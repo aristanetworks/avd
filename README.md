@@ -36,11 +36,11 @@ $ vim inventory.yml
 
 # Edit fabric variables
 # Change values to point to your own information
-$ vim group_vars/A_DC_FABRIC.yml
+$ vim group_vars/DC1_FABRIC.yml
 
 # Run ansible playbooks
 $ cd examples/evpn-design-guide/
-$ ansible-playbook a-dc-fabric-config.yml --tags "documentation"
+$ ansible-playbook dc1-fabric-config.yml --tags "documentation" --diff
 ```
 
 ## Resources
