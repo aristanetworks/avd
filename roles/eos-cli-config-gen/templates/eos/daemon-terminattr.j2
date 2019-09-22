@@ -1,0 +1,5 @@
+{% if daemon_terminattr is defined %}
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl={{ daemon_terminattr.ingestgrpcurl.ip }}:{{ daemon_terminattr.ingestgrpcurl.port }} -taillogs -ingestauth=key,{{ daemon_terminattr.ingestauth_key }} -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }} -ingestvrf={{ daemon_terminattr.ingestvrf }} -ntpvrf={{ daemon_terminattr.ingestvrf }}
+   no shutdown
+{% endif %}

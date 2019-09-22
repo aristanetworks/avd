@@ -1,0 +1,67 @@
+{# Device Configuration #}
+!RANCID-CONTENT-TYPE: arista
+!
+{# daemon TerminAttr #}
+{% include 'eos/daemon-terminattr.j2' %}
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+{# hardware tcam profile vxlan-routing  - placeholder for Jericho platform #}
+!
+hostname {{ inventory_hostname }}
+{# name servers #}
+{% include 'eos/name-servers.j2' %}
+!
+{# ntp servers #}
+{% include 'eos/ntp-servers.j2' %}
+!
+{# spanning-tree #}
+{% include 'eos/spanning-tree.j2' %}
+{# aaa authentication #}
+{% include 'eos/aaa-authentication.j2' %}
+{# users #}
+{% include 'eos/local-users.j2' %}
+{# VLANs #}
+{% include 'eos/vlans.j2' %}
+{# VRF Instances #}
+{% include 'eos/vrf-instances.j2' %}
+{# bfd multihop interval #}
+{% include 'eos/bfd-multihop-interval.j2' %}
+{# Port-Channel Interfaces #}
+{% include 'eos/port-channel-interfaces.j2' %}
+{# Ethernet Interfaces #}
+{% include 'eos/ethernet-interfaces.j2' %}
+{# Loopback Interfaces #}
+{% include 'eos/loopback-interfaces.j2' %}
+{# Management Interfaces #}
+{% include 'eos/management-interfaces.j2' %}
+{# VLAN Interfaces #}
+{% include 'eos/vlan-interfaces.j2' %}
+{# VxLAN interface #}
+{% include 'eos/vxlan-interface.j2' %}
+{# router virtual mac address #}
+{% include 'eos/virtual-router-mac-address.j2' %}
+{# Tenant virtual source-nat for VTEP diagnostics - introduced in 4.21 #}
+{% include 'eos/virtual-source-nat.j2' %}
+{# Static Route #}
+{% include 'eos/static-routes.j2' %}
+{# IP Routing #}
+{% include 'eos/ip-routing.j2' %}
+{# prefix-lists #}
+{% include 'eos/prefix-lists.j2' %}
+{# mlag configuration #}
+{% include 'eos/mlag-configuration.j2' %}
+{# route-maps #}
+{% include 'eos/route-maps.j2' %}
+{# peer-filters #}
+{% include 'eos/peer-filters.j2' %}
+{# router bgp configuration #}
+{% include 'eos/router-bgp.j2' %}
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+!
+end

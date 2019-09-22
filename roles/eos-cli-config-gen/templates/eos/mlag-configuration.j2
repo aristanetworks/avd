@@ -1,0 +1,9 @@
+{# eos - mlag configuration #}
+{% if mlag_configuration is defined %}
+mlag configuration
+   domain-id {{ mlag_configuration.domain_id }}
+   local-interface {{ mlag_configuration.local_interface }}
+   peer-address {{ mlag_configuration.peer_address }}
+   peer-link {{ mlag_configuration.peer_link }}
+!
+{% endif %}

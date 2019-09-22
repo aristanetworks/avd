@@ -1,0 +1,24 @@
+Leaf Node,Leaf Interface,Leaf IP Address,Spine Node,Spine Interface,Spine IP Address
+{% for l3leaf_node_group in l3leafs.node_groups | natural_sort %}
+{%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | natural_sort %}
+{%         set leaf_id = l3leafs.node_groups[l3leaf_node_group].nodes[node].id %}
+{%         set leaf_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
+{%         if l3leafs.node_groups[l3leaf_node_group].spines is defined %}
+{%             set leaf_spines = l3leafs.node_groups[l3leaf_node_group].spines %}
+{%         else %}
+{%             set leaf_spines = l3leafs.defaults.spines %}
+{%         endif %}
+{%         if l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
+{%             set leaf_uplink_to_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
+{%         else %}
+{%             set leaf_uplink_to_spine_interfaces = l3leafs.defaults.uplink_to_spine_interfaces %}
+{%         endif %}
+{%         for spine in leaf_spines %}
+{%             set leaf_interface = leaf_uplink_to_spine_interfaces[loop.index0] %}
+{%             set leaf_ip_address = hostvars[node].ethernet_interfaces[leaf_uplink_to_spine_interfaces[loop.index0]].ip_address %}
+{%             set spine_interface = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0]%}
+{%             set spine_ip_address = hostvars[spine].ethernet_interfaces[leaf_spine_interfaces[loop.index0]].ip_address %}
+{{ node }},{{ leaf_interface }},{{ leaf_ip_address }},{{ spine }}{{ spine_interface  }},{{ spine_ip_address }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

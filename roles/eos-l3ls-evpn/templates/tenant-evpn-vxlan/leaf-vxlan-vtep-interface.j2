@@ -1,0 +1,24 @@
+{# vxlan-vtep interface #}
+  Vxlan1:
+    description: {{ inventory_hostname }}_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+{% for tenant in tenants | natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+        {{ svi }}:
+          vni: {{ vxlan_l2_vni_base + svi }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+      vrfs:
+{% for tenant in tenants | natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+        {{ vrf }}:
+          vni: {{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}
+{%     endfor %}
+{% endfor %}

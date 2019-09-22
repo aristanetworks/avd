@@ -1,0 +1,7 @@
+{# static routes#}
+{% if static_routes is defined and static_routes is not none %}
+{%     for static_route in static_routes %}
+ip route {% if static_route.vrf is defined %}vrf {{ static_route.vrf }}{% endif %} {{ static_route.destination_address_prefix }} {{ static_route.gateway }}
+{%     endfor %}
+!
+{% endif %}

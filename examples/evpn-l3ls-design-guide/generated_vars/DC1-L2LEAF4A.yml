@@ -1,0 +1,120 @@
+## Ansible Generated ##
+
+### DC1-L2LEAF4A ###
+
+### Leaf Info ###
+l2leaf_node_group: DC1_L2LEAF4
+platform: vEOS-LAB
+leaf_id: 8
+leaf_mgmt_ip: 192.168.2.112/24
+leaf_mlag: False
+
+
+### Daemon TerminAttr
+daemon_terminattr:
+  ingestgrpcurl:
+    ip: 192.168.2.201
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+    - 192.168.2.1
+    - 8.8.8.8
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+    - 0.north-america.pool.ntp.org
+    - 1.north-america.pool.ntp.org
+
+### Spanning-tree ###
+spanning_tree:
+  mode: mstp
+  priority: 16384
+### local users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### VLANs ###
+vlans:
+
+## Tenant_A ##
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OPZone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OPZone_2
+## Tenant_B ##
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OPZone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OPZone_2
+## Tenant_C ##
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OPZone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OPZone_2
+
+### VRFs ###
+vrfs:
+  MGMT:
+    ip_routing: false
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+  Port-Channel11:
+    description: DC1-LEAF2A_Po6
+    vlans: 2-4092
+    mode: trunk
+    mlag: 11
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet11:
+    description: DC1-LEAF2A_Ethernet6
+    channel_group:
+      id: 11
+      mode: active
+  Ethernet12:
+    description: DC1-LEAF2B_Ethernet6
+    channel_group:
+      id: 11
+      mode: active
+
+### Management Interfaces ###
+management_interfaces:
+  Management1:
+    description: oob_management
+    vrf: MGMT
+    ip_address: 192.168.2.112/24
+    gateway: 192.168.2.1
+
+### VLAN Interfaces ###
+vlan_interfaces:
+
+### static routes ###
+static_routes:
+  - vrf: MGMT
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 192.168.2.1

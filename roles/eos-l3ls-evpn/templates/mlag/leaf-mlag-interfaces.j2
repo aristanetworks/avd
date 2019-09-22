@@ -1,0 +1,11 @@
+{# Leaf mlag interfaces #}
+{% if leaf.mlag == true %}
+## mlag interfaces ##
+{%     for mlag_interface in leaf.mlag_interfaces %}
+  {{ mlag_interface }}:
+    description: MLAG_PEER_{{ leaf.mlag_peer }}_{{ mlag_interface }}
+    channel_group:
+      id: {{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}
+      mode: active
+{%     endfor %}
+{% endif %}

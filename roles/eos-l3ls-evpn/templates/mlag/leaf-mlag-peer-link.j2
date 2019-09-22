@@ -1,0 +1,13 @@
+{# Leaf mlag peer-link #}
+{% if leaf.mlag == true %}
+## mlag peer-link ##
+  Port-Channel{{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}:
+    description: MLAG_PEER_{{ leaf.mlag_peer }}_Po{{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}
+    vlans: "2-4094"
+    mode: trunk
+    trunk_groups:
+{%     if type == 'l3leaf' %}
+      - LEAF_PEER_L3
+{%     endif %}
+      - MLAG
+{% endif %}

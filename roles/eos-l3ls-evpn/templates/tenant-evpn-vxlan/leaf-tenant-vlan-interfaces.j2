@@ -1,0 +1,18 @@
+{# Leaf tenant vlan interfaces #}
+{% for tenant in tenants | natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+  Vlan{{ svi }}:
+    tenant: {{ tenant }}
+    type: {{ tenants[tenant].vrfs[vrf].svis[svi].type }}
+    description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+    vrf: {{ vrf }}
+    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('prefix') }}
+{%             if tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary is defined %}
+    ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
+{%             endif %}
+    virtual: true
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

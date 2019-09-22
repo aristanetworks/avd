@@ -1,0 +1,50 @@
+{# Leaf underlay and overlay router bgp configuration #}
+  as: {{ leaf.bgp_as }}
+  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+  bgp_defaults:
+{% for bgp_default in leaf_bgp_defaults %}
+    - {{ bgp_default }}
+{% endfor %}
+    - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: {{ spine.bgp_as }}
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: true
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: {{ spine.bgp_as }}
+      update_source: Loopback0
+      fall_over_bfd: true
+      ebgp_multihop: 3
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: true
+      maximum_routes: 0
+{% if leaf.mlag == true %}
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: {{ leaf.bgp_as }}
+      next_hop_self: true
+      password: "{{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password }}"
+      maximum_routes: 12000
+      send_community: true
+{% endif %}
+{# BGP neighbors #}
+  neighbors:
+{% for leaf_spine in leaf.spines %}
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * spine.nodes | length * 2) + ( spine.nodes[leaf_spine].id *2 ) - 2) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+    {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[leaf_spine].id ) }}:
+      peer_group: EVPN-OVERLAY-PEERS
+{% endfor %}
+{# mlag iBGP neighbor #}
+{% if leaf.mlag == true %}
+    {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+{% endif %}
+{# redistribute routes #}
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP

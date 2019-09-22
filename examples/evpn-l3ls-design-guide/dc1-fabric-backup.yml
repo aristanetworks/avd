@@ -1,0 +1,16 @@
+---
+
+- hosts: DC1_FABRIC
+
+  tasks:
+    - name: show running config
+      eos_command:
+        commands: "show running-config"
+      register: backup
+      check_mode: no
+
+    - name: backup running config
+      copy:
+        content: "{{ backup.stdout[0] }}"
+        dest: "./config_backup/{{ inventory_hostname }}_running-config.conf"
+

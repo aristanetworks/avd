@@ -1,0 +1,13 @@
+{# eos- VxLAN interface #}
+{% if vxlan_tunnel_interface is defined %}
+interface Vxlan1
+   vxlan source-interface {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
+   vxlan udp-port {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+{%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | natural_sort %}
+   vxlan vlan {{ vlan }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans[vlan].vni }}
+{%     endfor %}
+{%     for vrf in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | natural_sort %}
+   vxlan vrf {{ vrf }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }}
+{%     endfor %}
+!
+{% endif %}

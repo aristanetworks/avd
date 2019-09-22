@@ -1,0 +1,11 @@
+{# Leaf tenant vlans #}
+{% for tenant in tenants | natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+  {{ svi }}:
+    tenant: {{ tenant }}
+    name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

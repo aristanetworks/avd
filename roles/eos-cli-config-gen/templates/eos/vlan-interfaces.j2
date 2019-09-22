@@ -1,0 +1,21 @@
+{# eos - VLAN Interfaces #}
+{% if vlan_interfaces is defined and vlan_interfaces is not none %}
+{%     for vlan_interface in vlan_interfaces | natural_sort %}
+interface {{ vlan_interface }}
+   description {{ vlan_interfaces[vlan_interface].description }}
+{%         if vlan_interfaces[vlan_interface].vrf is defined %}
+   vrf {{ vlan_interfaces[vlan_interface].vrf }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_address is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %}
+   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address }}
+{%         elif vlan_interfaces[vlan_interface].ip_address is defined %}
+   ip address {{ vlan_interfaces[vlan_interface].ip_address }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_address_secondary is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %}
+   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
+{%         elif vlan_interfaces[vlan_interface].ip_address_secondary is defined %}
+   ip address {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}

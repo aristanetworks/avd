@@ -1,0 +1,19 @@
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: replace configuration with intended configuration
+      eos_config:
+        src: ./intended_configs/{{ inventory_hostname }}.cfg
+        replace: config
+        save_when: modified
+
+    - name: show running config
+      eos_command:
+        commands: "show running-config"
+      register: backup
+
+    - name: backup running config
+      copy:
+        content: "{{ backup.stdout[0] }}"
+        dest: "./config_backup/{{ inventory_hostname }}_running-config.conf"

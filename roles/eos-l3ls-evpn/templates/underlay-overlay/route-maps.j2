@@ -1,0 +1,9 @@
+{# Leaf and Spine route-maps #}
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match: "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+      20:
+        type: permit
+        match: "ip address prefix-list PL-P2P-UNDERLAY"

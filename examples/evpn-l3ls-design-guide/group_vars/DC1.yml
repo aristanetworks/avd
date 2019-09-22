@@ -1,0 +1,30 @@
+# Validation lab
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1"
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+
+# Cloud Vision server information
+cvp_instance_ip: 192.168.2.201
+cvp_ingestauth_key: telarista
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.2.1
+
+# dns servers.
+name_servers:
+ - 192.168.2.1
+ - 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+ntp_servers:
+ - 0.north-america.pool.ntp.org
+ - 1.north-america.pool.ntp.org

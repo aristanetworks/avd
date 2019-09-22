@@ -1,0 +1,170 @@
+---
+# L3LS Fabric Values - update these values with caution, some changes could be disruptive.
+
+fabric_name: DC1_FABRIC
+
+# Point to Point Network Summary range, assigned as /31 for each uplink interfaces
+# Assign range larger then total [ spines * total potential leafs * 2 ]
+underlay_p2p_network_summary: 172.31.255.0/24
+
+# IP address range for evpn loopback for all switches in fabric, assigned as /32s
+# Assign range larger then total spines + total leafs switches
+overlay_loopback_network_summary: 192.168.255.0/24
+
+# VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
+# Assign range larger then total leaf switches
+vtep_loopback_network_summary: 192.168.254.0/24
+
+# mlag pair IP assignment - assign blocks - Assign range larger then total spines + total leafs switches
+mlag_ips:
+  leaf_peer_l3: 10.255.251.0/24
+  mlag_peer: 10.255.252.0/24
+
+# Enable vlan aware bundles
+vxlan_vlan_aware_bundles: true
+
+# bgp peer groups passwords
+bgp_peer_groups:
+  IPv4_UNDERLAY_PEERS:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  EVPN_OVERLAY_PEERS:
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+  MLAG_IPv4_UNDERLAY_PEER:
+      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+# Spine Switches
+spine:
+  platform: vEOS-LAB
+  bgp_as: 65001
+  nodes:
+    DC1-SPINE1:
+      id: 1
+      mgmt_ip: 192.168.2.101/24
+    DC1-SPINE2:
+      id: 2
+      mgmt_ip: 192.168.2.102/24
+
+# defines the range of acceptable remote ASNs from leaf switches
+leaf_as_range: 65101-65132
+
+# virtual router mac for VNIs assigned to Leaf switches format: xx:xx:xx:xx:xx:xx
+virtual_router_mac_address : 00:dc:00:00:00:01
+
+# Leaf switch groups
+# A maximum of two nodes can form a leaf group
+# When two nodes are in a leaf group this will automatically form mlag pair
+
+l3leafs:
+  virtual_router_mac_address: 00:dc:00:00:00:01
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65100
+    spines: [ DC1-SPINE1, DC1-SPINE2 ]
+    uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_priority: 4096
+  node_groups:
+    DC1_LEAF1:
+      bgp_as: 65101
+      nodes:
+        DC1-LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.2.105/24
+          spine_interfaces: [ Ethernet1, Ethernet1 ]
+    DC1_LEAF2:
+      bgp_as: 65102
+      nodes:
+        DC1-LEAF2A:
+          id: 2
+          mgmt_ip: 192.168.2.106/24
+          spine_interfaces: [ Ethernet2, Ethernet2 ]
+        DC1-LEAF2B:
+          id: 3
+          mgmt_ip: 192.168.2.107/24
+          spine_interfaces: [ Ethernet3, Ethernet3 ]
+    DC1_SVC3:
+      bgp_as: 65103
+      nodes:
+        DC1-SVC3A:
+          id: 4
+          mgmt_ip: 192.168.2.108/24
+          spine_interfaces: [ Ethernet4, Ethernet4 ]
+        DC1-SVC3B:
+          id: 5
+          mgmt_ip: 192.168.2.109/24
+          spine_interfaces: [ Ethernet5, Ethernet5 ]
+    DC1_BL1:
+      platform: vEOS-LAB
+      bgp_as: 65104
+      spanning_tree_priority: 16384
+      nodes:
+        DC1-BL1A:
+          id: 6
+          mgmt_ip: 192.168.2.110/24
+          spine_interfaces: [ Ethernet6, Ethernet6 ]
+        DC1-BL1B:
+          id: 7
+          mgmt_ip: 192.168.2.111/24
+          spine_interfaces: [ Ethernet7, Ethernet7 ]
+
+l2leafs:
+  defaults:
+    platform: vEOS-LAB
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_priority: 16384
+  node_groups:
+    DC1_L2LEAF4:
+      uplink_interfaces: [ Ethernet11, Ethernet12 ]
+      nodes:
+        DC1-L2LEAF4A:
+          id: 8
+          mgmt_ip: 192.168.2.112/24
+          l3leaf_interface: Ethernet6
+    DC1_L2LEAF5:
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      nodes:
+        DC1-L2LEAF5A:
+          id: 10
+          mgmt_ip: 192.168.2.113/24
+          l3leaf_interface: Ethernet5
+        DC1-L2LEAF5B:
+          id: 11
+          mgmt_ip: 192.168.2.114/24
+          l3leaf_interface: Ethernet6
+    DC1_L2LEAF6:
+      nodes:
+        DC1-L2LEAF6A:
+          id: 12
+          mgmt_ip: 192.168.2.115/24
+          l3leaf_interface: Ethernet7
+        DC1-L2LEAF6B:
+          id: 13
+          mgmt_ip: 192.168.2.116/24
+          l3leaf_interface: Ethernet8
+
+#### Override for vEOS Lab Caveats ####
+
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+# Refer to design guide
+
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+
+# Update p2p mtu 9000 -> 1500
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3

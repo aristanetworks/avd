@@ -1,0 +1,6 @@
+{# spanning-tree #}
+{% if spanning_tree is defined %}
+spanning-tree mode {{ spanning_tree.mode }}
+spanning-tree mst 0 priority {{ spanning_tree.priority }}
+!
+{% endif %}

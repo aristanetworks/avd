@@ -1,0 +1,10 @@
+{# Leaf Tenant vrf loopback interfaces #}
+{% for tenant in tenants | natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+  Loopback{{ tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:
+    description: {{ vrf }}_VTEP_DIAGNOSTICS
+    vrf: {{ vrf }}
+    ip_address: {{ tenants[tenant].vrfs[vrf].loopback_range | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
+{%     endfor %}
+{% endfor %}

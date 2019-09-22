@@ -1,0 +1,18 @@
+{# spanning-tree #}
+{% if spanning_tree is defined and spanning_tree is not none %}
+### Spanning Tree Summary
+
+Mode: {{ spanning_tree.mode|upper }}
+
+| Instance | Priority |
+| -------- | -------- |
+| 0 | {{ spanning_tree.priority }} |
+
+### Spanning Tree Device Configuration
+
+```eos
+{% include 'eos/spanning-tree.j2' %}
+```
+{% else %}
+Spanning-Tree Not Defined
+{% endif %}

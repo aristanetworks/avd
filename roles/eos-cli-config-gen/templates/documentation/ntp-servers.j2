@@ -1,0 +1,24 @@
+{% if ntp_server is defined and ntp_server is not none %}
+### NTP Summary
+
+Local Interface: {{ ntp_server.local_interface.interface }}
+VRF: {{ ntp_server.local_interface.vrf }}
+
+| Node | Primary |
+| ---- | ------- |
+{%     for node in ntp_server.nodes %}
+{%         if loop.first %}
+| {{ node }} | True |
+{%         else %}
+| {{ node }} | - |
+{%         endif %}
+{%     endfor %}
+
+### NTP Device Configuration
+
+```eos
+{% include 'eos/ntp-servers.j2' %}
+```
+{% else %}
+No NTP servers defined
+{% endif %}

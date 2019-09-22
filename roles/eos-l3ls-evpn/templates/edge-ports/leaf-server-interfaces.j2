@@ -1,0 +1,22 @@
+{# Leaf server interfaces #}
+{% for server in servers | natural_sort() %}
+{%     for adapter in servers[server].adapters %}
+{%         for switch in adapter.switches %}
+{%             if switch == inventory_hostname %}
+{%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
+  {{ adapter.switch_ports[loop.index0]}}:
+    host: {{ server }}
+    description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
+    type: {{ adapter.type }}
+    mode: {{ port_profiles[adapter.profile].mode }}
+    vlans: {{ port_profiles[adapter.profile].vlans }}
+{%                     if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
+    channel_group:
+      id: {{ channel_group_id }}
+      mode: "{{ adapter.port_channel.mode }}"
+{%                     endif %}
+    profile: {{ adapter.profile }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

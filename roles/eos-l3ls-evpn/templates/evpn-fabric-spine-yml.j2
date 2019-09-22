@@ -1,0 +1,87 @@
+{# Spine Switch Configuration #}
+## Ansible Generated ##
+
+### {{ inventory_hostname }} ###
+
+{# Daemon TerminAttr #}
+### Daemon TerminAttr ###
+daemon_terminattr:
+{% include 'base/daemon-terminattr.j2' %}
+
+{# name servers #}
+### Name Servers ###
+name_server:
+{% include 'base/name-servers.j2' %}
+
+{# NTP servers #}
+### NTP Servers ###
+ntp_server:
+{% include 'base/ntp-servers.j2' %}
+
+{# spanning-tree #}
+### Spanning-tree ###
+spanning_tree:
+{% include 'base/spine-spanning-tree.j2' %}
+
+
+{# local users #}
+### local users ###
+local_users:
+{% include 'base/local-users.j2' %}
+
+
+{# VRFs #}
+### VRFs ###
+vrfs:
+{% include 'base/mgmt-vrf.j2' %}
+
+{# bfd multihop #}
+### bfd multihop ###
+bfd_multihop:
+{% include 'base/bfd-multihop.j2' %}
+
+{# Ethernet Interfaces #}
+### Ethernet Interfaces ###
+ethernet_interfaces:
+{% include 'underlay-overlay/spine-p2p-interfaces.j2' %}
+
+
+{# Loopback Interfaces #}
+### Loopback Interfaces ###
+loopback_interfaces:
+{% include 'underlay-overlay/spine-overlay-loopback.j2' %}
+
+
+{# Management Interfaces #}
+### Management Interfaces ###
+management_interfaces:
+{% include 'base/spine-mgmt-interface.j2' %}
+
+{# static_routes #}
+### static routes ###
+static_routes:
+{% include 'routing/static-routes.j2' %}
+
+
+{# prefix_lists #}
+### prefix-lists ###
+prefix_lists:
+{% include 'underlay-overlay/spine-prefix-lists.j2' %}
+
+
+{# route maps #}
+### route-maps ###
+route_maps:
+{% include 'underlay-overlay/route-maps.j2' %}
+
+
+{# peer-filter #}
+### peer-filters ###
+peer_filters:
+{% include 'underlay-overlay/spine-peer-filters.j2' %}
+
+
+{# ##### BGP Configurartion ##### #}
+### Routing - BGP ###
+router_bgp:
+{% include 'underlay-overlay/spine-router-bgp.j2' %}
