@@ -5,7 +5,7 @@
 {%         if node == inventory_hostname %}
 {%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 {%                 if loop.first %}
-{%                      set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interface | regex_findall("\d") | join ) %}
+{%                      set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
 {%                 endif %}
 {%             endfor %}
 {%             if l2leafs.node_groups[l2leaf_node_group].uplink_interfaces is defined %}

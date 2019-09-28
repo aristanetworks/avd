@@ -15,7 +15,7 @@
 {%             endif %}
 {%             for uplink_interface in uplink_interfaces %}
   {{ uplink_interfaces[loop.index0] }}:
-    description: {{ parent_l3leafs[loop.index0]}}_{{ l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interface }}
+    description: {{ parent_l3leafs[loop.index0]}}_{{ l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] }}
     channel_group:
       id: {{ channel_group_id }}
       mode: active

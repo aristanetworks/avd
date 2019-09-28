@@ -11,7 +11,7 @@
 {%         if inventory_hostname in parent_l3leafs %}
 {%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 {%                 if loop.first %}
-{%                     set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interface | regex_findall("\d") | join ) %}
+{%                     set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
 {%                 endif %}
 {%             endfor %}
 {%             if l2leafs.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
@@ -21,7 +21,7 @@
 {%             endif %}
 {%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 ## L2 LEAF Uplink {{ l2leaf_node_group }} ##
-  {{ l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interface }}:
+  {{ l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] }}:
     description: {{ node }}_{{ l2leaf_uplink_interfaces[loop.index0] }}
     channel_group:
       id: {{ l3leaf.channel_group_id }}
