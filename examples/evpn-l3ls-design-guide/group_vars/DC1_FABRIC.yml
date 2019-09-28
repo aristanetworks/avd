@@ -121,28 +121,28 @@ l2leafs:
         DC1-L2LEAF4A:
           id: 8
           mgmt_ip: 192.168.2.112/24
-          l3leaf_interface: Ethernet6
+          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
     DC1_L2LEAF5:
       parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
       nodes:
         DC1-L2LEAF5A:
           id: 10
           mgmt_ip: 192.168.2.113/24
-          l3leaf_interface: Ethernet5
+          l3leaf_interfaces: [ Ethernet5, Ethernet5 ]
         DC1-L2LEAF5B:
           id: 11
           mgmt_ip: 192.168.2.114/24
-          l3leaf_interface: Ethernet6
+          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
     DC1_L2LEAF6:
       nodes:
         DC1-L2LEAF6A:
           id: 12
           mgmt_ip: 192.168.2.115/24
-          l3leaf_interface: Ethernet7
+          l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
         DC1-L2LEAF6B:
           id: 13
           mgmt_ip: 192.168.2.116/24
-          l3leaf_interface: Ethernet8
+          l3leaf_interfaces: [ Ethernet8, Ethernet8 ]
 
 #### Override for vEOS Lab Caveats ####
 
