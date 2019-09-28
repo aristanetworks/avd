@@ -252,8 +252,8 @@ interface Port-Channel11
 | Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.11/31 | - | - |
 | Ethernet3 | MLAG_PEER_DC1-LEAF2A_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-LEAF2A_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet6 | DC1-L2LEAF4A_Ethernet11 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 6 | active |
-| Ethernet7 | DC1-L2LEAF6A_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 7 | active |
+| Ethernet6 | DC1-L2LEAF4A_Ethernet12 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 6 | active |
+| Ethernet7 | DC1-L2LEAF6A_Ethernet2 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 7 | active |
 | Ethernet8 | DC1-L2LEAF6B_Ethernet2 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 7 | active |
 | Ethernet10 | server01_Eth3 | *1500 | *switched | *trunk | *210-211 | - | - | - | 10 | active |
 | Ethernet11 | server02_Eth3 | *1500 | *switched | *trunk | *210-211 | - | - | - | 11 | active |
@@ -282,11 +282,11 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet6
-   description DC1-L2LEAF4A_Ethernet11
+   description DC1-L2LEAF4A_Ethernet12
    channel-group 6 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF6A_Ethernet1
+   description DC1-L2LEAF6A_Ethernet2
    channel-group 7 mode active
 !
 interface Ethernet8

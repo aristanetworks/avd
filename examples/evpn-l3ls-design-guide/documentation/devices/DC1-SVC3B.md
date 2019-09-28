@@ -245,7 +245,7 @@ interface Port-Channel11
 | Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet5 | 1500 | routed | access | - | - | - | 172.31.255.19/31 | - | - |
 | Ethernet3 | MLAG_PEER_DC1-SVC3A_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-SVC3A_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet5 | DC1-L2LEAF5A_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
+| Ethernet5 | DC1-L2LEAF5A_Ethernet2 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
 | Ethernet6 | DC1-L2LEAF5B_Ethernet2 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
 | Ethernet10 | server03_Eth2 | *1500 | *switched | *trunk | *110-111,210-211 | - | - | - | 10 | active |
 | Ethernet11 | server04_Eth2 | *1500 | *switched | *trunk | *110-111,210-211 | - | - | - | 11 | active |
@@ -274,7 +274,7 @@ interface Ethernet4
    channel-group 3 mode active
 !
 interface Ethernet5
-   description DC1-L2LEAF5A_Ethernet1
+   description DC1-L2LEAF5A_Ethernet2
    channel-group 5 mode active
 !
 interface Ethernet6
