@@ -181,13 +181,13 @@ ethernet_interfaces:
       mode: active
 ## L2 LEAF Uplink DC1_L2LEAF4 ##
   Ethernet6:
-    description: DC1-L2LEAF4A_Ethernet11
+    description: DC1-L2LEAF4A_Ethernet12
     channel_group:
       id: 6
       mode: active
 ## L2 LEAF Uplink DC1_L2LEAF6 ##
   Ethernet7:
-    description: DC1-L2LEAF6A_Ethernet1
+    description: DC1-L2LEAF6A_Ethernet2
     channel_group:
       id: 7
       mode: active

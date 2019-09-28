@@ -246,7 +246,7 @@ interface Port-Channel11
 | Ethernet3 | MLAG_PEER_DC1-SVC3B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-SVC3B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet5 | DC1-L2LEAF5A_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
-| Ethernet6 | DC1-L2LEAF5B_Ethernet2 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
+| Ethernet6 | DC1-L2LEAF5B_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 5 | active |
 | Ethernet10 | server03_Eth1 | *1500 | *switched | *trunk | *110-111,210-211 | - | - | - | 10 | active |
 | Ethernet11 | server04_Eth1 | *1500 | *switched | *trunk | *110-111,210-211 | - | - | - | 11 | active |
 
@@ -278,7 +278,7 @@ interface Ethernet5
    channel-group 5 mode active
 !
 interface Ethernet6
-   description DC1-L2LEAF5B_Ethernet2
+   description DC1-L2LEAF5B_Ethernet1
    channel-group 5 mode active
 !
 interface Ethernet10
