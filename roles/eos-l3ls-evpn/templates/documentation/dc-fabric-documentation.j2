@@ -27,7 +27,7 @@
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-| {{ underlay_p2p_network_summary }} | {{ underlay_p2p_network_summary | ipaddr('size') }} | {{ spine.nodes | length * fabric_doc.leaf_total * 2 }} | {{ (( spine.nodes | length * fabric_doc.leaf_total * 2 ) / underlay_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+| {{ underlay_p2p_network_summary }} | {{ underlay_p2p_network_summary | ipaddr('size') }} | {{ spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links }} | {{ (( spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links ) / underlay_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
 
 ### Point-To-Point Links Node Allocation
 
