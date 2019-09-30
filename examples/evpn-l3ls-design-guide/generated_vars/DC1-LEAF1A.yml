@@ -121,7 +121,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.3/31
-  Ethernet3:
+  Ethernet5:
     host: server01
     description: server01_Eth1
     type: nic
