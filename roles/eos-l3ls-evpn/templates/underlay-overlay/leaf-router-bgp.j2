@@ -5,7 +5,7 @@
 {% for bgp_default in leaf_bgp_defaults %}
     - {{ bgp_default }}
 {% endfor %}
-    - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
+    - maximum-paths {{ spine.nodes | length * max_l3leaf_to_spine_links }} ecmp {{ spine.nodes | length * max_l3leaf_to_spine_links }}
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
