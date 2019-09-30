@@ -365,10 +365,10 @@ router_bgp:
   neighbors:
     172.31.255.24:
       peer_group: IPv4-UNDERLAY-PEERS
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
     172.31.255.26:
       peer_group: IPv4-UNDERLAY-PEERS
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
     10.255.251.10:
