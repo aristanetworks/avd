@@ -145,6 +145,7 @@ vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.19/31
+    no_autostate: true
 
 ### static routes ###
 static_routes:

@@ -257,6 +257,7 @@ No Loopback interfaces defined
 ```eos
 interface Vlan4094
    description MLAG_PEER
+   no autostate
    ip address 10.255.252.19/31
 !
 ```

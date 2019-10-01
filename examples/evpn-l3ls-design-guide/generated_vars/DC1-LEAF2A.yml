@@ -53,6 +53,8 @@ ntp_server:
 spanning_tree:
   mode: mstp
   priority: 4096
+  no_spanning_tree_vlan: 4094
+
 ### local users ###
 local_users:
   admin:
@@ -259,6 +261,7 @@ vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.2/31
+    no_autostate: true
 ## Tenant_A ##
   Vlan110:
     tenant: Tenant_A
