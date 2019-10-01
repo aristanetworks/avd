@@ -121,7 +121,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.3/31
-  Ethernet3:
+  Ethernet5:
     host: server01
     description: server01_Eth1
     type: nic
@@ -322,10 +322,10 @@ router_bgp:
   neighbors:
     172.31.255.0:
       peer_group: IPv4-UNDERLAY-PEERS
-    192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
     172.31.255.2:
       peer_group: IPv4-UNDERLAY-PEERS
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
   redistribute_routes:

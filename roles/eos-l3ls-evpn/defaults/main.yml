@@ -1,5 +1,7 @@
 # Roles Defaults
 
+max_l3leaf_to_spine_links: 1
+
 spine_bgp_defaults:
   - update wait-for-convergence
   - update wait-install

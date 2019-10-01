@@ -196,7 +196,7 @@ No Port-Channels defined
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
 | Ethernet1 | P2P_UPLINK_TO_DC1-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
 | Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
-| Ethernet3 | server01_Eth1 | 1500 | switched | trunk | 110 | - | - | - | - | - |
+| Ethernet5 | server01_Eth1 | 1500 | switched | trunk | 110 | - | - | - | - | - |
 | Ethernet6 | server02_Eth1 | 1500 | switched | trunk | 110 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -214,7 +214,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.3/31
 !
-interface Ethernet3
+interface Ethernet5
    description server01_Eth1
    switchport trunk allowed vlan 110
    switchport mode trunk

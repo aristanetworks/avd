@@ -18,7 +18,7 @@
     description: P2P_UPLINK_TO_{{ node | upper }}_{{ uplink_to_spine_interfaces[loop.index0] }}
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
-    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leafs.node_groups[l3leaf_node_group].nodes[node].id -1) * spine.nodes | length * 2) + (spine.nodes[inventory_hostname].id * 2) - 2) }}/31
+    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leafs.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
