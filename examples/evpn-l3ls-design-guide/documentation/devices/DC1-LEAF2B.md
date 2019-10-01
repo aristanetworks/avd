@@ -84,6 +84,7 @@ Mode: MSTP
 
 ```eos
 spanning-tree mode mstp
+no spanning-tree vlan-id 4094
 spanning-tree mst 0 priority 4096
 !
 ```
@@ -398,6 +399,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   no autostate
    ip address 10.255.252.3/31
 !
 ```
