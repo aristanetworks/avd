@@ -110,10 +110,10 @@ router bgp {{ router_bgp.as }}
    vrf {{ vrf }}
       rd {{ router_bgp.vrfs[vrf].rd }}
 {%             if router_bgp.vrfs[vrf].route_targets.import is defined %}
-      route-target import {{ router_bgp.vrfs[vrf].route_targets.import.asn }}
+      route-target import {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.import.asn }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].route_targets.export is defined %}
-      route-target export {{ router_bgp.vrfs[vrf].route_targets.export.asn }}
+      route-target export {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.export.asn }}
 {%             endif %}
 {%             for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | natural_sort %}
       redistribute {{ redistribute_route }}

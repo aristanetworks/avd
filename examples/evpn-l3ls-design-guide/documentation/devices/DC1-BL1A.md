@@ -693,20 +693,20 @@ router bgp 65104
    !
    vrf Tenant_A_OPZone
       rd 192.168.255.8:50101
-      route-target import 50101:50101
-      route-target export 50101:50101
+      route-target import evpn 50101:50101
+      route-target export evpn 50101:50101
       redistribute connected
    !
    vrf Tenant_B_OPZone
       rd 192.168.255.8:50201
-      route-target import 50201:50201
-      route-target export 50201:50201
+      route-target import evpn 50201:50201
+      route-target export evpn 50201:50201
       redistribute connected
    !
    vrf Tenant_C_OPZone
       rd 192.168.255.8:50301
-      route-target import 50301:50301
-      route-target export 50301:50301
+      route-target import evpn 50301:50301
+      route-target export evpn 50301:50301
       redistribute connected
 !
 ```
