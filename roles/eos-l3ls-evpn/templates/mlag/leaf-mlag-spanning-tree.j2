@@ -1,0 +1,5 @@
+{# Leaf mlag disable spanning tree - note intentional blank line #}
+{% if leaf.mlag == true %}
+
+  no_spanning_tree_vlan: 4094
+{% endif %}

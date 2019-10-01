@@ -105,6 +105,8 @@ ntp_server:
 ### Spanning-tree ###
 spanning_tree:
 {% include 'base/leaf-spanning-tree.j2' %}
+{# disable mlag vlan spanning tree #}
+{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# local users #}
 ### local users ###
