@@ -48,14 +48,13 @@ spine:
 leaf_as_range: 65101-65132
 
 # virtual router mac for VNIs assigned to Leaf switches format: xx:xx:xx:xx:xx:xx
-virtual_router_mac_address : 00:dc:00:00:00:01
+virtual_router_mac_address : 00:1c:73:00:dc:01
 
 # Leaf switch groups
 # A maximum of two nodes can form a leaf group
 # When two nodes are in a leaf group this will automatically form mlag pair
 
 l3leafs:
-  virtual_router_mac_address: 00:dc:00:00:00:01
   defaults:
     platform: vEOS-LAB
     bgp_as: 65100

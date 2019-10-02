@@ -399,12 +399,12 @@ interface Vxlan1
 
 ### Virtual Router MAC Address Summary
 
-**Virtual Router MAC Address:** 00:dc:00:00:00:01
+**Virtual Router MAC Address:** 00:1c:73:00:dc:01
 
 ### Virtual Router MAC Address Device Configuration
 
 ```eos
-ip virtual-router mac-address 00:dc:00:00:00:01
+ip virtual-router mac-address 00:1c:73:00:dc:01
 ```
 
 ## Virtual Source NAT

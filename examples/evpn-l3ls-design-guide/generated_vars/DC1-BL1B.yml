@@ -283,7 +283,7 @@ vxlan_tunnel_interface:
         Tenant_C_OPZone:
           vni: 50301
 
-ip_virtual_router_mac_address: 00:dc:00:00:00:01
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 
 virtual_source_nat_vrfs:
 ## Tenant_A ##
