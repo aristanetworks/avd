@@ -49,7 +49,7 @@ local_users:
 ### VRFs ###
 vrfs:
   MGMT:
-    ip_routing: false
+    ip_routing: False
 ### bfd multihop ###
 bfd_multihop:
   interval: 1200

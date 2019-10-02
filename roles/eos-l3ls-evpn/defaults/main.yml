@@ -1,6 +1,20 @@
 # Roles Defaults
 
+MGMT_vrf_routing: false
+
 max_l3leaf_to_spine_links: 1
+
+terminattr_ingestgrpcurl_port: 9910
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+spanning_tree_mode: mstp
+spanning_tree_priority: 4096
+
+p2p_uplinks_mtu: 9000
+
+vxlan_l2_vni_base: 10000
+vxlan_l3_vni_base: 50000
 
 spine_bgp_defaults:
   - update wait-for-convergence
@@ -17,19 +31,7 @@ leaf_bgp_defaults:
   - graceful-restart restart-time 300
   - graceful-restart
 
-p2p_uplinks_mtu: 9000
-
 vxlan_vlan_aware_bundles: false
-vxlan_l2_vni_base: 10000
-vxlan_l3_vni_base: 50000
-
-spanning_tree_mode: mstp
-spanning_tree_priority: 4096
-
-terminattr_ingestgrpcurl_port: 9910
-
-terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
-terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
 bfd_multihop:
   interval: 300

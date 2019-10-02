@@ -92,7 +92,7 @@ vlans:
 ### VRFs ###
 vrfs:
   MGMT:
-    ip_routing: false
+    ip_routing: False
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
   Port-Channel1:
