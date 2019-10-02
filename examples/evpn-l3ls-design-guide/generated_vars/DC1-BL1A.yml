@@ -105,7 +105,7 @@ vlans:
 ### VRFs ###
 vrfs:
   MGMT:
-    ip_routing: false
+    ip_routing: False
 ## Tenant_A ##
   Tenant_A_OPZone:
     tenant: Tenant_A
