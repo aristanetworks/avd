@@ -350,6 +350,8 @@ peer-filter LEAF-AS-RANGE
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
 ### Router BGP Peer Groups
@@ -414,6 +416,8 @@ router bgp 65001
    router-id 192.168.255.2
    no bgp default ipv4-unicast
    distance bgp 20 200 200
+   graceful-restart restart-time 300
+   graceful-restart
    maximum-paths 2 ecmp 2
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged

@@ -150,6 +150,8 @@ router_bgp:
   bgp_defaults:
     - no bgp default ipv4-unicast
     - distance bgp 20 200 200
+    - graceful-restart restart-time 300
+    - graceful-restart
     - maximum-paths 2 ecmp 2
   peer_groups:
     IPv4-UNDERLAY-PEERS:

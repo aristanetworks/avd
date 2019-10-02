@@ -153,11 +153,15 @@ spine_bgp_defaults:
 #  - update wait-install
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
 
 leaf_bgp_defaults:
 #  - update wait-install
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
 
 # Update p2p mtu 9000 -> 1500
 p2p_uplinks_mtu: 1500
