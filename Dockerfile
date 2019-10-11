@@ -2,7 +2,7 @@ FROM centos:7
 
 LABEL maintainer="ansible@arista.com"
 
-WORKDIR /usr/ansible-avd
+WORKDIR /usr/ansible_avd
 
 
 RUN yum makecache fast \
