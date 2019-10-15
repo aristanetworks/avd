@@ -81,6 +81,11 @@ vlans:
       - MLAG
 
 ## Tenant_A ##
+  3000:
+    tenant: Tenant_A
+    name: MLAG_iBGP_Tenant_A_OPZone
+    trunk_groups:
+      - LEAF_PEER_L3
   110:
     tenant: Tenant_A
     name: Tenant_A_OPZone_1
@@ -88,6 +93,11 @@ vlans:
     tenant: Tenant_A
     name: Tenant_A_OPZone_2
 ## Tenant_B ##
+  3020:
+    tenant: Tenant_B
+    name: MLAG_iBGP_Tenant_B_OPZone
+    trunk_groups:
+      - LEAF_PEER_L3
   210:
     tenant: Tenant_B
     name: Tenant_B_OPZone_1
@@ -95,6 +105,11 @@ vlans:
     tenant: Tenant_B
     name: Tenant_B_OPZone_2
 ## Tenant_C ##
+  3040:
+    tenant: Tenant_C
+    name: MLAG_iBGP_Tenant_C_OPZone
+    trunk_groups:
+      - LEAF_PEER_L3
   310:
     tenant: Tenant_C
     name: Tenant_C_OPZone_1
@@ -244,13 +259,19 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
   Vlan4093:
-    description: LEAF_PEER_L3_iBGP
+    description: MLAG_PEER_L3_iBGP
     ip_address: 10.255.251.6/31
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.6/31
     no_autostate: true
 ## Tenant_A ##
+  Vlan3000:
+    tenant: Tenant_A
+    type: underlay_peering
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone"
+    vrf: Tenant_A_OPZone
+    ip_address: 10.255.251.6/31
   Vlan110:
     tenant: Tenant_A
     type: host
@@ -267,6 +288,12 @@ vlan_interfaces:
     ip_address: 10.1.11.1/24
     virtual: true
 ## Tenant_B ##
+  Vlan3020:
+    tenant: Tenant_B
+    type: underlay_peering
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone"
+    vrf: Tenant_B_OPZone
+    ip_address: 10.255.251.6/31
   Vlan210:
     tenant: Tenant_B
     type: host
@@ -282,6 +309,12 @@ vlan_interfaces:
     ip_address: 10.2.11.1/24
     virtual: true
 ## Tenant_C ##
+  Vlan3040:
+    tenant: Tenant_C
+    type: underlay_peering
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone"
+    vrf: Tenant_C_OPZone
+    ip_address: 10.255.251.6/31
   Vlan310:
     tenant: Tenant_C
     type: host
@@ -468,6 +501,9 @@ router_bgp:
         export:
           address_family: evpn
           asn: "50101:50101"
+      neighbors:
+        10.255.251.7:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
 ## Tenant_B ##
@@ -480,6 +516,9 @@ router_bgp:
         export:
           address_family: evpn
           asn: "50201:50201"
+      neighbors:
+        10.255.251.7:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
 ## Tenant_C ##
@@ -492,5 +531,8 @@ router_bgp:
         export:
           address_family: evpn
           asn: "50301:50301"
+      neighbors:
+        10.255.251.7:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected

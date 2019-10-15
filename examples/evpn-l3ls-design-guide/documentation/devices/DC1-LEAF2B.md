@@ -122,6 +122,9 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 | 211 | Tenant_B_OPZone_2 | none  |
 | 310 | Tenant_C_OPZone_1 | none  |
 | 311 | Tenant_C_OPZone_2 | none  |
+| 3000 | MLAG_iBGP_Tenant_A_OPZone | LEAF_PEER_L3  |
+| 3020 | MLAG_iBGP_Tenant_B_OPZone | LEAF_PEER_L3  |
+| 3040 | MLAG_iBGP_Tenant_C_OPZone | LEAF_PEER_L3  |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
 | 4094 | MLAG_PEER | MLAG  |
 
@@ -145,6 +148,18 @@ vlan 310
 !
 vlan 311
    name Tenant_C_OPZone_2
+!
+vlan 3000
+   name MLAG_iBGP_Tenant_A_OPZone
+   trunk group LEAF_PEER_L3
+!
+vlan 3020
+   name MLAG_iBGP_Tenant_B_OPZone
+   trunk group LEAF_PEER_L3
+!
+vlan 3040
+   name MLAG_iBGP_Tenant_C_OPZone
+   trunk group LEAF_PEER_L3
 !
 vlan 4093
    name LEAF_PEER_L3
@@ -356,7 +371,10 @@ interface Loopback301
 | Vlan211 | Tenant_B_OPZone_2 | Tenant_B_OPZone  | 10.2.11.1/24 | True | - | - |
 | Vlan310 | Tenant_C_OPZone_1 | Tenant_C_OPZone  | 10.3.10.1/24 | True | - | - |
 | Vlan311 | Tenant_C_OPZone_2 | Tenant_C_OPZone  | 10.3.11.1/24 | True | - | - |
-| Vlan4093 | LEAF_PEER_L3_iBGP | Global Routing Table  | 10.255.251.3/31 | - | - | - |
+| Vlan3000 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone | Tenant_A_OPZone  | 10.255.251.3/31 | - | - | - |
+| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone | Tenant_B_OPZone  | 10.255.251.3/31 | - | - | - |
+| Vlan3040 | MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone | Tenant_C_OPZone  | 10.255.251.3/31 | - | - | - |
+| Vlan4093 | MLAG_PEER_L3_iBGP | Global Routing Table  | 10.255.251.3/31 | - | - | - |
 | Vlan4094 | MLAG_PEER | Global Routing Table  | 10.255.252.3/31 | - | - | - |
 
 ### VLAN Interfaces Device Configuration
@@ -393,8 +411,23 @@ interface Vlan311
    vrf Tenant_C_OPZone
    ip address virtual 10.3.11.1/24
 !
+interface Vlan3000
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone
+   vrf Tenant_A_OPZone
+   ip address 10.255.251.3/31
+!
+interface Vlan3020
+   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone
+   vrf Tenant_B_OPZone
+   ip address 10.255.251.3/31
+!
+interface Vlan3040
+   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone
+   vrf Tenant_C_OPZone
+   ip address 10.255.251.3/31
+!
 interface Vlan4093
-   description LEAF_PEER_L3_iBGP
+   description MLAG_PEER_L3_iBGP
    ip address 10.255.251.3/31
 !
 interface Vlan4094
@@ -752,18 +785,21 @@ router bgp 65102
       rd 192.168.255.5:50101
       route-target import evpn 50101:50101
       route-target export evpn 50101:50101
+      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
    vrf Tenant_B_OPZone
       rd 192.168.255.5:50201
       route-target import evpn 50201:50201
       route-target export evpn 50201:50201
+      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
    vrf Tenant_C_OPZone
       rd 192.168.255.5:50301
       route-target import evpn 50301:50301
       route-target export evpn 50301:50301
+      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 !
 ```
