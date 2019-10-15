@@ -52,6 +52,11 @@
         export:
           address_family: evpn
           asn: "{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+{% if leaf.mlag == true %}
+      neighbors:
+        {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+{% endif %}
       redistribute_routes:
         - connected
 {%     endfor %}

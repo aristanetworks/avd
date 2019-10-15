@@ -37,3 +37,7 @@ bfd_multihop:
   interval: 300
   min_rx: 300
   multiplier: 3
+
+mlag_ibgp_peering_vrfs:
+  base_vlan: 3000
+  tenant_multiplier: 20
