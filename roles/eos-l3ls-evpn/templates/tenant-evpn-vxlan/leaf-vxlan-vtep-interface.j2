@@ -2,6 +2,10 @@
   Vxlan1:
     description: {{ inventory_hostname }}_VTEP
     source_interface: Loopback1
+{% if leaf.mlag == true %}
+    virtual_router:
+      encapsulation_mac_address: "mlag-system-id"
+{% endif %}
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
