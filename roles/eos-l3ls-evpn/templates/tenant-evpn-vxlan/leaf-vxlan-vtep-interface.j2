@@ -10,7 +10,7 @@
 {%     for vrf in tenants[tenant].vrfs | natural_sort %}
 {%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
         {{ svi }}:
-          vni: {{ vxlan_l2_vni_base + svi }}
+          vni: {{ vxlan_vni_base * tenants[tenant].id + svi }}
 {%         endfor %}
 {%     endfor %}
 {% endfor %}
@@ -19,6 +19,6 @@
 ## {{ tenant }} ##
 {%     for vrf in tenants[tenant].vrfs | natural_sort %}
         {{ vrf }}:
-          vni: {{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}
+          vni: {{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id  }}
 {%     endfor %}
 {% endfor %}
