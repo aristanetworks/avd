@@ -235,8 +235,8 @@ interface Ethernet6
 | Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.3/32 |
 | Loopback101 | Tenant_A_OPZone_VTEP_DIAGNOSTICS | Tenant_A_OPZone | 10.1.255.3/32 |
-| Loopback201 | Tenant_B_OPZone_VTEP_DIAGNOSTICS | Tenant_B_OPZone | 10.2.255.3/32 |
-| Loopback301 | Tenant_C_OPZone_VTEP_DIAGNOSTICS | Tenant_C_OPZone | 10.3.255.3/32 |
+| Loopback202 | Tenant_B_OPZone_VTEP_DIAGNOSTICS | Tenant_B_OPZone | 10.2.255.3/32 |
+| Loopback303 | Tenant_C_OPZone_VTEP_DIAGNOSTICS | Tenant_C_OPZone | 10.3.255.3/32 |
 
 ### Loopback Interfaces Device Configuration
 
@@ -254,12 +254,12 @@ interface Loopback101
    vrf Tenant_A_OPZone
    ip address 10.1.255.3/32
 !
-interface Loopback201
+interface Loopback202
    description Tenant_B_OPZone_VTEP_DIAGNOSTICS
    vrf Tenant_B_OPZone
    ip address 10.2.255.3/32
 !
-interface Loopback301
+interface Loopback303
    description Tenant_C_OPZone_VTEP_DIAGNOSTICS
    vrf Tenant_C_OPZone
    ip address 10.3.255.3/32
@@ -328,18 +328,18 @@ interface Vlan311
 | ---- | --- |
 | 110 | 10110 |
 | 111 | 10111 |
-| 210 | 10210 |
-| 211 | 10211 |
-| 310 | 10310 |
-| 311 | 10311 |
+| 210 | 20210 |
+| 211 | 20211 |
+| 310 | 30310 |
+| 311 | 30311 |
 
 **VRF to VNI Mappings:**
 
 | VLAN | VNI |
 | ---- | --- |
-| Tenant_A_OPZone | 50101 |
-| Tenant_B_OPZone | 50201 |
-| Tenant_C_OPZone | 50301 |
+| Tenant_A_OPZone | 15001 |
+| Tenant_B_OPZone | 25002 |
+| Tenant_C_OPZone | 35003 |
 
 ### VXLAN Interface Device Configuration
 
@@ -349,13 +349,13 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
-   vxlan vlan 210 vni 10210
-   vxlan vlan 211 vni 10211
-   vxlan vlan 310 vni 10310
-   vxlan vlan 311 vni 10311
-   vxlan vrf Tenant_A_OPZone vni 50101
-   vxlan vrf Tenant_B_OPZone vni 50201
-   vxlan vrf Tenant_C_OPZone vni 50301
+   vxlan vlan 210 vni 20210
+   vxlan vlan 211 vni 20211
+   vxlan vlan 310 vni 30310
+   vxlan vlan 311 vni 30311
+   vxlan vrf Tenant_A_OPZone vni 15001
+   vxlan vrf Tenant_B_OPZone vni 25002
+   vxlan vrf Tenant_C_OPZone vni 35003
 !
 ```
 
@@ -549,17 +549,17 @@ No Peer Filters defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Route Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ------------ | ------------ | ----- |
-| Tenant_A_OPZone | 192.168.255.3:10101 | both 10101:10101 | learned | 110-111 |
-| Tenant_B_OPZone | 192.168.255.3:10201 | both 10201:10201 | learned | 210-211 |
-| Tenant_C_OPZone | 192.168.255.3:10301 | both 10301:10301 | learned | 310-311 |
+| Tenant_A_OPZone | 192.168.255.3:15001 | both 15001:15001 | learned | 110-111 |
+| Tenant_B_OPZone | 192.168.255.3:25002 | both 25002:25002 | learned | 210-211 |
+| Tenant_C_OPZone | 192.168.255.3:35003 | both 35003:35003 | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Route Target | Redistribute |
 | --- | ------------------- | ------------ | ------------ |
-| Tenant_A_OPZone | 192.168.255.3:50101 | import 50101:50101<br> export 50101:50101 | connected |
-| Tenant_B_OPZone | 192.168.255.3:50201 | import 50201:50201<br> export 50201:50201 | connected |
-| Tenant_C_OPZone | 192.168.255.3:50301 | import 50301:50301<br> export 50301:50301 | connected |
+| Tenant_A_OPZone | 192.168.255.3:15001 | import 15001:15001<br> export 15001:15001 | connected |
+| Tenant_B_OPZone | 192.168.255.3:25002 | import 25002:25002<br> export 25002:25002 | connected |
+| Tenant_C_OPZone | 192.168.255.3:35003 | import 35003:35003<br> export 35003:35003 | connected |
 
 ### Router BGP Device Configuration
 
@@ -591,20 +591,20 @@ router bgp 65101
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_OPZone
-      rd 192.168.255.3:10101
-      route-target both 10101:10101
+      rd 192.168.255.3:15001
+      route-target both 15001:15001
       redistribute learned
       vlan 110-111
    !
    vlan-aware-bundle Tenant_B_OPZone
-      rd 192.168.255.3:10201
-      route-target both 10201:10201
+      rd 192.168.255.3:25002
+      route-target both 25002:25002
       redistribute learned
       vlan 210-211
    !
    vlan-aware-bundle Tenant_C_OPZone
-      rd 192.168.255.3:10301
-      route-target both 10301:10301
+      rd 192.168.255.3:35003
+      route-target both 35003:35003
       redistribute learned
       vlan 310-311
    !
@@ -617,21 +617,21 @@ router bgp 65101
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Tenant_A_OPZone
-      rd 192.168.255.3:50101
-      route-target import evpn 50101:50101
-      route-target export evpn 50101:50101
+      rd 192.168.255.3:15001
+      route-target import evpn 15001:15001
+      route-target export evpn 15001:15001
       redistribute connected
    !
    vrf Tenant_B_OPZone
-      rd 192.168.255.3:50201
-      route-target import evpn 50201:50201
-      route-target export evpn 50201:50201
+      rd 192.168.255.3:25002
+      route-target import evpn 25002:25002
+      route-target export evpn 25002:25002
       redistribute connected
    !
    vrf Tenant_C_OPZone
-      rd 192.168.255.3:50301
-      route-target import evpn 50301:50301
-      route-target export evpn 50301:50301
+      rd 192.168.255.3:35003
+      route-target import evpn 35003:35003
+      route-target export evpn 35003:35003
       redistribute connected
 !
 ```
