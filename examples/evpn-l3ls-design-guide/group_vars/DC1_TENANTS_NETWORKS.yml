@@ -29,7 +29,7 @@ tenants:
     vrfs:
       Tenant_B_OPZone:
         loopback_range: 10.2.255.0/24
-        id: 1
+        id: 2
         svis:
           210:
             name: Tenant_B_OPZone_1
@@ -48,7 +48,7 @@ tenants:
     vrfs:
       Tenant_C_OPZone:
         loopback_range: 10.3.255.0/24
-        id: 1
+        id: 3
         svis:
           310:
             name: Tenant_C_OPZone_1
