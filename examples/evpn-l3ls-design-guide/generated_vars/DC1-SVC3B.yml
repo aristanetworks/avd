@@ -335,6 +335,8 @@ vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
     source_interface: Loopback1
+    virtual_router:
+      encapsulation_mac_address: "mlag-system-id"
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:

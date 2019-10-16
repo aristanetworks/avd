@@ -456,6 +456,7 @@ interface Vlan4094
 ```eos
 interface Vxlan1
    vxlan source-interface Loopback1
+   vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
