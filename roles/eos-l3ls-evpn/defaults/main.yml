@@ -13,8 +13,7 @@ spanning_tree_priority: 4096
 
 p2p_uplinks_mtu: 9000
 
-vxlan_l2_vni_base: 10000
-vxlan_l3_vni_base: 50000
+vxlan_vni_base: 10000
 
 spine_bgp_defaults:
   - update wait-for-convergence
@@ -40,4 +39,3 @@ bfd_multihop:
 
 mlag_ibgp_peering_vrfs:
   base_vlan: 3000
-  tenant_multiplier: 20
