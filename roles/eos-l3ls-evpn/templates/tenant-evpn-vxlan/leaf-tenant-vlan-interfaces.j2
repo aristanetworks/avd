@@ -3,7 +3,7 @@
 ## {{ tenant }} ##
 {%     for vrf in tenants[tenant].vrfs | natural_sort %}
 {%         if leaf.mlag == true %}
-  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + ((tenants[tenant].id - 1) * mlag_ibgp_peering_vrfs.tenant_multiplier) + (tenants[tenant].vrfs[vrf].id - 1) }}:
+  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].id - 1) }}:
     tenant: {{ tenant }}
     type: underlay_peering
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
