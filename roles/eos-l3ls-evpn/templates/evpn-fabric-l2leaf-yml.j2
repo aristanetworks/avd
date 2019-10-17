@@ -4,6 +4,7 @@
 ### {{ inventory_hostname }} ###
 
 {# set leaf variables #}
+{% set switch = namespace() %}
 {% set leaf = namespace() %}
 {% for l2leaf_node_group in l2leafs.node_groups | natural_sort %}
 {%     for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
@@ -14,9 +15,9 @@
 {%                 set leaf.spanning_tree_priority = l2leafs.defaults.spanning_tree_priority %}
 {%             endif %}
 {%             if l2leafs.node_groups[l2leaf_node_group].platform is defined %}
-{%                 set leaf.platform = l2leafs.node_groups[l2leaf_node_group].platform %}
+{%                 set switch.platform = l2leafs.node_groups[l2leaf_node_group].platform %}
 {%             else %}
-{%                 set leaf.platform = l2leafs.defaults.platform %}
+{%                 set switch.platform = l2leafs.defaults.platform %}
 {%             endif %}
 {%             set leaf.group = l2leaf_node_group %}
 {%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
@@ -50,7 +51,7 @@
 {% endfor %}
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
-platform: {{ leaf.platform }}
+platform: {{ switch.platform }}
 leaf_id: {{ leaf.id }}
 leaf_mgmt_ip: {{ leaf.mgmt_ip }}
 leaf_mlag: {{ leaf.mlag }}
