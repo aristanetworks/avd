@@ -4,6 +4,7 @@
 ### {{ inventory_hostname }} ###
 
 {# set leaf variables #}
+{% set switch = namespace() %}
 {% set leaf = namespace() %}
 {% for l3leaf_node_group in l3leafs.node_groups | natural_sort %}
 {%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | natural_sort %}
@@ -23,9 +24,9 @@
 {%                 set leaf.uplink_to_spine_interfaces = l3leafs.defaults.uplink_to_spine_interfaces %}
 {%             endif %}
 {%             if l3leafs.node_groups[l3leaf_node_group].platform is defined %}
-{%                 set leaf.platform = l3leafs.node_groups[l3leaf_node_group].platform %}
+{%                 set switch.platform = l3leafs.node_groups[l3leaf_node_group].platform %}
 {%             else %}
-{%                 set leaf.platform = l3leafs.defaults.platform %}
+{%                 set switch.platform = l3leafs.defaults.platform %}
 {%             endif %}
 {%             if l3leafs.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leafs.node_groups[l3leaf_node_group].bgp_as %}
@@ -66,7 +67,7 @@
 {% endfor %}
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
-leaf_platform: {{ leaf.platform }}
+leaf_platform: {{ switch.platform }}
 leaf_bgp_as: {{ leaf.bgp_as }}
 leaf_id: {{ leaf.id }}
 leaf_mgmt_ip: {{ leaf.mgmt_ip }}
@@ -189,6 +190,11 @@ vlan_interfaces:
 ### VxLAN interface ###
 vxlan_tunnel_interface:
 {% include 'tenant-evpn-vxlan/leaf-vxlan-vtep-interface.j2' %}
+
+{# TCAM Profiles #}
+### TCAM Profiles ###
+tcam_profile:
+{% include 'base/tcam-profile.j2' %}
 
 {# virtual router mac address #}
 ip_virtual_router_mac_address: {{ virtual_router_mac_address | lower }}

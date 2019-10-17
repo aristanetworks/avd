@@ -6,10 +6,10 @@
 ## {{ tenant }} ##
 {%         for vrf in tenants[tenant].vrfs | natural_sort %}
     {{ vrf }}:
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_l2_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
       route_targets:
         both:
-          asn: "{{ vxlan_l2_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_l2_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
       redistribute_routes:
         - learned
 {%             set vlan_range = [] %}
@@ -28,10 +28,10 @@
 {%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
     {{ svi }}:
       tenant: {{ tenant }}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_l2_vni_base + svi }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
       route_targets:
         both:
-          asn: "{{ vxlan_l2_vni_base + svi }}:{{ vxlan_l2_vni_base + svi }}"
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + svi }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
       redistribute_routes:
         - learned
 {%             endfor %}
@@ -44,14 +44,19 @@
 ## {{ tenant }} ##
 {%     for vrf in tenants[tenant].vrfs | natural_sort %}
     {{ vrf }}:
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
       route_targets:
         import:
           address_family: evpn
-          asn: "{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
         export:
           address_family: evpn
-          asn: "{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_l3_vni_base + tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}"
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+{% if leaf.mlag == true %}
+      neighbors:
+        {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+{% endif %}
       redistribute_routes:
         - connected
 {%     endfor %}

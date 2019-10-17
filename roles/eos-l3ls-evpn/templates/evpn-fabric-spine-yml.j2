@@ -3,6 +3,12 @@
 
 ### {{ inventory_hostname }} ###
 
+{# Set Spine Variables #}
+{% set switch = namespace() %}
+{% set switch.platform = spine.platform %}
+### Spine Info ###
+spine_platform: {{ switch.platform }}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr ###
 daemon_terminattr:
@@ -56,6 +62,11 @@ loopback_interfaces:
 ### Management Interfaces ###
 management_interfaces:
 {% include 'base/spine-mgmt-interface.j2' %}
+
+{# TCAM Profiles #}
+### TCAM Profiles ###
+tcam_profile:
+{% include 'base/tcam-profile.j2' %}
 
 {# static_routes #}
 ### static routes ###
