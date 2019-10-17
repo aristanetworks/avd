@@ -7,7 +7,6 @@
 transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
-{# hardware tcam profile vxlan-routing  - placeholder for Jericho platform #}
 !
 hostname {{ inventory_hostname }}
 {# name servers #}
@@ -40,6 +39,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vlan-interfaces.j2' %}
 {# VxLAN interface #}
 {% include 'eos/vxlan-interface.j2' %}
+{# Hardware TCAM Profiles #}
+{% include 'eos/tcam-profile.j2' %}
 {# router virtual mac address #}
 {% include 'eos/virtual-router-mac-address.j2' %}
 {# Tenant virtual source-nat for VTEP diagnostics - introduced in 4.21 #}
