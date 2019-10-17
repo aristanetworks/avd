@@ -39,3 +39,10 @@ bfd_multihop:
 
 mlag_ibgp_peering_vrfs:
   base_vlan: 3000
+
+# Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
+tcam_profile:
+  vxlan_routing:
+    - 7280R
+    - 7280R2
+    - 7280R3
