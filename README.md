@@ -46,6 +46,36 @@ $ cd examples/evpn-design-guide/
 $ ansible-playbook dc1-fabric-config.yml --tags "documentation" --diff
 ```
 
+## Docker
+
+The docker container approach for development can be used to ensure that
+everybody is using the same development environment while still being flexible
+enough to use the repo you are making changes in. You can inspect the
+Dockerfile to see what packages have been installed.
+
+The ansible version is passed in with the docker build command using 
+***ANSIBLE*** variable.  If the ***ANSIBLE*** variable is not used the
+Dockerfile will by default set the ansible version to 2.8.5.
+
+```
+docker build -t ansible_avd . --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg ANSIBLE=<ansible version>
+```
+
+Start up the docker container from the root of the repo directory with the
+following command. Note that specifying the -u option allows you to run the
+container as your user-id and not as root. This eliminates problem with
+creating files owned by root in your repo.
+
+```
+docker run -t -d --name ansible_avd -v $(pwd)/:/ansible_avd ansible_avd
+```
+
+Use docker exec to login into the container with a bash shell.
+
+```
+docker exec -it ansible_avd bash
+```
+
 ## Resources
 
 - EOS Ansible modules are documented part of [Ansible core modules](https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#eos)

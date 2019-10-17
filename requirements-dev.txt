@@ -1,0 +1,8 @@
+-r requirements.txt
+check-manifest
+coverage
+httmock
+pycodestyle
+flake8
+pylint
+twine
