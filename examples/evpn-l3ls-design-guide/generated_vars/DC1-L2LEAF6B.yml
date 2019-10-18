@@ -147,6 +147,9 @@ vlan_interfaces:
     ip_address: 10.255.252.23/31
     no_autostate: true
 
+### TCAM Profiles ###
+tcam_profile:
+
 ### static routes ###
 static_routes:
   - vrf: MGMT
