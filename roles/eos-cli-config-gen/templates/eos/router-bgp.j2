@@ -115,6 +115,11 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].route_targets.export is defined %}
       route-target export {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.export.asn }}
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors is defined %}
+{%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
+      neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
+{%                 endfor %}
+{%             endif %}
 {%             for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | natural_sort %}
       redistribute {{ redistribute_route }}
 {%             endfor %}

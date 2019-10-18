@@ -13,8 +13,7 @@ spanning_tree_priority: 4096
 
 p2p_uplinks_mtu: 9000
 
-vxlan_l2_vni_base: 10000
-vxlan_l3_vni_base: 50000
+vxlan_vni_base: 10000
 
 spine_bgp_defaults:
   - update wait-for-convergence
@@ -37,3 +36,13 @@ bfd_multihop:
   interval: 300
   min_rx: 300
   multiplier: 3
+
+mlag_ibgp_peering_vrfs:
+  base_vlan: 3000
+
+# Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
+tcam_profile:
+  vxlan_routing:
+    - 7280R
+    - 7280R2
+    - 7280R3

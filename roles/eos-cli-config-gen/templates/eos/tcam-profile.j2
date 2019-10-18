@@ -1,0 +1,5 @@
+{% if tcam_profile is defined and tcam_profile is not none %}
+hardware tcam
+   system profile {{ tcam_profile[0] }}
+!
+{% endif %}
