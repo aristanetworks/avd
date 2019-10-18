@@ -137,6 +137,11 @@ vlan_interfaces:
 {# mlag vlan interfaces #}
 {% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
 
+{# TCAM Profiles #}
+### TCAM Profiles ###
+tcam_profile:
+{% include 'base/tcam-profile.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
