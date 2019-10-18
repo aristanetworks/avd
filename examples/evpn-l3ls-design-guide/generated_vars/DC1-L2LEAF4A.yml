@@ -113,6 +113,9 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
 
+### TCAM Profiles ###
+tcam_profile:
+
 ### static routes ###
 static_routes:
   - vrf: MGMT

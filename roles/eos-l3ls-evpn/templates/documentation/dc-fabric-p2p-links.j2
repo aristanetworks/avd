@@ -18,7 +18,7 @@ Leaf Node,Leaf Interface,Leaf IP Address,Spine Node,Spine Interface,Spine IP Add
 {%             set leaf_ip_address = hostvars[node].ethernet_interfaces[leaf_uplink_to_spine_interfaces[loop.index0]].ip_address %}
 {%             set spine_interface = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0]%}
 {%             set spine_ip_address = hostvars[spine].ethernet_interfaces[leaf_spine_interfaces[loop.index0]].ip_address %}
-{{ node }},{{ leaf_interface }},{{ leaf_ip_address }},{{ spine }}{{ spine_interface  }},{{ spine_ip_address }}
+{{ node }},{{ leaf_interface }},{{ leaf_ip_address }},{{ spine }},{{ spine_interface  }},{{ spine_ip_address }}
 {%         endfor %}
 {%     endfor %}
 {% endfor %}
