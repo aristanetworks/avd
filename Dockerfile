@@ -19,7 +19,6 @@ VOLUME ["/ansible_avd"]
 # Install python modules required by the repo
 RUN pip install --upgrade pip
 ADD requirements.txt /tmp/requirements.txt
-RUN pip install --trusted-host pypi.python.org -r /tmp/requirements.txt
 ADD requirements-dev.txt /tmp/requirements-dev.txt
 RUN pip install --trusted-host pypi.python.org -r /tmp/requirements-dev.txt
 ARG ANSIBLE=2.8.5
