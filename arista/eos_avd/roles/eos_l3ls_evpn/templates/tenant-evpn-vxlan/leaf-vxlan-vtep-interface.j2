@@ -1,0 +1,28 @@
+{# vxlan-vtep interface #}
+  Vxlan1:
+    description: {{ inventory_hostname }}_VTEP
+    source_interface: Loopback1
+{% if leaf.mlag == true %}
+    virtual_router:
+      encapsulation_mac_address: "mlag-system-id"
+{% endif %}
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+{% for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | arista.eos_avd.natural_sort %}
+        {{ svi }}:
+          vni: {{ vxlan_vni_base * tenants[tenant].id + svi }}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+      vrfs:
+{% for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+        {{ vrf }}:
+          vni: {{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id  }}
+{%     endfor %}
+{% endfor %}

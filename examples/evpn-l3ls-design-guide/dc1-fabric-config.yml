@@ -1,15 +1,18 @@
 - hosts: DC1_FABRIC
 
+  collections:
+    - arista.eos_avd
+
   tasks:
 
     - name: generate intented variables
       import_role:
-         name: eos-l3ls-evpn
+         name: eos_l3ls_evpn
 
     - name: generate device intended config and documention
       import_role:
-         name: eos-cli-config-gen
+         name: eos_cli_config_gen
 
     - name: deploy configuration to device
       import_role:
-         name: eos-config-deploy
+         name: eos_config_deploy

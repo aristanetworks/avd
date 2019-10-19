@@ -1,0 +1,26 @@
+{# Leaf tenant vlan interfaces #}
+{% for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+{%         if leaf.mlag == true %}
+  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].id - 1) }}:
+    tenant: {{ tenant }}
+    type: underlay_peering
+    description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
+    vrf: {{ vrf }}
+    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
+{%         endif %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | arista.eos_avd.natural_sort %}
+  Vlan{{ svi }}:
+    tenant: {{ tenant }}
+    type: {{ tenants[tenant].vrfs[vrf].svis[svi].type }}
+    description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+    vrf: {{ vrf }}
+    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('prefix') }}
+{%             if tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary is defined %}
+    ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
+{%             endif %}
+    virtual: true
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

@@ -1,9 +1,0 @@
-{# Leaf tenant vrfs #}
-{% for tenant in tenants | natural_sort %}
-## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
-  {{ vrf }}:
-    tenant: {{ tenant }}
-    ip_routing: true
-{%     endfor %}
-{% endfor %}

@@ -1,0 +1,95 @@
+{% set fabric_doc = namespace() %}
+{% set fabric_doc.leaf_total = 0 %}
+{% for l3leaf_node_group in l3leafs.node_groups | arista.eos_avd.natural_sort %}
+{%     set fabric_doc.leaf_total = fabric_doc.leaf_total + l3leafs.node_groups[l3leaf_node_group].nodes | length %}
+{% endfor %}
+
+# {{ fabric_name }}
+
+## Fabric Switches and Management IP
+
+| Node | Management IP |
+| ---- | ------------- |
+{% for node in groups[fabric_name] | arista.eos_avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+| {{ node }} | {{ hostvars[node].management_interfaces.Management1.ip_address }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.eos_avd.natural_sort %}
+{%    if hostvars[node].type == "l3leaf" %}
+| {{ node }} | {{ hostvars[node].management_interfaces.Management1.ip_address }} |
+{%     endif %}
+{% endfor %}
+
+## Fabric IP Allocation
+
+### Fabric Point-To-Point Links
+
+| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ----------- | ------------------- | ------------------ | ------------------ |
+| {{ underlay_p2p_network_summary }} | {{ underlay_p2p_network_summary | ipaddr('size') }} | {{ spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links }} | {{ (( spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links ) / underlay_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Point-To-Point Links Node Allocation
+
+| Leaf Node | Leaf Interface | Leaf IP Address | Spine Node | Spine Interface | Spine IP Address |
+| --------- | -------------- | --------------- | ---------- | --------------- | ---------------- |
+{% for l3leaf_node_group in l3leafs.node_groups | arista.eos_avd.natural_sort %}
+{%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | arista.eos_avd.natural_sort %}
+{%         set leaf_id = l3leafs.node_groups[l3leaf_node_group].nodes[node].id %}
+{%         set leaf_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
+{%         if l3leafs.node_groups[l3leaf_node_group].spines is defined %}
+{%             set leaf_spines = l3leafs.node_groups[l3leaf_node_group].spines %}
+{%         else %}
+{%             set leaf_spines = l3leafs.defaults.spines %}
+{%         endif %}
+{%         if l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
+{%             set leaf_uplink_to_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
+{%         else %}
+{%             set leaf_uplink_to_spine_interfaces = l3leafs.defaults.uplink_to_spine_interfaces %}
+{%         endif %}
+{%         for spine in leaf_spines %}
+{%             set leaf_interface = leaf_uplink_to_spine_interfaces[loop.index0] %}
+{%             set leaf_ip_address = hostvars[node].ethernet_interfaces[leaf_uplink_to_spine_interfaces[loop.index0]].ip_address %}
+{%             set spine_interface = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0]%}
+{%             set spine_ip_address = hostvars[spine].ethernet_interfaces[leaf_spine_interfaces[loop.index0]].ip_address %}
+| {{ node }} | {{ leaf_interface }} | {{ leaf_ip_address  }} | {{ spine }} | {{ spine_interface }} | {{ spine_ip_address }} |
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
+
+### Overlay Loopback Interfaces (BGP EVPN Peering)
+
+| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------------------ | ------------------- | ------------------ | ------------------ |
+| {{ overlay_loopback_network_summary  }} | {{ overlay_loopback_network_summary | ipaddr('size') }} | {{ spine.nodes | length + fabric_doc.leaf_total }} | {{ (( spine.nodes | length + fabric_doc.leaf_total ) / overlay_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Loopback0 Interfaces Node Allocation
+
+| Node | Loopback0 |
+| ---- | --------- |
+{% for node in groups[fabric_name] | arista.eos_avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.eos_avd.natural_sort %}
+{%    if hostvars[node].type == "l3leaf" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{%     endif %}
+{% endfor %}
+
+### VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+
+| VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| --------------------- | ------------------- | ------------------ | ------------------ |
+| {{ vtep_loopback_network_summary  }} | {{ vtep_loopback_network_summary | ipaddr('size') }} | {{ fabric_doc.leaf_total }} | {{ ( fabric_doc.leaf_total / overlay_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### VTEP Loopback Node allocation
+
+| Node | Loopback1 |
+| ---- | --------- |
+{% for node in groups[fabric_name] | arista.eos_avd.natural_sort %}
+{%    if hostvars[node].type == "l3leaf" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback1.ip_address }} |
+{%     endif %}
+{% endfor %}

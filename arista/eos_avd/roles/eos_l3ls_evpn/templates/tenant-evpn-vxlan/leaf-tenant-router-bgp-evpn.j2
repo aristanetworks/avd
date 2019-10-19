@@ -1,0 +1,63 @@
+{# Leaf tenant router bgp evpn configuration #}
+{# MAC-VRF VLAN Aware bundles#}
+{% if vxlan_vlan_aware_bundles == true %}
+  vlan_aware_bundles:
+{%     for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%         for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+    {{ vrf }}:
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+      route_targets:
+        both:
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+      redistribute_routes:
+        - learned
+{%             set vlan_range = [] %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.eos_avd.natural_sort %}
+{%                 do vlan_range.append( svi ) %}
+{%             endfor %}
+      vlan: {{ vlan_range | arista.eos_avd.list_compress }}
+{%         endfor %}
+{%     endfor %}
+{% else %}
+{# MAC-VRF VLAN-Based bundles #}
+  vlans:
+{%     for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%         for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.eos_avd.natural_sort %}
+    {{ svi }}:
+      tenant: {{ tenant }}
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
+      route_targets:
+        both:
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + svi }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
+      redistribute_routes:
+        - learned
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+{# tenant vrfs #}
+  vrfs:
+{% for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+    {{ vrf }}:
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+      route_targets:
+        import:
+          address_family: evpn
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+        export:
+          address_family: evpn
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}:{{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id }}"
+{% if leaf.mlag == true %}
+      neighbors:
+        {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+{% endif %}
+      redistribute_routes:
+        - connected
+{%     endfor %}
+{% endfor %}

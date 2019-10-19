@@ -1,0 +1,40 @@
+---
+
+- name: Generate switch configuration in structured format (yaml)
+  template:
+    src: "evpn-fabric-{{ type }}-yml.j2"
+    dest: ./generated_vars/{{ inventory_hostname }}.yml
+  delegate_to: localhost
+  # check_mode: no
+  tags:
+    - documentation
+    - config
+
+- name: include device structured configuration
+  include_vars: ./generated_vars/{{ inventory_hostname }}.yml
+  delegate_to: localhost
+  tags:
+    - documentation
+    - config
+
+- name: Generate EVPN fabric documentation
+  template:
+    src: documentation/dc-fabric-documentation.j2
+    dest: ./documentation/{{ fabric_name }}/{{ fabric_name }}.md
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags:
+    - documentation
+    - config
+
+- name: Generate EVPN fabric documentation - p2p links csv
+  template:
+    src: documentation/dc-fabric-p2p-links.j2
+    dest: ./documentation/{{ fabric_name }}/{{ fabric_name }}-p2p-links.csv
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags:
+    - documentation
+    - config

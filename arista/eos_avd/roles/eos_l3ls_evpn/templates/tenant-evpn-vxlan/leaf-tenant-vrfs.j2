@@ -1,0 +1,9 @@
+{# Leaf tenant vrfs #}
+{% for tenant in tenants | arista.eos_avd.natural_sort %}
+## {{ tenant }} ##
+{%     for vrf in tenants[tenant].vrfs | arista.eos_avd.natural_sort %}
+  {{ vrf }}:
+    tenant: {{ tenant }}
+    ip_routing: true
+{%     endfor %}
+{% endfor %}

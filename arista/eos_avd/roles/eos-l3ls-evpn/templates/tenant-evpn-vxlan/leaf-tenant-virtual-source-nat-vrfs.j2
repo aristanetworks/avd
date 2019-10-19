@@ -1,8 +1,0 @@
-{# Tenant virtual source NAT vrfs #}
-{% for tenant in tenants | natural_sort %}
-## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
-  {{ vrf }}:
-    ip_address: {{ tenants[tenant].vrfs[vrf].loopback_range | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
-{%     endfor %}
-{% endfor %}

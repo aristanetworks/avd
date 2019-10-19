@@ -1,0 +1,32 @@
+{# L3Leaf Port-Channel uplinks to L2 Leaf #}
+{% if l2leafs.node_groups is defined %}
+{%     set l3leaf = namespace() %}
+{%     for l2leaf_node_group in l2leafs.node_groups | arista.eos_avd.natural_sort %}
+{%         if l2leafs.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
+{%             set parent_l3leafs = l2leafs.node_groups[l2leaf_node_group].parent_l3leafs %}
+{%         else %}
+{%             set parent_l3leafs = l2leafs.defaults.parent_l3leafs %}
+{%         endif %}
+{%         if inventory_hostname in parent_l3leafs %}
+{%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | arista.eos_avd.natural_sort %}
+{%                 if loop.first %}
+{%                     set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
+{%                 endif %}
+{%             endfor %}
+{%             if l2leafs.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
+{%                 set l2leaf_uplink_interfaces = l2leafs.node_groups[l2leaf_node_group].uplink_interfaces %}
+{%             else %}
+{%                 set l2leaf_uplink_interfaces = l2leafs.defaults.uplink_interfaces %}
+{%             endif %}
+{%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | arista.eos_avd.natural_sort %}
+## L2 LEAF Uplink {{ l2leaf_node_group }} ##
+  Port-Channel{{ l3leaf.channel_group_id }}:
+    description: {{ l2leaf_node_group }}_{{ 'Po' + l2leaf_uplink_interfaces[loop.index0] | regex_findall("\d") | join }}
+    vlans: 2-4092
+    mode: trunk
+    mlag: {{ l3leaf.channel_group_id }}
+{%             break %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
