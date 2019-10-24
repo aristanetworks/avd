@@ -9,10 +9,10 @@ GID = $(shell id -g)
 all:
 	#docker build --no-cache -t $(CONTAINER) .
 	docker build -t $(CONTAINER) . --build-arg UID=$(UID) --build-arg GID=$(GID) --build-arg ANSIBLE=$(ANSIBLE_VERSION)
-	docker run -t -d --name $(CONTAINER_NAME) -v $(HOME_DIR)/:/ansible_avd $(CONTAINER)
-	docker exec -it $(CONTAINER_NAME) /bin/bash
+	docker run -t -d --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) -v $(HOME_DIR)/:/ansible_avd -v /etc/hosts:/etc/hosts $(CONTAINER)
+	docker exec -it $(CONTAINER_NAME)_$(ANSIBLE_VERSION)  /bin/bash
 
 .PHONY: clean
 clean:
-	docker stop $(CONTAINER_NAME)
-	docker rm $(CONTAINER_NAME)
+	docker stop $(CONTAINER_NAME)_$(ANSIBLE_VERSION)
+	docker rm $(CONTAINER_NAME)_$(ANSIBLE_VERSION)
