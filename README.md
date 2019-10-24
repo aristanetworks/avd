@@ -58,7 +58,7 @@ The ansible version is passed in with the docker build command using
 Dockerfile will by default set the ansible version to 2.8.5.
 
 ```
-docker build -t ansible_avd . --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg ANSIBLE=<ansible version>
+$ docker build -t ansible_avd . --build-arg UID=$(id -u) --build-arg GID=$(id -g) --build-arg ANSIBLE=<ansible version>
 ```
 
 Start up the docker container from the root of the repo directory with the
@@ -67,13 +67,39 @@ container as your user-id and not as root. This eliminates problem with
 creating files owned by root in your repo.
 
 ```
-docker run -t -d --name ansible_avd -v $(pwd)/:/ansible_avd ansible_avd
+$ docker run -t -d --name ansible_avd -v $(pwd)/:/ansible_avd -v /etc/hosts:/etc/hosts ansible_avd
 ```
 
 Use docker exec to login into the container with a bash shell.
 
 ```
-docker exec -it ansible_avd bash
+$ docker exec -it ansible_avd bash
+```
+
+In addition to using docker commands to start up and access the container, make can be used to do 
+this in a single step.  A user can pass the ansible version number to make and alter the default 
+ansible-version number.  This allows a user to setup multiple containers running differing
+versions of ansible.
+
+```
+$ make                            # Use default version of Ansible 
+$ make ANSIBLE_VERSION=2.8.3      # Explicitly set Ansible version to 2.8.3
+$
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+38dc36a91ccc        ansible_avd:2.8.3   "/bin/sh"           7 seconds ago       Up 5 seconds                            ansible_avd_2.8.3
+9d82d0ca9105        ansible_avd:2.8.5   "/bin/sh"           22 seconds ago      Up 21 seconds                           ansible_avd_2.8.5
+```
+
+Another make target (clean) has been created to stop and remove the container once the user
+is finished with it.
+
+```
+$ make clean                           # Clean default container version of Ansible 
+$ make ANSIBLE_VERSION=2.8.3 clean     # Explicitly clean Ansible 2.8.3 container
+$
+$ docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 ```
 
 ## Resources
