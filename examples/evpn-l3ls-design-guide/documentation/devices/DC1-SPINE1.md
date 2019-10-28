@@ -32,6 +32,7 @@ interface Management1
 daemon TerminAttr
    exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl=192.168.2.201:9910 -taillogs -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -ntpvrf=MGMT
    no shutdown
+!
 ```
 
 ## Name Servers
@@ -48,6 +49,7 @@ daemon TerminAttr
 ```eos
 ip name-server vrf MGMT 192.168.2.1
 ip name-server vrf MGMT 8.8.8.8
+!
 ```
 
 ## NTP
@@ -68,6 +70,7 @@ VRF: MGMT
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 0.north-america.pool.ntp.org prefer
 ntp server vrf MGMT 1.north-america.pool.ntp.org
+!
 ```
 
 ## Spanning Tree
