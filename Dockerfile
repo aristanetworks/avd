@@ -1,14 +1,14 @@
-FROM fedora:27
+FROM centos:8
 MAINTAINER Arista Ansible Team <ansible@arista.com>
 
 ENV PS1='avd:\u% '
 
 # Install necessary packages
-RUN dnf -y install \
+RUN yum -y install \
     findutils \
     git \
     make \
-    python-pip \
+    python3-pip \
     rpm-build \
     sudo
 
@@ -17,12 +17,12 @@ WORKDIR /ansible_avd
 VOLUME ["/ansible_avd"]
 
 # Install python modules required by the repo
-RUN pip install --upgrade pip
+RUN pip3 install --upgrade pip
 ADD requirements.txt /tmp/requirements.txt
 ADD requirements-dev.txt /tmp/requirements-dev.txt
-RUN pip install --trusted-host pypi.python.org -r /tmp/requirements-dev.txt
+RUN pip3 install --trusted-host pypi.python.org -r /tmp/requirements-dev.txt
 ARG ANSIBLE=2.8.5
-RUN pip install ansible==$ANSIBLE
+RUN pip3 install ansible==$ANSIBLE
 
 # Clean up
 RUN dnf clean all
