@@ -2,6 +2,12 @@
 
 MGMT_vrf_routing: false
 
+internal_vlan_allocation_policy:
+  allocation: "ascending"
+  range:
+    beginning: 1006
+    ending: 1199
+
 max_l3leaf_to_spine_links: 1
 
 terminattr_ingestgrpcurl_port: 9910
