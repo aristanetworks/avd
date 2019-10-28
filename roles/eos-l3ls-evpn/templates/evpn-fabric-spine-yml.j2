@@ -14,6 +14,11 @@ spine_platform: {{ switch.platform }}
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
 
+{# vlan allocation policy #}
+vlan_internal_allocation_policy:
+{% include 'base/vlan-internal-allocation-policy.j2' %}
+
+
 {# name servers #}
 ### Name Servers ###
 name_server:

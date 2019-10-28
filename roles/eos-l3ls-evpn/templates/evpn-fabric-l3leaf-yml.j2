@@ -81,16 +81,15 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
-
-
-
-
-
-
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
+
+{# vlan allocation policy #}
+vlan_internal_allocation_policy:
+{% include 'base/vlan-internal-allocation-policy.j2' %}
+
 
 {# name servers #}
 ### Name Servers ###
