@@ -15,7 +15,6 @@ leaf_mlag_ip: 18
 leaf_mlag_peer_ip: 19
 leaf_mlag_peer_id: 11
 
-
 ### Daemon TerminAttr
 daemon_terminattr:
   ingestgrpcurl:
@@ -25,6 +24,12 @@ daemon_terminattr:
   ingestvrf: MGMT
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+vlan_internal_allocation_policy:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
 
 ### Name Servers ###
 name_server:

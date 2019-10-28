@@ -35,6 +35,21 @@ daemon TerminAttr
 !
 ```
 
+## Internal VLAN allocation Policy
+
+### Internal VLAN Allocation Policy Summary
+
+| Policy Allocation | Range Beginning | Range Ending |
+| ------------------| --------------- | ------------ |
+| ascending | 1006 | 1199 |
+
+### Internal VLAN Allocation Policy Configuration
+
+```eos
+vlan internal allocation policy ascending range 1006 1199
+!
+```
+
 ## Name Servers
 
 ### Name Servers Summary
