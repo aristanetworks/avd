@@ -8,4 +8,5 @@ ntp server vrf {{ ntp_server.local_interface.vrf }} {{ node }} prefer
 ntp server vrf {{ ntp_server.local_interface.vrf }} {{ node }}
 {%         endif %}
 {%     endfor %}
+!
 {% endif %}

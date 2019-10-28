@@ -11,10 +11,8 @@ service routing protocols model multi-agent
 hostname {{ inventory_hostname }}
 {# name servers #}
 {% include 'eos/name-servers.j2' %}
-!
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
-!
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
 {# aaa authentication #}
