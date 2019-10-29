@@ -1,0 +1,18 @@
+{# Spine router bgp peer groups configuration #}
+{% if type == "spine" %}
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      peer_filter: LEAF-AS-RANGE
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      peer_filter: LEAF-AS-RANGE
+      next_hop_unchanged: true
+      update_source: Loopback0
+      fall_over_bfd: true
+      ebgp_multihop: 3
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: true
+      maximum_routes: 0
+{% endif %}
