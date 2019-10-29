@@ -1,0 +1,15 @@
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: generate intented variables
+      import_role:
+         name: eos-l3ls-evpn
+
+    - name: generate device intended config and documention
+      import_role:
+         name: eos-cli-config-gen
+
+    - name: deploy configuration to device
+      import_role:
+         name: eos-config-deploy

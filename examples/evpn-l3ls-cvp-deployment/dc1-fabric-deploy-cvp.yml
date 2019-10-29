@@ -1,0 +1,10 @@
+---
+- name: Configuration deployment with CVP
+  hosts: CVP
+  connection: local
+  gather_facts: no
+
+  tasks:
+    - name: run CVP provisioning
+      import_role:
+         name: eos-config-deploy-cvp

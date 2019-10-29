@@ -1,0 +1,93 @@
+---
+CVP_CONFIGLET:
+  DC1_BL1A: "{{ lookup('file', 'intended_configs/DC1-BL1A.cfg')}}"
+  DC1_BL1B: "{{ lookup('file', 'intended_configs/DC1-BL1B.cfg')}}"
+  DC1_L2LEAF4A: "{{ lookup('file', 'intended_configs/DC1-L2LEAF4A.cfg')}}"
+  DC1_L2LEAF5A: "{{ lookup('file', 'intended_configs/DC1-L2LEAF5A.cfg')}}"
+  DC1_L2LEAF5B: "{{ lookup('file', 'intended_configs/DC1-L2LEAF5B.cfg')}}"
+  DC1_L2LEAF6A: "{{ lookup('file', 'intended_configs/DC1-L2LEAF6A.cfg')}}"
+  DC1_L2LEAF6B: "{{ lookup('file', 'intended_configs/DC1-L2LEAF6B.cfg')}}"
+  DC1_LEAF1A: "{{ lookup('file', 'intended_configs/DC1-LEAF1A.cfg')}}"
+  DC1_LEAF2A: "{{ lookup('file', 'intended_configs/DC1-LEAF2A.cfg')}}"
+  DC1_LEAF2B: "{{ lookup('file', 'intended_configs/DC1-LEAF2B.cfg')}}"
+  DC1_SPINE1: "{{ lookup('file', 'intended_configs/DC1-SPINE1.cfg')}}"
+  DC1_SPINE2: "{{ lookup('file', 'intended_configs/DC1-SPINE2.cfg')}}"
+  DC1_SVC3A: "{{ lookup('file', 'intended_configs/DC1-SVC3A.cfg')}}"
+  DC1_SVC3B: "{{ lookup('file', 'intended_configs/DC1-SVC3B.cfg')}}"
+
+CVP_TOPOLOGY:
+  # Testing specific environment
+  Fabric:
+    parent_container: Tenant
+  Spines:
+    parent_container: Fabric
+  Leaves:
+    parent_container: Fabric
+    configlets:
+        - alias
+    devices:
+      - veos03
+  MLAG01:
+    parent_container: Leaves
+    devices:
+      - veos01
+      - veos02
+  # AVD Specific Environment.
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_SPINES:
+    parent_container: DC1_FABRIC
+    # devices:
+    #   - DC1-SPINE1
+    #   - DC1-SPINE2
+  DC1_L3LEAFS:
+    parent_container: DC1_LEAFS
+  DC1_L2LEAFS:
+    parent_container: DC1_LEAFS
+  DC1_LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF1:
+    parent_container: DC1_L3LEAFS
+    # devices:
+    #   - DC1-LEAF1A
+  DC1_LEAF2:
+    parent_container: DC1_L3LEAFS
+    # devices:
+    #   - DC1-LEAF2A
+    #   - DC1-LEAF2B
+  DC1_L2LEAF4:
+    parent_container: DC1_L2LEAFS
+    # devices:
+    #   - DC1-L2LEAF4A
+  DC1_L2LEAF5:
+    parent_container: DC1_L2LEAFS
+    # devices:
+    #   - DC1-L2LEAF5A
+    #   - DC1-L2LEAF5B
+  DC1_L2LEAF6:
+    parent_container: DC1_L2LEAFS
+    # devices:
+    #   - DC1-L2LEAF6A
+    #   - DC1-L2LEAF6B
+
+
+CVP_CONFIGLET_LAB:
+  DC1_CONFIGLET: "alias a{{ 999 | random }} show version"
+
+CVP_TOPOLOGY_LAB:
+  # Testing specific environment
+  Fabric:
+    parent_container: Tenant
+  Spines:
+    parent_container: Fabric
+  Leaves:
+    parent_container: Fabric
+    configlets:
+        - alias
+    devices:
+      - veos03
+  MLAG01:
+    parent_container: Leaves
+    devices:
+      - veos01
+      - veos02

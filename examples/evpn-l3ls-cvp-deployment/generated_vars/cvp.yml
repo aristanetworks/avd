@@ -1,0 +1,23 @@
+CVP_TOPOLOGY:
+  DC1_BL1:
+    parent_container: DC1_L3LEAFS
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_L2LEAF4:
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAF5:
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAF6:
+    parent_container: DC1_L2LEAFS
+  DC1_L2LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_L3LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF1:
+    parent_container: DC1_L3LEAFS
+  DC1_LEAF2:
+    parent_container: DC1_L3LEAFS
+  DC1_SPINES:
+    parent_container: DC1_FABRIC
+  DC1_SVC3:
+    parent_container: DC1_L3LEAFS

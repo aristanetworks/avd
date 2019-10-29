@@ -1,0 +1,21 @@
+---
+# tasks file for eos-config-deploy-cvp
+- name: generate intented variables
+  inventory_to_container:
+    inventory: 'inventory.yml'
+    container_root: 'DC1_FABRIC'
+    destination: 'generated_vars/{{inventory_hostname}}.yml'
+
+- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
+
+# - name: run CVP provisioning
+#   import_role:
+#      name: eos-config-deploy-cvp
+
+- name: "Building Container topology on {{inventory_hostname}}"
+  arista.cvp.cv_container:
+    topology: '{{CVP_TOPOLOGY}}'
+    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    save_topology: true

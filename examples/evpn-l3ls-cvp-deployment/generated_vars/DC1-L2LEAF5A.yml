@@ -1,0 +1,168 @@
+## Ansible Generated ##
+
+### DC1-L2LEAF5A ###
+
+### Leaf Info ###
+l2leaf_node_group: DC1_L2LEAF5
+platform: vEOS-LAB
+leaf_id: 10
+leaf_mgmt_ip: 192.168.2.113/24
+leaf_mlag: True
+leaf_mlag_group: DC1_L2LEAF5
+leaf_mlag_role: primary
+leaf_mlag_peer: DC1-L2LEAF5B
+leaf_mlag_ip: 18
+leaf_mlag_peer_ip: 19
+leaf_mlag_peer_id: 11
+
+### Daemon TerminAttr
+daemon_terminattr:
+  ingestgrpcurl:
+    ip: 192.168.2.201
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+vlan_internal_allocation_policy:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+    - 192.168.2.1
+    - 8.8.8.8
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+    - 0.north-america.pool.ntp.org
+    - 1.north-america.pool.ntp.org
+
+### Spanning-tree ###
+spanning_tree:
+  mode: mstp
+  priority: 16384
+### local users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### VLANs ###
+vlans:
+## mlag vlans ##
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+      - MLAG
+
+## Tenant_A ##
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OPZone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OPZone_2
+## Tenant_B ##
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OPZone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OPZone_2
+## Tenant_C ##
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OPZone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OPZone_2
+
+### VRFs ###
+vrfs:
+  MGMT:
+    ip_routing: False
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+  Port-Channel1:
+    description: DC1-SVC3A_Po5
+    vlans: 2-4092
+    mode: trunk
+    mlag: 1
+## mlag peer-link ##
+  Port-Channel3:
+    description: MLAG_PEER_DC1-L2LEAF5B_Po3
+    vlans: "2-4094"
+    mode: trunk
+    trunk_groups:
+      - MLAG
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    description: DC1-SVC3A_Ethernet5
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    description: DC1-SVC3B_Ethernet5
+    channel_group:
+      id: 1
+      mode: active
+## mlag interfaces ##
+  Ethernet3:
+    description: MLAG_PEER_DC1-L2LEAF5B_Ethernet3
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    description: MLAG_PEER_DC1-L2LEAF5B_Ethernet4
+    channel_group:
+      id: 3
+      mode: active
+
+### Management Interfaces ###
+management_interfaces:
+  Management1:
+    description: oob_management
+    vrf: MGMT
+    ip_address: 192.168.2.113/24
+    gateway: 192.168.2.1
+
+### VLAN Interfaces ###
+vlan_interfaces:
+  Vlan4094:
+    description: MLAG_PEER
+    ip_address: 10.255.252.18/31
+    no_autostate: true
+
+### TCAM Profiles ###
+tcam_profile:
+
+### static routes ###
+static_routes:
+  - vrf: MGMT
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 192.168.2.1
+### MLAG Configuration ###
+mlag_configuration:
+  domain_id: DC1_L2LEAF5
+  local_interface: Vlan4094
+  peer_address: 10.255.252.19
+  peer_link: Port-Channel3
