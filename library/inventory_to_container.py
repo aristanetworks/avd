@@ -29,6 +29,37 @@ def isIterable( testing_object= None):
         return False
 
 
+def isLeaf(tree, nid):
+    if len(tree.is_branch(nid)) == 0:
+        return True
+    else:
+        return False
+
+
+def get_devices(dict_inventory, search_container=None, devices=list()):
+    for k1, v1 in dict_inventory.items():
+        # Read a leaf
+        if k1 == search_container and 'hosts' in v1:
+            for dev,data in v1['hosts'].items():
+                devices.append(dev)
+        # If subgroup has kids
+        if isIterable(v1) and 'children' in v1:
+            get_devices(
+                dict_inventory=v1['children'],
+                search_container=search_container,
+                devices=devices
+            )
+        elif k1 == 'children' and isIterable(v1):
+            # Extract sub-group information
+            for k2, v2 in v1.items():
+                get_devices(
+                    dict_inventory=v2,
+                    search_container=search_container,
+                    devcices=devices
+                )
+    return devices
+
+
 def serialize(dict_inventory, parent_container=None, tree_topology=None):
     if isIterable(dict_inventory):
         # Working with ROOT container for Fabric
@@ -91,22 +122,25 @@ if __name__ == '__main__':
         except yaml.YAMLError as exc:
             print(exc)
 
+    # create inventory, use path to host config file as source or hosts in a comma separated string
+    loader = DataLoader()
+    inventory_ansible = InventoryManager(loader=loader, sources=[inventory_file])
+
     serialized_inventory = serialize(dict_inventory=inventory_content)
-    # print '** Complete Inventory tree'
-    # print serialized_inventory.show()
     tree_dc = serialized_inventory.subtree(parent_container)
-    # print '** Partial Inventory tree starting from ' + parent_container
-    # print tree_dc.show()
     container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
 
     container_json = {}
     for container in container_list:
         data = dict()
         if container != 'Tenant':
-            parent = serialized_inventory.parent(container)
+            parent = tree_dc.parent(container)
             if container == parent_container:
                 data['parent_container'] = 'Tenant'
             elif parent.tag != 'Tenant':
+                if isLeaf(tree=tree_dc, nid=container):
+                    devices = get_devices(dict_inventory=inventory_content, search_container=container, devices=list())
+                    data['devices'] = devices
                 data['parent_container'] = parent.tag
             container_json[container] = data
 
