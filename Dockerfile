@@ -4,7 +4,7 @@ MAINTAINER Arista Ansible Team <ansible@arista.com>
 ENV PS1='avd:\u% '
 
 # Install necessary packages
-RUN yum -y install \
+RUN dnf -y install \
     findutils \
     git \
     make \
