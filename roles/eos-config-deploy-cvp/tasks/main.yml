@@ -9,7 +9,7 @@
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
-- name: test
+- name: Display CVP Variables structure
   debug:
     msg: '{{CVP_VARS}}'
 
@@ -23,8 +23,8 @@
     configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
     configlet_filter: ["AVD"]
 
-# - name: "Building Container topology on {{inventory_hostname}}"
-#   arista.cvp.cv_container:
-#     topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
-#     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
-#     save_topology: true
+- name: "Building Container topology on {{inventory_hostname}}"
+  arista.cvp.cv_container:
+    topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
+    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    save_topology: true

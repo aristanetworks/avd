@@ -1,16 +1,80 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.connection import Connection, ConnectionError
+
+ANSIBLE_METADATA = {'metadata_version': '1.0.0',
+                    'status': ['preview'],
+                    'supported_by': 'community'}
+
+DOCUMENTATION = r'''
+---
+module: inventory_to_container
+version_added: "2.9"
+author: "EMEA AS Team(ansible-dev@arista.com)"
+short_description:Transform information from inventory to arista.cvp collection
+description:
+  - Transform information from ansible inventory to be able to 
+  - provision CloudVision Platform using arista.cvp collection and 
+  - its specific data structure.
+options:
+  inventory:
+    description: YAML inventory file
+    required: true
+    default: None
+  container_root:
+    description: Ansible group name to consider to be Root of our topology.
+    required: true
+    default: None
+  configlet_dir:
+    description: Directory where intended configurations are located.
+    required: false
+    default: None
+  configlet_prefix:
+    description: Prefix to put on configlet.
+    required: false
+    default: None
+  destination:
+    description: Optional path to save variable.
+    required: false
+    default: None
+'''
+
+EXAMPLES = r'''
+- name: generate intented variables
+  inventory_to_container:
+    inventory: 'inventory.yml'
+    container_root: 'DC1_FABRIC'
+    configlet_dir: 'intended_configs'
+    configlet_prefix: 'AVD'
+    # destination: 'generated_vars/{{inventory_hostname}}.yml'
+  register: CVP_VARS
+
+- name: 'Collecting facts from CVP {{inventory_hostname}}.'
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
+
+- name: 'Create configlets on CVP {{inventory_hostname}}.'
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{CVP_FACTS.ansible_facts}}"
+    configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
+    configlet_filter: ["AVD"]
+
+- name: "Building Container topology on {{inventory_hostname}}"
+  arista.cvp.cv_container:
+    topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
+    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    save_topology: true
+'''
+
+
 import glob
 import os
 import json
 import yaml
 import pprint
 from treelib import Node, Tree
-from ansible.parsing.dataloader import DataLoader
-from ansible.vars.manager import VariableManager
-from ansible.inventory.manager import InventoryManager
+from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.connection import Connection, ConnectionError
+
 
 def isIterable( testing_object= None):
     """
@@ -31,13 +95,45 @@ def isIterable( testing_object= None):
 
 
 def isLeaf(tree, nid):
+    """
+    Test if NodeID is a leaf with no nid attached to it.
+
+    Parameters
+    ----------
+    tree : treelib.Tree
+        Tree where NID is defined.
+    nid : treelib.Node
+        NodeID to test.
+
+    Returns
+    -------
+    boolean
+        True if node is a leaf, false in other situation
+    """
     if len(tree.is_branch(nid)) == 0:
         return True
     else:
         return False
 
 
-def get_configlet(src_folder=str(), prefix='AVD' ,extension='cfg'):
+def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
+    """
+    Get available configlets to deploy to CVP.
+
+    Parameters
+    ----------
+    src_folder : str, optional
+        Path where to find configlet, by default str()
+    prefix : str, optional
+        Prefix to append to configlet name, by default 'AVD'
+    extension : str, optional
+        File extension to lookup configlet file, by default 'cfg'
+
+    Returns
+    -------
+    dict
+        Dictionary of configlets found in source folder.
+    """
     src_configlets = glob.glob(src_folder + '/*.' + extension)
     configlets = dict()
     for file in src_configlets:
@@ -51,31 +147,24 @@ def get_configlet(src_folder=str(), prefix='AVD' ,extension='cfg'):
     return configlets
 
 
-def get_devices(dict_inventory, search_container=None, devices=list()):
-    for k1, v1 in dict_inventory.items():
-        # Read a leaf
-        if k1 == search_container and 'hosts' in v1:
-            for dev,data in v1['hosts'].items():
-                devices.append(dev)
-        # If subgroup has kids
-        if isIterable(v1) and 'children' in v1:
-            get_devices(
-                dict_inventory=v1['children'],
-                search_container=search_container,
-                devices=devices
-            )
-        elif k1 == 'children' and isIterable(v1):
-            # Extract sub-group information
-            for k2, v2 in v1.items():
-                get_devices(
-                    dict_inventory=v2,
-                    search_container=search_container,
-                    devcices=devices
-                )
-    return devices
-
-
 def serialize(dict_inventory, parent_container=None, tree_topology=None):
+    """
+    Build a tree topology from inventory.
+
+    Parameters
+    ----------
+    dict_inventory : dict
+        Inventory YAML content.
+    parent_container : str, optional
+        Registration of container N-1 for recursive function, by default None
+    tree_topology : treelib.Tree, optional
+        Tree topology built over iteration, by default None
+
+    Returns
+    -------
+    treelib.Tree
+        complete container tree topology.
+    """
     if isIterable(dict_inventory):
         # Working with ROOT container for Fabric
         if tree_topology is None:
@@ -107,15 +196,52 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
                         parent_container=k2,
                         tree_topology=tree_topology
                     )
-            # elif 'hosts' in v1 and 'children' not in v1:
-            #     tree_topology.create_node(k1, k1, parent=parent_container)
         return tree_topology
 
 
-if __name__ == '__main__':
-
-    """ main entry point for module execution
+def get_devices(dict_inventory, search_container=None, devices=list()):
     """
+    Get devices attached to a container.
+
+    Parameters
+    ----------
+    dict_inventory : dict
+        Inventory YAML content. 
+    search_container : [type], optional
+        Container to look for, by default None
+    devices : [type], optional
+        List of found devices attached to container, by default list()
+
+    Returns
+    -------
+    list
+        List of found devices.
+    """
+    for k1, v1 in dict_inventory.items():
+        # Read a leaf
+        if k1 == search_container and 'hosts' in v1:
+            for dev,data in v1['hosts'].items():
+                devices.append(dev)
+        # If subgroup has kids
+        if isIterable(v1) and 'children' in v1:
+            get_devices(
+                dict_inventory=v1['children'],
+                search_container=search_container,
+                devices=devices
+            )
+        elif k1 == 'children' and isIterable(v1):
+            # Extract sub-group information
+            for k2, v2 in v1.items():
+                get_devices(
+                    dict_inventory=v2,
+                    search_container=search_container,
+                    devcices=devices
+                )
+    return devices
+
+
+if __name__ == '__main__':
+    """ Main entry point for module execution."""
     argument_spec = dict(
         inventory=dict(type='str', required=True),
         container_root=dict(type='str', required=True),
