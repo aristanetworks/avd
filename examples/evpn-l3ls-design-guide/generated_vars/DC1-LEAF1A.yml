@@ -2,12 +2,18 @@
 
 ### DC1-LEAF1A ###
 
+
 ### Leaf Info ###
 l3leaf_node_group: DC1_LEAF1
 leaf_platform: vEOS-LAB
 leaf_bgp_as: 65101
 leaf_id: 1
 leaf_mgmt_ip: 192.168.2.105/24
+leaf_filter_tenants: ['Tenant_B', 'Tenant_C']
+leaf_filter_tags: ['opzone']
+leaf_allowed_vrfs: ['Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
+leaf_allowed_svis: [210, 211, 310, 311]
+leaf_allowed_vlans: [210, 211, 310, 311]
 leaf_mlag: False
 
 ### Daemon TerminAttr
@@ -61,42 +67,31 @@ local_users:
 ### VLANs ###
 vlans:
 
-## Tenant_A ##
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OPZone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OPZone_2
 ## Tenant_B ##
   210:
     tenant: Tenant_B
-    name: Tenant_B_OPZone_1
+    name: Tenant_B_OP_Zone_1
   211:
     tenant: Tenant_B
-    name: Tenant_B_OPZone_2
+    name: Tenant_B_OP_Zone_2
 ## Tenant_C ##
   310:
     tenant: Tenant_C
-    name: Tenant_C_OPZone_1
+    name: Tenant_C_OP_Zone_1
   311:
     tenant: Tenant_C
-    name: Tenant_C_OPZone_2
+    name: Tenant_C_OP_Zone_2
 
 ### VRFs ###
 vrfs:
   MGMT:
     ip_routing: False
-## Tenant_A ##
-  Tenant_A_OPZone:
-    tenant: Tenant_A
-    ip_routing: true
 ## Tenant_B ##
-  Tenant_B_OPZone:
+  Tenant_B_OP_Zone:
     tenant: Tenant_B
     ip_routing: true
 ## Tenant_C ##
-  Tenant_C_OPZone:
+  Tenant_C_OP_Zone:
     tenant: Tenant_C
     ip_routing: true
 
@@ -145,21 +140,16 @@ loopback_interfaces:
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.3/32
-## Tenant_A ##
-  Loopback101:
-    description: Tenant_A_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.255.3/32
 ## Tenant_B ##
-  Loopback202:
-    description: Tenant_B_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_B_OPZone
-    ip_address: 10.2.255.3/32
+  Loopback220:
+    description: Tenant_B_OP_Zone_VTEP_DIAGNOSTICS
+    vrf: Tenant_B_OP_Zone
+    ip_address: 10.255.20.3/32
 ## Tenant_C ##
-  Loopback303:
-    description: Tenant_C_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_C_OPZone
-    ip_address: 10.3.255.3/32
+  Loopback330:
+    description: Tenant_C_OP_Zone_VTEP_DIAGNOSTICS
+    vrf: Tenant_C_OP_Zone
+    ip_address: 10.255.30.3/32
 
 ### Management Interfaces ###
 management_interfaces:
@@ -171,50 +161,34 @@ management_interfaces:
 
 ### VLAN Interfaces ###
 vlan_interfaces:
-## Tenant_A ##
-  Vlan110:
-    tenant: Tenant_A
-    type: host
-    description: Tenant_A_OPZone_1
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.10.1/24
-    ip_address_secondary: 10.1.100.1/24
-    virtual: true
-  Vlan111:
-    tenant: Tenant_A
-    type: host
-    description: Tenant_A_OPZone_2
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.11.1/24
-    virtual: true
 ## Tenant_B ##
   Vlan210:
     tenant: Tenant_B
-    type: host
-    description: Tenant_B_OPZone_1
-    vrf: Tenant_B_OPZone
+    tags: ['opzone']
+    description: Tenant_B_OP_Zone_1
+    vrf: Tenant_B_OP_Zone
     ip_address: 10.2.10.1/24
     virtual: true
   Vlan211:
     tenant: Tenant_B
-    type: host
-    description: Tenant_B_OPZone_2
-    vrf: Tenant_B_OPZone
+    tags: ['opzone']
+    description: Tenant_B_OP_Zone_2
+    vrf: Tenant_B_OP_Zone
     ip_address: 10.2.11.1/24
     virtual: true
 ## Tenant_C ##
   Vlan310:
     tenant: Tenant_C
-    type: host
-    description: Tenant_C_OPZone_1
-    vrf: Tenant_C_OPZone
+    tags: ['opzone']
+    description: Tenant_C_OP_Zone_1
+    vrf: Tenant_C_OP_Zone
     ip_address: 10.3.10.1/24
     virtual: true
   Vlan311:
     tenant: Tenant_C
-    type: host
-    description: Tenant_C_OPZone_2
-    vrf: Tenant_C_OPZone
+    tags: ['opzone']
+    description: Tenant_C_OP_Zone_2
+    vrf: Tenant_C_OP_Zone
     ip_address: 10.3.11.1/24
     virtual: true
 
@@ -226,11 +200,6 @@ vxlan_tunnel_interface:
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
-## Tenant_A ##
-        110:
-          vni: 10110
-        111:
-          vni: 10111
 ## Tenant_B ##
         210:
           vni: 20210
@@ -242,15 +211,12 @@ vxlan_tunnel_interface:
         311:
           vni: 30311
       vrfs:
-## Tenant_A ##
-        Tenant_A_OPZone:
-          vni: 15001
 ## Tenant_B ##
-        Tenant_B_OPZone:
-          vni: 25002
+        Tenant_B_OP_Zone:
+          vni: 25020
 ## Tenant_C ##
-        Tenant_C_OPZone:
-          vni: 35003
+        Tenant_C_OP_Zone:
+          vni: 35030
 
 ### TCAM Profiles ###
 tcam_profile:
@@ -258,15 +224,12 @@ tcam_profile:
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 
 virtual_source_nat_vrfs:
-## Tenant_A ##
-  Tenant_A_OPZone:
-    ip_address: 10.1.255.3
 ## Tenant_B ##
-  Tenant_B_OPZone:
-    ip_address: 10.2.255.3
+  Tenant_B_OP_Zone:
+    ip_address: 10.255.20.3
 ## Tenant_C ##
-  Tenant_C_OPZone:
-    ip_address: 10.3.255.3
+  Tenant_C_OP_Zone:
+    ip_address: 10.255.30.3
 
 ### static routes ###
 static_routes:
@@ -337,67 +300,47 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
-## Tenant_A ##
-    Tenant_A_OPZone:
-      rd: "192.168.255.3:15001"
-      route_targets:
-        both:
-          asn: "15001:15001"
-      redistribute_routes:
-        - learned
-      vlan: 110-111
 ## Tenant_B ##
-    Tenant_B_OPZone:
-      rd: "192.168.255.3:25002"
+    Tenant_B_OP_Zone:
+      rd: "192.168.255.3:25020"
       route_targets:
         both:
-          asn: "25002:25002"
+          asn: "25020:25020"
       redistribute_routes:
         - learned
       vlan: 210-211
 ## Tenant_C ##
-    Tenant_C_OPZone:
-      rd: "192.168.255.3:35003"
+    Tenant_C_OP_Zone:
+      rd: "192.168.255.3:35030"
       route_targets:
         both:
-          asn: "35003:35003"
+          asn: "35030:35030"
       redistribute_routes:
         - learned
       vlan: 310-311
+  vlans:
   vrfs:
-## Tenant_A ##
-    Tenant_A_OPZone:
-      rd: "192.168.255.3:15001"
-      route_targets:
-        import:
-          address_family: evpn
-          asn: "15001:15001"
-        export:
-          address_family: evpn
-          asn: "15001:15001"
-      redistribute_routes:
-        - connected
 ## Tenant_B ##
-    Tenant_B_OPZone:
-      rd: "192.168.255.3:25002"
+    Tenant_B_OP_Zone:
+      rd: "192.168.255.3:25020"
       route_targets:
         import:
           address_family: evpn
-          asn: "25002:25002"
+          asn: "25020:25020"
         export:
           address_family: evpn
-          asn: "25002:25002"
+          asn: "25020:25020"
       redistribute_routes:
         - connected
 ## Tenant_C ##
-    Tenant_C_OPZone:
-      rd: "192.168.255.3:35003"
+    Tenant_C_OP_Zone:
+      rd: "192.168.255.3:35030"
       route_targets:
         import:
           address_family: evpn
-          asn: "35003:35003"
+          asn: "35030:35030"
         export:
           address_family: evpn
-          asn: "35003:35003"
+          asn: "35030:35030"
       redistribute_routes:
         - connected

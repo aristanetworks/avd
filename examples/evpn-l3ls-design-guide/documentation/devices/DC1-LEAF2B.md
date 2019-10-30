@@ -134,15 +134,18 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OPZone_1 | none  |
-| 111 | Tenant_A_OPZone_2 | none  |
-| 210 | Tenant_B_OPZone_1 | none  |
-| 211 | Tenant_B_OPZone_2 | none  |
-| 310 | Tenant_C_OPZone_1 | none  |
-| 311 | Tenant_C_OPZone_2 | none  |
-| 3000 | MLAG_iBGP_Tenant_A_OPZone | LEAF_PEER_L3  |
-| 3001 | MLAG_iBGP_Tenant_B_OPZone | LEAF_PEER_L3  |
-| 3002 | MLAG_iBGP_Tenant_C_OPZone | LEAF_PEER_L3  |
+| 110 | Tenant_A_OP_Zone_1 | none  |
+| 111 | Tenant_A_OP_Zone_2 | none  |
+| 120 | Tenant_A_WEB_Zone_1 | none  |
+| 121 | Tenant_A_WEBZone_2 | none  |
+| 130 | Tenant_A_APP_Zone_1 | none  |
+| 131 | Tenant_A_APP_Zone_2 | none  |
+| 140 | Tenant_A_DB_BZone_1 | none  |
+| 141 | Tenant_A_DB_Zone_2 | none  |
+| 3000 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3  |
+| 3001 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3  |
+| 3002 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3  |
+| 3003 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3  |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
 | 4094 | MLAG_PEER | MLAG  |
 
@@ -150,33 +153,43 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ```eos
 vlan 110
-   name Tenant_A_OPZone_1
+   name Tenant_A_OP_Zone_1
 !
 vlan 111
-   name Tenant_A_OPZone_2
+   name Tenant_A_OP_Zone_2
 !
-vlan 210
-   name Tenant_B_OPZone_1
+vlan 120
+   name Tenant_A_WEB_Zone_1
 !
-vlan 211
-   name Tenant_B_OPZone_2
+vlan 121
+   name Tenant_A_WEBZone_2
 !
-vlan 310
-   name Tenant_C_OPZone_1
+vlan 130
+   name Tenant_A_APP_Zone_1
 !
-vlan 311
-   name Tenant_C_OPZone_2
+vlan 131
+   name Tenant_A_APP_Zone_2
+!
+vlan 140
+   name Tenant_A_DB_BZone_1
+!
+vlan 141
+   name Tenant_A_DB_Zone_2
 !
 vlan 3000
-   name MLAG_iBGP_Tenant_A_OPZone
+   name MLAG_iBGP_Tenant_A_OP_Zone
    trunk group LEAF_PEER_L3
 !
 vlan 3001
-   name MLAG_iBGP_Tenant_B_OPZone
+   name MLAG_iBGP_Tenant_A_WEB_Zone
    trunk group LEAF_PEER_L3
 !
 vlan 3002
-   name MLAG_iBGP_Tenant_C_OPZone
+   name MLAG_iBGP_Tenant_A_APP_Zone
+   trunk group LEAF_PEER_L3
+!
+vlan 3003
+   name MLAG_iBGP_Tenant_A_DB_Zone
    trunk group LEAF_PEER_L3
 !
 vlan 4093
@@ -196,20 +209,23 @@ vlan 4094
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT |  disabled |
-| Tenant_A_OPZone |  enabled |
-| Tenant_B_OPZone |  enabled |
-| Tenant_C_OPZone |  enabled |
+| Tenant_A_APP_Zone |  enabled |
+| Tenant_A_DB_Zone |  enabled |
+| Tenant_A_OP_Zone |  enabled |
+| Tenant_A_WEB_Zone |  enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 vrf instance MGMT
 !
-vrf instance Tenant_A_OPZone
+vrf instance Tenant_A_APP_Zone
 !
-vrf instance Tenant_B_OPZone
+vrf instance Tenant_A_DB_Zone
 !
-vrf instance Tenant_C_OPZone
+vrf instance Tenant_A_OP_Zone
+!
+vrf instance Tenant_A_WEB_Zone
 !
 ```
 
@@ -345,9 +361,10 @@ interface Ethernet11
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.5/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.4/32 |
-| Loopback101 | Tenant_A_OPZone_VTEP_DIAGNOSTICS | Tenant_A_OPZone | 10.1.255.5/32 |
-| Loopback202 | Tenant_B_OPZone_VTEP_DIAGNOSTICS | Tenant_B_OPZone | 10.2.255.5/32 |
-| Loopback303 | Tenant_C_OPZone_VTEP_DIAGNOSTICS | Tenant_C_OPZone | 10.3.255.5/32 |
+| Loopback101 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.5/32 |
+| Loopback102 | Tenant_A_WEB_Zone_VTEP_DIAGNOSTICS | Tenant_A_WEB_Zone | 10.255.2.5/32 |
+| Loopback103 | Tenant_A_APP_Zone_VTEP_DIAGNOSTICS | Tenant_A_APP_Zone | 10.255.3.5/32 |
+| Loopback104 | Tenant_A_DB_Zone_VTEP_DIAGNOSTICS | Tenant_A_DB_Zone | 10.255.4.5/32 |
 
 ### Loopback Interfaces Device Configuration
 
@@ -361,19 +378,24 @@ interface Loopback1
    ip address 192.168.254.4/32
 !
 interface Loopback101
-   description Tenant_A_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_A_OPZone
-   ip address 10.1.255.5/32
+   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   vrf Tenant_A_OP_Zone
+   ip address 10.255.1.5/32
 !
-interface Loopback202
-   description Tenant_B_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_B_OPZone
-   ip address 10.2.255.5/32
+interface Loopback102
+   description Tenant_A_WEB_Zone_VTEP_DIAGNOSTICS
+   vrf Tenant_A_WEB_Zone
+   ip address 10.255.2.5/32
 !
-interface Loopback303
-   description Tenant_C_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_C_OPZone
-   ip address 10.3.255.5/32
+interface Loopback103
+   description Tenant_A_APP_Zone_VTEP_DIAGNOSTICS
+   vrf Tenant_A_APP_Zone
+   ip address 10.255.3.5/32
+!
+interface Loopback104
+   description Tenant_A_DB_Zone_VTEP_DIAGNOSTICS
+   vrf Tenant_A_DB_Zone
+   ip address 10.255.4.5/32
 !
 ```
 
@@ -383,15 +405,18 @@ interface Loopback303
 
 | Interface | Description | VRF | IP Address | Virtual | IP Address Secondary | Virtual |
 | --------- | ----------- | --- | ---------- | ------- | -------------------- | ------- |
-| Vlan110 | Tenant_A_OPZone_1 | Tenant_A_OPZone  | 10.1.10.1/24 | True | 10.1.100.1/24 | True |
-| Vlan111 | Tenant_A_OPZone_2 | Tenant_A_OPZone  | 10.1.11.1/24 | True | - | - |
-| Vlan210 | Tenant_B_OPZone_1 | Tenant_B_OPZone  | 10.2.10.1/24 | True | - | - |
-| Vlan211 | Tenant_B_OPZone_2 | Tenant_B_OPZone  | 10.2.11.1/24 | True | - | - |
-| Vlan310 | Tenant_C_OPZone_1 | Tenant_C_OPZone  | 10.3.10.1/24 | True | - | - |
-| Vlan311 | Tenant_C_OPZone_2 | Tenant_C_OPZone  | 10.3.11.1/24 | True | - | - |
-| Vlan3000 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone | Tenant_A_OPZone  | 10.255.251.3/31 | - | - | - |
-| Vlan3001 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone | Tenant_B_OPZone  | 10.255.251.3/31 | - | - | - |
-| Vlan3002 | MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone | Tenant_C_OPZone  | 10.255.251.3/31 | - | - | - |
+| Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone  | 10.1.10.1/24 | True | - | - |
+| Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone  | 10.1.11.1/24 | True | - | - |
+| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone  | 10.1.20.1/24 | True | - | - |
+| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone  | 10.1.21.1/24 | True | - | - |
+| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone  | 10.1.30.1/24 | True | - | - |
+| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone  | 10.1.31.1/24 | True | - | - |
+| Vlan140 | Tenant_A_DB_BZone_1 | Tenant_A_DB_Zone  | 10.1.40.1/24 | True | - | - |
+| Vlan141 | Tenant_A_DB_Zone_2 | Tenant_A_DB_Zone  | 10.1.41.1/24 | True | - | - |
+| Vlan3000 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone  | 10.255.251.3/31 | - | - | - |
+| Vlan3001 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone | Tenant_A_WEB_Zone  | 10.255.251.3/31 | - | - | - |
+| Vlan3002 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone  | 10.255.251.3/31 | - | - | - |
+| Vlan3003 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone  | 10.255.251.3/31 | - | - | - |
 | Vlan4093 | MLAG_PEER_L3_iBGP | Global Routing Table  | 10.255.251.3/31 | - | - | - |
 | Vlan4094 | MLAG_PEER | Global Routing Table  | 10.255.252.3/31 | - | - | - |
 
@@ -399,49 +424,63 @@ interface Loopback303
 
 ```eos
 interface Vlan110
-   description Tenant_A_OPZone_1
-   vrf Tenant_A_OPZone
+   description Tenant_A_OP_Zone_1
+   vrf Tenant_A_OP_Zone
    ip address virtual 10.1.10.1/24
-   ip address virtual 10.1.100.1/24 secondary
 !
 interface Vlan111
-   description Tenant_A_OPZone_2
-   vrf Tenant_A_OPZone
+   description Tenant_A_OP_Zone_2
+   vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24
 !
-interface Vlan210
-   description Tenant_B_OPZone_1
-   vrf Tenant_B_OPZone
-   ip address virtual 10.2.10.1/24
+interface Vlan120
+   description Tenant_A_WEB_Zone_1
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.20.1/24
 !
-interface Vlan211
-   description Tenant_B_OPZone_2
-   vrf Tenant_B_OPZone
-   ip address virtual 10.2.11.1/24
+interface Vlan121
+   description Tenant_A_WEBZone_2
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.21.1/24
 !
-interface Vlan310
-   description Tenant_C_OPZone_1
-   vrf Tenant_C_OPZone
-   ip address virtual 10.3.10.1/24
+interface Vlan130
+   description Tenant_A_APP_Zone_1
+   vrf Tenant_A_APP_Zone
+   ip address virtual 10.1.30.1/24
 !
-interface Vlan311
-   description Tenant_C_OPZone_2
-   vrf Tenant_C_OPZone
-   ip address virtual 10.3.11.1/24
+interface Vlan131
+   description Tenant_A_APP_Zone_2
+   vrf Tenant_A_APP_Zone
+   ip address virtual 10.1.31.1/24
+!
+interface Vlan140
+   description Tenant_A_DB_BZone_1
+   vrf Tenant_A_DB_Zone
+   ip address virtual 10.1.40.1/24
+!
+interface Vlan141
+   description Tenant_A_DB_Zone_2
+   vrf Tenant_A_DB_Zone
+   ip address virtual 10.1.41.1/24
 !
 interface Vlan3000
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone
-   vrf Tenant_A_OPZone
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   vrf Tenant_A_OP_Zone
    ip address 10.255.251.3/31
 !
 interface Vlan3001
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone
-   vrf Tenant_B_OPZone
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   vrf Tenant_A_WEB_Zone
    ip address 10.255.251.3/31
 !
 interface Vlan3002
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone
-   vrf Tenant_C_OPZone
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   vrf Tenant_A_APP_Zone
+   ip address 10.255.251.3/31
+!
+interface Vlan3003
+   description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   vrf Tenant_A_DB_Zone
    ip address 10.255.251.3/31
 !
 interface Vlan4093
@@ -468,18 +507,21 @@ interface Vlan4094
 | ---- | --- |
 | 110 | 10110 |
 | 111 | 10111 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 310 | 30310 |
-| 311 | 30311 |
+| 120 | 10120 |
+| 121 | 10121 |
+| 130 | 10130 |
+| 131 | 10131 |
+| 140 | 10140 |
+| 141 | 10141 |
 
 **VRF to VNI Mappings:**
 
 | VLAN | VNI |
 | ---- | --- |
-| Tenant_A_OPZone | 15001 |
-| Tenant_B_OPZone | 25002 |
-| Tenant_C_OPZone | 35003 |
+| Tenant_A_APP_Zone | 15003 |
+| Tenant_A_DB_Zone | 15004 |
+| Tenant_A_OP_Zone | 15001 |
+| Tenant_A_WEB_Zone | 15002 |
 
 ### VXLAN Interface Device Configuration
 
@@ -490,13 +532,16 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
-   vxlan vlan 210 vni 20210
-   vxlan vlan 211 vni 20211
-   vxlan vlan 310 vni 30310
-   vxlan vlan 311 vni 30311
-   vxlan vrf Tenant_A_OPZone vni 15001
-   vxlan vrf Tenant_B_OPZone vni 25002
-   vxlan vrf Tenant_C_OPZone vni 35003
+   vxlan vlan 120 vni 10120
+   vxlan vlan 121 vni 10121
+   vxlan vlan 130 vni 10130
+   vxlan vlan 131 vni 10131
+   vxlan vlan 140 vni 10140
+   vxlan vlan 141 vni 10141
+   vxlan vrf Tenant_A_APP_Zone vni 15003
+   vxlan vrf Tenant_A_DB_Zone vni 15004
+   vxlan vrf Tenant_A_OP_Zone vni 15001
+   vxlan vrf Tenant_A_WEB_Zone vni 15002
 !
 ```
 
@@ -518,16 +563,18 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
-| Tenant_A_OPZone | 10.1.255.5 |
-| Tenant_B_OPZone | 10.2.255.5 |
-| Tenant_C_OPZone | 10.3.255.5 |
+| Tenant_A_APP_Zone | 10.255.3.5 |
+| Tenant_A_DB_Zone | 10.255.4.5 |
+| Tenant_A_OP_Zone | 10.255.1.5 |
+| Tenant_A_WEB_Zone | 10.255.2.5 |
 
 ### Virtual Source NAT Device Configuration
 
 ```eos
-ip address virtual source-nat vrf Tenant_A_OPZone address 10.1.255.5
-ip address virtual source-nat vrf Tenant_B_OPZone address 10.2.255.5
-ip address virtual source-nat vrf Tenant_C_OPZone address 10.3.255.5
+ip address virtual source-nat vrf Tenant_A_APP_Zone address 10.255.3.5
+ip address virtual source-nat vrf Tenant_A_DB_Zone address 10.255.4.5
+ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.5
+ip address virtual source-nat vrf Tenant_A_WEB_Zone address 10.255.2.5
 !
 ```
 
@@ -553,18 +600,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.2.1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | MGMT | False |
-| Tenant_A_OPZone | True |
-| Tenant_B_OPZone | True |
-| Tenant_C_OPZone | True |
+| Tenant_A_APP_Zone | True |
+| Tenant_A_DB_Zone | True |
+| Tenant_A_OP_Zone | True |
+| Tenant_A_WEB_Zone | True |
 
 ### IP Routing Device Configuration
 
 ```eos
 ip routing
 no ip routing vrf MGMT
-ip routing vrf Tenant_A_OPZone
-ip routing vrf Tenant_B_OPZone
-ip routing vrf Tenant_C_OPZone
+ip routing vrf Tenant_A_APP_Zone
+ip routing vrf Tenant_A_DB_Zone
+ip routing vrf Tenant_A_OP_Zone
+ip routing vrf Tenant_A_WEB_Zone
 !
 ```
 
@@ -724,17 +773,19 @@ No Peer Filters defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Route Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ------------ | ------------ | ----- |
-| Tenant_A_OPZone | 192.168.255.5:15001 | both 15001:15001 | learned | 110-111 |
-| Tenant_B_OPZone | 192.168.255.5:25002 | both 25002:25002 | learned | 210-211 |
-| Tenant_C_OPZone | 192.168.255.5:35003 | both 35003:35003 | learned | 310-311 |
+| Tenant_A_APP_Zone | 192.168.255.5:15003 | both 15003:15003 | learned | 130-131 |
+| Tenant_A_DB_Zone | 192.168.255.5:15004 | both 15004:15004 | learned | 140-141 |
+| Tenant_A_OP_Zone | 192.168.255.5:15001 | both 15001:15001 | learned | 110-111 |
+| Tenant_A_WEB_Zone | 192.168.255.5:15002 | both 15002:15002 | learned | 120-121 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Route Target | Redistribute |
 | --- | ------------------- | ------------ | ------------ |
-| Tenant_A_OPZone | 192.168.255.5:15001 | import 15001:15001<br> export 15001:15001 | connected |
-| Tenant_B_OPZone | 192.168.255.5:25002 | import 25002:25002<br> export 25002:25002 | connected |
-| Tenant_C_OPZone | 192.168.255.5:35003 | import 35003:35003<br> export 35003:35003 | connected |
+| Tenant_A_APP_Zone | 192.168.255.5:15003 | import 15003:15003<br> export 15003:15003 | connected |
+| Tenant_A_DB_Zone | 192.168.255.5:15004 | import 15004:15004<br> export 15004:15004 | connected |
+| Tenant_A_OP_Zone | 192.168.255.5:15001 | import 15001:15001<br> export 15001:15001 | connected |
+| Tenant_A_WEB_Zone | 192.168.255.5:15002 | import 15002:15002<br> export 15002:15002 | connected |
 
 ### Router BGP Device Configuration
 
@@ -772,23 +823,29 @@ router bgp 65102
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan-aware-bundle Tenant_A_OPZone
+   vlan-aware-bundle Tenant_A_APP_Zone
+      rd 192.168.255.5:15003
+      route-target both 15003:15003
+      redistribute learned
+      vlan 130-131
+   !
+   vlan-aware-bundle Tenant_A_DB_Zone
+      rd 192.168.255.5:15004
+      route-target both 15004:15004
+      redistribute learned
+      vlan 140-141
+   !
+   vlan-aware-bundle Tenant_A_OP_Zone
       rd 192.168.255.5:15001
       route-target both 15001:15001
       redistribute learned
       vlan 110-111
    !
-   vlan-aware-bundle Tenant_B_OPZone
-      rd 192.168.255.5:25002
-      route-target both 25002:25002
+   vlan-aware-bundle Tenant_A_WEB_Zone
+      rd 192.168.255.5:15002
+      route-target both 15002:15002
       redistribute learned
-      vlan 210-211
-   !
-   vlan-aware-bundle Tenant_C_OPZone
-      rd 192.168.255.5:35003
-      route-target both 35003:35003
-      redistribute learned
-      vlan 310-311
+      vlan 120-121
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
@@ -800,24 +857,31 @@ router bgp 65102
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
-   vrf Tenant_A_OPZone
+   vrf Tenant_A_APP_Zone
+      rd 192.168.255.5:15003
+      route-target import evpn 15003:15003
+      route-target export evpn 15003:15003
+      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+   !
+   vrf Tenant_A_DB_Zone
+      rd 192.168.255.5:15004
+      route-target import evpn 15004:15004
+      route-target export evpn 15004:15004
+      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+   !
+   vrf Tenant_A_OP_Zone
       rd 192.168.255.5:15001
       route-target import evpn 15001:15001
       route-target export evpn 15001:15001
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
-   vrf Tenant_B_OPZone
-      rd 192.168.255.5:25002
-      route-target import evpn 25002:25002
-      route-target export evpn 25002:25002
-      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
-   !
-   vrf Tenant_C_OPZone
-      rd 192.168.255.5:35003
-      route-target import evpn 35003:35003
-      route-target export evpn 35003:35003
+   vrf Tenant_A_WEB_Zone
+      rd 192.168.255.5:15002
+      route-target import evpn 15002:15002
+      route-target export evpn 15002:15002
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 !
