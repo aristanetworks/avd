@@ -1,5 +1,5 @@
 {# eos - router bgp #}
-{% if router_bgp is defined %}
+{% if router_bgp is defined and router_bgp is not none %}
 router bgp {{ router_bgp.as }}
    router-id {{ router_bgp.router_id }}
 {%     for bgp_default in router_bgp.bgp_defaults %}
@@ -56,7 +56,7 @@ router bgp {{ router_bgp.as }}
 {%     endif %}
    !
 {# vxlan vlan aware bundles #}
-{%     if router_bgp.vlan_aware_bundles is defined %}
+{%     if router_bgp.vlan_aware_bundles is defined and router_bgp.vlan_aware_bundles is not none %}
 {%        for vlan_aware_bundle in router_bgp.vlan_aware_bundles | natural_sort %}
    vlan-aware-bundle {{ vlan_aware_bundle }}
       rd {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].rd }}
@@ -71,7 +71,7 @@ router bgp {{ router_bgp.as }}
 {%         endfor %}
 {%     endif %}
 {# L2VPNs - (vxlan) vlan based #}
-{%     if router_bgp.vlans is defined %}
+{%     if router_bgp.vlans is defined and router_bgp.vlans is not none %}
 {%        for vlan in router_bgp.vlans | natural_sort %}
    vlan {{ vlan }}
       rd {{ router_bgp.vlans[vlan].rd }}
@@ -104,7 +104,7 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%     endfor %}
 {# L3VPNs - (vxlan) VRFs #}
-{%     if router_bgp.vrfs is defined %}
+{%     if router_bgp.vrfs is defined and router_bgp.vrfs is not none %}
 {%         for vrf in router_bgp.vrfs | natural_sort %}
    !
    vrf {{ vrf }}
