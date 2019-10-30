@@ -1,18 +1,22 @@
 {# Leaf tenant vlans #}
-{% for tenant in tenants | natural_sort %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
+{%         if loop.first %}
 ## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
-{%         if leaf.mlag == true and type == "l3leaf" %}
+{%         endif %}
+{# Tenant VLANs #}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
+  {{ svi }}:
+    tenant: {{ tenant }}
+    name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+{# VLAN for iBGP peering in overlay VRFs #}
+{%             if loop.last and type == "l3leaf" and leaf.mlag == true %}
   {{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].id - 1) }}:
     tenant: {{ tenant }}
     name: MLAG_iBGP_{{ vrf }}
     trunk_groups:
       - LEAF_PEER_L3
-{%         endif %}
-{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
-  {{ svi }}:
-    tenant: {{ tenant }}
-    name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endfor %}

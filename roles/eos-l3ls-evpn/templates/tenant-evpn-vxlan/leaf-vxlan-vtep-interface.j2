@@ -9,19 +9,19 @@
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
-{% for tenant in tenants | natural_sort %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
-{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+{%     for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
+{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
         {{ svi }}:
           vni: {{ vxlan_vni_base * tenants[tenant].id + svi }}
 {%         endfor %}
 {%     endfor %}
 {% endfor %}
       vrfs:
-{% for tenant in tenants | natural_sort %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%     for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
         {{ vrf }}:
           vni: {{ vxlan_vni_base * tenants[tenant].id + 5000 + tenants[tenant].vrfs[vrf].id  }}
 {%     endfor %}
