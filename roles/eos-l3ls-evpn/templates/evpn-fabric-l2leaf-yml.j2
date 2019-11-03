@@ -22,7 +22,7 @@
 {%             set leaf.group = l2leaf_node_group %}
 {%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
 {%             set leaf.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
-{%             if l2leafs.node_groups[l2leaf_node_group].filter.tags is defined %}
+{%             if l2leafs.node_groups[l2leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l2leafs.node_groups[l2leaf_node_group].filter.tenants %}
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}

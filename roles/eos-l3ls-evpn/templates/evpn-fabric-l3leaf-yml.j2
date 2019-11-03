@@ -13,7 +13,7 @@
 {%             set leaf.id = l3leafs.node_groups[l3leaf_node_group].nodes[node].id %}
 {%             set leaf.mgmt_ip = l3leafs.node_groups[l3leaf_node_group].nodes[node].mgmt_ip %}
 {%             set leaf.spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
-{%             if l3leafs.node_groups[l3leaf_node_group].filter.tags is defined %}
+{%             if l3leafs.node_groups[l3leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l3leafs.node_groups[l3leaf_node_group].filter.tenants %}
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
