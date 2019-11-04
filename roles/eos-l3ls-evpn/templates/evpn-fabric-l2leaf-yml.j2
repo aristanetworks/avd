@@ -87,12 +87,12 @@
 {% set leaf.svis = []  %}
 {% set leaf.vlans = []  %}
 {% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
-{%     if tenant in parentl3leaf.filter_tenants %}
+{%     if tenant in parentl3leaf.filter_tenants or "all" in parentl3leaf.filter_tenants %}
 {%         for vrf in tenants[tenant].vrfs | natural_sort %}
 {%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
 {%                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                     if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
-{%                         if svi_tag in parentl3leaf.filter_tags %}
+{%                         if svi_tag in parentl3leaf.filter_tags or "all" in parentl3leaf.filter_tags %}
 {%                             do leaf.vrfs.append( vrf ) %}
 {%                             do leaf.svis.append( svi ) %}
 {%                             do leaf.vlans.append( svi ) %}
