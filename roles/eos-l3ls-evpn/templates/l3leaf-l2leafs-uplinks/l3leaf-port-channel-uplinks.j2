@@ -1,6 +1,8 @@
 {# L3Leaf Port-Channel uplinks to L2 Leaf #}
+{# Set variables #}
 {% if l2leafs.node_groups is defined %}
 {%     set l3leaf = namespace() %}
+{%     set l2leaf = namespace() %}
 {%     for l2leaf_node_group in l2leafs.node_groups | natural_sort %}
 {%         if l2leafs.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
 {%             set parent_l3leafs = l2leafs.node_groups[l2leaf_node_group].parent_l3leafs %}
@@ -8,6 +10,16 @@
 {%             set parent_l3leafs = l2leafs.defaults.parent_l3leafs %}
 {%         endif %}
 {%         if inventory_hostname in parent_l3leafs %}
+{%             if l2leafs.node_groups[l2leaf_node_group].filter.tenants is defined %}
+{%                 set l2leaf.filter_tenants = l2leafs.node_groups[l2leaf_node_group].filter.tenants %}
+{%             else %}
+{%                 set l2leaf.filter_tenants = [ 'all' ] %}
+{%             endif %}
+{%             if l2leafs.node_groups[l2leaf_node_group].filter.tags is defined %}
+{%                 set l2leaf.filter_tags = l2leafs.node_groups[l2leaf_node_group].filter.tags %}
+{%             else %}
+{%                 set l2leaf.filter_tags = [ 'all' ] %}
+{%             endif %}
 {%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 {%                 if loop.first %}
 {%                     set l3leaf.channel_group_id = (l2leafs.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
@@ -18,11 +30,30 @@
 {%             else %}
 {%                 set l2leaf_uplink_interfaces = l2leafs.defaults.uplink_interfaces %}
 {%             endif %}
+{# Create allowed vlan lan list based on vlans being provisioned on L2 Leaf #}
+{%             set l2leaf.vlans = []  %}
+{%             for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%                 if tenant in l2leaf.filter_tenants or "all" in l2leaf.filter_tenants %}
+{%                     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%                         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+{%                             for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
+{%                                 if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                                     if svi_tag in l2leaf.filter_tags or "all" in l2leaf.filter_tags %}
+{%                                         do l2leaf.vlans.append( svi ) %}
+{%                                         break %}
+{%                                     endif %}
+{%                                 endif %}
+{%                             endfor %}
+{%                         endfor %}
+{%                     endfor %}
+{%                 endif %}
+{%             endfor %}
+{# Create port-channels for each nodes #}
 {%             for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 ## L2 LEAF Uplink {{ l2leaf_node_group }} ##
   Port-Channel{{ l3leaf.channel_group_id }}:
     description: {{ l2leaf_node_group }}_{{ 'Po' + l2leaf_uplink_interfaces[loop.index0] | regex_findall("\d") | join }}
-    vlans: 2-4092
+    vlans: {{ l2leaf.vlans | list_compress }}
     mode: trunk
     mlag: {{ l3leaf.channel_group_id }}
 {%             break %}
