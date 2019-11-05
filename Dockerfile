@@ -1,5 +1,5 @@
 FROM centos:8
-MAINTAINER Arista Ansible Team <ansible@arista.com>
+LABEL maintainer="Arista Ansible Team <ansible@arista.com>"
 
 ENV PS1='avd:\u% '
 
