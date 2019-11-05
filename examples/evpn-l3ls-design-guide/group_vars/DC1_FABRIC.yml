@@ -91,7 +91,7 @@ l3leafs:
       bgp_as: 65103
       filter:
         tenants: [ Tenant_A ]
-        tags: [ sap ]
+        tags: [ erp1 ]
       nodes:
         DC1-SVC3A:
           id: 4
@@ -128,6 +128,9 @@ l2leafs:
   node_groups:
     DC1_L2LEAF4:
       uplink_interfaces: [ Ethernet11, Ethernet12 ]
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
       nodes:
         DC1-L2LEAF4A:
           id: 8
@@ -145,6 +148,9 @@ l2leafs:
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
     DC1_L2LEAF6:
+      filter:
+        tenants: [ all ]
+        tags: [ opzone, web, app, db ]
       nodes:
         DC1-L2LEAF6A:
           id: 12

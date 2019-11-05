@@ -251,8 +251,8 @@ bfd multihop interval 1200 min_rx 1200 multiplier 3
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | MLAG ID | VRF | IP Address |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | ------- | --- | ---------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF2B_Po3 | 1500 | switched | trunk | 2-4094 | LEAF_PEER_L3<br> MLAG | - | - | - |
-| Port-Channel6 | DC1_L2LEAF4_Po11 | 1500 | switched | trunk | 2-4092 | - | 6 | - | - |
-| Port-Channel7 | DC1_L2LEAF6_Po1 | 1500 | switched | trunk | 2-4092 | - | 7 | - | - |
+| Port-Channel6 | DC1_L2LEAF4_Po11 | 1500 | switched | trunk | 110-111,120-121,130-131 | - | 6 | - | - |
+| Port-Channel7 | DC1_L2LEAF6_Po1 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141 | - | 7 | - | - |
 | Port-Channel10 | server01_PortChanne1 | 1500 | switched | trunk | 210-211 | - | 10 | - | - |
 | Port-Channel11 | server02_PortChanne1 | 1500 | switched | trunk | 210-211 | - | 11 | - | - |
 
@@ -268,13 +268,13 @@ interface Port-Channel3
 !
 interface Port-Channel6
    description DC1_L2LEAF4_Po11
-   switchport trunk allowed vlan 2-4092
+   switchport trunk allowed vlan 110-111,120-121,130-131
    switchport mode trunk
    mlag 6
 !
 interface Port-Channel7
    description DC1_L2LEAF6_Po1
-   switchport trunk allowed vlan 2-4092
+   switchport trunk allowed vlan 110-111,120-121,130-131,140-141
    switchport mode trunk
    mlag 7
 !
@@ -302,9 +302,9 @@ interface Port-Channel11
 | Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet2 | 1500 | routed | access | - | - | - | 172.31.255.7/31 | - | - |
 | Ethernet3 | MLAG_PEER_DC1-LEAF2B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-LEAF2B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet6 | DC1-L2LEAF4A_Ethernet11 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 6 | active |
-| Ethernet7 | DC1-L2LEAF6A_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 7 | active |
-| Ethernet8 | DC1-L2LEAF6B_Ethernet1 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 7 | active |
+| Ethernet6 | DC1-L2LEAF4A_Ethernet11 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 6 | active |
+| Ethernet7 | DC1-L2LEAF6A_Ethernet1 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141 | - | - | - | 7 | active |
+| Ethernet8 | DC1-L2LEAF6B_Ethernet1 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141 | - | - | - | 7 | active |
 | Ethernet10 | server01_Eth2 | *1500 | *switched | *trunk | *210-211 | - | - | - | 10 | active |
 | Ethernet11 | server02_Eth2 | *1500 | *switched | *trunk | *210-211 | - | - | - | 11 | active |
 

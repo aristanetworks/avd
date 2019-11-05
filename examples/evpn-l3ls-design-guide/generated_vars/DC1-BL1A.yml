@@ -9,9 +9,9 @@ leaf_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 6
 leaf_mgmt_ip: 192.168.2.110/24
-leaf_filter_tenants: ['all']
-leaf_filter_tags: ['wan']
-leaf_allowed_vrfs: ['Tenant_A_WAN_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_WAN_Zone']
+leaf_filter_tenants: [u'all']
+leaf_filter_tags: [u'wan']
+leaf_allowed_vrfs: [u'Tenant_A_WAN_Zone', u'Tenant_B_WAN_Zone', u'Tenant_C_WAN_Zone']
 leaf_allowed_svis: [150, 250, 350]
 leaf_allowed_vlans: [150, 250, 350]
 leaf_mlag: True
@@ -217,7 +217,7 @@ vlan_interfaces:
 ## Tenant_A ##
   Vlan150:
     tenant: Tenant_A
-    tags: ['wan']
+    tags: [u'wan']
     description: Tenant_A_WAN_Zone_1
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.1.40.1/24
@@ -231,7 +231,7 @@ vlan_interfaces:
 ## Tenant_B ##
   Vlan250:
     tenant: Tenant_B
-    tags: ['wan']
+    tags: [u'wan']
     description: Tenant_B_WAN_Zone_1
     vrf: Tenant_B_WAN_Zone
     ip_address: 10.2.50.1/24
@@ -245,7 +245,7 @@ vlan_interfaces:
 ## Tenant_C ##
   Vlan350:
     tenant: Tenant_C
-    tags: ['wan']
+    tags: [u'wan']
     description: Tenant_C_WAN_Zone_1
     vrf: Tenant_C_WAN_Zone
     ip_address: 10.3.50.1/24

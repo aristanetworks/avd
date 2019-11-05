@@ -27,7 +27,7 @@ tenants:
         svis:
           120:
             name: Tenant_A_WEB_Zone_1
-            tags: [ web, sap ]
+            tags: [ web, erp1 ]
             enabled: true
             ip_subnet: 10.1.20.0/24
           121:
@@ -41,7 +41,7 @@ tenants:
         svis:
           130:
             name: Tenant_A_APP_Zone_1
-            tags: [ app, sap ]
+            tags: [ app, erp1 ]
             enabled: true
             ip_subnet: 10.1.30.0/24
           131:
@@ -55,7 +55,7 @@ tenants:
         svis:
           140:
             name: Tenant_A_DB_BZone_1
-            tags: [ db, sap ]
+            tags: [ db, erp1 ]
             enabled: true
             ip_subnet: 10.1.40.0/24
           141:

@@ -10,9 +10,9 @@ leaf_id: 10
 leaf_mgmt_ip: 192.168.2.113/24
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['all']
-leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WAN_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_OP_Zone', 'Tenant_C_WAN_Zone']
-leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 150, 120, 121, 210, 211, 250, 310, 311, 350]
-leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 150, 120, 121, 210, 211, 250, 310, 311, 350]
+leaf_allowed_vrfs: [u'Tenant_A_APP_Zone', u'Tenant_A_DB_Zone', u'Tenant_A_WEB_Zone']
+leaf_allowed_svis: [130, 140, 120]
+leaf_allowed_vlans: [130, 140, 120]
 leaf_mlag: True
 leaf_mlag_group: DC1_L2LEAF5
 leaf_mlag_role: primary
@@ -82,50 +82,12 @@ vlans:
   130:
     tenant: Tenant_A
     name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
   140:
     tenant: Tenant_A
     name: Tenant_A_DB_BZone_1
-  141:
-    tenant: Tenant_A
-    name: Tenant_A_DB_Zone_2
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  150:
-    tenant: Tenant_A
-    name: Tenant_A_WAN_Zone_1
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-## Tenant_B ##
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_2
-  250:
-    tenant: Tenant_B
-    name: Tenant_B_WAN_Zone_1
-## Tenant_C ##
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_2
-  350:
-    tenant: Tenant_C
-    name: Tenant_C_WAN_Zone_1
 
 ### VRFs ###
 vrfs:
@@ -135,7 +97,7 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-SVC3A_Po5
-    vlans: 2-4092
+    vlans: 120,130,140
     mode: trunk
     mlag: 1
 ## mlag peer-link ##

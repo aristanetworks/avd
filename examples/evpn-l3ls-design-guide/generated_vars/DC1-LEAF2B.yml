@@ -9,9 +9,9 @@ leaf_platform: vEOS-LAB
 leaf_bgp_as: 65102
 leaf_id: 3
 leaf_mgmt_ip: 192.168.2.107/24
-leaf_filter_tenants: ['Tenant_A']
-leaf_filter_tags: ['opzone', 'web', 'app', 'db']
-leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone']
+leaf_filter_tenants: [u'Tenant_A']
+leaf_filter_tags: [u'opzone', u'web', u'app', u'db']
+leaf_allowed_vrfs: [u'Tenant_A_APP_Zone', u'Tenant_A_DB_Zone', u'Tenant_A_OP_Zone', u'Tenant_A_WEB_Zone']
 leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 120, 121]
 leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121]
 leaf_mlag: True
@@ -161,13 +161,13 @@ port_channel_interfaces:
 ## L2 LEAF Uplink DC1_L2LEAF4 ##
   Port-Channel6:
     description: DC1_L2LEAF4_Po11
-    vlans: 2-4092
+    vlans: 110-111,120-121,130-131
     mode: trunk
     mlag: 6
 ## L2 LEAF Uplink DC1_L2LEAF6 ##
   Port-Channel7:
     description: DC1_L2LEAF6_Po1
-    vlans: 2-4092
+    vlans: 110-111,120-121,130-131,140-141
     mode: trunk
     mlag: 7
 ## mlag peer-link ##
@@ -298,14 +298,14 @@ vlan_interfaces:
 ## Tenant_A ##
   Vlan130:
     tenant: Tenant_A
-    tags: ['app', 'sap']
+    tags: [u'app', u'erp1']
     description: Tenant_A_APP_Zone_1
     vrf: Tenant_A_APP_Zone
     ip_address: 10.1.30.1/24
     virtual: true
   Vlan131:
     tenant: Tenant_A
-    tags: ['app']
+    tags: [u'app']
     description: Tenant_A_APP_Zone_2
     vrf: Tenant_A_APP_Zone
     ip_address: 10.1.31.1/24
@@ -318,14 +318,14 @@ vlan_interfaces:
     ip_address: 10.255.251.3/31
   Vlan140:
     tenant: Tenant_A
-    tags: ['db', 'sap']
+    tags: [u'db', u'erp1']
     description: Tenant_A_DB_BZone_1
     vrf: Tenant_A_DB_Zone
     ip_address: 10.1.40.1/24
     virtual: true
   Vlan141:
     tenant: Tenant_A
-    tags: ['db']
+    tags: [u'db']
     description: Tenant_A_DB_Zone_2
     vrf: Tenant_A_DB_Zone
     ip_address: 10.1.41.1/24
@@ -338,14 +338,14 @@ vlan_interfaces:
     ip_address: 10.255.251.3/31
   Vlan110:
     tenant: Tenant_A
-    tags: ['opzone']
+    tags: [u'opzone']
     description: Tenant_A_OP_Zone_1
     vrf: Tenant_A_OP_Zone
     ip_address: 10.1.10.1/24
     virtual: true
   Vlan111:
     tenant: Tenant_A
-    tags: ['opzone']
+    tags: [u'opzone']
     description: Tenant_A_OP_Zone_2
     vrf: Tenant_A_OP_Zone
     ip_address: 10.1.11.1/24
@@ -358,14 +358,14 @@ vlan_interfaces:
     ip_address: 10.255.251.3/31
   Vlan120:
     tenant: Tenant_A
-    tags: ['web', 'sap']
+    tags: [u'web', u'erp1']
     description: Tenant_A_WEB_Zone_1
     vrf: Tenant_A_WEB_Zone
     ip_address: 10.1.20.1/24
     virtual: true
   Vlan121:
     tenant: Tenant_A
-    tags: ['web']
+    tags: [u'web']
     description: Tenant_A_WEBZone_2
     vrf: Tenant_A_WEB_Zone
     ip_address: 10.1.21.1/24
