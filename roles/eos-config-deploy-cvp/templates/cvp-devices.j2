@@ -1,0 +1,8 @@
+---
+CVP_DEVICES:
+{% for device in groups['DC1_FABRIC'] %}
+  '{{device}}':
+    name: {{device}}
+    configlets:
+      - 'AVD_{{device}}'
+{% endfor %}

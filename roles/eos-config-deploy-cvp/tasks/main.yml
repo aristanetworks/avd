@@ -9,6 +9,17 @@
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
+- name: 'Build configlet definition for {{inventory_hostname}}'
+  template:
+    src: "cvp-devices.j2"
+    dest: './generated_vars/{{inventory_hostname}}.yml'
+  delegate_to: localhost
+  run_once: true
+
+- name: "Load CVP device information for {{inventory_hostname}}"
+  include_vars: './generated_vars/{{inventory_hostname}}.yml'
+  delegate_to: localhost
+
 - name: Display CVP Variables structure
   debug:
     msg: '{{CVP_VARS}}'
@@ -28,3 +39,8 @@
     topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
     save_topology: true
+
+- name: "Configure devices on {{inventory_hostname}}"
+  arista.cvp.cv_device:
+    devices: "{{CVP_DEVICES}}"
+    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
