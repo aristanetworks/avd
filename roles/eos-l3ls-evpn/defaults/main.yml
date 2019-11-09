@@ -49,6 +49,8 @@ mlag_ibgp_peering_vrfs:
 # Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
 tcam_profile:
   vxlan_routing:
+    - 7500R
+    - 7500R3
     - 7280R
     - 7280R2
     - 7280R3
