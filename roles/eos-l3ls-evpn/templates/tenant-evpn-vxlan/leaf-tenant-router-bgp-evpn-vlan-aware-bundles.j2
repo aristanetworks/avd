@@ -11,7 +11,7 @@
       redistribute_routes:
         - learned
 {%             set vlan_range = [] %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
 {%                 do vlan_range.append( svi ) %}
 {%             endfor %}
       vlan: {{ vlan_range | list_compress }}
