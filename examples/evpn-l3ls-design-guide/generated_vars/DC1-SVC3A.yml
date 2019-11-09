@@ -431,7 +431,7 @@ router_bgp:
           asn: "15003:15003"
       redistribute_routes:
         - learned
-      vlan: 130-131
+      vlan: 130
     Tenant_A_DB_Zone:
       rd: "192.168.255.6:15004"
       route_targets:
@@ -439,7 +439,7 @@ router_bgp:
           asn: "15004:15004"
       redistribute_routes:
         - learned
-      vlan: 140-141
+      vlan: 140
     Tenant_A_WEB_Zone:
       rd: "192.168.255.6:15002"
       route_targets:
@@ -447,7 +447,7 @@ router_bgp:
           asn: "15002:15002"
       redistribute_routes:
         - learned
-      vlan: 120-121
+      vlan: 120
   vlans:
   vrfs:
 ## Tenant_A ##

@@ -675,9 +675,9 @@ No Peer Filters defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Route Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ------------ | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.6:15003 | both 15003:15003 | learned | 130-131 |
-| Tenant_A_DB_Zone | 192.168.255.6:15004 | both 15004:15004 | learned | 140-141 |
-| Tenant_A_WEB_Zone | 192.168.255.6:15002 | both 15002:15002 | learned | 120-121 |
+| Tenant_A_APP_Zone | 192.168.255.6:15003 | both 15003:15003 | learned | 130 |
+| Tenant_A_DB_Zone | 192.168.255.6:15004 | both 15004:15004 | learned | 140 |
+| Tenant_A_WEB_Zone | 192.168.255.6:15002 | both 15002:15002 | learned | 120 |
 
 #### Router BGP EVPN VRFs
 
@@ -727,19 +727,19 @@ router bgp 65103
       rd 192.168.255.6:15003
       route-target both 15003:15003
       redistribute learned
-      vlan 130-131
+      vlan 130
    !
    vlan-aware-bundle Tenant_A_DB_Zone
       rd 192.168.255.6:15004
       route-target both 15004:15004
       redistribute learned
-      vlan 140-141
+      vlan 140
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.6:15002
       route-target both 15002:15002
       redistribute learned
-      vlan 120-121
+      vlan 120
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
