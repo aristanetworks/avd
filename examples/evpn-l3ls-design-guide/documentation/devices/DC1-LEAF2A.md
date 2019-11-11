@@ -142,6 +142,7 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 | 131 | Tenant_A_APP_Zone_2 | none  |
 | 140 | Tenant_A_DB_BZone_1 | none  |
 | 141 | Tenant_A_DB_Zone_2 | none  |
+| 160 | Tenant_A_VMOTION | none  |
 | 3000 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3  |
 | 3001 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3  |
 | 3002 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3  |
@@ -175,6 +176,9 @@ vlan 140
 !
 vlan 141
    name Tenant_A_DB_Zone_2
+!
+vlan 160
+   name Tenant_A_VMOTION
 !
 vlan 3000
    name MLAG_iBGP_Tenant_A_OP_Zone
@@ -513,6 +517,7 @@ interface Vlan4094
 | 131 | 10131 |
 | 140 | 10140 |
 | 141 | 10141 |
+| 160 | 10160 |
 
 **VRF to VNI Mappings:**
 
@@ -538,6 +543,7 @@ interface Vxlan1
    vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
+   vxlan vlan 160 vni 10160
    vxlan vrf Tenant_A_APP_Zone vni 15003
    vxlan vrf Tenant_A_DB_Zone vni 15004
    vxlan vrf Tenant_A_OP_Zone vni 15001
@@ -776,6 +782,7 @@ No Peer Filters defined
 | Tenant_A_APP_Zone | 192.168.255.4:15003 | both 15003:15003 | learned | 130-131 |
 | Tenant_A_DB_Zone | 192.168.255.4:15004 | both 15004:15004 | learned | 140-141 |
 | Tenant_A_OP_Zone | 192.168.255.4:15001 | both 15001:15001 | learned | 110-111 |
+| Tenant_A_VMOTION | 192.168.255.4:10160 | both 10160:10160 | learned | 160 |
 | Tenant_A_WEB_Zone | 192.168.255.4:15002 | both 15002:15002 | learned | 120-121 |
 
 #### Router BGP EVPN VRFs
@@ -840,6 +847,12 @@ router bgp 65102
       route-target both 15001:15001
       redistribute learned
       vlan 110-111
+   !
+   vlan-aware-bundle Tenant_A_VMOTION
+      rd 192.168.255.4:10160
+      route-target both 10160:10160
+      redistribute learned
+      vlan 160
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.4:15002

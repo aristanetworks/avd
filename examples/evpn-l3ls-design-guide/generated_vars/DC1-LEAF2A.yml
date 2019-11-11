@@ -10,10 +10,10 @@ leaf_bgp_as: 65102
 leaf_id: 2
 leaf_mgmt_ip: 192.168.2.106/24
 leaf_filter_tenants: ['Tenant_A']
-leaf_filter_tags: ['opzone', 'web', 'app', 'db']
+leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone']
 leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 120, 121]
-leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121]
+leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121, 160]
 leaf_mlag: True
 leaf_mlag_group: DC1_LEAF2
 leaf_mlag_role: primary
@@ -131,6 +131,9 @@ vlans:
     name: MLAG_iBGP_Tenant_A_WEB_Zone
     trunk_groups:
       - LEAF_PEER_L3
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
 
 ### VRFs ###
 vrfs:
@@ -404,6 +407,8 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        160:
+          vni: 10160
       vrfs:
 ## Tenant_A ##
         Tenant_A_APP_Zone:
@@ -550,6 +555,15 @@ router_bgp:
       redistribute_routes:
         - learned
       vlan: 120-121
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: "192.168.255.4:10160"
+      route_targets:
+        both:
+          asn: "10160:10160"
+      redistribute_routes:
+        - learned
+      vlan: 160
   vlans:
   vrfs:
 ## Tenant_A ##

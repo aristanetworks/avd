@@ -72,6 +72,12 @@ tenants:
             tags: [ wan ]
             enabled: true
             ip_subnet: 10.1.40.0/24
+    l2vlans:
+      160:
+        name: Tenant_A_VMOTION
+        tags: [ vmotion ]
+        # enabled: true
+        # ip_subnet: 10.1.40.0/24
 
 
 # Tenant B Specific Information - VRFs / VLANs
