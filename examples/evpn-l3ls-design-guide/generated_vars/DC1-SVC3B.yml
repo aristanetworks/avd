@@ -9,9 +9,9 @@ leaf_platform: vEOS-LAB
 leaf_bgp_as: 65103
 leaf_id: 5
 leaf_mgmt_ip: 192.168.2.109/24
-leaf_filter_tenants: [u'Tenant_A']
-leaf_filter_tags: [u'erp1']
-leaf_allowed_vrfs: [u'Tenant_A_APP_Zone', u'Tenant_A_DB_Zone', u'Tenant_A_WEB_Zone']
+leaf_filter_tenants: ['Tenant_A']
+leaf_filter_tags: ['erp1']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_WEB_Zone']
 leaf_allowed_svis: [130, 140, 120]
 leaf_allowed_vlans: [130, 140, 120]
 leaf_mlag: True
@@ -259,7 +259,7 @@ vlan_interfaces:
 ## Tenant_A ##
   Vlan130:
     tenant: Tenant_A
-    tags: [u'app', u'erp1']
+    tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
     vrf: Tenant_A_APP_Zone
     ip_address: 10.1.30.1/24
@@ -272,7 +272,7 @@ vlan_interfaces:
     ip_address: 10.255.251.7/31
   Vlan140:
     tenant: Tenant_A
-    tags: [u'db', u'erp1']
+    tags: ['db', 'erp1']
     description: Tenant_A_DB_BZone_1
     vrf: Tenant_A_DB_Zone
     ip_address: 10.1.40.1/24
@@ -285,7 +285,7 @@ vlan_interfaces:
     ip_address: 10.255.251.7/31
   Vlan120:
     tenant: Tenant_A
-    tags: [u'web', u'erp1']
+    tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
     vrf: Tenant_A_WEB_Zone
     ip_address: 10.1.20.1/24

@@ -9,9 +9,9 @@ leaf_platform: vEOS-LAB
 leaf_bgp_as: 65101
 leaf_id: 1
 leaf_mgmt_ip: 192.168.2.105/24
-leaf_filter_tenants: [u'Tenant_B', u'Tenant_C']
-leaf_filter_tags: [u'opzone']
-leaf_allowed_vrfs: [u'Tenant_B_OP_Zone', u'Tenant_C_OP_Zone']
+leaf_filter_tenants: ['Tenant_B', 'Tenant_C']
+leaf_filter_tags: ['opzone']
+leaf_allowed_vrfs: ['Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
 leaf_allowed_svis: [210, 211, 310, 311]
 leaf_allowed_vlans: [210, 211, 310, 311]
 leaf_mlag: False
@@ -164,14 +164,14 @@ vlan_interfaces:
 ## Tenant_B ##
   Vlan210:
     tenant: Tenant_B
-    tags: [u'opzone']
+    tags: ['opzone']
     description: Tenant_B_OP_Zone_1
     vrf: Tenant_B_OP_Zone
     ip_address: 10.2.10.1/24
     virtual: true
   Vlan211:
     tenant: Tenant_B
-    tags: [u'opzone']
+    tags: ['opzone']
     description: Tenant_B_OP_Zone_2
     vrf: Tenant_B_OP_Zone
     ip_address: 10.2.11.1/24
@@ -179,14 +179,14 @@ vlan_interfaces:
 ## Tenant_C ##
   Vlan310:
     tenant: Tenant_C
-    tags: [u'opzone']
+    tags: ['opzone']
     description: Tenant_C_OP_Zone_1
     vrf: Tenant_C_OP_Zone
     ip_address: 10.3.10.1/24
     virtual: true
   Vlan311:
     tenant: Tenant_C
-    tags: [u'opzone']
+    tags: ['opzone']
     description: Tenant_C_OP_Zone_2
     vrf: Tenant_C_OP_Zone
     ip_address: 10.3.11.1/24

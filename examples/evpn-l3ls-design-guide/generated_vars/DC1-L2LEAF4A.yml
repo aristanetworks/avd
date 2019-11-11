@@ -8,9 +8,9 @@ l2leaf_node_group: DC1_L2LEAF4
 platform: vEOS-LAB
 leaf_id: 8
 leaf_mgmt_ip: 192.168.2.112/24
-leaf_filter_tenants: [u'Tenant_A']
-leaf_filter_tags: [u'opzone', u'web', u'app']
-leaf_allowed_vrfs: [u'Tenant_A_APP_Zone', u'Tenant_A_OP_Zone', u'Tenant_A_WEB_Zone']
+leaf_filter_tenants: ['Tenant_A']
+leaf_filter_tags: ['opzone', 'web', 'app']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone']
 leaf_allowed_svis: [130, 131, 110, 111, 120, 121]
 leaf_allowed_vlans: [130, 131, 110, 111, 120, 121]
 leaf_mlag: False

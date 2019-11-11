@@ -10,7 +10,7 @@ leaf_id: 11
 leaf_mgmt_ip: 192.168.2.114/24
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['all']
-leaf_allowed_vrfs: [u'Tenant_A_APP_Zone', u'Tenant_A_DB_Zone', u'Tenant_A_WEB_Zone']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_WEB_Zone']
 leaf_allowed_svis: [130, 140, 120]
 leaf_allowed_vlans: [130, 140, 120]
 leaf_mlag: True
@@ -88,6 +88,8 @@ vlans:
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
+## Tenant_B ##
+## Tenant_C ##
 
 ### VRFs ###
 vrfs:
