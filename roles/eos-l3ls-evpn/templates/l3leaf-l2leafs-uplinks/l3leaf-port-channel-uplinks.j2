@@ -34,18 +34,32 @@
 {%             set l2leaf.vlans = []  %}
 {%             for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 {%                 if tenant in l2leaf.filter_tenants or "all" in l2leaf.filter_tenants %}
-{%                     for vrf in tenants[tenant].vrfs | natural_sort %}
-{%                         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
-{%                             for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
-{%                                 if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
-{%                                     if svi_tag in l2leaf.filter_tags or "all" in l2leaf.filter_tags %}
-{%                                         do l2leaf.vlans.append( svi ) %}
+{%                     if tenants[tenant].vrfs is defined %}
+{%                         for vrf in tenants[tenant].vrfs | natural_sort %}
+{%                             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+{%                                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
+{%                                     if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                                         if svi_tag in l2leaf.filter_tags or "all" in l2leaf.filter_tags %}
+{%                                             do l2leaf.vlans.append( svi ) %}
+{%                                             break %}
+{%                                         endif %}
+{%                                     endif %}
+{%                                 endfor %}
+{%                             endfor %}
+{%                         endfor %}
+{%                     endif %}
+{%                     if tenants[tenant].l2vlans is defined %}
+{%                         for l2vlan in tenants[tenant].l2vlans | natural_sort %}
+{%                             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
+{%                                 if vlan_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                                     if vlan_tag in l2leaf.filter_tags or "all" in l2leaf.filter_tags %}
+{%                                         do l2leaf.vlans.append( l2vlan ) %}
 {%                                         break %}
 {%                                     endif %}
 {%                                 endif %}
 {%                             endfor %}
 {%                         endfor %}
-{%                     endfor %}
+{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {# Create port-channels for each nodes #}

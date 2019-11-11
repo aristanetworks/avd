@@ -2,8 +2,9 @@
 {% if vxlan_vlan_aware_bundles == false %}
 {%     for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
-{%         for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
+{%         if tenants[tenant].vrfs is defined %}
+{%             for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
     {{ svi }}:
       tenant: {{ tenant }}
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
@@ -12,7 +13,20 @@
           asn: "{{ vxlan_vni_base * tenants[tenant].id + svi }}:{{ vxlan_vni_base * tenants[tenant].id + svi }}"
       redistribute_routes:
         - learned
+{%                 endfor %}
 {%             endfor %}
-{%         endfor %}
+{%         endif %}
+{%         if tenants[tenant].l2vlans is defined %}
+{%             for l2vlan in tenants[tenant].l2vlans | natural_sort if l2vlan in leaf.vlans %}
+    {{ l2vlan }}:
+      tenant: {{ tenant }}
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ vxlan_vni_base * tenants[tenant].id + l2vlan }}"
+      route_targets:
+        both:
+          asn: "{{ vxlan_vni_base * tenants[tenant].id + l2vlan }}:{{ vxlan_vni_base * tenants[tenant].id + l2vlan }}"
+      redistribute_routes:
+        - learned
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {% endif %}
