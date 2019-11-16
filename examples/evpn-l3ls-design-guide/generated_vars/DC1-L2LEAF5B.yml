@@ -2,11 +2,17 @@
 
 ### DC1-L2LEAF5B ###
 
+
 ### Leaf Info ###
 l2leaf_node_group: DC1_L2LEAF5
 platform: vEOS-LAB
 leaf_id: 11
 leaf_mgmt_ip: 192.168.2.114/24
+leaf_filter_tenants: ['all']
+leaf_filter_tags: ['all']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_WEB_Zone']
+leaf_allowed_svis: [130, 140, 120]
+leaf_allowed_vlans: [130, 140, 120]
 leaf_mlag: True
 leaf_mlag_group: DC1_L2LEAF5
 leaf_mlag_role: secondary
@@ -73,26 +79,17 @@ vlans:
       - MLAG
 
 ## Tenant_A ##
-  110:
+  130:
     tenant: Tenant_A
-    name: Tenant_A_OPZone_1
-  111:
+    name: Tenant_A_APP_Zone_1
+  140:
     tenant: Tenant_A
-    name: Tenant_A_OPZone_2
+    name: Tenant_A_DB_BZone_1
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
 ## Tenant_B ##
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_2
 ## Tenant_C ##
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_2
 
 ### VRFs ###
 vrfs:
@@ -102,7 +99,7 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-SVC3B_Po5
-    vlans: 2-4092
+    vlans: 120,130,140
     mode: trunk
     mlag: 1
 ## mlag peer-link ##

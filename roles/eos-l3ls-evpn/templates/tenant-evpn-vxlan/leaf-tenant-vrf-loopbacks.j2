@@ -1,10 +1,14 @@
 {# Leaf Tenant vrf loopback interfaces #}
-{% for tenant in tenants | natural_sort %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is defined %}
+{%         for vrf in tenants[tenant].vrfs | natural_sort if vrf in leaf.vrfs %}
+{%             if loop.first %}
 ## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
+{%             endif %}
   Loopback{{ tenants[tenant].id *100 + tenants[tenant].vrfs[vrf].id }}:
     description: {{ vrf }}_VTEP_DIAGNOSTICS
     vrf: {{ vrf }}
     ip_address: {{ tenants[tenant].vrfs[vrf].loopback_range | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
-{%     endfor %}
+{%         endfor %}
+{%    endif %}
 {% endfor %}
