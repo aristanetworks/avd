@@ -1,6 +1,8 @@
 {# Device Configuration #}
 !RANCID-CONTENT-TYPE: arista
 !
+{# hardware counters #}
+{% include 'eos/hardware-counters.j2' %}
 {# daemon TerminAttr #}
 {% include 'eos/daemon-terminattr.j2' %}
 {# internnal vlan allocation policy #}

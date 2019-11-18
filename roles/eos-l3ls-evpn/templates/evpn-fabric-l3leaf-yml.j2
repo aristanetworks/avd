@@ -128,6 +128,11 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
+{# Hardware Counter #}
+### Hardware Counters
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr
 daemon_terminattr:

@@ -11,6 +11,11 @@
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 
+{# Hardware Counter #}
+### Hardware Counters
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr ###
 daemon_terminattr:
