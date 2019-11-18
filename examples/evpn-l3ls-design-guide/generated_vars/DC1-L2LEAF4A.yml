@@ -34,6 +34,18 @@ vlan_internal_allocation_policy:
     beginning: 1006
     ending: 1199
 
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
+
 ### Name Servers ###
 name_server:
   source:
@@ -55,6 +67,10 @@ ntp_server:
 spanning_tree:
   mode: mstp
   priority: 16384
+
+### AAA authorization ###
+aaa_authorization:
+
 ### local users ###
 local_users:
   admin:
@@ -65,6 +81,9 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
 
 ### VLANs ###
 vlans:
@@ -127,6 +146,9 @@ vlan_interfaces:
 
 ### TCAM Profiles ###
 tcam_profile:
+
+### MAC address table ###
+mac_address_table:
 
 ### static routes ###
 static_routes:
