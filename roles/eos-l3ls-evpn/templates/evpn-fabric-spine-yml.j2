@@ -6,8 +6,10 @@
 {# Set Spine Variables #}
 {% set switch = namespace() %}
 {% set switch.platform = spine.platform %}
+{% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 ### Spine Info ###
-spine_platform: {{ switch.platform }}
+switch_platform: {{ switch.platform }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
 
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr ###
@@ -66,7 +68,7 @@ loopback_interfaces:
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
-{% include 'base/spine-mgmt-interface.j2' %}
+{% include 'base/mgmt-interface.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###

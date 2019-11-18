@@ -9,6 +9,9 @@
 {% for l2leaf_node_group in l2leafs.node_groups | natural_sort %}
 {%     for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 {%         if node == inventory_hostname %}
+{%             set leaf.group = l2leaf_node_group %}
+{%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
+{%             set switch.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
 {%             if l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
 {%                 set leaf.spanning_tree_priority = l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority %}
 {%             else %}
@@ -19,9 +22,6 @@
 {%             else %}
 {%                 set switch.platform = l2leafs.defaults.platform %}
 {%             endif %}
-{%             set leaf.group = l2leaf_node_group %}
-{%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
-{%             set leaf.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
 {%             if l2leafs.node_groups[l2leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l2leafs.node_groups[l2leaf_node_group].filter.tenants %}
 {%             else %}
@@ -122,9 +122,9 @@
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
-platform: {{ switch.platform }}
+switch_platform: {{ switch.platform }}
 leaf_id: {{ leaf.id }}
-leaf_mgmt_ip: {{ leaf.mgmt_ip }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -208,7 +208,7 @@ ethernet_interfaces:
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
-{% include 'base/leaf-mgmt-interface.j2' %}
+{% include 'base/mgmt-interface.j2' %}
 
 
 {# vlan interfaces #}
