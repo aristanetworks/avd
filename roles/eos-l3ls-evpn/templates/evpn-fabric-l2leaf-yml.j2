@@ -155,6 +155,26 @@ vlan_internal_allocation_policy:
 {% include 'base/vlan-internal-allocation-policy.j2' %}
 
 
+{# event monitor #}
+### Event Monitor ###
+event_monitor:
+{% include 'base/event-monitor.j2' %}
+
+{# load interval #}
+### Load Interval ###
+load_interval:
+{% include 'base/load-interval.j2' %}
+
+{# queue monitor lenght #}
+### Queue Monitor ###
+queue_monitor:
+{% include 'base/queue-monitor.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
+
 {# name servers #}
 ### Name Servers ###
 name_server:
@@ -169,6 +189,9 @@ ntp_server:
 ### Spanning-tree ###
 spanning_tree:
 {% include 'base/leaf-spanning-tree.j2' %}
+
+{# unsupported transceiver #}
+{% include 'base/unsupported-transeiver.j2' %}
 
 {# local users #}
 ### local users ###

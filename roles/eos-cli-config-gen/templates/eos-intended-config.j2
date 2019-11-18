@@ -7,10 +7,18 @@
 {% include 'eos/daemon-terminattr.j2' %}
 {# internnal vlan allocation policy #}
 {% include 'eos/vlan-internal-allocation-policy.j2' %}
+{# event monitor #}
+{% include 'eos/event-monitor.j2' %}
+{# load-interval #}
+{% include 'eos/load-interval.j2' %}
 transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
 !
+{# queue monitor #}
+{% include 'eos/queue-monitor.j2' %}
+{# logging #}
+{% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}
 {# name servers #}
 {% include 'eos/name-servers.j2' %}
@@ -18,6 +26,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ntp-servers.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
+{# unsupported transceiver #}
+{% include 'eos/unsupported-transeiver.j2' %}
 {# aaa authentication #}
 {% include 'eos/aaa-authentication.j2' %}
 {# users #}
