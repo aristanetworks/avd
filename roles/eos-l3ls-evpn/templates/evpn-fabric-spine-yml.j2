@@ -36,10 +36,10 @@ event_monitor:
 load_interval:
 {% include 'base/load-interval.j2' %}
 
-{# queue monitor lenght #}
+{# queue monitor length #}
 ### Queue Monitor Lenght ###
-queue_monitor_lenght:
-{% include 'base/queue-monitor-lenght.j2' %}
+queue_monitor_length:
+{% include 'base/queue-monitor-length.j2' %}
 
 {# logging #}
 ### Logging ###
@@ -152,3 +152,8 @@ router_bgp:
 {% include 'underlay-overlay/spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'underlay-overlay/spine-router-bgp-redistribute-routes.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}

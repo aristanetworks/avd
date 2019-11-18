@@ -165,10 +165,10 @@ event_monitor:
 load_interval:
 {% include 'base/load-interval.j2' %}
 
-{# queue monitor lenght #}
+{# queue monitor length #}
 ### Queue Monitor Lenght ###
 queue_monitor_length:
-{% include 'base/queue-monitor-lenght.j2' %}
+{% include 'base/queue-monitor-length.j2' %}
 
 {# logging #}
 ### Logging ###
@@ -272,3 +272,8 @@ static_routes:
 
 {# MLAG Configuration #}
 {% include 'mlag/leaf-mlag-configuration.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}

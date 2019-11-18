@@ -15,8 +15,8 @@ transceiver qsfp default-mode 4x10G
 !
 service routing protocols model multi-agent
 !
-{# queue monitor #}
-{% include 'eos/queue-monitor-lenght.j2' %}
+{# queue monitor length #}
+{% include 'eos/queue-monitor-length.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}
@@ -74,6 +74,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
+{# queue monitor streaming #}
+{% include 'eos/queue-monitor-streaming.j2' %}
 management api http-commands
    no shutdown
    !
