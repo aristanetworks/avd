@@ -1,0 +1,12 @@
+{# eos - aaa authorization #}
+{% if aaa_authorization is defined and aaa_authorization is not none %}
+{%     if aaa_authorization.exec_default is defined %}
+aaa authorization exec default {{ aaa_authorization.exec_default }}
+!
+{%     endif %}
+no aaa root
+!
+{% else %}
+no aaa root
+!
+{% endif %}
