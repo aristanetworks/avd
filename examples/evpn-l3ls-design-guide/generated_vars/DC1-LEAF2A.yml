@@ -183,8 +183,8 @@ port_channel_interfaces:
       - MLAG
   Port-Channel10:
     description: server01_PortChanne1
-    vlans: 210-211
-    mode: trunk
+    vlans: 110
+    mode: access
     mlag: 10
   Port-Channel11:
     description: server02_PortChanne1
@@ -237,12 +237,12 @@ ethernet_interfaces:
     host: server01
     description: server01_Eth2
     type: cna
-    mode: trunk
-    vlans: 210-211
+    mode: access
+    vlans: 110
     channel_group:
       id: 10
       mode: "active"
-    profile: TENANT_B
+    profile: TENANT_A
   Ethernet11:
     host: server02
     description: server02_Eth2
