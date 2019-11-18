@@ -7,7 +7,9 @@
   {{ adapter.switch_ports[loop.index0]}}:
     host: {{ server }}
     description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
-    type: {{ adapter.type }}
+{%                 if adapter.speed is defined %}
+    speed: {{ adapter.speed }}
+{%                 endif %}
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
 {%                     if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
