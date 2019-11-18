@@ -6,6 +6,9 @@
 switch_platform: vEOS-LAB
 switch_mgmt_ip: 192.168.2.102/24
 
+### Hardware Counters
+hardware_counters:
+
 ### Daemon TerminAttr ###
 daemon_terminattr:
   ingestgrpcurl:

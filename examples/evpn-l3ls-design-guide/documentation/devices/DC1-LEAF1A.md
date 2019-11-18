@@ -18,6 +18,10 @@ interface Management1
 !
 ```
 
+## Hardware Counters
+
+No Hardware Counters defined
+
 ## TerminAttr Daemon
 
 ### TerminAttr Daemon Summary

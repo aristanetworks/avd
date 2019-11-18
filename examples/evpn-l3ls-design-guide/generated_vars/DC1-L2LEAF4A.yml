@@ -15,6 +15,9 @@ leaf_allowed_svis: [130, 131, 110, 111, 120, 121]
 leaf_allowed_vlans: [130, 131, 110, 111, 120, 121]
 leaf_mlag: False
 
+### Hardware Counter
+hardware_counters:
+
 ### Daemon TerminAttr
 daemon_terminattr:
   ingestgrpcurl:

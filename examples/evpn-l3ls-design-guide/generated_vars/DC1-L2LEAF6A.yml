@@ -21,6 +21,9 @@ leaf_mlag_ip: 22
 leaf_mlag_peer_ip: 23
 leaf_mlag_peer_id: 13
 
+### Hardware Counter
+hardware_counters:
+
 ### Daemon TerminAttr
 daemon_terminattr:
   ingestgrpcurl:
