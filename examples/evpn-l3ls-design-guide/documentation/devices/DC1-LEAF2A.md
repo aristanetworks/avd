@@ -257,7 +257,7 @@ bfd multihop interval 1200 min_rx 1200 multiplier 3
 | Port-Channel3 | MLAG_PEER_DC1-LEAF2B_Po3 | 1500 | switched | trunk | 2-4094 | LEAF_PEER_L3<br> MLAG | - | - | - |
 | Port-Channel6 | DC1_L2LEAF4_Po11 | 1500 | switched | trunk | 110-111,120-121,130-131 | - | 6 | - | - |
 | Port-Channel7 | DC1_L2LEAF6_Po1 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141 | - | 7 | - | - |
-| Port-Channel10 | server01_PortChanne1 | 1500 | switched | trunk | 210-211 | - | 10 | - | - |
+| Port-Channel10 | server01_PortChanne1 | 1500 | switched | access | 110 | - | 10 | - | - |
 | Port-Channel11 | server02_PortChanne1 | 1500 | switched | trunk | 210-211 | - | 11 | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -284,8 +284,7 @@ interface Port-Channel7
 !
 interface Port-Channel10
    description server01_PortChanne1
-   switchport trunk allowed vlan 210-211
-   switchport mode trunk
+   switchport access vlan 110
    mlag 10
 !
 interface Port-Channel11
@@ -309,7 +308,7 @@ interface Port-Channel11
 | Ethernet6 | DC1-L2LEAF4A_Ethernet11 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 6 | active |
 | Ethernet7 | DC1-L2LEAF6A_Ethernet1 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141 | - | - | - | 7 | active |
 | Ethernet8 | DC1-L2LEAF6B_Ethernet1 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141 | - | - | - | 7 | active |
-| Ethernet10 | server01_Eth2 | *1500 | *switched | *trunk | *210-211 | - | - | - | 10 | active |
+| Ethernet10 | server01_Eth2 | *1500 | *switched | *access | *110 | - | - | - | 10 | active |
 | Ethernet11 | server02_Eth2 | *1500 | *switched | *trunk | *210-211 | - | - | - | 11 | active |
 
 *Inherited from Port-Channel Interface
