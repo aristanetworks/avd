@@ -1,0 +1,10 @@
+{% if queue_monitor is defined %}
+{%     if queue_monitor.lenght is defined %}
+queue-monitor length
+!
+{%    endif %}
+{%    if queue_monitor.lenght.log is defined %}
+queue-monitor length log {{ queue_monitor.lenght.log }}
+!
+{%    endif %}
+{% endif %}
