@@ -5,10 +5,10 @@
 
 ### Leaf Info ###
 l3leaf_node_group: DC1_BL1
-leaf_platform: vEOS-LAB
+switch_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 6
-leaf_mgmt_ip: 192.168.2.110/24
+switch_mgmt_ip: 192.168.2.110/24
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['wan']
 leaf_allowed_vrfs: ['Tenant_A_WAN_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_WAN_Zone']

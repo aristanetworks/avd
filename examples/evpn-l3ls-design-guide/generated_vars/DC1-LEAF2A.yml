@@ -5,10 +5,10 @@
 
 ### Leaf Info ###
 l3leaf_node_group: DC1_LEAF2
-leaf_platform: vEOS-LAB
+switch_platform: vEOS-LAB
 leaf_bgp_as: 65102
 leaf_id: 2
-leaf_mgmt_ip: 192.168.2.106/24
+switch_mgmt_ip: 192.168.2.106/24
 leaf_filter_tenants: ['Tenant_A']
 leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone']
