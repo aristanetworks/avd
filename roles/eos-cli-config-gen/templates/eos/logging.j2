@@ -1,4 +1,4 @@
-{% if logging is defined %}
+{% if logging is defined and logging is not none %}
 {%     if logging.console is defined %}
 logging console {{ logging.console }}
 {%     endif %}
