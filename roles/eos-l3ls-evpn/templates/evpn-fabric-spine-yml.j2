@@ -37,9 +37,9 @@ load_interval:
 {% include 'base/load-interval.j2' %}
 
 {# queue monitor lenght #}
-### Queue Monitor ###
-queue_monitor:
-{% include 'base/queue-monitor.j2' %}
+### Queue Monitor Lenght ###
+queue_monitor_lenght:
+{% include 'base/queue-monitor-lenght.j2' %}
 
 {# logging #}
 ### Logging ###
@@ -64,10 +64,20 @@ spanning_tree:
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
 
+{# aaa authorization #}
+### AAA authorization ###
+aaa_authorization:
+{% include 'base/aaa-authorization.j2' %}
+
 {# local users #}
 ### local users ###
 local_users:
 {% include 'base/local-users.j2' %}
+
+{# clock timezone #}
+### Clock Timezone ###
+clock:
+{% include 'base/clock-timezone.j2' %}
 
 
 {# VRFs #}
@@ -101,6 +111,11 @@ management_interfaces:
 ### TCAM Profiles ###
 tcam_profile:
 {% include 'base/tcam-profile.j2' %}
+
+{# mac address-table #}
+### MAC address table ###
+mac_address_table:
+{% include 'base/mac-address-table.j2' %}
 
 {# static_routes #}
 ### static routes ###

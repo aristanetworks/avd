@@ -16,7 +16,7 @@ transceiver qsfp default-mode 4x10G
 service routing protocols model multi-agent
 !
 {# queue monitor #}
-{% include 'eos/queue-monitor.j2' %}
+{% include 'eos/queue-monitor-lenght.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}
@@ -29,9 +29,11 @@ hostname {{ inventory_hostname }}
 {# unsupported transceiver #}
 {% include 'eos/unsupported-transeiver.j2' %}
 {# aaa authentication #}
-{% include 'eos/aaa-authentication.j2' %}
+{% include 'eos/aaa-authorization.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
+{# clock timezone #}
+{% include 'eos/clock-timezone.j2' %}
 {# VLANs #}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
@@ -52,6 +54,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vxlan-interface.j2' %}
 {# Hardware TCAM Profiles #}
 {% include 'eos/tcam-profile.j2' %}
+{# MAC address-table#}
+{% include 'eos/mac-address-table.j2' %}
 {# router virtual mac address #}
 {% include 'eos/virtual-router-mac-address.j2' %}
 {# Tenant virtual source-nat for VTEP diagnostics - introduced in 4.21 #}
