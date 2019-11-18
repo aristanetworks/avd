@@ -11,7 +11,7 @@
 {%         if node == inventory_hostname %}
 {%             set leaf.group = l3leaf_node_group %}
 {%             set leaf.id = l3leafs.node_groups[l3leaf_node_group].nodes[node].id %}
-{%             set leaf.mgmt_ip = l3leafs.node_groups[l3leaf_node_group].nodes[node].mgmt_ip %}
+{%             set switch.mgmt_ip = l3leafs.node_groups[l3leaf_node_group].nodes[node].mgmt_ip %}
 {%             set leaf.spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
 {%             if l3leafs.node_groups[l3leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l3leafs.node_groups[l3leaf_node_group].filter.tenants %}
@@ -109,10 +109,10 @@
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
-leaf_platform: {{ switch.platform }}
+switch_platform: {{ switch.platform }}
 leaf_bgp_as: {{ leaf.bgp_as }}
 leaf_id: {{ leaf.id }}
-leaf_mgmt_ip: {{ leaf.mgmt_ip }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -221,7 +221,7 @@ loopback_interfaces:
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
-{% include 'base/leaf-mgmt-interface.j2' %}
+{% include 'base/mgmt-interface.j2' %}
 
 
 {# vlan interfaces #}

@@ -3,7 +3,8 @@
 ### DC1-SPINE2 ###
 
 ### Spine Info ###
-spine_platform: vEOS-LAB
+switch_platform: vEOS-LAB
+switch_mgmt_ip: 192.168.2.102/24
 
 ### Daemon TerminAttr ###
 daemon_terminattr:

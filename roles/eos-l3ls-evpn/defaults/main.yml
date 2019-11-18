@@ -2,6 +2,9 @@
 
 MGMT_vrf_routing: false
 
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+
 internal_vlan_allocation_policy:
   allocation: "ascending"
   range:
