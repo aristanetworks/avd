@@ -520,5 +520,8 @@ router_bgp:
       redistribute_routes:
         - connected
 
+### Routing - OSPF ###
+router_ospf:
+
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:

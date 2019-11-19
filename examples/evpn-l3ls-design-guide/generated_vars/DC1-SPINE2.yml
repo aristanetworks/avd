@@ -256,5 +256,8 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
 
+### Routing - OSPF ###
+router_ospf:
+
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:
