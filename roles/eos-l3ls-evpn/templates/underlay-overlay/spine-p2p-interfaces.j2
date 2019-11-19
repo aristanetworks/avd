@@ -19,6 +19,9 @@
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leafs.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
+{%                 if underlay_routing_protocol == "OSPF" %}
+    ospf_network_point_to_point: true
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

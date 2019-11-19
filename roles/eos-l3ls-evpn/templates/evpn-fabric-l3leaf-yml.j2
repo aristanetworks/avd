@@ -335,6 +335,12 @@ router_bgp:
   vrfs:
 {% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
+{# OSPF Configurartion #}
+### Routing - OSPF ###
+router_ospf:
+{# underlay #}
+{% include 'underlay-overlay/router-ospf.j2' %}
+
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:

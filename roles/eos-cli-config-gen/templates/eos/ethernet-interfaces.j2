@@ -35,6 +35,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point == true %}
+   ip ospf network point-to-point
+{%             endif %}
 {%         endif %}
 !
 {%     endfor %}
