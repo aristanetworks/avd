@@ -70,6 +70,9 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
@@ -488,3 +491,6 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:

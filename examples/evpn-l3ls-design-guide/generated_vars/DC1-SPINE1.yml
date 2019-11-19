@@ -32,7 +32,7 @@ event_monitor:
 load_interval:
 
 ### Queue Monitor Lenght ###
-queue_monitor_lenght:
+queue_monitor_length:
 
 ### Logging ###
 logging:
@@ -53,6 +53,9 @@ ntp_server:
   nodes:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
+
+### Redundancy ###
+redundancy:
 
 ### Spanning-tree ###
 spanning_tree:
@@ -252,3 +255,6 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:

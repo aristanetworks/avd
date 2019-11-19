@@ -64,6 +64,9 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
@@ -152,14 +155,12 @@ ethernet_interfaces:
   Ethernet5:
     host: server01
     description: server01_Eth1
-    type: nic
     mode: access
     vlans: 110
     profile: TENANT_A
   Ethernet6:
     host: server02
     description: server02_Eth1
-    type: nic
     mode: access
     vlans: 110
     profile: TENANT_A
@@ -432,3 +433,6 @@ router_bgp:
           asn: "35030:35030"
       redistribute_routes:
         - connected
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:

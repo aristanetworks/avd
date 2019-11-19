@@ -63,6 +63,9 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
@@ -155,3 +158,6 @@ static_routes:
   - vrf: MGMT
     destination_address_prefix: 0.0.0.0/0
     gateway: 192.168.2.1
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:

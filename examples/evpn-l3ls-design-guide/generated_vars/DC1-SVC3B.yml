@@ -70,6 +70,9 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
@@ -220,7 +223,6 @@ ethernet_interfaces:
   Ethernet10:
     host: server03
     description: server03_Eth2
-    type: cna
     mode: trunk
     vlans: 110-111,210-211
     channel_group:
@@ -230,7 +232,6 @@ ethernet_interfaces:
   Ethernet11:
     host: server04
     description: server04_Eth2
-    type: cna
     mode: trunk
     vlans: 110-111,210-211
     channel_group:
@@ -518,3 +519,6 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
