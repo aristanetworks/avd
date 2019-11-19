@@ -56,6 +56,11 @@ name_server:
 ntp_server:
 {% include 'base/ntp-servers.j2' %}
 
+{# redundancy #}
+### Redundancy ###
+redundancy:
+{% include 'base/redundancy.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
