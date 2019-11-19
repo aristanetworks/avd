@@ -369,7 +369,7 @@ interface Loopback104
 | Vlan3001 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone | Tenant_A_WEB_Zone  | 10.255.251.7/31 | - | - | - |
 | Vlan3002 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone  | 10.255.251.7/31 | - | - | - |
 | Vlan3003 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone  | 10.255.251.7/31 | - | - | - |
-| Vlan4093 | MLAG_PEER_L3_iBGP | Global Routing Table  | 10.255.251.7/31 | - | - | - |
+| Vlan4093 | MLAG_PEER_L3_PEERING | Global Routing Table  | 10.255.251.7/31 | - | - | - |
 | Vlan4094 | MLAG_PEER | Global Routing Table  | 10.255.252.7/31 | - | - | - |
 
 ### VLAN Interfaces Device Configuration
@@ -406,7 +406,7 @@ interface Vlan3003
    ip address 10.255.251.7/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_iBGP
+   description MLAG_PEER_L3_PEERING
    ip address 10.255.251.7/31
 !
 interface Vlan4094

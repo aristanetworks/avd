@@ -203,6 +203,7 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.9/32
+
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.8/32
@@ -233,7 +234,7 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
   Vlan4093:
-    description: MLAG_PEER_L3_iBGP
+    description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.11/31
   Vlan4094:
     description: MLAG_PEER
