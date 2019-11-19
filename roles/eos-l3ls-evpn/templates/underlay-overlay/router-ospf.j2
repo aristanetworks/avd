@@ -33,13 +33,9 @@
 {%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
         - {{ uplink_to_spine_interface }}
 {%         endfor %}
+{%         if leaf.mlag == true %}
+        - Vlan4093
+{%         endif %}
 {%     endif %}
-      network_prefixes:
-        {{ underlay_p2p_network_summary }}:
-          area: {{ underlay_ospf_area }}
-        {{ overlay_loopback_network_summary }}:
-          area: {{ underlay_ospf_area }}
-        {{ vtep_loopback_network_summary }}:
-          area: {{ underlay_ospf_area }}
       max_lsa: {{ underlay_ospf_max_lsa }}
 {% endif %}

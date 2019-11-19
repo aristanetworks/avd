@@ -13,8 +13,10 @@
       peer_group: EVPN-OVERLAY-PEERS
 {%     endfor %}
 {# MLAG iBGP neighbor #}
-{%     if leaf.mlag == true %}
+{%     if underlay_routing_protocol == "BGP" %}
+{%         if leaf.mlag == true %}
     {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+{%         endif %}
 {%     endif %}
 {% endif %}

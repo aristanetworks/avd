@@ -29,6 +29,8 @@ p2p_uplinks_mtu: 9000
 vxlan_vni_base: 10000
 
 underlay_routing_protocol: BGP
+
+# Underlay OSFP Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
