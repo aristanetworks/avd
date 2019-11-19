@@ -209,3 +209,9 @@ mlag_configuration:
 
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:
