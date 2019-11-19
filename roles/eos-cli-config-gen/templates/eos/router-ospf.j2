@@ -17,9 +17,9 @@ router ospf {{ process_id }}
    no passive-interface {{ interface }}
 {%             endfor %}
 {%         endif %}
-{%         if router_ospf.process_ids[process_id].networks is defined %}
-{%             for network in router_ospf.process_ids[process_id].networks %}
-   network {{ network.prefix }} area {{ network.area }}
+{%         if router_ospf.process_ids[process_id].network_prefixes is defined %}
+{%             for network_prefix in router_ospf.process_ids[process_id].network_prefixes | natural_sort %}
+   network {{ network_prefix }} area {{ router_ospf.process_ids[process_id].network_prefixes[network_prefix].area }}
 {%             endfor %}
 {%         endif %}
 {%         if router_ospf.process_ids[process_id].max_lsa is defined %}
