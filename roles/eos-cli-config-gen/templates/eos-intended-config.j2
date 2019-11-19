@@ -80,10 +80,7 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-ospf.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
-management api http-commands
-   no shutdown
-   !
-   vrf MGMT
-      no shutdown
+{# management api http #}
+{% include 'eos/management-api-http.j2' %}
 !
 end
