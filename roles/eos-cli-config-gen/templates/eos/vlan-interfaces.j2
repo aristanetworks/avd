@@ -3,6 +3,9 @@
 {%     for vlan_interface in vlan_interfaces | natural_sort %}
 interface {{ vlan_interface }}
    description {{ vlan_interfaces[vlan_interface].description }}
+{%         if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu != 1500 %}
+   mtu {{ vlan_interfaces[vlan_interface].mtu }}
+{%         endif %}
 {%         if vlan_interfaces[vlan_interface].no_autostate is defined and vlan_interfaces[vlan_interface].no_autostate == true %}
    no autostate
 {%         endif %}

@@ -17,6 +17,9 @@
     ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
 {%                 endif %}
     virtual: true
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
+    mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
+{%                 endif %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
 {%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
   Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].id - 1) }}:
@@ -25,6 +28,7 @@
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
+    mtu: 9214
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
