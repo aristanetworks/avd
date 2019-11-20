@@ -12,12 +12,18 @@
 {%                 endif %}
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
-{%                     if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
+{%                 if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
     channel_group:
       id: {{ channel_group_id }}
       mode: "{{ adapter.port_channel.mode }}"
-{%                     endif %}
+{%                 endif %}
     profile: {{ adapter.profile }}
+{%                 if port_profiles[adapter.profile].flowcontrol is defined %}
+    flowcontrol:
+{%                     if port_profiles[adapter.profile].flowcontrol.received is defined %}
+      received: {{ port_profiles[adapter.profile].flowcontrol.received }}
+{%                     endif %}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

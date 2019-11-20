@@ -15,6 +15,11 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}
    no switchport
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined %}
+{%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined %}
+   flowcontrol receive {{ ethernet_interfaces[ethernet_interface].flowcontrol.received }}
+{%                 endif %}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "access" %}
    switchport access vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
