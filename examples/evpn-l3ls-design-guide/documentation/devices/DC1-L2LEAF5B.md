@@ -50,7 +50,7 @@ daemon TerminAttr
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-vlan internal allocation policy ascending range 1006 1199
+vlan internal order ascending range 1006 1199
 !
 ```
 

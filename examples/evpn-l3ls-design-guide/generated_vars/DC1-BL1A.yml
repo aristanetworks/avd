@@ -35,7 +35,7 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
@@ -255,7 +255,6 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone"
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.255.251.10/31
-    mtu: 9214
 ## Tenant_B ##
   Vlan250:
     tenant: Tenant_B
@@ -270,7 +269,6 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone"
     vrf: Tenant_B_WAN_Zone
     ip_address: 10.255.251.10/31
-    mtu: 9214
 ## Tenant_C ##
   Vlan350:
     tenant: Tenant_C
@@ -285,7 +283,6 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone"
     vrf: Tenant_C_WAN_Zone
     ip_address: 10.255.251.10/31
-    mtu: 9214
 
 ### VxLAN interface ###
 vxlan_tunnel_interface:
