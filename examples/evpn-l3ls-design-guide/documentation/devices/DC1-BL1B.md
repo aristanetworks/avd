@@ -351,16 +351,19 @@ interface Vlan350
 !
 interface Vlan3004
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   mtu 9214
    vrf Tenant_A_WAN_Zone
    ip address 10.255.251.11/31
 !
 interface Vlan3020
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   mtu 9214
    vrf Tenant_B_WAN_Zone
    ip address 10.255.251.11/31
 !
 interface Vlan3030
    description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   mtu 9214
    vrf Tenant_C_WAN_Zone
    ip address 10.255.251.11/31
 !

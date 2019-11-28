@@ -240,6 +240,7 @@ vlan_interfaces:
     description: MLAG_PEER
     ip_address: 10.255.252.10/31
     no_autostate: true
+    mtu: 1500
 ## Tenant_A ##
   Vlan150:
     tenant: Tenant_A
@@ -254,6 +255,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone"
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.255.251.10/31
+    mtu: 9214
 ## Tenant_B ##
   Vlan250:
     tenant: Tenant_B
@@ -268,6 +270,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone"
     vrf: Tenant_B_WAN_Zone
     ip_address: 10.255.251.10/31
+    mtu: 9214
 ## Tenant_C ##
   Vlan350:
     tenant: Tenant_C
@@ -282,6 +285,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone"
     vrf: Tenant_C_WAN_Zone
     ip_address: 10.255.251.10/31
+    mtu: 9214
 
 ### VxLAN interface ###
 vxlan_tunnel_interface:

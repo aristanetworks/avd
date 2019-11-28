@@ -173,6 +173,7 @@ vlan_interfaces:
     description: MLAG_PEER
     ip_address: 10.255.252.18/31
     no_autostate: true
+    mtu: 1500
 
 ### TCAM Profiles ###
 tcam_profile:

@@ -472,21 +472,25 @@ interface Vlan141
 !
 interface Vlan3000
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   mtu 9214
    vrf Tenant_A_OP_Zone
    ip address 10.255.251.2/31
 !
 interface Vlan3001
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   mtu 9214
    vrf Tenant_A_WEB_Zone
    ip address 10.255.251.2/31
 !
 interface Vlan3002
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   mtu 9214
    vrf Tenant_A_APP_Zone
    ip address 10.255.251.2/31
 !
 interface Vlan3003
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   mtu 9214
    vrf Tenant_A_DB_Zone
    ip address 10.255.251.2/31
 !

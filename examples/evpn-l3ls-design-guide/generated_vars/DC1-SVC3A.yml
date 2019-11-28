@@ -280,6 +280,7 @@ vlan_interfaces:
     description: MLAG_PEER
     ip_address: 10.255.252.6/31
     no_autostate: true
+    mtu: 1500
 ## Tenant_A ##
   Vlan130:
     tenant: Tenant_A
@@ -294,6 +295,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone"
     vrf: Tenant_A_APP_Zone
     ip_address: 10.255.251.6/31
+    mtu: 9214
   Vlan140:
     tenant: Tenant_A
     tags: ['db', 'erp1']
@@ -307,6 +309,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone"
     vrf: Tenant_A_DB_Zone
     ip_address: 10.255.251.6/31
+    mtu: 9214
   Vlan120:
     tenant: Tenant_A
     tags: ['web', 'erp1']
@@ -320,6 +323,7 @@ vlan_interfaces:
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone"
     vrf: Tenant_A_WEB_Zone
     ip_address: 10.255.251.6/31
+    mtu: 9214
 
 ### VxLAN interface ###
 vxlan_tunnel_interface:
