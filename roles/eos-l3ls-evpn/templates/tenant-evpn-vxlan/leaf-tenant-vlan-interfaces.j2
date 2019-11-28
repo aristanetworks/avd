@@ -28,7 +28,6 @@
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
-    mtu: 9214
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
