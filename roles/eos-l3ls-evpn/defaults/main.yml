@@ -9,7 +9,7 @@ mgmt_interface_vrf: MGMT
 management_eapi:
   enable_https: true
 
-internal_vlan_allocation_policy:
+internal_vlan_order:
   allocation: "ascending"
   range:
     beginning: 1006

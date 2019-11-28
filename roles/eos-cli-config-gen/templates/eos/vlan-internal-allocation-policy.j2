@@ -1,5 +1,0 @@
-{# Internal VLAN allocation policy  #}
-{% if vlan_internal_allocation_policy is defined and vlan_internal_allocation_policy is not none %}
-vlan internal allocation policy {{ vlan_internal_allocation_policy.allocation }} range {{ vlan_internal_allocation_policy.range.beginning }} {{ vlan_internal_allocation_policy.range.ending }}
-!
-{% endif %}
