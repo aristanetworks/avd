@@ -1,0 +1,7 @@
+{% if queue_monitor_streaming is defined and queue_monitor_streaming is not none %}
+queue-monitor streaming
+{%    if queue_monitor_streaming.enable is defined and queue_monitor_streaming.enable == true %}
+   no shutdown
+{%    endif %}
+!
+{% endif %}

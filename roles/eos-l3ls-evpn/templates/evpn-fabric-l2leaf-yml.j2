@@ -51,12 +51,14 @@
 {%                     set leaf.mlag_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
 {%                     set leaf.mlag_peer_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
 {%                 elif loop.index == 2 %}
 {%                     set leaf.mlag_role = "secondary" %}
 {%                     set leaf.mlag_peer = loop.previtem %}
 {%                     set leaf.mlag_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
 {%                 endif %}
 {%             else %}
 {%                 set leaf.mlag = false %}
@@ -140,15 +142,40 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
+{# Hardware Counters #}
+### Hardware Counter
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
 
 {# vlan allocation policy #}
-vlan_internal_allocation_policy:
-{% include 'base/vlan-internal-allocation-policy.j2' %}
+vlan_internal_order:
+{% include 'base/vlan-internal-order.j2' %}
 
+
+{# event monitor #}
+### Event Monitor ###
+event_monitor:
+{% include 'base/event-monitor.j2' %}
+
+{# load interval #}
+### Load Interval ###
+load_interval:
+{% include 'base/load-interval.j2' %}
+
+{# queue monitor length #}
+### Queue Monitor Lenght ###
+queue_monitor_length:
+{% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
 
 {# name servers #}
 ### Name Servers ###
@@ -160,15 +187,33 @@ name_server:
 ntp_server:
 {% include 'base/ntp-servers.j2' %}
 
+{# redundancy #}
+### Redundancy ###
+redundancy:
+{% include 'base/redundancy.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
 {% include 'base/leaf-spanning-tree.j2' %}
 
+{# unsupported transceiver #}
+{% include 'base/unsupported-transeiver.j2' %}
+
+{# aaa authorization #}
+### AAA authorization ###
+aaa_authorization:
+{% include 'base/aaa-authorization.j2' %}
+
 {# local users #}
 ### local users ###
 local_users:
 {% include 'base/local-users.j2' %}
+
+{# clock timezone #}
+### Clock Timezone ###
+clock:
+{% include 'base/clock-timezone.j2' %}
 
 {# VLANs #}
 ### VLANs ###
@@ -222,6 +267,11 @@ vlan_interfaces:
 tcam_profile:
 {% include 'base/tcam-profile.j2' %}
 
+{# mac address-table #}
+### MAC address table ###
+mac_address_table:
+{% include 'base/mac-address-table.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
@@ -229,3 +279,13 @@ static_routes:
 
 {# MLAG Configuration #}
 {% include 'mlag/leaf-mlag-configuration.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}
+
+{# management api http #}
+### Management API http ###
+management_api_http:
+{% include 'base/management-api-http.j2' %}

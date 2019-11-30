@@ -21,6 +21,9 @@ leaf_mlag_ip: 23
 leaf_mlag_peer_ip: 22
 leaf_mlag_peer_id: 12
 
+### Hardware Counter
+hardware_counters:
+
 ### Daemon TerminAttr
 daemon_terminattr:
   ingestgrpcurl:
@@ -31,11 +34,23 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
 
 ### Name Servers ###
 name_server:
@@ -54,10 +69,17 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
   priority: 16384
+
+### AAA authorization ###
+aaa_authorization:
+
 ### local users ###
 local_users:
   admin:
@@ -68,6 +90,9 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
 
 ### VLANs ###
 vlans:
@@ -163,9 +188,13 @@ vlan_interfaces:
     description: MLAG_PEER
     ip_address: 10.255.252.23/31
     no_autostate: true
+    mtu: 1500
 
 ### TCAM Profiles ###
 tcam_profile:
+
+### MAC address table ###
+mac_address_table:
 
 ### static routes ###
 static_routes:
@@ -177,4 +206,19 @@ mlag_configuration:
   domain_id: DC1_L2LEAF6
   local_interface: Vlan4094
   peer_address: 10.255.252.22
+  peer_address_heartbeat:
+    peer_ip: 192.168.2.115
+    vrf: MGMT
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
+  reload_delay_mlag: 360
+  reload_delay_non_mlag: 300
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:

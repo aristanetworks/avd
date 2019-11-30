@@ -5,7 +5,11 @@ MGMT_vrf_routing: false
 mgmt_interface: Management1
 mgmt_interface_vrf: MGMT
 
-internal_vlan_allocation_policy:
+# eAPI
+management_eapi:
+  enable_https: true
+
+internal_vlan_order:
   allocation: "ascending"
   range:
     beginning: 1006
@@ -23,6 +27,13 @@ spanning_tree_priority: 4096
 p2p_uplinks_mtu: 9000
 
 vxlan_vni_base: 10000
+
+underlay_routing_protocol: BGP
+
+# Underlay OSFP Defaults
+underlay_ospf_process_id: 100
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_max_lsa: 12000
 
 spine_bgp_defaults:
   - update wait-for-convergence

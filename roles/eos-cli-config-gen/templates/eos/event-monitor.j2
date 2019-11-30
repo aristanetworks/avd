@@ -1,0 +1,6 @@
+{% if event_monitor is defined and event_monitor is not none %}
+{%     if event_monitor.enabled == true %}
+event-monitor
+!
+{%    endif %}
+{% endif %}

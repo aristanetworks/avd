@@ -1,0 +1,6 @@
+{% if unsupported_transceiver is defined %}
+### Unsupported Transceiver ###
+service_unsupported_transceiver:
+  license_name: {{ unsupported_transceiver.license_name }}
+  license_key: {{ unsupported_transceiver.license_key }}
+{% endif %}

@@ -1,0 +1,7 @@
+{% if redundancy is defined and redundancy is not none %}
+redundancy
+{%     if redundancy.protocol is defined %}
+   protocol {{ redundancy.protocol }}
+{%     endif %}
+!
+{% endif %}

@@ -18,6 +18,10 @@ interface Management1
 !
 ```
 
+## Hardware Counters
+
+No Hardware Counters defined
+
 ## TerminAttr Daemon
 
 ### TerminAttr Daemon Summary
@@ -30,7 +34,7 @@ interface Management1
 
 ```eos
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl=192.168.2.201:9910 -taillogs -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -ntpvrf=MGMT
+   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.2.201:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
    no shutdown
 !
 ```
@@ -46,7 +50,7 @@ daemon TerminAttr
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-vlan internal allocation policy ascending range 1006 1199
+vlan internal order ascending range 1006 1199
 !
 ```
 
@@ -272,13 +276,8 @@ interface Vlan4094
 
 No VXLAN interface defined
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-No Virtual Router MAC Address Defined
-
-## Virtual Source NAT
-
-No virtual source nat defined
 
 ## Static Routes
 
@@ -330,7 +329,11 @@ mlag configuration
    domain-id DC1_L2LEAF5
    local-interface Vlan4094
    peer-address 10.255.252.18
+   peer-address heartbeat 192.168.2.113 vrf MGMT
    peer-link Port-Channel3
+   dual-primary detection delay 5 action errdisable all-interfaces
+   reload-delay mlag 360
+   reload-delay non-mlag 300
 !
 ```
 
