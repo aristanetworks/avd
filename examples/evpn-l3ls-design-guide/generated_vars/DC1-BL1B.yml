@@ -115,7 +115,7 @@ vlans:
   150:
     tenant: Tenant_A
     name: Tenant_A_WAN_Zone_1
-  3004:
+  3013:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_WAN_Zone
     trunk_groups:
@@ -207,21 +207,6 @@ loopback_interfaces:
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.8/32
-## Tenant_A ##
-  Loopback105:
-    description: Tenant_A_WAN_Zone_VTEP_DIAGNOSTICS
-    vrf: Tenant_A_WAN_Zone
-    ip_address: 10.255.5.9/32
-## Tenant_B ##
-  Loopback221:
-    description: Tenant_B_WAN_Zone_VTEP_DIAGNOSTICS
-    vrf: Tenant_B_WAN_Zone
-    ip_address: 10.255.21.9/32
-## Tenant_C ##
-  Loopback331:
-    description: Tenant_C_WAN_Zone_VTEP_DIAGNOSTICS
-    vrf: Tenant_C_WAN_Zone
-    ip_address: 10.255.31.9/32
 
 ### Management Interfaces ###
 management_interfaces:
@@ -249,7 +234,7 @@ vlan_interfaces:
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.1.40.1/24
     virtual: true
-  Vlan3004:
+  Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
     description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone"
@@ -306,13 +291,13 @@ vxlan_tunnel_interface:
       vrfs:
 ## Tenant_A ##
         Tenant_A_WAN_Zone:
-          vni: 15005
+          vni: 14
 ## Tenant_B ##
         Tenant_B_WAN_Zone:
-          vni: 25021
+          vni: 21
 ## Tenant_C ##
         Tenant_C_WAN_Zone:
-          vni: 35031
+          vni: 31
 
 ### TCAM Profiles ###
 tcam_profile:
@@ -323,15 +308,6 @@ mac_address_table:
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 
 virtual_source_nat_vrfs:
-## Tenant_A ##
-  Tenant_A_WAN_Zone:
-    ip_address: 10.255.5.9
-## Tenant_B ##
-  Tenant_B_WAN_Zone:
-    ip_address: 10.255.21.9
-## Tenant_C ##
-  Tenant_C_WAN_Zone:
-    ip_address: 10.255.31.9
 
 ### static routes ###
 static_routes:
@@ -421,28 +397,28 @@ router_bgp:
   vlan_aware_bundles:
 ## Tenant_A ##
     Tenant_A_WAN_Zone:
-      rd: "192.168.255.9:15005"
+      rd: "192.168.255.9:14"
       route_targets:
         both:
-          asn: "15005:15005"
+          asn: "14:14"
       redistribute_routes:
         - learned
       vlan: 150
 ## Tenant_B ##
     Tenant_B_WAN_Zone:
-      rd: "192.168.255.9:25021"
+      rd: "192.168.255.9:21"
       route_targets:
         both:
-          asn: "25021:25021"
+          asn: "21:21"
       redistribute_routes:
         - learned
       vlan: 250
 ## Tenant_C ##
     Tenant_C_WAN_Zone:
-      rd: "192.168.255.9:35031"
+      rd: "192.168.255.9:31"
       route_targets:
         both:
-          asn: "35031:35031"
+          asn: "31:31"
       redistribute_routes:
         - learned
       vlan: 350
@@ -450,14 +426,14 @@ router_bgp:
   vrfs:
 ## Tenant_A ##
     Tenant_A_WAN_Zone:
-      rd: "192.168.255.9:15005"
+      rd: "192.168.255.9:14"
       route_targets:
         import:
           address_family: evpn
-          asn: "15005:15005"
+          asn: "14:14"
         export:
           address_family: evpn
-          asn: "15005:15005"
+          asn: "14:14"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -465,14 +441,14 @@ router_bgp:
         - connected
 ## Tenant_B ##
     Tenant_B_WAN_Zone:
-      rd: "192.168.255.9:25021"
+      rd: "192.168.255.9:21"
       route_targets:
         import:
           address_family: evpn
-          asn: "25021:25021"
+          asn: "21:21"
         export:
           address_family: evpn
-          asn: "25021:25021"
+          asn: "21:21"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -480,14 +456,14 @@ router_bgp:
         - connected
 ## Tenant_C ##
     Tenant_C_WAN_Zone:
-      rd: "192.168.255.9:35031"
+      rd: "192.168.255.9:31"
       route_targets:
         import:
           address_family: evpn
-          asn: "35031:35031"
+          asn: "31:31"
         export:
           address_family: evpn
-          asn: "35031:35031"
+          asn: "31:31"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER

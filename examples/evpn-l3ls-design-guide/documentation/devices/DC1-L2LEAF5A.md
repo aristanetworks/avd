@@ -276,13 +276,8 @@ interface Vlan4094
 
 No VXLAN interface defined
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-No Virtual Router MAC Address Defined
-
-## Virtual Source NAT
-
-No virtual source nat defined
 
 ## Static Routes
 

@@ -254,9 +254,7 @@ interface Ethernet6
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.3/32 |
-| Loopback101 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.3/32 |
-| Loopback220 | Tenant_B_OP_Zone_VTEP_DIAGNOSTICS | Tenant_B_OP_Zone | 10.255.20.3/32 |
-| Loopback330 | Tenant_C_OP_Zone_VTEP_DIAGNOSTICS | Tenant_C_OP_Zone | 10.255.30.3/32 |
+| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.3/32 |
 
 ### Loopback Interfaces Device Configuration
 
@@ -269,20 +267,10 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
 !
-interface Loopback101
+interface Loopback100
    description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.3/32
-!
-interface Loopback220
-   description Tenant_B_OP_Zone_VTEP_DIAGNOSTICS
-   vrf Tenant_B_OP_Zone
-   ip address 10.255.20.3/32
-!
-interface Loopback330
-   description Tenant_C_OP_Zone_VTEP_DIAGNOSTICS
-   vrf Tenant_C_OP_Zone
-   ip address 10.255.30.3/32
 !
 ```
 
@@ -346,7 +334,7 @@ interface Vlan311
 | VLAN | VNI |
 | ---- | --- |
 | 110 | 10110 |
-| 111 | 10111 |
+| 111 | 50111 |
 | 210 | 20210 |
 | 211 | 20211 |
 | 310 | 30310 |
@@ -356,9 +344,9 @@ interface Vlan311
 
 | VLAN | VNI |
 | ---- | --- |
-| Tenant_A_OP_Zone | 15001 |
-| Tenant_B_OP_Zone | 25020 |
-| Tenant_C_OP_Zone | 35030 |
+| Tenant_A_OP_Zone | 10 |
+| Tenant_B_OP_Zone | 20 |
+| Tenant_C_OP_Zone | 30 |
 
 ### VXLAN Interface Device Configuration
 
@@ -367,45 +355,33 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
-   vxlan vlan 111 vni 10111
+   vxlan vlan 111 vni 50111
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
-   vxlan vrf Tenant_A_OP_Zone vni 15001
-   vxlan vrf Tenant_B_OP_Zone vni 25020
-   vxlan vrf Tenant_C_OP_Zone vni 35030
+   vxlan vrf Tenant_A_OP_Zone vni 10
+   vxlan vrf Tenant_B_OP_Zone vni 20
+   vxlan vrf Tenant_C_OP_Zone vni 30
 !
 ```
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-### Virtual Router MAC Address Summary
+### Virtual Router MAC Address and Virtual Source NAT Summary
 
 **Virtual Router MAC Address:** 00:1c:73:00:dc:01
-
-### Virtual Router MAC Address Device Configuration
-
-```eos
-ip virtual-router mac-address 00:1c:73:00:dc:01
-```
-
-## Virtual Source NAT
-
 ### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
 | Tenant_A_OP_Zone | 10.255.1.3 |
-| Tenant_B_OP_Zone | 10.255.20.3 |
-| Tenant_C_OP_Zone | 10.255.30.3 |
 
-### Virtual Source NAT Device Configuration
+### Virtual Router MAC Address Device and Virtual Source NAT Configuration
 
 ```eos
+ip virtual-router mac-address 00:1c:73:00:dc:01
 ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.3
-ip address virtual source-nat vrf Tenant_B_OP_Zone address 10.255.20.3
-ip address virtual source-nat vrf Tenant_C_OP_Zone address 10.255.30.3
 !
 ```
 
@@ -568,17 +544,17 @@ No Peer Filters defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Route Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ------------ | ------------ | ----- |
-| Tenant_A_OP_Zone | 192.168.255.3:15001 | both 15001:15001 | learned | 110-111 |
-| Tenant_B_OP_Zone | 192.168.255.3:25020 | both 25020:25020 | learned | 210-211 |
-| Tenant_C_OP_Zone | 192.168.255.3:35030 | both 35030:35030 | learned | 310-311 |
+| Tenant_A_OP_Zone | 192.168.255.3:10 | both 10:10 | learned | 110-111 |
+| Tenant_B_OP_Zone | 192.168.255.3:20 | both 20:20 | learned | 210-211 |
+| Tenant_C_OP_Zone | 192.168.255.3:30 | both 30:30 | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Route Target | Redistribute |
 | --- | ------------------- | ------------ | ------------ |
-| Tenant_A_OP_Zone | 192.168.255.3:15001 | import 15001:15001<br> export 15001:15001 | connected |
-| Tenant_B_OP_Zone | 192.168.255.3:25020 | import 25020:25020<br> export 25020:25020 | connected |
-| Tenant_C_OP_Zone | 192.168.255.3:35030 | import 35030:35030<br> export 35030:35030 | connected |
+| Tenant_A_OP_Zone | 192.168.255.3:10 | import 10:10<br> export 10:10 | connected |
+| Tenant_B_OP_Zone | 192.168.255.3:20 | import 20:20<br> export 20:20 | connected |
+| Tenant_C_OP_Zone | 192.168.255.3:30 | import 30:30<br> export 30:30 | connected |
 
 ### Router BGP Device Configuration
 
@@ -610,20 +586,20 @@ router bgp 65101
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 192.168.255.3:15001
-      route-target both 15001:15001
+      rd 192.168.255.3:10
+      route-target both 10:10
       redistribute learned
       vlan 110-111
    !
    vlan-aware-bundle Tenant_B_OP_Zone
-      rd 192.168.255.3:25020
-      route-target both 25020:25020
+      rd 192.168.255.3:20
+      route-target both 20:20
       redistribute learned
       vlan 210-211
    !
    vlan-aware-bundle Tenant_C_OP_Zone
-      rd 192.168.255.3:35030
-      route-target both 35030:35030
+      rd 192.168.255.3:30
+      route-target both 30:30
       redistribute learned
       vlan 310-311
    !
@@ -636,21 +612,21 @@ router bgp 65101
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Tenant_A_OP_Zone
-      rd 192.168.255.3:15001
-      route-target import evpn 15001:15001
-      route-target export evpn 15001:15001
+      rd 192.168.255.3:10
+      route-target import evpn 10:10
+      route-target export evpn 10:10
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
-      rd 192.168.255.3:25020
-      route-target import evpn 25020:25020
-      route-target export evpn 25020:25020
+      rd 192.168.255.3:20
+      route-target import evpn 20:20
+      route-target export evpn 20:20
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
-      rd 192.168.255.3:35030
-      route-target import evpn 35030:35030
-      route-target export evpn 35030:35030
+      rd 192.168.255.3:30
+      route-target import evpn 30:30
+      route-target export evpn 30:30
       redistribute connected
 !
 ```

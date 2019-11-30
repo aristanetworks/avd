@@ -80,7 +80,7 @@ l3leafs:
       bgp_as: 65102
       filter:
         tenants: [ Tenant_A ]
-        tags: [ opzone, web, app, db, vmotion ]
+        tags: [ opzone, web, app, db, vmotion, nfs ]
       nodes:
         DC1-LEAF2A:
           id: 2
