@@ -51,12 +51,14 @@
 {%                     set leaf.mlag_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
 {%                     set leaf.mlag_peer_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
 {%                 elif loop.index == 2 %}
 {%                     set leaf.mlag_role = "secondary" %}
 {%                     set leaf.mlag_peer = loop.previtem %}
 {%                     set leaf.mlag_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
 {%                 endif %}
 {%             else %}
 {%                 set leaf.mlag = false %}
