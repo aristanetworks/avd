@@ -206,7 +206,13 @@ mlag_configuration:
   domain_id: DC1_L2LEAF6
   local_interface: Vlan4094
   peer_address: 10.255.252.22
+  peer_address_heartbeat:
+    peer_ip: 192.168.2.115
+    vrf: MGMT
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
+  reload_delay_mlag: 360
+  reload_delay_non_mlag: 300
 
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:
