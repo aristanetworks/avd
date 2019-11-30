@@ -93,37 +93,37 @@ bfd_multihop:
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet6:
-    description: P2P_UPLINK_TO_DC1-BL1A_Ethernet2
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.22/31
   Ethernet7:
-    description: P2P_UPLINK_TO_DC1-BL1B_Ethernet2
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.26/31
   Ethernet1:
-    description: P2P_UPLINK_TO_DC1-LEAF1A_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.2/31
   Ethernet2:
-    description: P2P_UPLINK_TO_DC1-LEAF2A_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.6/31
   Ethernet3:
-    description: P2P_UPLINK_TO_DC1-LEAF2B_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.10/31
   Ethernet4:
-    description: P2P_UPLINK_TO_DC1-SVC3A_Ethernet2
+    description: P2P_LINK_TO_DC1-SVC3A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.14/31
   Ethernet5:
-    description: P2P_UPLINK_TO_DC1-SVC3B_Ethernet2
+    description: P2P_LINK_TO_DC1-SVC3B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.18/31

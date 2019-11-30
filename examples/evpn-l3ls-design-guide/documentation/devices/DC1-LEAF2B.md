@@ -309,8 +309,8 @@ interface Port-Channel11
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_UPLINK_TO_DC1-SPINE1_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.9/31 | - | - |
-| Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.11/31 | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.9/31 | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.11/31 | - | - |
 | Ethernet3 | MLAG_PEER_DC1-LEAF2A_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-LEAF2A_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
 | Ethernet6 | DC1-L2LEAF4A_Ethernet12 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 6 | active |
@@ -325,12 +325,12 @@ interface Port-Channel11
 
 ```eos
 interface Ethernet1
-   description P2P_UPLINK_TO_DC1-SPINE1_Ethernet3
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet3
    no switchport
    ip address 172.31.255.9/31
 !
 interface Ethernet2
-   description P2P_UPLINK_TO_DC1-SPINE2_Ethernet3
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet3
    no switchport
    ip address 172.31.255.11/31
 !

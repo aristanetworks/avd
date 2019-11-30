@@ -175,13 +175,13 @@ No Port-Channels defined
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_UPLINK_TO_DC1-LEAF1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.0/31 | - | - |
-| Ethernet2 | P2P_UPLINK_TO_DC1-LEAF2A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.4/31 | - | - |
-| Ethernet3 | P2P_UPLINK_TO_DC1-LEAF2B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.8/31 | - | - |
-| Ethernet4 | P2P_UPLINK_TO_DC1-SVC3A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.12/31 | - | - |
-| Ethernet5 | P2P_UPLINK_TO_DC1-SVC3B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.16/31 | - | - |
-| Ethernet6 | P2P_UPLINK_TO_DC1-BL1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.20/31 | - | - |
-| Ethernet7 | P2P_UPLINK_TO_DC1-BL1B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.24/31 | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.0/31 | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.4/31 | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.8/31 | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.12/31 | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.16/31 | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.20/31 | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.24/31 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -189,37 +189,37 @@ No Port-Channels defined
 
 ```eos
 interface Ethernet1
-   description P2P_UPLINK_TO_DC1-LEAF1A_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF1A_Ethernet1
    no switchport
    ip address 172.31.255.0/31
 !
 interface Ethernet2
-   description P2P_UPLINK_TO_DC1-LEAF2A_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet1
    no switchport
    ip address 172.31.255.4/31
 !
 interface Ethernet3
-   description P2P_UPLINK_TO_DC1-LEAF2B_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet1
    no switchport
    ip address 172.31.255.8/31
 !
 interface Ethernet4
-   description P2P_UPLINK_TO_DC1-SVC3A_Ethernet1
+   description P2P_LINK_TO_DC1-SVC3A_Ethernet1
    no switchport
    ip address 172.31.255.12/31
 !
 interface Ethernet5
-   description P2P_UPLINK_TO_DC1-SVC3B_Ethernet1
+   description P2P_LINK_TO_DC1-SVC3B_Ethernet1
    no switchport
    ip address 172.31.255.16/31
 !
 interface Ethernet6
-   description P2P_UPLINK_TO_DC1-BL1A_Ethernet1
+   description P2P_LINK_TO_DC1-BL1A_Ethernet1
    no switchport
    ip address 172.31.255.20/31
 !
 interface Ethernet7
-   description P2P_UPLINK_TO_DC1-BL1B_Ethernet1
+   description P2P_LINK_TO_DC1-BL1B_Ethernet1
    no switchport
    ip address 172.31.255.24/31
 !

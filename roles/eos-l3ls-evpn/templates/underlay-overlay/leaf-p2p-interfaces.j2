@@ -1,7 +1,7 @@
 {# Leaf P2P interfaces #}
 {% for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
   {{ uplink_to_spine_interface }}:
-    description: P2P_UPLINK_TO_{{ leaf.spines[loop.index0] | upper }}_{{ leaf.spine_interfaces[loop.index0 ] }}
+    description: P2P_LINK_TO_{{ leaf.spines[loop.index0] | upper }}_{{ leaf.spine_interfaces[loop.index0 ] }}
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}/31
