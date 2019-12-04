@@ -30,9 +30,9 @@ It helps to demonstrate how to bring up an Arista EVPN/VXLAN Fabric from the fir
 
 This example use following specific resources:
 
-- A specific Module named [__`inventory_to_container`__](../library/inventory_to_container.py) to convert `YAML` inventory to a structure compatible with CVP for __Containers__ and __Configlets__ definitions. it generate a variable named `CVP_VARS` with list of configlet and a topology.
+- A specific Module named [__`inventory_to_container`__](../../library/inventory_to_container.py) to convert `YAML` inventory to a structure compatible with CVP for __Containers__ and __Configlets__ definitions. it generate a variable named `CVP_VARS` with list of configlet and a topology.
 
-- A [role](../roles/eos-config-deploy-cvp/tasks/main.yml) to support all tasks related to CV configuration:
+- A [role](../../roles/eos-config-deploy-cvp/tasks/main.yml) to support all tasks related to CV configuration:
   - Generate `cv_container` and `cv_configlet` inputs
   - Generate `cv_device` inputs
   - Load these new variables
