@@ -1,4 +1,4 @@
-ansible==2.9.0rc4
+ansible>=2.9.0rc4,<2.10
 requests==2.22.0
 fuzzywuzzy==0.17.0
 treelib==1.5.5

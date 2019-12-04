@@ -12,12 +12,18 @@ local_users:
     role: network-admin
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/"
+
 # Cloud Vision server information
-cvp_instance_ip: 192.168.2.201
-cvp_ingestauth_key: telarista
+cvp_instance_ip: 10.255.0.1
+cvp_ingestauth_key: ''
+# cvp_ingestauth_key: telarista
 
 # OOB Management network default gateway.
-mgmt_gateway: 192.168.2.1
+mgmt_gateway: 10.255.0.1
 
 # dns servers.
 name_servers:
@@ -26,5 +32,5 @@ name_servers:
 
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
 ntp_servers:
- - 0.north-america.pool.ntp.org
- - 1.north-america.pool.ntp.org
+ - 0.fr.pool.ntp.org
+ - 1.fr.pool.ntp.org

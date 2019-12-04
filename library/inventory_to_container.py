@@ -254,7 +254,7 @@ if __name__ == '__main__':
                            supports_check_mode=False)
     result = dict(changed=False)
 
-    # "/Users/tgrimonet/Projects/ansible-devel/github/aristanetworks/upstream-ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
+    # "ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
     inventory_file = module.params['inventory']
     parent_container = module.params['container_root']
 

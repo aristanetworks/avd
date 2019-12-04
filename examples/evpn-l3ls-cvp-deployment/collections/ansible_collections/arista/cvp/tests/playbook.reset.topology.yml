@@ -1,0 +1,113 @@
+---
+- name: Build Testing topology using Dev CVP servers
+  hosts: cvp
+  connection: local
+  gather_facts: no
+  ### Define variables
+  vars:
+    verbose: False
+    configlet_list:
+          ANSIBLE_TESTING_CONTAINER: "alias a{{ 999 | random }} show version"
+          ANSIBLE_TESTING_VEOS: "alias a{{ 999 | random }} show version"
+    device_provision:
+      veos01:
+        name: veos01
+        parentContainerName: staging
+        configlets:
+          - veos01-basic-configuration
+      veos02:
+        name: veos02
+        parentContainerName: staging
+        configlets:
+          - veos02-basic-configuration
+      veos03:
+        name: veos03
+        parentContainerName: staging
+        configlets:
+          - veos03-basic-configuration
+    containers_provision:
+        staging:
+          parent_container: Tenant
+          devices:
+            - veos01
+            - veos02
+            - veos03
+
+  ### tasks configuration
+
+  tasks:
+    - name: '#01 - Collect initial facts from {{inventory_hostname}}'
+      tags:
+        - always
+      cv_facts:
+      register: FACTS
+
+    ### Test cv_device
+    - name: "#02 - Configure devices on {{inventory_hostname}}"
+      tags:
+        - device
+      cv_device:
+        devices: "{{device_provision}}"
+        cvp_facts: '{{FACTS.ansible_facts}}'
+        device_filter: 'veos'
+      register: DEVICE
+
+    - name: '#03 - Display cv_device'
+      tags:
+        - device
+      debug:
+        msg: "{{DEVICE}}"
+
+    ### Execute cv_task
+    - name: '#04 - Execute pending tasks -- timeout 60sec'
+      tags:
+        - device
+      cv_task:
+        tasks: "{{ DEVICE.data.tasks }}"
+        wait: 60
+
+    ### Validate cv_container
+    - name: '#05 - Configure Container topology on {{inventory_hostname}}'
+      tags:
+        - container
+      cv_container:
+        cvp_facts: "{{FACTS.ansible_facts}}"
+        topology: '{{containers_provision}}'
+        save_topology: true
+        mode: 'override'
+      register: CONTAINERS
+
+    - name: '#06 - Display Containers Information'
+      tags:
+        - container
+      debug:
+        msg: "{{CONTAINERS}}"
+
+    ### Execute cv_task
+    - name: '#07 - Execute pending tasks -- timeout 60sec'
+      tags:
+        - container
+      cv_task:
+        tasks: "{{ CONTAINERS.data.tasks }}"
+        wait: 60
+
+    - name: '#08 - Collect intermeditate facts from {{inventory_hostname}}'
+      cv_facts:
+      register: FACTS
+
+    ### Validate cv_configlet
+    - name: '#09 - Configure Configlets on {{inventory_hostname}}'
+      tags: 
+        - configlet
+      cv_configlet:
+        cvp_facts: "{{FACTS.ansible_facts}}"
+        configlets: "{{configlet_list}}"
+        configlet_filter: ["ANSIBLE_TESTING"]
+      register: CONFIGLETS
+
+    - name: '#10 - Execute pending tasks -- timeout 60sec'
+      tags:
+        - configlet
+      cv_task:
+        tasks: "{{ CONFIGLETS.data.tasks }}"
+        wait: 60

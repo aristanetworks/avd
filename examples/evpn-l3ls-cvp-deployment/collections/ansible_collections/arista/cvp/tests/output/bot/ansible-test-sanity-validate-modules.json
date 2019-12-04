@@ -1,0 +1,10 @@
+{
+    "docs": "https://docs.ansible.com/ansible/2.9/dev_guide/testing/sanity/validate-modules.html",
+    "results": [
+        {
+            "message": "The test `ansible-test sanity --test validate-modules` [[explain](https://docs.ansible.com/ansible/2.9/dev_guide/testing/sanity/validate-modules.html)] failed with 5 errors:",
+            "output": "plugins/modules/cv_facts_v1.py:0:0: doc-choices-do-not-match-spec: Argument 'gather_subset' in argument_spec defines choices as ([['default'], ['config']]) but documentation defines choices as ([])\nplugins/modules/cv_facts_v1.py:0:0: doc-default-does-not-match-spec: Argument 'gather_subset' in argument_spec defines default as (['default']) but documentation defines default as (None)\nplugins/modules/cv_facts_v1.py:0:0: invalid-documentation: DOCUMENTATION.module: not a valid value for dictionary value @ data['module']. Got 'cv_facts'\nplugins/modules/cv_facts_v1.py:0:0: parameter-type-not-in-doc: Argument 'gather_subset' in argument_spec defines type as 'list' but documentation doesn't define type\nplugins/modules/cv_facts_v1.py:0:0: undocumented-parameter: Argument 'gather_subset' is listed in the argument_spec, but not documented in the module documentation"
+        }
+    ],
+    "verified": false
+}

@@ -1,8 +1,23 @@
 ---
 CVP_DEVICES:
 {% for device in groups['DC1_FABRIC'] %}
-  '{{device}}':
+  {{device}}:
     name: {{device}}
+{% for container_name, container in CVP_VARS.CVP_TOPOLOGY.iteritems() %}
+{%    if 'devices' in container %}
+{%        for device_container in container['devices']%}
+{%            if device == device_container %}
+    parentContainerName: {{container_name}}
+{%            endif %}
+{%        endfor %}
+{%    endif %}
+{% endfor %}
     configlets:
-      - 'AVD_{{device}}'
+        - AVD_{{device}}
+    imageBundle: []
+{% endfor %}
+CVP_CONTAINERS:
+{% for container_name, container in CVP_VARS.CVP_TOPOLOGY.iteritems() %}
+  {{container_name}}:
+    parent_container: {{container['parent_container']}}
 {% endfor %}

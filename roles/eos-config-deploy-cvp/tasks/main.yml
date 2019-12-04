@@ -1,6 +1,7 @@
 ---
 # tasks file for eos-config-deploy-cvp
 - name: generate intented variables
+  tags: [build]
   inventory_to_container:
     inventory: 'inventory.yml'
     container_root: 'DC1_FABRIC'
@@ -9,38 +10,48 @@
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
-- name: 'Build configlet definition for {{inventory_hostname}}'
+- name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
+  tags: [build]
   template:
     src: "cvp-devices.j2"
-    dest: './generated_vars/{{inventory_hostname}}.yml'
+    dest: './generated_vars/cvp.yml'
   delegate_to: localhost
   run_once: true
 
 - name: "Load CVP device information for {{inventory_hostname}}"
-  include_vars: './generated_vars/{{inventory_hostname}}.yml'
-  delegate_to: localhost
-
-- name: Display CVP Variables structure
-  debug:
-    msg: '{{CVP_VARS}}'
+  tags: [build, provision]
+  include_vars: './generated_vars/cvp.yml'
+  # delegate_to: localhost
 
 - name: 'Collecting facts from CVP {{inventory_hostname}}.'
+  tags: [always]
   arista.cvp.cv_facts:
   register: CVP_FACTS
 
 - name: 'Create configlets on CVP {{inventory_hostname}}.'
+  tags: [provision]
   arista.cvp.cv_configlet:
     cvp_facts: "{{CVP_FACTS.ansible_facts}}"
     configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
     configlet_filter: ["AVD"]
 
 - name: "Building Container topology on {{inventory_hostname}}"
+  tags: [provision]
   arista.cvp.cv_container:
-    topology: '{{CVP_VARS.CVP_TOPOLOGY}}'
+    topology: '{{CVP_CONTAINERS}}'
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
     save_topology: true
 
 - name: "Configure devices on {{inventory_hostname}}"
+  tags: [provision, apply]
   arista.cvp.cv_device:
     devices: "{{CVP_DEVICES}}"
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+    device_filter: ['DC1']
+  register: CVP_DEVICES_RESULTS
+
+- name: "Execute pending tasks on {{inventory_hostname}}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ CVP_DEVICES_RESULTS.tasks }}"
+    wait: 3600

@@ -1,9 +1,22 @@
 ---
+- name: Build Switch configuration
+  hosts: DC1_FABRIC
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: generate intented variables
+      tags: [build]
+      import_role:
+         name: eos-l3ls-evpn
+    - name: generate device intended config and documention
+      tags: [build]
+      import_role:
+         name: eos-cli-config-gen
+
 - name: Configuration deployment with CVP
   hosts: CVP
   connection: local
   gather_facts: no
-
   tasks:
     - name: run CVP provisioning
       import_role:

@@ -8,9 +8,9 @@ spine_platform: vEOS-LAB
 ### Daemon TerminAttr ###
 daemon_terminattr:
   ingestgrpcurl:
-    ip: 192.168.2.201
+    ip: 10.255.0.1
     port: 9910
-  ingestauth_key: telarista
+  ingestauth_key: 
   ingestvrf: MGMT
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
@@ -35,8 +35,8 @@ ntp_server:
     vrf: MGMT
     interface: Management1
   nodes:
-    - 0.north-america.pool.ntp.org
-    - 1.north-america.pool.ntp.org
+    - 0.fr.pool.ntp.org
+    - 1.fr.pool.ntp.org
 
 ### Spanning-tree ###
 spanning_tree:
@@ -49,6 +49,10 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/
   cvpadmin:
     privilege: 15
     role: network-admin
@@ -67,41 +71,26 @@ bfd_multihop:
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-  Ethernet6:
-    description: P2P_UPLINK_TO_DC1-BL1A_Ethernet2
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.22/31
-  Ethernet7:
-    description: P2P_UPLINK_TO_DC1-BL1B_Ethernet2
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.26/31
   Ethernet1:
     description: P2P_UPLINK_TO_DC1-LEAF1A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.2/31
   Ethernet2:
-    description: P2P_UPLINK_TO_DC1-LEAF2A_Ethernet2
+    description: P2P_UPLINK_TO_DC1-LEAF1B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.6/31
   Ethernet3:
-    description: P2P_UPLINK_TO_DC1-LEAF2B_Ethernet2
+    description: P2P_UPLINK_TO_DC1-LEAF2A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.10/31
   Ethernet4:
-    description: P2P_UPLINK_TO_DC1-SVC3A_Ethernet2
+    description: P2P_UPLINK_TO_DC1-LEAF2B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.14/31
-  Ethernet5:
-    description: P2P_UPLINK_TO_DC1-SVC3B_Ethernet2
-    mtu: 1500
-    type: routed
-    ip_address: 172.31.255.18/31
 
 
 ### Loopback Interfaces ###
@@ -115,8 +104,8 @@ management_interfaces:
   Management1:
     description: oob_management
     vrf: MGMT
-    ip_address: 192.168.2.102/24
-    gateway: 192.168.2.1
+    ip_address: 10.255.0.12/24
+    gateway: 10.255.0.1
 ### TCAM Profiles ###
 tcam_profile:
 
@@ -124,7 +113,7 @@ tcam_profile:
 static_routes:
   - vrf: MGMT
     destination_address_prefix: 0.0.0.0/0
-    gateway: 192.168.2.1
+    gateway: 10.255.0.1
 
 ### prefix-lists ###
 prefix_lists:
@@ -182,18 +171,6 @@ router_bgp:
       send_community: true
       maximum_routes: 0
   neighbors:
-    172.31.255.23:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
-    192.168.255.8:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65104
-    172.31.255.27:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
-    192.168.255.9:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65104
     172.31.255.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65101
@@ -202,10 +179,10 @@ router_bgp:
       remote_as: 65101
     172.31.255.7:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65102
+      remote_as: 65101
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65102
+      remote_as: 65101
     172.31.255.11:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65102
@@ -214,16 +191,10 @@ router_bgp:
       remote_as: 65102
     172.31.255.15:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65103
+      remote_as: 65102
     192.168.255.6:
       peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65103
-    172.31.255.19:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65103
-    192.168.255.7:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65103
+      remote_as: 65102
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
