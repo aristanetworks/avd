@@ -3,14 +3,14 @@
 
 ## Fabric Switches and Management IP
 
-| Node | Management IP |
-| ---- | ------------- |
-| DC1-SPINE1 | 10.255.0.11/24 |
-| DC1-SPINE2 | 10.255.0.12/24 |
-| DC1-LEAF1A | 10.255.0.13/24 |
-| DC1-LEAF1B | 10.255.0.14/24 |
-| DC1-LEAF2A | 10.255.0.15/24 |
-| DC1-LEAF2B | 10.255.0.16/24 |
+| Node | Management IP | Platform |
+| ---- | ------------- | -------- |
+| DC1-SPINE1 | 10.255.0.11/24 | vEOS-LAB |
+| DC1-SPINE2 | 10.255.0.12/24 | vEOS-LAB |
+| DC1-LEAF1A | 10.255.0.13/24 | vEOS-LAB |
+| DC1-LEAF1B | 10.255.0.14/24 | vEOS-LAB |
+| DC1-LEAF2A | 10.255.0.15/24 | vEOS-LAB |
+| DC1-LEAF2B | 10.255.0.16/24 | vEOS-LAB |
 
 ## Fabric IP Allocation
 

@@ -18,6 +18,10 @@ interface Management1
 !
 ```
 
+## Hardware Counters
+
+No Hardware Counters defined
+
 ## TerminAttr Daemon
 
 ### TerminAttr Daemon Summary
@@ -30,7 +34,7 @@ interface Management1
 
 ```eos
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl=10.255.0.1:9910 -taillogs -ingestauth=key, -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -ntpvrf=MGMT
+   exec /usr/bin/TerminAttr -ingestgrpcurl=10.255.0.1:9910 -cvcompression=gzip -ingestauth=key, -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
    no shutdown
 !
 ```
@@ -46,7 +50,7 @@ daemon TerminAttr
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-vlan internal allocation policy ascending range 1006 1199
+vlan internal order ascending range 1006 1199
 !
 ```
 
@@ -173,10 +177,10 @@ No Port-Channels defined
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_UPLINK_TO_DC1-LEAF1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.0/31 | - | - |
-| Ethernet2 | P2P_UPLINK_TO_DC1-LEAF1B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.4/31 | - | - |
-| Ethernet3 | P2P_UPLINK_TO_DC1-LEAF2A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.8/31 | - | - |
-| Ethernet4 | P2P_UPLINK_TO_DC1-LEAF2B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.12/31 | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.0/31 | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF1B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.4/31 | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.8/31 | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.12/31 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -184,22 +188,22 @@ No Port-Channels defined
 
 ```eos
 interface Ethernet1
-   description P2P_UPLINK_TO_DC1-LEAF1A_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF1A_Ethernet1
    no switchport
    ip address 172.31.255.0/31
 !
 interface Ethernet2
-   description P2P_UPLINK_TO_DC1-LEAF1B_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF1B_Ethernet1
    no switchport
    ip address 172.31.255.4/31
 !
 interface Ethernet3
-   description P2P_UPLINK_TO_DC1-LEAF2A_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet1
    no switchport
    ip address 172.31.255.8/31
 !
 interface Ethernet4
-   description P2P_UPLINK_TO_DC1-LEAF2B_Ethernet1
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet1
    no switchport
    ip address 172.31.255.12/31
 !
@@ -230,13 +234,8 @@ No VLAN interfaces defined
 
 No VXLAN interface defined
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-No Virtual Router MAC Address Defined
-
-## Virtual Source NAT
-
-No virtual source nat defined
 
 ## Static Routes
 

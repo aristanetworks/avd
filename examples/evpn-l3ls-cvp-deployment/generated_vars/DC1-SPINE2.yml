@@ -3,7 +3,11 @@
 ### DC1-SPINE2 ###
 
 ### Spine Info ###
-spine_platform: vEOS-LAB
+switch_platform: vEOS-LAB
+switch_mgmt_ip: 10.255.0.12/24
+
+### Hardware Counters
+hardware_counters:
 
 ### Daemon TerminAttr ###
 daemon_terminattr:
@@ -15,11 +19,23 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
 
 ### Name Servers ###
 name_server:
@@ -38,10 +54,16 @@ ntp_server:
     - 0.fr.pool.ntp.org
     - 1.fr.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
   priority: 4096
+
+### AAA authorization ###
+aaa_authorization:
 
 ### local users ###
 local_users:
@@ -58,6 +80,9 @@ local_users:
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 
+### Clock Timezone ###
+clock:
+
 
 ### VRFs ###
 vrfs:
@@ -72,22 +97,22 @@ bfd_multihop:
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
-    description: P2P_UPLINK_TO_DC1-LEAF1A_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.2/31
   Ethernet2:
-    description: P2P_UPLINK_TO_DC1-LEAF1B_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF1B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.6/31
   Ethernet3:
-    description: P2P_UPLINK_TO_DC1-LEAF2A_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.10/31
   Ethernet4:
-    description: P2P_UPLINK_TO_DC1-LEAF2B_Ethernet2
+    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
     mtu: 1500
     type: routed
     ip_address: 172.31.255.14/31
@@ -99,6 +124,7 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.2/32
 
+
 ### Management Interfaces ###
 management_interfaces:
   Management1:
@@ -108,6 +134,9 @@ management_interfaces:
     gateway: 10.255.0.1
 ### TCAM Profiles ###
 tcam_profile:
+
+### MAC address table ###
+mac_address_table:
 
 ### static routes ###
 static_routes:
@@ -198,3 +227,15 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
+
+### Routing - OSPF ###
+router_ospf:
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:
