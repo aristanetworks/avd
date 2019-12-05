@@ -1,14 +1,14 @@
-{% if vlan_internal_allocation_policy is defined and vlan_internal_allocation_policy is not none %}
+{% if vlan_internal_order is defined and vlan_internal_order is not none %}
 ### Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| {{ vlan_internal_allocation_policy.allocation }} | {{ vlan_internal_allocation_policy.range.beginning }} | {{ vlan_internal_allocation_policy.range.ending }} |
+| {{ vlan_internal_order.allocation }} | {{ vlan_internal_order.range.beginning }} | {{ vlan_internal_order.range.ending }} |
 
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-{% include 'eos/vlan-internal-allocation-policy.j2' %}
+{% include 'eos/vlan-internal-order.j2' %}
 ```
 {% else %}
 ### Internal VLAN Allocation Policy Summary

@@ -8,16 +8,21 @@
 
 ## Fabric Switches and Management IP
 
-| Node | Management IP |
-| ---- | ------------- |
+| Node | Management IP | Platform |
+| ---- | ------------- | -------- |
 {% for node in groups[fabric_name] | natural_sort %}
 {%     if hostvars[node].type == "spine" %}
-| {{ node }} | {{ hostvars[node].management_interfaces.Management1.ip_address }} |
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
 {%     endif %}
 {% endfor %}
 {% for node in groups[fabric_name] | natural_sort %}
 {%    if hostvars[node].type == "l3leaf" %}
-| {{ node }} | {{ hostvars[node].management_interfaces.Management1.ip_address }} |
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | natural_sort %}
+{%    if hostvars[node].type == "l2leaf" %}
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
 {%     endif %}
 {% endfor %}
 

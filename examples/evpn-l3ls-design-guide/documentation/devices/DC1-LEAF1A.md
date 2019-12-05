@@ -18,6 +18,10 @@ interface Management1
 !
 ```
 
+## Hardware Counters
+
+No Hardware Counters defined
+
 ## TerminAttr Daemon
 
 ### TerminAttr Daemon Summary
@@ -30,7 +34,7 @@ interface Management1
 
 ```eos
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl=192.168.2.201:9910 -taillogs -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -ntpvrf=MGMT
+   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.2.201:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
    no shutdown
 !
 ```
@@ -46,7 +50,7 @@ daemon TerminAttr
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-vlan internal allocation policy ascending range 1006 1199
+vlan internal order ascending range 1006 1199
 !
 ```
 
@@ -133,33 +137,33 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OPZone_1 | none  |
-| 111 | Tenant_A_OPZone_2 | none  |
-| 210 | Tenant_B_OPZone_1 | none  |
-| 211 | Tenant_B_OPZone_2 | none  |
-| 310 | Tenant_C_OPZone_1 | none  |
-| 311 | Tenant_C_OPZone_2 | none  |
+| 110 | Tenant_A_OP_Zone_1 | none  |
+| 111 | Tenant_A_OP_Zone_2 | none  |
+| 210 | Tenant_B_OP_Zone_1 | none  |
+| 211 | Tenant_B_OP_Zone_2 | none  |
+| 310 | Tenant_C_OP_Zone_1 | none  |
+| 311 | Tenant_C_OP_Zone_2 | none  |
 
 ### VLANs Device Configuration
 
 ```eos
 vlan 110
-   name Tenant_A_OPZone_1
+   name Tenant_A_OP_Zone_1
 !
 vlan 111
-   name Tenant_A_OPZone_2
+   name Tenant_A_OP_Zone_2
 !
 vlan 210
-   name Tenant_B_OPZone_1
+   name Tenant_B_OP_Zone_1
 !
 vlan 211
-   name Tenant_B_OPZone_2
+   name Tenant_B_OP_Zone_2
 !
 vlan 310
-   name Tenant_C_OPZone_1
+   name Tenant_C_OP_Zone_1
 !
 vlan 311
-   name Tenant_C_OPZone_2
+   name Tenant_C_OP_Zone_2
 !
 ```
 
@@ -170,20 +174,20 @@ vlan 311
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT |  disabled |
-| Tenant_A_OPZone |  enabled |
-| Tenant_B_OPZone |  enabled |
-| Tenant_C_OPZone |  enabled |
+| Tenant_A_OP_Zone |  enabled |
+| Tenant_B_OP_Zone |  enabled |
+| Tenant_C_OP_Zone |  enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 vrf instance MGMT
 !
-vrf instance Tenant_A_OPZone
+vrf instance Tenant_A_OP_Zone
 !
-vrf instance Tenant_B_OPZone
+vrf instance Tenant_B_OP_Zone
 !
-vrf instance Tenant_C_OPZone
+vrf instance Tenant_C_OP_Zone
 !
 ```
 
@@ -212,10 +216,10 @@ No Port-Channels defined
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_UPLINK_TO_DC1-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
-| Ethernet2 | P2P_UPLINK_TO_DC1-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
-| Ethernet5 | server01_Eth1 | 1500 | switched | trunk | 110 | - | - | - | - | - |
-| Ethernet6 | server02_Eth1 | 1500 | switched | trunk | 110 | - | - | - | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
+| Ethernet5 | server01_Eth1 | 1500 | switched | access | 110 | - | - | - | - | - |
+| Ethernet6 | server02_Eth1 | 1500 | switched | access | 110 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -223,24 +227,22 @@ No Port-Channels defined
 
 ```eos
 interface Ethernet1
-   description P2P_UPLINK_TO_DC1-SPINE1_Ethernet1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no switchport
    ip address 172.31.255.1/31
 !
 interface Ethernet2
-   description P2P_UPLINK_TO_DC1-SPINE2_Ethernet1
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet1
    no switchport
    ip address 172.31.255.3/31
 !
 interface Ethernet5
    description server01_Eth1
-   switchport trunk allowed vlan 110
-   switchport mode trunk
+   switchport access vlan 110
 !
 interface Ethernet6
    description server02_Eth1
-   switchport trunk allowed vlan 110
-   switchport mode trunk
+   switchport access vlan 110
 !
 ```
 
@@ -252,9 +254,7 @@ interface Ethernet6
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.3/32 |
-| Loopback101 | Tenant_A_OPZone_VTEP_DIAGNOSTICS | Tenant_A_OPZone | 10.1.255.3/32 |
-| Loopback202 | Tenant_B_OPZone_VTEP_DIAGNOSTICS | Tenant_B_OPZone | 10.2.255.3/32 |
-| Loopback303 | Tenant_C_OPZone_VTEP_DIAGNOSTICS | Tenant_C_OPZone | 10.3.255.3/32 |
+| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.3/32 |
 
 ### Loopback Interfaces Device Configuration
 
@@ -267,20 +267,10 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
 !
-interface Loopback101
-   description Tenant_A_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_A_OPZone
-   ip address 10.1.255.3/32
-!
-interface Loopback202
-   description Tenant_B_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_B_OPZone
-   ip address 10.2.255.3/32
-!
-interface Loopback303
-   description Tenant_C_OPZone_VTEP_DIAGNOSTICS
-   vrf Tenant_C_OPZone
-   ip address 10.3.255.3/32
+interface Loopback100
+   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   vrf Tenant_A_OP_Zone
+   ip address 10.255.1.3/32
 !
 ```
 
@@ -290,45 +280,44 @@ interface Loopback303
 
 | Interface | Description | VRF | IP Address | Virtual | IP Address Secondary | Virtual |
 | --------- | ----------- | --- | ---------- | ------- | -------------------- | ------- |
-| Vlan110 | Tenant_A_OPZone_1 | Tenant_A_OPZone  | 10.1.10.1/24 | True | 10.1.100.1/24 | True |
-| Vlan111 | Tenant_A_OPZone_2 | Tenant_A_OPZone  | 10.1.11.1/24 | True | - | - |
-| Vlan210 | Tenant_B_OPZone_1 | Tenant_B_OPZone  | 10.2.10.1/24 | True | - | - |
-| Vlan211 | Tenant_B_OPZone_2 | Tenant_B_OPZone  | 10.2.11.1/24 | True | - | - |
-| Vlan310 | Tenant_C_OPZone_1 | Tenant_C_OPZone  | 10.3.10.1/24 | True | - | - |
-| Vlan311 | Tenant_C_OPZone_2 | Tenant_C_OPZone  | 10.3.11.1/24 | True | - | - |
+| Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone  | 10.1.10.1/24 | True | - | - |
+| Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone  | 10.1.11.1/24 | True | - | - |
+| Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone  | 10.2.10.1/24 | True | - | - |
+| Vlan211 | Tenant_B_OP_Zone_2 | Tenant_B_OP_Zone  | 10.2.11.1/24 | True | - | - |
+| Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone  | 10.3.10.1/24 | True | - | - |
+| Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone  | 10.3.11.1/24 | True | - | - |
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
 interface Vlan110
-   description Tenant_A_OPZone_1
-   vrf Tenant_A_OPZone
+   description Tenant_A_OP_Zone_1
+   vrf Tenant_A_OP_Zone
    ip address virtual 10.1.10.1/24
-   ip address virtual 10.1.100.1/24 secondary
 !
 interface Vlan111
-   description Tenant_A_OPZone_2
-   vrf Tenant_A_OPZone
+   description Tenant_A_OP_Zone_2
+   vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24
 !
 interface Vlan210
-   description Tenant_B_OPZone_1
-   vrf Tenant_B_OPZone
+   description Tenant_B_OP_Zone_1
+   vrf Tenant_B_OP_Zone
    ip address virtual 10.2.10.1/24
 !
 interface Vlan211
-   description Tenant_B_OPZone_2
-   vrf Tenant_B_OPZone
+   description Tenant_B_OP_Zone_2
+   vrf Tenant_B_OP_Zone
    ip address virtual 10.2.11.1/24
 !
 interface Vlan310
-   description Tenant_C_OPZone_1
-   vrf Tenant_C_OPZone
+   description Tenant_C_OP_Zone_1
+   vrf Tenant_C_OP_Zone
    ip address virtual 10.3.10.1/24
 !
 interface Vlan311
-   description Tenant_C_OPZone_2
-   vrf Tenant_C_OPZone
+   description Tenant_C_OP_Zone_2
+   vrf Tenant_C_OP_Zone
    ip address virtual 10.3.11.1/24
 !
 ```
@@ -345,7 +334,7 @@ interface Vlan311
 | VLAN | VNI |
 | ---- | --- |
 | 110 | 10110 |
-| 111 | 10111 |
+| 111 | 50111 |
 | 210 | 20210 |
 | 211 | 20211 |
 | 310 | 30310 |
@@ -355,9 +344,9 @@ interface Vlan311
 
 | VLAN | VNI |
 | ---- | --- |
-| Tenant_A_OPZone | 15001 |
-| Tenant_B_OPZone | 25002 |
-| Tenant_C_OPZone | 35003 |
+| Tenant_A_OP_Zone | 10 |
+| Tenant_B_OP_Zone | 20 |
+| Tenant_C_OP_Zone | 30 |
 
 ### VXLAN Interface Device Configuration
 
@@ -366,45 +355,33 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
-   vxlan vlan 111 vni 10111
+   vxlan vlan 111 vni 50111
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
-   vxlan vrf Tenant_A_OPZone vni 15001
-   vxlan vrf Tenant_B_OPZone vni 25002
-   vxlan vrf Tenant_C_OPZone vni 35003
+   vxlan vrf Tenant_A_OP_Zone vni 10
+   vxlan vrf Tenant_B_OP_Zone vni 20
+   vxlan vrf Tenant_C_OP_Zone vni 30
 !
 ```
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-### Virtual Router MAC Address Summary
+### Virtual Router MAC Address and Virtual Source NAT Summary
 
 **Virtual Router MAC Address:** 00:1c:73:00:dc:01
-
-### Virtual Router MAC Address Device Configuration
-
-```eos
-ip virtual-router mac-address 00:1c:73:00:dc:01
-```
-
-## Virtual Source NAT
-
 ### Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
-| Tenant_A_OPZone | 10.1.255.3 |
-| Tenant_B_OPZone | 10.2.255.3 |
-| Tenant_C_OPZone | 10.3.255.3 |
+| Tenant_A_OP_Zone | 10.255.1.3 |
 
-### Virtual Source NAT Device Configuration
+### Virtual Router MAC Address Device and Virtual Source NAT Configuration
 
 ```eos
-ip address virtual source-nat vrf Tenant_A_OPZone address 10.1.255.3
-ip address virtual source-nat vrf Tenant_B_OPZone address 10.2.255.3
-ip address virtual source-nat vrf Tenant_C_OPZone address 10.3.255.3
+ip virtual-router mac-address 00:1c:73:00:dc:01
+ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.3
 !
 ```
 
@@ -430,18 +407,18 @@ ip route vrf MGMT 0.0.0.0/0 192.168.2.1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | MGMT | False |
-| Tenant_A_OPZone | True |
-| Tenant_B_OPZone | True |
-| Tenant_C_OPZone | True |
+| Tenant_A_OP_Zone | True |
+| Tenant_B_OP_Zone | True |
+| Tenant_C_OP_Zone | True |
 
 ### IP Routing Device Configuration
 
 ```eos
 ip routing
 no ip routing vrf MGMT
-ip routing vrf Tenant_A_OPZone
-ip routing vrf Tenant_B_OPZone
-ip routing vrf Tenant_C_OPZone
+ip routing vrf Tenant_A_OP_Zone
+ip routing vrf Tenant_B_OP_Zone
+ip routing vrf Tenant_C_OP_Zone
 !
 ```
 
@@ -567,17 +544,17 @@ No Peer Filters defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Route Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ------------ | ------------ | ----- |
-| Tenant_A_OPZone | 192.168.255.3:15001 | both 15001:15001 | learned | 110-111 |
-| Tenant_B_OPZone | 192.168.255.3:25002 | both 25002:25002 | learned | 210-211 |
-| Tenant_C_OPZone | 192.168.255.3:35003 | both 35003:35003 | learned | 310-311 |
+| Tenant_A_OP_Zone | 192.168.255.3:10 | both 10:10 | learned | 110-111 |
+| Tenant_B_OP_Zone | 192.168.255.3:20 | both 20:20 | learned | 210-211 |
+| Tenant_C_OP_Zone | 192.168.255.3:30 | both 30:30 | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Route Target | Redistribute |
 | --- | ------------------- | ------------ | ------------ |
-| Tenant_A_OPZone | 192.168.255.3:15001 | import 15001:15001<br> export 15001:15001 | connected |
-| Tenant_B_OPZone | 192.168.255.3:25002 | import 25002:25002<br> export 25002:25002 | connected |
-| Tenant_C_OPZone | 192.168.255.3:35003 | import 35003:35003<br> export 35003:35003 | connected |
+| Tenant_A_OP_Zone | 192.168.255.3:10 | import 10:10<br> export 10:10 | connected |
+| Tenant_B_OP_Zone | 192.168.255.3:20 | import 20:20<br> export 20:20 | connected |
+| Tenant_C_OP_Zone | 192.168.255.3:30 | import 30:30<br> export 30:30 | connected |
 
 ### Router BGP Device Configuration
 
@@ -608,21 +585,21 @@ router bgp 65101
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan-aware-bundle Tenant_A_OPZone
-      rd 192.168.255.3:15001
-      route-target both 15001:15001
+   vlan-aware-bundle Tenant_A_OP_Zone
+      rd 192.168.255.3:10
+      route-target both 10:10
       redistribute learned
       vlan 110-111
    !
-   vlan-aware-bundle Tenant_B_OPZone
-      rd 192.168.255.3:25002
-      route-target both 25002:25002
+   vlan-aware-bundle Tenant_B_OP_Zone
+      rd 192.168.255.3:20
+      route-target both 20:20
       redistribute learned
       vlan 210-211
    !
-   vlan-aware-bundle Tenant_C_OPZone
-      rd 192.168.255.3:35003
-      route-target both 35003:35003
+   vlan-aware-bundle Tenant_C_OP_Zone
+      rd 192.168.255.3:30
+      route-target both 30:30
       redistribute learned
       vlan 310-311
    !
@@ -634,22 +611,22 @@ router bgp 65101
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
    !
-   vrf Tenant_A_OPZone
-      rd 192.168.255.3:15001
-      route-target import evpn 15001:15001
-      route-target export evpn 15001:15001
+   vrf Tenant_A_OP_Zone
+      rd 192.168.255.3:10
+      route-target import evpn 10:10
+      route-target export evpn 10:10
       redistribute connected
    !
-   vrf Tenant_B_OPZone
-      rd 192.168.255.3:25002
-      route-target import evpn 25002:25002
-      route-target export evpn 25002:25002
+   vrf Tenant_B_OP_Zone
+      rd 192.168.255.3:20
+      route-target import evpn 20:20
+      route-target export evpn 20:20
       redistribute connected
    !
-   vrf Tenant_C_OPZone
-      rd 192.168.255.3:35003
-      route-target import evpn 35003:35003
-      route-target export evpn 35003:35003
+   vrf Tenant_C_OP_Zone
+      rd 192.168.255.3:30
+      route-target import evpn 30:30
+      route-target export evpn 30:30
       redistribute connected
 !
 ```

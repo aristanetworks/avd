@@ -1,0 +1,8 @@
+{% if logging is defined %}
+{%     if logging.console is defined %}
+  console: {{ logging.console }}
+{%     endif %}
+{%     if logging.monitor is defined %}
+  monitor: {{ logging.monitor }}
+{%     endif %}
+{% endif %}

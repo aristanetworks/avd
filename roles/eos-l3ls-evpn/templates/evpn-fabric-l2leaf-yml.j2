@@ -9,6 +9,9 @@
 {% for l2leaf_node_group in l2leafs.node_groups | natural_sort %}
 {%     for node in l2leafs.node_groups[l2leaf_node_group].nodes | natural_sort %}
 {%         if node == inventory_hostname %}
+{%             set leaf.group = l2leaf_node_group %}
+{%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
+{%             set switch.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
 {%             if l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
 {%                 set leaf.spanning_tree_priority = l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority %}
 {%             else %}
@@ -19,9 +22,21 @@
 {%             else %}
 {%                 set switch.platform = l2leafs.defaults.platform %}
 {%             endif %}
-{%             set leaf.group = l2leaf_node_group %}
-{%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
-{%             set leaf.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
+{%             if l2leafs.node_groups[l2leaf_node_group].filter.tenants is defined %}
+{%                 set leaf.filter_tenants = l2leafs.node_groups[l2leaf_node_group].filter.tenants %}
+{%             else %}
+{%                 set leaf.filter_tenants = [ 'all' ] %}
+{%             endif %}
+{%             if l2leafs.node_groups[l2leaf_node_group].filter.tags is defined %}
+{%                 set leaf.filter_tags = l2leafs.node_groups[l2leaf_node_group].filter.tags %}
+{%             else %}
+{%                 set leaf.filter_tags = [ 'all' ] %}
+{%             endif %}
+{%             if l2leafs.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
+{%                 set leaf.parent_l3leafs = l2leafs.node_groups[l2leaf_node_group].parent_l3leafs %}
+{%             else %}
+{%                 set leaf.parent_l3leafs = l2leafs.defaults.parent_l3leafs %}
+{%             endif %}
 {%             if loop.length == 2 %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l2leaf_node_group %}
@@ -36,12 +51,14 @@
 {%                     set leaf.mlag_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
 {%                     set leaf.mlag_peer_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
 {%                 elif loop.index == 2 %}
 {%                     set leaf.mlag_role = "secondary" %}
 {%                     set leaf.mlag_peer = loop.previtem %}
 {%                     set leaf.mlag_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
 {%                     set leaf.mlag_peer_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
 {%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
 {%                 endif %}
 {%             else %}
 {%                 set leaf.mlag = false %}
@@ -49,11 +66,72 @@
 {%         endif %}
 {%     endfor %}
 {% endfor %}
+{# get allowed vrfs, svis and vlans from parent L3 Leafs #}
+{% set parentl3leaf = namespace() %}
+{% for l3leaf_node_group in l3leafs.node_groups | natural_sort %}
+{%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | natural_sort %}
+{%         if node == leaf.parent_l3leafs[0] %}
+{%             if l3leafs.node_groups[l3leaf_node_group].filter.tenants is defined %}
+{%                 set parentl3leaf.filter_tenants = l3leafs.node_groups[l3leaf_node_group].filter.tenants %}
+{%             else %}
+{%                 set parentl3leaf.filter_tenants = [ 'all' ] %}
+{%             endif %}
+{%             if l3leafs.node_groups[l3leaf_node_group].filter.tags is defined %}
+{%                 set parentl3leaf.filter_tags = l3leafs.node_groups[l3leaf_node_group].filter.tags %}
+{%             else %}
+{%                 set parentl3leaf.filter_tags = [ 'all' ] %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{# set leaf allowed vrfs, svis and vlans #}
+{% set leaf.vrfs = []  %}
+{% set leaf.svis = []  %}
+{% set leaf.vlans = []  %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenant in parentl3leaf.filter_tenants or "all" in parentl3leaf.filter_tenants %}
+{%         if tenants[tenant].vrfs is defined %}
+{%             for vrf in tenants[tenant].vrfs | natural_sort %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
+{%                     for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
+{%                         if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                             if svi_tag in parentl3leaf.filter_tags or "all" in parentl3leaf.filter_tags %}
+{%                                 do leaf.vrfs.append( vrf ) %}
+{%                                 do leaf.svis.append( svi ) %}
+{%                                 do leaf.vlans.append( svi ) %}
+{%                                 break %}
+{%                             endif %}
+{%                         endif %}
+{%                     endfor %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%         if tenants[tenant].l2vlans is defined %}
+{%             for l2vlan in tenants[tenant].l2vlans | natural_sort %}
+{%                 for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
+{%                     if vlan_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                         if vlan_tag in parentl3leaf.filter_tags or "all" in parentl3leaf.filter_tags %}
+{%                             do leaf.vlans.append( l2vlan ) %}
+{%                             break %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% set leaf.vrfs = leaf.vrfs | unique  %}
+
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
-platform: {{ switch.platform }}
+switch_platform: {{ switch.platform }}
 leaf_id: {{ leaf.id }}
-leaf_mgmt_ip: {{ leaf.mgmt_ip }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
+leaf_filter_tenants: {{ leaf.filter_tenants }}
+leaf_filter_tags: {{ leaf.filter_tags }}
+leaf_allowed_vrfs: {{ leaf.vrfs }}
+leaf_allowed_svis: {{ leaf.svis }}
+leaf_allowed_vlans: {{ leaf.vlans }}
 leaf_mlag: {{ leaf.mlag }}
 {% if leaf.mlag == true %}
 leaf_mlag_group: {{ leaf.mlag_group }}
@@ -64,15 +142,40 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
+{# Hardware Counters #}
+### Hardware Counter
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
 
 {# vlan allocation policy #}
-vlan_internal_allocation_policy:
-{% include 'base/vlan-internal-allocation-policy.j2' %}
+vlan_internal_order:
+{% include 'base/vlan-internal-order.j2' %}
 
+
+{# event monitor #}
+### Event Monitor ###
+event_monitor:
+{% include 'base/event-monitor.j2' %}
+
+{# load interval #}
+### Load Interval ###
+load_interval:
+{% include 'base/load-interval.j2' %}
+
+{# queue monitor length #}
+### Queue Monitor Lenght ###
+queue_monitor_length:
+{% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
 
 {# name servers #}
 ### Name Servers ###
@@ -84,15 +187,33 @@ name_server:
 ntp_server:
 {% include 'base/ntp-servers.j2' %}
 
+{# redundancy #}
+### Redundancy ###
+redundancy:
+{% include 'base/redundancy.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
 {% include 'base/leaf-spanning-tree.j2' %}
 
+{# unsupported transceiver #}
+{% include 'base/unsupported-transeiver.j2' %}
+
+{# aaa authorization #}
+### AAA authorization ###
+aaa_authorization:
+{% include 'base/aaa-authorization.j2' %}
+
 {# local users #}
 ### local users ###
 local_users:
 {% include 'base/local-users.j2' %}
+
+{# clock timezone #}
+### Clock Timezone ###
+clock:
+{% include 'base/clock-timezone.j2' %}
 
 {# VLANs #}
 ### VLANs ###
@@ -132,7 +253,7 @@ ethernet_interfaces:
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
-{% include 'base/leaf-mgmt-interface.j2' %}
+{% include 'base/mgmt-interface.j2' %}
 
 
 {# vlan interfaces #}
@@ -146,6 +267,11 @@ vlan_interfaces:
 tcam_profile:
 {% include 'base/tcam-profile.j2' %}
 
+{# mac address-table #}
+### MAC address table ###
+mac_address_table:
+{% include 'base/mac-address-table.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
@@ -153,3 +279,13 @@ static_routes:
 
 {# MLAG Configuration #}
 {% include 'mlag/leaf-mlag-configuration.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}
+
+{# management api http #}
+### Management API http ###
+management_api_http:
+{% include 'base/management-api-http.j2' %}

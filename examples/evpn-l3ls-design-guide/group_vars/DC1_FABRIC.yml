@@ -3,6 +3,9 @@
 
 fabric_name: DC1_FABRIC
 
+# OSPF Underlay
+underlay_routing_protocol: BGP
+
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]
 underlay_p2p_network_summary: 172.31.255.0/24
@@ -65,6 +68,9 @@ l3leafs:
   node_groups:
     DC1_LEAF1:
       bgp_as: 65101
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone ]
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -72,6 +78,9 @@ l3leafs:
           spine_interfaces: [ Ethernet1, Ethernet1 ]
     DC1_LEAF2:
       bgp_as: 65102
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app, db, vmotion, nfs ]
       nodes:
         DC1-LEAF2A:
           id: 2
@@ -83,6 +92,9 @@ l3leafs:
           spine_interfaces: [ Ethernet3, Ethernet3 ]
     DC1_SVC3:
       bgp_as: 65103
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ erp1 ]
       nodes:
         DC1-SVC3A:
           id: 4
@@ -96,6 +108,9 @@ l3leafs:
       platform: vEOS-LAB
       bgp_as: 65104
       spanning_tree_priority: 16384
+      filter:
+        tenants: [ all ]
+        tags: [ wan ]
       nodes:
         DC1-BL1A:
           id: 6
@@ -116,6 +131,9 @@ l2leafs:
   node_groups:
     DC1_L2LEAF4:
       uplink_interfaces: [ Ethernet11, Ethernet12 ]
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
       nodes:
         DC1-L2LEAF4A:
           id: 8
@@ -133,6 +151,9 @@ l2leafs:
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
     DC1_L2LEAF6:
+      filter:
+        tenants: [ all ]
+        tags: [ opzone, web, app, db ]
       nodes:
         DC1-L2LEAF6A:
           id: 12

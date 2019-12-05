@@ -1,26 +1,35 @@
 {# Leaf tenant vlan interfaces #}
-{% for tenant in tenants | natural_sort %}
+{% for tenant in tenants | natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is defined %}
+{%         for vrf in tenants[tenant].vrfs | natural_sort %}
+{%             if loop.first %}
 ## {{ tenant }} ##
-{%     for vrf in tenants[tenant].vrfs | natural_sort %}
-{%         if leaf.mlag == true %}
-  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].id - 1) }}:
+{%             endif %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | natural_sort if svi in leaf.svis %}
+{# Tenant VLAN interfaces #}
+  Vlan{{ svi }}:
+    tenant: {{ tenant }}
+    tags: {{ tenants[tenant].vrfs[vrf].svis[svi].tags }}
+    description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+    vrf: {{ vrf }}
+    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('prefix') }}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary is defined %}
+    ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
+{%                 endif %}
+    virtual: true
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
+    mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
+{%                 endif %}
+{# VLAN interface for iBGP peering in overlay VRFs #}
+{%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
+  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
     tenant: {{ tenant }}
     type: underlay_peering
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
-{%         endif %}
-{%         for svi in tenants[tenant].vrfs[vrf].svis | natural_sort %}
-  Vlan{{ svi }}:
-    tenant: {{ tenant }}
-    type: {{ tenants[tenant].vrfs[vrf].svis[svi].type }}
-    description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
-    vrf: {{ vrf }}
-    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('prefix') }}
-{%             if tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary is defined %}
-    ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
-{%             endif %}
-    virtual: true
+{%                 endif %}
+{%             endfor %}
 {%         endfor %}
-{%     endfor %}
+{%    endif %}
 {% endfor %}

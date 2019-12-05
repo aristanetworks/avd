@@ -1,0 +1,5 @@
+{# Internal VLAN allocation policy  #}
+{% if vlan_internal_order is defined and vlan_internal_order is not none %}
+vlan internal order {{ vlan_internal_order.allocation }} range {{ vlan_internal_order.range.beginning }} {{ vlan_internal_order.range.ending }}
+!
+{% endif %}

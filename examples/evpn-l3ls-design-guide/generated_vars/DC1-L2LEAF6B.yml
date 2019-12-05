@@ -2,11 +2,17 @@
 
 ### DC1-L2LEAF6B ###
 
+
 ### Leaf Info ###
 l2leaf_node_group: DC1_L2LEAF6
-platform: vEOS-LAB
+switch_platform: vEOS-LAB
 leaf_id: 13
-leaf_mgmt_ip: 192.168.2.116/24
+switch_mgmt_ip: 192.168.2.116/24
+leaf_filter_tenants: ['all']
+leaf_filter_tags: ['opzone', 'web', 'app', 'db']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone']
+leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 120, 121]
+leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121]
 leaf_mlag: True
 leaf_mlag_group: DC1_L2LEAF6
 leaf_mlag_role: secondary
@@ -14,6 +20,9 @@ leaf_mlag_peer: DC1-L2LEAF6A
 leaf_mlag_ip: 23
 leaf_mlag_peer_ip: 22
 leaf_mlag_peer_id: 12
+
+### Hardware Counter
+hardware_counters:
 
 ### Daemon TerminAttr
 daemon_terminattr:
@@ -25,11 +34,23 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
 
 ### Name Servers ###
 name_server:
@@ -48,10 +69,17 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
   priority: 16384
+
+### AAA authorization ###
+aaa_authorization:
+
 ### local users ###
 local_users:
   admin:
@@ -63,6 +91,9 @@ local_users:
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 
+### Clock Timezone ###
+clock:
+
 ### VLANs ###
 vlans:
 ## mlag vlans ##
@@ -73,26 +104,32 @@ vlans:
       - MLAG
 
 ## Tenant_A ##
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  140:
+    tenant: Tenant_A
+    name: Tenant_A_DB_BZone_1
+  141:
+    tenant: Tenant_A
+    name: Tenant_A_DB_Zone_2
   110:
     tenant: Tenant_A
-    name: Tenant_A_OPZone_1
+    name: Tenant_A_OP_Zone_1
   111:
     tenant: Tenant_A
-    name: Tenant_A_OPZone_2
+    name: Tenant_A_OP_Zone_2
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
 ## Tenant_B ##
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_2
 ## Tenant_C ##
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_2
 
 ### VRFs ###
 vrfs:
@@ -102,7 +139,7 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-LEAF2B_Po7
-    vlans: 2-4092
+    vlans: 110-111,120-121,130-131,140-141
     mode: trunk
     mlag: 1
 ## mlag peer-link ##
@@ -151,9 +188,13 @@ vlan_interfaces:
     description: MLAG_PEER
     ip_address: 10.255.252.23/31
     no_autostate: true
+    mtu: 1500
 
 ### TCAM Profiles ###
 tcam_profile:
+
+### MAC address table ###
+mac_address_table:
 
 ### static routes ###
 static_routes:
@@ -165,4 +206,19 @@ mlag_configuration:
   domain_id: DC1_L2LEAF6
   local_interface: Vlan4094
   peer_address: 10.255.252.22
+  peer_address_heartbeat:
+    peer_ip: 192.168.2.115
+    vrf: MGMT
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
+  reload_delay_mlag: 360
+  reload_delay_non_mlag: 300
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:

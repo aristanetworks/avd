@@ -18,6 +18,10 @@ interface Management1
 !
 ```
 
+## Hardware Counters
+
+No Hardware Counters defined
+
 ## TerminAttr Daemon
 
 ### TerminAttr Daemon Summary
@@ -30,7 +34,7 @@ interface Management1
 
 ```eos
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvcompression=gzip -ingestgrpcurl=192.168.2.201:9910 -taillogs -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -ntpvrf=MGMT
+   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.2.201:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
    no shutdown
 !
 ```
@@ -46,7 +50,7 @@ daemon TerminAttr
 ### Internal VLAN Allocation Policy Configuration
 
 ```eos
-vlan internal allocation policy ascending range 1006 1199
+vlan internal order ascending range 1006 1199
 !
 ```
 
@@ -133,33 +137,33 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OPZone_1 | none  |
-| 111 | Tenant_A_OPZone_2 | none  |
-| 210 | Tenant_B_OPZone_1 | none  |
-| 211 | Tenant_B_OPZone_2 | none  |
-| 310 | Tenant_C_OPZone_1 | none  |
-| 311 | Tenant_C_OPZone_2 | none  |
+| 110 | Tenant_A_OP_Zone_1 | none  |
+| 111 | Tenant_A_OP_Zone_2 | none  |
+| 120 | Tenant_A_WEB_Zone_1 | none  |
+| 121 | Tenant_A_WEBZone_2 | none  |
+| 130 | Tenant_A_APP_Zone_1 | none  |
+| 131 | Tenant_A_APP_Zone_2 | none  |
 
 ### VLANs Device Configuration
 
 ```eos
 vlan 110
-   name Tenant_A_OPZone_1
+   name Tenant_A_OP_Zone_1
 !
 vlan 111
-   name Tenant_A_OPZone_2
+   name Tenant_A_OP_Zone_2
 !
-vlan 210
-   name Tenant_B_OPZone_1
+vlan 120
+   name Tenant_A_WEB_Zone_1
 !
-vlan 211
-   name Tenant_B_OPZone_2
+vlan 121
+   name Tenant_A_WEBZone_2
 !
-vlan 310
-   name Tenant_C_OPZone_1
+vlan 130
+   name Tenant_A_APP_Zone_1
 !
-vlan 311
-   name Tenant_C_OPZone_2
+vlan 131
+   name Tenant_A_APP_Zone_2
 !
 ```
 
@@ -199,14 +203,14 @@ bfd multihop interval 1200 min_rx 1200 multiplier 3
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | MLAG ID | VRF | IP Address |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | ------- | --- | ---------- |
-| Port-Channel11 | DC1-LEAF2A_Po6 | 1500 | switched | trunk | 2-4092 | - | 11 | - | - |
+| Port-Channel11 | DC1-LEAF2A_Po6 | 1500 | switched | trunk | 110-111,120-121,130-131 | - | 11 | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 interface Port-Channel11
    description DC1-LEAF2A_Po6
-   switchport trunk allowed vlan 2-4092
+   switchport trunk allowed vlan 110-111,120-121,130-131
    switchport mode trunk
    mlag 11
 !
@@ -218,8 +222,8 @@ interface Port-Channel11
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet11 | DC1-LEAF2A_Ethernet6 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 11 | active |
-| Ethernet12 | DC1-LEAF2B_Ethernet6 | *1500 | *switched | *trunk | *2-4092 | - | - | - | 11 | active |
+| Ethernet11 | DC1-LEAF2A_Ethernet6 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 11 | active |
+| Ethernet12 | DC1-LEAF2B_Ethernet6 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 11 | active |
 
 *Inherited from Port-Channel Interface
 
@@ -248,13 +252,8 @@ No VLAN interfaces defined
 
 No VXLAN interface defined
 
-## Virtual Router MAC Address
+## Virtual Router MAC Address & Virtual Source NAT
 
-No Virtual Router MAC Address Defined
-
-## Virtual Source NAT
-
-No virtual source nat defined
 
 ## Static Routes
 

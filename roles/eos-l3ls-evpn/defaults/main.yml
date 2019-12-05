@@ -2,7 +2,14 @@
 
 MGMT_vrf_routing: false
 
-internal_vlan_allocation_policy:
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+
+# eAPI
+management_eapi:
+  enable_https: true
+
+internal_vlan_order:
   allocation: "ascending"
   range:
     beginning: 1006
@@ -20,6 +27,13 @@ spanning_tree_priority: 4096
 p2p_uplinks_mtu: 9000
 
 vxlan_vni_base: 10000
+
+underlay_routing_protocol: BGP
+
+# Underlay OSFP Defaults
+underlay_ospf_process_id: 100
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_max_lsa: 12000
 
 spine_bgp_defaults:
   - update wait-for-convergence
@@ -49,6 +63,8 @@ mlag_ibgp_peering_vrfs:
 # Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
 tcam_profile:
   vxlan_routing:
+    - 7500R
+    - 7500R3
     - 7280R
     - 7280R2
     - 7280R3

@@ -3,7 +3,11 @@
 ### DC1-SPINE1 ###
 
 ### Spine Info ###
-spine_platform: vEOS-LAB
+switch_platform: vEOS-LAB
+switch_mgmt_ip: 192.168.2.101/24
+
+### Hardware Counters
+hardware_counters:
 
 ### Daemon TerminAttr ###
 daemon_terminattr:
@@ -15,11 +19,23 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
 
 ### Name Servers ###
 name_server:
@@ -38,10 +54,16 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
   priority: 4096
+
+### AAA authorization ###
+aaa_authorization:
 
 ### local users ###
 local_users:
@@ -53,6 +75,9 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
 
 
 ### VRFs ###
@@ -68,37 +93,37 @@ bfd_multihop:
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet6:
-    description: P2P_UPLINK_TO_DC1-BL1A_Ethernet1
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.20/31
   Ethernet7:
-    description: P2P_UPLINK_TO_DC1-BL1B_Ethernet1
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.24/31
   Ethernet1:
-    description: P2P_UPLINK_TO_DC1-LEAF1A_Ethernet1
+    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.0/31
   Ethernet2:
-    description: P2P_UPLINK_TO_DC1-LEAF2A_Ethernet1
+    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.4/31
   Ethernet3:
-    description: P2P_UPLINK_TO_DC1-LEAF2B_Ethernet1
+    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.8/31
   Ethernet4:
-    description: P2P_UPLINK_TO_DC1-SVC3A_Ethernet1
+    description: P2P_LINK_TO_DC1-SVC3A_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.12/31
   Ethernet5:
-    description: P2P_UPLINK_TO_DC1-SVC3B_Ethernet1
+    description: P2P_LINK_TO_DC1-SVC3B_Ethernet1
     mtu: 1500
     type: routed
     ip_address: 172.31.255.16/31
@@ -110,6 +135,7 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.1/32
 
+
 ### Management Interfaces ###
 management_interfaces:
   Management1:
@@ -119,6 +145,9 @@ management_interfaces:
     gateway: 192.168.2.1
 ### TCAM Profiles ###
 tcam_profile:
+
+### MAC address table ###
+mac_address_table:
 
 ### static routes ###
 static_routes:
@@ -227,3 +256,15 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
+
+### Routing - OSPF ###
+router_ospf:
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:

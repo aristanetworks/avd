@@ -2,12 +2,18 @@
 
 ### DC1-BL1B ###
 
+
 ### Leaf Info ###
 l3leaf_node_group: DC1_BL1
-leaf_platform: vEOS-LAB
+switch_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 7
-leaf_mgmt_ip: 192.168.2.111/24
+switch_mgmt_ip: 192.168.2.111/24
+leaf_filter_tenants: ['all']
+leaf_filter_tags: ['wan']
+leaf_allowed_vrfs: ['Tenant_A_WAN_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_WAN_Zone']
+leaf_allowed_svis: [150, 250, 350]
+leaf_allowed_vlans: [150, 250, 350]
 leaf_mlag: True
 leaf_mlag_group: DC1_BL1
 leaf_mlag_role: secondary
@@ -15,6 +21,9 @@ leaf_mlag_peer: DC1-BL1A
 leaf_mlag_ip: 11
 leaf_mlag_peer_ip: 10
 leaf_mlag_peer_id: 6
+
+### Hardware Counters
+hardware_counters:
 
 ### Daemon TerminAttr
 daemon_terminattr:
@@ -26,11 +35,23 @@ daemon_terminattr:
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Logging ###
+logging:
 
 ### Name Servers ###
 name_server:
@@ -49,11 +70,18 @@ ntp_server:
     - 0.north-america.pool.ntp.org
     - 1.north-america.pool.ntp.org
 
+### Redundancy ###
+redundancy:
+
 ### Spanning-tree ###
 spanning_tree:
   mode: mstp
   priority: 16384
   no_spanning_tree_vlan: 4094
+
+
+### AAA authorization ###
+aaa_authorization:
 
 ### local users ###
 local_users:
@@ -65,6 +93,9 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
 
 ### VLANs ###
 vlans:
@@ -81,56 +112,47 @@ vlans:
       - MLAG
 
 ## Tenant_A ##
-  3000:
+  150:
     tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_OPZone
+    name: Tenant_A_WAN_Zone_1
+  3013:
+    tenant: Tenant_A
+    name: MLAG_iBGP_Tenant_A_WAN_Zone
     trunk_groups:
       - LEAF_PEER_L3
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OPZone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OPZone_2
 ## Tenant_B ##
-  3001:
+  250:
     tenant: Tenant_B
-    name: MLAG_iBGP_Tenant_B_OPZone
+    name: Tenant_B_WAN_Zone_1
+  3020:
+    tenant: Tenant_B
+    name: MLAG_iBGP_Tenant_B_WAN_Zone
     trunk_groups:
       - LEAF_PEER_L3
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OPZone_2
 ## Tenant_C ##
-  3002:
+  350:
     tenant: Tenant_C
-    name: MLAG_iBGP_Tenant_C_OPZone
+    name: Tenant_C_WAN_Zone_1
+  3030:
+    tenant: Tenant_C
+    name: MLAG_iBGP_Tenant_C_WAN_Zone
     trunk_groups:
       - LEAF_PEER_L3
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OPZone_2
 
 ### VRFs ###
 vrfs:
   MGMT:
     ip_routing: False
 ## Tenant_A ##
-  Tenant_A_OPZone:
+  Tenant_A_WAN_Zone:
     tenant: Tenant_A
     ip_routing: true
 ## Tenant_B ##
-  Tenant_B_OPZone:
+  Tenant_B_WAN_Zone:
     tenant: Tenant_B
     ip_routing: true
 ## Tenant_C ##
-  Tenant_C_OPZone:
+  Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
 
@@ -154,12 +176,12 @@ port_channel_interfaces:
 ### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
-    description: P2P_UPLINK_TO_DC1-SPINE1_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
     mtu: 1500
     type: routed
     ip_address: 172.31.255.25/31
   Ethernet2:
-    description: P2P_UPLINK_TO_DC1-SPINE2_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
     mtu: 1500
     type: routed
     ip_address: 172.31.255.27/31
@@ -181,24 +203,10 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.9/32
+
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     ip_address: 192.168.254.8/32
-## Tenant_A ##
-  Loopback101:
-    description: Tenant_A_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.255.9/32
-## Tenant_B ##
-  Loopback202:
-    description: Tenant_B_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_B_OPZone
-    ip_address: 10.2.255.9/32
-## Tenant_C ##
-  Loopback303:
-    description: Tenant_C_OPZone_VTEP_DIAGNOSTICS
-    vrf: Tenant_C_OPZone
-    ip_address: 10.3.255.9/32
 
 ### Management Interfaces ###
 management_interfaces:
@@ -211,76 +219,55 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
   Vlan4093:
-    description: MLAG_PEER_L3_iBGP
+    description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.11/31
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.11/31
     no_autostate: true
+    mtu: 1500
 ## Tenant_A ##
-  Vlan3000:
+  Vlan150:
+    tenant: Tenant_A
+    tags: ['wan']
+    description: Tenant_A_WAN_Zone_1
+    vrf: Tenant_A_WAN_Zone
+    ip_address: 10.1.40.1/24
+    virtual: true
+  Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
-    description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_OPZone"
-    vrf: Tenant_A_OPZone
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone"
+    vrf: Tenant_A_WAN_Zone
     ip_address: 10.255.251.11/31
-  Vlan110:
-    tenant: Tenant_A
-    type: host
-    description: Tenant_A_OPZone_1
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.10.1/24
-    ip_address_secondary: 10.1.100.1/24
-    virtual: true
-  Vlan111:
-    tenant: Tenant_A
-    type: host
-    description: Tenant_A_OPZone_2
-    vrf: Tenant_A_OPZone
-    ip_address: 10.1.11.1/24
-    virtual: true
 ## Tenant_B ##
-  Vlan3001:
+  Vlan250:
+    tenant: Tenant_B
+    tags: ['wan']
+    description: Tenant_B_WAN_Zone_1
+    vrf: Tenant_B_WAN_Zone
+    ip_address: 10.2.50.1/24
+    virtual: true
+  Vlan3020:
     tenant: Tenant_B
     type: underlay_peering
-    description: "MLAG_PEER_L3_iBGP: vrf Tenant_B_OPZone"
-    vrf: Tenant_B_OPZone
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone"
+    vrf: Tenant_B_WAN_Zone
     ip_address: 10.255.251.11/31
-  Vlan210:
-    tenant: Tenant_B
-    type: host
-    description: Tenant_B_OPZone_1
-    vrf: Tenant_B_OPZone
-    ip_address: 10.2.10.1/24
-    virtual: true
-  Vlan211:
-    tenant: Tenant_B
-    type: host
-    description: Tenant_B_OPZone_2
-    vrf: Tenant_B_OPZone
-    ip_address: 10.2.11.1/24
-    virtual: true
 ## Tenant_C ##
-  Vlan3002:
+  Vlan350:
+    tenant: Tenant_C
+    tags: ['wan']
+    description: Tenant_C_WAN_Zone_1
+    vrf: Tenant_C_WAN_Zone
+    ip_address: 10.3.50.1/24
+    virtual: true
+  Vlan3030:
     tenant: Tenant_C
     type: underlay_peering
-    description: "MLAG_PEER_L3_iBGP: vrf Tenant_C_OPZone"
-    vrf: Tenant_C_OPZone
+    description: "MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone"
+    vrf: Tenant_C_WAN_Zone
     ip_address: 10.255.251.11/31
-  Vlan310:
-    tenant: Tenant_C
-    type: host
-    description: Tenant_C_OPZone_1
-    vrf: Tenant_C_OPZone
-    ip_address: 10.3.10.1/24
-    virtual: true
-  Vlan311:
-    tenant: Tenant_C
-    type: host
-    description: Tenant_C_OPZone_2
-    vrf: Tenant_C_OPZone
-    ip_address: 10.3.11.1/24
-    virtual: true
 
 ### VxLAN interface ###
 vxlan_tunnel_interface:
@@ -293,46 +280,34 @@ vxlan_tunnel_interface:
     vxlan_vni_mappings:
       vlans:
 ## Tenant_A ##
-        110:
-          vni: 10110
-        111:
-          vni: 10111
+        150:
+          vni: 10150
 ## Tenant_B ##
-        210:
-          vni: 20210
-        211:
-          vni: 20211
+        250:
+          vni: 20250
 ## Tenant_C ##
-        310:
-          vni: 30310
-        311:
-          vni: 30311
+        350:
+          vni: 30350
       vrfs:
 ## Tenant_A ##
-        Tenant_A_OPZone:
-          vni: 15001
+        Tenant_A_WAN_Zone:
+          vni: 14
 ## Tenant_B ##
-        Tenant_B_OPZone:
-          vni: 25002
+        Tenant_B_WAN_Zone:
+          vni: 21
 ## Tenant_C ##
-        Tenant_C_OPZone:
-          vni: 35003
+        Tenant_C_WAN_Zone:
+          vni: 31
 
 ### TCAM Profiles ###
 tcam_profile:
 
+### MAC address table ###
+mac_address_table:
+
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 
 virtual_source_nat_vrfs:
-## Tenant_A ##
-  Tenant_A_OPZone:
-    ip_address: 10.1.255.9
-## Tenant_B ##
-  Tenant_B_OPZone:
-    ip_address: 10.2.255.9
-## Tenant_C ##
-  Tenant_C_OPZone:
-    ip_address: 10.3.255.9
 
 ### static routes ###
 static_routes:
@@ -360,7 +335,13 @@ mlag_configuration:
   domain_id: DC1_BL1
   local_interface: Vlan4094
   peer_address: 10.255.252.10
+  peer_address_heartbeat:
+    peer_ip: 192.168.2.110
+    vrf: MGMT
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
+  reload_delay_mlag: 360
+  reload_delay_non_mlag: 300
 
 ### route-maps ###
 route_maps:
@@ -421,75 +402,88 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
 ## Tenant_A ##
-    Tenant_A_OPZone:
-      rd: "192.168.255.9:15001"
+    Tenant_A_WAN_Zone:
+      rd: "192.168.255.9:14"
       route_targets:
         both:
-          asn: "15001:15001"
+          asn: "14:14"
       redistribute_routes:
         - learned
-      vlan: 110-111
+      vlan: 150
 ## Tenant_B ##
-    Tenant_B_OPZone:
-      rd: "192.168.255.9:25002"
+    Tenant_B_WAN_Zone:
+      rd: "192.168.255.9:21"
       route_targets:
         both:
-          asn: "25002:25002"
+          asn: "21:21"
       redistribute_routes:
         - learned
-      vlan: 210-211
+      vlan: 250
 ## Tenant_C ##
-    Tenant_C_OPZone:
-      rd: "192.168.255.9:35003"
+    Tenant_C_WAN_Zone:
+      rd: "192.168.255.9:31"
       route_targets:
         both:
-          asn: "35003:35003"
+          asn: "31:31"
       redistribute_routes:
         - learned
-      vlan: 310-311
+      vlan: 350
+  vlans:
   vrfs:
 ## Tenant_A ##
-    Tenant_A_OPZone:
-      rd: "192.168.255.9:15001"
+    Tenant_A_WAN_Zone:
+      rd: "192.168.255.9:14"
       route_targets:
         import:
           address_family: evpn
-          asn: "15001:15001"
+          asn: "14:14"
         export:
           address_family: evpn
-          asn: "15001:15001"
+          asn: "14:14"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
 ## Tenant_B ##
-    Tenant_B_OPZone:
-      rd: "192.168.255.9:25002"
+    Tenant_B_WAN_Zone:
+      rd: "192.168.255.9:21"
       route_targets:
         import:
           address_family: evpn
-          asn: "25002:25002"
+          asn: "21:21"
         export:
           address_family: evpn
-          asn: "25002:25002"
+          asn: "21:21"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
 ## Tenant_C ##
-    Tenant_C_OPZone:
-      rd: "192.168.255.9:35003"
+    Tenant_C_WAN_Zone:
+      rd: "192.168.255.9:31"
       route_targets:
         import:
           address_family: evpn
-          asn: "35003:35003"
+          asn: "31:31"
         export:
           address_family: evpn
-          asn: "35003:35003"
+          asn: "31:31"
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
         - connected
+
+### Routing - OSPF ###
+router_ospf:
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:

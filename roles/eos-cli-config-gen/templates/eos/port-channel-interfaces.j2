@@ -9,10 +9,13 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
    no switchport
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].vlans is defined %}
+{%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "access" %}
+   switchport access vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].vlans is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].mode is defined %}
+{%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
