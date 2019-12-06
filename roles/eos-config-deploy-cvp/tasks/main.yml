@@ -14,13 +14,13 @@
   tags: [build]
   template:
     src: "cvp-devices.j2"
-    dest: './generated_vars/cvp.yml'
+    dest: './generated_vars/{{inventory_hostname}}.yml'
   delegate_to: localhost
   run_once: true
 
 - name: "Load CVP device information for {{inventory_hostname}}"
   tags: [build, provision]
-  include_vars: './generated_vars/cvp.yml'
+  include_vars: './generated_vars/{{inventory_hostname}}.yml'
   # delegate_to: localhost
 
 - name: 'Collecting facts from CVP {{inventory_hostname}}.'
@@ -56,8 +56,8 @@
     state: present
   register: CVP_DEVICES_RESULTS
 
-- name: "Execute pending tasks on {{inventory_hostname}}"
-  tags: [apply]
-  arista.cvp.cv_task:
-    tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
-    wait: 3600
+# - name: "Execute pending tasks on {{inventory_hostname}}"
+#   tags: [apply]
+#   arista.cvp.cv_task:
+#     tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
+#     wait: 3600

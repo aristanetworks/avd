@@ -26,6 +26,8 @@ It helps to demonstrate how to bring up an Arista EVPN/VXLAN Fabric from the fir
 
 > Lab is based on GNS3 topology and a CloudVision server running on a VMware instance.
 
+For a complete demo with __ansible-avd__ and __ansible-cvp__, you can visit [Ansible Arista Validated Design with CloudVision](https://github.com/titom73/ansible-avd-cloudvision-demo)
+
 ## How it works
 
 This example use following specific resources:
