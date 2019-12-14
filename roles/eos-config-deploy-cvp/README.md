@@ -1,31 +1,104 @@
-Role Name
+eos-config-deploy-cvp
 =========
 
-A brief description of the role goes here.
+__eos-config-deploy-cvp__ is a module in charge of publishing AVD configuration to a CloudVision instance.
 
 Requirements
 ------------
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+To use this role, you must follow next requirements:
+
+- arista.cvp collection
+
+```
+$ ansible-galaxy collection install arista.cvp
+```
+
+- Python libraies:
+
+```
+$ pip install ansible>=2.9.0rc4,<2.10
+$ pip install requests==2.22.0
+$ pip install treelib==1.5.5
+```
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Some variables are used to capture customer's inputs:
+
+- Filter to apply on cv_device to target only devices involved in Fabric
+
+```yaml
+device_filter: 'all'
+```
+
+- Define inventory group to consider root of container topology
+```yaml
+container_root: '{{ fabric_name }}'
+```
+
+- Configure prefix to append to configlets on CloudVision
+```yaml
+configlets_prefix: 'AVD-{{ fabric_name }}-'
+```
+
+- Define whether Ansible must create/update or delete CloudVision topology
+```yaml
+state: present
+```
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- arista.cvp collection
+
+```
+$ ansible-galaxy collection install arista.cvp
+```
+
+Inventory file must use `YAML` syntax and have at least one group named __CVP__
+
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Below is an example of how to use this role to create topology on CloudVision:
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+```yaml
+- name: Configuration deployment with CVP
+  hosts: CVP
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: run CVP provisioning
+      import_role:
+         name: eos-config-deploy-cvp
+      vars:
+        container_root: DC1
+        configlets_prefix: 'DC1-AVD'
+        device_filter: 'A-'
+        state: present
+```
+
+Below is an example of how to use this role to delete topology on CloudVision:
+
+```yaml
+- name: Configuration deployment with CVP
+  hosts: CVP
+  connection: local
+  gather_facts: no
+  tasks:
+    - name: run CVP provisioning
+      import_role:
+         name: eos-config-deploy-cvp
+      vars:
+        container_root: DC1
+        configlets_prefix: 'DC1-AVD'
+        device_filter: 'A-'
+        state: absent
+```
+
 
 License
 -------

@@ -1,13 +1,13 @@
 ---
-# tasks file for eos-config-deploy-cvp
+# Common action for all states.
 - name: generate intented variables
   tags: [always]
   inventory_to_container:
     inventory: 'inventory.yml'
-    container_root: 'DC1_FABRIC'
+    container_root: '{{ container_root }}'
     configlet_dir: 'intended_configs'
-    configlet_prefix: 'AVD'
-    # destination: 'generated_vars/{{inventory_hostname}}.yml'
+    configlet_prefix: '{{ configlets_prefix }}'
+    destination: '{{playbook_dir}}/generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
 - name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
@@ -20,44 +20,19 @@
 
 - name: "Load CVP device information for {{inventory_hostname}}"
   tags: [build, provision]
-  include_vars: './generated_vars/{{inventory_hostname}}.yml'
+  include_vars: '{{playbook_dir}}/generated_vars/{{inventory_hostname}}.yml'
   # delegate_to: localhost
 
-- name: 'Collecting facts from CVP {{inventory_hostname}}.'
-  tags: [always]
-  arista.cvp.cv_facts:
-  register: CVP_FACTS
+#################################################
 
-- name: 'Create configlets on CVP {{inventory_hostname}}.'
-  tags: [provision]
-  arista.cvp.cv_configlet:
-    cvp_facts: "{{CVP_FACTS.ansible_facts}}"
-    configlets: "{{CVP_VARS.CVP_CONFIGLETS}}"
-    configlet_filter: ["AVD"]
+# If state=present launch creation/update process
+- name: Start creation/update process.
+  include_tasks: ./present.yml
+  when: state=="present"
 
-- name: "Building Container topology on {{inventory_hostname}}"
-  tags: [provision]
-  arista.cvp.cv_container:
-    topology: '{{CVP_CONTAINERS}}'
-    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
-    save_topology: true
+#################################################
 
-- name: 'Refreshing facts from CVP {{inventory_hostname}}.'
-  tags: [always]
-  arista.cvp.cv_facts:
-  register: CVP_FACTS
-
-- name: "Configure devices on {{inventory_hostname}}"
-  tags: [provision, apply]
-  arista.cvp.cv_device:
-    devices: "{{CVP_DEVICES}}"
-    cvp_facts: '{{CVP_FACTS.ansible_facts}}'
-    device_filter: ['DC1']
-    state: present
-  register: CVP_DEVICES_RESULTS
-
-# - name: "Execute pending tasks on {{inventory_hostname}}"
-#   tags: [apply]
-#   arista.cvp.cv_task:
-#     tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
-#     wait: 3600
+# If state=absent launch deletion process
+- name: Start deletion process.
+  include_tasks: ./absent.yml
+  when: state=="absent"

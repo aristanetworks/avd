@@ -62,7 +62,7 @@ $ pip install -r requirements.txt
 You also have to install `arista.cvp` collection to be able to connect to CloudVision
 
 ```shell
-$ ansible-galaxy collection install arista-cvp-1.0.1.tar.gz -p collections
+$ ansible-galaxy collection install arista.cvp -p collections
 ```
 
 ### 2. Configure DHCP server on CloudVision
@@ -188,7 +188,7 @@ In the inventory, update CloudVision information to target your own setup:
 # inventory.yml
 all:
   children:
-    CVP:
+    CloudVision:
       hosts:
         cvp:
           ansible_httpapi_host: 10.83.28.164

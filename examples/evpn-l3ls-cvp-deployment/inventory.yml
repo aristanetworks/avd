@@ -1,8 +1,8 @@
 all:
   children:
-    CVP:
+    CloudVision:
       hosts:
-        cvp:
+        DC1-CloudVision:
           ansible_httpapi_host: 10.83.28.164
           ansible_host: 10.83.28.164
           ansible_connection: httpapi

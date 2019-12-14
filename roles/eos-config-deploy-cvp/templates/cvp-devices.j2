@@ -13,7 +13,7 @@ CVP_DEVICES:
 {%    endif %}
 {% endfor %}
     configlets:
-        - AVD_{{device}}
+        - {{configlets_prefix}}{{device}}
     imageBundle: []
 {% endfor %}
 CVP_CONTAINERS:

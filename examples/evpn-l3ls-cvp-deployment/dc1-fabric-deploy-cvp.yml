@@ -14,10 +14,15 @@
          name: eos-cli-config-gen
 
 - name: Configuration deployment with CVP
-  hosts: CVP
+  hosts: CloudVision
   connection: local
   gather_facts: no
   tasks:
     - name: run CVP provisioning
       import_role:
          name: eos-config-deploy-cvp
+      vars:
+        container_root: 'DC1'
+        configlets_prefix: 'DC1-AVD-'
+        device_filter: 'DC1-'
+        state: present
