@@ -49,7 +49,7 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if router_bgp.redistribute_routes is defined %}
+{%     if router_bgp.redistribute_routes is defined and router_bgp.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.redistribute_routes | natural_sort %}
    redistribute {{ redistribute_route }} route-map {{ router_bgp.redistribute_routes[redistribute_route].route_map }}
 {%         endfor %}
