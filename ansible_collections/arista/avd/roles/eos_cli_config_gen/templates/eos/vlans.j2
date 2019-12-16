@@ -1,0 +1,13 @@
+{# eos - VLANs #}
+{% if vlans is defined and vlans is not none %}
+{%     for vlan in vlans | arista.avd.natural_sort %}
+vlan {{ vlan }}
+   name {{ vlans[vlan].name }}
+{%         if vlans[vlan].trunk_groups is defined %}
+{%             for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
+   trunk group {{ trunk_group }}
+{%             endfor %}
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}

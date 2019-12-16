@@ -1,0 +1,18 @@
+{# eos - local users #}
+{% if local_users is defined and local_users is not none %}
+### Local Users Summary
+
+| User | Privilege | role |
+| ---- | --------- | ---- |
+{%     for local_user in local_users | arista.avd.natural_sort %}
+| {{ local_user }} | {{ local_users[local_user].privilege }} | {{ local_users[local_user].role }} |
+{%     endfor %}
+
+### Local Users Device Configuration
+
+```eos
+{% include 'eos/local-users.j2' %}
+```
+{% else %}
+No Users Defined
+{% endif %}

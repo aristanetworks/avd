@@ -1,0 +1,19 @@
+{# VLANs Summary #}
+{% if vlans is defined and vlans is not none %}
+### VLANs Summary
+
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+{%     for vlan in vlans | arista.avd.natural_sort %}
+| {{ vlan }} | {{ vlans[vlan].name }} |
+{%-        if vlans[vlan].trunk_groups is defined %}{% for trunk_group in vlans[vlan].trunk_groups %} {{ trunk_group }} {% endfor %}{% else %} none {% endif %} |
+{%     endfor %}
+
+### VLANs Device Configuration
+
+```eos
+{% include 'eos/vlans.j2' %}
+```
+{% else %}
+No VLANs defined
+{% endif %}

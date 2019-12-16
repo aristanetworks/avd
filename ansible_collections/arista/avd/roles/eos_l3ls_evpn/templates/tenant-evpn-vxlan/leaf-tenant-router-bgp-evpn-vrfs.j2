@@ -1,0 +1,24 @@
+{# Leaf tenant router bgp evpn VRFs #}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+## {{ tenant }} ##
+{%     if tenants[tenant].vrfs is defined %}
+{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if vrf in leaf.vrfs %}
+    {{ vrf }}:
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      route_targets:
+        import:
+          address_family: evpn
+          asn: "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+        export:
+          address_family: evpn
+          asn: "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+{%             if leaf.mlag == true %}
+      neighbors:
+        {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+{%             endif %}
+      redistribute_routes:
+        - connected
+{%         endfor %}
+{%    endif %}
+{% endfor %}

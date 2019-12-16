@@ -1,0 +1,12 @@
+{# eos - IP Routing #}
+ip routing
+{% if vrfs is defined %}
+{%     for vrf in vrfs | arista.avd.natural_sort %}
+{%         if vrfs[vrf].ip_routing == true %}
+ip routing vrf {{ vrf }}
+{%         elif vrfs[vrf].ip_routing == false %}
+no ip routing vrf {{ vrf }}
+{%         endif %}
+{%     endfor %}
+!
+{% endif %}
