@@ -1,0 +1,6 @@
+{% for local_user in local_users | arista.avd.natural_sort %}
+  {{ local_user }}:
+    privilege: {{ local_users[local_user].privilege }}
+    role: {{ local_users[local_user].role }}
+    sha512_password: {{ local_users[local_user].sha512_password }}
+{% endfor %}

@@ -1,0 +1,12 @@
+{% if ip_virtual_router_mac_address is defined or virtual_source_nat_vrfs is defined %}
+{%     if ip_virtual_router_mac_address is defined and ip_virtual_router_mac_address is not none %}
+ip virtual-router mac-address {{ ip_virtual_router_mac_address }}
+{%     endif %}
+{# eos - virtual source-nat - introduced in 4.21 #}
+{%     if virtual_source_nat_vrfs is defined and virtual_source_nat_vrfs is not none  %}
+{%         for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
+ip address virtual source-nat vrf {{ vrf }} address {{ virtual_source_nat_vrfs[vrf].ip_address }}
+{%         endfor %}
+{%     endif %}
+!
+{% endif %}

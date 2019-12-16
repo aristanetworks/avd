@@ -1,7 +1,0 @@
-{# eos - VRFs #}
-{% if vrfs is defined and vrfs is not none %}
-{%     for vrf in vrfs | natural_sort %}
-vrf instance {{ vrf }}
-!
-{%     endfor %}
-{% endif %}

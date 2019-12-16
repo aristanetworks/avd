@@ -1,0 +1,37 @@
+{# eos- Port-Channel Interfaces #}
+{% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+interface {{ port_channel_interface }}
+   description {{ port_channel_interfaces[port_channel_interface].description }}
+{%         if port_channel_interfaces[port_channel_interface].mtu is defined %}
+   mtu {{ port_channel_interfaces[port_channel_interface].mtu }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
+   no switchport
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "access" %}
+   switchport access vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].vlans is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
+   switchport trunk allowed vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
+   switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
+{%             for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
+   switchport trunk group {{ trunk_group }}
+{%             endfor %}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].mlag is defined %}
+   mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].vrf is defined %}
+   vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ip_address is defined %}
+   ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}
