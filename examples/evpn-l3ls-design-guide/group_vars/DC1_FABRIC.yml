@@ -3,9 +3,6 @@
 
 fabric_name: DC1_FABRIC
 
-# OSPF Underlay
-underlay_routing_protocol: BGP
-
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]
 underlay_p2p_network_summary: 172.31.255.0/24
