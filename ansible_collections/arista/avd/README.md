@@ -13,13 +13,13 @@
 
 ## About
 
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision platform (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of ansible roles and modules to accelerate
+[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision platform (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are design to be customized and extended to your needs!
 
 ## Roles Overview
 
 This repository provides roles for Ansible's collection __arista.avd__ with following content:
 
-- [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opiniated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plave with an EVPN Control plane.
+- [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opiniated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
 - [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate eos cli syntax and device documentation.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eapi.
 
@@ -60,6 +60,6 @@ Support for this `arista.avd` collection is provided by the community directly i
 
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
 
-You can also open an [issue](https://github.com/aristanetworks/ansible-avp/issues) to report any problem or to submit enhancement.
+You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
 
 A more complete [guide for contribution](contributing.md) is available in the repository
