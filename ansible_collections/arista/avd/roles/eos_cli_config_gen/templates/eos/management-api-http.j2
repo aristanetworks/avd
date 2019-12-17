@@ -1,0 +1,18 @@
+{% if management_api_http is defined and management_api_http is not none %}
+management api http-commands
+{%     if management_api_http.enable_https is defined and management_api_http.enable_https == true %}
+{%     else %}
+   no protocol https
+{%     endif %}
+{%     if management_api_http.enable_http is defined and management_api_http.enable_http == true %}
+   protocol http
+{%     endif %}
+   no shutdown
+{%     if management_api_http.enable_vrfs is defined %}
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort %}
+   !
+   vrf {{ vrf }}
+      no shutdown
+{%         endfor %}
+{%     endif %}
+{% endif %}

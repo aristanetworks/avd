@@ -1,0 +1,25 @@
+{% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+### Port-Channel Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | MLAG ID | VRF | IP Address |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | ------- | --- | ---------- |
+{%   for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].description }} |
+{%-    if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu  != 1500  %} {{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} 1500 {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %} {{ port_channel_interfaces[port_channel_interface].type }} {% else %} switched {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].mode is defined %} {{ port_channel_interfaces[port_channel_interface].mode }} {% else %} access {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].vlans is defined %} {{ port_channel_interfaces[port_channel_interface].vlans }} {% else %} - {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].trunk_groups is defined %} {% for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}{{ trunk_group }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% else %} - {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].mlag is defined %} {{ port_channel_interfaces[port_channel_interface].mlag }} {% else %} - {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].vrf is defined %} {{ port_channel_interfaces[port_channel_interface].vrf }} {% else %} - {% endif -%} |
+{%-    if port_channel_interfaces[port_channel_interface].ip_address is defined %} {{ port_channel_interfaces[port_channel_interface].ip_address }} {% else %} - {% endif -%} |
+{%   endfor %}
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+{% include 'eos/port-channel-interfaces.j2' %}
+```
+{% else %}
+No Port-Channels defined
+{% endif %}

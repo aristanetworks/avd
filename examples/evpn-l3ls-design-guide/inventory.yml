@@ -45,13 +45,15 @@ all:
                     DC1-L2LEAF6B:
 
           vars:
-            ansible_connection: network_cli
+            ansible_connection: httpapi
             ansible_network_os: eos
             ansible_user: admin
             # should use vault for passwords - leaving un-encrypted for ease of sharing for labs
             ansible_ssh_pass: arista123
             ansible_become: yes
             ansible_become_method: enable
+            ansible_httpapi_use_ssl: true
+            ansible_httpapi_validate_certs: false
 
         DC1_TENANTS_NETWORKS:
           children:

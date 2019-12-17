@@ -1,0 +1,30 @@
+{# eos - router ospf #}
+{% if router_ospf is defined and router_ospf is not none %}
+{%     for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
+{%         if router_ospf.process_ids[process_id].vrf is defined %}
+router ospf {{ process_id }} vrf {{ router_ospf.process_ids[process_id].vrf }}
+{%         else %}
+router ospf {{ process_id }}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].router_id is defined %}
+   router-id {{ router_ospf.process_ids[process_id].router_id }}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].passive_interface_default is defined and router_ospf.process_ids[process_id].passive_interface_default == true %}
+   passive-interface default
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].no_passive_interfaces is defined %}
+{%             for interface in router_ospf.process_ids[process_id].no_passive_interfaces %}
+   no passive-interface {{ interface }}
+{%             endfor %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].network_prefixes is defined %}
+{%             for network_prefix in router_ospf.process_ids[process_id].network_prefixes | arista.avd.natural_sort %}
+   network {{ network_prefix }} area {{ router_ospf.process_ids[process_id].network_prefixes[network_prefix].area }}
+{%             endfor %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].max_lsa is defined %}
+   max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}
