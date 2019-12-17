@@ -3,7 +3,7 @@
 - name: generate intented variables
   tags: [always]
   inventory_to_container:
-    inventory: 'inventory.yml'
+    inventory: '{{ inventory_file }}'
     container_root: '{{ container_root }}'
     configlet_dir: 'intended_configs'
     configlet_prefix: '{{ configlets_prefix }}'
