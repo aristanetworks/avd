@@ -70,10 +70,13 @@ import glob
 import os
 import json
 import yaml
-import pprint
 from treelib import Node, Tree
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
+
+# Root container on CloudVision.
+# Shall not be changed unless CloudVision changes it in the core.
+CVP_ROOT_CONTAINER = 'Tenant'
 
 
 def isIterable( testing_object= None):
@@ -240,6 +243,41 @@ def get_devices(dict_inventory, search_container=None, devices=list()):
     return devices
 
 
+def get_containers(inventory_content, parent_container):
+    """
+    Build Container topology to build on CoudVision.
+
+    Parameters
+    ----------
+    inventory_content : dict
+        Inventory loaded using a YAML input.
+
+    Returns
+    -------
+    json
+        CVP Container structure to use with cv_container.
+    """
+    serialized_inventory = serialize(dict_inventory=inventory_content)
+    tree_dc = serialized_inventory.subtree(parent_container)
+    container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
+    container_json = {}
+    for container in container_list:
+        data = dict()
+        if container != CVP_ROOT_CONTAINER:
+            parent = tree_dc.parent(container)
+            if container == parent_container:
+                data['parent_container'] = CVP_ROOT_CONTAINER
+            elif parent.tag != CVP_ROOT_CONTAINER:
+                if isLeaf(tree=tree_dc, nid=container):
+                    devices = get_devices(dict_inventory=inventory_content,
+                                          search_container=container,
+                                          devices=list())
+                    data['devices'] = devices
+                data['parent_container'] = parent.tag
+            container_json[container] = data
+    return container_json
+
+
 if __name__ == '__main__':
     """ Main entry point for module execution."""
     argument_spec = dict(
@@ -254,34 +292,21 @@ if __name__ == '__main__':
                            supports_check_mode=False)
     result = dict(changed=False)
 
-    # "ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
-    inventory_file = module.params['inventory']
-    parent_container = module.params['container_root']
-
-    # Build containers & devices topology
-    inventory_content = str()
-    with open(inventory_file, 'r') as stream:
-        try:
-            inventory_content = yaml.safe_load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-    serialized_inventory = serialize(dict_inventory=inventory_content)
-    tree_dc = serialized_inventory.subtree(parent_container)
-    container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
-    container_json = {}
-    for container in container_list:
-        data = dict()
-        if container != 'Tenant':
-            parent = tree_dc.parent(container)
-            if container == parent_container:
-                data['parent_container'] = 'Tenant'
-            elif parent.tag != 'Tenant':
-                if isLeaf(tree=tree_dc, nid=container):
-                    devices = get_devices(dict_inventory=inventory_content, search_container=container, devices=list())
-                    data['devices'] = devices
-                data['parent_container'] = parent.tag
-            container_json[container] = data
-    result['CVP_TOPOLOGY'] = container_json
+    # Build cv_container structure from YAML inventory.
+    if (module.params['inventory'] is not None and
+            module.params['container_root'] is not None):
+        # "ansible-avd/examples/evpn-l3ls-cvp-deployment/inventory.yml"
+        inventory_file = module.params['inventory']
+        parent_container = module.params['container_root']
+        # Build containers & devices topology
+        inventory_content = str()
+        with open(inventory_file, 'r') as stream:
+            try:
+                inventory_content = yaml.safe_load(stream)
+            except yaml.YAMLError as exc:
+                print(exc)
+        result['CVP_TOPOLOGY'] = get_containers(inventory_content=inventory_content,
+                                                parent_container=parent_container)
 
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:
@@ -292,4 +317,5 @@ if __name__ == '__main__':
     if module.params['destination'] is not None:
         with open(module.params['destination'], 'w') as file:
             documents = yaml.dump(result, file)
+
     module.exit_json(**result)
