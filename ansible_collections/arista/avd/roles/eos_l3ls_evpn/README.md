@@ -1,38 +1,77 @@
-Role Name
-=========
+# Ansible Role: eos_l3ls_evpn
 
-A brief description of the role goes here.
+- [Ansible Role: eos_l3ls_evpn](#ansible-role-eosl3lsevpn)
+  - [Overview](#overview)
+  - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Requirements](#requirements)
+  - [Role Variables](#role-variables)
+  - [Example Playbook](#example-playbook)
+  - [License](#license)
 
-Requirements
-------------
+## Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+**eos_l3ls_evpn** is a role that provides an abstrated data model to deploy a L3 VXLAN/EVPN Leaf and Spine Fabric. The role helps network engineers deploy Arista L3 Leaf & Spine fabric underlay and overlay network services with consistency. The role is designed to easily be extended leveraging a __*"stackable template architecture"*__. The role is design to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration, and applied using a config replace strategy with with either the **eos_config_deploy_eapi** or **eos_config_deploy_cvp** roles. The role is design to work completely offline and doesn't require connectivity to any devices.
 
-Role Variables
---------------
+## Role Inputs and Outputs
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+Figure 1 below, provides a visualization of the roles inputs and outputs and tasks in order executed by the role.
 
-Dependencies
-------------
+**Inputs:**
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- Desired variables are defined in: role defaults, group_vars and host_vars variables.
+- As mentionned in the overview, if desired, the role can be extended to leverage data from dynamic sources such as an IPAM.
 
-Example Playbook
-----------------
+**Outputs:**
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- A structure EOS configuration file in yaml format. This provides the follow benefits:
+  - First, this allows to naturally detect duplicate entries from input, as yaml dictionaries don't process duplicate keys.
+  - Leverage the structure data to create near perfect eos cli configuration.
+  - Leverage the structure data to create end user documentation.
+  - Leverage the structure data to for pre and post fabric tests.
+- Fabric Documentation in Markdown format.
+- Leaf and Spine Point-To-Point Links summary in csv format.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+**Tasks:**
 
-License
--------
+1. Generate device configuration in structured format (yaml).
+2. Include device structured configuration, that was previously generated.
+3. Generate EVPN fabric documentation in Markdown Format.
+4. Generate Leaf and Spine Point-To-Point Links summary in csv format.
 
-BSD
+<p align="center">
+  <img src='media/figure-1-role-eos_l3ls_evpn.png' alt='figure 1: ansible role eos_l3ls_evpn'/>
+</p>
 
-Author Information
-------------------
+## Requirements
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+**Ansible Collections:**
+
+- arista.avd collection
+- arista.cvp collection, if deploying via cvp
+
+```bash
+ansible-galaxy collection install arista.avd
+ansible-galaxy collection install arista.cvp
+```
+
+**Python:** Python 3.6.8 or later
+
+**Python Libraries:**
+
+- ansible 2.9.x
+- requests 2.22.0
+- treelib 1.5.5
+
+```bash
+pip3 install ansible==2.9.2
+pip3 instal requests==2.22.0
+pip3 instal treelib==1.5.5
+```
+
+## Role Variables
+
+## Example Playbook
+
+## License
+
+Project is published under [Apache 2.0 License](../../../../../LICENSE)
