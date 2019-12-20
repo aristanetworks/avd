@@ -53,7 +53,9 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 - EOS 4.21.8M or later
 
-**Python:** Python 3.6.8 or later
+**Python:**
+
+- Python 3.6.8 or later
 
 **Supported Ansible Versions:**
 
@@ -85,25 +87,33 @@ duplicate_dict_key=error
 
 ## Role Variables
 
+The role variables are documented inline within yaml formated output with: "< >"
+Some variables are required while others are optional.
+Default values, are stored in the role defaults [main.yml](./defaults/main.yml) file.
+
+Role variable have been grouped by configuration elements, and are typically stored in different group_vars files.
+
 ### Common Device Configuration
+
+**Variable and Options:**
 
 ```yaml
 # Clock timezone | Optional
-timezone: <timezone>
+timezone: < timezone >
 
-# Dictionary of local users | all fields required
+# Dictionary of local users | Required
 local_users:
-  <username_1>:
+  < username_1 >:
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
     role: < Specify a role for the user >
     sha512_password: "< SHA512 ENCRYPTED password >"
 
-  <username_2>:
+  < username_2 >:
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
     role: < Specify a role for the user >
     sha512_password: "< SHA512 ENCRYPTED password >"
 
-# Management eAPI | enable by default
+# Management eAPI | Required
 # Default is https management eAPI enabled
 management_eapi:
   enable_http: < boolean | default -> false >
@@ -112,27 +122,111 @@ management_eapi:
 # CloudVision - Telemetry Agent (TerminAttr) configuration | Optional
 cvp_instance_ip: < IPv4 address >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
-
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
-terminattr_smashexcludes: "< smash excludes default -> ale,flexCounter,hardware,kni,pulse,strata >"
-terminattr_ingestexclude: "< ingest excludes default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
+terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
+terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
 
 
-# Specify Management interface default gateway.
+# Management interface configuration | Required
+mgmt_vrf_routing: < boolean | default -> false >
+mgmt_interface: < mgmt_interface | default -> Management1 >
+mgmt_interface_vrf: < vrf_name | default -> MGMT >
 mgmt_gateway: < IPv4 address >
 
-# list of dns servers.
+# list of DNS servers | Optional
 name_servers:
- - < IPv4 address 1>
- - < IPv4 address 2>
+ - < IPv4 address 1 >
+ - < IPv4 address 2 >
 
-# List of NTP Servers IP or DNS name
+# List of NTP Servers IP or DNS name | Optional
 # The first NTP server in the list will be preferred
-# NTP request will be sourced from <management_vrf>
+# NTP request will be sourced from < management_interface_vrf >
 ntp_servers:
- - < ntp_server_1>
- - < ntp_server_1>
+ - < ntp_server_1 >
+ - < ntp_server_1 >
+
+# Internal vlan allocation order and range | Required
+internal_vlan_order:
+  allocation: < ascending or descending | default -> ascending >
+  range:
+    beginning: < vlan_id | default -> 1006 >
+    ending: < vlan_id | default -> 1199 >
+
+# Redundancy for chassis platforms with dual supervisors | Optional
+redundancy:
+  protocol: < sso | rpr >
+
+# MAC address-table aging time | Optional
+# Use to change the platform defaults
+mac_address_table:
+  aging_time: < time_in_seconds >
 ```
+
+**Example:**
+
+note: values that are commented are either defaults or optional configuration.
+
+```yaml
+# Timezone
+timezone: "US/Eastern"
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1"
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+
+# Management eAPI
+management_eapi:
+  enable_https: true
+
+# Cloud Vision server information
+cvp_instance_ip: 192.168.2.201
+cvp_ingestauth_key: telarista
+# terminattr_ingestgrpcurl_port: 9910
+# terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+# terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+
+# Management interface configuration
+mgmt_gateway: 192.168.2.1
+# mgmt_vrf_routing: false
+# mgmt_interface: Management1
+# mgmt_interface_vrf: MGMT
+
+# DNS servers.
+name_servers:
+ - 192.168.2.1
+ - 8.8.8.8
+
+# NTP Servers
+ntp_servers:
+ - 0.north-america.pool.ntp.org
+ - 1.north-america.pool.ntp.org
+
+# Internal vlan allocation order and range | Required
+# internal_vlan_order:
+#   allocation: ascending
+#   range:
+#     beginning: 1006
+#     ending: 1199
+
+# Redundancy for chassis platforms with dual supervisors
+# redundancy:
+#   protocol: sso
+
+# MAC address-table aging time
+# mac_address_table:
+#   aging_time: 1500
+
+```
+
+
 
 ### Fabric Underlay / Overlay Topology
 
@@ -162,8 +256,8 @@ An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
          name: arista.avd.eos_config_deploy_eapi
 ```
 
-Full examples with variables, are located here:
-[Arista Ansible AVD Examples](https://github.com/aristanetworks/ansible-examples)
+Full examples with variables and outputs, are located here:
+[Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## License
 
