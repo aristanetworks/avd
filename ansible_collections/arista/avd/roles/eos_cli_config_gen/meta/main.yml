@@ -1,5 +1,5 @@
 galaxy_info:
-  author: Arista Ansible Team <ansible-team@arista.com>
+  author: Arista Ansible Team <ansible@arista.com>
   description: Generates eos cli syntax and device documentation.
   company: Arista Networks
   license: Apache-2.0

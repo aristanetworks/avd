@@ -1,5 +1,5 @@
 galaxy_info:
-  author: Arista Ansible Team <ansible-team@arista.com>
+  author: Arista Ansible Team <ansible@arista.com>
   description: Opiniated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
   company: Arista Networks
   license: Apache-2.0
