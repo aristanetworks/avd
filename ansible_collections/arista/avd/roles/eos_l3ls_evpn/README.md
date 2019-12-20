@@ -14,11 +14,16 @@
 
 ## Overview
 
-**eos_l3ls_evpn** is a role that provides an abstracted data model to deploy a L3 VXLAN/EVPN Leaf and Spine Fabric. The role helps network engineers deploy Arista L3 Leaf & Spine fabric underlay and overlay network services with consistency. The role is designed to easily be extended leveraging a __*"stackable template architecture"*__. The role is designed to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either the **eos_config_deploy_eapi** or **eos_config_deploy_cvp** roles. The role is designed to work completely offline and doesn't require connectivity to any device.
+**eos_l3ls_evpn** is a role that provides an abstracted data model to deploy a L3 VXLAN/EVPN Leaf and Spine Fabric. The role helps network engineers deploy Arista L3 Leaf & Spine fabric underlay and overlay network services with consistency. The role is designed to easily be extended leveraging a __*"stackable template architecture"*__. The role is designed to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either the **eos_config_deploy_eapi** or **eos_config_deploy_cvp** roles. The role is also designed that it doesn't rely on any information from the devices, therefore can be used to generate the intended configuration offline
 
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
+
+<p align="center">
+  <img src='media/figure-1-role-eos_l3ls_evpn.png' alt='figure 1: ansible role eos_l3ls_evpn'/>
+</p>
+
 
 **Inputs:**
 
@@ -29,7 +34,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 - A structure EOS configuration file in yaml format. This provides the following benefits:
   - First, this allows to naturally detect duplicate entries from input, as yaml dictionaries don't process duplicate keys.
-  - Leverage the structured data to create near perfect eos cli configuration.
+  - Leverage the structured data to create eos cli configuration.
   - Leverage the structured data to create end user documentation.
   - Leverage the structured data for pre and post fabric tests.
 - Fabric Documentation in Markdown format.
@@ -42,23 +47,15 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 3. Generate VXLAN/EVPN fabric documentation in Markdown format.
 4. Generate Leaf and Spine point-to-point links summary in CSV format.
 
-<p align="center">
-  <img src='media/figure-1-role-eos_l3ls_evpn.png' alt='figure 1: ansible role eos_l3ls_evpn'/>
-</p>
-
 ## Requirements
 
-**Ansible Collections:**
+**Arista EOS Version:**
 
-- arista.avd collection
-
-```bash
-ansible-galaxy collection install arista.avd
-```
+- EOS 4.21.8M or later
 
 **Python:** Python 3.6.8 or later
 
-**Python Libraries:**
+**Supported Ansible Versions:**
 
 - ansible 2.9.x
 
@@ -66,7 +63,16 @@ ansible-galaxy collection install arista.avd
 pip3 install ansible==2.9.2
 ```
 
-Ansible Configuration INI file configuration:
+**Ansible Collection:**
+
+- arista.avd collection
+
+```bash
+ansible-galaxy collection install arista.avd
+```
+
+
+**Ansible Configuration INI file:**
 
 - enable jinja2 extensions: loop controls and do
   - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
@@ -82,8 +88,7 @@ duplicate_dict_key=error
 ### Common Device Configuration
 
 ```yaml
-
-# Clock timezone | optional
+# Clock timezone | Optional
 timezone: <timezone>
 
 # Dictionary of local users | all fields required
@@ -127,7 +132,6 @@ name_servers:
 ntp_servers:
  - < ntp_server_1>
  - < ntp_server_1>
-
 ```
 
 ### Fabric Underlay / Overlay Topology
