@@ -7,6 +7,10 @@
   - [Role Variables](#role-variables)
     - [Common Device Configuration](#common-device-configuration)
     - [Fabric Underlay / Overlay Topology](#fabric-underlay--overlay-topology)
+      - [Global Fabric Variables](#global-fabric-variables)
+      - [Spine Variables](#spine-variables)
+      - [L3 Leafs](#l3-leafs)
+      - [L2 Leafs](#l2-leafs)
     - [Network Services - VRFs/VLANs](#network-services---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
   - [Example Playbook](#example-playbook)
@@ -157,14 +161,14 @@ redundancy:
   protocol: < sso | rpr >
 
 # MAC address-table aging time | Optional
-# Use to change the platform defaults
+# Use to change the EOS default of 300
 mac_address_table:
   aging_time: < time_in_seconds >
 ```
 
 **Example:**
 
-note: values that are commented are either defaults or optional configuration.
+note: Default values are commented
 
 ```yaml
 # Timezone
@@ -183,8 +187,8 @@ local_users:
     sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
 
 # Management eAPI
-management_eapi:
-  enable_https: true
+# management_eapi:
+#   enable_https: true
 
 # Cloud Vision server information
 cvp_instance_ip: 192.168.2.201
@@ -209,7 +213,7 @@ ntp_servers:
  - 0.north-america.pool.ntp.org
  - 1.north-america.pool.ntp.org
 
-# Internal vlan allocation order and range | Required
+# Internal vlan allocation order and range
 # internal_vlan_order:
 #   allocation: ascending
 #   range:
@@ -217,18 +221,68 @@ ntp_servers:
 #     ending: 1199
 
 # Redundancy for chassis platforms with dual supervisors
-# redundancy:
-#   protocol: sso
+redundancy:
+  protocol: sso
 
 # MAC address-table aging time
-# mac_address_table:
-#   aging_time: 1500
-
+mac_address_table:
+  aging_time: 1500
 ```
 
-
-
 ### Fabric Underlay / Overlay Topology
+
+#### Global Fabric Variables
+
+```yaml
+
+# Fabric Name, required to match group_var file name.
+fabric_name: < Fabric_Name >
+
+# Underlay routing protocol
+underlay_routing_protocol: < BGP or OSPF | Default -> BGP >
+
+# IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
+# Assigned as /31 for each uplink interfaces
+# Assign network summary larger then: [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
+underlay_p2p_network_summary: < IPv4/Mask >
+
+# IP address summary for BGP evpn overlay peering loopback for L3 leafs and spines | Required
+# Assigned as /32 to Loopback0
+# Assign range larger then: [ total spines + total potential L3 leafs ]
+overlay_loopback_network_summary: < IPv4/Mask >
+
+# IP address summary VTEP VXLAN Tunnel source loopback1 IP for L3 leafs | Required
+# Assigned as /32 to Loopback1
+# Assign range larger then total L3 leafs
+vtep_loopback_network_summary: < IPv4/Mask >
+
+# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | Required when MLAG leafs in topology.
+# Assign range larger then total: L3 Leafs + 2 ]
+mlag_ips:
+  leaf_peer_l3: < IPv4/Mask >
+  mlag_peer: < IPv4/Mask >
+
+# Enable vlan aware bundles
+vxlan_vlan_aware_bundles: < boolean | default -> false >
+
+# BGP peer groups encrypted password
+# IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
+# EVPN_OVERLAY_PEERS | Required
+# To generate the encrypted password, logon to switch and configure the peer group password under bgp and extract.
+bgp_peer_groups:
+  IPv4_UNDERLAY_PEERS:
+    password: "< encrypted password >"
+  MLAG_IPv4_UNDERLAY_PEER:
+      password: "< encrypted password >"
+  EVPN_OVERLAY_PEERS:
+      password: "< encrypted password >"
+```
+
+#### Spine Variables
+
+#### L3 Leafs
+
+#### L2 Leafs
 
 ### Network Services - VRFs/VLANs
 
