@@ -3,7 +3,7 @@
 - name: Generate switch configuration in structured format (yaml)
   template:
     src: "evpn-fabric-{{ type }}-yml.j2"
-    dest: ./generated_vars/{{ inventory_hostname }}.yml
+    dest: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
   check_mode: no
   tags:
@@ -11,7 +11,7 @@
     - config
 
 - name: include device structured configuration
-  include_vars: ./generated_vars/{{ inventory_hostname }}.yml
+  include_vars: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
   tags:
     - documentation
