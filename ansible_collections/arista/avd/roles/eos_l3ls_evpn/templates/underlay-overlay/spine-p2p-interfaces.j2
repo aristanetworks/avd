@@ -1,16 +1,16 @@
 {# Point-to-Point Interfaces to Leaf Switches #}
-{% for l3leaf_node_group in l3leafs.node_groups | arista.avd.natural_sort %}
-{%     if l3leafs.node_groups[l3leaf_node_group].spines is defined %}
-{%         set leaf_spines = l3leafs.node_groups[l3leaf_node_group].spines %}
+{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%     if l3leaf.node_groups[l3leaf_node_group].spines is defined %}
+{%         set leaf_spines = l3leaf.node_groups[l3leaf_node_group].spines %}
 {%     else %}
-{%         set leaf_spines = l3leafs.defaults.spines %}
+{%         set leaf_spines = l3leaf.defaults.spines %}
 {%     endif %}
-{%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-{%         set spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
-{%         if l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
-{%             set uplink_to_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
+{%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%         set spine_interfaces = l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
+{%         if l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
+{%             set uplink_to_spine_interfaces = l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
 {%         else %}
-{%             set uplink_to_spine_interfaces = l3leafs.defaults.uplink_to_spine_interfaces %}
+{%             set uplink_to_spine_interfaces = l3leaf.defaults.uplink_to_spine_interfaces %}
 {%         endif %}
 {%         for leaf_spine in leaf_spines %}
 {%             if leaf_spine == inventory_hostname %}
@@ -18,7 +18,7 @@
     description: P2P_LINK_TO_{{ node | upper }}_{{ uplink_to_spine_interfaces[loop.index0] }}
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
-    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leafs.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
+    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
 {%                 if underlay_routing_protocol == "OSPF" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
