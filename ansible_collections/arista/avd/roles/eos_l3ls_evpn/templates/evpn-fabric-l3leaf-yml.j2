@@ -43,6 +43,11 @@
 {%             else %}
 {%                 set leaf.bgp_as = l3leaf.defaults.bgp_as %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address is defined %}
+{%                 set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address %}
+{%             else %}
+{%                 set leaf.virtual_router_mac_address = l3leaf.defaults.virtual_router_mac_address %}
+{%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority is defined %}
 {%                 set leaf.spanning_tree_priority = l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority %}
 {%             else %}
@@ -293,7 +298,7 @@ mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
 {# virtual router mac address #}
-ip_virtual_router_mac_address: {{ virtual_router_mac_address | lower }}
+ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
