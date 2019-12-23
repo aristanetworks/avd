@@ -1,7 +1,7 @@
 ---
 
 - name: include data center fabric variables
-  include_vars: ./generated_vars/{{ inventory_hostname }}.yml
+  include_vars: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
   tags:
     - documentation
@@ -11,7 +11,7 @@
 - name: Generate eos intended configuration
   template:
     src: eos-intended-config.j2
-    dest: ./intended_configs/{{ inventory_hostname }}.cfg
+    dest: ./intended/configs/{{ inventory_hostname }}.cfg
   delegate_to: localhost
   register: eosconfig
   tags:
