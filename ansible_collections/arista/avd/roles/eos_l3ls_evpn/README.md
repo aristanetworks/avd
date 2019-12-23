@@ -25,7 +25,7 @@
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
 <p align="center">
-  <img src='media/figure-1-role-eos_l3ls_evpn.png' alt='figure 1: ansible role eos_l3ls_evpn'/>
+  <img src='media/figure-1-role-eos_l3ls_evpn.gif' alt='figure 1: ansible role eos_l3ls_evpn'/>
 </p>
 
 
