@@ -26,8 +26,6 @@ spanning_tree_priority: 4096
 
 p2p_uplinks_mtu: 9000
 
-vxlan_vni_base: 10000
-
 underlay_routing_protocol: BGP
 
 # Underlay OSFP Defaults
