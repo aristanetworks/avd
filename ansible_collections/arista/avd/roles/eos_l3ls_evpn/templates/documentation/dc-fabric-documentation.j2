@@ -40,8 +40,8 @@
 
 ## Fabric Topology
 
-| Type | Leaf Node | Leaf Interface | Leaf Port-Channel | Peer Node | Peer Interface | Peer Port-Channel |
-| ---- | --------- | -------------- | ----------------- |---------- | -------------- | ----------------- |
+| Type | Leaf Node | Leaf Interface | Peer Node | Peer Interface |
+| ---- | --------- | -------------- | --------- | -------------- |
 {% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
 {%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         set leaf_id = l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
@@ -59,7 +59,7 @@
 {%         for spine in leaf_spines %}
 {%             set leaf_interface = leaf_uplink_to_spine_interfaces[loop.index0] %}
 {%             set spine_interface = l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0]%}
-| L3 Leaf | {{ node }} | {{ leaf_interface }} | N/A | {{ spine }} | {{ spine_interface }} | N/A |
+| L3 Leaf | {{ node }} | {{ leaf_interface }} | {{ spine }} | {{ spine_interface }} |
 {%         endfor %}
 {%     endfor %}
 {% endfor %}
@@ -70,7 +70,6 @@
 {%         else %}
 {%             set uplink_interfaces = l2leaf.defaults.uplink_interfaces %}
 {%         endif %}
-{%         set l2leaf_channel_group_id = (uplink_interfaces[0] | regex_findall("\d") | join ) %}
 {%         if l2leaf.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
 {%             set parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs %}
 {%         else %}
@@ -80,8 +79,7 @@
 {%             set l2leaf_interface = uplink_interfaces[loop.index0] %}
 {%             set l3leaf_node = parent_l3leafs[loop.index0] %}
 {%             set l3leaf_interface = l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] %}
-{%             set l3leaf_channel_group_id = l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join %}
-| L2 Leaf | {{ node }} | {{ l2leaf_interface }} | Po{{ l2leaf_channel_group_id }} | {{ l3leaf_node }} | {{ l3leaf_interface }} | Po{{ l3leaf_channel_group_id }} |
+| L2 Leaf | {{ node }} | {{ l2leaf_interface }} | {{ l3leaf_node }} | {{ l3leaf_interface }} |
 {%             endfor %}
 {%     endfor %}
 {% endfor %}
