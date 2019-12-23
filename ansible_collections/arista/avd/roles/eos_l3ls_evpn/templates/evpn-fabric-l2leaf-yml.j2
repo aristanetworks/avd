@@ -12,10 +12,15 @@
 {%             set leaf.group = l2leaf_node_group %}
 {%             set leaf.id = l2leaf.node_groups[l2leaf_node_group].nodes[node].id %}
 {%             set switch.mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
-{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
-{%                 set leaf.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
+{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode is defined %}
+{%                 set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode %}
 {%             else %}
-{%                 set leaf.spanning_tree_priority = l2leaf.defaults.spanning_tree_priority %}
+{%                 set switch.spanning_tree_mode = l2leaf.defaults.spanning_tree_mode %}
+{%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
+{%                 set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
+{%             else %}
+{%                 set switch.spanning_tree_priority = l2leaf.defaults.spanning_tree_priority %}
 {%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].platform is defined %}
 {%                 set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform %}
@@ -195,7 +200,9 @@ redundancy:
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
-{% include 'base/leaf-spanning-tree.j2' %}
+{% include 'base/spanning-tree.j2' %}
+{# disable mlag vlan spanning tree #}
+{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}

@@ -48,10 +48,15 @@
 {%             else %}
 {%                 set leaf.virtual_router_mac_address = l3leaf.defaults.virtual_router_mac_address %}
 {%             endif %}
-{%             if l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority is defined %}
-{%                 set leaf.spanning_tree_priority = l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority %}
+{%             if l3leaf.node_groups[l3leaf_node_group].spanning_tree_mode is defined %}
+{%                 set switch.spanning_tree_mode = l3leaf.node_groups[l3leaf_node_group].spanning_tree_mode %}
 {%             else %}
-{%                 set leaf.spanning_tree_priority = l3leaf.defaults.spanning_tree_priority %}
+{%                 set switch.spanning_tree_mode = l3leaf.defaults.spanning_tree_mode %}
+{%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority is defined %}
+{%                 set switch.spanning_tree_priority = l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority %}
+{%             else %}
+{%                 set switch.spanning_tree_priority = l3leaf.defaults.spanning_tree_priority %}
 {%             endif %}
 {%             if loop.length == 2 %}
 {%                 set leaf.mlag = true %}
@@ -188,7 +193,7 @@ redundancy:
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
-{% include 'base/leaf-spanning-tree.j2' %}
+{% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
 {% include 'mlag/leaf-mlag-spanning-tree.j2' %}
 
