@@ -24,6 +24,7 @@
   {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] }}:
     peer: {{ node }}
     peer_interface: {{ l2leaf_uplink_interfaces[loop.index0] }}
+    peer_type: l2leaf
     description: {{ node }}_{{ l2leaf_uplink_interfaces[loop.index0] }}
     channel_group:
       id: {{ l3leaf.channel_group_id }}

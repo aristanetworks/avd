@@ -17,6 +17,7 @@
   {{ spine_interfaces[loop.index0] }}:
     peer: {{ node }}
     peer_interface: {{ uplink_to_spine_interfaces[loop.index0] }}
+    peer_type: l3leaf
     description: P2P_LINK_TO_{{ node | upper }}_{{ uplink_to_spine_interfaces[loop.index0] }}
     mtu: {{ p2p_uplinks_mtu }}
     type: routed

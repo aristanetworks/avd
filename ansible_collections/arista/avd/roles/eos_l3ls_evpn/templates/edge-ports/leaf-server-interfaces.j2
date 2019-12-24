@@ -7,6 +7,7 @@
   {{ adapter.switch_ports[loop.index0]}}:
     peer: {{ server }}
     peer_interface: {{ adapter.server_ports[loop.index0] }}
+    peer_type: server
     description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
 {%                 if adapter.speed is defined %}
     speed: {{ adapter.speed }}
