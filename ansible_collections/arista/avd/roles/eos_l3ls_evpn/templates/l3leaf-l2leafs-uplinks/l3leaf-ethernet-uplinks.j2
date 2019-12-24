@@ -20,8 +20,10 @@
 {%             endif %}
 {%                 for parent_l3leaf in parent_l3leafs %}
 {%                     if inventory_hostname == parent_l3leaf  %}
-## L2 LEAF Uplink {{ l2leaf_node_group }} ##
+## L2 LEAF link {{ l2leaf_node_group }} ##
   {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] }}:
+    peer: {{ node }}
+    peer_interface: {{ l2leaf_uplink_interfaces[loop.index0] }}
     description: {{ node }}_{{ l2leaf_uplink_interfaces[loop.index0] }}
     channel_group:
       id: {{ l3leaf.channel_group_id }}
