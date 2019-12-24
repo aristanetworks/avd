@@ -38,3 +38,14 @@
   tags:
     - documentation
     - config
+
+- name: Generate Fabric Topology in csv format.
+  template:
+    src: documentation/dc-fabric-topology.j2
+    dest: ./documentation/{{ fabric_name }}/{{ fabric_name }}-topology.csv
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags:
+    - documentation
+    - config
