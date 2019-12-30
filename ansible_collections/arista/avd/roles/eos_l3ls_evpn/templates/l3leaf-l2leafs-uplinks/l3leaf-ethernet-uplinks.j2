@@ -18,6 +18,11 @@
 {%             else %}
 {%                 set l2leaf_uplink_interfaces = l2leaf.defaults.uplink_interfaces %}
 {%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].p2p_link_interface_speed is defined %}
+{%                 set p2p_link_interface_speed = l2leaf.node_groups[l2leaf_node_group].p2p_link_interface_speed %}
+{%             elif l2leaf.defaults.p2p_link_interface_speed is defined %}
+{%                 set p2p_link_interface_speed = l2leaf.defaults.p2p_link_interface_speed %}
+{%             endif %}
 {%                 for parent_l3leaf in parent_l3leafs %}
 {%                     if inventory_hostname == parent_l3leaf  %}
 ## L2 LEAF link {{ l2leaf_node_group }} ##
@@ -26,6 +31,9 @@
     peer_interface: {{ l2leaf_uplink_interfaces[loop.index0] }}
     peer_type: l2leaf
     description: {{ node }}_{{ l2leaf_uplink_interfaces[loop.index0] }}
+{%                         if p2p_link_interface_speed is defined %}
+    speed: {{ p2p_link_interface_speed }}
+{%                         endif %}
     channel_group:
       id: {{ l3leaf.channel_group_id }}
       mode: active
