@@ -17,7 +17,6 @@
 {%         elif l3leaf.defaults.spine_interface_speed is defined %}
 {%             set p2p_link_interface_speed = l3leaf.defaults.p2p_link_interface_speed %}
 {%         endif %}
-
 {%         for leaf_spine in leaf_spines %}
 {%             if leaf_spine == inventory_hostname %}
   {{ spine_interfaces[loop.index0] }}:
