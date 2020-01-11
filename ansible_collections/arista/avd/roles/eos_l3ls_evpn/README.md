@@ -264,12 +264,14 @@ p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 
 # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
 # Assigned as /31 for each uplink interfaces
-# Assign network summary larger then: [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
+# Assign network summary larger then:
+# [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
 underlay_p2p_network_summary: < IPv4/Mask >
 
 # IP address summary for BGP evpn overlay peering loopback for L3 leafs and spines | Required
 # Assigned as /32 to Loopback0
-# Assign range larger then: [ total spines + total potential L3 leafs ]
+# Assign range larger then:
+# [ total spines + total potential L3 leafs ]
 overlay_loopback_network_summary: < IPv4/Mask >
 
 # IP address summary VTEP VXLAN Tunnel source loopback1 IP for L3 leafs | Required
@@ -277,7 +279,8 @@ overlay_loopback_network_summary: < IPv4/Mask >
 # Assign range larger then total L3 leafs
 vtep_loopback_network_summary: < IPv4/Mask >
 
-# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | Required when MLAG leafs present in topology.
+# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
+# * When MLAG leafs present in topology.
 # Assign range larger then total: L3 Leafs + 2 ]
 mlag_ips:
   leaf_peer_l3: < IPv4/Mask >
@@ -286,7 +289,7 @@ mlag_ips:
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
 # EVPN_OVERLAY_PEERS | Required
-# To generate the encrypted password, logon to switch and configure the peer group password under bgp and copy encrypted password
+# Leverage an Arista EOS switch to generate the encrypted password
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
     password: "< encrypted password >"
@@ -456,7 +459,8 @@ l3leaf:
     platform: < Arista Platform Family >
 # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
     spines: [ < spine_inventory_hostname >, < spine_nventory_hostname > ]
-# Uplink to spine interfaces (list), interface located on L3 Leaf, corresponding to spines and spine_interfaces | Required.
+# Uplink to spine interfaces (list), interface located on L3 Leaf,
+# corresponding to spines and spine_interfaces | Required.
     uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed >
@@ -468,13 +472,15 @@ l3leaf:
     spanning_tree_priority: < spanning-tree priority >
 # Virtual router mac address for anycast gateway | Required.
     virtual_router_mac_address: < mac address >
-# The node groups are group of one or two nodes where specific variables can be defined related to the topology and allowed L3 and L2 network services.
+# The node groups are group of one or two nodes where specific variables can be defined related to the topology
+# and allowed L3 and L2 network services.
 # All variables defined under `defaults` dictionary can be defined under each node group to overide it.
   node_groups:
     < node_group_1 >:
 # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
-# Filert L3 and L2 network services based on tenant and tags - and filter | Optional, if not defined will default to all
+# Filert L3 and L2 network services based on tenant and tags - and filter | Optional
+# If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
@@ -486,7 +492,8 @@ l3leaf:
           id: < integer >
 # Node mnagement IP address | Required.
           mgmt_ip: < IPv4/Mask >
-# Spine interfaces (list), interface located on Spine, corresponding to spines and uplink_to_spine_interfaces | Required.
+# Spine interfaces (list), interface located on Spine,
+# corresponding to spines and uplink_to_spine_interfaces | Required.
           spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
     < node_group_2 >:
       bgp_as: < bgp_as >
