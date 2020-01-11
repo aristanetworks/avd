@@ -18,7 +18,17 @@
 
 ## Overview
 
-**eos_l3ls_evpn** is a role that provides an abstracted data model to deploy a L3 VXLAN/EVPN Leaf and Spine Fabric. The role helps network engineers deploy Arista L3 Leaf & Spine fabric underlay and overlay network services with consistency. The role is designed to easily be extended leveraging a __*"stackable template architecture"*__. The role is designed to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either the **eos_config_deploy_eapi** or **eos_config_deploy_cvp** roles. The role is also designed that it doesn't rely on any information from the devices, therefore can be used to generate the intended configuration offline
+**eos_l3ls_evpn**, is a role that provides an abstracted data model to deploy a L3 Leaf and Spine fabric leveraging VXLAN data-plane with an EVPN control-plane.
+
+The **eos_l3ls_evpn** role:
+
+- Enables network engineers to deploy Arista L3 Leaf & Spine fabric underlay and overlay network services effectively and with consistency.
+- Designed to easily be extended leveraging a __*"stackable template architecture"*__.
+- Designed to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either
+  - **eos_config_deploy_eapi** role.
+  - **eos_config_deploy_cvp** role.
+- Designed to generate the intended configuration offline, without relying on switch current state information.
+  - This also facilates the evaluation of the configuration pre-deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs
 
@@ -28,7 +38,6 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
   <img src='media/figure-1-role-eos_l3ls_evpn.gif' alt='figure 1: ansible role eos_l3ls_evpn'/>
 </p>
 
-
 **Inputs:**
 
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
@@ -36,13 +45,13 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Outputs:**
 
-- A structure EOS configuration file in yaml format. This provides the following benefits:
+- A structured EOS configuration file in yaml format. This provides the following benefits:
   - First, this allows to naturally detect duplicate entries from input, as yaml dictionaries don't process duplicate keys.
   - Leverage the structured data to create eos cli configuration.
   - Leverage the structured data to create end user documentation.
   - Leverage the structured data for pre and post fabric tests.
 - Fabric Documentation in Markdown format.
-- Leaf and Spine Point-To-Point Links summary in csv format.
+- Leaf and Spine Topology summary in csv format.
 
 **Tasks:**
 
@@ -63,7 +72,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Supported Ansible Versions:**
 
-- ansible 2.9.x
+- ansible 2.9.2 or later
 
 ```bash
 pip3 install ansible==2.9.2
@@ -76,7 +85,6 @@ pip3 install ansible==2.9.2
 ```bash
 ansible-galaxy collection install arista.avd
 ```
-
 
 **Ansible Configuration INI file:**
 
@@ -428,7 +436,6 @@ spine:
 ```yaml
 
 ```
-
 
 #### L2 Leafs Variables
 
