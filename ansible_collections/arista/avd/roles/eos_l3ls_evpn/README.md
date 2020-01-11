@@ -6,8 +6,8 @@
   - [Requirements](#requirements)
   - [Role Variables](#role-variables)
     - [Common Device Configuration](#common-device-configuration)
-    - [Fabric Underlay / Overlay Topology](#fabric-underlay--overlay-topology)
-      - [Global Fabric Variables](#global-fabric-variables)
+    - [Fabric Underlay and Overlay Topology Variables](#fabric-underlay-and-overlay-topology-variables)
+    - [Fabric Topology Variables](#fabric-topology-variables)
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
@@ -23,19 +23,19 @@
 The **eos_l3ls_evpn** role:
 
 - Enables network engineers to deploy Arista L3 Leaf & Spine fabric underlay and overlay network services effectively and with consistency.
-- Designed to easily be extended leveraging a __*"stackable template architecture"*__.
+- Designed to be extended easily, leveraging a __*"stackable template architecture"*__.
 - Designed to be used with the **eos_l3ls_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either
   - **eos_config_deploy_eapi** role.
   - **eos_config_deploy_cvp** role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
-  - This also facilates the evaluation of the configuration pre-deployment with tools like [Batfish](https://www.batfish.org/)
+- Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
 <p align="center">
-  <img src='media/figure-1-role-eos_l3ls_evpn.gif' alt='figure 1: ansible role eos_l3ls_evpn'/>
+  <img src='media/figure-1-role-eos_l3ls_evpn.gif' alt='Figure 1: Ansible Role eos_l3ls_evpn'/>
 </p>
 
 **Inputs:**
@@ -244,16 +244,14 @@ mac_address_table:
   aging_time: 1500
 ```
 
-### Fabric Underlay / Overlay Topology
-
-#### Global Fabric Variables
+### Fabric Underlay and Overlay Topology Variables
 
 ```yaml
 
-# Fabric Name, required to match group_var file name.
+# Fabric Name, required to match group_var file name | Required.
 fabric_name: < Fabric_Name >
 
-# Underlay routing protocol
+# Underlay routing protocol | Required.
 underlay_routing_protocol: < BGP or OSPF | Default -> BGP >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
@@ -261,7 +259,7 @@ underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | default -> 12000 >
 
-# Point to Point Links MTU
+# Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 
 # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
@@ -279,7 +277,7 @@ overlay_loopback_network_summary: < IPv4/Mask >
 # Assign range larger then total L3 leafs
 vtep_loopback_network_summary: < IPv4/Mask >
 
-# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | Required when MLAG leafs in topology.
+# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | Required when MLAG leafs present in topology.
 # Assign range larger then total: L3 Leafs + 2 ]
 mlag_ips:
   leaf_peer_l3: < IPv4/Mask >
@@ -297,7 +295,7 @@ bgp_peer_groups:
   EVPN_OVERLAY_PEERS:
       password: "< encrypted password >"
 
-# Spine BGP Tuning | Defaults
+# Spine BGP Tuning | Optional.
 spine_bgp_defaults:
   - update wait-for-convergence
   - update wait-install
@@ -306,7 +304,7 @@ spine_bgp_defaults:
   - graceful-restart restart-time 300
   - graceful-restart
 
-# Leaf BGP Tuning | Defaults
+# Leaf BGP Tuning | Optional.
 leaf_bgp_defaults:
   - update wait-install
   - no bgp default ipv4-unicast
@@ -314,10 +312,10 @@ leaf_bgp_defaults:
   - graceful-restart restart-time 300
   - graceful-restart
 
-# Enable vlan aware bundles for EVPN MAC-VRF
+# Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
 
-# BFD Multihop tunning
+# BFD Multihop tunning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >
@@ -393,25 +391,42 @@ bgp_peer_groups:
 #   multiplier: 3
 ```
 
+### Fabric Topology Variables
+
+The fabric topology variables define the connectivity between the spines, L3 Leaves, and L2 Leaves.
+
+<p align="center">
+  <img src='media/figure-2-topology.gif' alt='Figure 2: Topology - naming convention'/>
+</p>
+
+- Connectivity is defined from the child's device perspective.
+  - Source uplink interfaces and parent interfaces are defined on the child.
+- A static unique identifier (id) is assigned to each device.
+  - This is leveraged to derive the IP address assignment from each summary defined in the Fabric Underlay and Overlay Topology Variables.
+- Within the l3_leaf and l2_leaf dictionary variables, defaults can be defined.
+  - This reduces user input requirements, limiting errors.
+  - The default variables can be overridden when defined under the node groups.
+- The ability to define a super-spine layer is planned for a future release of ansible-avd.
+
 #### Spine Variables
 
 ```yaml
 spine:
-# Arista platform family
+# Arista platform family | Required.
   platform: < Arista Platform Family >
-# Sine BGP AS
+# Spine BGP AS | Required.
   bgp_as: < bgp_as >
-# accepted L3 leaf bgp as range
+# Accepted L3 leaf bgp as range | Required.
   leaf_as_range: < bgp_as_start-bgp_as_end >
-# Specify dictionary of Spine nodes
+# Specify dictionary of Spine nodes | Required.
   nodes:
-    < DC1-SPINE1 >:
-# Unique identifier
-      id: 1
-# Node management IP address
+    < inventory_hostname >:
+# Unique identifier | Required.
+      id: < integer >
+# Node management IP address | Required.
       mgmt_ip: < IPv4/Mask >
-    < DC1-SPINE2 >:
-      id: 2
+    < inventory_hostname >:
+      id: < integer >
       mgmt_ip: < IPv4/Mask >
 ```
 
@@ -419,7 +434,7 @@ spine:
 
 ```yaml
 spine:
-  platform: 7504N
+  platform: vEOS-LAB
   bgp_as: 65001
   leaf_as_range: 65101-65132
   nodes:
@@ -434,10 +449,126 @@ spine:
 #### L3 Leaf Variables
 
 ```yaml
+l3leaf:
+# L3 Leaf default variables, can be overridden when defined under < node_group >.
+  defaults:
+# Arista platform family. | Required
+    platform: < Arista Platform Family >
+# Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
+    spines: [ < spine_inventory_hostname >, < spine_nventory_hostname > ]
+# Uplink to spine interfaces (list), interface located on L3 Leaf, corresponding to spines and spine_interfaces | Required.
+    uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+# Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
+    p2p_link_interface_speed: < interface_speed >
+# MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+# Spanning tree mode (note - only mstp has been validated at this time) | Required.
+    spanning_tree_mode: < mstp >
+# Spanning tree priority | Required.
+    spanning_tree_priority: < spanning-tree priority >
+# Virtual router mac address for anycast gateway | Required.
+    virtual_router_mac_address: < mac address >
+# The node groups are group of one or two nodes where specific variables can be defined related to the topology and allowed L3 and L2 network services.
+# All variables defined under `defaults` dictionary can be defined under each node group to overide it.
+  node_groups:
+    < node_group_1 >:
+# L3 Leaf BGP AS. | Required.
+      bgp_as: < bgp_as >
+# Filert L3 and L2 network services based on tenant and tags - and filter | Optional, if not defined will default to all
+      filter:
+        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+# Define when one or two nodes | Required
+# When two nodes are defined, this will create an MLAG pair.
+      nodes:
+        < l3_leaf_inventory_hostname_1 >:
+# Unique identifier | Required.
+          id: < integer >
+# Node mnagement IP address | Required.
+          mgmt_ip: < IPv4/Mask >
+# Spine interfaces (list), interface located on Spine, corresponding to spines and uplink_to_spine_interfaces | Required.
+          spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+    < node_group_2 >:
+      bgp_as: < bgp_as >
+      filter:
+        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
+      nodes:
+        < l3_leaf_inventory_hostname_2 >:
+          id: < integer >
+          mgmt_ip: < IPv4/Mask >
+          spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
+        < l3_leaf_inventory_hostname_3 >:
+          id: < integer >
+          mgmt_ip: < IPv4/Mask >
+          spine_interfaces: [  < ethernet_interface_3 >, < ethernet_interface_3 > ]
+```
 
+**Example:**
+
+```yaml
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65100
+    spines: [ DC1-SPINE1, DC1-SPINE2 ]
+    uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 4096
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+  node_groups:
+    DC1_LEAF1:
+      bgp_as: 65101
+      filter:
+        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+        tags: [ opzone ]
+      nodes:
+        DC1-LEAF1A:
+          id: 1
+          mgmt_ip: 192.168.2.105/24
+          spine_interfaces: [ Ethernet1, Ethernet1 ]
+    DC1_LEAF2:
+      bgp_as: 65102
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app, db, vmotion, nfs ]
+      nodes:
+        DC1-LEAF2A:
+          id: 2
+          mgmt_ip: 192.168.2.106/24
+          spine_interfaces: [ Ethernet2, Ethernet2 ]
+        DC1-LEAF2B:
+          id: 3
+          mgmt_ip: 192.168.2.107/24
+          spine_interfaces: [ Ethernet3, Ethernet3 ]
+    DC1_SVC3:
+      bgp_as: 65103
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ erp1 ]
+      nodes:
+        DC1-SVC3A:
+          id: 4
+          mgmt_ip: 192.168.2.108/24
+          spine_interfaces: [ Ethernet4, Ethernet4 ]
+        DC1-SVC3B:
+          id: 5
+          mgmt_ip: 192.168.2.109/24
+          spine_interfaces: [ Ethernet5, Ethernet5 ]
 ```
 
 #### L2 Leafs Variables
+
+```yaml
+
+```
+
+**Example:**
+
+```yaml
+
+```
 
 ### Network Services - VRFs/VLANs
 
