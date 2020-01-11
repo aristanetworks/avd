@@ -136,6 +136,10 @@ mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
 mgmt_interface_vrf: < vrf_name | default -> MGMT >
 mgmt_gateway: < IPv4 address >
+# OOB mgmt interface destination networks - overide default route
+mgmt_destination_networks:
+  - < IPv4/Mask >
+  - < IPv4/Mask >
 
 # list of DNS servers | Optional
 name_servers:
@@ -202,6 +206,9 @@ mgmt_gateway: 192.168.2.1
 # mgmt_vrf_routing: false
 # mgmt_interface: Management1
 # mgmt_interface_vrf: MGMT
+# OOB mgmt interface destination networks
+# mgmt_destination_networks:
+#   - 0.0.0.0/0
 
 # DNS servers.
 name_servers:
@@ -245,6 +252,9 @@ underlay_routing_protocol: < BGP or OSPF | Default -> BGP >
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | default -> 12000 >
+
+# Point to Point Links MTU
+p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 
 # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
 # Assigned as /31 for each uplink interfaces
@@ -298,6 +308,12 @@ leaf_bgp_defaults:
 
 # Enable vlan aware bundles for EVPN MAC-VRF
 vxlan_vlan_aware_bundles: < boolean | default -> false >
+
+# BFD Multihop tunning
+bfd_multihop:
+  interval: < | default -> 300 >
+  min_rx: < | default -> 300 >
+  multiplier: < | default -> 3 >
 ```
 
 **Example:**
@@ -313,8 +329,11 @@ fabric_name: DC1_FABRIC
 
 # Underlay OSFP
 # underlay_ospf_process_id: 100
-# underlay_ospf_area:  0.0.0.0
+# underlay_ospf_area: 0.0.0.0
 # underlay_ospf_max_lsa: 12000
+
+# Point to Point Links MTU
+# p2p_uplinks_mtu: 9000
 
 # Underlay p2p network summary
 underlay_p2p_network_summary: 172.31.255.0/24
@@ -329,7 +348,6 @@ vtep_loopback_network_summary: 192.168.254.0/24
 mlag_ips:
   leaf_peer_l3: 10.255.251.0/24
   mlag_peer: 10.255.252.0/24
-
 
 # BGP peer groups passwords
 bgp_peer_groups:
@@ -360,15 +378,68 @@ bgp_peer_groups:
 # vxlan vlan aware bundles
 # vxlan_vlan_aware_bundles: false
 
+# BFD Multihop
+# bfd_multihop:
+#   interval: 300
+#   min_rx: 300
+#   multiplier: 3
 ```
 
 #### Spine Variables
 
+```yaml
+spine:
+# Arista platform family
+  platform: < Arista Platform Family >
+# Sine BGP AS
+  bgp_as: < bgp_as >
+# accepted L3 leaf bgp as range
+  leaf_as_range: < bgp_as_start-bgp_as_end >
+# Specify dictionary of Spine nodes
+  nodes:
+    < DC1-SPINE1 >:
+# Unique identifier
+      id: 1
+# Node management IP address
+      mgmt_ip: < IPv4/Mask >
+    < DC1-SPINE2 >:
+      id: 2
+      mgmt_ip: < IPv4/Mask >
+```
+
+**Example:**
+
+```yaml
+spine:
+  platform: 7504N
+  bgp_as: 65001
+  leaf_as_range: 65101-65132
+  nodes:
+    DC1-SPINE1:
+      id: 1
+      mgmt_ip: 192.168.2.101/24
+    DC1-SPINE2:
+      id: 2
+      mgmt_ip: 192.168.2.102/24
+```
+
 #### L3 Leaf Variables
+
+```yaml
+
+```
+
 
 #### L2 Leafs Variables
 
 ### Network Services - VRFs/VLANs
+
+```yaml
+# Underlay iBGP peering SVI based
+mlag_ibgp_peering_vrfs:
+  base_vlan: < 1-4000 | default -> 3000 >
+
+```
 
 ### Server Edge Port Connectivity
 
