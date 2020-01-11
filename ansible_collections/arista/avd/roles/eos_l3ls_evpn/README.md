@@ -9,8 +9,8 @@
     - [Fabric Underlay / Overlay Topology](#fabric-underlay--overlay-topology)
       - [Global Fabric Variables](#global-fabric-variables)
       - [Spine Variables](#spine-variables)
-      - [L3 Leafs](#l3-leafs)
-      - [L2 Leafs](#l2-leafs)
+      - [L3 Leaf Variables](#l3-leaf-variables)
+      - [L2 Leafs Variables](#l2-leafs-variables)
     - [Network Services - VRFs/VLANs](#network-services---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
   - [Example Playbook](#example-playbook)
@@ -241,6 +241,11 @@ fabric_name: < Fabric_Name >
 # Underlay routing protocol
 underlay_routing_protocol: < BGP or OSPF | Default -> BGP >
 
+# Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
+underlay_ospf_process_id: < process_id | Default -> 100 >
+underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
+underlay_ospf_max_lsa: < lsa | default -> 12000 >
+
 # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
 # Assigned as /31 for each uplink interfaces
 # Assign network summary larger then: [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
@@ -262,13 +267,10 @@ mlag_ips:
   leaf_peer_l3: < IPv4/Mask >
   mlag_peer: < IPv4/Mask >
 
-# Enable vlan aware bundles
-vxlan_vlan_aware_bundles: < boolean | default -> false >
-
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
 # EVPN_OVERLAY_PEERS | Required
-# To generate the encrypted password, logon to switch and configure the peer group password under bgp and extract.
+# To generate the encrypted password, logon to switch and configure the peer group password under bgp and copy encrypted password
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
     password: "< encrypted password >"
@@ -276,13 +278,95 @@ bgp_peer_groups:
       password: "< encrypted password >"
   EVPN_OVERLAY_PEERS:
       password: "< encrypted password >"
+
+# Spine BGP Tuning | Defaults
+spine_bgp_defaults:
+  - update wait-for-convergence
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+# Leaf BGP Tuning | Defaults
+leaf_bgp_defaults:
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+# Enable vlan aware bundles for EVPN MAC-VRF
+vxlan_vlan_aware_bundles: < boolean | default -> false >
+```
+
+**Example:**
+
+note: Default values are commented
+
+```yaml
+# Fabric name
+fabric_name: DC1_FABRIC
+
+# Underlay routing protocol
+# underlay_routing_protocol: BGP
+
+# Underlay OSFP
+# underlay_ospf_process_id: 100
+# underlay_ospf_area:  0.0.0.0
+# underlay_ospf_max_lsa: 12000
+
+# Underlay p2p network summary
+underlay_p2p_network_summary: 172.31.255.0/24
+
+# Overlay p2p network summary
+overlay_loopback_network_summary: 192.168.255.0/24
+
+# VTEP loopback network summary
+vtep_loopback_network_summary: 192.168.254.0/24
+
+# MLAG IPs
+mlag_ips:
+  leaf_peer_l3: 10.255.251.0/24
+  mlag_peer: 10.255.252.0/24
+
+
+# BGP peer groups passwords
+bgp_peer_groups:
+  IPv4_UNDERLAY_PEERS:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  EVPN_OVERLAY_PEERS:
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+  MLAG_IPv4_UNDERLAY_PEER:
+      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
+# Spine BGP defaults
+# spine_bgp_defaults:
+  # - update wait-for-convergence
+  # - update wait-install
+  # - no bgp default ipv4-unicast
+  # - distance bgp 20 200 200
+  # - graceful-restart restart-time 300
+  # - graceful-restart
+
+# Leaf BGP defaults
+# leaf_bgp_defaults:
+  # - update wait-install
+  # - no bgp default ipv4-unicast
+  # - distance bgp 20 200 200
+  # - graceful-restart restart-time 300
+  # - graceful-restart
+
+# vxlan vlan aware bundles
+# vxlan_vlan_aware_bundles: false
+
 ```
 
 #### Spine Variables
 
-#### L3 Leafs
+#### L3 Leaf Variables
 
-#### L2 Leafs
+#### L2 Leafs Variables
 
 ### Network Services - VRFs/VLANs
 
