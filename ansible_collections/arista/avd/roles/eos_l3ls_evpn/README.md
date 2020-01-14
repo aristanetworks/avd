@@ -411,18 +411,24 @@ The fabric topology variables define the connectivity between the spines, L3 Lea
 
 ```yaml
 spine:
-# Arista platform family | Required.
+
+  # Arista platform family | Required.
   platform: < Arista Platform Family >
-# Spine BGP AS | Required.
+
+  # Spine BGP AS | Required.
   bgp_as: < bgp_as >
-# Accepted L3 leaf bgp as range | Required.
+
+  # Accepted L3 leaf bgp as range | Required.
   leaf_as_range: < bgp_as_start-bgp_as_end >
-# Specify dictionary of Spine nodes | Required.
+
+  # Specify dictionary of Spine nodes | Required.
   nodes:
     < inventory_hostname >:
-# Unique identifier | Required.
+
+      # Unique identifier | Required.
       id: < integer >
-# Node management IP address | Required.
+
+      # Node management IP address | Required.
       mgmt_ip: < IPv4/Mask >
     < inventory_hostname >:
       id: < integer >
@@ -449,58 +455,84 @@ spine:
 
 ```yaml
 l3leaf:
-# L3 Leaf default variables, can be overridden when defined under < node_group >.
+
+  # L3 Leaf default variables, can be overridden when defined under < node_group >.
   defaults:
-# Arista platform family. | Required
+
+    # Arista platform family. | Required
     platform: < Arista Platform Family >
-# Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
+
+    # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
     spines: [ < spine_inventory_hostname >, < spine_nventory_hostname > ]
-# Uplink to spine interfaces (list), interface located on L3 Leaf,
-# corresponding to spines and spine_interfaces | Required.
+
+    # Uplink to spine interfaces (list), interface located on L3 Leaf,
+    # corresponding to spines and spine_interfaces | Required.
     uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-# Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
+
+    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed >
-# MLAG interfaces (list) | Required when MLAG leafs present in topology.
+
+    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-# Spanning tree mode (note - only mstp has been validated at this time) | Required.
+
+    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
     spanning_tree_mode: < mstp >
-# Spanning tree priority | Required.
+
+    # Spanning tree priority | Required.
     spanning_tree_priority: < spanning-tree priority >
-# Virtual router mac address for anycast gateway | Required.
+
+    # Virtual router mac address for anycast gateway | Required.
     virtual_router_mac_address: < mac address >
-# The node groups are group of one or two nodes where specific variables can be defined related to the topology
-# and allowed L3 and L2 network services.
-# All variables defined under `defaults` dictionary can be defined under each node group to overide it.
+
+  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # and allowed L3 and L2 network services.
+  # All variables defined under `defaults` dictionary can be defined under each node group to overide it.
   node_groups:
+
+    # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
-# L3 Leaf BGP AS. | Required.
+
+      # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
-# Filert L3 and L2 network services based on tenant and tags - and filter | Optional
-# If filter is not defined will default to all
+
+      # Filert L3 and L2 network services based on tenant and tags - and filter | Optional
+      # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
-# Define when one or two nodes | Required
-# When two nodes are defined, this will create an MLAG pair.
+
+      # Define when one or two nodes | Required
+      # When two nodes are defined, this will create an MLAG pair.
       nodes:
+
+        # First node
         < l3_leaf_inventory_hostname_1 >:
-# Unique identifier | Required.
+
+          # Unique identifier | Required.
           id: < integer >
-# Node mnagement IP address | Required.
+
+          # Node mnagement IP address | Required.
           mgmt_ip: < IPv4/Mask >
-# Spine interfaces (list), interface located on Spine,
-# corresponding to spines and uplink_to_spine_interfaces | Required.
+
+          # Spine interfaces (list), interface located on Spine,
+          # corresponding to spines and uplink_to_spine_interfaces | Required.
           spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+
+    # node_group_2, will result in MLAG pair.
     < node_group_2 >:
       bgp_as: < bgp_as >
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]
       nodes:
+
+        # Second node
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
           mgmt_ip: < IPv4/Mask >
           spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
+
+        # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
           mgmt_ip: < IPv4/Mask >
