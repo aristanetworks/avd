@@ -39,7 +39,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 **Inputs:**
 
 - Desired variables are defined in: role defaults, group_vars, and host_vars variables.
-- As mentioned in the overview, if desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
+- If desired, the role can be extended to leverage data from dynamic sources such as an IPAM or CMDB.
 
 **Outputs:**
 
