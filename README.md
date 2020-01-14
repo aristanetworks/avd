@@ -4,11 +4,8 @@
 
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
   - [About](#about)
-  - [Roles Overview](#roles-overview)
-  - [Installation](#installation)
-    - [Dependencies](#dependencies)
-    - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
-  - [Resources](#resources)
+  - [Project Documentation](#project-documentation)
+  - [Additional Resources](#additional-resources)
   - [License](#license)
   - [Ask a question](#ask-a-question)
   - [Contributing](#contributing)
@@ -17,34 +14,11 @@
 
 [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision Portal (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs!
 
-## Roles Overview
+## Project Documentation
 
-This repository provides roles for Ansible's collection __arista.avd__ with following content:
+The documentation how to install and leverage ansible-avd collection is located here: **[arista.avd](./ansible_collections/arista/avd/README.md)**
 
-- [__arista.avd.eos_l3ls_evpn__](ansible_collections/arista/avd/roles/eos_l3ls_evpn/README.md): Opiniated Data model for L3 VXLAN/EVPN Leaf and Spine Fabric.
-- [__arista.avd.eos_cli_config_gen__](ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md): Generates intented configuration in eos cli syntax and device documentation.
-- [__arista.avd.eos_config_deploy_eapi__](ansible_collections/arista/avd/roles/eos_config_deploy_eapi/README.md): Deployment of intended configuration via eapi.
-
-## Installation
-
-### Dependencies
-
-This collection requires the following to be installed on the Ansible control machine:
-
-- python `3.6.8` or later
-- ansible  `2.9.0` or later
-- requests `2.22.0` or later
-- treelib version `1.5.5` or later
-
-### Installation from ansible-galaxy
-
-Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content
-
-```shell
-ansible-galaxy collection install arista.avd
-```
-
-## Resources
+## Additional Resources
 
 - Ansible [EOS modules](https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#eos) on ansible documentation.
 - Ansible [CloudVision modules](https://github.com/aristanetworks/ansible-cvp)

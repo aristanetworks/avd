@@ -1,19 +1,11 @@
 # Ansible Collection For Arista Validate Designs - arista.avd
 
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
-  - [About](#about)
   - [Roles Overview](#roles-overview)
   - [Installation](#installation)
     - [Dependencies](#dependencies)
     - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
-  - [Resources](#resources)
   - [License](#license)
-  - [Ask a question](#ask-a-question)
-  - [Contributing](#contributing)
-
-## About
-
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision platform (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are design to be customized and extended to your needs!
 
 ## Roles Overview
 
@@ -42,24 +34,6 @@ Ansible galaxy hosts all stable version of this collection. Installation from an
 ansible-galaxy collection install arista.avd
 ```
 
-## Resources
-
-- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#eos) on ansible documentation.
-- Ansible [CloudVision modules](https://github.com/aristanetworks/ansible-cvp)
-- [CloudVision Platform](https://www.arista.com/en/products/eos/eos-cloudvision)
-
 ## License
 
 Project is published under [Apache 2.0 License](../../../LICENSE)
-
-## Ask a question
-
-Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
-
-## Contributing
-
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
-
-You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
-
-A more complete [guide for contribution](contributing.md) is available in the repository
