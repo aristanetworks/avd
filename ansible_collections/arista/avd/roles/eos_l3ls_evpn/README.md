@@ -501,7 +501,7 @@ l3leaf:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
 
-      # Define when one or two nodes | Required
+      # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
       nodes:
 
@@ -596,13 +596,115 @@ l3leaf:
 #### L2 Leafs Variables
 
 ```yaml
+l2leaf:
 
+  # L2 Leaf default variables, can be overridden when defined under < node_group >.
+  defaults:
+
+    # Arista platform family. | Required
+    platform: < Arista Platform Family >
+
+    # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+
+    # Uplink interfaces (list), interface located on L2 Leaf,
+    # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
+    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+    # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
+    p2p_link_interface_speed: < interface_speed >
+
+    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+    spanning_tree_mode: < mstp >
+
+    # Spanning tree priority | Required.
+    spanning_tree_priority: < spanning-tree priority >
+
+  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # and allowed L3 and L2 network services.
+  # All variables defined under `defaults` dictionary can be defined under each node group to overide it.
+  node_groups:
+
+    # node_group_1, will result in stand-alone leaf.
+    < node_group_1 >:
+
+      # Filert L3 and L2 network services based on tenant and tags - and filter | Optional
+      # If filter is not defined will default to all
+      filter:
+        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Define one or two nodes - same name as inventory_hostname.
+      # When two nodes are defined, this will create an MLAG pair.
+      nodes:
+
+        # First node
+        < l2_leaf_inventory_hostname_1 >:
+
+          # Unique identifier | Required.
+          id: < integer >
+
+          # Node mnagement IP address | Required.
+          mgmt_ip: < IPv4/Mask >
+
+          # l3leaf interfaces (list), interface located on l3leaf,
+          # corresponding to parent_l3leafs and uplink_interfaces | Required.
+          l3leaf_interfaces: [ < ethernet_interface_6 >, < ethernet_interface_6 > ]
+
+    # node_group_2, will result in MLAG pair.
+    < node_group_1 >:
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      nodes:
+
+        # Second node.
+        < l2_leaf_inventory_hostname_2 >:
+          id: < integer >
+          mgmt_ip: < IPv4/Mask >
+          l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
+
+        # Third node.
+        < l2_leaf_inventory_hostname_3 >:
+          id: < integer >
+          mgmt_ip: < IPv4/Mask >
+          l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
 ```
 
 **Example:**
 
 ```yaml
-
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    spanning_tree_mode: mstp
+    spanning_tree_priority: 16384
+  node_groups:
+    DC1_L2LEAF4:
+      uplink_interfaces: [ Ethernet11, Ethernet12 ]
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF4A:
+          id: 8
+          mgmt_ip: 192.168.2.112/24
+          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+    DC1_L2LEAF5:
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      nodes:
+        DC1-L2LEAF5A:
+          id: 10
+          mgmt_ip: 192.168.2.113/24
+          l3leaf_interfaces: [ Ethernet5, Ethernet5 ]
+        DC1-L2LEAF5B:
+          id: 11
+          mgmt_ip: 192.168.2.114/24
+          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
 ```
 
 ### Network Services - VRFs/VLANs
