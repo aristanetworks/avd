@@ -1031,7 +1031,7 @@ tenants:
 
 However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
 
-*Variables adjustments required for vEOS-LAB:**
+**Variables adjustments required for vEOS-LAB:**
 
 ```yaml
 # Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
