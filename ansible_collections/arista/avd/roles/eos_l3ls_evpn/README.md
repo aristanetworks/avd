@@ -5,14 +5,16 @@
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
   - [Role Variables](#role-variables)
-    - [Common Device Configuration](#common-device-configuration)
+    - [Common Device Configuration Variables](#common-device-configuration-variables)
     - [Fabric Underlay and Overlay Topology Variables](#fabric-underlay-and-overlay-topology-variables)
     - [Fabric Topology Variables](#fabric-topology-variables)
+    - [Type Variable](#type-variable)
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
-    - [Network Services - VRFs/VLANs](#network-services---vrfsvlans)
+    - [Network Services Varialbes - VRFs/VLANs](#network-services-varialbes---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
+    - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [Example Playbook](#example-playbook)
   - [License](#license)
 
@@ -103,9 +105,12 @@ Default values, are stored in the role defaults [main.yml](./defaults/main.yml) 
 
 Role variable have been grouped by configuration elements, and are typically stored in different group_vars files.
 
-### Common Device Configuration
+### Common Device Configuration Variables
 
-**Variable and Options:**
+- Common device configuration variables, are for elements not related specifically to the fabric configuration.
+- The variables should be applied to all devices within the fabric, and can be shared with other infrastructure elements.
+
+**Variables and Options:**
 
 ```yaml
 # Clock timezone | Optional
@@ -144,13 +149,13 @@ mgmt_interface_vrf: < vrf_name | default -> MGMT >
 mgmt_gateway: < IPv4 address >
 # OOB mgmt interface destination networks - overide default route
 mgmt_destination_networks:
-  - < IPv4/Mask >
-  - < IPv4/Mask >
+  - < IPv4_network/Mask >
+  - < IPv4_network/Mask >
 
 # list of DNS servers | Optional
 name_servers:
- - < IPv4 address 1 >
- - < IPv4 address 2 >
+ - < IPv4_address_1 >
+ - < IPv4_address_2 >
 
 # List of NTP Servers IP or DNS name | Optional
 # The first NTP server in the list will be preferred
@@ -244,6 +249,17 @@ mac_address_table:
 
 ### Fabric Underlay and Overlay Topology Variables
 
+- The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
+- The following underlay routing protocols are supported:
+  - BGP (default)
+  - OSFP
+  - ISIS is planned for a future release.
+- Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on it's unique device id.
+  - To view IP address allocation and consumption, a summary is provided in the auto generated fabric documentation in Markdown format.
+- The variables should be applied to all devices in the fabric.
+
+**Variables and Options:**
+
 ```yaml
 
 # Fabric Name, required to match group_var file name | Required.
@@ -264,25 +280,25 @@ p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 # Assigned as /31 for each uplink interfaces
 # Assign network summary larger then:
 # [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
-underlay_p2p_network_summary: < IPv4/Mask >
+underlay_p2p_network_summary: < IPv4_network/Mask >
 
 # IP address summary for BGP evpn overlay peering loopback for L3 leafs and spines | Required
 # Assigned as /32 to Loopback0
 # Assign range larger then:
 # [ total spines + total potential L3 leafs ]
-overlay_loopback_network_summary: < IPv4/Mask >
+overlay_loopback_network_summary: < IPv4_network/Mask >
 
 # IP address summary VTEP VXLAN Tunnel source loopback1 IP for L3 leafs | Required
 # Assigned as /32 to Loopback1
 # Assign range larger then total L3 leafs
-vtep_loopback_network_summary: < IPv4/Mask >
+vtep_loopback_network_summary: < IPv4_network/Mask >
 
 # IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
 # * When MLAG leafs present in topology.
 # Assign range larger then total: L3 Leafs + 2 ]
 mlag_ips:
-  leaf_peer_l3: < IPv4/Mask >
-  mlag_peer: < IPv4/Mask >
+  leaf_peer_l3: < IPv4_network/Mask >
+  mlag_peer: < IPv4_network/Mask >
 
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
@@ -328,35 +344,28 @@ bfd_multihop:
 note: Default values are commented
 
 ```yaml
-# Fabric name
+# Defined in FABRIC.yml
+
 fabric_name: DC1_FABRIC
 
-# Underlay routing protocol
 # underlay_routing_protocol: BGP
 
-# Underlay OSFP
 # underlay_ospf_process_id: 100
 # underlay_ospf_area: 0.0.0.0
 # underlay_ospf_max_lsa: 12000
 
-# Point to Point Links MTU
 # p2p_uplinks_mtu: 9000
 
-# Underlay p2p network summary
 underlay_p2p_network_summary: 172.31.255.0/24
 
-# Overlay p2p network summary
 overlay_loopback_network_summary: 192.168.255.0/24
 
-# VTEP loopback network summary
 vtep_loopback_network_summary: 192.168.254.0/24
 
-# MLAG IPs
 mlag_ips:
   leaf_peer_l3: 10.255.251.0/24
   mlag_peer: 10.255.252.0/24
 
-# BGP peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
@@ -365,7 +374,6 @@ bgp_peer_groups:
   MLAG_IPv4_UNDERLAY_PEER:
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
-# Spine BGP defaults
 # spine_bgp_defaults:
   # - update wait-for-convergence
   # - update wait-install
@@ -374,7 +382,6 @@ bgp_peer_groups:
   # - graceful-restart restart-time 300
   # - graceful-restart
 
-# Leaf BGP defaults
 # leaf_bgp_defaults:
   # - update wait-install
   # - no bgp default ipv4-unicast
@@ -382,10 +389,8 @@ bgp_peer_groups:
   # - graceful-restart restart-time 300
   # - graceful-restart
 
-# vxlan vlan aware bundles
 # vxlan_vlan_aware_bundles: false
 
-# BFD Multihop
 # bfd_multihop:
 #   interval: 300
 #   min_rx: 300
@@ -394,7 +399,8 @@ bgp_peer_groups:
 
 ### Fabric Topology Variables
 
-The fabric topology variables define the connectivity between the spines, L3 Leaves, and L2 Leaves.
+The fabric topology variables define the connectivity between the spines, L3 leafs, and L2 leafs.
+The variables should be applied to all devices in the fabric.
 
 ![Figure 2: Topology - naming convention](media/figure-2-topology.gif)
 
@@ -407,9 +413,37 @@ The fabric topology variables define the connectivity between the spines, L3 Lea
   - The default variables can be overridden when defined under the node groups.
 - The ability to define a super-spine layer is planned for a future release of ansible-avd.
 
-#### Spine Variables
+### Type Variable
+
+- The `type:` variable need to be applied to layer
+
+**Variables and Options:**
 
 ```yaml
+# define the layer type
+type: < spine | l3leaf | l2leaf >
+```
+
+**Example:**
+
+```yaml
+# Defined in SPINE.yml file
+type: spine
+
+# Defined in L3LEAFS.yml
+type: l3leaf
+
+# Defined in L2LEAFS.yml
+type: l2leaf
+```
+
+#### Spine Variables
+
+**Variables and Options:**
+
+```yaml
+# Defined in FABRIC.yml
+
 spine:
 
   # Arista platform family | Required.
@@ -429,15 +463,17 @@ spine:
       id: < integer >
 
       # Node management IP address | Required.
-      mgmt_ip: < IPv4/Mask >
+      mgmt_ip: < IPv4_address/Mask >
     < inventory_hostname >:
       id: < integer >
-      mgmt_ip: < IPv4/Mask >
+      mgmt_ip: < IPv4_address/Mask >
 ```
 
 **Example:**
 
 ```yaml
+# Defined in FABRIC.yml
+
 spine:
   platform: vEOS-LAB
   bgp_as: 65001
@@ -452,6 +488,8 @@ spine:
 ```
 
 #### L3 Leaf Variables
+
+**Variables and Options:**
 
 ```yaml
 l3leaf:
@@ -495,7 +533,7 @@ l3leaf:
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
-      # Filert L3 and L2 network services based on tenant and tags - and filter | Optional
+      # Filert L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
@@ -512,7 +550,7 @@ l3leaf:
           id: < integer >
 
           # Node mnagement IP address | Required.
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
 
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
@@ -529,19 +567,21 @@ l3leaf:
         # Second node
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
           spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
 
         # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
           spine_interfaces: [  < ethernet_interface_3 >, < ethernet_interface_3 > ]
 ```
 
 **Example:**
 
 ```yaml
+# Defined in FABRIC.yml
+
 l3leaf:
   defaults:
     platform: vEOS-LAB
@@ -594,6 +634,8 @@ l3leaf:
 ```
 
 #### L2 Leafs Variables
+
+**Variables and Options:**
 
 ```yaml
 l2leaf:
@@ -648,7 +690,7 @@ l2leaf:
           id: < integer >
 
           # Node mnagement IP address | Required.
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
 
           # l3leaf interfaces (list), interface located on l3leaf,
           # corresponding to parent_l3leafs and uplink_interfaces | Required.
@@ -662,19 +704,21 @@ l2leaf:
         # Second node.
         < l2_leaf_inventory_hostname_2 >:
           id: < integer >
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
           l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
 
         # Third node.
         < l2_leaf_inventory_hostname_3 >:
           id: < integer >
-          mgmt_ip: < IPv4/Mask >
+          mgmt_ip: < IPv4_address/Mask >
           l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
 ```
 
 **Example:**
 
 ```yaml
+# Defined in FABRIC.yml
+
 l2leaf:
   defaults:
     platform: vEOS-LAB
@@ -707,16 +751,314 @@ l2leaf:
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
 ```
 
-### Network Services - VRFs/VLANs
+### Network Services Varialbes - VRFs/VLANs
+
+- The network services variables, provide an abstrated model to create L2 and L3 network services across the fabric.
+- The network services, are grouped by tenants. The definition of a tenant, may vary between organizations.
+  - e.g. Tenants can be organization or departments.
+- The tenant shares a common vni range for mac vrf assignment.
+- The filtering model allows for granular deployment of network service to the fabric leveraging the tenant name and tags applied to the service definition.
+  - This allows for the re-use of SVIs and VLANs accross the fabric.
+
+**Variables and Options:**
 
 ```yaml
-# Underlay iBGP peering SVI based
+# On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
+# The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + vrf_vni
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
 
+# Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
+
+tenants:
+
+  # Specify a tenant name. | Required
+  # Tenant provide a contruct to group L3 VRFs and L2 VLANs.
+  # Networks services can be filtered by tenant name.
+  < tenant_a >:
+
+    # VXLAN Network Identifier for MAC VRF | Required.
+    # VXLAN VNI is derived from the base number with simple addition.
+    # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
+    mac_vrf_vni_base: < 10000-16770000 >
+
+    # Define L3 network services organized by vrf.
+    vrfs:
+      # VRF name | Required
+      < tenant_a_vrf_1 >:
+
+        # VRF VNI | Required.
+        # The VRF VNI range is limited.
+        vrf_vni: <1-1024>
+
+        # Enable VTEP Network diagnostics | Optional.
+        # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
+        vtep_diagnostic:
+
+          # Loopback interface number | Required (when vtep_diagnotics defined)
+          loopback: < 2-2100 >
+
+          # Loopback ip range, a unique ip is derived from this ranged and assigned
+          # to each l3 leaf based on it's unique id. | Required (when vtep_diagnotics defined)
+          loopback_ip_range: < IPv4_address/Mask >
+
+        # Dictionary of SVIs | Required.
+        # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
+        svis:
+
+          # SVI interface id and VLAN id. | Required
+          < 1-4096 >:
+
+            # By default the vni will be derived from "mac_vrf_vni_base:"
+            # The vni_override, allows to override this value and statically define it. | Optional
+            vni_override: < 1-16777215 >
+
+            # vlan name + svi description. | Required
+            name: < description >
+
+            # Tags leveraged for networks services filtering. | Required
+            tags: [ < tag_1 >, < tag_2 > ]
+
+            # Enable or disable interface
+            enabled: < true | false >
+
+            # Ip subnet of vlan. the first IP address will be assigned as the anycast address
+            # to each svi interface. | Required
+            ip_subnet: < IPv4_address/Mask >
+
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_subnet: < IPv4_address/Mask >
+
+      < tenant_a_vrf_2 >:
+        vrf_vni: <1-1024>
+        svis:
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_subnet: < IPv4_address/Mask >
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_subnet: < IPv4_address/Mask >
+
+   # Define L2 network services organized by vlan id.
+    l2vlans:
+
+      # VLAN id.
+      < 1-4096 >:
+        # By default the vni will be derived from "mac_vrf_vni_base:"
+        # The vni_override, allows to override this value and statically define it.
+        vni_override: < 1-16777215 >
+
+        # VLAN name.
+        name: < description >
+
+        # Tags leveraged for networks services filtering.
+        tags: [ < tag_1 >, < tag_2 > ]
+
+      < 1-4096 >:
+        name: < description >
+        tags: [ < tag_1 >, < tag_2 > ]
+
+
+  < tenant_a >:
+    mac_vrf_vni_base: < 10000-16770000 >
+    vrfs:
+      < tenant_b_vrf_1 >:
+        vrf_vni: <1-1024>
+        vtep_diagnostic:
+          loopback: < 2-2100 >
+          loopback_ip_range: < IPv4_address/Mask >
+        svis:
+          < 1-4096 >:
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_subnet: < IPv4_address/Mask >
+          < 1-4096 >:
+            vni_override: < 1-16777215 >
+            name: < description >
+            tags: [ < tag_1 >, < tag_2 > ]
+            enabled: < true | false >
+            ip_subnet: < IPv4_address/Mask >
+    l2vlans:
+      < 1-4096 >:
+        vni_override: < 1-16777215 >
+        name: < description >
+        tags: [ < tag_1 >, < tag_2 > ]
+      < 1-4096 >:
+        name: < description >
+        tags: [ < tag_1 >, < tag_2 > ]
+
+```
+
+**Example:**
+
+```yaml
+# mlag_ibgp_peering_vrfs:
+#   base_vlan: 3000
+
+tenants:
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      Tenant_A_OP_Zone:
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          110:
+            name: Tenant_A_OP_Zone_1
+            tags: [ opzone ]
+            enabled: true
+            ip_subnet: 10.1.10.0/24
+          111:
+            vni_override: 50111
+            name: Tenant_A_OP_Zone_2
+            tags: [ opzone ]
+            enabled: true
+            ip_subnet: 10.1.11.0/24
+      Tenant_A_WEB_Zone:
+        vrf_vni: 11
+        svis:
+          120:
+            name: Tenant_A_WEB_Zone_1
+            tags: [ web, erp1 ]
+            enabled: true
+            ip_subnet: 10.1.20.0/24
+          121:
+            name: Tenant_A_WEBZone_2
+            tags: [ web ]
+            enabled: true
+            ip_subnet: 10.1.21.0/24
+      Tenant_A_APP_Zone:
+        vrf_vni: 12
+        svis:
+          130:
+            name: Tenant_A_APP_Zone_1
+            tags: [ app, erp1 ]
+            enabled: true
+            ip_subnet: 10.1.30.0/24
+          131:
+            name: Tenant_A_APP_Zone_2
+            tags: [ app ]
+            enabled: true
+            ip_subnet: 10.1.31.0/24
+      Tenant_A_DB_Zone:
+        vrf_vni: 13
+        svis:
+          140:
+            name: Tenant_A_DB_BZone_1
+            tags: [ db, erp1 ]
+            enabled: true
+            ip_subnet: 10.1.40.0/24
+          141:
+            name: Tenant_A_DB_Zone_2
+            tags: [ db ]
+            enabled: true
+            ip_subnet: 10.1.41.0/24
+      Tenant_A_WAN_Zone:
+        vrf_vni: 14
+        svis:
+          150:
+            name: Tenant_A_WAN_Zone_1
+            tags: [ wan ]
+            enabled: true
+            ip_subnet: 10.1.40.0/24
+    l2vlans:
+      160:
+        vni_override: 55160
+        name: Tenant_A_VMOTION
+        tags: [ vmotion ]
+      161:
+        name: Tenant_A_NFS
+        tags: [ nfs]
+
+  Tenant_B:
+    mac_vrf_vni_base: 20000
+    vrfs:
+      Tenant_B_OP_Zone:
+        vrf_vni: 20
+        svis:
+          210:
+            name: Tenant_B_OP_Zone_1
+            tags: [ opzone ]
+            enabled: true
+            ip_subnet: 10.2.10.0/24
+          211:
+            name: Tenant_B_OP_Zone_2
+            tags: [ opzone ]
+            enabled: true
+            ip_subnet: 10.2.11.0/24
+      Tenant_B_WAN_Zone:
+        vrf_vni: 21
+        svis:
+          250:
+            name: Tenant_B_WAN_Zone_1
+            tags: [ wan ]
+            enabled: true
+            ip_subnet: 10.2.50.0/24
 ```
 
 ### Server Edge Port Connectivity
+
+**Variables and Options:**
+
+```yaml
+
+
+```
+
+**Example:**
+
+```yaml
+
+```
+
+### vEOS-LAB Know Caveats and Recommendations
+
+- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
+- vEOS-lab enables you to create and run replicas of physical networks within a riskfree virtual environment.
+- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
+- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
+- Supported features are documented here: [vEOS-LAB Datasheet](https://www.arista.com/assets/data/pdf/Datasheets/vEOS_Datasheet.pdf)
+
+However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
+
+*Variables adjustments required for vEOS-LAB:**
+
+```yaml
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values, to avoid high CPU.
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+```
 
 ## Example Playbook
 
