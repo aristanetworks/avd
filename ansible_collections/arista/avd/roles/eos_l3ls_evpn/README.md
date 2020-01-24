@@ -12,7 +12,7 @@
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
-    - [Network Services Varialbes - VRFs/VLANs](#network-services-varialbes---vrfsvlans)
+    - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [Example Playbook](#example-playbook)
@@ -46,7 +46,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 **Outputs:**
 
 - A structured EOS configuration file in yaml format. This provides the following benefits:
-  - First, this allows to naturally detect duplicate entries from input, as yaml dictionaries don't process duplicate keys.
+  - First, this allows us to naturally detect duplicate entries from inputs, as yaml dictionaries don't process duplicate keys.
   - Leverage the structured data to create eos cli configuration.
   - Leverage the structured data to create end user documentation.
   - Leverage the structured data for pre and post fabric tests.
@@ -90,7 +90,7 @@ ansible-galaxy collection install arista.avd
 
 - enable jinja2 extensions: loop controls and do
   - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
-- By default Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when duplicate key are detected.
+- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
 ```ini
 jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
@@ -103,12 +103,12 @@ The role variables are documented inline within yaml formated output with: "< >"
 Some variables are required while others are optional.
 Default values, are stored in the role defaults [main.yml](./defaults/main.yml) file.
 
-Role variable have been grouped by configuration elements, and are typically stored in different group_vars files.
+Role variable are grouped by configuration elements and are typically stored in different group_vars files.
 
 ### Common Device Configuration Variables
 
-- Common device configuration variables, are for elements not related specifically to the fabric configuration.
-- The variables should be applied to all devices within the fabric, and can be shared with other infrastructure elements.
+- Common device configuration variables are for elements not related specifically to the fabric configuration.
+- The variables should be applied to all devices within the fabric and can be shared with other infrastructure elements.
 
 **Variables and Options:**
 
@@ -147,7 +147,7 @@ mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
 mgmt_interface_vrf: < vrf_name | default -> MGMT >
 mgmt_gateway: < IPv4 address >
-# OOB mgmt interface destination networks - overide default route
+# OOB mgmt interface destination networks - override default route
 mgmt_destination_networks:
   - < IPv4_network/Mask >
   - < IPv4_network/Mask >
@@ -254,8 +254,8 @@ mac_address_table:
   - BGP (default)
   - OSFP
   - ISIS is planned for a future release.
-- Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on it's unique device id.
-  - To view IP address allocation and consumption, a summary is provided in the auto generated fabric documentation in Markdown format.
+- Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
+  - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
 - The variables should be applied to all devices in the fabric.
 
 **Variables and Options:**
@@ -501,7 +501,7 @@ l3leaf:
     platform: < Arista Platform Family >
 
     # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
-    spines: [ < spine_inventory_hostname >, < spine_nventory_hostname > ]
+    spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
 
     # Uplink to spine interfaces (list), interface located on L3 Leaf,
     # corresponding to spines and spine_interfaces | Required.
@@ -524,7 +524,7 @@ l3leaf:
 
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to overide it.
+  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
@@ -533,7 +533,7 @@ l3leaf:
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
-      # Filert L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
+      # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
@@ -549,7 +549,7 @@ l3leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node mnagement IP address | Required.
+          # Node management IP address | Required.
           mgmt_ip: < IPv4_address/Mask >
 
           # Spine interfaces (list), interface located on Spine,
@@ -667,13 +667,13 @@ l2leaf:
 
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to overide it.
+  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
 
-      # Filert L3 and L2 network services based on tenant and tags - and filter | Optional
+      # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
@@ -689,7 +689,7 @@ l2leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node mnagement IP address | Required.
+          # Node management IP address | Required.
           mgmt_ip: < IPv4_address/Mask >
 
           # l3leaf interfaces (list), interface located on l3leaf,
@@ -751,14 +751,14 @@ l2leaf:
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
 ```
 
-### Network Services Varialbes - VRFs/VLANs
+### Network Services Variables - VRFs/VLANs
 
-- The network services variables, provide an abstrated model to create L2 and L3 network services across the fabric.
-- The network services, are grouped by tenants. The definition of a tenant, may vary between organizations.
-  - e.g. Tenants can be organization or departments.
+- The network services variables provide an abstracted model to create L2 and L3 network services across the fabric.
+- The network services are grouped by tenants. The definition of a tenant may vary between organizations.
+  - e.g. Tenants can be organizations or departments.
 - The tenant shares a common vni range for mac vrf assignment.
 - The filtering model allows for granular deployment of network service to the fabric leveraging the tenant name and tags applied to the service definition.
-  - This allows for the re-use of SVIs and VLANs accross the fabric.
+  - This allows for the re-use of SVIs and VLANs across the fabric.
 
 **Variables and Options:**
 
@@ -773,7 +773,7 @@ mlag_ibgp_peering_vrfs:
 tenants:
 
   # Specify a tenant name. | Required
-  # Tenant provide a contruct to group L3 VRFs and L2 VLANs.
+  # Tenant provide a construct to group L3 VRFs and L2 VLANs.
   # Networks services can be filtered by tenant name.
   < tenant_a >:
 
@@ -810,7 +810,7 @@ tenants:
           < 1-4096 >:
 
             # By default the vni will be derived from "mac_vrf_vni_base:"
-            # The vni_override, allows to override this value and statically define it. | Optional
+            # The vni_override allows us to override this value and statically define it. | Optional
             vni_override: < 1-16777215 >
 
             # vlan name + svi description. | Required
@@ -1024,7 +1024,7 @@ tenants:
 ### vEOS-LAB Know Caveats and Recommendations
 
 - vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
-- vEOS-lab enables you to create and run replicas of physical networks within a riskfree virtual environment.
+- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
 - Supported features are documented here: [vEOS-LAB Datasheet](https://www.arista.com/assets/data/pdf/Datasheets/vEOS_Datasheet.pdf)
