@@ -1,6 +1,6 @@
 ---
 
-- name: include data center fabric variables
+- name: include device intended structure configuration variables
   include_vars: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
   tags:
