@@ -1,38 +1,628 @@
-Role Name
-=========
+# Ansible Role: eos_cli_config_gen
 
-A brief description of the role goes here.
+- [Ansible Role: eos_cli_config_gen](#ansible-role-eoscliconfiggen)
+  - [Overview](#overview)
+  - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Requirements](#requirements)
+  - [Input Variables](#input-variables)
+    - [Hardware Counters](#hardware-counters)
+    - [Daemon TerminAttr](#daemon-terminattr)
+    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [Event Monitor](#event-monitor)
+    - [Load Interval](#load-interval)
+    - [Queue Monitor Length](#queue-monitor-length)
+    - [Logging](#logging)
+    - [Name Servers](#name-servers)
+    - [NTP Servers](#ntp-servers)
+    - [redundancy](#redundancy)
+    - [Spanning Tree](#spanning-tree)
+    - [AAA Authentication](#aaa-authentication)
+    - [Local users](#local-users)
+    - [clock timezone](#clock-timezone)
+    - [VLANs](#vlans)
+    - [VRF Instances](#vrf-instances)
+    - [bfd multihop interval](#bfd-multihop-interval)
+    - [Port-Channel Interfaces](#port-channel-interfaces)
+    - [Ethernet Interfaces](#ethernet-interfaces)
+    - [Loopback Interfaces](#loopback-interfaces)
+    - [Management Interfaces](#management-interfaces)
+    - [VLAN Interfaces](#vlan-interfaces)
+    - [VxLAN interface](#vxlan-interface)
+    - [Hardware TCAM Profiles](#hardware-tcam-profiles)
+    - [MAC address-table](#mac-address-table)
+    - [Router Virtual MAC Address](#router-virtual-mac-address)
+    - [Virtual Source NAT](#virtual-source-nat)
+    - [Static Routes](#static-routes)
+    - [Prefix Lists](#prefix-lists)
+    - [MLAG Configuration](#mlag-configuration)
+    - [Route Maps](#route-maps)
+    - [Peer Filters](#peer-filters)
+    - [Router BGP Configuration](#router-bgp-configuration)
+    - [Router OSPF Configuration](#router-ospf-configuration)
+    - [Queue Monitor Streaming](#queue-monitor-streaming)
+    - [HTTP Management API](#http-management-api)
 
-Requirements
-------------
+## Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+**eos_cli_config_gen**, is a role that generates eos cli syntax and device documentation.
 
-Role Variables
---------------
+The **eos_cli_config_gen** role:
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- Designed to generate the intended configuration offline, without relying on switch current state information.
+- Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
-Dependencies
-------------
+## Role Inputs and Outputs
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-Example Playbook
-----------------
+![Figure 1: Ansible Role eos_cli_config_gen](media/figure-1-role-eos_cli_config_gen.gif)
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+**Inputs:**
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- Structured EOS configuration file in yaml format.
 
-License
--------
+**Outputs:**
 
-BSD
+- EOS configuration in CLI format.
+- Device Documentation in Markdown format.
 
-Author Information
-------------------
+**Tasks:**
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+1. Include device structured configuration that was previously generated.
+2. Generate EOS configuration in CLI format.
+3. Generate Device Documentation in Markdown format.
+
+## Requirements
+
+**Arista EOS Version:**
+
+- EOS 4.21.8M or later
+
+**Python:**
+
+- Python 3.6.8 or later
+
+**Supported Ansible Versions:**
+
+- ansible 2.9.2 or later
+
+```bash
+pip3 install ansible==2.9.2
+```
+
+**Ansible Collection:**
+
+- arista.avd collection
+
+```bash
+ansible-galaxy collection install arista.avd
+```
+
+**Ansible Configuration INI file:**
+
+- enable jinja2 extensions: loop controls and do
+  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
+- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
+
+```ini
+jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
+duplicate_dict_key=error
+```
+
+## Input Variables
+
+- The input variables are documented inline within yaml formated output with: "< >"
+- Variables are organized in order of how they appear in the CLI syntax.
+- Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
+- All values are optional. Boolean variables default to "false" unless explicitly stated.
+
+### Hardware Counters
+
+```yaml
+hardware_counters:
+  features:
+    - <feature_1>: < direction | in | out >
+    - <feature_1>: < direction | in | out >
+```
+
+### Daemon TerminAttr
+
+```yaml
+daemon_terminattr:
+  ingestgrpcurl:
+    ip: < IPv4_address >
+    port: < port_id >
+  ingestauth_key: < ingest_key >
+  ingestvrf: < vrf_name >
+  smashexcludes: "< list as string >"
+  ingestexclude: "< list as string >"
+
+```
+
+### Internal VLAN Allocation Policy
+
+```yaml
+vlan_internal_allocation_policy:
+  allocation: < ascending | descending >
+  range:
+    beginning: < vlan_id >
+    ending: < vlan_id >
+```
+
+### Event Monitor
+
+```yaml
+event_monitor:
+  enabled: < true | false >
+```
+
+### Load Interval
+
+```yaml
+load_interval:
+  default: < seconds >
+
+```
+
+### Queue Monitor Length
+
+```yaml
+queue_monitor_length:
+  log: < seconds >
+```
+
+### Logging
+
+```yaml
+logging:
+  console: < severity_level >
+  monitor: < severity_level >
+```
+
+### Name Servers
+
+```yaml
+name_server:
+  source:
+    vrf: < vrf_name >
+  nodes:
+    - < name_server_1 >
+    - < name_server_2 >
+```
+
+### NTP Servers
+
+```yaml
+ntp_server:
+  local_interface:
+    vrf: < vrf_name >
+    interface: < source_interface >
+  nodes:
+    - < ntp_server_1 >
+    - < ntp_server_2 >
+
+```
+
+### redundancy
+
+```yaml
+redundancy:
+  protocol: < redundancy_protocol >
+```
+
+### Spanning Tree
+
+```yaml
+spanning_tree:
+  mode: < spanning_tree_mode >
+  priority: < priority_level >
+```
+
+### AAA Authentication
+
+```yaml
+aaa_authorization:
+  exec_default: < group | local | none >
+```
+
+### Local users
+
+```yaml
+local_users:
+  < user_1 >:
+    privilege: < 1-15 >
+    role: < role >
+    sha512_password: "< sha_512_password >"
+  < user_2 >:
+    privilege: < 1-15 >
+    role: < role >
+    sha512_password: "< sha_512_password >"
+```
+
+### clock timezone
+
+```yaml
+clock:
+  timezone: < timezone >
+```
+
+### VLANs
+
+```yaml
+vlans:
+  < vlan_id >:
+    name: < vlan_name >
+    trunk_groups:
+      - < trunk_group_name_1 >
+      - < trunk_group_name_2 >
+  < vlan_id >:
+    name: < vlan_name >
+```
+
+### VRF Instances
+
+```yaml
+vrfs:
+  < vrf_name >:
+    ip_routing: < true | false >
+  < vrf_name >:
+    ip_routing: < true | false >
+```
+
+### bfd multihop interval
+
+```yaml
+bfd_multihop:
+  interval: < Rate in milliseconds >
+  min_rx: < Rate in milliseconds >
+  multiplier: < 3-50 >
+```
+
+### Port-Channel Interfaces
+
+```yaml
+port_channel_interfaces:
+  < Port-Channel_interface_1 >:
+    description: < description >
+    vlans: "< list of vlans as sting >"
+    mode: < access | dot1q-tunnel | trunk >
+    mlag: < mlag_id >
+    trunk_groups:
+      - < trunk_group_name_1 >
+      - < trunk_group_name_2 >
+  < Port-Channel_interface_1 >:
+    description: < description >
+    vlans: "< list of vlans as sting >"
+    mode: < access | dot1q-tunnel | trunk >
+```
+
+### Ethernet Interfaces
+
+```yaml
+# Routed Interfaces
+ethernet_interfaces:
+  <Ethernet_interface_1 >:
+    description: < description >
+    speed: < interface_speed >
+    mtu: < mtu >
+    type: routed
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+    ospf_network_point_to_point: < true | false >
+    ospf_area: < ospf_area >
+
+# Switched Interfaces
+  <Ethernet_interface_2 >:
+    description: < description >
+    speed: < interface_speed >
+    vlans: "< list of vlans as sting >"
+    mode: < access | dot1q-tunnel | trunk >
+    flowcontrol:
+      received: < received | send | on >
+    channel_group:
+      id: < Port-Channel_id >
+      mode: < on | active | passive >
+```
+
+### Loopback Interfaces
+
+```yaml
+loopback_interfaces:
+  < Loopback_interface_1 >:
+    description: < description >
+    ip_address: < IPv4_address/Mask >
+    ospf_area: < ospf_area >
+  < Loopback_interface_2 >:
+    description: < description >
+    ip_address: < IPv4_address/Mask >
+```
+
+### Management Interfaces
+
+```yaml
+management_interfaces:
+  < Management_interface_1:
+    description: < description >
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+```
+
+### VLAN Interfaces
+
+```yaml
+vlan_interfaces:
+  < Vlan_id_1 >:
+    description: < description >
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+    ip_address_secondary: < IPv4_address/Mask >
+    virtual: < true | false >
+    ospf_network_point_to_point: < true | false >
+    ospf_area: < ospf_area >
+    mtu: < mtu >
+  < Vlan_id_2 >:
+    description: < description >
+    ip_address: < IPv4_address/Mask >
+```
+
+### VxLAN interface
+
+```yaml
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: < description >
+    source_interface: < interface >
+    virtual_router:
+      encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
+    vxlan_udp_port: < udp_port >
+    vxlan_vni_mappings:
+      vlans:
+        < vlan_id_1 >:
+          vni: < vni_id_1 >
+        < vlan_id_2 >:
+          vni: < vni_id_2 >
+      vrfs:
+        < vrf_name >:
+          vni: < vni_id_3 >
+        < vrf_name >:
+          vni: < vni_id_4 >
+```
+
+### Hardware TCAM Profiles
+
+```yaml
+tcam_profile:
+  - < tcam_profile >
+```
+
+### MAC address-table
+
+```yaml
+mac_address_table:
+  aging_time: < agin_time_in_seconds >
+```
+
+### Router Virtual MAC Address
+
+```yaml
+ip_virtual_router_mac_address: < mac_address (hh:hh:hh:hh:hh:hh) >
+```
+
+### Virtual Source NAT
+
+```yaml
+virtual_source_nat_vrfs:
+  < vrf_name_1 >:
+    ip_address: < IPv4_address >
+  < vrf_name_2 >:
+    ip_address: < IPv4_address >
+```
+
+### Static Routes
+
+```yaml
+static_routes:
+  - vrf: < vrf_name >
+    destination_address_prefix: < IPv4_network/Mask >
+    gateway: < IPv4_address >
+  - destination_address_prefix: < IPv4_network/Mask >
+    gateway: < IPv4_address >
+```
+
+### Prefix Lists
+
+```yaml
+prefix_lists:
+  < prefix_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < prefix_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+### MLAG Configuration
+
+```yaml
+mlag_configuration:
+  domain_id: < domain_id_name >
+  local_interface: < interface >
+  peer_address: < IPv4_address >
+  peer_address_heartbeat:
+    peer_ip: < IPv4_address >
+    vrf: < vrf_name >
+  dual_primary_detection_delay: < seconds >
+  peer_link: < Port-Channel_id >
+  reload_delay_mlag: < seconds >
+  reload_delay_non_mlag: < seconds >
+```
+
+### Route Maps
+
+```yaml
+route_maps:
+  < route_map_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        type: < permit | deny >
+        match: "< match as string >"
+      < sequence_id_1 >:
+        type: < permit | deny >
+        match: "< match as string >"
+  < route_map_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        type: < permit | deny >
+        match: "< match as string >"
+```
+
+### Peer Filters
+
+```yaml
+peer_filters:
+  < peer_filter_name_1:
+    sequence_numbers:
+      < sequence_id_1 >:
+        match: "< match as string >"
+      < sequence_id_2 >:
+        match: "< match as string >"
+  < peer_filter_name_2:
+    sequence_numbers:
+      < sequence_id_1 >:
+        match: "< match as string >"
+```
+
+### Router BGP Configuration
+
+```yaml
+router_bgp:
+  as: < bgp_as >
+  router_id: < IPv4_address >
+  bgp_defaults:
+    - "< bgp command as string >"
+    - "< bgp command as string >"
+  peer_groups:
+    < peer_group_name_1>:
+      type: < ipv4 | evpn >
+      peer_filter: < peer_filter >
+      next_hop_unchanged: < true | false >
+      update_source: < interface >
+      fall_over_bfd: < true | false >
+      ebgp_multihop: < integer >
+      next_hop_self: < true | false >
+      password: "< encrypted_password >"
+      send_community: < true | false >
+      maximum_routes: < integer >
+    < peer_group_name_2 >:
+      type: < ipv4 | evpn >
+      peer_filter: < peer_filter >
+      password: "< encrypted_password >"
+      maximum_routes: < integer >
+  neighbors:
+    < IPv4_address_1 >:
+      peer_group: < peer_group_name >
+      remote_as: < bgp_as >
+    < IPv4_address_2 >:
+      peer_group: < peer_group_name >
+      remote_as: < bgp_as >
+  redistribute_routes:
+    connected:
+      route_map: < route_map_name >
+  vlan_aware_bundles:
+    < vlan_aware_bundle_name_1 >:
+      rd: "< route distinguisher >"
+      route_targets:
+        < both | import | export >:
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+      vlan: < vlan_range >
+    < vlan_aware_bundle_name_2 >:
+      rd: "< route distinguisher >"
+      route_targets:
+        < both | import | export >:
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+      vlan: < vlan_range >
+  vlans:
+    < vlan_id_1>:
+      rd: "< route distinguisher >"
+      route_targets:
+        < both | import | export >:
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+    <vlan_id_2 >:
+      rd: "< route distinguisher >"
+      route_targets:
+        < both | import | export >:
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+  vrfs:
+    < vrf_name_1 >:
+      rd: "< route distinguisher >"
+      route_targets:
+        import:
+          address_family: < evpn >
+          asn: "< asn >"
+        export:
+          address_family: < evpn >
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+    < vrf_name_2 >:
+      rd: "<route distinguisher >"
+      route_targets:
+        import:
+          address_family: < evpn >
+          asn: "< asn >"
+        export:
+          address_family: < evpn >
+          asn: "< asn >"
+      redistribute_routes:
+        - < connected >
+        - < learned >
+```
+
+### Router OSPF Configuration
+
+```yaml
+router_ospf:
+  process_ids:
+    < process_id >:
+      passive_interface_default: < true | false >
+      router_id: < IPv4_address >
+      no_passive_interfaces:
+        - < interface_1 >
+        - < interface_2 >
+      max_lsa: < integer >
+```
+
+### Queue Monitor Streaming
+
+```yaml
+queue_monitor_streaming:
+  enable: < true | false >
+```
+
+### HTTP Management API
+
+```yaml
+management_api_http:
+  enable_http: < true | false >
+  enable_https: < true | false >
+  enable_vrfs:
+    < vrf_name_1 >:
+    < vrf_name_2 >:
+```
