@@ -59,6 +59,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 2. Include device structured configuration that was previously generated.
 3. Generate VXLAN/EVPN fabric documentation in Markdown format.
 4. Generate Leaf and Spine point-to-point links summary in CSV format.
+5. Generate Leaf and Spine physical topology summary in CSV format.
 
 ## Requirements
 
