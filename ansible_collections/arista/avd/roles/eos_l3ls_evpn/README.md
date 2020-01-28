@@ -15,7 +15,6 @@
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
-  - [Example Playbook](#example-playbook)
   - [License](#license)
 
 ## Overview
@@ -63,40 +62,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 ## Requirements
 
-**Arista EOS Version:**
-
-- EOS 4.21.8M or later
-
-**Python:**
-
-- Python 3.6.8 or later
-
-**Supported Ansible Versions:**
-
-- ansible 2.9.2 or later
-
-```bash
-pip3 install ansible==2.9.2
-```
-
-**Ansible Collection:**
-
-- arista.avd collection
-
-```bash
-ansible-galaxy collection install arista.avd
-```
-
-**Ansible Configuration INI file:**
-
-- enable jinja2 extensions: loop controls and do
-  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
-- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
-
-```ini
-jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
-duplicate_dict_key=error
-```
+Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## Role Variables
 
@@ -1012,6 +978,89 @@ tenants:
 **Variables and Options:**
 
 ```yaml
+# Dictionary of port_profiles to be applied to servers
+port_profiles:
+
+  # Port-profile name
+  < port_profile_1 >:
+
+    # Interface mode | required
+    mode: < access | dot1q-tunnel | trunk >
+
+    # Interface vlans | required
+    vlans: < vlans as string >
+
+    # Flow control | Optional
+    flowcontrol:
+      received: < received | send | on >
+
+  < port_profile_2 >:
+    mode: < access | dot1q-tunnel | trunk >
+    vlans: < vlans as string >
+
+# Dictionary of servers, a device attaching to L2 switched port(s)
+servers:
+
+  # Server name, this will be used in the switchport description
+  < server_1 >:
+
+    # rack is used for documentation purposes only
+    rack: < rack_id >
+
+    # A list of adapter(s), group by adapters leveraging the same port-profile.
+    adapters:
+
+      # Example of stand-alone adapter
+
+        # Adapter speed - if not specified will be auto.
+      - speed: < adapter speed >
+
+        # Local server port(s)
+        server_ports: [ < interface_name > ]
+
+        # List of port(s) connected to switches
+        switch_ports: [ < switchport_interface > ]
+
+        # List of switche(s)
+        switches: [ < device > ]
+
+        # Port-profile name, to inherit configuration.
+        profile: < port_profile_name >
+
+      # Example of port-channel adpater
+      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+        switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
+        switches: [ < device_1 >, < device_2 >  ]
+        profile: < port_profile_name >
+
+        # Port- Channel
+        port_channel:
+
+          # State, create or remove port-channel.
+          state: < present | absent >
+
+          # Port-Channel Description.
+          description: < port_channel_description >
+
+          # Port-Channel Mode.
+          mode: < active | passive | on >
+
+  < server_2 >:
+    rack: RackC
+    adapters:
+      - speed: < adapter speed >
+        server_ports: [ < interface_name > ]
+        switch_ports: [ < switchport_interface > ]
+        switches: [ < device > ]
+        profile: < port_profile_name >
+      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+        switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
+        switches: [ < device_1 >, < device_2 >  ]
+        profile: < port_profile_name >
+        port_channel:
+          state: < present | absent >
+          description: < port_channel_description >
+          mode: < active | passive | on >
 
 
 ```
@@ -1019,6 +1068,50 @@ tenants:
 **Example:**
 
 ```yaml
+port_profiles:
+
+  VM_Servers:
+    mode: trunk
+    vlans: "110-111,120-121,130-131"
+
+  MGMT:
+    mode: access
+    vlans: "110"
+
+  DB_Clusters:
+    mode: trunk
+    vlans: "140-141"
+
+
+servers:
+
+  server01:
+    rack: RackB
+    adapters:
+      - server_ports: [ E0 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC1-LEAF1A ]
+        profile: MGMT
+      - server_ports: [ E1, E2 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: DB_Clusters
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
+
+  server03:
+    rack: RackC
+    adapters:
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
 
 ```
 
@@ -1060,31 +1153,6 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 ```
-
-## Example Playbook
-
-An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
-
-```yml
-- hosts: DC1_FABRIC
-
-  tasks:
-
-    - name: generate intended variables
-      import_role:
-         name: arista.avd.eos_l3ls_evpn
-
-    - name: generate device intended config and documentation
-      import_role:
-         name: arista.avd.eos_cli_config_gen
-
-    - name: deploy configuration to device
-      import_role:
-         name: arista.avd.eos_config_deploy_eapi
-```
-
-Full examples with variables and outputs, are located here:
-[Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## License
 

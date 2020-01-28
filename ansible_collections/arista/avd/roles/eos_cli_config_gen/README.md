@@ -41,6 +41,7 @@
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [HTTP Management API](#http-management-api)
+  - [License](#license)
 
 ## Overview
 
@@ -74,40 +75,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 ## Requirements
 
-**Arista EOS Version:**
-
-- EOS 4.21.8M or later
-
-**Python:**
-
-- Python 3.6.8 or later
-
-**Supported Ansible Versions:**
-
-- ansible 2.9.2 or later
-
-```bash
-pip3 install ansible==2.9.2
-```
-
-**Ansible Collection:**
-
-- arista.avd collection
-
-```bash
-ansible-galaxy collection install arista.avd
-```
-
-**Ansible Configuration INI file:**
-
-- enable jinja2 extensions: loop controls and do
-  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
-- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
-
-```ini
-jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
-duplicate_dict_key=error
-```
+Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## Input Variables
 
@@ -626,3 +594,7 @@ management_api_http:
     < vrf_name_1 >:
     < vrf_name_2 >:
 ```
+
+## License
+
+Project is published under [Apache 2.0 License](../../../../../LICENSE)

@@ -1,38 +1,44 @@
-Role Name
-=========
+# Ansible Role: eos_config_deploy_eapi
 
-A brief description of the role goes here.
+- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
+  - [Overview](#overview)
+  - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Requirements](#requirements)
+  - [License](#license)
 
-Requirements
-------------
+## Overview
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+**eos_config_deploy_eapi**, is a role that deploys the configuration to Arista EOS devices.
 
-Role Variables
---------------
+The **eos_config_deploy_eapi** role:
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- Designed to replace device running-configuration with intended configuration.
+- Backup configuration after successfully change.
 
-Dependencies
-------------
+## Role Inputs and Outputs
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-Example Playbook
-----------------
+![Figure 1: Ansible Role eos_config_deploy_eapi](media/figure-1-role-eos_config_deploy_eapi.gif)
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+**Inputs:**
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- Device configuration file in EOS CLI syntax.
 
-License
--------
+**Outputs:**
 
-BSD
+- Device running-configuration (backup).
 
-Author Information
-------------------
+**Tasks:**
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+1. Replace configuration on device with intended EOS configuration (Only when change is detected when configuration is generated). If changed, saves to startup-config, and notifies handler to backup configuration.
+2. Show running configuration of device (handler)
+3. Copy configuration to: `./config_backup/{{ inventory_hostname }}.cfg` (handler)
+
+## Requirements
+
+Requirements are located here: [avd-requirements](../../README.md#Requirements)
+
+## License
+
+Project is published under [Apache 2.0 License](../../../../../LICENSE)
