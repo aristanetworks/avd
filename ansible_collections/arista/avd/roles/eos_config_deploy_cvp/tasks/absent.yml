@@ -31,7 +31,6 @@
     topology: '{{CVP_CONTAINERS}}'
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
     mode: delete
-    save_topology: true
 
 - name: 'Delete configlets from CVP {{inventory_hostname}}.'
   tags: [reset]
