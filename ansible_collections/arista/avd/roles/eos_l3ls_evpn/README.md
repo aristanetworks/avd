@@ -382,7 +382,8 @@ The variables should be applied to all devices in the fabric.
 
 ### Type Variable
 
-- The `type:` variable need to be applied to layer
+- The `type:` variable needs to be defined for each device in the fabric.
+- This is leveraged to load to appropriate template, to generate the configuration.
 
 **Variables and Options:**
 
@@ -974,6 +975,8 @@ tenants:
 ```
 
 ### Server Edge Port Connectivity
+
+- The
 
 **Variables and Options:**
 
