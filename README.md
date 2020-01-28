@@ -41,5 +41,3 @@ Support for this `arista.avd` collection is provided by the community directly i
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
-
-A more complete [guide for contribution](contributing.md) is available in the repository
