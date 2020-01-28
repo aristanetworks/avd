@@ -1,5 +1,7 @@
 # Ansible Role: eos_config_deploy_eapi
 
+**Table of Contents:**
+
 - [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)

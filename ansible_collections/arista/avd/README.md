@@ -1,5 +1,7 @@
 # Ansible Collection For Arista Validate Designs - arista.avd
 
+**Table of Contents:**
+
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
   - [Roles Overview](#roles-overview)
   - [Installation](#installation)
