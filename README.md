@@ -2,12 +2,16 @@
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
-## Table of Contents
+**Table of Contents:**
 
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
-  - [Table of Contents](#table-of-contents)
   - [About](#about)
   - [Project Documentation](#project-documentation)
+  - [Installation](#installation)
+    - [Requirements](#requirements)
+    - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
+  - [Example Playbooks](#example-playbooks)
+  - [Examples](#examples)
   - [Additional Resources](#additional-resources)
   - [License](#license)
   - [Ask a question](#ask-a-question)
@@ -19,7 +23,97 @@
 
 ## Project Documentation
 
-The documentation how to install and leverage ansible-avd collection is located here: **[arista.avd](./ansible_collections/arista/avd/README.md)**
+The documentation how to leverage ansible-avd collection is located here: **[arista.avd](./ansible_collections/arista/avd/README.md)**
+
+## Installation
+
+### Requirements
+
+**Arista EOS:**
+
+- EOS 4.21.8M or later
+- Roles validated with eAPI transport -> `ansible_connection: httpapi`
+
+**Python:**
+
+- Python 3.6.8 or later
+
+**Supported Ansible Versions:**
+
+- ansible 2.9.2 or later
+
+**Additional Python Libraries required:**
+
+- Jinja2  `2.10.3`
+- netaddr `0.7.19`
+- requests `2.22.0`
+- treelib `1.5.5`
+- pytest `5.3.4`
+- pytest-html `2.0.1`
+
+**Ansible + Additional Python Libraries Installation:**
+
+```bash
+pip3 install -r requirements.txt
+```
+
+requirements.txt content:
+
+```text
+ansible==2.9.2
+Jinja2==2.10.3
+netaddr==0.7.19
+requests==2.22.0
+treelib==1.5.5
+pytest==5.3.4
+pytest-html==2.0.1
+```
+
+**Ansible Configuration INI file:**
+
+- enable jinja2 extensions: loop controls and do
+  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
+- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
+
+```ini
+jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
+duplicate_dict_key=error
+```
+
+### Installation from ansible-galaxy
+
+Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content
+
+```shell
+ansible-galaxy collection install arista.avd
+```
+
+## Example Playbooks
+
+An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+
+    - name: generate device intended config and documentation
+      import_role:
+         name: arista.avd.eos_cli_config_gen
+
+    - name: deploy configuration to device
+      import_role:
+         name: arista.avd.eos_config_deploy_eapi
+```
+
+## Examples
+
+Full examples with variables and outputs, are located here:
+[Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional Resources
 
