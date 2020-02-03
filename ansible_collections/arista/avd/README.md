@@ -4,6 +4,7 @@
 
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
   - [Roles Overview](#roles-overview)
+  - [Custom Plugins](#custom-plugins)
   - [Installation](#installation)
     - [Requirements](#requirements)
     - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
@@ -12,11 +13,17 @@
 
 ## Roles Overview
 
-This repository provides roles for Ansible's collection __arista.avd__ with following content:
+This repository provides roles for Ansible's collection __arista.avd__ with the following content:
 
 - [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opinionated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
 - [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eAPI.
+
+## Custom Plugins
+
+This repository provides custom plugins for Ansible's collection __arista.avd__ :
+
+- [Arista AVD Plugins](plugins/README.md)
 
 ## Installation
 
