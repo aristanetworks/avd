@@ -978,12 +978,13 @@ tenants:
 
 ### Server Edge Port Connectivity
 
-- The
+- The Server Edge Port Connectivity variables, define infrastructure elements that connect to the fabric on switched interface(s).
+- The infrastructure elements are not limited to servers, but any device that connect to a L2 switch port, i.e.: firewalls, load balancers and storage.
 
 **Variables and Options:**
 
 ```yaml
-# Dictionary of port_profiles to be applied to servers
+# Dictionary of port_profiles to be applied to elements defined in the servers variables.
 port_profiles:
 
   # Port-profile name
@@ -1003,7 +1004,7 @@ port_profiles:
     mode: < access | dot1q-tunnel | trunk >
     vlans: < vlans as string >
 
-# Dictionary of servers, a device attaching to L2 switched port(s)
+# Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
 
   # Server name, this will be used in the switchport description
