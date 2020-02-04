@@ -1,38 +1,84 @@
 # Ansible Collection For Arista Validate Designs - arista.avd
 
+**Table of Contents:**
+
 - [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
-  - [About](#about)
   - [Roles Overview](#roles-overview)
+  - [Custom Plugins](#custom-plugins)
   - [Installation](#installation)
-    - [Dependencies](#dependencies)
+    - [Requirements](#requirements)
     - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
-  - [Resources](#resources)
+  - [Example Playbooks](#example-playbooks)
   - [License](#license)
-  - [Ask a question](#ask-a-question)
-  - [Contributing](#contributing)
-
-## About
-
-[Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision platform (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision). This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are design to be customized and extended to your needs!
 
 ## Roles Overview
 
-This repository provides roles for Ansible's collection __arista.avd__ with following content:
+This repository provides roles for Ansible's collection __arista.avd__ with the following content:
 
-- [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opiniated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
-- [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate eos cli syntax and device documentation.
-- [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eapi.
+- [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opinionated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
+- [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
+- [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eAPI.
+
+## Custom Plugins
+
+This repository provides custom plugins for Ansible's collection __arista.avd__ :
+
+- [Arista AVD Plugins](plugins/README.md)
 
 ## Installation
 
-### Dependencies
+### Requirements
 
-This collection requires the following to be installed on the Ansible control machine:
+**Arista EOS:**
 
-- python `3.x`
-- ansible  `2.9.0` or later
-- requests `2.22.0` or later
-- treelib version `1.5.5` or later
+- EOS 4.21.8M or later
+- Roles validated with eAPI transport -> `ansible_connection: httpapi`
+
+**Python:**
+
+- Python 3.6.8 or later
+
+**Supported Ansible Versions:**
+
+- ansible 2.9.2 or later
+
+**Additional Python Libraries required:**
+
+- Jinja2  `2.10.3`
+- netaddr `0.7.19`
+- requests `2.22.0`
+- treelib `1.5.5`
+- pytest `5.3.4`
+- pytest-html `2.0.1`
+
+**Ansible + Additional Python Libraries Installation:**
+
+```bash
+pip3 install -r requirements.txt
+```
+
+requirements.txt content:
+
+```text
+ansible==2.9.2
+Jinja2==2.10.3
+netaddr==0.7.19
+requests==2.22.0
+treelib==1.5.5
+pytest==5.3.4
+pytest-html==2.0.1
+```
+
+**Ansible Configuration INI file:**
+
+- enable jinja2 extensions: loop controls and do
+  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
+- By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
+
+```ini
+jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
+duplicate_dict_key=error
+```
 
 ### Installation from ansible-galaxy
 
@@ -42,24 +88,31 @@ Ansible galaxy hosts all stable version of this collection. Installation from an
 ansible-galaxy collection install arista.avd
 ```
 
-## Resources
+## Example Playbooks
 
-- Ansible [EOS modules](https://docs.ansible.com/ansible/latest/modules/list_of_network_modules.html#eos) on ansible documentation.
-- Ansible [CloudVision modules](https://github.com/aristanetworks/ansible-cvp)
-- [CloudVision Platform](https://www.arista.com/en/products/eos/eos-cloudvision)
+An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+
+    - name: generate device intended config and documentation
+      import_role:
+         name: arista.avd.eos_cli_config_gen
+
+    - name: deploy configuration to device
+      import_role:
+         name: arista.avd.eos_config_deploy_eapi
+```
+
+Full examples with variables and outputs, are located here:
+[Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## License
 
 Project is published under [Apache 2.0 License](../../../LICENSE)
-
-## Ask a question
-
-Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
-
-## Contributing
-
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
-
-You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
-
-A more complete [guide for contribution](contributing.md) is available in the repository

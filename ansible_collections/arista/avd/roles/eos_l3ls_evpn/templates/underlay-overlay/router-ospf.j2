@@ -6,18 +6,18 @@
       router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[inventory_hostname].id) }}
       no_passive_interfaces:
 {# Point-to-Point Interfaces to Leaf Switches #}
-{%         for l3leaf_node_group in l3leafs.node_groups | arista.avd.natural_sort %}
-{%             if l3leafs.node_groups[l3leaf_node_group].spines is defined %}
-{%                 set leaf_spines = l3leafs.node_groups[l3leaf_node_group].spines %}
+{%         for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%             if l3leaf.node_groups[l3leaf_node_group].spines is defined %}
+{%                 set leaf_spines = l3leaf.node_groups[l3leaf_node_group].spines %}
 {%             else %}
-{%                 set leaf_spines = l3leafs.defaults.spines %}
+{%                 set leaf_spines = l3leaf.defaults.spines %}
 {%             endif %}
-{%             for node in l3leafs.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-{%                 set spine_interfaces = l3leafs.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
-{%                 if l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
-{%                     set uplink_to_spine_interfaces = l3leafs.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
+{%             for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                 set spine_interfaces = l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
+{%                 if l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces is defined %}
+{%                     set uplink_to_spine_interfaces = l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces %}
 {%                 else %}
-{%                     set uplink_to_spine_interfaces = l3leafs.defaults.uplink_to_spine_interfaces %}
+{%                     set uplink_to_spine_interfaces = l3leaf.defaults.uplink_to_spine_interfaces %}
 {%                 endif %}
 {%                 for leaf_spine in leaf_spines %}
 {%                     if leaf_spine == inventory_hostname %}
