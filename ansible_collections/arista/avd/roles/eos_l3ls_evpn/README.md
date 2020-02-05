@@ -180,7 +180,10 @@ local_users:
 #   enable_https: true
 
 # Cloud Vision server information
-cvp_instance_ip: 192.168.2.201
+cvp_instance_ips:
+ - 192.168.2.201
+ - 192.168.2.202
+ - 192.168.2.203
 cvp_ingestauth_key: telarista
 # terminattr_ingestgrpcurl_port: 9910
 # terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
