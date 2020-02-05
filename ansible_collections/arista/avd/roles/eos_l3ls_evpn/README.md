@@ -105,6 +105,11 @@ management_eapi:
 
 # CloudVision - Telemetry Agent (TerminAttr) configuration | Optional
 cvp_instance_ip: < IPv4 address >
+or
+cvp_instance_ips:
+  - < IPv4 address >
+  - < IPv4 address >
+  - < IPv4 address >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"

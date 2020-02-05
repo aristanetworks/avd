@@ -3,7 +3,7 @@
 
 | CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF |
 | -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- |
-| gzip | {{ daemon_terminattr.ingestgrpcurl.ip }}:{{ daemon_terminattr.ingestgrpcurl.port }} | {{ daemon_terminattr.ingestauth_key }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.ingestvrf }} |
+| gzip | {% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} | {{ daemon_terminattr.ingestauth_key }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.ingestvrf }} |
 
 ### TerminAttr Daemon Device Configuration
 
