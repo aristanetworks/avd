@@ -221,7 +221,7 @@ mac_address_table:
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
   - BGP (default)
-  - OSFP
+  - OSPF
   - ISIS is planned for a future release.
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
