@@ -1,6 +1,6 @@
 # Roles Defaults
 
-MGMT_vrf_routing: false
+mgmt_vrf_routing: false
 
 mgmt_interface: Management1
 mgmt_interface_vrf: MGMT
@@ -21,12 +21,7 @@ terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
 terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 
-spanning_tree_mode: mstp
-spanning_tree_priority: 4096
-
 p2p_uplinks_mtu: 9000
-
-vxlan_vni_base: 10000
 
 underlay_routing_protocol: BGP
 

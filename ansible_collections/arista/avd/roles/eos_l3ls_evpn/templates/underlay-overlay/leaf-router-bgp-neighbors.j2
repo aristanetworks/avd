@@ -8,7 +8,7 @@
 {%         endfor %}
 {%     endif %}
 {# Overlay network peering #}
-{%     for spine_node in spine.nodes %}
+{%     for spine_node in spine.nodes | arista.avd.natural_sort %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[spine_node].id ) }}:
       peer_group: EVPN-OVERLAY-PEERS
 {%     endfor %}

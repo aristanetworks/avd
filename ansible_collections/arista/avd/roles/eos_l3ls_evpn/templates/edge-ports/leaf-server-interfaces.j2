@@ -5,7 +5,9 @@
 {%             if switch == inventory_hostname %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   {{ adapter.switch_ports[loop.index0]}}:
-    host: {{ server }}
+    peer: {{ server }}
+    peer_interface: {{ adapter.server_ports[loop.index0] }}
+    peer_type: server
     description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
 {%                 if adapter.speed is defined %}
     speed: {{ adapter.speed }}

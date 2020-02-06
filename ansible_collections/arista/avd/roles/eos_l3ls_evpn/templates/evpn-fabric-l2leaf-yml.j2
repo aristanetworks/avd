@@ -6,59 +6,64 @@
 {# set leaf variables #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
-{% for l2leaf_node_group in l2leafs.node_groups | arista.avd.natural_sort %}
-{%     for node in l2leafs.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
+{% for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         if node == inventory_hostname %}
 {%             set leaf.group = l2leaf_node_group %}
-{%             set leaf.id = l2leafs.node_groups[l2leaf_node_group].nodes[node].id %}
-{%             set switch.mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
-{%             if l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
-{%                 set leaf.spanning_tree_priority = l2leafs.node_groups[l2leaf_node_group].spanning_tree_priority %}
+{%             set leaf.id = l2leaf.node_groups[l2leaf_node_group].nodes[node].id %}
+{%             set switch.mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
+{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode is defined %}
+{%                 set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode %}
 {%             else %}
-{%                 set leaf.spanning_tree_priority = l2leafs.defaults.spanning_tree_priority %}
+{%                 set switch.spanning_tree_mode = l2leaf.defaults.spanning_tree_mode %}
 {%             endif %}
-{%             if l2leafs.node_groups[l2leaf_node_group].platform is defined %}
-{%                 set switch.platform = l2leafs.node_groups[l2leaf_node_group].platform %}
+{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
+{%                 set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
 {%             else %}
-{%                 set switch.platform = l2leafs.defaults.platform %}
+{%                 set switch.spanning_tree_priority = l2leaf.defaults.spanning_tree_priority %}
 {%             endif %}
-{%             if l2leafs.node_groups[l2leaf_node_group].filter.tenants is defined %}
-{%                 set leaf.filter_tenants = l2leafs.node_groups[l2leaf_node_group].filter.tenants %}
+{%             if l2leaf.node_groups[l2leaf_node_group].platform is defined %}
+{%                 set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform %}
+{%             else %}
+{%                 set switch.platform = l2leaf.defaults.platform %}
+{%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].filter.tenants is defined %}
+{%                 set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants %}
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
-{%             if l2leafs.node_groups[l2leaf_node_group].filter.tags is defined %}
-{%                 set leaf.filter_tags = l2leafs.node_groups[l2leaf_node_group].filter.tags %}
+{%             if l2leaf.node_groups[l2leaf_node_group].filter.tags is defined %}
+{%                 set leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags %}
 {%             else %}
 {%                 set leaf.filter_tags = [ 'all' ] %}
 {%             endif %}
-{%             if l2leafs.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
-{%                 set leaf.parent_l3leafs = l2leafs.node_groups[l2leaf_node_group].parent_l3leafs %}
+{%             if l2leaf.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
+{%                 set leaf.parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs %}
 {%             else %}
-{%                 set leaf.parent_l3leafs = l2leafs.defaults.parent_l3leafs %}
+{%                 set leaf.parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
 {%             endif %}
 {%             if loop.length == 2 %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l2leaf_node_group %}
-{%                 if l2leafs.node_groups[l2leaf_node_group].mlag_interfaces is defined %}
-{%                     set leaf.mlag_interfaces = l2leafs.node_groups[l2leaf_node_group].mlag_interfaces %}
+{%                 if l2leaf.node_groups[l2leaf_node_group].mlag_interfaces is defined %}
+{%                     set leaf.mlag_interfaces = l2leaf.node_groups[l2leaf_node_group].mlag_interfaces %}
 {%                 else %}
-{%                     set leaf.mlag_interfaces = l2leafs.defaults.mlag_interfaces %}
+{%                     set leaf.mlag_interfaces = l2leaf.defaults.mlag_interfaces %}
 {%                 endif %}
 {%                 if loop.index == 1 %}
 {%                     set leaf.mlag_role = "primary" %}
 {%                     set leaf.mlag_peer = loop.nextitem %}
-{%                     set leaf.mlag_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
-{%                     set leaf.mlag_peer_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
-{%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
-{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
+{%                     set leaf.mlag_ip = (( l2leaf.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
+{%                     set leaf.mlag_peer_ip = ((( l2leaf.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
+{%                     set leaf.mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
 {%                 elif loop.index == 2 %}
 {%                     set leaf.mlag_role = "secondary" %}
 {%                     set leaf.mlag_peer = loop.previtem %}
-{%                     set leaf.mlag_ip = ((( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
-{%                     set leaf.mlag_peer_ip = (( l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
-{%                     set leaf.mlag_peer_id = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
-{%                     set leaf.mlag_peer_mgmt_ip = l2leafs.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
+{%                     set leaf.mlag_ip = ((( l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
+{%                     set leaf.mlag_peer_ip = (( l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
+{%                     set leaf.mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
 {%                 endif %}
 {%             else %}
 {%                 set leaf.mlag = false %}
@@ -68,16 +73,16 @@
 {% endfor %}
 {# get allowed vrfs, svis and vlans from parent L3 Leafs #}
 {% set parentl3leaf = namespace() %}
-{% for l3leaf_node_group in l3leafs.node_groups | arista.avd.natural_sort %}
-{%     for node in l3leafs.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         if node == leaf.parent_l3leafs[0] %}
-{%             if l3leafs.node_groups[l3leaf_node_group].filter.tenants is defined %}
-{%                 set parentl3leaf.filter_tenants = l3leafs.node_groups[l3leaf_node_group].filter.tenants %}
+{%             if l3leaf.node_groups[l3leaf_node_group].filter.tenants is defined %}
+{%                 set parentl3leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants %}
 {%             else %}
 {%                 set parentl3leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
-{%             if l3leafs.node_groups[l3leaf_node_group].filter.tags is defined %}
-{%                 set parentl3leaf.filter_tags = l3leafs.node_groups[l3leaf_node_group].filter.tags %}
+{%             if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
+{%                 set parentl3leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
 {%             else %}
 {%                 set parentl3leaf.filter_tags = [ 'all' ] %}
 {%             endif %}
@@ -195,7 +200,9 @@ redundancy:
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
-{% include 'base/leaf-spanning-tree.j2' %}
+{% include 'base/spanning-tree.j2' %}
+{# disable mlag vlan spanning tree #}
+{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -254,7 +261,6 @@ ethernet_interfaces:
 ### Management Interfaces ###
 management_interfaces:
 {% include 'base/mgmt-interface.j2' %}
-
 
 {# vlan interfaces #}
 ### VLAN Interfaces ###
