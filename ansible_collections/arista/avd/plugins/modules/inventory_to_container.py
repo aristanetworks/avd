@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
@@ -12,8 +12,8 @@ version_added: "2.9"
 author: "EMEA AS Team(ansible-dev@arista.com)"
 short_description:Transform information from inventory to arista.cvp collection
 description:
-  - Transform information from ansible inventory to be able to 
-  - provision CloudVision Platform using arista.cvp collection and 
+  - Transform information from ansible inventory to be able to
+  - provision CloudVision Platform using arista.cvp collection and
   - its specific data structure.
 options:
   inventory:
@@ -209,7 +209,7 @@ def get_devices(dict_inventory, search_container=None, devices=list()):
     Parameters
     ----------
     dict_inventory : dict
-        Inventory YAML content. 
+        Inventory YAML content.
     search_container : [type], optional
         Container to look for, by default None
     devices : [type], optional
