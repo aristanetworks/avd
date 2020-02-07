@@ -100,7 +100,10 @@ hardware_counters:
 ```yaml
 daemon_terminattr:
   ingestgrpcurl:
-    ip: < IPv4_address >
+    ips:
+      - < IPv4_address >
+      - < IPv4_address >
+      - < IPv4_address >
     port: < port_id >
   ingestauth_key: < ingest_key >
   ingestvrf: < vrf_name >

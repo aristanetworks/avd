@@ -105,6 +105,11 @@ management_eapi:
 
 # CloudVision - Telemetry Agent (TerminAttr) configuration | Optional
 cvp_instance_ip: < IPv4 address >
+or
+cvp_instance_ips:
+  - < IPv4 address >
+  - < IPv4 address >
+  - < IPv4 address >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
@@ -175,7 +180,10 @@ local_users:
 #   enable_https: true
 
 # Cloud Vision server information
-cvp_instance_ip: 192.168.2.201
+cvp_instance_ips:
+ - 192.168.2.201
+ - 192.168.2.202
+ - 192.168.2.203
 cvp_ingestauth_key: telarista
 # terminattr_ingestgrpcurl_port: 9910
 # terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
@@ -221,7 +229,7 @@ mac_address_table:
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
   - BGP (default)
-  - OSFP
+  - OSPF
   - ISIS is planned for a future release.
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
