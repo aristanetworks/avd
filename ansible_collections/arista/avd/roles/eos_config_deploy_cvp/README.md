@@ -1,111 +1,97 @@
-eos-config-deploy-cvp
-=========
+# Ansible Role: eos_config_deploy_eapi
 
-__eos-config-deploy-cvp__ is a module in charge of publishing AVD configuration to a CloudVision instance.
+**Table of Contents:**
 
-Requirements
-------------
+- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
+  - [Overview](#overview)
+  - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Requirements](#requirements)
+  - [License](#license)
 
-To use this role, you must follow next requirements:
+## Overview
 
-- arista.cvp collection
+**eos_config_deploy_cvp_**, is a role that deploys the configuration to Arista EOS devices via CloudVision Management platform.
 
-```
-$ ansible-galaxy collection install arista.cvp
-```
+The **eos_config_deploy_cvp** role:
 
-- Python libraies:
+- Designed to configure CloudVision with fabric configlets & topology.
+- Deploy intended configlets to devices and execute pending tasks.
 
-```
-$ pip install ansible>=2.9.0rc4,<2.10
-$ pip install requests==2.22.0
-$ pip install treelib==1.5.5
-```
+## Role requirements
 
-Role Variables
---------------
-
-Some variables are used to capture customer's inputs:
-
-- Filter to apply on cv_device to target only devices involved in Fabric
-
-```yaml
-device_filter: 'all'
-```
-
-- Define inventory group to consider root of container topology
-```yaml
-container_root: '{{ fabric_name }}'
-```
-
-- Configure prefix to append to configlets on CloudVision
-```yaml
-configlets_prefix: 'AVD-{{ fabric_name }}-'
-```
-
-- Define whether Ansible must create/update or delete CloudVision topology
-```yaml
-state: present
-```
-
-Dependencies
-------------
-
-- arista.cvp collection
+This role requires to install `arista.cvp` collection to support CloudVision interactions.
 
 ```
 $ ansible-galaxy collection install arista.cvp
 ```
 
-Inventory file must use `YAML` syntax and have at least one group named __CVP__
+## Role Inputs and Outputs
 
+Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-Example Playbook
-----------------
+![Figure 1: Ansible Role eos_config_deploy_eapi](media/figure-1-role-eos_config_deploy_eapi.gif)
 
-Below is an example of how to use this role to create topology on CloudVision:
+**Inputs:**
 
-```yaml
-- name: Configuration deployment with CVP
-  hosts: CVP
-  connection: local
-  gather_facts: no
-  tasks:
-    - name: run CVP provisioning
-      import_role:
-         name: eos-config-deploy-cvp
-      vars:
-        container_root: DC1
-        configlets_prefix: 'DC1-AVD'
-        device_filter: 'A-'
-        state: present
-```
+__Inventory configuration:__
 
-Below is an example of how to use this role to delete topology on CloudVision:
+An entry must be part of the inventory to describe CloudVision server. `arista.cvp` modules use httpapi approach. Example below provides framework to use in your inventory.
 
 ```yaml
-- name: Configuration deployment with CVP
-  hosts: CVP
-  connection: local
-  gather_facts: no
-  tasks:
-    - name: run CVP provisioning
-      import_role:
-         name: eos-config-deploy-cvp
-      vars:
-        container_root: DC1
-        configlets_prefix: 'DC1-AVD'
-        device_filter: 'A-'
-        state: absent
+all:
+  children:
+    cloudvision:
+      hosts:
+        cv_server01:
+          ansible_httpapi_host: 10.83.28.164
+          ansible_host: 10.83.28.164
+          ansible_user: ansible
+          ansible_password: ansible
+          ansible_connection: httpapi
+          ansible_httpapi_use_ssl: True
+          ansible_httpapi_validate_certs: False
+          ansible_network_os: eos
+          ansible_httpapi_port: 443
+          # Configuration to get Virtual Env information
+          ansible_python_interpreter: $(which python3)
 ```
 
+__Module variables:__
 
-License
--------
+- __`container_root`__: Inventory group name where Fabric devices are located
+- __`configlets_prefix`__: Prefix to use for configlet on CV side.
+- __`device_filter`__: Filter to target a specific set of devices on CV side.
+- __`state`__: `present` / `absent`. Support creation or cleanup topology on CV server.
 
-BSD
+_Example_:
 
-Author Information
-------------------
+```yaml
+tasks:
+  - name: run CVP provisioning
+    import_role:
+        name: eos_config_deploy_cvp
+    vars:
+      container_root: 'DC1_FABRIC'
+      configlets_prefix: 'DC1-AVD'
+      device_filter: 'DC1'
+      state: present
+```
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+**Outputs:**
+
+- None.
+
+**Tasks:**
+
+1. Copy generated configuration to CloudVision static configlets.
+2. Create container topology and attach devices to correct container
+3. Bind configlet to devices.
+4. Apply generated tasks to deploy configuration to devices.
+
+## Requirements
+
+Requirements are located here: [avd-requirements](../../README.md#Requirements)
+
+## License
+
+Project is published under [Apache 2.0 License](../../../../../LICENSE)
