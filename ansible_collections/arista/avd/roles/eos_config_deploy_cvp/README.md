@@ -4,6 +4,7 @@
 
 - [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
   - [Overview](#overview)
+  - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
   - [License](#license)

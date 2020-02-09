@@ -46,30 +46,9 @@ The `inventory_to_container` module provides following capabilities:
 - Transform inventory groups into CloudVision containers topology. 
 - Create list of configlets definition.
 
-It saves everything in a `YAML` file with the following structure:
+It saves everything in a `YAML` file using **`destination`** keyword.
 
-```yaml
----
-CVP_DEVICES:
-  DC1-SPINE1:
-    name: DC1-SPINE1
-    parentContainerName: DC1_SPINES
-    configlets:
-        - DC1-AVD_DC1-SPINE1
-    imageBundle: []
-
-CVP_CONTAINERS:
-  DC1_LEAF1:
-    parent_container: DC1_L3LEAFS
-  DC1_FABRIC:
-    parent_container: Tenant
-  DC1_L3LEAFS:
-    parent_container: DC1_FABRIC
-  DC1_LEAF2:
-    parent_container: DC1_L3LEAFS
-  DC1_SPINES:
-    parent_container: DC1_FABRIC
-```
+It is a module to build structure of data to configure on a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
 
 **Example:**
 
@@ -111,4 +90,29 @@ all:
                   hosts:
                     DC1-LEAF2A:
                     DC1-LEAF2B:
+```
+
+Generated output ready to be used by [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) collection:
+
+```yaml
+---
+CVP_DEVICES:
+  DC1-SPINE1:
+    name: DC1-SPINE1
+    parentContainerName: DC1_SPINES
+    configlets:
+        - DC1-AVD_DC1-SPINE1
+    imageBundle: []
+
+CVP_CONTAINERS:
+  DC1_LEAF1:
+    parent_container: DC1_L3LEAFS
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_L3LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF2:
+    parent_container: DC1_L3LEAFS
+  DC1_SPINES:
+    parent_container: DC1_FABRIC
 ```
