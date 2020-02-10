@@ -17,6 +17,7 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 
 - [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opinionated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
 - [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
+- [__arista.avd.eos_config_deploy_cvp__](roles/eos_config_deploy_cvp/README.md) - deploys intended configuration via CloudVision.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eAPI.
 
 ## Custom Plugins
