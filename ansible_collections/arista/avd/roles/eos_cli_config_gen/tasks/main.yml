@@ -3,10 +3,7 @@
 - name: include device intended structure configuration variables
   include_vars: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
-  tags:
-    - documentation
-    - config
-    - device_documentation
+  tags: [build, provision]
 
 - name: Generate eos intended configuration
   template:
@@ -14,16 +11,11 @@
     dest: ./intended/configs/{{ inventory_hostname }}.cfg
   delegate_to: localhost
   register: eosconfig
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]
 
 - name: Generate device documentation
   template:
     src: eos-device-documentation.j2
     dest: ./documentation/devices/{{ inventory_hostname }}.md
   delegate_to: localhost
-  tags:
-    - documentation
-    - config
-    - device_documentation
+  tags: [build, provision]
