@@ -12,3 +12,6 @@ configlets_prefix: 'AVD-{{ fabric_name }}-'
 
 # State management to know if module should create/update or delete fabric
 state: 'present'
+
+# CVP Deployment methodology, whether to exectute or stage tasks
+execute_task: false

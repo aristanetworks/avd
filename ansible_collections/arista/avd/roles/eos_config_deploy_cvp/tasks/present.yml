@@ -17,7 +17,9 @@
   arista.cvp.cv_task:
     tasks: "{{ CVP_CONFIGLETS_STATUS.data.tasks }}"
     wait: 90
-  when: CVP_CONFIGLETS_STATUS.data.tasks | length > 0
+  when:
+    - CVP_CONFIGLETS_STATUS.data.tasks | length > 0
+    - execute_task == true
 
 - name: "Building Containers topology on {{inventory_hostname}}"
   tags: [provision]
@@ -44,3 +46,5 @@
   arista.cvp.cv_task:
     tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
     wait: 720
+  when:
+    - execute_task == true

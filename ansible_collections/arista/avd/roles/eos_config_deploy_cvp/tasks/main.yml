@@ -11,7 +11,7 @@
   register: CVP_VARS
 
 - name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
-  tags: [build]
+  tags: [build, provision]
   template:
     src: "cvp-devices.j2"
     dest: './intended/structured_configs/{{inventory_hostname}}.yml'
@@ -27,12 +27,13 @@
 
 # If state=present launch creation/update process
 - name: Start creation/update process.
+  tags: [provision]
   include_tasks: ./present.yml
   when: state=="present"
 
 #################################################
 
 # If state=absent launch deletion process
-- name: Start deletion process.
+- name: Start deletion process - when state == absent.
   include_tasks: ./absent.yml
   when: state=="absent"
