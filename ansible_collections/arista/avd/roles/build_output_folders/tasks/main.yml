@@ -1,0 +1,27 @@
+---
+# tasks file for build_directories
+
+- name: 'Cleanup existing folders in {{output_dir}}'
+  file:
+    path: '{{output_dir}}'
+    state: absent 
+    mode: 0755
+  delegate_to: localhost
+- name: 'Create folder {{output_dir}}'
+  file:
+    path: '{{output_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+- name: 'Create folder {{structured_dir_name}} for structued YAML files'
+  file:
+    path: '{{structured_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+- name: 'Create folder {{eos_config_dir_name}} for EOS Configuration files'
+  file:
+    path: '{{eos_config_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
