@@ -1,0 +1,6 @@
+{% if daemon_terminattr is defined and daemon_terminattr is not none %}
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -ingestgrpcurl={% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} -cvcompression=gzip -ingestauth=key,{{ daemon_terminattr.ingestauth_key }} -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }} -ingestvrf={{ daemon_terminattr.ingestvrf }} -taillogs
+   no shutdown
+!
+{% endif %}

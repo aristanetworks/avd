@@ -1,0 +1,10 @@
+{# Leaf underlay and overlay router bgp configuration #}
+{% if type == "l3leaf" %}
+  as: {{ leaf.bgp_as }}
+  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+  bgp_defaults:
+{%     for bgp_default in leaf_bgp_defaults %}
+    - {{ bgp_default }}
+{%     endfor %}
+    - maximum-paths {{ spine.nodes | length * max_l3leaf_to_spine_links }} ecmp {{ spine.nodes | length * max_l3leaf_to_spine_links }}
+{% endif %}

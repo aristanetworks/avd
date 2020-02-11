@@ -1,0 +1,175 @@
+{# Spine Switch Configuration #}
+## Ansible Generated ##
+
+### {{ inventory_hostname }} ###
+
+{# Set Spine Variables #}
+{% set switch = namespace() %}
+{% set switch.platform = spine.platform %}
+{% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
+{% set switch.spanning_tree_mode = "none" %}
+### Spine Info ###
+switch_platform: {{ switch.platform }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
+
+{# Hardware Counter #}
+### Hardware Counters
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
+{# Daemon TerminAttr #}
+### Daemon TerminAttr ###
+daemon_terminattr:
+{% include 'base/daemon-terminattr.j2' %}
+
+{# vlan allocation policy #}
+vlan_internal_order:
+{% include 'base/vlan-internal-order.j2' %}
+
+
+{# event monitor #}
+### Event Monitor ###
+event_monitor:
+{% include 'base/event-monitor.j2' %}
+
+{# load interval #}
+### Load Interval ###
+load_interval:
+{% include 'base/load-interval.j2' %}
+
+{# queue monitor length #}
+### Queue Monitor Lenght ###
+queue_monitor_length:
+{% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
+
+{# name servers #}
+### Name Servers ###
+name_server:
+{% include 'base/name-servers.j2' %}
+
+{# NTP servers #}
+### NTP Servers ###
+ntp_server:
+{% include 'base/ntp-servers.j2' %}
+
+{# redundancy #}
+### Redundancy ###
+redundancy:
+{% include 'base/redundancy.j2' %}
+
+{# spanning-tree #}
+### Spanning-tree ###
+spanning_tree:
+{% include 'base/spanning-tree.j2' %}
+
+{# unsupported transceiver #}
+{% include 'base/unsupported-transeiver.j2' %}
+
+{# aaa authorization #}
+### AAA authorization ###
+aaa_authorization:
+{% include 'base/aaa-authorization.j2' %}
+
+{# local users #}
+### local users ###
+local_users:
+{% include 'base/local-users.j2' %}
+
+{# clock timezone #}
+### Clock Timezone ###
+clock:
+{% include 'base/clock-timezone.j2' %}
+
+
+{# VRFs #}
+### VRFs ###
+vrfs:
+{% include 'base/mgmt-vrf.j2' %}
+
+{# bfd multihop #}
+### bfd multihop ###
+bfd_multihop:
+{% include 'base/bfd-multihop.j2' %}
+
+{# Ethernet Interfaces #}
+### Ethernet Interfaces ###
+ethernet_interfaces:
+{% include 'underlay-overlay/spine-p2p-interfaces.j2' %}
+
+
+{# Loopback Interfaces #}
+### Loopback Interfaces ###
+loopback_interfaces:
+{% include 'underlay-overlay/spine-overlay-loopback.j2' %}
+
+
+{# Management Interfaces #}
+### Management Interfaces ###
+management_interfaces:
+{% include 'base/mgmt-interface.j2' %}
+
+{# TCAM Profiles #}
+### TCAM Profiles ###
+tcam_profile:
+{% include 'base/tcam-profile.j2' %}
+
+{# mac address-table #}
+### MAC address table ###
+mac_address_table:
+{% include 'base/mac-address-table.j2' %}
+
+{# static_routes #}
+### static routes ###
+static_routes:
+{% include 'routing/static-routes.j2' %}
+
+{# prefix_lists #}
+### prefix-lists ###
+prefix_lists:
+{% include 'underlay-overlay/spine-prefix-lists.j2' %}
+
+
+{# route maps #}
+### route-maps ###
+route_maps:
+{% include 'underlay-overlay/route-maps.j2' %}
+
+
+{# peer-filter #}
+### peer-filters ###
+peer_filters:
+{% include 'underlay-overlay/spine-peer-filters.j2' %}
+
+
+{# ##### BGP Configurartion ##### #}
+### Routing - BGP ###
+router_bgp:
+{# underlay and overlay #}
+{% include 'underlay-overlay/spine-router-bgp-base.j2' %}
+  peer_groups:
+{% include 'underlay-overlay/spine-router-bgp-peer-groups.j2' %}
+  neighbors:
+{% include 'underlay-overlay/spine-router-bgp-neighbors.j2' %}
+  redistribute_routes:
+{% include 'underlay-overlay/spine-router-bgp-redistribute-routes.j2' %}
+
+{# OSPF Configurartion #}
+### Routing - OSPF ###
+router_ospf:
+{# underlay #}
+{% include 'underlay-overlay/router-ospf.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}
+
+{# management api http #}
+### Management API http ###
+management_api_http:
+{% include 'base/management-api-http.j2' %}

@@ -1,0 +1,11 @@
+{# spanning-tree #}
+{% if spanning_tree is defined %}
+spanning-tree mode {{ spanning_tree.mode }}
+{%     if spanning_tree.no_spanning_tree_vlan is defined %}
+no spanning-tree vlan-id {{ spanning_tree.no_spanning_tree_vlan }}
+{%     endif %}
+{%     if spanning_tree.mode == "mstp" %}
+spanning-tree mst 0 priority {{ spanning_tree.priority }}
+{%     endif %}
+!
+{% endif %}

@@ -1,0 +1,20 @@
+{# Leaf mlag configuration #}
+{% if leaf.mlag == true %}
+### MLAG Configuration ###
+mlag_configuration:
+  domain_id: {{ leaf.mlag_group }}
+  local_interface: Vlan4094
+  peer_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}
+  peer_address_heartbeat:
+    peer_ip: {{ leaf.mlag_peer_mgmt_ip }}
+    vrf: {{ mgmt_interface_vrf }}
+  dual_primary_detection_delay: 5
+  peer_link: Port-Channel{{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}
+{%     if switch.platform in tcam_profile.vxlan_routing %}
+  reload_delay_mlag: 1020
+  reload_delay_non_mlag: 780
+{%     else %}
+  reload_delay_mlag: 360
+  reload_delay_non_mlag: 300
+{%     endif %}
+{% endif %}

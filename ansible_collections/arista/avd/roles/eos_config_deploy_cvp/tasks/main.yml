@@ -1,0 +1,34 @@
+---
+# Common action for all states.
+- name: generate intented variables
+  tags: [always]
+  inventory_to_container:
+    inventory: '{{ inventory_file }}'
+    container_root: '{{ container_root }}'
+    configlet_dir: 'intended/configs'
+    configlet_prefix: '{{ configlets_prefix }}'
+    destination: '{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml'
+  register: CVP_VARS
+
+- name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
+  tags: [build, provision]
+  template:
+    src: "cvp-devices.j2"
+    dest: './intended/structured_configs/{{inventory_hostname}}.yml'
+  delegate_to: localhost
+  run_once: true
+
+- name: "Load CVP device information for {{inventory_hostname}}"
+  tags: [build, provision]
+  include_vars: '{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml'
+  # delegate_to: localhost
+
+#################################################
+
+# If state=present launch creation/update process
+# If state=absent launch deletion process
+- name: Start creation/update process.
+  tags: [provision]
+  include_tasks: "./{{ state }}.yml"
+
+#################################################

@@ -1,0 +1,65 @@
+# Roles Defaults
+
+mgmt_vrf_routing: false
+
+mgmt_interface: Management1
+mgmt_interface_vrf: MGMT
+
+# eAPI
+management_eapi:
+  enable_https: true
+
+internal_vlan_order:
+  allocation: "ascending"
+  range:
+    beginning: 1006
+    ending: 1199
+
+max_l3leaf_to_spine_links: 1
+
+terminattr_ingestgrpcurl_port: 9910
+terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+p2p_uplinks_mtu: 9000
+
+underlay_routing_protocol: BGP
+
+# Underlay OSFP Defaults
+underlay_ospf_process_id: 100
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_max_lsa: 12000
+
+spine_bgp_defaults:
+  - update wait-for-convergence
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+leaf_bgp_defaults:
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+vxlan_vlan_aware_bundles: false
+
+bfd_multihop:
+  interval: 300
+  min_rx: 300
+  multiplier: 3
+
+mlag_ibgp_peering_vrfs:
+  base_vlan: 3000
+
+# Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
+tcam_profile:
+  vxlan_routing:
+    - 7500R
+    - 7500R3
+    - 7280R
+    - 7280R2
+    - 7280R3

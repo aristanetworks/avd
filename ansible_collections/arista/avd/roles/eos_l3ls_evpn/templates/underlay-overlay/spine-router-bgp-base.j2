@@ -1,0 +1,10 @@
+{# Spine router bgp base configuration #}
+{% if type == "spine" %}
+  as: {{ spine.bgp_as }}
+  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[inventory_hostname].id) }}
+  bgp_defaults:
+{%     for bgp_default in spine_bgp_defaults %}
+    - {{ bgp_default }}
+{%     endfor %}
+    - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
+{% endif%}

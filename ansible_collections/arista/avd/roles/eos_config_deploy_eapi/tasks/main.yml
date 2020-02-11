@@ -1,0 +1,10 @@
+---
+
+- name: replace configuration with intended configuration
+  eos_config:
+    src: ./intended/configs/{{ inventory_hostname }}.cfg
+    replace: config
+    save_when: modified
+  when: eosconfig.changed
+  notify: "backup config"
+  tags: [provision]

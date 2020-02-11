@@ -1,0 +1,17 @@
+{# eos- Loopback Interfaces #}
+{% if loopback_interfaces is defined and loopback_interfaces is not none %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+interface {{ loopback_interface }}
+   description {{ loopback_interfaces[loopback_interface].description }}
+{%         if loopback_interfaces[loopback_interface].vrf is defined %}
+   vrf {{ loopback_interfaces[loopback_interface].vrf }}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ip_address is defined %}
+   ip address {{ loopback_interfaces[loopback_interface].ip_address }}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ospf_area is defined %}
+   ip ospf area {{ loopback_interfaces[loopback_interface].ospf_area }}
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}

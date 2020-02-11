@@ -1,0 +1,32 @@
+{# Leaf server interfaces #}
+{% for server in servers | arista.avd.natural_sort() %}
+{%     for adapter in servers[server].adapters %}
+{%         for switch in adapter.switches %}
+{%             if switch == inventory_hostname %}
+{%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
+  {{ adapter.switch_ports[loop.index0]}}:
+    peer: {{ server }}
+    peer_interface: {{ adapter.server_ports[loop.index0] }}
+    peer_type: server
+    description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
+{%                 if adapter.speed is defined %}
+    speed: {{ adapter.speed }}
+{%                 endif %}
+    mode: {{ port_profiles[adapter.profile].mode }}
+    vlans: {{ port_profiles[adapter.profile].vlans }}
+{%                 if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
+    channel_group:
+      id: {{ channel_group_id }}
+      mode: "{{ adapter.port_channel.mode }}"
+{%                 endif %}
+    profile: {{ adapter.profile }}
+{%                 if port_profiles[adapter.profile].flowcontrol is defined %}
+    flowcontrol:
+{%                     if port_profiles[adapter.profile].flowcontrol.received is defined %}
+      received: {{ port_profiles[adapter.profile].flowcontrol.received }}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

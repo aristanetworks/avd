@@ -1,0 +1,7 @@
+{# leaf overlay loopback interface #}
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    ip_address: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
+{% if underlay_routing_protocol == "OSPF" %}
+    ospf_area: {{ underlay_ospf_area }}
+{% endif %}

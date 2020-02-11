@@ -1,0 +1,18 @@
+{# leaf mlag vlan interfaces #}
+{% if leaf.mlag == true %}
+{%     if type == 'l3leaf' %}
+  Vlan4093:
+    description: MLAG_PEER_L3_PEERING
+    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
+{%         if underlay_routing_protocol == "OSPF" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+    mtu: {{ p2p_uplinks_mtu }}
+{%         endif %}
+{%     endif %}
+  Vlan4094:
+    description: MLAG_PEER
+    ip_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(leaf.mlag_ip) }}/31
+    no_autostate: true
+    mtu: {{ p2p_uplinks_mtu }}
+{% endif %}

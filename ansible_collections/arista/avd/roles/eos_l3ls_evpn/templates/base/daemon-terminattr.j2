@@ -1,0 +1,17 @@
+{# daemon TerminAttr #}
+{% if cvp_instance_ip is defined or cvp_instance_ips is defined %}
+  ingestgrpcurl:
+    ips:
+{%     if cvp_instance_ip is defined %}
+      - {{ cvp_instance_ip }}
+{%     elif cvp_instance_ips is defined %}
+{%         for cvp_instance_ip in cvp_instance_ips %}
+      - {{ cvp_instance_ip }}
+{%         endfor %}
+{%     endif %}
+    port: {{ terminattr_ingestgrpcurl_port }}
+  ingestauth_key: {{ cvp_ingestauth_key }}
+  ingestvrf: {{ mgmt_interface_vrf }}
+  smashexcludes: "{{ terminattr_smashexcludes }}"
+  ingestexclude: "{{ terminattr_ingestexclude }}"
+{% endif %}

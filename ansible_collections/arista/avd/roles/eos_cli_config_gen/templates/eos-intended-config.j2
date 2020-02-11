@@ -1,0 +1,84 @@
+{# Device Configuration #}
+!RANCID-CONTENT-TYPE: arista
+!
+{# hardware counters #}
+{% include 'eos/hardware-counters.j2' %}
+{# daemon TerminAttr #}
+{% include 'eos/daemon-terminattr.j2' %}
+{# internal vlan allocation policy #}
+{% include 'eos/vlan-internal-order.j2' %}
+{# event monitor #}
+{% include 'eos/event-monitor.j2' %}
+{# load-interval #}
+{% include 'eos/load-interval.j2' %}
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+{# queue monitor length #}
+{% include 'eos/queue-monitor-length.j2' %}
+{# logging #}
+{% include 'eos/logging.j2' %}
+hostname {{ inventory_hostname }}
+{# name servers #}
+{% include 'eos/name-servers.j2' %}
+{# ntp servers #}
+{% include 'eos/ntp-servers.j2' %}
+{# redundancy #}
+{% include 'eos/redundancy.j2' %}
+{# spanning-tree #}
+{% include 'eos/spanning-tree.j2' %}
+{# unsupported transceiver #}
+{% include 'eos/unsupported-transeiver.j2' %}
+{# aaa authentication #}
+{% include 'eos/aaa-authorization.j2' %}
+{# users #}
+{% include 'eos/local-users.j2' %}
+{# clock timezone #}
+{% include 'eos/clock-timezone.j2' %}
+{# VLANs #}
+{% include 'eos/vlans.j2' %}
+{# VRF Instances #}
+{% include 'eos/vrf-instances.j2' %}
+{# bfd multihop interval #}
+{% include 'eos/bfd-multihop-interval.j2' %}
+{# Port-Channel Interfaces #}
+{% include 'eos/port-channel-interfaces.j2' %}
+{# Ethernet Interfaces #}
+{% include 'eos/ethernet-interfaces.j2' %}
+{# Loopback Interfaces #}
+{% include 'eos/loopback-interfaces.j2' %}
+{# Management Interfaces #}
+{% include 'eos/management-interfaces.j2' %}
+{# VLAN Interfaces #}
+{% include 'eos/vlan-interfaces.j2' %}
+{# VxLAN interface #}
+{% include 'eos/vxlan-interface.j2' %}
+{# Hardware TCAM Profiles #}
+{% include 'eos/tcam-profile.j2' %}
+{# MAC address-table#}
+{% include 'eos/mac-address-table.j2' %}
+{# router virtual mac address #}
+{% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+{# Static Route #}
+{% include 'eos/static-routes.j2' %}
+{# IP Routing #}
+{% include 'eos/ip-routing.j2' %}
+{# prefix-lists #}
+{% include 'eos/prefix-lists.j2' %}
+{# mlag configuration #}
+{% include 'eos/mlag-configuration.j2' %}
+{# route-maps #}
+{% include 'eos/route-maps.j2' %}
+{# peer-filters #}
+{% include 'eos/peer-filters.j2' %}
+{# router bgp configuration #}
+{% include 'eos/router-bgp.j2' %}
+{# router ospf configuration #}
+{% include 'eos/router-ospf.j2' %}
+{# queue monitor streaming #}
+{% include 'eos/queue-monitor-streaming.j2' %}
+{# management api http #}
+{% include 'eos/management-api-http.j2' %}
+!
+end

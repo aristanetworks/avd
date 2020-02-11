@@ -1,0 +1,6 @@
+{% if name_server is defined %}
+{%     for node in name_server.nodes %}
+ip name-server vrf {{ name_server.source.vrf }} {{ node }}
+{%     endfor %}
+!
+{% endif %}

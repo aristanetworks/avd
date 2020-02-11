@@ -1,0 +1,34 @@
+{% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+### Ethernet Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
+{%   for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].description }} |
+{%-    if ethernet_interfaces[ethernet_interface].channel_group is defined %}{% set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
+{%-      if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu  != 1500 %} *{{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} *1500 {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %} *{{ port_channel_interfaces[port_channel_interface].type }} {% else %} *switched {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].mode is defined %} *{{ port_channel_interfaces[port_channel_interface].mode }} {% else %} *access {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].vlans is defined %} *{{ port_channel_interfaces[port_channel_interface].vlans }} {% else %} - {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].trunk_groups is defined %} {% for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}*{{ trunk_group }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% else %} - {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].vrf is defined %} *{{ port_channel_interfaces[port_channel_interface].vrf }} {% else %} - {% endif -%} |
+{%-      if port_channel_interfaces[port_channel_interface].ip_address is defined %} *{{ port_channel_interfaces[port_channel_interface].ip_address }} {% else %} - {% endif -%} | {{ ethernet_interfaces[ethernet_interface].channel_group.id }} | {{ ethernet_interfaces[ethernet_interface].channel_group.mode }} |
+{%     else %}
+{%-      if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu != 1500 %} {{ ethernet_interfaces[ethernet_interface].mtu }} {% else %} 1500 {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %} routed {% else %} switched {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].mode is defined %} {{ ethernet_interfaces[ethernet_interface].mode }} {% else %} access {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].vlans is defined %} {{ ethernet_interfaces[ethernet_interface].vlans }} {% else %} - {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].trunk_groups is defined %} {% for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort  %}{{ trunk_group }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% else %} - {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].vrf is defined %} {{ ethernet_interfaces[ethernet_interface].vrf }} {% else %} - {% endif -%} |
+{%-      if ethernet_interfaces[ethernet_interface].ip_address is defined %} {{ ethernet_interfaces[ethernet_interface].ip_address }} {% else %} - {% endif -%} | - | - |
+{%     endif %}
+{%   endfor %}
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+{% include 'eos/ethernet-interfaces.j2' %}
+```
+{% endif %}

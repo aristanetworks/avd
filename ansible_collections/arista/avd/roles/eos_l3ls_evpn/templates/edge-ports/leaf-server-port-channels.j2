@@ -1,0 +1,19 @@
+{# Leaf server port-channels #}
+{% for server in servers | arista.avd.natural_sort() %}
+{%     for adapter in servers[server].adapters %}
+{%         if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
+{%             for switch in adapter.switches %}
+{%                 if switch == inventory_hostname %}
+{%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
+  Port-Channel{{ channel_group_id }}:
+    description: {{ server }}_{{ adapter.port_channel.description }}
+    vlans: {{ port_profiles[adapter.profile].vlans }}
+    mode: {{ port_profiles[adapter.profile].mode }}
+{# place holder add logic to handle no mlag #}
+    mlag: {{ channel_group_id }}
+{%                 break %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

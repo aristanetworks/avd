@@ -1,0 +1,52 @@
+{# eos - Ethernet Interfaces #}
+{% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+interface {{ ethernet_interface }}
+   description {{ ethernet_interfaces[ethernet_interface].description }}
+{%         if ethernet_interfaces[ethernet_interface].speed is defined %}
+   speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].channel_group is defined %}
+   channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
+{%         else %}
+{%             if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu != 1500 %}
+   mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}
+   no switchport
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined %}
+{%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined %}
+   flowcontrol receive {{ ethernet_interfaces[ethernet_interface].flowcontrol.received }}
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "access" %}
+   switchport access vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vlans is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
+   switchport trunk allowed vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
+   switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].trunk_groups is defined %}
+{%                 for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
+   switchport trunk group {{ trunk_group }}
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vrf is defined %}
+   vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ip_address is defined %}
+   ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point == true %}
+   ip ospf network point-to-point
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
+   ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
+{%             endif %}
+{%         endif %}
+!
+{%     endfor %}
+{% endif %}

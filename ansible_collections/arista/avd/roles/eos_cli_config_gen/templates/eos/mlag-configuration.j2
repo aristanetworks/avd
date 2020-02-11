@@ -1,0 +1,13 @@
+{# eos - mlag configuration #}
+{% if mlag_configuration is defined %}
+mlag configuration
+   domain-id {{ mlag_configuration.domain_id }}
+   local-interface {{ mlag_configuration.local_interface }}
+   peer-address {{ mlag_configuration.peer_address }}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
+   peer-link {{ mlag_configuration.peer_link }}
+   dual-primary detection delay {{ mlag_configuration.dual_primary_detection_delay }} action errdisable all-interfaces
+   reload-delay mlag {{ mlag_configuration.reload_delay_mlag }}
+   reload-delay non-mlag {{ mlag_configuration.reload_delay_non_mlag }}
+!
+{% endif %}

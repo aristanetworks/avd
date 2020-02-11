@@ -1,0 +1,17 @@
+{% if name_server is defined and name_server is not none %}
+### Name Servers Summary
+
+| Name Server | Source VRF |
+| ----------- | ---------- |
+{%     for node in name_server.nodes %}
+| {{ node }} | {{ name_server.source.vrf }} |
+{%     endfor %}
+
+### Name Servers Device Configuration
+
+```eos
+{% include 'eos/name-servers.j2' %}
+```
+{% else %}
+No Name Servers defined
+{% endif %}

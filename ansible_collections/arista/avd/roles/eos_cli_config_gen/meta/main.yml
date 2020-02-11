@@ -1,0 +1,9 @@
+galaxy_info:
+  author: Arista Ansible Team <ansible@arista.com>
+  description: Generates eos cli syntax and device documentation.
+  issue_tracker_url: https://github.com/aristanetworks/ansible-avd/issues
+  company: Arista Networks
+  license: Apache-2.0
+  min_ansible_version: 2.9
+  galaxy_tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
+dependencies: []

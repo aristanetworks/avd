@@ -1,0 +1,15 @@
+{% if mlag_configuration is defined and mlag_configuration is not none %}
+### MLAG Summary
+
+| domain-id | local-interface | peer-address | peer-link |
+| --------- | --------------- | ------------ | --------- |
+| {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
+
+### MLAG Device Configuration
+
+```eos
+{% include 'eos/mlag-configuration.j2' %}
+```
+{% else %}
+MLAG not defined
+{% endif %}

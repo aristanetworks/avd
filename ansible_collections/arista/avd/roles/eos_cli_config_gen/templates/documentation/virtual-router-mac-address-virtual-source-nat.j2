@@ -1,0 +1,22 @@
+{% if ip_virtual_router_mac_address is defined or virtual_source_nat_vrfs is defined %}
+### Virtual Router MAC Address and Virtual Source NAT Summary
+{%     if ip_virtual_router_mac_address is defined and ip_virtual_router_mac_address is not none %}
+
+**Virtual Router MAC Address:** {{ ip_virtual_router_mac_address }}
+{%     endif %}
+{%     if virtual_source_nat_vrfs is defined and virtual_source_nat_vrfs is not none %}
+### Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+{%         for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
+| {{ vrf }} | {{ virtual_source_nat_vrfs[vrf].ip_address }} |
+{%         endfor %}
+{%     endif %}
+
+### Virtual Router MAC Address Device and Virtual Source NAT Configuration
+
+```eos
+{% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+```
+{% endif %}

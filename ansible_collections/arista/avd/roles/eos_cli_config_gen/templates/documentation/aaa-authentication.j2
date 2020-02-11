@@ -1,0 +1,14 @@
+{% if aaa_authentication is defined and aaa_authentication is not none %}
+### AAA Authentication Summary
+
+{# placeholder for aaa logic #}
+
+### AAA Authentication Device Configuration
+
+```eos
+{% include 'eos/aaa-authentication.j2' %}
+```
+!
+{% else %}
+AAA Not Configured
+{% endif %}

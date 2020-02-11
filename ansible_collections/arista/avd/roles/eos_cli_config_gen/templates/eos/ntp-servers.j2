@@ -1,0 +1,12 @@
+{# NTP Server #}
+{% if ntp_server is defined and ntp_server is not none %}
+ntp local-interface vrf {{ ntp_server.local_interface.vrf }} {{ ntp_server.local_interface.interface }}
+{%     for node in ntp_server.nodes %}
+{%         if loop.first %}
+ntp server vrf {{ ntp_server.local_interface.vrf }} {{ node }} prefer
+{%         else %}
+ntp server vrf {{ ntp_server.local_interface.vrf }} {{ node }}
+{%         endif %}
+{%     endfor %}
+!
+{% endif %}

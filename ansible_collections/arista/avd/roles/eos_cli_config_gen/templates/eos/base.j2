@@ -1,0 +1,9 @@
+{# Fabric base configuration Configuration #}
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+{# hardware tcam profile vxlan-routing  - placeholder for Jericho platform #}
+!
+hostname {{ inventory_hostname }}
+!

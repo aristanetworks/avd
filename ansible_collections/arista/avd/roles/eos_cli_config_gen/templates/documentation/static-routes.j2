@@ -1,0 +1,15 @@
+{% if static_routes is defined and static_routes is not none %}
+### Static Routes Summary
+
+| VRF | Destination Prefix | Fowarding Address / Interface |
+| --- | ------------------ | ----------------------------- |
+{%  for static_route in static_routes %}
+|{%      if static_route.vrf is defined %} {{ static_route.vrf }} {% else %} Global Routing Table {% endif %}| {{ static_route.destination_address_prefix }} | {{ static_route.gateway }} |
+{%  endfor %}
+
+### Static Routes Device Configuration
+
+```eos
+{% include 'eos/static-routes.j2' %}
+```
+{% endif %}
