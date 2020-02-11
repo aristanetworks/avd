@@ -11,7 +11,7 @@
 
 ## Overview
 
-**eos_config_deploy_cvp_**, is a role that deploys the configuration to Arista EOS devices via CloudVision Management platform.
+**eos_config_deploy_cvp**, is a role that deploys the configuration to Arista EOS devices via CloudVision Management platform.
 
 The **eos_config_deploy_cvp** role:
 
@@ -69,10 +69,11 @@ all:
 
 __Module variables:__
 
-- __`container_root`__: Inventory group name where Fabric devices are located
-- __`configlets_prefix`__: Prefix to use for configlet on CV side.
-- __`device_filter`__: Filter to target a specific set of devices on CV side.
-- __`state`__: `present` / `absent`. Support creation or cleanup topology on CV server.
+- __`container_root`__: Inventory group name where Fabric devices are located. Default: `all`.
+- __`configlets_prefix`__: Prefix to use for configlet on CV side. Default: `{{ fabric_name }}`.
+- __`device_filter`__: Filter to target a specific set of devices on CV side. Default: `AVD-{{ fabric_name }}-`.
+- __`state`__: `present` / `absent`. Support creation or cleanup topology on CV server. Default: `present`.
+- __`execute_tasks`__:  `true` / `false`. Support automatically excuting pending tasks. Default: `false`.
 
 _Example_:
 
@@ -86,6 +87,7 @@ tasks:
       configlets_prefix: 'DC1-AVD'
       device_filter: 'DC1'
       state: present
+      execute_tasks: false
 ```
 
 **Outputs:**
