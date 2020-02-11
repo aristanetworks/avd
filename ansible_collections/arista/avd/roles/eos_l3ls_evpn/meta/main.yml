@@ -7,4 +7,3 @@ galaxy_info:
   min_ansible_version: 2.9
   galaxy_tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
 dependencies: []
-

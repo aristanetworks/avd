@@ -1,5 +1,26 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+#
+# FIXME: required to pass ansible-test
+# GNU General Public License v3.0+
+#
+# Copyright 2019 Arista Networks AS-EMEA
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
                     'status': ['preview'],
@@ -9,8 +30,8 @@ DOCUMENTATION = r'''
 ---
 module: inventory_to_container
 version_added: "2.9"
-author: "EMEA AS Team(ansible-dev@arista.com)"
-short_description:Transform information from inventory to arista.cvp collection
+author: EMEA AS Team (@aristanetworks)
+short_description: Transform information from inventory to arista.cvp collection
 description:
   - Transform information from ansible inventory to be able to
   - provision CloudVision Platform using arista.cvp collection and
@@ -19,23 +40,23 @@ options:
   inventory:
     description: YAML inventory file
     required: true
-    default: None
+    type: str
   container_root:
     description: Ansible group name to consider to be Root of our topology.
     required: true
-    default: None
+    type: str
   configlet_dir:
     description: Directory where intended configurations are located.
     required: false
-    default: None
+    type: str
   configlet_prefix:
     description: Prefix to put on configlet.
     required: false
-    default: None
+    type: str
   destination:
     description: Optional path to save variable.
     required: false
-    default: None
+    type: str
 '''
 
 EXAMPLES = r'''
@@ -65,21 +86,35 @@ EXAMPLES = r'''
     save_topology: true
 '''
 
-
 import glob
 import os
 import json
-import yaml
-from treelib import Node, Tree
+import traceback
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
+TREELIB_IMP_ERR = None
+try:
+    from treelib import Node, Tree
+    HAS_TREELIB = True
+except ImportError:
+    HAS_TREELIB = False
+    TREELIB_IMP_ERR = traceback.format_exc()
+YAML_IMP_ERR = None
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+    YAML_IMP_ERR = traceback.format_exc()
+
+
 
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
 CVP_ROOT_CONTAINER = 'Tenant'
 
 
-def isIterable( testing_object= None):
+def isIterable(testing_object=None):
     """
     Test if an object is iterable or not.
 
@@ -179,7 +214,7 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
         # Recursive Inventory read
         for k1, v1 in dict_inventory.items():
             # Read a leaf
-            if isIterable(v1) and 'children' not in v1 :
+            if isIterable(v1) and 'children' not in v1:
                 tree_topology.create_node(k1, k1, parent=parent_container)
             # If subgroup has kids
             if isIterable(v1) and 'children' in v1:
@@ -202,7 +237,7 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
         return tree_topology
 
 
-def get_devices(dict_inventory, search_container=None, devices=list()):
+def get_devices(dict_inventory, search_container=None, devices=None):
     """
     Get devices attached to a container.
 
@@ -223,7 +258,7 @@ def get_devices(dict_inventory, search_container=None, devices=list()):
     for k1, v1 in dict_inventory.items():
         # Read a leaf
         if k1 == search_container and 'hosts' in v1:
-            for dev,data in v1['hosts'].items():
+            for dev, data in v1['hosts'].items():
                 devices.append(dev)
         # If subgroup has kids
         if isIterable(v1) and 'children' in v1:
@@ -278,13 +313,13 @@ def get_containers(inventory_content, parent_container):
     return container_json
 
 
-if __name__ == '__main__':
+def main():
     """ Main entry point for module execution."""
     argument_spec = dict(
         inventory=dict(type='str', required=True),
         container_root=dict(type='str', required=True),
         configlet_dir=dict(type='str', required=False),
-        configlet_prefix=dict(type='str', required=False, default='none'),
+        configlet_prefix=dict(type='str', required=False),
         destination=dict(type='str', required=False)
     )
 
@@ -319,3 +354,7 @@ if __name__ == '__main__':
             documents = yaml.dump(result, file)
 
     module.exit_json(**result)
+
+
+if __name__ == '__main__':
+    main()
