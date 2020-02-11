@@ -90,7 +90,7 @@ ansible-galaxy collection install arista.avd
 
 ## Example Playbooks
 
-An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:
+**An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
 ![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
 
@@ -112,7 +112,7 @@ An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
-An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
+**An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
 
 ![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
 
@@ -136,7 +136,8 @@ An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
 
 ## Examples
 
-Full examples with variables and outputs, are located here:
+**Full examples with variables and outputs, are located here:**
+
 [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional Resources
