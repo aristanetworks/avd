@@ -53,7 +53,7 @@ The documentation how to leverage ansible-avd collection is located here: **[ari
 
 **Ansible + Additional Python Libraries Installation:**
 
-```bash
+```shell
 pip3 install -r requirements.txt
 ```
 
