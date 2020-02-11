@@ -19,6 +19,12 @@ output_dir_name: 'intended'
 structured_dir_name: 'structured_configs'
 # EOS Configuration Directory name
 eos_config_dir_name: 'configs'
+# Main documentation folder
+documentation_dir_name: 'documentation'
+# Fabric Documentation
+fabric_dir_name: 'DC1_FABRIC'
+# Device documentation
+devices_dir_name: 'devices'
 ```
 
 Role will create following structure:
@@ -27,6 +33,10 @@ Role will create following structure:
 intended
 ├── configs
 └── structured_configs
+|
+documentation
+├── DC1_FABRIC
+└── devices
 ```
 
 If folders already exists, role will delete them and recreate structure.
