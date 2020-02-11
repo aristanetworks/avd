@@ -90,6 +90,15 @@ tasks:
       execute_tasks: false
 ```
 
+This module also supports tags to run a subset of ansible tasks:
+
+- __`build`__: Generate Arista Validated Design configuration for EOS devices (structure_configs / configs / documentation) and CloudVision inputs.
+- __`provision`__: Run `build` tags + configure Cloudvision with information generated in previous tasks
+
+```shell
+$ ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
+```
+
 **Outputs:**
 
 - None.
