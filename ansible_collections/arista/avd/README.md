@@ -116,4 +116,4 @@ Full examples with variables and outputs, are located here:
 
 ## License
 
-Project is published under [Apache 2.0 License](../../../LICENSE)
+Project is published under [Apache 2.0 License](LICENSE)
