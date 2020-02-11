@@ -26,14 +26,9 @@
 #################################################
 
 # If state=present launch creation/update process
+# If state=absent launch deletion process
 - name: Start creation/update process.
   tags: [provision]
-  include_tasks: ./present.yml
-  when: state=="present"
+  include_tasks: "./{{ state }}.yml"
 
 #################################################
-
-# If state=absent launch deletion process
-- name: Start deletion process - when state == absent.
-  include_tasks: ./absent.yml
-  when: state=="absent"
