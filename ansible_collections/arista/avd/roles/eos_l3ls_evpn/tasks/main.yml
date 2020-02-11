@@ -6,16 +6,12 @@
     dest: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
   check_mode: no
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]
 
 - name: Include device structured configuration, that was previously generated.
   include_vars: ./intended/structured_configs//{{ inventory_hostname }}.yml
   delegate_to: localhost
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]
 
 - name: Generate EVPN fabric documentation in Markdown Format.
   template:
@@ -24,9 +20,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]
 
 - name: Generate Leaf and Spine Point-To-Point Links summary in csv format.
   template:
@@ -35,9 +29,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]
 
 - name: Generate Fabric Topology in csv format.
   template:
@@ -46,6 +38,4 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  tags:
-    - documentation
-    - config
+  tags: [build, provision]

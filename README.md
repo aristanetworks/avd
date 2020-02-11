@@ -53,7 +53,7 @@ The documentation how to leverage ansible-avd collection is located here: **[ari
 
 **Ansible + Additional Python Libraries Installation:**
 
-```bash
+```shell
 pip3 install -r requirements.txt
 ```
 
@@ -90,7 +90,31 @@ ansible-galaxy collection install arista.avd
 
 ## Example Playbooks
 
-An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
+**An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
+
+![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+
+    - name: generate device intended config and documentation
+      import_role:
+         name: arista.avd.eos_cli_config_gen
+
+    - name: deploy configuration via CVP
+      import_role:
+         name: arista.avd.eos_config_deploy_cvp
+```
+
+**An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
+
+![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -112,7 +136,8 @@ An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
 
 ## Examples
 
-Full examples with variables and outputs, are located here:
+**Full examples with variables and outputs, are located here:**
+
 [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## Additional Resources

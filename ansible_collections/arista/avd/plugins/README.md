@@ -37,3 +37,82 @@ To use this filter:
 {{ natural_sorted_item }}
 {% endfor %}
 ```
+
+## Modules
+
+### **Inventory to CloudVision Containers**
+
+The `inventory_to_container` module provides following capabilities:
+- Transform inventory groups into CloudVision containers topology. 
+- Create list of configlets definition.
+
+It saves everything in a `YAML` file using **`destination`** keyword.
+
+It is a module to build structure of data to configure on a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
+
+**Example:**
+
+To use this module:
+
+```yaml
+tasks:
+  - name: generate intented variables
+    tags: [always]
+    inventory_to_container:
+      inventory: '{{ inventory_file }}'
+      container_root: '{{ container_root }}'
+      configlet_dir: 'intended/configs'
+      configlet_prefix: '{{ configlets_prefix }}'
+      destination: '{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml'
+```
+
+Inventory example applied to this example:
+
+```yaml
+all:
+  children:
+# DC1_Fabric - EVPN Fabric running in home lab
+    DC1:
+      children:
+        DC1_FABRIC:
+          children:
+            DC1_SPINES:
+              hosts:
+                DC1-SPINE1:
+                DC1-SPINE2:
+            DC1_L3LEAFS:
+              children:
+                DC1_LEAF1:
+                  hosts:
+                    DC1-LEAF1A:
+                    DC1-LEAF1B:
+                DC1_LEAF2:
+                  hosts:
+                    DC1-LEAF2A:
+                    DC1-LEAF2B:
+```
+
+Generated output ready to be used by [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) collection:
+
+```yaml
+---
+CVP_DEVICES:
+  DC1-SPINE1:
+    name: DC1-SPINE1
+    parentContainerName: DC1_SPINES
+    configlets:
+        - DC1-AVD_DC1-SPINE1
+    imageBundle: []
+
+CVP_CONTAINERS:
+  DC1_LEAF1:
+    parent_container: DC1_L3LEAFS
+  DC1_FABRIC:
+    parent_container: Tenant
+  DC1_L3LEAFS:
+    parent_container: DC1_FABRIC
+  DC1_LEAF2:
+    parent_container: DC1_L3LEAFS
+  DC1_SPINES:
+    parent_container: DC1_FABRIC
+```

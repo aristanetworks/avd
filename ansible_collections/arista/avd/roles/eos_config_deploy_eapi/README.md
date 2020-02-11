@@ -43,4 +43,4 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## License
 
-Project is published under [Apache 2.0 License](../../../../../LICENSE)
+Project is published under [Apache 2.0 License](../../LICENSE)

@@ -7,5 +7,4 @@
     save_when: modified
   when: eosconfig.changed
   notify: "backup config"
-  tags:
-    - config
+  tags: [provision]

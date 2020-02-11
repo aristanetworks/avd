@@ -17,6 +17,7 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 
 - [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opinionated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
 - [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
+- [__arista.avd.eos_config_deploy_cvp__](roles/eos_config_deploy_cvp/README.md) - deploys intended configuration via CloudVision.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - deploys intended configuration via eAPI.
 
 ## Custom Plugins
@@ -53,7 +54,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 
 **Ansible + Additional Python Libraries Installation:**
 
-```bash
+```shell
 pip3 install -r requirements.txt
 ```
 
@@ -90,7 +91,31 @@ ansible-galaxy collection install arista.avd
 
 ## Example Playbooks
 
-An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
+**An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
+
+![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+
+    - name: generate device intended config and documentation
+      import_role:
+         name: arista.avd.eos_cli_config_gen
+
+    - name: deploy configuration via CVP
+      import_role:
+         name: arista.avd.eos_config_deploy_cvp
+```
+
+**An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
+
+![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -110,9 +135,10 @@ An example playbook to deploy VXLAN/EVPN Fabric via eAPI:
          name: arista.avd.eos_config_deploy_eapi
 ```
 
-Full examples with variables and outputs, are located here:
+**Full examples with variables and outputs, are located here:**
+
 [Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
 
 ## License
 
-Project is published under [Apache 2.0 License](../../../LICENSE)
+Project is published under [Apache 2.0 License](LICENSE)

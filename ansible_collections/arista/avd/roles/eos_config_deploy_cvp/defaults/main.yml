@@ -1,0 +1,17 @@
+---
+# defaults file for eos-config-deploy-cvp
+
+# Filter to apply on cv_device to target only devices involved in Fabric
+device_filter: 'all'
+
+# Define inventory group to consider root of container topology
+container_root: '{{ fabric_name }}'
+
+# Configure prefix to append to configlets on CloudVision
+configlets_prefix: 'AVD-{{ fabric_name }}-'
+
+# State management to know if module should create/update or delete fabric
+state: 'present'
+
+# CVP Deployment methodology, whether to exectute or stage tasks
+execute_tasks: false
