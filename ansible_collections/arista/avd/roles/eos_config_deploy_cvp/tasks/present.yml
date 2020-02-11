@@ -19,7 +19,7 @@
     wait: 90
   when:
     - CVP_CONFIGLETS_STATUS.data.tasks | length > 0
-    - execute_task == true
+    - execute_tasks == true
 
 - name: "Building Containers topology on {{inventory_hostname}}"
   tags: [provision]
@@ -47,4 +47,4 @@
     tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
     wait: 720
   when:
-    - execute_task == true
+    - execute_tasks == true

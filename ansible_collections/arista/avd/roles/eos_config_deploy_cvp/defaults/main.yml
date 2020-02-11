@@ -14,4 +14,4 @@ configlets_prefix: 'AVD-{{ fabric_name }}-'
 state: 'present'
 
 # CVP Deployment methodology, whether to exectute or stage tasks
-execute_task: false
+execute_tasks: false
