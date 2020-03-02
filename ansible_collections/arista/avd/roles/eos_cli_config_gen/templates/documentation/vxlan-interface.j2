@@ -11,8 +11,8 @@
 {%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
 | {{ vlan }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans[vlan].vni }} |
 {%     endfor %}
-{% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and 
-vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
+{% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
+
 **VRF to VNI Mappings:**
 
 | VLAN | VNI |
@@ -21,6 +21,7 @@ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
 | {{ vrf }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }} |
 {%     endfor %}
 {% endif %}
+
 ### VXLAN Interface Device Configuration
 
 ```eos
