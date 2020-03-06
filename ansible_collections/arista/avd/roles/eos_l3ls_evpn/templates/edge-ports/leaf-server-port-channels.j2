@@ -9,8 +9,9 @@
     description: {{ server }}_{{ adapter.port_channel.description }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
     mode: {{ port_profiles[adapter.profile].mode }}
-{# place holder add logic to handle no mlag #}
+{%                     if adapter.switches | unique| list | length > 1 %}
     mlag: {{ channel_group_id }}
+{%                     endif %}
 {%                 break %}
 {%                 endif %}
 {%             endfor %}
