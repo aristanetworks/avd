@@ -1,0 +1,8 @@
+galaxy_info:
+  author: Arista Ansible Team <ansible@arista.com>
+  description: Generates Output folders for arista.avd collection.
+  company: Arista Networks
+  license: Apache-2.0
+  min_ansible_version: 2.9
+  galaxy_tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
+dependencies: []
