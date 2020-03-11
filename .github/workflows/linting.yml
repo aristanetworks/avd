@@ -1,0 +1,27 @@
+name: Code Linting
+on: 
+  push:
+    branches-ignore:
+      - master
+    tags-ignore:
+      - '*'
+    paths:
+      - 'ansible_collections/arista/avd/*'
+jobs:
+  'lint-yaml':
+    name: Run YAML Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Lint YAML Content'
+        run: |
+          pip install yamllint
+          sh .github/lint-yaml
+  'lint-python':
+    name: Run PYTHON Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: 'Lint Python code in plugins'
+        run: |
+          pip install -r development/requirements-dev.txt
+          sh .github/precommit
