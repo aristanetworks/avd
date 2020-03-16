@@ -67,4 +67,4 @@ github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
 setup-repository: ## Install python requirements
 	pip install --upgrade wheel
 	pip install -r requirements.txt
-	pip install -r requirements.dev.txt
+	pip install -r development/requirements.dev.txt
