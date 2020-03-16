@@ -7,11 +7,13 @@
 
 exec 1>&2
 
-echo "Validating YAML for tasks in roles..."
-find ansible_collections/arista/avd/roles/*/tasks -type f -name '*.yml' -exec yamllint -c .github/yamllintrc {} \;
+echo "------------------------------------------------------------------------------------------------------------"
+echo "Validating YAML files inAVD collection ..."
+echo "------------------------------------------------------------------------------------------------------------"
+yamllint --strict -c .github/yamllintrc \
+    ansible_collections/arista/avd/roles/*/tasks \
+    ansible_collections/arista/avd/roles/*/defaults/ \
+    ansible_collections/arista/avd/galaxy.yml
 
-echo "Validating YAML for defaults var in roles..."
-find ansible_collections/arista/avd/roles/*/defaults/ -type f -name '*.yml' -exec yamllint -c .github/yamllintrc {} \;
+echo "------------------------------------------------------------------------------------------------------------"
 
-echo "Validating YAML for Ansible Galaxy file..."
-find ansible_collections/arista/avd/galaxy.yml -type f -name '*.yml' -exec yamllint -c .github/yamllintrc {} \;
