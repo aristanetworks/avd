@@ -7,14 +7,16 @@ on:
       - '*'
     paths:
       - 'ansible_collections/arista/avd/*'
+
 jobs:
   'lint-yaml':
-    name: Run YAML Linting
+    name: Run YAML Linting collection
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@master
       - name: 'Lint YAML Content'
         run: |
-          pip install yamllint
+          sudo apt-get install -y yamllint
           sh .github/lint-yaml
   'lint-python':
     name: Run PYTHON Linting
@@ -23,5 +25,6 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Lint Python code in plugins'
         run: |
-          pip install -r development/requirements-dev.txt
-          sh .github/precommit
+          pip install wheel
+          pip install pylint
+          sh .github/lint-python
