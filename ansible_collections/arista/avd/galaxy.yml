@@ -19,7 +19,6 @@ readme: README.md
 authors:
 - Arista Ansible Team <ansible@arista.com>
 
-
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
