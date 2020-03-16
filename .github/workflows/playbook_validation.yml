@@ -1,4 +1,4 @@
-name: Ansible Test
+name: Ansible Execution
 on: 
   pull_request:
     branches:
