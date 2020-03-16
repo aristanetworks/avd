@@ -48,7 +48,8 @@ sanity-import: ## Run ansible-test sanity for code import
 
 .PHONY: linting
 linting: ## Run pre-commit script for python code linting using pylint
-	sh .github/pre-commit
+	sh .github/lint-yaml
+	sh .github/lint-python
 
 .PHONY: github-configure-ci
 github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
