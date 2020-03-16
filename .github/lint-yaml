@@ -8,7 +8,7 @@
 exec 1>&2
 
 echo "------------------------------------------------------------------------------------------------------------"
-echo "Validating YAML files inAVD collection ..."
+echo "Validating YAML files in AVD collection ..."
 echo "------------------------------------------------------------------------------------------------------------"
 yamllint --strict -c .github/yamllintrc \
     ansible_collections/arista/avd/roles/*/tasks \
