@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: 'Install requirements'
-        run: setup-repository
+        run: make setup-repository
       - name: Execute testing playbook
         run: |
           cd testing
