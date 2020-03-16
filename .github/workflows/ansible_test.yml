@@ -3,7 +3,7 @@ on:
   pull_request:
     branches:
       - master
-  jobs:
+jobs:
   'ansible-test':
     name: Run ansible-test validation
     runs-on: ubuntu-latest
