@@ -1,0 +1,19 @@
+name: Ansible Test
+on: 
+  pull_request:
+    branches:
+      - master
+jobs:
+  'ansible-test':
+    name: Run ansible-test validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: 'Install requirements'
+        run: make github-configure-ci
+      - name: 'Install Python requirements'
+        run: make setup-repository
+      - name: 'ansible-test linting'
+        run: make sanity-lint
+      - name: 'ansible-test import'
+        run: make sanity-import

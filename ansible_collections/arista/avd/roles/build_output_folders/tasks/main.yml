@@ -4,7 +4,7 @@
 - name: 'Cleanup existing folders in {{output_dir}}'
   file:
     path: '{{output_dir}}'
-    state: absent 
+    state: absent
     mode: 0755
   delegate_to: localhost
 
