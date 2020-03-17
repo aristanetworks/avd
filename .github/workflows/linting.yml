@@ -6,7 +6,7 @@ on:
     tags-ignore:
       - '*'
     paths:
-      - 'ansible_collections/arista/avd/*'
+      - 'ansible_collections/arista/avd/**'
 
 jobs:
   'lint-yaml':
