@@ -13,6 +13,7 @@ echo "--------------------------------------------------------------------------
 yamllint --strict -c .github/yamllintrc \
     ansible_collections/arista/avd/roles/*/tasks \
     ansible_collections/arista/avd/roles/*/defaults/ \
+    ansible_collections/arista/avd/roles/*/handlers/ \
     ansible_collections/arista/avd/galaxy.yml
 
 echo "------------------------------------------------------------------------------------------------------------"
