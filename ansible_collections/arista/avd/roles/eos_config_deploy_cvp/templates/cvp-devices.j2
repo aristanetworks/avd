@@ -13,9 +13,9 @@ CVP_DEVICES:
 {%         endif %}
 {%     endfor %}
     configlets:
-{%     if hostvars[device]['cv_configlets_device'] is defined and hostvars[device]['cv_configlets_device'] is iterable %}
-{%         for configlet in hostvars[device]['cv_configlets_device'] %}
-        - {{ configlet }}
+{%     if hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] is defined %}
+{%         for configlet in hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] %}
+      - {{ configlet }}
 {%         endfor %}
 {%      endif %}
         - {{configlets_prefix}}_{{device}}
@@ -25,4 +25,10 @@ CVP_CONTAINERS:
 {% for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() %}
   {{container_name}}:
     parent_container: {{container['parent_container']}}
+{%     if hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is defined and hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] is iterable %}
+    configlets:
+{%         for configlet in hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] %}
+      - {{ configlet }}
+{%         endfor %}
+{%      endif %}
 {% endfor %}
