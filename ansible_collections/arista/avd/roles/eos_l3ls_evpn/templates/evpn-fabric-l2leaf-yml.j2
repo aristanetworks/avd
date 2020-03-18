@@ -99,8 +99,8 @@
 {%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
 {%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
 {%                     for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
-{%                         if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
-{%                             if svi_tag in parentl3leaf.filter_tags or "all" in parentl3leaf.filter_tags %}
+{%                         if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
+{%                             if svi_tag in parentl3leaf.filter_tags or svi_tag == leaf.group or "all" in parentl3leaf.filter_tags %}
 {%                                 do leaf.vrfs.append( vrf ) %}
 {%                                 do leaf.svis.append( svi ) %}
 {%                                 do leaf.vlans.append( svi ) %}
@@ -114,8 +114,8 @@
 {%         if tenants[tenant].l2vlans is defined %}
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%                 for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
-{%                     if vlan_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
-{%                         if vlan_tag in parentl3leaf.filter_tags or "all" in parentl3leaf.filter_tags %}
+{%                     if vlan_tag in leaf.filter_tags or vlan_tag == leaf.group or "all" in leaf.filter_tags %}
+{%                         if vlan_tag in parentl3leaf.filter_tags or vlan_tag == leaf.group or "all" in parentl3leaf.filter_tags %}
 {%                             do leaf.vlans.append( l2vlan ) %}
 {%                             break %}
 {%                         endif %}

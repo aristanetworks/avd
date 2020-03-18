@@ -38,8 +38,8 @@
 {%                         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
 {%                             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
 {%                                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
-{%                                     if svi_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
-{%                                         if svi_tag in l2_leaf.filter_tags or "all" in l2_leaf.filter_tags %}
+{%                                     if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
+{%                                         if svi_tag in l2_leaf.filter_tags or svi_tag == leaf.group or "all" in l2_leaf.filter_tags %}
 {%                                             do l2_leaf.vlans.append( svi ) %}
 {%                                             break %}
 {%                                         endif %}
