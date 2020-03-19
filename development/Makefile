@@ -5,8 +5,8 @@ HOME_DIR = $(shell pwd)
 UID = $(shell id -u)
 GID = $(shell id -g)
 
-.PHONY: all
-all:
+.PHONY: build
+build:
 	#docker build --no-cache -t $(CONTAINER) .
 	docker build -t $(CONTAINER) . --build-arg UID=$(UID) --build-arg GID=$(GID) --build-arg ANSIBLE=$(ANSIBLE_VERSION)
 	docker run -t -d --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) -v $(HOME_DIR)/:/ansible_avd -v /etc/hosts:/etc/hosts $(CONTAINER)
