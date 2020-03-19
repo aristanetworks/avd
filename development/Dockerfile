@@ -37,6 +37,7 @@ VOLUME ["/ansible_avd"]
 # Install python modules required by the repo
 ADD requirements.txt /tmp/requirements.txt
 ADD requirements-dev.txt /tmp/requirements-dev.txt
+RUN pip3 install -r /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements-dev.txt
 ARG ANSIBLE=2.9.2
 RUN pip3 install ansible==$ANSIBLE
