@@ -12,15 +12,20 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].vrf is defined %}
    vrf {{ vlan_interfaces[vlan_interface].vrf }}
 {%         endif %}
-{%         if vlan_interfaces[vlan_interface].ip_address is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %}
-   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address }}
-{%         elif vlan_interfaces[vlan_interface].ip_address is defined %}
+{%         if vlan_interfaces[vlan_interface].ip_address is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address }}
 {%         endif %}
-{%         if vlan_interfaces[vlan_interface].ip_address_secondary is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %}
-   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
-{%         elif vlan_interfaces[vlan_interface].ip_address_secondary is defined %}
+{%         if vlan_interfaces[vlan_interface].ip_address_secondary is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %}
+   ip virtual-router address {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_address_virtual is defined %}
+   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondary is defined %}
+   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual_secondary }} secondary
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point

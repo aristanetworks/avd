@@ -1,14 +1,14 @@
 {% if vlan_interfaces is defined and vlan_interfaces is not none %}
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | Virtual | IP Address Secondary | Virtual |
-| --------- | ----------- | --- | ---------- | ------- | -------------------- | ------- |
+| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
+| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 | {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].description }} |
-{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} Global Routing Table {% endif %} | {{ vlan_interfaces[vlan_interface].ip_address }} |
-{%-        if vlan_interfaces[vlan_interface].ip_address is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %} True {% else %} - {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_address_secondary is defined %} {{ vlan_interfaces[vlan_interface].ip_address_secondary }} {% else %} - {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_address_secondary is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true  %} True {% else %} - {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].ip_address is defined %} {{ vlan_interfaces[vlan_interface].ip_address }} {% else %} - {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].ip_address_virtual is defined %} {{ vlan_interfaces[vlan_interface].ip_address_virtual }} {% else %} - {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %} {{ vlan_interfaces[vlan_interface].ip_virtual_router_address  }} {% else %} - {% endif -%} |
 {%     endfor %}
 
 ### VLAN Interfaces Device Configuration
