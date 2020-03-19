@@ -344,7 +344,9 @@ vlan_interfaces:
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
-    virtual: < true | false >
+    ip_router_virtual_address: < IPv4_address >
+    ip_router_virtual_address_secondary: < IPv4_address >
+    ip_address_virtual: < IPv4_address/Mask >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     mtu: < mtu >

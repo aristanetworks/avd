@@ -802,15 +802,30 @@ tenants:
             # Enable or disable interface
             enabled: < true | false >
 
-            # Ip subnet of vlan. the first IP address will be assigned as the anycast address
-            # to each svi interface. | Required
-            ip_subnet: < IPv4_address/Mask >
+            # ip address virtual to configure VXLAN Anycast IP address
+            # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+            # Optional
+            ip_address_virtual:: < IPv4_address/Mask >
+
+            # ip virtual-router address
+            # note, also requires an IP address to be configured on the SVI where it is applied.
+            # Optional
+            ip_virtual_router_address: < IPv4_address/Mask >
+
+            # Define node specific configuration, such as unique IP addresses.
+            nodes:
+              < l3_leaf_inventory_hostname_1 >:
+                # device unique IP address for node.
+                ip_address: < IPv4_address/Mask >
+
+              < l3_leaf_inventory_hostname_2 >:
+                ip_address: < IPv4_address/Mask >
 
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
       < tenant_a_vrf_2 >:
         vrf_vni: <1-1024>
@@ -819,12 +834,12 @@ tenants:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
    # Define L2 network services organized by vlan id.
     l2vlans:
@@ -839,6 +854,7 @@ tenants:
         name: < description >
 
         # Tags leveraged for networks services filtering.
+        # 
         tags: [ < tag_1 >, < tag_2 > ]
 
       < 1-4096 >:
@@ -859,13 +875,13 @@ tenants:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
           < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
     l2vlans:
       < 1-4096 >:
         vni_override: < 1-16777215 >
@@ -897,13 +913,32 @@ tenants:
             name: Tenant_A_OP_Zone_1
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.1.10.0/24
+            ip_address_virtual: 10.1.10.0/24
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.1.11.0/24
+            ip_address_virtual: 10.1.11.0/24
+          112:
+            name: Tenant_A_OP_Zone_3
+            tags: [ DC1_LEAF2 ]
+            enabled: true
+            ip_virtual_router_address: 10.1.12.1/24
+            nodes:
+              DC1-LEAF2A:
+                ip_address: 10.1.12.2/24
+              DC1-LEAF2B:
+                ip_address: 10.1.12.3/24
+          113:
+            name: Tenant_A_OP_Zone_WAN
+            tags: [ DC1_BL1 ]
+            enabled: true
+            nodes:
+              DC1-BL1A:
+                ip_address: 10.1.13.1/24
+              DC1-BL1B:
+                ip_address: 10.1.13.2/24
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
@@ -911,12 +946,12 @@ tenants:
             name: Tenant_A_WEB_Zone_1
             tags: [ web, erp1 ]
             enabled: true
-            ip_subnet: 10.1.20.0/24
+            ip_address_virtual: 10.1.20.0/24
           121:
             name: Tenant_A_WEBZone_2
             tags: [ web ]
             enabled: true
-            ip_subnet: 10.1.21.0/24
+            ip_address_virtual: 10.1.21.0/24
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -924,12 +959,12 @@ tenants:
             name: Tenant_A_APP_Zone_1
             tags: [ app, erp1 ]
             enabled: true
-            ip_subnet: 10.1.30.0/24
+            ip_address_virtual: 10.1.30.0/24
           131:
             name: Tenant_A_APP_Zone_2
             tags: [ app ]
             enabled: true
-            ip_subnet: 10.1.31.0/24
+            ip_address_virtual: 10.1.31.0/24
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -937,12 +972,12 @@ tenants:
             name: Tenant_A_DB_BZone_1
             tags: [ db, erp1 ]
             enabled: true
-            ip_subnet: 10.1.40.0/24
+            ip_address_virtual: 10.1.40.0/24
           141:
             name: Tenant_A_DB_Zone_2
             tags: [ db ]
             enabled: true
-            ip_subnet: 10.1.41.0/24
+            ip_address_virtual: 10.1.41.0/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
@@ -950,7 +985,7 @@ tenants:
             name: Tenant_A_WAN_Zone_1
             tags: [ wan ]
             enabled: true
-            ip_subnet: 10.1.40.0/24
+            ip_address_virtual: 10.1.40.0/24
     l2vlans:
       160:
         vni_override: 55160
@@ -970,12 +1005,12 @@ tenants:
             name: Tenant_B_OP_Zone_1
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.2.10.0/24
+            ip_address_virtual: 10.2.10.0/24
           211:
             name: Tenant_B_OP_Zone_2
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.2.11.0/24
+            ip_address_virtual: 10.2.11.0/24
       Tenant_B_WAN_Zone:
         vrf_vni: 21
         svis:
@@ -983,7 +1018,7 @@ tenants:
             name: Tenant_B_WAN_Zone_1
             tags: [ wan ]
             enabled: true
-            ip_subnet: 10.2.50.0/24
+            ip_address_virtual: 10.2.50.0/24
 ```
 
 ### Server Edge Port Connectivity
