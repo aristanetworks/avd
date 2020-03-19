@@ -68,11 +68,16 @@ EXAMPLES = r'''
 import glob
 import os
 import json
-import yaml
 import traceback
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
-
+YAML_IMP_ERR = None
+try:
+    import yaml
+    HAS_YAML = True
+except ImportError:
+    HAS_YAML = False
+    YAML_IMP_ERR = traceback.format_exc()
 
 def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
     """
