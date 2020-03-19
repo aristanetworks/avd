@@ -1,0 +1,11 @@
+---
+# defaults file for cvp_configlet_upload
+
+# Directory where configlets are stored.
+configlet_directory: 'configlets/'
+
+# File extension to look for configlets
+file_extension: 'conf'
+
+# Prefix to add to configlets name on Cloudvision
+configlets_cvp_prefix: ''
