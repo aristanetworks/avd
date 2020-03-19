@@ -76,6 +76,7 @@
 {% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
 {%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         if node == leaf.parent_l3leafs[0] %}
+{%             set parentl3leaf.group = l3leaf_node_group %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tenants is defined %}
 {%                 set parentl3leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants %}
 {%             else %}
@@ -100,7 +101,7 @@
 {%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
 {%                     for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                         if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
-{%                             if svi_tag in parentl3leaf.filter_tags or svi_tag == leaf.group or "all" in parentl3leaf.filter_tags %}
+{%                             if svi_tag in parentl3leaf.filter_tags or svi_tag == parentl3leaf.group or "all" in parentl3leaf.filter_tags %}
 {%                                 do leaf.vrfs.append( vrf ) %}
 {%                                 do leaf.svis.append( svi ) %}
 {%                                 do leaf.vlans.append( svi ) %}
