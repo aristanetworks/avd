@@ -47,12 +47,12 @@ options:
     description: File where to save information.
     required: false
     type: str
-    default: none
-  extension:
+    default: ''
+  configlet_extension:
     description: File extensio to look for.
     required: false
     type: str
-    default: conf
+    default: 'conf'
 '''
 
 EXAMPLES = r'''

@@ -108,7 +108,6 @@ except ImportError:
     YAML_IMP_ERR = traceback.format_exc()
 
 
-
 # Root container on CloudVision.
 # Shall not be changed unless CloudVision changes it in the core.
 CVP_ROOT_CONTAINER = 'Tenant'
