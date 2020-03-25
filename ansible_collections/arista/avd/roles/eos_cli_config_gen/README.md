@@ -46,6 +46,7 @@
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [HTTP Management API](#http-management-api)
     - [Management Console](#management-console)
+    - [Management SSH](#management-ssh)
   - [License](#license)
 
 ## Overview
