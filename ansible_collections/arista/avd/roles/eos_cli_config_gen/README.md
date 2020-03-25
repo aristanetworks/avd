@@ -18,6 +18,7 @@
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
+    - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
     - [Sflow](#sflow)
     - [redundancy](#redundancy)
@@ -183,7 +184,7 @@ logging:
       hosts:
         - < syslog_server_1>
         - < syslog_server_2>  
-```
+```  
 
 ### Domain Lookup
 
@@ -192,7 +193,7 @@ ip_domain_lookup:
   source_interfaces:
     <source_interface_1>:
       vrf: <vrf_name>
-``` 
+```
 
 ### Name Servers
 
@@ -209,7 +210,7 @@ name_server:
 
 ```yaml
 dns_domain: <domain_name>
-``` 
+```
 
 ### NTP Servers
 
@@ -234,7 +235,7 @@ sflow:
   source_interface: < interface >
   sample: < integer >
   run: < true | false >
-``` 
+```
 
 ### redundancy
 
@@ -702,7 +703,6 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
-
 
 ## License
 
