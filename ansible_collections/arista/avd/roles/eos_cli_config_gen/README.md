@@ -626,6 +626,24 @@ management_console:
   idle_timeout: < integer between 0 and 86400 representing minutes >
 ```
 
+### Management SSH
+
+```yaml
+management_ssh:
+  access_groups:
+    < standard_acl_name_1 >:
+    < standard_acl_name_2 >:
+      vrf: < vrf name >
+  idle_timeout: < integer between 0 and 86400 representing minutes >
+  enable: < true | false >
+  vrfs:
+    < vrf_name_1 >:
+      enable: < true | false >
+    < vrf_name_2 >:
+      enable: < true | false >
+```
+
+
 ## License
 
 Project is published under [Apache 2.0 License](../../LICENSE)
