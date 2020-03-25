@@ -220,6 +220,12 @@ name_server:
     - < name_server_2 >
 ```
 
+### DNS Domain
+
+```yaml
+dns_domain: <domain_name>
+``` 
+
 ### NTP Servers
 
 ```yaml
