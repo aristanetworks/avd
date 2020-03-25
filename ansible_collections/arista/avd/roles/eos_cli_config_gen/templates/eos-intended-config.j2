@@ -24,6 +24,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/name-servers.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# sflow #}
+{% include 'eos/sflow.j2' %}
 {# redundancy #}
 {% include 'eos/redundancy.j2' %}
 {# spanning-tree #}
