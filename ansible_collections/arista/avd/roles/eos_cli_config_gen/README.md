@@ -18,6 +18,7 @@
     - [Logging](#logging)
     - [Name Servers](#name-servers)
     - [NTP Servers](#ntp-servers)
+    - [Sflow](#sflow)
     - [redundancy](#redundancy)
     - [Spanning Tree](#spanning-tree)
     - [AAA Authentication](#aaa-authentication)
@@ -195,6 +196,18 @@ ntp_server:
     - < ntp_server_2 >
 
 ```
+
+### Sflow
+
+```yaml
+sflow:
+  destinations:
+    < sflow_destination_ip_1 >:
+    < sflow_destination_ip_2 >:
+  source_interface: < interface >
+  sample: < integer >
+  run: < true | false >
+``` 
 
 ### redundancy
 
