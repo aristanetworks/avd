@@ -5,6 +5,28 @@ logging console {{ logging.console }}
 {%     if logging.monitor is defined %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
+{%     if logging.buffered is defined and logging.buffered is not none %}
+logging buffered {{ logging.buffered.size }} {{ logging.buffered.level }}
+{%     endif %}
+{%     if logging.trap is defined and logging.trap is not none %}
+logging trap {{ logging.trap }}
+{%     endif %}
+{%     if logging.source_interface is defined and logging.source_interface is not none %}
+logging source-interface {{ logging.source_interface }}
+{%     endif %}
+{%     if logging.vrfs is defined and logging.vrfs is not none %}
+{%          for vrf in logging.vrfs %}
+{%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none %}
+logging vrf {{ vrf }} source-interface {{ logging.vrfs[vrf].source_interface  }}
+{%              endif %}
+{%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
+{%                  for host in logging.vrfs[vrf].hosts %}                
+logging vrf {{ vrf }} host {{ host }}
+{%                  endfor %}
+{%              endif %}
+{%          endfor %}
+{%     endif %}
+{% endif %}
 !
 {% endif %}
 
