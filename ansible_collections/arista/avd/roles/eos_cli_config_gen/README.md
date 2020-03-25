@@ -7,6 +7,7 @@
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
   - [Input Variables](#input-variables)
+    - [Terminal Settings](#terminal-settings)
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -86,6 +87,14 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 - Variables are organized in order of how they appear in the CLI syntax.
 - Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional. Boolean variables default to "false" unless explicitly stated.
+
+### Terminal Settings
+
+```yaml
+terminal:
+  length: < integer between 0 and 32767 >
+  width: < integer between 0 and 32767 >
+```
 
 ### Hardware Counters
 
