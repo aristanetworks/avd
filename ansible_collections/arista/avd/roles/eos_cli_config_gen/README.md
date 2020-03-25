@@ -366,6 +366,8 @@ management_interfaces:
     ip_address: < IPv4_address/Mask >
     ipv6_address: < IPv6_address/Mask >
     ipv6_enable: < true | false >
+    gateway: <IPv4 address of gateway>
+    ipv6_gateway: <IPv6 address of gateway>
 ```
 
 ### VLAN Interfaces
