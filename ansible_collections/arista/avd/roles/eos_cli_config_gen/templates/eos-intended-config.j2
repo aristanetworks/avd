@@ -74,6 +74,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ip-routing.j2' %}
 {# prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
+{# IPv6 Routing #}
+{% include 'eos/ipv6-routing.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
 {# route-maps #}

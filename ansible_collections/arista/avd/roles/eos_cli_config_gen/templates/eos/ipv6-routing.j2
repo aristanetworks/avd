@@ -4,8 +4,6 @@ ipv6 unicast-routing
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}
 ipv6 unicast-routing vrf {{ vrf }}
-{%         else %}
-no ipv6 unicast-routing vrf {{ vrf }}
 {%         endif %}
 {%     endfor %}
 !
