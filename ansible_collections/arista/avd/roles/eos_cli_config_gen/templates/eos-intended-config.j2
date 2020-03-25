@@ -64,6 +64,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/event-handler.j2' %}
 {# Static Route #}
 {% include 'eos/static-routes.j2' %}
+{# IPv6 Static Route #}
+{% include 'eos/ipv6_static-routes.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
 {# prefix-lists #}
