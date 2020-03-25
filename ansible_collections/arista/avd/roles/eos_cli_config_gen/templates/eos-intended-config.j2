@@ -15,8 +15,8 @@
 {% include 'eos/event-monitor.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
-transceiver qsfp default-mode 4x10G
 !
+{# multi-agent needed if EVPN address family is needed #}
 service routing protocols model multi-agent
 !
 {# queue monitor length #}
