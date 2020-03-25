@@ -45,6 +45,7 @@
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
+    - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
     - [Management Console](#management-console)
     - [Management SSH](#management-ssh)
@@ -623,6 +624,16 @@ router_ospf:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+```
+
+### Banners
+
+```yaml
+banners:
+  login: |
+    < text ending by EOF >
+  motd: |
+    < text ending by EOF >
 ```
 
 ### HTTP Management API
