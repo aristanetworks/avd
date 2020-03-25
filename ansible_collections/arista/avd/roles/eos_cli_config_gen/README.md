@@ -8,6 +8,7 @@
   - [Requirements](#requirements)
   - [Input Variables](#input-variables)
     - [Terminal Settings](#terminal-settings)
+    - [Aliases](#aliases)
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -93,6 +94,13 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 terminal:
   length: < integer between 0 and 32767 >
   width: < integer between 0 and 32767 >
+```
+
+### Aliases
+
+```yaml
+aliases: |
+< list of alias commands in EOS CLI >
 ```
 
 ### Hardware Counters
