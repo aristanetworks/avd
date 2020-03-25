@@ -46,6 +46,7 @@
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [HTTP Management API](#http-management-api)
+    - [Management Console](#management-console)
   - [License](#license)
 
 ## Overview
@@ -633,6 +634,13 @@ management_api_http:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
     < vrf_name_2 >:
+```
+
+### Management Console
+
+```yaml
+management_console:
+  idle_timeout: < integer between 0 and 86400 representing minutes >
 ```
 
 ## License
