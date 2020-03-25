@@ -186,6 +186,17 @@ queue_monitor_length:
 logging:
   console: < severity_level >
   monitor: < severity_level >
+  buffered:
+    size: < integer between 10 and 2147483647 representing number of messages >
+    level: < severity_level >
+  trap: < severity_level >
+  source_interface:
+  vrfs:
+    mgt:
+      source_interface:
+      hosts:
+        - < syslog_server_1>
+        - < syslog_server_2>  
 ```
 
 ### Name Servers
