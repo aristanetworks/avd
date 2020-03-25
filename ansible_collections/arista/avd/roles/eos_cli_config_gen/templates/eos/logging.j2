@@ -1,8 +1,9 @@
+{# eos - logging #}
 {% if logging is defined and logging is not none %}
-{%     if logging.console is defined %}
+{%     if logging.console is defined and logging.console is not none %}
 logging console {{ logging.console }}
 {%     endif %}
-{%     if logging.monitor is defined %}
+{%     if logging.monitor is defined and logging.monitor is not none %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
 {%     if logging.buffered is defined and logging.buffered is not none %}
@@ -28,5 +29,4 @@ logging vrf {{ vrf }} host {{ host }}
 {%     endif %}
 {% endif %}
 !
-{% endif %}
 
