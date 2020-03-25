@@ -297,8 +297,10 @@ vlans:
 vrfs:
   < vrf_name >:
     ip_routing: < true | false >
+    ipv6_routing: < true | false >
   < vrf_name >:
     ip_routing: < true | false >
+    ipv6_routing: < true | false >
 ```
 
 ### bfd multihop interval
