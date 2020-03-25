@@ -16,6 +16,7 @@
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
     - [Logging](#logging)
+    - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [NTP Servers](#ntp-servers)
     - [Sflow](#sflow)
@@ -183,6 +184,15 @@ logging:
         - < syslog_server_1>
         - < syslog_server_2>  
 ```
+
+### Domain Lookup
+
+```yaml
+ip_domain_lookup:
+  source_interfaces:
+    <source_interface_1>:
+      vrf: <vrf_name>
+``` 
 
 ### Name Servers
 

@@ -24,6 +24,8 @@ service routing protocols model multi-agent
 {# logging #}
 {% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}
+{# domain lookup #}
+{% include 'eos/domain-lookup.j2' %}
 {# name servers #}
 {% include 'eos/name-servers.j2' %}
 {# ntp servers #}
