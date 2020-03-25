@@ -86,6 +86,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-ospf.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
+{# vmtracer sessions #}
+{% include 'eos/vmtracer_sessions.j2' %}
+{# banner #}
+{% include 'eos/banners.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
