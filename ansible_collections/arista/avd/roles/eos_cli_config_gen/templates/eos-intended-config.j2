@@ -88,5 +88,7 @@ hostname {{ inventory_hostname }}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
+{# management console #}
+{% include 'eos/management-console.j2' %}
 !
 end
