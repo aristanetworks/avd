@@ -614,6 +614,7 @@ management_api_http:
   enable_https: < true | false >
   enable_vrfs:
     < vrf_name_1 >:
+      access_group: < Standard IPv4 ACL name >
     < vrf_name_2 >:
 ```
 
