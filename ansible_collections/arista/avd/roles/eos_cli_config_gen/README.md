@@ -377,6 +377,8 @@ management_interfaces:
     description: < description >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
+    ipv6_address: < IPv6_address/Mask >
+    ipv6_enable: < true | false >
 ```
 
 ### VLAN Interfaces
