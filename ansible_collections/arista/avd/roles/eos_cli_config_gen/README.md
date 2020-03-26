@@ -273,6 +273,15 @@ spanning_tree:
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
 ```
 
+### AAA Authentication
+
+```yaml
+aaa_authentication:
+  login:
+    default: < group | local | none >
+    serial_console: < group | local | none >
+```
+
 ### AAA Authorization
 
 ```yaml
