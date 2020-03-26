@@ -41,6 +41,8 @@ hostname {{ inventory_hostname }}
 {# unsupported transceiver #}
 {% include 'eos/unsupported-transeiver.j2' %}
 {# aaa authentication #}
+{% include 'eos/aaa-authentication.j2' %}
+{# aaa authorization #}
 {% include 'eos/aaa-authorization.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
