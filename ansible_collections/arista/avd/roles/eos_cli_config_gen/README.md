@@ -48,6 +48,7 @@
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
+    - [VM Tracer Sessions](#vmtracer-sessions)
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
     - [Management Console](#management-console)
@@ -683,6 +684,20 @@ router_ospf:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+```
+
+### VM Tracer Sessions
+
+```yaml
+vmtracer_sessions:
+  < vmtracer_session_name_1 >:
+    username: < username >
+    password: < encrypted_password >
+    autovlan_disable: < true | false >
+    source_interface: < interface_name >
+  < vmtracer_session_name_2 >:  
+    username: < username >
+    password: < encrypted_password >
 ```
 
 ### Banners
