@@ -400,9 +400,18 @@ vlan_interfaces:
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
     virtual: < true | false >
+    mtu: < mtu >
+    ip_helpers:
+      < ip_helper_address_1 >:
+        source_interface: < interface_name >
+        vrf: < vrf_name >
+      < ip_helper_address_2 >:
+        source_interface: < interface_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
-    mtu: < mtu >
+    pim:
+      ipv4:
+        sparse_mode: < true | false >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
