@@ -1,4 +1,4 @@
-# Ansible Role: eos_config_deploy_eapi
+# Ansible Role: eos_config_deploy_cvp
 
 **Table of Contents:**
 
