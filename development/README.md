@@ -50,19 +50,30 @@ The ansible version is passed in with the docker build command using ***ANSIBLE*
 
 Before you can use a container, you must install Docker CE on your workstation: https://www.docker.com/products/docker-desktop
 
-### Start Docker Container
+### Build Docker Container
 
 In addition to the `Dockerfile`, a `Makefile` is provided to help provision the container a single step. A user can pass the ansible version number to make and alter the default ansible-version number.  This allows a user to setup multiple containers running differing versions of ansible.
 
 ```shell
-make                        # Use default version of Ansible
-make ANSIBLE_VERSION=2.9.5  # Explicitly set Ansible version to 2.9.5
+make build                        # Use default version of Ansible
+make build ANSIBLE_VERSION=2.9.5  # Explicitly set Ansible version to 2.9.5
+
+docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ansible_avd         2.9.6               5291937a2214        33 minutes ago      795MB
+ansible_avd         2.9.5               27f648c4c249        46 hours ago        912MB
+```
+
+### Run Docker Container
+
+```shell
+make run                        # Use default version of Ansible
+make run ANSIBLE_VERSION=2.9.5  # Explicitly set Ansible version to 2.9.5
 
 docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED              STATUS              PORTS               NAMES
-43e8e095e1f5        ansible_avd:2.9.5   "/bin/sh"           26 seconds ago       Up 25 seconds                           ansible_avd_2.9.5
-3ee4c555bca5        ansible_avd:2.9.2   "/bin/sh"           About a minute ago   Up About a minute                       ansible_avd_2.9.2
-
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+e682058d7dae        ansible_avd:2.9.5   "/bin/sh"           6 seconds ago       Up 5 seconds                            ansible_avd_2.9.5
+540a8e778907        ansible_avd:2.9.6   "/bin/sh"           38 seconds ago      Up 37 seconds                           ansible_avd_2.9.6
 ```
 
 ### Stop Docker Container
@@ -71,8 +82,21 @@ Another make target (clean) has been created to stop and remove the container on
 
 ```shell
 make clean                       # Clean default version of Ansible
-make ANSIBLE_VERSION=2.9.5 clean # Explicitly clean Ansible version to 2.9.5
+make clean ANSIBLE_VERSION=2.9.5 # Explicitly clean Ansible version to 2.9.5
 
 docker ps
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+```
+
+## Getting started Script
+
+```shell
+mkdir git_projects
+cd git_projects
+git clone https://github.com/aristanetworks/ansible-avd.git
+git clone https://github.com/aristanetworks/ansible-cvp.git
+git clone https://github.com/aristanetworks/netdevops-examples.git
+cp ansible-avd/development/* ./
+make build
+make run
 ```
