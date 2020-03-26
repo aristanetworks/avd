@@ -61,7 +61,7 @@ github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo apt-get install ansible-test
 	sudo pip install --upgrade wheel
-	sudo pip install -r requirements.txt
+	sudo pip install -r development/requirements.txt
 
 .PHONY: setup-repository
 setup-repository: ## Install python requirements
