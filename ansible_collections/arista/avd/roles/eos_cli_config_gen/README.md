@@ -25,6 +25,7 @@
     - [redundancy](#redundancy)
     - [Spanning Tree](#spanning-tree)
     - [AAA Authentication](#aaa-authentication)
+    - [AAA Authorization](#aaa-authorization)
     - [Local users](#local-users)
     - [clock timezone](#clock-timezone)
     - [VLANs](#vlans)
@@ -272,11 +273,12 @@ spanning_tree:
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
 ```
 
-### AAA Authentication
+### AAA Authorization
 
 ```yaml
 aaa_authorization:
   exec_default: < group | local | none >
+  config_commands: < true | false >
 ```
 
 ### Local users
