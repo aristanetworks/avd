@@ -26,12 +26,21 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondary is defined %}
    ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual_secondary }} secondary
+{%         if vlan_interfaces[vlan_interface].ip_helpers is defined and vlan_interfaces[vlan_interface].ip_helpers is not none %}
+{%            for ip_helper in vlan_interfaces[vlan_interface].ip_helpers %}
+   ip helper_address {{ ip_helper }} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is not none %}vrf {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf }} {% endif %} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is not none %}source-interface {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface }} {% endif %}
+{%            endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_area is defined %}
    ip ospf area {{ vlan_interfaces[vlan_interface].ospf_area }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].pim is defined %}
+{%            if vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode is defined and vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%            endif %}
 {%         endif %}
 !
 {%     endfor %}

@@ -199,8 +199,8 @@ logging:
       source_interface:
       hosts:
         - < syslog_server_1>
-        - < syslog_server_2>  
-```  
+        - < syslog_server_2>
+```
 
 ### Domain Lookup
 
@@ -318,7 +318,7 @@ vrfs:
     ip_routing: < true | false >
     ipv6_routing: < true | false >
   < vrf_name >:
-    description: < description>  
+    description: < description>
     ip_routing: < true | false >
     ipv6_routing: < true | false >
 ```
@@ -417,9 +417,19 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
+    virtual: < true | false >
+    mtu: < mtu >
+    ip_helpers:
+      < ip_helper_address_1 >:
+        source_interface: < interface_name >
+        vrf: < vrf_name >
+      < ip_helper_address_2 >:
+        source_interface: < interface_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
-    mtu: < mtu >
+    pim:
+      ipv4:
+        sparse_mode: < true | false >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
