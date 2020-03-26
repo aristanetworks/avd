@@ -265,8 +265,11 @@ redundancy:
 
 ```yaml
 spanning_tree:
+  edge_port:
+    bpduguard_default: < true | false >
   mode: < spanning_tree_mode >
   priority: < priority_level >
+  no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
 ```
 
 ### AAA Authentication
