@@ -481,9 +481,12 @@ virtual_source_nat_vrfs:
 
 ```yaml
 static_routes:
-  - vrf: < vrf_name >
+  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
     destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
+    distance: < integer between 1 and 255 >
+    tag: < integer between 0 and 4294967295 >
+    name: < description >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
 ```
