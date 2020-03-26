@@ -2,7 +2,9 @@
 {% if aaa_authorization is defined and aaa_authorization is not none %}
 {%     if aaa_authorization.exec_default is defined %}
 aaa authorization exec default {{ aaa_authorization.exec_default }}
-!
+{%     endif %}
+{%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == false %}
+no aaa authorization config-commands
 {%     endif %}
 no aaa root
 !
