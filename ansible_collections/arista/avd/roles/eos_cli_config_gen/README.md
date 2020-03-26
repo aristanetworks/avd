@@ -41,6 +41,7 @@
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
     - [Static Routes](#static-routes)
+    - [IPv6 Static Routes](#ipv6-static-routes)
     - [Prefix Lists](#prefix-lists)
     - [MLAG Configuration](#mlag-configuration)
     - [Route Maps](#route-maps)
@@ -489,6 +490,20 @@ static_routes:
     name: < description >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
+```
+
+### IPv6 Static Routes
+
+```yaml
+ipv6_static_routes:
+  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
+    destination_address_prefix: < IPv6_network/Mask >
+    gateway: < IPv6_address >
+    distance: < integer between 1 and 255 >
+    tag: < integer between 0 and 4294967295 >
+    name: < description >
+  - destination_address_prefix: < IPv6_network/Mask >
+    gateway: < IPv6_address >
 ```
 
 ### Prefix Lists
