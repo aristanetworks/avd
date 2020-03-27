@@ -62,9 +62,9 @@ _Example_:
 
 ```yaml
 tasks:
-  - name: run CVP provisioning
+  - name: upload cvp configlets
     import_role:
-        name: cvp_configlet_upload
+        name: arista.avd.cvp_configlet_upload
     vars:
       configlet_directory: 'configlets/'
       file_extension: 'txt'
