@@ -79,6 +79,7 @@ except ImportError:
     HAS_YAML = False
     YAML_IMP_ERR = traceback.format_exc()
 
+
 def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
     """
     Get available configlets to deploy to CVP.
