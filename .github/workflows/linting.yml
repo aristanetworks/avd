@@ -16,6 +16,7 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Lint YAML Content'
         run: |
+          make github-configure-ci-python3
           sudo apt-get install -y yamllint
           sh .github/lint-yaml
   'lint-python':
@@ -25,6 +26,6 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Lint Python code in plugins'
         run: |
-          pip3 install wheel
+          make github-configure-ci-python3
           pip3 install pylint
           sh .github/lint-python

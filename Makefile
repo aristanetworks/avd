@@ -52,17 +52,25 @@ linting: ## Run pre-commit script for python code linting using pylint
 	sh .github/lint-python
 
 .PHONY: github-configure-ci
-github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
+github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
+
+.PHONY: github-configure-ci-python3
+github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
+	sudo apt-get update
+	sudo apt-get install -y python3 python3-pip git python3-setuptools
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+	pip3 install --upgrade wheel
+	pip3 install -r development/requirements.txt
+
+.PHONY: github-configure-ci-ansible
+github-configure-ci-ansible: ## Install Ansible Test on GA
 	sudo apt-get update
 	sudo apt-get install -y gnupg2
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 	sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
 	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
 	sudo apt-get update
-	sudo apt-get install -y ansible-test python3 python3-pip git python3-setuptools
-	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-	sudo pip3 install --upgrade wheel
-	sudo pip3 install -r development/requirements.txt
+	sudo apt-get install -y ansible-test
 
 .PHONY: setup-repository
 setup-repository: ## Install python requirements
@@ -73,4 +81,4 @@ setup-repository: ## Install python requirements
 .PHONY: setup-repository-dev
 setup-repository-dev: ## Install python requirements for development purpose
 	pip3 install --upgrade wheel
-	pip install -r development/requirements-dev.txt
+	pip3 install -r development/requirements-dev.txt
