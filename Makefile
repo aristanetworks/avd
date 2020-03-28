@@ -59,9 +59,10 @@ github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
 	sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
 	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
 	sudo apt-get update
-	sudo apt-get install ansible-test
-	sudo pip install --upgrade wheel
-	sudo pip install -r development/requirements.txt
+	sudo apt-get install -y ansible-test python3 python3-pip git
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+	sudo pip3 install --upgrade wheel
+	sudo pip3 install -r development/requirements.txt
 
 .PHONY: setup-repository
 setup-repository: ## Install python requirements
