@@ -66,6 +66,11 @@ github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
 .PHONY: setup-repository
 setup-repository: ## Install python requirements
-	pip install --upgrade wheel
-	pip install -r development/requirements.txt
+	pip3 install --upgrade wheel
+	pip3 install -r development/requirements.txt
 	# pip install -r development/requirements-dev.txt
+
+.PHONY: setup-repository-dev
+setup-repository-dev: ## Install python requirements for development purpose
+	pip3 install --upgrade wheel
+	pip install -r development/requirements-dev.txt
