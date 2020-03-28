@@ -73,10 +73,7 @@ github-configure-ci-ansible: ## Install Ansible Test on GA
 	sudo apt-get install -y ansible-test
 
 .PHONY: setup-repository
-setup-repository: ## Install python requirements
-	pip3 install --upgrade wheel
-	pip3 install -r development/requirements.txt
-	# pip install -r development/requirements-dev.txt
+setup-repository: github-configure-ci-python3 ## Install python requirements (DEPRECATED / ALIAS to github-configure-ci-python3)
 
 .PHONY: setup-repository-dev
 setup-repository-dev: ## Install python requirements for development purpose

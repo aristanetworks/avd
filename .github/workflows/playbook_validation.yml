@@ -1,5 +1,5 @@
 name: Ansible Execution
-on: 
+on:
   pull_request:
     branches:
       - 'master'
@@ -12,8 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Install requirements'
         run: |
-          cat Makefile
-          echo "************************************"
+          make github-configure-ci-python3
           make setup-repository
       - name: Execute testing playbook
         run: |
