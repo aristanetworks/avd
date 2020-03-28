@@ -25,6 +25,6 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Lint Python code in plugins'
         run: |
-          pip install wheel
-          pip install pylint
+          pip3 install wheel
+          pip3 install pylint
           sh .github/lint-python
