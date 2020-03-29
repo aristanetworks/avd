@@ -13,7 +13,6 @@ jobs:
       - name: 'Install requirements'
         run: |
           make github-configure-ci-python3
-          make setup-repository
       - name: Execute testing playbook
         run: |
           cd testing
