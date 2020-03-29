@@ -9,10 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Setup Python 3 on runner
+        uses: actions/setup-python@v1.2.0
+        with: 
+          python-version: '3.x'
       - name: 'Install requirements'
         run: make github-configure-ci
       - name: 'Install Python requirements'
-        run: make setup-repository
+        run: make install-requirements
       - name: 'ansible-test linting'
         run: make sanity-lint
       - name: 'ansible-test import'
