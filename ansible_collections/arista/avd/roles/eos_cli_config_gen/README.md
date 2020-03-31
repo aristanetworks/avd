@@ -52,6 +52,7 @@
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
+    - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
     - [VM Tracer Sessions](#vmtracer-sessions)
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
@@ -280,11 +281,11 @@ spanning_tree:
 ```yaml
 tacacs_servers:
   hosts:
-    - host: <host_1_ip_address>
-      vrf: <vrf_name>
-      key: <encypted_key>
-    - host: <host_1_ip_address>
-      key: <encypted_key>
+    - host: < host_1_ip_address >
+      vrf: < vrf_name >
+      key: < encypted_key >
+    - host: < host_1_ip_address >
+      key: < encypted_key >
 ```
 
 ### AAA Server Groups
@@ -745,6 +746,15 @@ router_ospf:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+```
+
+### IP TACACS+ Source Interfaces
+
+```yaml
+ip_tacacs_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
 ```
 
 ### VM Tracer Sessions

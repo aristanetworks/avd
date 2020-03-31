@@ -100,6 +100,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-ospf.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
+{# ip tacacs+ source interfaces #}
+{% include 'eos/ip-tacacs-source-interfaces.j2' %}
 {# vmtracer sessions #}
 {% include 'eos/vmtracer-sessions.j2' %}
 {# banner #}
