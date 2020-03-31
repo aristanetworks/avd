@@ -24,6 +24,7 @@
     - [Sflow](#sflow)
     - [redundancy](#redundancy)
     - [Spanning Tree](#spanning-tree)
+    - [AAA Server Groups](#aaa-server-groups)
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
     - [Local users](#local-users)
@@ -271,6 +272,21 @@ spanning_tree:
   mode: < spanning_tree_mode >
   priority: < priority_level >
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
+```
+
+### AAA Server Groups
+
+```yaml
+aaa_server_groups:
+  - name: <name_of_the_server_group>
+    type: < tacacs+ | radius | ladp >
+    servers:
+      - <server_1_ip_address>
+      - <server_2_ip_address>
+  - name: <name_of_the_server_group>
+    type: < tacacs+ | radius | ladp >
+    servers:
+      - <server_1_ip_address>
 ```
 
 ### AAA Authentication
