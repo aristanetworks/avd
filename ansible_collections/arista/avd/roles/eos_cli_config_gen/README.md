@@ -22,8 +22,9 @@
     - [NTP Servers](#ntp-servers)
     - [Sflow](#sflow)
     - [redundancy](#redundancy)
+    - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
-    - [Tacacs+ Servers](#tacacs-servers.j2)
+    - [Tacacs+ Servers](#tacacs-servers)
     - [AAA Server Groups](#aaa-server-groups)
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
@@ -248,6 +249,54 @@ sflow:
 ```yaml
 redundancy:
   protocol: < redundancy_protocol >
+```
+
+### Snmp Settings
+
+```yaml
+snmp_server:
+  contact: < contact_name >
+  location: < location >
+  local_interfaces:
+    - name: < interface_name_1 >
+      vrf: < vrf_name >
+    - name: < interface_name_2 >  
+  views:
+    - name: < view_name >
+      MIB_family_name: < MIB_family_name >
+      included: < true | false >
+    - name: < view_name >
+      MIB_family_name: < MIB_family_name >
+      included: < true | false >
+  groups:
+    - name: < group_name >
+      version: < v1 | v2c | v3 >
+      authentication: < auth | noauth | priv >
+      read: < read_view >
+      write: < write_view >
+      notify: < notify_view >
+    - name: < group_name >
+      version: < v1 | v2c | v3 >
+      authentication: < auth | noauth | priv >
+      read: < read_view >
+  users:
+    - name: < user_name >
+      group: < group_name >
+      version: < v1 | v2c | v3 >
+      auth: < md5 | sha | sha224 | sha256 | sha 384 | sha512 >
+      auth_passphrase: < encrypted_auth_passphrase >
+      priv: < aes | eas192 | aes256 | des >
+      priv_passphrase: < encrypted_priv_passphrase >
+    - name: < user_name >
+      group: < group_name >
+      version: < v1 | v2c | v3 >
+  traps:
+    enable: < true | false >
+  vrfs:
+    - name: < vrf_name >
+      enable: < true | false >
+    - name: < vrf_name >
+      enable: < true | false >
 ```
 
 ### Spanning Tree
