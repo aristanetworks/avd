@@ -40,6 +40,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/spanning-tree.j2' %}
 {# unsupported transceiver #}
 {% include 'eos/unsupported-transeiver.j2' %}
+{# tacacs servers #}
+{% include 'eos/tacacs-servers.j2' %}
 {# aaa server groups #}
 {% include 'eos/aaa-server-groups.j2' %}
 {# aaa authentication #}

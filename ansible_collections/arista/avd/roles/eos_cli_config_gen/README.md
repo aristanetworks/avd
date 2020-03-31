@@ -24,6 +24,7 @@
     - [Sflow](#sflow)
     - [redundancy](#redundancy)
     - [Spanning Tree](#spanning-tree)
+    - [Tacacs+ Servers](#tacacs-servers.j2)
     - [AAA Server Groups](#aaa-server-groups)
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
@@ -272,6 +273,18 @@ spanning_tree:
   mode: < spanning_tree_mode >
   priority: < priority_level >
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
+```
+
+### Tacacs+ Servers
+
+```yaml
+tacacs_servers:
+  hosts:
+    - host: <host_1_ip_address>
+      vrf: <vrf_name>
+      key: <encypted_key>
+    - host: <host_1_ip_address>
+      key: <encypted_key>
 ```
 
 ### AAA Server Groups
