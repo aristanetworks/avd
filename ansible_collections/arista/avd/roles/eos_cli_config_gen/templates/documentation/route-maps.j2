@@ -4,10 +4,15 @@
 {%     for route_map in route_maps | arista.avd.natural_sort %}
 **{{ route_map }}:**
 
-| Sequence | Type | Match |
-| -------- | ---- | ----- |
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
 {%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
-| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | {{ route_maps[route_map].sequence_numbers[sequence].match }} |
+{%              if route_maps[route_map].sequence_numbers[sequence].match is defined and route_maps[route_map].sequence_numbers[sequence].match is not none %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | match {{ route_maps[route_map].sequence_numbers[sequence].match }} |
+{%              endif %}
+{%              if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | set {{ route_maps[route_map].sequence_numbers[sequence].set }} |
+{%              endif %}
 {%         endfor %}
 
 {%     endfor %}

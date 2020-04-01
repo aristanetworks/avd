@@ -663,7 +663,9 @@ route_maps:
     sequence_numbers:
       < sequence_id_1 >:
         type: < permit | deny >
+        description: < description >
         match: "< match as string >"
+        set: "< set as string >"
       < sequence_id_1 >:
         type: < permit | deny >
         match: "< match as string >"
@@ -671,7 +673,8 @@ route_maps:
     sequence_numbers:
       < sequence_id_1 >:
         type: < permit | deny >
-        match: "< match as string >"
+        description: < description >
+        set: "< set as string >"
 ```
 
 ### Peer Filters
