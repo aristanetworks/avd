@@ -9,6 +9,9 @@ interface {{ loopback_interface }}
 {%         if loopback_interfaces[loopback_interface].ip_address is defined %}
    ip address {{ loopback_interfaces[loopback_interface].ip_address }}
 {%         endif %}
+{%         if loopback_interfaces[loopback_interface].ipv6_address is defined %}
+   ipv6 address {{ loopback_interfaces[loopback_interface].ipv6_address }}
+{%         endif %}
 {%         if loopback_interfaces[loopback_interface].ospf_area is defined %}
    ip ospf area {{ loopback_interfaces[loopback_interface].ospf_area }}
 {%         endif %}
