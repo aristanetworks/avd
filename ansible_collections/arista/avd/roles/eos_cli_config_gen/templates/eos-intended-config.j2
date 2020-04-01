@@ -16,6 +16,9 @@
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
 !
+{# cannot be disabled in current EOS releases #}
+transceiver qsfp default-mode 4x10G
+!
 {# multi-agent needed if EVPN address family is needed #}
 service routing protocols model multi-agent
 !
