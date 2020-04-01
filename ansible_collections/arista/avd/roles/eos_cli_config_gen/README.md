@@ -492,6 +492,7 @@ loopback_interfaces:
   < Loopback_interface_1 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
+    ipv6_address: < IPv6_address/Mask >
     ospf_area: < ospf_area >
   < Loopback_interface_2 >:
     description: < description >
