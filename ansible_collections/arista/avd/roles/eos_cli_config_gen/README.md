@@ -172,6 +172,7 @@ load_interval:
 ```yaml
 queue_monitor_length:
   log: < seconds >
+  notifying: < true | false >
 ```
 
 ### Logging
