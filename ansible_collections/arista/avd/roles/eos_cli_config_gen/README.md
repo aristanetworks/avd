@@ -245,7 +245,6 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
-
 ```
 
 ### Sflow
@@ -306,6 +305,19 @@ snmp_server:
     - name: < user_name >
       group: < group_name >
       version: < v1 | v2c | v3 >
+  hosts:
+    - host: < host IP address or name >
+      vrf: < vrf_name >
+      users:
+        - username: < username >
+          authentication_level: < auth | noauth | priv >
+          version: < 1 | 2c | 3 >
+    - host: < host IP address or name >
+      vrf: < vrf_name >
+      users:
+        - username: < username >
+          authentication_level: < auth | noauth | priv >
+          version: < 1 | 2c | 3 >
   traps:
     enable: < true | false >
   vrfs:
@@ -701,6 +713,7 @@ router_bgp:
       maximum_routes: < integer >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
+      bgp_listen_range_prefix: < IP prefix range >
       peer_filter: < peer_filter >
       password: "< encrypted_password >"
       maximum_routes: < integer >
