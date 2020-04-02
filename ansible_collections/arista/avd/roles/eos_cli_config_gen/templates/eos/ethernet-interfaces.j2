@@ -2,7 +2,12 @@
 {% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 interface {{ ethernet_interface }}
+{%             if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %}
    description {{ ethernet_interfaces[ethernet_interface].description }}
+{%             endif %}
+{%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
+   shutdown
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined %}
    speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
 {%         endif %}
@@ -40,11 +45,29 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
+   ipv6 enable
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_address is defined %}
+   ipv6 address {{ ethernet_interfaces[ethernet_interface].ipv6_address }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_address_link_local is defined %}
+   ipv6 address {{ ethernet_interfaces[ethernet_interface].ipv6_address_link_local }} link-local
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled == true %}
+   ipv6 nd ra disabled
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
+   vmtracer vmware-esx
 {%             endif %}
 {%         endif %}
 !
