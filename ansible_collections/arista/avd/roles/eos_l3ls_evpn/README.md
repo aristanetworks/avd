@@ -16,6 +16,7 @@
       - [L2 Leafs Variables](#l2-leafs-variables)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
+    - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -1127,6 +1128,32 @@ servers:
           description: PortChanne1
           mode: active
 
+```
+
+### Variable to attach additional configlets
+
+Role [`eos_config_deploy_cvp`](../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
+
+This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on Cloudvision as current role does not upload additional containers.
+
+To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../eos_config_deploy_cvp/README.md#add-additional-configlets)
+
+Below is an example provided as-is:
+
+```yaml
+# group_vars/DC1_FABRIC.yml
+
+# List of additional CVP configlets to bind to devices and containers
+# Configlets MUST be configured on CVP before running AVD playbooks.
+cv_configlets:
+  containers:
+    DC1_L3LEAFS:
+      - GLOBAL-ALIASES
+  devices:
+    DC1-L2LEAF2A:
+      - GLOBAL-ALIASES
+    DC1-L2LEAF2B:
+      - GLOBAL-ALIASES
 ```
 
 ### vEOS-LAB Know Caveats and Recommendations

@@ -14,6 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Setup Python 3 on runner
+        uses: actions/setup-python@v1.2.0
+        with: 
+          python-version: '3.x'
       - name: 'Lint YAML Content'
         run: |
           sudo apt-get install -y yamllint
@@ -23,8 +27,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
+      - name: Setup Python 3 on runner
+        uses: actions/setup-python@v1.2.0
+        with: 
+          python-version: '3.x'
       - name: 'Lint Python code in plugins'
         run: |
-          pip install wheel
-          pip install pylint
+          pip3 install wheel
+          pip3 install pylint
           sh .github/lint-python
