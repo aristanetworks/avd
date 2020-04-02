@@ -247,7 +247,7 @@ sflow:
 ### redundancy
 
 ```yaml
-redundancy:
+Redundancy:
   protocol: < redundancy_protocol >
 ```
 
@@ -381,7 +381,7 @@ local_users:
     sha512_password: "< sha_512_password >"
 ```
 
-### clock timezone
+### Clock timezone
 
 ```yaml
 clock:
@@ -415,7 +415,7 @@ vrfs:
     ipv6_routing: < true | false >
 ```
 
-### bfd multihop interval
+### Bfd multihop interval
 
 ```yaml
 bfd_multihop:
