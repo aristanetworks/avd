@@ -26,11 +26,28 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].mlag is defined %}
    mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'edge' %}
+   spanning-tree portfast
+{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'network' %}
+   spanning-tree portfast network
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter == true %}
+   spanning-tree bpdufilter enable
+{%         endif%}
 {%         if port_channel_interfaces[port_channel_interface].vrf is defined %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+   ipv6 address {{ port_channel_interfaces[port_channel_interface].ipv6_address }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_address_link_local is defined %}
+   ipv6 address {{ port_channel_interfaces[port_channel_interface].ipv6_address_link_local }} link-local
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
+   vmtracer vmware-esx
 {%         endif %}
 !
 {%     endfor %}

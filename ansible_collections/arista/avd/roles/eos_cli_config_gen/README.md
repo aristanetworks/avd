@@ -275,7 +275,7 @@ snmp_server:
   local_interfaces:
     - name: < interface_name_1 >
       vrf: < vrf_name >
-    - name: < interface_name_2 >  
+    - name: < interface_name_2 >
   views:
     - name: < view_name >
       MIB_family_name: < MIB_family_name >
@@ -455,6 +455,14 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as sting >"
     mode: < access | dot1q-tunnel | trunk >
+    spanning_tree_bpdufilter: < true | false >
+    spanning_tree_portfast: < portfast_mode >
+    vmtracer: < true | false >
+  < Port-Channel_interface_3 >:
+    description: < description >
+    type: < switched | routed >
+    ipv6_address: < IPv6_address/mask >
+    ipv6_address_link_local: < link_local_IPv6_address/mask >
 ```
 
 ### Ethernet Interfaces
@@ -833,7 +841,7 @@ vmtracer_sessions:
     password: < encrypted_password >
     autovlan_disable: < true | false >
     source_interface: < interface_name >
-  < vmtracer_session_name_2 >:  
+  < vmtracer_session_name_2 >:
     username: < username >
     password: < encrypted_password >
 ```
