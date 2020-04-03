@@ -103,6 +103,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
+{# router multicast configuration #}
+{% include 'eos/router-multicast.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
 {# queue monitor streaming #}
