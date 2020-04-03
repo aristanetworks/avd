@@ -17,7 +17,7 @@ IPv6
 {% for management_interface in management_interfaces | arista.avd.natural_sort %}
 | {{ management_interface }} | {{ management_interfaces[management_interface].description }} |
 {%- if management_interfaces[management_interface].vrf is defined %} {{ management_interfaces[management_interface].vrf }} {% else %} not defined / default {% endif -%}
-| {{ management_interfaces[management_interface].ipv6_address }} | {{ management_interfaces[management_interface].ipv6_gateway }} |
+| {%- if management_interfaces[management_interface].ipv6_address is defined and management_interfaces[management_interface].ipv6_address is not none %} {{ management_interfaces[management_interface].ipv6_address }} {% endif %} | {%- if management_interfaces[management_interface].ipv6_gateway is defined and management_interfaces[management_interface].ipv6_gateway is not none %} {{ management_interfaces[management_interface].ipv6_gateway }} {% endif -%} |
 {% endfor %}
 
 ### Management Interfaces Device Configuration
