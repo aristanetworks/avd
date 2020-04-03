@@ -1,5 +1,5 @@
 name: Ansible Execution
-on: 
+on:
   pull_request:
     branches:
       - 'master'
@@ -12,14 +12,13 @@ jobs:
       - uses: actions/checkout@master
       - name: Setup Python 3 on runner
         uses: actions/setup-python@v1.2.0
-        with: 
+        with:
           python-version: '3.x'
       - name: 'Install requirements'
         run: make install-requirements-generic
       - name: Execute testing playbook
         run: |
-          cd testing
-          ansible-playbook playbook-generate-documentation.yml
+          make playbook-validation
       - uses: actions/upload-artifact@v1
         with:
           name: testing-results
