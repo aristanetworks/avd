@@ -12,6 +12,7 @@
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [IP IGMP Snooping](#ip_igmp_snooping#)
     - [Event Monitor](#event-monitor)
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
@@ -21,7 +22,7 @@
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
     - [Sflow](#sflow)
-    - [redundancy](#redundancy)
+    - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -33,7 +34,7 @@
     - [clock timezone](#clock-timezone)
     - [VLANs](#vlans)
     - [VRF Instances](#vrf-instances)
-    - [bfd multihop interval](#bfd-multihop-interval)
+    - [Bfd multihop interval](#bfd-multihop-interval)
     - [Port-Channel Interfaces](#port-channel-interfaces)
     - [Ethernet Interfaces](#ethernet-interfaces)
     - [Loopback Interfaces](#loopback-interfaces)
@@ -153,6 +154,15 @@ vlan_internal_allocation_policy:
     ending: < vlan_id >
 ```
 
+### IP IGMP Snooping ###
+
+```yaml
+ip_igmp_snooping:
+  vlans:
+    < vlan_id >:
+      enabled: < true | false >
+```
+
 ### Event Monitor
 
 ```yaml
@@ -245,7 +255,7 @@ sflow:
   run: < true | false >
 ```
 
-### redundancy
+### Redundancy
 
 ```yaml
 Redundancy:
