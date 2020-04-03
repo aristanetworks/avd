@@ -5,7 +5,7 @@ ANSIBLE_TEST ?= $(shell which ansible-test)
 ANSIBLE_TEST_MODE ?= docker
 
 .PHONY: help
-help: ## Display help message (*: main entry points / []: part of an entry point)
+help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 #########################################
@@ -52,19 +52,36 @@ linting: ## Run pre-commit script for python code linting using pylint
 	sh .github/lint-python
 
 .PHONY: github-configure-ci
-github-configure-ci: ## Configure CI environment to run GA (Ubuntu:latest LTS)
+github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
+
+.PHONY: github-configure-ci-python3
+github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
+	sudo apt-get update
+	sudo apt-get upgrade -y
+	sudo apt-get install -y python3 python3-pip git python3-setuptools
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
+	pip3 install --upgrade wheel
+	pip3 install -r development/requirements.txt
+
+.PHONY: github-configure-ci-ansible
+github-configure-ci-ansible: ## Install Ansible Test on GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo apt-get install -y gnupg2
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 	sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
 	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
 	sudo apt-get update
-	sudo apt-get install ansible-test
-	sudo pip install --upgrade wheel
-	sudo pip install -r requirements.txt
+	sudo apt-get install -y ansible-test
 
-.PHONY: setup-repository
-setup-repository: ## Install python requirements
-	pip install --upgrade wheel
-	pip install -r development/requirements.txt
-	pip install -r development/requirements-dev.txt
+.PHONY: install-requirements
+install-requirements: install-requirements-generic install-requirements-dev ## Install python requirements (normal + dev)
+
+.PHONY: install-requirements-generic
+install-requirements-generic: ## Install python requirements for generic purpose
+	pip3 install --upgrade wheel
+	pip3 install -r development/requirements.txt
+
+.PHONY: install-requirements-dev
+install-requirements-dev: ## Install python requirements for development purpose
+	pip3 install --upgrade wheel
+	pip3 install -r development/requirements-dev.txt

@@ -1,0 +1,25 @@
+name: Docker Build
+on:
+  push:
+    paths: 
+      - 'developement/Dockerfile'
+    tags:
+      - 'v**'
+  pull_request:
+    branches:
+      - 'master'
+      - 'releases/*'
+jobs:
+  'docker_image':
+    name: Build Local Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Execute testing playbook
+        run: |
+          cd development
+          make build
+          echo '-----------------------'
+          echo 'Image information: '
+          docker images | grep avd
+          echo '-----------------------'
