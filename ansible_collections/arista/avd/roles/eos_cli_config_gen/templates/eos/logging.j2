@@ -21,7 +21,7 @@ logging source-interface {{ logging.source_interface }}
 logging vrf {{ vrf }} source-interface {{ logging.vrfs[vrf].source_interface  }}
 {%              endif %}
 {%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
-{%                  for host in logging.vrfs[vrf].hosts %}                
+{%                  for host in logging.vrfs[vrf].hosts %}
 logging vrf {{ vrf }} host {{ host }}
 {%                  endfor %}
 {%              endif %}
