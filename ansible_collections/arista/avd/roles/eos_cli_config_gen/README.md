@@ -813,6 +813,14 @@ router_bgp:
         - < learned >
 ```
 
+### Routing - Multicast ###
+
+```yaml
+router_multicast:
+  ipv4:
+    routing: < true | false >
+```
+
 ### Router OSPF Configuration
 
 ```yaml
