@@ -1,0 +1,13 @@
+{% if aaa_authorization is defined and aaa_authorization is not none %}
+### AAA Authorization Summary
+
+{# placeholder for aaa logic #}
+### AAA Authorization Device Configuration
+
+```eos
+{% include 'eos/aaa-authorization.j2' %}
+!
+```
+{% else %}
+AAA Authorization Not Configured
+{% endif %}

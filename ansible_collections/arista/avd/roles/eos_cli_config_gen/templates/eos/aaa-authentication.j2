@@ -6,5 +6,4 @@ aaa authentication login default {{ aaa_authentication.login.default }}
 {%     if aaa_authentication.login.serial_console is defined and aaa_authentication.login.serial_console is defined %}
 aaa authentication login serial-console {{ aaa_authentication.login.serial_console }}
 {%     endif %}
-!
 {% endif %}

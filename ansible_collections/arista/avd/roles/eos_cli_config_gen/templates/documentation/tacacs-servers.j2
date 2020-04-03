@@ -1,0 +1,17 @@
+{% if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
+### TACACS Servers
+
+| VRF | TACACS Servers |
+| --- | ---------------|
+{%  for host in tacacs_servers.hosts %}
+| {% if host['vrf'] is defined and host['vrf'] is not none %} {{ host['vrf'] }} {% else %} Global Routing Table {% endif %}| {{ host['host'] }} |
+{%  endfor %}
+
+### TACACS Servers Device Configuration
+
+```eos
+{% include 'eos/tacacs-servers.j2' %}
+```
+{% else %}
+TACACS Servers Not Configured
+{% endif %}
