@@ -28,9 +28,29 @@
 
 {% include 'documentation/spanning-tree.j2' %}
 
+{# tacacs servers #}
+
+{% include 'documentation/tacacs-servers.j2' %}
+
+{# ip tacacs source interfaces #}
+
+{% include 'documentation/ip-tacacs-source-interfaces.j2' %}
+
+{# aaa server groups #}
+
+{% include 'documentation/aaa-server-groups.j2' %}
+
 ## AAA Authentication
 
 {% include 'documentation/aaa-authentication.j2' %}
+
+## AAA Authorization
+
+{% include 'documentation/aaa-authorization.j2' %}
+
+## AAA Accounting
+
+{% include 'documentation/aaa-accounting.j2' %}
 
 ## Local Users
 
@@ -83,6 +103,10 @@
 ## Prefix Lists
 
 {% include 'documentation/prefix-lists.j2' %}
+
+## IPv6 Routing
+
+{% include 'documentation/ipv6-routing.j2' %}
 
 ## MLAG
 

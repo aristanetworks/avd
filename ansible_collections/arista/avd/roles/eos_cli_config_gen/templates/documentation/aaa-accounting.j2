@@ -1,0 +1,12 @@
+{% if aaa_accounting is defined and aaa_accounting is not none %}
+### AAA Accounting Summary
+
+{# placeholder for aaa logic #}
+### AAA Accounting Device Configuration
+
+```eos
+{% include 'eos/aaa-accounting.j2' %}
+```
+{% else %}
+AAA Accounting Not Configured
+{% endif %}

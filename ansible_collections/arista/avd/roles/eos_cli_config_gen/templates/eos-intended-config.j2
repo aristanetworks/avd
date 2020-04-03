@@ -53,6 +53,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/aaa-authentication.j2' %}
 {# aaa authorization #}
 {% include 'eos/aaa-authorization.j2' %}
+{# aaa accounting #}
+{% include 'eos/aaa-accounting.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# clock timezone #}

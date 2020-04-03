@@ -28,6 +28,7 @@
     - [AAA Server Groups](#aaa-server-groups)
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
+    - [AAA Accounting](#aaa-accounting)
     - [Local users](#local-users)
     - [clock timezone](#clock-timezone)
     - [VLANs](#vlans)
@@ -365,6 +366,25 @@ aaa_authentication:
 aaa_authorization:
   exec_default: < group | local | none >
   config_commands: < true | false >
+```
+
+### AAA Accounting
+
+```yaml
+aaa_accounting:
+  exec:
+    default:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
+  commands:
+    commands_default:
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        logging: < true | false >
 ```
 
 ### Local users
