@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@master
       - name: Setup Python 3 on runner
         uses: actions/setup-python@v1.2.0
-        with:
+        with: 
           python-version: '3.x'
       - name: 'Install requirements'
         run: make install-requirements-generic
