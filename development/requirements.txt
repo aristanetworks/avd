@@ -6,4 +6,3 @@ treelib==1.5.5
 pytest==5.3.4
 pytest-html==2.0.1
 ward==0.34.0b0
-git+https://github.com/batfish/pybatfish.git
