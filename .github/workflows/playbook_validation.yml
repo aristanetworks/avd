@@ -1,5 +1,5 @@
 name: Ansible Execution
-on: 
+on:
   pull_request:
     branches:
       - 'master'
@@ -18,8 +18,7 @@ jobs:
         run: make install-requirements-generic
       - name: Execute testing playbook
         run: |
-          cd testing
-          ansible-playbook playbook-generate-documentation.yml
+          make playbook-validation
       - uses: actions/upload-artifact@v1
         with:
           name: testing-results
