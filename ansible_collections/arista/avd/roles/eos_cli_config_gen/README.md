@@ -863,6 +863,24 @@ router_ospf:
       max_lsa: < integer >
 ```
 
+### Routing PIM Sparse Mode
+
+```yaml
+router_pim_sparse_mode:
+  ipv4:
+    rp_addresses:
+      < rp_address_1 >:
+        groups:
+          < group_prefix_1/mask > :
+          < group_prefix_2/mask > :
+      < rp_address_2 >:
+    anycast_rps:
+      < anycast_rp_address_1 > :
+        other_anycast_rp_addresses:
+          < ip_address_other_anycast_rp_1 >:
+            register_count: < register_count_nb >
+```
+
 ### Queue Monitor Streaming
 
 ```yaml
