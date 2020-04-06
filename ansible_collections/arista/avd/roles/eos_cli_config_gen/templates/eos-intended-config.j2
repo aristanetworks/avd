@@ -107,6 +107,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-multicast.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
+{# router pim sparse mode configuration #}
+{% include 'eos/router-pim-sparse-mode.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}
