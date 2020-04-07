@@ -460,6 +460,7 @@ bfd_multihop:
 port_channel_interfaces:
   < Port-Channel_interface_1 >:
     description: < description >
+    shutdown: < true | false >
     vlans: "< list of vlans as sting >"
     mode: < access | dot1q-tunnel | trunk >
     mlag: < mlag_id >
@@ -475,9 +476,22 @@ port_channel_interfaces:
     vmtracer: < true | false >
   < Port-Channel_interface_3 >:
     description: < description >
+    mtu: < mtu >
     type: < switched | routed >
+    ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
     ipv6_address_link_local: < link_local_IPv6_address/mask >
+    ipv6_nd_ra_disabled: < true | false >
+    ipv6_nd_managed_config_flag: < true | false >
+    ipv6_nd_prefixes:
+      < IPv6_address_1/Mask >:
+        valid_lifetime: < infinite or lifetime in seconds >
+        preferred_lifetime: < infinite or lifetime in seconds >
+        no_autoconfig_flag: true
+      < IPv6_address_2/Mask >:
+    pim:
+      ipv4:
+        sparse_mode: < true | false >
 ```
 
 ### Ethernet Interfaces
@@ -497,6 +511,13 @@ ethernet_interfaces:
     ipv6_address: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
     ipv6_nd_ra_disabled: < true | false >
+    ipv6_nd_managed_config_flag: < true | false >
+    ipv6_nd_prefixes:
+      < IPv6_address_1/Mask >:
+        valid_lifetime: < infinite or lifetime in seconds >
+        preferred_lifetime: < infinite or lifetime in seconds >
+        no_autoconfig_flag: true
+      < IPv6_address_2/Mask >:
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     pim:
@@ -507,13 +528,15 @@ ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     speed: < interface_speed >
-    vlans: "< list of vlans as sting >"
+    vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
       received: < received | send | on >
     channel_group:
       id: < Port-Channel_id >
       mode: < on | active | passive >
+    spanning_tree_bpdufilter: < true | false >
+    spanning_tree_portfast: < portfast_mode >
     vmtracer: < true | false >
 ```
 
@@ -523,7 +546,10 @@ ethernet_interfaces:
 loopback_interfaces:
   < Loopback_interface_1 >:
     description: < description >
+    shutdown: < true | false >
+    vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
+    ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ospf_area: < ospf_area >
   < Loopback_interface_2 >:
@@ -539,8 +565,8 @@ management_interfaces:
     description: < description >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
-    ipv6_address: < IPv6_address/Mask >
     ipv6_enable: < true | false >
+    ipv6_address: < IPv6_address/Mask >
     gateway: <IPv4 address of gateway>
     ipv6_gateway: <IPv6 address of gateway>
 ```
@@ -551,6 +577,7 @@ management_interfaces:
 vlan_interfaces:
   < Vlan_id_1 >:
     description: < description >
+    shutdown: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
@@ -562,11 +589,28 @@ vlan_interfaces:
         vrf: < vrf_name >
       < ip_helper_address_2 >:
         source_interface: < interface_name >
+    ipv6_enable: < true | false >
+    ipv6_address: < IPv6_address/Mask >
+    ipv6_address_link_local: < link_local_IPv6_address/Mask >
+    ipv6_nd_ra_disabled: < true | false >
+    ipv6_nd_managed_config_flag: < true | false >
+    ipv6_nd_prefixes:
+      < IPv6_address_1/Mask >:
+        valid_lifetime: < infinite or lifetime in seconds >
+        preferred_lifetime: < infinite or lifetime in seconds >
+        no_autoconfig_flag: true
+      < IPv6_address_2/Mask >:
+    multicast:
+      ipv4:
+        source_route_export:
+          enabled: < true | false >
+          administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     pim:
       ipv4:
         sparse_mode: < true | false >
+    ipv6_virtual_router_address: < IPv6 virtual address >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
