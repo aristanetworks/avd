@@ -1,12 +1,13 @@
 # {{ inventory_hostname }}
 
 ## Management Interfaces
-
 {% include 'documentation/management-interfaces.j2' %}
-
 
 ## Hardware Counters
 {% include 'documentation/hardware-counters.j2' %}
+
+## Aliases
+{% include 'documentation/aliases.j2' %}
 
 ## TerminAttr Daemon
 
@@ -135,3 +136,7 @@
 ## Router PIM Sparse Mode
 
 {% include 'documentation/router-pim-sparse-mode.j2' %}
+
+## VM Tracer Sessions
+
+{% include 'documentation/vmtracer-sessions.j2' %}
