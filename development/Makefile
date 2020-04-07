@@ -2,6 +2,7 @@ CONTAINER_NAME = ansible_avd
 ANSIBLE_VERSION = 2.9.6
 CONTAINER = $(CONTAINER_NAME):$(ANSIBLE_VERSION)
 HOME_DIR = $(shell pwd)
+HOME_DIR_DOCKER = '/home/docker'
 UID = $(shell id -u)
 GID = $(shell id -g)
 
@@ -16,7 +17,8 @@ build: ## Build a new image of avd container
 
 .PHONY: run
 run: ## Run ansible-avd container
-	docker run --rm -it --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) -v $(HOME_DIR)/:/ansible_avd -v /etc/hosts:/etc/hosts $(CONTAINER)
+	docker run --rm -it --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) -v $(HOME)/.ssh:$(HOME_DIR_DOCKER)/.ssh -v $(HOME_DIR)/:/ansible_avd -v /etc/hosts:/etc/hosts $(CONTAINER)
+
 
 .PHONY: clean
 clean: ## Remove avd image from local repository

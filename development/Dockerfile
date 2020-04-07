@@ -70,5 +70,8 @@ USER $UNAME
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 RUN echo 'plugins=(ansible common-aliases safe-paste git jsontools history git-extras)' >> $HOME/.zshrc
 
+# Enable SSH Agent
+RUN echo 'eval `ssh-agent -s`' >> $HOME/.zshrc
+
 # Use ZSH as default shell with default oh-my-zsh theme
 CMD ["/bin/zsh"]
