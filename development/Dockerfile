@@ -3,8 +3,6 @@ LABEL maintainer="Arista Ansible Team <ansible@arista.com>"
 
 # ENV PS1='avd:\u% '
 
-
-
 # Install necessary packages
 # Install systemd -- See https://hub.docker.com/_/centos/
 RUN yum -y update; yum clean all; \
@@ -30,6 +28,9 @@ RUN yum makecache fast \
    python3-pip \
    rpm-build \
    sudo \
+   zsh \
+   wget \
+   git-extras \
    && yum clean all
 
 # Create the /project directory and add it as a mountpoint
@@ -65,4 +66,9 @@ RUN useradd -r -m -u $UID -g $GID -G sudo -o -s /bin/bash -p $(perl -e 'print cr
 # Switch to the new user for when the container is run
 USER $UNAME
 
-CMD ["/bin/bash"]
+# Install Oh My ZSH to provide improved shell
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+RUN echo 'plugins=(ansible common-aliases safe-paste git jsontools history git-extras)' >> $HOME/.zshrc
+
+# Use ZSH as default shell with default oh-my-zsh theme
+CMD ["/bin/zsh"]
