@@ -108,15 +108,15 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ```yaml
 terminal:
-  length: < integer between 0 and 32767 >
-  width: < integer between 0 and 32767 >
+  length: < 0-32767 >
+  width: <  0-32767 >
 ```
 
 ### Aliases
 
 ```yaml
 aliases: |
-< list of alias commands in EOS CLI >
+< list of alias commands in EOS CLI syntax >
 ```
 
 ### Hardware Counters
@@ -155,7 +155,7 @@ vlan_internal_allocation_policy:
     ending: < vlan_id >
 ```
 
-### IP IGMP Snooping ###
+### IP IGMP Snooping
 
 ```yaml
 ip_igmp_snooping:
@@ -194,13 +194,13 @@ logging:
   console: < severity_level >
   monitor: < severity_level >
   buffered:
-    size: < integer between 10 and 2147483647 representing number of messages >
+    size: < 10-2147483647 representing number of messages >
     level: < severity_level >
   trap: < severity_level >
-  source_interface:
+  source_interface: < source_interface_name >
   vrfs:
-    mgt:
-      source_interface:
+    < vrf_name >:
+      source_interface: < source_interface_name >
       hosts:
         - < syslog_server_1>
         - < syslog_server_2>
@@ -211,8 +211,8 @@ logging:
 ```yaml
 ip_domain_lookup:
   source_interfaces:
-    <source_interface_1>:
-      vrf: <vrf_name>
+    < source_interface_1 >:
+      vrf: < vrf_name >
 ```
 
 ### Name Servers
@@ -229,7 +229,7 @@ name_server:
 ### DNS Domain
 
 ```yaml
-dns_domain: <domain_name>
+dns_domain: < domain_name >
 ```
 
 ### NTP Servers
@@ -259,8 +259,8 @@ sflow:
   destinations:
     < sflow_destination_ip_1 >:
     < sflow_destination_ip_2 >:
-  source_interface: < interface >
-  sample: < integer >
+  source_interface: < source_interface_name >
+  sample: < sample_rate >
   run: < true | false >
 ```
 
@@ -351,7 +351,7 @@ tacacs_servers:
     - host: < host_1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
-    - host: < host_1_ip_address >
+    - host: < host_2_ip_address >
       key: < encypted_key >
 ```
 
@@ -359,15 +359,15 @@ tacacs_servers:
 
 ```yaml
 aaa_server_groups:
-  - name: <name_of_the_server_group>
+  - name: < name_of_the_server_group >
     type: < tacacs+ | radius | ladp >
     servers:
-      - <server_1_ip_address>
-      - <server_2_ip_address>
-  - name: <name_of_the_server_group>
+      - < server_1_ip_address >
+      - < server_2_ip_address >
+  - name: < name_of_the_server_group >
     type: < tacacs+ | radius | ladp >
     servers:
-      - <server_1_ip_address>
+      - < server_1_ip_address >
 ```
 
 ### AAA Authentication
@@ -470,7 +470,7 @@ port_channel_interfaces:
   < Port-Channel_interface_1 >:
     description: < description >
     shutdown: < true | false >
-    vlans: "< list of vlans as sting >"
+    vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     mlag: < mlag_id >
     trunk_groups:
@@ -478,7 +478,7 @@ port_channel_interfaces:
       - < trunk_group_name_2 >
   < Port-Channel_interface_1 >:
     description: < description >
-    vlans: "< list of vlans as sting >"
+    vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_portfast: < portfast_mode >
@@ -594,10 +594,10 @@ vlan_interfaces:
     mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
-        source_interface: < interface_name >
+        source_interface: < source_interface_name >
         vrf: < vrf_name >
       < ip_helper_address_2 >:
-        source_interface: < interface_name >
+        source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
@@ -619,7 +619,7 @@ vlan_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
-    ipv6_virtual_router_address: < IPv6 virtual address >
+    ipv6_virtual_router_address: < IPv6_address >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -631,7 +631,7 @@ vlan_interfaces:
 vxlan_tunnel_interface:
   Vxlan1:
     description: < description >
-    source_interface: < interface >
+    source_interface: < source_interface_name >
     virtual_router:
       encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
     vxlan_udp_port: < udp_port >
@@ -685,8 +685,8 @@ static_routes:
   - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
     destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
-    distance: < integer between 1 and 255 >
-    tag: < integer between 0 and 4294967295 >
+    distance: < 1-255 >
+    tag: < 0-4294967295 >
     name: < description >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
@@ -699,8 +699,8 @@ ipv6_static_routes:
   - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
     destination_address_prefix: < IPv6_network/Mask >
     gateway: < IPv6_address >
-    distance: < integer between 1 and 255 >
-    tag: < integer between 0 and 4294967295 >
+    distance: < 1-255 >
+    tag: < 0-4294967295 >
     name: < description >
   - destination_address_prefix: < IPv6_network/Mask >
     gateway: < IPv6_address >
@@ -727,7 +727,7 @@ prefix_lists:
 ```yaml
 mlag_configuration:
   domain_id: < domain_id_name >
-  local_interface: < interface >
+  local_interface: < interface_name >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
     peer_ip: < IPv4_address >
@@ -876,7 +876,7 @@ router_bgp:
         - < learned >
 ```
 
-### Routing - Multicast ###
+### Routing - Multicast
 
 ```yaml
 router_multicast:
@@ -951,9 +951,9 @@ vmtracer_sessions:
 ```yaml
 banners:
   login: |
-    < text ending by EOF >
+    < text ending with EOF >
   motd: |
-    < text ending by EOF >
+    < text ending with EOF >
 ```
 
 ### HTTP Management API
@@ -972,7 +972,7 @@ management_api_http:
 
 ```yaml
 management_console:
-  idle_timeout: < integer between 0 and 86400 representing minutes >
+  idle_timeout: < 0-86400 in minutes >
 ```
 
 ### Management SSH
@@ -983,7 +983,7 @@ management_ssh:
     < standard_acl_name_1 >:
     < standard_acl_name_2 >:
       vrf: < vrf name >
-  idle_timeout: < integer between 0 and 86400 representing minutes >
+  idle_timeout: < 0-86400 in minutes >
   enable: < true | false >
   vrfs:
     < vrf_name_1 >:
