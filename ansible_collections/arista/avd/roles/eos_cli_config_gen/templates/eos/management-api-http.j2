@@ -9,15 +9,15 @@ management api http-commands
    protocol http
 {%     endif %}
    no shutdown
-{%     if management_api_http.enable_vrfs is defined %}
-{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort if vrf is ne 'default' %}
+{%     if management_api_http.enable_vrfs is defined -%}
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort if vrf is ne 'default' -%}
    !
    vrf {{ vrf }}
       no shutdown
 {%             if management_api_http.enable_vrfs[vrf].access_group is defined and management_api_http.enable_vrfs[vrf].access_group is not none %}
       ip access-group {{ management_api_http.enable_vrfs[vrf].access_group }}
 {%             endif %}
-{%         endfor %}
-{%     endif %}
+{%-         endfor %}
+{%-     endif %}
 !
 {% endif %}
