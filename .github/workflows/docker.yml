@@ -23,3 +23,5 @@ jobs:
           echo 'Image information: '
           docker images | grep avd
           echo '-----------------------'
+          echo 'Cleanup image'
+          make clean
