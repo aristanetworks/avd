@@ -8,7 +8,8 @@ Routing for IPv4 multicast is enabled.
 ```eos
 {% include 'eos/router-multicast.j2' %}
 ```
-{% else %}
-Routing for IPv4 multicast is disabled.
+
 {%   endif %}
+{% else %}
+Routing multicast not defined
 {% endif %}
