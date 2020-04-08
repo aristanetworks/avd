@@ -1,7 +1,17 @@
 {% if aaa_authorization is defined and aaa_authorization is not none %}
 ### AAA Authorization Summary
 
-{# placeholder for aaa logic #}
+| Type | User Stores |
+| ---- | ----------- |
+{%     if aaa_authorization.exec_default is defined and aaa_authorization.exec_default is not none %}
+| Exec | {{ aaa_authorization.exec_default }} |
+{%     endif %}{{''}}
+{%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == true %}
+Authorization for configuration commands is enabled.
+{%     else %}
+Authorization for configuration commands is disabled.
+{%     endif %}
+
 ### AAA Authorization Device Configuration
 
 ```eos
