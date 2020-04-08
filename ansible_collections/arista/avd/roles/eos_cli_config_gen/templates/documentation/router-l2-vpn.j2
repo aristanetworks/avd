@@ -1,11 +1,15 @@
 {% if router_l2_vpn is defined and router_l2_vpn is not none %}
 ### Router L2 VPN
-{%   if router_l2_vpn.nd_rs_flooding_disabled is defined and router_l2_vpn.nd_rs_flooding_disabled == true %}
+{%    if '7020' in switch_platform or '7160' in switch_platform %}
+{%    else %}
+{%       if router_l2_vpn.nd_rs_flooding_disabled is defined and router_l2_vpn.nd_rs_flooding_disabled == true %}
    Neighbor discovery router solicitation VTEP flooding is disabled.
-{%   endif %}{{''}}
-{%   if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is defined and router_l2_vpn.virtual_router_nd_ra_flooding_disabled == true %}
+{%       endif %}{{''}}
+{%       if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is defined and router_l2_vpn.virtual_router_nd_ra_flooding_disabled == true %}
    Virtual router neighbor advertisement VTEP flooding is disabled.
-{%   endif %}{{''}}
+{%       endif %}{{''}}
+{%    endif %}
+
 
 ### Router L2 VPN Device Configuration
 
