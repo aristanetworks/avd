@@ -34,8 +34,8 @@ RUN yum makecache fast \
    && yum clean all
 
 # Create the /project directory and add it as a mountpoint
-WORKDIR /ansible_avd
-VOLUME ["/ansible_avd"]
+WORKDIR /projects
+VOLUME ["/projects"]
 
 # Install python modules required by the repo
 ADD requirements.txt /tmp/requirements.txt

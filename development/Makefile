@@ -20,7 +20,7 @@ run: ## Run ansible-avd container
 	docker run --rm -it --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) \
 		-v $(HOME)/.ssh:$(HOME_DIR_DOCKER)/.ssh \
 		-v $(HOME)/.gitconfig:$(HOME_DIR_DOCKER)/.gitconfig \
-		-v $(HOME_DIR)/:/ansible_avd \
+		-v $(HOME_DIR)/:/projects \
 		-v /etc/hosts:/etc/hosts $(CONTAINER)
 
 .PHONY: clean
