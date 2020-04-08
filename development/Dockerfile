@@ -1,8 +1,6 @@
 FROM centos:7
 LABEL maintainer="Arista Ansible Team <ansible@arista.com>"
 
-# ENV PS1='avd:\u% '
-
 # Install necessary packages
 # Install systemd -- See https://hub.docker.com/_/centos/
 RUN yum -y update; yum clean all; \
@@ -32,6 +30,11 @@ RUN yum makecache fast \
    wget \
    git-extras \
    && yum clean all
+
+
+# Optionally install github CLI
+# RUN wget https://github.com/cli/cli/releases/download/v0.6.4/gh_0.6.4_linux_amd64.rpm
+# RUN yum -y localinstall *.rpm
 
 # Create the /project directory and add it as a mountpoint
 WORKDIR /projects
