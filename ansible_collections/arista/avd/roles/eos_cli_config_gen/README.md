@@ -22,6 +22,7 @@
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
+    - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
@@ -256,6 +257,14 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
+```
+
+### Router L2 VPN
+
+```yaml
+router_l2_vpn:
+  nd_rs_flooding_disabled: < true | false >
+  virtual_router_nd_ra_flooding_disabled: < true | false >
 ```
 
 ### Sflow
