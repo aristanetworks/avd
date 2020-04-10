@@ -26,11 +26,15 @@ daemon_terminattr:
 vlan_internal_order:
 {% include 'base/vlan-internal-order.j2' %}
 
-
 {# event monitor #}
 ### Event Monitor ###
 event_monitor:
 {% include 'base/event-monitor.j2' %}
+
+{# event handler #}
+### Event Handler ###
+event_handler:
+{% include 'base/event-handler.j2' %}
 
 {# load interval #}
 ### Load Interval ###

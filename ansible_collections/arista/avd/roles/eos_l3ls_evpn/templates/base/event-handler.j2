@@ -1,0 +1,21 @@
+{% if event_handler is defined and event_handler is iterable %}
+{%     for handler in event_handler %}
+  {{ handler }}:
+{%         if event_handler[handler].action is defined and event_handler[handler].action_type is defined %}
+    action_type: {{ event_handler[handler].action_type }}
+    action: {{ event_handler[handler].action }}
+{%         endif %}
+{%         if event_handler[handler].delay is defined %}
+    delay: {{ event_handler[handler].delay }}
+{%         endif %}
+{%         if event_handler[handler].asynchronous is defined and event_handler[handler].asynchronous is true %}
+    asynchronous: event_handler[handler].asynchronous
+{%         endif %}
+{%         if event_handler[handler].trigger is defined %}
+    trigger: {{ event_handler[handler].trigger }}
+{%             if event_handler[handler].regex is defined %}
+    regex: {{ event_handler[handler].regex }}
+{%             endif %}
+{%         endif %}
+{%    endfor %}
+{% endif %}
