@@ -60,6 +60,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/mac-address-table.j2' %}
 {# router virtual mac address #}
 {% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+{# event handler #}
+{% include 'eos/event-handler.j2' %}
 {# Static Route #}
 {% include 'eos/static-routes.j2' %}
 {# IP Routing #}
