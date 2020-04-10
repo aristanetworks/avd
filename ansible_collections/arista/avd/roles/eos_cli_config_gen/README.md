@@ -141,7 +141,7 @@ event_handler:
     delay: < Event-handler delay in seconds >
     trigger: < Configure event trigger condition. Only supports on-logging >
     regex: < Regular expression to use for searching log messages. Required for on-logging trigger >
-    asynchronous: < Set the action to be non-blocking. Boolean True or False. If unset, default is False >
+    asynchronous: < Set the action to be non-blocking. if unset, default is False >
 ```
 
 ### Load Interval
