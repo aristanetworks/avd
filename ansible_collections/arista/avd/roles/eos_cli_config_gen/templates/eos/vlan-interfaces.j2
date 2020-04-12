@@ -29,7 +29,7 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ip_helpers is defined and vlan_interfaces[vlan_interface].ip_helpers is not none %}
 {%            for ip_helper in vlan_interfaces[vlan_interface].ip_helpers | arista.avd.natural_sort %}
-   ip helper_address {{ ip_helper }} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is not none %}vrf {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf }} {% endif %} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is not none %}source-interface {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface }}{% endif %}{{''}}
+   ip helper-address {{ ip_helper }} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf is not none %}vrf {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].vrf }} {% endif %} {% if vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is defined and vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface is not none %}source-interface {{vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface }}{% endif %}{{''}}
 {%            endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ipv6_enable is defined and vlan_interfaces[vlan_interface].ipv6_enable == true %}
