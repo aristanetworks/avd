@@ -680,6 +680,22 @@ virtual_source_nat_vrfs:
     ip_address: < IPv4_address >
 ```
 
+### IP Standard Access-List
+
+```yaml
+standard_access_lists:
+  < access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
 ### Static Routes
 
 ```yaml
