@@ -102,7 +102,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 - The input variables are documented inline within yaml formated output with: "< >"
 - Variables are organized in order of how they appear in the CLI syntax.
 - Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
-- All values are optional. Boolean variables default to "false" unless explicitly stated.
+- All values are optional.
 
 ### Terminal Settings
 
@@ -300,14 +300,14 @@ snmp_server:
       authentication: < auth | noauth | priv >
       read: < read_view >
   users:
-    - name: < user_name >
+    - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >
       auth: < md5 | sha | sha224 | sha256 | sha 384 | sha512 >
       auth_passphrase: < encrypted_auth_passphrase >
       priv: < aes | eas192 | aes256 | des >
       priv_passphrase: < encrypted_priv_passphrase >
-    - name: < user_name >
+    - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >
   hosts:
@@ -348,10 +348,10 @@ spanning_tree:
 ```yaml
 tacacs_servers:
   hosts:
-    - host: < host_1_ip_address >
+    - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
-    - host: < host_2_ip_address >
+    - host: < host2_ip_address >
       key: < encypted_key >
 ```
 
@@ -359,12 +359,12 @@ tacacs_servers:
 
 ```yaml
 aaa_server_groups:
-  - name: < name_of_the_server_group >
+  - name: < server_group_name >
     type: < tacacs+ | radius | ladp >
     servers:
       - < server_1_ip_address >
       - < server_2_ip_address >
-  - name: < name_of_the_server_group >
+  - name: < server_group_name >
     type: < tacacs+ | radius | ladp >
     servers:
       - < server_1_ip_address >
@@ -458,8 +458,8 @@ vrfs:
 
 ```yaml
 bfd_multihop:
-  interval: < Rate in milliseconds >
-  min_rx: < Rate in milliseconds >
+  interval: < rate in milliseconds >
+  min_rx: < rate in milliseconds >
   multiplier: < 3-50 >
 ```
 
@@ -496,7 +496,7 @@ port_channel_interfaces:
       < IPv6_address_1/Mask >:
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
-        no_autoconfig_flag: true
+        no_autoconfig_flag: < true | false >
       < IPv6_address_2/Mask >:
     pim:
       ipv4:
@@ -513,7 +513,7 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed >
     mtu: < mtu >
-    type: routed
+    type: < routed | switched >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
@@ -525,7 +525,7 @@ ethernet_interfaces:
       < IPv6_address_1/Mask >:
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
-        no_autoconfig_flag: true
+        no_autoconfig_flag: < true | false >
       < IPv6_address_2/Mask >:
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
@@ -536,7 +536,9 @@ ethernet_interfaces:
 # Switched Interfaces
   <Ethernet_interface_2 >:
     description: < description >
+    shutdown: < true | false >
     speed: < interface_speed >
+    mtu: < mtu >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
@@ -607,7 +609,7 @@ vlan_interfaces:
       < IPv6_address_1/Mask >:
         valid_lifetime: < infinite or lifetime in seconds >
         preferred_lifetime: < infinite or lifetime in seconds >
-        no_autoconfig_flag: true
+        no_autoconfig_flag: < true | false >
       < IPv6_address_2/Mask >:
     multicast:
       ipv4:
@@ -659,7 +661,7 @@ tcam_profile:
 
 ```yaml
 mac_address_table:
-  aging_time: < agin_time_in_seconds >
+  aging_time: < aging_time_in_seconds >
 ```
 
 ### Router Virtual MAC Address
@@ -937,11 +939,13 @@ ip_tacacs_source_interfaces:
 ```yaml
 vmtracer_sessions:
   < vmtracer_session_name_1 >:
+    url: < url >
     username: < username >
     password: < encrypted_password >
     autovlan_disable: < true | false >
     source_interface: < interface_name >
   < vmtracer_session_name_2 >:
+    url: < url >
     username: < username >
     password: < encrypted_password >
 ```
