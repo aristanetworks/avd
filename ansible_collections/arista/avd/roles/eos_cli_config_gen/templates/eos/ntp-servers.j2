@@ -5,9 +5,9 @@ ntp local-interface {% if ntp_server.local_interface.vrf is defined and ntp_serv
 {%   endif %}
 {%     for node in ntp_server.nodes %}
 {%         if loop.first %}
-ntp server{% if ntp_server.local_interface.vrf is ne 'default'%} vrf {{ ntp_server.local_interface.vrf }}{% endif %} {{ node }} prefer
+ntp server {% if ntp_server.local_interface.vrf is defined and ntp_server.local_interface.vrf is not none and ntp_server.local_interface.vrf is ne 'default' %}vrf {{ ntp_server.local_interface.vrf }} {% endif %}{{ node }} prefer
 {%         else %}
-ntp server{% if ntp_server.local_interface.vrf is ne 'default'%} vrf {{ ntp_server.local_interface.vrf }}{% endif %} {{ node }}
+ntp server {% if ntp_server.local_interface.vrf is defined and ntp_server.local_interface.vrf is not none and ntp_server.local_interface.vrf is ne 'default' %}vrf {{ ntp_server.local_interface.vrf }} {% endif %}{{ node }}
 {%         endif %}
 {%     endfor %}
 !
