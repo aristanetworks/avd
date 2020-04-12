@@ -85,10 +85,12 @@ hostname {{ inventory_hostname }}
 {% include 'eos/tcam-profile.j2' %}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
-{# router virtual mac address #}
+{# Router virtual mac address #}
 {% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
+{# Standard access-lists #}
+{% include 'eos/standard-access-lists.j2' %}
 {# Static Route #}
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
