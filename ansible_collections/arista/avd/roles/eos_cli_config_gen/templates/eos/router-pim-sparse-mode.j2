@@ -1,6 +1,6 @@
 {# eos - Router PIM Sparse Mode #}
 {% if router_pim_sparse_mode is defined and router_pim_sparse_mode is not none %}
-router pim sparse mode
+router pim sparse-mode
 {%     if router_pim_sparse_mode.ipv4 is defined and router_pim_sparse_mode.ipv4 is not none %}
    ipv4
 {%          if router_pim_sparse_mode.ipv4.rp_addresses is defined and router_pim_sparse_mode.ipv4.rp_addresses is not none %}
