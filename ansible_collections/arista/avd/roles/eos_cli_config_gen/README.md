@@ -476,6 +476,8 @@ port_channel_interfaces:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    qos:
+      trust: < cos | dscp >
   < Port-Channel_interface_1 >:
     description: < description >
     vlans: "< list of vlans as string >"
