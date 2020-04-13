@@ -561,6 +561,8 @@ ethernet_interfaces:
     channel_group:
       id: < Port-Channel_id >
       mode: < on | active | passive >
+    qos:
+      trust: < cos | dscp >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_portfast: < portfast_mode >
     vmtracer: < true | false >

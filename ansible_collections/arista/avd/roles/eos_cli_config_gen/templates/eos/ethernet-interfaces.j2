@@ -39,6 +39,9 @@ interface {{ ethernet_interface }}
    switchport trunk group {{ trunk_group }}
 {%                 endfor %}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
+   qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'edge' %}
    spanning-tree portfast
 {%             elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'network' %}
