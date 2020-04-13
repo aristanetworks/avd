@@ -18,7 +18,7 @@ snmp-server view {{ view['name'] }} {{ view['MIB_family_name'] }} {% if view['in
 {%    endif %}
 {%     if snmp_server.groups is defined and snmp_server.groups is not none %}
 {%          for group in snmp_server.groups %}
-snmp-server group {{ group['name'] }} {{ group['version'] }} {% if user['auth']is defined and user['version'] == 'v3' %} {{ group['auth'] }} {% endif %}{% if group['read'] is defined %}read {{ group['read'] }} {% endif %}{% if group['write'] is defined %}write {{ group['write'] }}{% endif %}{% if group['notify'] is defined %}notify {{ group['notify'] }} {% endif %}{{''}}
+snmp-server group {{ group['name'] }} {{ group['version'] }} {% if group['authentication']is defined and group['version'] == 'v3' %} {{ group['authentication'] }} {% endif %}{% if group['read'] is defined %}read {{ group['read'] }} {% endif %}{% if group['write'] is defined %}write {{ group['write'] }}{% endif %}{% if group['notify'] is defined %}notify {{ group['notify'] }} {% endif %}{{''}}
 {%          endfor %}
 {%    endif %}
 {%     if snmp_server.users is defined and snmp_server.users is not none %}
