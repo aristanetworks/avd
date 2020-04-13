@@ -639,6 +639,7 @@ vlan_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+        local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
   < Vlan_id_2 >:
     description: < description >
