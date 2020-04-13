@@ -827,7 +827,7 @@ router_bgp:
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
-      fall_over_bfd: < true | false >
+      bfd: < true | false >
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
@@ -844,17 +844,18 @@ router_bgp:
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
     < IPv4_address_2 >:
-      peer_group: < peer_group_name >
       remote_as: < bgp_as >
   redistribute_routes:
     connected:
+      route_map: < route_map_name >
+    static:
       route_map: < route_map_name >
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
       route_targets:
         < both | import | export >:
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -863,7 +864,7 @@ router_bgp:
       rd: "< route distinguisher >"
       route_targets:
         < both | import | export >:
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -873,7 +874,7 @@ router_bgp:
       rd: "< route distinguisher >"
       route_targets:
         < both | import | export >:
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -881,20 +882,65 @@ router_bgp:
       rd: "< route distinguisher >"
       route_targets:
         < both | import | export >:
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
+  address_family_evpn:
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+  address_family_ipv4:
+    peer_groups:
+      < peer_group_name >:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
+        activate: < true | false >
+      < peer_group_name >:
+        activate: < true | false >
+    neighbors:
+      < neighbor_ip_address>:
+        activate: < true | false >
+      < neighbor_ip_address>:
+        activate: < true | false >
+  address_family_ipv4_multicast:
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+      < peer_group_name >:
+        activate: < true | false >
+    neighbors:
+      < neighbor_ip_address>:
+    redistribute_routes:
+      attached-host:
+  address_family_ipv6:
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
+      < peer_group_name >:
+        activate: true
+    neighbors:
+      < neighbor_ip_address>:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
+        activate: < true | false >
+    redistribute_routes:
+       dhcp:
+          route_map: < route_map_name >
+    static:
+      route_map: < route_map_name >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
       route_targets:
         import:
           address_family: < evpn >
-          asn: "< asn >"
+          rt: "< route_target >"
         export:
           address_family: < evpn >
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -903,10 +949,10 @@ router_bgp:
       route_targets:
         import:
           address_family: < evpn >
-          asn: "< asn >"
+          rt: "< route_target >"
         export:
           address_family: < evpn >
-          asn: "< asn >"
+          rt: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
