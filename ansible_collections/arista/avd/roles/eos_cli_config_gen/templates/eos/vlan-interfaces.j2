@@ -4,7 +4,7 @@
 interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %}
    description {{ vlan_interfaces[vlan_interface].description }}
-   {%      endif %}
+{%         endif %}
 {%         if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown == true %}
    shutdown
 {%         endif %}
