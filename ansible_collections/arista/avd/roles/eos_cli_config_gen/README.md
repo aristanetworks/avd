@@ -833,9 +833,9 @@ router_bgp:
     < IPv4_address_2 >:
       remote_as: < bgp_as >
   redistribute_routes:
-    connected:
+    < route_type >:
       route_map: < route_map_name >
-    static:
+    < route_type >:
       route_map: < route_map_name >
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
@@ -899,7 +899,7 @@ router_bgp:
     neighbors:
       < neighbor_ip_address>:
     redistribute_routes:
-      attached-host:
+      < route_type >:
   address_family_ipv6:
     peer_groups:
       < peer_group_name >:
@@ -914,10 +914,10 @@ router_bgp:
         route_map_out: < route_map_name >
         activate: < true | false >
     redistribute_routes:
-       dhcp:
-          route_map: < route_map_name >
-    static:
-      route_map: < route_map_name >
+      < route_type >:
+        route_map: < route_map_name >
+      < route_type >:
+        route_map: < route_map_name >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
@@ -929,8 +929,10 @@ router_bgp:
           address_family: < evpn >
           rt: "< route_target >"
       redistribute_routes:
-        - < connected >
-        - < learned >
+        < route_type >:
+          route_map: < route_map_name >
+        < route_type >:
+          route_map: < route_map_name >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
@@ -941,8 +943,10 @@ router_bgp:
           address_family: < evpn >
           rt: "< route_target >"
       redistribute_routes:
-        - < connected >
-        - < learned >
+        < route_type >:
+          route_map: < route_map_name >
+        < route_type >:
+          route_map: < route_map_name >
 ```
 
 ### Routing - Multicast
