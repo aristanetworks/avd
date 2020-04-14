@@ -238,7 +238,7 @@ router bgp {{ router_bgp.as }}
 {%                 endfor %}
 {%             endif %}
 {%             for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }}
+      redistribute {{ redistribute_route }} {% if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is defined and router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map }}{% endif %}{{''}}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
