@@ -1,6 +1,9 @@
 FROM centos:7
 LABEL maintainer="Arista Ansible Team <ansible@arista.com>"
 
+# Default value for Ansible as it is part of requirement files
+ARG ANSIBLE=UNSET
+
 # Install necessary packages
 # Install systemd -- See https://hub.docker.com/_/centos/
 RUN yum -y update; yum clean all; \
@@ -45,8 +48,7 @@ ADD requirements.txt /tmp/requirements.txt
 ADD requirements-dev.txt /tmp/requirements-dev.txt
 RUN pip3 install -r /tmp/requirements.txt
 RUN pip3 install -r /tmp/requirements-dev.txt
-ARG ANSIBLE=2.9.6
-RUN pip3 install ansible==$ANSIBLE
+RUN ANSIBLE_VERSION=$(pip3 freeze | grep -e 'ansible==' | awk -F '==' '{print $2}'); if [ "$ANSIBLE" == "UNSET" ] || [ "$ANSIBLE_VERSION" == "$ANSIBLE" ]; then echo "Correct ansible version"; else pip3 install ansible==$ANSIBLE; fi
 
 # Clean up
 RUN yum clean all
