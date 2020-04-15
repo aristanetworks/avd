@@ -13,7 +13,7 @@ help: ## Display help message
 .PHONY: build
 build: ## Build a new image of avd container
 	#docker build --no-cache -t $(CONTAINER) .
-	docker build -t $(CONTAINER) . --build-arg UID=$(UID) --build-arg GID=$(GID) --build-arg ANSIBLE=$(ANSIBLE_VERSION)
+	docker build -t $(CONTAINER) . --build-arg UID=$(UID) --build-arg GID=$(GID) 
 
 .PHONY: run
 run: ## Run ansible-avd container
