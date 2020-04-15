@@ -841,8 +841,14 @@ router_bgp:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
       route_targets:
-        < both | import | export >:
-          rt: "< route_target >"
+        both:
+          - "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -850,8 +856,14 @@ router_bgp:
     < vlan_aware_bundle_name_2 >:
       rd: "< route distinguisher >"
       route_targets:
-        < both | import | export >:
-          rt: "< route_target >"
+        both:
+          - "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -860,16 +872,20 @@ router_bgp:
     < vlan_id_1>:
       rd: "< route distinguisher >"
       route_targets:
-        < both | import | export >:
-          rt: "< route_target >"
+        both:
+          - "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
     <vlan_id_2 >:
       rd: "< route distinguisher >"
       route_targets:
-        < both | import | export >:
-          rt: "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -923,11 +939,21 @@ router_bgp:
       rd: "< route distinguisher >"
       route_targets:
         import:
-          address_family: < evpn >
-          rt: "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
         export:
-          address_family: < evpn >
-          rt: "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
+        neighbors:
+          < neighbor_ip_address >:
+            remote_as: < asn >
+          < neighbor_ip_address >:
+            remote_as: < asn >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -937,11 +963,16 @@ router_bgp:
       rd: "<route distinguisher >"
       route_targets:
         import:
-          address_family: < evpn >
-          rt: "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
         export:
-          address_family: < evpn >
-          rt: "< route_target >"
+          < address_family >:
+            - "< route_target >"
+            - "< route_target >"
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >

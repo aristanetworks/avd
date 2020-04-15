@@ -63,8 +63,20 @@ router bgp {{ router_bgp.as }}
 {%        for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort %}
    vlan-aware-bundle {{ vlan_aware_bundle }}
       rd {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].rd }}
-{%            if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is defined %}
-      route-target both {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both.rt }}
+{%            if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is not none %}
+{%                for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both %}
+      route-target both {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import is not none %}
+{%                for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import %}
+      route-target import {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export is not none %}
+{%                for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export %}
+      route-target export {{ route_target }}
+{%                endfor %}
 {%            endif %}
 {%            for redistribute_route in router_bgp.vlan_aware_bundles[vlan_aware_bundle].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
@@ -78,8 +90,20 @@ router bgp {{ router_bgp.as }}
 {%        for vlan in router_bgp.vlans | arista.avd.natural_sort %}
    vlan {{ vlan }}
       rd {{ router_bgp.vlans[vlan].rd }}
-{%            if router_bgp.vlans[vlan].route_targets.both is defined %}
-      route-target both {{ router_bgp.vlans[vlan].route_targets.both.rt }}
+{%            if router_bgp.vlans[vlan].route_targets.both is defined and router_bgp.vlans[vlan].route_targets.both is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.both %}
+      route-target both {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlans[vlan].route_targets.import is defined and router_bgp.vlans[vlan].route_targets.import is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.import %}
+      route-target import {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlans[vlan].route_targets.export is defined and router_bgp.vlans[vlan].route_targets.export is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.export %}
+      route-target export {{ route_target }}
+{%                endfor %}
 {%            endif %}
 {%            for redistribute_route in router_bgp.vlans[vlan].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
@@ -223,15 +247,23 @@ router bgp {{ router_bgp.as }}
    !
    vrf {{ vrf }}
       rd {{ router_bgp.vrfs[vrf].rd }}
-{%             if router_bgp.vrfs[vrf].route_targets.import is defined %}
-      route-target import {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.import.rt }}
+{%             if router_bgp.vrfs[vrf].route_targets.import is defined and router_bgp.vrfs[vrf].route_targets.import is not none %}
+{%                for address_family in router_bgp.vrfs[vrf].route_targets.import %}
+{%                      for route_target in router_bgp.vrfs[vrf].route_targets.import[address_family] %}
+      route-target import {{ address_family }} {{ route_target }}{{''}}
+{%                      endfor %}
+{%                endfor %}
 {%             endif %}
-{%             if router_bgp.vrfs[vrf].route_targets.export is defined %}
-      route-target export {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.export.rt }}
+{%             if router_bgp.vrfs[vrf].route_targets.export is defined and router_bgp.vrfs[vrf].route_targets.export is not none %}
+{%                for address_family in router_bgp.vrfs[vrf].route_targets.export %}
+{%                      for route_target in router_bgp.vrfs[vrf].route_targets.export[address_family] %}
+      route-target export {{ address_family }} {{ route_target }}{{''}}
+{%                      endfor %}
+{%                endfor %}
 {%             endif %}
-{%             if router_bgp.vrfs[vrf].neighbors is defined %}
+{%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
-      neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
+      neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
 {%                 endfor %}
 {%             endif %}
 {%             for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
