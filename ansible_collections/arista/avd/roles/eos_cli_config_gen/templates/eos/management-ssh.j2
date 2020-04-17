@@ -15,7 +15,7 @@ management ssh
    shutdown
 {%     endif %}
    !
-{%     if management_ssh.vrfs is defined and management_console.vrfs is not none %}
+{%     if management_ssh.vrfs is defined and management_ssh.vrfs is not none %}
 {%         for vrf in management_ssh.vrfs %}
    vrf {{ vrf }}
 {%             if management_ssh.vrfs[vrf].enable is defined and management_ssh.vrfs[vrf].enable == true %}
