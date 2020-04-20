@@ -265,6 +265,9 @@ ntp_server:
 router_l2_vpn:
   nd_rs_flooding_disabled: < true | false >
   virtual_router_nd_ra_flooding_disabled: < true | false >
+  arp_selective_install: < true | false >
+  arp_proxy:
+    prefix_list: < prefix_list_name >
 ```
 
 ### Sflow
