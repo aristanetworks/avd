@@ -108,6 +108,9 @@ router bgp {{ router_bgp.as }}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
    !
    vrf {{ vrf }}
+{%             if router_bgp.vrfs[vrf].router_id is defined %}
+      router-id {{ router_bgp.vrfs[vrf].router_id }}
+{%             endif %}
       rd {{ router_bgp.vrfs[vrf].rd }}
 {%             if router_bgp.vrfs[vrf].route_targets.import is defined %}
       route-target import {{ router_bgp.vrfs[vrf].route_targets.import.address_family }} {{ router_bgp.vrfs[vrf].route_targets.import.asn }}

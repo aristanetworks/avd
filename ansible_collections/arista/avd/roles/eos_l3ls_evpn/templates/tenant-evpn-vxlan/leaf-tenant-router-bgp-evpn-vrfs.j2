@@ -4,6 +4,7 @@
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if vrf in leaf.vrfs %}
     {{ vrf }}:
+      router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         import:
