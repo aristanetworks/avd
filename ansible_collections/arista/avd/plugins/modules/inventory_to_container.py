@@ -272,7 +272,7 @@ def get_devices(dict_inventory, search_container=None, devices=None):
                 get_devices(
                     dict_inventory=v2,
                     search_container=search_container,
-                    devcices=devices
+                    devices=devices
                 )
     return devices
 
