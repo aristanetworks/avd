@@ -47,6 +47,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/snmp-settings.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
+{# platform #}
+{% include 'eos/platform.j2' %}
 {# unsupported transceiver #}
 {% include 'eos/unsupported-transeiver.j2' %}
 {# tacacs servers #}

@@ -26,6 +26,7 @@
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
+    - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
     - [AAA Server Groups](#aaa-server-groups)
     - [AAA Authentication](#aaa-authentication)
@@ -345,6 +346,14 @@ spanning_tree:
   mode: < spanning_tree_mode >
   priority: < priority_level >
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
+```
+
+### Platform
+
+```yaml
+platform:
+  trident:
+    forwarding_table_partition: < partition >
 ```
 
 ### Tacacs+ Servers
