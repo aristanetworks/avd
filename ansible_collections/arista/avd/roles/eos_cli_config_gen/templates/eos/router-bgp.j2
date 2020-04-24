@@ -58,6 +58,32 @@ router bgp {{ router_bgp.as }}
 {%         endfor %}
 {%     endif %}
    !
+{# L2VPNs - (vxlan) vlan based #}
+{%     if router_bgp.vlans is defined and router_bgp.vlans is not none %}
+{%        for vlan in router_bgp.vlans | arista.avd.natural_sort %}
+   vlan {{ vlan }}
+      rd {{ router_bgp.vlans[vlan].rd }}
+{%            if router_bgp.vlans[vlan].route_targets.both is defined and router_bgp.vlans[vlan].route_targets.both is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.both %}
+      route-target both {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlans[vlan].route_targets.import is defined and router_bgp.vlans[vlan].route_targets.import is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.import %}
+      route-target import {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            if router_bgp.vlans[vlan].route_targets.export is defined and router_bgp.vlans[vlan].route_targets.export is not none %}
+{%                for route_target in router_bgp.vlans[vlan].route_targets.export %}
+      route-target export {{ route_target }}
+{%                endfor %}
+{%            endif %}
+{%            for redistribute_route in router_bgp.vlans[vlan].redistribute_routes | arista.avd.natural_sort %}
+      redistribute {{ redistribute_route }}
+{%            endfor %}
+   !
+{%         endfor %}
+{%     endif %}
 {# vxlan vlan aware bundles #}
 {%     if router_bgp.vlan_aware_bundles is defined and router_bgp.vlan_aware_bundles is not none %}
 {%        for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort %}
@@ -82,32 +108,6 @@ router bgp {{ router_bgp.as }}
       redistribute {{ redistribute_route }}
 {%            endfor %}
       vlan {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan }}
-   !
-{%         endfor %}
-{%     endif %}
-{# L2VPNs - (vxlan) vlan based #}
-{%     if router_bgp.vlans is defined and router_bgp.vlans is not none %}
-{%        for vlan in router_bgp.vlans | arista.avd.natural_sort %}
-   vlan {{ vlan }}
-      rd {{ router_bgp.vlans[vlan].rd }}
-{%            if router_bgp.vlans[vlan].route_targets.both is defined and router_bgp.vlans[vlan].route_targets.both is not none %}
-{%                for route_target in router_bgp.vlans[vlan].route_targets.both %}
-      route-target both {{ route_target }}
-{%                endfor %}
-{%            endif %}
-{%            if router_bgp.vlans[vlan].route_targets.import is defined and router_bgp.vlans[vlan].route_targets.import is not none %}
-{%                for route_target in router_bgp.vlans[vlan].route_targets.import %}
-      route-target import {{ route_target }}
-{%                endfor %}
-{%            endif %}
-{%            if router_bgp.vlans[vlan].route_targets.export is defined and router_bgp.vlans[vlan].route_targets.export is not none %}
-{%                for route_target in router_bgp.vlans[vlan].route_targets.export %}
-      route-target export {{ route_target }}
-{%                endfor %}
-{%            endif %}
-{%            for redistribute_route in router_bgp.vlans[vlan].redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }}
-{%            endfor %}
    !
 {%         endfor %}
 {%     endif %}
