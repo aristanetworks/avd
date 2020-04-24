@@ -23,7 +23,7 @@ snmp-server group {{ group['name'] }} {{ group['version'] }} {% if group['authen
 {%    endif %}
 {%     if snmp_server.users is defined and snmp_server.users is not none %}
 {%          for user in snmp_server.users %}
-snmp-server user {{ user['name'] }} group {{ user['group'] }} {{ user['version'] }} {% if user['auth']is defined and user['version'] == 'v3' %}auth {{ user['auth'] }} {{ user['auth_passphrase'] }}{% endif %} {% if user['priv'] is defined and user['version'] == 'v3' %}priv {{ user['priv'] }} {{ user['priv_passphrase'] }} {% endif %}{{''}}
+snmp-server user {{ user['name'] }} {{ user['group'] }} {{ user['version'] }} {% if user['auth']is defined and user['version'] == 'v3' %}auth {{ user['auth'] }} {{ user['auth_passphrase'] }}{% endif %} {% if user['priv'] is defined and user['version'] == 'v3' %}priv {{ user['priv'] }} {{ user['priv_passphrase'] }} {% endif %}{{''}}
 {%          endfor %}
 {%    endif %}
 {%     if snmp_server.hosts is defined and snmp_server.hosts is not none %}
