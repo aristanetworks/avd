@@ -60,6 +60,7 @@
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
     - [Management Console](#management-console)
+    - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
   - [License](#license)
 
@@ -853,7 +854,6 @@ router_bgp:
           - "< route_target >"
           - "< route_target >"
       redistribute_routes:
-        - < connected >
         - < learned >
       vlan: < vlan_range >
     < vlan_aware_bundle_name_2 >:
@@ -1082,6 +1082,14 @@ management_api_http:
 ```yaml
 management_console:
   idle_timeout: < 0-86400 in minutes >
+```
+
+### Management Security
+
+```yaml
+management_security:
+  password:
+    encryption_key_common : < true | false >
 ```
 
 ### Management SSH

@@ -125,6 +125,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-api-http.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
+{# management security #}
+{% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
 !
