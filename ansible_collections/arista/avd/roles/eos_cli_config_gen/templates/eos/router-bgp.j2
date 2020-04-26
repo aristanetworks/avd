@@ -50,6 +50,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].remote_as is defined and router_bgp.neighbors[neighbor].remote_as is not none %}
    neighbor {{ neighbor }} remote-as {{ router_bgp.neighbors[neighbor].remote_as }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
+   neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.redistribute_routes is defined and router_bgp.redistribute_routes is not none %}

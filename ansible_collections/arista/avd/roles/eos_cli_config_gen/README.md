@@ -845,6 +845,7 @@ router_bgp:
       remote_as: < bgp_as >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
+      password: "< encrypted_password >"
   redistribute_routes:
     < route_type >:
       route_map: < route_map_name >
