@@ -33,19 +33,19 @@
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
     - [AAA Accounting](#aaa-accounting)
-    - [Local users](#local-users)
-    - [clock timezone](#clock-timezone)
+    - [Local Users](#local-users)
+    - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
     - [VRF Instances](#vrf-instances)
-    - [Bfd multihop interval](#bfd-multihop-interval)
+    - [Bfd Multihop Interval](#bfd-multihop-interval)
     - [Port-Channel Interfaces](#port-channel-interfaces)
     - [Ethernet Interfaces](#ethernet-interfaces)
     - [Loopback Interfaces](#loopback-interfaces)
     - [Management Interfaces](#management-interfaces)
     - [VLAN Interfaces](#vlan-interfaces)
-    - [VxLAN interface](#vxlan-interface)
+    - [VxLAN Interface](#vxlan-interface)
     - [Hardware TCAM Profiles](#hardware-tcam-profiles)
-    - [MAC address-table](#mac-address-table)
+    - [MAC Address-table](#mac-address-table)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
     - [Static Routes](#static-routes)
@@ -112,7 +112,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 ```yaml
 terminal:
   length: < 0-32767 >
-  width: <  0-32767 >
+  width: < 0-32767 >
 ```
 
 ### Aliases
@@ -434,7 +434,7 @@ aaa_accounting:
         logging: < true | false >
 ```
 
-### Local users
+### Local Users
 
 ```yaml
 local_users:
@@ -448,7 +448,7 @@ local_users:
     sha512_password: "< sha_512_password >"
 ```
 
-### Clock timezone
+### Clock Timezone
 
 ```yaml
 clock:
@@ -482,7 +482,7 @@ vrfs:
     ipv6_routing: < true | false >
 ```
 
-### Bfd multihop interval
+### Bfd Multihop Interval
 
 ```yaml
 bfd_multihop:
@@ -604,7 +604,7 @@ loopback_interfaces:
 
 ```yaml
 management_interfaces:
-  < Management_interface_1:
+  < Management_interface_1 >:
     description: < description >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
@@ -663,7 +663,7 @@ vlan_interfaces:
     ip_address: < IPv4_address/Mask >
 ```
 
-### VxLAN interface
+### VxLAN Interface
 
 ```yaml
 vxlan_tunnel_interface:
@@ -693,7 +693,7 @@ tcam_profile:
   - < tcam_profile >
 ```
 
-### MAC address-table
+### MAC Address-table
 
 ```yaml
 mac_address_table:
