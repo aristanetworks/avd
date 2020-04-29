@@ -8,7 +8,7 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.peer_groups is defined and router_bgp.peer_groups is not none%}
 {%       for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
 {%          if router_bgp.peer_groups[peer_group].bgp_listen_range_prefix is defined and router_bgp.peer_groups[peer_group].bgp_listen_range_prefix is not none %}
-   bgp listen range {{ router_bgp.peer_groups[peer_group].bgp_listen_range_prefix }} peer group {{ peer_group }} peer-filter {{ router_bgp.peer_groups[peer_group].peer_filter }}
+   bgp listen range {{ router_bgp.peer_groups[peer_group].bgp_listen_range_prefix }} peer-group {{ peer_group }} peer-filter {{ router_bgp.peer_groups[peer_group].peer_filter }}
 {%          endif %}
 {%       endfor %}
 {%       for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
