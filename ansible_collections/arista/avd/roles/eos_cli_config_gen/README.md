@@ -758,6 +758,22 @@ prefix_lists:
         action: "< action as string >"
 ```
 
+### IPv6 Prefix Lists
+
+```yaml
+ipv6_prefix_lists:
+  < ipv6_prefix_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_prefix_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
 ### MLAG Configuration
 
 ```yaml
