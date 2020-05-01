@@ -272,9 +272,11 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
 {%                 endfor %}
 {%             endif %}
-{%             for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
+{%             if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}
+{%                for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }} {% if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is defined and router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map }}{% endif %}{{''}}
-{%             endfor %}
+{%                endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 !
