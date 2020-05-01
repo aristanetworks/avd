@@ -101,6 +101,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ip-routing.j2' %}
 {# prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
+{# ipv6-prefix-lists #}
+{% include 'eos/ipv6-prefix-lists.j2' %}
 {# IPv6 Routing #}
 {% include 'eos/ipv6-routing.j2' %}
 {# mlag configuration #}
