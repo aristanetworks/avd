@@ -1,0 +1,67 @@
+---
+scenario:
+  create_sequence:
+    # - dependency
+    - create
+    - prepare
+  check_sequence:
+    # - dependency
+    # - cleanup
+    - destroy
+    - create
+    - prepare
+    - converge
+    - check
+    - destroy
+  converge_sequence:
+    # - dependency
+    - create
+    - prepare
+    - converge
+    - idempotence
+  destroy_sequence:
+    # - dependency
+    # - cleanup
+    - destroy
+  test_sequence:
+    # - dependency
+    # - lint
+    # - cleanup
+    - destroy
+    - syntax
+    - create
+    # - prepare
+    - converge
+    - idempotence
+    # - side_effect
+    - verify
+    - cleanup
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: DC1-LEAF1A
+    image: centos:7
+    pre_build_image: true
+    managed: false
+    groups:
+      - DC1_LEAF1
+      - DC1_LEAFS
+      - DC1_FABRIC
+      - AVD_LAB
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_COLLECTIONS_PATHS: ~/Projects/arista-ansible/ansible-avd/
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+  inventory:
+    links:
+      hosts: 'inventory/hosts'
+      group_vars: 'inventory/group_vars/'
+verifier:
+  name: ansible
