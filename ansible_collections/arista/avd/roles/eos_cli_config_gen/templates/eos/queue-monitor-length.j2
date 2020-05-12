@@ -3,7 +3,7 @@ queue-monitor length
 {%    if queue_monitor_length.log is defined %}
 queue-monitor length log {{ queue_monitor_length.log }}
 {%    endif %}
-{%    if queue_monitor_length.notifying is defined and queue_monitor_length.notifying == true and 'R' in switch_platform %}
+{%    if queue_monitor_length.notifying is defined and queue_monitor_length.notifying == true %}
 queue-monitor length notifying
 {%    endif %}
 !
