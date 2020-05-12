@@ -640,6 +640,10 @@ vlan_interfaces:
         preferred_lifetime: < infinite or lifetime in seconds >
         no_autoconfig_flag: < true | false >
       < IPv6_address_2/Mask >:
+    access_group_in: < access_list_name >
+    access_group_out: < access_list_name >
+    ipv6_access_group_in: < ipv6_access_list_name >
+    ipv6_access_group_out: < ipv6_access_list_name >
     multicast:
       ipv4:
         source_route_export:

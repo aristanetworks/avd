@@ -55,6 +55,18 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled == true %}
    multicast ipv4 source route export {% if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is not none %}{{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}{% endif %}{{''}}
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].access_group_in is defined and vlan_interfaces[vlan_interface].access_group_in is not none %}
+   ip access-group {{ vlan_interfaces[vlan_interface].access_group_in }} in
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].access_group_out is defined and vlan_interfaces[vlan_interface].access_group_out is not none %}
+   ip access-group {{ vlan_interfaces[vlan_interface].access_group_out }} out
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ipv6_access_group_in is defined and vlan_interfaces[vlan_interface].ipv6_access_group_in is not none %}
+   ipv6 access-group {{ vlan_interfaces[vlan_interface].ipv6_access_group_in }} in
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ipv6_access_group_out is defined and vlan_interfaces[vlan_interface].ipv6_access_group_out is not none %}
+   ipv6 access-group {{ vlan_interfaces[vlan_interface].ipv6_access_group_out }} out
+{%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%         endif %}
