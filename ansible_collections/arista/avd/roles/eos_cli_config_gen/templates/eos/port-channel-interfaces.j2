@@ -68,6 +68,18 @@ interface {{ port_channel_interface }}
    ipv6 nd prefix {{ prefix }} {% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag == true %}no-autoconfig{% endif %}{{''}}
 {%                 endfor %}
 {%             endif %}
+{%         if port_channel_interfaces[port_channel_interface].access_group_in is defined and port_channel_interfaces[port_channel_interface].access_group_in is not none %}
+   ip access-group {{ port_channel_interfaces[port_channel_interface].access_group_in }} in
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].access_group_out is defined and port_channel_interfaces[port_channel_interface].access_group_out is not none %}
+   ip access-group {{ port_channel_interfaces[port_channel_interface].access_group_out }} out
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_access_group_in is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_in is not none %}
+   ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_in }} in
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_access_group_out is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_out is not none %}
+   ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_out }} out
+{%            endif %}
 {%         if port_channel_interfaces[port_channel_interface].pim is defined and port_channel_interfaces[port_channel_interface].pim is not none %}
 {%            if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is defined and port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode == true %}
    pim ipv4 sparse-mode
