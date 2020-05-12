@@ -91,6 +91,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
+{# IPv6 Standard access-lists #}
+{% include 'eos/ipv6-standard-access-lists.j2' %}
 {# Standard access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# Static Route #}
@@ -99,9 +101,9 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ipv6-static-routes.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
-{# prefix-lists #}
+{# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
-{# ipv6-prefix-lists #}
+{# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
 {# IPv6 Routing #}
 {% include 'eos/ipv6-routing.j2' %}

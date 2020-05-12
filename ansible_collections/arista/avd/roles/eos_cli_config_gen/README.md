@@ -48,6 +48,8 @@
     - [MAC Address-table](#mac-address-table)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
+    - [IPv6 Standard ACL](#ipv6-standard-access-lists)
+    - [Standard ACL](#standard-access-lists)
     - [Static Routes](#static-routes)
     - [IPv6 Static Routes](#ipv6-static-routes)
     - [Prefix Lists](#prefix-lists)
@@ -716,7 +718,23 @@ virtual_source_nat_vrfs:
     ip_address: < IPv4_address >
 ```
 
-### IP Standard Access-List
+### IPv6 Standard Access-Lists
+
+```yaml
+ipv6_standard_access_lists:
+  < ipv6_access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+### IP Standard Access-Lists
 
 ```yaml
 standard_access_lists:
@@ -819,7 +837,7 @@ route_maps:
         description: < description >
         match: "< match as string >"
         set: "< set as string >"
-      < sequence_id_1 >:
+      < sequence_id_2 >:
         type: < permit | deny >
         match: "< match as string >"
   < route_map_name_2 >:
