@@ -49,6 +49,7 @@
     - [Virtual Source NAT](#virtual-source-nat)
     - [IPv6 Extended ACL](#ipv6-access-lists)
     - [IPv6 Standard ACL](#ipv6-standard-access-lists)
+    - [Extended ACL](#access-lists)
     - [Standard ACL](#standard-access-lists)
     - [Static Routes](#static-routes)
     - [IPv6 Static Routes](#ipv6-static-routes)
@@ -728,6 +729,22 @@ ipv6_standard_access_lists:
       < sequence_id_2 >:
         action: "< action as string >"
   < ipv6_access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+### IP Extended Access-Lists
+
+```yaml
+access_lists:
+  < access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < access_list_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
