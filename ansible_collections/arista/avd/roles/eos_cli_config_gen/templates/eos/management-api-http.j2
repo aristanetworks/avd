@@ -17,6 +17,9 @@ management api http-commands
 {%             if management_api_http.enable_vrfs[vrf].access_group is defined and management_api_http.enable_vrfs[vrf].access_group is not none %}
       ip access-group {{ management_api_http.enable_vrfs[vrf].access_group }}
 {%             endif %}
+{%             if management_api_http.enable_vrfs[vrf].ipv6_access_group is defined and management_api_http.enable_vrfs[vrf].ipv6_access_group is not none %}
+      ipv6 access-group {{ management_api_http.enable_vrfs[vrf].ipv6_access_group }}
+{%             endif %}
 {%-         endfor %}
 {%-     endif %}
 !

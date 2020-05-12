@@ -1164,6 +1164,7 @@ management_api_http:
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
+      ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
 ```
 
