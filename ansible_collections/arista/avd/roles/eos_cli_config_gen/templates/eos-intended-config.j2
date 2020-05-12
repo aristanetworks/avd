@@ -96,6 +96,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ipv6-access-lists.j2' %}
 {# IPv6 Standard Access-lists #}
 {% include 'eos/ipv6-standard-access-lists.j2' %}
+{# Extended Access-lists #}
+{% include 'eos/access-lists.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# Static Route #}
