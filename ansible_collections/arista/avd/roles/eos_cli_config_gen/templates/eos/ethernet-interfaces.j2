@@ -76,6 +76,18 @@ interface {{ ethernet_interface }}
    ipv6 nd prefix {{ prefix }} {% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is not none %}{{ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime }} {% endif %}{% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is not none %}{{ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime }} {% endif %}{% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag == true %}no-autoconfig{% endif %}{{''}}
 {%                 endfor %}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].access_group_in is defined and ethernet_interfaces[ethernet_interface].access_group_in is not none %}
+   ip access-group {{ ethernet_interfaces[ethernet_interface].access_group_in }} in
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].access_group_out is defined and ethernet_interfaces[ethernet_interface].access_group_out is not none %}
+   ip access-group {{ ethernet_interfaces[ethernet_interface].access_group_out }} out
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_access_group_in is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_in is not none %}
+   ipv6 access-group {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_in }} in
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_access_group_out is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_out is not none %}
+   ipv6 access-group {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_out }} out
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%             endif %}
