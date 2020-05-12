@@ -89,9 +89,11 @@ hostname {{ inventory_hostname }}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
 {% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
-{# IPv6 Standard access-lists #}
+{# IPv6 Extended Access-lists #}
+{% include 'eos/ipv6-access-lists.j2' %}
+{# IPv6 Standard Access-lists #}
 {% include 'eos/ipv6-standard-access-lists.j2' %}
-{# Standard access-lists #}
+{# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# Static Route #}
 {% include 'eos/static-routes.j2' %}

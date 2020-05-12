@@ -47,6 +47,7 @@
     - [MAC Address-table](#mac-address-table)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
+    - [IPv6 Extended ACL](#ipv6-access-lists)
     - [IPv6 Standard ACL](#ipv6-standard-access-lists)
     - [Standard ACL](#standard-access-lists)
     - [Static Routes](#static-routes)
@@ -698,6 +699,22 @@ virtual_source_nat_vrfs:
     ip_address: < IPv4_address >
   < vrf_name_2 >:
     ip_address: < IPv4_address >
+```
+
+### IPv6 Extended Access-Lists
+
+```yaml
+ipv6_access_lists:
+  < ipv6_access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
 ```
 
 ### IPv6 Standard Access-Lists
