@@ -47,8 +47,8 @@ VOLUME ["/projects"]
 # Install python modules required by the repo
 ADD requirements.txt /tmp/requirements.txt
 ADD requirements-dev.txt /tmp/requirements-dev.txt
-RUN pip3 install -r requirements.txt \
-   && pip3 install -r requirements-dev.txt \
+RUN pip3 install -r /tmp/requirements.txt \
+   && pip3 install -r /tmp/requirements-dev.txt \
    && ANSIBLE_VERSION=$(pip3 freeze | grep -e 'ansible==' | awk -F '==' '{print $2}'); \
    if [ "$ANSIBLE" == "UNSET" ] || [ "$ANSIBLE_VERSION" == "$ANSIBLE" ]; \
    then echo "Correct ansible version"; \
