@@ -11,7 +11,6 @@ For example, see the file/folder structure below.
 │   ├── ansible-avd
 │   ├── ansible-cvp
 │   ├── ansible-eos
-│   ├── eve-ng-lab
 │   ├── netdevops-examples
 │   │
 │   ├── Dockerfile
