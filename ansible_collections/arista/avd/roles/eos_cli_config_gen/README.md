@@ -134,7 +134,7 @@ event_monitor:
 
 ```yaml
 ### Event Handler ###
-event_handler:
+event_handlers:
   evpn-blacklist-recovery:
     action_type: < Type of action. [bash, increment, log]>
     action: < Command to execute >

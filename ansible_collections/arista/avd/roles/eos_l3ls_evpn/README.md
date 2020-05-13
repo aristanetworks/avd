@@ -1164,7 +1164,7 @@ Gives ability to monitor and react to Syslog messages provides a powerful and fl
 **Variables and Options:**
 
 ```yaml
-event_handler:
+event_handlers:
   evpn-blacklist-recovery:    # Name of the event-handler
     action_type: < bash, increment >
     action: < Command to run when handler is triggered >
@@ -1178,7 +1178,7 @@ event_handler:
 **Example:**
 
 ```yaml
-event_handler:
+event_handlers:
   evpn-blacklist-recovery:
     action_type: bash
     action: FastCli -p 15 -c “clear bgp evpn host-flap”

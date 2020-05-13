@@ -1,20 +1,20 @@
-{% if event_handler is defined and event_handler is iterable %}
-{%     for handler in event_handler %}
+{% if event_handlers is defined and event_handlers is iterable %}
+{%     for handler in event_handlers %}
   {{ handler }}:
-{%         if event_handler[handler].action is defined and event_handler[handler].action_type is defined %}
-    action_type: {{ event_handler[handler].action_type }}
-    action: {{ event_handler[handler].action }}
+{%         if event_handlers[handler].action is defined and event_handlers[handler].action_type is defined %}
+    action_type: {{ event_handlers[handler].action_type }}
+    action: {{ event_handlers[handler].action }}
 {%         endif %}
-{%         if event_handler[handler].delay is defined %}
-    delay: {{ event_handler[handler].delay }}
+{%         if event_handlers[handler].delay is defined %}
+    delay: {{ event_handlers[handler].delay }}
 {%         endif %}
-{%         if event_handler[handler].asynchronous is defined and event_handlers[handler].asynchronous == true %}
-    asynchronous: event_handler[handler].asynchronous
+{%         if event_handlers[handler].asynchronous is defined and event_handlers[handler].asynchronous == true %}
+    asynchronous: event_handlers[handler].asynchronous
 {%         endif %}
-{%         if event_handler[handler].trigger is defined %}
-    trigger: {{ event_handler[handler].trigger }}
-{%             if event_handler[handler].regex is defined %}
-    regex: {{ event_handler[handler].regex }}
+{%         if event_handlers[handler].trigger is defined %}
+    trigger: {{ event_handlers[handler].trigger }}
+{%             if event_handlers[handler].regex is defined %}
+    regex: {{ event_handlers[handler].regex }}
 {%             endif %}
 {%         endif %}
 {%    endfor %}
