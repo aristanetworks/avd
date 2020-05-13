@@ -7,7 +7,7 @@ event-handler {{ handler }}
 {%         if event_handler[handler].delay is defined %}
    delay {{ event_handler[handler].delay }}
 {%         endif %}
-{%         if event_handler[handler].asynchronous is defined and event_handler[handler].asynchronous is true %}
+{%         if event_handler[handler].asynchronous is defined and event_handlers[handler].asynchronous == true %}
    asynchronous
 {%         endif %}
    !
