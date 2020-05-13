@@ -1,6 +1,7 @@
 - hosts: DC1_FABRIC
   tasks:
     - name: create local output folders
+      tags: build
       import_role:
          name: arista.avd.build_output_folders
       run_once: true

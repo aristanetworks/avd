@@ -54,6 +54,10 @@ linting: ## Run pre-commit script for python code linting using pylint
 .PHONY: github-configure-ci
 github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
+.PHONY: playbook-validation
+playbook-validation: ## Run script to validate playbooks defined under testing/ folder
+	sh .github/run-test-playbooks
+
 .PHONY: github-configure-ci-python3
 github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
 	sudo apt-get update
