@@ -17,6 +17,7 @@
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
+    - [Event Handlers](#event-handlers)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -1154,6 +1155,37 @@ cv_configlets:
       - GLOBAL-ALIASES
     DC1-L2LEAF2B:
       - GLOBAL-ALIASES
+```
+
+### Event Handlers
+
+Gives ability to monitor and react to Syslog messages provides a powerful and flexible tool that can be used to apply self-healing actions, customize the system behavior, and implement workarounds to problems discovered in the field.
+
+**Variables and Options:**
+
+```yaml
+event_handlers:
+  evpn-blacklist-recovery:    # Name of the event-handler
+    action_type: < bash, increment >
+    action: < Command to run when handler is triggered >
+    delay: < int / delay in sec between 2 triggers >
+    trigger: < on-logging >
+    regex:  < string to trigger handler >
+    asynchronous: < true, false >
+
+```
+
+**Example:**
+
+```yaml
+event_handlers:
+  evpn-blacklist-recovery:
+    action_type: bash
+    action: FastCli -p 15 -c “clear bgp evpn host-flap”
+    delay: 300
+    trigger: on-logging
+    regex:  EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    asynchronous: true
 ```
 
 ### vEOS-LAB Know Caveats and Recommendations

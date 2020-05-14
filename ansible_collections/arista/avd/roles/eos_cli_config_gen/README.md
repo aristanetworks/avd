@@ -11,6 +11,7 @@
     - [Daemon TerminAttr](#daemon-terminattr)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [Event Monitor](#event-monitor)
+    - [Event Handler](#event-handler)
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
     - [Logging](#logging)
@@ -127,6 +128,20 @@ vlan_internal_allocation_policy:
 ```yaml
 event_monitor:
   enabled: < true | false >
+```
+
+### Event Handler
+
+```yaml
+### Event Handler ###
+event_handlers:
+  evpn-blacklist-recovery:
+    action_type: < Type of action. [bash, increment, log]>
+    action: < Command to execute >
+    delay: < Event-handler delay in seconds >
+    trigger: < Configure event trigger condition. Only supports on-logging >
+    regex: < Regular expression to use for searching log messages. Required for on-logging trigger >
+    asynchronous: < Set the action to be non-blocking. if unset, default is False >
 ```
 
 ### Load Interval
