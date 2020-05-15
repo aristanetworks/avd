@@ -392,7 +392,7 @@ tacacs_servers:
 ```yaml
 aaa_server_groups:
   - name: < server_group_name >
-    type: < tacacs+ | radius | ladp >
+    type: < tacacs+ | radius | ldap >
     servers:
       - < server_1_ip_address >
       - < server_2_ip_address >
@@ -510,7 +510,7 @@ port_channel_interfaces:
       - < trunk_group_name_2 >
     qos:
       trust: < cos | dscp >
-  < Port-Channel_interface_1 >:
+  < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
@@ -521,6 +521,7 @@ port_channel_interfaces:
     description: < description >
     mtu: < mtu >
     type: < switched | routed >
+    ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
     ipv6_address_link_local: < link_local_IPv6_address/mask >
