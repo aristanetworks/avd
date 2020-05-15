@@ -3,7 +3,7 @@
 {%     for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
 {%         if tenants[tenant].vrfs is defined %}
-{%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if vrf in leaf.vrfs %}
+{%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
     {{ vrf }}:
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
@@ -12,14 +12,14 @@
       redistribute_routes:
         - learned
 {%                 set vlan_range = [] %}
-{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi in leaf.svis %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
 {%                     do vlan_range.append( svi ) %}
 {%                 endfor %}
       vlan: {{ vlan_range | arista.avd.list_compress }}
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
-{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if l2vlan in leaf.vlans %}
+{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan in leaf.vlans %}
     {{ tenants[tenant].l2vlans[l2vlan].name }}:
       tenant: {{ tenant }}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
