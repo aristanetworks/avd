@@ -9,7 +9,7 @@ management api http-commands
 {%     endif %}
    no shutdown
 {%     if management_api_http.enable_vrfs is defined %}
-{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort %}
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort if vrf is ne 'default' %}
    !
    vrf {{ vrf }}
       no shutdown
