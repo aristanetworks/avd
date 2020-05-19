@@ -78,6 +78,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-bgp.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
+{# router isis configuration #}
+{% include 'eos/router-isis.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# management api http #}

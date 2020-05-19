@@ -1,0 +1,27 @@
+{% if router_isis is defined and router_isis is not none %}
+### Router ISIS Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%     if router_isis.instance is defined %}
+| Instance | {{ router_isis.instance }} |
+{%     endif %}
+{%     if router_isis.net is defined %}
+| Net-ID | {{ router_isis.net }} |
+{%     endif %}
+{%     if router_isis.is_type is defined %}
+| Type | {{ router_isis.is_type }} |
+{%     endif %}
+{%     if router_isis.address_family is defined %}
+| Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|
+{%     endif %}
+
+### Router ISIS Device Configuration
+
+```eos
+{% include 'eos/router-isis.j2' %}
+```
+
+{% else %}
+Router ISIS not defined
+{% endif %}

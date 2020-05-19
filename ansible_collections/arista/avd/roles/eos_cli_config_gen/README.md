@@ -42,6 +42,7 @@
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router OSPF Configuration](#router-ospf-configuration)
+    - [Router ISIS Configuration](#router-isis-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [HTTP Management API](#http-management-api)
   - [License](#license)
@@ -298,6 +299,10 @@ ethernet_interfaces:
     ip_address: < IPv4_address/Mask >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -323,6 +328,10 @@ loopback_interfaces:
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 ```
 
 ### Management Interfaces
@@ -347,6 +356,10 @@ vlan_interfaces:
     virtual: < true | false >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
     mtu: < mtu >
   < Vlan_id_2 >:
     description: < description >
@@ -595,6 +608,19 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+```
+
+### Router ISIS Configuration
+
+```yaml
+
+router_isis:
+  instance: <ISIS Instance Name>
+  net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
+  router_id: < IPv4_address >
+  no_passive_interfaces: < List no-passive-interface >
+  is_type: < level-1 | level-1-2 | level-2 >
+  address_family: < List of Address Families >
 ```
 
 ### Queue Monitor Streaming

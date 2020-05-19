@@ -46,6 +46,18 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
+   isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive == true %}
+   isis passive
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_metric is defined %}
+   isis metric {{ ethernet_interfaces[ethernet_interface].isis_metric }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
+{%             endif %}
 {%         endif %}
 !
 {%     endfor %}
