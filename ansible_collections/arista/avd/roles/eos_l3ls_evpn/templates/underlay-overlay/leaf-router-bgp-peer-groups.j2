@@ -20,7 +20,7 @@
       send_community: true
       maximum_routes: 0
 {# MLAG iBGP peering #}
-{%     if leaf.mlag == true %}
+{%     if leaf.mlag == true and underlay_routing_protocol == 'BGP' %}
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: {{ leaf.bgp_as }}
