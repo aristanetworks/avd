@@ -176,6 +176,12 @@ router_ospf:
 {# underlay #}
 {% include 'underlay-overlay/router-ospf.j2' %}
 
+{# OSPF Configurartion #}
+### Routing - ISIS ###
+router_isis:
+{# underlay #}
+{% include 'underlay-overlay/router-isis.j2' %}
+
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
 queue_monitor_streaming:
