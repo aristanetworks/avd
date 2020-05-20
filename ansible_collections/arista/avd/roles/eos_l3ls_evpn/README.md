@@ -854,7 +854,6 @@ tenants:
         name: < description >
 
         # Tags leveraged for networks services filtering.
-        # 
         tags: [ < tag_1 >, < tag_2 > ]
 
       < 1-4096 >:
@@ -1216,7 +1215,7 @@ event_handlers:
 event_handlers:
   evpn-blacklist-recovery:
     action_type: bash
-    action: FastCli -p 15 -c “clear bgp evpn host-flap”
+    action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
     trigger: on-logging
     regex:  EVPN-3-BLACKLISTED_DUPLICATE_MAC
