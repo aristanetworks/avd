@@ -1,10 +1,10 @@
-# Ansible Collection For Arista Validate Designs - arista.avd
+# Ansible Collection For Arista Validated Designs - arista.avd
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 **Table of Contents:**
 
-- [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
+- [Ansible Collection For Arista Validated Designs - arista.avd](#ansible-collection-for-arista-validated-designs---aristaavd)
   - [About](#about)
   - [Project Documentation](#project-documentation)
   - [Installation](#installation)
@@ -81,8 +81,6 @@ duplicate_dict_key=error
 ```
 
 > **_NOTE:_** When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
-
-
 
 ### Installation from ansible-galaxy
 
