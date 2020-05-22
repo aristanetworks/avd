@@ -5,17 +5,21 @@
 {%    else %}
 {%       if router_l2_vpn.nd_rs_flooding_disabled is defined and router_l2_vpn.nd_rs_flooding_disabled == true %}
    Neighbor discovery router solicitation VTEP flooding is disabled.
-{%       endif %}{{''}}
+{%       endif %}
+
 {%       if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is defined and router_l2_vpn.virtual_router_nd_ra_flooding_disabled == true %}
    Virtual router neighbor advertisement VTEP flooding is disabled.
-{%       endif %}{{''}}
+{%       endif %}
+
 {%    endif %}
 {%       if router_l2_vpn.arp_selective_install is defined and router_l2_vpn.arp_selective_install == true %}
    Selective ARP is enabled.
-{%       endif %}{{''}}
+{%       endif %}
+
 {%       if router_l2_vpn.arp_proxy.prefix_list is defined and router_l2_vpn.arp_proxy.prefix_list is not none %}
    VLXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}.
-{%       endif %}{{''}}
+{%       endif %}
+
 
 ### Router L2 VPN Device Configuration
 
