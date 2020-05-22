@@ -5,7 +5,8 @@
 | ---- | ----------- |
 {%     if aaa_authorization.exec_default is defined and aaa_authorization.exec_default is not none %}
 | Exec | {{ aaa_authorization.exec_default }} |
-{%     endif %}{{''}}
+{%     endif %}
+
 {%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == true %}
 Authorization for configuration commands is enabled.
 {%     else %}
