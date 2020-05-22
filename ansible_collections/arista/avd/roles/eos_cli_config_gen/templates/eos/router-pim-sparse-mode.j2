@@ -13,7 +13,8 @@ router pim sparse-mode
 {%          if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
 {%                for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
 {%                      for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
-      anycast-rp {{ anycast_rp }} {{ other_anycast_rp_address }} {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is defined and router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is not none %}register-count {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} {% endif %}{{''}}
+      anycast-rp {{ anycast_rp }} {{ other_anycast_rp_address }} {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is defined and router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is not none %}register-count {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} {% endif %}
+
 {%                      endfor %}
 {%                endfor %}
 {%           endif %}
