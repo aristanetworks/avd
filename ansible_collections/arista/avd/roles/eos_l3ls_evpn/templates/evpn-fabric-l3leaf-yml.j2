@@ -347,6 +347,10 @@ router_bgp:
 {% include 'underlay-overlay/leaf-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'underlay-overlay/leaf-router-bgp-redistribute-routes.j2' %}
+  address_family_evpn:
+{% include 'underlay-overlay/leaf-router-bgp-address-family-evpn.j2' %}
+  address_family_ipv4:
+{% include 'underlay-overlay/leaf-router-bgp-address-family-ipv4.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
 {% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}

@@ -15,9 +15,9 @@
       route_targets:
         both:
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].vni_override is defined %}
-          asn: "{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}:{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}"
+          - "{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}:{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}"
 {%                     else %}
-          asn: "{{ tenants[tenant].mac_vrf_vni_base + svi }}:{{ tenants[tenant].mac_vrf_vni_base + svi }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + svi }}:{{ tenants[tenant].mac_vrf_vni_base + svi }}"
 {%                     endif %}
       redistribute_routes:
         - learned
@@ -36,9 +36,9 @@
       route_targets:
         both:
 {%                     if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
-          asn: "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
+          - "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                     else %}
-          asn: "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
 {%                     endif %}
       redistribute_routes:
         - learned
