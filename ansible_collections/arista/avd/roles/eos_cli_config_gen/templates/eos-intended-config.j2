@@ -69,8 +69,6 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
 {% include 'eos/vrf-instances.j2' %}
-{# bfd multihop interval #}
-{% include 'eos/bfd-multihop-interval.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
 {# Ethernet Interfaces #}
@@ -116,6 +114,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/mlag-configuration.j2' %}
 {# route-maps #}
 {% include 'eos/route-maps.j2' %}
+{# router bfd #}
+{% include 'eos/router-bfd.j2' %}
 {# peer-filters #}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
