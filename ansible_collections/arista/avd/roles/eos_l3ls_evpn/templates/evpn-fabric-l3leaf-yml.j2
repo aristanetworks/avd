@@ -145,6 +145,10 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
+{# routing protocol model multi-agent needed for EVPN address family #}
+service_routing_protocols_model: multi-agent
+ip_routing: true
+
 {# Hardware Counter #}
 ### Hardware Counters
 hardware_counters:

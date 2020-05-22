@@ -20,9 +20,8 @@
 {# cannot be disabled in current EOS releases #}
 transceiver qsfp default-mode 4x10G
 !
-{# multi-agent needed if EVPN address family is needed #}
-service routing protocols model multi-agent
-!
+{# service routing protocols model #}
+{% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
 {# logging #}
