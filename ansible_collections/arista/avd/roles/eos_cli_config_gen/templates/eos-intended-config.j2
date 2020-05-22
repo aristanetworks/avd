@@ -17,7 +17,6 @@
 {% include 'eos/event-monitor.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
-!
 {# cannot be disabled in current EOS releases #}
 transceiver qsfp default-mode 4x10G
 !
@@ -98,10 +97,6 @@ hostname {{ inventory_hostname }}
 {% include 'eos/access-lists.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
-{# Static Route #}
-{% include 'eos/static-routes.j2' %}
-{# IPv6 Static Route #}
-{% include 'eos/ipv6-static-routes.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
 {# Prefix-lists #}
@@ -112,6 +107,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ipv6-routing.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
+{# Static Route #}
+{% include 'eos/static-routes.j2' %}
+{# IPv6 Static Route #}
+{% include 'eos/ipv6-static-routes.j2' %}
 {# route-maps #}
 {% include 'eos/route-maps.j2' %}
 {# router bfd #}
@@ -142,5 +141,4 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
-!
 end
