@@ -11,10 +11,12 @@
 
 {%     if sflow.source_interface is defined and sflow.source_interface is not none %}
 sFlow Source Interface: {{ sflow.source_interface }}
-{%     endif %}{{''}}
+{%     endif %}
+
 {%     if sflow.sample is defined and sflow.sample is not none %}
 sFlow Sample Rate: {{ sflow.sample }}
-{%     endif %}{{''}}
+{%     endif %}
+
 {%     if sflow.run is defined and sflow.run == True %}
 sFlow is enabled.
 {% else %}
