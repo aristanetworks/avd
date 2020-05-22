@@ -57,13 +57,14 @@ router bgp {{ router_bgp.as }}
 {%     endif %}
 {%     if router_bgp.redistribute_routes is defined and router_bgp.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.redistribute_routes | arista.avd.natural_sort %}
-   redistribute {{ redistribute_route }} {% if router_bgp.redistribute_routes[redistribute_route].route_map is defined and router_bgp.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.redistribute_routes[redistribute_route].route_map }} {% endif %}{{''}}
+   redistribute {{ redistribute_route }} {% if router_bgp.redistribute_routes[redistribute_route].route_map is defined and router_bgp.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.redistribute_routes[redistribute_route].route_map }}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
-   !
 {# L2VPNs - (vxlan) vlan based #}
 {%     if router_bgp.vlans is defined and router_bgp.vlans is not none %}
 {%        for vlan in router_bgp.vlans | arista.avd.natural_sort %}
+   !
    vlan {{ vlan }}
       rd {{ router_bgp.vlans[vlan].rd }}
 {%            if router_bgp.vlans[vlan].route_targets.both is defined and router_bgp.vlans[vlan].route_targets.both is not none %}
@@ -84,12 +85,12 @@ router bgp {{ router_bgp.as }}
 {%            for redistribute_route in router_bgp.vlans[vlan].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
 {%            endfor %}
-   !
 {%         endfor %}
 {%     endif %}
 {# vxlan vlan aware bundles #}
 {%     if router_bgp.vlan_aware_bundles is defined and router_bgp.vlan_aware_bundles is not none %}
 {%        for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort %}
+   !
    vlan-aware-bundle {{ vlan_aware_bundle }}
       rd {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].rd }}
 {%            if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is not none %}
@@ -111,12 +112,12 @@ router bgp {{ router_bgp.as }}
       redistribute {{ redistribute_route }}
 {%            endfor %}
       vlan {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan }}
-   !
 {%         endfor %}
 {%     endif %}
 {# address families activation #}
 {# address family evpn activation #}
 {%     if router_bgp.address_family_evpn is defined and router_bgp.address_family_evpn is not none %}
+   !
    address-family evpn
 {%       if router_bgp.address_family_evpn.peer_groups is defined and router_bgp.address_family_evpn.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
@@ -129,8 +130,8 @@ router bgp {{ router_bgp.as }}
 {%       endif %}
 {%     endif %}
 {# address family ipv4 activation #}
-   !
 {%     if router_bgp.address_family_ipv4 is defined and router_bgp.address_family_ipv4 is not none %}
+   !
    address-family ipv4
 {%       if router_bgp.address_family_ipv4.peer_groups is defined and router_bgp.address_family_ipv4.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort %}
@@ -164,8 +165,8 @@ router bgp {{ router_bgp.as }}
 {%       endif %}
 {%     endif %}
 {# address family ipv4 multicast activation #}
-   !
 {%     if router_bgp.address_family_ipv4_multicast is defined and router_bgp.address_family_ipv4_multicast is not none %}
+   !
    address-family ipv4 multicast
 {%       if router_bgp.address_family_ipv4_multicast.peer_groups is defined and router_bgp.address_family_ipv4_multicast.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_ipv4_multicast.peer_groups | arista.avd.natural_sort %}
@@ -199,12 +200,12 @@ router bgp {{ router_bgp.as }}
 {%       endif %}
 {%       if router_bgp.address_family_ipv4_multicast.redistribute_routes is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.address_family_ipv4_multicast.redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map }} {% endif %}{{''}}
+      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map }}
+{%             endif %}
 {%         endfor %}
 {%       endif %}
 {%     endif %}
 {# address family ipv6 activation #}
-   !
 {%     if router_bgp.address_family_ipv6 is defined and router_bgp.address_family_iv6 is not none %}
    address-family ipv6
 {%       if router_bgp.address_family_ipv6.peer_groups is defined and router_bgp.address_family_ipv6.peer_groups is not none %}
@@ -239,42 +240,47 @@ router bgp {{ router_bgp.as }}
 {%       endif %}
 {%       if router_bgp.address_family_ipv6.redistribute_routes is defined and router_bgp.address_family_ipv6.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map }} {% endif %}{{''}}
+      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map }}
+{%             endif %}
 {%         endfor %}
 {%       endif %}
 {%     endif %}
-   !
 {# L3VPNs - (vxlan) VRFs #}
 {%     if router_bgp.vrfs is defined and router_bgp.vrfs is not none %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
    !
    vrf {{ vrf }}
-{%             if router_bgp.vrfs[vrf].router_id is defined %}
-      router-id {{ router_bgp.vrfs[vrf].router_id }}
-{%             endif %}
       rd {{ router_bgp.vrfs[vrf].rd }}
 {%             if router_bgp.vrfs[vrf].route_targets.import is defined and router_bgp.vrfs[vrf].route_targets.import is not none %}
 {%                for address_family in router_bgp.vrfs[vrf].route_targets.import %}
 {%                      for route_target in router_bgp.vrfs[vrf].route_targets.import[address_family] %}
-      route-target import {{ address_family }} {{ route_target }}{{''}}
+      route-target import {{ address_family }} {{ route_target }}
 {%                      endfor %}
 {%                endfor %}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].route_targets.export is defined and router_bgp.vrfs[vrf].route_targets.export is not none %}
 {%                for address_family in router_bgp.vrfs[vrf].route_targets.export %}
 {%                      for route_target in router_bgp.vrfs[vrf].route_targets.export[address_family] %}
-      route-target export {{ address_family }} {{ route_target }}{{''}}
+      route-target export {{ address_family }} {{ route_target }}
 {%                      endfor %}
 {%                endfor %}
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].router_id is defined %}
+      router-id {{ router_bgp.vrfs[vrf].router_id }}
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
+{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is defined and router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is not none %}
+      neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
+{%                      endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}
 {%                for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }} {% if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is defined and router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map }}{% endif %}{{''}}
+      redistribute {{ redistribute_route }}{% if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is defined and router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is not none %} route-map {{ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map }}{% endif %}
+
 {%                endfor %}
 {%             endif %}
 {%         endfor %}
