@@ -9,6 +9,9 @@ router isis {{ router_isis.instance }}
 {%     if router_isis.address_family is defined and router_isis.address_family is iterable %}
 {%          for address_family in router_isis.address_family %}
    address-family {{ address_family }}
+{%             for af_default in router_isis.isis_af_defaults %}
+      {{af_default}}
+{%             endfor %}
 {%          endfor %}
 {%     endif %}
    !
