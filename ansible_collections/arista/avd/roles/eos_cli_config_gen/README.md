@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_cli_config_gen](#ansible-role-eoscliconfiggen)
+- [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -621,6 +621,8 @@ router_isis:
   no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
   address_family: < List of Address Families >
+  isis_af_defaults:
+      - maximum-paths < Integer 1-64 >
 ```
 
 ### Queue Monitor Streaming
