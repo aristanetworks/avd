@@ -38,4 +38,6 @@
 {% endif %}
   is_type: level-2
   address_family: ['ipv4 unicast']
+  isis_af_defaults:
+    - maximum-paths {{ spine.nodes | length * max_l3leaf_to_spine_links }}
 {% endif %}
