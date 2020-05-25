@@ -64,3 +64,11 @@
     mode: 0755
   delegate_to: localhost
   run_once: True
+
+- name: 'Create folder {{running_config_backup_dir_name}} for EOS documentation'
+  file:
+    path: '{{running_config_backup_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: True
