@@ -162,9 +162,9 @@ You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issue
 
 ## Branching Model
 
-- The devel branch corresponds to the release actively under development.
-- The releases/x.x.x branches correspond to stable releases.
-- Create a branch based on devel and set up a dev environment if you want to open a PR.
+- The __`devel`__ branch corresponds to the release actively under development.
+- The __`releases/x.x.x`__ branches correspond to stable releases.
+- Fork repository and create a branch based on __`devel`__ to set up a dev environment if you want to open a PR.
 - See the ansible-avd release for information about active branches.
 
 ## License
