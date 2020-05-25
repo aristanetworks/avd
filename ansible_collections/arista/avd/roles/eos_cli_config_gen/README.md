@@ -1245,6 +1245,8 @@ router_isis:
   no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
   address_family: < List of Address Families >
+  isis_af_defaults:
+      - maximum-paths < Integer 1-64 >
 ```
 
 ### Queue Monitor Streaming
