@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_l3ls_evpn](#ansible-role-eosl3lsevpn)
+- [Ansible Role: eos_l3ls_evpn](#ansible-role-eos_l3ls_evpn)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -1138,10 +1138,15 @@ servers:
   server01:
     rack: RackB
     adapters:
+
+      # Single homed interface from E0 toward DC1-LEAF1A_Eth5
       - server_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
+
+      # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
+      #                            from E2 to DC1-LEAF2B_Eth10
       - server_ports: [ E1, E2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
@@ -1154,6 +1159,9 @@ servers:
   server03:
     rack: RackC
     adapters:
+
+      # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
+      #                            from E1 to DC1-SVC3B_Eth10
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
