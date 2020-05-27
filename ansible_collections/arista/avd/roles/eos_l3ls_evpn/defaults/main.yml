@@ -55,11 +55,17 @@ bfd_multihop:
 mlag_ibgp_peering_vrfs:
   base_vlan: 3000
 
-# Set TCAM profile to Vxlan-Routing (R-Series / Jericho Platforms Only)
-tcam_profile:
-  vxlan_routing:
-    - 7500R
-    - 7500R3
-    - 7280R
-    - 7280R2
-    - 7280R3
+# Set platform specific settings, TCAM profile and reload delay.
+# The reload delay values should be reviewed and tuned to the specific environment.
+# Recommended default values for Jericho based platform, and all other platforms default tag.
+
+platform_settings:
+  - platforms: [ default ]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+    tcam_profile: vxlan-routing
+    reload_delay:
+      mlag: 780
+      non_mlag: 1020
