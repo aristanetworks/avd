@@ -18,6 +18,7 @@
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
+    - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -1186,6 +1187,45 @@ event_handlers:
     trigger: on-logging
     regex:  EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
+```
+
+### Platform Specific settings
+
+- Set platform specific settings, TCAM profile and reload delay.
+- The reload delay values should be reviewed and tuned to the specific environment.
+- If the platform is not defined, it will load parameters from the platform tagged `default`.
+
+**Variables and Options:**
+
+```yaml
+platform_settings:
+  - platforms: [ default ]
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+  - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
+    tcam_profile: < tcam_profile >
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+
+```
+
+note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
+
+**Example:**
+
+```yaml
+# platform_settings:
+#   - platforms: [ default ]
+#     reload_delay:
+#       mlag: 300
+#       non_mlag: 330
+#   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+#     tcam_profile: vxlan-routing
+#     reload_delay:
+#       mlag: 780
+#       non_mlag: 1020
 ```
 
 ### vEOS-LAB Know Caveats and Recommendations
