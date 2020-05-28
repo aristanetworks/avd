@@ -50,6 +50,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].remote_as is defined and router_bgp.neighbors[neighbor].remote_as is not none %}
    neighbor {{ neighbor }} remote-as {{ router_bgp.neighbors[neighbor].remote_as }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].shutdown is defined and router_bgp.neighbors[neighbor].shutdown == true %}
+   neighbor {{ neighbor }} shutdown
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].description is defined and router_bgp.neighbors[neighbor].description is not none %}
+   neighbor {{ neighbor }} description {{ router_bgp.neighbors[neighbor].description }}
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
 {%             endif %}

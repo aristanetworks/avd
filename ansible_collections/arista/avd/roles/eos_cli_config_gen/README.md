@@ -963,9 +963,13 @@ router_bgp:
     < IPv4_address_1 >:
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
+      description: "< description as string >"
+      shutdown: < true | false >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       password: "< encrypted_password >"
+    < IPv6_address_1 >:
+      remote_as: < bgp_as >
   redistribute_routes:
     < route_type >:
       route_map: < route_map_name >
