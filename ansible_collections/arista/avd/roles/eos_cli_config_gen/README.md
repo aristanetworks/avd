@@ -215,7 +215,7 @@ logging:
   console: < severity_level >
   monitor: < severity_level >
   buffered:
-    size: < 10-2147483647 representing number of messages >
+    size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
   source_interface: < source_interface_name >
@@ -327,9 +327,9 @@ snmp_server:
     - name: < username >
       group: < group_name >
       version: < v1 | v2c | v3 >
-      auth: < md5 | sha | sha224 | sha256 | sha 384 | sha512 >
+      auth: < hash_algorithm >
       auth_passphrase: < encrypted_auth_passphrase >
-      priv: < aes | eas192 | aes256 | des >
+      priv: < encryption_algorithm >
       priv_passphrase: < encrypted_priv_passphrase >
     - name: < username >
       group: < group_name >
