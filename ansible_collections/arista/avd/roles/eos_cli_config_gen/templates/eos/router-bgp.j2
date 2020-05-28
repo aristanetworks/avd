@@ -200,13 +200,14 @@ router bgp {{ router_bgp.as }}
 {%       endif %}
 {%       if router_bgp.address_family_ipv4_multicast.redistribute_routes is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.address_family_ipv4_multicast.redistribute_routes | arista.avd.natural_sort %}
-      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map }}
-{%             endif %}
+      redistribute {{ redistribute_route }} {% if router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is defined and router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map is not none %}route-map {{ router_bgp.address_family_ipv4_multicast.redistribute_routes[redistribute_route].route_map }}{% endif %}
+
 {%         endfor %}
 {%       endif %}
 {%     endif %}
 {# address family ipv6 activation #}
 {%     if router_bgp.address_family_ipv6 is defined and router_bgp.address_family_iv6 is not none %}
+   !
    address-family ipv6
 {%       if router_bgp.address_family_ipv6.peer_groups is defined and router_bgp.address_family_ipv6.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_ipv6.peer_groups | arista.avd.natural_sort %}
