@@ -18,6 +18,7 @@
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
     - [Logging](#logging)
+    - [Service Routing Protocols Model](#service-routing-protocols-model)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
@@ -54,7 +55,10 @@
     - [Standard ACL](#standard-access-lists)
     - [Static Routes](#static-routes)
     - [IPv6 Static Routes](#ipv6-static-routes)
+    - [IP Routing](#ip-routing)
     - [Prefix Lists](#prefix-lists)
+    - [IPv6 Prefix Lists](#ipv6-prefix-lists)
+    - [IPv6 Routing](#ipv6-unicast-routing)
     - [MLAG Configuration](#mlag-configuration)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
@@ -206,6 +210,12 @@ load_interval:
 queue_monitor_length:
   log: < seconds >
   notifying: < true | false >
+```
+
+### Service Routing Protocols Model
+
+```yaml
+service_routing_protocols_model: < multi-agent | ribd >
 ```
 
 ### Logging
@@ -827,6 +837,12 @@ ipv6_static_routes:
     gateway: < IPv6_address >
 ```
 
+### IP Routing
+
+```yaml
+ip_routing: < true | false >
+```
+
 ### Prefix Lists
 
 ```yaml
@@ -858,6 +874,9 @@ ipv6_prefix_lists:
       < sequence_id_1 >:
         action: "< action as string >"
 ```
+
+### IPv6 Routing ###
+ipv6_unicast_routing: < true | false >
 
 ### MLAG Configuration
 
