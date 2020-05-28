@@ -394,12 +394,14 @@ aaa_server_groups:
   - name: < server_group_name >
     type: < tacacs+ | radius | ldap >
     servers:
-      - < server_1_ip_address >
-      - < server_2_ip_address >
+      - server: < server1_ip_address >
+        vrf: < vrf_name >
+      - server: < server1_ip_address >
+        vrf: < vrf_name >
   - name: < server_group_name >
     type: < tacacs+ | radius | ladp >
     servers:
-      - < server_1_ip_address >
+      - server: < host1_ip_address >
 ```
 
 ### AAA Authentication
