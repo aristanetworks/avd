@@ -53,6 +53,10 @@ linting: ## Run pre-commit script for python code linting using pylint
 	sh .github/lint-yaml
 	sh .github/lint-python
 
+.PHONY: pre-commit
+pre-commit: ## Execute pre-commit validation
+	pre-commit run --all-files
+
 .PHONY: github-configure-ci
 github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
