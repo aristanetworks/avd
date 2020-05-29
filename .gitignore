@@ -107,3 +107,6 @@ venv.bak/
 
 # Installation path for CVP example
 examples/evpn-l3ls-cvp-deployment/collections
+
+# DS_Store
+*.DS_Store

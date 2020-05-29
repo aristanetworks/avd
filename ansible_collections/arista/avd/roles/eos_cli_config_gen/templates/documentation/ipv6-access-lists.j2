@@ -1,0 +1,21 @@
+{% if ipv6_access_lists is defined and ipv6_access_lists is not none %}
+### IPv6 Extended Access-lists Summary
+
+{%     for ipv6_access_list in ipv6_access_lists | arista.avd.natural_sort %}
+**{{ ipv6_access_list }}:**
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in ipv6_access_lists[ipv6_access_list].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ ipv6_access_lists[ipv6_access_list].sequence_numbers[sequence].action }} |
+{%         endfor %}
+
+{%     endfor %}
+### IPv6 Extended Access-lists Device Configuration
+
+```eos
+{% include 'eos/ipv6-access-lists.j2' %}
+```
+{% else %}
+IPv6 Extended Access-lists not defined
+{% endif %}

@@ -1,0 +1,12 @@
+{# IPv6 static routes#}
+{% if ipv6_static_routes is defined and ipv6_static_routes is not none %}
+{%     for ipv6_static_route in ipv6_static_routes %}
+ipv6 route
+{%- if ipv6_static_route['vrf'] is defined and ipv6_static_route['vrf'] != 'default' %} vrf {{ ipv6_static_route['vrf'] }}{% endif -%} {{ ipv6_static_route['destination_address_prefix'] }} {{ ipv6_static_route['gateway'] }}
+{%- if ipv6_static_route['distance'] is defined and ipv6_static_route['distance'] is not none %} {{ ipv6_static_route['distance'] }}{% endif -%}
+{%- if ipv6_static_route['tag'] is defined and ipv6_static_route['tag'] is not none %} tag {{ ipv6_static_route['tag'] }}{% endif -%}
+{%- if ipv6_static_route['name'] is defined and ipv6_static_route['name'] is not none %} name {{ ipv6_static_route['name'] }}{% endif %}
+
+{%          endfor %}
+!
+{% endif %}

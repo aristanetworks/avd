@@ -2,14 +2,25 @@
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
 interface {{ loopback_interface }}
+{%         if loopback_interfaces[loopback_interface].description is defined and loopback_interfaces[loopback_interface].description is not none %}
    description {{ loopback_interfaces[loopback_interface].description }}
-{%         if loopback_interfaces[loopback_interface].vrf is defined %}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].shutdown is defined and loopback_interfaces[loopback_interface].shutdown == true %}
+   shutdown
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].vrf is defined and loopback_interfaces[loopback_interface].vrf is not none %}
    vrf {{ loopback_interfaces[loopback_interface].vrf }}
 {%         endif %}
-{%         if loopback_interfaces[loopback_interface].ip_address is defined %}
+{%         if loopback_interfaces[loopback_interface].ip_address is defined and loopback_interfaces[loopback_interface].ip_address is not none %}
    ip address {{ loopback_interfaces[loopback_interface].ip_address }}
 {%         endif %}
-{%         if loopback_interfaces[loopback_interface].ospf_area is defined %}
+{%         if loopback_interfaces[loopback_interface].ipv6_enable is defined and loopback_interfaces[loopback_interface].ipv6_enable == true %}
+   ipv6 enable
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ipv6_address is defined and loopback_interfaces[loopback_interface].ipv6_address is not none %}
+   ipv6 address {{ loopback_interfaces[loopback_interface].ipv6_address }}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].ospf_area is defined and loopback_interfaces[loopback_interface].ospf_area is not none %}
    ip ospf area {{ loopback_interfaces[loopback_interface].ospf_area }}
 {%         endif %}
 !

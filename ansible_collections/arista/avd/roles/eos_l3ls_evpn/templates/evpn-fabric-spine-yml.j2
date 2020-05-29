@@ -12,6 +12,10 @@
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 
+{# routing protocol model multi-agent needed for EVPN address family #}
+service_routing_protocols_model: multi-agent
+ip_routing: true
+
 {# Hardware Counter #}
 ### Hardware Counters
 hardware_counters:
@@ -161,6 +165,10 @@ router_bgp:
 {% include 'underlay-overlay/spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'underlay-overlay/spine-router-bgp-redistribute-routes.j2' %}
+  address_family_evpn:
+{% include 'underlay-overlay/spine-router-bgp-address-family-evpn.j2' %}
+  address_family_ipv4:
+{% include 'underlay-overlay/spine-router-bgp-address-family-ipv4.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###

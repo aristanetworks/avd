@@ -1,0 +1,49 @@
+{% if logging is defined and logging is not none %}
+### Logging Servers and Features Summary
+
+| Type | Level |
+| -----| ----- |
+{%     if logging.console is defined and logging.console is not none %}
+| Console | {{ logging.console }} |
+{%     endif %}
+{%     if logging.monitor is defined and logging.monitor is not none %}
+| Monitor | {{ logging.monitor }} |
+{%     endif %}
+{%     if logging.buffered is defined and logging.buffered is not none %}
+| Buffer |{% if logging.buffered.level is defined and logging.buffered.level is not none %} {{ logging.buffered.level }} {% else %} - {% endif %} |
+{%     endif %}
+{%     if logging.trap is defined and logging.trap is not none %}
+| Trap | {{ logging.trap }} |
+{%     endif %}
+
+| VRF | Source Interface |
+| --- | ---------------- |
+{%     if logging.source_interface is defined and logging.source_interface is not none %}
+| - | {{ logging.source_interface }} |
+{%     endif %}
+{%     if logging.vrfs is defined and logging.vrfs is not none %}
+{%          for vrf in logging.vrfs | arista.avd.natural_sort %}
+{%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none %}
+| {{ vrf }} | {{ logging.vrfs[vrf].source_interface }} |
+{%              endif %}
+{%          endfor %}
+{%     endif %}
+
+| VRF | Hosts |
+| --- | ---------------- |
+{%          for vrf in logging.vrfs | arista.avd.natural_sort %}
+{%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
+{%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
+| {{ vrf }} | {{ host }} |
+{%                  endfor %}
+{%              endif %}
+{%          endfor %}
+
+### Logging Servers and Features Device Configuration
+
+```eos
+{% include 'eos/logging.j2' %}
+```
+{% else %}
+No logging settings defined
+{% endif %}

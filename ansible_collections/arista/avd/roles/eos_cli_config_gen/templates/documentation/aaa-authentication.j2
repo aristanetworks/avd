@@ -1,14 +1,21 @@
 {% if aaa_authentication is defined and aaa_authentication is not none %}
 ### AAA Authentication Summary
 
-{# placeholder for aaa logic #}
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+{%     if aaa_authentication.login.default is defined and aaa_authentication.login.default is not none %}
+| Login | Default | {{ aaa_authentication.login.default }} |
+{%     endif %}
+{%     if aaa_authentication.login.serial_console is defined and aaa_authentication.login.serial_console is not none %}
+| Login | Serial-console | {{ aaa_authentication.login.serial_console }} |
+{%     endif %}
 
 ### AAA Authentication Device Configuration
 
 ```eos
 {% include 'eos/aaa-authentication.j2' %}
-```
 !
+```
 {% else %}
-AAA Not Configured
+AAA authentication not defined
 {% endif %}

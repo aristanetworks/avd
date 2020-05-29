@@ -1,37 +1,64 @@
 {# Device Configuration #}
 !RANCID-CONTENT-TYPE: arista
 !
+{# terminal settings #}
+{% include 'eos/terminal-settings.j2' %}
+{# aliases #}
+{% include 'eos/aliases.j2' %}
 {# hardware counters #}
 {% include 'eos/hardware-counters.j2' %}
 {# daemon TerminAttr #}
 {% include 'eos/daemon-terminattr.j2' %}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
+{# ip igmp snooping #}
+{% include 'eos/ip-igmp-snooping.j2' %}
 {# event monitor #}
 {% include 'eos/event-monitor.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
+{# cannot be disabled in current EOS releases #}
 transceiver qsfp default-mode 4x10G
 !
-service routing protocols model multi-agent
-!
+{# service routing protocols model #}
+{% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}
+{# domain lookup #}
+{% include 'eos/domain-lookup.j2' %}
 {# name servers #}
 {% include 'eos/name-servers.j2' %}
+{# dns domain #}
+{% include 'eos/dns-domain.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# router l2-vpn#}
+{% include 'eos/router-l2-vpn.j2' %}
+{# sflow #}
+{% include 'eos/sflow.j2' %}
 {# redundancy #}
 {% include 'eos/redundancy.j2' %}
+{# snmp settings #}
+{% include 'eos/snmp-settings.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
+{# platform #}
+{% include 'eos/platform.j2' %}
 {# unsupported transceiver #}
 {% include 'eos/unsupported-transeiver.j2' %}
+{# tacacs servers #}
+{% include 'eos/tacacs-servers.j2' %}
+{# aaa server groups #}
+{% include 'eos/aaa-server-groups.j2' %}
 {# aaa authentication #}
+{% include 'eos/aaa-authentication.j2' %}
+{# aaa authorization #}
 {% include 'eos/aaa-authorization.j2' %}
+{# aaa accounting #}
+{% include 'eos/aaa-accounting.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# clock timezone #}
@@ -40,8 +67,6 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
 {% include 'eos/vrf-instances.j2' %}
-{# bfd multihop interval #}
-{% include 'eos/bfd-multihop-interval.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
 {# Ethernet Interfaces #}
@@ -58,29 +83,61 @@ hostname {{ inventory_hostname }}
 {% include 'eos/tcam-profile.j2' %}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
-{# router virtual mac address #}
+{# Router virtual mac address #}
 {% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
-{# Static Route #}
-{% include 'eos/static-routes.j2' %}
+{# IPv6 Standard access-lists #}
+{# IPv6 Extended Access-lists #}
+{% include 'eos/ipv6-access-lists.j2' %}
+{# IPv6 Standard Access-lists #}
+{% include 'eos/ipv6-standard-access-lists.j2' %}
+{# Extended Access-lists #}
+{% include 'eos/access-lists.j2' %}
+{# Standard Access-lists #}
+{% include 'eos/standard-access-lists.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
-{# prefix-lists #}
+{# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
+{# IPv6 Prefix-lists #}
+{% include 'eos/ipv6-prefix-lists.j2' %}
+{# IPv6 Routing #}
+{% include 'eos/ipv6-routing.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
+{# Static Route #}
+{% include 'eos/static-routes.j2' %}
+{# IPv6 Static Route #}
+{% include 'eos/ipv6-static-routes.j2' %}
 {# route-maps #}
 {% include 'eos/route-maps.j2' %}
+{# router bfd #}
+{% include 'eos/router-bfd.j2' %}
 {# peer-filters #}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
+{# router multicast configuration #}
+{% include 'eos/router-multicast.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
+{# router pim sparse mode configuration #}
+{% include 'eos/router-pim-sparse-mode.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
+{# ip tacacs+ source interfaces #}
+{% include 'eos/ip-tacacs-source-interfaces.j2' %}
+{# vmtracer sessions #}
+{% include 'eos/vmtracer-sessions.j2' %}
+{# banner #}
+{% include 'eos/banners.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
-!
+{# management console #}
+{% include 'eos/management-console.j2' %}
+{# management security #}
+{% include 'eos/management-security.j2' %}
+{# management ssh #}
+{% include 'eos/management-ssh.j2' %}
 end

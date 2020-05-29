@@ -1,0 +1,21 @@
+{% if vrfs is defined and vrfs is not none %}
+### IPv6 Routing Summary
+
+| VRF | IPv6 Routing Enabled |
+| --- | -------------------- |
+{%     for vrf in vrfs | arista.avd.natural_sort %}
+{%         if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}
+| {{ vrf }} | True |
+{%         else %}
+| {{ vrf }} | False |
+{%         endif %}
+{%     endfor %}
+
+### IPv6 Routing Device Configuration
+
+```eos
+{% include 'eos/ipv6-routing.j2' %}
+```
+{% else %}
+IPv6 routing not defined
+{% endif %}
