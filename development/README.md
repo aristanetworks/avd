@@ -1,4 +1,24 @@
-# Development Tool
+# Development Process
+
+- [Development Process](#development-process)
+  - [Overview](#overview)
+  - [Build local environment](#build-local-environment)
+    - [Python Virtual Environment](#python-virtual-environment)
+      - [Install Python3 Virtual Environment](#install-python3-virtual-environment)
+    - [Docker Container for Ansible Testing and Development](#docker-container-for-ansible-testing-and-development)
+      - [Build Docker Container](#build-docker-container)
+      - [Run Docker Container](#run-docker-container)
+      - [Stop Docker Container](#stop-docker-container)
+  - [Getting started Script](#getting-started-script)
+    - [Step by step installation process](#step-by-step-installation-process)
+  - [Development tools](#development-tools)
+    - [One liner installation](#one-liner-installation)
+    - [Pre-commit hook](#pre-commit-hook)
+      - [Installation](#installation)
+      - [Run pre-commit manually](#run-pre-commit-manually)
+    - [Configure git hook](#configure-git-hook)
+
+## Overview
 
 Two methods can be used get Ansible up and running quickly with all the requirements to leverage ansible-avd.
 A Python Virtual Environment or Docker container.
@@ -12,7 +32,6 @@ For example, see the file/folder structure below.
 │   ├── ansible-cvp
 │   ├── ansible-eos
 │   ├── netdevops-examples
-│   │
 │   ├── Dockerfile
 │   ├── Makefile
 │   ├── requirements-dev.txt
@@ -20,9 +39,11 @@ For example, see the file/folder structure below.
 
 ```
 
-## Python Virtual Environment
+## Build local environment
 
-### Install Python3 Virtual Environment
+### Python Virtual Environment
+
+#### Install Python3 Virtual Environment
 
 ```shell
 # install virtualenv via pip3
@@ -40,7 +61,7 @@ $ pip install -r requirements.txt
 
 ```
 
-## Docker Container for Ansible Testing and Development
+### Docker Container for Ansible Testing and Development
 
 The docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repo you are making changes in. You can inspect the Dockerfile to see what packages have been installed.
 The container will mount the current working directory, so you can work with your local files.
@@ -49,7 +70,7 @@ The ansible version is passed in with the docker build command using ***ANSIBLE*
 
 Before you can use a container, you must install Docker CE on your workstation: https://www.docker.com/products/docker-desktop
 
-### Build Docker Container
+#### Build Docker Container
 
 In addition to the `Dockerfile`, a `Makefile` is provided to help provision the container a single step. A user can pass the ansible version number to make and alter the default ansible-version number.  This allows a user to setup multiple containers running differing versions of ansible.
 
@@ -63,7 +84,7 @@ ansible_avd         2.9.6               5291937a2214        33 minutes ago      
 ansible_avd         2.9.5               27f648c4c249        46 hours ago        912MB
 ```
 
-### Run Docker Container
+#### Run Docker Container
 
 ```shell
 make run                        # Use default version of Ansible
@@ -75,7 +96,7 @@ e682058d7dae        ansible_avd:2.9.5   "/bin/sh"           6 seconds ago       
 540a8e778907        ansible_avd:2.9.6   "/bin/sh"           38 seconds ago      Up 37 seconds                           ansible_avd_2.9.6
 ```
 
-### Stop Docker Container
+#### Stop Docker Container
 
 Another make target (clean) has been created to stop and remove the container once the user is finished with it.
 
@@ -102,13 +123,15 @@ make build
 make run
 ```
 
+## Development tools
+
 ### One liner installation
 
 ```shell
 $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/master/development/install.sh)"
 ```
 
-## Pre-commit hook
+### Pre-commit hook
 
 [`pre-commit`](../.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. By pointing these issues out before code review, this allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
@@ -123,7 +146,7 @@ Repository implements following hooks:
 - `yamllint`: Validate all YAML files using configuration from [`yamllintrc`](../.github/yamllintrc)
 - `ansible-lint`: Validate yaml files are valid against ansible rules.
 
-### Installation
+#### Installation
 
 `pre-commit` is part of [__developement requirememnts__](./requirements-dev.txt). To install, run `pip command`:
 
@@ -132,7 +155,7 @@ $ pip install -r requirements-dev.txt
 ...
 ```
 
-### Run pre-commit manually
+#### Run pre-commit manually
 
 To run `pre-commit` manually before your commit, use this command:
 
