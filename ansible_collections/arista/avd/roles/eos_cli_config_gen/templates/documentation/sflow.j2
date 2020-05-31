@@ -1,0 +1,33 @@
+{% if sflow is defined and sflow is not none %}
+### SFlow Summary
+
+{%     if sflow.destinations is defined and sflow.destinations is not none %}
+| SFlow Destination | Port |
+| ----------------- | --- |
+{%      for destination in sflow.destinations %}
+| {{ destination }} | {% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
+{%      endfor %}
+{%     endif %}
+
+{%     if sflow.source_interface is defined and sflow.source_interface is not none %}
+sFlow Source Interface: {{ sflow.source_interface }}
+{%     endif %}
+
+{%     if sflow.sample is defined and sflow.sample is not none %}
+sFlow Sample Rate: {{ sflow.sample }}
+{%     endif %}
+
+{%     if sflow.run is defined and sflow.run == True %}
+sFlow is enabled.
+{% else %}
+sFlow is disabled.
+{%     endif %}
+
+### SFlow Device Configuration
+
+```eos
+{% include 'eos/sflow.j2' %}
+```
+{% else %}
+No sFlow defined
+{% endif %}

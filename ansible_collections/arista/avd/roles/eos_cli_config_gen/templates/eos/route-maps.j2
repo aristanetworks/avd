@@ -3,7 +3,15 @@
 {%     for route_map in route_maps | arista.avd.natural_sort %}
 {%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
 route-map {{ route_map }} {{ route_maps[route_map].sequence_numbers[sequence].type }} {{ sequence }}
+{%             if route_maps[route_map].sequence_numbers[sequence].description is defined and route_maps[route_map].sequence_numbers[sequence].description is not none %}
+   description {{ route_maps[route_map].sequence_numbers[sequence].description }}
+{%             endif %}
+{%             if route_maps[route_map].sequence_numbers[sequence].match is defined and route_maps[route_map].sequence_numbers[sequence].match is not none %}
    match {{ route_maps[route_map].sequence_numbers[sequence].match }}
+{%             endif %}
+{%             if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}
+   set {{ route_maps[route_map].sequence_numbers[sequence].set }}
+{%             endif %}
 !
 {%         endfor %}
 {%     endfor %}

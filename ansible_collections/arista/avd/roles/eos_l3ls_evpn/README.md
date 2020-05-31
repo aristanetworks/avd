@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_l3ls_evpn](#ansible-role-eosl3lsevpn)
+- [Ansible Role: eos_l3ls_evpn](#ansible-role-eos_l3ls_evpn)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -16,8 +16,11 @@
       - [L2 Leafs Variables](#l2-leafs-variables)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
+      - [Single attached server scenario](#single-attached-server-scenario)
+      - [MLAG dual-attached server scenario](#mlag-dual-attached-server-scenario)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
+    - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -806,15 +809,30 @@ tenants:
             # Enable or disable interface
             enabled: < true | false >
 
-            # Ip subnet of vlan. the first IP address will be assigned as the anycast address
-            # to each svi interface. | Required
-            ip_subnet: < IPv4_address/Mask >
+            # ip address virtual to configure VXLAN Anycast IP address
+            # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
+            # Optional
+            ip_address_virtual:: < IPv4_address/Mask >
+
+            # ip virtual-router address
+            # note, also requires an IP address to be configured on the SVI where it is applied.
+            # Optional
+            ip_virtual_router_address: < IPv4_address/Mask >
+
+            # Define node specific configuration, such as unique IP addresses.
+            nodes:
+              < l3_leaf_inventory_hostname_1 >:
+                # device unique IP address for node.
+                ip_address: < IPv4_address/Mask >
+
+              < l3_leaf_inventory_hostname_2 >:
+                ip_address: < IPv4_address/Mask >
 
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
       < tenant_a_vrf_2 >:
         vrf_vni: <1-1024>
@@ -823,12 +841,12 @@ tenants:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
    # Define L2 network services organized by vlan id.
     l2vlans:
@@ -863,13 +881,13 @@ tenants:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
           < 1-4096 >:
             vni_override: < 1-16777215 >
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
             enabled: < true | false >
-            ip_subnet: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
     l2vlans:
       < 1-4096 >:
         vni_override: < 1-16777215 >
@@ -901,13 +919,32 @@ tenants:
             name: Tenant_A_OP_Zone_1
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.1.10.0/24
+            ip_address_virtual: 10.1.10.0/24
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.1.11.0/24
+            ip_address_virtual: 10.1.11.0/24
+          112:
+            name: Tenant_A_OP_Zone_3
+            tags: [ DC1_LEAF2 ]
+            enabled: true
+            ip_virtual_router_address: 10.1.12.1/24
+            nodes:
+              DC1-LEAF2A:
+                ip_address: 10.1.12.2/24
+              DC1-LEAF2B:
+                ip_address: 10.1.12.3/24
+          113:
+            name: Tenant_A_OP_Zone_WAN
+            tags: [ DC1_BL1 ]
+            enabled: true
+            nodes:
+              DC1-BL1A:
+                ip_address: 10.1.13.1/24
+              DC1-BL1B:
+                ip_address: 10.1.13.2/24
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
@@ -915,12 +952,12 @@ tenants:
             name: Tenant_A_WEB_Zone_1
             tags: [ web, erp1 ]
             enabled: true
-            ip_subnet: 10.1.20.0/24
+            ip_address_virtual: 10.1.20.0/24
           121:
             name: Tenant_A_WEBZone_2
             tags: [ web ]
             enabled: true
-            ip_subnet: 10.1.21.0/24
+            ip_address_virtual: 10.1.21.0/24
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -928,12 +965,12 @@ tenants:
             name: Tenant_A_APP_Zone_1
             tags: [ app, erp1 ]
             enabled: true
-            ip_subnet: 10.1.30.0/24
+            ip_address_virtual: 10.1.30.0/24
           131:
             name: Tenant_A_APP_Zone_2
             tags: [ app ]
             enabled: true
-            ip_subnet: 10.1.31.0/24
+            ip_address_virtual: 10.1.31.0/24
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -941,12 +978,12 @@ tenants:
             name: Tenant_A_DB_BZone_1
             tags: [ db, erp1 ]
             enabled: true
-            ip_subnet: 10.1.40.0/24
+            ip_address_virtual: 10.1.40.0/24
           141:
             name: Tenant_A_DB_Zone_2
             tags: [ db ]
             enabled: true
-            ip_subnet: 10.1.41.0/24
+            ip_address_virtual: 10.1.41.0/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
@@ -954,7 +991,7 @@ tenants:
             name: Tenant_A_WAN_Zone_1
             tags: [ wan ]
             enabled: true
-            ip_subnet: 10.1.40.0/24
+            ip_address_virtual: 10.1.40.0/24
     l2vlans:
       160:
         vni_override: 55160
@@ -974,12 +1011,12 @@ tenants:
             name: Tenant_B_OP_Zone_1
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.2.10.0/24
+            ip_address_virtual: 10.2.10.0/24
           211:
             name: Tenant_B_OP_Zone_2
             tags: [ opzone ]
             enabled: true
-            ip_subnet: 10.2.11.0/24
+            ip_address_virtual: 10.2.11.0/24
       Tenant_B_WAN_Zone:
         vrf_vni: 21
         svis:
@@ -987,7 +1024,7 @@ tenants:
             name: Tenant_B_WAN_Zone_1
             tags: [ wan ]
             enabled: true
-            ip_subnet: 10.2.50.0/24
+            ip_address_virtual: 10.2.50.0/24
 ```
 
 ### Server Edge Port Connectivity
@@ -1108,10 +1145,15 @@ servers:
   server01:
     rack: RackB
     adapters:
+
+      # Single homed interface from E0 toward DC1-LEAF1A_Eth5
       - server_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
+
+      # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
+      #                            from E2 to DC1-LEAF2B_Eth10
       - server_ports: [ E1, E2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
@@ -1124,6 +1166,9 @@ servers:
   server03:
     rack: RackC
     adapters:
+
+      # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
+      #                            from E1 to DC1-SVC3B_Eth10
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
@@ -1132,7 +1177,44 @@ servers:
           state: present
           description: PortChanne1
           mode: active
+```
 
+#### Single attached server scenario
+
+Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+      - server_ports: [ E0 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC1-LEAF1A ]
+        profile: MGMT
+```
+
+#### MLAG dual-attached server scenario
+
+MLAG dual-homed connection:
+
+- From `E0` to `DC1-SVC3A` interface `Eth10`
+- From `E1` to `DC1-SVC3B` interface `Eth10`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
 ```
 
 ### Variable to attach additional configlets
@@ -1185,11 +1267,50 @@ event_handlers:
 event_handlers:
   evpn-blacklist-recovery:
     action_type: bash
-    action: FastCli -p 15 -c “clear bgp evpn host-flap”
+    action: FastCli -p 15 -c "clear bgp evpn host-flap"
     delay: 300
     trigger: on-logging
     regex:  EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
+```
+
+### Platform Specific settings
+
+- Set platform specific settings, TCAM profile and reload delay.
+- The reload delay values should be reviewed and tuned to the specific environment.
+- If the platform is not defined, it will load parameters from the platform tagged `default`.
+
+**Variables and Options:**
+
+```yaml
+platform_settings:
+  - platforms: [ default ]
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+  - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
+    tcam_profile: < tcam_profile >
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+
+```
+
+note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
+
+**Example:**
+
+```yaml
+# platform_settings:
+#   - platforms: [ default ]
+#     reload_delay:
+#       mlag: 300
+#       non_mlag: 330
+#   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+#     tcam_profile: vxlan-routing
+#     reload_delay:
+#       mlag: 780
+#       non_mlag: 1020
 ```
 
 ### vEOS-LAB Know Caveats and Recommendations

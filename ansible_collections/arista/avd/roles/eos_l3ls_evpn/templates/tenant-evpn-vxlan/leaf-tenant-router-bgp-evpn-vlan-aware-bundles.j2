@@ -8,7 +8,7 @@
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         both:
-          asn: "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+          - "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       redistribute_routes:
         - learned
 {%                 set vlan_range = [] %}
@@ -30,9 +30,9 @@
       route_targets:
         both:
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
-          asn: "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
+          - "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                 else %}
-          asn: "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
 {%                 endif %}
       redistribute_routes:
         - learned

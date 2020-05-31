@@ -1,4 +1,5 @@
 {# Leaf mlag configuration #}
+{% set ns = namespace() %}
 {% if leaf.mlag == true %}
 ### MLAG Configuration ###
 mlag_configuration:
@@ -10,11 +11,25 @@ mlag_configuration:
     vrf: {{ mgmt_interface_vrf }}
   dual_primary_detection_delay: 5
   peer_link: Port-Channel{{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}
-{%     if switch.platform in tcam_profile.vxlan_routing %}
-  reload_delay_mlag: 1020
-  reload_delay_non_mlag: 780
-{%     else %}
-  reload_delay_mlag: 360
-  reload_delay_non_mlag: 300
-{%     endif %}
+{%     set ns = namespace() %}
+{%     for platform_setting in platform_settings %}
+{%         set ns.platform_defined = false %}
+{%         if switch.platform in platform_setting.platforms %}
+{%             set ns.platform_defined = true %}
+{%             if platform_setting.reload_delay is defined %}
+  reload_delay_mlag: {{ platform_setting.reload_delay.mlag }}
+  reload_delay_non_mlag: {{ platform_setting.reload_delay.non_mlag }}
+{%             endif %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     for platform_setting in platform_settings if ns.platform_defined == false %}
+{%         if 'default' in platform_setting.platforms %}
+{%             if platform_setting.reload_delay is defined %}
+  reload_delay_mlag: {{ platform_setting.reload_delay.mlag }}
+  reload_delay_non_mlag: {{ platform_setting.reload_delay.non_mlag }}
+{%             endif %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
 {% endif %}

@@ -1,5 +1,8 @@
 {# spanning-tree #}
 {% if spanning_tree is defined %}
+{%     if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
+spanning-tree edge-port bpduguard default
+{%     endif %}
 spanning-tree mode {{ spanning_tree.mode }}
 {%     if spanning_tree.no_spanning_tree_vlan is defined %}
 no spanning-tree vlan-id {{ spanning_tree.no_spanning_tree_vlan }}

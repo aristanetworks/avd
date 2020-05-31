@@ -89,6 +89,8 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 
 ## Getting started Script
 
+### Step by step installation process
+
 ```shell
 mkdir git_projects
 cd git_projects
@@ -98,4 +100,10 @@ git clone https://github.com/aristanetworks/netdevops-examples.git
 cp ansible-avd/development/* ./
 make build
 make run
+```
+
+### One liner installation
+
+```shell
+$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/master/development/install.sh)"
 ```

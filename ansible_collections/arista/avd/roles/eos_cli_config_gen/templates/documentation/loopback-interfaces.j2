@@ -1,12 +1,24 @@
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
 ### Loopback Interfaces Summary
 
+IPv4
+
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
 | {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description }} |
 {%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
 {%-        if loopback_interfaces[loopback_interface].ip_address is defined %} {{ loopback_interfaces[loopback_interface].ip_address }} {% else %} - {% endif -%} |
+{%     endfor %}
+
+IPv6
+
+| Interface | Description | VRF | IPv6 Address |
+| --------- | ----------- | --- | ------------ |
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description }} |
+{%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
+{%-        if loopback_interfaces[loopback_interface].ipv6_address is defined %} {{ loopback_interfaces[loopback_interface].ipv6_address }} {% else %} - {% endif -%} |
 {%     endfor %}
 
 ### Loopback Interfaces Device Configuration
