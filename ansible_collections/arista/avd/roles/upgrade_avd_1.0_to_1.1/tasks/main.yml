@@ -15,6 +15,7 @@
   
   - name: convert DC1_TENANTS_NETWORKS.yml from 1.0 to 1.1 version
     template:
+      trim_blocks: no
       src: "DC1_TENANTS_NETWORKS.j2"
       dest: ./upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml
     delegate_to: localhost
