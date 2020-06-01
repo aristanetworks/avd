@@ -529,7 +529,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
-    spanning_tree_portfast: < portfast_mode >
+    spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
   < Port-Channel_interface_3 >:
     description: < description >
@@ -606,7 +606,7 @@ ethernet_interfaces:
     qos:
       trust: < cos | dscp >
     spanning_tree_bpdufilter: < true | false >
-    spanning_tree_portfast: < portfast_mode >
+    spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
 ```
 
