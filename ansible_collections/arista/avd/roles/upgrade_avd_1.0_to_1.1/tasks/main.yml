@@ -1,0 +1,23 @@
+---
+  # create required directories
+  - name: 'Create directory for updated data model'
+    file:
+      path: ./upgrade_1.0_to_1.1/group_vars
+      state: directory
+      mode: 0755
+    delegate_to: localhost
+  
+  # convert DC1_TENANTS_NETWORKS.yml from 1.0 to 1.1 version
+  - name: load vars
+    include_vars:
+      file: ./group_vars/DC1_TENANTS_NETWORKS.yml
+      name: tenants_and_networks
+  
+  - name: convert DC1_TENANTS_NETWORKS.yml from 1.0 to 1.1 version
+    template:
+      src: "DC1_TENANTS_NETWORKS.j2"
+      dest: ./upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml
+    delegate_to: localhost
+    run_once: true
+    check_mode: no
+    tags: [upgrade, 1.0_to_1.1]
