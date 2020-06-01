@@ -1043,6 +1043,10 @@ port_profiles:
     # Interface vlans | required
     vlans: < vlans as string >
 
+    # Spanning Tree
+    spanning_tree_portfast: < edge | network >
+    spanning_tree_bpdufilter: < true | false >
+
     # Flow control | Optional
     flowcontrol:
       received: < received | send | on >
@@ -1126,6 +1130,7 @@ port_profiles:
   VM_Servers:
     mode: trunk
     vlans: "110-111,120-121,130-131"
+    spanning_tree_portfast: edge
 
   MGMT:
     mode: access
