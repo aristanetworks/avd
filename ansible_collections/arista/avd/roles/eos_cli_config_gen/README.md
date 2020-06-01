@@ -877,7 +877,8 @@ ipv6_prefix_lists:
         action: "< action as string >"
 ```
 
-### IPv6 Routing ###
+### IPv6 Routing
+
 ipv6_unicast_routing: < true | false >
 
 ### MLAG Configuration
@@ -1119,7 +1120,7 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
-### Routing - Multicast
+### Router Multicast
 
 ```yaml
 router_multicast:
