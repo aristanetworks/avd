@@ -23,6 +23,7 @@
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
+    - [Radius Servers](#radius-servers)
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
@@ -275,6 +276,15 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
+```
+
+### Radius Servers
+
+```yaml
+radius_servers:
+  - host: < host IP address or name >
+    vrf: < vrf_name >
+    key: < encypted_key >
 ```
 
 ### Router L2 VPN
