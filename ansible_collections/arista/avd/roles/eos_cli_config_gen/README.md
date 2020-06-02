@@ -648,7 +648,6 @@ vlan_interfaces:
     shutdown: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
-    ip_address_virtual: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
