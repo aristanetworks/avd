@@ -1,6 +1,7 @@
 {# eos - VLAN Interfaces #}
 {% if vlan_interfaces is defined and vlan_interfaces is not none %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+!
 interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %}
    description {{ vlan_interfaces[vlan_interface].description }}
@@ -94,6 +95,5 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is defined and vlan_interfaces[vlan_interface].ipv6_virtual_router_address is not none %}
    ipv6 virtual-router address {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

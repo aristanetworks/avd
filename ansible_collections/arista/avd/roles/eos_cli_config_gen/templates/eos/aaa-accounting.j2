@@ -1,5 +1,6 @@
 {# eos - aaa accounting #}
 {% if aaa_accounting is defined and aaa_accounting is not none %}
+!
 {%     if aaa_accounting.exec.default is defined and aaa_accounting.exec.default is not none %}
 {%        if aaa_accounting.exec.default.group is defined and aaa_accounting.exec.default.group is not none %}
 aaa accounting exec default {{ aaa_accounting.exec.default.type }} group {{ aaa_accounting.exec.default.group }}
@@ -14,8 +15,7 @@ aaa accounting commands {{ command_default.commands }} default {{ command_defaul
 {%        endif %}
 {%     endif %}
 no aaa root
-!
 {% else %}
-no aaa root
 !
+no aaa root
 {% endif %}

@@ -1,6 +1,5 @@
 {# Device Configuration #}
 !RANCID-CONTENT-TYPE: arista
-!
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# aliases #}
@@ -18,14 +17,15 @@
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
 {# cannot be disabled in current EOS releases #}
-transceiver qsfp default-mode 4x10G
 !
+transceiver qsfp default-mode 4x10G
 {# service routing protocols model #}
 {% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
+!
 hostname {{ inventory_hostname }}
 {# domain lookup #}
 {% include 'eos/domain-lookup.j2' %}
@@ -142,4 +142,5 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+!
 end

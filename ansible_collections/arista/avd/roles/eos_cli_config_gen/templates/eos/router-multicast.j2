@@ -1,5 +1,6 @@
 {# eos - IP Multicast Routing #}
 {% if router_multicast is defined and router_multicast is not none %}
+!
 router multicast
 {%     if router_multicast.ipv4 is defined and router_multicast.ipv4 is not none %}
    ipv4
@@ -7,5 +8,4 @@ router multicast
       routing
 {%          endif %}
 {%     endif %}
-!
 {% endif %}

@@ -1,5 +1,6 @@
 {# eos - mlag configuration #}
 {% if mlag_configuration is defined and mlag_configuration is not none %}
+!
 mlag configuration
    domain-id {{ mlag_configuration.domain_id }}
    local-interface {{ mlag_configuration.local_interface }}
@@ -14,5 +15,4 @@ mlag configuration
 {%   endif %}
    reload-delay mlag {{ mlag_configuration.reload_delay_mlag }}
    reload-delay non-mlag {{ mlag_configuration.reload_delay_non_mlag }}
-!
 {% endif %}

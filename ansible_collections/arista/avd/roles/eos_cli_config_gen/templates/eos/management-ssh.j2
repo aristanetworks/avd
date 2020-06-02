@@ -1,5 +1,6 @@
 {# Management SSH #}
 {% if management_ssh is defined and management_ssh is not none %}
+!
 management ssh
 {%     if management_ssh.access_groups is defined and management_ssh.access_groups is not none %}
 {%         for access_group in management_ssh.access_groups %}
@@ -30,5 +31,4 @@ management ssh
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-!
 {% endif %}

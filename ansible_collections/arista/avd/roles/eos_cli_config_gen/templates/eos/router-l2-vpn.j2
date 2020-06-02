@@ -1,5 +1,6 @@
 {# eos - Router L2 VPN #}
 {% if router_l2_vpn is defined and router_l2_vpn is not none %}
+!
 router l2-vpn
 {%    if '7020' in switch_platform or '7160' in switch_platform %}
 {%    else %}
@@ -16,5 +17,4 @@ router l2-vpn
    arp proxy prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}
 {%       endif %}
 {%    endif %}
-!
 {% endif %}

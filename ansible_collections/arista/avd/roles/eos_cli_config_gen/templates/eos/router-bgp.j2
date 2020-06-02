@@ -1,5 +1,6 @@
 {# eos - router bgp #}
 {% if router_bgp is defined and router_bgp is not none %}
+!
 router bgp {{ router_bgp.as }}
    router-id {{ router_bgp.router_id }}
 {%     for bgp_default in router_bgp.bgp_defaults %}
@@ -292,5 +293,4 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-!
 {% endif %}

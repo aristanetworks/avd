@@ -1,6 +1,7 @@
 {# eos - Ethernet Interfaces #}
 {% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+!
 interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %}
    description {{ ethernet_interfaces[ethernet_interface].description }}
@@ -102,6 +103,5 @@ interface {{ ethernet_interface }}
    vmtracer vmware-esx
 {%             endif %}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}
