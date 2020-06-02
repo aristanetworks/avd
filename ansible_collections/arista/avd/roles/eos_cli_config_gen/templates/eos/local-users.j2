@@ -2,6 +2,6 @@
 {% if local_users is defined %}
 !
 {%     for local_user in local_users | arista.avd.natural_sort %}
-username {{ local_user }} privilege {{ local_users[local_user].privilege }} role {{ local_users[local_user].role }} secret sha512 {{ local_users[local_user].sha512_password }}
+username {{ local_user }} privilege {{ local_users[local_user].privilege }}{% if local_users[local_user].role is defined %} role {{ local_users[local_user].role }}{% endif %} secret sha512 {{ local_users[local_user].sha512_password }}
 {%     endfor %}
 {% endif %}
