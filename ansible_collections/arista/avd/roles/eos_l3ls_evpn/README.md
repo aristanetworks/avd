@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_l3ls_evpn](#ansible-role-eosl3lsevpn)
+- [Ansible Role: eos_l3ls_evpn](#ansible-role-eos_l3ls_evpn)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -16,8 +16,11 @@
       - [L2 Leafs Variables](#l2-leafs-variables)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
+      - [Single attached server scenario](#single-attached-server-scenario)
+      - [MLAG dual-attached server scenario](#mlag-dual-attached-server-scenario)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
+    - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -1104,10 +1107,15 @@ servers:
   server01:
     rack: RackB
     adapters:
+
+      # Single homed interface from E0 toward DC1-LEAF1A_Eth5
       - server_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
+
+      # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
+      #                            from E2 to DC1-LEAF2B_Eth10
       - server_ports: [ E1, E2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
@@ -1120,6 +1128,9 @@ servers:
   server03:
     rack: RackC
     adapters:
+
+      # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
+      #                            from E1 to DC1-SVC3B_Eth10
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
@@ -1128,7 +1139,44 @@ servers:
           state: present
           description: PortChanne1
           mode: active
+```
 
+#### Single attached server scenario
+
+Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+      - server_ports: [ E0 ]
+        switch_ports: [ Ethernet5 ]
+        switches: [ DC1-LEAF1A ]
+        profile: MGMT
+```
+
+#### MLAG dual-attached server scenario
+
+MLAG dual-homed connection:
+
+- From `E0` to `DC1-SVC3A` interface `Eth10`
+- From `E1` to `DC1-SVC3B` interface `Eth10`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
 ```
 
 ### Variable to attach additional configlets
@@ -1186,6 +1234,45 @@ event_handlers:
     trigger: on-logging
     regex:  EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
+```
+
+### Platform Specific settings
+
+- Set platform specific settings, TCAM profile and reload delay.
+- The reload delay values should be reviewed and tuned to the specific environment.
+- If the platform is not defined, it will load parameters from the platform tagged `default`.
+
+**Variables and Options:**
+
+```yaml
+platform_settings:
+  - platforms: [ default ]
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+  - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
+    tcam_profile: < tcam_profile >
+    reload_delay:
+      mlag: < seconds >
+      non_mlag: < seconds >
+
+```
+
+note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
+
+**Example:**
+
+```yaml
+# platform_settings:
+#   - platforms: [ default ]
+#     reload_delay:
+#       mlag: 300
+#       non_mlag: 330
+#   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+#     tcam_profile: vxlan-routing
+#     reload_delay:
+#       mlag: 780
+#       non_mlag: 1020
 ```
 
 ### vEOS-LAB Know Caveats and Recommendations

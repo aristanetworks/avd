@@ -7,5 +7,5 @@
 - name: backup running config
   copy:
     content: "{{ backup.stdout[0] }}"
-    dest: "./config_backup/{{ inventory_hostname }}_running-config.conf"
+    dest: "{{inventory_dir}}/config_backup/{{ inventory_hostname }}_running-config.conf"
   listen: "backup config"
