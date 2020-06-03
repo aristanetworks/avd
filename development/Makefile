@@ -1,6 +1,6 @@
-CONTAINER_NAME = ansible_avd
-ANSIBLE_VERSION = 2.9.6
-CONTAINER = $(CONTAINER_NAME):$(ANSIBLE_VERSION)
+CONTAINER_NAME = avdteam/base
+DOCKER_TAG = centos-7
+CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 HOME_DIR = $(shell pwd)
 HOME_DIR_DOCKER = '/home/docker'
 UID = $(shell id -u)
@@ -17,7 +17,7 @@ build: ## Build a new image of avd container
 
 .PHONY: run
 run: ## Run ansible-avd container
-	docker run --rm -it --name $(CONTAINER_NAME)_$(ANSIBLE_VERSION) \
+	docker run --rm -it \
 		-v $(HOME)/.ssh:$(HOME_DIR_DOCKER)/.ssh \
 		-v $(HOME)/.gitconfig:$(HOME_DIR_DOCKER)/.gitconfig \
 		-v $(HOME_DIR)/:/projects \
