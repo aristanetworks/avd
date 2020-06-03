@@ -50,6 +50,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter == true %}
    spanning-tree bpdufilter enable
 {%             endif%}
+{%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard == true %}
+   spanning-tree bpduguard enable
+{%             endif%}
 {%             if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%             endif %}
