@@ -26,7 +26,7 @@ else
     exit 1
 fi
 
-if [ ! -d "${_ROOT_INSTALLATION_DIR}" ]; then 
+if [ ! -d "${_ROOT_INSTALLATION_DIR}" ]; then
     echo "  * creating local installation folder: ${_ROOT_INSTALLATION_DIR}"
     mkdir -p ${_ROOT_INSTALLATION_DIR}
     echo "  * cloning ansible-avd collections to ${_LOCAL_AVD}"
@@ -37,7 +37,7 @@ if [ ! -d "${_ROOT_INSTALLATION_DIR}" ]; then
     git clone ${_REPO_EXAMPLES} ${_LOCAL_EXAMPLES}
     if [ -d ${_DEV_FOLDER} ]; then
         echo "deploying development content to ${_ROOT_INSTALLATION_DIR}"
-        cp ${_DEV_FOLDER}/* ${_ROOT_INSTALLATION_DIR}
+        cp ${_DEV_FOLDER}/Makefile ${_ROOT_INSTALLATION_DIR}
     else
         echo "  ! error: development folder is missing"
     fi
