@@ -5,7 +5,7 @@
   inventory_to_container:
     inventory: '{{ inventory_file }}'
     container_root: '{{ container_root }}'
-    configlet_dir: '{{playbook_dir}}/intended/configs'
+    configlet_dir: '{{inventory_dir}}/intended/configs'
     configlet_prefix: '{{ configlets_prefix }}'
     destination: '{{inventory_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}_configlets.yml'
     device_filter: ['{{ device_filter }}']
