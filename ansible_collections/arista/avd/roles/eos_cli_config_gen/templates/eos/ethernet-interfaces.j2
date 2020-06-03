@@ -118,6 +118,12 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point == true %}
    isis network point-to-point
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
+   vmtracer vmware-esx
+{%             endif %}
 {%         endif %}
 !
 {%     endfor %}

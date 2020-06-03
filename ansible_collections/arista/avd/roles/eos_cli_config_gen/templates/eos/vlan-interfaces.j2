@@ -97,6 +97,17 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point == true %}
    isis network point-to-point
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].pim is defined and vlan_interfaces[vlan_interface].pim is not none %}
+{%            if vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode is defined and vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%            endif %}
+{%            if vlan_interfaces[vlan_interface].pim.ipv4.local_interface is defined and vlan_interfaces[vlan_interface].pim.ipv4.local_interface is not none %}
+   pim ipv4 local-interface {{ vlan_interfaces[vlan_interface].pim.ipv4.local_interface }}
+{%            endif %}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is defined and vlan_interfaces[vlan_interface].ipv6_virtual_router_address is not none %}
+   ipv6 virtual-router address {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }}
+{%         endif %}
 !
 {%     endfor %}
 {% endif %}
