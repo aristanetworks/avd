@@ -5,9 +5,9 @@
   inventory_to_container:
     inventory: '{{ inventory_file }}'
     container_root: '{{ container_root }}'
-    configlet_dir: '{{playbook_dir}}/intended/configs'
+    configlet_dir: '{{inventory_dir}}/intended/configs'
     configlet_prefix: '{{ configlets_prefix }}'
-    destination: '{{inventory_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}.yml'
+    destination: '{{inventory_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}_2.yml'
   register: CVP_VARS
 
 - name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
