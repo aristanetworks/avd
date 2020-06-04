@@ -25,4 +25,4 @@ run: ## Run ansible-avd container
 
 .PHONY: clean
 clean: ## Remove avd image from local repository
-	docker rmi $(CONTAINER_NAME):$(ANSIBLE_VERSION)
+	docker rmi $(CONTAINER_NAME):$(DOCKER_TAG)
