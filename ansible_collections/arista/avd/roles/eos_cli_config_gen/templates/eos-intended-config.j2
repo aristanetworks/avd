@@ -37,6 +37,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ntp-servers.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
+{# aaa server groups #}
+{% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
@@ -53,8 +55,6 @@ hostname {{ inventory_hostname }}
 {% include 'eos/unsupported-transeiver.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
-{# aaa server groups #}
-{% include 'eos/aaa-server-groups.j2' %}
 {# aaa authentication #}
 {% include 'eos/aaa-authentication.j2' %}
 {# aaa authorization #}
