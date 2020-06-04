@@ -15,12 +15,10 @@ management ssh
 {%     if management_ssh.idle_timeout is defined and management_ssh.idle_timeout is not none %}
    idle-timeout {{ management_ssh.idle_timeout }}
 {%     endif %}
-{%     if management_ssh.enable is defined and management_ssh.enable == true %}
-   no shutdown
-{%     else %}
+{%     if management_ssh.enable is defined and management_ssh.enable == false %}
    shutdown
-{%     endif %}
    !
+{%     endif %}
 {%     if management_ssh.vrfs is defined and management_ssh.vrfs is not none %}
 {%         for vrf in management_ssh.vrfs %}
    vrf {{ vrf }}
