@@ -1,22 +1,31 @@
 {# eos - SFlow #}
 {% if sflow is defined and sflow is not none %}
-{%     if sflow.destinations is defined and sflow.destinations is not none %}
-{%      for destination in sflow.destinations %}
-{%          if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %}
-sflow destination {{ destination }} {{ sflow.destinations[destination].port }}
-{%          else %}
-sflow destination {{ destination }}
-{%          endif %}
-{%      endfor %}
-{%     endif %}
-{%     if sflow.source_interface is defined and sflow.source_interface is not none %}
+{# eos - VRF based SFlow #}
+{%   if sflow.vrfs is defined and sflow.vrfs is not none %}
+{%     for vrf in sflow.vrfs %}
+{%       for destination in vrf.destinations %}
+{%         set port = vrf.destinations[destination].port if vrf.destinations[destination].port is defined else '' %}
+sflow vrf {{ vrf.name }} destination {{ destination }} {{ port }}
+{%       endfor %}
+{%       if vrf.source_interface is defined and vrf.source_interface is not none %}
+sflow vrf {{ vrf.name }} source-interface {{ vrf.source_interface }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{%   if sflow.destinations is defined and sflow.destinations is not none %}
+{%     for destination in sflow.destinations %}
+{%       set port = sflow.destinations[destination].port if sflow.destinations[destination].port is defined else '' %}
+sflow destination {{ destination }} {{ port }}
+{%     endfor %}
+{%   endif %}
+{%   if sflow.source_interface is defined and sflow.source_interface is not none %}
 sflow source-interface {{ sflow.source_interface }}
-{%     endif %}
-{%     if sflow.sample is defined and sflow.sample is not none %}
+{%   endif %}
+{%   if sflow.sample is defined and sflow.sample is not none %}
 sflow sample dangerous {{ sflow.sample }}
-{%     endif %}
-{%     if sflow.run is defined and sflow.run == True %}
+{%   endif %}
+{%   if sflow.run is defined and sflow.run == True %}
 sflow run
-{%     endif %}
+{%   endif %}
 !
 {% endif %}

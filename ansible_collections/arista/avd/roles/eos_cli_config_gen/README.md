@@ -292,8 +292,16 @@ router_l2_vpn:
 sflow:
   destinations:
     < sflow_destination_ip_1 >:
+      port: < sflow_destination_port >
     < sflow_destination_ip_2 >:
   source_interface: < source_interface_name >
+  vrfs:
+    name: < vrf_name >
+    destinations:
+      < sflow_destination_ip_1 >:
+        port: < sflow_destination_port >
+      < sflow_destination_ip_2 >:
+    source_interface: < source_interface_name >
   sample: < sample_rate >
   run: < true | false >
 ```
