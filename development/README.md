@@ -6,9 +6,6 @@
     - [Python Virtual Environment](#python-virtual-environment)
       - [Install Python3 Virtual Environment](#install-python3-virtual-environment)
     - [Docker Container for Ansible Testing and Development](#docker-container-for-ansible-testing-and-development)
-      - [Build Docker Container](#build-docker-container)
-      - [Run Docker Container](#run-docker-container)
-      - [Stop Docker Container](#stop-docker-container)
   - [Getting started Script](#getting-started-script)
     - [Step by step installation process](#step-by-step-installation-process)
   - [Development tools](#development-tools)
@@ -70,43 +67,9 @@ The ansible version is passed in with the docker build command using ***ANSIBLE*
 
 Before you can use a container, you must install Docker CE on your workstation: https://www.docker.com/products/docker-desktop
 
-#### Build Docker Container
+Since docker image is now automatically published on [__docker-hub__](https://hub.docker.com/repository/docker/avdteam/base), a dedicated repository is available on [__Arista Netdevops Community__](https://github.com/arista-netdevops-community/docker-avd-base).
 
-In addition to the `Dockerfile`, a `Makefile` is provided to help provision the container a single step. A user can pass the ansible version number to make and alter the default ansible-version number.  This allows a user to setup multiple containers running differing versions of ansible.
-
-```shell
-make build                        # Use default version of Ansible
-make build ANSIBLE_VERSION=2.9.5  # Explicitly set Ansible version to 2.9.5
-
-docker images
-REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
-ansible_avd         2.9.6               5291937a2214        33 minutes ago      795MB
-ansible_avd         2.9.5               27f648c4c249        46 hours ago        912MB
-```
-
-#### Run Docker Container
-
-```shell
-make run                        # Use default version of Ansible
-make run ANSIBLE_VERSION=2.9.5  # Explicitly set Ansible version to 2.9.5
-
-docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-e682058d7dae        ansible_avd:2.9.5   "/bin/sh"           6 seconds ago       Up 5 seconds                            ansible_avd_2.9.5
-540a8e778907        ansible_avd:2.9.6   "/bin/sh"           38 seconds ago      Up 37 seconds                           ansible_avd_2.9.6
-```
-
-#### Stop Docker Container
-
-Another make target (clean) has been created to stop and remove the container once the user is finished with it.
-
-```shell
-make clean                       # Clean default version of Ansible
-make clean ANSIBLE_VERSION=2.9.5 # Explicitly clean Ansible version to 2.9.5
-
-docker ps
-CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
-```
+If you want to test a specific ansible version, you can refer to this [dedicated page](https://github.com/arista-netdevops-community/docker-avd-base/blob/master/USAGE.md) to build your own docker image.
 
 ## Getting started Script
 
@@ -118,8 +81,7 @@ cd git_projects
 git clone https://github.com/aristanetworks/ansible-avd.git
 git clone https://github.com/aristanetworks/ansible-cvp.git
 git clone https://github.com/aristanetworks/netdevops-examples.git
-cp ansible-avd/development/* ./
-make build
+cp ansible-avd/development/Makefile ./
 make run
 ```
 
