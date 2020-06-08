@@ -48,12 +48,12 @@
 {%          endif %}
 {%          if router_bgp.peer_groups[peer_group].maximum_routes is defined and router_bgp.peer_groups[peer_group].maximum_routes is not none %}
 | maximum routes |{% if router_bgp.peer_groups[peer_group].maximum_routes == 0 %} 0 (no limit) |{% else %} {{ router_bgp.peer_groups[peer_group].maximum_routes }} |{% endif %}
+
 {%          endif %}
 {%    endfor %}
 {%   endif %}
 
 {% if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
-
 ### BGP Neighbors
 
 | Neighbor | Remote AS |
