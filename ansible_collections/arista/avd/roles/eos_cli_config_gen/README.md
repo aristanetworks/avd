@@ -11,6 +11,7 @@
     - [Aliases](#aliases)
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
+    - [IP DHCP Relay](#ip-dhcp-relay)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP IGMP Snooping](#ip_igmp_snooping#)
     - [Event Monitor](#event-monitor)
@@ -155,6 +156,15 @@ daemon_terminattr:
   ingestexclude: "< list as string >"
 
 ```
+
+### IP DHCP Relay
+
+```yaml
+ip_dhcp_relay:
+  information_option: true
+  
+```
+
 
 ### Internal VLAN Allocation Policy
 
