@@ -163,8 +163,8 @@ daemon_terminattr:
 
 ```yaml
 ip_dhcp_relay:
-  information_option: true
-  
+  information_option: < true | false >
+
 ```
 
 
