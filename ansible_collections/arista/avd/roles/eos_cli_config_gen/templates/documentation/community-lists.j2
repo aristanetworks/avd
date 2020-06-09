@@ -1,0 +1,17 @@
+{% if community_lists is defined and community_lists is not none %}
+### Community Lists Summary
+
+| Name | Action |
+| -------- | ------ |
+{%     for community_list in community_lists | arista.avd.natural_sort %}
+| {{ community_list }} | {{ community_lists[community_list].action }} |
+{%     endfor %}
+
+### Community Lists Device Configuration
+
+```eos
+{% include 'eos/community-lists.j2' %}
+```
+{% else %}
+Community Lists not defined
+{% endif %}

@@ -61,6 +61,7 @@
     - [IPv6 Prefix Lists](#ipv6-prefix-lists)
     - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
+    - [Community Lists](#community-lists)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
@@ -166,7 +167,6 @@ ip_dhcp_relay:
   information_option: < true | false >
 
 ```
-
 
 ### Internal VLAN Allocation Policy
 
@@ -919,6 +919,16 @@ mlag_configuration:
   peer_link: < Port-Channel_id >
   reload_delay_mlag: < seconds >
   reload_delay_non_mlag: < seconds >
+```
+
+### Community Lists
+
+```yaml
+community_lists:
+  < community_list_name_1 >:
+    action: "< action as string >"
+  < community_list_name_2 >:
+    action: "< action as string >"
 ```
 
 ### Route Maps
