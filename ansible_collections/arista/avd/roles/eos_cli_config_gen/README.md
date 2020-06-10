@@ -20,6 +20,7 @@
     - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
     - [Logging](#logging)
+    - [LLDP](#lldp)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
@@ -229,6 +230,16 @@ queue_monitor_length:
 
 ```yaml
 service_routing_protocols_model: < multi-agent | ribd >
+```
+
+### LLDP
+
+```yaml
+lldp:
+  timer: < transmission_time >
+  holdtime: < hold_time_period >
+  management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
+  vrf: < vrf_name >
 ```
 
 ### Logging
