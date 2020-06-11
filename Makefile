@@ -45,7 +45,7 @@ sanity-import: ## Run ansible-test sanity for code import
 	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import
 
 #########################################
-# Misc Actions 							#
+# Code Validation & CI Actions 			#
 #########################################
 
 .PHONY: linting
@@ -57,21 +57,16 @@ linting: ## Run pre-commit script for python code linting using pylint
 pre-commit: ## Execute pre-commit validation
 	pre-commit run --all-files
 
-.PHONY: github-configure-ci
-github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
-
 .PHONY: playbook-validation
 playbook-validation: ## Run script to validate playbooks defined under testing/ folder
 	sh .github/run-test-playbooks
 
-.PHONY: github-configure-ci-python3
-github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
-	sudo apt-get update
-	sudo apt-get upgrade -y
-	sudo apt-get install -y python3 python3-pip git python3-setuptools
-	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
-	pip3 install --upgrade wheel
-	pip3 install -r development/requirements.txt
+#########################################
+# Misc Actions (configure CI runner) 	#
+#########################################
+
+.PHONY: github-configure-ci
+github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
 .PHONY: github-configure-ci-ansible
 github-configure-ci-ansible: ## Install Ansible Test on GA (Ubuntu:latest LTS)
@@ -83,15 +78,15 @@ github-configure-ci-ansible: ## Install Ansible Test on GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo apt-get install -y ansible-test
 
-.PHONY: install-requirements
-install-requirements: install-requirements-generic install-requirements-dev ## Install python requirements (normal + dev)
+.PHONY: github-configure-ci-python3
+github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
+	sudo apt-get update
+	sudo apt-get upgrade -y
+	sudo apt-get install -y python3 python3-pip git python3-setuptools
+	sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-.PHONY: install-requirements-generic
-install-requirements-generic: ## Install python requirements for generic purpose
+.PHONY: install-requirements
+install-requirements: ## Install python requirements for generic purpose
 	pip3 install --upgrade wheel
 	pip3 install -r development/requirements.txt
-
-.PHONY: install-requirements-dev
-install-requirements-dev: ## Install python requirements for development purpose
-	pip3 install --upgrade wheel
 	pip3 install -r development/requirements-dev.txt
