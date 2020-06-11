@@ -7,10 +7,14 @@ route-map {{ route_map }} {{ route_maps[route_map].sequence_numbers[sequence].ty
    description {{ route_maps[route_map].sequence_numbers[sequence].description }}
 {%             endif %}
 {%             if route_maps[route_map].sequence_numbers[sequence].match is defined and route_maps[route_map].sequence_numbers[sequence].match is not none %}
-   match {{ route_maps[route_map].sequence_numbers[sequence].match }}
+{%                for match_rule in route_maps[route_map].sequence_numbers[sequence].match | arista.avd.natural_sort %}
+   match {{ match_rule }}
+{%                endfor %}
 {%             endif %}
 {%             if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}
-   set {{ route_maps[route_map].sequence_numbers[sequence].set }}
+{%                for set_rule in route_maps[route_map].sequence_numbers[sequence].set | arista.avd.natural_sort %}
+   set {{ set_rule }}
+{%                endfor %}
 {%             endif %}
 !
 {%         endfor %}

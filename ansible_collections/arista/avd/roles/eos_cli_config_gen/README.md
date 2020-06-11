@@ -922,17 +922,23 @@ route_maps:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        match: "< match as string >"
-        set: "< set as string >"
+        match:
+          - "< match rule 1 as string >"
+          - "< match rule 2 as string >"
+        set:
+          - "< set as string >"
       < sequence_id_2 >:
         type: < permit | deny >
-        match: "< match as string >"
+        match:
+          - "< match as string >"
   < route_map_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        set: "< set as string >"
+        set:
+          - "< set rule 1 as string >"
+          - "< set rule 2 as string >"
 ```
 
 ### Peer Filters
