@@ -54,7 +54,11 @@ linting: ## Run pre-commit script for python code linting using pylint
 	sh .github/lint-python
 
 .PHONY: pre-commit
-pre-commit: ## Execute pre-commit validation
+pre-commit: ## Execute pre-commit validation for staged files
+	pre-commit run
+
+.PHONY: pre-commit-all
+pre-commit-all: ## Execute pre-commit validation for all files
 	pre-commit run --all-files
 
 .PHONY: playbook-validation

@@ -9,6 +9,6 @@ jobs:
     container: avdteam/base:centos-8
     steps:
       - uses: actions/checkout@master
-      - name: 'Lint YAML Content'
+      - name: 'Pre Commit run'
         run: |
           make pre-commit
