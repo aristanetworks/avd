@@ -8,10 +8,13 @@
 | -------- | ---- | ---------------- |
 {%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
 {%              if route_maps[route_map].sequence_numbers[sequence].match is defined and route_maps[route_map].sequence_numbers[sequence].match is not none %}
-| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | match {{ route_maps[route_map].sequence_numbers[sequence].match }} |
+{%                for match_rule in route_maps[route_map].sequence_numbers[sequence].match | arista.avd.natural_sort %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | match {{ match_rule }} |
+{%                endfor %}
 {%              endif %}
-{%              if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}
-| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | set {{ route_maps[route_map].sequence_numbers[sequence].set }} |
+{%              if route_maps[route_map].sequence_numbers[sequence].set is defined and route_maps[route_map].sequence_numbers[sequence].set is not none %}{%                for set_rule in route_maps[route_map].sequence_numbers[sequence].set | arista.avd.natural_sort %}
+| {{ sequence }} | {{ route_maps[route_map].sequence_numbers[sequence].type }} | set {{ set_rule }} |
+{%                endfor %}
 {%              endif %}
 {%         endfor %}
 
