@@ -1,12 +1,6 @@
 name: Commit check
 on:
   push:
-    branches-ignore:
-      - master
-    tags-ignore:
-      - '*'
-    paths:
-      - 'ansible_collections/arista/avd/**'
 
 jobs:
   'pre-commit':
