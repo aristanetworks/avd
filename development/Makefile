@@ -1,5 +1,5 @@
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG = centos-7
+DOCKER_TAG = centos-8
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 HOME_DIR = $(shell pwd)
 HOME_DIR_DOCKER = '/home/docker'
