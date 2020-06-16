@@ -3,6 +3,8 @@ CURRENT_DIR = $(shell pwd)
 ANSIBLE_TEST ?= $(shell which ansible-test)
 # option to run ansible-test sanity: must be either venv or docker (default is docker)
 ANSIBLE_TEST_MODE ?= docker
+# Root path for MKDOCS content
+WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 
 .PHONY: help
 help: ## Display help message
@@ -64,6 +66,22 @@ pre-commit-all: ## Execute pre-commit validation for all files
 .PHONY: playbook-validation
 playbook-validation: ## Run script to validate playbooks defined under testing/ folder
 	sh .github/run-test-playbooks
+
+
+#########################################
+# Documentation actions					#
+#########################################
+.PHONY: webdoc
+webdoc: ## Build documentation to publish static content
+	( cd $(WEBDOC_BUILD) ; \
+	python ansible2rst.py ; \
+	find . -name '*.rst' -exec pandoc {} --from rst --to gfm -o ../modules/{}.md \;)
+	cp $(CURRENT_DIR)/contributing.md $(WEBDOC_BUILD)/.. ;\
+	cp $(CURRENT_DIR)/development/README.md $(WEBDOC_BUILD)/../installation/development.md ;\
+	cp -r $(CURRENT_DIR)/media $(WEBDOC_BUILD)/../ ;\
+	cd $(CURRENT_DIR)
+	mkdocs build -f mkdocs.yml
+
 
 #########################################
 # Misc Actions (configure CI runner) 	#
