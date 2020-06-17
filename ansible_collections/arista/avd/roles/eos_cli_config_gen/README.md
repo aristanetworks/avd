@@ -26,7 +26,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
-    - [Snmp Settings](#snmp-settings)
+    - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -307,7 +307,7 @@ Redundancy:
   protocol: < redundancy_protocol >
 ```
 
-### Snmp Settings
+### SNMP Settings
 
 ```yaml
 snmp_server:
