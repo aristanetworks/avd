@@ -20,6 +20,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vlans is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].native_vlan is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%         endif %}

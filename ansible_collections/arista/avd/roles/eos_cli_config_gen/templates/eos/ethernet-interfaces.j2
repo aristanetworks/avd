@@ -31,6 +31,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vlans is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].native_vlan is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
 {%             endif %}

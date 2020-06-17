@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_cli_config_gen](#ansible-role-eoscliconfiggen)
+- [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -12,13 +12,13 @@
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-    - [IP IGMP Snooping](#ip_igmp_snooping#)
+    - [IP IGMP Snooping](#ip-igmp-snooping)
     - [Event Monitor](#event-monitor)
     - [Event Handler](#event-handler)
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
-    - [Logging](#logging)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
+    - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
@@ -49,24 +49,26 @@
     - [MAC Address-table](#mac-address-table)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
-    - [IPv6 Extended ACL](#ipv6-access-lists)
-    - [IPv6 Standard ACL](#ipv6-standard-access-lists)
-    - [Extended ACL](#access-lists)
-    - [Standard ACL](#standard-access-lists)
+    - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
+    - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
+    - [IP Extended Access-Lists](#ip-extended-access-lists)
+    - [IP Standard Access-Lists](#ip-standard-access-lists)
     - [Static Routes](#static-routes)
     - [IPv6 Static Routes](#ipv6-static-routes)
     - [IP Routing](#ip-routing)
     - [Prefix Lists](#prefix-lists)
     - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-    - [IPv6 Routing](#ipv6-unicast-routing)
+    - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
+    - [Routing - Multicast](#routing---multicast)
     - [Router OSPF Configuration](#router-ospf-configuration)
+    - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
-    - [VM Tracer Sessions](#vmtracer-sessions)
+    - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
     - [Management Console](#management-console)
@@ -305,7 +307,7 @@ Redundancy:
   protocol: < redundancy_protocol >
 ```
 
-### Snmp Settings
+### SNMP Settings
 
 ```yaml
 snmp_server:
@@ -596,6 +598,7 @@ ethernet_interfaces:
     speed: < interface_speed >
     mtu: < mtu >
     vlans: "< list of vlans as string >"
+    native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
       received: < received | send | on >
