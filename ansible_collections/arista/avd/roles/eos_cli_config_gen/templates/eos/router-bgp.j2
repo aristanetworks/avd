@@ -56,6 +56,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].remote_as is defined and router_bgp.neighbors[neighbor].remote_as is not none %}
    neighbor {{ neighbor }} remote-as {{ router_bgp.neighbors[neighbor].remote_as }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].next_hop_self is defined and router_bgp.neighbors[neighbor].next_hop_self == true %}
+   neighbor {{ neighbor }} next-hop-self
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].shutdown is defined and router_bgp.neighbors[neighbor].shutdown == true %}
    neighbor {{ neighbor }} shutdown
 {%             endif %}

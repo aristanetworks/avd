@@ -1036,6 +1036,7 @@ router_bgp:
       shutdown: < true | false >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
+      next_hop_self: < true | false >
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
