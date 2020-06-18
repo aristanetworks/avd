@@ -148,6 +148,15 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_ipv4 is defined and router_bgp.address_family_ipv4 is not none %}
    !
    address-family ipv4
+{%       if router_bgp.address_family_ipv4.networks is defined and router_bgp.address_family_ipv4.networks is not none %}
+{%          for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort %}
+{%             if router_bgp.address_family_ipv4.networks[network].route_map is defined and router_bgp.address_family_ipv4.networks[network].route_map is not none %}
+      network {{ network }} route-map {{ router_bgp.address_family_ipv4.networks[network].route_map }}
+{%             else %}
+      network {{ network }}
+{%             endif %}
+{%          endfor %}
+{%       endif %}
 {%       if router_bgp.address_family_ipv4.peer_groups is defined and router_bgp.address_family_ipv4.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in is defined and router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in is not none %}
