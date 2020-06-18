@@ -1011,6 +1011,7 @@ router_bgp:
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
+      shutdown: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
