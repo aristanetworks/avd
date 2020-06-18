@@ -1214,6 +1214,8 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      default_information_originate:
+        always: true
 ```
 
 ### Routing PIM Sparse Mode
