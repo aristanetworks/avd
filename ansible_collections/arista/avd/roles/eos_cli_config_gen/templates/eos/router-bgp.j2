@@ -12,6 +12,9 @@ router bgp {{ router_bgp.as }}
 {%          endif %}
 {%       endfor %}
 {%       for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
+{%             if router_bgp.peer_groups[peer_group].description is defined and router_bgp.peer_groups[peer_group].description is not none %}
+   neighbor {{ peer_group }} description {{ router_bgp.peer_groups[peer_group].description }}
+{%             endif %}
 {%             if router_bgp.peer_groups[peer_group].shutdown is defined and router_bgp.peer_groups[peer_group].shutdown == true %}
    neighbor {{ peer_group }} shutdown
 {%             endif %}
@@ -42,9 +45,6 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].maximum_routes is defined and router_bgp.peer_groups[peer_group].maximum_routes is not none %}
    neighbor {{ peer_group }} maximum-routes {{ router_bgp.peer_groups[peer_group].maximum_routes }}
-{%             endif %}
-{%             if router_bgp.peer_groups[peer_group].shutdown is defined and router_bgp.peer_groups[peer_group].shutdown is not none %}
-   neighbor {{ peer_group }} shutdown
 {%             endif %}
 {%       endfor %}
 {%     endif %}
