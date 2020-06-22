@@ -1023,6 +1023,7 @@ router_bgp:
       send_community: < true | false >
       maximum_routes: < integer >
       weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
       bgp_listen_range_prefix: < IP prefix range >
@@ -1036,6 +1037,7 @@ router_bgp:
       description: "< description as string >"
       shutdown: < true | false >
       weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >

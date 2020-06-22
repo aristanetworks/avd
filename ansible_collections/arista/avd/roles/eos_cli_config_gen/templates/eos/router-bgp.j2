@@ -49,6 +49,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.peer_groups[peer_group].weight is defined and router_bgp.peer_groups[peer_group].weight is not none %}
    neighbor {{ peer_group }} weight {{ router_bgp.peer_groups[peer_group].weight }}
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].timers is defined and router_bgp.peer_groups[peer_group].timers is not none %}
+   neighbor {{ peer_group }} timers {{ router_bgp.peer_groups[peer_group].timers }}
+{%             endif %}
 {%       endfor %}
 {%     endif %}
 {%     if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
@@ -73,6 +76,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.neighbors[neighbor].weight is defined and router_bgp.neighbors[neighbor].weight is not none %}
    neighbor {{ neighbor }} weight {{ router_bgp.neighbors[neighbor].weight }}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].timers is defined and router_bgp.neighbors[neighbor].timers is not none %}
+   neighbor {{ neighbor }} timers {{ router_bgp.neighbors[neighbor].timers }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
