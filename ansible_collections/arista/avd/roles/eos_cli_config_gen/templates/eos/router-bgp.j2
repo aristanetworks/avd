@@ -46,6 +46,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.peer_groups[peer_group].maximum_routes is defined and router_bgp.peer_groups[peer_group].maximum_routes is not none %}
    neighbor {{ peer_group }} maximum-routes {{ router_bgp.peer_groups[peer_group].maximum_routes }}
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].weight is defined and router_bgp.peer_groups[peer_group].weight is not none %}
+   neighbor {{ peer_group }} weight {{ router_bgp.peer_groups[peer_group].weight }}
+{%             endif %}
 {%       endfor %}
 {%     endif %}
 {%     if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
@@ -67,6 +70,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].weight is defined and router_bgp.neighbors[neighbor].weight is not none %}
+   neighbor {{ neighbor }} weight {{ router_bgp.neighbors[neighbor].weight }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
