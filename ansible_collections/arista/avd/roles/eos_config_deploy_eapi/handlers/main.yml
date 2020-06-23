@@ -1,7 +1,2 @@
-- name: show running config
-  eos_config:
-    backup: yes
-    backup_options:
-      filename: "{{ inventory_hostname }}_running-config.conf"
-      dir_path: "{{ inventory_dir }}/config_backup/"
-  listen: "backup config"
+---
+  # handlers file for eos_config_deploy_eapi
