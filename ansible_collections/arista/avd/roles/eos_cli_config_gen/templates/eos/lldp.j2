@@ -12,9 +12,10 @@ lldp management-address {{ lldp.management_address }}
 {%   if lldp.vrf is defined and lldp.vrf is not none %}
 lldp management-address vrf {{ lldp.vrf }}
 {%   endif %}
+{%   if lldp.run is defined and lldp.run == true %}
 lldp run
-!
-{% else %}
+{%   else %}
 no lldp run
+{%   endif %}
 !
 {% endif %}
