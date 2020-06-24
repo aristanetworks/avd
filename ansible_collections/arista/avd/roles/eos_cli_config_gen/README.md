@@ -1036,6 +1036,7 @@ router_bgp:
       remote_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      update_source: < interface >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
     < IPv4_address_2 >:
