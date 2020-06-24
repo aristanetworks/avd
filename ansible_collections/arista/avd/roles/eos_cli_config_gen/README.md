@@ -240,6 +240,7 @@ lldp:
   holdtime: < hold_time_period >
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
+  run: < true | false >
 ```
 
 ### Logging
