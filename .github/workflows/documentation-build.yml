@@ -13,7 +13,6 @@ jobs:
           python-version: '3.x'
       - name: 'Build mkdocs content to site folder'
         run: |
-            pip install -r requirements.txt
             pip install -r ansible_collections/arista/avd/docs/requirements.txt
             make webdoc
       - name: 'Deploy last version to gh-pages'
