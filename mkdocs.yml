@@ -14,7 +14,7 @@ extra_css:
   - docs/stylesheets/extra.css
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
 repo_name: Github
-repo_url: https://github.com/aristanetworks/ansible-cvp
+repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
   - Installation:
