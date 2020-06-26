@@ -25,4 +25,3 @@ class FilterModule(object):
         return {
             'is_in_filter': self.is_in_filter,
         }
-    
