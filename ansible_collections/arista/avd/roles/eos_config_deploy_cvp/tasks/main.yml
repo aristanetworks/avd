@@ -8,6 +8,7 @@
     configlet_dir: '{{inventory_dir}}/intended/configs'
     configlet_prefix: '{{ configlets_prefix }}'
     destination: '{{inventory_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}_configlets.yml'
+    device_filter: ['{{ device_filter }}']
   register: CVP_VARS
 
 - name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
