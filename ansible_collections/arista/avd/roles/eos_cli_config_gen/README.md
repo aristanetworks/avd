@@ -1302,12 +1302,12 @@ management_security:
 ```yaml
 management_ssh:
   access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   ipv6_access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   enable: < true | false >
