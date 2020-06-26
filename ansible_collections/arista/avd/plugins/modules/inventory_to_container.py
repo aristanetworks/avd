@@ -56,8 +56,8 @@ options:
     description: Optional path to save variable.
     required: false
     type: str
-    device_filter:
-  description: Filter to apply intended mode on a set of configlet.
+  device_filter:
+    description: Filter to apply intended mode on a set of configlet.
                  If not used, then module only uses ADD mode. device_filter
                  list devices that can be modified or deleted based
                  on configlets entries.
@@ -147,6 +147,7 @@ def is_in_filter(hostname_filter=None, hostname="eos"):
     elif any(element in hostname for element in hostname_filter):
         return True
     return False
+
 
 def isIterable(testing_object=None):
     """
@@ -299,7 +300,8 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
             for dev, data in v1['hosts'].items():
                 if is_in_filter(
                     hostname_filter=device_filter,
-                    hostname=dev):
+                    hostname=dev
+                ):
                     devices.append(dev)
         # If subgroup has kids
         if isIterable(v1) and 'children' in v1:
