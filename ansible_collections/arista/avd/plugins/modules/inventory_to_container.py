@@ -189,7 +189,7 @@ def isLeaf(tree, nid):
         return False
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
+def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter=None):
     """
     Get available configlets to deploy to CVP.
 
@@ -201,22 +201,30 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
+    device_filter: list, optional
+        List of filter to compare device configlet and to select only a subset of configlet.
 
     Returns
     -------
     dict
         Dictionary of configlets found in source folder.
     """
+    # W102 Workaround to avoid list as default value.
+    if device_filter is None:
+        device_filter = ["all"]
+
     src_configlets = glob.glob(src_folder + '/*.' + extension)
     configlets = dict()
     for file in src_configlets:
-        if prefix != 'none':
-            name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
-        else:
-            name = os.path.splitext(os.path.basename(file))[0]
-        with open(file, 'r') as file:
-            data = file.read()
-        configlets[name] = data
+        # Build structure only if configlet match device_filter.
+        if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
+            if prefix != 'none':
+                name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
+            else:
+                name = os.path.splitext(os.path.basename(file))[0]
+            with open(file, 'r') as file:
+                data = file.read()
+            configlets[name] = data
     return configlets
 
 
@@ -280,10 +288,12 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     ----------
     dict_inventory : dict
         Inventory YAML content.
-    search_container : [type], optional
+    search_container : str, optional
         Container to look for, by default None
-    devices : [type], optional
+    devices : str, optional
         List of found devices attached to container, by default list()
+    device_filter: list, optional
+        List of filter to compare device name and to select only a subset of devices.
 
     Returns
     -------
@@ -398,7 +408,8 @@ def main():
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:
         result['CVP_CONFIGLETS'] = get_configlet(src_folder=module.params['configlet_dir'],
-                                                 prefix=module.params['configlet_prefix'])
+                                                 prefix=module.params['configlet_prefix'],
+                                                 device_filter=module.params['device_filter'])
 
     # Write vars to file if set by user
     if module.params['destination'] is not None:
