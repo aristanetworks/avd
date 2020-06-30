@@ -65,7 +65,7 @@ DEPRECATED = b" (D)"
 
 MODULE_NAME_STARTS_WITH = ""
 MODULEDIR = "../../plugins/modules/"
-OUTPUTDIR = "./"
+OUTPUTDIR = "../"
 
 #####################################################################################
 

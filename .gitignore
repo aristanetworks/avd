@@ -117,3 +117,4 @@ ansible_collections/arista/avd/docs/_build/*.rst
 ansible_collections/arista/avd/docs/media/*
 ansible_collections/arista/avd/docs/contributing.md
 ansible_collections/arista/avd/docs/modules/*
+ansible_collections/arista/avd/docs/*.rst

@@ -1,6 +1,7 @@
 name: Mkdocs
 on:
   push:
+    - 'devel'
 jobs:
   'doc':
     name: 'Update Public documentation'
