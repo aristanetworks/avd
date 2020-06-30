@@ -727,6 +727,13 @@ vlan_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
+    vrrp:
+      virtual_router: < virtual_router_id >
+      priority: < instance_priority >
+      ipv4: < virtual_ip_address >
+      ipv6: < virtual_ip_address >
+      interval: < advertisement_interval>
+      preempt_delay: < minimum_preemption_delay >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
