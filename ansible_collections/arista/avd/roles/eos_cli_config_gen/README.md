@@ -1131,6 +1131,8 @@ router_bgp:
     neighbors:
       < neighbor_ip_address>:
         activate: < true | false >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < neighbor_ip_address>:
         activate: < true | false >
   address_family_ipv4_multicast:
