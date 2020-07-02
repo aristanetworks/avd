@@ -5,19 +5,20 @@
 {%         if tenants[tenant].vrfs is defined %}
 {%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
 {%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi in leaf.svis %}
+{%                      set svi_int = svi | int %}
     {{ svi }}:
       tenant: {{ tenant }}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].vni_override is defined %}
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}"
 {%                     else %}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + svi }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + svi_int }}"
 {%                     endif %}
       route_targets:
         both:
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].vni_override is defined %}
           - "{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}:{{ tenants[tenant].vrfs[vrf].svis[svi].vni_override }}"
 {%                     else %}
-          - "{{ tenants[tenant].mac_vrf_vni_base + svi }}:{{ tenants[tenant].mac_vrf_vni_base + svi }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + svi }}:{{ tenants[tenant].mac_vrf_vni_base + svi_int }}"
 {%                     endif %}
       redistribute_routes:
         - learned
@@ -26,19 +27,20 @@
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan in leaf.vlans %}
+{%                 set l2vlan_int = l2vlan | int %}
     {{ l2vlan }}:
       tenant: {{ tenant }}
 {%                     if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                     else %}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
 {%                     endif %}
       route_targets:
         both:
 {%                     if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
           - "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                     else %}
-          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
 {%                     endif %}
       redistribute_routes:
         - learned

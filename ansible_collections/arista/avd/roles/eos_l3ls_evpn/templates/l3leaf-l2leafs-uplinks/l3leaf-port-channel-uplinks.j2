@@ -40,7 +40,7 @@
 {%                                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                                     if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
 {%                                         if svi_tag in l2_leaf.filter_tags or svi_tag == l2leaf_node_group or "all" in l2_leaf.filter_tags %}
-{%                                             do l2_leaf.vlans.append( svi ) %}
+{%                                             do l2_leaf.vlans.append( svi | int ) %}
 {%                                             break %}
 {%                                         endif %}
 {%                                     endif %}
@@ -53,7 +53,7 @@
 {%                             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
 {%                                 if vlan_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
 {%                                     if vlan_tag in l2_leaf.filter_tags or "all" in l2_leaf.filter_tags %}
-{%                                         do l2_leaf.vlans.append( l2vlan ) %}
+{%                                         do l2_leaf.vlans.append( l2vlan | int ) %}
 {%                                         break %}
 {%                                     endif %}
 {%                                 endif %}
