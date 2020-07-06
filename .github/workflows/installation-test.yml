@@ -1,0 +1,11 @@
+name: Test Installation
+on:
+  push:
+jobs:
+  'setup':
+    name: 'One liner installation'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute one-liner installation
+        run: |
+          sh -c "$(curl -fsSL https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/development/install.sh)"

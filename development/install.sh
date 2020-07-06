@@ -6,7 +6,7 @@ _ROOT_INSTALLATION_DIR="${PWD}/arista-ansible"
 # List of Arista Repositories
 _REPO_AVD="https://github.com/aristanetworks/ansible-avd.git"
 _REPO_CVP="https://github.com/aristanetworks/ansible-cvp.git"
-_REPO_EXAMPLES="https://github.com/aristanetworks/ansible-avd.git"
+_REPO_EXAMPLES="https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo"
 
 # Path for local repositories
 _LOCAL_AVD="${_ROOT_INSTALLATION_DIR}/ansible-avd"
