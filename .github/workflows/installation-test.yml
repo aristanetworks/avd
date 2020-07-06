@@ -11,12 +11,8 @@ jobs:
           echo "Test installation script from: ${GITHUB_REPOSITORY}"
           echo "Use content from commit: ${GITHUB_SHA}"
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/development/install.sh)"
-          cat arista-ansible/Makefile
       - name: Run Makefile commands
         run: |
           cd arista-ansible/
+          cat Makefile
           make
-      - name: Start docker shell
-        run: |
-          cd arista-ansible
-          make run
