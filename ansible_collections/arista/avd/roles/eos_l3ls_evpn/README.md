@@ -1044,6 +1044,9 @@ port_profiles:
     # Interface mode | required
     mode: < access | dot1q-tunnel | trunk >
 
+    # Native VLAN for a trunk port | optional
+    native_vlan: <native vlan number>
+
     # Interface vlans | required
     vlans: < vlans as string >
 

@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - 'devel'
-      - 'master'
       - 'releases/*'
 jobs:
   'ansible-test':
@@ -17,9 +16,12 @@ jobs:
           python-version: '3.x'
       - name: 'Install requirements'
         run: make github-configure-ci
+
       - name: 'Install Python requirements'
         run: make install-requirements
+
       - name: 'ansible-test linting'
         run: make sanity-lint
+
       - name: 'ansible-test import'
         run: make sanity-import

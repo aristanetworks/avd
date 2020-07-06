@@ -14,6 +14,9 @@
 {%                 endif %}
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
+{%                 if port_profiles[adapter.profile].native_vlan is defined %}
+    native_vlan: {{ port_profiles[adapter.profile].native_vlan }}
+{%                 endif %}
 {%                 if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
     channel_group:
       id: {{ channel_group_id }}

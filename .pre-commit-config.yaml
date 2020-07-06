@@ -1,0 +1,42 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+  - repo: https://github.com/pre-commit/mirrors-pylint
+    rev: 'v2.5.0'
+    hooks:
+    - id: pylint # Use pylintrc file in repository
+      name: Check for Linting error on Python files
+      description: This hook runs pylint.
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: 'v1.23.0'
+    hooks:
+    - id: yamllint
+      name: Check for Linting error on YAML files
+      description: This hook runs yamllint.
+      entry: yamllint
+      language: python
+      types: [file, yaml]
+      args: [-c=.github/yamllintrc]
+  - repo: https://github.com/ansible/ansible-lint.git
+    rev: v4.2.0
+    hooks:
+      - id: ansible-lint
+        name: Check for ansible-lint errors
+        files: \.(yaml|yml)$
+  # - repo: https://github.com/markdownlint/markdownlint.git
+  #   rev: v0.9.0
+  #   hooks:
+  #     - id: markdownlint
+  #       name: Markdownlint
+  #       description: Run markdownlint on your Markdown files
+  #       entry: mdl
+  #       language: ruby
+  #       files: \.(md|mdown|markdown)$
