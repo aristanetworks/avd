@@ -13,7 +13,9 @@ jobs:
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/development/install.sh)"
       - name: Run Makefile commands
         run: |
+          cd arista-ansible/
           make
       - name: Start docker shell
         run: |
+          cd arista-ansible
           make run
