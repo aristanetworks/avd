@@ -1,0 +1,16 @@
+version: "3"
+services:
+  ansible:
+    image: avdteam/base:3.6
+    volumes:
+      - ./../../:/projects
+    entrypoint: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
+
+  webdoc:
+    image: titom73/mkdocs:latest
+    volumes:
+      - ${PWD}:/docs
+    ports:
+      - 8000:8000
+    entrypoint: ""
+    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]
