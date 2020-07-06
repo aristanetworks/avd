@@ -8,8 +8,8 @@ jobs:
     steps:
       - name: Execute one-liner installation
         run: |
-          echo 'Test installation script from: ${GITHUB_REPOSITORY}'
-          echo 'Use content from commit: ${GITHUB_SHA}'
+          echo "Test installation script from: ${GITHUB_REPOSITORY}"
+          echo "Use content from commit: ${GITHUB_SHA}"
           sh -c "$(curl -fsSL https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/development/install.sh)"
       - name: Run Makefile commands
         run: |
