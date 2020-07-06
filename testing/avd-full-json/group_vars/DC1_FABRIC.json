@@ -1,0 +1,206 @@
+{
+    "fabric_name": "DC1_FABRIC",
+    "underlay_routing_protocol": "BGP",
+    "isis_area_id": "49.0001",
+    "isis_site_id": "0001",
+    "underlay_p2p_network_summary": "172.31.255.0/24",
+    "overlay_loopback_network_summary": "192.168.255.0/24",
+    "vtep_loopback_network_summary": "192.168.254.0/24",
+    "mlag_ips": {
+        "leaf_peer_l3": "10.255.251.0/24",
+        "mlag_peer": "10.255.252.0/24"
+    },
+    "vxlan_vlan_aware_bundles": true,
+    "bgp_peer_groups": {
+        "IPv4_UNDERLAY_PEERS": {
+            "password": "AQQvKeimxJu+uGQ/yYvv9w=="
+        },
+        "EVPN_OVERLAY_PEERS": {
+            "password": "q+VNViP5i4rVjW1cxFv2wA=="
+        },
+        "MLAG_IPv4_UNDERLAY_PEER": {
+            "password": "vnEaG8gMeQf3d3cN6PktXQ=="
+        }
+    },
+    "spine": {
+        "platform": "vEOS-LAB",
+        "bgp_as": 65001,
+        "leaf_as_range": "65101-65132",
+        "nodes": {
+            "DC1-SPINE1": {
+                "id": 1,
+                "mgmt_ip": "10.255.0.11/24"
+            },
+            "DC1-SPINE2": {
+                "id": 2,
+                "mgmt_ip": "10.255.0.12/24"
+            }
+        }
+    },
+    "l3leaf": {
+        "defaults": {
+            "virtual_router_mac_address": "00:1c:73:00:dc:01",
+            "platform": "vEOS-LAB",
+            "bgp_as": 65100,
+            "spines": [
+                "DC1-SPINE1",
+                "DC1-SPINE2"
+            ],
+            "uplink_to_spine_interfaces": [
+                "Ethernet1",
+                "Ethernet2"
+            ],
+            "mlag_interfaces": [
+                "Ethernet3",
+                "Ethernet4"
+            ],
+            "spanning_tree_priority": 4096,
+            "spanning_tree_mode": "mstp"
+        },
+        "node_groups": {
+            "DC1_LEAF1": {
+                "bgp_as": 65101,
+                "filter": {
+                    "tenants": [
+                        "Tenant_A"
+                    ],
+                    "tags": [
+                        "opzone",
+                        "web",
+                        "app"
+                    ]
+                },
+                "nodes": {
+                    "DC1-LEAF1A": {
+                        "id": 1,
+                        "mgmt_ip": "10.255.0.13/24",
+                        "spine_interfaces": [
+                            "Ethernet1",
+                            "Ethernet1"
+                        ]
+                    },
+                    "DC1-LEAF1B": {
+                        "id": 2,
+                        "mgmt_ip": "10.255.0.14/24",
+                        "spine_interfaces": [
+                            "Ethernet2",
+                            "Ethernet2"
+                        ]
+                    }
+                }
+            },
+            "DC1_LEAF2": {
+                "bgp_as": 65102,
+                "nodes": {
+                    "DC1-LEAF2A": {
+                        "id": 3,
+                        "mgmt_ip": "10.255.0.15/24",
+                        "spine_interfaces": [
+                            "Ethernet3",
+                            "Ethernet3"
+                        ]
+                    },
+                    "DC1-LEAF2B": {
+                        "id": 4,
+                        "mgmt_ip": "10.255.0.16/24",
+                        "spine_interfaces": [
+                            "Ethernet4",
+                            "Ethernet4"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "l2leaf": {
+        "defaults": {
+            "platform": "vEOS-LAB",
+            "parent_l3leafs": [
+                "DC1-LEAF1A",
+                "DC1-LEAF1B"
+            ],
+            "uplink_interfaces": [
+                "Ethernet1",
+                "Ethernet2"
+            ],
+            "mlag_interfaces": [
+                "Ethernet3",
+                "Ethernet4"
+            ],
+            "spanning_tree_mode": "mstp",
+            "spanning_tree_priority": 16384
+        },
+        "node_groups": {
+            "DC1_L2LEAF1": {
+                "parent_l3leafs": [
+                    "DC1-LEAF1A",
+                    "DC1-LEAF1B"
+                ],
+                "filter": {
+                    "tenants": [
+                        "Tenant_A"
+                    ],
+                    "tags": [
+                        "opzone",
+                        "web",
+                        "app"
+                    ]
+                },
+                "nodes": {
+                    "DC1-L2LEAF1A": {
+                        "id": 5,
+                        "mgmt_ip": "10.255.0.17/24",
+                        "l3leaf_interfaces": [
+                            "Ethernet5",
+                            "Ethernet5"
+                        ]
+                    }
+                }
+            },
+            "DC1_L2LEAF2": {
+                "parent_l3leafs": [
+                    "DC1-LEAF2A",
+                    "DC1-LEAF2B"
+                ],
+                "filter": {
+                    "tenants": [
+                        "Tenant_A"
+                    ],
+                    "tags": [
+                        "opzone",
+                        "web",
+                        "app"
+                    ]
+                },
+                "nodes": {
+                    "DC1-L2LEAF2A": {
+                        "id": 7,
+                        "mgmt_ip": "10.255.0.18/24",
+                        "l3leaf_interfaces": [
+                            "Ethernet5",
+                            "Ethernet5"
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    "spine_bgp_defaults": [
+        "no bgp default ipv4-unicast",
+        "distance bgp 20 200 200",
+        "graceful-restart restart-time 300",
+        "graceful-restart"
+    ],
+    "leaf_bgp_defaults": [
+        "no bgp default ipv4-unicast",
+        "distance bgp 20 200 200",
+        "graceful-restart restart-time 300",
+        "graceful-restart"
+    ],
+    "p2p_uplinks_mtu": 1500,
+    "bfd_multihop": {
+        "interval": 1200,
+        "min_rx": 1200,
+        "multiplier": 3
+    }
+}
