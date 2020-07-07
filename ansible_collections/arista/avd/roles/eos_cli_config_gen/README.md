@@ -11,6 +11,7 @@
     - [Aliases](#aliases)
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
+    - [IP DHCP Relay](#ip-dhcp-relay)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP IGMP Snooping](#ip-igmp-snooping)
     - [Event Monitor](#event-monitor)
@@ -26,7 +27,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
-    - [SNMP Settings](#snmp-settings)
+    - [Snmp Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -60,6 +61,7 @@
     - [IPv6 Prefix Lists](#ipv6-prefix-lists)
     - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
+    - [Community Lists](#community-lists)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
@@ -155,6 +157,14 @@ daemon_terminattr:
   ingestvrf: < vrf_name >
   smashexcludes: "< list as string >"
   ingestexclude: "< list as string >"
+
+```
+
+### IP DHCP Relay
+
+```yaml
+ip_dhcp_relay:
+  information_option: < true | false >
 
 ```
 
@@ -292,11 +302,23 @@ router_l2_vpn:
 
 ```yaml
 sflow:
+  sample: < sample_rate >
+  dangerous: < true | false >
+  vrfs:
+    <vrf_name_1>:
+      destinations:
+        < sflow_destination_ip_1>:
+        < sflow_destination_ip_2>:
+          port: < port_number >
+      source_interface: < source_interface >
+    <vrf_name_2>:
+      destinations:
+        < sflow_destination_ip_1>:
+      source_interface: < source_interface >
   destinations:
     < sflow_destination_ip_1 >:
     < sflow_destination_ip_2 >:
-  source_interface: < source_interface_name >
-  sample: < sample_rate >
+  source_interface: < source_interface >
   run: < true | false >
 ```
 
@@ -657,7 +679,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    virtual: < true | false >
     mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
@@ -880,7 +901,8 @@ ipv6_prefix_lists:
         action: "< action as string >"
 ```
 
-### IPv6 Routing ###
+### IPv6 Routing
+
 ipv6_unicast_routing: < true | false >
 
 ### MLAG Configuration
@@ -899,6 +921,16 @@ mlag_configuration:
   reload_delay_non_mlag: < seconds >
 ```
 
+### Community Lists
+
+```yaml
+community_lists:
+  < community_list_name_1 >:
+    action: "< action as string >"
+  < community_list_name_2 >:
+    action: "< action as string >"
+```
+
 ### Route Maps
 
 ```yaml
@@ -908,17 +940,23 @@ route_maps:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        match: "< match as string >"
-        set: "< set as string >"
+        match:
+          - "< match rule 1 as string >"
+          - "< match rule 2 as string >"
+        set:
+          - "< set as string >"
       < sequence_id_2 >:
         type: < permit | deny >
-        match: "< match as string >"
+        match:
+          - "< match as string >"
   < route_map_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        set: "< set as string >"
+        set:
+          - "< set rule 1 as string >"
+          - "< set rule 2 as string >"
 ```
 
 ### Peer Filters
@@ -1237,12 +1275,12 @@ management_security:
 ```yaml
 management_ssh:
   access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   ipv6_access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   enable: < true | false >
