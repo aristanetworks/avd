@@ -68,6 +68,7 @@
     - [Routing - Multicast](#routing---multicast)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Router ISIS Configuration](#router-isis-configuration)
+    - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
     - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -914,7 +915,8 @@ ipv6_prefix_lists:
         action: "< action as string >"
 ```
 
-### IPv6 Routing ###
+### IPv6 Routing
+
 ipv6_unicast_routing: < true | false >
 
 ### MLAG Configuration
