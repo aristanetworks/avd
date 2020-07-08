@@ -48,9 +48,15 @@ dev-start: ## Start docker compose stack to develop with AVD and CVP collection
 	@echo "---------------"
 	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
 
+.PHONY: start
+start: dev-start ## Start docker-compose stack
+
 .PHONY: dev-stop
 dev-stop: ## Stop docker compose stack and remove containers
 	docker-compose -f $(COMPOSE_FILE) kill && docker-compose -f $(COMPOSE_FILE) rm -f
+
+.PHONY: stop
+stop: dev-stop ## Stop docker-compose stack
 
 .PHONY: dev-run
 dev-run: ## Run a shell attached to ansible container
