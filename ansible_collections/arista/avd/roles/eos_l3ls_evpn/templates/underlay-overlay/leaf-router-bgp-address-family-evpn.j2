@@ -7,7 +7,7 @@
       IPv4-UNDERLAY-PEERS:
         activate: false
 {%     endif %}
-{%     if leaf.mlag == true %}
+{%     if leaf.mlag == true and underlay_routing_protocol == "BGP" %}
       MLAG-IPv4-UNDERLAY-PEER:
         activate: false
 {%     endif %}
