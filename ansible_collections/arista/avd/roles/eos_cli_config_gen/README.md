@@ -78,20 +78,6 @@
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
   - [License](#license)
-<<<<<<< HEAD
-    - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
-=======
-    - [Router ISIS Configuration](#router-isis-configuration)
->>>>>>> 6062c69... Implement ISIS in eos_cli_config_gen (#127)
-    - [Queue Monitor Streaming](#queue-monitor-streaming)
-    - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
-    - [VM Tracer Sessions](#vm-tracer-sessions)
-    - [Banners](#banners)
-    - [HTTP Management API](#http-management-api)
-    - [Management Console](#management-console)
-    - [Management Security](#management-security)
-    - [Management SSH](#management-ssh)
-  - [License](#license)
 
 ## Overview
 
@@ -624,16 +610,13 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
-<<<<<<< HEAD
     pim:
       ipv4:
         sparse_mode: < true | false >
-=======
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
->>>>>>> 6062c69... Implement ISIS in eos_cli_config_gen (#127)
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -734,19 +717,16 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
-<<<<<<< HEAD
     pim:
       ipv4:
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
-=======
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
->>>>>>> 6062c69... Implement ISIS in eos_cli_config_gen (#127)
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
