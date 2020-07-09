@@ -86,6 +86,18 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is defined and vlan_interfaces[vlan_interface].ipv6_virtual_router_address is not none %}
    ipv6 virtual-router address {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }}
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_enable is defined %}
+   isis enable {{ vlan_interfaces[vlan_interface].isis_enable }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive == true %}
+   isis passive
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_metric is defined %}
+   isis metric {{ vlan_interfaces[vlan_interface].isis_metric }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
+{%         endif %}
 !
 {%     endfor %}
 {% endif %}

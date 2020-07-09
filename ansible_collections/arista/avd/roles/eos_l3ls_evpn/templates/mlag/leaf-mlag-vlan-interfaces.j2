@@ -9,6 +9,11 @@
     ospf_area: {{ underlay_ospf_area }}
     mtu: {{ p2p_uplinks_mtu }}
 {%         endif %}
+{%         if underlay_routing_protocol == "ISIS" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+{%         endif %}
 {%     endif %}
   Vlan4094:
     description: MLAG_PEER

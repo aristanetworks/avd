@@ -1,0 +1,9 @@
+---
+ansible_httpapi_host: '{{ ansible_host }}'
+ansible_connection: httpapi
+ansible_httpapi_use_ssl: true
+ansible_httpapi_validate_certs: false
+ansible_network_os: eos
+ansible_httpapi_port: 443
+# Configuration to get Virtual Env information
+ansible_python_interpreter: $(which python)

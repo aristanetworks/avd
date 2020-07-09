@@ -23,6 +23,18 @@ interface {{ loopback_interface }}
 {%         if loopback_interfaces[loopback_interface].ospf_area is defined and loopback_interfaces[loopback_interface].ospf_area is not none %}
    ip ospf area {{ loopback_interfaces[loopback_interface].ospf_area }}
 {%         endif %}
+{%         if loopback_interfaces[loopback_interface].isis_enable is defined %}
+   isis enable {{ loopback_interfaces[loopback_interface].isis_enable }}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].isis_passive is defined and loopback_interfaces[loopback_interface].isis_passive == true %}
+   isis passive
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].isis_metric is defined %}
+   isis metric {{ loopback_interfaces[loopback_interface].isis_metric }}
+{%         endif %}
+{%         if loopback_interfaces[loopback_interface].isis_network_point_to_point is defined and loopback_interfaces[loopback_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
+{%         endif %}
 !
 {%     endfor %}
 {% endif %}

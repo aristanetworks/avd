@@ -27,7 +27,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
-    - [Snmp Settings](#snmp-settings)
+    - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -68,6 +68,7 @@
     - [Routing - Multicast](#routing---multicast)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
+    - [Router ISIS Configuration](#router-isis-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
     - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -612,6 +613,10 @@ ethernet_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -650,6 +655,10 @@ loopback_interfaces:
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 ```
 
 ### Management Interfaces
@@ -713,6 +722,11 @@ vlan_interfaces:
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
+    mtu: < mtu >
   < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1198,6 +1212,21 @@ router_pim_sparse_mode:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
+```
+
+### Router ISIS Configuration
+
+```yaml
+
+router_isis:
+  instance: <ISIS Instance Name>
+  net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
+  router_id: < IPv4_address >
+  no_passive_interfaces: < List no-passive-interface >
+  is_type: < level-1 | level-1-2 | level-2 >
+  address_family: < List of Address Families >
+  isis_af_defaults:
+      - maximum-paths < Integer 1-64 >
 ```
 
 ### Queue Monitor Streaming

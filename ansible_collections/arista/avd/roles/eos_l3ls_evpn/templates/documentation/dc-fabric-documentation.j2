@@ -15,6 +15,9 @@
     - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
     - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
     - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+{% if underlay_routing_protocol == "ISIS" %}
+    - [CLNS Interfaces](#isis-clns-interfaces)
+{% endif %}
     - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
     - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
@@ -143,6 +146,23 @@
 {%     endif %}
 {% endfor %}
 
+{% if underlay_routing_protocol == "ISIS" %}
+### ISIS CLNS interfaces
+
+| Node | CLNS Address |
+| ---- | ------------ |
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+| {{ node }} | {{ hostvars[node].router_isis.net }} |
+{% endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "l3leaf" %}
+| {{ node }} | {{ hostvars[node].router_isis.net }} |
+{% endif %}
+{% endfor %}
+
+{% endif %}
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
