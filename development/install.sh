@@ -3,12 +3,8 @@
 # Local Installation Path
 _ROOT_INSTALLATION_DIR="${PWD}/arista-ansible"
 
-if [[ -z GITHUB_REPOSITORY ]]; then
-    export GITHUB_REPOSITORY="aristanetworks/ansible-avd"
-fi
-if [[ -z GITHUB_SHA ]]; then
-    export GITHUB_SHA="devel"
-fi
+GITHUB_REPOSITORY="aristanetworks/ansible-avd"
+GITHUB_SHA="devel"
 
 # List of Arista Repositories
 _REPO_AVD="https://github.com/${GITHUB_REPOSITORY}.git"
@@ -46,8 +42,13 @@ if [ ! -d "${_ROOT_INSTALLATION_DIR}" ]; then
         echo "deploying development content to ${_ROOT_INSTALLATION_DIR}"
         cp ${_DEV_FOLDER}/Makefile ${_ROOT_INSTALLATION_DIR}
     else
-        echo "  ! error: development folder is missing"
+        echo "  ! error: development folder is missing: ${_DEV_FOLDER}"
+        exit 1
     fi
+    echo ""
+    echo "Installtion done. You can access setup at ${_ROOT_INSTALLATION_DIR}"
+    echo ""
 else
     echo "  ! local installation folder already exists - ${_ROOT_INSTALLATION_DIR}"
+    exit 1
 fi
