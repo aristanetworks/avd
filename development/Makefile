@@ -32,20 +32,43 @@ clean: ## Remove avd image from local repository
 
 .PHONY: build
 build: ## [DEPRECATED] visit https://github.com/arista-netdevops-community/docker-avd-base to build image
-	#docker build --no-cache -t $(CONTAINER) .
-	echo ''; echo 'Deprecated command -- visit https://github.com/arista-netdevops-community/docker-avd-base to build image'; echo ''
+	@echo "!!!!!!!!"
+	@echo "Deprecated command -- visit https://github.com/arista-netdevops-community/docker-avd-base to build image"
+	@echo "!!!!!!!!"
 
 .PHONY: dev-start
 dev-start: ## Start docker compose stack to develop with AVD and CVP collection
 	docker-compose -f $(COMPOSE_FILE) up -d
+	@echo "---------------"
+	@echo " INFORMATION"
+	@echo "---------------"
+	@echo " * Webserver for AVD: http://127.0.0.1:8000"
+	@echo " * Webserver for CVP: http://127.0.0.1:8001"
+	@echo " * Ansible shell: make dev-run"
+	@echo "---------------"
+	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+
+.PHONY: start
+start: dev-start ## Start docker-compose stack
 
 .PHONY: dev-stop
 dev-stop: ## Stop docker compose stack and remove containers
 	docker-compose -f $(COMPOSE_FILE) kill && docker-compose -f $(COMPOSE_FILE) rm -f
 
+.PHONY: stop
+stop: dev-stop ## Stop docker-compose stack
+
 .PHONY: dev-run
 dev-run: ## Run a shell attached to ansible container
 	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+
+.PHONY: shell
+shell: ## Run a shell attached to ansible container
+	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+
+.PHONY: ansible-upgrade
+ansible-upgrade: ## Run a shell attached to ansible container
+	docker-compose -f $(COMPOSE_FILE) exec ansible pip install ansible==$(ANSIBLE_VERSION)
 
 .PHONY: dev-reload
 dev-reload: dev-stop dev-start  ## Stop and Start docker-compose stack
