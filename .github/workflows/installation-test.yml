@@ -1,6 +1,7 @@
 name: Test Installation
 on:
   push:
+  pull_request:
 jobs:
   'setup':
     name: 'One liner installation'

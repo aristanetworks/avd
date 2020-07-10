@@ -33,7 +33,6 @@ if [ ! -d "${_ROOT_INSTALLATION_DIR}" ]; then
     echo "  * creating local installation folder: ${_ROOT_INSTALLATION_DIR}"
     mkdir -p ${_ROOT_INSTALLATION_DIR}
     echo "  * cloning ansible-avd collections to ${_LOCAL_AVD}"
-    echo "! ${_REPO_AVD}"
     git clone ${_REPO_AVD} ${_LOCAL_AVD}
     echo "  * cloning ansible-cvp collections to ${_LOCAL_CVP}"
     git clone ${_REPO_CVP} ${_LOCAL_CVP}
