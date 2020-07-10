@@ -5,14 +5,16 @@ jobs:
   'setup':
     name: 'One liner installation'
     runs-on: ubuntu-latest
+    container: avdteam/base:centos-8
     steps:
+      - uses: actions/checkout@master
       - name: Execute one-liner installation
         run: |
-          echo "Test installation script from: ${GITHUB_REPOSITORY}"
-          echo "Use content from commit: ${GITHUB_SHA}"
-          sh -c "$(curl -fsSL https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/development/install.sh)"
+          cp development/install.sh /tmp/
+          cd /tmp/
+          sh install.sh
       - name: Run Makefile commands
         run: |
-          cd arista-ansible/
+          cd /tmp/arista-ansible/
           cat Makefile
           make
