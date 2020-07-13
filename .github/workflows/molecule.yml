@@ -1,0 +1,16 @@
+name: Ansible Molecule
+on: push
+jobs:
+  molecule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Run molecule action
+        uses: inetsix/molecule-collection-actions@master
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--all'
+          pip_file: 'requirements.txt'
