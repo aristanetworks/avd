@@ -1,28 +1,28 @@
 ---
 scenario:
-  create_sequence:
-    # - dependency
-    - create
-    - prepare
-  check_sequence:
-    # - dependency
-    # - cleanup
-    - destroy
-    - create
-    - prepare
-    - converge
-    - check
-    - destroy
-  converge_sequence:
-    # - dependency
-    - create
-    - prepare
-    - converge
-    - idempotence
-  destroy_sequence:
-    # - dependency
-    # - cleanup
-    - destroy
+  # create_sequence:
+  #   # - dependency
+  #   - create
+  #   # - prepare
+  # check_sequence:
+  #   # - dependency
+  #   # - cleanup
+  #   - destroy
+  #   - create
+  #   # - prepare
+  #   - converge
+  #   # - check
+  #   - destroy
+  # converge_sequence:
+  #   # - dependency
+  #   - create
+  #   - prepare
+  #   - converge
+  #   - idempotence
+  # destroy_sequence:
+  #   # - dependency
+  #   # - cleanup
+  #   - destroy
   test_sequence:
     # - dependency
     # - lint
@@ -43,7 +43,7 @@ driver:
   name: docker
 platforms:
   - name: DC1-LEAF1A
-    image: centos:7
+    image: avdteam/base:3.6
     pre_build_image: true
     managed: false
     groups:
