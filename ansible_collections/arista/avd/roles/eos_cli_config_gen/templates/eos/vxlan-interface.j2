@@ -6,10 +6,12 @@ interface Vxlan1
    vxlan virtual-router encapsulation mac-address {{ vxlan_tunnel_interface.Vxlan1.virtual_router.encapsulation_mac_address }}
 {%     endif %}
    vxlan udp-port {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
-{%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
+{%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans is iterable %}
+{%          for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
    vxlan vlan {{ vlan }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans[vlan].vni }}
-{%     endfor %}
-{% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and 
+{%          endfor %}
+{%     endif %}
+{% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and
 vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
 {%     for vrf in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | arista.avd.natural_sort %}
    vxlan vrf {{ vrf }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }}

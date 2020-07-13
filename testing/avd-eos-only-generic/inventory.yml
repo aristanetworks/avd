@@ -4,7 +4,7 @@ all:
       children:
         CVP:
           hosts:
-            AVD-CVP-1:
+            CVP-1:
 # DC1 Fabric
         DC1_FABRIC:
           children:

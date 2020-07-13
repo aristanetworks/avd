@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# FIXME: required to pass ansible-test
 # GNU General Public License v3.0+
 #
 # Copyright 2019 Arista Networks AS-EMEA
@@ -30,7 +29,7 @@ DOCUMENTATION = r'''
 ---
 module: inventory_to_container
 version_added: "2.9"
-author: EMEA AS Team (@aristanetworks)
+author: Ansible Arista Team (@aristanetworks)
 short_description: Transform information from inventory to arista.cvp collection
 description:
   - Transform information from ansible inventory to be able to
@@ -57,6 +56,14 @@ options:
     description: Optional path to save variable.
     required: false
     type: str
+  device_filter:
+    description: Filter to apply intended mode on a set of configlet.
+                 If not used, then module only uses ADD mode. device_filter
+                 list devices that can be modified or deleted based
+                 on configlets entries.
+    required: false
+    default: ['all']
+    type: list
 '''
 
 EXAMPLES = r'''
@@ -66,6 +73,7 @@ EXAMPLES = r'''
     container_root: 'DC1_FABRIC'
     configlet_dir: 'intended_configs'
     configlet_prefix: 'AVD'
+    device_filter: ['DC1-LE']
     # destination: 'generated_vars/{{inventory_hostname}}.yml'
   register: CVP_VARS
 
@@ -113,6 +121,34 @@ except ImportError:
 CVP_ROOT_CONTAINER = 'Tenant'
 
 
+def is_in_filter(hostname_filter=None, hostname="eos"):
+    """
+    Check if device is part of the filter or not.
+
+    Parameters
+    ----------
+    hostname_filter : list, optional
+        Device filter, by default ['all']
+    hostname : str
+        Device hostname to compare against filter.
+
+    Returns
+    -------
+    boolean
+        True if device hostname is part of filter. False if not.
+    """
+
+    # W102 Workaround to avoid list as default value.
+    if hostname_filter is None:
+        hostname_filter = ["all"]
+
+    if "all" in hostname_filter:
+        return True
+    elif any(element in hostname for element in hostname_filter):
+        return True
+    return False
+
+
 def isIterable(testing_object=None):
     """
     Test if an object is iterable or not.
@@ -153,7 +189,7 @@ def isLeaf(tree, nid):
         return False
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
+def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter=None):
     """
     Get available configlets to deploy to CVP.
 
@@ -165,22 +201,30 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional
         File extension to lookup configlet file, by default 'cfg'
+    device_filter: list, optional
+        List of filter to compare device configlet and to select only a subset of configlet.
 
     Returns
     -------
     dict
         Dictionary of configlets found in source folder.
     """
+    # W102 Workaround to avoid list as default value.
+    if device_filter is None:
+        device_filter = ["all"]
+
     src_configlets = glob.glob(src_folder + '/*.' + extension)
     configlets = dict()
     for file in src_configlets:
-        if prefix != 'none':
-            name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
-        else:
-            name = os.path.splitext(os.path.basename(file))[0]
-        with open(file, 'r') as file:
-            data = file.read()
-        configlets[name] = data
+        # Build structure only if configlet match device_filter.
+        if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
+            if prefix != 'none':
+                name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
+            else:
+                name = os.path.splitext(os.path.basename(file))[0]
+            with open(file, 'r') as file:
+                data = file.read()
+            configlets[name] = data
     return configlets
 
 
@@ -236,7 +280,7 @@ def serialize(dict_inventory, parent_container=None, tree_topology=None):
         return tree_topology
 
 
-def get_devices(dict_inventory, search_container=None, devices=None):
+def get_devices(dict_inventory, search_container=None, devices=None, device_filter=None):
     """
     Get devices attached to a container.
 
@@ -244,27 +288,38 @@ def get_devices(dict_inventory, search_container=None, devices=None):
     ----------
     dict_inventory : dict
         Inventory YAML content.
-    search_container : [type], optional
+    search_container : str, optional
         Container to look for, by default None
-    devices : [type], optional
+    devices : str, optional
         List of found devices attached to container, by default list()
+    device_filter: list, optional
+        List of filter to compare device name and to select only a subset of devices.
 
     Returns
     -------
     list
         List of found devices.
     """
+    # W102 Workaround to avoid list as default value.
+    if device_filter is None:
+        device_filter = ["all"]
+
     for k1, v1 in dict_inventory.items():
         # Read a leaf
         if k1 == search_container and 'hosts' in v1:
             for dev, data in v1['hosts'].items():
-                devices.append(dev)
+                if is_in_filter(
+                    hostname_filter=device_filter,
+                    hostname=dev
+                ):
+                    devices.append(dev)
         # If subgroup has kids
         if isIterable(v1) and 'children' in v1:
             get_devices(
                 dict_inventory=v1['children'],
                 search_container=search_container,
-                devices=devices
+                devices=devices,
+                device_filter=device_filter
             )
         elif k1 == 'children' and isIterable(v1):
             # Extract sub-group information
@@ -272,23 +327,28 @@ def get_devices(dict_inventory, search_container=None, devices=None):
                 get_devices(
                     dict_inventory=v2,
                     search_container=search_container,
-                    devcices=devices
+                    devices=devices,
+                    device_filter=device_filter
                 )
     return devices
 
 
-def get_containers(inventory_content, parent_container):
+def get_containers(inventory_content, parent_container, module):
     """
-    Build Container topology to build on CoudVision.
+    get_containers - Build Container topology to build on CoudVision.
 
     Parameters
     ----------
     inventory_content : dict
         Inventory loaded using a YAML input.
+    parent_container : string
+        Root of tree lookup
+    module : AnsibleModule
+        Ansible Module
 
     Returns
     -------
-    json
+    JSON
         CVP Container structure to use with cv_container.
     """
     serialized_inventory = serialize(dict_inventory=inventory_content)
@@ -305,7 +365,8 @@ def get_containers(inventory_content, parent_container):
                 if isLeaf(tree=tree_dc, nid=container):
                     devices = get_devices(dict_inventory=inventory_content,
                                           search_container=container,
-                                          devices=list())
+                                          devices=list(),
+                                          device_filter=module.params['device_filter'])
                     data['devices'] = devices
                 data['parent_container'] = parent.tag
             container_json[container] = data
@@ -319,7 +380,8 @@ def main():
         container_root=dict(type='str', required=True),
         configlet_dir=dict(type='str', required=False),
         configlet_prefix=dict(type='str', required=False),
-        destination=dict(type='str', required=False)
+        destination=dict(type='str', required=False),
+        device_filter=dict(type="list", default="all")
     )
 
     module = AnsibleModule(argument_spec=argument_spec,
@@ -340,12 +402,14 @@ def main():
             except yaml.YAMLError as exc:
                 print(exc)
         result['CVP_TOPOLOGY'] = get_containers(inventory_content=inventory_content,
-                                                parent_container=parent_container)
+                                                parent_container=parent_container,
+                                                module=module)
 
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:
         result['CVP_CONFIGLETS'] = get_configlet(src_folder=module.params['configlet_dir'],
-                                                 prefix=module.params['configlet_prefix'])
+                                                 prefix=module.params['configlet_prefix'],
+                                                 device_filter=module.params['device_filter'])
 
     # Write vars to file if set by user
     if module.params['destination'] is not None:

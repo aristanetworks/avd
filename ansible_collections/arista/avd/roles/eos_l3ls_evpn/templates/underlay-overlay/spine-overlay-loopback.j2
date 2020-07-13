@@ -5,3 +5,7 @@
 {% if underlay_routing_protocol == "OSPF" %}
     ospf_area: {{ underlay_ospf_area }}
 {% endif %}
+{% if underlay_routing_protocol == "ISIS" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+{% endif %}

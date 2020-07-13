@@ -1,0 +1,11 @@
+{# eos - IP IGMP Snooping #}
+{% if ip_igmp_snooping is defined and ip_igmp_snooping is not none %}
+{%    if ip_igmp_snooping.vlans is defined and ip_igmp_snooping.vlans is not none %}
+{%       for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
+{%          if ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == false %}
+no ip igmp snooping vlan {{ vlan }}
+{%          endif %}
+{%        endfor %}
+{%   endif %}
+!
+{% endif %}

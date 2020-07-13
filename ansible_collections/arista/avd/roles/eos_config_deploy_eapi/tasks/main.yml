@@ -2,9 +2,12 @@
 
 - name: replace configuration with intended configuration
   eos_config:
-    src: ./intended/configs/{{ inventory_hostname }}.cfg
+    src: '{{inventory_dir}}/intended/configs/{{ inventory_hostname }}.cfg'
     replace: config
     save_when: modified
+    backup: yes
+    backup_options:
+      filename: "{{ inventory_hostname }}_running-config.conf"
+      dir_path: "{{ inventory_dir }}/config_backup/"
   when: eosconfig.changed
-  notify: "backup config"
   tags: [provision]

@@ -1,7 +1,11 @@
+ansible-lint==4.2.0
 check-manifest
 coverage
+docker==4.2.0
 httmock
 pycodestyle
 flake8
-pylint
+pylint==2.4.4
 twine
+molecule==3.0.4
+pre-commit==2.3.0

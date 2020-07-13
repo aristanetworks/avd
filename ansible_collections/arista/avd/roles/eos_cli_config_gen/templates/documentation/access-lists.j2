@@ -1,0 +1,21 @@
+{% if access_lists is defined and access_lists is not none %}
+### Extended Access-lists Summary
+
+{%     for access_list in access_lists | arista.avd.natural_sort %}
+**{{ access_list }}:**
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in access_lists[access_list].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ access_lists[access_list].sequence_numbers[sequence].action }} |
+{%         endfor %}
+
+{%     endfor %}
+### Extended Access-lists Device Configuration
+
+```eos
+{% include 'eos/access-lists.j2' %}
+```
+{% else %}
+Extended Access-lists not defined
+{% endif %}

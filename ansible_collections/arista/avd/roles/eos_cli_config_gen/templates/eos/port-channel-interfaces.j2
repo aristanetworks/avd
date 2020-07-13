@@ -2,8 +2,13 @@
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 interface {{ port_channel_interface }}
+{%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
-{%         if port_channel_interfaces[port_channel_interface].mtu is defined %}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == true %}
+   shutdown
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %}
    mtu {{ port_channel_interfaces[port_channel_interface].mtu }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
@@ -15,6 +20,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vlans is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].native_vlan is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%         endif %}
@@ -23,14 +31,69 @@ interface {{ port_channel_interface }}
    switchport trunk group {{ trunk_group }}
 {%             endfor %}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].mlag is defined %}
+{%         if port_channel_interfaces[port_channel_interface].mlag is defined and port_channel_interfaces[port_channel_interface].mlag is not none %}
    mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].vrf is defined %}
+{%         if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
+   qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'edge' %}
+   spanning-tree portfast
+{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'network' %}
+   spanning-tree portfast network
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter == true %}
+   spanning-tree bpdufilter enable
+{%         endif%}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard == true %}
+   spanning-tree bpduguard enable
+{%         endif%}
+{%         if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_enable is defined and port_channel_interfaces[port_channel_interface].ipv6_enable == true %}
+   ipv6 enable
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %}
+   ipv6 address {{ port_channel_interfaces[port_channel_interface].ipv6_address }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_address_link_local is defined and port_channel_interfaces[port_channel_interface].ipv6_address_link_local is not none %}
+   ipv6 address {{ port_channel_interfaces[port_channel_interface].ipv6_address_link_local }} link-local
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled == true %}
+   ipv6 nd ra disabled
+{%         endif %}
+{%             if port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag == true %}
+   ipv6 nd managed-config-flag
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes is not none %}
+{%                 for prefix in port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes %}
+   ipv6 nd prefix {{ prefix }} {% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag == true %}no-autoconfig{% endif %}
+
+{%                 endfor %}
+{%             endif %}
+{%         if port_channel_interfaces[port_channel_interface].access_group_in is defined and port_channel_interfaces[port_channel_interface].access_group_in is not none %}
+   ip access-group {{ port_channel_interfaces[port_channel_interface].access_group_in }} in
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].access_group_out is defined and port_channel_interfaces[port_channel_interface].access_group_out is not none %}
+   ip access-group {{ port_channel_interfaces[port_channel_interface].access_group_out }} out
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_access_group_in is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_in is not none %}
+   ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_in }} in
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].ipv6_access_group_out is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_out is not none %}
+   ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_out }} out
+{%            endif %}
+{%         if port_channel_interfaces[port_channel_interface].pim is defined and port_channel_interfaces[port_channel_interface].pim is not none %}
+{%            if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is defined and port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%            endif %}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
+   vmtracer vmware-esx
 {%         endif %}
 !
 {%     endfor %}

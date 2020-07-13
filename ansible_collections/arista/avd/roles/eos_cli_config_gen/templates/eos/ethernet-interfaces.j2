@@ -2,11 +2,16 @@
 {% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 interface {{ ethernet_interface }}
+{%         if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %}
    description {{ ethernet_interfaces[ethernet_interface].description }}
-{%         if ethernet_interfaces[ethernet_interface].speed is defined %}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
+   shutdown
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
    speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].channel_group is defined %}
+{%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
 {%         else %}
 {%             if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu != 1500 %}
@@ -15,8 +20,8 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}
    no switchport
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined %}
-{%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined %}
+{%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined and ethernet_interfaces[ethernet_interface].flowcontrol is not none %}
+{%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined and ethernet_interfaces[ethernet_interface].flowcontrol.received is not none %}
    flowcontrol receive {{ ethernet_interfaces[ethernet_interface].flowcontrol.received }}
 {%                 endif %}
 {%             endif %}
@@ -26,25 +31,99 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vlans is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].native_vlan is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].trunk_groups is defined %}
+{%             if ethernet_interfaces[ethernet_interface].trunk_groups is defined and ethernet_interfaces[ethernet_interface].trunk_groups is not none %}
 {%                 for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%                 endfor %}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].vrf is defined %}
+{%             if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
+   qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'edge' %}
+   spanning-tree portfast
+{%             elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'network' %}
+   spanning-tree portfast network
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter == true %}
+   spanning-tree bpdufilter enable
+{%             endif%}
+{%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard == true %}
+   spanning-tree bpduguard enable
+{%             endif%}
+{%             if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].ip_address is defined %}
+{%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
+   ipv6 enable
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_address is defined and ethernet_interfaces[ethernet_interface].ipv6_address is not none %}
+   ipv6 address {{ ethernet_interfaces[ethernet_interface].ipv6_address }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_address_link_local is defined and ethernet_interfaces[ethernet_interface].ipv6_address_link_local is not none %}
+   ipv6 address {{ ethernet_interfaces[ethernet_interface].ipv6_address_link_local }} link-local
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled == true %}
+   ipv6 nd ra disabled
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag == true %}
+   ipv6 nd managed-config-flag
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes is not none %}
+{%                 for prefix in ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes %}
+   ipv6 nd prefix {{ prefix }} {% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is not none %}{{ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime }} {% endif %}{% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is not none %}{{ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime }} {% endif %}{% if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag == true %}no-autoconfig{% endif %}
+
+{%                 endfor %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].access_group_in is defined and ethernet_interfaces[ethernet_interface].access_group_in is not none %}
+   ip access-group {{ ethernet_interfaces[ethernet_interface].access_group_in }} in
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].access_group_out is defined and ethernet_interfaces[ethernet_interface].access_group_out is not none %}
+   ip access-group {{ ethernet_interfaces[ethernet_interface].access_group_out }} out
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_access_group_in is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_in is not none %}
+   ipv6 access-group {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_in }} in
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ipv6_access_group_out is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_out is not none %}
+   ipv6 access-group {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_out }} out
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
+   vmtracer vmware-esx
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
+   isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive == true %}
+   isis passive
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_metric is defined %}
+   isis metric {{ ethernet_interfaces[ethernet_interface].isis_metric }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
+   vmtracer vmware-esx
 {%             endif %}
 {%         endif %}
 !

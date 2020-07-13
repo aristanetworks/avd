@@ -32,6 +32,7 @@ This role requires to install `arista.cvp` collection to support CloudVision int
 ```shell
 $ ansible-galaxy collection install arista.cvp
 ```
+> __NOTE__: When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ## Role Inputs and Outputs
 

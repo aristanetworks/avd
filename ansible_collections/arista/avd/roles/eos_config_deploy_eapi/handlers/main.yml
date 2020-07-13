@@ -1,11 +1,2 @@
-- name: show running config
-  eos_command:
-    commands: "show running-config"
-  register: backup
-  listen: "backup config"
-
-- name: backup running config
-  copy:
-    content: "{{ backup.stdout[0] }}"
-    dest: "./config_backup/{{ inventory_hostname }}_running-config.conf"
-  listen: "backup config"
+---
+  # handlers file for eos_config_deploy_eapi

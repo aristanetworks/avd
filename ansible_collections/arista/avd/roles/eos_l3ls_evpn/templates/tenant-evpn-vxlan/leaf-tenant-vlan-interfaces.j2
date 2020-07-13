@@ -12,11 +12,24 @@
     tags: {{ tenants[tenant].vrfs[vrf].svis[svi].tags }}
     description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
     vrf: {{ vrf }}
-    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet | ipaddr('prefix') }}
-{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary is defined %}
-    ip_address_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('network') | ipmath(1) }}/{{ tenants[tenant].vrfs[vrf].svis[svi].ip_subnet_secondary | ipaddr('prefix') }}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].nodes is defined %}
+{%                     for node in tenants[tenant].vrfs[vrf].svis[svi].nodes %}
+{%                          if node == inventory_hostname %}
+{%                              if tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address is defined %}
+    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address }}
+{%                              endif %}
+{%                          endif %}
+{%                     endfor %}
 {%                 endif %}
-    virtual: true
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_virtual_router_address is defined %}
+    ip_virtual_router_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_virtual_router_address | ipaddr('address') }}
+{%                 endif %}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual is defined %}
+    ip_address_virtual: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual }}
+{%                 endif %}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual_secondary is defined %}
+    ip_address_virtual_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual_secondary }}
+{%                 endif %}
 {%                 if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
     mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
 {%                 endif %}

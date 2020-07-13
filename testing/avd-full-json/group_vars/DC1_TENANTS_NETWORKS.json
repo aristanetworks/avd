@@ -1,0 +1,43 @@
+{
+    "tenants": {
+        "Tenant_A": {
+            "mac_vrf_vni_base": 10000,
+            "vrfs": {
+                "Tenant_A_OP_Zone": {
+                    "vrf_vni": 10,
+                    "vtep_diagnostic": {
+                        "loopback": 100,
+                        "loopback_ip_range": "10.255.1.0/24"
+                    },
+                    "svis": {
+                        "110": {
+                            "name": "Tenant_A_OP_Zone_1",
+                            "tags": [
+                                "opzone"
+                            ],
+                            "enabled": true,
+                            "ip_subnet": "10.1.10.0/24"
+                        }
+                    }
+                }
+            }
+        },
+        "Tenant_D": {
+            "mac_vrf_vni_base": 40000,
+            "l2vlans": {
+                "411": {
+                    "name": "Tenant_D_OP_Zone_1",
+                    "tags": [
+                        "opzone"
+                    ]
+                },
+                "412": {
+                    "name": "Tenant_D_OP_Zone_2",
+                    "tags": [
+                        "opzone"
+                    ]
+                }
+            }
+        }
+    }
+}

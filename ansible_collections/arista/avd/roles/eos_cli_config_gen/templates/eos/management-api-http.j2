@@ -1,3 +1,4 @@
+{# Management API HTTP #}
 {% if management_api_http is defined and management_api_http is not none %}
 management api http-commands
 {%     if management_api_http.enable_https is defined and management_api_http.enable_https == true %}
@@ -8,11 +9,18 @@ management api http-commands
    protocol http
 {%     endif %}
    no shutdown
-{%     if management_api_http.enable_vrfs is defined %}
-{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort %}
+{%     if management_api_http.enable_vrfs is defined -%}
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort if vrf is ne 'default' %}
    !
    vrf {{ vrf }}
       no shutdown
-{%         endfor %}
-{%     endif %}
+{%             if management_api_http.enable_vrfs[vrf].access_group is defined and management_api_http.enable_vrfs[vrf].access_group is not none %}
+      ip access-group {{ management_api_http.enable_vrfs[vrf].access_group }}
+{%             endif %}
+{%             if management_api_http.enable_vrfs[vrf].ipv6_access_group is defined and management_api_http.enable_vrfs[vrf].ipv6_access_group is not none %}
+      ipv6 access-group {{ management_api_http.enable_vrfs[vrf].ipv6_access_group }}
+{%             endif %}
+{%-         endfor %}
+{%-     endif %}
+!
 {% endif %}

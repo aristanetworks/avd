@@ -1,6 +1,7 @@
+{# eos - name-server #}
 {% if name_server is defined %}
 {%     for node in name_server.nodes %}
-ip name-server vrf {{ name_server.source.vrf }} {{ node }}
+ip name-server{% if name_server.source.vrf is ne 'default'%} vrf {{ name_server.source.vrf }}{% endif %} {{ node }}
 {%     endfor %}
 !
 {% endif %}

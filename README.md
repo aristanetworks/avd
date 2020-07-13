@@ -1,10 +1,10 @@
-# Ansible Collection For Arista Validate Designs - arista.avd
+# Ansible Collection For Arista Validated Designs - arista.avd
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 **Table of Contents:**
 
-- [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
+- [Ansible Collection For Arista Validated Designs - arista.avd](#ansible-collection-for-arista-validated-designs---aristaavd)
   - [About](#about)
   - [Project Documentation](#project-documentation)
   - [Installation](#installation)
@@ -13,9 +13,10 @@
   - [Example Playbooks](#example-playbooks)
   - [Examples](#examples)
   - [Additional Resources](#additional-resources)
-  - [License](#license)
   - [Ask a question](#ask-a-question)
   - [Contributing](#contributing)
+  - [Branching Model](#branching-model)
+  - [License](#license)
 
 ## About
 
@@ -79,6 +80,8 @@ pytest-html==2.0.1
 jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
+
+> **_NOTE:_** When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ### Installation from ansible-galaxy
 
@@ -147,10 +150,6 @@ ansible-galaxy collection install arista.avd
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 
-## License
-
-Project is published under [Apache 2.0 License](LICENSE)
-
 ## Ask a question
 
 Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
@@ -160,3 +159,14 @@ Support for this `arista.avd` collection is provided by the community directly i
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
+
+## Branching Model
+
+- The __`devel`__ branch corresponds to the release actively under development.
+- The __`releases/x.x.x`__ branches correspond to stable releases.
+- Fork repository and create a branch based on __`devel`__ to set up a dev environment if you want to open a PR.
+- See the ansible-avd release for information about active branches.
+
+## License
+
+Project is published under [Apache 2.0 License](LICENSE)
