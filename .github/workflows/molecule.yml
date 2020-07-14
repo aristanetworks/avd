@@ -1,5 +1,11 @@
 name: Ansible Molecule
-on: push
+on:
+  push:
+  pull_request:
+    paths:
+      - 'ansible_collections/arista/avd/roles/**'
+      - 'ansible_collections/arista/avd/molecules/**'
+      - 'requirements.txt'
 jobs:
   molecule:
     runs-on: ubuntu-latest
