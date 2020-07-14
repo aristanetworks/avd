@@ -4,6 +4,10 @@
 
 fabric_name: DC1_FABRIC
 
+underlay_routing_protocol: ISIS
+isis_area_id: "49.0001"
+isis_site_id: "0001"
+
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]
 underlay_p2p_network_summary: 172.31.255.0/24

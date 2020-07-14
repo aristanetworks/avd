@@ -1,4 +1,5 @@
 # Nashua EVE-NG LAB shared attributes
+root_dir: '../../'
 
 # local users
 local_users:
