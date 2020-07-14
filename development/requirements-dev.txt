@@ -6,7 +6,6 @@ pycodestyle
 flake8
 pylint==2.4.4
 twine
-molecule==3.0.4
 pre-commit==2.3.0
 docker==4.2.2
 molecule==3.0.5
