@@ -1,7 +1,6 @@
 ansible-lint==4.2.0
 check-manifest
 coverage
-docker==4.2.0
 httmock
 pycodestyle
 flake8
