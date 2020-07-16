@@ -14,7 +14,7 @@ _REPO_EXAMPLES="https://github.com/arista-netdevops-community/ansible-avd-cloudv
 # Path for local repositories
 _LOCAL_AVD="${_ROOT_INSTALLATION_DIR}/ansible-avd"
 _LOCAL_CVP="${_ROOT_INSTALLATION_DIR}/ansible-cvp"
-_LOCAL_EXAMPLES="${_ROOT_INSTALLATION_DIR}/netdevops-examples"
+_LOCAL_EXAMPLES="${_ROOT_INSTALLATION_DIR}/ansible-avd-cloudvision-demo"
 
 # Folder where Dockerfile and Makefile are located
 _DEV_FOLDER="${_LOCAL_AVD}/development/"
