@@ -502,6 +502,7 @@ clock:
 vlans:
   < vlan_id >:
     name: < vlan_name >
+    state: < active | suspend >
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
