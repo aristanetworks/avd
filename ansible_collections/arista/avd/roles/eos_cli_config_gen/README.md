@@ -855,6 +855,7 @@ standard_access_lists:
 static_routes:
   - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
     destination_address_prefix: < IPv4_network/Mask >
+    interface: < interface >
     gateway: < IPv4_address >
     distance: < 1-255 >
     tag: < 0-4294967295 >
@@ -869,6 +870,7 @@ static_routes:
 ipv6_static_routes:
   - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
     destination_address_prefix: < IPv6_network/Mask >
+    interface: < interface >
     gateway: < IPv6_address >
     distance: < 1-255 >
     tag: < 0-4294967295 >
