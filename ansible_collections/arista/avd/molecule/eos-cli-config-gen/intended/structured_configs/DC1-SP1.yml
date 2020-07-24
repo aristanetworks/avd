@@ -1,0 +1,564 @@
+---
+### EU0DC001MAG-D02E19-SP1 ###
+
+### Spine Info ###
+switch_platform: 7308X3
+switch_mgmt_ip: 10.10.10.11/23
+
+### Terminal Settings ###
+terminal:
+  length: 40
+
+###  Aliases ###
+aliases: |
+  alias sib show ip bgp
+  alias sibs show ip bgp summary
+  alias siib show ip int brief
+  alias sir show ip route
+  alias senz show interface counter error | nz
+  alias snz show interface counter | nz
+  alias sps show port-channel summary
+  alias spd show port-channel %1 detail all
+  alias sqnz show interface counter queue | nz
+  alias srnz show interface counter rate | nz
+  alias smac show mac address-table dynamic
+  alias sarp show ip arp
+  alias copp show policy-map copp copp-system-policy
+  alias help
+  10 bash echo -e "sib  : show ip bgp\nsibs : show ip bgp summary\nsiib : show ip int brief\nsir  : show ip route\nsenz : show interface counter error | nz\nsnz   : show interface counter | nz\nsps  : show port-channel summary\nspd  : show port-channel detail all\nsqnz : show interface counter queue | nz\nsrnz : show interface counter rate | nz\nsmac : show mac address-table dynamic\nsarp : show ip arp\ncopp : show policy-map copp copp-system-policy\ninfo : version, serial and mlag"
+  alias info
+  10 bash SERIAL=$(FastCli -p 15 -c 'show version' | grep Serial | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "SN : $SERIAL"
+  20 bash VERSION=$(FastCli -p 15 -c 'show version' | grep image | tr -s ' ' | cut -d ' ' -f 4 | tr -d '\r');echo -e "EOS VERSION : $VERSION"
+  30 bash DOMAIN=$(FastCli -p 15 -c 'show mlag' | grep domain | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "MLAG DOMAIN : $DOMAIN"
+  40 bash STATE=$(FastCli -p 15 -c 'show mlag' | grep state | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "MLAG STATE : $STATE"
+
+### Daemon TerminAttr ###
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - 10.10.10.8
+      - 10.10.10.9
+      - 10.10.10.10
+    port: 9910
+  ingestauth_key: magickey
+  ingestvrf: mgt
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+
+
+### Queue Monitor Length ###
+queue_monitor_length:
+  notifying: true
+
+### ArBGP ###
+service_routing_protocols_model: "multi-agent"
+
+### Logging ###
+logging:
+  console: debugging
+  buffered:
+    size: 1000000
+    level: informational
+  trap: informational
+  source_interface:
+  vrfs:
+    mgt:
+      source_interface: Management0
+      hosts:
+        - 10.10.10.7
+
+### Domain Lookup ###
+ip_domain_lookup:
+  source_interfaces:
+    Management0:
+      vrf: mgt
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: mgt
+  nodes:
+    - 10.10.128.10
+    - 10.10.129.10
+
+### DNS Domain ###
+dns_domain: test.local
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: mgt
+    interface: Management0
+  nodes:
+    - 10.10.111.1
+    - 10.10.111.2
+
+### Sflow ###
+sflow:
+  destinations:
+    10.10.111.3:
+  source_interface: Loopback0
+  sample: 1000
+  run: true
+
+### Snmp Settings ####
+snmp_server:
+  contact: DC1_OPS
+  location: DC1
+  local_interfaces:
+    - name: Management0
+      vrf: mgt
+  views:
+    - name: VW-WRITE
+      MIB_family_name: iso
+      included: true
+    - name: VW-READ
+      MIB_family_name: iso
+      included: true
+  groups:
+    - name: GRP-READ-ONLY
+      version: v3
+      authentication: priv
+      read: v3read
+    - name: GRP-READ-WRITE
+      version: v3
+      authentication: auth
+      read: v3read
+      write: v3write
+  users:
+    - name: USER-READ
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+    - name: USER-WRITE
+      group: GRP-READ-WRITE
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+  hosts:
+    - host: 10.6.75.99
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+        - username: USER-WRITE
+          authentication_level: auth
+          version: 3
+    - host: 10.6.75.121
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+  traps:
+    enable: true
+  vrfs:
+    - name: default
+      enable: false
+    - name: mgt
+      enable: true
+
+### Tacacs+ Servers
+tacacs_servers:
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      vrf: mgt
+      key: 071B245F5A
+
+### AAA Server Groups
+aaa_server_groups:
+  - name: TACACS
+    type: tacacs+
+    servers:
+      - server: 10.10.10.157
+        vrf: mgt
+      - server: 10.10.10.249
+        vrf: mgt
+
+### AAA Authentication
+aaa_authentication:
+  login:
+    default: group TACACS local
+    serial_console: local
+
+### AAA Authorization
+aaa_authorization:
+  exec_default: group TACACS local
+  config_commands: true
+
+### AAA Accounting
+aaa_accounting:
+  exec:
+    default:
+      type: start-stop
+      group: TACACS
+  commands:
+    commands_default:
+      - commands: all
+        type: start-stop
+        group: TACACS
+        logging: true
+      - commands: 0
+        type: start-stop
+        logging: true
+
+### local users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+
+### Clock Timezone ###
+clock:
+  timezone: UTC
+
+### VRFs ###
+vrfs:
+  mgt:
+    ip_routing: False
+
+### bfd multihop ###
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet3/1/1:
+    description: P2P_LINK_TO_BL1_Ethernet3/49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.1/31
+    ipv6_address: 1b11:3a00:22b0:0088::1/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/1/1:
+    description: P2P_LINK_TO_BL1_Ethernet3/49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.2.7/31
+    ipv6_address: 1b11:3a00:22b0:0088::7/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet3/7/1:
+    description: P2P_LINK_TO_CL1_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.13/31
+    ipv6_address: 1b11:3a00:22b0:0088::13/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/7/1:
+    description: P2P_LINK_TO_CL2_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.19/31
+    ipv6_address: 1b11:3a00:22b0:0088::2/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet3/8/1:
+    description: P2P_LINK_TO_CL3_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.1.25/31
+    ipv6_address: 1b11:3a00:22b0:0088::25/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/8/1:
+    description: P2P_LINK_TO_CL4_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.31/31
+    ipv6_address: 1b11:3a00:22b0:0088::31/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet3/9/1:
+    description: P2P_LINK_TO_CL5_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.37/31
+    ipv6_address: 1b11:3a00:22b0:0088::37/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/9/1:
+    description: P2P_LINK_TO_CL6_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.43/31
+    ipv6_address: 1b11:3a00:22b0:0088::43/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet3/10/1:
+    description: P2P_LINK_TO_CL7_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.49/31
+    ipv6_address: 1b11:3a00:22b0:0088::49/127
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/10/1:
+    description: P2P_LINK_TO_CL8_Ethernet49/1
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.55/31
+    ipv6_address: 1b11:3a00:22b0:0088::55/127
+    pim:
+      ipv4:
+        sparse_mode: true
+
+### Loopback Interfaces ###
+loopback_interfaces:
+  Loopback0:
+    description: ROUTER-ID
+    shutdown: false
+    ip_address: 10.50.64.11/32
+    ipv6_enable: true
+    ipv6_address: 1b11:3a00:22b0:0082::11/128
+
+### Management Interfaces ###
+management_interfaces:
+  Management0:
+    description: MANAGEMENT_VRF
+    vrf: mgt
+    ip_address: 10.10.10.11/24
+    ipv6_address: 1b11:3a00:22b0:0083::11/64
+    ipv6_enable: true
+    gateway: 10.10.10.1
+    ipv6_gateway: 1b11:3a00:22b0:0083::1
+
+### Standard Access-Lists ###
+standard_access_lists:
+  ACL-API:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+      20:
+        action: "permit host 10.10.10.7"
+      30:
+        action: "permit host 10.10.10.8"
+      40:
+        action: "permit host 10.10.10.9"
+      50:
+        action: "permit host 10.10.10.9"
+  ACL-SSH:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"
+  ACL-SSH-VRF:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"
+
+### IP Routing ###
+ip_routing: true
+
+### IPv4 static routes ###
+static_routes:
+  - destination_address_prefix: 0.0.0.0/0
+    gateway: 10.10.10.1
+    vrf: mgt
+
+### IPv6 static routes ###
+ipv6_static_routes:
+  - destination_address_prefix: ::/0
+    gateway: 1b11:3a00:22b0:0083::1
+    vrf: mgt
+
+### IPv4 Prefix-lists ###
+prefix_lists:
+  PL-LOOPBACKS:
+    sequence_numbers:
+      10:
+        action: permit 10.50.64.0/23 eq 32
+
+### IPv6 Prefix-lists ###
+ipv6_prefix_lists:
+  PL-IPV6-LOOPBACKS:
+    sequence_numbers:
+      10:
+        action: permit 1b11:3a00:22b0:0092::/64 eq 128
+
+### IPv6 Routing ###
+ipv6_unicast_routing: true
+
+### Route-maps ###
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match: ip address prefix-list PL-LOOPBACKS
+      20:
+        type: permit
+        match: ipv6 address prefix-list PL-IPV6-LOOPBACKS
+
+### Peer-filters ###
+peer_filters:
+  LEAF-AS-RANGE:
+    sequence_numbers:
+      10:
+        match: as-range 65001-65200 result accept
+
+### Routing - BGP ###
+router_bgp:
+  as: 65000
+  router_id: 10.50.64.11
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - update wait-install
+    - update wait-for-convergence
+    - distance bgp 20 200 200
+    - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPV4-UNDERLAY:
+      bgp_listen_range_prefix: 10.50.0.0/21
+      peer_filter: LEAF-AS-RANGE
+      password: SLh4FyuEQ+GWSmzJyJ3O8A==
+      send_community: true
+      maximum_routes: 12000
+    IPV6-UNDERLAY:
+      bgp_listen_range_prefix: 1b11:3a00:22b0:0088::/64
+      peer_filter: LEAF-AS-RANGE
+      password: SLh4FyuEQ+GWSmzJyJ3O8A==
+      send_community: true
+      maximum_routes: 12000
+    EVPN-OVERLAY:
+      bgp_listen_range_prefix: 10.50.64.0/23
+      peer_filter: LEAF-AS-RANGE
+      next_hop_unchanged: true
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 5
+      password: SLh4FyuEQ+GWSmzJyJ3O8A==
+      send_community: true
+      maximum_routes: 0
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+  address_family_ipv4_multicast:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+  address_family_ipv6:
+    peer_groups:
+      IPV6-UNDERLAY:
+        activate: true
+
+### Routing - Multicast ###
+router_multicast:
+  ipv4:
+    routing: true
+
+### Routing - PIM Sparse Mode ###
+router_pim_sparse_mode:
+  ipv4:
+    rp_addresses:
+      10.238.1.161:
+        groups:
+          239.12.12.12/32:
+          239.12.12.13/32:
+          239.12.12.14/32:
+          239.12.12.16/32:
+          239.12.12.20/32:
+          239.12.12.21/32:
+
+### IP TACACS+ Source Interface ###
+ip_tacacs_source_interfaces:
+    - name: Management0
+      vrf: mgt
+
+### Banners ###
+banners:
+  login: |
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !***!!!Unauthorized access prohibited!!!***!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    EOF
+  motd: |
+    .         Switch       : $(hostname)                            .
+    .         Site         : DC1                      .
+    .         Type info for information about the device            .
+    .         Type help for information about the aliases           .
+    EOF
+
+### Management API http ###
+management_api_http:
+  enable_http: true
+  enable_https: true
+  enable_vrfs:
+    mgt:
+      access_group: ACL-API
+
+### Management console ###
+management_console:
+  idle_timeout: 300
+
+### Management security ###
+management_security:
+  password:
+    encryption_key_common: true
+
+### Management ssh ###
+management_ssh:
+  access_groups:
+    - name: ACL-SSH
+    - name: ACL-SSH-VRF
+      vrf: mgt
+  ipv6_access_groups:
+    - name: ACL-SSH6
+    - name: ACL-SSH-VRF6
+      vrf: mgt
+  idle_timeout: 15
+  enable: true
+  vrfs:
+    mgt:
+      enable: true
