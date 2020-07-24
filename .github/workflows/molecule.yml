@@ -19,6 +19,7 @@ jobs:
           - avd-l3ls-ebgp
           - avd-l3ls-ebgp-json
           - avd-l3ls-isis
+          - eos-cli-config-gen
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
