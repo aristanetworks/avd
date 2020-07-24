@@ -19,7 +19,7 @@ jobs:
           - 'avd-l3ls-ebgp'
           - 'avd-l3ls-ebgp-json'
           - 'avd-l3ls-isis'
-          - 'eos-cli-config-gen'
+          # - 'eos-cli-config-gen'
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -31,11 +31,6 @@ jobs:
           molecule_command: 'test'
           molecule_args: '-s ${{ matrix.avd_scenario }}'
           pip_file: 'requirements.txt'
-
-      - name: Check molecule content
-        run: |
-          cd ansible_collections/arista/avd/molecule/
-          ls -R *
 
       - uses: actions/upload-artifact@v1
         with:
