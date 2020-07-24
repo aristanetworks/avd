@@ -29,8 +29,8 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r developement/requirements.txt
-          pip install -r developement/requirements-dev.txt
+          pip install -r development/requirements.txt
+          pip install -r development/requirements-dev.txt
 
       # - name: Run molecule action
       #   uses: inetsix/molecule-collection-actions@master
