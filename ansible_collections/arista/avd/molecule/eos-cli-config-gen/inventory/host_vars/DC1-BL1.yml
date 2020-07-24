@@ -1,4 +1,4 @@
-
+---
 ### EU0DC001MAG-D02E14-BL1 ###
 
 ### Leaf Info ###
@@ -1108,7 +1108,7 @@ management_console:
 ### Management security ###
 management_security:
   password:
-    encryption_key_common : true
+    encryption_key_common: true
 
 ### Management ssh ###
 management_ssh:
