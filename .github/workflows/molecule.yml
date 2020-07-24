@@ -30,3 +30,8 @@ jobs:
           molecule_command: 'test'
           molecule_args: '-s ${{ matrix.avd_scenario }}'
           pip_file: 'requirements.txt'
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: molecule-results-${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
