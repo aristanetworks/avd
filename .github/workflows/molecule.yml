@@ -1,11 +1,13 @@
 name: Ansible Molecule
 on:
   push:
+    branches:
+      - devel
   pull_request:
     paths:
       - 'ansible_collections/arista/avd/roles/**'
       - 'ansible_collections/arista/avd/molecules/**'
-      - 'requirements.txt'
+      - 'development/requirements**'
 jobs:
   molecule:
     runs-on: ubuntu-latest
@@ -31,14 +33,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r development/requirements.txt
           pip install -r development/requirements-dev.txt
-
-      # - name: Run molecule action
-      #   uses: inetsix/molecule-collection-actions@master
-      #   with:
-      #     molecule_parentdir: 'ansible_collections/arista/avd'
-      #     molecule_command: 'test'
-      #     molecule_args: '-s ${{ matrix.avd_scenario }}'
-      #     pip_file: 'requirements.txt'
 
       - name: Execute molecule
         run: |
