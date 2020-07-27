@@ -1135,6 +1135,9 @@ router_bgp:
         prefix_list_out: < prefix_list_name >
       < neighbor_ip_address>:
         activate: < true | false >
+        default_originate:
+          always: < true | false >
+          route_map: < route_map_name >
   address_family_ipv4_multicast:
     peer_groups:
       < peer_group_name >:
