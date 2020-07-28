@@ -730,11 +730,11 @@ vlan_interfaces:
     vrrp:
       virtual_router: < virtual_router_id >
       priority: < instance_priority >
+      advertisement_interval: < advertisement_interval>
+      preempt_delay_minimum: < minimum_preemption_delay >
       ipv4: < virtual_ip_address >
       ipv6: < virtual_ip_address >
-      interval: < advertisement_interval>
-      preempt_delay: < minimum_preemption_delay >
-  < Vlan_id_2 >:
+< Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```

@@ -100,20 +100,20 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].vrrp is defined and vlan_interfaces[vlan_interface].vrrp is not none %}
 {%           if vlan_interfaces[vlan_interface].vrrp.virtual_router is defined and vlan_interfaces[vlan_interface].vrrp.virtual_router is not none %}
+{%             if vlan_interfaces[vlan_interface].vrrp.priority is defined and vlan_interfaces[vlan_interface].vrrp.priority is not none and vlan_interfaces[vlan_interface].vrrp.priority > 1 %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} priority {{ vlan_interfaces[vlan_interface].vrrp.priority }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.advertisement_interval is defined and vlan_interfaces[vlan_interface].vrrp.advertisement_interval is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} advertisement interval {{ vlan_interfaces[vlan_interface].vrrp.advertisement_interval }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is defined and vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} preempt delay minimum {{ vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum }}
+{%             endif %}
 {%             if vlan_interfaces[vlan_interface].vrrp.ipv4 is defined and vlan_interfaces[vlan_interface].vrrp.ipv4 is not none %}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} ipv4 {{ vlan_interfaces[vlan_interface].vrrp.ipv4 }}
 {%             endif %}
 {%             if vlan_interfaces[vlan_interface].vrrp.ipv6 is defined and vlan_interfaces[vlan_interface].vrrp.ipv6 is not none %}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} ipv6 {{ vlan_interfaces[vlan_interface].vrrp.ipv6 }}
-{%             endif %}
-{%             if vlan_interfaces[vlan_interface].vrrp.priority is defined and vlan_interfaces[vlan_interface].vrrp.priority is not none %}
-   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} priority {{ vlan_interfaces[vlan_interface].vrrp.priority }}
-{%             endif %}
-{%             if vlan_interfaces[vlan_interface].vrrp.interval is defined and vlan_interfaces[vlan_interface].vrrp.interval is not none %}
-   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} advertisement interval {{ vlan_interfaces[vlan_interface].vrrp.interval }}
-{%             endif %}
-{%             if vlan_interfaces[vlan_interface].vrrp.preempt_delay is defined and vlan_interfaces[vlan_interface].vrrp.preempt_delay is not none %}
-   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} preempt delay minimum {{ vlan_interfaces[vlan_interface].vrrp.preempt_delay }}
 {%             endif %}
 {%           endif %}
 {%         endif %}
