@@ -3,7 +3,7 @@
 {%     for vlan in vlans | arista.avd.natural_sort %}
 vlan {{ vlan }}
    name {{ vlans[vlan].name }}
-{%         if vlans[vlan].state is defined and vlans[vlan].state is not none %}
+{%         if vlans[vlan].state is defined and vlans[vlan].state is not none and vlans[vlan].state = "suspend" %}
    state {{ vlans[vlan].state }}
 {%         endif %}
 {%         if vlans[vlan].trunk_groups is defined %}
