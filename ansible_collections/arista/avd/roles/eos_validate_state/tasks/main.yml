@@ -116,7 +116,7 @@
           - result[0].interfaceDescriptions.{{item.key}}.interfaceStatus eq 'up'
         retries: 2
         interval: 2
-      loop: "{{ethernet_interfaces|dict2items}}"
+      loop: "{{ethernet_interfaces|default({})|dict2items}}"
       when: | 
         (ethernet_interfaces is defined and ethernet_interfaces is not none) and 
         (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
@@ -131,7 +131,7 @@
           - result[0].interfaceDescriptions.{{item.key}}.lineProtocolStatus eq 'up'
         retries: 2
         interval: 2
-      loop: "{{ethernet_interfaces|dict2items}}"
+      loop: "{{ethernet_interfaces|default({})|dict2items}}"
       when: | 
         (ethernet_interfaces is defined and ethernet_interfaces is not none) and 
         (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
@@ -147,11 +147,12 @@
           - "result[0].lldpNeighbors[0].neighborPort eq {{item.value.peer_interface}}"
         retries: 2
         interval: 2
-      loop: "{{ethernet_interfaces|dict2items}}"
+      loop: "{{ethernet_interfaces|default({})|dict2items}}"
       when: | 
         (ethernet_interfaces is defined and ethernet_interfaces is not none) and 
         (item.value.peer is defined and item.value.peer is not none) and 
         (item.value.peer_interface is defined and item.value.peer_interface is not none) and 
+        (hostvars[item.value.peer] is defined and hostvars[item.value.peer] is not none) and
         (hostvars[item.value.peer]['dns_domain'] is defined and hostvars[item.value.peer]['dns_domain'] is not none) and
         (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
       ignore_errors: "{{ validation_mode_loose }}"
@@ -179,7 +180,7 @@
         waitfor: result[0] contains '1 received' 
         retries: 2
         interval: 2
-      loop: "{{ethernet_interfaces|dict2items}}"
+      loop: "{{ethernet_interfaces|default({})|dict2items}}"
       ignore_errors: "{{ validation_mode_loose }}"
       when: | 
         (ethernet_interfaces is defined and ethernet_interfaces is not none) and
@@ -211,8 +212,9 @@
           - "result[0].vrfs.default.peerList[0].state eq 'Established'"
         retries: 2
         interval: 2
-      loop: "{{router_bgp.neighbors|dict2items}}"
+      loop: "{{router_bgp.neighbors|default({})|dict2items}}"
       when: | 
+        (router_bgp is defined and router_bgp is not none) and 
         (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and 
         (item.key is defined) and 
         (item.value |length > 0) and 
