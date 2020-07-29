@@ -36,6 +36,13 @@ router ospf {{ process_id }}
    redistribute static
 {%           endif %}
 {%         endif %}
+{%         if router_ospf.process_ids[process_id].redistribute.connected is defined %}
+{%           if router_ospf.process_ids[process_id].redistribute.connected.route_map is defined %}
+   redistribute connected route-map {{ router_ospf.process_ids[process_id].redistribute.connected.route_map }}
+{%           else %}
+   redistribute connected
+{%           endif %}
+{%         endif %}
 !
 {%     endfor %}
 {% endif %}

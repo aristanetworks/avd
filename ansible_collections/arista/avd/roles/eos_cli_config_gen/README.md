@@ -1236,7 +1236,9 @@ router_ospf:
         always: true
       redistribute:
         static:
-         route_map: < route_map_name >
+          route_map: < route_map_name >
+        connected:
+          route_map: < route_map_name >
 ```
 
 ### Routing PIM Sparse Mode
