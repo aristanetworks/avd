@@ -42,10 +42,10 @@ dependencies: {}
 repository: https://github.com/aristanetworks/ansible-avd
 
 # The URL to any online docs
-documentation: https://github.com/aristanetworks/ansible-avd
+documentation: https://aristanetworks.github.io/ansible-avd/
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/aristanetworks/ansible-avd
+homepage: https://aristanetworks.github.io/ansible-avd/
 
 # The URL to the collection issue tracker
 issues: https://github.com/aristanetworks/ansible-avd/issues
