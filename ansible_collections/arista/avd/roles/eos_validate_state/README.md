@@ -6,7 +6,7 @@
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
-  - [Example PLaybook](#example-playbook)
+  - [Example Playbook](#example-playbook)
   - [Input example](#input-example)
     - [inventory/inventory.ini](#inventoryinventoryini)
     - [inventory/group_vars/DC1.yml](#inventorygroup_varsdc1yml)
@@ -56,7 +56,7 @@
 
 Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
-## Example PLaybook
+## Example Playbook
 
 ```yaml
 ---
