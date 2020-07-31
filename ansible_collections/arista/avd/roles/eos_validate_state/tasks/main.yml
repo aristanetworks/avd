@@ -137,24 +137,37 @@
       tags:
         - avd
 
-    - name: validate LLDP topology
+    - name: Gather LLDP topology
       eos_command:
-        commands: "show lldp neighbors {{ item.key }} | json"
-        waitfor:
-          - "result[0].lldpNeighbors[0].neighborDevice eq {{ item.value.peer }}.{{ hostvars[item.value.peer]['dns_domain'] }}"
-          - "result[0].lldpNeighbors[0].neighborPort eq {{ item.value.peer_interface }}"
-        retries: 2
-        interval: 2
+        commands: "show lldp neighbors {{ ethernet_interface.key }} | json"
       loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
+      loop_control:
+        loop_var: ethernet_interface
       when: |
         (ethernet_interfaces is defined and ethernet_interfaces is not none) and
-        (item.value.peer is defined and item.value.peer is not none) and
-        (item.value.peer_interface is defined and item.value.peer_interface is not none) and
-        (hostvars[item.value.peer] is defined and hostvars[item.value.peer] is not none) and
-        (hostvars[item.value.peer]['dns_domain'] is defined and hostvars[item.value.peer]['dns_domain'] is not none)
+        (ethernet_interface.value.peer is defined and ethernet_interface.value.peer is not none) and
+        (ethernet_interface.value.peer_interface is defined and ethernet_interface.value.peer_interface is not none) and
+        (hostvars[ethernet_interface.value.peer] is defined and hostvars[ethernet_interface.value.peer] is not none) and
+        (hostvars[ethernet_interface.value.peer]['dns_domain'] is defined and hostvars[ethernet_interface.value.peer]['dns_domain'] is not none)
       ignore_errors: "{{ validation_mode_loose }}"
+      register: lldp_topology
       tags:
-        - avd
+        - validate_lldp_topology
+
+    - name: validate lldp topology
+      assert:
+        that:
+          - lldp_test.stdout[0].lldpNeighbors[0] is defined
+          - lldp_test.stdout[0].lldpNeighbors[0].neighborDevice == lldp_test.ethernet_interface.value.peer + "." + hostvars[lldp_test.ethernet_interface.value.peer]['dns_domain']
+          - lldp_test.stdout[0].lldpNeighbors[0].neighborPort == lldp_test.ethernet_interface.value.peer_interface
+        quiet: true
+      loop: "{{ lldp_topology.results }}"
+      loop_control:
+        loop_var: lldp_test
+      ignore_errors: "{{ validation_mode_loose }}"
+      register: lldp_topology_results
+      tags:
+        - validate_lldp_topology
 
     - name: validate MLAG status
       eos_command:
