@@ -103,8 +103,7 @@
         retries: 2
         interval: 2
       when: |
-        (ntp_server.nodes is defined and ntp_server.nodes is not none) and
-        (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
+        (ntp_server.nodes is defined and ntp_server.nodes is not none)
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
@@ -118,8 +117,7 @@
         interval: 2
       loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
       when: |
-        (ethernet_interfaces is defined and ethernet_interfaces is not none) and
-        (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
+        (ethernet_interfaces is defined and ethernet_interfaces is not none)
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
@@ -133,8 +131,7 @@
         interval: 2
       loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
       when: |
-        (ethernet_interfaces is defined and ethernet_interfaces is not none) and
-        (ansible_version['major'] == 2 and ansible_version['minor']|int >= 9)
+        (ethernet_interfaces is defined and ethernet_interfaces is not none)
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
@@ -153,8 +150,7 @@
         (item.value.peer is defined and item.value.peer is not none) and
         (item.value.peer_interface is defined and item.value.peer_interface is not none) and
         (hostvars[item.value.peer] is defined and hostvars[item.value.peer] is not none) and
-        (hostvars[item.value.peer]['dns_domain'] is defined and hostvars[item.value.peer]['dns_domain'] is not none) and
-        (ansible_version['major'] == 2 and ansible_version['minor'] | int >= 9)
+        (hostvars[item.value.peer]['dns_domain'] is defined and hostvars[item.value.peer]['dns_domain'] is not none)
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
@@ -169,8 +165,7 @@
         interval: 2
       ignore_errors: "{{ validation_mode_loose }}"
       when: |
-        (mlag_configuration is defined and mlag_configuration is not none) and
-        (ansible_version['major'] == 2 and ansible_version['minor'] | int >= 9)
+        (mlag_configuration is defined and mlag_configuration is not none)
       tags:
         - avd
 
@@ -218,8 +213,7 @@
         (router_bgp is defined and router_bgp is not none) and
         (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
         (item.key is defined) and
-        (item.value |length > 0) and
-        (ansible_version['major'] == 2 and ansible_version['minor'] | int >= 9)
+        (item.value |length > 0)
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
