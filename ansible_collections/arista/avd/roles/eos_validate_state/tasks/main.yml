@@ -1,4 +1,9 @@
 ---
+
+    - name: include device intended structure configuration variables
+      include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+      delegate_to: localhost
+
     - name: run show version on EOS devices
       eos_command:
         commands: "show version | json"
@@ -6,7 +11,7 @@
       tags:
         - always
 
-    - name: Print some details regarding EOS devices
+    - name: Display device platform and release information
       debug:
         msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
       tags:
@@ -91,10 +96,6 @@
       tags:
         - optional
 
-    - name: include device intended structure configuration variables
-      include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
-      delegate_to: localhost
-
     - name: validate NTP status
       eos_command:
         commands: "show ntp status"
@@ -169,7 +170,7 @@
       tags:
         - avd
 
-    - name: validate IP reachability (directly connected)
+    - name: validate IP reachability (directly connected interfaces)
       eos_command:
         commands: "ping {{ hostvars[item.value.peer]['ethernet_interfaces'][item.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ item.value.ip_address  | ipaddr('address')}} repeat 1"
         waitfor: result[0] contains '1 received'

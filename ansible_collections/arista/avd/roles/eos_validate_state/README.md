@@ -38,8 +38,8 @@
 
 1. Include device structured configuration.
 2. Display devices model and EOS release.
-3. Validate environment (fan status).
-4. Validate environment (power supplies status).
+3. Validate environment (power supplies status).
+4. Validate environment (fan status).
 5. Validate environment (temperature).
 6. Validate transceivers manufacturer.
 7. Validate last reload cause.
