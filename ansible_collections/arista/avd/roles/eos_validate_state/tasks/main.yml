@@ -201,7 +201,7 @@
           - "result[0] contains 'Configured routing protocol model: multi-agent'"
         retries: 2
         interval: 2
-      when: (ansible_version['major'] == 2 and ansible_version['minor'] | int >= 9)
+      when: (hostvars.service_routing_protocols_model is defined and hostvars.service_routing_protocols_model == "multi-agent")
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - avd
