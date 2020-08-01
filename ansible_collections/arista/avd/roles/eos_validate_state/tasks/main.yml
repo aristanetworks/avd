@@ -3,19 +3,21 @@
     - name: include device intended structure configuration variables
       include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
       delegate_to: localhost
+      tags:
+        - always
 
     - name: run show version on EOS devices
       eos_command:
         commands: "show version | json"
       register: eos_version
       tags:
-        - always
+        - platform_information
 
     - name: Display device platform and release information
       debug:
         msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
       tags:
-        - always
+        - platform_information
 
     - name: collect power supplies status
       eos_command:
@@ -152,7 +154,7 @@
       ignore_errors: "{{ validation_mode_loose }}"
       register: lldp_topology
       tags:
-        - validate_lldp_topology
+        - lldp_topology
 
     - name: validate lldp topology
       assert:
@@ -167,7 +169,7 @@
       ignore_errors: "{{ validation_mode_loose }}"
       register: lldp_topology_results
       tags:
-        - validate_lldp_topology
+        - lldp_topology
 
     - name: validate MLAG status
       eos_command:
@@ -202,32 +204,47 @@
       tags:
         - avd
 
-    - name: validate ArBGP is configured and operating
+    - name: Gathter ip route summary and ArBGP state
       eos_command:
         commands: "show ip route summary"
-        waitfor:
-          - "result[0] contains 'Operating routing protocol model: multi-agent'"
-          - "result[0] contains 'Configured routing protocol model: multi-agent'"
-        retries: 2
-        interval: 2
-      when: (hostvars.service_routing_protocols_model is defined and hostvars.service_routing_protocols_model == "multi-agent")
+      register: ip_route_summary
+      tags:
+        - ArBGP_state
+
+    - name: validate ArBGP is configured and operating
+      assert:
+        that:
+          - ip_route_summary.stdout_lines[0][0] | regex_search("multi-agent")
+          - ip_route_summary.stdout_lines[0][1] | regex_search("multi-agent")
+        quiet: yes
+      when: ( service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent" )
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
-        - avd
+        - ArBGP_state
 
-    - name: validate BGP sessions state
+    - name: gather bgp neighbors state
       eos_command:
-        commands: "show ip bgp neighbors {{ item.key }} | json"
-        waitfor:
-          - "result[0].vrfs.default.peerList[0].state eq 'Established'"
-        retries: 2
-        interval: 2
-      loop: "{{router_bgp.neighbors|default({})|dict2items}}"
+        commands: "show ip bgp neighbors {{ bgp_neighbor.key }} | json"
+      loop: "{{ router_bgp.neighbors | default({}) | dict2items }}"
+      loop_control:
+        loop_var: bgp_neighbor
       when: |
         (router_bgp is defined and router_bgp is not none) and
         (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
-        (item.key is defined) and
-        (item.value |length > 0)
+        (bgp_neighbor.key is defined) and
+        (bgp_neighbor.value | length > 0)
+      register: bgp_neighbors_state
+      tags:
+        - bgp_session_state
+
+    - name: validate BGP sessions state
+      assert:
+        that:
+          - bgp_test.stdout[0].vrfs.default.peerList[0].state == "Established"
+        quiet: yes
+      loop: "{{ bgp_neighbors_state.results }}"
+      loop_control:
+        loop_var: bgp_test
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
-        - avd
+        - bgp_session_state
