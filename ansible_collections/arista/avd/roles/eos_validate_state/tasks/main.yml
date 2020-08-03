@@ -222,29 +222,49 @@
       tags:
         - ArBGP_state
 
-    - name: gather bgp neighbors state
+    - name: gather bgp summary (ip and evpn)
       eos_command:
-        commands: "show ip bgp neighbors {{ bgp_neighbor.key }} | json"
+        commands:
+          - command: "show ip bgp summary | json"
+          - command: "show bgp evpn summary | json"
+      when: |
+        (router_bgp is defined and router_bgp is not none) and
+        (router_bgp.neighbors is defined and router_bgp.neighbors is not none)
+      register: bgp_summary
+      tags:
+        - bgp_session_state
+
+
+    - name: Validate ip bgp neighbors peer state
+      assert:
+        that:
+          - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
+        fail_msg: Session state "{{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState }}", expected Established
+        quiet: yes
       loop: "{{ router_bgp.neighbors | default({}) | dict2items }}"
       loop_control:
         loop_var: bgp_neighbor
       when: |
         (router_bgp is defined and router_bgp is not none) and
         (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
-        (bgp_neighbor.key is defined) and
-        (bgp_neighbor.value | length > 0)
-      register: bgp_neighbors_state
+        (bgp_neighbor.value.peer_group == "IPv4-UNDERLAY-PEERS" or bgp_neighbor.value.peer_group == "MLAG-IPv4-UNDERLAY-PEER")
+      ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - bgp_session_state
 
-    - name: validate BGP sessions state
+    - name: Validate bgp evpn neighbors peer state
       assert:
         that:
-          - bgp_test.stdout[0].vrfs.default.peerList[0].state == "Established"
+          - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
+        fail_msg: Session state "{{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState }}", expected Established
         quiet: yes
-      loop: "{{ bgp_neighbors_state.results }}"
+      loop: "{{ router_bgp.neighbors | default({}) | dict2items }}"
       loop_control:
-        loop_var: bgp_test
+        loop_var: bgp_neighbor
+      when: |
+        (router_bgp is defined and router_bgp is not none) and
+        (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
+        (bgp_neighbor.value.peer_group == "EVPN-OVERLAY-PEERS")
       ignore_errors: "{{ validation_mode_loose }}"
       tags:
         - bgp_session_state
