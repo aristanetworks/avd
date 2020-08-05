@@ -1,5 +1,5 @@
 {
-    "root_dir": "../../",
+    "root_dir": "{{playbook_dir}}",
     "local_users": {
         "admin": {
             "privilege": 15,
