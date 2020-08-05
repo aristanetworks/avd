@@ -37,7 +37,7 @@ jobs:
       - name: Execute molecule
         run: |
           cd ansible_collections/arista/avd
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
+          molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
 
       - uses: actions/upload-artifact@v1
         with:
