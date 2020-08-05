@@ -925,7 +925,9 @@ ipv6_prefix_lists:
 
 ### IPv6 Routing
 
+```yaml
 ipv6_unicast_routing: < true | false >
+```
 
 ### MLAG Configuration
 
