@@ -44,7 +44,7 @@ jobs:
         run: |
           pwd
           cd ansible_collections/arista/avd/
-          ls -alR molecule
+          ls -alR
 
       - uses: actions/upload-artifact@v1
         with:
