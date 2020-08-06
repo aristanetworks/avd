@@ -50,33 +50,10 @@
       tags:
         - avd
 
-    - name: validate interfaces admin state
-      eos_command:
-        commands: "show interfaces {{ item.key }} description | json"
-        waitfor:
-          - result[0].interfaceDescriptions.{{ item.key }}.interfaceStatus eq 'up'
-        retries: 2
-        interval: 2
-      loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
-      when: |
-        (ethernet_interfaces is defined and ethernet_interfaces is not none)
-      ignore_errors: "{{ validation_mode_loose }}"
+    - name: Load interface state tasks
+      include_tasks: "interface_state.yml"
       tags:
-        - avd
-
-    - name: validate interfaces operational state
-      eos_command:
-        commands: "show interfaces {{ item.key }} description | json"
-        waitfor:
-          - result[0].interfaceDescriptions.{{ item.key }}.lineProtocolStatus eq 'up'
-        retries: 2
-        interval: 2
-      loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
-      when: |
-        (ethernet_interfaces is defined and ethernet_interfaces is not none)
-      ignore_errors: "{{ validation_mode_loose }}"
-      tags:
-        - avd
+        - interfaces_state
 
     - name: Gather LLDP topology
       eos_command:
