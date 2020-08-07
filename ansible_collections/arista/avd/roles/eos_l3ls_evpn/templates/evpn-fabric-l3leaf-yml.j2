@@ -253,6 +253,7 @@ bfd_multihop:
 {% include 'base/bfd-multihop.j2' %}
 
 {# Port-Channel Interfaces #}
+{% if leaf.mlag == true %}
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
@@ -261,6 +262,7 @@ port_channel_interfaces:
 {% include 'mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
 {% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% endif %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
