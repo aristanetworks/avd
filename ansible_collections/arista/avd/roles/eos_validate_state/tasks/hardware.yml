@@ -4,7 +4,7 @@
 
 - name: Gather power supplies status
   eos_command:
-      commands: "show system environment power | json"
+    commands: "show system environment power | json"
   register: system_environment_power
   tags:
     - hardware
