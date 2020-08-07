@@ -20,6 +20,7 @@
   loop_control:
     loop_var: ethernet_interface
   ignore_errors: "{{ validation_mode_loose }}"
+  register: ethernet_interface_state_results
   tags:
     - interfaces_state
 
@@ -33,6 +34,7 @@
   loop_control:
     loop_var: port_channel_interface
   ignore_errors: "{{ validation_mode_loose }}"
+  register: port_channel_interface_results
   tags:
     - interfaces_state
 
@@ -47,6 +49,7 @@
     loop_var: vlan_interface
   ignore_errors: "{{ validation_mode_loose }}"
   when: (vlan_interfaces is defined and vlan_interfaces is not none)
+  register: vlan_interface_state_results
   tags:
     - interfaces_state
 
@@ -58,6 +61,7 @@
     quiet: true
   ignore_errors: "{{ validation_mode_loose }}"
   when: (vxlan_tunnel_interface is defined and vxlan_tunnel_interface is not none)
+  register: vxlan_interface_state_results
   tags:
     - interfaces_state
 
@@ -72,6 +76,7 @@
     loop_var: loopback_interface
   ignore_errors: "{{ validation_mode_loose }}"
   when: (loopback_interfaces is defined and loopback_interfaces is not none)
+  register: loopback_interface_state_results
   tags:
     - interfaces_state
 
