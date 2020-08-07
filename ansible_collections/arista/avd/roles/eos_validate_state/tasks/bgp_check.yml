@@ -1,5 +1,8 @@
 ---
-- name: Gathter ip route summary and ArBGP state
+
+# BGP Validation tests
+
+  - name: Gathter ip route summary and ArBGP state
   eos_command:
     commands: "show ip route summary"
   register: ip_route_summary
@@ -14,6 +17,7 @@
     quiet: yes
   when: ( service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent" )
   ignore_errors: "{{ validation_mode_loose }}"
+  register: arbgp_state_results
   tags:
     - bgp_check
 
@@ -29,7 +33,6 @@
   tags:
     - bgp_check
 
-
 - name: Validate ip bgp neighbors peer state
   assert:
     that:
@@ -44,6 +47,7 @@
     (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
     (bgp_neighbor.value.peer_group == "IPv4-UNDERLAY-PEERS" or bgp_neighbor.value.peer_group == "MLAG-IPv4-UNDERLAY-PEER")
   ignore_errors: "{{ validation_mode_loose }}"
+  register: ip_bgp_peer_state_results
   tags:
     - bgp_check
 
@@ -61,5 +65,6 @@
     (router_bgp.neighbors is defined and router_bgp.neighbors is not none) and
     (bgp_neighbor.value.peer_group == "EVPN-OVERLAY-PEERS")
   ignore_errors: "{{ validation_mode_loose }}"
+  register: bgp_evpn_peer_state_results
   tags:
     - bgp_check
