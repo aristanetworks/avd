@@ -1,4 +1,7 @@
 ---
+
+# IP Reachability tests
+
 - name: Gather IP reachability state (directly connected interfaces)
   eos_command:
     commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ ethernet_interface.value.ip_address  | ipaddr('address')}} repeat 1"
