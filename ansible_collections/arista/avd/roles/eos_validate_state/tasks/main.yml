@@ -59,6 +59,8 @@
 
 - name: Load BGP tasks
   include_tasks: "bgp_check.yml"
+  when: |
+    (router_bgp is defined and router_bgp is not none)
   tags:
     - bgp_check
 
