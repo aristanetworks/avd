@@ -273,10 +273,12 @@ management_interfaces:
 {% include 'base/mgmt-interface.j2' %}
 
 {# vlan interfaces #}
+{% if leaf.mlag == true %}
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
 {% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% endif %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
