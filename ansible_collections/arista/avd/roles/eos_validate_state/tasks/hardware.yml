@@ -5,61 +5,80 @@
 - name: collect power supplies status
   eos_command:
       commands: "show system environment power | json"
-  register: power
+  register: system_environment_power
   tags:
-  - hardware
+    - hardware
 
 - name: validate power supplies status
   assert:
     that:
-      - item.value.state == 'ok'
+      - powerSupply.value.state == 'ok'
     quiet: true
-  loop: "{{ power.stdout_lines.0.powerSupplies | dict2items }}"
+  loop: "{{ system environment power.stdout_lines.0.powerSupplies | dict2items }}"
+  loop_control:
+    loop_var: powerSupply
   ignore_errors: "{{ validation_mode_loose }}"
+  register: power_supplies_results
   tags:
-  - hardware
+    - hardware
 
 - name: collect fan status
   eos_command:
     commands: "show system environment cooling | json"
-  register: fan
+  register: system_environment_cooling
   tags:
-  - hardware
+    - hardware
 
 - name: validate fan status (power supplies)
   assert:
     that:
-      - item.status == 'ok'
+      - powerSupplySlot.status == 'ok'
     quiet: true
-  loop: "{{ fan.stdout_lines.0.powerSupplySlots }}"
+  loop: "{{ system_environment_cooling.stdout_lines.0.powerSupplySlots }}"
+  loop_control:
+    loop_var: powerSupplySlot
   ignore_errors: "{{ validation_mode_loose }}"
+  register: fan_power_supplies_results
   tags:
-  - hardware
+    - hardware
 
 - name: validate fan status (fan tray)
   assert:
     that:
-      - item.status == 'ok'
+      - fanTraySlot.status == 'ok'
     quiet: true
-  loop: "{{ fan.stdout_lines.0.fanTraySlots }}"
+  loop: "{{ system_environment_cooling.stdout_lines.0.fanTraySlots }}"
+  loop_control:
+    loop_var: fanTraySlot
   ignore_errors: "{{ validation_mode_loose }}"
+  register: fan_tray_status_results
   tags:
-  - hardware
+    - hardware
 
 - name: validate temperature
   eos_command:
     commands: "show system environment temperature | json"
-    wait_for: result[0].systemStatus eq 'temperatureOk'
   ignore_errors: "{{ validation_mode_loose }}"
+  register: environment_temperature
   tags:
-  - hardware
+    - hardware
+
+- name: validate temparature
+  assert:
+    that:
+      - environment_temparature.stdout[0].systemStatus == "temperatureOk"
+    quiet: true
+  ignore_errors: "{{ validation_mode_loose }}"
+  register: environment_temperature_results
+  tags:
+    - hardware
 
 - name: collect transceivers inventory
   eos_command:
     commands: "show inventory | json"
   register: inventory
   tags:
-  - hardware
+    - hardware
 
 - name: validate transceivers manufacturers
   assert:
@@ -68,5 +87,6 @@
     quiet: true
   loop: "{{ inventory.stdout_lines.0.xcvrSlots | dict2items }}"
   ignore_errors: "{{ validation_mode_loose }}"
+  register: transceiver_inventory_results
   tags:
-  - hardware
+    - hardware
