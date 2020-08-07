@@ -2,7 +2,7 @@
 
 # BGP Validation tests
 
-  - name: Gathter ip route summary and ArBGP state
+- name: Gathter ip route summary and ArBGP state
   eos_command:
     commands: "show ip route summary"
   register: ip_route_summary
