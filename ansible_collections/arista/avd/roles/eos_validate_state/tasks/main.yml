@@ -25,10 +25,10 @@
 
     - name: Load Hardware validation tasks
       include_tasks: "hardware.yml"
-      tags:
-        - hardware
       when:
         - eos_version.stdout_lines.0.modelName != 'vEOS'
+      tags:
+        - hardware
 
     - name: Load interface state tasks
       include_tasks: "interface_state.yml"
@@ -40,10 +40,17 @@
       tags:
         - lldp_topology
 
-    - name: Load AVD generic tasks
-      include_tasks: "avd.yml"
+    - name: Load ntp tasks
+      include_tasks: "ntp.yml"
       tags:
-        - avd
+        - ntp
+
+    - name: Load mlag tasks
+      include_tasks: "mlag.yml"
+      when: |
+        (mlag_configuration is defined and mlag_configuration is not none)
+      tags:
+        - mlag
 
     - name: Load IP Reachability tasks
       include_tasks: "ip_reachability.yml"

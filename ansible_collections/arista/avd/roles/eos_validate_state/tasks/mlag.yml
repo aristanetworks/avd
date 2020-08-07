@@ -1,0 +1,21 @@
+---
+
+# MLAG State Tests
+
+- name: Gather MLAG status
+  eos_command:
+    commands: "show mlag detail | json"
+  register: mlag_state
+  tags:
+    - mlag
+
+- name:
+  assert:
+    that:
+      - mlag_state.stdout[0].state == "active"
+      - mlag_state.stdout[0].negStatus == "connected"
+    quiet: true
+  ignore_errors: "{{ validation_mode_loose }}"
+  register: mlag_state_results
+  tags:
+    - mlag
