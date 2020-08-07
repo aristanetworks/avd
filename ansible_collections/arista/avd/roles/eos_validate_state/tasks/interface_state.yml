@@ -79,4 +79,3 @@
   register: loopback_interface_state_results
   tags:
     - interfaces_state
-
