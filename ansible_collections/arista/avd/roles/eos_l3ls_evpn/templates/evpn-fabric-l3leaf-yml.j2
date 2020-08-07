@@ -92,6 +92,26 @@
 {%         endif %}
 {%     endfor %}
 {% endfor %}
+
+{% set leaf.has_port__channel=false %}
+{# If l3leaf hostname is in l2leaf default uplink list and 2 neighbors are defined #}
+{# We consider there is a PO to configure on L3LEAF                               #}
+{% for l3leaf in l2leaf.defaults.parent_l3leafs | arista.avd.natural_sort %}
+{%    if l3leaf == inventory_hostname and l2leaf.defaults.parent_l3leafs | length > 1%}
+{%        set leaf.has_port__channel=true %}
+{%    endif %}
+{% endfor %}
+{% for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
+{# If l3leaf hostname is in l2leaf node specific uplink list and 2 neighbors are defined #}
+{# We consider there is a PO to configure on L3LEAF                                      #}
+{%      for l3leaf in l2leaf.node_groups[l2leaf_node_group].parent_l3leafs | arista.avd.natural_sort %}
+{%              if l3leaf == inventory_hostname and l2leaf.node_groups[l2leaf_node_group].parent_l3leafs | length > 1%}
+{%                  set leaf.has_port__channel=true %}
+{%              endif %}
+{%      endfor %}
+{% endfor %}
+
+
 {# set leaf allowed vrfs, svis and vlans #}
 {% set leaf.vrfs = []  %}
 {% set leaf.svis = []  %}
@@ -253,7 +273,7 @@ bfd_multihop:
 {% include 'base/bfd-multihop.j2' %}
 
 {# Port-Channel Interfaces #}
-{% if leaf.mlag == true %}
+{% if leaf.mlag == true or leaf.has_port__channel == true %}
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
