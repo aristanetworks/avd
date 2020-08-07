@@ -2,7 +2,7 @@
 
 # LLDP Topology Tests
 
-- name: Gather LLDP topology
+- name: Gather lldp topology
   eos_command:
     commands: "show lldp neighbors detail | json"
   ignore_errors: "{{ validation_mode_loose }}"
@@ -10,7 +10,7 @@
   tags:
     - lldp_topology
 
-- name: validate lldp topology
+- name: Validate lldp topology
   assert:
     that:
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.key].lldpNeighborInfo[0] is defined

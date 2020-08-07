@@ -9,7 +9,7 @@
   tags:
     - bgp_check
 
-- name: validate ArBGP is configured and operating
+- name: Validate ArBGP is configured and operating
   assert:
     that:
       - ip_route_summary.stdout_lines[0][0] | regex_search("multi-agent")
@@ -21,7 +21,7 @@
   tags:
     - bgp_check
 
-- name: gather bgp summary (ip and evpn)
+- name: Gather bgp summary (ip and evpn)
   eos_command:
     commands:
       - command: "show ip bgp summary | json"

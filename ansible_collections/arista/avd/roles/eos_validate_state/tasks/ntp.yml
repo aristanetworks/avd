@@ -2,7 +2,7 @@
 
 # NTP Status Tests
 
-- name: Gather NTP status
+- name: Gather ntp status
   eos_command:
     commands: "show ntp status"
   when: |
@@ -11,7 +11,7 @@
   tags:
     - ntp
 
-- name: validate NTP status
+- name: Validate ntp status
   assert:
     that:
       - ntp_status.stdout[0] | regex_search("synchronised to NTP server")

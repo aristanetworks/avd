@@ -2,14 +2,14 @@
 
 # Hardware Validation Tests
 
-- name: collect power supplies status
+- name: Gather power supplies status
   eos_command:
       commands: "show system environment power | json"
   register: system_environment_power
   tags:
     - hardware
 
-- name: validate power supplies status
+- name: Validate power supplies status
   assert:
     that:
       - powerSupply.value.state == 'ok'
@@ -22,14 +22,14 @@
   tags:
     - hardware
 
-- name: collect fan status
+- name: Gather system environment fan status
   eos_command:
     commands: "show system environment cooling | json"
   register: system_environment_cooling
   tags:
     - hardware
 
-- name: validate fan status (power supplies)
+- name: Validate fan status (power supplies)
   assert:
     that:
       - powerSupplySlot.status == 'ok'
@@ -42,7 +42,7 @@
   tags:
     - hardware
 
-- name: validate fan status (fan tray)
+- name: Validate fan status (fan tray)
   assert:
     that:
       - fanTraySlot.status == 'ok'
@@ -55,7 +55,7 @@
   tags:
     - hardware
 
-- name: validate temperature
+- name: Gather system environment temperature
   eos_command:
     commands: "show system environment temperature | json"
   ignore_errors: "{{ validation_mode_loose }}"
@@ -63,7 +63,7 @@
   tags:
     - hardware
 
-- name: validate temparature
+- name: Validate system temparature
   assert:
     that:
       - environment_temparature.stdout[0].systemStatus == "temperatureOk"
@@ -73,14 +73,14 @@
   tags:
     - hardware
 
-- name: collect transceivers inventory
+- name: Gather transceivers inventory
   eos_command:
     commands: "show inventory | json"
   register: inventory
   tags:
     - hardware
 
-- name: validate transceivers manufacturers
+- name: Validate transceivers manufacturers
   assert:
     that:
       - "item.value.mfgName in ['Not Present', 'Arastra, Inc.', 'Arista Networks']"

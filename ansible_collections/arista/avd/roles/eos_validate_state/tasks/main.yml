@@ -1,78 +1,78 @@
 ---
 
-    - name: include device intended structure configuration variables
-      include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
-      delegate_to: localhost
-      tags:
-        - always
+- name: Include device intended structure configuration variables
+  include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  tags:
+    - always
 
-    - name: run show version on EOS devices
-      eos_command:
-        commands: "show version | json"
-      register: eos_version
-      tags:
-        - platform_information
+- name: Gather EOS platform and version details
+  eos_command:
+    commands: "show version | json"
+  register: eos_version
+  tags:
+    - platform_information
 
-    - name: Display device platform and release information
-      debug:
-        msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
-      tags:
-        - platform_information
+- name: Display device platform and release information
+  debug:
+    msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
+  tags:
+    - platform_information
 
-    ##################################
-    ## Load tasks for specific tags ##
-    ##################################
+  ##################################
+  ## Load tasks for specific tags ##
+  ##################################
 
-    - name: Load Hardware validation tasks
-      include_tasks: "hardware.yml"
-      when:
-        - eos_version.stdout_lines.0.modelName != 'vEOS'
-      tags:
-        - hardware
+- name: Load Hardware validation tasks
+  include_tasks: "hardware.yml"
+  when:
+    - eos_version.stdout_lines.0.modelName != 'vEOS'
+  tags:
+    - hardware
 
-    - name: Load interface state tasks
-      include_tasks: "interface_state.yml"
-      tags:
-        - interfaces_state
+- name: Load interface state tasks
+  include_tasks: "interface_state.yml"
+  tags:
+    - interfaces_state
 
-    - name: Load LLDP Topology tasks
-      include_tasks: "lldp_topology.yml"
-      tags:
-        - lldp_topology
+- name: Load LLDP Topology tasks
+  include_tasks: "lldp_topology.yml"
+  tags:
+    - lldp_topology
 
-    - name: Load ntp tasks
-      include_tasks: "ntp.yml"
-      tags:
-        - ntp
+- name: Load ntp tasks
+  include_tasks: "ntp.yml"
+  tags:
+    - ntp
 
-    - name: Load mlag tasks
-      include_tasks: "mlag.yml"
-      when: |
-        (mlag_configuration is defined and mlag_configuration is not none)
-      tags:
-        - mlag
+- name: Load mlag tasks
+  include_tasks: "mlag.yml"
+  when: |
+    (mlag_configuration is defined and mlag_configuration is not none)
+  tags:
+    - mlag
 
-    - name: Load IP Reachability tasks
-      include_tasks: "ip_reachability.yml"
-      tags:
-        - ip_reachability
+- name: Load IP Reachability tasks
+  include_tasks: "ip_reachability.yml"
+  tags:
+    - ip_reachability
 
-    - name: Load BGP tasks
-      include_tasks: "bgp_check.yml"
-      tags:
-        - bgp_check
+- name: Load BGP tasks
+  include_tasks: "bgp_check.yml"
+  tags:
+    - bgp_check
 
-    ####################################
-    ## NOT YET categorized / Optional ##
-    ####################################
+  ####################################
+  ## NOT YET categorized / Optional ##
+  ####################################
 
-    - name: validate reload cause
-      eos_command:
-        commands: "show reload cause | json"
-        wait_for: result[0].resetCauses[0].description eq 'Reload requested by the user.'
-        retries: 2
-        interval: 2
-      ignore_errors: "{{ validation_mode_loose }}"
-      tags:
-        - optional
-        - never
+- name: Validate reload cause
+  eos_command:
+    commands: "show reload cause | json"
+    wait_for: result[0].resetCauses[0].description eq 'Reload requested by the user.'
+    retries: 2
+    interval: 2
+  ignore_errors: "{{ validation_mode_loose }}"
+  tags:
+    - optional
+    - never

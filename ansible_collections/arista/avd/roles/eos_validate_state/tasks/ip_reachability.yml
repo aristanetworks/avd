@@ -2,7 +2,7 @@
 
 # IP Reachability tests
 
-- name: Gather IP reachability state (directly connected interfaces)
+- name: Gather ip reachability state (directly connected interfaces)
   eos_command:
     commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ ethernet_interface.value.ip_address  | ipaddr('address')}} repeat 1"
   loop: "{{ethernet_interfaces | default({}) | dict2items}}"
@@ -21,7 +21,7 @@
   tags:
     - ip_reachability
 
-- name: validate ip reachability (directly connected interfaces)
+- name: Validate ip reachability (directly connected interfaces)
   assert:
     that:
       - ip_reachability_test.stdout[0] | regex_search("1 received")
