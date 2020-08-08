@@ -34,7 +34,7 @@
   loop_control:
     loop_var: port_channel_interface
   ignore_errors: "{{ validation_mode_loose }}"
-  register: port_channel_interface_results
+  register: port_channel_interface_state_results
   tags:
     - interfaces_state
 
