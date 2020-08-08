@@ -30,6 +30,11 @@
   tags:
     - hardware
 
+- name: Load ntp tasks
+  include_tasks: "ntp.yml"
+  tags:
+    - ntp
+
 - name: Load interface state tasks
   include_tasks: "interface_state.yml"
   tags:
@@ -39,11 +44,6 @@
   include_tasks: "lldp_topology.yml"
   tags:
     - lldp_topology
-
-- name: Load ntp tasks
-  include_tasks: "ntp.yml"
-  tags:
-    - ntp
 
 - name: Load mlag tasks
   include_tasks: "mlag.yml"
