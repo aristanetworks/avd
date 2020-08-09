@@ -17,7 +17,7 @@
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.key].lldpNeighborInfo[0].systemName == ethernet_interface.value.peer + "." + hostvars[ethernet_interface.value.peer]['dns_domain']
       - lldp_topology_state.stdout[0].lldpNeighbors[ethernet_interface.key].lldpNeighborInfo[0].neighborInterfaceInfo.interfaceId == "\"" + ethernet_interface.value.peer_interface + "\""
     quiet: true
-  loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
+  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: ethernet_interface
   when: |

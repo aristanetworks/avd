@@ -36,7 +36,7 @@
       - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
     fail_msg: Session state "{{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState }}", expected Established
     quiet: yes
-  loop: "{{ router_bgp.neighbors | default({}) | dict2items }}"
+  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
   loop_control:
     loop_var: bgp_neighbor
   when: |
@@ -52,7 +52,7 @@
       - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
     fail_msg: Session state "{{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState }}", expected Established
     quiet: yes
-  loop: "{{ router_bgp.neighbors | default({}) | dict2items }}"
+  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
   loop_control:
     loop_var: bgp_neighbor
   when: |

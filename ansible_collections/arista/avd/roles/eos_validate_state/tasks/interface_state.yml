@@ -16,7 +16,7 @@
       - interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus == "up"
       - interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus == "up"
     quiet: true
-  loop: "{{ ethernet_interfaces | default({}) | dict2items }}"
+  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: ethernet_interface
   ignore_errors: "{{ validation_mode_loose }}"
@@ -30,7 +30,7 @@
       - interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus == "up"
       - interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus == "up"
     quiet: true
-  loop: "{{ port_channel_interfaces | default({}) | dict2items }}"
+  loop: "{{ port_channel_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: port_channel_interface
   ignore_errors: "{{ validation_mode_loose }}"
@@ -44,7 +44,7 @@
       - interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus == "up"
       - interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus == "up"
     quiet: true
-  loop: "{{ vlan_interfaces | default({}) | dict2items }}"
+  loop: "{{ vlan_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: vlan_interface
   ignore_errors: "{{ validation_mode_loose }}"
@@ -70,7 +70,7 @@
       - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].interfaceStatus == "up"
       - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].lineProtocolStatus == "up"
     quiet: true
-  loop: "{{ loopback_interfaces | default({}) | dict2items }}"
+  loop: "{{ loopback_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: loopback_interface
   ignore_errors: "{{ validation_mode_loose }}"

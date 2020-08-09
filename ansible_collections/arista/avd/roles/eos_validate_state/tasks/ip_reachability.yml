@@ -5,7 +5,7 @@
 - name: Gather ip reachability state (directly connected interfaces)
   eos_command:
     commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ ethernet_interface.value.ip_address  | ipaddr('address')}} repeat 1"
-  loop: "{{ethernet_interfaces | default({}) | dict2items}}"
+  loop: "{{ethernet_interfaces | default({}, true) | dict2items}}"
   loop_control:
     loop_var: ethernet_interface
   ignore_errors: "{{ validation_mode_loose }}"
