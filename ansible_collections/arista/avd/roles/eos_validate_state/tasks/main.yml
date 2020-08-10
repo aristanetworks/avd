@@ -12,12 +12,14 @@
   register: eos_version
   tags:
     - platform_information
+    - hardware
 
 - name: Display device platform and release information
   debug:
     msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
   tags:
     - platform_information
+    - hardware
 
   ##################################
   ## Load tasks for specific tags ##

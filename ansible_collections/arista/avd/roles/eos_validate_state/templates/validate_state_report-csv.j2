@@ -1,7 +1,54 @@
 {# AVD State Validation Report - CSV #}
 Test ID,Node,Test Decription,Test,Results
 {% set test_id = namespace(value=0) %}
-{# Placeholder Hardware results #}
+{# Hardware results - power supplies status #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].power_supplies_results is defined and hostvars[node].power_supplies_results.results is defined %}
+{%         for result in hostvars[node].power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Power supply state,Power supply {{ result.powerSupply.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - fan status (power supplies) #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].fan_power_supplies_results is defined and hostvars[node].fan_power_supplies_results.results is defined %}
+{%         for result in hostvars[node].fan_power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},fan status (power supplies),{{ result.powerSupplySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - fan status (fan tray) #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].fan_tray_status_results is defined and hostvars[node].fan_tray_status_results.results is defined %}
+{%         for result in hostvars[node].fan_tray_status_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},fan status (fan tray),Tray {{ result.fanTraySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - temperature #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].environment_temperature_results is defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},temperature,system temperature,{% if hostvars[node].environment_temperature_results.failed == false %}PASS{% else %}FAIL{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# Hardware results - transceivers manufacturers #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].transceiver_inventory_results is defined and hostvars[node].transceiver_inventory_results.results is defined %}
+{%         for result in hostvars[node].transceiver_inventory_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},transceivers manufacturers,port {{ result.xcvrSlot.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
 {# NTP Status Results #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].ntp_status_results is defined and hostvars[node].ntp_status_results.skipped is not defined %}
