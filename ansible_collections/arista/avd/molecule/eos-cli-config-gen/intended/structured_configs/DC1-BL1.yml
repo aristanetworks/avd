@@ -1,0 +1,1127 @@
+---
+### EU0DC001MAG-D02E14-BL1 ###
+
+### Leaf Info ###
+switch_platform: 7504R
+switch_mgmt_ip: 10.10.10.15/23
+
+### Terminal Settings ###
+terminal:
+  length: 40
+
+###  Aliases ###
+aliases: |
+  alias sib show ip bgp
+  alias sibs show ip bgp summary
+  alias siib show ip int brief
+  alias sir show ip route
+  alias senz show interface counter error | nz
+  alias snz show interface counter | nz
+  alias sps show port-channel summary
+  alias spd show port-channel %1 detail all
+  alias sqnz show interface counter queue | nz
+  alias srnz show interface counter rate | nz
+  alias smac show mac address-table dynamic
+  alias sarp show ip arp
+  alias copp show policy-map copp copp-system-policy
+  alias help
+  10 bash echo -e "sib  : show ip bgp\nsibs : show ip bgp summary\nsiib : show ip int brief\nsir  : show ip route\nsenz : show interface counter error | nz\nsnz   : show interface counter | nz\nsps  : show port-channel summary\nspd  : show port-channel detail all\nsqnz : show interface counter queue | nz\nsrnz : show interface counter rate | nz\nsmac : show mac address-table dynamic\nsarp : show ip arp\ncopp : show policy-map copp copp-system-policy\ninfo : version, serial and mlag"
+  alias info
+  10 bash SERIAL=$(FastCli -p 15 -c 'show version' | grep Serial | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "SN : $SERIAL"
+  20 bash VERSION=$(FastCli -p 15 -c 'show version' | grep image | tr -s ' ' | cut -d ' ' -f 4 | tr -d '\r');echo -e "EOS VERSION : $VERSION"
+  30 bash DOMAIN=$(FastCli -p 15 -c 'show mlag' | grep domain | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "MLAG DOMAIN : $DOMAIN"
+  40 bash STATE=$(FastCli -p 15 -c 'show mlag' | grep state | tr -s ' ' | cut -d ' ' -f 3 | tr -d '\r');echo -e "MLAG STATE : $STATE"
+
+### Daemon TerminAttr
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - 10.10.10.8
+      - 10.10.10.9
+      - 10.10.10.10
+    port: 9910
+  ingestauth_key: magickey
+  ingestvrf: mgt
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+### Internal Vlans ###
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 4000
+    ending: 4080
+
+### IP IGMP Snooping ###
+ip_igmp_snooping:
+  vlans:
+    320:
+      enabled: false
+
+### Queue Monitor Length ###
+queue_monitor_length:
+  notifying: true
+
+### ArBGP ###
+service_routing_protocols_model: "multi-agent"
+
+### Logging ###
+logging:
+  console: debugging
+  buffered:
+    size: 1000000
+    level: informational
+  trap: informational
+  source_interface:
+  vrfs:
+    mgt:
+      source_interface: Management0
+      hosts:
+        - 10.10.10.7
+
+### Domain Lookup ###
+ip_domain_lookup:
+  source_interfaces:
+    Management0:
+      vrf: mgt
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: mgt
+  nodes:
+    - 10.10.128.10
+    - 10.10.129.10
+
+### DNS Domain ###
+dns_domain: test.local
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: mgt
+    interface: Management0
+  nodes:
+    - 10.10.111.1
+    - 10.10.111.2
+
+### Sflow ###
+sflow:
+  vrfs:
+    MGMT:
+      destinations:
+        10.6.75.62:
+          port: 123
+        10.6.75.63:
+          port: 333
+        10.6.75.59:
+      source_interface: Ethernet3
+    AAA:
+      destinations:
+        10.6.75.62:
+          port: 123
+        10.6.75.63:
+          port: 333
+      source_interface: Ethernet2
+  destinations:
+    10.6.75.62:
+      port: 123
+    10.6.75.61:
+  source_interface: Management0
+  sample: 1000
+  dangerous: true
+  run: true
+
+### Snmp Settings ####
+snmp_server:
+  contact: DC1_OPS
+  location: DC1
+  local_interfaces:
+    - name: Management0
+      vrf: mgt
+  views:
+    - name: VW-WRITE
+      MIB_family_name: iso
+      included: true
+    - name: VW-READ
+      MIB_family_name: iso
+      included: true
+  groups:
+    - name: GRP-READ-ONLY
+      version: v3
+      authentication: priv
+      read: v3read
+    - name: GRP-READ-WRITE
+      version: v3
+      authentication: auth
+      read: v3read
+      write: v3write
+  users:
+    - name: USER-READ
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+    - name: USER-WRITE
+      group: GRP-READ-WRITE
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+  hosts:
+    - host: 10.6.75.99
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+        - username: USER-WRITE
+          authentication_level: auth
+          version: 3
+    - host: 10.6.75.121
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+  traps:
+    enable: true
+  vrfs:
+    - name: default
+      enable: false
+    - name: mgt
+      enable: true
+
+### Spanning-tree ###
+spanning_tree:
+  edge_port:
+    bpduguard_default: true
+  mode: mstp
+  priority: 4096
+  no_spanning_tree_vlan: 4094
+
+### Tacacs+ Servers
+tacacs_servers:
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      vrf: mgt
+      key: 071B245F5A
+
+### AAA Server Groups
+aaa_server_groups:
+  - name: TACACS
+    type: tacacs+
+    servers:
+      - server: 10.10.10.157
+        vrf: mgt
+      - server: 10.10.10.249
+        vrf: mgt
+
+## AAA Authentication
+aaa_authentication:
+ login:
+  default: group TACACS local
+  serial_console: local
+
+## AAA Authorization
+aaa_authorization:
+  exec_default: local
+  config_commands: true
+
+## AAA Accounting
+aaa_accounting:
+  exec:
+    default:
+      type: start-stop
+      group: TACACS
+  commands:
+    commands_default:
+      - commands: all
+        type: start-stop
+        group: TACACS
+        logging: true
+      - commands: 0
+        type: start-stop
+        logging: true
+
+### Local Users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+
+### Clock Timezone ###
+clock:
+  timezone:  UTC
+
+### VLANs ###
+vlans:
+## mlag vlans ##
+  4094:
+    name: MLAG_PEER
+    trunk_groups:
+      - MLAG
+## Tenant_A ##
+  1001:
+    name: Tenant_A_Z1
+  1002:
+    name: Tenant_A_Z2
+## Tenant_B ##
+  2001:
+    name: Tenant_B_Z1
+  2002:
+    name: Tenant_B_Z2
+## Fabric ##
+  24:
+    name: PROD_24
+  41:
+    name: PROD_41
+  42:
+    name: PROD_42
+  65:
+    name: PROD_65
+  71:
+    name: PROD_71
+  75:
+    name: PROD_75
+  82:
+    name: PROD_82
+  83:
+    name: PROD_83
+  84:
+    name: PROD_84
+  87:
+    name: PROD_87
+  89:
+    name: PROD_89
+## BL ##
+  69:
+    name: INTERCO_LAN2
+  76:
+    name: INTERCO_MAN
+  77:
+    name: INTERCO_WAN1
+  78:
+    name: INTERCO_WAN2
+  80:
+    name: INTERCO_WAN3
+  81:
+    name: INTERCO_WAN4
+  501:
+    name: INTERCO_FTD_BL
+
+### VRFs ###
+vrfs:
+  mgt:
+    description: MANAGEMENT VRF
+    ip_routing: false
+    ipv6_routing: false
+
+## Tenant_A ##
+  Tenant_A:
+    description: TEST TENANT_A VRF
+    ip_routing: true
+    ipv6_routing: true
+## Tenant_B ##
+  Tenant_B:
+    description: TEST TENANT_B VRF
+    ip_routing: true
+    ipv6_routing: true
+
+### bfd multihop ###
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+## MLAG Peer-Link ##
+  Port-Channel1000:
+    description: MLAG_PEER_BL2_Po1000
+    shutdown: false
+    type: switched
+    mode: trunk
+    trunk_groups:
+      - MLAG
+### Trunk Mode ESX Server Port-channel Example ###
+  Port-Channel41:
+    description: PROD_41_ESX1
+    shutdown: false
+    type: switched
+    mode: trunk
+    mlag: 41
+    vmtracer: true
+    qos:
+      trust: dscp
+### Access Mode Port-channel to Checkpoint FW ###
+  Port-Channel69:
+    description: INTERCO_EXT_SIDE_CHECKPOINT
+    shutdown: false
+    type: switched
+    vlans: 69
+    mode: access
+    mlag: 69
+    vmtracer: true
+### Nexus 7K Port-channel ###
+  Port-Channel8:
+    description: N7K12
+    shutdown: false
+    type: switched
+    mode: trunk
+    spanning_tree_bpdufilter: true
+    spanning_tree_portfast: edge
+    mlag: 8
+### FTD Port-channels ###
+  Port-Channel25:
+    description: FTD01
+    shutdown: false
+    type: switched
+    vlans: 65,69,76,322-326,329,334,501
+    mode: trunk
+    spanning_tree_bpdufilter: true
+    spanning_tree_portfast: edge
+    mlag: 25
+  Port-Channel26:
+    description: FTD02
+    shutdown: false
+    type: switched
+    vlans: 65,69,76,322-326,329,334,501
+    mode: trunk
+    spanning_tree_bpdufilter: true
+    spanning_tree_portfast: edge
+    mlag: 26
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+### Point-to-Point Ethernet Interfaces for Underlay BGP ###
+  Ethernet3/49/1:
+    description: P2P_LINK_TO_SP1_Ethernet3/1/1
+    shutdown: false
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.0/31
+    ipv6_address: 1b11:3a00:22b0:0088::0/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/49/1:
+    description: P2P_LINK_TO_SP2_Ethernet3/1/1
+    shutdown: false
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.2/31
+    ipv6_address: 1b11:3a00:22b0:0088::2/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet5/1/1:
+    description: P2P_LINK_TO_SP3_Ethernet3/1/1
+    shutdown: false
+    mtu: 9214
+    type: routed
+    ip_address: 10.50.0.4/31
+    ipv6_address: 1b11:3a00:22b0:0088::4/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+## MLAG Interfaces ##
+  Ethernet3/50/1:
+    description: MLAG_PEER_BL1_Ethernet3/50/1
+    channel_group:
+      id: 1000
+      mode: active
+  Ethernet4/50/1:
+    description: MLAG_PEER_BL1_Ethernet4/50/1
+    channel_group:
+      id: 1000
+      mode: active
+## L2 Nexus 7K ##
+  Ethernet3/47/1:
+    description: N7K2_1/41
+    channel_group:
+      id: 8
+      mode: active
+  Ethernet4/47/1:
+    description: N7K2_1/41
+    channel_group:
+      id: 8
+      mode: active
+## L3 Nexus 7K ##
+  Ethernet3/44/1:
+    description: N7K2_1/17
+    mtu: 9000
+    type: routed
+    ip_address: 10.8.2.217/31
+    ipv6_address: 1b11:3a00:22b0:0088::217/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+  Ethernet4/44/1:
+    description: N7K2_1/17
+    mtu: 9000
+    type: routed
+    ip_address: 10.238.2.221/31
+    ipv6_address: 1b11:3a00:22b0:0088::221/127
+    ipv6_nd_ra_disabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+## FTD Firewall ##
+  Ethernet3/1/1:
+    description: FTD01_Eth2/1
+    channel_group:
+      id: 25
+      mode: active
+  Ethernet4/1/1:
+    description: FTD01_Eth2/2
+    channel_group:
+      id: 25
+      mode: active
+  Ethernet3/2/1:
+    description: FTD01_Eth2/3
+    channel_group:
+      id: 25
+      mode: active
+  Ethernet4/2/1:
+    description: FTD01_Eth2/4
+    channel_group:
+      id: 25
+      mode: active
+  Ethernet3/3/1:
+    description: FTD02_Eth2/1
+    channel_group:
+      id: 26
+      mode: active
+  Ethernet4/3/1:
+    description: FTD02_Eth2/2
+    channel_group:
+      id: 26
+      mode: active
+
+### Loopback Interfaces ###
+loopback_interfaces:
+  Loopback0:
+    description: ROUTER-ID
+    shutdown: false
+    ip_address: 10.50.64.15/32
+    ipv6_address: 1b11:3a00:22b0:0082::15/128
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    ip_address: 10.50.66.15/32
+  Loopback2:
+    description: Multicast_RDV_Point
+    ip_address: 10.38.1.161/32
+
+### Management Interfaces ###
+management_interfaces:
+  Management0:
+    description: MANAGEMENT_VRF
+    vrf: mgt
+    ip_address: 10.10.10.15/24
+    ipv6_address: 1b11:3a00:22b0:0083::15/64
+    ipv6_enable: true
+    gateway: 10.10.10.1
+    ipv6_gateway: 1b11:3a00:22b0:0083::1
+
+### VLAN Interfaces ###
+vlan_interfaces:
+  Vlan4094:
+    description: MLAG_PEER_LINK
+    ip_address: 169.254.252.0/31
+    ipv6_address_link_local: fe80::a/64
+    mtu: 9214
+    pim:
+      ipv4:
+        sparse_mode: true
+## Legacy ###
+  Vlan24:
+    description: PROD_24
+    shutdown: false
+    ip_address_virtual: 10.10.24.1/24
+    ipv6_address: 1b11:3a00:22b0:6::15/64
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      1b11:3a00:22b0:6::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+    ipv6_virtual_router_address: 1b11:3a00:22b0:6::1
+  Vlan41:
+    description: PROD_41
+    shutdown: false
+    ip_address_virtual: 10.10.41.1/24
+    ip_helpers:
+      10.10.96.151:
+        source_interface: Loopback0
+      10.10.96.150:
+        source_interface: Loopback0
+      10.10.64.150:
+        source_interface: Loopback0
+  Vlan42:
+    description: PROD_42
+    shutdown: false
+    ip_address_virtual: 10.10.42.1/24
+    helpers:
+      10.10.96.151:
+        source_interface: Loopback0
+      10.10.96.150:
+        source_interface: Loopback0
+      10.10.64.150:
+        source_interface: Loopback0
+  Vlan75:
+    description: PROD_75
+    shutdown: false
+    ip_address_virtual: 10.10.75.1/24
+    ipv6_address: 1b11:3a00:22b0:1000::15/64
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      1b11:3a00:22b0:1000::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+    ipv6_virtual_router_address: 1b11:3a00:22b0:1000::1
+  Vlan83:
+    description: PROD_83
+    shutdown: false
+    ip_address_virtual: 10.10.83.1/24
+  Vlan84:
+    description: PROD_84
+    shutdown: false
+    ip_address_virtual: 10.10.84.1/24
+  Vlan87:
+    description: PROD_87
+    shutdown: false
+    ip_address_virtual: 10.10.87.1/23
+  Vlan89:
+    description: PROD_320
+    shutdown: false
+    ip_address_virtual: 10.10.144.3/20
+    ipv6_address: 1b11:3a00:22b0:5200::15/64
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      1b11:3a00:22b0:5200::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+    ipv6_virtual_router_address: 1b11:3a00:22b0:5200::3
+    helpers:
+      10.10.96.101:
+        source_interface: Loopback0
+      10.10.96.151:
+        source_interface: Loopback0
+      10.10.96.150:
+        source_interface: Loopback0
+      10.10.64.150:
+        source_interface: Loopback0
+    multicast:
+      ipv4:
+        source_route_export:
+          enabled: true
+    pim:
+      ipv4:
+        sparse_mode: true
+        local_interface: Loopback0
+## L3 Interface to FTD ##
+  Vlan501:
+    description: INTERCO_FTD_BL
+    shutdown: false
+    ip_address: 10.50.26.29/27
+    ipv6_address: 1b11:3a00:22b0:0088::207/127
+    ipv6_nd_ra_disabled: true
+## Tenant_A ##
+  Vlan1001:
+    description: Tenant_A_Z1
+    shutdown: false
+    vrf: Tenant_A
+    ip_address_virtual: 10.1.1.1/24
+    ipv6_address: a1::1/64
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      a1::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+  Vlan1002:
+    description: Tenant_A_Z2
+    shutdown: false
+    vrf: Tenant_A
+    ip_address_virtual: 10.1.2.1/24
+    ipv6_address: a2::1/64
+    ipv6_nd_managed_config_flag: true
+    ipv6_nd_prefixes:
+      a2::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+    ipv6_nd_ra_disabled: true
+## Tenant_B ##
+  Vlan2001:
+    description: Tenant_B_Z1
+    vrf: Tenant_B
+    ip_address_virtual: 10.2.1.1/24
+  Vlan2002:
+    description: Tenant_B_Z2
+    vrf: Tenant_B
+    ip_address_virtual: 10.2.2.1/24
+
+### VxLAN interface ###
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+## Tenant_A ##
+        1001:
+          vni: 11001
+        1002:
+          vni: 11002
+## Tenant_B ##
+        2001:
+          vni: 12001
+        2002:
+          vni: 12002
+## Fabric ##
+        24:
+          vni: 10024
+        41:
+          vni: 10041
+        42:
+          vni: 10042
+        65:
+          vni: 10065
+        71:
+          vni: 10071
+        75:
+          vni: 10075
+        82:
+          vni: 10082
+        83:
+          vni: 10083
+        84:
+          vni: 10084
+        87:
+          vni: 10087
+        89:
+          vni: 10089
+      vrfs:
+## Tenant_A ##
+        Tenant_A:
+          vni: 30001
+## Tenant_B ##
+        Tenant_B:
+          vni: 30002
+
+### TCAM Profiles ###
+tcam_profile:
+ - vxlan-routing
+
+### MAC address table ###
+mac_address_table:
+ip_virtual_router_mac_address: 00:1c:73:aa:bb:cc
+
+### Standard Access-Lists ###
+standard_access_lists:
+  ACL-API:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+      20:
+        action: "permit host 10.10.10.10"
+      30:
+        action: "permit host 10.10.10.11"
+      40:
+        action: "permit host 10.10.10.12"
+  ACL-SSH:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"
+  ACL-SSH-VRF:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"
+
+### IP Routing ###
+ip_routing: true
+
+### Static routes ###
+static_routes:
+  - destination_address_prefix: 10.6.70.0/24
+    gateway: 10.10.154.3
+    name: LAN1
+    tag: 65100
+  - destination_address_prefix: 10.6.71.0/24
+    gateway: 10.10.245.254
+    distance: 3
+    name: LAN2
+    tag: 65100
+  - vrf: mgt
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 10.10.10.1
+
+### IPv6 static routes ###
+ipv6_static_routes:
+  - destination_address_prefix: ::/0
+    gateway: 1b11:3a00:22b0:91::1
+    vrf: mgt
+
+### Prefix-lists ###
+prefix_lists:
+  PL-MLAG:
+    sequence_numbers:
+      10:
+        action: permit 169.254.252.0/31
+  PL-LOOPBACKS:
+    sequence_numbers:
+      10:
+        action: permit 10.50.64.0/23 eq 32
+      20:
+        action: permit 10.50.66.0/23 eq 32
+      30:
+        action: permit 10.238.1.161/32
+
+### IPv6 Prefix-lists ###
+ipv6_prefix_lists:
+  PL-IPV6-LOOPBACKS:
+    sequence_numbers:
+      10:
+        action: permit 1b11:3a00:22b0:0082::/64 eq 128
+
+### IPv6 Routing ###
+ipv6_unicast_routing: true
+
+### MLAG Configuration ###
+mlag_configuration:
+  domain_id: MLAG_BL
+  local_interface: Vlan4094
+  peer_address: 169.254.252.1
+  peer_link: Port-Channel1000
+  reload_delay_mlag: 1800
+  reload_delay_non_mlag: 2000
+
+### Community-lists ###
+community_lists:
+  LIST-COM:
+    action: permit 65000:1
+
+### Route-maps ###
+route_maps:
+  RM-CONN-BL-BGP:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - ip address prefix-list PL-MLAG
+      20:
+        type: permit
+  RM-STATIC-2-BGP:
+    sequence_numbers:
+      10:
+        description: tag for static routes
+        type: permit
+        set:
+          - tag 65100
+  RM-HIDE-ASPATH-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - as-path match all replacement auto
+          - community 65000:1 additive
+  RM-HIDE-ASPATH-OUT:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - community LIST-COM
+      20:
+        type: permit
+        set:
+          - as-path match all replacement auto
+
+## Routing - BGP ###
+router_bgp:
+  as: 65100
+  router_id: 10.50.64.15
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - update wait-install
+    - distance bgp 20 200 200
+    - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPV4-UNDERLAY:
+      remote_as: 65000
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    IPV6-UNDERLAY:
+      remote_as: 65000
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    EVPN-OVERLAY:
+      remote_as: 65000
+      next_hop_unchanged: true
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 5
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      send_community: true
+      maximum_routes: 0
+    IPV4-UNDERLAY-MLAG:
+      remote_as: 65100
+      next_hop_self: true
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    IPV6-UNDERLAY-MLAG:
+      remote_as: 65100
+      next_hop_self: true
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+  neighbors:
+    10.50.2.1:
+      peer_group: IPV4-UNDERLAY
+    10.50.2.3:
+      peer_group: IPV4-UNDERLAY
+    10.50.2.5:
+      peer_group: IPV4-UNDERLAY
+    10.50.64.11:
+      peer_group: EVPN-OVERLAY
+    10.50.64.12:
+      peer_group: EVPN-OVERLAY
+    10.50.64.13:
+      peer_group: EVPN-OVERLAY
+    169.254.252.1:
+      peer_group: IPV4-UNDERLAY-MLAG
+    fe80::b%Vl4094:
+      peer_group: IPV6-UNDERLAY-MLAG
+    1b11:3a00:22b0:0088::1:
+      peer_group: IPV6-UNDERLAY
+    1b11:3a00:22b0:0088::3:
+      peer_group: IPV6-UNDERLAY
+    1b11:3a00:22b0:0088::5:
+      peer_group: IPV6-UNDERLAY
+    1.1.1.1:
+      remote_as: 1
+      shutdown: false
+      description: TEST
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+    static:
+      route_map: RM-STATIC-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+        route_map_in: RM-HIDE-AS-PATH
+        route_map_out: RM-HIDE-AS-PATH
+      IPV4-UNDERLAY-MLAG:
+        activate: true
+  address_family_ipv4_multicast:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+      IPV4-UNDERLAY-MLAG:
+        activate: true
+    redistribute_routes:
+      attached-host:
+  address_family_ipv6:
+    peer_groups:
+      IPV6-UNDERLAY:
+        activate: true
+        route_map_in: RM-HIDE-AS-PATH
+        route_map_out: RM-HIDE-AS-PATH
+      IPV6-UNDERLAY-MLAG:
+        activate: true
+  vlans:
+    24:
+      rd: "10.50.64.15:10024"
+      route_targets:
+        both:
+          - "1:10024"
+      redistribute_routes:
+        - learned
+    41:
+      rd: "10.50.64.15:10041"
+      route_targets:
+        both:
+          - "1:10041"
+      redistribute_routes:
+        - learned
+    42:
+      rd: "10.50.64.15:10042"
+      route_targets:
+        both:
+          - "1:10042"
+      redistribute_routes:
+        - learned
+    65:
+      rd: "10.50.64.15:10065"
+      route_targets:
+        both:
+          - "1:10065"
+      redistribute_routes:
+        - learned
+  vrfs:
+    Tenant_A:
+      rd: "10.50.64.15:30001"
+      route_targets:
+        import:
+          evpn:
+            - "1:30001"
+        export:
+          evpn:
+            - "1:30001"
+      redistribute_routes:
+        connected:
+    Tenant_B:
+      rd: "10.50.64.15:30002"
+      route_targets:
+        import:
+          evpn:
+            - 1:30002
+        export:
+          evpn:
+            - 1:30002
+
+### Routing - Multicast ###
+router_multicast:
+  ipv4:
+    routing: true
+
+### Routing - PIM Sparse Mode ###
+router_pim_sparse_mode:
+  ipv4:
+    rp_addresses:
+      10.238.1.161:
+        groups:
+          239.12.12.12/32:
+          239.12.12.13/32:
+          239.12.12.14/32:
+          239.12.12.16/32:
+          239.12.12.20/32:
+          239.12.12.21/32:
+    anycast_rps:
+      10.38.1.161:
+        other_anycast_rp_addresses:
+          10.50.64.16:
+            register_count: 15
+
+### IP TACACS+ Source Interface ###
+ip_tacacs_source_interfaces:
+    - name: Management0
+      vrf: mgt
+
+### VM Tracer Sessions ###
+vmtracer_sessions:
+  esx101sas:
+    url: https://esx101sas.test.local/
+    username: testuser
+    password: SUCF7CNfXw4=
+    autovlan_disable: true
+    source_interface: Loopback0
+  esx201sas:
+    url: https://esx201sas.test.local/
+    username: testuser
+    password: SUCF7CNfXw4=
+    autovlan_disable: true
+    source_interface: Loopback0
+  esx301sas:
+    url: https://esx301sas.test.local/
+    username: testuser
+    password: SUCF7CNfXw4=
+    autovlan_disable: true
+    source_interface: Loopback0
+  esx401sas:
+    url: https://esx401sas.test.local/
+    username: testuser
+    password: SUCF7CNfXw4=
+    autovlan_disable: true
+    source_interface: Loopback0
+
+### Banners ###
+banners:
+  login: |
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !***!!!Unauthorized access prohibited!!!***!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    EOF
+  motd: |
+    .         Switch       : $(hostname)                            .
+    .         Site         : DC1                      .
+    .         Type info for information about the device            .
+    .         Type help for information about the aliases           .
+    EOF
+
+### Management API http ###
+management_api_http:
+  enable_http: true
+  enable_https: true
+  enable_vrfs:
+    mgt:
+      access_group: ACL-API
+
+### Management console ###
+management_console:
+  idle_timeout: 300
+
+### Management security ###
+management_security:
+  password:
+    encryption_key_common: true
+
+### Management ssh ###
+management_ssh:
+  access_groups:
+    - name: ACL-SSH
+    - name: ACL-SSH-VRF
+      vrf: mgt
+  ipv6_access_groups:
+    - name: ACL-SSH6
+    - name: ACL-SSH-VRF6
+      vrf: mgt
+  idle_timeout: 15
+  enable: true
+  vrfs:
+    mgt:
+      enable: true
