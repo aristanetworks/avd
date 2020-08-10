@@ -1,12 +1,12 @@
 {# AVD State Validation Report - CSV #}
-Test ID,Node,Test Decription,Test,Results
+Test ID,Node,Test Decription,Test,Results, Failure reason
 {% set test_id = namespace(value=0) %}
 {# Hardware results - power supplies status #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].power_supplies_results is defined and hostvars[node].power_supplies_results.results is defined %}
 {%         for result in hostvars[node].power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Power supply state,Power supply {{ result.powerSupply.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Power supply state,Power supply {{ result.powerSupply.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -16,7 +16,7 @@ Test ID,Node,Test Decription,Test,Results
 {%     if hostvars[node].fan_power_supplies_results is defined and hostvars[node].fan_power_supplies_results.results is defined %}
 {%         for result in hostvars[node].fan_power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},fan status (power supplies),{{ result.powerSupplySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},fan status (power supplies),{{ result.powerSupplySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -26,7 +26,7 @@ Test ID,Node,Test Decription,Test,Results
 {%     if hostvars[node].fan_tray_status_results is defined and hostvars[node].fan_tray_status_results.results is defined %}
 {%         for result in hostvars[node].fan_tray_status_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},fan status (fan tray),Tray {{ result.fanTraySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},fan status (fan tray),Tray {{ result.fanTraySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -35,7 +35,7 @@ Test ID,Node,Test Decription,Test,Results
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].environment_temperature_results is defined %}
 {%         set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},temperature,system temperature,{% if hostvars[node].environment_temperature_results.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},temperature,system temperature,{% if hostvars[node].environment_temperature_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].environment_temperature_results.msg }}{% endif %}
 
 {%    endif %}
 {% endfor %}
@@ -44,7 +44,7 @@ Test ID,Node,Test Decription,Test,Results
 {%     if hostvars[node].transceiver_inventory_results is defined and hostvars[node].transceiver_inventory_results.results is defined %}
 {%         for result in hostvars[node].transceiver_inventory_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},transceivers manufacturers,port {{ result.xcvrSlot.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},transceivers manufacturers,port {{ result.xcvrSlot.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -53,7 +53,7 @@ Test ID,Node,Test Decription,Test,Results
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].ntp_status_results is defined and hostvars[node].ntp_status_results.skipped is not defined %}
 {%         set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Synchronised with NTP server,NTP,{% if hostvars[node].ntp_status_results.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Synchronised with NTP server,NTP,{% if hostvars[node].ntp_status_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].ntp_status_results.msg }}{% endif %}
 
 {%    endif %}
 {% endfor %}

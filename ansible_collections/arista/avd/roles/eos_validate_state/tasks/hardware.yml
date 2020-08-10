@@ -13,6 +13,7 @@
   assert:
     that:
       - powerSupply.value.state == 'ok'
+    fail_msg: Power supply state is "{{ powerSupply.value.state }}"
     quiet: true
   loop: "{{ system_environment_power.stdout_lines.0.powerSupplies | dict2items }}"
   loop_control:
@@ -33,6 +34,7 @@
   assert:
     that:
       - powerSupplySlot.status == 'ok'
+    fail_msg: fan status is "{{ powerSupplySlot.status }}"
     quiet: true
   loop: "{{ system_environment_cooling.stdout_lines.0.powerSupplySlots }}"
   loop_control:
@@ -46,6 +48,7 @@
   assert:
     that:
       - fanTraySlot.status == 'ok'
+    fail_msg: fan status is "{{ fanTraySlot.status }}"
     quiet: true
   loop: "{{ system_environment_cooling.stdout_lines.0.fanTraySlots }}"
   loop_control:
@@ -67,6 +70,7 @@
   assert:
     that:
       - environment_temperature.stdout[0].systemStatus == "temperatureOk"
+    fail_msg: system temperature is "{{ environment_temperature.stdout[0].systemStatus }}"
     quiet: true
   ignore_errors: "{{ validation_mode_loose }}"
   register: environment_temperature_results
@@ -84,6 +88,7 @@
   assert:
     that:
       - "xcvrSlot.value.mfgName in ['Not Present', 'Arastra, Inc.', 'Arista Networks']"
+    fail_msg: transceivers manufacturers is "{{ xcvrSlot.value.mfgName }}"
     quiet: true
   loop: "{{ inventory.stdout_lines.0.xcvrSlots | dict2items }}"
   loop_control:
