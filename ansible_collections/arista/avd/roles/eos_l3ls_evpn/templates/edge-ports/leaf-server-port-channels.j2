@@ -17,11 +17,12 @@
 {%                     endif %}
 {# Add ESI Support isse aristanetworks/ansible-avd #215 #}
 {%                     if adapter.switches | unique | list | length > 1 %}
-{%                         if adapter.port_channel.esi is defined and adapter.port_channel.esi is not none %}
-    esi: {{ adapter.port_channel.esi }}
+{%                         if adapter.port_channel.esi is defined and adapter.port_channel.esi is not none and adapter.port_channel.esi.split(':') | length == 3 %}
+    esi: 0000:0000:{{ adapter.port_channel.esi }}
+    rt: {{ adapter.port_channel.esi | arista.avd.esi_to_rt }}
 {%                         endif %}
-{%                         if adapter.port_channel.lacp_id is defined and adapter.port_channel.lapc_id is not none %}
-    lacp_id: {{ adapter.port_channel.lacp_id }}
+{%                         if adapter.port_channel.mode is defined and adapter.port_channel.mode == 'active' %}
+    lacp_id: {{ adapter.port_channel.esi.replace(':', '.') }}
 {%                         endif %}
 {%                     endif %}
 {%                 break %}
