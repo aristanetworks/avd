@@ -12,8 +12,17 @@
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}
     native_vlan: {{ port_profiles[adapter.profile].native_vlan }}
 {%                 endif %}
-{%                     if adapter.switches | unique | list | length > 1 %}
+{%                     if adapter.switches | unique | list | length > 1 and adapter.port_channel.esi is not defined %}
     mlag: {{ channel_group_id }}
+{%                     endif %}
+{# Add ESI Support isse aristanetworks/ansible-avd #215 #}
+{%                     if adapter.switches | unique | list | length > 1 %}
+{%                         if adapter.port_channel.esi is defined and adapter.port_channel.esi is not none %}
+    esi: {{ adapter.port_channel.esi }}
+{%                         endif %}
+{%                         if adapter.port_channel.lacp_id is defined and adapter.port_channel.lapc_id is not none %}
+    lacp_id: {{ adapter.port_channel.lacp_id }}
+{%                         endif %}
 {%                     endif %}
 {%                 break %}
 {%                 endif %}
