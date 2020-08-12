@@ -1,0 +1,20 @@
+---
+- name: Configure local folders
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    # - name: create local output folders
+    #   delegate_to: 127.0.0.1
+    #   import_role:
+    #      name: arista.avd.build_output_folders
+    #   run_once: true
+    # - name: create intended/structured_configs
+    #   delegate_to: 127.0.0.1
+    #   copy:
+    #     src: 'inventory/host_vars/{{ item }}'
+    #     dest: '{{root_dir}}/intended/structured_configs/'
+    #   with_items:
+    #     - 'DC1-BL1.yml'
+    #     - 'DC1-SP1.yml'
+    #   run_once: true

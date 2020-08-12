@@ -1,4 +1,6 @@
 # Roles Defaults
+# Root directory where to build output structure
+root_dir: '{{inventory_dir}}'
 
 mgmt_vrf_routing: false
 

@@ -8,6 +8,9 @@ jobs:
   'ansible-test':
     name: Run ansible-test validation
     runs-on: ubuntu-latest
+    env:
+      PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
+      ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
     steps:
       - uses: actions/checkout@master
       - name: Setup Python 3 on runner
