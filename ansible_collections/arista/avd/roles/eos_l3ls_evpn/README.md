@@ -18,6 +18,7 @@
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
       - [MLAG dual-attached server scenario](#mlag-dual-attached-server-scenario)
+      - [EVPN A/A ESI dual-attached server scenario](#evpn-aa-esi-dual-attached-server-scenario)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
@@ -1218,6 +1219,30 @@ servers:
           state: present
           description: PortChanne1
           mode: active
+```
+
+#### EVPN A/A ESI dual-attached server scenario
+
+MLAG dual-homed connection:
+
+- From `E0` to `DC1-SVC3A` interface `Eth10`
+- From `E1` to `DC1-SVC4A` interface `Eth10`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
+          esi: 0303:0202:0101
 ```
 
 ### Variable to attach additional configlets

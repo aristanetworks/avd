@@ -551,12 +551,19 @@ port_channel_interfaces:
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
+    mode: < access | trunk >
+    esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
+    rt: < EVPN Route Target for ESI xx:xx:xx:xx:xx:xx >
+    lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
+  < Port-Channel_interface_3 >:
+    description: < description >
+    vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < portfast_mode >
     vmtracer: < true | false >
-  < Port-Channel_interface_3 >:
+  < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
     type: < switched | routed >
