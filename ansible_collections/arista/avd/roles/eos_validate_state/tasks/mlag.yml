@@ -14,6 +14,7 @@
     that:
       - mlag_state.stdout[0].state == "active"
       - mlag_state.stdout[0].negStatus == "connected"
+    fail_msg: "state: {{ mlag_state.stdout[0].state }} - negotiation_status: {{ mlag_state.stdout[0].negStatus }}"
     quiet: true
   ignore_errors: "{{ validation_mode_loose }}"
   register: mlag_state_results

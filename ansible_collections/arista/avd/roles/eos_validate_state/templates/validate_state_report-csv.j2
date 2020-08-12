@@ -62,7 +62,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%     if hostvars[node].ethernet_interface_state_results is defined and hostvars[node].ethernet_interface_state_results.results is defined %}
 {%         for result in hostvars[node].ethernet_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Ethernet Interface Status & Line Protocol == "up",{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Ethernet Interface Status & Line Protocol == "up",{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -72,7 +72,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%     if hostvars[node].port_channel_interface_state_results is defined and hostvars[node].port_channel_interface_state_results.results is defined %}
 {%         for result in hostvars[node].port_channel_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Port-Channel Interface Status & Line Protocol == "up",{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Port-Channel Interface Status & Line Protocol == "up",{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -82,7 +82,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%     if hostvars[node].vlan_interface_state_results is defined and hostvars[node].vlan_interface_state_results.results is defined %}
 {%         for result in hostvars[node].vlan_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Vlan Interface Status & Line Protocol == "up",{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Vlan Interface Status & Line Protocol == "up",{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -91,7 +91,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].vxlan_interface_state_results is defined and hostvars[node].vxlan_interface_state_results.skipped is not defined %}
 {%         set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Vxlan Interface Status & Line Protocol == "up",Vxlan1,{% if hostvars[node].vxlan_interface_state_results.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Vxlan Interface Status & Line Protocol == "up",Vxlan1,{% if hostvars[node].vxlan_interface_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].vxlan_interface_state_results.msg }}{% endif %}
 
 {%    endif %}
 {% endfor %}
@@ -100,7 +100,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%     if hostvars[node].loopback_interface_state_results is defined and hostvars[node].loopback_interface_state_results.results is defined %}
 {%         for result in hostvars[node].loopback_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Loopback Interface Status & Line Protocol == "up",{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},Loopback Interface Status & Line Protocol == "up",{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -111,7 +111,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].lldp_topology_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},lldp topology - validate peer and interface,{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},lldp topology - validate peer and interface,{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
@@ -121,7 +121,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].mlag_state_results is defined and hostvars[node].mlag_state_results.skipped is not defined %}
 {%         set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},MLAG State active & Status connected,MLAG,{% if hostvars[node].mlag_state_results.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},MLAG State active & Status connected,MLAG,{% if hostvars[node].mlag_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].mlag_state_results.msg }}{% endif %}
 
 {%    endif %}
 {% endfor %}
@@ -131,7 +131,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].ip_reachability_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},ip reachability test p2p links,Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} | Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},ip reachability test p2p links,Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} | Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
@@ -141,7 +141,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].arbgp_state_results is defined and hostvars[node].arbgp_state_results.skipped is not defined %}
 {%         set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},ArBGP is configured and operating,ArBGP,{% if hostvars[node].arbgp_state_results.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},ArBGP is configured and operating,ArBGP,{% if hostvars[node].arbgp_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].arbgp_state_results.msg }}{% endif %}
 
 {%    endif %}
 {% endfor %}
@@ -151,7 +151,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},ip bgp peer state established - IPv4-UNDERLAY-PEERS & "MLAG-IPv4-UNDERLAY-PEER,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},ip bgp peer state established: IPv4-UNDERLAY-PEERS and MLAG-IPv4-UNDERLAY-PEER,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
@@ -163,7 +163,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},bgp evpn peer state established - EVPN-OVERLAY-PEERS,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL{% endif %}
+{{ test_id.value }},{{ node }},bgp evpn peer state established - EVPN-OVERLAY-PEERS,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}

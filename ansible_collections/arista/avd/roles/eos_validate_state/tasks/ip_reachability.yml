@@ -25,6 +25,7 @@
   assert:
     that:
       - ip_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
     quiet: true
   loop: "{{ ip_reachability_state.results }}"
   loop_control:
