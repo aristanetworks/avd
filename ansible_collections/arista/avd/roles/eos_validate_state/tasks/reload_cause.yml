@@ -11,15 +11,6 @@
     - optional
     - never
 
-- name: view output
-  debug:
-    msg: "{{ reload_cause }}"
-  tags:
-    - reload_cause
-    - optional
-    - never
-
-
 - name: validate reload cause
   assert:
     that: reload_cause.stdout_lines[0][2] == "Reload requested by the user."
