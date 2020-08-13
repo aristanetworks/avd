@@ -41,7 +41,7 @@
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (bgp_neighbor.value.peer_group == "IPv4-UNDERLAY-PEERS" or bgp_neighbor.value.peer_group == "MLAG-IPv4-UNDERLAY-PEER")
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "ipv4")
   ignore_errors: "{{ validation_mode_loose }}"
   register: ip_bgp_peer_state_results
   tags:
@@ -57,7 +57,7 @@
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (bgp_neighbor.value.peer_group == "EVPN-OVERLAY-PEERS")
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "evpn")
   ignore_errors: "{{ validation_mode_loose }}"
   register: bgp_evpn_peer_state_results
   tags:

@@ -151,7 +151,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},ip bgp peer state established: IPv4-UNDERLAY-PEERS and MLAG-IPv4-UNDERLAY-PEER,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},ip bgp peer state established (ipv4),bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
@@ -163,7 +163,7 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},bgp evpn peer state established - EVPN-OVERLAY-PEERS,bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},bgp evpn peer state established (evpn),bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
