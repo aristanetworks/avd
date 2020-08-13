@@ -66,18 +66,10 @@
   tags:
     - bgp_check
 
-  ####################################
-  ## NOT YET categorized / Optional ##
-  ####################################
-
 - name: Validate reload cause
-  eos_command:
-    commands: "show reload cause | json"
-    wait_for: result[0].resetCauses[0].description eq 'Reload requested by the user.'
-    retries: 2
-    interval: 2
-  ignore_errors: "{{ validation_mode_loose }}"
+  include_tasks: "reload_cause.yml"
   tags:
+    - reload_cause
     - optional
     - never
 

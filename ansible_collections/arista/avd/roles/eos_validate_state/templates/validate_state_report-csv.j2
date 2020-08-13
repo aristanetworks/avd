@@ -169,3 +169,11 @@ Test ID,Node,Test Decription,Test,Results, Failure reason
 {%         endfor %}
 {%    endif %}
 {% endfor %}
+{# Reload Cause Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].reload_cause_results is defined and hostvars[node].reload_cause_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Reload Cause: Reload requested by the user,Reload Cause,{% if hostvars[node].reload_cause_results.failed == false %}PASS{% else %}FAIL,Reload Cause: {{ hostvars[node].reload_cause_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
