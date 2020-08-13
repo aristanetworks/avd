@@ -1,0 +1,3 @@
+avd_eos_validate_state:
+  validation_mode_loose: true
+  csv_report_path: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.csv'

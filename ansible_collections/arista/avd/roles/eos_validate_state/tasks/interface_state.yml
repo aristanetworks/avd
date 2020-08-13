@@ -5,7 +5,7 @@
 - name: Gather interfaces state
   eos_command:
     commands: "show interfaces description | json"
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   register: interfaces_state
   tags:
     - interfaces_state
@@ -20,7 +20,7 @@
   loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: ethernet_interface
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   register: ethernet_interface_state_results
   tags:
     - interfaces_state
@@ -35,7 +35,7 @@
   loop: "{{ port_channel_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: port_channel_interface
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   register: port_channel_interface_state_results
   tags:
     - interfaces_state
@@ -50,7 +50,7 @@
   loop: "{{ vlan_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: vlan_interface
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   register: vlan_interface_state_results
   tags:
     - interfaces_state
@@ -62,7 +62,7 @@
       - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus == "up"
     fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus }}"
     quiet: true
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   when: (vxlan_tunnel_interface is defined and vxlan_tunnel_interface is not none)
   register: vxlan_interface_state_results
   tags:
@@ -78,7 +78,7 @@
   loop: "{{ loopback_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: loopback_interface
-  ignore_errors: "{{ validation_mode_loose }}"
+  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
   register: loopback_interface_state_results
   tags:
     - interfaces_state

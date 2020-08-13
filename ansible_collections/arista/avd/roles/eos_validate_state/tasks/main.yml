@@ -21,9 +21,9 @@
     - platform_information
     - hardware
 
-  ##################################
-  ## Load tasks for specific tags ##
-  ##################################
+  #####################################
+  ## Load tasks for validaiton tests ##
+  #####################################
 
 - name: Load Hardware validation tasks
   include_tasks: "hardware.yml"
@@ -74,15 +74,11 @@
     - never
 
   ####################################
-  ##          Reports               ##
+  ##       Validation Reports       ##
   ####################################
 
-- name: Create Validation report - CSV
-  template:
-    src: validate_state_report-csv.j2
-    dest: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.csv'
-  delegate_to: localhost
-  run_once: true
+- name: Validate reload cause
+  include_tasks: "reports.yml"
   tags:
     - always
-    - report
+    - reports

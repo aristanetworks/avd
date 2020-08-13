@@ -1,0 +1,13 @@
+---
+
+# Validation reports
+
+- name: Create Validation report - CSV
+  template:
+    src: validate_state_report-csv.j2
+    dest: "{{ avd_eos_validate_state.csv_report_path }}"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
