@@ -11,3 +11,34 @@
   tags:
     - always
     - report
+
+- name: Read CSV report
+  read_csv:
+    path: "{{ avd_eos_validate_state.csv_report_path }}"
+    key: "test_id"
+  register: validation_report_csv
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+- name: view csv input
+  debug:
+    msg: "{{ validation_report_csv }}"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+- name: Create Validation report - Markdown
+  template:
+    src: validate_state_report-md.j2
+    dest: "{{ avd_eos_validate_state.md_report_path }}"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
