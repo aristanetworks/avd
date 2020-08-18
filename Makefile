@@ -92,14 +92,14 @@ webdoc: ## Build documentation to publish static content
 github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
 .PHONY: github-configure-ci-ansible
-github-configure-ci-ansible: ## Install Ansible Test on GA (Ubuntu:latest LTS)
+github-configure-ci-ansible: ## Install Ansible on GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo apt-get install -y gnupg2
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
 	sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
 	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
 	sudo apt-get update
-	sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ansible-test
+	sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ansible
 
 .PHONY: github-configure-ci-python3
 github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
