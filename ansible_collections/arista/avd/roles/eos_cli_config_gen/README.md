@@ -20,6 +20,7 @@
     - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
     - [Logging](#logging)
+    - [LLDP](#lldp)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
@@ -230,6 +231,17 @@ queue_monitor_length:
 
 ```yaml
 service_routing_protocols_model: < multi-agent | ribd >
+```
+
+### LLDP
+
+```yaml
+lldp:
+  timer: < transmission_time >
+  holdtime: < hold_time_period >
+  management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
+  vrf: < vrf_name >
+  run: < true | false >
 ```
 
 ### Logging
@@ -729,7 +741,14 @@ vlan_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
-  < Vlan_id_2 >:
+    vrrp:
+      virtual_router: < virtual_router_id >
+      priority: < instance_priority >
+      advertisement_interval: < advertisement_interval>
+      preempt_delay_minimum: < minimum_preemption_delay >
+      ipv4: < virtual_ip_address >
+      ipv6: < virtual_ip_address >
+< Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```
@@ -919,7 +938,9 @@ ipv6_prefix_lists:
 
 ### IPv6 Routing
 
+```yaml
 ipv6_unicast_routing: < true | false >
+```
 
 ### MLAG Configuration
 
@@ -1003,6 +1024,8 @@ router_bgp:
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
+      description: "< description as string >"
+      shutdown: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
@@ -1012,6 +1035,8 @@ router_bgp:
       password: "< encrypted_password >"
       send_community: < true | false >
       maximum_routes: < integer >
+      weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
       bgp_listen_range_prefix: < IP prefix range >
@@ -1024,8 +1049,12 @@ router_bgp:
       remote_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      update_source: < interface >
+      weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
+      next_hop_self: < true | false >
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
@@ -1090,6 +1119,9 @@ router_bgp:
       < peer_group_name >:
         activate: < true | false >
   address_family_ipv4:
+    networks:
+      < prefix_ipv4 >:
+        route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
         route_map_in: < route_map_name >
@@ -1100,8 +1132,13 @@ router_bgp:
     neighbors:
       < neighbor_ip_address>:
         activate: < true | false >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < neighbor_ip_address>:
         activate: < true | false >
+        default_originate:
+          always: < true | false >
+          route_map: < route_map_name >
   address_family_ipv4_multicast:
     peer_groups:
       < peer_group_name >:
@@ -1196,6 +1233,13 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      default_information_originate:
+        always: true
+      redistribute:
+        static:
+          route_map: < route_map_name >
+        connected:
+          route_map: < route_map_name >
 ```
 
 ### Routing PIM Sparse Mode

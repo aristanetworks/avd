@@ -101,6 +101,7 @@ github-configure-ci-ansible: ## Install Ansible on GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ansible
 
+
 .PHONY: github-configure-ci-python3
 github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
 	sudo apt-get update
