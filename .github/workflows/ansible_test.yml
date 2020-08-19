@@ -20,6 +20,9 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: update packages
+        run: apt-get update
+
       - name: 'Install sudo'
         run: apt-get -q -y install sudo
 
