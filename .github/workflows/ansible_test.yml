@@ -32,6 +32,9 @@ jobs:
       - name: 'Install requirements'
         run: make github-configure-ci
 
+      - name: 'Install docker'
+        run: make install-docker
+
       - name: 'Install Python requirements'
         run: make install-requirements
 
