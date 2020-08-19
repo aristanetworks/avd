@@ -19,6 +19,13 @@ jobs:
         uses: actions/setup-python@v1.2.0
         with:
           python-version: '3.x'
+
+      - name: 'Install sudo'
+        run: apt-get -q -y install sudo
+
+      - name: 'Install build essentials'
+        run: sudo apt-get install -q -y build-essential
+
       - name: 'Install requirements'
         run: make github-configure-ci
 
