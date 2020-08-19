@@ -1,6 +1,5 @@
 name: Ansible Test
 on:
-  push:
   pull_request:
     branches:
       - 'devel'
