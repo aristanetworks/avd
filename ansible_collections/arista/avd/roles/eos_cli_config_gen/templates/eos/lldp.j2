@@ -1,0 +1,19 @@
+{# eos - lldp #}
+{% if lldp is defined and lldp is not none %}
+{%   if lldp.run is defined and lldp.run == false %}
+no lldp run
+{%   endif %}
+{%   if lldp.timer is defined and lldp.timer is not none %}
+lldp timer {{ lldp.timer }}
+{%   endif %}
+{%   if lldp.holdtime is defined and lldp.holdtime is not none %}
+lldp hold-time {{ lldp.holdtime }}
+{%   endif %}
+{%   if lldp.management_address is defined and lldp.management_address is not none %}
+lldp management-address {{ lldp.management_address }}
+{%   endif %}
+{%   if lldp.vrf is defined and lldp.vrf is not none %}
+lldp management-address vrf {{ lldp.vrf }}
+{%   endif %}
+!
+{% endif %}

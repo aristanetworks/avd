@@ -1,0 +1,556 @@
+.. _@{ module }@:
+
+{% set title = module %}
+{% set title_len = title|length %}
+@{ title }@
+@{ '+' * title_len }@
+{% if short_description %}
+@{ short_description|convert_symbols_to_format }@
+{% endif %}
+
+{% if version_added is defined and version_added != '' -%}
+Module added in version @{ version_added | default('') }@
+
+
+{% endif %}
+
+.. contents::
+   :local:
+   :depth: 2
+
+{# ------------------------------------------
+ #
+ # Please note: this looks like a core dump
+ # but it isn't one.
+ #
+ --------------------------------------------#}
+{% if deprecated is defined -%}
+
+
+DEPRECATED
+----------
+
+{# use unknown here? skip the fields? #}
+:In: version: @{ deprecated['version'] | default('') | string | convert_symbols_to_format }@
+:Why: @{ deprecated['why'] | default('') | convert_symbols_to_format }@
+:Alternative: @{ deprecated['alternative'] | default('')|  convert_symbols_to_format }@
+
+
+{% endif %}
+
+Synopsis
+--------
+
+{% if description %}
+
+{% for desc in description -%}
+@{ desc | convert_symbols_to_format }@
+{% endfor %}
+
+
+{% endif %}
+{% if aliases is defined -%}
+
+Aliases: @{ ','.join(aliases) }@
+
+
+{% endif %}
+{% if requirements %}
+
+Requirements
+------------
+The following software packages must be installed on hosts that execute this module:
+
+{% for req in requirements %}
+* @{ req | convert_symbols_to_format }@
+{% endfor %}
+
+
+
+{% endif %}
+{% if options -%}
+
+.. _module-specific-options-label:
+
+Module-specific Options
+-----------------------
+The following options may be specified for this module:
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">parameter</th>
+    <th class="head">type</th>
+    <th class="head">required</th>
+    <th class="head">default</th>
+    <th class="head">choices</th>
+    <th class="head">comments</th>
+    </tr>
+{% for k in option_keys -%}
+{% set v = options[k] -%}
+{% if not v['suboptions'] %}
+
+    <tr>
+    <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
+    <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
+{% if v.get('type', 'not_bool') == 'bool' %}
+    <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+    <td>
+{% if v.description is string %}
+        <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+{% else %}
+
+    <tr>
+    <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+    <td></td>
+    <td></td>
+    <td>
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+    </tr>
+
+    <tr>
+    <td colspan="5">
+        <table border=1 cellpadding=4>
+        <caption><b>Dictionary object @{ k }@</b></caption>
+
+        <tr>
+        <th class="head">parameter</th>
+        <th class="head">type</th>
+        <th class="head">required</th>
+        <th class="head">default</th>
+        <th class="head">choices</th>
+        <th class="head">comments</th>
+        </tr>
+{% for k2 in v['suboptions'] %}
+{% set v2 = v['suboptions'] [k2] %}
+
+        <tr>
+        <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
+        <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
+        <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+        <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
+{% if v2.get('type', 'not_bool') == 'bool' %}
+        <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+        <td>
+{% if v2.description is string %}
+        <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v2.description %}
+            <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v2.aliases %}
+            </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
+{% endif %}
+        </td>
+        </tr>
+{% endfor %}
+
+        </table>
+
+    </td>
+    </tr>
+{% endif %}
+    </td>
+    </tr>
+{% endfor %}
+
+    </table>
+    </br>
+
+{% endif %}
+{% if connection_options -%}
+
+
+Common Connection-related Options
+---------------------------------
+In addition to the :ref:`module-specific-options-label`, the following connection-related options are also supported by this module:
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">parameter</th>
+    <th class="head">type</th>
+    <th class="head">required</th>
+    <th class="head">default</th>
+    <th class="head">choices</th>
+    <th class="head">comments</th>
+    </tr>
+{% for k in connection_option_keys -%}
+{% set v = connection_options[k] -%}
+{% if not v['suboptions'] %}
+
+    <tr>
+    <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
+    <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
+{% if v.get('type', 'not_bool') == 'bool' %}
+    <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+    <td>
+{% if v.description is string %}
+        <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+{% else %}
+
+    <tr>
+    <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+    <td></td>
+    <td></td>
+    <td>
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+    </tr>
+
+    <tr>
+    <td colspan="5">
+        <table border=1 cellpadding=4>
+        <caption><b>Dictionary object @{ k }@</b></caption>
+
+        <tr>
+        <th class="head">parameter</th>
+        <th class="head">type</th>
+        <th class="head">required</th>
+        <th class="head">default</th>
+        <th class="head">choices</th>
+        <th class="head">comments</th>
+        </tr>
+{% for k2 in v['suboptions'] %}
+{% set v2 = v['suboptions'] [k2] %}
+
+        <tr>
+        <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
+        <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
+        <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+        <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
+{% if v2.get('type', 'not_bool') == 'bool' %}
+        <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+        <td>
+{% if v2.description is string %}
+        <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v2.description %}
+            <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v2.aliases %}
+            </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
+{% endif %}
+        </td>
+        </tr>
+{% endfor %}
+
+        </table>
+
+    </td>
+    </tr>
+{% endif %}
+    </td>
+    </tr>
+{% endfor %}
+
+    </table>
+    </br>
+
+{% endif %}
+{% if logging_options -%}
+
+
+Common Logging-related Options
+------------------------------
+In addition to the :ref:`module-specific-options-label`, the following logging-related options are also supported by this module:
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">parameter</th>
+    <th class="head">type</th>
+    <th class="head">required</th>
+    <th class="head">default</th>
+    <th class="head">choices</th>
+    <th class="head">comments</th>
+    </tr>
+{% for k in logging_option_keys -%}
+{% set v = logging_options[k] -%}
+{% if not v['suboptions'] %}
+
+    <tr>
+    <td>@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else %}no{% endif -%}</td>
+    <td>{% if v.get('default', None) is not none  -%}@{ v['default'] | string | html_ify }@{% endif -%}</td>
+{% if v.get('type', 'not_bool') == 'bool' %}
+    <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+    <td>{% if v['choices'] -%}<ul>{% for choice in v.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+    <td>
+{% if v.description is string %}
+        <div>@{ v.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+{% else %}
+
+    <tr>
+    <td rowspan="2">@{ k }@<br/><div style="font-size: small;">{% if v['version_added'] -%} (added in @{v['version_added']}@){% endif -%}</div></td>
+    <td>{% if v['type'] -%}@{ v['type'] }@{% endif -%}</td>
+    <td>{% if v.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+    <td></td>
+    <td></td>
+    <td>
+{% for desc in v.description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% if 'aliases' in v and v.aliases %}
+        </br><div style="font-size: small;">aliases: @{ v.aliases|join(', ') }@</div>
+{% endif %}
+    </tr>
+
+    <tr>
+    <td colspan="5">
+        <table border=1 cellpadding=4>
+        <caption><b>Dictionary object @{ k }@</b></caption>
+
+        <tr>
+        <th class="head">parameter</th>
+        <th class="head">type</th>
+        <th class="head">required</th>
+        <th class="head">default</th>
+        <th class="head">choices</th>
+        <th class="head">comments</th>
+        </tr>
+{% for k2 in v['suboptions'] %}
+{% set v2 = v['suboptions'] [k2] %}
+
+        <tr>
+        <td>@{ k2 }@<br/><div style="font-size: small;">{% if v2['version_added'] -%} (added in @{v2['version_added']}@){% endif -%}</div></td>
+        <td>{% if v2['type'] -%}@{ v2['type'] }@{% endif -%}</td>
+        <td>{% if v2.get('required', False) -%}yes{% else -%}no{% endif -%}</td>
+        <td>{% if v2.get('default', None) is not none  -%}@{ v2['default'] | string | html_ify }@{% endif -%}</td>
+{% if v2.get('type', 'not_bool') == 'bool' %}
+        <td><ul><li>yes</li><li>no</li></ul></td>
+{% else %}
+        <td>{% if v2['choices'] -%}<ul>{% for choice in v2.get('choices',[]) -%}<li>@{ choice }@</li>{% endfor -%}</ul>{% endif -%}</td>
+{% endif %}
+        <td>
+{% if v2.description is string %}
+        <div>@{ v2.description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in v2.description %}
+            <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+{% if 'aliases' in v and v2.aliases %}
+            </br><div style="font-size: small;">aliases: @{ v2.aliases|join(', ') }@</div>
+{% endif %}
+        </td>
+        </tr>
+{% endfor %}
+
+        </table>
+
+    </td>
+    </tr>
+{% endif %}
+    </td>
+    </tr>
+{% endfor %}
+
+    </table>
+    </br>
+
+{% endif %}
+{% if examples or plainexamples -%}
+.. _@{ title }@-examples-label:
+
+Examples:
+---------
+
+::
+{% for example in examples %}
+{% if example['description'] %}
+@{ example['description'] }@
+{% endif %}
+@{ example['code'] | escape | indent(4, True) }@
+{% endfor %}
+{% if plainexamples %}
+@{ plainexamples | indent(4, True) }@
+{% endif %}
+{% endif %}
+{% if returndocs -%}
+
+
+Return Values
+-------------
+
+.. raw:: html
+
+    <table border=1 cellpadding=4>
+
+    <tr>
+    <th class="head">name</th>
+    <th class="head">description</th>
+    <th class="head">returned</th>
+    <th class="head">type</th>
+    <th class="head">sample</th>
+    </tr>
+
+{% for entry in returndocs_keys %}
+
+    <tr>
+    <td>@{ entry }@</td>
+    <td>
+{% if returndocs[entry].description is string %}
+        <div>@{ returndocs[entry].description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in returndocs[entry].description %}
+        <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+    </td>
+    <td align=center>@{ returndocs[entry].returned | html_ify }@</td>
+    <td align=center>@{ returndocs[entry].type | html_ify }@</td>
+    <td align=center>@{ returndocs[entry].sample | replace('\n', '\n    ') | html_ify }@</td>
+    </tr>
+{% if returndocs[entry].type == 'complex' %}
+
+    <tr>
+    <td>contains:</td>
+    <td colspan=4>
+        <table border=1 cellpadding=2>
+
+        <tr>
+        <th class="head">name</th>
+        <th class="head">description</th>
+        <th class="head">returned</th>
+        <th class="head">type</th>
+        <th class="head">sample</th>
+        </tr>
+{% for sub in returndocs[entry].contains %}
+
+        <tr>
+        <td>@{ sub }@</td>
+        <td>
+{% if returndocs[entry].contains[sub].description is string %}
+            <div>@{ returndocs[entry].contains[sub].description | replace('\n', '\n    ') | html_ify }@</div>
+{% else %}
+{% for desc in returndocs[entry].contains[sub].description %}
+            <div>@{ desc | replace('\n', '\n    ') | html_ify }@</div>
+{% endfor %}
+{% endif %}
+        </td>
+        <td align=center>@{ returndocs[entry].contains[sub].returned | html_ify }@</td>
+        <td align=center>@{ returndocs[entry].contains[sub].type | html_ify }@</td>
+        <td align=center>@{ returndocs[entry].contains[sub].sample }@</td>
+        </tr>
+{% endfor %}
+
+        </table>
+    </td>
+    </tr>
+{% endif %}
+{% endfor %}
+
+    </table>
+    </br>
+    </br>
+{% endif %}
+
+
+{% if notes -%}
+
+
+Notes
+-----
+
+.. note::
+{% for note in notes %}
+    - @{ note | convert_symbols_to_format }@
+{% endfor %}
+
+
+{% endif %}
+{% if author is defined -%}
+
+
+Author
+~~~~~~
+
+{% for author_name in author %}
+* @{ author_name }@
+{% endfor %}
+
+
+{% endif %}
+{% if not deprecated %}
+{% set support = { 'core': 'The Ansible Core Team', 'network': 'The Ansible Network Team', 'certified': 'an Ansible Partner', 'community': 'The Ansible Community', 'curated': 'A Third Party'} %}
+{% set module_states = { 'preview': 'it is not guaranteed to have a backwards compatible interface', 'stableinterface': 'the maintainers for this module guarantee that no backward incompatible interface changes will be made'} %}
+{% if metadata %}
+{% if metadata.status %}
+
+
+Status
+~~~~~~
+
+{% for cur_state in  metadata.status %}
+This module is flagged as **@{cur_state}@** which means that @{module_states[cur_state]}@.
+{% endfor %}
+
+
+{% endif %}
+{% endif %}
+{% endif %}

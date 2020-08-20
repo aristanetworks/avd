@@ -1,0 +1,2 @@
+# Root directory where to build output structure
+root_dir: '{{inventory_dir}}'

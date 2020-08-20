@@ -11,6 +11,7 @@
     - [Aliases](#aliases)
     - [Hardware Counters](#hardware-counters)
     - [Daemon TerminAttr](#daemon-terminattr)
+    - [IP DHCP Relay](#ip-dhcp-relay)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP IGMP Snooping](#ip-igmp-snooping)
     - [Event Monitor](#event-monitor)
@@ -18,6 +19,7 @@
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
+    - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
@@ -27,7 +29,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
-    - [Snmp Settings](#snmp-settings)
+    - [SNMP Settings](#snmp-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -61,12 +63,14 @@
     - [IPv6 Prefix Lists](#ipv6-prefix-lists)
     - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
+    - [Community Lists](#community-lists)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router Multicast](#router-multicast)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
+    - [Router ISIS Configuration](#router-isis-configuration)
     - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
     - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -159,6 +163,14 @@ daemon_terminattr:
 
 ```
 
+### IP DHCP Relay
+
+```yaml
+ip_dhcp_relay:
+  information_option: < true | false >
+
+```
+
 ### Internal VLAN Allocation Policy
 
 ```yaml
@@ -219,6 +231,17 @@ queue_monitor_length:
 
 ```yaml
 service_routing_protocols_model: < multi-agent | ribd >
+```
+
+### LLDP
+
+```yaml
+lldp:
+  timer: < transmission_time >
+  holdtime: < hold_time_period >
+  management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
+  vrf: < vrf_name >
+  run: < true | false >
 ```
 
 ### Logging
@@ -302,11 +325,23 @@ router_l2_vpn:
 
 ```yaml
 sflow:
+  sample: < sample_rate >
+  dangerous: < true | false >
+  vrfs:
+    <vrf_name_1>:
+      destinations:
+        < sflow_destination_ip_1>:
+        < sflow_destination_ip_2>:
+          port: < port_number >
+      source_interface: < source_interface >
+    <vrf_name_2>:
+      destinations:
+        < sflow_destination_ip_1>:
+      source_interface: < source_interface >
   destinations:
     < sflow_destination_ip_1 >:
     < sflow_destination_ip_2 >:
-  source_interface: < source_interface_name >
-  sample: < sample_rate >
+  source_interface: < source_interface >
   run: < true | false >
 ```
 
@@ -317,7 +352,7 @@ Redundancy:
   protocol: < redundancy_protocol >
 ```
 
-### Snmp Settings
+### SNMP Settings
 
 ```yaml
 snmp_server:
@@ -489,6 +524,7 @@ clock:
 vlans:
   < vlan_id >:
     name: < vlan_name >
+    state: < active | suspend >
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
@@ -539,6 +575,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
+    spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
   < Port-Channel_interface_3 >:
@@ -599,6 +636,10 @@ ethernet_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -607,6 +648,7 @@ ethernet_interfaces:
     speed: < interface_speed >
     mtu: < mtu >
     vlans: "< list of vlans as string >"
+    native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
       received: < received | send | on >
@@ -616,6 +658,7 @@ ethernet_interfaces:
     qos:
       trust: < cos | dscp >
     spanning_tree_bpdufilter: < true | false >
+    spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
 ```
@@ -635,6 +678,10 @@ loopback_interfaces:
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
 ```
 
 ### Management Interfaces
@@ -664,7 +711,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    virtual: < true | false >
     mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
@@ -699,7 +745,19 @@ vlan_interfaces:
         sparse_mode: < true | false >
         local_interface: < local_interface_name >
     ipv6_virtual_router_address: < IPv6_address >
-  < Vlan_id_2 >:
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
+    mtu: < mtu >
+    vrrp:
+      virtual_router: < virtual_router_id >
+      priority: < instance_priority >
+      advertisement_interval: < advertisement_interval>
+      preempt_delay_minimum: < minimum_preemption_delay >
+      ipv4: < virtual_ip_address >
+      ipv6: < virtual_ip_address >
+< Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
 ```
@@ -889,7 +947,9 @@ ipv6_prefix_lists:
 
 ### IPv6 Routing
 
+```yaml
 ipv6_unicast_routing: < true | false >
+```
 
 ### MLAG Configuration
 
@@ -907,6 +967,16 @@ mlag_configuration:
   reload_delay_non_mlag: < seconds >
 ```
 
+### Community Lists
+
+```yaml
+community_lists:
+  < community_list_name_1 >:
+    action: "< action as string >"
+  < community_list_name_2 >:
+    action: "< action as string >"
+```
+
 ### Route Maps
 
 ```yaml
@@ -916,17 +986,23 @@ route_maps:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        match: "< match as string >"
-        set: "< set as string >"
+        match:
+          - "< match rule 1 as string >"
+          - "< match rule 2 as string >"
+        set:
+          - "< set as string >"
       < sequence_id_2 >:
         type: < permit | deny >
-        match: "< match as string >"
+        match:
+          - "< match as string >"
   < route_map_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
         type: < permit | deny >
         description: < description >
-        set: "< set as string >"
+        set:
+          - "< set rule 1 as string >"
+          - "< set rule 2 as string >"
 ```
 
 ### Peer Filters
@@ -957,6 +1033,8 @@ router_bgp:
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
+      description: "< description as string >"
+      shutdown: < true | false >
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
@@ -966,6 +1044,8 @@ router_bgp:
       password: "< encrypted_password >"
       send_community: < true | false >
       maximum_routes: < integer >
+      weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
       bgp_listen_range_prefix: < IP prefix range >
@@ -978,8 +1058,12 @@ router_bgp:
       remote_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
+      update_source: < interface >
+      weight: < weight_value >
+      timers: < keepalive_hold_timer_values >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
+      next_hop_self: < true | false >
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
@@ -1044,6 +1128,9 @@ router_bgp:
       < peer_group_name >:
         activate: < true | false >
   address_family_ipv4:
+    networks:
+      < prefix_ipv4 >:
+        route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
         route_map_in: < route_map_name >
@@ -1054,8 +1141,13 @@ router_bgp:
     neighbors:
       < neighbor_ip_address>:
         activate: < true | false >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < neighbor_ip_address>:
         activate: < true | false >
+        default_originate:
+          always: < true | false >
+          route_map: < route_map_name >
   address_family_ipv4_multicast:
     peer_groups:
       < peer_group_name >:
@@ -1150,6 +1242,13 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      default_information_originate:
+        always: true
+      redistribute:
+        static:
+          route_map: < route_map_name >
+        connected:
+          route_map: < route_map_name >
 ```
 
 ### Routing PIM Sparse Mode
@@ -1168,6 +1267,21 @@ router_pim_sparse_mode:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
+```
+
+### Router ISIS Configuration
+
+```yaml
+
+router_isis:
+  instance: <ISIS Instance Name>
+  net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
+  router_id: < IPv4_address >
+  no_passive_interfaces: < List no-passive-interface >
+  is_type: < level-1 | level-1-2 | level-2 >
+  address_family: < List of Address Families >
+  isis_af_defaults:
+      - maximum-paths < Integer 1-64 >
 ```
 
 ### Queue Monitor Streaming
@@ -1245,12 +1359,12 @@ management_security:
 ```yaml
 management_ssh:
   access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   ipv6_access_groups:
-    < standard_acl_name_1 >:
-    < standard_acl_name_2 >:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   enable: < true | false >

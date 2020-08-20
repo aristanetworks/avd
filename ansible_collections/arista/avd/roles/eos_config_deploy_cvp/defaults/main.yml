@@ -1,5 +1,7 @@
 ---
 # defaults file for eos-config-deploy-cvp
+# Root directory where to build output structure
+root_dir: '{{inventory_dir}}'
 
 # Filter to apply on cv_device to target only devices involved in Fabric
 device_filter: 'all'

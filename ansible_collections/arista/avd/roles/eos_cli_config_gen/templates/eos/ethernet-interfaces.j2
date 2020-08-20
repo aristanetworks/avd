@@ -32,6 +32,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vlans is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].native_vlan is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mode is defined and ethernet_interfaces[ethernet_interface].mode == "trunk" %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
 {%             endif %}
@@ -50,6 +53,9 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter == true %}
    spanning-tree bpdufilter enable
+{%             endif%}
+{%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard == true %}
+   spanning-tree bpduguard enable
 {%             endif%}
 {%             if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
@@ -95,6 +101,24 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
+   pim ipv4 sparse-mode
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
+   vmtracer vmware-esx
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
+   isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive == true %}
+   isis passive
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_metric is defined %}
+   isis metric {{ ethernet_interfaces[ethernet_interface].isis_metric }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode is defined and ethernet_interfaces[ethernet_interface].pim.ipv4.sparse_mode == true %}
    pim ipv4 sparse-mode

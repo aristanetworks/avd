@@ -103,8 +103,8 @@
 {%                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                     if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
 {%                         do leaf.vrfs.append( vrf ) %}
-{%                         do leaf.svis.append( svi ) %}
-{%                         do leaf.vlans.append( svi ) %}
+{%                         do leaf.svis.append( svi | int) %}
+{%                         do leaf.vlans.append( svi | int) %}
 {%                         break %}
 {%                     endif %}
 {%                 endfor %}
@@ -115,7 +115,7 @@
 {%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
 {%                 if vlan_tag in leaf.filter_tags or vlan_tag == leaf.group or "all" in leaf.filter_tags %}
-{%                     do leaf.vlans.append( l2vlan ) %}
+{%                     do leaf.vlans.append( l2vlan | int) %}
 {%                     break %}
 {%                 endif %}
 {%             endfor %}
@@ -368,6 +368,12 @@ router_bgp:
 router_ospf:
 {# underlay #}
 {% include 'underlay-overlay/router-ospf.j2' %}
+
+{# OSPF Configurartion #}
+### Routing - ISIS ###
+router_isis:
+{# underlay #}
+{% include 'underlay-overlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

@@ -21,6 +21,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vlans is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport trunk allowed vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].native_vlan is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
+   switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%         endif %}
@@ -42,6 +45,9 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter == true %}
    spanning-tree bpdufilter enable
+{%         endif%}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard == true %}
+   spanning-tree bpduguard enable
 {%         endif%}
 {%         if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}

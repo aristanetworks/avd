@@ -21,14 +21,6 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].ip_address is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address }}
 {%         endif %}
-{%         if vlan_interfaces[vlan_interface].ip_address is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true %}
-   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address }}
-{%         endif %}
-{%         if vlan_interfaces[vlan_interface].ip_address_secondary is defined and vlan_interfaces[vlan_interface].virtual is defined and vlan_interfaces[vlan_interface].virtual == true %}
-   ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
-{%         elif vlan_interfaces[vlan_interface].ip_address_secondary is defined %}
-   ip address {{ vlan_interfaces[vlan_interface].ip_address_secondary }} secondary
-{%         endif %}
 {%         if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %}
    ip virtual-router address {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }}
 {%         endif %}
@@ -94,6 +86,37 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is defined and vlan_interfaces[vlan_interface].ipv6_virtual_router_address is not none %}
    ipv6 virtual-router address {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_enable is defined %}
+   isis enable {{ vlan_interfaces[vlan_interface].isis_enable }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive == true %}
+   isis passive
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_metric is defined %}
+   isis metric {{ vlan_interfaces[vlan_interface].isis_metric }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point == true %}
+   isis network point-to-point
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].vrrp is defined and vlan_interfaces[vlan_interface].vrrp is not none %}
+{%           if vlan_interfaces[vlan_interface].vrrp.virtual_router is defined and vlan_interfaces[vlan_interface].vrrp.virtual_router is not none %}
+{%             if vlan_interfaces[vlan_interface].vrrp.priority is defined and vlan_interfaces[vlan_interface].vrrp.priority is not none and vlan_interfaces[vlan_interface].vrrp.priority > 1 %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} priority {{ vlan_interfaces[vlan_interface].vrrp.priority }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.advertisement_interval is defined and vlan_interfaces[vlan_interface].vrrp.advertisement_interval is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} advertisement interval {{ vlan_interfaces[vlan_interface].vrrp.advertisement_interval }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is defined and vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} preempt delay minimum {{ vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.ipv4 is defined and vlan_interfaces[vlan_interface].vrrp.ipv4 is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} ipv4 {{ vlan_interfaces[vlan_interface].vrrp.ipv4 }}
+{%             endif %}
+{%             if vlan_interfaces[vlan_interface].vrrp.ipv6 is defined and vlan_interfaces[vlan_interface].vrrp.ipv6 is not none %}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} ipv6 {{ vlan_interfaces[vlan_interface].vrrp.ipv6 }}
+{%             endif %}
+{%           endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

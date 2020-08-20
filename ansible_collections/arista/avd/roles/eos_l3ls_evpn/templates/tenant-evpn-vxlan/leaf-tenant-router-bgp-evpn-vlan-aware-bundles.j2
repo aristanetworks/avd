@@ -13,30 +13,31 @@
         - learned
 {%                 set vlan_range = [] %}
 {%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
-{%                     do vlan_range.append( svi ) %}
+{%                     do vlan_range.append( svi| int ) %}
 {%                 endfor %}
       vlan: {{ vlan_range | arista.avd.list_compress }}
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan in leaf.vlans %}
+{%                 set l2vlan_int = l2vlan | int %}
     {{ tenants[tenant].l2vlans[l2vlan].name }}:
       tenant: {{ tenant }}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
       rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                 else %}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
 {%                 endif %}
       route_targets:
         both:
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
           - "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
 {%                 else %}
-          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}"
+          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
 {%                 endif %}
       redistribute_routes:
         - learned
-      vlan: {{ l2vlan }}
+      vlan: {{ l2vlan_int }}
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
