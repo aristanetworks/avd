@@ -33,8 +33,8 @@
 {%                     if port_profiles[adapter.profile].flowcontrol.received is defined %}
       received: {{ port_profiles[adapter.profile].flowcontrol.received }}
 {%                     endif %}
-    profile: {{ adapter.profile }}
 {%                 endif %}
+    profile: {{ adapter.profile }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
