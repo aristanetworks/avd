@@ -23,15 +23,6 @@
     - always
     - report
 
-- name: view csv input
-  debug:
-    msg: "{{ validation_report_csv }}"
-  delegate_to: localhost
-  run_once: true
-  tags:
-    - always
-    - report
-
 - name: Create Validation report - Markdown
   template:
     src: validate_state_report-md.j2
