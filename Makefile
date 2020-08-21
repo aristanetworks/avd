@@ -114,3 +114,11 @@ install-requirements: ## Install python requirements for generic purpose
 	pip3 install --upgrade wheel
 	pip3 install -r development/requirements.txt
 	pip3 install -r development/requirements-dev.txt
+
+.PHONY: install-docker
+install-docker: ## Install docker
+	sudo apt install -q -y apt-transport-https ca-certificates curl software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+	sudo apt update
+	sudo apt install -q -y docker-ce
