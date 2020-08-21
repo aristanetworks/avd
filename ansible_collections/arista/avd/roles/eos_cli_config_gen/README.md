@@ -17,8 +17,8 @@
     - [Event Monitor](#event-monitor)
     - [Event Handler](#event-handler)
     - [Load Interval](#load-interval)
-    - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
+    - [Queue Monitor Length](#queue-monitor-length)
     - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
@@ -219,18 +219,18 @@ load_interval:
 
 ```
 
+### Service Routing Protocols Model
+
+```yaml
+service_routing_protocols_model: < multi-agent | ribd >
+```
+
 ### Queue Monitor Length
 
 ```yaml
 queue_monitor_length:
   log: < seconds >
   notifying: < true | false >
-```
-
-### Service Routing Protocols Model
-
-```yaml
-service_routing_protocols_model: < multi-agent | ribd >
 ```
 
 ### LLDP
