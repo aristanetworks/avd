@@ -37,6 +37,7 @@
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
     - [AAA Accounting](#aaa-accounting)
+    - [AAA Root](#aaa-root)
     - [Local Users](#local-users)
     - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
@@ -468,6 +469,8 @@ aaa_authentication:
   login:
     default: < group | local | none >
     serial_console: < group | local | none >
+  dot1x:
+    default: < group | local | none >
 ```
 
 ### AAA Authorization
@@ -495,6 +498,14 @@ aaa_accounting:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         logging: < true | false >
+```
+
+### AAA Root
+
+```yaml
+aaa_root:
+  secret:
+    sha512_password: "< sha_512_password >"
 ```
 
 ### Local Users
@@ -1289,6 +1300,7 @@ router_isis:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+  vrf: < vrf_name >
 ```
 
 ### IP TACACS+ Source Interfaces
