@@ -74,6 +74,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].update_source is defined and router_bgp.neighbors[neighbor].update_source is not none %}
    neighbor {{ neighbor }} update-source {{ router_bgp.neighbors[neighbor].update_source }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].bfd is defined and router_bgp.neighbors[neighbor].bfd == true %}
+   neighbor {{ neighbor }} bfd
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
 {%             endif %}

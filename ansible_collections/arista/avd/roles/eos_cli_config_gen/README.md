@@ -1049,6 +1049,7 @@ router_bgp:
       description: "< description as string >"
       shutdown: < true | false >
       update_source: < interface >
+      bfd: < true | false >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
     < IPv4_address_2 >:
