@@ -101,7 +101,7 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].vrrp is defined and vlan_interfaces[vlan_interface].vrrp is not none %}
 {%           if vlan_interfaces[vlan_interface].vrrp.virtual_router is defined and vlan_interfaces[vlan_interface].vrrp.virtual_router is not none %}
 {%             if vlan_interfaces[vlan_interface].vrrp.priority is defined and vlan_interfaces[vlan_interface].vrrp.priority is not none and vlan_interfaces[vlan_interface].vrrp.priority > 1 %}
-   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} priority {{ vlan_interfaces[vlan_interface].vrrp.priority }}
+   vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} priority-level {{ vlan_interfaces[vlan_interface].vrrp.priority }}
 {%             endif %}
 {%             if vlan_interfaces[vlan_interface].vrrp.advertisement_interval is defined and vlan_interfaces[vlan_interface].vrrp.advertisement_interval is not none %}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} advertisement interval {{ vlan_interfaces[vlan_interface].vrrp.advertisement_interval }}
