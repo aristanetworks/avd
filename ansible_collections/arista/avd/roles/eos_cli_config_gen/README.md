@@ -19,8 +19,8 @@
     - [Load Interval](#load-interval)
     - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
-    - [Logging](#logging)
     - [LLDP](#lldp)
+    - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
@@ -495,10 +495,12 @@ local_users:
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
+    no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
   < user_2 >:
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
+    no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
 ```
 
 ### Clock Timezone
