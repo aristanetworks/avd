@@ -1122,9 +1122,14 @@ servers:
           state: < present | absent >
           description: < port_channel_description >
           mode: < active | passive | on >
-
-
+          short_esi: < 0000:0000:0000 >
 ```
+
+`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../plugins/filter/esi_management.py) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
 
 **Example:**
 

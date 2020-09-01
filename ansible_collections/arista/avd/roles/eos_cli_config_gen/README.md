@@ -553,7 +553,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     mode: < access | trunk >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
-    rt: < EVPN Route Target for ESI xx:xx:xx:xx:xx:xx >
+    rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
   < Port-Channel_interface_3 >:
     description: < description >
