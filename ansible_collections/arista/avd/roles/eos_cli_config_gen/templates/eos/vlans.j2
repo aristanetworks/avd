@@ -1,6 +1,7 @@
 {# eos - VLANs #}
 {% if vlans is defined and vlans is not none %}
 {%     for vlan in vlans | arista.avd.natural_sort %}
+!
 vlan {{ vlan }}
    name {{ vlans[vlan].name }}
 {%         if vlans[vlan].state is defined and vlans[vlan].state == "suspend" %}
@@ -11,6 +12,5 @@ vlan {{ vlan }}
    trunk group {{ trunk_group }}
 {%             endfor %}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

@@ -1,5 +1,6 @@
 {# eos - NTP Server #}
 {% if ntp_server is defined and ntp_server is not none %}
+!
 {%   if ntp_server.local_interface.interface is defined and ntp_server.local_interface.interface is not none %}
 ntp local-interface {% if ntp_server.local_interface.vrf is defined and ntp_server.local_interface.vrf is not none and ntp_server.local_interface.vrf is ne 'default' %}vrf {{ ntp_server.local_interface.vrf }} {% endif %}{{ ntp_server.local_interface.interface }}
 {%   endif %}
@@ -10,5 +11,4 @@ ntp server {% if ntp_server.local_interface.vrf is defined and ntp_server.local_
 ntp server {% if ntp_server.local_interface.vrf is defined and ntp_server.local_interface.vrf is not none and ntp_server.local_interface.vrf is ne 'default' %}vrf {{ ntp_server.local_interface.vrf }} {% endif %}{{ node }}
 {%         endif %}
 {%     endfor %}
-!
 {% endif %}

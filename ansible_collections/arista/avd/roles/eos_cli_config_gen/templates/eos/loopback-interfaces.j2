@@ -1,6 +1,7 @@
 {# eos- Loopback Interfaces #}
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+!
 interface {{ loopback_interface }}
 {%         if loopback_interfaces[loopback_interface].description is defined and loopback_interfaces[loopback_interface].description is not none %}
    description {{ loopback_interfaces[loopback_interface].description }}
@@ -35,6 +36,5 @@ interface {{ loopback_interface }}
 {%         if loopback_interfaces[loopback_interface].isis_network_point_to_point is defined and loopback_interfaces[loopback_interface].isis_network_point_to_point == true %}
    isis network point-to-point
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}
