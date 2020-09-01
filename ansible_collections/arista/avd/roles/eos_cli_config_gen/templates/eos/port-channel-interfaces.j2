@@ -1,6 +1,7 @@
 {# eos- Port-Channel Interfaces #}
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+!
 interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
@@ -107,6 +108,5 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

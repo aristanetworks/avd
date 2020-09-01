@@ -25,6 +25,12 @@
 {%                             endif %}
 {%                         endif %}
 {%                     endif %}
+{%                     if port_profiles[adapter.profile].spanning_tree_portfast is defined %}
+    spanning_tree_portfast: {{ port_profiles[adapter.profile].spanning_tree_portfast }}
+{%                     endif %}
+{%                     if port_profiles[adapter.profile].spanning_tree_bpdufilter is defined %}
+    spanning_tree_bpdufilter: {{ port_profiles[adapter.profile].spanning_tree_bpdufilter }}
+{%                     endif %}
 {%                 break %}
 {%                 endif %}
 {%             endfor %}

@@ -17,14 +17,15 @@
     - [Event Monitor](#event-monitor)
     - [Event Handler](#event-handler)
     - [Load Interval](#load-interval)
-    - [Queue Monitor Length](#queue-monitor-length)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
-    - [Logging](#logging)
+    - [Queue Monitor Length](#queue-monitor-length)
     - [LLDP](#lldp)
+    - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
+    - [Radius Servers](#radius-servers)
     - [Router L2 VPN](#router-l2-vpn)
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
@@ -36,6 +37,7 @@
     - [AAA Authentication](#aaa-authentication)
     - [AAA Authorization](#aaa-authorization)
     - [AAA Accounting](#aaa-accounting)
+    - [AAA Root](#aaa-root)
     - [Local Users](#local-users)
     - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
@@ -66,7 +68,7 @@
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
-    - [Routing - Multicast](#routing---multicast)
+    - [Router Multicast](#router-multicast)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Router ISIS Configuration](#router-isis-configuration)
@@ -218,18 +220,18 @@ load_interval:
 
 ```
 
+### Service Routing Protocols Model
+
+```yaml
+service_routing_protocols_model: < multi-agent | ribd >
+```
+
 ### Queue Monitor Length
 
 ```yaml
 queue_monitor_length:
   log: < seconds >
   notifying: < true | false >
-```
-
-### Service Routing Protocols Model
-
-```yaml
-service_routing_protocols_model: < multi-agent | ribd >
 ```
 
 ### LLDP
@@ -298,6 +300,15 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
+```
+
+### Radius Servers
+
+```yaml
+radius_servers:
+  - host: < host IP address or name >
+    vrf: < vrf_name >
+    key: < encypted_key >
 ```
 
 ### Router L2 VPN
@@ -458,6 +469,8 @@ aaa_authentication:
   login:
     default: < group | local | none >
     serial_console: < group | local | none >
+  dot1x:
+    default: < group | local | none >
 ```
 
 ### AAA Authorization
@@ -485,6 +498,14 @@ aaa_accounting:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         logging: < true | false >
+```
+
+### AAA Root
+
+```yaml
+aaa_root:
+  secret:
+    sha512_password: "< sha_512_password >"
 ```
 
 ### Local Users
@@ -573,7 +594,7 @@ port_channel_interfaces:
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
-    spanning_tree_portfast: < portfast_mode >
+    spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
   < Port-Channel_interface_4 >:
     description: < description >
@@ -656,7 +677,7 @@ ethernet_interfaces:
       trust: < cos | dscp >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
-    spanning_tree_portfast: < portfast_mode >
+    spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
 ```
 
@@ -1219,7 +1240,7 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
-### Routing - Multicast
+### Router Multicast
 
 ```yaml
 router_multicast:
@@ -1286,6 +1307,7 @@ router_isis:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+  vrf: < vrf_name >
 ```
 
 ### IP TACACS+ Source Interfaces
