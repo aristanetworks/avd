@@ -8,13 +8,13 @@ import re
 
 class FilterModule(object):
 
-    def generate_esi(self, short_esi):
-        return '000:000:000:' + short_esi
+    def generate_esi(self, esi_short, esi_prefix='0000:0000:0000:'):
+        return esi_prefix + esi_short
 
-    def generate_lacp_id(self, short_esi):
-        return short_esi.replace(':', '.')
+    def generate_lacp_id(self, esi_short):
+        return esi_short.replace(':', '.')
 
-    def generate_route_target(self, short_esi):
+    def generate_route_target(self, esi_short):
         """
         generate_route_target Transform 3 octets ESI like 0303:0202:0101 to route-target
 
@@ -29,9 +29,8 @@ class FilterModule(object):
             String based on route-target format like 03:03:02:02:01:01
         """
         delimiter = ':'
-        if ":" in short_esi:
-            esi = short_esi.replace(delimiter, "")
-        esi_split = re.findall('..', short_esi)
+        esi = esi_short.replace(delimiter, "")
+        esi_split = re.findall('..', esi)
         rt = ""
         loop_cpt = 0
         for esi_section in esi_split:
