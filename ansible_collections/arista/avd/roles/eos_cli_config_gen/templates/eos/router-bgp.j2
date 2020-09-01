@@ -12,6 +12,12 @@ router bgp {{ router_bgp.as }}
 {%          endif %}
 {%       endfor %}
 {%       for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
+{%             if router_bgp.peer_groups[peer_group].description is defined and router_bgp.peer_groups[peer_group].description is not none %}
+   neighbor {{ peer_group }} description {{ router_bgp.peer_groups[peer_group].description }}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].shutdown is defined and router_bgp.peer_groups[peer_group].shutdown == true %}
+   neighbor {{ peer_group }} shutdown
+{%             endif %}
    neighbor {{ peer_group }} peer group
 {%             if router_bgp.peer_groups[peer_group].remote_as is defined and router_bgp.peer_groups[peer_group].remote_as is not none %}
    neighbor {{ peer_group }} remote-as {{ router_bgp.peer_groups[peer_group].remote_as }}
@@ -40,6 +46,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.peer_groups[peer_group].maximum_routes is defined and router_bgp.peer_groups[peer_group].maximum_routes is not none %}
    neighbor {{ peer_group }} maximum-routes {{ router_bgp.peer_groups[peer_group].maximum_routes }}
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].weight is defined and router_bgp.peer_groups[peer_group].weight is not none %}
+   neighbor {{ peer_group }} weight {{ router_bgp.peer_groups[peer_group].weight }}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].timers is defined and router_bgp.peer_groups[peer_group].timers is not none %}
+   neighbor {{ peer_group }} timers {{ router_bgp.peer_groups[peer_group].timers }}
+{%             endif %}
 {%       endfor %}
 {%     endif %}
 {%     if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
@@ -50,14 +62,26 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].remote_as is defined and router_bgp.neighbors[neighbor].remote_as is not none %}
    neighbor {{ neighbor }} remote-as {{ router_bgp.neighbors[neighbor].remote_as }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].next_hop_self is defined and router_bgp.neighbors[neighbor].next_hop_self == true %}
+   neighbor {{ neighbor }} next-hop-self
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].shutdown is defined and router_bgp.neighbors[neighbor].shutdown == true %}
    neighbor {{ neighbor }} shutdown
 {%             endif %}
 {%             if router_bgp.neighbors[neighbor].description is defined and router_bgp.neighbors[neighbor].description is not none %}
    neighbor {{ neighbor }} description {{ router_bgp.neighbors[neighbor].description }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].update_source is defined and router_bgp.neighbors[neighbor].update_source is not none %}
+   neighbor {{ neighbor }} update-source {{ router_bgp.neighbors[neighbor].update_source }}
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].weight is defined and router_bgp.neighbors[neighbor].weight is not none %}
+   neighbor {{ neighbor }} weight {{ router_bgp.neighbors[neighbor].weight }}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].timers is defined and router_bgp.neighbors[neighbor].timers is not none %}
+   neighbor {{ neighbor }} timers {{ router_bgp.neighbors[neighbor].timers }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -139,6 +163,15 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_ipv4 is defined and router_bgp.address_family_ipv4 is not none %}
    !
    address-family ipv4
+{%       if router_bgp.address_family_ipv4.networks is defined and router_bgp.address_family_ipv4.networks is not none %}
+{%          for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort %}
+{%             if router_bgp.address_family_ipv4.networks[network].route_map is defined and router_bgp.address_family_ipv4.networks[network].route_map is not none %}
+      network {{ network }} route-map {{ router_bgp.address_family_ipv4.networks[network].route_map }}
+{%             else %}
+      network {{ network }}
+{%             endif %}
+{%          endfor %}
+{%       endif %}
 {%       if router_bgp.address_family_ipv4.peer_groups is defined and router_bgp.address_family_ipv4.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_ipv4.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in is defined and router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_in is not none %}
@@ -161,6 +194,16 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.neighbors[neighbor].route_map_out is defined and router_bgp.address_family_ipv4.neighbors[neighbor].route_map_out is not none %}
       neighbor {{ neighbor }} route-map {{ router_bgp.address_family_ipv4.neighbors[neighbor].route_map_out }} out
+{%             endif %}
+{%             if router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_in is defined and router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_in is not none %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_out is defined and router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_out is not none %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.address_family_ipv4.neighbors[neighbor].prefix_list_out }} out
+{%             endif %}
+{%             if router_bgp.address_family_ipv4.neighbors[neighbor].default_originate is defined %}
+      neighbor {{ neighbor }} default-originate{%if router_bgp.address_family_ipv4.neighbors[neighbor].default_originate.route_map is defined and router_bgp.address_family_ipv4.neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.address_family_ipv4.neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.address_family_ipv4.neighbors[neighbor].default_originate.always is defined and router_bgp.address_family_ipv4.neighbors[neighbor].default_originate.always == true %} always{% endif %}
+
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.neighbors[neighbor].activate == true %}
       neighbor {{ neighbor }} activate

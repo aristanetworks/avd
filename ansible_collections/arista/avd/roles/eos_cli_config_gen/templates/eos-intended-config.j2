@@ -26,6 +26,8 @@ transceiver qsfp default-mode 4x10G
 {% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
+{# lldp #}
+{% include 'eos/lldp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 hostname {{ inventory_hostname }}

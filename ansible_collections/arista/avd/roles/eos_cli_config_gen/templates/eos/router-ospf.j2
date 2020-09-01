@@ -25,6 +25,24 @@ router ospf {{ process_id }}
 {%         if router_ospf.process_ids[process_id].max_lsa is defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%         endif %}
+{%         if router_ospf.process_ids[process_id].default_information_originate is defined %}
+   default-information originate{% if router_ospf.process_ids[process_id].default_information_originate.always == true %} always{% endif %}
+
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].redistribute.static is defined %}
+{%           if router_ospf.process_ids[process_id].redistribute.static.route_map is defined %}
+   redistribute static route-map {{ router_ospf.process_ids[process_id].redistribute.static.route_map }}
+{%           else %}
+   redistribute static
+{%           endif %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].redistribute.connected is defined %}
+{%           if router_ospf.process_ids[process_id].redistribute.connected.route_map is defined %}
+   redistribute connected route-map {{ router_ospf.process_ids[process_id].redistribute.connected.route_map }}
+{%           else %}
+   redistribute connected
+{%           endif %}
+{%         endif %}
 !
 {%     endfor %}
 {% endif %}

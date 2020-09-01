@@ -8,6 +8,7 @@ jobs:
   'ansible-test':
     name: Run ansible-test validation
     runs-on: ubuntu-latest
+    container: ubuntu:18.04
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
@@ -17,8 +18,21 @@ jobs:
         uses: actions/setup-python@v1.2.0
         with:
           python-version: '3.x'
+
+      - name: update packages
+        run: apt-get update
+
+      - name: 'Install sudo'
+        run: apt-get -q -y install sudo
+
+      - name: 'Install build essentials'
+        run: sudo apt-get install -q -y build-essential
+
       - name: 'Install requirements'
         run: make github-configure-ci
+
+      - name: 'Install docker'
+        run: make install-docker
 
       - name: 'Install Python requirements'
         run: make install-requirements
