@@ -4,12 +4,12 @@
 management ssh
 {%     if management_ssh.access_groups is defined and management_ssh.access_groups is not none %}
 {%         for access_group in management_ssh.access_groups %}
-   ip access-group {{ access_group.name }}{% if management_ssh.access_groups[access_group].vrf is defined and management_ssh.access_groups[access_group].vrf is not none %} vrf {{ access_group.vrf }}{% endif %} in
+   ip access-group {{ access_group.name }}{% if access_group.vrf is defined and access_group.vrf is not none %} vrf {{ access_group.vrf }}{% endif %} in
 {%         endfor %}
 {%     endif %}
 {%     if management_ssh.ipv6_access_groups is defined and management_ssh.ipv6_access_groups is not none %}
-{%         for access_group in management_ssh.ipv6_access_groups %}
-   ipv6 access-group {{ access_group.name }}{% if management_ssh.ipv6_access_groups[access_group].vrf is defined and management_ssh.ipv6_access_groups[access_group].vrf is not none %} vrf {{ access_group.vrf }}{% endif %} in
+{%         for ipv6_access_group in management_ssh.ipv6_access_groups %}
+   ipv6 access-group {{ ipv6_access_group.name }}{% if ipv6_access_group.vrf is defined and ipv6_access_group.vrf is not none %} vrf {{ ipv6_access_group.vrf }}{% endif %} in
 {%         endfor %}
 {%     endif %}
 {%     if management_ssh.idle_timeout is defined and management_ssh.idle_timeout is not none %}
