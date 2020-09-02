@@ -4,7 +4,7 @@ on:
     branches:
       - devel
       - 'releases/**'
-      - 'features/ci-build-docker-224'
+      # - 'features/ci-build-docker-224'
     paths:
       - '.github/workflows/docker_build.yml'
       - 'development/requirements.txt'
