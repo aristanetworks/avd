@@ -1,4 +1,3 @@
-avd_eos_validate_state:
-  validation_mode_loose: true
-  md_report_path: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.md'
-  csv_report_path: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.csv'
+eos_validate_state_validation_mode_loose: true
+eos_validate_state_md_report_path: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.md'
+eos_validate_state_csv_report_path: '{{inventory_dir}}/reports/{{ fabric_name }}/{{ fabric_name }}-state.csv'

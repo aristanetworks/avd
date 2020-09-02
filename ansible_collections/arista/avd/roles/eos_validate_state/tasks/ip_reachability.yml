@@ -8,7 +8,7 @@
   loop: "{{ethernet_interfaces | default({}, true) | dict2items}}"
   loop_control:
     loop_var: ethernet_interface
-  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
     (ethernet_interfaces is defined and ethernet_interfaces is not none) and
     (ethernet_interface.value.type is defined and ethernet_interface.value.type is not none and ethernet_interface.value.type == 'routed') and
@@ -30,7 +30,7 @@
   loop: "{{ ip_reachability_state.results }}"
   loop_control:
     loop_var: ip_reachability_test
-  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: ( ip_reachability_test.skipped is not defined )
   register: ip_reachability_results
   tags:

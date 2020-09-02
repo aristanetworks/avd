@@ -17,7 +17,7 @@
     fail_msg: "{{ ip_route_summary.stdout_lines[0][0] }}, {{ ip_route_summary.stdout_lines[0][1] }}"
     quiet: yes
   when: ( service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent" )
-  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: arbgp_state_results
   tags:
     - bgp_check
@@ -42,7 +42,7 @@
     loop_var: bgp_neighbor
   when: |
     (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "ipv4")
-  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: ip_bgp_peer_state_results
   tags:
     - bgp_check
@@ -58,7 +58,7 @@
     loop_var: bgp_neighbor
   when: |
     (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "evpn")
-  ignore_errors: "{{ avd_eos_validate_state.validation_mode_loose }}"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: bgp_evpn_peer_state_results
   tags:
     - bgp_check
