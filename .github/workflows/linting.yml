@@ -1,7 +1,7 @@
 name: Commit check
 on:
   push:
-
+  pull_request:
 jobs:
   'pre-commit':
     name: Run pre-commit validation hooks
@@ -9,6 +9,9 @@ jobs:
     container: avdteam/base:3.6
     steps:
       - uses: actions/checkout@master
+      - name: Install Pre Commit
+        run: |
+          pip --no-cache-dir install -r development/requirements-dev.txt
       - name: 'Pre Commit run'
         run: |
           make pre-commit
