@@ -21,6 +21,7 @@ jobs:
           - 'avd-l3ls-ebgp'
           - 'avd-l3ls-ebgp-json'
           - 'avd-l3ls-isis'
+          - 'avd-l3ls-server-connections'
           - 'eos-cli-config-gen'
     steps:
       - uses: actions/checkout@v1

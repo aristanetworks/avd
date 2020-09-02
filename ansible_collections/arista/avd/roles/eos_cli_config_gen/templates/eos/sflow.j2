@@ -1,5 +1,6 @@
 {# eos - SFlow #}
 {% if sflow is defined and sflow is not none %}
+!
 {%     if sflow.sample is defined and sflow.sample is not none %}
 sflow sample{% if sflow.dangerous is defined and sflow.dangerous == true %} dangerous{% endif %} {{ sflow.sample }}
 {%     endif %}
@@ -28,5 +29,4 @@ sflow source-interface {{ sflow.source_interface }}
 {%     if sflow.run is defined and sflow.run == true %}
 sflow run
 {%     endif %}
-!
 {% endif %}

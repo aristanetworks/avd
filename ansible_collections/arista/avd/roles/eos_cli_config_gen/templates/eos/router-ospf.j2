@@ -1,6 +1,7 @@
 {# eos - router ospf #}
 {% if router_ospf is defined and router_ospf is not none %}
 {%     for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
+!
 {%         if router_ospf.process_ids[process_id].vrf is defined %}
 router ospf {{ process_id }} vrf {{ router_ospf.process_ids[process_id].vrf }}
 {%         else %}
@@ -43,6 +44,5 @@ router ospf {{ process_id }}
    redistribute connected
 {%           endif %}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

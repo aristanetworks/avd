@@ -1,10 +1,10 @@
 {# eos - VRFs #}
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort if vrf is ne 'default'%}
+!
 vrf instance {{ vrf }}
 {%         if vrfs[vrf].description is defined and vrfs[vrf].description is not none %}
    description {{ vrfs[vrf].description }}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

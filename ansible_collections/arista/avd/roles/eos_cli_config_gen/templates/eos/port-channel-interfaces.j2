@@ -1,6 +1,7 @@
 {# eos- Port-Channel Interfaces #}
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+!
 interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
@@ -33,6 +34,18 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mlag is defined and port_channel_interfaces[port_channel_interface].mlag is not none %}
    mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].esi is defined and port_channel_interfaces[port_channel_interface].esi is not none %}
+   !
+    evpn ethernet-segment
+       identifier {{ port_channel_interfaces[port_channel_interface].esi }}
+{%             if port_channel_interfaces[port_channel_interface].rt is defined and port_channel_interfaces[port_channel_interface].rt is not none %}
+       route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
+{%             endif %}
+   !
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].lacp_id is defined and port_channel_interfaces[port_channel_interface].lacp_id is not none %}
+   lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
    qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
@@ -95,6 +108,5 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}

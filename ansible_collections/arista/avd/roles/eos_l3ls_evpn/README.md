@@ -18,6 +18,7 @@
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
       - [MLAG dual-attached server scenario](#mlag-dual-attached-server-scenario)
+      - [EVPN A/A ESI dual-attached server scenario](#evpn-aa-esi-dual-attached-server-scenario)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
@@ -1051,6 +1052,10 @@ port_profiles:
     # Interface vlans | required
     vlans: < vlans as string >
 
+    # Spanning Tree
+    spanning_tree_portfast: < edge | network >
+    spanning_tree_bpdufilter: < true | false >
+
     # Flow control | Optional
     flowcontrol:
       received: < received | send | on >
@@ -1122,9 +1127,14 @@ servers:
           state: < present | absent >
           description: < port_channel_description >
           mode: < active | passive | on >
-
-
+          short_esi: < 0000:0000:0000 >
 ```
+
+`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../plugins/filter/esi_management.py) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
 
 **Example:**
 
@@ -1134,6 +1144,7 @@ port_profiles:
   VM_Servers:
     mode: trunk
     vlans: "110-111,120-121,130-131"
+    spanning_tree_portfast: edge
 
   MGMT:
     mode: access
@@ -1220,6 +1231,36 @@ servers:
           description: PortChanne1
           mode: active
 ```
+
+#### EVPN A/A ESI dual-attached server scenario
+
+MLAG dual-homed connection:
+
+- From `E0` to `DC1-SVC3A` interface `Eth10`
+- From `E1` to `DC1-SVC4A` interface `Eth10`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
+          short_esi: 0303:0202:0101
+```
+
+`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../plugins/filter/esi_management.py) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
 
 ### Variable to attach additional configlets
 
