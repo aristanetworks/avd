@@ -6,7 +6,7 @@ jobs:
   'pre-commit':
     name: Run pre-commit validation hooks
     runs-on: ubuntu-latest
-    container: avdteam/base:centos-8
+    container: avdteam/base:3.6
     steps:
       - uses: actions/checkout@master
       - name: 'Pre Commit run'
