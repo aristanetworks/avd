@@ -5,7 +5,10 @@
 {% set validate_state_report.total_tests_failed = 0 %}
 {% set validate_state_report.total_tests = 0 %}
 {% set validate_state_report.test_categories = [] %}
+{% set validate_state_report.test_categories_failed = [] %}
+{% set validate_state_report.duts = [] %}
 {% for test_id in validation_report_csv.dict %}
+{%     do validate_state_report.duts.append(validation_report_csv.dict[test_id].node) %}
 {%     do validate_state_report.test_categories.append(validation_report_csv.dict[test_id].test_category) %}
 {%     if validation_report_csv.dict[test_id].result == "PASS" %}
 {%         set validate_state_report.total_tests_passed = validate_state_report.total_tests_passed + 1 %}
@@ -16,6 +19,7 @@
 {%        set validate_state_report.total_tests = loop.length %}
 {%     endif %}
 {% endfor %}
+{% set validate_state_report.duts = validate_state_report.duts | unique  %}
 {% set validate_state_report.test_categories = validate_state_report.test_categories | unique  %}
 
 # Validate State Report
@@ -35,6 +39,27 @@
 | ----------- | ------------------ | ------------------ |
 | {{ validate_state_report.total_tests }} | {{ validate_state_report.total_tests_passed }} | {{ validate_state_report.total_tests_failed }} |
 
+### Summary Totals Devices Under Tests
+
+| DUT | Total Tests | Tests Passed | Tests Failed | Categories Failed |
+| --- | ----------- | ------------ | ------------ | ----------------- |
+{% for dut in validate_state_report.duts %}
+{%     for test_id in validation_report_csv.dict %}
+{%         if validation_report_csv.dict[test_id].node == dut %}
+{%             if validation_report_csv.dict[test_id].result == "PASS" %}
+{%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
+{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
+{%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
+{%                 do validate_state_report.test_categories_failed.append(validation_report_csv.dict[test_id].test_category) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+| {{ dut }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} | {{ validate_state_report.test_categories_failed | default('-', true) | unique | join(', ') }} |
+{%     set validate_state_report.tests_passed = 0 %}
+{%     set validate_state_report.tests_failed = 0 %}
+{%     set validate_state_report.test_categories_failed = [] %}
+{% endfor %}
+
 ### Summary Totals Per Category
 
 | Test Category | Total Tests | Tests Passed | Tests Failed |
@@ -44,8 +69,7 @@
 {%         if validation_report_csv.dict[test_id].test_category == test_category %}
 {%             if validation_report_csv.dict[test_id].result == "PASS" %}
 {%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
-{%             endif %}
-{%             if validation_report_csv.dict[test_id].result == "FAIL" %}
+{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
 {%             endif %}
 {%         endif %}
