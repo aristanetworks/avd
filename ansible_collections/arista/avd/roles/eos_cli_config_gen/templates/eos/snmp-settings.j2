@@ -1,5 +1,6 @@
 {# eos - SNMP Settings#}
 {% if snmp_server is defined and snmp_server is not none %}
+!
 {%     if snmp_server.contact is defined and snmp_server.contact is not none %}
 snmp-server contact {{ snmp_server.contact }}
 {%     endif %}
@@ -53,5 +54,4 @@ no snmp-server vrf {{ vrf['name'] }}
 {%             endif %}
 {%          endfor %}
 {%    endif %}
-!
 {% endif %}

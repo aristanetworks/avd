@@ -51,11 +51,12 @@ The documentation how to leverage ansible-avd collection is located here: **[ari
 - treelib `1.5.5`
 - pytest `5.3.4`
 - pytest-html `2.0.1`
+- cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-pip3 install -r requirements.txt
+pip3 install -r development/requirements.txt
 ```
 
 requirements.txt content:
@@ -68,6 +69,7 @@ requests==2.22.0
 treelib==1.5.5
 pytest==5.3.4
 pytest-html==2.0.1
+cvprac==1.0.4
 ```
 
 **Ansible Configuration INI file:**

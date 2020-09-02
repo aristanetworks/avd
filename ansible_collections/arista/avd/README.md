@@ -53,6 +53,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 - treelib `1.5.5`
 - pytest `5.3.4`
 - pytest-html `2.0.1`
+- cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
 
@@ -70,6 +71,7 @@ requests==2.22.0
 treelib==1.5.5
 pytest==5.3.4
 pytest-html==2.0.1
+cvprac==1.0.4
 ```
 
 **Ansible Configuration INI file:**

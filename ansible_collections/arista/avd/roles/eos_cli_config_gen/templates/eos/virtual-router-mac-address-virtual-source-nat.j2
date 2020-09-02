@@ -1,4 +1,5 @@
 {% if ip_virtual_router_mac_address is defined or virtual_source_nat_vrfs is defined %}
+!
 {%     if ip_virtual_router_mac_address is defined and ip_virtual_router_mac_address is not none %}
 ip virtual-router mac-address {{ ip_virtual_router_mac_address }}
 {%     endif %}
@@ -8,5 +9,4 @@ ip virtual-router mac-address {{ ip_virtual_router_mac_address }}
 ip address virtual source-nat vrf {{ vrf }} address {{ virtual_source_nat_vrfs[vrf].ip_address }}
 {%         endfor %}
 {%     endif %}
-!
 {% endif %}

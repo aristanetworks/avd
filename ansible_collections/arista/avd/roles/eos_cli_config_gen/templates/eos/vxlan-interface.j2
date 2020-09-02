@@ -1,5 +1,6 @@
 {# eos- VxLAN interface #}
 {% if vxlan_tunnel_interface is defined %}
+!
 interface Vxlan1
    vxlan source-interface {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
 {%     if vxlan_tunnel_interface.Vxlan1.virtual_router is defined %}
@@ -17,5 +18,4 @@ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
    vxlan vrf {{ vrf }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }}
 {%     endfor %}
 {% endif %}
-!
 {% endif %}

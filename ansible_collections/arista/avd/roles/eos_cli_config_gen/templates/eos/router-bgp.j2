@@ -1,5 +1,6 @@
 {# eos - router bgp #}
 {% if router_bgp is defined and router_bgp is not none %}
+!
 router bgp {{ router_bgp.as }}
    router-id {{ router_bgp.router_id }}
 {%     for bgp_default in router_bgp.bgp_defaults %}
@@ -73,6 +74,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.neighbors[neighbor].update_source is defined and router_bgp.neighbors[neighbor].update_source is not none %}
    neighbor {{ neighbor }} update-source {{ router_bgp.neighbors[neighbor].update_source }}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].bfd is defined and router_bgp.neighbors[neighbor].bfd == true %}
+   neighbor {{ neighbor }} bfd
 {%             endif %}
 {%             if router_bgp.neighbors[neighbor].password is defined and router_bgp.neighbors[neighbor].password is not none %}
    neighbor {{ neighbor }} password 7 {{ router_bgp.neighbors[neighbor].password }}
@@ -179,6 +183,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_out is defined and router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_out is not none %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_ipv4.peer_groups[peer_group].route_map_out }} out
+{%             endif %}
+{%             if router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_in is defined and router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_in is not none %}
+      neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out is defined and router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out is not none %}
+      neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out }} out
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].activate == true %}
       neighbor {{ peer_group }} activate
@@ -335,5 +345,4 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-!
 {% endif %}

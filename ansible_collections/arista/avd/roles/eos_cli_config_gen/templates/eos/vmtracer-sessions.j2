@@ -1,6 +1,7 @@
 {# eos - vmtracer sessions #}
 {% if vmtracer_sessions is defined and vmtracer_sessions is not none %}
 {%     for session in vmtracer_sessions | arista.avd.natural_sort %}
+!
 vmtracer session {{ session }}
 {%         if vmtracer_sessions[session].url is defined and vmtracer_sessions[session].url is not none %}
    url {{ vmtracer_sessions[session].url }}
@@ -17,6 +18,5 @@ vmtracer session {{ session }}
 {%         if vmtracer_sessions[session].source_interface is defined and vmtracer_sessions[session].source_interface is not none %}
    source-interface {{ vmtracer_sessions[session].source_interface }}
 {%         endif %}
-!
 {%     endfor %}
 {% endif %}
