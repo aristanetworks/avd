@@ -8,5 +8,4 @@ username {{ local_user }} privilege {{ local_users[local_user].privilege }}{% if
 username {{ local_user }} privilege {{ local_users[local_user].privilege }} role {{ local_users[local_user].role }} nopassword
 {%         endif  %}
 {%     endfor %}
-!
 {% endif %}
