@@ -28,6 +28,8 @@
       - command: "show ip bgp summary | json"
       - command: "show bgp evpn summary | json"
   register: bgp_summary
+  when: |
+    (arbgp_state_results)
   tags:
     - bgp_check
 
@@ -41,7 +43,7 @@
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "ipv4")
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "ipv4" and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: ip_bgp_peer_state_results
   tags:
@@ -57,7 +59,7 @@
   loop_control:
     loop_var: bgp_neighbor
   when: |
-    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "evpn")
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "evpn"  and arbgp_state_results)
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: bgp_evpn_peer_state_results
   tags:
