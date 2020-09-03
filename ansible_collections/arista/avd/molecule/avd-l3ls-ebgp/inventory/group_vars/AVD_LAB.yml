@@ -6,7 +6,7 @@ local_users:
   admin:
     privilege: 15
     role: network-admin
-    sha512_password: "$6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1"
+    no_password: true
 
   cvpadmin:
     privilege: 15
