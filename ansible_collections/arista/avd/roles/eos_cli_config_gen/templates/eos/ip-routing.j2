@@ -1,14 +1,19 @@
 {# eos - IP Routing #}
-{% if ip_routing is defined and ip_routing == true %}
+{% if ip_routing is defined and ip_routing is not none %}
+{%     if ip_routing == true %}
 !
 ip routing
-{%     if vrfs is defined %}
-{%         for vrf in vrfs | arista.avd.natural_sort %}
-{%             if vrfs[vrf].ip_routing == true %}
+{%     else %}
+!
+no ip routing
+{%     endif %}
+{% endif %}
+{% if vrfs is defined and vrfs is not none %}
+{%     for vrf in vrfs | arista.avd.natural_sort %}
+{%             if vrfs[vrf].ip_routing == true and vrf is ne 'default' %}
 ip routing vrf {{ vrf }}
 {%             elif vrfs[vrf].ip_routing == false and vrf is ne 'default' %}
 no ip routing vrf {{ vrf }}
 {%             endif %}
-{%         endfor %}
-{%     endif %}
+{%     endfor %}
 {% endif %}
