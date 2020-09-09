@@ -24,6 +24,8 @@ nav:
     - Git installation: docs/installation/setup-git.md
     - Configure development environment: docs/installation/development.md
   - Getting Started: docs/getting-started.md
+  - How-To:
+    - Build your first AVD project: docs/how-to/first-project.md
   - Roles documentation:
     - eos_l3ls_evpn: roles/eos_l3ls_evpn/README.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
