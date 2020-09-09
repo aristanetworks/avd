@@ -101,6 +101,7 @@ github-configure-ci-ansible: ## Install Ansible Test 2.9 on GA (Ubuntu:latest LT
 	sudo apt-get update
 	sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ansible-test
 
+
 .PHONY: github-configure-ci-python3
 github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
 	sudo apt-get update
