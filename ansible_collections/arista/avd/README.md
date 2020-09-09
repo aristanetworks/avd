@@ -97,7 +97,7 @@ ansible-galaxy collection install arista.avd
 
 **An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-cvp.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -112,14 +112,29 @@ ansible-galaxy collection install arista.avd
       import_role:
          name: arista.avd.eos_cli_config_gen
 
+- hosts: CVP-1
+
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
+Execute eos_state_validation playbook once change control has been approved and deploy in CVP.
+Note: Requires Ansible to communicate directly with devices via eAPI.
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: validate states on EOS devices
+      import_role:
+         name: arista.avd.eos_validate_state
+```
+
 **An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
 
-![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
+![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -137,6 +152,10 @@ ansible-galaxy collection install arista.avd
     - name: deploy configuration to device
       import_role:
          name: arista.avd.eos_config_deploy_eapi
+
+    - name: validate states on EOS devices
+      import_role:
+         name: arista.avd.eos_validate_state
 ```
 
 **Full examples with variables and outputs, are located here:**
