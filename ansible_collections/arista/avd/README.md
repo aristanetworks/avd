@@ -51,8 +51,6 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 - netaddr `0.7.19`
 - requests `2.22.0`
 - treelib `1.5.5`
-- pytest `5.3.4`
-- pytest-html `2.0.1`
 - cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
@@ -69,8 +67,6 @@ Jinja2==2.10.3
 netaddr==0.7.19
 requests==2.22.0
 treelib==1.5.5
-pytest==5.3.4
-pytest-html==2.0.1
 cvprac==1.0.4
 ```
 
@@ -101,33 +97,30 @@ ansible-galaxy collection install arista.avd
 
 ```yml
 - hosts: DC1_FABRIC
-
   tasks:
-
     - name: generate intended variables
       import_role:
          name: arista.avd.eos_l3ls_evpn
-
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
 
-- hosts: CVP-1
-
+- hosts: CVP
+  tasks:
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
-Execute eos_state_validation playbook once change control has been approved and deploy in CVP.
-Note: Requires Ansible to communicate directly with devices via eAPI.
+Execute eos_state_validation playbook once change control has been approved and deployed to devices in CVP.
+Note: To run this playbook, ansible_host **must** be configured in your inventory for every EOS device. eAPI access **must** be configured and allowed in your networks.
 
 ```yml
 - hosts: DC1_FABRIC
 
   tasks:
 
-    - name: validate states on EOS devices
+    - name: audit fabric state using EOS eAPI connection
       import_role:
          name: arista.avd.eos_validate_state
 ```
@@ -149,11 +142,11 @@ Note: Requires Ansible to communicate directly with devices via eAPI.
       import_role:
          name: arista.avd.eos_cli_config_gen
 
-    - name: deploy configuration to device
+    - name: deploy configuration via eAPI
       import_role:
          name: arista.avd.eos_config_deploy_eapi
 
-    - name: validate states on EOS devices
+    - name: audit fabric state using EOS eAPI connection
       import_role:
          name: arista.avd.eos_validate_state
 ```

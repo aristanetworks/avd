@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
+- [Ansible Role: eos_config_deploy_cvp](#ansible-role-eos_config_deploy_cvp)
   - [Overview](#overview)
   - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
@@ -32,13 +32,14 @@ This role requires to install `arista.cvp` collection to support CloudVision int
 ```shell
 $ ansible-galaxy collection install arista.cvp
 ```
+
 > __NOTE__: When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
 
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_config_deploy_eapi](media/figure-1-eos_config_deploy_cvp.gif)
+![Figure 1: Ansible Role eos_config_deploy_eapi](./media/role_eos_config_deploy_cvp.gif)
 
 1. Read inventory file
    1. Build containers topology
