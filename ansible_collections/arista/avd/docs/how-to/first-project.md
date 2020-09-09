@@ -4,6 +4,8 @@
 
 This page explains how-to build your first Ansible project leveraging ansible-avd collection. In this tutorial, we will configure an EVPN fabric using Arista eAPI method.
 
+![Figure 1: Example Playbook CloudVision Deployment](../../media/figure-2-example-playbook-evpn-deploy-eapi.gif)
+
 In this post, we will go through all configuration steps to generate [EVPN/VXLAN configuration](https://www.arista.com/custom_data/downloads/?f=/support/download/DesignGuides/EVPN_Deployment_Guide.pdf) for EOS devices.
 
 You can organize your work in many different way, but a structure we find useful is something like this:
@@ -33,7 +35,7 @@ $ tree -L 3 -d
 
 Here is a high-level overview of the topology
 
-![](../../docs/_media/avd-eos-lab-topology-overview.gif)
+![](../_media/avd-eos-lab-topology-overview.gif)
 
 ## Configure Variables
 

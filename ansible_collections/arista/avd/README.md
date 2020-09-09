@@ -92,7 +92,36 @@ ansible-galaxy collection install arista.avd
 
 **An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/evpn-deploy-cvp.gif)
+
+```yml
+- hosts: DC1_FABRIC
+  tasks:
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+    - name: generate device intended config and documentation
+      import_role:
+         name: arista.avd.eos_cli_config_gen
+
+- hosts: CVP
+  tasks:
+    - name: deploy configuration to device
+      import_role:
+         name: arista.avd.eos_config_deploy_eapi
+
+# To run this play, ansible_host **must** be configured in your inventory for every EOS device
+# eAPI access **must** be configured and allowed in your networks.
+- hosts: DC1_FABRIC
+  tasks:
+    - name: audit fabric state using EOS eAPI connection
+      import_role:
+         name: arista.avd.eos_validate_state
+```
+
+**An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
+
+![Figure 2: Example Playbook eAPI Deployment](media/evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -110,28 +139,10 @@ ansible-galaxy collection install arista.avd
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
-```
 
-**An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
-
-![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
-
-```yml
-- hosts: DC1_FABRIC
-
-  tasks:
-
-    - name: generate intended variables
+    - name: audit fabric state using EOS eAPI connection
       import_role:
-         name: arista.avd.eos_l3ls_evpn
-
-    - name: generate device intended config and documentation
-      import_role:
-         name: arista.avd.eos_cli_config_gen
-
-    - name: deploy configuration to device
-      import_role:
-         name: arista.avd.eos_config_deploy_eapi
+         name: arista.avd.eos_validate_state
 ```
 
 **Full examples with variables and outputs, are located here:**

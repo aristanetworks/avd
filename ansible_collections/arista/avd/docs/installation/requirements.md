@@ -54,4 +54,4 @@ Or if you prefer you can run this oneLiner installation script:
 $ curl -fsSL get.docker.com | sh
 ```
 
-In addition, docker-compose should be consider as easy setup leverage this tool to run a stack of containers: https://docs.docker.com/compose/install/
+In addition, docker-compose should be considered to run a stack of containers: https://docs.docker.com/compose/install/

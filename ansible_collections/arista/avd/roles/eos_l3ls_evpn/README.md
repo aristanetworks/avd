@@ -43,7 +43,7 @@ The **eos_l3ls_evpn** role:
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_l3ls_evpn](media/figure-1-role-eos_l3ls_evpn.gif)
+![Figure 1: Ansible Role eos_l3ls_evpn](media/role_eos_l3ls_evpn.gif)
 
 **Inputs:**
 
@@ -390,7 +390,7 @@ bgp_peer_groups:
 The fabric topology variables define the connectivity between the spines, L3 leafs, and L2 leafs.
 The variables should be applied to all devices in the fabric.
 
-![Figure 2: Topology - naming convention](media/figure-2-topology.gif)
+![Figure 2: Topology - naming convention](media/topology.gif)
 
 - Connectivity is defined from the child's device perspective.
   - Source uplink interfaces and parent interfaces are defined on the child.
