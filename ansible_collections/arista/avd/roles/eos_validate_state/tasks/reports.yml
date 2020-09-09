@@ -1,0 +1,34 @@
+---
+
+# Validation reports
+
+- name: Create Validation report - CSV
+  template:
+    src: validate_state_report-csv.j2
+    dest: "{{ eos_validate_state_csv_report_path }}"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+- name: Read CSV report
+  read_csv:
+    path: "{{ eos_validate_state_csv_report_path }}"
+    key: "test_id"
+  register: validation_report_csv
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+- name: Create Validation report - Markdown
+  template:
+    src: validate_state_report-md.j2
+    dest: "{{ eos_validate_state_md_report_path }}"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report

@@ -1,0 +1,85 @@
+---
+
+- name: Include device intended structure configuration variables
+  include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  tags:
+    - always
+
+- name: Gather EOS platform and version details
+  eos_command:
+    commands: "show version | json"
+  register: eos_version
+  tags:
+    - platform_information
+    - hardware
+
+- name: Display device platform and release information
+  debug:
+    msg: "The device {{ inventory_hostname }} is a {{ eos_version.stdout_lines.0.modelName }} model running EOS version {{ eos_version.stdout_lines.0.version }}"
+  tags:
+    - platform_information
+    - hardware
+
+  #####################################
+  ## Load tasks for validaiton tests ##
+  #####################################
+
+- name: Load Hardware validation tasks
+  include_tasks: "hardware.yml"
+  when:
+    - eos_version.stdout_lines.0.modelName != 'vEOS'
+    - eos_version.stdout_lines.0.modelName != 'cEOSLab'
+  tags:
+    - hardware
+
+- name: Load ntp tasks
+  include_tasks: "ntp.yml"
+  tags:
+    - ntp
+
+- name: Load interface state tasks
+  include_tasks: "interface_state.yml"
+  tags:
+    - interfaces_state
+
+- name: Load LLDP Topology tasks
+  include_tasks: "lldp_topology.yml"
+  tags:
+    - lldp_topology
+
+- name: Load mlag tasks
+  include_tasks: "mlag.yml"
+  when: |
+    (mlag_configuration is defined and mlag_configuration is not none)
+  tags:
+    - mlag
+
+- name: Load IP Reachability tasks
+  include_tasks: "ip_reachability.yml"
+  tags:
+    - ip_reachability
+
+- name: Load BGP tasks
+  include_tasks: "bgp_check.yml"
+  when: |
+    (router_bgp is defined and router_bgp is not none)
+  tags:
+    - bgp_check
+
+- name: Validate reload cause
+  include_tasks: "reload_cause.yml"
+  tags:
+    - reload_cause
+    - optional
+    - never
+
+  ####################################
+  ##       Validation Reports       ##
+  ####################################
+
+- name: Validate reload cause
+  include_tasks: "reports.yml"
+  tags:
+    - always
+    - reports
