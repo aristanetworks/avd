@@ -50,8 +50,6 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 - netaddr `0.7.19`
 - requests `2.22.0`
 - treelib `1.5.5`
-- pytest `5.3.4`
-- pytest-html `2.0.1`
 - cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
@@ -68,8 +66,6 @@ Jinja2==2.10.3
 netaddr==0.7.19
 requests==2.22.0
 treelib==1.5.5
-pytest==5.3.4
-pytest-html==2.0.1
 cvprac==1.0.4
 ```
 
