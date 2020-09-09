@@ -124,7 +124,7 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
   tasks:
 
-    - name: validate states on EOS devices
+    - name: audit fabric state using EOS eAPI connection
       import_role:
          name: arista.avd.eos_validate_state
 ```
