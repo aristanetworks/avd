@@ -26,6 +26,7 @@ nav:
   - Getting Started: docs/getting-started.md
   - How-To:
     - Build your first AVD project: docs/how-to/first-project.md
+    - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
   - Roles documentation:
     - eos_l3ls_evpn: roles/eos_l3ls_evpn/README.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
@@ -69,4 +70,4 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: "#"
-      baselevel: 1
+      baselevel: 2
