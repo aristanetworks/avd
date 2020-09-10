@@ -3,9 +3,10 @@ on:
   push:
     branches:
       - 'devel'
-  paths:
-    - 'ansible_collections/arista/avd/docs/**'
-    - 'ansible_collections/arista/avd/roles/**/README.md'
+    paths:
+      - 'mkdocs.yml'
+      - 'ansible_collections/arista/avd/docs/**'
+      - 'ansible_collections/arista/avd/roles/**/README.md'
 jobs:
   'doc':
     name: 'Update Public documentation'
