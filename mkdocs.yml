@@ -17,13 +17,13 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
   - Home: README.md
+  - Getting Started: docs/getting-started.md
   - Installation:
     - Requirements: docs/installation/requirements.md
     - Setup environment: docs/installation/setup-environement.md
     - Ansible-galaxy installation: docs/installation/setup-galaxy.md
     - Git installation: docs/installation/setup-git.md
     - Configure development environment: docs/installation/development.md
-  - Getting Started: docs/getting-started.md
   - How-To:
     - Build your first AVD project: docs/how-to/first-project.md
     - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
