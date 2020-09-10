@@ -4,13 +4,13 @@ site_description: Arista Validated Design collection's documentation
 docs_dir: ansible_collections/arista/avd/
 site_favicon: docs/_media/favicon.ico
 theme:
-  # name: material
-  name: ivory
+  name: material
+  # name: ivory
   features:
     - instant
 extra_css:
-  - docs/stylesheets/extra.ivory.css
-#   - docs/stylesheets/extra.material.css
+  # - docs/stylesheets/extra.ivory.css
+  - docs/stylesheets/extra.material.css
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
 repo_name: Github
 repo_url: https://github.com/aristanetworks/ansible-avd
