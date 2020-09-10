@@ -15,7 +15,7 @@ In both scenario, this document will leverage git approach to create a local env
 
 ## Ansible runner requirements
 
-As described in [requirement page](docs/installation/requirements.md), your runner should run Python 3.6.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
+As described in [requirement page](../../docs/installation/requirements.md), your runner should run Python 3.6.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
 
 ## Create local folder structure
 

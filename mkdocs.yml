@@ -4,19 +4,19 @@ site_description: Arista Validated Design collection's documentation
 docs_dir: ansible_collections/arista/avd/
 site_favicon: docs/_media/favicon.ico
 theme:
-  name: material
+  # name: material
+  name: ivory
   features:
     - instant
-  font:
-    text: Ubuntu
-    code: Ubuntu Mono
 extra_css:
-  - docs/stylesheets/extra.css
+  - docs/stylesheets/extra.ivory.css
+#   - docs/stylesheets/extra.material.css
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
 repo_name: Github
 repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
+  - Home: README.md
   - Installation:
     - Requirements: docs/installation/requirements.md
     - Setup environment: docs/installation/setup-environement.md
@@ -32,6 +32,7 @@ nav:
     - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
     - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
     - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
+    - eos_validate_state: roles/eos_validate_state/README.md
     - build_output_folders: roles/build_output_folders/README.md
   - Modules documentation:
     - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
