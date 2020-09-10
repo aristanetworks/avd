@@ -12,7 +12,7 @@ extra_css:
   # - docs/stylesheets/extra.ivory.css
   - docs/stylesheets/extra.material.css
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
-repo_name: Github
+repo_name: AVD on Github
 repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
