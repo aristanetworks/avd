@@ -4,28 +4,29 @@ site_description: Arista Validated Design collection's documentation
 docs_dir: ansible_collections/arista/avd/
 site_favicon: docs/_media/favicon.ico
 theme:
-  # name: material
-  name: ivory
+  name: material
+  # name: ivory
   features:
     - instant
 extra_css:
-  - docs/stylesheets/extra.ivory.css
-#   - docs/stylesheets/extra.material.css
+  # - docs/stylesheets/extra.ivory.css
+  - docs/stylesheets/extra.material.css
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
 repo_name: Github
 repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
   - Home: README.md
+  - Getting Started: docs/getting-started.md
   - Installation:
     - Requirements: docs/installation/requirements.md
     - Setup environment: docs/installation/setup-environement.md
     - Ansible-galaxy installation: docs/installation/setup-galaxy.md
     - Git installation: docs/installation/setup-git.md
     - Configure development environment: docs/installation/development.md
-  - Getting Started: docs/getting-started.md
   - How-To:
     - Build your first AVD project: docs/how-to/first-project.md
+    - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
   - Roles documentation:
     - eos_l3ls_evpn: roles/eos_l3ls_evpn/README.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
@@ -69,4 +70,4 @@ markdown_extensions:
   - toc:
       separator: "-"
       permalink: "#"
-      baselevel: 1
+      baselevel: 2
