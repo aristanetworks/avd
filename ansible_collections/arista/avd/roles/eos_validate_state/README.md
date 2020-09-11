@@ -20,7 +20,7 @@
 
 **eos_validate_state** role:
 
-- consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](ansible_collections/arista/avd/roles/eos_cli_config_gen). This input is considered the source of truth (the desired state).
+- consumes structured EOS configuration file, the same input as the role [eos_cli_config_gen](../eos_cli_config_gen). This input is considered the source of truth (the desired state).
 - It connects to EOS devices to collects operational states (actual state). So this role requires an access to the configured devices.
 - Compares the actual states against the desired state.
 - Generates CSV and Markdown reports of the results.

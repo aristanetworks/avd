@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eosconfigdeployeapi)
+- [Ansible Role: eos_config_deploy_eapi](#ansible-role-eos_config_deploy_eapi)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
@@ -21,7 +21,7 @@ The **eos_config_deploy_eapi** role:
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_config_deploy_eapi](media/figure-1-role-eos_config_deploy_eapi.gif)
+![Figure 1: Ansible Role eos_config_deploy_eapi](media/role_eos_config_deploy_eapi.gif)
 
 **Inputs:**
 

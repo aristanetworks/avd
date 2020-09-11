@@ -98,7 +98,7 @@ $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-a
 
 ### Pre-commit hook
 
-[`pre-commit`](../.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. By pointing these issues out before code review, this allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
+[`pre-commit`](https://github.com/aristanetworks/ansible-avd/blob/devel/.pre-commit-config.yaml) can run standard hooks on every commit to automatically point out issues in code such as missing semicolons, trailing whitespace, and debug statements. By pointing these issues out before code review, this allows a code reviewer to focus on the architecture of a change while not wasting time with trivial style nitpicks.
 
 Repository implements following hooks:
 
@@ -107,13 +107,13 @@ Repository implements following hooks:
 - `check-yaml`: Check all YAML files ares valid
 - `check-added-large-files`: Check if there is no large file included in repository
 - `check-merge-conflict`: Validate there is no `MERGE` syntax related to a invalid merge process.
-- `pylint`: Run python linting with settings defined in [`pylintrc`](../pylintrc)
-- `yamllint`: Validate all YAML files using configuration from [`yamllintrc`](../.github/yamllintrc)
+- `pylint`: Run python linting with settings defined in [`pylintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/pylintrc)
+- `yamllint`: Validate all YAML files using configuration from [`yamllintrc`](https://github.com/aristanetworks/ansible-avd/blob/devel/.github/yamllintrc)
 - `ansible-lint`: Validate yaml files are valid against ansible rules.
 
 #### Installation
 
-`pre-commit` is part of [__developement requirememnts__](./requirements-dev.txt). To install, run `pip command`:
+`pre-commit` is part of [__developement requirememnts__](https://github.com/aristanetworks/ansible-avd/blob/devel/development/requirements-dev.txt). To install, run `pip command`:
 
 ```shell
 $ pip install -r requirements-dev.txt
