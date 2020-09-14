@@ -12,7 +12,9 @@ Role support following variables:
 
 ```yaml
 # Root directory where to build output structure
-root_dir: '{{playbook_dir}}'
+# All folder below will be created in this directory folder.
+root_dir: '{{inventory_dir}}'
+
 # Main output directory
 output_dir_name: 'intended'
 # Output for structured YAML files:
@@ -25,11 +27,13 @@ documentation_dir_name: 'documentation'
 fabric_dir_name: 'DC1_FABRIC'
 # Device documentation
 devices_dir_name: 'devices'
+# EOS State Validation Directory name
+eos_validate_state_name: 'report'
 ```
 
 Role will create following structure:
 
-```
+```shell
 intended
 ├── configs
 └── structured_configs
@@ -64,4 +68,3 @@ Below is an example to use in your playbook to build output folders using defaul
 ## License
 
 Project is published under [Apache 2.0 License](../../../../../LICENSE)
-
