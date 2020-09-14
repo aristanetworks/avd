@@ -45,7 +45,7 @@ Or you can use a one-liner script available in ansible-avd repository to create 
 - Deploy Makefile
 
 ```shell
-$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/development/install.sh)"
+$ sh -c "$(curl -fsSL https://get.avd.sh)"
 ```
 
 Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
