@@ -86,4 +86,19 @@
     background-color: var(--md-code-bg-color);
     border: 2px solid var(--md-code-border-color);
   }
+  .md-typeset .admonition, .md-typeset details {
+      margin: 1.5625em 0;
+      padding: 0 .6rem;
+      overflow: hidden;
+      font-size: .64rem;
+      page-break-inside: avoid;
+      border-left: .2rem solid var(--md-accent-bg-color);
+          border-left-color: var(--md-accent-bg-color);
+      border-radius: .1rem;
+      box-shadow: 0 .2rem .5rem rgba(0,0,0,.05),0 0 .05rem rgba(0,0,0,.1);
+  }
+  .md-typeset .note > .admonition-title, .md-typeset .note > summary {
+    background-color: var(--md-accent-bg-color);
+    color: var(--md-default-fg-color--lighter)
+  }
 }

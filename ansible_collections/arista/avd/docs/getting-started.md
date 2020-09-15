@@ -3,10 +3,13 @@
 ## Install tools
 
 ```shell
-$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/development/install.sh)"
+# Install AVD environment
+$ sh -c "$(curl -fsSL https://get.avd.sh)"
 
+# Move to AVD directory
 $ cd arista-ansible
 
+# Spin up container for easy access
 $ make dev-start
 ```
 
@@ -97,3 +100,6 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
       import_role:
          name: arista.avd.eos_config_deploy_eapi
 ```
+
+!!! note
+    - For complete and detailed lab description, you can refer to this [how-to](./how-to/first-project.md) document.
