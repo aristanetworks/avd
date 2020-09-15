@@ -39,5 +39,5 @@ running_config_backup_dir_name: 'config_backup'
 running_config_backup_dir: '{{root_dir}}/{{running_config_backup_dir_name}}'
 
 # EOS State Validation Directory name
-eos_validate_state_name: 'report'
+eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{root_dir}}/{{eos_validate_state_name}}'
