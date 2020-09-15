@@ -5,6 +5,7 @@
 - [Ansible Role: eos_validate_state](#ansible-role-eos_validate_state)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Default Variables](#default-variables)
   - [Requirements](#requirements)
   - [Example Playbook](#example-playbook)
   - [Input example](#input-example)
@@ -67,6 +68,24 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 3. Create CSV report.
 4. Read CSV file (leveraged to generate summary report).
 5. Create Markdown Summary report.
+
+## Default Variables
+
+The following default variables are defined, and can be modified as desired:
+
+```yaml
+# configure playbook to ingnore errors and continue testing.
+eos_validate_state_validation_mode_loose: true
+
+# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
+root_dir: '{{ inventory_dir }}'
+eos_validate_state_name: 'reports'
+eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+
+# Reports name
+eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
+eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+```
 
 ## Requirements
 
