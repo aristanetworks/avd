@@ -28,7 +28,7 @@ fabric_dir_name: 'DC1_FABRIC'
 # Device documentation
 devices_dir_name: 'devices'
 # EOS State Validation Directory name
-eos_validate_state_name: 'report'
+eos_validate_state_name: 'reports'
 ```
 
 Role will create following structure:
