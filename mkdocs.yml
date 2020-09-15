@@ -44,7 +44,8 @@ nav:
   - About:
     - Contribution Guide: docs/contributing.md
     - Ansible Galaxy page: https://galaxy.ansible.com/arista/cvp
-    - Arista CloudVision Modules: https://github.com/aristanetworks/ansible-cvp
+    - Arista AVD Modules: https://github.com/aristanetworks/ansible-avd
+    - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
     - Arista Automation Examples: https://github.com/aristanetworks/netdevops-examples
 
 markdown_extensions:

@@ -59,7 +59,7 @@ One liner script to setup a development environment. it does following actions:
 - Deploy Makefile
 
 ```shell
-$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/development/install.sh)"
+$ sh -c "$(curl -fsSL https://get.avd.sh)"
 ```
 
 ## Build local environment
