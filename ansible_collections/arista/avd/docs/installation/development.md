@@ -1,20 +1,5 @@
 # Development Process
 
-- [Development Process](#development-process)
-  - [Overview](#overview)
-  - [Build local environment](#build-local-environment)
-    - [Python Virtual Environment](#python-virtual-environment)
-      - [Install Python3 Virtual Environment](#install-python3-virtual-environment)
-    - [Docker Container for Ansible Testing and Development](#docker-container-for-ansible-testing-and-development)
-  - [Getting started Script](#getting-started-script)
-    - [Step by step installation process](#step-by-step-installation-process)
-    - [One liner installation](#one-liner-installation)
-  - [Development tools](#development-tools)
-    - [Pre-commit hook](#pre-commit-hook)
-      - [Installation](#installation)
-      - [Run pre-commit manually](#run-pre-commit-manually)
-    - [Configure git hook](#configure-git-hook)
-
 ## Overview
 
 Two methods can be used get Ansible up and running quickly with all the requirements to leverage ansible-avd.
