@@ -32,6 +32,6 @@ jobs:
         run: |
           docker run --network container:webdoc_avd raviqqe/muffet http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
 
-      - name: 'start docker-compose stack'
+      - name: 'stop docker-compose stack'
         run: |
           docker-compose -f docker-compose.yml down
