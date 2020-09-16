@@ -1,4 +1,4 @@
-name: Check_mkdoc
+name: mkdoc_check
 on:
   pull_request:
     branches:

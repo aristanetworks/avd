@@ -1,4 +1,4 @@
-name: Deploy_mkdoc
+name: mkdoc_deploy
 on:
   push:
     branches:
