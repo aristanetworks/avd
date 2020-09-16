@@ -22,6 +22,8 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 - [__arista.avd.cvp_configlet_upload__](roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
 - [__arista.avd.eos_validate_state__](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices
 
+![Arista AVD Overview](media/example-playbook-evpn-deploy-cvp.gif)
+
 ## Custom Plugins
 
 This repository provides custom plugins for Ansible's collection __arista.avd__ :

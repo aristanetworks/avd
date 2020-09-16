@@ -5,13 +5,18 @@
 - EOS __4.21.8M__ or later
 - Roles validated with eAPI transport -> `ansible_connection: httpapi`
 
+## Arista Cloudvision
+
+If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvision) deployment with AVD, your CV instance must be supported by [Cloudvision ansible collection](https://cvp.avd.sh/)
+
 ## Python
 
 - Python __3.6.8__ or later
 
 ## Supported Ansible Versions
 
-- ansible 2.9.2 or later
+- ansible __2.9.2__ or later
+- previous ansible version not supported as avd is shipped as an [ansible collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
 
 ## Additional Python Libraries required
 
