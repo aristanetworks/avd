@@ -5,9 +5,13 @@ docs_dir: ansible_collections/arista/avd/
 site_favicon: docs/_media/favicon.ico
 theme:
   name: material
-  # name: ivory
   features:
     - instant
+  highlightjs: true
+  hljs_languages:
+        - yaml
+        - python
+        - shell
 extra_css:
   # - docs/stylesheets/extra.ivory.css
   - docs/stylesheets/extra.material.css
@@ -23,7 +27,7 @@ nav:
     - Setup environment: docs/installation/setup-environement.md
     - Ansible-galaxy installation: docs/installation/setup-galaxy.md
     - Git installation: docs/installation/setup-git.md
-    - Configure development environment: docs/installation/development.md
+    - Development tips & tricks: docs/installation/development.md
   - How-To:
     - Build your first AVD project: docs/how-to/first-project.md
     - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
