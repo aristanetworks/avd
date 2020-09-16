@@ -18,7 +18,7 @@ jobs:
       - name: 'start docker-compose stack'
         run: |
           cp development/docker-compose.yml .
-          sed -i {} 's/ansible-avd\///g' docker-compose.yml
+          sed -i 's/ansible-avd\///g' docker-compose.yml
           docker-compose -f docker-compose.yml up -d webdoc_avd
           docker-compose -f docker-compose.yml ps
 
