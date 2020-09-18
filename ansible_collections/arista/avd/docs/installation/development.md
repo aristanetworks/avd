@@ -24,7 +24,7 @@ Please refer to [Setup environment page](./setup-environement.md)
 Once installed, use `dev-start` command to bring up all the required containers:
 
 - An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) for AVD documentation listening on port `localhost:8000`
-- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or AVD documentation listening on port `localhost:8001`
+- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or CVP documentation listening on port `localhost:8001`
 - An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
 
 ## Development tools
