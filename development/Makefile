@@ -13,6 +13,10 @@ MUFFET_TIMEOUT ?= 60
 help: ## Display help message
 	@grep -E '^[0-9a-zA-Z_-]+\.*[0-9a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+###############################################################################
+# 			docker containers target									      #
+###############################################################################
+
 .PHONY: update
 update: ## Get latest version of AVD runner and MKDOCs server
 	docker pull $(CONTAINER_NAME):$(DOCKER_TAG) && \
@@ -74,6 +78,9 @@ ansible-upgrade: ## Run a shell attached to ansible container
 .PHONY: dev-reload
 dev-reload: dev-stop dev-start  ## Stop and Start docker-compose stack
 
+###############################################################################
+# 			Documentation target											  #
+###############################################################################
 
 .PHONY: check-404
 check-404: check-avd-404 check-cvp-404 ## Check local 404 links in both AVD and CVP documentation
