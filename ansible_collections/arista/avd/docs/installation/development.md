@@ -23,8 +23,8 @@ Please refer to [Setup environment page](./setup-environement.md)
 
 Once installed, use `dev-start` command to bring up all the required containers:
 
-- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) for AVD documentation listening on port `8000`
-- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or AVD documentation listening on port `8001`
+- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) for AVD documentation listening on port `localhost:8000`
+- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or AVD documentation listening on port `localhost:8001`
 - An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
 
 ## Development tools
@@ -77,6 +77,8 @@ Check for ansible-lint errors............................................Passed
 
 Command will automatically detect changed files using git status and run tests according their type.
 
+> This process is also implemented in project CI to ensure code quality and compliance with ansible development process.
+
 ### Configure git hook
 
 To automatically run tests when running a commit, configure your repository whit command:
@@ -87,3 +89,24 @@ pre-commit installed at .git/hooks/pre-commit
 ```
 
 To remove installation, use `uninstall` option.
+
+### Check 404 links
+
+To validate documentation, you should check for _not found_ links in your local version of the documentation. This test requires to run mkdocs container as explained in [installation documentation](./setup-environement.md).
+
+In a shell, run the following make command. It starts a container in AVD documentation network and leverage [`muffet`](https://github.com/raviqqe/muffet) tool to check 404 HTTP code:
+
+```shell
+$ check-avd-404
+docker run --network container:webdoc_avd raviqqe/muffet \
+    http://127.0.0.1:8000 \
+    -e ".*fonts.gstatic.com.*" \
+    -e ".*edit.*" \
+    -f --limit-redirections=3 \
+    --timeout=60
+http://127.0.0.1:8000/docs/installation/development/
+        404     http://127.0.0.1:8000/docs/installation/development/setup-environement2.md
+make: *** [check-avd-404] Error 1
+```
+
+> This process is also implemented in project CI to protect documentation against dead links.
