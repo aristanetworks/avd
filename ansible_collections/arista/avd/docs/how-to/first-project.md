@@ -18,7 +18,7 @@ You can organize your work in many different way, but a structure we find useful
 $ tree -L 3 -d
 .
 ├── inventories
-│   └── topology01
+│   └── eapi-example
 │       ├── group_vars
 │       ├── host_vars
 │       └── inventory.yml
@@ -53,7 +53,7 @@ In our inventory, let's list our devices:
 - `AVD_SERVERS` as similar behavior to previous group. Its goal is to configure downlinks to compute nodes.
 
 ```yaml
-# vim inventories/topology01/inventory.yml
+# vim inventories/eapi-example/inventory.yml
 ---
 AVD:
   children:
@@ -126,7 +126,7 @@ Based on inventory we did in the previous section, it is time to create `group_v
 All the documentation is available here, but below is a short example. All this information will be configured on all devices.
 
 ```yaml
-# vim inventories/inetsix-eapi/group_vars/AVD.yml
+# vim inventories/eapi-example/group_vars/AVD.yml
 ---
 # local users
 local_users:
@@ -162,7 +162,7 @@ ntp_servers:
 
 #### Configure Fabric topology
 
-Fabric topology is configured under `inventories/inetsix-eapi/group_vars/AVD_FABRIC.yml` which is file that covers `AVD_FABRIC` group we defined in [inventory](#inventory-file). This file contains all the base information to create initial configuration:
+Fabric topology is configured under `inventories/eapi-example/group_vars/AVD_FABRIC.yml` which is file that covers `AVD_FABRIC` group we defined in [inventory](#inventory-file). This file contains all the base information to create initial configuration:
 
 You can also refer to [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_l3ls_evpn/README.md#fabric-topology-variables) to get a description of every single option available.
 
