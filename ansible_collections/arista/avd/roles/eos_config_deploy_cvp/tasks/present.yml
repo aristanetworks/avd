@@ -33,6 +33,15 @@
   arista.cvp.cv_container:
     topology: '{{CVP_CONTAINERS}}'
     cvp_facts: '{{CVP_FACTS.ansible_facts}}'
+  register: CVP_CONTAINER_RESULTS
+
+- name: "Execute pending tasks on {{inventory_hostname}}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ CVP_CONTAINER_RESULTS.data.tasks }}"
+    wait: 720
+  when:
+    - execute_tasks|bool
 
 - name: 'Refreshing facts from CVP {{inventory_hostname}}.'
   tags: [always]
