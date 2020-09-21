@@ -1,4 +1,4 @@
-name: Mkdocs
+name: mkdoc_deploy
 on:
   push:
     branches:
@@ -8,7 +8,7 @@ on:
       - 'ansible_collections/arista/avd/docs/**'
       - 'ansible_collections/arista/avd/roles/**/README.md'
 jobs:
-  'doc':
+  publish:
     name: 'Update Public documentation'
     runs-on: ubuntu-latest
     steps:
