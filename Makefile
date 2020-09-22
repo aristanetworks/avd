@@ -80,7 +80,6 @@ webdoc: ## Build documentation to publish static content
 	mkdir ../modules/ ; \
 	find . -name '*.rst' -exec pandoc {} --from rst --to gfm -o ../modules/{}.md \;)
 	cp $(CURRENT_DIR)/contributing.md $(WEBDOC_BUILD)/.. ;\
-	cp $(CURRENT_DIR)/development/README.md $(WEBDOC_BUILD)/../installation/development.md ;\
 	cp -r $(CURRENT_DIR)/media $(WEBDOC_BUILD)/../ ;\
 	cd $(CURRENT_DIR)
 	mkdocs build -f mkdocs.yml

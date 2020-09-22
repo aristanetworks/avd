@@ -15,6 +15,9 @@ repos:
     - id: pylint # Use pylintrc file in repository
       name: Check for Linting error on Python files
       description: This hook runs pylint.
+      args:
+        # Suppress duplicate code for modules header
+        - -d duplicate-code
   - repo: https://github.com/adrienverge/yamllint.git
     rev: 'v1.23.0'
     hooks:

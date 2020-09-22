@@ -34,7 +34,7 @@ $ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvisio
 
 # Copy Makefile at the root position
 $ cp ansible-avd/development/Makefile ./
-$ make shell
+$ make start
 ```
 
 Or you can use a one-liner script available in ansible-avd repository to create this structure for you. This script does following actions:

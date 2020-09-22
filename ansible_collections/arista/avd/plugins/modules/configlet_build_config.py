@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
-# FIXME: required to pass ansible-test
 # GNU General Public License v3.0+
 #
 # Copyright 2019 Arista Networks AS-EMEA
@@ -67,10 +66,8 @@ EXAMPLES = r'''
 
 import glob
 import os
-import json
 import traceback
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.connection import Connection, ConnectionError
 YAML_IMP_ERR = None
 try:
     import yaml
@@ -133,7 +130,7 @@ def main():
     # Write vars to file if set by user
     if module.params['destination'] is not None:
         with open(module.params['destination'], 'w') as file:
-            documents = yaml.dump(result, file)
+            yaml.dump(result, file)
 
     module.exit_json(**result)
 
