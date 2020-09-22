@@ -761,6 +761,12 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_key:
+      < id >:
+        method: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
     pim:
       ipv4:
         sparse_mode: < true | false >
