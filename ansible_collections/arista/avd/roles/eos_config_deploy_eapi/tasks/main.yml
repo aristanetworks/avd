@@ -5,9 +5,9 @@
     src: '{{root_dir}}/intended/configs/{{ inventory_hostname }}.cfg'
     replace: config
     save_when: modified
-    backup: yes
+    backup: "{{ eos_config_deploy_eapi_snapshot }}"
     backup_options:
-      filename: "{{ inventory_hostname }}_running-config.conf"
+      filename: "{{ running_config_snapshot_filename }}"
       dir_path: "{{ root_dir }}/config_backup/"
-  when: eosconfig.changed
+  notify: "backup config"
   tags: [provision]
