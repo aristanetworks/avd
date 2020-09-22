@@ -1264,6 +1264,7 @@ router_ospf:
     < process_id >:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
+      log_adjacency_changes_detail: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
