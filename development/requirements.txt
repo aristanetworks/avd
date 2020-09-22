@@ -4,3 +4,4 @@ Jinja2==2.10.3
 requests==2.22.0
 treelib==1.5.5
 cvprac==1.0.4
+paramiko==2.7.1

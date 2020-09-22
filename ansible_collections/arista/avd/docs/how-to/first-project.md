@@ -18,7 +18,7 @@ You can organize your work in many different way, but a structure we find useful
 $ tree -L 3 -d
 .
 ├── inventories
-│   └── topology01
+│   └── eapi-example
 │       ├── group_vars
 │       ├── host_vars
 │       └── inventory.yml
@@ -53,7 +53,7 @@ In our inventory, let's list our devices:
 - `AVD_SERVERS` as similar behavior to previous group. Its goal is to configure downlinks to compute nodes.
 
 ```yaml
-# vim inventories/topology01/inventory.yml
+# vim inventories/eapi-example/inventory.yml
 ---
 AVD:
   children:
@@ -126,7 +126,7 @@ Based on inventory we did in the previous section, it is time to create `group_v
 All the documentation is available here, but below is a short example. All this information will be configured on all devices.
 
 ```yaml
-# vim inventories/inetsix-eapi/group_vars/AVD.yml
+# vim inventories/eapi-example/group_vars/AVD.yml
 ---
 # local users
 local_users:
@@ -162,7 +162,7 @@ ntp_servers:
 
 #### Configure Fabric topology
 
-Fabric topology is configured in [`inventories/inetsix-eapi/group_vars/AVD_FABRIC.yml`](https://github.com/inetsix/demo-avd-evpn-eve-ng/blob/master/inventories/inetsix-eapi/group_vars/AVD_FABRIC.yml) which is file that covers `AVD_FABRIC` group we defined in [inventory](#inventory-file). This file contains all the base information to create initial configuration:
+Fabric topology is configured under `inventories/eapi-example/group_vars/AVD_FABRIC.yml` which is file that covers `AVD_FABRIC` group we defined in [inventory](#inventory-file). This file contains all the base information to create initial configuration:
 
 You can also refer to [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_l3ls_evpn/README.md#fabric-topology-variables) to get a description of every single option available.
 
@@ -243,7 +243,7 @@ l3leaf:
 [... output truncated ...]
 ```
 
-Complete documentation of all available variables is available in [__Arista Validated Design documentation__](../roles/../../roles/eos_l3ls_evpn/README.md). You can also look at [variables part of the demo repo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
+Complete documentation of all available variables is available in [__Arista Validated Design documentation__](../../roles/eos_l3ls_evpn/README.md). You can also look at [variables part of the demo repo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
 
 #### Configure device type
 
@@ -263,7 +263,7 @@ AVD supports mechanism to create VLANs and VNIs and enable traffic forwarding in
 
 Model defines a set of tenants (user's defined) where you can configure VRF or `l2vlans` or a mix of them. Let's take a look at how we configure such services.
 
-All these configurations shall be configured in file [`AVD_TENANTS_NETWORKS.yml`](https://github.com/inetsix/demo-avd-evpn-eve-ng/blob/3a461e0ce25afb25d4e51f620bafd324018c1189/inventories/inetsix-eapi/group_vars/AVD_L3LEAFS.yml)
+All these configurations shall be configured in file `AVD_TENANTS_NETWORKS.yml`
 
 #### L2 Services
 
@@ -400,7 +400,7 @@ In `TENANT_A_PROJECT02`, we can also see an optional feature named __`vtep_diagn
 
 #### Configure downlinks
 
-As we have configured L3LS fabric, EVPN/VXLAN overlay, services, it is now time to configure ports to connect servers. Ports should be configured in [`AVD_SERVERS.yml`](https://github.com/inetsix/demo-avd-evpn-eve-ng/blob/3a461e0ce25afb25d4e51f620bafd324018c1189/inventories/inetsix-eapi/group_vars/AVD_SERVERS.yml).
+As we have configured L3LS fabric, EVPN/VXLAN overlay, services, it is now time to configure ports to connect servers. Ports should be configured in `AVD_SERVERS.yml`.
 
 You first have to configure port profile. it is basically a description of how the port will be configured (`access` or `trunk`) and which set of vlan(s) will be configured
 

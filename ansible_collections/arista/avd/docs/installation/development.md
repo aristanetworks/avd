@@ -1,19 +1,4 @@
-# Development Process
-
-- [Development Process](#development-process)
-  - [Overview](#overview)
-  - [Build local environment](#build-local-environment)
-    - [Python Virtual Environment](#python-virtual-environment)
-      - [Install Python3 Virtual Environment](#install-python3-virtual-environment)
-    - [Docker Container for Ansible Testing and Development](#docker-container-for-ansible-testing-and-development)
-  - [Getting started Script](#getting-started-script)
-    - [Step by step installation process](#step-by-step-installation-process)
-    - [One liner installation](#one-liner-installation)
-  - [Development tools](#development-tools)
-    - [Pre-commit hook](#pre-commit-hook)
-      - [Installation](#installation)
-      - [Run pre-commit manually](#run-pre-commit-manually)
-    - [Configure git hook](#configure-git-hook)
+# Development Tips & Tricks
 
 ## Overview
 
@@ -27,72 +12,74 @@ For example, see the file/folder structure below.
 ├── git_projects
 │   ├── ansible-avd
 │   ├── ansible-cvp
-│   ├── ansible-eos
 │   ├── netdevops-examples
+|   ├── <YOUR OWN TESTING REPOSITORY>
 │   ├── Makefile
 ```
 
 ## Build local environment
 
-### Python Virtual Environment
+Please refer to [Setup environment page](./setup-environement.md)
 
-#### Install Python3 Virtual Environment
+Once installed, use `dev-start` command to bring up all the required containers:
 
-```shell
-# install virtualenv via pip3
-$ sudo pip3 install virtualenv
+- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) for AVD documentation listening on port `localhost:8000`
+- An [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) or CVP documentation listening on port `localhost:8001`
+- An [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
 
-```
+## Docker things
 
-```shell
-# Configure Python virtual environment
-$ virtualenv -p python3 .venv
-$ source .venv/bin/activate
-
-# Install Python requirements
-$ pip install -r requirements.txt
-
-```
-
-### Docker Container for Ansible Testing and Development
-
-The docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repo you are making changes in. You can inspect the Dockerfile to see what packages have been installed.
+he docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repo you are making changes in. You can inspect the Dockerfile to see what packages have been installed.
 The container will mount the current working directory, so you can work with your local files.
 
-The ansible version is passed in with the docker build command using ***ANSIBLE*** variable.  If the ***ANSIBLE*** variable is not used the Dockerfile will by default set the ansible version to 2.9.2
+The ansible version is passed in with the docker build command using **`ANSIBLE_VERSION`** variable.  If the ***ANSIBLE*** variable is not used the Dockerfile will by default set the ansible version to describe in AVD requirements.
 
-Before you can use a container, you must install Docker CE on your workstation: https://www.docker.com/products/docker-desktop
+Before you can use a container, you must install [__Docker CE__](https://www.docker.com/products/docker-desktop) and [__docker-compose__](https://docs.docker.com/compose/) on your workstation.
 
 Since docker image is now automatically published on [__docker-hub__](https://hub.docker.com/repository/docker/avdteam/base), a dedicated repository is available on [__Arista Netdevops Community__](https://github.com/arista-netdevops-community/docker-avd-base).
 
-If you want to test a specific ansible version, you can refer to this [dedicated page](https://github.com/arista-netdevops-community/docker-avd-base/blob/master/USAGE.md) to build your own docker image.
-
-## Getting started Script
-
-### Step by step installation process
-
 ```shell
-mkdir git_projects
-cd git_projects
-git clone https://github.com/aristanetworks/ansible-avd.git
-git clone https://github.com/aristanetworks/ansible-cvp.git
-git clone https://github.com/aristanetworks/netdevops-examples.git
-cp ansible-avd/development/Makefile ./
-make run
+# Start development stack
+$ make dev-start
+docker-compose -f ansible-avd/development/docker-compose.yml up -d
+Recreating development_ansible_1    ... done
+Recreating development_webdoc_cvp_1 ... done
+Recreating development_webdoc_avd_1 ... done
+
+# List containers started with stack
+$ docker-compose -f ansible-avd/development/docker-compose.yml ps
+        Name                       Command               State           Ports
+-----------------------------------------------------------------------------
+ansible_avd   /bin/sh -c while true; do  ...   Up
+webdoc_avd    sh -c pip install -r ansib ...   Up      0.0.0.0:8000->8000/tcp
+webdoc_cvp    sh -c pip install -r ansib ...   Up      0.0.0.0:8001->8000/tcp
+
+# Get a shell with ansible (if not in shell from previous command)
+$ make dev-run
+docker-compose -f ansible-avd/development/docker-compose.yml exec ansible zsh
+Agent pid 52
+➜  /projects
+
+# Test MKDOCS access (outside of development container)
+$ curl -s http://127.0.0.1:8000 | head -n 10
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+
+# Stop development stack
+$ make dev-stop
+docker-compose -f ansible-avd/development/docker-compose.yml kill &&\
+        docker-compose -f ansible-avd/development/docker-compose.yml rm -f
+Killing development_ansible_1 ... done
+Killing development_webdoc_1  ... done
+Going to remove development_ansible_1, development_webdoc_1
+Removing development_ansible_1 ... done
+Removing development_webdoc_1  ... done
 ```
 
-### One liner installation
-
-One liner script to setup a development environment. it does following actions:
-
-- Create local folder for development
-- Instantiate a local git repository (no remote)
-- Clone AVD and CVP collections
-- Deploy Makefile
-
-```shell
-$ sh -c "$(curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/master/development/install.sh)"
-```
 
 ## Development tools
 
@@ -113,10 +100,10 @@ Repository implements following hooks:
 
 #### Installation
 
-`pre-commit` is part of [__developement requirememnts__](https://github.com/aristanetworks/ansible-avd/blob/devel/development/requirements-dev.txt). To install, run `pip command`:
+`pre-commit` is part of [__development requirememnts__](https://github.com/aristanetworks/ansible-avd/blob/devel/development/requirements-dev.txt). To install, run `pip command` in __ansible-avd__ folder:
 
 ```shell
-$ pip install -r requirements-dev.txt
+$ pip install -r development/requirements-dev.txt
 ...
 ```
 
@@ -144,6 +131,8 @@ Check for ansible-lint errors............................................Passed
 
 Command will automatically detect changed files using git status and run tests according their type.
 
+> This process is also implemented in project CI to ensure code quality and compliance with ansible development process.
+
 ### Configure git hook
 
 To automatically run tests when running a commit, configure your repository whit command:
@@ -154,3 +143,24 @@ pre-commit installed at .git/hooks/pre-commit
 ```
 
 To remove installation, use `uninstall` option.
+
+### Check 404 links
+
+To validate documentation, you should check for _not found_ links in your local version of the documentation. This test requires to run mkdocs container as explained in [installation documentation](./setup-environement.md).
+
+In a shell, run the following make command. It starts a container in AVD documentation network and leverage [`muffet`](https://github.com/raviqqe/muffet) tool to check 404 HTTP code:
+
+```shell
+$ check-avd-404
+docker run --network container:webdoc_avd raviqqe/muffet \
+    http://127.0.0.1:8000 \
+    -e ".*fonts.gstatic.com.*" \
+    -e ".*edit.*" \
+    -f --limit-redirections=3 \
+    --timeout=60
+http://127.0.0.1:8000/docs/installation/development/
+        404     http://127.0.0.1:8000/docs/installation/development/setup-environement2.md
+make: *** [check-avd-404] Error 1
+```
+
+> This process is also implemented in project CI to protect documentation against dead links.

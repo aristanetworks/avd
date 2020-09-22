@@ -96,13 +96,11 @@ EXAMPLES = r'''
 
 import glob
 import os
-import json
 import traceback
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.connection import Connection, ConnectionError
 TREELIB_IMP_ERR = None
 try:
-    from treelib import Node, Tree
+    from treelib import Tree
     HAS_TREELIB = True
 except ImportError:
     HAS_TREELIB = False
@@ -161,9 +159,9 @@ def isIterable(testing_object=None):
         Object to test if it is iterable or not, by default None
     """
     try:
-        some_object_iterator = iter(testing_object)
+        some_object_iterator = iter(testing_object)  # noqa # pylint: disable=unused-variable
         return True
-    except TypeError as te:
+    except TypeError as te:  # noqa # pylint: disable=unused-variable
         return False
 
 
@@ -414,7 +412,7 @@ def main():
     # Write vars to file if set by user
     if module.params['destination'] is not None:
         with open(module.params['destination'], 'w') as file:
-            documents = yaml.dump(result, file)
+            yaml.dump(result, file)
 
     module.exit_json(**result)
 

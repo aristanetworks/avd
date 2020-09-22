@@ -34,7 +34,7 @@ $ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvisio
 
 # Copy Makefile at the root position
 $ cp ansible-avd/development/Makefile ./
-$ make run
+$ make start
 ```
 
 Or you can use a one-liner script available in ansible-avd repository to create this structure for you. This script does following actions:
@@ -57,6 +57,35 @@ In this approach Docker container will be leveraged to provides all the AVD requ
 This approach make the run process easier as all libraries are pre-configured in container and you can continue to use your preferred text editor to edit and build your content.
 
 Considering you have deployed [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) described in previous section, all the outputs will provide native docker command and the Make command.
+
+### AVD environment commands
+
+When using installation script to create your own AVD environment, a [`Makefile`](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) is deployed under `./ansible-arista` to automate some common commands:
+
+```shell
+$ make <your command>
+```
+
+#### Commands for docker-compose
+
+- `dev-start`: Start docker compose stack to develop with AVD and CVP collection (alias: `start`)
+    - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose AVD documentation with live reload for development purposes.
+    - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose CVP documentation with live reload for development purposes.
+    - Deploy an [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
+- `dev-stop`: Stop docker compose stack and remove containers (alias: `stop`)
+- `dev-run`: Run a shell attached to ansible container (alias: `shell`)
+- `dev-reload`: Stop and Start docker-compose stack
+
+### Commands for docker only
+
+- `run`: Run a [docker container](https://hub.docker.com/repository/docker/avdteam/base) with local folder mounted under `/projects`. This command supports some option to test development version like:
+    - `ANSIBLE_VERSION`: Specific version of ansible to install during container startup.
+    - `PIP_REQ`: Specific pip requirements file to install during container startup.
+
+#### Command for image management
+
+- `update`: Get latest version of [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) and [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) servers
+- `clean`: Remove avd image from local repository
 
 ### Run AVD shell
 
