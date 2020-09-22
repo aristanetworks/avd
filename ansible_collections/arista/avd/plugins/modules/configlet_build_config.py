@@ -67,10 +67,8 @@ EXAMPLES = r'''
 
 import glob
 import os
-import json
 import traceback
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils.connection import Connection, ConnectionError
 YAML_IMP_ERR = None
 try:
     import yaml
