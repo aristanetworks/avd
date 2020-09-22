@@ -111,7 +111,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%         for result in hostvars[node].lldp_topology_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},LLDP Topology,lldp topology - validate peer and interface,{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},LLDP Topology,lldp topology - validate peer and interface,local: {{ result.ethernet_interface.key }} - remote: {{ hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer }}_{{ hostvars[node].ethernet_interfaces[result.ethernet_interface.key].peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL,remote: {{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
@@ -131,7 +131,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%         for result in hostvars[node].ip_reachability_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},IP Reachability,ip reachability test p2p links,Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} | Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},IP Reachability,ip reachability test p2p links,Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} - Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}
