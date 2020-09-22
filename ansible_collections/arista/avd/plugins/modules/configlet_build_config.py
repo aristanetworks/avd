@@ -77,7 +77,6 @@ except ImportError:
     HAS_YAML = False
     YAML_IMP_ERR = traceback.format_exc()
 
-
 def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
     """
     Get available configlets to deploy to CVP.
@@ -131,7 +130,7 @@ def main():
     # Write vars to file if set by user
     if module.params['destination'] is not None:
         with open(module.params['destination'], 'w') as file:
-            documents = yaml.dump(result, file)
+            yaml.dump(result, file)
 
     module.exit_json(**result)
 
