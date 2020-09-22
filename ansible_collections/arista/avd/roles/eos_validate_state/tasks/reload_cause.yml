@@ -1,0 +1,24 @@
+---
+
+# Reload Cause - Optional
+
+- name: gather reload cause information
+  eos_command:
+    commands: "show reload cause"
+  register: reload_cause
+  tags:
+    - reload_cause
+    - optional
+    - never
+
+- name: validate reload cause
+  assert:
+    that: reload_cause.stdout_lines[0][2] == "Reload requested by the user."
+    fail_msg: "{{ reload_cause.stdout_lines[0][2] }}"
+    quiet: true
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: reload_cause_results
+  tags:
+    - reload_cause
+    - optional
+    - never

@@ -7,6 +7,7 @@
     state: absent
     mode: 0755
   delegate_to: localhost
+  run_once: True
 
 - name: 'Create folder {{output_dir}}'
   file:
@@ -14,13 +15,15 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
 
-- name: 'Create folder {{structured_dir_name}} for structued YAML files'
+- name: 'Create folder {{structured_dir_name}} for structured YAML files'
   file:
     path: '{{structured_dir}}'
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
 
 - name: 'Create folder {{eos_config_dir_name}} for EOS Configuration files'
   file:
@@ -28,6 +31,15 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
+
+- name: 'Create folder {{structured_cvp_name}} for CVP structured YAML files'
+  file:
+    path: '{{structured_cvp}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: True
 
 - name: 'Create documentation folder: {{documentation_dir_name}}'
   file:
@@ -35,6 +47,7 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
 
 - name: 'Create folder {{fabric_dir_name}} for Fabric documentation'
   file:
@@ -42,6 +55,7 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
 
 - name: 'Create folder {{devices_dir_name}} for EOS documentation'
   file:
@@ -49,3 +63,20 @@
     state: directory
     mode: 0755
   delegate_to: localhost
+  run_once: True
+
+- name: 'Create folder {{running_config_backup_dir_name}} for EOS backup dir'
+  file:
+    path: '{{running_config_backup_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: True
+
+- name: 'Create folder {{eos_validate_state_name}} for EOS state report dir'
+  file:
+    path: '{{eos_validate_state_dir}}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: True

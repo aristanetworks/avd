@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Save from where script is run
+_WHEREAMI="${PWD}"
+
+# Folder where test playbooks are saved
+_ROOT_TEST_FOLDER="../testing/"
+# Test to protect script if we run from .github folder or from ansible-avd root directory
+if [ ! -d "$_ROOT_TEST_FOLDER" ]; then
+    _ROOT_TEST_FOLDER="testing/"
+fi
+# Name of playbook to run for validation.
+# Must be the same for all environment.
+_PLAYBOOK_NAME='playbook-validation.yml'
+
+echo "Run Test playbooks for AVD validation"
+
+for _TEST_FOLDER in $(find ${_ROOT_TEST_FOLDER} -mindepth 1 -maxdepth 1 -type d) ; do
+    _TEST_NAME=$(basename "${_TEST_FOLDER}")
+    if [ -d "${_TEST_FOLDER}" ]; then
+        echo "  * found test ${_TEST_NAME}"
+        cd ${_TEST_FOLDER}
+        if [ -f "${_PLAYBOOK_NAME}" ]; then
+            echo "    * running test playbook: ${_PLAYBOOK_NAME}"
+            ansible-playbook ${_PLAYBOOK_NAME} --tags "build"
+            echo ""
+            echo "--------------------------------------------------------------"
+            echo ""
+        else
+            echo "    ! no playbook found ... skipped"
+        fi
+        cd ${_WHEREAMI}
+    else
+        echo "  ! not a folder ... skipped: ${_TEST_NAME}: ${_TEST_FOLDER}"
+    fi
+done
+
+echo "Testing done: OK"

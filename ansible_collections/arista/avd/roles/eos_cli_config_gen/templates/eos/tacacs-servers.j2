@@ -1,0 +1,10 @@
+{# eos - AAA Group Servers#}
+{% if tacacs_servers is defined and tacacs_servers is not none %}
+!
+{%    if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
+{%       for host in tacacs_servers.hosts %}
+tacacs-server host {{ host['host'] }} {% if host['vrf'] is defined and host['vrf'] is not none %}vrf {{ host['vrf'] }} {% endif %} {% if host['key'] is defined and host['key'] is not none %}key 7 {{ host['key'] }} {% endif %}
+
+{%       endfor %}
+{%    endif %}
+{% endif %}

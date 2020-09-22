@@ -13,7 +13,7 @@
       peer_filter: LEAF-AS-RANGE
       next_hop_unchanged: true
       update_source: Loopback0
-      fall_over_bfd: true
+      bfd: true
       ebgp_multihop: 3
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true

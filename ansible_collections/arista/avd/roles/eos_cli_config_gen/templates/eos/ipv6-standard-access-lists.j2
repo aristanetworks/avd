@@ -1,0 +1,10 @@
+{# eos - IPv6 standard access-lists #}
+{% if ipv6_standard_access_lists is defined and ipv6_standard_access_lists is not none %}
+{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
+!
+ipv6 access-list standard {{ ipv6_standard_access_list }}
+{%         for sequence in ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers | arista.avd.natural_sort %}
+   {{ sequence }} {{ ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action }}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

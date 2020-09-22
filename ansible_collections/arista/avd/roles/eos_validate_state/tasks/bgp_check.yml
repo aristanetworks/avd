@@ -1,0 +1,66 @@
+---
+
+# BGP Validation tests
+
+- name: Gathter ip route summary and ArBGP state
+  eos_command:
+    commands: "show ip route summary"
+  register: ip_route_summary
+  tags:
+    - bgp_check
+
+- name: Validate ArBGP is configured and operating
+  assert:
+    that:
+      - ip_route_summary.stdout_lines[0][0] | regex_search("multi-agent")
+      - ip_route_summary.stdout_lines[0][1] | regex_search("multi-agent")
+    fail_msg: "{{ ip_route_summary.stdout_lines[0][0] }}, {{ ip_route_summary.stdout_lines[0][1] }}"
+    quiet: yes
+  when: ( service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent" )
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: arbgp_state_results
+  tags:
+    - bgp_check
+
+- name: Gather bgp summary (ip and evpn)
+  eos_command:
+    commands:
+      - command: "show ip bgp summary | json"
+      - command: "show bgp evpn summary | json"
+  register: bgp_summary
+  when: |
+    (arbgp_state_results)
+  tags:
+    - bgp_check
+
+- name: Validate ip bgp neighbors peer state
+  assert:
+    that:
+      - bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
+    fail_msg: Session state "{{ bgp_summary.stdout[0].vrfs.default.peers[bgp_neighbor.key].peerState }}"
+    quiet: yes
+  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: bgp_neighbor
+  when: |
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "ipv4" and arbgp_state_results)
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: ip_bgp_peer_state_results
+  tags:
+    - bgp_check
+
+- name: Validate bgp evpn neighbors peer state
+  assert:
+    that:
+      - bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState == "Established"
+    fail_msg: Session state "{{ bgp_summary.stdout[1].vrfs.default.peers[bgp_neighbor.key].peerState }}"
+    quiet: yes
+  loop: "{{ router_bgp.neighbors | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: bgp_neighbor
+  when: |
+    (router_bgp.peer_groups[bgp_neighbor.value.peer_group].type == "evpn"  and arbgp_state_results)
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: bgp_evpn_peer_state_results
+  tags:
+    - bgp_check

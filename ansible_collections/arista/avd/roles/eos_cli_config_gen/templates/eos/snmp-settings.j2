@@ -1,0 +1,57 @@
+{# eos - SNMP Settings#}
+{% if snmp_server is defined and snmp_server is not none %}
+!
+{%     if snmp_server.contact is defined and snmp_server.contact is not none %}
+snmp-server contact {{ snmp_server.contact }}
+{%     endif %}
+{%     if snmp_server.location is defined and snmp_server.location is not none %}
+snmp-server location {{ snmp_server.location }}
+{%     endif %}
+{%     if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
+{%          for local_interface in snmp_server.local_interfaces %}
+snmp-server {% if local_interface['vrf'] is defined and local_interface['vrf'] is not none %}vrf {{ local_interface['vrf'] }} {% endif %}local-interface {{ local_interface['name'] }}
+{%          endfor %}
+{%     endif %}
+{%     if snmp_server.views is defined and snmp_server.views is not none %}
+{%          for view in snmp_server.views %}
+snmp-server view {{ view['name'] }} {{ view['MIB_family_name'] }} {% if view['included'] == true %}included{% else %}excluded {% endif %}
+
+{%          endfor %}
+{%    endif %}
+{%     if snmp_server.groups is defined and snmp_server.groups is not none %}
+{%          for group in snmp_server.groups %}
+snmp-server group {{ group['name'] }} {{ group['version'] }} {% if group['authentication']is defined and group['version'] == 'v3' %} {{ group['authentication'] }} {% endif %}{% if group['read'] is defined %}read {{ group['read'] }} {% endif %}{% if group['write'] is defined %}write {{ group['write'] }}{% endif %}{% if group['notify'] is defined %}notify {{ group['notify'] }} {% endif %}
+
+{%          endfor %}
+{%    endif %}
+{%     if snmp_server.users is defined and snmp_server.users is not none %}
+{%          for user in snmp_server.users %}
+snmp-server user {{ user['name'] }} {{ user['group'] }} {{ user['version'] }} {% if user['auth']is defined and user['version'] == 'v3' %}auth {{ user['auth'] }} {{ user['auth_passphrase'] }}{% endif %} {% if user['priv'] is defined and user['version'] == 'v3' %}priv {{ user['priv'] }} {{ user['priv_passphrase'] }} {% endif %}
+
+{%          endfor %}
+{%    endif %}
+{%     if snmp_server.hosts is defined and snmp_server.hosts is not none %}
+{%          for host in snmp_server.hosts %}
+{%              if host['users'] is defined %}
+{%                   for user in host['users'] %}
+snmp-server host {{ host['host'] }} {% if host['vrf']is defined %}vrf {{ host['vrf'] }} {% endif %}version {{ user['version'] }} {% if user['version'] == 3 %}{{ user['authentication_level'] }} {{ user['username'] }} {% endif %}
+
+{%                  endfor %}
+{%              endif %}
+{%          endfor %}
+{%    endif %}
+{%    if snmp_server.traps is defined and snmp_server.traps is not none %}
+{%       if snmp_server.traps.enable is defined and snmp_server.traps.enable == true %}
+snmp-server enable traps
+{%       endif %}
+{%    endif %}
+{%     if snmp_server.vrfs is defined and snmp_server.vrfs is not none %}
+{%          for vrf in snmp_server.vrfs %}
+{%             if vrf['enable'] == true %}
+snmp-server vrf {{ vrf['name'] }}
+{%             else %}
+no snmp-server vrf {{ vrf['name'] }}
+{%             endif %}
+{%          endfor %}
+{%    endif %}
+{% endif %}

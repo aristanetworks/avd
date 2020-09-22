@@ -1,0 +1,21 @@
+name: Test Installation
+on:
+  push:
+  pull_request:
+jobs:
+  'setup':
+    name: 'One liner installation'
+    runs-on: ubuntu-latest
+    container: avdteam/base:3.6
+    steps:
+      - uses: actions/checkout@master
+      - name: Execute one-liner installation
+        run: |
+          cp development/install.sh /tmp/
+          cd /tmp/
+          sh install.sh
+      - name: Run Makefile commands
+        run: |
+          cd /tmp/arista-ansible/
+          cat Makefile
+          make

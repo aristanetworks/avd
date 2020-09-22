@@ -1,0 +1,41 @@
+{# IP PIM Sparse Mode Summary #}
+{% if router_pim_sparse_mode is defined and router_pim_sparse_mode is not none %}
+### IP Sparse Mode Information
+
+{%   if router_pim_sparse_mode.ipv4 is defined and router_pim_sparse_mode.ipv4 is not none %}
+{%          if router_pim_sparse_mode.ipv4.rp_addresses is defined and router_pim_sparse_mode.ipv4.rp_addresses is not none %}
+### IP Rendez-vous Information
+
+| Rendez-vous Point Address | Group Address |
+| ------------------------- | ------------- |
+{%                for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort %}
+{%                      for group in router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
+| {{ rp_address }} | {{ group }} |
+{%                      endfor %}
+{%                endfor %}
+{%          endif %}
+
+{%          if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
+{%          endif %}
+
+{%          if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
+### IP Anycast Information
+
+| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
+| ------------------ | ------------------------------- | -------------- |
+{%                for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
+{%                      for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
+| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is defined and router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is not none %} {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} | {% else %} - {% endif %}|
+{%                      endfor %}
+{%                endfor %}
+{%           endif %}
+
+### Router Multicast Device Configuration
+
+```eos
+{% include 'eos/router-pim-sparse-mode.j2' %}
+```
+{%   endif %}
+{% else %}
+Router PIM sparse mode not defined
+{% endif %}

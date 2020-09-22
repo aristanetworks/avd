@@ -1,36 +1,85 @@
 # {{ inventory_hostname }}
 
 ## Management Interfaces
-
 {% include 'documentation/management-interfaces.j2' %}
-
 
 ## Hardware Counters
 {% include 'documentation/hardware-counters.j2' %}
+
+## Aliases
+{% include 'documentation/aliases.j2' %}
 
 ## TerminAttr Daemon
 
 {% include 'documentation/daemon-terminattr.j2' %}
 
+## IP DHCP Relay
+
+{% include 'documentation/ip-dhcp-relay.j2' %}
+
 ## Internal VLAN allocation Policy
 
 {% include 'documentation/vlan-internal-order.j2' %}
+
+## IP IGMP Snooping
+
+{% include 'documentation/ip-igmp-snooping.j2' %}
+
+## Logging
+
+{% include 'documentation/logging.j2' %}
+
+## Domain Lookup
+
+{% include 'documentation/domain-lookup.j2' %}
 
 ## Name Servers
 
 {% include 'documentation/name-servers.j2' %}
 
+## DNS Domain
+
+{% include 'documentation/dns-domain.j2' %}
+
 ## NTP
 
 {% include 'documentation/ntp-servers.j2' %}
+
+## Router L2 VPN
+
+{% include 'documentation/router-l2-vpn.j2' %}
+
+## SFlow
+
+{% include 'documentation/sflow.j2' %}
 
 ## Spanning Tree
 
 {% include 'documentation/spanning-tree.j2' %}
 
+{# tacacs servers #}
+
+{% include 'documentation/tacacs-servers.j2' %}
+
+{# ip tacacs source interfaces #}
+
+{% include 'documentation/ip-tacacs-source-interfaces.j2' %}
+
+{# aaa server groups #}
+
+{% include 'documentation/aaa-server-groups.j2' %}
+
 ## AAA Authentication
 
 {% include 'documentation/aaa-authentication.j2' %}
+
+## AAA Authorization
+
+{% include 'documentation/aaa-authorization.j2' %}
+
+## AAA Accounting
+
+{% include 'documentation/aaa-accounting.j2' %}
 
 ## Local Users
 
@@ -43,10 +92,6 @@
 ## VRF Instances
 
 {% include 'documentation/vrf-instances.j2' %}
-
-## BFD Multihop Interval
-
-{% include 'documentation/bfd-multihop-interval.j2' %}
 
 ## Port-Channel Interfaces
 
@@ -72,9 +117,29 @@
 
 {% include 'documentation/virtual-router-mac-address-virtual-source-nat.j2' %}
 
+## IPv6 Extended Access-lists
+
+{% include 'documentation/ipv6-access-lists.j2' %}
+
+## IPv6 Standard Access-lists
+
+{% include 'documentation/ipv6-standard-access-lists.j2' %}
+
+## Extended Access-lists
+
+{% include 'documentation/access-lists.j2' %}
+
+## Standard Access-lists
+
+{% include 'documentation/standard-access-lists.j2' %}
+
 ## Static Routes
 
 {% include 'documentation/static-routes.j2' %}
+
+## Event Handler
+
+{% include 'documentation/event-handler.j2' %}
 
 ## IP Routing
 
@@ -84,9 +149,21 @@
 
 {% include 'documentation/prefix-lists.j2' %}
 
+## IPv6 Prefix Lists
+
+{% include 'documentation/ipv6-prefix-lists.j2' %}
+
+## IPv6 Routing
+
+{% include 'documentation/ipv6-routing.j2' %}
+
 ## MLAG
 
 {% include 'documentation/mlag-configuration.j2' %}
+
+## Community Lists
+
+{% include 'documentation/community-lists.j2' %}
 
 ## Route Maps
 
@@ -96,6 +173,34 @@
 
 {% include 'documentation/peer-filters.j2' %}
 
+## Router BFD
+
+{% include 'documentation/router-bfd.j2' %}
+
 ## Router BGP
 
 {% include 'documentation/router-bgp.j2' %}
+
+## Router Multicast
+
+{% include 'documentation/router-multicast.j2' %}
+
+## Router PIM Sparse Mode
+
+{% include 'documentation/router-pim-sparse-mode.j2' %}
+
+## VM Tracer Sessions
+
+{% include 'documentation/vmtracer-sessions.j2' %}
+
+## Management Security
+
+{% include 'documentation/management-security.j2' %}
+
+## Platform
+
+{% include 'documentation/platform.j2' %}
+
+## Router ISIS
+
+{% include 'documentation/router-isis.j2' %}

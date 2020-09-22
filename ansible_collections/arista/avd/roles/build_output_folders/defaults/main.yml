@@ -2,7 +2,7 @@
 # defaults file for build_directories
 
 # Root directory where to build output structure
-root_dir: '{{playbook_dir}}'
+root_dir: '{{inventory_dir}}'
 
 # AVD configurations output
 # Main output directory
@@ -12,6 +12,10 @@ output_dir: '{{root_dir}}/{{output_dir_name}}'
 # Output for structured YAML files:
 structured_dir_name: 'structured_configs'
 structured_dir: '{{output_dir}}/{{structured_dir_name}}'
+
+# Output for structured YAML files for CVP:
+structured_cvp_name: 'cvp'
+structured_cvp: '{{structured_dir}}/{{structured_cvp_name}}'
 
 # EOS Configuration Directory name
 eos_config_dir_name: 'configs'
@@ -29,3 +33,11 @@ fabric_dir: '{{documentation_dir}}/{{fabric_dir_name}}'
 # Device documentation
 devices_dir_name: 'devices'
 devices_dir: '{{documentation_dir}}/{{devices_dir_name}}'
+
+# Backup config dir for eos_config_deploy_eaopi
+running_config_backup_dir_name: 'config_backup'
+running_config_backup_dir: '{{root_dir}}/{{running_config_backup_dir_name}}'
+
+# EOS State Validation Directory name
+eos_validate_state_name: 'reports'
+eos_validate_state_dir: '{{root_dir}}/{{eos_validate_state_name}}'

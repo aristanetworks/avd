@@ -1,0 +1,28 @@
+version: "3"
+services:
+  ansible:
+    image: avdteam/base:3.6
+    container_name: ansible_avd
+    volumes:
+      - ./../../:/projects
+    command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
+
+  webdoc_cvp:
+    image: titom73/mkdocs:latest
+    container_name: webdoc_cvp
+    volumes:
+      - ${PWD}:/docs
+    ports:
+      - 8001:8000
+    entrypoint: ""
+    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
+
+  webdoc_avd:
+    image: titom73/mkdocs:latest
+    container_name: webdoc_avd
+    volumes:
+      - ${PWD}:/docs
+    ports:
+      - 8000:8000
+    entrypoint: ""
+    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]

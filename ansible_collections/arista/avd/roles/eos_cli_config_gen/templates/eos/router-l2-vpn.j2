@@ -1,0 +1,20 @@
+{# eos - Router L2 VPN #}
+{% if router_l2_vpn is defined and router_l2_vpn is not none %}
+!
+router l2-vpn
+{%    if '7020' in switch_platform or '7160' in switch_platform %}
+{%    else %}
+{%       if router_l2_vpn.nd_rs_flooding_disabled is defined and router_l2_vpn.nd_rs_flooding_disabled == true %}
+   nd rs flooding disabled
+{%       endif %}
+{%       if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is defined and router_l2_vpn.virtual_router_nd_ra_flooding_disabled == true %}
+   virtual-router neighbor advertisement flooding disabled
+{%       endif %}
+{%       if router_l2_vpn.arp_selective_install is defined and router_l2_vpn.arp_selective_install == true %}
+   arp selective-install
+{%       endif %}
+{%       if router_l2_vpn.arp_proxy.prefix_list is defined and router_l2_vpn.arp_proxy.prefix_list is not none %}
+   arp proxy prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}
+{%       endif %}
+{%    endif %}
+{% endif %}

@@ -1,0 +1,10 @@
+{# eos - domain lookup #}
+{% if ip_domain_lookup is defined and ip_domain_lookup is not none %}
+{%    for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort %}
+{%              if ip_domain_lookup.source_interfaces[source].vrf is defined and ip_domain_lookup.source_interfaces[source].vrf is not none %}
+ip domain lookup vrf {{ ip_domain_lookup.source_interfaces[source].vrf }} source-interface {{ source }}
+{%              else %}
+ip domain lookup source-interface {{ source }}
+{%              endif %}
+{%     endfor %}
+{% endif %}

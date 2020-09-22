@@ -1,0 +1,10 @@
+{# terminal settings : width and length #}
+{% if terminal is defined and terminal is not none %}
+!
+{%     if terminal.width is defined and terminal.width is not none %}
+terminal width {{ terminal.width }}
+{%     endif %}
+{%     if terminal.length is defined and terminal.length is not none %}
+terminal length {{ terminal.length }}
+{%     endif %}
+{% endif %}

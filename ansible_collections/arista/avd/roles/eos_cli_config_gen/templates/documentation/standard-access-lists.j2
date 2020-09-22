@@ -1,0 +1,21 @@
+{% if standard_access_lists is defined and standard_access_lists is not none %}
+### Standard Access-lists Summary
+
+{%     for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
+**{{ standard_access_list }}:**
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in standard_access_lists[standard_access_list].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ standard_access_lists[standard_access_list].sequence_numbers[sequence].action }} |
+{%         endfor %}
+
+{%     endfor %}
+### Standard Access-lists Device Configuration
+
+```eos
+{% include 'eos/standard-access-lists.j2' %}
+```
+{% else %}
+Standard Access-lists not defined
+{% endif %}

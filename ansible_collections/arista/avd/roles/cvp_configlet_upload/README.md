@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: cvp_configlet_upload](#ansible-role-cvpconfigletupload)
+- [Ansible Role: cvp_configlet_upload](#ansible-role-cvp_configlet_upload)
   - [Overview](#overview)
   - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
@@ -56,15 +56,15 @@ __Module variables:__
 
 - __`configlet_directory`__: Folder where local configlets are stored. Default: `configlets`.
 - __`file_extension`__: File extension to look for configlet in their local folder. Default: `conf`.
-- __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: `none`.
+- __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: _Not set_ and it is required.
 
 _Example_:
 
 ```yaml
 tasks:
-  - name: run CVP provisioning
+  - name: upload cvp configlets
     import_role:
-        name: cvp_configlet_upload
+        name: arista.avd.cvp_configlet_upload
     vars:
       configlet_directory: 'configlets/'
       file_extension: 'txt'

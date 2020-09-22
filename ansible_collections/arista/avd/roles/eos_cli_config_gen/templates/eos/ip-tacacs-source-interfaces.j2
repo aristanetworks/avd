@@ -1,0 +1,7 @@
+{# eos - IP TACACS+ Source interfaces#}
+{% if ip_tacacs_source_interfaces is defined and ip_tacacs_source_interfaces is not none %}
+{%     for ip_tacacs_source_interface in ip_tacacs_source_interfaces %}
+!
+ip tacacs {% if ip_tacacs_source_interface['vrf'] is defined and ip_tacacs_source_interface['vrf'] is not none %}vrf {{ ip_tacacs_source_interface['vrf'] }} {% endif %}source-interface {{ ip_tacacs_source_interface['name'] }}
+{%      endfor %}
+{% endif %}

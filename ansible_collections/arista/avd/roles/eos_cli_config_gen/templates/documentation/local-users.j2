@@ -5,7 +5,7 @@
 | User | Privilege | role |
 | ---- | --------- | ---- |
 {%     for local_user in local_users | arista.avd.natural_sort %}
-| {{ local_user }} | {{ local_users[local_user].privilege }} | {{ local_users[local_user].role }} |
+| {{ local_user }} | {{ local_users[local_user].privilege }} | {% if local_users[local_user].role is defined %}{{ local_users[local_user].role }}{% else %}N/A{% endif %} |
 {%     endfor %}
 
 ### Local Users Device Configuration

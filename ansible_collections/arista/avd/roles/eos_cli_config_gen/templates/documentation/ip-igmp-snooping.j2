@@ -1,0 +1,19 @@
+{% if ip_igmp_snooping is defined and ip_igmp_snooping is not none %}
+### IP IGMP Snooping Summary
+{%   if ip_igmp_snooping.vlans is defined and ip_igmp_snooping.vlans is not none %}
+
+| VLAN | IGMP Snooping |
+| --- | --------------- |
+{%       for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
+{%          if ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == false %}
+| {{ vlan }} | Disabled |
+{%          endif %}
+{%       endfor %}
+
+### IP IGMP Snooping Device Configuration
+
+```eos
+{% include 'eos/ip-igmp-snooping.j2' %}
+```
+{%   endif %}
+{% endif %}

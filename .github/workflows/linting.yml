@@ -1,30 +1,17 @@
-name: Code Linting
-on: 
+name: Commit check
+on:
   push:
-    branches-ignore:
-      - master
-    tags-ignore:
-      - '*'
-    paths:
-      - 'ansible_collections/arista/avd/**'
-
+  pull_request:
 jobs:
-  'lint-yaml':
-    name: Run YAML Linting collection
+  'pre-commit':
+    name: Run pre-commit validation hooks
     runs-on: ubuntu-latest
+    container: avdteam/base:3.6
     steps:
       - uses: actions/checkout@master
-      - name: 'Lint YAML Content'
+      - name: Install Pre Commit
         run: |
-          sudo apt-get install -y yamllint
-          sh .github/lint-yaml
-  'lint-python':
-    name: Run PYTHON Linting
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-      - name: 'Lint Python code in plugins'
+          pip --no-cache-dir install -r development/requirements-dev.txt
+      - name: 'Pre Commit run'
         run: |
-          pip install wheel
-          pip install pylint
-          sh .github/lint-python
+          make pre-commit

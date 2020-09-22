@@ -1,0 +1,99 @@
+---
+
+# Hardware Validation Tests
+
+- name: Gather power supplies status
+  eos_command:
+    commands: "show system environment power | json"
+  register: system_environment_power
+  tags:
+    - hardware
+
+- name: Validate power supplies status
+  assert:
+    that:
+      - powerSupply.value.state == 'ok'
+    fail_msg: Power supply state is "{{ powerSupply.value.state }}"
+    quiet: true
+  loop: "{{ system_environment_power.stdout_lines.0.powerSupplies | dict2items }}"
+  loop_control:
+    loop_var: powerSupply
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: power_supplies_results
+  tags:
+    - hardware
+
+- name: Gather system environment fan status
+  eos_command:
+    commands: "show system environment cooling | json"
+  register: system_environment_cooling
+  tags:
+    - hardware
+
+- name: Validate fan status (power supplies)
+  assert:
+    that:
+      - powerSupplySlot.status == 'ok'
+    fail_msg: fan status is "{{ powerSupplySlot.status }}"
+    quiet: true
+  loop: "{{ system_environment_cooling.stdout_lines.0.powerSupplySlots }}"
+  loop_control:
+    loop_var: powerSupplySlot
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: fan_power_supplies_results
+  tags:
+    - hardware
+
+- name: Validate fan status (fan tray)
+  assert:
+    that:
+      - fanTraySlot.status == 'ok'
+    fail_msg: fan status is "{{ fanTraySlot.status }}"
+    quiet: true
+  loop: "{{ system_environment_cooling.stdout_lines.0.fanTraySlots }}"
+  loop_control:
+    loop_var: fanTraySlot
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: fan_tray_status_results
+  tags:
+    - hardware
+
+- name: Gather system environment temperature
+  eos_command:
+    commands: "show system environment temperature | json"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: environment_temperature
+  tags:
+    - hardware
+
+- name: Validate system temperature
+  assert:
+    that:
+      - environment_temperature.stdout[0].systemStatus == "temperatureOk"
+    fail_msg: system temperature is "{{ environment_temperature.stdout[0].systemStatus }}"
+    quiet: true
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: environment_temperature_results
+  tags:
+    - hardware
+
+- name: Gather transceivers inventory
+  eos_command:
+    commands: "show inventory | json"
+  register: inventory
+  tags:
+    - hardware
+
+- name: Validate transceivers manufacturers
+  assert:
+    that:
+      - "xcvrSlot.value.mfgName in ['Not Present', 'Arastra, Inc.', 'Arista Networks']"
+    fail_msg: transceivers manufacturers is "{{ xcvrSlot.value.mfgName }}"
+    quiet: true
+  loop: "{{ inventory.stdout_lines.0.xcvrSlots | dict2items }}"
+  loop_control:
+    loop_var: xcvrSlot
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: transceiver_inventory_results
+  tags:
+    - hardware

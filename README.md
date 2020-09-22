@@ -1,10 +1,10 @@
-# Ansible Collection For Arista Validate Designs - arista.avd
+# Ansible Collection For Arista Validated Designs - arista.avd
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 **Table of Contents:**
 
-- [Ansible Collection For Arista Validate Designs - arista.avd](#ansible-collection-for-arista-validate-designs---aristaavd)
+- [Ansible Collection For Arista Validated Designs - arista.avd](#ansible-collection-for-arista-validated-designs---aristaavd)
   - [About](#about)
   - [Project Documentation](#project-documentation)
   - [Installation](#installation)
@@ -13,9 +13,10 @@
   - [Example Playbooks](#example-playbooks)
   - [Examples](#examples)
   - [Additional Resources](#additional-resources)
-  - [License](#license)
   - [Ask a question](#ask-a-question)
   - [Contributing](#contributing)
+  - [Branching Model](#branching-model)
+  - [License](#license)
 
 ## About
 
@@ -50,11 +51,12 @@ The documentation how to leverage ansible-avd collection is located here: **[ari
 - treelib `1.5.5`
 - pytest `5.3.4`
 - pytest-html `2.0.1`
+- cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-pip3 install -r requirements.txt
+pip3 install -r development/requirements.txt
 ```
 
 requirements.txt content:
@@ -67,6 +69,7 @@ requests==2.22.0
 treelib==1.5.5
 pytest==5.3.4
 pytest-html==2.0.1
+cvprac==1.0.4
 ```
 
 **Ansible Configuration INI file:**
@@ -80,6 +83,8 @@ jinja2_extensions=jinja2.ext.loopcontrols,jinja2.ext.do
 duplicate_dict_key=error
 ```
 
+> **_NOTE:_** When using ansible-cvp modules, the user that is executing the ansible-playbook has to have access to both CVP and the EOS CLI.
+
 ### Installation from ansible-galaxy
 
 Ansible galaxy hosts all stable version of this collection. Installation from ansible-galaxy is the most convenient approach for consuming `arista.avd` content
@@ -92,29 +97,41 @@ ansible-galaxy collection install arista.avd
 
 **An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-cvp.gif)
 
 ```yml
 - hosts: DC1_FABRIC
-
   tasks:
-
     - name: generate intended variables
       import_role:
          name: arista.avd.eos_l3ls_evpn
-
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
 
+- hosts: CVP
+  tasks:
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
+Execute eos_state_validation playbook once change control has been approved and deployed to devices in CVP.
+Note: To run this playbook, ansible_host **must** be configured in your inventory for every EOS device. eAPI access **must** be configured and allowed in your networks.
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: audit fabric state using EOS eAPI connection
+      import_role:
+         name: arista.avd.eos_validate_state
+```
+
 **An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
 
-![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
+![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -129,9 +146,13 @@ ansible-galaxy collection install arista.avd
       import_role:
          name: arista.avd.eos_cli_config_gen
 
-    - name: deploy configuration to device
+    - name: deploy configuration via eAPI
       import_role:
          name: arista.avd.eos_config_deploy_eapi
+
+    - name: audit fabric state using EOS eAPI connection
+      import_role:
+         name: arista.avd.eos_validate_state
 ```
 
 ## Examples
@@ -147,10 +168,6 @@ ansible-galaxy collection install arista.avd
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 
-## License
-
-Project is published under [Apache 2.0 License](LICENSE)
-
 ## Ask a question
 
 Support for this `arista.avd` collection is provided by the community directly in this repository. Easiest way to get support is to open [an issue](https://github.com/aristanetworks/ansible-avd/issues).
@@ -160,3 +177,14 @@ Support for this `arista.avd` collection is provided by the community directly i
 Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
 
 You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
+
+## Branching Model
+
+- The __`devel`__ branch corresponds to the release actively under development.
+- The __`releases/x.x.x`__ branches correspond to stable releases.
+- Fork repository and create a branch based on __`devel`__ to set up a dev environment if you want to open a PR.
+- See the ansible-avd release for information about active branches.
+
+## License
+
+Project is published under [Apache 2.0 License](LICENSE)
