@@ -1,0 +1,84 @@
+---
+
+# Interface State Tests
+
+- name: Gather interfaces state
+  eos_command:
+    commands: "show interfaces description | json"
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: interfaces_state
+  tags:
+    - interfaces_state
+
+- name: Validate Ethernet interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus == "up"
+      - interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus == "up"
+    fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[ethernet_interface.key].lineProtocolStatus }}"
+    quiet: true
+  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: ethernet_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: ethernet_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Port-Channel interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus == "up"
+      - interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus == "up"
+    fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[port_channel_interface.key].lineProtocolStatus }}"
+    quiet: true
+  loop: "{{ port_channel_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: port_channel_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: port_channel_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vlan interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus == "up"
+      - interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus == "up"
+    fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[vlan_interface.key].lineProtocolStatus }}"
+    quiet: true
+  loop: "{{ vlan_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: vlan_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: vlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Vxlan interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus == "up"
+      - interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus == "up"
+    fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus }}"
+    quiet: true
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: (vxlan_tunnel_interface is defined and vxlan_tunnel_interface is not none)
+  register: vxlan_interface_state_results
+  tags:
+    - interfaces_state
+
+- name: Validate Loopback interfaces state
+  assert:
+    that:
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].interfaceStatus == "up"
+      - interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].lineProtocolStatus == "up"
+    fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions[loopback_interface.key].lineProtocolStatus }}"
+    quiet: true
+  loop: "{{ loopback_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: loopback_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  register: loopback_interface_state_results
+  tags:
+    - interfaces_state

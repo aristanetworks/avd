@@ -1,0 +1,179 @@
+{# AVD State Validation Report - CSV #}
+test_id,node,test_category,test_description,test,result,failure_reason
+{% set test_id = namespace(value=0) %}
+{# Hardware results - power supplies status #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].power_supplies_results is defined and hostvars[node].power_supplies_results.results is defined %}
+{%         for result in hostvars[node].power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Hardware,Power supply state,Power supply {{ result.powerSupply.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - fan status (power supplies) #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].fan_power_supplies_results is defined and hostvars[node].fan_power_supplies_results.results is defined %}
+{%         for result in hostvars[node].fan_power_supplies_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Hardware,fan status (power supplies),{{ result.powerSupplySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - fan status (fan tray) #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].fan_tray_status_results is defined and hostvars[node].fan_tray_status_results.results is defined %}
+{%         for result in hostvars[node].fan_tray_status_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Hardware,fan status (fan tray),Tray {{ result.fanTraySlot.label }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Hardware results - temperature #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].environment_temperature_results is defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Hardware,temperature,system temperature,{% if hostvars[node].environment_temperature_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].environment_temperature_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# Hardware results - transceivers manufacturers #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].transceiver_inventory_results is defined and hostvars[node].transceiver_inventory_results.results is defined %}
+{%         for result in hostvars[node].transceiver_inventory_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Hardware,transceivers manufacturers,port {{ result.xcvrSlot.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# NTP Status Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].ntp_status_results is defined and hostvars[node].ntp_status_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},NTP,Synchronised with NTP server,NTP,{% if hostvars[node].ntp_status_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].ntp_status_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# Ethernet Interface State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].ethernet_interface_state_results is defined and hostvars[node].ethernet_interface_state_results.results is defined %}
+{%         for result in hostvars[node].ethernet_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Interface State,Ethernet Interface Status & Line Protocol == "up",{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Port-Channel Interface State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].port_channel_interface_state_results is defined and hostvars[node].port_channel_interface_state_results.results is defined %}
+{%         for result in hostvars[node].port_channel_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Interface State,Port-Channel Interface Status & Line Protocol == "up",{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Vlan Interface State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].vlan_interface_state_results is defined and hostvars[node].vlan_interface_state_results.results is defined %}
+{%         for result in hostvars[node].vlan_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Interface State,Vlan Interface Status & Line Protocol == "up",{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Vxlan Interface State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].vxlan_interface_state_results is defined and hostvars[node].vxlan_interface_state_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Interface State,Vxlan Interface Status & Line Protocol == "up",Vxlan1,{% if hostvars[node].vxlan_interface_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].vxlan_interface_state_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# Loopback Interface State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].loopback_interface_state_results is defined and hostvars[node].loopback_interface_state_results.results is defined %}
+{%         for result in hostvars[node].loopback_interface_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Interface State,Loopback Interface Status & Line Protocol == "up",{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# LLDP Topology Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].lldp_topology_results is defined and hostvars[node].lldp_topology_results.results is defined %}
+{%         for result in hostvars[node].lldp_topology_results.results %}
+{%             if result.skipped is not defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},LLDP Topology,lldp topology - validate peer and interface,{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%             endif %}
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# mlag_state_results Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].mlag_state_results is defined and hostvars[node].mlag_state_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},MLAG,MLAG State active & Status connected,MLAG,{% if hostvars[node].mlag_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].mlag_state_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# IP Reachability test - point-to-point links Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].ip_reachability_results is defined and hostvars[node].ip_reachability_results.results is defined %}
+{%         for result in hostvars[node].ip_reachability_results.results %}
+{%             if result.skipped is not defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},IP Reachability,ip reachability test p2p links,Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} | Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%             endif %}
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# ArBGP State Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].arbgp_state_results is defined and hostvars[node].arbgp_state_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},BGP,ArBGP is configured and operating,ArBGP,{% if hostvars[node].arbgp_state_results.failed == false %}PASS{% else %}FAIL,{{ hostvars[node].arbgp_state_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}
+{# ip bgp neighbors peer state - IPv4-UNDERLAY-PEERS Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].ip_bgp_peer_state_results is defined and hostvars[node].ip_bgp_peer_state_results.results is defined %}
+{%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
+{%             if result.skipped is not defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},BGP,ip bgp peer state established (ipv4),bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%             endif %}
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# bgp evpn neighbors peer state - IPv4-UNDERLAY-PEERS Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].ip_bgp_peer_state_results is defined and hostvars[node].ip_bgp_peer_state_results.results is defined %}
+{%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
+{%             if result.skipped is not defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},BGP,bgp evpn peer state established (evpn),bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%             endif %}
+{%         endfor %}
+{%    endif %}
+{% endfor %}
+{# Reload Cause Results #}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].reload_cause_results is defined and hostvars[node].reload_cause_results.skipped is not defined %}
+{%         set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Reload Cause,Reload Cause: Reload requested by the user,Reload Cause,{% if hostvars[node].reload_cause_results.failed == false %}PASS{% else %}FAIL,Reload Cause: {{ hostvars[node].reload_cause_results.msg }}{% endif %}
+
+{%    endif %}
+{% endfor %}

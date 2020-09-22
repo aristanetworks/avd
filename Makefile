@@ -3,6 +3,10 @@ CURRENT_DIR = $(shell pwd)
 ANSIBLE_TEST ?= $(shell which ansible-test)
 # option to run ansible-test sanity: must be either venv or docker (default is docker)
 ANSIBLE_TEST_MODE ?= docker
+# Root path for MKDOCS content
+WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
+COMPOSE_FILE ?= development/docker-compose.yml
+MUFFET_TIMEOUT ?= 60
 
 .PHONY: help
 help: ## Display help message
@@ -65,6 +69,26 @@ pre-commit-all: ## Execute pre-commit validation for all files
 playbook-validation: ## Run script to validate playbooks defined under testing/ folder
 	sh .github/run-test-playbooks
 
+
+#########################################
+# Documentation actions					#
+#########################################
+.PHONY: webdoc
+webdoc: ## Build documentation to publish static content
+	( cd $(WEBDOC_BUILD) ; \
+	python ansible2rst.py ; \
+	mkdir ../modules/ ; \
+	find . -name '*.rst' -exec pandoc {} --from rst --to gfm -o ../modules/{}.md \;)
+	cp $(CURRENT_DIR)/contributing.md $(WEBDOC_BUILD)/.. ;\
+	cp $(CURRENT_DIR)/development/README.md $(WEBDOC_BUILD)/../installation/development.md ;\
+	cp -r $(CURRENT_DIR)/media $(WEBDOC_BUILD)/../ ;\
+	cd $(CURRENT_DIR)
+	mkdocs build -f mkdocs.yml
+
+.PHONY: check-avd-404
+check-avd-404: ## Check local 404 links for AVD documentation
+	docker run --rm --network container:webdoc_avd raviqqe/muffet http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
+
 #########################################
 # Misc Actions (configure CI runner) 	#
 #########################################
@@ -73,14 +97,15 @@ playbook-validation: ## Run script to validate playbooks defined under testing/ 
 github-configure-ci: github-configure-ci-python3 github-configure-ci-ansible ## Configure CI environment to run GA (Ubuntu:latest LTS)
 
 .PHONY: github-configure-ci-ansible
-github-configure-ci-ansible: ## Install Ansible Test on GA (Ubuntu:latest LTS)
+github-configure-ci-ansible: ## Install Ansible Test 2.9 on GA (Ubuntu:latest LTS)
 	sudo apt-get update
 	sudo apt-get install -y gnupg2
 	sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367
-	sudo echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
-	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
+	sudo echo "deb http://ppa.launchpad.net/ansible/ansible-2.9/ubuntu bionic main" | sudo tee /etc/apt/sources.list.d/ansible.list
+	sudo echo "deb-src http://ppa.launchpad.net/ansible/ansible-2.9/ubuntu bionic main" | sudo tee -a /etc/apt/sources.list.d/ansible.list
 	sudo apt-get update
-	sudo apt-get install -y ansible-test
+	sudo DEBIAN_FRONTEND=noninteractive apt-get install -q -y ansible-test
+
 
 .PHONY: github-configure-ci-python3
 github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:latest LTS)
@@ -94,3 +119,11 @@ install-requirements: ## Install python requirements for generic purpose
 	pip3 install --upgrade wheel
 	pip3 install -r development/requirements.txt
 	pip3 install -r development/requirements-dev.txt
+
+.PHONY: install-docker
+install-docker: ## Install docker
+	sudo apt install -q -y apt-transport-https ca-certificates curl software-properties-common
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+	sudo apt update
+	sudo apt install -q -y docker-ce

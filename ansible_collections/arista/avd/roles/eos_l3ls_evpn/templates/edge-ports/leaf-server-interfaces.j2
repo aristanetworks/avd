@@ -14,6 +14,12 @@
 {%                 endif %}
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
+{%                 if port_profiles[adapter.profile].spanning_tree_portfast is defined %}
+    spanning_tree_portfast: {{ port_profiles[adapter.profile].spanning_tree_portfast }}
+{%                 endif %}
+{%                 if port_profiles[adapter.profile].spanning_tree_bpdufilter is defined %}
+    spanning_tree_bpdufilter: {{ port_profiles[adapter.profile].spanning_tree_bpdufilter }}
+{%                 endif %}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}
     native_vlan: {{ port_profiles[adapter.profile].native_vlan }}
 {%                 endif %}
@@ -22,13 +28,13 @@
       id: {{ channel_group_id }}
       mode: "{{ adapter.port_channel.mode }}"
 {%                 endif %}
-    profile: {{ adapter.profile }}
 {%                 if port_profiles[adapter.profile].flowcontrol is defined %}
     flowcontrol:
 {%                     if port_profiles[adapter.profile].flowcontrol.received is defined %}
       received: {{ port_profiles[adapter.profile].flowcontrol.received }}
 {%                     endif %}
 {%                 endif %}
+    profile: {{ adapter.profile }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

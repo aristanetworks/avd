@@ -7,5 +7,4 @@ ip domain lookup vrf {{ ip_domain_lookup.source_interfaces[source].vrf }} source
 ip domain lookup source-interface {{ source }}
 {%              endif %}
 {%     endfor %}
-!
 {% endif %}

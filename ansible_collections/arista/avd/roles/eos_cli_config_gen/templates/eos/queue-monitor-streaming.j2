@@ -1,7 +1,10 @@
 {% if queue_monitor_streaming is defined and queue_monitor_streaming is not none %}
+!
 queue-monitor streaming
+{%    if queue_monitor_streaming.vrf is defined %}
+   vrf {{ queue_monitor_streaming.vrf }}
+{%    endif %}
 {%    if queue_monitor_streaming.enable is defined and queue_monitor_streaming.enable == true %}
    no shutdown
 {%    endif %}
-!
 {% endif %}

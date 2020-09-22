@@ -1,5 +1,6 @@
 {% if event_handlers is defined and event_handlers is not none %}
 {%     for handler in event_handlers %}
+!
 event-handler {{ handler }}
 {%         if event_handlers[handler].action is defined and event_handlers[handler].action_type is defined %}
    action {{ event_handlers[handler].action_type }} {{ event_handlers[handler].action }}
@@ -17,6 +18,5 @@ event-handler {{ handler }}
       regex {{ event_handlers[handler].regex }}
 {%             endif %}
 {%         endif %}
-!
 {%    endfor %}
 {% endif %}

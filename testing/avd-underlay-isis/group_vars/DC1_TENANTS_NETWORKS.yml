@@ -1,0 +1,42 @@
+---
+# DC1 Tenants Networks
+# Documentation of Tenant specific information - Vlans/VRFs
+tenants:
+  # Tenant A Specific Information - VRFs / VLANs
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      Tenant_A_OP_Zone:
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          110:
+            name: Tenant_A_OP_Zone_1
+            tags: [opzone]
+            enabled: true
+            ip_subnet: 10.1.10.0/24
+  #         111:
+  #           vni_override: 50111
+  #           name: Tenant_A_OP_Zone_2
+  #           tags: [opzone]
+  #           enabled: true
+  #           ip_subnet: 10.1.11.0/24
+  #         114:
+  #           vni_override: 50114
+  #           name: Tenant_A_OP_Zone_3
+  #           tags: [opzone]
+  #           enabled: true
+  #           ip_subnet: 10.1.14.0/24
+
+# Tenant D Specific Information - Pure L2 tenant
+  Tenant_D:
+    mac_vrf_vni_base: 40000
+    l2vlans:
+      411:
+        name: 'Tenant_D_OP_Zone_1'
+        tags: [opzone]
+      412:
+        name: 'Tenant_D_OP_Zone_2'
+        tags: [opzone]

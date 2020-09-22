@@ -18,6 +18,7 @@
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
       - [MLAG dual-attached server scenario](#mlag-dual-attached-server-scenario)
+      - [EVPN A/A ESI dual-attached server scenario](#evpn-aa-esi-dual-attached-server-scenario)
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
@@ -42,7 +43,7 @@ The **eos_l3ls_evpn** role:
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-![Figure 1: Ansible Role eos_l3ls_evpn](media/figure-1-role-eos_l3ls_evpn.gif)
+![Figure 1: Ansible Role eos_l3ls_evpn](media/role_eos_l3ls_evpn.gif)
 
 **Inputs:**
 
@@ -95,6 +96,7 @@ local_users:
   < username_1 >:
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
     role: < Specify a role for the user >
+    no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     sha512_password: "< SHA512 ENCRYPTED password >"
 
   < username_2 >:
@@ -234,8 +236,8 @@ mac_address_table:
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
   - BGP (default)
-  - OSPF
-  - ISIS is planned for a future release.
+  - OSPF.
+  - ISIS.
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
 - The variables should be applied to all devices in the fabric.
@@ -248,12 +250,16 @@ mac_address_table:
 fabric_name: < Fabric_Name >
 
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < BGP or OSPF | Default -> BGP >
+underlay_routing_protocol: < BGP or OSPF or ISIS | Default -> BGP >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
-underlay_ospf_max_lsa: < lsa | default -> 12000 >
+underlay_ospf_max_lsa: < lsa | Default -> 12000 >
+
+# Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
+isis_area_id: < isis area | Default -> "49.0001" >
+isis_site_id: < isis site ID | Default -> "0001" >
 
 # Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
@@ -384,7 +390,7 @@ bgp_peer_groups:
 The fabric topology variables define the connectivity between the spines, L3 leafs, and L2 leafs.
 The variables should be applied to all devices in the fabric.
 
-![Figure 2: Topology - naming convention](media/figure-2-topology.gif)
+![Figure 2: Topology - naming convention](media/topology.gif)
 
 - Connectivity is defined from the child's device perspective.
   - Source uplink interfaces and parent interfaces are defined on the child.
@@ -1046,6 +1052,10 @@ port_profiles:
     # Interface vlans | required
     vlans: < vlans as string >
 
+    # Spanning Tree
+    spanning_tree_portfast: < edge | network >
+    spanning_tree_bpdufilter: < true | false >
+
     # Flow control | Optional
     flowcontrol:
       received: < received | send | on >
@@ -1117,9 +1127,14 @@ servers:
           state: < present | absent >
           description: < port_channel_description >
           mode: < active | passive | on >
-
-
+          short_esi: < 0000:0000:0000 >
 ```
+
+`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../../plugins/filter/esi_management.py) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
 
 **Example:**
 
@@ -1129,6 +1144,7 @@ port_profiles:
   VM_Servers:
     mode: trunk
     vlans: "110-111,120-121,130-131"
+    spanning_tree_portfast: edge
 
   MGMT:
     mode: access
@@ -1215,6 +1231,36 @@ servers:
           description: PortChanne1
           mode: active
 ```
+
+#### EVPN A/A ESI dual-attached server scenario
+
+MLAG dual-homed connection:
+
+- From `E0` to `DC1-SVC3A` interface `Eth10`
+- From `E1` to `DC1-SVC4A` interface `Eth10`
+
+```yaml
+servers:
+  server01:
+    rack: RackB
+    adapters:
+
+      - server_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        profile: VM_Servers
+        port_channel:
+          state: present
+          description: PortChanne1
+          mode: active
+          short_esi: 0303:0202:0101
+```
+
+`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../../plugins/filter/esi_management.py) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
 
 ### Variable to attach additional configlets
 

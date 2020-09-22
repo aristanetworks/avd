@@ -1,0 +1,26 @@
+{# eos - router ospf #}
+{% if router_isis is defined and router_isis is not none %}
+router isis {{ router_isis.instance }}
+   net {{ router_isis.net }}
+   is-type {{ router_isis.is_type }}
+   router-id ipv4 {{ router_isis.router_id }}
+   log-adjacency-changes
+   !
+{%     if router_isis.address_family is defined and router_isis.address_family is iterable %}
+{%          for address_family in router_isis.address_family %}
+   address-family {{ address_family }}
+{%             for af_default in router_isis.isis_af_defaults %}
+      {{af_default}}
+{%             endfor %}
+{%          endfor %}
+{%     endif %}
+   !
+{%     if router_isis.segment_routing_mpls is defined %}
+   segment-routing mpls
+{%         if router_isis.segment_routing_mpls.router_id is defined %}
+      router-id {{ router_isis.segment_routing_mpls.router_id }}
+{%         endif %}
+      no shutdown
+{%     endif %}
+!
+{% endif %}

@@ -1,0 +1,10 @@
+eos_validate_state_validation_mode_loose: true
+
+# Format for path to r/w reports. Sync with default values configured in arista.avd.build_output_folders
+root_dir: '{{ inventory_dir }}'
+eos_validate_state_name: 'reports'
+eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+
+# Reports name
+eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
+eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'

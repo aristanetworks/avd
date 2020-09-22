@@ -1,0 +1,6 @@
+{% if radius_servers is defined and radius_servers is not none %}
+{%     for radius_server in radius_servers %}
+!
+radius-server host {{ radius_server.host }}{% if radius_server.vrf is defined %} vrf {{ radius_server.vrf }}{% endif %} key 7 {{ radius_server.key }}
+{%     endfor %}
+{% endif %}

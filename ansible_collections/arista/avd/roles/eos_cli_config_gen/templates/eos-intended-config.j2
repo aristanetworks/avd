@@ -1,6 +1,5 @@
 {# Device Configuration #}
 !RANCID-CONTENT-TYPE: arista
-!
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# aliases #}
@@ -9,6 +8,8 @@
 {% include 'eos/hardware-counters.j2' %}
 {# daemon TerminAttr #}
 {% include 'eos/daemon-terminattr.j2' %}
+{# ip dhcp relay #}
+{% include 'eos/ip-dhcp-relay.j2' %}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
 {# ip igmp snooping #}
@@ -18,14 +19,17 @@
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
 {# cannot be disabled in current EOS releases #}
-transceiver qsfp default-mode 4x10G
 !
+transceiver qsfp default-mode 4x10G
 {# service routing protocols model #}
 {% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}
 {% include 'eos/queue-monitor-length.j2' %}
+{# lldp #}
+{% include 'eos/lldp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
+!
 hostname {{ inventory_hostname }}
 {# domain lookup #}
 {% include 'eos/domain-lookup.j2' %}
@@ -35,6 +39,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/dns-domain.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# radius server #}
+{% include 'eos/radius-server.j2' %}
+{# aaa server groups #}
+{% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
 {% include 'eos/router-l2-vpn.j2' %}
 {# sflow #}
@@ -51,14 +59,14 @@ hostname {{ inventory_hostname }}
 {% include 'eos/unsupported-transeiver.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
-{# aaa server groups #}
-{% include 'eos/aaa-server-groups.j2' %}
 {# aaa authentication #}
 {% include 'eos/aaa-authentication.j2' %}
 {# aaa authorization #}
 {% include 'eos/aaa-authorization.j2' %}
 {# aaa accounting #}
 {% include 'eos/aaa-accounting.j2' %}
+{# aaa root #}
+{% include 'eos/aaa-root.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
 {# clock timezone #}
@@ -110,6 +118,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# Community-lists #}
+{% include 'eos/community-lists.j2' %}
 {# route-maps #}
 {% include 'eos/route-maps.j2' %}
 {# router bfd #}
@@ -124,6 +134,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-ospf.j2' %}
 {# router pim sparse mode configuration #}
 {% include 'eos/router-pim-sparse-mode.j2' %}
+{# router isis configuration #}
+{% include 'eos/router-isis.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}
@@ -140,4 +152,5 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+!
 end

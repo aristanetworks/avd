@@ -51,11 +51,12 @@ The documentation how to leverage ansible-avd collection is located here: **[ari
 - treelib `1.5.5`
 - pytest `5.3.4`
 - pytest-html `2.0.1`
+- cvprac `1.0.4`
 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-pip3 install -r requirements.txt
+pip3 install -r development/requirements.txt
 ```
 
 requirements.txt content:
@@ -68,6 +69,7 @@ requests==2.22.0
 treelib==1.5.5
 pytest==5.3.4
 pytest-html==2.0.1
+cvprac==1.0.4
 ```
 
 **Ansible Configuration INI file:**
@@ -95,29 +97,41 @@ ansible-galaxy collection install arista.avd
 
 **An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/figure-1-example-playbook-evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-cvp.gif)
 
 ```yml
 - hosts: DC1_FABRIC
-
   tasks:
-
     - name: generate intended variables
       import_role:
          name: arista.avd.eos_l3ls_evpn
-
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
 
+- hosts: CVP
+  tasks:
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
 ```
 
+Execute eos_state_validation playbook once change control has been approved and deployed to devices in CVP.
+Note: To run this playbook, ansible_host **must** be configured in your inventory for every EOS device. eAPI access **must** be configured and allowed in your networks.
+
+```yml
+- hosts: DC1_FABRIC
+
+  tasks:
+
+    - name: audit fabric state using EOS eAPI connection
+      import_role:
+         name: arista.avd.eos_validate_state
+```
+
 **An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
 
-![Figure 2: Example Playbook CloudVision Deployment](media/figure-2-example-playbook-evpn-deploy-eapi.gif)
+![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -132,9 +146,13 @@ ansible-galaxy collection install arista.avd
       import_role:
          name: arista.avd.eos_cli_config_gen
 
-    - name: deploy configuration to device
+    - name: deploy configuration via eAPI
       import_role:
          name: arista.avd.eos_config_deploy_eapi
+
+    - name: audit fabric state using EOS eAPI connection
+      import_role:
+         name: arista.avd.eos_validate_state
 ```
 
 ## Examples

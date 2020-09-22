@@ -1,5 +1,6 @@
 {# Management API HTTP #}
 {% if management_api_http is defined and management_api_http is not none %}
+!
 management api http-commands
 {%     if management_api_http.enable_https is defined and management_api_http.enable_https == true %}
 {%     else %}
@@ -22,5 +23,4 @@ management api http-commands
 {%             endif %}
 {%-         endfor %}
 {%-     endif %}
-!
 {% endif %}
