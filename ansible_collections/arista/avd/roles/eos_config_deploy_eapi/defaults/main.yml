@@ -1,16 +1,14 @@
-# Peform config snapshop before config replace
-
-eos_config_deploy_eapi_snapshot: false
+# Peform config backup before config replace
+eos_config_deploy_eapi_pre_running_config_backup: false
 
 # Root directory where to build output structure
 root_dir: '{{ inventory_dir }}'
 
+# Backup directories path and filenames
+post_running_config_backup_filename: "{{ inventory_hostname }}_post_running-config.conf"
+post_running_config_backup_dir_name: 'config_backup'
+post_running_config_backup_dir: '{{ root_dir }}/{{ post_running_config_backup_dir_name }}'
 
-# Directory Path and filename
-running_config_backup_filename: "{{ inventory_hostname }}_running-config.conf"
-running_config_backup_dir_name: 'config_backup'
-running_config_backup_dir: '{{ root_dir }}/{{ running_config_backup_dir_name }}'
-
-running_config_snapshot_filename: "{{ inventory_hostname }}_pre_running-config.conf"
-running_config_snapshot_dir_name: 'config_backup'
-running_config_snapshot_dir: '{{ root_dir }}/{{ running_config_snapshot_dir_name }}'
+pre_running_config_backup_filename: "{{ inventory_hostname }}_pre_running-config.conf"
+pre_running_config_backup_dir_name: 'config_backup'
+pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_name }}'

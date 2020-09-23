@@ -5,6 +5,6 @@
   eos_config:
     backup: yes
     backup_options:
-      filename: "{{ running_config_backup_filename }}"
-      dir_path: "{{ running_config_backup_dir }}"
+      filename: "{{ post_running_config_backup_filename }}"
+      dir_path: "{{ post_running_config_backup_dir }}"
   listen: "backup config"
