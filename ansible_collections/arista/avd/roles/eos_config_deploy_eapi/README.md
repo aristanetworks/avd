@@ -35,9 +35,11 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Tasks:**
 
-1. Take a snapshop of the running configuration before configuration is replaced - (optional, default false).
+1. Take a backup of the running configuration before configuration is replaced (pre) - (optional, default false).
+   1. Destination: `{{ pre_running_config_backup_dir }}\{{ pre_running_config_backup_filename }}`
 2. Replace configuration on device with intended EOS configuration. If changed, saves to startup-config, and notifies handler to backup configuration.
-3. Backup Configuration: `./config_backup/{{ inventory_hostname }}.cfg` (handler).
+3. Backup Configuration after the configuration is replaced (post) with handler.
+   1. Destination: `{{ post_running_config_backup_dir }}\{{ post_running_config_backup_filename }}`.
 
 ## Default Variables
 
