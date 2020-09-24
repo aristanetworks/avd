@@ -1,5 +1,5 @@
-Role Name
-=========
+Upgrade Tools
+==============
 
 This role can be used to upgrade AVD data structures from 1.0 to 1.1 data model.
 Following data structures will be upgraded:
@@ -29,13 +29,15 @@ To translate the data, provide the list of `{{ DC-name }}_TENANTS_NETWORKS.yml` 
   tasks:
     - name: upgrade
       include_role:
-        name: upgrade_avd_1.0_to_1.1
+        name: upgrade_tools
+      vars:
+        subset: 'v1.0_to_v1.1'
       loop:
         - DC1_TENANTS_NETWORKS.yml
         - DC2_TENANTS_NETWORKS.yml
 ```
 
 License
--------
+--------
 
-BSD
+Project is published under [Apache 2.0 License](../../LICENSE)
