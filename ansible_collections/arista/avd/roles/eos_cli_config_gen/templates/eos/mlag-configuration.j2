@@ -6,8 +6,12 @@ mlag configuration
    local-interface {{ mlag_configuration.local_interface }}
    peer-address {{ mlag_configuration.peer_address }}
 {%   if mlag_configuration.peer_address_heartbeat.peer_ip is defined and mlag_configuration.peer_address_heartbeat.peer_ip is not none %}
-   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}{% if mlag_configuration.peer_address_heartbeat.vrf is defined and mlag_configuration.peer_address_heartbeat.vrf is not none and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
-{%       endif -%}
+{%      if mlag_configuration.peer_address_heartbeat.vrf is defined and mlag_configuration.peer_address_heartbeat.vrf is not none and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
+{# using the default VRF #}
+{%      else %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}
+{%      endif %}
 {%   endif %}
    peer-link {{ mlag_configuration.peer_link }}
 {%   if mlag_configuration.dual_primary_detection_delay is defined and mlag_configuration.dual_primary_detection_delay is not none %}
