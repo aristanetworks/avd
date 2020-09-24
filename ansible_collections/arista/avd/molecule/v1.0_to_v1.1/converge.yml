@@ -1,0 +1,36 @@
+---
+- name: Upgrade from v1.0 to v1.1
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.avd
+  vars:
+    # Inventory dir not defined for localhost (#31087)
+    inventory_dir: "{{playbook_dir}}/inventory"
+  tasks:
+    - name: Upgrade AVD datamodel from v1.0 to v1.1
+      include_role:
+        name: arista.avd.avd_upgrade
+      vars:
+        subset: 'v1.0_to_v1.1'
+      loop:
+        - DC1_TENANTS_NETWORKS.yml
+    - name: Deploy new file version
+      copy:
+        src: '{{ playbook_dir }}/inventory/upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml'
+        dest: '{{ playbook_dir }}/inventory/group_vars/DC1_TENANTS_NETWORKS.yml'
+
+- name: Run AVD process
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: generate intented variables
+      delegate_to: 127.0.0.1
+      import_role:
+         name: arista.avd.eos_l3ls_evpn
+    - name: generate device intended config and documention
+      delegate_to: 127.0.0.1
+      import_role:
+         name: arista.avd.eos_cli_config_gen
