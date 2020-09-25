@@ -25,7 +25,26 @@ tenants:
             name: {{ svi_data['name'] }}
             tags: {{ svi_data['tags'] }}
             enabled: {{ svi_data['enabled'] }}
+            {%- if svi_data['ip_subnet'] is defined %}
             ip_address_virtual: {{ svi_data['ip_subnet'] | ipaddr('net') | ipaddr(1) }}
+            {%- elif svi_data['ip_address_virtual'] is defined %}
+            ip_address_virtual: {{ svi_data['ip_address_virtual'] }}
+            {%- endif %}
         {%- endfor %}
       {%- endfor %}
+    {%- if tenant_data['l2vlans'] is defined %}
+    l2vlans:
+      {%- for l2circuit_id, l2circuit_data in tenant_data['l2vlans'].items() %}
+      {{ l2circuit_id }}:
+        {%- if l2circuit_data['name'] is defined %}
+        name: {{ l2circuit_data['name'] }}
+        {%- endif %}
+        {%- if l2circuit_data['tags'] is defined %}
+        tags: {{ l2circuit_data['tags'] }}
+        {%- endif %}
+        {%- if l2circuit_data['vni_override'] is defined %}
+        vni_override: {{ l2circuit_data['vni_override'] }}
+        {%- endif %}
+      {%- endfor %}
+    {%- endif %}
   {%- endfor %}
