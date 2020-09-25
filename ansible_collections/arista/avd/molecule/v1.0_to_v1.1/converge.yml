@@ -11,7 +11,7 @@
   tasks:
     - name: Upgrade AVD datamodel from v1.0 to v1.1
       include_role:
-        name: arista.avd.avd_upgrade
+        name: arista.avd.upgrade_tools
       vars:
         subset: 'v1.0_to_v1.1'
       loop:
