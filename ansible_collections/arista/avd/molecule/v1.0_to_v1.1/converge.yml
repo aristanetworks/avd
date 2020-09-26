@@ -1,13 +1,8 @@
 ---
 - name: Upgrade from v1.0 to v1.1
-  hosts: localhost
+  hosts: all
   connection: local
   gather_facts: false
-  collections:
-    - arista.avd
-  vars:
-    # Inventory dir not defined for localhost (#31087)
-    inventory_dir: "{{playbook_dir}}/inventory"
   tasks:
     - name: Upgrade AVD datamodel from v1.0 to v1.1
       include_role:
