@@ -20,21 +20,16 @@ To translate the data, provide the list of `{{ ??_TENANTS_NETWORKS }}.yml` files
 
 ```yaml
 ---
-- name: upgrade
-  hosts: localhost
-  connection: local
-  gather_facts: false
-  collections:
-    - arista.avd
+
+- hosts: DC1_FABRIC
   tasks:
-    - name: upgrade
+    - name: upgrade data model
       include_role:
-        name: upgrade_tools
+        name: arista.avd.upgrade_tools
       vars:
         subset: 'v1.0_to_v1.1'
       loop:
         - DC1_TENANTS_NETWORKS.yml
-        - DC2_TENANTS_NETWORKS.yml
 ```
 
 ## Requirements
