@@ -8,7 +8,7 @@ tenants:
   {{ tenant_name }}:
     mac_vrf_vni_base: {{ tenant_data['mac_vrf_vni_base'] | int }}
     vrfs:
-{%     for vrf_name, vrf_data in tenant_data['vrfs'].items() %}
+{%     for vrf_name, vrf_data in tenant_data['vrfs'].items() | sort %}
       {{ vrf_name }}:
         vrf_vni: {{ vrf_data['vrf_vni'] | int }}
 {%         if vrf_data['vtep_diagnostic'] is defined %}
@@ -34,7 +34,7 @@ tenants:
 {%     endfor %}
 {%     if tenant_data['l2vlans'] is defined %}
     l2vlans:
-{%         for l2circuit_id, l2circuit_data in tenant_data['l2vlans'].items() %}
+{%         for l2circuit_id, l2circuit_data in tenant_data['l2vlans'].items() | arista.avd.natural_sort %}
       {{ l2circuit_id }}:
 {%             if l2circuit_data['name'] is defined %}
         name: {{ l2circuit_data['name'] }}
