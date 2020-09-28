@@ -23,6 +23,7 @@ jobs:
           - 'avd-l3ls-isis'
           - 'avd-l3ls-server-connections'
           - 'eos-cli-config-gen'
+          - 'v1.0_to_v1.1'
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3

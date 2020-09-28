@@ -86,7 +86,7 @@ webdoc: ## Build documentation to publish static content
 
 .PHONY: check-avd-404
 check-avd-404: ## Check local 404 links for AVD documentation
-	docker run --rm --network container:webdoc_avd raviqqe/muffet http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
+	docker run --rm --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
 
 #########################################
 # Misc Actions (configure CI runner) 	#
