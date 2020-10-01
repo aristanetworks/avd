@@ -21,6 +21,9 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
   - Home: README.md
+  - Release Notes:
+    - 1.1.x: docs/release-notes/1.1.x.md
+    - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
     - Requirements: docs/installation/requirements.md
