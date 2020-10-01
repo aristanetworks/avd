@@ -1,5 +1,14 @@
 # Release Notes
 
+**Table of Contents:**
+
+- [Release Notes](#release-notes)
+  - [Release 1.1.0](#release-110)
+    - [Data model modifications](#data-model-modifications)
+  - [Release 1.0.2](#release-102)
+  - [Release 1.0.1](#release-101)
+  - [Release 1.0.0](#release-100)
+
 ## Release 1.1.0
 
 Provide major enhancements and data model has been updated!
@@ -86,7 +95,7 @@ router_bgp:
             - "14:14"
 ```
 
-For detail information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.1.0)
+For detailed information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.1.0)
 
 ## Release 1.0.2
 
@@ -98,7 +107,7 @@ Provides minor enhancements and fixes.
 - eos_cli_config_gen
 - eos_config_deploy_cvp
 
-For detail information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.2)
+For detailed information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.2)
 
 ## Release 1.0.1
 
@@ -114,7 +123,7 @@ Provides minor enhancements and fixes.
 - eos_l3ls_evpn
 - eos_cli_config_gen
 
-For detail information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.1)
+For detailed information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.1)
 
 ## Release 1.0.0
 
@@ -136,4 +145,4 @@ Initial release of Ansible AVD
 
 - inventory_to_container
 
-For detail information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.0)
+For detailed information please see the [release tag](https://github.com/aristanetworks/ansible-avd/releases/tag/v1.0.0)
