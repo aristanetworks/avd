@@ -26,7 +26,7 @@ Provide major enhancements and data model has been updated!
 
 ### Data model modifications
 
-This section provides an overview of only tyhe data model that have ***changed*** from the previous release that would require user modifications. See the release notes and role documentation for all new additions.
+This section provides an overview of only the data model that have ***changed*** from the previous release that would require user modifications. See the release notes and role documentation for all new additions.
 
 **eos_l3ls_evpn:**
 
@@ -37,7 +37,7 @@ This section provides an overview of only tyhe data model that have ***changed**
         svis:
           <svi>:
             # ip_subnet: 10.1.30.0/24
-            #< now ip_address_virtual and required to provide gateware ip as opposed to network.>
+            #< now ip_address_virtual and required to provide gateway ip as opposed to network.>
             ip_address_virtual: 10.1.30.1/24
 ```
 
@@ -118,7 +118,7 @@ For detail information please see the [release tag](https://github.com/aristanet
 
 ## Release 1.0.0
 
-Initial releae of Ansible AVD
+Initial release of Ansible AVD
 
 **New Roles:**
 
