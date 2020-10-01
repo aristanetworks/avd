@@ -1,0 +1,22 @@
+name: Test Installation
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron:  '0 6 * * *'
+jobs:
+  'setup':
+    name: 'One liner installation'
+    runs-on: ubuntu-latest
+    container: avdteam/base:3.6
+    steps:
+      - uses: actions/checkout@master
+      - name: Execute one-liner installation
+        run: |
+          cd /tmp/
+          curl -fs https://get.avd.sh | sh
+      - name: Run Makefile commands
+        run: |
+          cd /tmp/arista-ansible/
+          cat Makefile
+          make

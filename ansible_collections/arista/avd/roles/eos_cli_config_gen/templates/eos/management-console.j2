@@ -1,0 +1,8 @@
+{# Management console #}
+{% if management_console is defined and management_console is not none %}
+!
+management console
+{%     if management_console.idle_timeout is defined and management_console.idle_timeout is not none %}
+   idle-timeout {{ management_console.idle_timeout }}
+{%     endif %}
+{% endif %}

@@ -1,0 +1,29 @@
+### Router BFD Multihop Summary
+{% if bfd_multihop is defined and bfd_multihop is not none %}
+{%     if bfd_multihop.interval == 300 and bfd_multihop.min_rx == 300 and bfd_multihop.multiplier == 3 %}
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+| 300 | 300 | 3 |
+
+*No device configuration required - default values
+{%     else %}
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+| {{ bfd_multihop.interval }} | {{ bfd_multihop.min_rx }} | {{ bfd_multihop.multiplier }} |
+
+### Router BFD Multihop Device Configuration
+
+```eos
+{% include 'eos/router-bfd.j2' %}
+```
+{%     endif %}
+{% else %}
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+| 300 | 300 | 3 |
+
+*No device configuration required - default values
+{% endif %}

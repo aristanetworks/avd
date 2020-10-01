@@ -1,0 +1,14 @@
+{# leaf - address family evpn activation #}
+{% if type == "l3leaf" %}
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+{%     if underlay_routing_protocol == "BGP" %}
+      IPv4-UNDERLAY-PEERS:
+        activate: false
+{%     endif %}
+{%     if leaf.mlag == true %}
+      MLAG-IPv4-UNDERLAY-PEER:
+        activate: false
+{%     endif %}
+{% endif %}

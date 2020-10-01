@@ -1,0 +1,37 @@
+---
+
+# IP Reachability tests
+
+- name: Gather ip reachability state (directly connected interfaces)
+  eos_command:
+    commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ ethernet_interface.value.ip_address  | ipaddr('address')}} repeat 1"
+  loop: "{{ethernet_interfaces | default({}, true) | dict2items}}"
+  loop_control:
+    loop_var: ethernet_interface
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (ethernet_interfaces is defined and ethernet_interfaces is not none) and
+    (ethernet_interface.value.type is defined and ethernet_interface.value.type is not none and ethernet_interface.value.type == 'routed') and
+    (ethernet_interface.value.ip_address is defined and ethernet_interface.value.ip_address is not none) and
+    (ethernet_interface.value.peer is defined and ethernet_interface.value.peer is not none) and
+    (ethernet_interface.value.peer_interface is defined and ethernet_interface.value.peer_interface is not none) and
+    (hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] is defined and
+    hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] is not none)
+  register: ip_reachability_state
+  tags:
+    - ip_reachability
+
+- name: Validate ip reachability (directly connected interfaces)
+  assert:
+    that:
+      - ip_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ ip_reachability_state.results }}"
+  loop_control:
+    loop_var: ip_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: ( ip_reachability_test.skipped is not defined )
+  register: ip_reachability_results
+  tags:
+    - ip_reachability

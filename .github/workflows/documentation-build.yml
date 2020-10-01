@@ -1,0 +1,28 @@
+name: mkdoc_deploy
+on:
+  push:
+    branches:
+      - 'devel'
+    paths:
+      - 'mkdocs.yml'
+      - 'ansible_collections/arista/avd/docs/**'
+      - 'ansible_collections/arista/avd/roles/**/README.md'
+jobs:
+  publish:
+    name: 'Update Public documentation'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: 'Setup Python 3 on runner'
+        uses: actions/setup-python@v1.2.0
+        with:
+          python-version: '3.x'
+      - name: 'Build mkdocs content to site folder'
+        run: |
+            pip install -r ansible_collections/arista/avd/docs/requirements.txt
+            make webdoc
+      - name: 'Deploy last version to gh-pages'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            publish_dir: ./site

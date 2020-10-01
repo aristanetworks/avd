@@ -1,0 +1,17 @@
+{# eos - aaa accounting #}
+{% if aaa_accounting is defined and aaa_accounting is not none %}
+!
+{%     if aaa_accounting.exec.default is defined and aaa_accounting.exec.default is not none %}
+{%        if aaa_accounting.exec.default.group is defined and aaa_accounting.exec.default.group is not none %}
+aaa accounting exec default {{ aaa_accounting.exec.default.type }} group {{ aaa_accounting.exec.default.group }}
+{%        endif %}
+{%     endif %}
+{%     if aaa_accounting.commands is defined and aaa_accounting.commands is not none %}
+{%        if aaa_accounting.commands.commands_default is defined and aaa_accounting.commands.commands_default is not none %}
+{%            for command_default in aaa_accounting.commands.commands_default %}
+aaa accounting commands {{ command_default.commands }} default {{ command_default.type }} {% if command_default.group is defined %}group {{ command_default.group }} {% endif %}{% if command_default.logging is defined and command_default.logging == true %}logging{% endif %}
+
+{%            endfor %}
+{%        endif %}
+{%     endif %}
+{% endif %}

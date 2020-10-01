@@ -1,0 +1,50 @@
+# DC1 Tenants Networks
+# Documentation of Tenant specific information - Vlans/VRFs
+
+tenants:
+
+{% for tenant_name, tenant_data in tenants_and_networks['tenants'].items() %}
+  # {{ tenant_name }} Specific Information - VRFs / VLANs
+  {{ tenant_name }}:
+    mac_vrf_vni_base: {{ tenant_data['mac_vrf_vni_base'] | int }}
+    vrfs:
+{%     for vrf_name, vrf_data in tenant_data['vrfs'].items() | sort %}
+      {{ vrf_name }}:
+        vrf_vni: {{ vrf_data['vrf_vni'] | int }}
+{%         if vrf_data['vtep_diagnostic'] is defined %}
+        vtep_diagnostic:
+          loopback: {{ vrf_data['vtep_diagnostic']['loopback'] | int }}
+          loopback_ip_range: {{ vrf_data['vtep_diagnostic']['loopback_ip_range'] }}
+{%         endif %}
+        svis:
+{%         for svi_number, svi_data in vrf_data['svis'].items() %}
+          {{ svi_number | int }}:
+{%             if svi_data['vni_override'] is defined %}
+            vni_override: {{ svi_data['vni_override'] }}
+{%             endif %}
+            name: {{ svi_data['name'] }}
+            tags: {{ svi_data['tags'] }}
+            enabled: {{ svi_data['enabled'] }}
+{%             if svi_data['ip_subnet'] is defined %}
+            ip_address_virtual: {{ svi_data['ip_subnet'] | ipaddr('net') | ipaddr(1) }}
+{%             elif svi_data['ip_address_virtual'] is defined %}
+            ip_address_virtual: {{ svi_data['ip_address_virtual'] }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     if tenant_data['l2vlans'] is defined %}
+    l2vlans:
+{%         for l2circuit_id, l2circuit_data in tenant_data['l2vlans'].items() | arista.avd.natural_sort %}
+      {{ l2circuit_id }}:
+{%             if l2circuit_data['name'] is defined %}
+        name: {{ l2circuit_data['name'] }}
+{%             endif %}
+{%             if l2circuit_data['tags'] is defined %}
+        tags: {{ l2circuit_data['tags'] }}
+{%             endif %}
+{%             if l2circuit_data['vni_override'] is defined %}
+        vni_override: {{ l2circuit_data['vni_override'] }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

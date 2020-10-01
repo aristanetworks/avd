@@ -1,0 +1,27 @@
+---
+# This is an example playbook to execute Ansible tests.
+- name: Deploy Upgrade from v1.0 to v1.1
+  hosts: all
+  connection: local
+  gather_facts: false
+  tasks:
+    - name: Deploy new file version
+      delegate_to: 127.0.0.1
+      run_once: true
+      copy:
+        src: '{{ playbook_dir }}/inventory/upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml'
+        dest: '{{ playbook_dir }}/inventory/group_vars/DC1_TENANTS_NETWORKS.yml'
+
+- name: Run AVD process in Verify section
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: generate intented variables
+      delegate_to: 127.0.0.1
+      import_role:
+        name: arista.avd.eos_l3ls_evpn
+    - name: generate device intended config and documention
+      delegate_to: 127.0.0.1
+      import_role:
+        name: arista.avd.eos_cli_config_gen

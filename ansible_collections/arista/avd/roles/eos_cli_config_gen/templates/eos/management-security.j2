@@ -1,0 +1,10 @@
+{# eos - management security #}
+{% if management_security is defined and management_security is not none %}
+!
+management security
+{%     if management_security.password is defined and management_security.password is not none %}
+{%       if management_security.password.encryption_key_common is defined and management_security.password.encryption_key_common == true %}
+   password encryption-key common
+{%       endif %}
+{%     endif %}
+{% endif %}

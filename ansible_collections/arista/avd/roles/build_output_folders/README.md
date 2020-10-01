@@ -12,31 +12,40 @@ Role support following variables:
 
 ```yaml
 # Root directory where to build output structure
-root_dir: '{{playbook_dir}}'
+# All folder below will be created in this directory folder.
+root_dir: '{{inventory_dir}}'
+
 # Main output directory
 output_dir_name: 'intended'
 # Output for structured YAML files:
 structured_dir_name: 'structured_configs'
-# EOS Configuration Directory name
+# EOS configuration directory name
 eos_config_dir_name: 'configs'
 # Main documentation folder
 documentation_dir_name: 'documentation'
-# Fabric Documentation
+# Fabric documentation
 fabric_dir_name: 'DC1_FABRIC'
 # Device documentation
 devices_dir_name: 'devices'
+# EOS state validation directory name
+eos_validate_state_name: 'reports'
+# EOS config deploy eapi running config backup directory
+post_running_config_backup_dir_name: 'config_backup'
+pre_running_config_backup_dir_name: 'config_backup'
 ```
 
 Role will create following structure:
 
-```
-intended
-├── configs
-└── structured_configs
-|
-documentation
-├── DC1_FABRIC
-└── devices
+```shell
+├── config_backup
+├── documentation
+│   ├── DC1_FABRIC
+│   └── devices
+├── intended
+│   ├── configs
+│   └── structured_configs
+├── reports
+
 ```
 
 If folders already exists, role will delete them and recreate structure.
@@ -55,7 +64,7 @@ Below is an example to use in your playbook to build output folders using defaul
   connection: local
   gather_facts: no
   tasks:
-    - name: 'Reset local folders for output'
+    - name: 'build local folders for output'
       tags: [build]
       import_role:
         name: arista.avd.build_output_folders
@@ -64,4 +73,3 @@ Below is an example to use in your playbook to build output folders using defaul
 ## License
 
 Project is published under [Apache 2.0 License](../../../../../LICENSE)
-

@@ -1,0 +1,13 @@
+{# eos - aaa authentication #}
+{% if aaa_authentication is defined and aaa_authentication is not none %}
+!
+{%     if aaa_authentication.login.default is defined and aaa_authentication.login.default != 'local' %}
+aaa authentication login default {{ aaa_authentication.login.default }}
+{%     endif %}
+{%     if aaa_authentication.login.serial_console is defined and aaa_authentication.login.serial_console is not none %}
+aaa authentication login serial-console {{ aaa_authentication.login.serial_console }}
+{%     endif %}
+{%     if aaa_authentication.dot1x.default is defined and aaa_authentication.dot1x.default is not none %}
+aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
+{%     endif %}
+{% endif %}

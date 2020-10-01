@@ -1,13 +1,22 @@
 {# eos - mlag configuration #}
-{% if mlag_configuration is defined %}
+{% if mlag_configuration is defined and mlag_configuration is not none %}
+!
 mlag configuration
    domain-id {{ mlag_configuration.domain_id }}
    local-interface {{ mlag_configuration.local_interface }}
    peer-address {{ mlag_configuration.peer_address }}
+{%   if mlag_configuration.peer_address_heartbeat.peer_ip is defined and mlag_configuration.peer_address_heartbeat.peer_ip is not none %}
+{%      if mlag_configuration.peer_address_heartbeat.vrf is defined and mlag_configuration.peer_address_heartbeat.vrf is not none and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
+{# using the default VRF #}
+{%      else %}
+   peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}
+{%      endif %}
+{%   endif %}
    peer-link {{ mlag_configuration.peer_link }}
+{%   if mlag_configuration.dual_primary_detection_delay is defined and mlag_configuration.dual_primary_detection_delay is not none %}
    dual-primary detection delay {{ mlag_configuration.dual_primary_detection_delay }} action errdisable all-interfaces
+{%   endif %}
    reload-delay mlag {{ mlag_configuration.reload_delay_mlag }}
    reload-delay non-mlag {{ mlag_configuration.reload_delay_non_mlag }}
-!
 {% endif %}

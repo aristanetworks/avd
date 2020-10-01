@@ -2,7 +2,7 @@
 
 **Table of Contents:**
 
-- [Ansible Role: cvp_configlet_upload](#ansible-role-cvpconfigletupload)
+- [Ansible Role: cvp_configlet_upload](#ansible-role-cvp_configlet_upload)
   - [Overview](#overview)
   - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
@@ -22,6 +22,10 @@ $ ansible-galaxy collection install arista.cvp
 ```
 
 ## Role Inputs and Outputs
+
+Figure 1 below provides a visualization of the roles inputs, outputs and tasks in order executed by the role.
+
+![Figure 1: Ansible Role cvp_configlet_upload](./media/role_cvp_configlet_upload.gif)
 
 1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.
@@ -56,15 +60,15 @@ __Module variables:__
 
 - __`configlet_directory`__: Folder where local configlets are stored. Default: `configlets`.
 - __`file_extension`__: File extension to look for configlet in their local folder. Default: `conf`.
-- __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: `none`.
+- __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: _Not set_ and it is required.
 
 _Example_:
 
 ```yaml
 tasks:
-  - name: run CVP provisioning
+  - name: upload cvp configlets
     import_role:
-        name: cvp_configlet_upload
+        name: arista.avd.cvp_configlet_upload
     vars:
       configlet_directory: 'configlets/'
       file_extension: 'txt'

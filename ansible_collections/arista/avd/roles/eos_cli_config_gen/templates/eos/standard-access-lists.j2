@@ -1,0 +1,10 @@
+{# eos - standard access-lists #}
+{% if standard_access_lists is defined and standard_access_lists is not none %}
+{%     for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
+!
+ip access-list standard {{ standard_access_list }}
+{%         for sequence in standard_access_lists[standard_access_list].sequence_numbers | arista.avd.natural_sort %}
+   {{ sequence }} {{ standard_access_lists[standard_access_list].sequence_numbers[sequence].action }}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

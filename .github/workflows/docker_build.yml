@@ -1,0 +1,23 @@
+name: Docker Build
+on:
+  push:
+    branches:
+      - devel
+      - 'releases/**'
+      # - 'features/ci-build-docker-224'
+    paths:
+      - '.github/workflows/docker_build.yml'
+      - 'development/requirements.txt'
+      - 'development/requirements-dev.txt'
+jobs:
+  'rebuild-docker-avd':
+    name: Instruct Docker Hub to build image
+    runs-on: ubuntu-latest
+    container: avdteam/base:3.6
+    steps:
+      - uses: actions/checkout@master
+      - name: 'Send Webhook'
+        env:
+          DOCKER_WEBHOOK: ${{secrets.DOCKER_WEBHOOK}}
+        run: |
+          curl  -H "Content-Type: application/json" --data '{}' -X POST $DOCKER_WEBHOOK

@@ -1,0 +1,8 @@
+{% if bfd_multihop is defined and bfd_multihop is not none %}
+{%     if bfd_multihop.interval == 300 and bfd_multihop.min_rx == 300 and bfd_multihop.multiplier == 3 %}
+{%     else %}
+!
+router bfd
+   multihop interval {{ bfd_multihop.interval }} min-rx {{ bfd_multihop.min_rx }} multiplier {{ bfd_multihop.multiplier }}
+{%     endif %}
+{% endif %}

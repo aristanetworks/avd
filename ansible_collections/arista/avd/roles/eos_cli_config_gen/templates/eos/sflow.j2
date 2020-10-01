@@ -1,0 +1,32 @@
+{# eos - SFlow #}
+{% if sflow is defined and sflow is not none %}
+!
+{%     if sflow.sample is defined and sflow.sample is not none %}
+sflow sample{% if sflow.dangerous is defined and sflow.dangerous == true %} dangerous{% endif %} {{ sflow.sample }}
+{%     endif %}
+{%   if sflow.vrfs is defined and sflow.vrfs is not none %}
+{%     for vrf in sflow.vrfs | arista.avd.natural_sort %}
+{%       if sflow.vrfs[vrf].destinations is defined and sflow.vrfs[vrf].destinations is not none %}
+{%          for destination in sflow.vrfs[vrf].destinations | arista.avd.natural_sort %}
+sflow vrf {{ vrf }} destination {{ destination }}{% if sflow.vrfs[vrf].destinations[destination].port is defined and sflow.vrfs[vrf].destinations[destination].port is not none %} {{ sflow.vrfs[vrf].destinations[destination].port }}{% endif %}
+
+{%          endfor %}
+{%       endif %}
+{%       if sflow.vrfs[vrf].source_interface is defined and sflow.vrfs[vrf].source_interface is not none %}
+sflow vrf {{ vrf }} source-interface {{ sflow.vrfs[vrf].source_interface }}
+{%       endif %}
+{%     endfor %}
+{%   endif %}
+{%     if sflow.destinations is defined and sflow.destinations is not none %}
+{%      for destination in sflow.destinations | arista.avd.natural_sort %}
+sflow destination {{ destination }}{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }}{% endif %}
+
+{%      endfor %}
+{%     endif %}
+{%     if sflow.source_interface is defined and sflow.source_interface is not none %}
+sflow source-interface {{ sflow.source_interface }}
+{%     endif %}
+{%     if sflow.run is defined and sflow.run == true %}
+sflow run
+{%     endif %}
+{% endif %}
