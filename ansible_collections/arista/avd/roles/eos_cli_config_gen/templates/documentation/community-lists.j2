@@ -3,8 +3,10 @@
 
 | Name | Action |
 | -------- | ------ |
-{%     for community_list in community_lists | arista.avd.natural_sort %}
-| {{ community_list }} | {{ community_lists[community_list].action }} |
+{%     for community_list in community_lists %}
+{%         for action in community_lists[community_list].actions | sort %}
+| {{ community_list }} | {{ action }} |
+{%         endfor %}
 {%     endfor %}
 
 ### Community Lists Device Configuration

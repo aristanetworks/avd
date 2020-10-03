@@ -2,6 +2,8 @@
 {% if community_lists is defined and community_lists is not none %}
 !
 {%     for community_list in community_lists | arista.avd.natural_sort %}
-ip community-list {{ community_list }} {{ community_lists[community_list].action }}
+{%         for action in community_lists[community_list].actions | sort %}
+ip community-list {{ community_list }} {{ action }}
+{%         endfor %}
 {%     endfor %}
 {% endif %}
