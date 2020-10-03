@@ -12,6 +12,11 @@
 {%     if logging.buffered is defined and logging.buffered is not none %}
 | Buffer |{% if logging.buffered.level is defined and logging.buffered.level is not none %} {{ logging.buffered.level }} {% else %} - {% endif %} |
 {%     endif %}
+{%     if logging.format is defined and logging.format is not none %}
+| Format - Hostname | {{ logging.format.hostname | default("default") }} |
+| Format - Sequence Numbers | {{ logging.format.sequence_numbers | default(False) }} |
+| Format - Timestamp | {{ logging.format.timestamp | default("traditional") }} |
+{%     endif %}
 {%     if logging.trap is defined and logging.trap is not none %}
 | Trap | {{ logging.trap }} |
 {%     endif %}

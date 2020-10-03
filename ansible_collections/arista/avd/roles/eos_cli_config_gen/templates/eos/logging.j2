@@ -10,6 +10,23 @@ logging monitor {{ logging.monitor }}
 {%     if logging.buffered is defined and logging.buffered is not none %}
 logging buffered {{ logging.buffered.size }} {{ logging.buffered.level }}
 {%     endif %}
+{%     if logging.format is defined and logging.format is not none %}
+{%         if logging.format.hostname is not defined or logging.format.hostname is none or logging.format.hostname == false %}
+no logging format hostname
+{%         else %}
+logging format hostname {{ logging.format.hostname }}
+{%         endif %}
+{%         if logging.format.sequence_numbers is not defined or logging.format.sequence_numbers is none or logging.format.sequence_numbers == false %}
+no logging format sequence-numbers
+{%         elif logging.format.sequence_numbers is defined and logging.format.sequence_numbers is not none and logging.format.sequence_numbers == true %}
+logging format sequence-numbers
+{%         endif %}
+{%         if logging.format.sequence_numbers is not defined or logging.format.sequence_numbers is none or logging.format.sequence_numbers == "traditional" %}
+logging format timestamp traditional
+{%         elif logging.format.sequence_numbers is defined and logging.format.sequence_numbers is not none and logging.format.sequence_numbers == "high-resolution" %}
+logging format timestamp high-resolution
+{%         endif %}
+{%     endif %}
 {%     if logging.trap is defined and logging.trap is not none %}
 logging trap {{ logging.trap }}
 {%     endif %}

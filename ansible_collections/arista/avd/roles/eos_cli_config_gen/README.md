@@ -255,6 +255,10 @@ logging:
   buffered:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
+  format:
+    hostname: < false | fqdn | ipv4 >
+    sequence_numbers: < true | false >
+    timestamp: < high_resolution | traditional >
   trap: < severity_level >
   source_interface: < source_interface_name >
   vrfs:
