@@ -38,6 +38,7 @@
     - [AAA Authorization](#aaa-authorization)
     - [AAA Accounting](#aaa-accounting)
     - [AAA Root](#aaa-root)
+    - [Enable Password](#enable-password)
     - [Local Users](#local-users)
     - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
@@ -507,6 +508,14 @@ aaa_accounting:
 aaa_root:
   secret:
     sha512_password: "< sha_512_password >"
+```
+
+### Enable Password
+
+```yaml
+enable_password:
+  encryption: < md5 | sha512 >
+  hash: "< hashed_password >"
 ```
 
 ### Local Users
