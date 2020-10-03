@@ -274,6 +274,14 @@ ip_domain_lookup:
       vrf: < vrf_name >
 ```
 
+### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
+```
+
 ### Name Servers
 
 ```yaml

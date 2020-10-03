@@ -37,6 +37,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/name-servers.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
+{# domain-list #}
+{% include 'eos/domain-list.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
 {# radius server #}
