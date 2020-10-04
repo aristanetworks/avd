@@ -44,7 +44,7 @@
     - ansible_collections/arista/avd/docs/*
 
   # 'type: code quality':
-  refactor:
+  'type: code quality':
     - ./.github/labeler.yml
     - ./.github/*
     - ./.github/**/*
