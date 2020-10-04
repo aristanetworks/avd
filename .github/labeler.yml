@@ -1,0 +1,56 @@
+---
+  # Labeler file for action provided by https://github.com/actions/labeler
+
+  'role: build_output_folders':
+    - ansible_collections/arista/avd/roles/build_output_folders/*
+
+  'role: cvp_configlet_upload':
+    - ansible_collections/arista/avd/roles/cvp_configlet_upload/*
+
+  'role: eos_cli_config_gen':
+    - ansible_collections/arista/avd/roles/eos_cli_config_gen/*
+
+  'role: eos_config_deploy_cvp':
+    - ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*
+
+  'role: eos_config_deploy_eapi':
+    - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/*
+
+  'role: eos_l3ls_evpn':
+    - ansible_collections/arista/avd/roles/eos_l3ls_evpn/*
+
+  'role: eos_validate_state':
+    - ansible_collections/arista/avd/roles/eos_validate_state/*
+
+  'filter: natural_sort':
+    - ansible_collections/arista/avd/plugins/filter/natural_sort.py
+
+  'filter: is_in_filter':
+    - ansible_collections/arista/avd/plugins/filter/is_in_filter.py
+
+  'filter: list_compress':
+    - ansible_collections/arista/avd/plugins/filter/list_compress.py
+
+  'module: configlet_build_config':
+    - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
+
+  'module: inventory_to_container':
+    - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
+
+  'type: documentation':
+    - README.md
+    - contributing.md
+    - ansible_collections/arista/avd/README.md
+    - ansible_collections/arista/avd/docs/*
+
+  # 'type: code quality':
+  refactor:
+    - ./.github/labeler.yml
+    - ./.github/*
+    - ./.github/**/*
+    - development/docker-compose.yml
+    - development/Makefile
+
+  'type: dependencies':
+    - development/requirements-dev.txt
+    - development/requirements.txt
