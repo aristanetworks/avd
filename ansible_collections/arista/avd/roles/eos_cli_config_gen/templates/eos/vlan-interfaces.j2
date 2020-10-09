@@ -85,7 +85,7 @@ interface {{ vlan_interface }}
 {%           elif vlan_interfaces[vlan_interface].ospf_authentication == "message-digest" %}
    ip ospf authentication message-digest
 {%             for id in vlan_interfaces[vlan_interface].ospf_message_digest_key | arista.avd.natural_sort %}
-   ip ospf message-digest-key {{ id }} {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].method }} 7 {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].key }}
+   ip ospf message-digest-key {{ id }} {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].hash_algorithm }} 7 {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].key }}
 {%             endfor %}
 {%           endif %}
 {%         endif %}
