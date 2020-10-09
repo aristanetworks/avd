@@ -162,6 +162,8 @@ mac_address_table:
   aging_time: < time_in_seconds >
 ```
 
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
 **Example:**
 
 note: Default values are commented
