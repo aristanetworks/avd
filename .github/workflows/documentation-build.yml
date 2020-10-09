@@ -8,7 +8,7 @@ on:
       - 'ansible_collections/arista/avd/docs/**/*'
       - 'ansible_collections/arista/avd/docs/*'
       - 'ansible_collections/arista/avd/roles/**/README.md'
-      - '.github/workflows/documentation-build.yml '
+      - '.github/workflows/documentation-build.yml'
 jobs:
   publish:
     name: 'Update Public documentation'
