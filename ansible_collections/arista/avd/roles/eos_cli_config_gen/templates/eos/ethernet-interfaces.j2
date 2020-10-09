@@ -102,6 +102,17 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_authentication is defined and ethernet_interfaces[ethernet_interface].ospf_authentication is not none %}
+   ip ospf authentication {{ "message-digest" if ethernet_interfaces[ethernet_interface].ospf_authentication == "message-digest" }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_authentication_key is defined and ethernet_interfaces[ethernet_interface].ospf_authentication_key is not none %}
+   ip ospf authentication-key 7 {{ ethernet_interfaces[ethernet_interface] }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_message_digest_key is defined and ethernet_interfaces[ethernet_interface].ospf_message_digest_key is not none %}
+{%               for id in ethernet_interfaces[ethernet_interface].ospf_message_digest_key | arista.avd.natural_sort %}
+   ip ospf message-digest-key {{ id }} {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_key[id].hash_algorithm }} 7 {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_key[id].key }}
+{%               endfor %}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
    isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
 {%             endif %}
