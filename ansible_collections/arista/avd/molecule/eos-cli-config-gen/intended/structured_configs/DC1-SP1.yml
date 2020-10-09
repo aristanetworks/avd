@@ -36,10 +36,8 @@ aliases: |
 daemon_terminattr:
   ingestgrpcurl:
     ips:
-      - 10.10.10.8
-      - 10.10.10.9
-      - 10.10.10.10
-    port: 9910
+      - test-cvp.arista.io
+    port: 443
   ingestauth_key: magickey
   ingestvrf: mgt
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
