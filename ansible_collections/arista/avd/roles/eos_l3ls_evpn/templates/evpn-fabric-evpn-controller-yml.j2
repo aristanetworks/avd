@@ -15,7 +15,7 @@
 {%        if evpn_controller.nodes[node].uplink_to_remote_switches is defined %}
 {%            set switch.uplink_to_remote_switches = evpn_controller.nodes[node].uplink_to_remote_switches %}
 {%        else %}
-{%            set switch.remote_switches = evpn_controller.default.uplink_to_remote_switches %}
+{%            set switch.uplink_to_remote_switches = evpn_controller.defaults.uplink_to_remote_switches %}
 {%        endif %}
 {# Get remote switch interface to configure #}
 {%        if evpn_controller.nodes[node].remote_switches_interfaces is defined %}
@@ -25,7 +25,13 @@
 {%        if evpn_controller.nodes[node].remote_switches is defined %}
 {%            set switch.remote_switches = evpn_controller.nodes[node].remote_switches %}
 {%        else %}
-{%            set switch.remote_switches = evpn_controller.default.remote_switches %}
+{%            set switch.remote_switches = evpn_controller.defaults.remote_switches %}
+{%        endif %}
+{# Get group of remote devices where RS/RR are connected #}
+{%        if evpn_controller.nodes[node].remote_switches_group is defined %}
+{%            set switch.remote_switches_group = evpn_controller.nodes[node].remote_switches_group %}
+{%        else %}
+{%            set switch.remote_switches_group = evpn_controller.defaults.remote_switches_group %}
 {%        endif %}
 {%    endif %}
 {% endfor %}
