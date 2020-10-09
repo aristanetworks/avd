@@ -1,14 +1,17 @@
-# Ansible Collection For Arista Validated Designs - arista.avd
+# Ansible Collection For Arista Validated Designs
+
+<center><img src="media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
 
 **Table of Contents:**
 
-- [Ansible Collection For Arista Validated Designs - arista.avd](#ansible-collection-for-arista-validated-designs---aristaavd)
+- [Ansible Collection For Arista Validated Designs](#ansible-collection-for-arista-validated-designs)
   - [Roles Overview](#roles-overview)
   - [Custom Plugins](#custom-plugins)
   - [Installation](#installation)
     - [Requirements](#requirements)
     - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
   - [Example Playbooks](#example-playbooks)
+  - [Contributing](#contributing)
   - [License](#license)
 
 ## Roles Overview
@@ -155,7 +158,13 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
 **Full examples with variables and outputs, are located here:**
 
-[Arista NetDevOps Examples](https://github.com/aristanetworks/netdevops-examples)
+[Arista NetDevOps Examples](https://github.com/arista-netdevops-community)
+
+## Contributing
+
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we’ll be able to merge it.
+
+You can also open an [issue](https://github.com/aristanetworks/ansible-avd/issues) to report any problem or to submit enhancement.
 
 ## License
 
