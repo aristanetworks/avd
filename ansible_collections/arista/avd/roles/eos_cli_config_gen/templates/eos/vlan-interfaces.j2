@@ -77,17 +77,15 @@ interface {{ vlan_interface }}
    ip ospf area {{ vlan_interfaces[vlan_interface].ospf_area }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_authentication is defined and vlan_interfaces[vlan_interface].ospf_authentication is not none %}
-{%           if vlan_interfaces[vlan_interface].ospf_authentication == "simple" %}
-   ip ospf authentication
-{%             if vlan_interfaces[vlan_interface].ospf_authentication_key is defined and vlan_interfaces[vlan_interface].ospf_authentication_key is not none %}
+   ip ospf authentication {{ "message-digest" if vlan_interfaces[vlan_interface].ospf_authentication == "message-digest" }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_authentication_key is defined and vlan_interfaces[vlan_interface].ospf_authentication_key is not none %}
    ip ospf authentication-key 7 {{ vlan_interfaces[vlan_interface].ospf_authentication_key }}
-{%             endif %}
-{%           elif vlan_interfaces[vlan_interface].ospf_authentication == "message-digest" %}
-   ip ospf authentication message-digest
-{%             for id in vlan_interfaces[vlan_interface].ospf_message_digest_key | arista.avd.natural_sort %}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_message_digest_key is defined and vlan_interfaces[vlan_interface].ospf_message_digest_key is not none %}
+{%           for id in vlan_interfaces[vlan_interface].ospf_message_digest_key | arista.avd.natural_sort %}
    ip ospf message-digest-key {{ id }} {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].hash_algorithm }} 7 {{ vlan_interfaces[vlan_interface].ospf_message_digest_key[id].key }}
-{%             endfor %}
-{%           endif %}
+{%           endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].pim is defined and vlan_interfaces[vlan_interface].pim is not none %}
 {%            if vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode is defined and vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode == true %}
