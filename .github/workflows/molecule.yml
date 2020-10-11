@@ -22,6 +22,7 @@ jobs:
           - 'avd-l3ls-ebgp-json'
           - 'avd-l3ls-isis'
           - 'avd-l3ls-server-connections'
+          - 'eos_l3ls_evpn-topology-route-server'
           - 'eos-cli-config-gen'
           - 'v1.0_to_v1.1'
     steps:
