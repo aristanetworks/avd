@@ -131,6 +131,13 @@ bfd_multihop:
 ethernet_interfaces:
 {% include 'evpn-controller/evpn-controller-ethernet-uplinks.j2' %}
 
+{# loopback interfaces #}
+### Loopback Interfaces ###
+loopback_interfaces:
+{# overlay peering interface #}
+{% include 'evpn-controller/evpn-controller-overlay-loopback.j2'%}
+{# intentional blank line #}
+
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
