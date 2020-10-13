@@ -5,7 +5,7 @@ scenario:
     - create
     - converge
     - idempotence
-    # - verify
+    - verify
 dependency:
   name: galaxy
 driver:
