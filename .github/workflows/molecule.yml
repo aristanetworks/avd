@@ -8,6 +8,7 @@ on:
       - 'ansible_collections/arista/avd/roles/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
+      - '.github/workflows/molecule.yml'
 jobs:
   molecule:
     runs-on: ubuntu-latest

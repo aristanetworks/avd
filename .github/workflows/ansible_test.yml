@@ -6,6 +6,7 @@ on:
       - 'releases/**'
     paths:
       - 'ansible_collections/arista/avd/**'
+      - '.github/workflows/ansible_test.yml'
 jobs:
   'ansible-test':
     name: Run ansible-test validation
