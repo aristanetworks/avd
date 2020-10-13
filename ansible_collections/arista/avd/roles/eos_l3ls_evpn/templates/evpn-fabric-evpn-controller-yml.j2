@@ -2,7 +2,6 @@
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-
 {# Set Spine Variables #}
 {% set switch = namespace() %}
 {% set switch.platform = evpn_controller.platform %}
@@ -121,6 +120,12 @@ local_users:
 clock:
 {% include 'base/clock-timezone.j2' %}
 
+
+{# VRFs #}
+### VRFs ###
+vrfs:
+{% include 'base/mgmt-vrf.j2' %}
+
 {# bfd multihop #}
 ### bfd multihop ###
 bfd_multihop:
@@ -161,7 +166,7 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{# {% include 'underlay-overlay/leaf-prefix-lists.j2' %} #}
+{% include 'evpn-controller/evpn-controller-prefix-list.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###
