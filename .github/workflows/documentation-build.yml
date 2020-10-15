@@ -9,14 +9,18 @@ on:
       - 'ansible_collections/arista/avd/roles/**/README.md'
 jobs:
   publish:
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ 3.6 ]
     name: 'Update Public documentation'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: 'Setup Python 3 on runner'
-        uses: actions/setup-python@v1.2.0
+      - uses: actions/checkout@v2
+      - name: Install python
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: ${{ matrix.python_version }}
       - name: 'Build mkdocs content to site folder'
         run: |
             pip install -r ansible_collections/arista/avd/docs/requirements.txt

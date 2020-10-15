@@ -8,8 +8,10 @@ on:
       - 'ansible_collections/arista/avd/roles/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
+      - '.github/workflows/molecule.yml'
 jobs:
-  molecule:
+  molecule_stable:
+    name: "Molecule Stable"
     runs-on: ubuntu-latest
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
@@ -17,6 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        python_version: [ 3.6 ]
         avd_scenario:
           - 'avd-l3ls-ebgp'
           - 'avd-l3ls-ebgp-json'
@@ -28,9 +31,9 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python 3
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v2
         with:
-          python-version: '3.x'
+          python-version: ${{ matrix.python_version }}
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
