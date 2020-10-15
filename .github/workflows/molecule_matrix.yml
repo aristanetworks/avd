@@ -1,4 +1,4 @@
-name: Ansible Molecule
+name: Ansible Molecule Latest
 on:
   push:
     # branches:
@@ -8,7 +8,7 @@ on:
       - 'ansible_collections/arista/avd/roles/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
-      - '.github/workflows/molecule.yml'
+      - '.github/workflows/molecule_matrix.yml'
 jobs:
   molecule_latest:
     name: "Molecule Latest"
@@ -20,13 +20,13 @@ jobs:
       fail-fast: true
       matrix:
         python_version: [ 3.6 ]
-        ansible_version: [ 2.9, 2.10 ]
+        ansible_version: [ '2.9', '2.10' ]
         avd_scenario:
           - 'avd-l3ls-ebgp'
           - 'avd-l3ls-ebgp-json'
           - 'avd-l3ls-isis'
           - 'avd-l3ls-server-connections'
-          - 'eos_l3ls_evpn-topology-route-server'
+          # - 'eos_l3ls_evpn-topology-route-server'
           - 'eos-cli-config-gen'
           - 'v1.0_to_v1.1'
     steps:
@@ -43,6 +43,7 @@ jobs:
 
       - name: install ansible
         run: |
+          pip uninstall -y ansible
           pip install --upgrade ansible==${{ matrix.ansible_version }}
           ansible --version
 
