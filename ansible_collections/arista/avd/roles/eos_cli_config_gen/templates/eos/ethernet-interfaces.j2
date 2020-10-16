@@ -102,6 +102,21 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_authentication is defined and ethernet_interfaces[ethernet_interface].ospf_authentication is not none %}
+{%                 if ethernet_interfaces[ethernet_interface].ospf_authentication == "simple" %}
+   ip ospf authentication
+{%                 elif ethernet_interfaces[ethernet_interface].ospf_authentication == "message-digest" %}
+   ip ospf authentication message-digest
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_authentication_key is defined and ethernet_interfaces[ethernet_interface].ospf_authentication_key is not none %}
+   ip ospf authentication-key 7 {{ ethernet_interfaces[ethernet_interface].ospf_authentication_key }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_message_digest_keys is defined and ethernet_interfaces[ethernet_interface].ospf_message_digest_keys is not none %}
+{%               for ospf_message_digest_key in ethernet_interfaces[ethernet_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
+   ip ospf message-digest-key {{ ospf_message_digest_key }} {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm }} 7 {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].key }}
+{%               endfor %}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
    isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
 {%             endif %}
