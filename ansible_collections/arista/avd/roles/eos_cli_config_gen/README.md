@@ -656,7 +656,7 @@ ethernet_interfaces:
     ospf_area: < ospf_area >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
-    ospf_message_digest_key:
+    ospf_message_digest_keys:
       < id >:
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
@@ -769,7 +769,7 @@ vlan_interfaces:
     ospf_area: < ospf_area >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
-    ospf_message_digest_key:
+    ospf_message_digest_keys:
       < id >:
         hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
         key: "< encrypted_password >"
