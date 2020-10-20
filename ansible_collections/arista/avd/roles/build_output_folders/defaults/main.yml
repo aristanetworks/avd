@@ -2,42 +2,45 @@
 # defaults file for build_directories
 
 # Root directory where to build output structure
-root_dir: '{{inventory_dir}}'
+root_dir: '{{ inventory_dir }}'
 
 # AVD configurations output
 # Main output directory
 output_dir_name: 'intended'
-output_dir: '{{root_dir}}/{{output_dir_name}}'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
 
 # Output for structured YAML files:
 structured_dir_name: 'structured_configs'
-structured_dir: '{{output_dir}}/{{structured_dir_name}}'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 
 # Output for structured YAML files for CVP:
 structured_cvp_name: 'cvp'
-structured_cvp: '{{structured_dir}}/{{structured_cvp_name}}'
+structured_cvp: '{{ structured_dir }}/{{ structured_cvp_name }}'
 
 # EOS Configuration Directory name
 eos_config_dir_name: 'configs'
-eos_config_dir: '{{output_dir}}/{{eos_config_dir_name}}'
+eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
 
 # Documentation folders
 # Main documentation folder
 documentation_dir_name: 'documentation'
-documentation_dir: '{{root_dir}}/{{documentation_dir_name}}'
+documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
 
-# Fabric Documentation
+# Fabric documentation
 fabric_dir_name: 'DC1_FABRIC'
-fabric_dir: '{{documentation_dir}}/{{fabric_dir_name}}'
+fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
 
 # Device documentation
 devices_dir_name: 'devices'
-devices_dir: '{{documentation_dir}}/{{devices_dir_name}}'
+devices_dir: '{{ documentation_dir }}/{{ devices_dir_name }}'
 
-# Backup config dir for eos_config_deploy_eaopi
-running_config_backup_dir_name: 'config_backup'
-running_config_backup_dir: '{{root_dir}}/{{running_config_backup_dir_name}}'
+# EOS config deploy eapi running config backup directory
+post_running_config_backup_dir_name: 'config_backup'
+post_running_config_backup_dir: '{{ root_dir }}/{{ post_running_config_backup_dir_name }}'
 
-# EOS State Validation Directory name
+pre_running_config_backup_dir_name: 'config_backup'
+pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_name }}'
+
+# EOS state validation directory name
 eos_validate_state_name: 'reports'
-eos_validate_state_dir: '{{root_dir}}/{{eos_validate_state_name}}'
+eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'

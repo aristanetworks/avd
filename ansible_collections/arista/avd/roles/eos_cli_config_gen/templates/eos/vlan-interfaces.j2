@@ -73,8 +73,23 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %}
    ip ospf network point-to-point
 {%         endif %}
-{%         if vlan_interfaces[vlan_interface].ospf_area is defined %}
+{%         if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
    ip ospf area {{ vlan_interfaces[vlan_interface].ospf_area }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_authentication is defined and vlan_interfaces[vlan_interface].ospf_authentication is not none %}
+{%           if vlan_interfaces[vlan_interface].ospf_authentication == "simple" %}
+   ip ospf authentication
+{%           elif vlan_interfaces[vlan_interface].ospf_authentication == "message-digest" %}
+   ip ospf authentication message-digest
+{%           endif %}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_authentication_key is defined and vlan_interfaces[vlan_interface].ospf_authentication_key is not none %}
+   ip ospf authentication-key 7 {{ vlan_interfaces[vlan_interface].ospf_authentication_key }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_message_digest_keys is defined and vlan_interfaces[vlan_interface].ospf_message_digest_keys is not none %}
+{%           for ospf_message_digest_key in vlan_interfaces[vlan_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
+   ip ospf message-digest-key {{ ospf_message_digest_key }} {{ vlan_interfaces[vlan_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm }} 7 {{ vlan_interfaces[vlan_interface].ospf_message_digest_keys[ospf_message_digest_key].key }}
+{%           endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].pim is defined and vlan_interfaces[vlan_interface].pim is not none %}
 {%            if vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode is defined and vlan_interfaces[vlan_interface].pim.ipv4.sparse_mode == true %}

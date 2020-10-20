@@ -80,14 +80,13 @@ webdoc: ## Build documentation to publish static content
 	mkdir ../modules/ ; \
 	find . -name '*.rst' -exec pandoc {} --from rst --to gfm -o ../modules/{}.md \;)
 	cp $(CURRENT_DIR)/contributing.md $(WEBDOC_BUILD)/.. ;\
-	cp $(CURRENT_DIR)/development/README.md $(WEBDOC_BUILD)/../installation/development.md ;\
 	cp -r $(CURRENT_DIR)/media $(WEBDOC_BUILD)/../ ;\
 	cd $(CURRENT_DIR)
 	mkdocs build -f mkdocs.yml
 
 .PHONY: check-avd-404
 check-avd-404: ## Check local 404 links for AVD documentation
-	docker run --rm --network container:webdoc_avd raviqqe/muffet http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
+	docker run --rm --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
 
 #########################################
 # Misc Actions (configure CI runner) 	#

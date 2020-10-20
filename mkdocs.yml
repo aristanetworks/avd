@@ -21,6 +21,9 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: true
 nav:
   - Home: README.md
+  - Release Notes:
+    - 1.1.x: docs/release-notes/1.1.x.md
+    - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
     - Requirements: docs/installation/requirements.md
@@ -39,6 +42,7 @@ nav:
     - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
     - eos_validate_state: roles/eos_validate_state/README.md
     - build_output_folders: roles/build_output_folders/README.md
+    - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
     - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
     - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
@@ -53,6 +57,7 @@ nav:
     - Arista Automation Examples: https://github.com/aristanetworks/netdevops-examples
 
 markdown_extensions:
+  - mdx_truly_sane_lists
   - smarty
   - pymdownx.arithmatex
   - pymdownx.betterem:

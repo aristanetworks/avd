@@ -37,7 +37,7 @@ $ ansible-galaxy collection install arista.cvp
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
+Figure 1 below provides a visualization of the roles inputs, outputs and tasks in order executed by the role.
 
 ![Figure 1: Ansible Role eos_config_deploy_eapi](./media/role_eos_config_deploy_cvp.gif)
 

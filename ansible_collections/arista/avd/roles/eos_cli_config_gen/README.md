@@ -654,6 +654,12 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_keys:
+      < id >:
+        hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
     pim:
       ipv4:
         sparse_mode: < true | false >
@@ -761,6 +767,12 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_keys:
+      < id >:
+        hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
     pim:
       ipv4:
         sparse_mode: < true | false >
@@ -1264,6 +1276,7 @@ router_ospf:
     < process_id >:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
+      log_adjacency_changes_detail: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
@@ -1334,13 +1347,13 @@ vmtracer_sessions:
   < vmtracer_session_name_1 >:
     url: < url >
     username: < username >
-    password: < encrypted_password >
+    password: "< encrypted_password >"
     autovlan_disable: < true | false >
     source_interface: < interface_name >
   < vmtracer_session_name_2 >:
     url: < url >
     username: < username >
-    password: < encrypted_password >
+    password: "< encrypted_password >"
 ```
 
 ### Banners

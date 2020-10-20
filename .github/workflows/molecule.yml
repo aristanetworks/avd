@@ -8,12 +8,14 @@ on:
       - 'ansible_collections/arista/avd/roles/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
+      - '.github/workflows/molecule.yml'
 jobs:
   molecule:
     runs-on: ubuntu-latest
-    env:
-      PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-      ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+    # Deactivated as per GH changes
+    # env:
+    #   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
+    #   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
     strategy:
       fail-fast: true
       matrix:
@@ -23,7 +25,12 @@ jobs:
           - 'avd-l3ls-isis'
           - 'avd-l3ls-server-connections'
           - 'eos-cli-config-gen'
+          - 'v1.0_to_v1.1'
     steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v1
       - name: Set up Python 3
         uses: actions/setup-python@v1

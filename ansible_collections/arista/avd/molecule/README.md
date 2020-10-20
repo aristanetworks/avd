@@ -112,6 +112,7 @@ scenario:
     - create
     - converge
     - idempotence
+    - verify # Optional based on scenario we need to test
 ```
 
 In this configuration, molecule will run playbooks in that specific order:

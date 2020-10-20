@@ -2,26 +2,26 @@
 # Common action for all states.
 - name: generate intented variables
   tags: [always]
-  inventory_to_container:
+  arista.avd.inventory_to_container:
     inventory: '{{ inventory_file }}'
     container_root: '{{ container_root }}'
-    configlet_dir: '{{root_dir}}/intended/configs'
+    configlet_dir: '{{ root_dir }}/intended/configs'
     configlet_prefix: '{{ configlets_prefix }}'
-    destination: '{{root_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}_configlets.yml'
+    destination: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}_configlets.yml'
     device_filter: ['{{ device_filter }}']
   register: CVP_VARS
 
-- name: 'Build DEVICES and CONTAINER definition for {{inventory_hostname}}'
+- name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
   tags: [build, provision]
   template:
     src: "cvp-devices.j2"
-    dest: '{{root_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}.yml'
+    dest: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
   delegate_to: localhost
   run_once: true
 
-- name: "Load CVP device information for {{inventory_hostname}}"
+- name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision]
-  include_vars: '{{root_dir}}/intended/structured_configs/cvp/{{inventory_hostname}}.yml'
+  include_vars: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
   # delegate_to: localhost
 
 #################################################

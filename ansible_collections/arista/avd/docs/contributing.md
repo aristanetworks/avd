@@ -167,7 +167,7 @@ merged:
 - Commit your changes in logical chunks. Please adhere to these [git commit
    message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
    or your code is unlikely be merged into the main project. Use Git's
-   [interactive rebase](https://help.github.com/articles/interactive-rebase)
+   [git rebase](https://docs.github.com/en/free-pro-team@latest/github/using-git/about-git-rebase)
    feature to tidy up your commits before making them public.
 
 - Locally merge (or rebase) the upstream development branch into your topic branch:
