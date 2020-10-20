@@ -1,5 +1,60 @@
 # {{ inventory_hostname }}
 
+## Table of Contents
+
+- [Management Interfaces](#management-interfaces)  
+- [Hardware Counters](#hardware-counters)  
+- [Aliases](#aliases)  
+- [TerminAttr Daemon](#terminattr-daemon)  
+- [IP DHCP Relay](#ip-dhcp-relay)  
+- [Internal VLAN allocation Policy](#internal-vlan-allocation-policy)  
+- [IP IGMP Snooping](#ip-igmp-snooping)  
+- [Logging](#logging)  
+- [Domain Lookup](#domain-lookup)  
+- [Name Servers](#name-servers)  
+- [DNS Domain](#dns-domain)  
+- [NTP](#ntp)  
+- [Router L2 VPN](#router-l2-vpn)  
+- [SFlow](#sflow)  
+- [Spanning Tree](#spanning-tree)  
+- [TACACS servers](#tacacs-servers)  
+- [IP TACACS source interfaces](#ip-tacacs-source-interfaces)  
+- [AAA server groups](#aaa-server-groups)  
+- [AAA Authentication](#aaa-authentication)  
+- [AAA Authorization](#aaa-authorization)  
+- [AAA Accounting](#aaa-accounting)  
+- [Local Users](#local-users)  
+- [VLANs](#vlans)  
+- [VRF Instances](#vrf-instances)  
+- [Port-Channel Interfaces](#port-channel-interfaces)  
+- [Ethernet Interfaces](#ethernet-interfaces)  
+- [Loopback Interfaces](#loopback-interfaces)  
+- [VLAN Interfaces](#vlan-interfaces)  
+- [VXLAN Interface](#vxlan-interface)  
+- [Virtual Router MAC Address & Virtual Source NAT](#virtual-router-mac-address-virtual-source-nat)  
+- [IPv6 Extended Access-lists](#ipv6-extended-access-lists)  
+- [IPv6 Standard Access-lists](#ipv6-standard-access-lists)  
+- [Extended Access-lists](#extended-access-lists)  
+- [Standard Access-lists](#standard-access-lists)  
+- [Static Routes](#static-routes)  
+- [Event Handler](#event-handler)  
+- [IP Routing](#ip-routing)  
+- [Prefix Lists](#prefix-lists)  
+- [IPv6 Prefix Lists](#ipv6-prefix-lists)  
+- [IPv6 Routing](#ipv6-routing)  
+- [MLAG](#mlag)  
+- [Community Lists](#community-lists)  
+- [Route Maps](#route-maps)  
+- [Peer Filters](#peer-filters)  
+- [Router BFD](#router-bfd)  
+- [Router BGP](#router-bgp)  
+- [Router Multicast](#router-multicast)  
+- [Router PIM Sparse Mode](#router-pim-sparse-mode)  
+- [VM Tracer Sessions](#vm-tracer-sessions)  
+- [Management Security](#management-security)  
+- [Platform](#platform)  
+- [Router ISIS](#router-isis)  
+
 ## Management Interfaces
 {% include 'documentation/management-interfaces.j2' %}
 
@@ -57,15 +112,15 @@
 
 {% include 'documentation/spanning-tree.j2' %}
 
-{# tacacs servers #}
+## TACACS servers
 
 {% include 'documentation/tacacs-servers.j2' %}
 
-{# ip tacacs source interfaces #}
+## IP TACACS source interfaces
 
 {% include 'documentation/ip-tacacs-source-interfaces.j2' %}
 
-{# aaa server groups #}
+## AAA server groups
 
 {% include 'documentation/aaa-server-groups.j2' %}
 
