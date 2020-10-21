@@ -12,6 +12,18 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
    speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].priority_flow_control is defined and ethernet_interfaces[ethernet_interface].priority_flow_control == true %}
+   priority-flow-control on
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities is defined and ethernet_interfaces[ethernet_interface].priority_flow_control_priorities is not none %}
+{%           for priorities in ethernet_interfaces[ethernet_interface].priority_flow_control_priorities %}
+{%             if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities[loop.index0].enable_pfc == true  %}
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities[loop.index0].priority }} no-drop
+{%             else %}
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities[loop.index0].priority }} drop
+{%             endif %}
+{%           endfor %}
+{%         endif%}
 {%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
 {%         else %}
