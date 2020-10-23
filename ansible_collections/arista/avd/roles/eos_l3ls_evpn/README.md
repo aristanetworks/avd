@@ -1234,7 +1234,7 @@ servers:
 
 #### EVPN A/A ESI dual-attached server scenario
 
-MLAG dual-homed connection:
+Active/Active multihoming connections:
 
 - From `E0` to `DC1-SVC3A` interface `Eth10`
 - From `E1` to `DC1-SVC4A` interface `Eth10`
