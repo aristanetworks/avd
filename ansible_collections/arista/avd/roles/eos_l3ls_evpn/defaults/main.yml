@@ -31,6 +31,7 @@ underlay_routing_protocol: BGP
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: false
 
 spine_bgp_defaults:
   - update wait-for-convergence
