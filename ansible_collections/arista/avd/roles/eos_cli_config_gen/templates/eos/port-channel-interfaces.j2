@@ -117,5 +117,14 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].storm_control is defined and port_channel_interfaces[port_channel_interface].storm_control is not none %}
+{%             for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}
+{%                if port_channel_interfaces[port_channel_interface].storm_control[section].unit is defined and port_channel_interfaces[port_channel_interface].storm_control[section].unit == "pps" %}
+   storm-control {{ section }} level pps {{port_channel_interfaces[port_channel_interface].storm_control[section].level}}
+{%                else %}
+   storm-control {{ section }} level {{port_channel_interfaces[port_channel_interface].storm_control[section].level}}
+{%                endif %}
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 {% endif %}
