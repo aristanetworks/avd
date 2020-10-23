@@ -724,6 +724,19 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      'unknown-unicast':
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
 ```
 
 ### Loopback Interfaces
