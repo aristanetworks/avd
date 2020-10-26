@@ -25,11 +25,7 @@
 | Timestamp | traditional |
 {%        endif %}
 {%        if logging.format.hostname is defined and logging.format.hostname is not none %}
-{%              if logging.format.hostname is defined and logging.format.hostname == 'fqdn' %}
-| Hostname | fqdn |
-{%              elif logging.format.hostname is defined and logging.format.hostname == 'ipv4' %}
-| Hostname | ipv4 |
-{%              endif %}
+| Hostname | {{ logging.format.hostname }} |
 {%        else %}
 | Hostname | hostname |
 {%        endif %}
