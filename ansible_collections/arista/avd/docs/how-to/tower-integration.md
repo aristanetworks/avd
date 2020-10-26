@@ -1,4 +1,4 @@
-# AVD & CVP Playbooks integration in AWX/Tower.
+# AVD & CVP Playbooks integration in AWX/Tower
 
 ## About
 
@@ -9,7 +9,7 @@ This example shows how to deploy basic __EVPN/VXLAN Fabric__ based on __[Arista 
 - Install collections
 - Install python requirements
 
-All these elements are part of a dedicated demo repository available at [arista-netdevops-community/avd-with-ansible-tower-awx](https://github.com:arista-netdevops-community/avd-with-ansible-tower-awx)
+All these elements are part of a dedicated demo repository available at [arista-netdevops-community/avd-with-ansible-tower-awx](https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx)
 
 If you want to see how to build your inventory and all related variables, it is recommended to read following documentation:
 
@@ -259,12 +259,3 @@ inventory_file: '/tmp/inventory.yml'
 Under __Resources > Templates__ click on the rocket icon to start playbook execution
 
 ![](../_media/awx-playbook-run.png)
-
-## Resources
-
-- Ansible [Arista Validated Design](https://github.com/aristanetworks/ansible-avd) repository.
-- Ansible [Arista CloudVision Collection](https://github.com/aristanetworks/ansible-cvp) repository.
-
-## License
-
-Project is published under [Apache License](LICENSE).
