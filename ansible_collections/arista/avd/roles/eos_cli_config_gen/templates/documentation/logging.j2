@@ -15,6 +15,26 @@
 {%     if logging.trap is defined and logging.trap is not none %}
 | Trap | {{ logging.trap }} |
 {%     endif %}
+{%     if logging.format is defined and logging.format is not none %}
+
+| Format Type | Setting |
+| ----------- | ------- |
+{%        if logging.format.timestamp is defined and logging.format.timestamp == 'high-resolution' %}
+| Timestamp | high-resolution |
+{%        else %}
+| Timestamp | traditional |
+{%        endif %}
+{%        if logging.format.hostname is defined and logging.format.hostname is not none %}
+| Hostname | {{ logging.format.hostname }} |
+{%        else %}
+| Hostname | hostname |
+{%        endif %}
+{%        if logging.format.sequence_numbers is defined and logging.format.sequence_numbers == true %}
+| Sequence-numbers | true |
+{%        else %}
+| Sequence-numbers | false |
+{%        endif %}
+{%     endif %}
 
 | VRF | Source Interface |
 | --- | ---------------- |

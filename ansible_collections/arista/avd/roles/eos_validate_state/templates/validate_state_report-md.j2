@@ -85,7 +85,7 @@
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
 {% for test_id in validation_report_csv.dict %}
 {%     if validation_report_csv.dict[test_id].result == "FAIL" %}
-| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
+| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result|arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
 {%     endif %}
 {% endfor %}
 
@@ -94,5 +94,5 @@
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
 {% for test_id in validation_report_csv.dict %}
-| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
+| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result|arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
 {% endfor %}

@@ -256,6 +256,7 @@ underlay_routing_protocol: < BGP or OSPF or ISIS | Default -> BGP >
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | Default -> 12000 >
+underlay_ospf_bfd_enable: < true | false | Default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
@@ -341,6 +342,7 @@ fabric_name: DC1_FABRIC
 # underlay_ospf_process_id: 100
 # underlay_ospf_area: 0.0.0.0
 # underlay_ospf_max_lsa: 12000
+# underlay_ospf_bfd_enable: true
 
 # p2p_uplinks_mtu: 9000
 
@@ -1234,7 +1236,7 @@ servers:
 
 #### EVPN A/A ESI dual-attached server scenario
 
-MLAG dual-homed connection:
+Active/Active multihoming connections:
 
 - From `E0` to `DC1-SVC3A` interface `Eth10`
 - From `E1` to `DC1-SVC4A` interface `Eth10`

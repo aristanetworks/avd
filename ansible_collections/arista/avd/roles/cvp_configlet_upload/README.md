@@ -6,6 +6,11 @@
   - [Overview](#overview)
   - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
+    - [Inputs](#inputs)
+      - [Inventory configuration](#inventory-configuration)
+      - [Module variables](#module-variables)
+      - [Outputs](#outputs)
+    - [Tasks](#tasks)
   - [Requirements](#requirements)
   - [License](#license)
 
@@ -31,9 +36,9 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 2. Collect Cloudvision facts.
 3. Create or update configlets on Cloudvision server with content from `{{configlet_directory}}`
 
-**Inputs:**
+### Inputs
 
-__Inventory configuration:__
+#### Inventory configuration
 
 An entry must be part of the inventory to describe CloudVision server. `arista.cvp` modules use httpapi approach. Example below provides framework to use in your inventory.
 
@@ -56,7 +61,9 @@ all:
           ansible_python_interpreter: $(which python3)
 ```
 
-__Module variables:__
+For complete list of authentication options available with Cloudvision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/docs/how-to/cvp-authentication/).
+
+#### Module variables
 
 - __`configlet_directory`__: Folder where local configlets are stored. Default: `configlets`.
 - __`file_extension`__: File extension to look for configlet in their local folder. Default: `conf`.
@@ -84,11 +91,11 @@ This module also supports tags to run a subset of ansible tasks:
 $ ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
 ```
 
-**Outputs:**
+#### Outputs
 
 - None.
 
-**Tasks:**
+### Tasks
 
 1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.

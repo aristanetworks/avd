@@ -256,6 +256,10 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  format:
+    timestamp: < high-resolution | traditional >
+    hostname: < fqdn | ipv4 >
+    sequence_numbers: < true | false >
   source_interface: < source_interface_name >
   vrfs:
     < vrf_name >:
@@ -1277,6 +1281,7 @@ router_ospf:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
+      bfd_enable: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
