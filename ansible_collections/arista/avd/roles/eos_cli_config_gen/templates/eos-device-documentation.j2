@@ -1,6 +1,6 @@
 # {{ inventory_hostname }}
 
-## Table of Contents
+# Table of Contents
 
 - [Management](#management)  
   - [Management Interfaces](#management-interfaces)  
@@ -30,7 +30,6 @@
 - [Spanning Tree](#spanning-tree)  
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)  
 - [VLANs](#vlans)  
-- [IP IGMP Snooping](#ip-igmp-snooping)    
 - [Interfaces](#interfaces)  
   - [Ethernet Interfaces](#ethernet-interfaces)  
   - [Port-Channel Interfaces](#port-channel-interfaces)  
@@ -44,253 +43,251 @@
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)  
   - [Router BFD](#router-bfd)    
-  - [Multicast](#multicast)  
-    - [Router Multicast](#router-multicast)  
-    - [Router PIM Sparse Mode](#router-pim-sparse-mode)  
+- [Multicast](#multicast)  
+  - [IP IGMP Snooping](#ip-igmp-snooping)    
+  - [Router Multicast](#router-multicast)  
+  - [Router PIM Sparse Mode](#router-pim-sparse-mode)  
 - [Filters](#filters)
   - [Community Lists](#community-lists)  
   - [Peer Filters](#peer-filters)  
   - [Prefix Lists](#prefix-lists)  
-    - [Prefix Lists](#prefix-lists-1)  
-    - [IPv6 Prefix Lists](#ipv6-prefix-lists)  
+  - [IPv6 Prefix Lists](#ipv6-prefix-lists)  
   - [Route Maps](#route-maps)  
-  - [ACL](#acl)  
-    - [Standard Access-lists](#standard-access-lists)  
-    - [Extended Access-lists](#extended-access-lists)   
-    - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)  
-    - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)  
+- [ACL](#acl)  
+  - [Standard Access-lists](#standard-access-lists)  
+  - [Extended Access-lists](#extended-access-lists)   
+  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)  
+  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)  
 - [VRF Instances](#vrf-instances)  
 - [Virtual Router MAC Address & Virtual Source NAT](#virtual-router-mac-address-virtual-source-nat)  
 - [Platform](#platform)  
 - [Router L2 VPN](#router-l2-vpn)  
 - [IP DHCP Relay](#ip-dhcp-relay)  
 
-## Management
+# Management
 
-### Management Interfaces
+## Management Interfaces
 
 {% include 'documentation/management-interfaces.j2' %}
 
-### DNS Domain
+## DNS Domain
 
 {% include 'documentation/dns-domain.j2' %}
 
-### Name Servers
+## Name Servers
 
 {% include 'documentation/name-servers.j2' %}
 
-### Domain Lookup
+## Domain Lookup
 
 {% include 'documentation/domain-lookup.j2' %}
 
-### NTP
+## NTP
 
 {% include 'documentation/ntp-servers.j2' %}
 
-### Management SSH 
+## Management SSH 
 
 {% include 'documentation/management-ssh.j2' %}
 
-## Authentication
+# Authentication
 
-### Local Users
+## Local Users
 
 {% include 'documentation/local-users.j2' %}
 
-### TACACS Servers
+## TACACS Servers
 
 {% include 'documentation/tacacs-servers.j2' %}
 
-### IP TACACS Source Interfaces
+## IP TACACS Source Interfaces
 
 {% include 'documentation/ip-tacacs-source-interfaces.j2' %}
 
-### AAA server groups
+## AAA server groups
 
 {% include 'documentation/aaa-server-groups.j2' %}
 
-### AAA Authentication
+## AAA Authentication
 
 {% include 'documentation/aaa-authentication.j2' %}
 
-### AAA Authorization
+## AAA Authorization
 
 {% include 'documentation/aaa-authorization.j2' %}
 
-### AAA Accounting
+## AAA Accounting
 
 {% include 'documentation/aaa-accounting.j2' %}
 
-## Management Security
+# Management Security
 
 {% include 'documentation/management-security.j2' %}
 
-## Aliases
+# Aliases
 
 {% include 'documentation/aliases.j2' %}
 
-## Monitoring
+# Monitoring
 
-### TerminAttr Daemon
+## TerminAttr Daemon
 
 {% include 'documentation/daemon-terminattr.j2' %}
 
-### Logging
+## Logging
 
 {% include 'documentation/logging.j2' %}
 
-### SFlow
+## SFlow
 
 {% include 'documentation/sflow.j2' %}
 
-### Hardware Counters
+## Hardware Counters
 
 {% include 'documentation/hardware-counters.j2' %}
 
-### VM Tracer Sessions
+## VM Tracer Sessions
 
 {% include 'documentation/vmtracer-sessions.j2' %}
 
-### Event Handler
+## Event Handler
 
 {% include 'documentation/event-handler.j2' %}
 
-## MLAG
+# MLAG
 
 {% include 'documentation/mlag-configuration.j2' %}
 
-## Spanning Tree
+# Spanning Tree
 
 {% include 'documentation/spanning-tree.j2' %}
 
-## Internal VLAN allocation Policy
+# Internal VLAN allocation Policy
 
 {% include 'documentation/vlan-internal-order.j2' %}
 
-## VLANs
+# VLANs
 
 {% include 'documentation/vlans.j2' %}
+
+# Interfaces
+
+## Ethernet Interfaces
+
+{% include 'documentation/ethernet-interfaces.j2' %}
+
+## Port-Channel Interfaces
+
+{% include 'documentation/port-channel-interfaces.j2' %}
+
+## Loopback Interfaces
+
+{% include 'documentation/loopback-interfaces.j2' %}
+
+## VLAN Interfaces
+
+{% include 'documentation/vlan-interfaces.j2' %}
+
+## VXLAN Interface
+
+{% include 'documentation/vxlan-interface.j2' %}
+
+# Routing
+
+## IP Routing
+
+{% include 'documentation/ip-routing.j2' %}
+
+## IPv6 Routing
+
+{% include 'documentation/ipv6-routing.j2' %}
+
+## Static Routes
+
+{% include 'documentation/static-routes.j2' %}
+
+## Router ISIS
+
+{% include 'documentation/router-isis.j2' %}
+
+# Router BGP
+
+{% include 'documentation/router-bgp.j2' %}
+
+## Router BFD
+
+{% include 'documentation/router-bfd.j2' %}
+
+# Multicast
 
 ## IP IGMP Snooping
 
 {% include 'documentation/ip-igmp-snooping.j2' %}
 
-## Interfaces
-
-### Ethernet Interfaces
-
-{% include 'documentation/ethernet-interfaces.j2' %}
-
-### Port-Channel Interfaces
-
-{% include 'documentation/port-channel-interfaces.j2' %}
-
-### Loopback Interfaces
-
-{% include 'documentation/loopback-interfaces.j2' %}
-
-### VLAN Interfaces
-
-{% include 'documentation/vlan-interfaces.j2' %}
-
-### VXLAN Interface
-
-{% include 'documentation/vxlan-interface.j2' %}
-
-## Routing
-
-### IP Routing
-
-{% include 'documentation/ip-routing.j2' %}
-
-### IPv6 Routing
-
-{% include 'documentation/ipv6-routing.j2' %}
-
-### Static Routes
-
-{% include 'documentation/static-routes.j2' %}
-
-### Router ISIS
-
-{% include 'documentation/router-isis.j2' %}
-
-## Router BGP
-
-{% include 'documentation/router-bgp.j2' %}
-
-### Router BFD
-
-{% include 'documentation/router-bfd.j2' %}
-
-## Multicast
-
-### Router Multicast
+## Router Multicast
 
 {% include 'documentation/router-multicast.j2' %}
 
-### Router PIM Sparse Mode
+## Router PIM Sparse Mode
 
 {% include 'documentation/router-pim-sparse-mode.j2' %}
 
-## Filters
+# Filters
 
-### Community Lists
+## Community Lists
 
 {% include 'documentation/community-lists.j2' %}
 
-### Peer Filters
+## Peer Filters
 
 {% include 'documentation/peer-filters.j2' %}
 
-### Prefix Lists
-
-#### Prefix Lists
+## Prefix Lists
 
 {% include 'documentation/prefix-lists.j2' %}
 
-#### IPv6 Prefix Lists
+## IPv6 Prefix Lists
 
 {% include 'documentation/ipv6-prefix-lists.j2' %}
 
-### Route Maps
+## Route Maps
 
 {% include 'documentation/route-maps.j2' %}
 
-### ACL 
+# ACL 
 
-#### Standard Access-lists
+## Standard Access-lists
 
 {% include 'documentation/standard-access-lists.j2' %}
 
-#### Extended Access-lists
+## Extended Access-lists
 
 {% include 'documentation/access-lists.j2' %}
 
-#### IPv6 Standard Access-lists
+## IPv6 Standard Access-lists
 
 {% include 'documentation/ipv6-standard-access-lists.j2' %}
 
-#### IPv6 Extended Access-lists
+## IPv6 Extended Access-lists
 
 {% include 'documentation/ipv6-access-lists.j2' %}
 
-## VRF Instances
+# VRF Instances
 
 {% include 'documentation/vrf-instances.j2' %}
 
-## Virtual Router MAC Address & Virtual Source NAT
+# Virtual Router MAC Address & Virtual Source NAT
 
 {% include 'documentation/virtual-router-mac-address-virtual-source-nat.j2' %}
 
-## Platform
+# Platform
 
 {% include 'documentation/platform.j2' %}
 
-## Router L2 VPN
+# Router L2 VPN
 
 {% include 'documentation/router-l2-vpn.j2' %}
 
-## IP DHCP Relay
+# IP DHCP Relay
 
 {% include 'documentation/ip-dhcp-relay.j2' %}
