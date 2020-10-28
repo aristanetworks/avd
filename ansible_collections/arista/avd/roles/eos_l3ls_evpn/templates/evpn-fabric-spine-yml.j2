@@ -170,13 +170,13 @@ router_bgp:
   address_family_ipv4:
 {% include 'underlay-overlay/spine-router-bgp-address-family-ipv4.j2' %}
 
-{# OSPF Configurartion #}
+{# OSPF Configuration #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
 {% include 'underlay-overlay/router-ospf.j2' %}
 
-{# OSPF Configurartion #}
+{# ISIS Configuration #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
