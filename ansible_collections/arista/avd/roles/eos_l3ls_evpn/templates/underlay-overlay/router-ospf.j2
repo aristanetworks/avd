@@ -37,5 +37,8 @@
         - Vlan4093
 {%         endif %}
 {%     endif %}
+{%     if underlay_ospf_bfd_enable is defined and underlay_ospf_bfd_enable %}
+      bfd_enable: true
+{%     endif %}
       max_lsa: {{ underlay_ospf_max_lsa }}
 {% endif %}

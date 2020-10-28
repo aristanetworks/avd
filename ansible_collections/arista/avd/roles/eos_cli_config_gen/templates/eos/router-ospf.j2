@@ -26,6 +26,9 @@ router ospf {{ process_id }}
    network {{ network_prefix }} area {{ router_ospf.process_ids[process_id].network_prefixes[network_prefix].area }}
 {%             endfor %}
 {%         endif %}
+{%         if router_ospf.process_ids[process_id].bfd_enable is defined and router_ospf.process_ids[process_id].bfd_enable %}
+   bfd default
+{%         endif %}
 {%         if router_ospf.process_ids[process_id].max_lsa is defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%         endif %}
