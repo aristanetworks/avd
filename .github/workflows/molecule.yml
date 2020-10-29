@@ -20,12 +20,10 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'avd-l3ls-ebgp'
-          - 'avd-l3ls-ebgp-json'
-          - 'avd-l3ls-isis'
-          - 'avd-l3ls-server-connections'
-          - 'eos-cli-config-gen'
-          - 'v1.0_to_v1.1'
+          - 'eos_cli_config_gen'
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
         run: |
