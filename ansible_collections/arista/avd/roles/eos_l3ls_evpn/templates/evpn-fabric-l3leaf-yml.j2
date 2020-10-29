@@ -209,7 +209,7 @@ redundancy:
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
-{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
+{% include 'fabric/mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -233,10 +233,10 @@ clock:
 ### VLANs ###
 vlans:
 {# mlag VLANs #}
-{% include 'mlag/leaf-mlag-vlans.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -245,7 +245,7 @@ vrfs:
 {% include 'base/mgmt-vrf.j2' %}
 
 {# Tenant VRFS #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
 {# bfd multihop #}
 ### bfd multihop ###
@@ -256,36 +256,36 @@ bfd_multihop:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
-{% include 'mlag/leaf-mlag-peer-link.j2' %}
+{% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# Point-to-Point Interfaces to Spine Switches #}
-{% include 'underlay-overlay/leaf-p2p-interfaces.j2'%}
+{% include 'fabric/interfaces/leaf-p2p-interfaces.j2'%}
 {# mlag interfaces #}
-{% include 'mlag/leaf-mlag-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
 {# overlay peering interface #}
-{% include 'underlay-overlay/leaf-overlay-loopback.j2'%}
+{% include 'fabric/interfaces/leaf-overlay-loopback.j2'%}
 {# intentional blank line #}
 
 {# VTEP VXLAN Tunnel Source #}
-{% include 'underlay-overlay/leaf-vtep-vxlan-tunnel-loopback.j2'%}
+{% include 'fabric/interfaces/leaf-vtep-vxlan-tunnel-loopback.j2'%}
 {# Tenant VRF Loopback - to allow VTEPs daignostics from switch #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrf-loopbacks.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrf-loopbacks.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -296,14 +296,14 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
-{% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
 {# Tenant vlan interfaces #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlan-interfaces.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
 
 {# vxlan interface #}
 ### VxLAN interface ###
 vxlan_tunnel_interface:
-{% include 'tenant-evpn-vxlan/leaf-vxlan-vtep-interface.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-vxlan-vtep-interface.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -320,7 +320,7 @@ ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
 
 {# static_routes #}
 ### static routes ###
@@ -330,50 +330,50 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'underlay-overlay/leaf-prefix-lists.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-prefix-lists.j2' %}
 
 {# MLAG Configuration #}
-{% include 'mlag/leaf-mlag-configuration.j2' %}
+{% include 'fabric/mlag/leaf-mlag-configuration.j2' %}
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'underlay-overlay/route-maps.j2' %}
+{% include 'fabric/ebgp_overlay/route-maps.j2' %}
 
 {# BGP Configurartion #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'underlay-overlay/leaf-router-bgp-base.j2' %}
+{% include 'fabric/leaf-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/leaf-router-bgp-peer-groups.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'underlay-overlay/leaf-router-bgp-neighbors.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-neighbors-ipv4.j2' %}
   redistribute_routes:
-{% include 'underlay-overlay/leaf-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'underlay-overlay/leaf-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/ebgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'underlay-overlay/leaf-router-bgp-address-family-ipv4.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
   vlans:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
   vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
-{# OSPF Configurartion #}
+{# OSPF Configuration #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'underlay-overlay/router-ospf.j2' %}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
-{# OSPF Configurartion #}
+{# ISIS Configuration #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'underlay-overlay/router-isis.j2' %}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
