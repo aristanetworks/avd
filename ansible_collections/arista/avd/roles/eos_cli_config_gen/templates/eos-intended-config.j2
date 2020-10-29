@@ -92,7 +92,9 @@ hostname {{ inventory_hostname }}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
-{% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+{% include 'eos/virtual-router-mac-address.j2' %}
+{# Router virtual source nat #}
+{% include 'eos/virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
 {# IPv6 Standard access-lists #}

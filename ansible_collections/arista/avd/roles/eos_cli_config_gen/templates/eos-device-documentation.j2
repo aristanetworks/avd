@@ -30,6 +30,7 @@
 - [Spanning Tree](#spanning-tree)  
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)  
 - [VLANs](#vlans)  
+- [Virtual Router MAC Address](#virtual-router-mac-address)  
 - [Interfaces](#interfaces)  
   - [Ethernet Interfaces](#ethernet-interfaces)  
   - [Port-Channel Interfaces](#port-channel-interfaces)  
@@ -59,7 +60,7 @@
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)  
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)  
 - [VRF Instances](#vrf-instances)  
-- [Virtual Router MAC Address & Virtual Source NAT](#virtual-router-mac-address-virtual-source-nat)  
+- [Virtual Source NAT](#virtual-source-nat)  
 - [Platform](#platform)  
 - [Router L2 VPN](#router-l2-vpn)  
 - [IP DHCP Relay](#ip-dhcp-relay)  
@@ -170,6 +171,10 @@
 
 {% include 'documentation/vlans.j2' %}
 
+# Virtual Router MAC Address
+
+{% include 'documentation/virtual-router-mac-address.j2' %}
+
 # Interfaces
 
 ## Ethernet Interfaces
@@ -276,9 +281,9 @@
 
 {% include 'documentation/vrf-instances.j2' %}
 
-# Virtual Router MAC Address & Virtual Source NAT
+# Virtual Source NAT
 
-{% include 'documentation/virtual-router-mac-address-virtual-source-nat.j2' %}
+{% include 'documentation/virtual-source-nat.j2' %}
 
 # Platform
 
