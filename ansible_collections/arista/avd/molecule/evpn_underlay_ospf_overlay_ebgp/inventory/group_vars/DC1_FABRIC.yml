@@ -6,7 +6,7 @@ fabric_name: DC1_FABRIC
 
 # OSPF Parameters when underlay_routing_protocol=OSPF
 underlay_routing_protocol: OSPF
-underlay_ospf_process_id: 100
+underlay_ospf_process_id: 101
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
