@@ -1,6 +1,14 @@
-{% if vrfs is defined and vrfs is not none %}
 ### IP Routing Summary
 
+{% if ip_routing is defined and ip_routing is not none %}
+{%     if ip_routing == true %} 
+IPv4 Routing is enabled
+{%         else %} 
+IPv4 Routing is disabled
+{%     endif %}
+{% endif %}
+
+{% if vrfs is defined and vrfs is not none %}
 | VRF | Routing Enabled |
 | --- | --------------- |
 {%     for vrf in vrfs | arista.avd.natural_sort %}
@@ -10,10 +18,10 @@
 | {{ vrf }} | False |
 {%         endif %}
 {%     endfor %}
+{% endif %}
 
 ### IP Routing Device Configuration
 
 ```eos
 {% include 'eos/ip-routing.j2' %}
 ```
-{% endif %}
