@@ -2,8 +2,7 @@
 # Documentation of Tenant specific information - Vlans/VRFs
 
 tenants:
-  # Tenant_B Specific Information - VRFs / VLANs
-  Tenant_B:
+  fake_tenant:
     mac_vrf_vni_base: 20000
     vrfs:
       Tenant_B_OP_Zone:
@@ -14,8 +13,3 @@ tenants:
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.2.10.1/24
-          211:
-            name: Tenant_B_OP_Zone_2
-            tags: ['opzone']
-            enabled: True
-            ip_address_virtual: 10.2.11.1/24
