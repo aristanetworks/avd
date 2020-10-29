@@ -239,7 +239,7 @@ vlans:
 {% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -251,21 +251,21 @@ vrfs:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
 {% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###

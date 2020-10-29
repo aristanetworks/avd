@@ -236,7 +236,7 @@ vlans:
 {% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -245,7 +245,7 @@ vrfs:
 {% include 'base/mgmt-vrf.j2' %}
 
 {# Tenant VRFS #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
 {# bfd multihop #}
 ### bfd multihop ###
@@ -256,11 +256,11 @@ bfd_multihop:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -270,9 +270,9 @@ ethernet_interfaces:
 {# mlag interfaces #}
 {% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 
 {# loopback interfaces #}
@@ -285,7 +285,7 @@ loopback_interfaces:
 {# VTEP VXLAN Tunnel Source #}
 {% include 'fabric/ebgp_overlay/leaf-vtep-vxlan-tunnel-loopback.j2'%}
 {# Tenant VRF Loopback - to allow VTEPs daignostics from switch #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrf-loopbacks.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrf-loopbacks.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -298,12 +298,12 @@ vlan_interfaces:
 {# mlag vlan interfaces #}
 {% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
 {# Tenant vlan interfaces #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlan-interfaces.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
 
 {# vxlan interface #}
 ### VxLAN interface ###
 vxlan_tunnel_interface:
-{% include 'tenant-evpn-vxlan/leaf-vxlan-vtep-interface.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-vxlan-vtep-interface.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -320,7 +320,7 @@ ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
 
 {# static_routes #}
 ### static routes ###
@@ -357,11 +357,11 @@ router_bgp:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
   vlans:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
   vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
 {# OSPF Configuration #}
 ### Routing - OSPF ###
