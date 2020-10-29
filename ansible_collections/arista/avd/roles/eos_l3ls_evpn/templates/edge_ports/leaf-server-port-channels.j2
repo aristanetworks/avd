@@ -1,5 +1,6 @@
 {# Leaf server port-channels #}
-{% for server in servers | arista.avd.natural_sort() %}
+{% if servers is defined and servers is not none %}
+{%  for server in servers | arista.avd.natural_sort() %}
 {%     for adapter in servers[server].adapters %}
 {%         if adapter.port_channel is defined and adapter.port_channel.state == "present" %}
 {%             for switch in adapter.switches %}
@@ -36,4 +37,5 @@
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
-{% endfor %}
+{%  endfor %}
+{% endif %}
