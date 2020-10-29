@@ -1,0 +1,6 @@
+[all]
+ethernet_interfaces
+vlans
+vrfs
+loopbacks
+prefix-lists
