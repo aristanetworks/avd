@@ -1,16 +1,18 @@
-name: Ansible Molecule
+name: Ansible Molecule L3LS EVPN
 on:
   push:
     branches:
       - devel
   pull_request:
     paths:
-      - 'ansible_collections/arista/avd/roles/**'
+      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
-      - '.github/workflows/molecule.yml'
+      - '.github/workflows/molecule-l3ls-evpn.yml'
 jobs:
   molecule:
+    name: Run CI test for eos_l3ls_evpn
     runs-on: ubuntu-latest
     # Deactivated as per GH changes
     # env:
@@ -20,9 +22,9 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'eos_cli_config_gen'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ebgp'
           - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
@@ -45,12 +47,6 @@ jobs:
           cd ansible_collections/arista/avd
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
-
-      - name: Test molecule results
-        run: |
-          pwd
-          cd ansible_collections/arista/avd/
-          ls -alR
 
       - uses: actions/upload-artifact@v1
         with:
