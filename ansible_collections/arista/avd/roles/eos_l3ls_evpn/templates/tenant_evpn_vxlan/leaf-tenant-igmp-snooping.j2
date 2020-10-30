@@ -1,6 +1,9 @@
 {# Leaf tenant IGMP snooping #}
 {% set igmp_snooping = namespace() %}
 {% set igmp_snooping.configured = false %}
+{% if default_igmp_snooping == false %}
+{% set igmp_snooping.configured = true %}
+{% endif %}
 {% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
@@ -21,13 +24,19 @@
 {% endfor %}
 {% if igmp_snooping.configured == true %}
   vlans:
+{# ---------------------------- #}
+{# SVI & L3VLANs services       #}
+{# ---------------------------- #}
 {%      for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
 {%          if tenants[tenant].vrfs is defined %}
 {%              for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
 {# Tenant VLANs w/SVIs #}
 {%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
-{%                      if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping is not defined %}
+{%                      if default_igmp_snooping == false %}
+    {{ svi|int }}:
+      enabled: false
+{%                      elif tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping is not defined %}
     {{ svi|int }}:
       enabled: true
 {%                      elif tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping == true %}
@@ -40,10 +49,15 @@
 {%                  endfor %}
 {%              endfor %}
 {%          endif %}
+{# ---------------------------- #}
+{# L2VLANs services             #}
+{# ---------------------------- #}
 {%          if tenants[tenant].l2vlans is defined %}
 {%              for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
-{# Tenant VLANs w/o SVIs #}
-{%                      if tenants[tenant].l2vlans[l2vlan].igmp_snooping is not defined %}
+{%                      if default_igmp_snooping == false %}
+    {{ l2vlan|int }}:
+      enabled: false
+{%                      elif tenants[tenant].l2vlans[l2vlan].igmp_snooping is not defined %}
     {{ l2vlan|int }}:
       enabled: true
 {%                      elif tenants[tenant].l2vlans[l2vlan].igmp_snooping == true %}

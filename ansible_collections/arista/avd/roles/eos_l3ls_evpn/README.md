@@ -321,6 +321,10 @@ leaf_bgp_defaults:
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
 
+# Disable IGMP snooping at fabric level.
+# If set, it overrides per vlan settings
+default_igmp_snooping: < boolean | default -> true >
+
 # BFD Multihop tunning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
