@@ -288,6 +288,10 @@ tcam_profile:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
+{# Tenant ip-igmp-snooping #}
+ip_igmp_snooping:
+{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
