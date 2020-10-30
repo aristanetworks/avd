@@ -1,6 +1,23 @@
 [all]
-ethernet_interfaces
-vlans
-vrfs
-loopbacks
+; ls -l | gawk -F ' ' '{print $9}'| gawk -F '.' '{print $1}'
+aaa
+acl
+base
+dns-ntp
+ethernet-interfaces
+logging
+loopbacks-interfaces
+mcast-pim
 prefix-lists
+route-maps
+router-bgp-evpn
+router-bgp-v4-evpn
+router-bgp-v4-v6-evpn
+router-ospf
+router-isis
+sflow
+snmp
+terminattr-prem
+vlan-interfaces
+vlans
+vtfs
