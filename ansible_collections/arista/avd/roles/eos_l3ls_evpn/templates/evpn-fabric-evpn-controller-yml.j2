@@ -134,13 +134,13 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'evpn-controller/evpn-controller-ethernet-uplinks.j2' %}
+{% include 'fabric/interfaces/evpn-controller-ethernet-uplinks.j2' %}
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
 {# overlay peering interface #}
-{% include 'evpn-controller/evpn-controller-overlay-loopback.j2'%}
+{% include 'fabric/interfaces/evpn-controller-overlay-loopback.j2'%}
 {# intentional blank line #}
 
 {# Management Interfaces #}
@@ -166,19 +166,19 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'evpn-controller/evpn-controller-prefix-list.j2' %}
+{% include 'fabric/ebgp_underlay/evpn-controller-prefix-list.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'underlay-overlay/router-ospf.j2' %}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'underlay-overlay/router-isis.j2' %}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
