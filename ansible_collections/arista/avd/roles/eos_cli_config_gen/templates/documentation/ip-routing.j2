@@ -1,16 +1,10 @@
 ### IP Routing Summary
 
-{% if ip_routing is defined and ip_routing is not none %}
-{%     if ip_routing == true %} 
-IPv4 Routing is enabled
-{%         else %} 
-IPv4 Routing is disabled
-{%     endif %}
-{% endif %}
-
-{% if vrfs is defined and vrfs is not none %}
 | VRF | Routing Enabled |
 | --- | --------------- |
+| Default | {% if ip_routing is defined and ip_routing is not none and ip_routing == true %} True | {% else %} False | {% endif %}
+
+{% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ip_routing == true %}
 | {{ vrf }} | True |
