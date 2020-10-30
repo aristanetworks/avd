@@ -814,7 +814,7 @@ tenants:
             enabled: < true | false >
 
             # Enable IGMP Snooping
-            ip_igmp_snooping: < true | false | default true (eos) >
+            igmp_snooping: < true | false | default true (eos) >
 
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
