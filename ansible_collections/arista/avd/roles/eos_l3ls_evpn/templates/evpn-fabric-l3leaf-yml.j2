@@ -322,6 +322,10 @@ ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 virtual_source_nat_vrfs:
 {% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
 
+{# Tenant ip-igmp-snooping #}
+ip_igmp_snooping:
+{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
