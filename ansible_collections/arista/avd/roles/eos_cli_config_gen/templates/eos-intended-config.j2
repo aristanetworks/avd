@@ -39,8 +39,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/dns-domain.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
-{# radius server #}
-{% include 'eos/radius-server.j2' %}
+{# radius servers #}
+{% include 'eos/radius-servers.j2' %}
 {# aaa server groups #}
 {% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
