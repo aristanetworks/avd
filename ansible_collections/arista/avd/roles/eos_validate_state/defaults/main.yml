@@ -8,3 +8,7 @@ eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 # Reports name
 eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
 eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
+
+# Markdown flavor to support non-text rendering
+# Only support default and github
+validate_state_markdown_flavor: "default"

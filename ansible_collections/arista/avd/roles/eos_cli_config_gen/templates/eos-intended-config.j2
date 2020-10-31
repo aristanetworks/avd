@@ -39,8 +39,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/dns-domain.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
-{# radius server #}
-{% include 'eos/radius-server.j2' %}
+{# radius servers #}
+{% include 'eos/radius-servers.j2' %}
 {# aaa server groups #}
 {% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
@@ -92,7 +92,9 @@ hostname {{ inventory_hostname }}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
-{% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+{% include 'eos/virtual-router-mac-address.j2' %}
+{# Router virtual source nat #}
+{% include 'eos/virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
 {# IPv6 Standard access-lists #}

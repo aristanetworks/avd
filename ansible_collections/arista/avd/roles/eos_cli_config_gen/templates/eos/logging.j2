@@ -13,6 +13,21 @@ logging buffered {{ logging.buffered.size }} {{ logging.buffered.level }}
 {%     if logging.trap is defined and logging.trap is not none %}
 logging trap {{ logging.trap }}
 {%     endif %}
+{%     if logging.format is defined and logging.format is not none %}
+{%        if logging.format.timestamp is defined and logging.format.timestamp == 'high-resolution' %}
+logging format timestamp high-resolution
+{%        endif %}
+{%        if logging.format.hostname is defined and logging.format.hostname is not none %}
+{%              if logging.format.hostname is defined and logging.format.hostname == 'fqdn' %}
+logging format hostname fqdn
+{%              elif logging.format.hostname is defined and logging.format.hostname == 'ipv4' %}
+logging format hostname ipv4
+{%              endif %}
+{%        endif %}
+{%        if logging.format.sequence_numbers is defined and logging.format.sequence_numbers == true %}
+logging format sequence-numbers
+{%        endif %}
+{%     endif %}
 {%     if logging.source_interface is defined and logging.source_interface is not none %}
 logging source-interface {{ logging.source_interface }}
 {%     endif %}
