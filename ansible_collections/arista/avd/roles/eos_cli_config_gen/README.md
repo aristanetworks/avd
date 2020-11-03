@@ -187,10 +187,13 @@ vlan_internal_allocation_policy:
 
 ```yaml
 ip_igmp_snooping:
+  globally_enabled: < true | false (default is true) >
   vlans:
     < vlan_id >:
       enabled: < true | false >
 ```
+
+`globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
 
 ### Event Monitor
 
