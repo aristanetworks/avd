@@ -380,9 +380,9 @@ route_maps:
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'fabric/leaf-router-bgp-base.j2' %}
+{% include 'fabric/bgp_base/leaf-router-bgp-base.j2' %}
   peer_groups:
-{% include 'fabric/ebgp_underlay/leaf-router-bgp-peer-groups.j2' %}
+{% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
   neighbors:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-neighbors-ipv4.j2' %}
   redistribute_routes:
