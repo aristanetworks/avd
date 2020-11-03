@@ -17,6 +17,13 @@
 {%             else %}
 {%                 set switch.spanning_tree_mode = l2leaf.defaults.spanning_tree_mode %}
 {%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled %}
+{%             elif l2leaf.defaults.igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l2leaf.defaults.igmp_snooping_enabled %}
+{%             else %}
+{%                 set leaf.igmp_snooping_enabled = default_igmp_snooping_enabled %}
+{%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
 {%                 set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
 {%             else %}

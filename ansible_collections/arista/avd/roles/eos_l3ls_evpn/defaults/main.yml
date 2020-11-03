@@ -50,7 +50,7 @@ leaf_bgp_defaults:
 
 vxlan_vlan_aware_bundles: false
 
-default_igmp_snooping: false
+default_igmp_snooping_enabled: true
 
 bfd_multihop:
   interval: 300

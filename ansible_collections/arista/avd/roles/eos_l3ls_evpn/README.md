@@ -517,6 +517,9 @@ l3leaf:
     # Virtual router mac address for anycast gateway | Required.
     virtual_router_mac_address: < mac address >
 
+    # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -533,6 +536,9 @@ l3leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
@@ -660,6 +666,9 @@ l2leaf:
     # Spanning tree priority | Required.
     spanning_tree_priority: < spanning-tree priority >
 
+    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -673,6 +682,9 @@ l2leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname.
       # When two nodes are defined, this will create an MLAG pair.
