@@ -33,6 +33,14 @@
 {%                 if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
     mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
 {%                 endif %}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is not none %}
+    ip_helpers:
+{%                     for helper_ip in tenants[tenant].vrfs[vrf].svis[svi].ip_helpers %}
+      {{ helper_ip }}:
+        source_interface: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_interface }}
+        vrf: {{ vrf }}
+{%                     endfor %}
+{%                 endif %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
 {%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
   Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:

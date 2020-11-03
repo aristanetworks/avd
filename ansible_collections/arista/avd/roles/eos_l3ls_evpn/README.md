@@ -823,6 +823,11 @@ tenants:
             # Optional
             ip_virtual_router_address: < IPv4_address/Mask >
 
+            # IP Helper for DHCP relay
+            ip_helpers:
+              < IPv4 dhcp server IP >:
+                source_interface: < interface-name >
+
             # Define node specific configuration, such as unique IP addresses.
             nodes:
               < l3_leaf_inventory_hostname_1 >:
