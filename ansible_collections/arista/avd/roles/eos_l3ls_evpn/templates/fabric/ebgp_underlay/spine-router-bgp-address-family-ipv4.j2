@@ -3,7 +3,7 @@
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-{%     if underlay_routing_protocol == "BGP" %}
+{%     if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
       IPv4-UNDERLAY-PEERS:
         activate: true
 {%     endif %}

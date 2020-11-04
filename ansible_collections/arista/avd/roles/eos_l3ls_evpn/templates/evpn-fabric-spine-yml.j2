@@ -8,6 +8,11 @@
 {% set switch.platform = spine.platform %}
 {% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
+{% if switch.spine.bgp_as is defined %}
+{%     set spine.bgp_as = spine.bgp_as %}
+{% else %}
+{%     set spine.bgp_as = bgp_as %}
+{% endif %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -113,7 +118,7 @@ ethernet_interfaces:
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'fabric/ebgp_overlay/spine-overlay-loopback.j2' %}
+{% include 'fabric/bgp_overlay/spine-overlay-loopback.j2' %}
 
 
 {# Management Interfaces #}
@@ -139,19 +144,19 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/ebgp_overlay/spine-prefix-lists.j2' %}
+{% include 'fabric/bgp_overlay/spine-prefix-lists.j2' %}
 
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'fabric/ebgp_overlay/route-maps.j2' %}
+{% include 'fabric/ebgp_underlay/route-maps.j2' %}
 
 
 {# peer-filter #}
 ### peer-filters ###
 peer_filters:
-{% include 'fabric/ebgp_overlay/spine-peer-filters.j2' %}
+{% include 'fabric/bgp_overlay/spine-peer-filters.j2' %}
 
 
 {# ##### BGP Configurartion ##### #}
@@ -166,7 +171,7 @@ router_bgp:
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'fabric/ebgp_overlay/spine-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/spine-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/spine-router-bgp-address-family-ipv4.j2' %}
 

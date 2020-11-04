@@ -1,0 +1,7 @@
+{# Spine peer filters#}
+{% if ( overlay_routing_protocol|upper == "BGP" or overlay_routing_protocol|upper == "EBGP" ) %}
+  LEAF-AS-RANGE:
+    sequence_numbers:
+      10:
+        match: as-range {{ spine.leaf_as_range }} result accept
+{% endif %}

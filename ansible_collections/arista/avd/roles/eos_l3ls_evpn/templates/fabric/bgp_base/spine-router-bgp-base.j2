@@ -7,4 +7,7 @@
     - {{ bgp_default }}
 {%     endfor %}
     - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
+{%     if overlay_routing_protocol|upper == "IBGP" %}
+  bgp_cluster_id: {{ overlay_loopback_network_summary  | ipaddr('network') | ipmath(spine.nodes[inventory_hostname].id) }}/32
+{%     endif%}
 {% endif%}

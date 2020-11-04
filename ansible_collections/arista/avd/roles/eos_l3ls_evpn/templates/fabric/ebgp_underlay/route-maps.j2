@@ -1,0 +1,9 @@
+{# Leaf and Spine route-maps #}
+{% if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+          - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+{% endif %}

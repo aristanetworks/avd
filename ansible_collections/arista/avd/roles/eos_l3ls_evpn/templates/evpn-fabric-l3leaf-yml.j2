@@ -45,8 +45,10 @@
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
-{%             else %}
+{%             elif l3leaf.defaults.bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.defaults.bgp_as %}
+{%             else %}
+{%                 set leaf.bgp_as = bgp_as %}
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address is defined %}
 {%                 set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address %}
@@ -374,7 +376,7 @@ prefix_lists:
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'fabric/ebgp_overlay/route-maps.j2' %}
+{% include 'fabric/ebgp_underlay/route-maps.j2' %}
 
 {# BGP Configurartion #}
 ### Routing - BGP ###
@@ -388,7 +390,7 @@ router_bgp:
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'fabric/ebgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
 {# Tenant router bgp evpn #}

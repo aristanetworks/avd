@@ -1,4 +1,5 @@
 {# Leaf prefix-lists #}
+{% if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
@@ -9,7 +10,8 @@
     sequence_numbers:
       10:
         action: "permit {{ underlay_p2p_network_summary }} le 31"
-{% if leaf.mlag == true %}
+{%     if leaf.mlag == true %}
       20:
         action: "permit {{ mlag_ips.leaf_peer_l3 }} le 31"
+{%     endif %}
 {% endif %}
