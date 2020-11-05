@@ -832,6 +832,9 @@ tenants:
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
 
+            # Defined interface MTU
+            mtu: < mtu >
+
           < 1-4096 >:
             name: < description >
             tags: [ < tag_1 >, < tag_2 > ]
@@ -924,6 +927,7 @@ tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
+            mtu: 1400
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
