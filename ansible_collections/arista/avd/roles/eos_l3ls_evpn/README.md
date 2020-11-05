@@ -759,6 +759,29 @@ l2leaf:
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
 
+# Specify RD type | Optional
+# Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
+# By configuring evpn_rd_type the Administrator subfield (first part of RD) can be set to other values.
+#
+# Note:
+# RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rd_type:
+  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+
+# Specify RT type | Optional
+# Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+# By configuring evpn_rt_type the Administrator subfield (first part of RT) can be set to other values.
+#
+# Note:
+# RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rt_type:
+  admin_subfield: < "asn" | "spine_asn" | "vni" | <0-65535> | <0-2147483647> | default -> "vni" >
+
+
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
 tenants:

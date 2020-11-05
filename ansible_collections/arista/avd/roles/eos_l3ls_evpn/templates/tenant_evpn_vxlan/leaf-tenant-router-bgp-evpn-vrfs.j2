@@ -5,14 +5,14 @@
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
     {{ vrf }}:
       router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      rd: "{{ leaf.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         import:
           evpn:
-            - "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+            - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
         export:
           evpn:
-            - "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+            - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
 {%             if leaf.mlag == true %}
       neighbors:
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
