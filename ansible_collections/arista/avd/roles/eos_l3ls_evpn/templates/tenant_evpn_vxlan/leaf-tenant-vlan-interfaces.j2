@@ -38,7 +38,11 @@
 {%                     for helper_ip in tenants[tenant].vrfs[vrf].ip_helpers %}
       {{ helper_ip }}:
         source_interface: {{ tenants[tenant].vrfs[vrf].ip_helpers[helper_ip].source_interface }}
+{%                          if tenants[tenant].vrfs[vrf].ip_helpers[helper_ip].source_vrf is defined and tenants[tenant].vrfs[vrf].ip_helpers[helper_ip].source_vrf is not none %}
+        vrf: {{ tenants[tenant].vrfs[vrf].ip_helpers[helper_ip].source_vrf }}
+{%                          else %}
         vrf: {{ vrf }}
+{%                          endif %}
 {%                     endfor %}
 {%                 elif tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is not none %}
     ip_helpers:
