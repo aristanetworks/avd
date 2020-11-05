@@ -145,7 +145,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 
 {%    endif %}
 {% endfor %}
-{# ip bgp neighbors peer state - IPv4-UNDERLAY-PEERS Results #}
+{# ip bgp neighbors peer state type: "ipv4" Results #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].ip_bgp_peer_state_results is defined and hostvars[node].ip_bgp_peer_state_results.results is defined %}
 {%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
@@ -157,10 +157,10 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%         endfor %}
 {%    endif %}
 {% endfor %}
-{# bgp evpn neighbors peer state - IPv4-UNDERLAY-PEERS Results #}
+{# bgp evpn neighbors peer state type: "evpn" Results #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%     if hostvars[node].ip_bgp_peer_state_results is defined and hostvars[node].ip_bgp_peer_state_results.results is defined %}
-{%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
+{%     if hostvars[node].bgp_evpn_peer_state_results is defined and hostvars[node].bgp_evpn_peer_state_results.results is defined %}
+{%         for result in hostvars[node].bgp_evpn_peer_state_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
 {{ test_id.value }},{{ node }},BGP,bgp evpn peer state established (evpn),bgp_neighbor: {{ result.bgp_neighbor.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}

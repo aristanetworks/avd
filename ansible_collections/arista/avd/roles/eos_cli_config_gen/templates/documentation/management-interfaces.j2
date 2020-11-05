@@ -1,29 +1,31 @@
-
+{% if management_interfaces is defined and management_interfaces is not none %}
 ### Management Interfaces Summary
 
 IPv4
 
 | Management Interface | description | VRF | IP Address | Gateway |
 | -------------------- | ----------- | --- | ---------- | ------- |
-{% for management_interface in management_interfaces | arista.avd.natural_sort %}
+{%     for management_interface in management_interfaces | arista.avd.natural_sort %}
 | {{ management_interface }} | {{ management_interfaces[management_interface].description }} |
-{%- if management_interfaces[management_interface].vrf is defined %} {{ management_interfaces[management_interface].vrf }} {% else %} not defined / default {% endif -%}
+{%- if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %} {{ management_interfaces[management_interface].vrf }} {% else %} default {% endif -%}
 | {{ management_interfaces[management_interface].ip_address }} | {{ management_interfaces[management_interface].gateway }} |
-{% endfor %}
+{%     endfor %}
 
 IPv6
 
 | Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | --- | ------------ | ------------ |
-{% for management_interface in management_interfaces | arista.avd.natural_sort %}
+{%     for management_interface in management_interfaces | arista.avd.natural_sort %}
 | {{ management_interface }} | {{ management_interfaces[management_interface].description }} |
-{%- if management_interfaces[management_interface].vrf is defined %} {{ management_interfaces[management_interface].vrf }} {% else %} not defined / default {% endif -%}
-| {%- if management_interfaces[management_interface].ipv6_address is defined and management_interfaces[management_interface].ipv6_address is not none %} {{ management_interfaces[management_interface].ipv6_address }} {% endif %} | {%- if management_interfaces[management_interface].ipv6_gateway is defined and management_interfaces[management_interface].ipv6_gateway is not none %} {{ management_interfaces[management_interface].ipv6_gateway }} {% endif -%} |
-{% endfor %}
+{%- if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is not none %} {{ management_interfaces[management_interface].vrf }} {% else %} default {% endif -%}
+| {%- if management_interfaces[management_interface].ipv6_address is defined and management_interfaces[management_interface].ipv6_address is not none %} {{ management_interfaces[management_interface].ipv6_address }} {% else %} not configured {% endif %} | {%- if management_interfaces[management_interface].ipv6_gateway is defined and management_interfaces[management_interface].ipv6_gateway is not none %} {{ management_interfaces[management_interface].ipv6_gateway }} {% else %} not configured {% endif -%} |
+{%     endfor %}
 
 ### Management Interfaces Device Configuration
 
 ```eos
 {% include 'eos/management-interfaces.j2' %}
 ```
-
+{% else %}
+Management interfaces not defined
+{% endif %}
