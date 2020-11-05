@@ -816,7 +816,7 @@ tenants:
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
-            ip_address_virtual:: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
