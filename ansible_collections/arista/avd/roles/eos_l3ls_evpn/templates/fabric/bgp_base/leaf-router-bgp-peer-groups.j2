@@ -36,7 +36,6 @@
       remote_as: {{ bgp_as }}
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 3
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true
       maximum_routes: 0

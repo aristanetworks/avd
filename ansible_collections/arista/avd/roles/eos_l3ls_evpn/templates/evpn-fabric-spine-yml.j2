@@ -167,7 +167,7 @@ router_bgp:
   peer_groups:
 {% include 'fabric/bgp_base/spine-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'fabric/ebgp_underlay/spine-router-bgp-neighbors-ipv4.j2' %}
+{% include 'fabric/bgp_base/spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
