@@ -35,10 +35,7 @@
 {# Tenant VLANs w/SVIs #}
 {%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
 {%                      if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled is defined %}
-{%                          if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled == true and leaf.igmp_snooping_enabled == false %}
-    {{ svi|int }}:
-      enabled: true
-{%                          elif tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
+{%                          if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
     {{ svi|int }}:
       enabled: false
 {%                          endif %}
@@ -52,10 +49,7 @@
 {%          if tenants[tenant].l2vlans is defined %}
 {%              for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%                  if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled is defined %}
-{%                      if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled == true and leaf.igmp_snooping_enabled == false %}
-    {{ l2vlan|int }}:
-      enabled: true
-{%                      elif tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
+{%                      if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
     {{ l2vlan|int }}:
       enabled: false
 {%                      endif %}
