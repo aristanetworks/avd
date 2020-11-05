@@ -816,7 +816,7 @@ tenants:
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
-            ip_address_virtual:: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
@@ -831,6 +831,9 @@ tenants:
 
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
+
+            # Defined interface MTU
+            mtu: < mtu >
 
           < 1-4096 >:
             name: < description >
@@ -924,6 +927,7 @@ tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
+            mtu: 1400
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2

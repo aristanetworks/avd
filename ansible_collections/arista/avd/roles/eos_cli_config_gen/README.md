@@ -742,7 +742,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
