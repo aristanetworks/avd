@@ -1,6 +1,6 @@
 {# Leaf underlay and overlay router bgp redistribute routes configuration #}
-{% if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
-{%     if type == "l3leaf" %}
+{% if type == "l3leaf" %}
+{%     if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
     connected:
       route_map: RM-CONN-2-BGP
 {%     endif %}
