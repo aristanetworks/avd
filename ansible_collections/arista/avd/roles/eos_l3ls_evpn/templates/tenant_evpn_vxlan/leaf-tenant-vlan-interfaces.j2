@@ -10,11 +10,12 @@
 {# If exists, create a shortpath to access profile data #}
 {%                 set profile = namespace() %}
 {%                 set profile.exist = false %}
+{%                 set profile.per_svi = tenants[tenant].vrfs[vrf].svis[svi] %}
 {%                 if svi_profiles is defined and svi_profiles is not none %}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
 {%                         if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
 {%                             set profile.exist = true %}
-{%                             set profile.data = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
+{%                             set profile.svi_profile = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}
@@ -22,9 +23,11 @@
   Vlan{{ svi }}:
     tenant: {{ tenant }}
     tags: {{ tenants[tenant].vrfs[vrf].svis[svi].tags }}
-    description: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+    description: {{ profile.per_svi.name }}
+{%                 if profile.per_svi.enabled is defined or profile.svi_profile.enabled is defined %}
+    enabled: {{ profile.per_svi.enabled if profile.per_svi.enabled is defined else profile.svi_profile.enabled | default(true) }}
+{%                 endif %}
     vrf: {{ vrf }}
-{# START KEYS dedicated to SVI (non-profile keys) #}
 {%                 if tenants[tenant].vrfs[vrf].svis[svi].nodes is defined %}
 {%                     for node in tenants[tenant].vrfs[vrf].svis[svi].nodes %}
 {%                          if node == inventory_hostname %}
@@ -34,34 +37,17 @@
 {%                          endif %}
 {%                     endfor %}
 {%                 endif %}
-{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_virtual_router_address is defined %}
-    ip_virtual_router_address: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_virtual_router_address | ipaddr('address') }}
+{%                 if profile.per_svi.ip_virtual_router_address is defined or profile.svi_profile.ip_virtual_router_address is defined %}
+    ip_virtual_router_address: {{ profile.per_svi.ip_virtual_router_address if profile.per_svi.ip_virtual_router_address is defined else profile.svi_profile.ip_virtual_router_address }}
 {%                 endif %}
-{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual is defined %}
-    ip_address_virtual: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual }}
+{%                 if profile.per_svi.ip_address_virtual is defined or profile.svi_profile.ip_address_virtual is defined %}
+    ip_address_virtual: {{ profile.per_svi.ip_address_virtual if profile.per_svi.ip_address_virtual is defined else profile.svi_profile.ip_address_virtual }}
 {%                 endif %}
-{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual_secondary is defined %}
-    ip_address_virtual_secondary: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_address_virtual_secondary }}
+{%                 if profile.per_svi.ip_address_virtual_secondary is defined or profile.svi_profile.ip_address_virtual_secondary is defined %}
+    ip_address_virtual_secondary: {{ profile.per_svi.ip_address_virtual_secondary if profile.per_svi.ip_address_virtual_secondary is defined else profile.svi_profile.ip_address_virtual_secondary }}
 {%                 endif %}
-{# START KEYS covered by PROFILE #}
-{#                 block for PROFILE keys #}
-{%                 if profile.exist == true %}
-{%                     if profile.data.mtu is defined %}
-    mtu: {{ profile.data.mtu }}
-{%                     endif %}
-{%                     if profile.data.enabled is defined %}
-    enabled: {{ profile.data.enabled }}
-{%                     endif %}
-{#                 block for keys if profile does not exist #}
-{%                 else %}
-{%                     if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
-    mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
-{%                     endif %}
-{%                     if tenants[tenant].vrfs[vrf].svis[svi].enabled is defined %}
-    enabled: {{ tenants[tenant].vrfs[vrf].svis[svi].enabled }}
-{%                     else %}
-    enabled: true
-{%                     endif %}
+{%                 if profile.per_svi.mtu is defined or profile.svi_profile.mtu is defined %}
+    mtu: {{ profile.per_svi.mtu if profile.per_svi.mtu is defined else profile.svi_profile.mtu }}
 {%                 endif %}
 {%                 if tenants[tenant].vrfs[vrf].ip_helpers is defined and tenants[tenant].vrfs[vrf].ip_helpers is not none %}
     ip_helpers:
