@@ -768,7 +768,7 @@ mlag_ibgp_peering_vrfs:
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rd_type:
-  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
@@ -779,7 +779,7 @@ evpn_rd_type:
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rt_type:
-  admin_subfield: < "asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
+  admin_subfield: < "leaf_asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
 
 
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.

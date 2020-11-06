@@ -135,7 +135,7 @@
 {%             else %}
 {%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
 {%             endif %}
-{%         elif evpn_rd_type.admin_subfield == "asn" %}
+{%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
 {%             set leaf.evpn_rd_admin_subfield = leaf.bgp_as %}
 {%         elif evpn_rd_type.admin_subfield == "spine_asn" %}
 {%             set leaf.evpn_rd_admin_subfield = spine.bgp_as %}
@@ -150,7 +150,7 @@
 {% set leaf.evpn_rt_admin_subfield = false %}
 {% if evpn_rt_type is defined and evpn_rt_type is not none %}
 {%     if evpn_rt_type.admin_subfield is defined and evpn_rt_type.admin_subfield is not none %}
-{%         if evpn_rt_type.admin_subfield == "asn" %}
+{%         if evpn_rt_type.admin_subfield == "leaf_asn" %}
 {%             set leaf.evpn_rt_admin_subfield = leaf.bgp_as %}
 {%         elif evpn_rt_type.admin_subfield == "spine_asn" %}
 {%             set leaf.evpn_rt_admin_subfield = spine.bgp_as %}
