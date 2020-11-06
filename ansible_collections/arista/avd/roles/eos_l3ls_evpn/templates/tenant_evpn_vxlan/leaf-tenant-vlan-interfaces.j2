@@ -49,10 +49,18 @@
 {%                     if svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile].mtu is defined %}
     mtu: {{ svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile].mtu }}
 {%                     endif %}
+{%                     if profile.data.enabled is defined %}
+    enabled: {{ profile.data.enabled }}
+{%                     endif %}
 {#                 block for keys if profile does not exist #}
 {%                 else %}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].mtu is defined %}
     mtu: {{ tenants[tenant].vrfs[vrf].svis[svi].mtu }}
+{%                     endif %}
+{%                     if tenants[tenant].vrfs[vrf].svis[svi].enabled is defined %}
+    enabled: {{ tenants[tenant].vrfs[vrf].svis[svi].enabled }}
+{%                     else %}
+    enabled: true
 {%                     endif %}
 {%                 endif %}
 {%                 if tenants[tenant].vrfs[vrf].ip_helpers is defined and tenants[tenant].vrfs[vrf].ip_helpers is not none %}
