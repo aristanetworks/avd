@@ -46,8 +46,8 @@
 {# START KEYS covered by PROFILE #}
 {#                 block for PROFILE keys #}
 {%                 if profile.exist == true %}
-{%                     if svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile].mtu is defined %}
-    mtu: {{ svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile].mtu }}
+{%                     if profile.data..mtu is defined %}
+    mtu: {{ profile.data..mtu }}
 {%                     endif %}
 {%                     if profile.data.enabled is defined %}
     enabled: {{ profile.data.enabled }}
