@@ -8,11 +8,6 @@
 {% set switch.platform = spine.platform %}
 {% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
-{% if switch.spine.bgp_as is defined %}
-{%     set spine.bgp_as = spine.bgp_as %}
-{% else %}
-{%     set spine.bgp_as = bgp_as %}
-{% endif %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
