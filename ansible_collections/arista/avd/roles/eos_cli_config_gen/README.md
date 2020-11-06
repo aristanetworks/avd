@@ -1425,8 +1425,8 @@ management_ssh:
 
 ```yaml
 custom_templates:
-  - < relative path from playbook to template 1 >
-  - < relative path from playbook to template 2 >
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
 ## License
