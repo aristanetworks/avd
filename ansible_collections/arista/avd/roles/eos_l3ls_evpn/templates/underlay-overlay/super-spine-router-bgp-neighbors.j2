@@ -1,0 +1,34 @@
+{# Super Spine to Spine router BGP underlay peering #}
+{% set s_spine = namespace() %}
+{% set s_spine.id = super_spine.nodes[inventory_hostname].id %}
+{# find maximum underlay pool size as it will be later devided by max number of sup spines and pods #}
+{# that allows changes in network setup, but pool must not be changed to avoid changing p2p addresses #}
+{% set s_spine.max_hosts_in_subnet = super_spine_underlay_p2p_network_summary | ipaddr('size') %}
+{# walk over super-spine ports defined as connections to spines #}
+{% for ports_to_specific_pod in super_spine.spine_interfaces %}
+{% set pod_loop = loop %}
+{%      for port_name in ports_to_specific_pod %}
+{%          set link = namespace() %}
+{%          set link.spine_number = (loop.index0 / max_spine_to_super_spine_links + 1)|int %}
+{# walk over hostvars to find if connection exists on the spine side and info about connected spine #}
+{%          for host in hostvars.keys() %}
+{%              if hostvars[host]['type'] is defined %}
+{%                  if hostvars[host]['type'] == 'spine' %}
+{%                      if hostvars[host]['pod_number'] == pod_loop.index %}
+{%                          for spine_hostname in hostvars[host]['spine']['nodes'] %}
+{%                              if hostvars[host]['spine']['nodes'][spine_hostname]['id'] == link.spine_number %}
+{%                                  set link.spine_hostname = spine_hostname %}
+{%                                  set link.spine_as = hostvars[host]['spine']['bgp_as'] %}
+{%                              endif %}
+{%                          endfor %}
+{%                      endif %}
+{%                  endif %}
+{%              endif %}
+{%          endfor %}
+    {{ super_spine_underlay_p2p_network_summary | ipaddr('network') | ipmath(
+            ((s_spine.max_hosts_in_subnet / max_super_spines) / max_pods)|int * pod_loop.index0 + loop.index0 * 2 + 1
+        ) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: {{ link.spine_as }}
+{%      endfor %}
+{% endfor %}
