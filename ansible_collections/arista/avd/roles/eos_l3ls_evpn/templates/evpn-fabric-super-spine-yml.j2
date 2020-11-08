@@ -153,7 +153,7 @@ router_bgp:
 {# underlay and overlay #}
 {% include 'underlay-overlay/super-spine-router-bgp-base.j2' %}
   peer_groups:
-{# {% include 'underlay-overlay/super-spine-router-bgp-peer-groups.j2' %} #}
+{% include 'underlay-overlay/super-spine-router-bgp-peer-groups.j2' %}
   neighbors:
 {# {% include 'underlay-overlay/super-spine-router-bgp-neighbors.j2' %} #}
   redistribute_routes:
