@@ -37,6 +37,6 @@
     type: routed
     ip_address: {{ super_spine_underlay_p2p_network_summary | ipaddr('network') | ipmath(
             ((s_spine.max_hosts_in_subnet / max_super_spines) / max_pods)|int * pod_loop.index0 + loop.index0 * 2
-        ) }}
+        ) }}/31
 {%      endfor %}
 {% endfor %}
