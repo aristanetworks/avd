@@ -1,0 +1,8 @@
+{# Spine router bgp peer groups configuration #}
+{% if type == "super-spine" %}
+{# Underlay network peering #}
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+{% endif %}
