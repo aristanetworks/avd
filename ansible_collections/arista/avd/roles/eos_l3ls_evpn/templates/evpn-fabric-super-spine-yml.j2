@@ -151,17 +151,17 @@ route_maps:
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{# {% include 'underlay-overlay/super-spine-router-bgp-base.j2' %}
+{% include 'underlay-overlay/super-spine-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/super-spine-router-bgp-peer-groups.j2' %}
+{# {% include 'underlay-overlay/super-spine-router-bgp-peer-groups.j2' %} #}
   neighbors:
-{% include 'underlay-overlay/super-spine-router-bgp-neighbors.j2' %}
+{# {% include 'underlay-overlay/super-spine-router-bgp-neighbors.j2' %} #}
   redistribute_routes:
-{% include 'underlay-overlay/super-spine-router-bgp-redistribute-routes.j2' %}
+{# {% include 'underlay-overlay/super-spine-router-bgp-redistribute-routes.j2' %} #}
   address_family_evpn:
-{% include 'underlay-overlay/super-spine-router-bgp-address-family-evpn.j2' %}
+{# {% include 'underlay-overlay/super-spine-router-bgp-address-family-evpn.j2' %} #}
   address_family_ipv4:
-{% include 'underlay-overlay/super-spine-router-bgp-address-family-ipv4.j2' %} #}
+{# {% include 'underlay-overlay/super-spine-router-bgp-address-family-ipv4.j2' %} #}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
