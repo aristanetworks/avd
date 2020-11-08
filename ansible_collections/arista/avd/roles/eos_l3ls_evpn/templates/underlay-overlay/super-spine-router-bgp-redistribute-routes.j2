@@ -1,0 +1,5 @@
+{# Spine router bgp redistribute routes configuration #}
+{%     if type == "super-spine" %}
+    connected:
+      route_map: RM-CONN-2-BGP
+{%     endif %}
