@@ -43,3 +43,34 @@
 {%         endfor %}
 {%     endfor %}
 {% endfor %}
+{# Point-to-Point Interfaces to Spine Switches #}
+  ### p2p Interfaces to Super Spine Switches
+{% set a_spine = namespace() %}
+{% set a_spine.id = spine.nodes[inventory_hostname].id %}
+{# find maximum underlay pool size as it will be later devided by max number of sup spines and pods #}
+{# that allows changes in network setup, but pool must not be changed to avoid changing p2p addresses #}
+{% set a_spine.max_hosts_in_subnet = super_spine_underlay_p2p_network_summary | ipaddr('size') %}
+{# walk over spine ports defined as connections to super-spine #}
+{% for port_name in spine['uplinks_to_super_spine_interfaces'] %}
+{%      set link = namespace() %}
+{%      set link.s_spine_number = loop.index0 // max_spine_to_super_spine_links + 1 %}
+{%          for sup_spine in super_spine.nodes %}
+{%              if super_spine.nodes[sup_spine].id == link.s_spine_number %}
+{%                  set link.s_spine_hostname = sup_spine %}
+{%                  set link.peer_interface = super_spine.spine_interfaces[pod_number-1][a_spine.id-1+(loop.index0%max_spine_to_super_spine_links)] %}
+{%              endif %}
+{%          endfor %}
+  {{ port_name }}:
+    peer: {{ link.s_spine_hostname }}
+    peer_interface: {{ link.peer_interface }}
+    peer_type: super-spine
+    description: P2P_LINK_TO_{{ link.s_spine_hostname | upper }}_{{ link.peer_interface }}
+{%              if p2p_link_interface_speed is defined %}
+    speed: {{ p2p_link_interface_speed }}
+{%              endif %}
+    mtu: {{ p2p_uplinks_mtu }}
+    type: routed
+    ip_address: {{ super_spine_underlay_p2p_network_summary | ipaddr('network') | ipmath(
+            ((a_spine.max_hosts_in_subnet / max_super_spines) / max_pods)|int * (pod_number-1) + loop.index0 * 2 + 1
+        ) }}/31
+{% endfor %}
