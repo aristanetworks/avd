@@ -158,10 +158,10 @@ router_bgp:
 {% include 'underlay-overlay/super-spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'underlay-overlay/super-spine-router-bgp-redistribute-routes.j2' %}
-  address_family_evpn:
-{# {% include 'underlay-overlay/super-spine-router-bgp-address-family-evpn.j2' %} #}
   address_family_ipv4:
-{# {% include 'underlay-overlay/super-spine-router-bgp-address-family-ipv4.j2' %} #}
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
