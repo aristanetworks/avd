@@ -3,6 +3,10 @@
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+{%     if overlay_routing_protocol|upper == "IBGP" %}
+        route_map_in: RM-EVPN-SOO-IN
+        route_map_out: RM-EVPN-SOO-OUT
+{%     endif %}
 {%     if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
       IPv4-UNDERLAY-PEERS:
         activate: false
