@@ -39,3 +39,16 @@
 {%         endfor %}
 {%     endfor %}
 {% endif %}
+{# Underlay network peering to super spines #}
+{% set a_spine = namespace() %}
+{# find maximum underlay pool size as it will be later devided by max number of sup spines and pods #}
+{# that allows changes in network setup, but pool must not be changed to avoid changing p2p addresses #}
+{% set a_spine.max_hosts_in_subnet = super_spine_underlay_p2p_network_summary | ipaddr('size') %}
+{# walk over spine ports defined as connections to super-spine #}
+{% for port_name in spine['uplinks_to_super_spine_interfaces'] %}
+    {{ super_spine_underlay_p2p_network_summary | ipaddr('network') | ipmath(
+            ((a_spine.max_hosts_in_subnet / max_super_spines) / max_pods)|int * (pod_number-1) + loop.index0 * 2
+      ) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: {{ super_spine.bgp_as }}
+{% endfor %}
