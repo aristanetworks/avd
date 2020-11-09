@@ -14,6 +14,7 @@
   tags: [build, provision]
 
 - name: Generate EVPN fabric documentation in Markdown Format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-documentation.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}.md'
@@ -23,6 +24,7 @@
   tags: [build, provision]
 
 - name: Generate Leaf and Spine Point-To-Point Links summary in csv format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-p2p-links.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-p2p-links.csv'
@@ -32,6 +34,7 @@
   tags: [build, provision]
 
 - name: Generate Fabric Topology in csv format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-topology.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-topology.csv'
