@@ -20,7 +20,7 @@
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true
       maximum_routes: 0
-{%     elif overlay_routing_protocol|upper == "IBGP" %}
+{%     elif ( overlay_routing_protocol|upper == "IBGP" and switch.bgp_route_reflector == true ) %}
     EVPN-OVERLAY-PEERS:
       type: evpn
       remote_as: {{ bgp_as }}

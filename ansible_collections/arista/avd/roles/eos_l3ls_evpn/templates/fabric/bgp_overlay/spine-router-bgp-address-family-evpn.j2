@@ -1,10 +1,14 @@
 {# spine - address family evpn activation #}
 {% if type == "spine" %}
+{%     if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-{%     if (underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP") %}
       IPv4-UNDERLAY-PEERS:
         activate: false
+{%     elif ( overlay_routing_protocol|upper == "IBGP" and switch.bgp_route_reflector == true ) %}
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
 {%     endif %}
 {% endif %}

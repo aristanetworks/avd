@@ -14,7 +14,9 @@
 {%     endif %}
 {# Overlay network peering #}
 {%     for spine_node in spine.nodes | arista.avd.natural_sort %}
+{%         if spine.nodes[spine_node].bgp_route_reflector == true %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[spine_node].id ) }}:
       peer_group: EVPN-OVERLAY-PEERS
+{%         endif %}
 {%     endfor %}
 {% endif %}
