@@ -378,7 +378,7 @@ prefix_lists:
 route_maps:
 {% include 'fabric/bgp_base/route-maps.j2' %}
 
-{# BGP Configurartion #}
+{# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
@@ -400,6 +400,11 @@ router_bgp:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
   vrfs:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+
+{# Extended Community Lists Configuration #}
+### Extended Community Lists ###
+ip_extcommunity_lists:
+{% include 'fabric/bgp_base/ip-extcommunity-lists.j2' %}
 
 {# OSPF Configuration #}
 ### Routing - OSPF ###
