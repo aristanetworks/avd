@@ -1,6 +1,6 @@
 {# Spine router bgp base configuration whith EBGP #}
 {% if type == "spine" %}
-{%     if ( underlay_routing_protocol|upper == "BGP" or underlay_routing_protocol|upper == "EBGP" ) %}
+{%     if ( overlay_routing_protocol|upper == "BGP" or overlay_routing_protocol|upper == "EBGP" ) %}
   as: {{ spine.bgp_as }}
   router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[inventory_hostname].id) }}
   bgp_defaults:
