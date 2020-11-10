@@ -43,12 +43,12 @@
 {%             else %}
 {%                 set switch.platform = l3leaf.defaults.platform %}
 {%             endif %}
-{%             if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+{%             if bgp_as is defined and bgp_as is not none and overlay_routing_protocol|upper == 'IBGP' %}
+{%                  set leaf.bgp_as = bgp_as %}
+{%             elif l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
 {%             elif l3leaf.defaults.bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.defaults.bgp_as %}
-{%             else %}
-{%                 set leaf.bgp_as = bgp_as %}
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address is defined %}
 {%                 set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address %}
