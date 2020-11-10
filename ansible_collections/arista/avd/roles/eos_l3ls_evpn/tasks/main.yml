@@ -43,7 +43,7 @@
   check_mode: no
   tags: [build, provision]
 
-- name: Create Directory for the dc documentaion
+- name: Create Directory for the dc topology documentaion
   file:
     path: '{{ root_dir }}/documentation/{{ dc_name }}'
     state: directory
@@ -53,6 +53,16 @@
   template:
     src: documentation/dc-topology.j2
     dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-topology.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Generate Spine and Super-Spine Point-To-Point Links summary in csv format.
+  when: dc_name is defined
+  template:
+    src: documentation/dc-p2p-links.j2
+    dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-p2p-links.csv'
   delegate_to: localhost
   run_once: true
   check_mode: no
