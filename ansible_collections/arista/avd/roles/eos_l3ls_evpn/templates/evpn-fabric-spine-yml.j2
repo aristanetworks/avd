@@ -8,7 +8,7 @@
 {% set switch.platform = spine.platform %}
 {% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
-{% set switch.bgp_route_reflector = spine.nodes[inventory_hostname].bgp_route_reflector %}
+{% set switch.bgp_route_reflector = spine.nodes[inventory_hostname].bgp_route_reflector | default(false) %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
