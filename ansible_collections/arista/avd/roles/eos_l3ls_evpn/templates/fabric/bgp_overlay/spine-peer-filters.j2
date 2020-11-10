@@ -1,5 +1,5 @@
 {# Spine peer filters#}
-{% if ( overlay_routing_protocol|upper == "BGP" or overlay_routing_protocol|upper == "EBGP" ) %}
+{% if ( overlay_routing_protocol|lower == "bgp" or overlay_routing_protocol|lower == "ebgp" ) %}
   LEAF-AS-RANGE:
     sequence_numbers:
       10:
