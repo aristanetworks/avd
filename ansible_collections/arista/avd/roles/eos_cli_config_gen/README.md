@@ -80,6 +80,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [Custom Templates](#custom-templates)
   - [License](#license)
 
 ## Overview
@@ -1417,6 +1418,14 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+
+### Custom Templates
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
 ## License
