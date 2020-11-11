@@ -3,6 +3,9 @@
 !
 router bgp {{ router_bgp.as }}
    router-id {{ router_bgp.router_id }}
+{% if router_bgp.bgp_cluster_id is defined %}
+   bgp cluster-id {{ router_bgp.bgp_cluster_id }}
+{% endif %}
 {%     for bgp_default in router_bgp.bgp_defaults %}
    {{ bgp_default }}
 {%     endfor %}
@@ -31,6 +34,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].update_source is defined and router_bgp.peer_groups[peer_group].update_source is not none %}
    neighbor {{ peer_group }} update-source {{ router_bgp.peer_groups[peer_group].update_source }}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].route_reflector_client is defined and router_bgp.peer_groups[peer_group].route_reflector_client == true %}
+   neighbor {{ peer_group }} route-reflector-client
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].bfd is defined and router_bgp.peer_groups[peer_group].bfd == true %}
    neighbor {{ peer_group }} bfd
