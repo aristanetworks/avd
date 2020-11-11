@@ -1,4 +1,4 @@
-{% if underlay_routing_protocol == "OSPF" %}
+{% if underlay_routing_protocol|lower == "ospf" %}
   process_ids:
     {{ underlay_ospf_process_id }}:
       passive_interface_default: true
