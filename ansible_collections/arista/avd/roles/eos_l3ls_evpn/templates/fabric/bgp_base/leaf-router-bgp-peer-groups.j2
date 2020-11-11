@@ -22,7 +22,11 @@
 {# Overlay network peering #}
     EVPN-OVERLAY-PEERS:
       type: evpn
+{% if bgp_as is defined %}
+      remote_as: {{ bgp_as }}
+{% else %}
       remote_as: {{ spine.bgp_as }}
+{% endif %}
       update_source: Loopback0
       bfd: true
       ebgp_multihop: 3
