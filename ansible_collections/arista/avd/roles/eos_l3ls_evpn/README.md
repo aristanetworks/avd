@@ -1541,8 +1541,7 @@ Assigned to the DC group:
 ```yaml
 dc_name: DC1  # data center fabric name
 
-max_super_spines: 4  # maximum number of super-spines
-max_pods: 10  # maximum number of PODs
+max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
 
 super_spine:
   platform: vEOS-LAB  # super-spine platform
@@ -1558,12 +1557,6 @@ super_spine:
       id: 1
       mgmt_ip: 192.168.0.1/24
     <-- etc. -->
-
-# Point to Point Network Summary range, assigned as /31 for each
-# uplink interfaces
-# Assign range larger than total [super-spines * total potential
-# spines * number of links between spine and super-spine * 2]
-super_spine_underlay_p2p_network_summary: 172.31.00.0/24
 
 # IP address range for loopbacks for all super-spines in the DC,
 # assigned as /32s
@@ -1593,6 +1586,12 @@ pod_number: 1  # leaf-spine POD number
 
 spine:
   uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+
+# Point to Point Network Summary range, assigned as /31 for each
+# uplink interfaces
+# Assign range larger then total
+# [ max_spines_in_a_POD * max_super_spines * max_spine_to_super_spine_links * 2 ]
+super_spine_underlay_p2p_network_summary: 172.31.1.0/24
 ```
 
 Following variables must be now defined on DC and not POD level:
