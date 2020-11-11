@@ -67,3 +67,13 @@
   run_once: true
   check_mode: no
   tags: [build, provision]
+
+- name: Generate EVPN Spine-to-Super-SPine fabric documentation in Markdown Format.
+  when: dc_name is defined
+  template:
+    src: documentation/dc-documentation.j2
+    dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}.md'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
