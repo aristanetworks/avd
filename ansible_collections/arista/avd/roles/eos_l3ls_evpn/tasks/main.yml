@@ -13,6 +13,12 @@
   delegate_to: localhost
   tags: [build, provision]
 
+- name: Create Directory for the dc topology documentaion
+  when: fabric_name is defined
+  file:
+    path: '{{ root_dir }}/documentation/{{ fabric_name }}'
+    state: directory
+
 - name: Generate EVPN fabric documentation in Markdown Format.
   when: fabric_name is defined
   template:
