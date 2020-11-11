@@ -9,7 +9,7 @@
     ospf_area: {{ underlay_ospf_area }}
     mtu: {{ p2p_uplinks_mtu }}
 {%         endif %}
-{%         if underlay_routing_protocol == "ISIS" %}
+{%         if underlay_routing_protocol|lower == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true

@@ -11,7 +11,7 @@
 {% if underlay_routing_protocol == "OSPF" %}
     ospf_area: {{ underlay_ospf_area }}
 {% endif %}
-{% if underlay_routing_protocol == "ISIS" %}
+{% if underlay_routing_protocol|lower == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
 {% endif %}
