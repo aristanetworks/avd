@@ -1,6 +1,6 @@
 {# Leaf and Spine route-maps for the underlay#}
 {% if type == "l3leaf" %}
-{%     if overlay_routing_protocol|upper == "IBGP" %}
+{%     if overlay_routing_protocol|lower == "ibgp" %}
   ECL-EVPN-SOO:
     - type: permit
 {%         if leaf.mlag == true and leaf.mlag_role == "primary" %}
