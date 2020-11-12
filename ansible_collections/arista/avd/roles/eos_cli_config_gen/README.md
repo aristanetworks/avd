@@ -22,6 +22,7 @@
     - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
+    - [Domain-List](#domain-list)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
@@ -277,6 +278,14 @@ ip_domain_lookup:
   source_interfaces:
     < source_interface_1 >:
       vrf: < vrf_name >
+```
+
+### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
 ```
 
 ### Name Servers
