@@ -9,6 +9,46 @@
 {% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
 {% set switch.bgp_route_reflector = spine.nodes[inventory_hostname].bgp_route_reflector | default(false) %}
+{# Build variables for fabric protocols #}
+{# Logic for underlay routing protocol configured on device #}
+{% if underlay_routing_protocol is defined %}
+{%     if underlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.underlay_routing_protocol = 'ibgp'%}
+{%     elif underlay_routing_protocol|lower == 'isis' %}
+{%         set switch.underlay_routing_protocol = 'isis' %}
+{%     elif underlay_routing_protocol|lower == 'ospf' %}
+{%         set switch.underlay_routing_protocol = 'ospf' %}
+{%     else %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.underlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for overlay protocol definition #}
+{% if overlay_routing_protocol is defined %}
+{%     if overlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.overlay_routing_protocol = 'ibgp'%}
+{%     else %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for route_reflector role #}
+{% set switch.is_route_reflector = false %}
+{% for spine_node in spine.nodes | arista.avd.natural_sort %}
+{%     if spine.nodes[spine_node].bgp_route_reflector is defined and spine.nodes[spine_node].bgp_route_reflector == true %}
+{%         set switch.is_route_reflector = true %}
+{%     endif%}
+{% endfor %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}

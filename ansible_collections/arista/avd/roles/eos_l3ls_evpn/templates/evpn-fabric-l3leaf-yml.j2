@@ -161,7 +161,48 @@
 {%         endif %}
 {%     endif %}
 {% endif %}
-
+{# Build variables for fabric protocols #}
+{# Logic for underlay routing protocol configured on device #}
+{% if underlay_routing_protocol is defined %}
+{%     if underlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.underlay_routing_protocol = 'ibgp'%}
+{%     elif underlay_routing_protocol|lower == 'isis' %}
+{%         set switch.underlay_routing_protocol = 'isis' %}
+{%     elif underlay_routing_protocol|lower == 'ospf' %}
+{%         set switch.underlay_routing_protocol = 'ospf' %}
+{%     else %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.underlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for overlay protocol definition #}
+{% if overlay_routing_protocol is defined %}
+{%     if overlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.overlay_routing_protocol = 'ibgp'%}
+{%     else %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for route_reflector role #}
+{% set switch.is_route_reflector = false %}
+{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%         if l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector is defined and l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector == true %}
+{%             set switch.is_route_reflector = true %}
+{%         endif%}
+{%     endfor %}
+{% endfor %}
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
