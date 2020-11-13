@@ -9,13 +9,14 @@ on:
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/**'
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
-      - 'ansible_collections/arista/avd/molecules/**'
+      - 'ansible_collections/arista/avd/molecule/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-cli-config-gen.yml'
 jobs:
   molecule:
     name: Run CI test for eos_cli_config_gen
     runs-on: ubuntu-latest
+    strategy:
       fail-fast: true
       matrix:
         avd_scenario:
@@ -44,9 +45,7 @@ jobs:
 
       - name: Check GIT changes
         run: |
-          changes=$(git status --short | wc -l | awk -F " " "{print $1}") ;\
-          if [[ $(echo ${changes}| tr -d ' ') == *'0' ]];\
-          then echo 'No change' && return 0; else echo 'Has changes' && return 1 ; fi
+          changes=$(git status --short | wc -l | awk -F " " "{print $1}") ; if [[ $(echo ${changes}| tr -d ' ') == *'0' ]]; then echo 'No change' && return 0; else echo 'Has changes' && return 1 ; fi
 
       - uses: actions/upload-artifact@v1
         with:
