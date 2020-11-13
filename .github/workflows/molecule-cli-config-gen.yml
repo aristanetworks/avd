@@ -45,7 +45,7 @@ jobs:
 
       - name: Check GIT changes
         run: |
-          changes=$(git status --short | wc -l | awk -F " " "{print $1}") ; if [[ $(echo ${changes}| tr -d ' ') == *'0' ]]; then echo 'No change' && return 0; else echo 'Has changes' && return 1 ; fi
+          sh .github/git-status.sh
 
       - uses: actions/upload-artifact@v1
         with:
