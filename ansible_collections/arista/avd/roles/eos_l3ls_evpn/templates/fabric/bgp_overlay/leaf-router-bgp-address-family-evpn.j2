@@ -3,11 +3,11 @@
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-{%     if overlay_routing_protocol|lower == "ibgp" %}
+{%     if switch.overlay_routing_protocol == "ibgp" %}
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
 {%     endif %}
-{%     if (underlay_routing_protocol|lower == "bgp" or underlay_routing_protocol|lower == "ebgp") %}
+{%     if switch.underlay_routing_protocol == "ebgp" %}
       IPv4-UNDERLAY-PEERS:
         activate: false
 {%         if leaf.mlag == true %}

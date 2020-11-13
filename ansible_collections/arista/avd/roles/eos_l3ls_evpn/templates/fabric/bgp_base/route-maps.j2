@@ -1,5 +1,5 @@
 {# Leaf and Spine route-maps for the underlay#}
-{% if (underlay_routing_protocol|lower == "bgp" or underlay_routing_protocol|lower == "ebgp" ) %}
+{% if switch.underlay_routing_protocol == "ebgp" %}
   RM-CONN-2-BGP:
     sequence_numbers:
       10:
@@ -8,7 +8,7 @@
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
 {% endif %}
 {# Leaf route-maps for the overlay#}
-{% if overlay_routing_protocol|lower == "ibgp" %}
+{% if switch.overlay_routing_protocol == "ibgp" %}
 {%     if type == "l3leaf" %}
   RM-EVPN-SOO-IN:
     sequence_numbers:

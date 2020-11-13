@@ -2,7 +2,7 @@
 {% if type == "l3leaf" %}
 {# EBGP #}
 {## Underlay network peering #}
-{%     if (underlay_routing_protocol|lower == "bgp" or underlay_routing_protocol|lower == "ebgp") %}
+{%     if switch.underlay_routing_protocol == "ebgp" %}
 {%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
     {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -18,7 +18,7 @@
       peer_group: EVPN-OVERLAY-PEERS
 {%         endfor %}
 {# EBGP #}
-{%     elif overlay_routing_protocol|lower == "ibgp" %}
+{%     elif switch.overlay_routing_protocol == "ibgp"  %}
 {## Overlay network peering #}
 {%         for spine_node in spine.nodes | arista.avd.natural_sort %}
 {%             if ( spine.nodes[spine_node].bgp_route_reflector is defined and spine.nodes[spine_node].bgp_route_reflector == true ) %}

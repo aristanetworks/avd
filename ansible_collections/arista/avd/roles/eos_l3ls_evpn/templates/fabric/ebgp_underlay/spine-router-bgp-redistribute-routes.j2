@@ -1,6 +1,6 @@
 {# Spine router bgp redistribute routes configuration #}
 {% if type == "spine" %}
-{%     if (underlay_routing_protocol|lower == "bgp" or underlay_routing_protocol|lower == "ebgp") %}
+{%     if switch.underlay_routing_protocol == "ebgp" %}
     connected:
       route_map: RM-CONN-2-BGP
 {%     endif %}
