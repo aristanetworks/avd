@@ -409,7 +409,7 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/ebgp_underlay/leaf-prefix-lists.j2' %}
+{% include 'fabric/bgp_base/leaf-prefix-lists.j2' %}
 
 {# MLAG Configuration #}
 {% include 'fabric/mlag/leaf-mlag-configuration.j2' %}

@@ -180,7 +180,7 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/bgp_overlay/spine-prefix-lists.j2' %}
+{% include 'fabric/bgp_base/spine-prefix-lists.j2' %}
 
 
 {# route maps #}
@@ -192,7 +192,6 @@ route_maps:
 {# peer-filter #}
 ### peer-filters ###
 peer_filters:
-{% include 'fabric/bgp_overlay/spine-peer-filters.j2' %}
 
 
 {# ##### BGP Configurartion ##### #}
