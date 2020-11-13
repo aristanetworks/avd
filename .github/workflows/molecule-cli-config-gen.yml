@@ -7,6 +7,8 @@ on:
     paths:
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/tasks/**'
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/**'
+      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-cli-config-gen.yml'
@@ -14,11 +16,6 @@ jobs:
   molecule:
     name: Run CI test for eos_cli_config_gen
     runs-on: ubuntu-latest
-    # Deactivated as per GH changes
-    # env:
-    #   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-    #   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
-    strategy:
       fail-fast: true
       matrix:
         avd_scenario:
@@ -44,6 +41,12 @@ jobs:
           cd ansible_collections/arista/avd
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
+
+      - name: Check GIT changes
+        run: |
+          changes=$(git status --short | wc -l | awk -F " " "{print $1}") ;\
+          if [[ $(echo ${changes}| tr -d ' ') == *'0' ]];\
+          then echo 'No change' && return 0; else echo 'Has changes' && return 1 ; fi
 
       - uses: actions/upload-artifact@v1
         with:

@@ -12,6 +12,6 @@
         state: absent
       with_items:
         - documentation
-        - intended
+        - intended/structured_configs
         - config_backup
         - reports
