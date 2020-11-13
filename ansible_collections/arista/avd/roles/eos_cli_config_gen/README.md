@@ -65,6 +65,7 @@
     - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
     - [Community Lists](#community-lists)
+    - [IP Extended Community Lists](#ip-extended-community-lists)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
@@ -1014,6 +1015,18 @@ community_lists:
     action: "< action as string >"
   < community_list_name_2 >:
     action: "< action as string >"
+```
+
+### IP Extended Community Lists
+
+```yaml
+ip_extcommunity_lists:
+  < community_list_name_1 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
+  < community_list_name_2 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
 ```
 
 ### Route Maps
