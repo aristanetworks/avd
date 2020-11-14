@@ -80,6 +80,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [Custom Templates](#custom-templates)
   - [License](#license)
 
 ## Overview
@@ -742,7 +743,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -1418,6 +1418,14 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+
+### Custom Templates
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
 ## License
