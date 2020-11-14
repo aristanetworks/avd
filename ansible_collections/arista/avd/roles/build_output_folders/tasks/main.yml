@@ -48,14 +48,24 @@
     mode: 0755
   delegate_to: localhost
   run_once: True
-
-- name: 'Create folder {{ fabric_dir_name }} for Fabric documentation'
+  
+- name: 'Create folder {{ fabric_name }} for Fabric documentation'
+  when: fabric_name is defined
   file:
-    path: '{{fabric_dir}}'
+    path: '{{ fabric_dir }}'
     state: directory
     mode: 0755
   delegate_to: localhost
-  run_once: True
+  run_once: False
+
+- name: 'Create folder {{ dc_dir_name }} for DC documentation'
+  when: dc_name is defined
+  file:
+    path: '{{ dc_dir }}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: False
 
 - name: 'Create folder {{ devices_dir_name }} for EOS documentation'
   file:
