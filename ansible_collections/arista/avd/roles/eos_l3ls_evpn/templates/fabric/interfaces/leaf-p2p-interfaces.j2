@@ -11,11 +11,11 @@
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}/31
-{%     if underlay_routing_protocol == "OSPF" %}
+{%     if underlay_routing_protocol|lower == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%     endif %}
-{%     if underlay_routing_protocol == "ISIS" %}
+{%     if underlay_routing_protocol|lower == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true

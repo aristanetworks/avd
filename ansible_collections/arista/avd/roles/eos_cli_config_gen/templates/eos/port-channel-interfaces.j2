@@ -64,6 +64,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
+{%             if port_channel_interfaces[port_channel_interface].ip_proxy_arp is defined and port_channel_interfaces[port_channel_interface].ip_proxy_arp == true %}
+   ip proxy-arp 
+{%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
 {%         endif %}
