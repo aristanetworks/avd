@@ -1,4 +1,0 @@
-{# Super Spine Loopback Interface for Overlay Peering #}
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    ip_address: {{ super_spine_loopback_network_summary  | ipaddr('network') | ipmath(super_spine.nodes[inventory_hostname].id) }}/32
