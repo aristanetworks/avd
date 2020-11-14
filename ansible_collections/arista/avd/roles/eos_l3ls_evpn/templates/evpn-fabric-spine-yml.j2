@@ -107,13 +107,13 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'underlay-overlay/spine-p2p-interfaces.j2' %}
+{% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
 
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'underlay-overlay/spine-overlay-loopback.j2' %}
+{% include 'fabric/ebgp_overlay/spine-overlay-loopback.j2' %}
 
 
 {# Management Interfaces #}
@@ -139,48 +139,48 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'underlay-overlay/spine-prefix-lists.j2' %}
+{% include 'fabric/ebgp_overlay/spine-prefix-lists.j2' %}
 
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'underlay-overlay/route-maps.j2' %}
+{% include 'fabric/ebgp_overlay/route-maps.j2' %}
 
 
 {# peer-filter #}
 ### peer-filters ###
 peer_filters:
-{% include 'underlay-overlay/spine-peer-filters.j2' %}
+{% include 'fabric/ebgp_overlay/spine-peer-filters.j2' %}
 
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'underlay-overlay/spine-router-bgp-base.j2' %}
+{% include 'fabric/spine-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/spine-router-bgp-peer-groups.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'underlay-overlay/spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-neighbors-ipv4.j2' %}
   redistribute_routes:
-{% include 'underlay-overlay/spine-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'underlay-overlay/spine-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/ebgp_overlay/spine-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'underlay-overlay/spine-router-bgp-address-family-ipv4.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-address-family-ipv4.j2' %}
 
-{# OSPF Configurartion #}
+{# OSPF Configuration #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'underlay-overlay/router-ospf.j2' %}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
-{# OSPF Configurartion #}
+{# ISIS Configuration #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'underlay-overlay/router-isis.j2' %}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

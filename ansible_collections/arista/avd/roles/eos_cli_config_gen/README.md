@@ -22,6 +22,7 @@
     - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
+    - [Domain-List](#domain-list)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
@@ -80,6 +81,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [Custom Templates](#custom-templates)
   - [License](#license)
 
 ## Overview
@@ -256,6 +258,10 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  format:
+    timestamp: < high-resolution | traditional >
+    hostname: < fqdn | ipv4 >
+    sequence_numbers: < true | false >
   source_interface: < source_interface_name >
   vrfs:
     < vrf_name >:
@@ -272,6 +278,14 @@ ip_domain_lookup:
   source_interfaces:
     < source_interface_1 >:
       vrf: < vrf_name >
+```
+
+### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
 ```
 
 ### Name Servers
@@ -738,7 +752,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -1277,6 +1290,7 @@ router_ospf:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
+      bfd_enable: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
@@ -1413,6 +1427,14 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+
+### Custom Templates
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
 ## License

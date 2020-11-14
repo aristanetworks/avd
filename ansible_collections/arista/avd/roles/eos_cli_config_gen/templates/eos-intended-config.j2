@@ -37,10 +37,12 @@ hostname {{ inventory_hostname }}
 {% include 'eos/name-servers.j2' %}
 {# dns domain #}
 {% include 'eos/dns-domain.j2' %}
+{# domain-list #}
+{% include 'eos/domain-list.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
-{# radius server #}
-{% include 'eos/radius-server.j2' %}
+{# radius servers #}
+{% include 'eos/radius-servers.j2' %}
 {# aaa server groups #}
 {% include 'eos/aaa-server-groups.j2' %}
 {# router l2-vpn#}
@@ -92,7 +94,9 @@ hostname {{ inventory_hostname }}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
-{% include 'eos/virtual-router-mac-address-virtual-source-nat.j2' %}
+{% include 'eos/virtual-router-mac-address.j2' %}
+{# Router virtual source nat #}
+{% include 'eos/virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
 {# IPv6 Standard access-lists #}
@@ -152,5 +156,7 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+{# custom templates #}
+{% include 'eos/custom-templates.j2' %}
 !
 end

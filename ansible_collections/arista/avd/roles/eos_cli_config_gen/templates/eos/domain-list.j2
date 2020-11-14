@@ -1,0 +1,6 @@
+{# eos - domain-list #}
+{% if domain_list is defined and domain_list is not none %}
+{%    for domain in domain_list | sort %}
+ip domain-list {{ domain }}
+{%    endfor %}
+{% endif %}
