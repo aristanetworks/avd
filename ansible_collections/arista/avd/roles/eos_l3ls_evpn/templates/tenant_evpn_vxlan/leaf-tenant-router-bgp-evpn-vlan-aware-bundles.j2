@@ -5,10 +5,10 @@
 {%         if tenants[tenant].vrfs is defined %}
 {%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
     {{ vrf }}:
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      rd: "{{ leaf.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         both:
-          - "{{ tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+          - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       redistribute_routes:
         - learned
 {%                 set vlan_range = [] %}
@@ -21,20 +21,17 @@
 {%         if tenants[tenant].l2vlans is defined %}
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan in leaf.vlans %}
 {%                 set l2vlan_int = l2vlan | int %}
+{%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
+{%                     set vni = tenants[tenant].l2vlans[l2vlan].vni_override %}
+{%                 else %}
+{%                     set vni = tenants[tenant].mac_vrf_vni_base + l2vlan_int %}
+{%                 endif %}
     {{ tenants[tenant].l2vlans[l2vlan].name }}:
       tenant: {{ tenant }}
-{%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
-{%                 else %}
-      rd: "{{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
-{%                 endif %}
+      rd: "{{ leaf.evpn_rd_admin_subfield }}:{{ vni }}"
       route_targets:
         both:
-{%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
-          - "{{ tenants[tenant].l2vlans[l2vlan].vni_override }}:{{ tenants[tenant].l2vlans[l2vlan].vni_override }}"
-{%                 else %}
-          - "{{ tenants[tenant].mac_vrf_vni_base + l2vlan }}:{{ tenants[tenant].mac_vrf_vni_base + l2vlan_int }}"
-{%                 endif %}
+          - "{{ leaf.evpn_rt_admin_subfield or vni }}:{{ vni }}"
       redistribute_routes:
         - learned
       vlan: {{ l2vlan_int }}
