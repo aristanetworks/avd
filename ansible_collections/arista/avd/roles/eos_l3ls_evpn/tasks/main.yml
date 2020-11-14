@@ -13,7 +13,14 @@
   delegate_to: localhost
   tags: [build, provision]
 
+- name: Create Directory for the dc topology documentaion
+  when: fabric_name is defined
+  file:
+    path: '{{ root_dir }}/documentation/{{ fabric_name }}'
+    state: directory
+
 - name: Generate EVPN fabric documentation in Markdown Format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-documentation.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}.md'
@@ -23,6 +30,7 @@
   tags: [build, provision]
 
 - name: Generate Leaf and Spine Point-To-Point Links summary in csv format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-p2p-links.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-p2p-links.csv'
@@ -32,9 +40,45 @@
   tags: [build, provision]
 
 - name: Generate Fabric Topology in csv format.
+  when: fabric_name is defined
   template:
     src: documentation/dc-fabric-topology.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-topology.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Create Directory for the dc topology documentaion
+  file:
+    path: '{{ root_dir }}/documentation/{{ dc_name }}'
+    state: directory
+
+- name: Generate DC Topology in csv format.
+  when: dc_name is defined
+  template:
+    src: documentation/dc-topology.j2
+    dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-topology.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Generate Spine and Super-Spine Point-To-Point Links summary in csv format.
+  when: dc_name is defined
+  template:
+    src: documentation/dc-p2p-links.j2
+    dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-p2p-links.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Generate EVPN Spine-to-Super-SPine fabric documentation in Markdown Format.
+  when: dc_name is defined
+  template:
+    src: documentation/dc-documentation.j2
+    dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}.md'
   delegate_to: localhost
   run_once: true
   check_mode: no

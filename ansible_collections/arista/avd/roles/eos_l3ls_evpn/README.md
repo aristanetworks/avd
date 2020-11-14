@@ -23,6 +23,9 @@
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
+  - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
+    - [Inventory Structure](#inventory-structure)
+    - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
   - [License](#license)
 
 ## Overview
@@ -1398,6 +1401,111 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 ```
+
+## Role Enchancements for Super Spine Support
+
+The enchancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
+5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
+The logic to deploy every leaf-spine POD fabric remains unchanged. The enchancement only adds logic required to provision spine-to-super-spine fabric.
+Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
+Current AVD release supports single plane deployment only.
+
+Only BGP underlay is supported for super-spine deployment. Spines in every POD must have unique AS per POD.
+
+### Inventory Structure
+
+The inventory must have a dedicated group for super-spines and every leaf-spine POD. Example:
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Super Spines group name >:
+          hosts:
+            < super-spine name >:
+              ansible_host: < management IP >
+            < super-spine name >:
+              ansible_host: < management IP >
+            ...
+        < DC POD 1 group name >:
+          children:
+            < spines group >:
+              <-- omitted -->
+            < leaf group >:
+              <-- omitted -->
+```
+
+### Additional Variables Required For Super Spine Deployment
+
+Defaults:
+
+```yaml
+max_spine_to_super_spine_links: 1  # number of parallel links between spines and super-spines
+```
+
+Assigned to the DC group:
+
+```yaml
+dc_name: DC1  # data center fabric name
+
+max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
+
+super_spine:
+  platform: vEOS-LAB  # super-spine platform
+  bgp_as: super-spine BGP AS
+  spine_interfaces:  # super-spine interfaces to spines
+  # interface list for every POD will be walked sequentially
+  # taking `max_spine_to_super_spine_links` into account
+  # for example: spine1, spine2, spine3, ... or spine1, spine1, spine2, spine2, etc.
+  - ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']  # interfaces to POD1
+  - ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']  # interfaces to POD2
+  nodes:
+    SU-01:  # super-spine name
+      id: 1
+      mgmt_ip: 192.168.0.1/24
+    <-- etc. -->
+
+# IP address range for loopbacks for all super-spines in the DC,
+# assigned as /32s
+# Assign range larger then total super-spines
+super_spine_loopback_network_summary: 192.168.100.0/24
+
+# additional lines for super-spine BGP config
+super_spine_bgp_defaults:
+  #  - update wait-for-convergence
+  #  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+```
+
+Assigned to Super Spine Group:
+
+```yaml
+type: super-spine  # identifies every host in the group as super-spine
+```
+
+Assigned to Every POD Group:
+
+```yaml
+pod_number: 1  # leaf-spine POD number
+
+spine:
+  uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+
+# Point to Point Network Summary range, assigned as /31 for each
+# uplink interfaces
+# Assign range larger then total
+# [ max_spines_in_a_POD * max_super_spines * max_spine_to_super_spine_links * 2 ]
+super_spine_underlay_p2p_network_summary: 172.31.1.0/24
+```
+
+Following variables must be now defined on DC and not POD level:
+
+- `p2p_uplinks_mtu`
+- `bgp_peer_groups`
 
 ## License
 
