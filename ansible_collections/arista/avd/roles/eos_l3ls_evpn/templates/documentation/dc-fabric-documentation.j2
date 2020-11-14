@@ -15,7 +15,7 @@
     - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
     - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
     - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-{% if underlay_routing_protocol == "ISIS" %}
+{% if underlay_routing_protocol|lower == "isis" %}
     - [CLNS Interfaces](#isis-clns-interfaces)
 {% endif %}
     - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
@@ -146,7 +146,7 @@
 {%     endif %}
 {% endfor %}
 
-{% if underlay_routing_protocol == "ISIS" %}
+{% if underlay_routing_protocol|lower == "isis" %}
 ### ISIS CLNS interfaces
 
 | Node | CLNS Address |

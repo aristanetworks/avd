@@ -259,6 +259,7 @@ underlay_routing_protocol: < BGP or OSPF or ISIS | Default -> BGP >
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | Default -> 12000 >
+underlay_ospf_bfd_enable: < true | false | Default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
@@ -344,6 +345,7 @@ fabric_name: DC1_FABRIC
 # underlay_ospf_process_id: 100
 # underlay_ospf_area: 0.0.0.0
 # underlay_ospf_max_lsa: 12000
+# underlay_ospf_bfd_enable: true
 
 # p2p_uplinks_mtu: 9000
 
@@ -760,6 +762,29 @@ l2leaf:
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
 
+# Specify RD type | Optional
+# Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
+# By configuring evpn_rd_type the Administrator subfield (first part of RD) can be set to other values.
+#
+# Note:
+# RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rd_type:
+  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+
+# Specify RT type | Optional
+# Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+# By configuring evpn_rt_type the Administrator subfield (first part of RT) can be set to other values.
+#
+# Note:
+# RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rt_type:
+  admin_subfield: < "leaf_asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
+
+
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
 tenants:
@@ -817,7 +842,7 @@ tenants:
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
-            ip_address_virtual:: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
@@ -832,6 +857,9 @@ tenants:
 
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
+
+            # Defined interface MTU
+            mtu: < mtu >
 
           < 1-4096 >:
             name: < description >
@@ -925,6 +953,7 @@ tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
+            mtu: 1400
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
@@ -1237,7 +1266,7 @@ servers:
 
 #### EVPN A/A ESI dual-attached server scenario
 
-MLAG dual-homed connection:
+Active/Active multihoming connections:
 
 - From `E0` to `DC1-SVC3A` interface `Eth10`
 - From `E1` to `DC1-SVC4A` interface `Eth10`

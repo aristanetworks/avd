@@ -1,0 +1,22 @@
+{# Leaf underlay and overlay router bgp neighbors configuration #}
+{% if type == "l3leaf" %}
+{# Underlay network peering #}
+{%     if underlay_routing_protocol == "BGP" %}
+{%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+{%         endfor %}
+{%     endif %}
+{# Overlay network peering #}
+{%     for spine_node in spine.nodes | arista.avd.natural_sort %}
+    {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[spine_node].id ) }}:
+      peer_group: EVPN-OVERLAY-PEERS
+{%     endfor %}
+{# MLAG iBGP neighbor #}
+{%     if underlay_routing_protocol == "BGP" %}
+{%         if leaf.mlag == true %}
+    {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+{%         endif %}
+{%     endif %}
+{% endif %}

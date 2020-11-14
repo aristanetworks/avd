@@ -212,7 +212,7 @@ redundancy:
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
-{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
+{% include 'fabric/mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -236,10 +236,10 @@ clock:
 ### VLANs ###
 vlans:
 {# mlag VLANs #}
-{% include 'mlag/leaf-mlag-vlans.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -251,21 +251,21 @@ vrfs:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
-{% include 'mlag/leaf-mlag-peer-link.j2' %}
+{% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
-{% include 'mlag/leaf-mlag-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -276,7 +276,7 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
-{% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -294,7 +294,7 @@ static_routes:
 {% include 'routing/static-routes.j2' %}
 
 {# MLAG Configuration #}
-{% include 'mlag/leaf-mlag-configuration.j2' %}
+{% include 'fabric/mlag/leaf-mlag-configuration.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
