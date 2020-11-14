@@ -1,4 +1,4 @@
-type, Super-Spine Node,Super-SPine Interface,Super-Spine IP Address,Peer Node,Peer Interface,Peer IP Address
+type, Super-Spine Node,Super-Spine Interface,Super-Spine IP Address,Peer Node,Peer Interface,Peer IP Address
 {% for node in groups[dc_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type == "super-spine" %}
 {%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
