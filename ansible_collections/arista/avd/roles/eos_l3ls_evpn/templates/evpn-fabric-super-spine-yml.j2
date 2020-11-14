@@ -107,12 +107,12 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'underlay-overlay/super-spine-p2p-interfaces.j2' %}
+{% include 'fabric/interfaces/super-spine-p2p-interfaces.j2' %}
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'underlay-overlay/super-spine-overlay-loopback.j2' %}
+{% include 'fabric/ebgp_overlay/super-spine-overlay-loopback.j2' %}
 
 
 {# Management Interfaces #}
@@ -138,26 +138,26 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'underlay-overlay/super-spine-prefix-lists.j2' %}
+{% include 'fabric/ebgp_overlay/super-spine-prefix-lists.j2' %}
 
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'underlay-overlay/route-maps.j2' %}
+{% include 'fabric/ebgp_overlay/route-maps.j2' %}
 
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'underlay-overlay/super-spine-router-bgp-base.j2' %}
+{% include 'fabric/super-spine-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/super-spine-router-bgp-peer-groups.j2' %}
+{% include 'fabric/ebgp_underlay/super-spine-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'underlay-overlay/super-spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/ebgp_underlay/super-spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
-{% include 'underlay-overlay/super-spine-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/super-spine-router-bgp-redistribute-routes.j2' %}
   address_family_ipv4:
     peer_groups:
       IPv4-UNDERLAY-PEERS:
