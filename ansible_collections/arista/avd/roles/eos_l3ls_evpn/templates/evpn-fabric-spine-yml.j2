@@ -109,8 +109,8 @@ bfd_multihop:
 ethernet_interfaces:
 {# Point-to-Point Interfaces to l3leaf #}
 {% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
-{# Point-to-Point Interfaces to evpn-controller #}
-{% include 'fabric/interfaces/spine-p2p-interfaces-evpn-controller.j2' %}
+{# Point-to-Point Interfaces to overlay-controller #}
+{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###

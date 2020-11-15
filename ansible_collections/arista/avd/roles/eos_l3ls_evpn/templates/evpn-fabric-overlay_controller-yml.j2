@@ -4,33 +4,33 @@
 ### {{ inventory_hostname }} ###
 {# Set Spine Variables #}
 {% set switch = namespace() %}
-{% set switch.platform = evpn_controller.platform %}
-{% set switch.mgmt_ip = evpn_controller.nodes[inventory_hostname].mgmt_ip %}
+{% set switch.platform = overlay_controller.platform %}
+{% set switch.mgmt_ip = overlay_controller.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
-{% for node in evpn_controller.nodes | arista.avd.natural_sort %}
+{% for node in overlay_controller.nodes | arista.avd.natural_sort %}
 {%    if node == inventory_hostname %}
-{%        set switch.id = evpn_controller.nodes[node].id %}
+{%        set switch.id = overlay_controller.nodes[node].id %}
 {# Get local RR/RS interface to configure #}
-{%        if evpn_controller.nodes[node].uplink_to_remote_switches is defined %}
-{%            set switch.uplink_to_remote_switches = evpn_controller.nodes[node].uplink_to_remote_switches %}
+{%        if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
+{%            set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
 {%        else %}
-{%            set switch.uplink_to_remote_switches = evpn_controller.defaults.uplink_to_remote_switches %}
+{%            set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
 {%        endif %}
 {# Get remote switch interface to configure #}
-{%        if evpn_controller.nodes[node].remote_switches_interfaces is defined %}
-{%            set switch.remote_switches_interfaces = evpn_controller.nodes[node].remote_switches_interfaces %}
+{%        if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
+{%            set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
 {%        endif %}
 {# Get remote hostname #}
-{%        if evpn_controller.nodes[node].remote_switches is defined %}
-{%            set switch.remote_switches = evpn_controller.nodes[node].remote_switches %}
+{%        if overlay_controller.nodes[node].remote_switches is defined %}
+{%            set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
 {%        else %}
-{%            set switch.remote_switches = evpn_controller.defaults.remote_switches %}
+{%            set switch.remote_switches = overlay_controller.defaults.remote_switches %}
 {%        endif %}
 {# Get group of remote devices where RS/RR are connected #}
-{%        if evpn_controller.nodes[node].remote_switches_group is defined %}
-{%            set switch.remote_switches_group = evpn_controller.nodes[node].remote_switches_group %}
+{%        if overlay_controller.nodes[node].remote_switches_group is defined %}
+{%            set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
 {%        else %}
-{%            set switch.remote_switches_group = evpn_controller.defaults.remote_switches_group %}
+{%            set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
 {%        endif %}
 {%    endif %}
 {% endfor %}
@@ -134,13 +134,13 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'fabric/interfaces/evpn-controller-ethernet-uplinks.j2' %}
+{% include 'fabric/interfaces/overlay-controller-ethernet-uplinks.j2' %}
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
 {# overlay peering interface #}
-{% include 'fabric/interfaces/evpn-controller-overlay-loopback.j2'%}
+{% include 'fabric/interfaces/overlay-controller-loopback.j2'%}
 {# intentional blank line #}
 
 {# Management Interfaces #}
@@ -166,7 +166,7 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/ebgp_underlay/evpn-controller-prefix-list.j2' %}
+{% include 'fabric/ebgp_overlay/overlay-controller-prefix-list.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###
