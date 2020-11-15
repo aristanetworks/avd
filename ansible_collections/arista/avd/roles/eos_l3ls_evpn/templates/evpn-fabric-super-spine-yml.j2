@@ -107,12 +107,12 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'fabric/ebgp_underlay/super-spine-p2p-interfaces.j2' %}
+{% include 'fabric/interfaces/super-spine-p2p-interfaces.j2' %}
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'fabric/ebgp_underlay/super-spine-overlay-loopback.j2' %}
+{% include 'fabric/ebgp_overlay/super-spine-overlay-loopback.j2' %}
 
 
 {# Management Interfaces #}
@@ -138,7 +138,7 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/ebgp_underlay/super-spine-prefix-lists.j2' %}
+{% include 'fabric/ebgp_overlay/super-spine-prefix-lists.j2' %}
 
 
 {# route maps #}
@@ -151,7 +151,7 @@ route_maps:
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'fabric/ebgp_underlay/super-spine-router-bgp-base.j2' %}
+{% include 'fabric/super-spine-router-bgp-base.j2' %}
   peer_groups:
 {% include 'fabric/ebgp_underlay/super-spine-router-bgp-peer-groups.j2' %}
   neighbors:
