@@ -18,7 +18,11 @@ internal_vlan_order:
     ending: 1199
 
 max_l3leaf_to_spine_links: 1
+<<<<<<< HEAD
 max_spine_to_super_spine_links: 1
+=======
+max_evpn_controller_to_switch_links: 1
+>>>>>>> 719ec58417d0f6dc0d31af48841d3795f352bed8
 
 terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"

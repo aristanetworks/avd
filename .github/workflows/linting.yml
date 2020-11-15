@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     container: avdteam/base:3.6
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: Install Pre Commit
         run: |
           pip --no-cache-dir install -r development/requirements-dev.txt

@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     container: avdteam/base:3.6
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2
       - name: 'Send Webhook'
         env:
           DOCKER_WEBHOOK: ${{secrets.DOCKER_WEBHOOK}}

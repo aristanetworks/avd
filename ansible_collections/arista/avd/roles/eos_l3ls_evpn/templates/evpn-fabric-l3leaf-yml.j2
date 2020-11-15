@@ -303,6 +303,8 @@ port_channel_interfaces:
 ethernet_interfaces:
 {# Point-to-Point Interfaces to Spine Switches #}
 {% include 'fabric/interfaces/leaf-p2p-interfaces.j2'%}
+{# Point-to-Point Interfaces to evpn-controller #}
+{% include 'fabric/interfaces/leaf-p2p-interfaces-evpn-controller.j2' %}
 {# mlag interfaces #}
 {% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
