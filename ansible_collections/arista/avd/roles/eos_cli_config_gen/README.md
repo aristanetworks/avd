@@ -654,6 +654,7 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
@@ -767,6 +768,7 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
