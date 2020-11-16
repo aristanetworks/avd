@@ -22,6 +22,7 @@
     - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
+    - [Domain-List](#domain-list)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
@@ -277,6 +278,14 @@ ip_domain_lookup:
   source_interfaces:
     < source_interface_1 >:
       vrf: < vrf_name >
+```
+
+### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
 ```
 
 ### Name Servers
@@ -659,6 +668,7 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
@@ -771,6 +781,7 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
