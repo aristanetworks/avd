@@ -84,6 +84,7 @@
 {%                     for helper_ip in profile.svi_profile.ip_helpers %}
       {{ helper_ip }}:
         source_interface: {{ profile.svi_profile.ip_helpers[helper_ip].source_interface }}
+{%                          if profile.svi_profile.ip_helpers[helper_ip].source_vrf is defined and profile.svi_profile.ip_helpers[helper_ip].source_vrf is not none %}
         vrf: {{ profile.svi_profile.ip_helpers[helper_ip].source_vrf }}
 {%                          else %}
         vrf: {{ vrf }}
