@@ -1475,18 +1475,13 @@ Assigned to the DC group:
 
 ```yaml
 dc_name: DC1  # data center fabric name
+              # this variable is required to identify devices in the same DC in case of multi-DC setup
 
 max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
 
 super_spine:
   platform: vEOS-LAB  # super-spine platform
-  bgp_as: super-spine BGP AS
-  spine_interfaces:  # super-spine interfaces to spines
-  # interface list for every POD will be walked sequentially
-  # taking `max_spine_to_super_spine_links` into account
-  # for example: spine1, spine2, spine3, ... or spine1, spine1, spine2, spine2, etc.
-  - ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']  # interfaces to POD1
-  - ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']  # interfaces to POD2
+  bgp_as: <super-spine BGP AS>
   nodes:
     SU-01:  # super-spine name
       id: 1
@@ -1517,10 +1512,22 @@ type: super-spine  # identifies every host in the group as super-spine
 Assigned to Every POD Group:
 
 ```yaml
-pod_number: 1  # leaf-spine POD number
+pod_number: 1  # leaf-spine POD number, starts with 1
 
 spine:
+  # list of spine interfaces used as uplinks to super-spines
+  # taking `max_spine_to_super_spine_links` into account
+  # for example: spine1, spine2, spine3, ...
+  # or spine1, spine1, spine2, spine2, etc.
   uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+  nodes:
+    <spine-hostname>:
+      # super-spine interfaces to spines
+      # taking `max_spine_to_super_spine_links` into account
+      # for example: super-spine1, super-spine2, super-spine3, ...
+      # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
+      super_spine_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+    <-- etc. -->
 
 # Point to Point Network Summary range, assigned as /31 for each
 # uplink interfaces
