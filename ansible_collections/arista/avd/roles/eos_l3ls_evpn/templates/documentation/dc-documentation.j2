@@ -53,11 +53,24 @@
 
 ### Super Spine Fabric Point-To-Point Links
 
-| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ----------- | ------------------- | ------------------ | ------------------ |
-| {{ super_spine_underlay_p2p_network_summary }} | {{ super_spine_underlay_p2p_network_summary | ipaddr('size') }} | {{ 
-    super_spine.nodes | length * dc_doc.spine_total * 2 * max_spine_to_super_spine_links }} | {{
-    (( super_spine.nodes | length * dc_doc.spine_total * 2 * max_spine_to_super_spine_links ) / super_spine_underlay_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+| POD Number | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ----------- | ----------- | ------------------- | ------------------ | ------------------ |
+{% set dc_doc = namespace() %}
+{% set dc_doc.pod = dict() %}
+{% for host in groups[dc_name] | arista.avd.natural_sort %}
+{%      if hostvars[host]['type'] == 'spine' %}
+{%          set pod_number = hostvars[host]['pod_number'] %}
+{%          if hostvars[host]['pod_number'] not in dc_doc.pod.keys() %}
+{%              set __ = dc_doc.pod.update({ pod_number: { 'p2p_summary': hostvars[host]['super_spine_underlay_p2p_network_summary'], 'number_of_spines_in_a_pod': 0 } }) %}
+{%          endif %}
+{% set __ = dc_doc.pod[pod_number].update({ 'number_of_spines_in_a_pod': (dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] + 1) }) %}
+{%      endif %}
+{% endfor %}
+{% for pod_number in dc_doc.pod | sort %}
+| {{ pod_number }} | {{ dc_doc.pod[pod_number]['p2p_summary'] }} | {{ dc_doc.pod[pod_number]['p2p_summary'] | ipaddr('size') }} | {{
+  super_spine.nodes | length * dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] * 2 * max_spine_to_super_spine_links }} | {{
+  ((super_spine.nodes | length * dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] * 2 * max_spine_to_super_spine_links) / dc_doc.pod[pod_number]['p2p_summary']|ipaddr('size') * 100) | round(2,'ceil') }} % |
+{% endfor %}
 
 ### Point-To-Point Links Node Allocation
 
