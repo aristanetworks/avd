@@ -811,6 +811,19 @@ evpn_rd_type:
 evpn_rt_type:
   admin_subfield: < "leaf_asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
 
+# Optional profiles to apply on SVI interfaces
+# Each profile can support all or some of the following keys according your own needs.
+# Keys are the same used under SVI.
+svi_profiles:
+  < profile_name >:
+    mtu: < mtu >
+    enabled: < true | false >
+    ip_address_virtual: < IPv4_address/Mask >
+    ip_helpers:
+      < IPv4 dhcp server IP >:
+        source_interface: < interface-name >
+        source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
 
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
@@ -862,6 +875,10 @@ tenants:
             # By default the vni will be derived from "mac_vrf_vni_base:"
             # The vni_override allows us to override this value and statically define it. | Optional
             vni_override: < 1-16777215 >
+
+            # SVI profile to apply
+            # If variables are configured in profile AND SVI, SVI information will overwrite profile.
+            profile: < svi-profile-name >
 
             # vlan name + svi description. | Required
             name: < description >
