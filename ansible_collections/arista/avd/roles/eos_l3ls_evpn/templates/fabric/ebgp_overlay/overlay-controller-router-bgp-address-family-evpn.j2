@@ -1,0 +1,10 @@
+{# Overlay Controller - address family evpn activation #}
+{% if type == "overlay-controller" %}
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+{%     if underlay_routing_protocol == "BGP" %}
+      IPv4-UNDERLAY-PEERS:
+        activate: false
+{%     endif %}
+{% endif %}

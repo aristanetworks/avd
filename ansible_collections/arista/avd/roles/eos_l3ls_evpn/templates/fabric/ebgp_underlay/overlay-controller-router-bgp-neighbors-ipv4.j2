@@ -1,0 +1,14 @@
+{# Overlay Controller router bgp neighbors configuration #}
+{% if type == "overlay-controller" %}
+{# Underlay network peering #}
+{%     if underlay_routing_protocol == "BGP" %}
+
+{%         for uplink_to_remote_switches in switch.uplink_to_remote_switches %}
+    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * overlay_controller.nodes | length * max_overlay_controller_to_switch_links ) + loop.index0 * 2) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+{%         endfor %}
+{%     endif %}
+{# Overlay network peering #}
+{# TODO #}
+{% endif %}
+

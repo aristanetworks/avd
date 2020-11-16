@@ -1,41 +1,46 @@
-{# Spine Switch Configuration #}
+{# Overlay Controller Configuration #}
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-{# Set Spine Variables #}
+{# Set Overlay Controller Variables #}
 {% set switch = namespace() %}
 {% set switch.platform = overlay_controller.platform %}
 {% set switch.mgmt_ip = overlay_controller.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
 {% for node in overlay_controller.nodes | arista.avd.natural_sort %}
-{%    if node == inventory_hostname %}
-{%        set switch.id = overlay_controller.nodes[node].id %}
+{%     if node == inventory_hostname %}
+{%         set switch.id = overlay_controller.nodes[node].id %}
+{%         if l3leaf.nodes[node].bgp_as is defined %}
+{%             set switch.bgp_as = overlay_controller.nodes[node].bgp_as %}
+{%         else %}
+{%             set switch.bgp_as = overlay_controller.defaults.bgp_as %}
+{%         endif %}
 {# Get local RR/RS interface to configure #}
-{%        if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
-{%            set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
-{%        else %}
-{%            set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
-{%        endif %}
+{%         if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
+{%         else %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
+{%         endif %}
 {# Get remote switch interface to configure #}
-{%        if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
-{%            set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
-{%        endif %}
+{%         if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
+{%             set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
+{%         endif %}
 {# Get remote hostname #}
-{%        if overlay_controller.nodes[node].remote_switches is defined %}
-{%            set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
-{%        else %}
-{%            set switch.remote_switches = overlay_controller.defaults.remote_switches %}
-{%        endif %}
+{%         if overlay_controller.nodes[node].remote_switches is defined %}
+{%             set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
+{%         else %}
+{%             set switch.remote_switches = overlay_controller.defaults.remote_switches %}
+{%         endif %}
 {# Get group of remote devices where RS/RR are connected #}
-{%        if overlay_controller.nodes[node].remote_switches_group is defined %}
-{%            set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
-{%        else %}
-{%            set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
-{%        endif %}
-{%    endif %}
+{%         if overlay_controller.nodes[node].remote_switches_group is defined %}
+{%             set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
+{%         else %}
+{%             set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
+{%         endif %}
+{%     endif %}
 {% endfor %}
 
-### Spine Info ###
+### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 
@@ -167,6 +172,23 @@ static_routes:
 ### prefix-lists ###
 prefix_lists:
 {% include 'fabric/ebgp_overlay/overlay-controller-prefix-list.j2' %}
+
+
+{# ##### BGP Configurartion ##### #}
+### Routing - BGP ###
+router_bgp:
+{# underlay and overlay #}
+{% include 'fabric/overlay-controller-router-bgp-base.j2' %}
+  peer_groups:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-peer-groups.j2' %}
+  neighbors:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-neighbors-ipv4.j2' %}
+  redistribute_routes:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-redistribute-routes.j2' %}
+  address_family_evpn:
+{% include 'fabric/ebgp_overlay/overlay-controller-router-bgp-address-family-evpn.j2' %}
+  address_family_ipv4:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###
