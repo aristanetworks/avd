@@ -28,6 +28,7 @@
     enabled: {{ profile.per_svi.enabled if profile.per_svi.enabled is defined else profile.svi_profile.enabled | default(true) }}
 {%                 endif %}
     vrf: {{ vrf }}
+{# IP address configuration #}
 {%                 if tenants[tenant].vrfs[vrf].svis[svi].nodes is defined %}
 {%                     for node in tenants[tenant].vrfs[vrf].svis[svi].nodes %}
 {%                          if node == inventory_hostname %}
@@ -37,19 +38,36 @@
 {%                          endif %}
 {%                     endfor %}
 {%                 endif %}
+{# Virtual Router IP Address #}
 {%                 if profile.per_svi.ip_virtual_router_address is defined or profile.svi_profile.ip_virtual_router_address is defined %}
     ip_virtual_router_address: {{ profile.per_svi.ip_virtual_router_address if profile.per_svi.ip_virtual_router_address is defined else profile.svi_profile.ip_virtual_router_address }}
 {%                 endif %}
+{# Virtual IP address #}
 {%                 if profile.per_svi.ip_address_virtual is defined or profile.svi_profile.ip_address_virtual is defined %}
     ip_address_virtual: {{ profile.per_svi.ip_address_virtual if profile.per_svi.ip_address_virtual is defined else profile.svi_profile.ip_address_virtual }}
 {%                 endif %}
+{# Virtual Secondary IP address #}
 {%                 if profile.per_svi.ip_address_virtual_secondary is defined or profile.svi_profile.ip_address_virtual_secondary is defined %}
     ip_address_virtual_secondary: {{ profile.per_svi.ip_address_virtual_secondary if profile.per_svi.ip_address_virtual_secondary is defined else profile.svi_profile.ip_address_virtual_secondary }}
 {%                 endif %}
+{# MTU definition #}
 {%                 if profile.per_svi.mtu is defined or profile.svi_profile.mtu is defined %}
     mtu: {{ profile.per_svi.mtu if profile.per_svi.mtu is defined else profile.svi_profile.mtu }}
 {%                 endif %}
-{%                 if tenants[tenant].vrfs[vrf].ip_helpers is defined and tenants[tenant].vrfs[vrf].ip_helpers is not none %}
+{#                 Apply IP helper configuration from SVI interface #}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is not none %}
+    ip_helpers:
+{%                     for helper_ip in tenants[tenant].vrfs[vrf].svis[svi].ip_helpers %}
+      {{ helper_ip }}:
+        source_interface: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_interface }}
+{%                          if tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_vrf is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_vrf is not none %}
+        vrf: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_vrf }}
+{%                          else %}
+        vrf: {{ vrf }}
+{%                          endif %}
+{%                     endfor %}
+{#                 Apply IP helper configuration from VRF configuration #}
+{%                 elif tenants[tenant].vrfs[vrf].ip_helpers is defined and tenants[tenant].vrfs[vrf].ip_helpers is not none %}
     ip_helpers:
 {%                     for helper_ip in tenants[tenant].vrfs[vrf].ip_helpers %}
       {{ helper_ip }}:
@@ -60,12 +78,16 @@
         vrf: {{ vrf }}
 {%                          endif %}
 {%                     endfor %}
-{%                 elif tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is not none %}
+{#                 Apply IP helper configuration from SVI profile #}
+{%                 elif profile.svi_profile.ip_helpers is defined and profile.svi_profile.ip_helpers is not none %}
     ip_helpers:
-{%                     for helper_ip in tenants[tenant].vrfs[vrf].svis[svi].ip_helpers %}
+{%                     for helper_ip in profile.svi_profile.ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ tenants[tenant].vrfs[vrf].svis[svi].ip_helpers[helper_ip].source_interface }}
+        source_interface: {{ profile.svi_profile.ip_helpers[helper_ip].source_interface }}
+        vrf: {{ profile.svi_profile.ip_helpers[helper_ip].source_vrf }}
+{%                          else %}
         vrf: {{ vrf }}
+{%                          endif %}
 {%                     endfor %}
 {%                 endif %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
