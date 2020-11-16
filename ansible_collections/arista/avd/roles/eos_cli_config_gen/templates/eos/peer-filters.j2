@@ -1,5 +1,5 @@
 {# eos - peer-filters #}
-{% if peer_filters is defined %}
+{% if peer_filters is defined and peer_filters is not none %}
 {%     for peer_filter in peer_filters | arista.avd.natural_sort %}
 !
 peer-filter {{ peer_filter }}

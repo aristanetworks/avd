@@ -235,9 +235,12 @@ mac_address_table:
 
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
-  - BGP (default)
+  - EBGP (default)
   - OSPF.
   - ISIS.
+- The following overlay routing protocols are supported:
+  - EBGP (default)
+  - IBGP (only with OSPF or ISIS in underlay)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
 - The variables should be applied to all devices in the fabric.
@@ -250,7 +253,8 @@ mac_address_table:
 fabric_name: < Fabric_Name >
 
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < BGP or OSPF or ISIS | Default -> BGP >
+underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
+overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
 underlay_ospf_process_id: < process_id | Default -> 100 >
@@ -261,6 +265,9 @@ underlay_ospf_bfd_enable: < true | false | Default -> false >
 # Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
 isis_site_id: < isis site ID | Default -> "0001" >
+
+# AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
+bagp_as: < AS number >
 
 # Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
@@ -453,11 +460,15 @@ spine:
       # Unique identifier | Required.
       id: < integer >
 
+      # Route Reflector when < overlay_routing_protocol > == IBGP
+      bgp_route_reflector: < boolean >
+
       # Node management IP address | Required.
       mgmt_ip: < IPv4_address/Mask >
     < inventory_hostname >:
       id: < integer >
       mgmt_ip: < IPv4_address/Mask >
+
 ```
 
 **Example:**
