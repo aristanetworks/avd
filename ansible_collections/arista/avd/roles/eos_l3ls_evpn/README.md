@@ -805,6 +805,12 @@ tenants:
         # The VRF VNI range is limited.
         vrf_vni: <1-1024>
 
+        # IP Helper for DHCP relay
+        ip_helpers:
+          < IPv4 dhcp server IP >:
+            source_interface: < interface-name >
+            source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
@@ -845,6 +851,12 @@ tenants:
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
             ip_virtual_router_address: < IPv4_address/Mask >
+
+            # IP Helper for DHCP relay
+            ip_helpers:
+              < IPv4 dhcp server IP >:
+                source_interface: < interface-name >
+                source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
