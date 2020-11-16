@@ -1,29 +1,19 @@
 {# Super Spine to Spine router BGP underlay peering #}
-{% set s_spine = namespace() %}
-{% set s_spine.id = super_spine.nodes[inventory_hostname].id %}
-{% for ports_to_specific_pod in super_spine.spine_interfaces %}
-{% set pod_loop = loop %}
-{%      for port_name in ports_to_specific_pod %}
-{%          set link = namespace() %}
-{%          set link.spine_number = loop.index0 // max_spine_to_super_spine_links + 1 %}
-{# find info about connected spine #}
-{%          for host in groups[dc_name] | arista.avd.natural_sort %}
-{%              if hostvars[host]['type'] == 'spine' %}
-{%                  if hostvars[host]['pod_number'] == pod_loop.index %}
-{%                      if hostvars[host]['spine']['nodes'][host]['id'] == link.spine_number %}
-{% set link.peer_interface = hostvars[host]['spine']['uplinks_to_super_spine_interfaces'][s_spine.id-1+((link.spine_number-1)%max_spine_to_super_spine_links)] %}
-{% set link.ip_pool = hostvars[host]['super_spine_underlay_p2p_network_summary'] %}
-{% set link.ip_pool_max_hosts_in_subnet = link.ip_pool | ipaddr('size') %}
+{% for host in groups[dc_name] | arista.avd.natural_sort %}
+{%      if hostvars[host]['type'] == 'spine' %}
+{%          for offset in range(max_spine_to_super_spine_links) %}
+{%              set spine_id = hostvars[host]['spine']['nodes'][host]['id'] %}
+{%              set s_spine_id = super_spine.nodes[inventory_hostname].id %}
+{%              set ip_pool = hostvars[host]['super_spine_underlay_p2p_network_summary'] %}
+{#              max number of hosts in subnet will be divided by max super-spine number to avoid address changes when provisioning new spines #}
+{%              set ip_pool_max_hosts_in_subnet = ip_pool | ipaddr('size') %}
     {{
-      link.ip_pool | ipaddr('network') | ipmath(
-            (link.ip_pool_max_hosts_in_subnet / max_super_spines)|int * (s_spine.id-1) + (link.spine_number-1) * 2
+      ip_pool | ipaddr('network') | ipmath(
+            (ip_pool_max_hosts_in_subnet / max_super_spines)|int * (s_spine_id-1) + ((spine_id-1) * max_spine_to_super_spine_links + offset) * 2 + 1
         )
     }}:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: {{ hostvars[host]['spine']['bgp_as'] }}
-{%                      endif %}
-{%                  endif %}
-{%              endif %}
 {%          endfor %}
-{%      endfor %}
+{%      endif %}
 {% endfor %}
