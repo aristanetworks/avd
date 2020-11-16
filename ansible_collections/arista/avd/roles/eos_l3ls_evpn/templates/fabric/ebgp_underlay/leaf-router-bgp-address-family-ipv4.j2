@@ -3,12 +3,12 @@
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-{%     if underlay_routing_protocol == "BGP" %}
+{%     if switch.underlay_routing_protocol == 'ebgp'  %}
       IPv4-UNDERLAY-PEERS:
         activate: true
-{%     endif %}
-{%     if leaf.mlag == true %}
+{%            if leaf.mlag == true %}
       MLAG-IPv4-UNDERLAY-PEER:
         activate: true
+{%            endif %}
 {%     endif %}
 {% endif %}
