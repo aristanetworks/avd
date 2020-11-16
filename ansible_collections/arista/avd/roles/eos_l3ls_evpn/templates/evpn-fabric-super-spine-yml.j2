@@ -8,6 +8,78 @@
 {% set switch.platform = super_spine.platform %}
 {% set switch.mgmt_ip = super_spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for switches pointing to us as evpn_overlay_controller / server #}
+{% for some_switch in groups['all'] %}
+{%     set some_switch_vars = hostvars[some_switch] %}
+{%     if some_switch_vars.evpn_overlay_controller_groups is defined and some_switch_vars.evpn_overlay_controller_groups is not none %}
+{%         for evpn_overlay_controller_group in some_switch_vars.evpn_overlay_controller_groups %}
+{%             if inventory_hostname in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%                 set peer = namespace() %}
+{%                 set peer.description = some_switch %}
+{%                 if some_switch_vars.type == 'l3leaf' %}
+{%                     for l3leaf_node_group in some_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                         for node in some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                             if node == some_switch %}
+{%                                 set peer.id = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
+{%                                 if some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as %}
+{%                                 else %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.defaults.bgp_as %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endfor %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(peer.id + some_switch_vars.spine.nodes | length) %}
+{%                 elif some_switch_vars.type == 'spine' %}
+{%                     set peer.bgp_as = some_switch_vars.spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'super-spine' %}
+{%                     set peer.bgp_as = some_switch_vars.super_spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(some_switch_vars.super_spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'overlay-controller' %}
+{%                     if some_switch_vars.overlay_controller.nodes[some_switch].bgp_as is defined %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.nodes[some_switch].bgp_as %}
+{%                     else %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.defaults.bgp_as %}
+{%                     endif %}
+{%                     set peer.ip = some_switch_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.overlay_controller.nodes[some_switch].id) %}
+{%                 endif %}
+{%                 do switch.evpn_overlay_peers.append(peer) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for some_switch in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set some_switch_vars = hostvars[some_switch] %}
+{%             set peer = namespace() %}
+{%             set peer.description = some_switch %}
+{%             if some_switch_vars.type == 'spine' %}
+{%                 set peer.bgp_as = some_switch_vars.spine.bgp_as %}
+{%                 set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.spine.nodes[some_switch].id) %}
+{%             elif some_switch_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = some_switch_vars.super_spine.bgp_as %}
+{%                 set peer.ip = some_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(some_switch_vars.super_spine.nodes[some_switch].id) %}
+{%             elif some_switch_vars.type == 'overlay-controller' %}
+{%                 if some_switch_vars.overlay_controller.nodes[some_switch].bgp_as is defined %}
+{%                     set peer.bgp_as = some_switch_vars.overlay_controller.nodes[some_switch].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = some_switch_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = some_switch_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.overlay_controller.nodes[some_switch].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+
 ### Super Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -143,12 +215,10 @@ static_routes:
 prefix_lists:
 {% include 'fabric/ebgp_overlay/super-spine-prefix-lists.j2' %}
 
-
 {# route maps #}
 ### route-maps ###
 route_maps:
 {% include 'fabric/ebgp_overlay/route-maps.j2' %}
-
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
@@ -158,7 +228,7 @@ router_bgp:
   peer_groups:
 {% include 'fabric/ebgp_underlay/super-spine-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'fabric/ebgp_underlay/super-spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/ebgp_underlay/super-spine-router-bgp-neighbors-ipv4.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/super-spine-router-bgp-redistribute-routes.j2' %}
   address_family_ipv4:

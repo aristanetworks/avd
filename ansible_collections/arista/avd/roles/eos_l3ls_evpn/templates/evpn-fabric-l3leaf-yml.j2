@@ -159,6 +159,35 @@
 {%         endif %}
 {%     endif %}
 {% endif %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for some_switch in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set some_switch_vars = hostvars[some_switch] %}
+{%             set peer = namespace() %}
+{%             set peer.description = some_switch %}
+{%             if some_switch_vars.type == 'spine' %}
+{%                 set peer.bgp_as = some_switch_vars.spine.bgp_as %}
+{%                 set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.spine.nodes[some_switch].id) %}
+{%             elif some_switch_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = some_switch_vars.super_spine.bgp_as %}
+{%                 set peer.ip = some_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(some_switch_vars.super_spine.nodes[some_switch].id) %}
+{%             elif some_switch_vars.type == 'overlay-controller' %}
+{%                 if some_switch_vars.overlay_controller.nodes[some_switch].bgp_as is defined %}
+{%                     set peer.bgp_as = some_switch_vars.overlay_controller.nodes[some_switch].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = some_switch_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = some_switch_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.overlay_controller.nodes[some_switch].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}

@@ -8,7 +8,12 @@
       peer_group: IPv4-UNDERLAY-PEERS
 {%         endfor %}
 {%     endif %}
-{# Overlay network peering #}
-{# TODO #}
+{# Overlay network peerings based on evpn_overlay_controller variable #} 
+{%     for evpn_overlay_peer in switch.evpn_overlay_peers %}
+    {{ evpn_overlay_peer.ip }}:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: {{ evpn_overlay_peer.description }}
+      remote_as: {{ evpn_overlay_peer.bgp_as }}
+{%     endfor %}
 {% endif %}
 

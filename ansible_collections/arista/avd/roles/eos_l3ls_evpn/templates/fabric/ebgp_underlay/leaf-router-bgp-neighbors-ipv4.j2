@@ -7,11 +7,13 @@
       peer_group: IPv4-UNDERLAY-PEERS
 {%         endfor %}
 {%     endif %}
-{# Overlay network peering #}
-{%     for spine_node in spine.nodes | arista.avd.natural_sort %}
+{# Overlay network peering to spines for backwards compability - pre evpn_overlay_controller_groups variable #}
+{%     if evpn_overlay_controller_groups is not defined %}
+{%         for spine_node in spine.nodes | arista.avd.natural_sort %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[spine_node].id ) }}:
       peer_group: EVPN-OVERLAY-PEERS
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 {# MLAG iBGP neighbor #}
 {%     if underlay_routing_protocol == "BGP" %}
 {%         if leaf.mlag == true %}
@@ -19,4 +21,11 @@
       peer_group: MLAG-IPv4-UNDERLAY-PEER
 {%         endif %}
 {%     endif %}
+{# Overlay network peerings based on evpn_overlay_controller_groups variable #} 
+{%     for evpn_overlay_peer in switch.evpn_overlay_peers %}
+    {{ evpn_overlay_peer.ip }}:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: {{ evpn_overlay_peer.description }}
+      remote_as: {{ evpn_overlay_peer.bgp_as }}
+{%     endfor %}
 {% endif %}
