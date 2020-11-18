@@ -270,7 +270,7 @@ isis_area_id: < isis area | Default -> "49.0001" >
 isis_site_id: < isis site ID | Default -> "0001" >
 
 # AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
-bagp_as: < AS number >
+bgp_as: < AS number >
 
 # Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
