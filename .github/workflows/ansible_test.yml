@@ -23,7 +23,7 @@ jobs:
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - name: Setup Python 3 on runner
-        uses: actions/setup-python@v1.2.0
+        uses: actions/setup-python@v2.1.4
         with:
           python-version: '3.x'
 
