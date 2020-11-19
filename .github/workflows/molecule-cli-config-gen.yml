@@ -12,6 +12,7 @@ on:
       - 'ansible_collections/arista/avd/molecule/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-cli-config-gen.yml'
+      - '.github/git-repo-state-monitor.sh'
 jobs:
   molecule:
     name: Run CI test for eos_cli_config_gen
@@ -43,9 +44,9 @@ jobs:
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
 
-      - name: Check GIT changes
+      - name: Monitor git status
         run: |
-          sh .github/git-status.sh
+          bash .github/git-repo-state-monitor.sh
 
       - uses: actions/upload-artifact@v1
         with:
