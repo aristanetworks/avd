@@ -10,6 +10,7 @@ on:
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-l3ls-evpn.yml'
+      - '.github/git-repo-state-monitor.sh'
 jobs:
   molecule:
     name: Run CI test for eos_l3ls_evpn
@@ -47,6 +48,10 @@ jobs:
           cd ansible_collections/arista/avd
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
+
+      - name: Monitor git status
+        run: |
+          bash .github/git-repo-state-monitor.sh
 
       - uses: actions/upload-artifact@v1
         with:
