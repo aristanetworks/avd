@@ -596,6 +596,8 @@ port_channel_interfaces:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
+    lacp_fallback_mode: < individual | static >
     qos:
       trust: < cos | dscp >
   < Port-Channel_interface_2 >:
