@@ -1,8 +1,6 @@
 ### VLAN Interfaces ###
 vlan_interfaces:
-
 # Standard SVI configuration
-
   Vlan2001:
     description: SVI Description
     vrf: Tenant_B
@@ -20,12 +18,23 @@ vlan_interfaces:
 
   Vlan84:
     description: SVI Description
-    shutdown: false
     ip_address_virtual: 10.10.84.1/24
+
+  Vlan85:
+    description: SVI Description
+    ip_address: 10.10.84.1/24
 
   Vlan87:
     description: SVI Description
-    shutdown: false
+    shutdown: true
+    ip_router_virtual_address: 10.10.87.254
+    ip_address: 10.10.87.1/24
+    access_group_in: ACL_IN
+    access_group_out: ACL_OUT
+
+  Vlan88:
+    description: SVI Description
+    shutdown: true
     ip_address_virtual: 10.10.87.1/23
 
 # MCAST Configuration
@@ -127,7 +136,7 @@ vlan_interfaces:
         no_autoconfig_flag: true
     ipv6_virtual_router_address: 1b11:3a00:22b0:1000::1
 
-# IPv6 + helpers
+# IPv6 + helpers + Mcast
 
   Vlan89:
     description: SVI Description
