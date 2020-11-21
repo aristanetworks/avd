@@ -51,6 +51,7 @@
 
 | VRF | Hosts |
 | --- | ---------------- |
+{%     if logging.vrfs is defined and logging.vrfs is not none %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
@@ -58,6 +59,7 @@
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}
+{%     endif %}
 
 ### Logging Servers and Features Device Configuration
 
