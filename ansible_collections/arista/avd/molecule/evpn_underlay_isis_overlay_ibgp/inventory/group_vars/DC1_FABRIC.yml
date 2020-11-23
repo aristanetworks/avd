@@ -5,7 +5,9 @@
 fabric_name: DC1_FABRIC
 
 # ISIS Parameters when underlay_routing_protocol=ISIS
-underlay_routing_protocol: ISIS
+underlay_routing_protocol: isis
+overlay_routing_protocol: ibgp
+bgp_as: 65000
 isis_area_id: "49.0001"
 isis_site_id: "0001"
 
@@ -47,6 +49,7 @@ spine:
     DC1-SPINE1:
       id: 1
       mgmt_ip: 192.168.200.101/24
+      bgp_route_reflector: true
     DC1-SPINE2:
       id: 2
       mgmt_ip: 192.168.200.102/24
@@ -56,6 +59,7 @@ spine:
     DC1-SPINE4:
       id: 4
       mgmt_ip: 192.168.200.104/24
+      bgp_route_reflector: true
 
 # Leaf switch groups
 # A maximum of two nodes can form a leaf group
