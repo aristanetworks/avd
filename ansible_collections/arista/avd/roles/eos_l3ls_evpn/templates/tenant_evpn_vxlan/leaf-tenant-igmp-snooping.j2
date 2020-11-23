@@ -4,6 +4,7 @@
 {% if leaf.igmp_snooping_enabled == true %}
 {% set igmp_snooping.configured = true %}
 {% endif %}
+{# Detect if igmp-snopping is globally activated #}
 {% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
@@ -22,6 +23,7 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
+{# End igmp-snopping status detection #}
   globally_enabled: {{ leaf.igmp_snooping_enabled }}
 {% if igmp_snooping.configured == true %}
   vlans:
@@ -34,10 +36,25 @@
 {%              for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
 {# Tenant VLANs w/SVIs #}
 {%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
-{%                      if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled is defined %}
-{%                          if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%                      set profile = namespace() %}
+{%                      set profile.exist = false %}
+{%                      set profile.per_svi = tenants[tenant].vrfs[vrf].svis[svi] %}
+{%                      if svi_profiles is defined and svi_profiles is not none %}
+{%                          if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
+{%                              if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
+{%                                  set profile.exist = true %}
+{%                                  set profile.svi_profile = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
+{%                              endif %}
+{%                          endif %}
+{%                      endif %}
+{# End svi_profile detection #}
+{# IGMP SNOOPING detection #}
+{%                      if profile.per_svi.igmp_snooping_enabled is defined or profile.svi_profile.igmp_snooping_enabled is defined %}
+{%                          if leaf.igmp_snooping_enabled == true %}
     {{ svi|int }}:
-      enabled: false
+      enabled: {{ profile.per_svi.igmp_snooping_enabled if profile.per_svi.igmp_snooping_enabled is defined else profile.svi_profile.igmp_snooping_enabled|default(true) }}
 {%                          endif %}
 {%                      endif %}
 {%                  endfor %}
