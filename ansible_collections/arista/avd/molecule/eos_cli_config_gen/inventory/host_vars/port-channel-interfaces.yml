@@ -16,7 +16,15 @@ port_channel_interfaces:
       - LEAF_PEER_L3
       - MLAG
 
+  Port-Channel50:
+    description: SRV-POD03_PortChanne1
+    vlans: 1-4000
+    mode: trunk
+    esi: 0000:0000:0303:0202:0101
+    rt: 03:03:02:02:01:01
+    lacp_id: 0303.0202.0101
 
+# Children interfaces
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-AGG01
@@ -35,6 +43,7 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+
   Ethernet4:
     peer: DC1-LEAF1B
     peer_interface: Ethernet4
@@ -43,3 +52,15 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+
+  Ethernet50:
+    peer: SRV-POD03
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD03_Eth1
+    mode: trunk
+    vlans: 1-4000
+    channel_group:
+      id: 5
+      mode: "active"
+    profile: ALL
