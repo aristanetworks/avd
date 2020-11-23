@@ -328,6 +328,10 @@ leaf_bgp_defaults:
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
 
+# Disable IGMP snooping at fabric level.
+# If set, it overrides per vlan settings
+default_igmp_snooping: < boolean | default -> true >
+
 # BFD Multihop tunning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
@@ -524,6 +528,9 @@ l3leaf:
     # Virtual router mac address for anycast gateway | Required.
     virtual_router_mac_address: < mac address >
 
+    # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -540,6 +547,9 @@ l3leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
@@ -667,6 +677,9 @@ l2leaf:
     # Spanning tree priority | Required.
     spanning_tree_priority: < spanning-tree priority >
 
+    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -680,6 +693,9 @@ l2leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname.
       # When two nodes are defined, this will create an MLAG pair.
@@ -852,6 +868,9 @@ tenants:
 
             # Enable or disable interface
             enabled: < true | false >
+
+            # Enable IGMP Snooping
+            igmp_snooping_enabled: < true | false | default true (eos) >
 
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
