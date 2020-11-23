@@ -117,6 +117,7 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < IPv4 address >
+  - < CV as a Service hostname >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
