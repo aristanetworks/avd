@@ -12,7 +12,6 @@
 {%             do cvaas.ips.append( cvp_ip ) %}
 {%    endif %}
 {% endfor %}
-
 daemon TerminAttr
 {% if cvp_on_prem.ips|length > 0 %}
    exec /usr/bin/TerminAttr -ingestgrpcurl={% for cvp_ip in cvp_on_prem.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} -cvcompression=gzip -ingestauth=key,{{ daemon_terminattr.ingestauth_key }} -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }}{% if daemon_terminattr.ingestvrf is ne 'default'%} -ingestvrf={{ daemon_terminattr.ingestvrf }}{% endif %} -taillogs
