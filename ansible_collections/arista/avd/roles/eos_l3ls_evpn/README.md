@@ -117,6 +117,7 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < IPv4 address >
+  - < CV as a Service hostname >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
@@ -161,6 +162,8 @@ redundancy:
 mac_address_table:
   aging_time: < time_in_seconds >
 ```
+
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
 
 **Example:**
 
