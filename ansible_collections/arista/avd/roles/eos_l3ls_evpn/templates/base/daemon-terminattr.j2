@@ -6,23 +6,12 @@
 {% set cvaas = namespace() %}
 {% set cvaas.ips = [] %}
 {%     if cvp_instance_ip is defined %}
-{%          for cvp_ip in cvp_instance_ip %}
-{%              if "arista.io" not in cvp_ip %}
-{%                  do cvp_on_prem.ips.append( cvp_ip ) %}
-{%              elif "arista.io" in cvp_ip %}
-{%                  do cvaas.ips.append( cvp_ip ) %}
-{%              endif %}
-{%          endfor %}
+{%          if "arista.io" not in cvp_instance_ip %}
+{%              do cvp_on_prem.ips.append( cvp_instance_ip ) %}
+{%          elif "arista.io" in cvp_ip %}
+{%              do cvaas.ips.append( cvp_ip ) %}
+{%          endif %}
 {%     elif cvp_instance_ips is defined %}
-{%          for cvp_ip in cvp_instance_ips %}
-{%              if "arista.io" not in cvp_ip %}
-{%                  do cvp_on_prem.ips.append( cvp_ip ) %}
-{%              elif "arista.io" in cvp_ip %}
-{%                  do cvaas.ips.append( cvp_ip ) %}
-{%              endif %}
-{%          endfor %}
-{%     endif %}
-{%     if cvp_instance_ips is defined %}
 {%          for cvp_ip in cvp_instance_ips %}
 {%              if "arista.io" not in cvp_ip %}
 {%                  do cvp_on_prem.ips.append( cvp_ip ) %}
