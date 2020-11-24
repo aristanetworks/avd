@@ -1,21 +1,25 @@
-{% if vrfs is defined and vrfs is not none %}
 ### IPv6 Routing Summary
 
-| VRF | IPv6 Routing Enabled |
-| --- | -------------------- |
+| VRF | Routing Enabled |
+| --- | --------------- |
+| default | {% if ipv6_unicast_routing is defined and ipv6_unicast_routing == true %} True | {% else %} False | {% endif %}
+
+{% set IPv6_configured_in_vrf = false %}
+{% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}
+{% set IPv6_configured_in_vrf = true %}
 | {{ vrf }} | True |
 {%         else %}
 | {{ vrf }} | False |
 {%         endif %}
 {%     endfor %}
+{% endif %} 
 
+{% if (ipv6_unicast_routing is defined and ipv6_unicast_routing == true) or (IPv6_configured_in_vrf == true) %}
 ### IPv6 Routing Device Configuration
 
 ```eos
 {% include 'eos/ipv6-routing.j2' %}
 ```
-{% else %}
-IPv6 routing not defined
 {% endif %}

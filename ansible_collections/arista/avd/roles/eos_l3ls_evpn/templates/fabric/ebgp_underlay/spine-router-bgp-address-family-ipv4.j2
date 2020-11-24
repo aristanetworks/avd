@@ -1,0 +1,10 @@
+{# Spine - address family ipv4 activation #}
+{% if type == "spine" %}
+    peer_groups:
+{%     if switch.underlay_routing_protocol == "ebgp" %}
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+{%     endif %}
+      EVPN-OVERLAY-PEERS:
+        activate: false
+{% endif %}

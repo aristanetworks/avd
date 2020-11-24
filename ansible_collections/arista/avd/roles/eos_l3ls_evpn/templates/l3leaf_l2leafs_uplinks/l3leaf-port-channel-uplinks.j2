@@ -1,0 +1,77 @@
+{# L3Leaf Port-Channel uplinks to L2 Leaf #}
+{# Set variables #}
+{% if l2leaf.node_groups is defined %}
+{%     set l3_leaf = namespace() %}
+{%     set l2_leaf = namespace() %}
+{%     for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
+{%         if l2leaf.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
+{%             set parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs %}
+{%         else %}
+{%             set parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
+{%         endif %}
+{%         if inventory_hostname in parent_l3leafs %}
+{%             if l2leaf.node_groups[l2leaf_node_group].filter.tenants is defined %}
+{%                 set l2_leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants %}
+{%             else %}
+{%                 set l2_leaf.filter_tenants = [ 'all' ] %}
+{%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].filter.tags is defined %}
+{%                 set l2_leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags %}
+{%             else %}
+{%                 set l2_leaf.filter_tags = [ 'all' ] %}
+{%             endif %}
+{%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                 if loop.first %}
+{%                     set l3_leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
+{%                 endif %}
+{%             endfor %}
+{%             if l2leaf.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
+{%                 set l2leaf_uplink_interfaces = l2leaf.node_groups[l2leaf_node_group].uplink_interfaces %}
+{%             else %}
+{%                 set l2leaf_uplink_interfaces = l2leaf.defaults.uplink_interfaces %}
+{%             endif %}
+{# Create allowed vlan lan list based on vlans being provisioned on L2 Leaf #}
+{%             set l2_leaf.vlans = []  %}
+{%             for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%                 if tenant in l2_leaf.filter_tenants or "all" in l2_leaf.filter_tenants %}
+{%                     if tenants[tenant].vrfs is defined %}
+{%                         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%                             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%                                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
+{%                                     if svi_tag in leaf.filter_tags or svi_tag == leaf.group or "all" in leaf.filter_tags %}
+{%                                         if svi_tag in l2_leaf.filter_tags or svi_tag == l2leaf_node_group or "all" in l2_leaf.filter_tags %}
+{%                                             do l2_leaf.vlans.append( svi | int ) %}
+{%                                             break %}
+{%                                         endif %}
+{%                                     endif %}
+{%                                 endfor %}
+{%                             endfor %}
+{%                         endfor %}
+{%                     endif %}
+{%                     if tenants[tenant].l2vlans is defined %}
+{%                         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%                             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
+{%                                 if vlan_tag in leaf.filter_tags or "all" in leaf.filter_tags %}
+{%                                     if vlan_tag in l2_leaf.filter_tags or "all" in l2_leaf.filter_tags %}
+{%                                         do l2_leaf.vlans.append( l2vlan | int ) %}
+{%                                         break %}
+{%                                     endif %}
+{%                                 endif %}
+{%                             endfor %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{# Create port-channels for each nodes #}
+{%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
+## L2 LEAF Uplink {{ l2leaf_node_group }} ##
+  Port-Channel{{ l3_leaf.channel_group_id }}:
+    description: {{ l2leaf_node_group }}_{{ 'Po' + l2leaf_uplink_interfaces[loop.index0] | regex_findall("\d") | join }}
+    vlans: {{ l2_leaf.vlans | arista.avd.list_compress }}
+    mode: trunk
+    mlag: {{ l3_leaf.channel_group_id }}
+{%             break %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

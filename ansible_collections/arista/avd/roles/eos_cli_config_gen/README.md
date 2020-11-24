@@ -22,6 +22,7 @@
     - [LLDP](#lldp)
     - [Logging](#logging)
     - [Domain Lookup](#domain-lookup)
+    - [Domain-List](#domain-list)
     - [Name Servers](#name-servers)
     - [DNS Domain](#dns-domain)
     - [NTP Servers](#ntp-servers)
@@ -65,6 +66,7 @@
     - [IPv6 Routing](#ipv6-routing)
     - [MLAG Configuration](#mlag-configuration)
     - [Community Lists](#community-lists)
+    - [IP Extended Community Lists](#ip-extended-community-lists)
     - [Route Maps](#route-maps)
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
@@ -80,6 +82,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [Custom Templates](#custom-templates)
   - [License](#license)
 
 ## Overview
@@ -165,6 +168,8 @@ daemon_terminattr:
 
 ```
 
+You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
 ### IP DHCP Relay
 
 ```yaml
@@ -187,10 +192,13 @@ vlan_internal_allocation_policy:
 
 ```yaml
 ip_igmp_snooping:
+  globally_enabled: < true | false (default is true) >
   vlans:
     < vlan_id >:
       enabled: < true | false >
 ```
+
+`globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
 
 ### Event Monitor
 
@@ -256,6 +264,10 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  format:
+    timestamp: < high-resolution | traditional >
+    hostname: < fqdn | ipv4 >
+    sequence_numbers: < true | false >
   source_interface: < source_interface_name >
   vrfs:
     < vrf_name >:
@@ -272,6 +284,14 @@ ip_domain_lookup:
   source_interfaces:
     < source_interface_1 >:
       vrf: < vrf_name >
+```
+
+### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
 ```
 
 ### Name Servers
@@ -582,6 +602,8 @@ port_channel_interfaces:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
+    lacp_fallback_mode: < individual | static >
     qos:
       trust: < cos | dscp >
   < Port-Channel_interface_2 >:
@@ -654,6 +676,7 @@ ethernet_interfaces:
     ipv6_access_group_out: < ipv6_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
@@ -739,7 +762,6 @@ vlan_interfaces:
     ip_router_virtual_address: < IPv4_address >
     ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    mtu: < mtu >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -768,6 +790,7 @@ vlan_interfaces:
           administrative_distance: < 1-255 >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
     ospf_authentication: < none | simple | message-digest >
     ospf_authentication_key: "< encrypted_password >"
     ospf_message_digest_keys:
@@ -1011,6 +1034,18 @@ community_lists:
     action: "< action as string >"
   < community_list_name_2 >:
     action: "< action as string >"
+```
+
+### IP Extended Community Lists
+
+```yaml
+ip_extcommunity_lists:
+  < community_list_name_1 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
+  < community_list_name_2 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
 ```
 
 ### Route Maps
@@ -1278,6 +1313,7 @@ router_ospf:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
+      bfd_enable: < true | false >
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
@@ -1414,6 +1450,14 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+
+### Custom Templates
+
+```yaml
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
 ## License

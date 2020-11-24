@@ -1,0 +1,34 @@
+{# Leaf and Spine route-maps for the underlay#}
+{% if switch.underlay_routing_protocol == "ebgp" %}
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+          - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+{% endif %}
+{# Leaf route-maps for the overlay#}
+{% if switch.overlay_routing_protocol == "ibgp" %}
+{%     if type == "l3leaf" %}
+  RM-EVPN-SOO-IN:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - "extcommunity ECL-EVPN-SOO"
+      20:
+        type: permit
+  RM-EVPN-SOO-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+{%         if leaf.mlag == true and leaf.mlag_role == "primary" %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1 additive"
+{%         elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) }}:1 additive"
+{%         else %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1 additive"
+{%         endif %}
+{%     endif %}
+{% endif %}
