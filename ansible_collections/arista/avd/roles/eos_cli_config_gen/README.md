@@ -733,6 +733,7 @@ vlan_interfaces:
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
+    arp_aging_timeout: < arp_timeout >
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
     ip_router_virtual_address: < IPv4_address >
