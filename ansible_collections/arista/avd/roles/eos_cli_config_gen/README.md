@@ -31,6 +31,7 @@
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
+    - [Hardware Speed-Group Settings](#speed-group-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -428,6 +429,18 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+### Speed-Group Settings
+
+```yaml
+hardware:
+  speed_groups:
+    1:
+      serdes: <10g | 25g>
+    2:
+      serdes: <10g | 25g>
+    ...
 ```
 
 ### Spanning Tree
