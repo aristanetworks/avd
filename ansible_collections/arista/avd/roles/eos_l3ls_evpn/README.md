@@ -429,7 +429,7 @@ The variables should be applied to all devices in the fabric.
 
 ```yaml
 # define the layer type
-type: < spine | l3leaf | l2leaf >
+type: < spine | l3leaf | l2leaf | super-spine | overlay-controller >
 ```
 
 **Example:**
@@ -443,6 +443,12 @@ type: l3leaf
 
 # Defined in L2LEAFS.yml
 type: l2leaf
+
+# Defined in SUPER-SPINES.yml
+type: super-spine
+
+# Defined in ROUTE-SERVERS.yml
+type: overlay-controller
 ```
 
 #### Spine Variables
@@ -1605,6 +1611,129 @@ Following variables must be now defined on DC and not POD level:
 
 - `p2p_uplinks_mtu`
 - `bgp_peer_groups`
+
+## Role Enchancements for dedicated Overlay Controllers
+
+This enhancement will allow support for dedicated Overlay Controllers connected to fabric nodes.
+Overlay Controllers can be connected to any other device type.
+Overlay Controllers can currently only be used as EVPN Overlay Controllers
+
+### Inventory Structure
+
+The inventory must have a dedicated group for Overlay Controllers. Example:
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Overlay Controllers group name >:
+          hosts:
+            < Overlay Controller name >:
+              ansible_host: < management IP >
+            < Overlay Controller name >:
+              ansible_host: < management IP >
+            ...
+```
+
+### Additional Variables Required For Overlay Controllers Deployment
+
+Defaults:
+```yaml
+max_overlay_controller_to_switch_links: 1
+```
+
+Assigned to the DC group:
+
+```yaml
+overlay_controller:
+  platform: <platform>   # overlay-controller platform
+  defaults: #Default variables, can be overridden when defined under each node
+    remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
+    uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
+    bgp_as: <BGP AS>
+  nodes:
+    <inventory_hostname>:
+      id: <number> # Starting from 1
+      mgmt_ip: < IPv4_address/Mask >
+      remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+# Point to Point Network Summary range, assigned as /31 for each uplink interfaces
+# Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
+overlay_controller_p2p_network_summary: < IPv4_network/Mask >
+# IP address summary for BGP evpn overlay peering loopback for Overlay Controllers | Required
+# Assigned as /32 to Loopback0
+# Assign range larger then:
+# [ total overlay_controllers ]
+overlay_controller_loopback_network_summary: < IPv4_network/Mask >
+# additional lines for overlay-controller BGP config
+overlay_controller_bgp_defaults:
+  #  - update wait-for-convergence
+  #  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+```
+
+Assigned to Overlay Controller Group:
+
+```yaml
+type: overlay-controller # identifies every host in the group as overlay-controller
+```
+
+
+## Role Enhancements for Flexible EVPN Overlay peering design
+
+This enhancement will allow a more flexible EVPN Overlay peering design.
+Overlay peerings can be configured to any of the following options as well as combinations thereof:
+* l3leaf <-> spine
+* l3leaf <-> super-spine
+* l3leaf <-> overlay-controller
+* spine <-> spine (in other PODs)
+* spine <-> super-spine
+* spine <-> overlay-controller
+* super-spine <-> super-spine (in other DCs)
+* super-spine <-> overlay-controller
+* overlay-controller <-> overlay-controller (in other DCs)
+The overlay peerings will be derived from the variable `evpn_overlay_controller_groups` on the "client".
+Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between 
+all the l3leafs in this group and all devices in the group `DC1_SUPER_SPINES`. The devices in group `DC1_SUPER_SPINES` will detect that others are
+pointing at them, and configure the peering as well.
+
+Currently all spines, super-spines and overlay-controllers will have the EVPN adress-family and EVPN BGP peer-group configured even if they have no
+EVPN overlay peerings.
+
+To be backward compatible the templates will use the old behavior of configuring EVPN Overlay between all spines and l3leafs if `evpn_overlay_controller_groups`
+is not defined on the l3leafs group.
+
+### Inventory Structure
+
+There are no specific requirements for this feature, so this is just an example for reference.
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Overlay Controllers group name >:
+          <-- omitted -->
+        < Super Spines group name >:
+          <-- omitted -->
+        < DC POD 1 group name >:
+          children:
+            < spines group >:
+              <-- omitted -->
+            < leaf group >:
+              <-- omitted -->
+```
+
+### Additional Variables For Flexible EVPN Overlay peerings
+
+Assigned to any device group:
+
+```yaml
+evpn_overlay_controller_groups: [ < inventory_group > ]  # One or more groups containing EVPN RR/RS.
+```
 
 ## License
 
