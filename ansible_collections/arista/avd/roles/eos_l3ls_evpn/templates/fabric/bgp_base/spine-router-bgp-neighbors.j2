@@ -20,9 +20,11 @@
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}
-{%              endif %}
+{%             endif %}
 {# Overlay network peering #}
-{%             if switch.overlay_routing_protocol == 'ebgp' %}
+{# Default to overlay network peering to leafs if not using evpn_overlay_controller_groups variable #}
+{%             if evpn_overlay_controller_groups is not defined %}
+{%                 if switch.overlay_routing_protocol == 'ebgp' %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(l3leaf.node_groups[l3leaf_node_group].nodes[node].id + spine.nodes | length ) }}:
       peer_group: EVPN-OVERLAY-PEERS
 {%                     if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
@@ -30,6 +32,7 @@
 {%                     else %}
       remote_as: {{ l3leaf.defaults.bgp_as }}
 {%                     endif %}
+{%                 endif %}
 {%             endif %}
 {%             if switch.overlay_routing_protocol == 'ibgp' and switch.is_route_reflector == true %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(l3leaf.node_groups[l3leaf_node_group].nodes[node].id + spine.nodes | length ) }}:
@@ -59,4 +62,11 @@
     }}:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: {{ super_spine.bgp_as }}
+{% endfor %}
+{# Overlay network peerings based on evpn_overlay_controller_groups variable #} 
+{% for evpn_overlay_peer in switch.evpn_overlay_peers %}
+    {{ evpn_overlay_peer.ip }}:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: {{ evpn_overlay_peer.description }}
+      remote_as: {{ evpn_overlay_peer.bgp_as }}
 {% endfor %}
