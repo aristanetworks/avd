@@ -210,6 +210,35 @@
 {%         endif%}
 {%     endfor %}
 {% endfor %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for evpn_overlay_controller in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set evpn_overlay_controller_vars = hostvars[evpn_overlay_controller] %}
+{%             set peer = namespace() %}
+{%             set peer.description = evpn_overlay_controller %}
+{%             if evpn_overlay_controller_vars.type == 'spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.super_spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(evpn_overlay_controller_vars.super_spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'overlay-controller' %}
+{%                 if evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as is defined %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
@@ -354,6 +383,8 @@ ethernet_interfaces:
 {% include 'l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Server - Interfaces Configuration #}
 {% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Point-to-Point Interfaces to overlay-controller #}
+{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 
 
 {# loopback interfaces #}
