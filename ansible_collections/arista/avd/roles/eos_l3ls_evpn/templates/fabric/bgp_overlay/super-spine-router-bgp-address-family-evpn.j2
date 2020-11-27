@@ -1,0 +1,10 @@
+{# super-spine - address family evpn activation #}
+    peer_groups:
+{% if switch.underlay_routing_protocol == "ebgp" %}
+      IPv4-UNDERLAY-PEERS:
+        activate: false
+{% endif %}
+{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_overlay_peers | length > 0 %}
+      EVPN-OVERLAY-PEERS:
+        activate: true
+{% endif %}
