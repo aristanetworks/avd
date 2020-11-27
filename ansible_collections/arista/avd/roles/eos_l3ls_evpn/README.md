@@ -1674,8 +1674,6 @@ overlay_controller_p2p_network_summary: < IPv4_network/Mask >
 overlay_controller_loopback_network_summary: < IPv4_network/Mask >
 # additional lines for overlay-controller BGP config
 overlay_controller_bgp_defaults:
-  #  - update wait-for-convergence
-  #  - update wait-install
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
