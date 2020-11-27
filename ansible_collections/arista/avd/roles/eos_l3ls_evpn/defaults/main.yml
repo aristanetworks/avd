@@ -52,8 +52,6 @@ leaf_bgp_defaults:
   - graceful-restart
 
 overlay_controller_bgp_defaults:
-  - update wait-for-convergence
-  - update wait-install
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300
