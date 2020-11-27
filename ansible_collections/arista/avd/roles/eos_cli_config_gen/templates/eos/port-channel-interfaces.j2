@@ -50,10 +50,10 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
    qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'edge' %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast is none %}
    spanning-tree portfast
-{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'network' %}
-   spanning-tree portfast network
+{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast is not none %}
+   spanning-tree portfast {{ port_channel_interfaces[port_channel_interface].spanning_tree_portfast }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter == true %}
    spanning-tree bpdufilter enable
@@ -88,6 +88,14 @@ interface {{ port_channel_interface }}
 
 {%                 endfor %}
 {%             endif %}
+{%         if port_channel_interfaces[port_channel_interface].lacp_fallback is defined and port_channel_interfaces[port_channel_interface].lacp_fallback is not none %}
+   port-channel lacp fallback {{ port_channel_interfaces[port_channel_interface].lacp_fallback.mode }}
+{%          if port_channel_interfaces[port_channel_interface].lacp_fallback.timeout is defined and port_channel_interfaces[port_channel_interface].lacp_fallback.timeout is not none %}
+   port-channel lacp fallback timeout {{ port_channel_interfaces[port_channel_interface].lacp_fallback.timeout }}
+{% else %}
+   port-channel lacp fallback timeout 90
+{%          endif %}
+{%            endif %}
 {%         if port_channel_interfaces[port_channel_interface].access_group_in is defined and port_channel_interfaces[port_channel_interface].access_group_in is not none %}
    ip access-group {{ port_channel_interfaces[port_channel_interface].access_group_in }} in
 {%            endif %}
@@ -104,6 +112,13 @@ interface {{ port_channel_interface }}
 {%            if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is defined and port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode == true %}
    pim ipv4 sparse-mode
 {%            endif %}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].storm_control is defined and port_channel_interfaces[port_channel_interface].storm_control is not none %}
+{%            for mode in port_channel_interfaces[port_channel_interface].storm_control %}
+{%                if port_channel_interfaces[port_channel_interface].storm_control[mode] is not none %}
+   storm-control {{ mode }} level {{ port_channel_interfaces[port_channel_interface].storm_control[mode] }}
+{%                endif %}
+{%            endfor %}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx

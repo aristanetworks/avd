@@ -597,7 +597,7 @@ port_channel_interfaces:
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
-    spanning_tree_portfast: < edge | network >
+    spanning_tree_portfast: < auto | edge | network | normal >
     vmtracer: < true | false >
   < Port-Channel_interface_4 >:
     description: < description >
@@ -622,6 +622,17 @@ port_channel_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+  < Port-Channel_interface_5 >:
+    description: < description >
+    vlans: "< list of vlans as string >"
+    mode: < access | dot1q-tunnel | trunk >
+    lacp_fallback: 
+      mode: < individual | static >
+      timeout: < LACP fallback timeout >
+    storm_control:
+      broadcast: < level >
+      multicast: < level >
+      unknown_unicast: < level >
 ```
 
 ### Ethernet Interfaces
@@ -686,8 +697,12 @@ ethernet_interfaces:
       trust: < cos | dscp >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
-    spanning_tree_portfast: < edge | network >
+    spanning_tree_portfast: < auto | edge | network | normal >
     vmtracer: < true | false >
+    storm_control:
+      broadcast: < level >
+      multicast: < level >
+      unknown_unicast: < level >
 ```
 
 ### Loopback Interfaces
