@@ -1,0 +1,78 @@
+---
+ztp:
+  default:
+{% if cvp_instance_ip is defined and cvp_instance_ip is not none %}
+    registration: http://{{ cvp_instance_ip }}/ztp/bootstrap
+{% elif cvp_instance_ips is defined and cvp_instance_ips is not none %}
+    registration: http://{{ cvp_instance_ips[0] }}/ztp/bootstrap
+{% endif %}
+{% if mgmt_gateway is defined and mgmt_gateway is not none %}
+    gateway: {{ mgmt_gateway }}
+{% endif %}
+{% if name_servers is defined and name_servers is not none %}
+    nameservers:
+{%     for name_server in name_servers %}
+      - {{ name_server }}
+{%     endfor %}
+{% endif %}
+{% if ztp_mac_source == 'system' %}
+    use_system_mac: true
+{% else %}
+    use_system_mac: false
+{% endif %}
+  general:
+    subnets:
+{% if ztp_network_summary is defined and ztp_network_summary is not none %}
+      - network: {{ ztp_network_summary | ipaddr('network') }}
+        netmask: {{ ztp_network_summary | ipaddr('netmask') }}
+{% endif %}
+{% if mgmt_gateway is defined and mgmt_gateway is not none %}
+        gateway: {{ mgmt_gateway }}
+{% endif %}
+{% if name_servers is defined and name_servers is not none %}
+        nameservers:
+{% for name_server in name_servers %}
+          - {{ name_server }}
+{% endfor %}
+{% endif %}
+{% if ztp_pool_start is defined and ztp_pool_start is not none %}
+        start: {{ ztp_pool_start }}
+{% endif %}
+{% if ztp_pool_end is defined and ztp_pool_end is not none %}
+        end: {{ ztp_pool_end }}
+{% endif %}
+{% if ztp_lease_time is defined and ztp_lease_time is not none %}
+        lease_time: 300
+{% endif %}
+  clients:
+{# Read SPINE devices #}
+    # SPINE
+{% for node in hostvars[groups[fabric_group][0]].spine.nodes %}
+{%      if hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is not none %}
+    - name: {{ node }}
+      mac: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address }}
+      ip4: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mgmt_ip | ipaddr('address') }}
+{%      endif %}
+{% endfor %}
+{# Read L3LEAF devices #}
+    # L3LEAF
+{% for node_group in hostvars[groups[fabric_group][0]].l3leaf.node_groups %}
+{%     for node in hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes %}
+{%         if hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is not none %}
+    - name: {{ node }}
+      mac: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address }}
+      ip4: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
+{# Read L2LEAF devices #}
+    # L2LEAF
+{% for node_group in hostvars[groups[fabric_group][0]].l2leaf.node_groups %}
+{%     for node in hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes %}
+{%         if hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is not none %}
+    - name: {{ node }}
+      mac: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address }}
+      ip4: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
