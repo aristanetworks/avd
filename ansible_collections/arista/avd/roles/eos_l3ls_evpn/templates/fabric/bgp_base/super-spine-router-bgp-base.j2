@@ -1,5 +1,4 @@
 {# Spine router bgp base configuration #}
-{% if type == "super-spine" %}
   as: {{ super_spine.bgp_as }}
   router_id: {{ super_spine_loopback_network_summary  | ipaddr('network') | ipmath(super_spine.nodes[inventory_hostname].id) }}
   bgp_defaults:
@@ -9,4 +8,3 @@
 {%     endfor %}
     - maximum-paths {{ super_spine.nodes | length }} ecmp {{ super_spine.nodes | length }}
 {%    endif%}
-{% endif%}
