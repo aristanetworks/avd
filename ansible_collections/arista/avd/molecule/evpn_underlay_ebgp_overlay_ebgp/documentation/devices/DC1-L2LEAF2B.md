@@ -422,10 +422,10 @@ interface Ethernet4
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel1 | DC1-SVC3B_Po7 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | 1 | - | - | - | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | 1500 | switched | trunk | 2-4094 | MLAG | - | - | - | - | - |
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
+| Port-Channel1 | DC1-SVC3B_Po7 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | 1500 | switched | trunk | 2-4094 | MLAG | - | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -546,6 +546,7 @@ router bfd
 
 ## IP IGMP Snooping
 
+### IP IGMP Snooping Summary
 
 ## Router Multicast
 

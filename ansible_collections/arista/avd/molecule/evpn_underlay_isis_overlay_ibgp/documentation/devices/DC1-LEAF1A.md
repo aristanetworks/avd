@@ -581,6 +581,7 @@ router bfd
 
 ## IP IGMP Snooping
 
+### IP IGMP Snooping Summary
 
 ## Router Multicast
 

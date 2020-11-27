@@ -594,6 +594,13 @@ virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.9
 
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## Tenant_A ##
+## Tenant_B ##
+## Tenant_C ##
+
 ### static routes ###
 static_routes:
   - vrf: MGMT

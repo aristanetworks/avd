@@ -165,6 +165,11 @@ tcam_profile:
 ### MAC address table ###
 mac_address_table:
 
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## Tenant_A ##
+
 ### static routes ###
 static_routes:
   - vrf: MGMT

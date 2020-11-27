@@ -12,7 +12,7 @@ leaf_filter_tenants: ['all']
 leaf_filter_tags: ['all']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WAN_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_OP_Zone', 'Tenant_C_WAN_Zone']
 leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 150, 120, 121, 210, 211, 250, 310, 311, 350]
-leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 150, 120, 121, 160, 161, 210, 211, 250, 310, 311, 350]
+leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 150, 120, 121, 210, 211, 250, 310, 311, 350]
 leaf_mlag: True
 leaf_mlag_group: DC1_L2LEAF2
 leaf_mlag_role: secondary
@@ -136,12 +136,6 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
 ## Tenant_B ##
   210:
     tenant: Tenant_B
@@ -171,7 +165,7 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-SVC3B_Po7
-    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+    vlans: 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
     mode: trunk
     mlag: 1
 ## mlag peer-link ##
@@ -241,6 +235,13 @@ tcam_profile:
 
 ### MAC address table ###
 mac_address_table:
+
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## Tenant_A ##
+## Tenant_B ##
+## Tenant_C ##
 
 ### static routes ###
 static_routes:

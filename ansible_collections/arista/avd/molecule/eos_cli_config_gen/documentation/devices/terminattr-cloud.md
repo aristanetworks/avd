@@ -177,7 +177,7 @@ Aliases not defined
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=apiserver.corp.arista.io:9910 -cvcompression=gzip -ingestauth=key,magickey -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=mgt -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=apiserver.corp.arista.io:9910 -cvcompression=gzip -taillogs -cvauth=token-secure,/tmp/onboardingtoken1 -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent  -cvvrf=mgt
    no shutdown
 ```
 

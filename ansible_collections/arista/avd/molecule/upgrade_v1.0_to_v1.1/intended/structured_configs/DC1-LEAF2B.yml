@@ -12,7 +12,7 @@ leaf_filter_tenants: ['Tenant_A', 'Tenant_B', 'Tenant_C']
 leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion', 'nfs']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
 leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 120, 121, 210, 211, 310, 311]
-leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121, 160, 161, 210, 211, 310, 311]
+leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121, 210, 211, 310, 311]
 leaf_mlag: True
 leaf_mlag_group: DC1_LEAF2
 leaf_mlag_role: secondary
@@ -158,12 +158,6 @@ vlans:
     name: MLAG_iBGP_Tenant_A_WEB_Zone
     trunk_groups:
       - LEAF_PEER_L3
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
 ## Tenant_B ##
   210:
     tenant: Tenant_B
@@ -370,11 +364,13 @@ vlan_interfaces:
     tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
     vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.30.1/24
   Vlan131:
     tenant: Tenant_A
     tags: ['app']
     description: Tenant_A_APP_Zone_2
     vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.31.1/24
   Vlan3011:
     tenant: Tenant_A
     type: underlay_peering
@@ -386,11 +382,13 @@ vlan_interfaces:
     tags: ['db', 'erp1']
     description: Tenant_A_DB_BZone_1
     vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.40.1/24
   Vlan141:
     tenant: Tenant_A
     tags: ['db']
     description: Tenant_A_DB_Zone_2
     vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.41.1/24
   Vlan3012:
     tenant: Tenant_A
     type: underlay_peering
@@ -402,11 +400,13 @@ vlan_interfaces:
     tags: ['opzone']
     description: Tenant_A_OP_Zone_1
     vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.10.1/24
   Vlan111:
     tenant: Tenant_A
     tags: ['opzone']
     description: Tenant_A_OP_Zone_2
     vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.11.1/24
   Vlan3009:
     tenant: Tenant_A
     type: underlay_peering
@@ -418,11 +418,13 @@ vlan_interfaces:
     tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
     vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.20.1/24
   Vlan121:
     tenant: Tenant_A
     tags: ['web']
     description: Tenant_A_WEBZone_2
     vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.21.1/24
   Vlan3010:
     tenant: Tenant_A
     type: underlay_peering
@@ -435,11 +437,13 @@ vlan_interfaces:
     tags: ['opzone']
     description: Tenant_B_OP_Zone_1
     vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.10.1/24
   Vlan211:
     tenant: Tenant_B
     tags: ['opzone']
     description: Tenant_B_OP_Zone_2
     vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.11.1/24
   Vlan3019:
     tenant: Tenant_B
     type: underlay_peering
@@ -452,11 +456,13 @@ vlan_interfaces:
     tags: ['opzone']
     description: Tenant_C_OP_Zone_1
     vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.10.1/24
   Vlan311:
     tenant: Tenant_C
     tags: ['opzone']
     description: Tenant_C_OP_Zone_2
     vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.11.1/24
   Vlan3029:
     tenant: Tenant_C
     type: underlay_peering
@@ -491,10 +497,6 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
-        160:
-          vni: 50160
-        161:
-          vni: 10161
 ## Tenant_B ##
         210:
           vni: 20210
@@ -533,6 +535,13 @@ ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.7
+
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## Tenant_A ##
+## Tenant_B ##
+## Tenant_C ##
 
 ### static routes ###
 static_routes:
@@ -680,24 +689,6 @@ router_bgp:
       redistribute_routes:
         - learned
       vlan: 120-121
-    Tenant_A_VMOTION:
-      tenant: Tenant_A
-      rd: "192.168.255.7:50160"
-      route_targets:
-        both:
-          - "50160:50160"
-      redistribute_routes:
-        - learned
-      vlan: 160
-    Tenant_A_NFS:
-      tenant: Tenant_A
-      rd: "192.168.255.7:10161"
-      route_targets:
-        both:
-          - "10161:10161"
-      redistribute_routes:
-        - learned
-      vlan: 161
 ## Tenant_B ##
     Tenant_B_OP_Zone:
       rd: "192.168.255.7:20"

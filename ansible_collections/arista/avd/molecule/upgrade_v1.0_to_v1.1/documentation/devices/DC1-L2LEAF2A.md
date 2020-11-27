@@ -320,8 +320,6 @@ vlan internal order ascending range 1006 1199
 | 140 | Tenant_A_DB_BZone_1 | none  |
 | 141 | Tenant_A_DB_Zone_2 | none  |
 | 150 | Tenant_A_WAN_Zone_1 | none  |
-| 160 | Tenant_A_VMOTION | none  |
-| 161 | Tenant_A_NFS | none  |
 | 210 | Tenant_B_OP_Zone_1 | none  |
 | 211 | Tenant_B_OP_Zone_2 | none  |
 | 250 | Tenant_B_WAN_Zone_1 | none  |
@@ -361,12 +359,6 @@ vlan 141
 vlan 150
    name Tenant_A_WAN_Zone_1
 !
-vlan 160
-   name Tenant_A_VMOTION
-!
-vlan 161
-   name Tenant_A_NFS
-!
 vlan 210
    name Tenant_B_OP_Zone_1
 !
@@ -398,8 +390,8 @@ vlan 4094
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | DC1-SVC3A_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | 1 | active |
-| Ethernet2 | DC1-SVC3B_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | 1 | active |
+| Ethernet1 | DC1-SVC3A_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | active |
+| Ethernet2 | DC1-SVC3B_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | active |
 | Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *MLAG | - | - | 3 | active |
 | Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *MLAG | - | - | 3 | active |
 
@@ -430,10 +422,10 @@ interface Ethernet4
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel1 | DC1-SVC3A_Po7 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | 1 | - | - | - | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | 1500 | switched | trunk | 2-4094 | MLAG | - | - | - | - | - |
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
+| Port-Channel1 | DC1-SVC3A_Po7 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | - | - | - | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | 1500 | switched | trunk | 2-4094 | MLAG | - | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -441,7 +433,7 @@ interface Ethernet4
 !
 interface Port-Channel1
    description DC1-SVC3A_Po7
-   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
    switchport mode trunk
    mlag 1
 !
@@ -554,6 +546,7 @@ router bfd
 
 ## IP IGMP Snooping
 
+### IP IGMP Snooping Summary
 
 ## Router Multicast
 
