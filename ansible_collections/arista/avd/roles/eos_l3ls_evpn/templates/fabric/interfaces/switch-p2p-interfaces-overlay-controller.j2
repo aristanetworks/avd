@@ -1,4 +1,4 @@
-{# Point-to-Point Interfaces to OPTIONAL OVERLAY_CONTROLLER Switches #}
+{# Point-to-Point Interfaces to optional OVERLAY_CONTROLLER Switches #}
 {% if overlay_controller is defined %}
 {%     for overlay_controller_node in overlay_controller.nodes | arista.avd.natural_sort %}
 {%         if overlay_controller.nodes[overlay_controller_node].remote_switches is defined %}
@@ -31,11 +31,11 @@
     mtu: {{ p2p_uplinks_mtu }}
     type: routed
     ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * overlay_controller_remote_switches | length * max_overlay_controller_to_switch_links ) + loop.index0 * 2) }}/31
-{%                 if underlay_routing_protocol == "OSPF" %}
+{%                 if underlay_routing_protocol|lower == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%                 endif %}
-{%                 if underlay_routing_protocol == "ISIS" %}
+{%                 if underlay_routing_protocol|lower == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
