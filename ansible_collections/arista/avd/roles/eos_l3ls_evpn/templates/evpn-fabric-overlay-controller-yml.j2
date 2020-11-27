@@ -1,14 +1,44 @@
-{# Spine Switch Configuration #}
+{# Overlay Controller Configuration #}
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-
-{# Set Spine Variables #}
+{# Set Overlay Controller Variables #}
 {% set switch = namespace() %}
-{% set switch.platform = spine.platform %}
-{% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
+{% set switch.platform = overlay_controller.platform %}
+{% set switch.mgmt_ip = overlay_controller.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
-{% set switch.bgp_route_reflector = spine.nodes[inventory_hostname].bgp_route_reflector | default(false) %}
+{% for node in overlay_controller.nodes | arista.avd.natural_sort %}
+{%     if node == inventory_hostname %}
+{%         set switch.id = overlay_controller.nodes[node].id %}
+{%         if overlay_controller.nodes[node].bgp_as is defined %}
+{%             set switch.bgp_as = overlay_controller.nodes[node].bgp_as %}
+{%         else %}
+{%             set switch.bgp_as = overlay_controller.defaults.bgp_as %}
+{%         endif %}
+{# Get local RR/RS interface to configure #}
+{%         if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
+{%         else %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
+{%         endif %}
+{# Get remote switch interface to configure #}
+{%         if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
+{%             set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
+{%         endif %}
+{# Get remote hostname #}
+{%         if overlay_controller.nodes[node].remote_switches is defined %}
+{%             set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
+{%         else %}
+{%             set switch.remote_switches = overlay_controller.defaults.remote_switches %}
+{%         endif %}
+{# Get group of remote devices where RS/RR are connected #}
+{%         if overlay_controller.nodes[node].remote_switches_group is defined %}
+{%             set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
+{%         else %}
+{%             set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
 {# Build variables for fabric protocols #}
 {# Logic for underlay routing protocol configured on device #}
 {% if underlay_routing_protocol is defined %}
@@ -42,13 +72,6 @@
 {% else %}
 {%     set switch.overlay_routing_protocol = 'ebgp' %}
 {% endif %}
-{# Logic for route_reflector role #}
-{% set switch.is_route_reflector = false %}
-{% for spine_node in spine.nodes | arista.avd.natural_sort %}
-{%     if spine.nodes[spine_node].bgp_route_reflector is defined and spine.nodes[spine_node].bgp_route_reflector == true %}
-{%         set switch.is_route_reflector = true %}
-{%     endif%}
-{% endfor %}
 {# Gather overlay peering information #}
 {% set switch.evpn_overlay_peers = [] %}
 {# #}
@@ -120,7 +143,8 @@
 {%         endfor %}
 {%     endfor %}
 {% endif %}
-### Spine Info ###
+
+### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 
@@ -134,7 +158,7 @@ hardware_counters:
 {% include 'base/hardware-counters.j2' %}
 
 {# Daemon TerminAttr #}
-### Daemon TerminAttr ###
+### Daemon TerminAttr
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
 
@@ -161,6 +185,11 @@ load_interval:
 ### Queue Monitor Lenght ###
 queue_monitor_length:
 {% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
 
 {# name servers #}
 ### Name Servers ###
@@ -214,16 +243,14 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{# Point-to-Point Interfaces to l3leaf #}
-{% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
-{# Point-to-Point Interfaces to overlay-controller #}
-{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
+{% include 'fabric/interfaces/overlay-controller-p2p-interfaces.j2' %}
 
-{# Loopback Interfaces #}
+{# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'fabric/interfaces/spine-overlay-loopback.j2' %}
-
+{# overlay peering interface #}
+{% include 'fabric/interfaces/overlay-controller-loopback.j2'%}
+{# intentional blank line #}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -248,43 +275,36 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/bgp_base/spine-prefix-lists.j2' %}
-
+{% include 'fabric/bgp_base/overlay-controller-prefix-lists.j2' %}
 
 {# route maps #}
 ### route-maps ###
 route_maps:
 {% include 'fabric/bgp_base/route-maps.j2' %}
 
-
-{# peer-filter #}
-### peer-filters ###
-peer_filters:
-
-
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'fabric/bgp_base/spine-router-bgp-base.j2' %}
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-base.j2' %}
   peer_groups:
-{% include 'fabric/bgp_base/spine-router-bgp-peer-groups.j2' %}
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'fabric/bgp_base/spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-neighbors.j2' %}
   redistribute_routes:
-{% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'fabric/bgp_overlay/spine-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/overlay-controller-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'fabric/ebgp_underlay/spine-router-bgp-address-family-ipv4.j2' %}
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
 
-{# OSPF Configuration #}
+{# OSPF Configurartion #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
 {% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
-{# ISIS Configuration #}
+{# OSPF Configurartion #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
