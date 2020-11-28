@@ -18,3 +18,19 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-111,210-211
     profile: ALL
+
+  Ethernet2:
+    peer: SRV-POD03
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    profile: ALL
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 500
+        unit: pps
