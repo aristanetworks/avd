@@ -221,6 +221,7 @@ No VLANs defined
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
+| Ethernet2 | SRV-POD02_Eth1 | 1500 | switched | trunk | 110-111,210-211 | - | - | - | - | - |
 | Ethernet6 | SRV-POD02_Eth1 | 1500 | switched | trunk | 110-111,210-211 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -233,6 +234,13 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no switchport
    ip address 172.31.255.1/31
+!
+interface Ethernet2
+   description SRV-POD02_Eth1
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   storm-control all level 10
+   storm-control broadcast level pps 500
 !
 interface Ethernet6
    description SRV-POD02_Eth1
