@@ -13,6 +13,8 @@ if [[ `git status --porcelain` ]]; then
     # No changes
     echo 'Some changes'
     git status --short
+    echo 'Diffs are:'
+    git diff
     exit 1
 else
     # Changes
