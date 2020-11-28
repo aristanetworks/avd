@@ -1,0 +1,16 @@
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+
+### VLANs ###
+vlans:
+  110:
+    tenant: Tenant_A
+    name: PR01-DMZ
+  3010:
+    tenant: Tenant_A
+    name: MLAG_iBGP_TENANT_A_PROJECT01
+    trunk_groups:
+      - LEAF_PEER_L3

@@ -1,0 +1,13 @@
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    ip_address: 192.168.255.3/32
+
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    ip_address: 192.168.254.3/32
+
+  Loopback100:
+    description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
+    vrf: TENANT_A_PROJECT02
+    ip_address: 10.1.255.3/32

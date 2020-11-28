@@ -1,0 +1,4 @@
+### Logging ###
+logging:
+  console: informational
+  monitor: debugging
