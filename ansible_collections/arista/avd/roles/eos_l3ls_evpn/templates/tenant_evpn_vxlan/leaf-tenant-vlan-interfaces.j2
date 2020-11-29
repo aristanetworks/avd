@@ -9,12 +9,10 @@
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 set profile = namespace() %}
-{%                 set profile.exist = false %}
 {%                 set profile.per_svi = tenants[tenant].vrfs[vrf].svis[svi] %}
 {%                 if svi_profiles is defined and svi_profiles is not none %}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
 {%                         if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
-{%                             set profile.exist = true %}
 {%                             set profile.svi_profile = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
 {%                         endif %}
 {%                     endif %}
