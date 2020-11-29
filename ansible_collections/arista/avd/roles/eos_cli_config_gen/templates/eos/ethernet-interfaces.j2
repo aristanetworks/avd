@@ -141,6 +141,15 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
+{%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
+{%                      if ethernet_interfaces[ethernet_interface].storm_control[section].unit is defined and ethernet_interfaces[ethernet_interface].storm_control[section].unit == "pps" %}
+   storm-control {{ section }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+{%                      else %}
+   storm-control {{ section }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+{%                      endif %}
+{%                   endfor %}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endif %}

@@ -30,5 +30,9 @@ commit-facts: ## Commit updated facts for CI
 	git add .
 	git commit --no-verify -m 'Update CI acritfacts' ./
 
+.PHONY: test-git-status
+test-git-status: ## Run post molecule script to check git status
+	sh ../../../../.github/git-repo-state-monitor.sh
+
 .PHONY: sync-facts
 sync-facts: refresh-facts commit-facts ## Refresh and commit CI artifacts
