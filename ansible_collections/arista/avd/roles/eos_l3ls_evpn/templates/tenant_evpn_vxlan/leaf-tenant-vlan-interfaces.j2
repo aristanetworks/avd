@@ -8,12 +8,13 @@
 {%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi in leaf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
+{%                 set per_svi = namespace() %}
 {%                 set profile = namespace() %}
-{%                 set profile.per_svi = tenants[tenant].vrfs[vrf].svis[svi] %}
+{%                 set per_svi.values = tenants[tenant].vrfs[vrf].svis[svi] %}
 {%                 if svi_profiles is defined and svi_profiles is not none %}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
 {%                         if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
-{%                             set profile.svi_profile = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
+{%                             set profile.values = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}
@@ -21,9 +22,9 @@
   Vlan{{ svi }}:
     tenant: {{ tenant }}
     tags: {{ tenants[tenant].vrfs[vrf].svis[svi].tags }}
-    description: {{ profile.per_svi.name }}
-{%                 if profile.per_svi.enabled is defined or profile.svi_profile.enabled is defined %}
-    enabled: {{ profile.per_svi.enabled if profile.per_svi.enabled is defined else profile.svi_profile.enabled | default(true) }}
+    description: {{ per_svi.values.name }}
+{%                 if per_svi.values.enabled is defined or profile.values.enabled is defined %}
+    enabled: {{ per_svi.values.enabled if per_svi.values.enabled is defined else profile.values.enabled | default(true) }}
 {%                 endif %}
     vrf: {{ vrf }}
 {# IP address configuration #}
@@ -37,20 +38,20 @@
 {%                     endfor %}
 {%                 endif %}
 {# Virtual Router IP Address #}
-{%                 if profile.per_svi.ip_virtual_router_address is defined or profile.svi_profile.ip_virtual_router_address is defined %}
-    ip_virtual_router_address: {{ profile.per_svi.ip_virtual_router_address if profile.per_svi.ip_virtual_router_address is defined else profile.svi_profile.ip_virtual_router_address }}
+{%                 if per_svi.values.ip_virtual_router_address is defined or profile.values.ip_virtual_router_address is defined %}
+    ip_virtual_router_address: {{ per_svi.values.ip_virtual_router_address if per_svi.values.ip_virtual_router_address is defined else profile.values.ip_virtual_router_address }}
 {%                 endif %}
 {# Virtual IP address #}
-{%                 if profile.per_svi.ip_address_virtual is defined or profile.svi_profile.ip_address_virtual is defined %}
-    ip_address_virtual: {{ profile.per_svi.ip_address_virtual if profile.per_svi.ip_address_virtual is defined else profile.svi_profile.ip_address_virtual }}
+{%                 if per_svi.values.ip_address_virtual is defined or profile.values.ip_address_virtual is defined %}
+    ip_address_virtual: {{ per_svi.values.ip_address_virtual if per_svi.values.ip_address_virtual is defined else profile.values.ip_address_virtual }}
 {%                 endif %}
 {# Virtual Secondary IP address #}
-{%                 if profile.per_svi.ip_address_virtual_secondary is defined or profile.svi_profile.ip_address_virtual_secondary is defined %}
-    ip_address_virtual_secondary: {{ profile.per_svi.ip_address_virtual_secondary if profile.per_svi.ip_address_virtual_secondary is defined else profile.svi_profile.ip_address_virtual_secondary }}
+{%                 if per_svi.values.ip_address_virtual_secondary is defined or profile.values.ip_address_virtual_secondary is defined %}
+    ip_address_virtual_secondary: {{ per_svi.values.ip_address_virtual_secondary if per_svi.values.ip_address_virtual_secondary is defined else profile.values.ip_address_virtual_secondary }}
 {%                 endif %}
 {# MTU definition #}
-{%                 if profile.per_svi.mtu is defined or profile.svi_profile.mtu is defined %}
-    mtu: {{ profile.per_svi.mtu if profile.per_svi.mtu is defined else profile.svi_profile.mtu }}
+{%                 if per_svi.values.mtu is defined or profile.values.mtu is defined %}
+    mtu: {{ per_svi.values.mtu if per_svi.values.mtu is defined else profile.values.mtu }}
 {%                 endif %}
 {#                 Apply IP helper configuration from SVI interface #}
 {%                 if tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is defined and tenants[tenant].vrfs[vrf].svis[svi].ip_helpers is not none %}
@@ -77,13 +78,13 @@
 {%                          endif %}
 {%                     endfor %}
 {#                 Apply IP helper configuration from SVI profile #}
-{%                 elif profile.svi_profile.ip_helpers is defined and profile.svi_profile.ip_helpers is not none %}
+{%                 elif profile.values.ip_helpers is defined and profile.values.ip_helpers is not none %}
     ip_helpers:
-{%                     for helper_ip in profile.svi_profile.ip_helpers %}
+{%                     for helper_ip in profile.values.ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ profile.svi_profile.ip_helpers[helper_ip].source_interface }}
-{%                          if profile.svi_profile.ip_helpers[helper_ip].source_vrf is defined and profile.svi_profile.ip_helpers[helper_ip].source_vrf is not none %}
-        vrf: {{ profile.svi_profile.ip_helpers[helper_ip].source_vrf }}
+        source_interface: {{ profile.values.ip_helpers[helper_ip].source_interface }}
+{%                          if profile.values.ip_helpers[helper_ip].source_vrf is defined and profile.values.ip_helpers[helper_ip].source_vrf is not none %}
+        vrf: {{ profile.values.ip_helpers[helper_ip].source_vrf }}
 {%                          else %}
         vrf: {{ vrf }}
 {%                          endif %}
