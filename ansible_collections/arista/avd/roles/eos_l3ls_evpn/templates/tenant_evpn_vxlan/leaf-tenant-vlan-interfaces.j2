@@ -39,7 +39,7 @@
 {%                 endif %}
 {# Virtual Router IP Address #}
 {%                 if per_svi.values.ip_virtual_router_address is defined or profile.values.ip_virtual_router_address is defined %}
-    ip_virtual_router_address: {{ per_svi.values.ip_virtual_router_address if per_svi.values.ip_virtual_router_address is defined else profile.values.ip_virtual_router_address }}
+    ip_virtual_router_address: {{ per_svi.values.ip_virtual_router_address | ipaddr('address') if per_svi.values.ip_virtual_router_address is defined else profile.values.ip_virtual_router_address | ipaddr('address') }}
 {%                 endif %}
 {# Virtual IP address #}
 {%                 if per_svi.values.ip_address_virtual is defined or profile.values.ip_address_virtual is defined %}
