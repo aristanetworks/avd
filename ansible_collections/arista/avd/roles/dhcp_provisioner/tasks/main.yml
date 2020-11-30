@@ -9,7 +9,6 @@
 
 - name: 'include DHCP variables to build dhcpd.conf file'
   include_vars: '{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml'
-  delegate_to: localhost
   run_once: true
 
 - name: start creation/update process.

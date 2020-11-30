@@ -59,6 +59,7 @@ all:
 - __`ztp_pool_end`__: Last IP available in the pool
 - __`ztp_lease_time`__: Maximum lease time before device loose IP. Renewal is max/2 (default is 300sec)
 - __`ztp_mac_source`__: Define which mac-address field is used for identification: interface ma-address (`interface`) or system-mac-address (`system`). Default: `system`
+- __`ztp_mode`__: Define how role works either `offline` or `online`. (Default `offline`)
 
 _Example_:
 
