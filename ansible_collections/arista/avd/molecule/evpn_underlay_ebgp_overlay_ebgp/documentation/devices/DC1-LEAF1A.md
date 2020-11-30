@@ -404,7 +404,7 @@ interface Loopback1
 | Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
 | --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
 | Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | 10.1.20.1/24 | - |
-| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | - | 10.1.21.1/24 | - |
+| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | - | 10.1.10.254/24 | - |
 | Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | 10.1.30.1/24 | - |
 | Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | 10.1.31.1/24 | - |
 
@@ -416,11 +416,13 @@ interface Vlan120
    description Tenant_A_WEB_Zone_1
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.20.1/24
+   ip helper-address 1.1.1.1 vrf TEST  source-interface lo100
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
+   mtu 1560
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.21.1/24
+   ip address virtual 10.1.10.254/24
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
@@ -697,6 +699,17 @@ router bfd
 ## IP IGMP Snooping
 
 ### IP IGMP Snooping Summary
+
+| VLAN | IGMP Snooping |
+| --- | --------------- |
+| 120 | Disabled |
+
+### IP IGMP Snooping Device Configuration
+
+```eos
+!
+no ip igmp snooping vlan 120
+```
 
 ## Router Multicast
 
