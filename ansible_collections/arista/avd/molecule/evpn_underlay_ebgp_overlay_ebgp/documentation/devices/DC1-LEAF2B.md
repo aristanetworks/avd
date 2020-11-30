@@ -577,6 +577,7 @@ interface Vlan111
    description Tenant_A_OP_Zone_2
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24
+   ip helper-address 1.1.1.1 vrf MGMT  source-interface lo100
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1

@@ -50,6 +50,10 @@ tenants:
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.11.1/24
+            ip_helpers:
+              1.1.1.1:
+                source_interface: lo100
+                source_vrf: MGMT
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
