@@ -261,7 +261,6 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['wan']
     description: Tenant_A_WAN_Zone_1
-    enabled: True
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
   Vlan3013:
@@ -275,7 +274,6 @@ vlan_interfaces:
     tenant: Tenant_B
     tags: ['wan']
     description: Tenant_B_WAN_Zone_1
-    enabled: True
     vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
   Vlan3020:
@@ -289,7 +287,6 @@ vlan_interfaces:
     tenant: Tenant_C
     tags: ['wan']
     description: Tenant_C_WAN_Zone_1
-    enabled: True
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
   Vlan3030:
