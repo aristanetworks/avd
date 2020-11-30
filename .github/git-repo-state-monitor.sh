@@ -12,12 +12,7 @@
 if [[ `git status --porcelain` ]]; then
     # No changes
     echo 'Some changes'
-    echo '------------'
-    git --no-pager status --short
-    echo ''
-    echo 'Diffs are:'
-    echo '------------'
-    git --no-pager diff
+    git status --short
     exit 1
 else
     # Changes

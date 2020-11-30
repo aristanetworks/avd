@@ -1,32 +1,5 @@
 # DC1 Tenants Networks
 # Documentation of Tenant specific information - Vlans/VRFs
-# SVI Profile
-svi_profiles:
-  GENERIC:
-    mtu: 1560
-    enabled: true
-  GENERIC_FULL:
-    name: GENERIC Name
-    mtu: 1560
-    enabled: false
-    ip_address_virtual: 10.1.10.254/24
-  WITH_NO_MTU:
-    enabled: true
-  WITH_DHCP_AND_SNOOPING:
-    enabled: true
-    ip_address_virtual: 10.1.11.254/24
-    igmp_snooping_enabled: false
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        source_vrf: TEST
-  WITH_DHCP:
-    enabled: true
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        source_vrf: MGMT
-
 
 tenants:
   # Tenant_A Specific Information - VRFs / VLANs
@@ -50,29 +23,26 @@ tenants:
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.11.1/24
-            ip_helpers:
-              1.1.1.1:
-                source_interface: lo100
-                source_vrf: MGMT
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
           120:
             name: Tenant_A_WEB_Zone_1
             tags: ['web', 'erp1']
-            profile: WITH_DHCP_AND_SNOOPING
+            enabled: True
             ip_address_virtual: 10.1.20.1/24
           121:
             name: Tenant_A_WEBZone_2
             tags: ['web']
-            profile: GENERIC_FULL
+            enabled: True
+            ip_address_virtual: 10.1.21.1/24
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
           130:
             name: Tenant_A_APP_Zone_1
             tags: ['app', 'erp1']
-            profile: WITH_NO_MTU
+            enabled: True
             ip_address_virtual: 10.1.30.1/24
           131:
             name: Tenant_A_APP_Zone_2
