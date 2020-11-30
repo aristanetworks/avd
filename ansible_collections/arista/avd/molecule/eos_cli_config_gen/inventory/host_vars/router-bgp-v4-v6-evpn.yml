@@ -1,0 +1,151 @@
+## Routing - BGP ###
+router_bgp:
+  as: 65100
+  router_id: 10.50.64.15
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - update wait-install
+    - distance bgp 20 200 200
+    - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPV4-UNDERLAY:
+      remote_as: 65000
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    IPV6-UNDERLAY:
+      remote_as: 65000
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    EVPN-OVERLAY:
+      remote_as: 65000
+      next_hop_unchanged: true
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 5
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      send_community: true
+      maximum_routes: 0
+    IPV4-UNDERLAY-MLAG:
+      remote_as: 65100
+      next_hop_self: true
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+    IPV6-UNDERLAY-MLAG:
+      remote_as: 65100
+      next_hop_self: true
+      password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
+      maximum_routes: 12000
+      send_community: true
+  neighbors:
+    10.50.2.1:
+      peer_group: IPV4-UNDERLAY
+    10.50.2.3:
+      peer_group: IPV4-UNDERLAY
+    10.50.2.5:
+      peer_group: IPV4-UNDERLAY
+    10.50.64.11:
+      peer_group: EVPN-OVERLAY
+    10.50.64.12:
+      peer_group: EVPN-OVERLAY
+    10.50.64.13:
+      peer_group: EVPN-OVERLAY
+    169.254.252.1:
+      peer_group: IPV4-UNDERLAY-MLAG
+    fe80::b%Vl4094:
+      peer_group: IPV6-UNDERLAY-MLAG
+    1b11:3a00:22b0:0088::1:
+      peer_group: IPV6-UNDERLAY
+    1b11:3a00:22b0:0088::3:
+      peer_group: IPV6-UNDERLAY
+    1b11:3a00:22b0:0088::5:
+      peer_group: IPV6-UNDERLAY
+    1.1.1.1:
+      remote_as: 1
+      shutdown: false
+      description: TEST
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+    static:
+      route_map: RM-STATIC-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+        route_map_in: RM-HIDE-AS-PATH
+        route_map_out: RM-HIDE-AS-PATH
+      IPV4-UNDERLAY-MLAG:
+        activate: true
+  address_family_ipv4_multicast:
+    peer_groups:
+      IPV4-UNDERLAY:
+        activate: true
+      IPV4-UNDERLAY-MLAG:
+        activate: true
+    redistribute_routes:
+      attached-host:
+  address_family_ipv6:
+    peer_groups:
+      IPV6-UNDERLAY:
+        activate: true
+        route_map_in: RM-HIDE-AS-PATH
+        route_map_out: RM-HIDE-AS-PATH
+      IPV6-UNDERLAY-MLAG:
+        activate: true
+  vlans:
+    24:
+      rd: "10.50.64.15:10024"
+      route_targets:
+        both:
+          - "1:10024"
+      redistribute_routes:
+        - learned
+    41:
+      rd: "10.50.64.15:10041"
+      route_targets:
+        both:
+          - "1:10041"
+      redistribute_routes:
+        - learned
+    42:
+      rd: "10.50.64.15:10042"
+      route_targets:
+        both:
+          - "1:10042"
+      redistribute_routes:
+        - learned
+    65:
+      rd: "10.50.64.15:10065"
+      route_targets:
+        both:
+          - "1:10065"
+      redistribute_routes:
+        - learned
+  vrfs:
+    Tenant_A:
+      rd: "10.50.64.15:30001"
+      route_targets:
+        import:
+          evpn:
+            - "1:30001"
+        export:
+          evpn:
+            - "1:30001"
+      redistribute_routes:
+        connected:
+    Tenant_B:
+      rd: "10.50.64.15:30002"
+      route_targets:
+        import:
+          evpn:
+            - 1:30002
+        export:
+          evpn:
+            - 1:30002

@@ -15,6 +15,26 @@
 {%     if logging.trap is defined and logging.trap is not none %}
 | Trap | {{ logging.trap }} |
 {%     endif %}
+{%     if logging.format is defined and logging.format is not none %}
+
+| Format Type | Setting |
+| ----------- | ------- |
+{%        if logging.format.timestamp is defined and logging.format.timestamp == 'high-resolution' %}
+| Timestamp | high-resolution |
+{%        else %}
+| Timestamp | traditional |
+{%        endif %}
+{%        if logging.format.hostname is defined and logging.format.hostname is not none %}
+| Hostname | {{ logging.format.hostname }} |
+{%        else %}
+| Hostname | hostname |
+{%        endif %}
+{%        if logging.format.sequence_numbers is defined and logging.format.sequence_numbers == true %}
+| Sequence-numbers | true |
+{%        else %}
+| Sequence-numbers | false |
+{%        endif %}
+{%     endif %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
@@ -31,6 +51,7 @@
 
 | VRF | Hosts |
 | --- | ---------------- |
+{%     if logging.vrfs is defined and logging.vrfs is not none %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
@@ -38,6 +59,7 @@
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}
+{%     endif %}
 
 ### Logging Servers and Features Device Configuration
 

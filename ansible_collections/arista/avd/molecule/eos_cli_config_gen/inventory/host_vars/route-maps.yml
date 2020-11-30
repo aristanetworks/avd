@@ -1,0 +1,34 @@
+### Route-maps ###
+route_maps:
+  RM-CONN-BL-BGP:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - ip address prefix-list PL-MLAG
+      20:
+        type: permit
+  RM-STATIC-2-BGP:
+    sequence_numbers:
+      10:
+        description: tag for static routes
+        type: permit
+        set:
+          - tag 65100
+  RM-HIDE-ASPATH-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - as-path match all replacement auto
+          - community 65000:1 additive
+  RM-HIDE-ASPATH-OUT:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - community LIST-COM
+      20:
+        type: permit
+        set:
+          - as-path match all replacement auto

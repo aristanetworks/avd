@@ -1,0 +1,17 @@
+{# Leaf VTEP vxlan tunnel loopback source interface #}
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+{% if leaf.mlag == true and leaf.mlag_role == "primary" %}
+    ip_address: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
+{% elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+    ip_address: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) }}/32
+{% else %}
+    ip_address: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
+{% endif %}
+{% if underlay_routing_protocol|lower == "ospf" %}
+    ospf_area: {{ underlay_ospf_area }}
+{% endif %}
+{% if underlay_routing_protocol|lower == "isis" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+{% endif %}

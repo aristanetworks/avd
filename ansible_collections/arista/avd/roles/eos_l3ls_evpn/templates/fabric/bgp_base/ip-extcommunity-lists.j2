@@ -1,0 +1,14 @@
+{# Leaf and Spine route-maps for the underlay#}
+{% if type == "l3leaf" %}
+{%     if switch.overlay_routing_protocol == "ibgp" %}
+  ECL-EVPN-SOO:
+    - type: permit
+{%         if leaf.mlag == true and leaf.mlag_role == "primary" %}
+      extcommunities: "soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1"
+{%         elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+      extcommunities: "soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) }}:1"
+{%         else %}
+      extcommunities: "soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1"
+{%         endif %}
+{%     endif %}
+{% endif %}

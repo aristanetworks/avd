@@ -18,6 +18,12 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %}
    vrf {{ vlan_interfaces[vlan_interface].vrf }}
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].arp_aging_timeout is defined and vlan_interfaces[vlan_interface].arp_aging_timeout is not none %}
+   arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
+{%         endif %}
+{%             if vlan_interfaces[vlan_interface].ip_proxy_arp is defined and vlan_interfaces[vlan_interface].ip_proxy_arp == true %}
+   ip proxy-arp 
+{%             endif %}
 {%         if vlan_interfaces[vlan_interface].ip_address is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address }}
 {%         endif %}
@@ -75,6 +81,9 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
    ip ospf area {{ vlan_interfaces[vlan_interface].ospf_area }}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %}
+   ip ospf cost {{ vlan_interfaces[vlan_interface].ospf_cost }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ospf_authentication is defined and vlan_interfaces[vlan_interface].ospf_authentication is not none %}
 {%           if vlan_interfaces[vlan_interface].ospf_authentication == "simple" %}

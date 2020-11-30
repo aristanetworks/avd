@@ -1,0 +1,14 @@
+### Routing - ISIS ###
+router_isis:
+  instance: EVPN_UNDERLAY
+  net: 49.0001.0001.0001.0001.00
+  router_id: 192.168.255.3
+  no_passive_interfaces:
+    - Ethernet1
+    - Ethernet2
+    - Vlan4093
+    - Loopback1
+  is_type: level-2
+  address_family: ['ipv4 unicast']
+  isis_af_defaults:
+    - maximum-paths 2
