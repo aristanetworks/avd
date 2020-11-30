@@ -548,6 +548,17 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
+| VLAN | IGMP Snooping |
+| --- | --------------- |
+| 120 | Disabled |
+
+### IP IGMP Snooping Device Configuration
+
+```eos
+!
+no ip igmp snooping vlan 120
+```
+
 ## Router Multicast
 
 Routing multicast not defined

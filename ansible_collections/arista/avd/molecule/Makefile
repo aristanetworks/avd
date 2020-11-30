@@ -28,7 +28,7 @@ refresh-facts: ## Run all molecule scenario and commit changes
 commit-facts: ## Commit updated facts for CI
 	git status --short
 	git add .
-	git commit --no-verify -m 'Update CI acritfacts' ./
+	git commit --no-verify -m 'Update CI artifacts' ./
 
 .PHONY: test-git-status
 test-git-status: ## Run post molecule script to check git status

@@ -405,12 +405,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
+    enabled: True
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
   Vlan131:
     tenant: Tenant_A
     tags: ['app']
     description: Tenant_A_APP_Zone_2
+    enabled: True
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
   Vlan3011:
@@ -423,12 +425,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['db', 'erp1']
     description: Tenant_A_DB_BZone_1
+    enabled: True
     vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.40.1/24
   Vlan141:
     tenant: Tenant_A
     tags: ['db']
     description: Tenant_A_DB_Zone_2
+    enabled: True
     vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.41.1/24
   Vlan3012:
@@ -441,12 +445,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['opzone']
     description: Tenant_A_OP_Zone_1
+    enabled: True
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
   Vlan111:
     tenant: Tenant_A
     tags: ['opzone']
     description: Tenant_A_OP_Zone_2
+    enabled: True
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
   Vlan3009:
@@ -459,6 +465,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['wan']
     description: Tenant_A_WAN_Zone_1
+    enabled: True
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
   Vlan3013:
@@ -471,12 +478,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
+    enabled: True
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
   Vlan121:
     tenant: Tenant_A
     tags: ['web']
     description: Tenant_A_WEBZone_2
+    enabled: True
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.21.1/24
   Vlan3010:
@@ -490,12 +499,14 @@ vlan_interfaces:
     tenant: Tenant_B
     tags: ['opzone']
     description: Tenant_B_OP_Zone_1
+    enabled: True
     vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.10.1/24
   Vlan211:
     tenant: Tenant_B
     tags: ['opzone']
     description: Tenant_B_OP_Zone_2
+    enabled: True
     vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.11.1/24
   Vlan3019:
@@ -508,6 +519,7 @@ vlan_interfaces:
     tenant: Tenant_B
     tags: ['wan']
     description: Tenant_B_WAN_Zone_1
+    enabled: True
     vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
   Vlan3020:
@@ -521,12 +533,14 @@ vlan_interfaces:
     tenant: Tenant_C
     tags: ['opzone']
     description: Tenant_C_OP_Zone_1
+    enabled: True
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.10.1/24
   Vlan311:
     tenant: Tenant_C
     tags: ['opzone']
     description: Tenant_C_OP_Zone_2
+    enabled: True
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
   Vlan3029:
@@ -539,6 +553,7 @@ vlan_interfaces:
     tenant: Tenant_C
     tags: ['wan']
     description: Tenant_C_WAN_Zone_1
+    enabled: True
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
   Vlan3030:
