@@ -238,6 +238,14 @@ router_bgp:
       send_community: true
       maximum_routes: 0
   neighbors:
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.3:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.4:
+      peer_group: EVPN-OVERLAY-PEERS
   redistribute_routes:
   address_family_evpn:
     peer_groups:
