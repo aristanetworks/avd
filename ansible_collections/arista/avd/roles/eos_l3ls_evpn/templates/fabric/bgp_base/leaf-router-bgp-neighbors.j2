@@ -12,6 +12,8 @@
     {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
 {%         endif %}
+{%     endif %}
+{%     if switch.overlay_routing_protocol == "ebgp" %}
 {## Overlay network peering #}
 {%         for spine_node in spine.nodes | arista.avd.natural_sort %}
     {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(spine.nodes[spine_node].id ) }}:
