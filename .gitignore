@@ -119,10 +119,4 @@ ansible_collections/arista/avd/docs/contributing.md
 ansible_collections/arista/avd/docs/*.rst
 
 # Molecule AVD build folders
-ansible_collections/arista/avd/molecule/*/intended
-ansible_collections/arista/avd/molecule/*/documentation
 ansible_collections/arista/avd/molecule/*/config_backup
-!ansible_collections/arista/avd/molecule/eos-cli-config-gen/*
-
-#  playground for tests during development
-playground
