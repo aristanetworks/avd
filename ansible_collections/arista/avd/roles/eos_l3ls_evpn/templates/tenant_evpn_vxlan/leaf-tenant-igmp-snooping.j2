@@ -38,23 +38,22 @@
 {%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
+{%                      set per_svi = namespace() %}
 {%                      set profile = namespace() %}
-{%                      set profile.exist = false %}
-{%                      set profile.per_svi = tenants[tenant].vrfs[vrf].svis[svi] %}
+{%                      set per_svi.values = tenants[tenant].vrfs[vrf].svis[svi] %}
 {%                      if svi_profiles is defined and svi_profiles is not none %}
 {%                          if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
 {%                              if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
-{%                                  set profile.exist = true %}
-{%                                  set profile.svi_profile = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
+{%                                  set profile.values = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
 {%                              endif %}
 {%                          endif %}
 {%                      endif %}
 {# End svi_profile detection #}
 {# IGMP SNOOPING detection #}
-{%                      if profile.per_svi.igmp_snooping_enabled is defined or profile.svi_profile.igmp_snooping_enabled is defined %}
+{%                      if per_svi.values.igmp_snooping_enabled is defined or profile.values.igmp_snooping_enabled is defined %}
 {%                          if leaf.igmp_snooping_enabled == true %}
     {{ svi|int }}:
-      enabled: {{ profile.per_svi.igmp_snooping_enabled if profile.per_svi.igmp_snooping_enabled is defined else profile.svi_profile.igmp_snooping_enabled|default(true) }}
+      enabled: {{ per_svi.values.igmp_snooping_enabled if per_svi.values.igmp_snooping_enabled is defined else profile.values.igmp_snooping_enabled|default(true) }}
 {%                          endif %}
 {%                      endif %}
 {%                  endfor %}
