@@ -489,6 +489,14 @@ Router ISIS not defined
 | send community | true |
 | maximum routes | 0 (no limit) |
 
+### BGP Neighbors
+
+| Neighbor | Remote AS |
+| -------- | ---------
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -516,6 +524,10 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
