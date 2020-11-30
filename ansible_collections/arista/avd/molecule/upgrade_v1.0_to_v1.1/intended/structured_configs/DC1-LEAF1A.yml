@@ -209,24 +209,28 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
+    enabled: True
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
   Vlan131:
     tenant: Tenant_A
     tags: ['app']
     description: Tenant_A_APP_Zone_2
+    enabled: True
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
   Vlan120:
     tenant: Tenant_A
     tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
+    enabled: True
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
   Vlan121:
     tenant: Tenant_A
     tags: ['web']
     description: Tenant_A_WEBZone_2
+    enabled: True
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.21.1/24
 ## Tenant_B ##

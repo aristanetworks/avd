@@ -240,6 +240,8 @@ ip_igmp_snooping:
   globally_enabled: True
   vlans:
 ## Tenant_A ##
+    120:
+      enabled: False
 ## Tenant_B ##
 ## Tenant_C ##
 

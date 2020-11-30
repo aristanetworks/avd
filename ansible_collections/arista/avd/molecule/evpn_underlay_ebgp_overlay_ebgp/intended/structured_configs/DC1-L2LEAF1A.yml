@@ -169,6 +169,8 @@ ip_igmp_snooping:
   globally_enabled: True
   vlans:
 ## Tenant_A ##
+    120:
+      enabled: False
 
 ### static routes ###
 static_routes:
