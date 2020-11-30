@@ -31,6 +31,7 @@
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
+    - [Hardware Speed-Group Settings](#speed-group-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -168,6 +169,8 @@ daemon_terminattr:
 
 ```
 
+You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
 ### IP DHCP Relay
 
 ```yaml
@@ -190,10 +193,13 @@ vlan_internal_allocation_policy:
 
 ```yaml
 ip_igmp_snooping:
+  globally_enabled: < true | false (default is true) >
   vlans:
     < vlan_id >:
       enabled: < true | false >
 ```
+
+`globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
 
 ### Event Monitor
 
@@ -430,6 +436,18 @@ snmp_server:
       enable: < true | false >
 ```
 
+### Speed-Group Settings
+
+```yaml
+hardware:
+  speed_groups:
+    1:
+      serdes: <10g | 25g>
+    2:
+      serdes: <10g | 25g>
+    ...
+```
+
 ### Spanning Tree
 
 ```yaml
@@ -597,6 +615,8 @@ port_channel_interfaces:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
+    lacp_fallback_mode: < individual | static >
     qos:
       trust: < cos | dscp >
   < Port-Channel_interface_2 >:
@@ -704,6 +724,19 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      'unknown-unicast':
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
 ```
 
 ### Loopback Interfaces
@@ -749,6 +782,7 @@ vlan_interfaces:
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
+    arp_aging_timeout: < arp_timeout >
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
     ip_router_virtual_address: < IPv4_address >

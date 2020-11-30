@@ -53,6 +53,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/redundancy.j2' %}
 {# snmp settings #}
 {% include 'eos/snmp-settings.j2' %}
+{# hardware speed-group configuration #}
+{% include 'eos/speed-group.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
 {# platform #}

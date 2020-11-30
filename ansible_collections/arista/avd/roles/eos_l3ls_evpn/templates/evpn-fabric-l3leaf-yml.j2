@@ -18,6 +18,13 @@
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled %}
+{%             elif l3leaf.defaults.igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l3leaf.defaults.igmp_snooping_enabled %}
+{%             else %}
+{%                 set leaf.igmp_snooping_enabled = default_igmp_snooping_enabled %}
+{%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
 {%                 set leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
 {%             else %}
@@ -426,6 +433,10 @@ ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
 {% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+
+{# Tenant ip-igmp-snooping #}
+ip_igmp_snooping:
+{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
 
 {# static_routes #}
 ### static routes ###

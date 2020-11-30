@@ -1,6 +1,22 @@
 {% if daemon_terminattr is defined and daemon_terminattr is not none %}
 !
+{# Create list of non CVaaS server #}
+{% set cvp_on_prem = namespace() %}
+{% set cvp_on_prem.ips = [] %}
+{% set cvaas = namespace() %}
+{% set cvaas.ips = [] %}
+{% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}
+{%       if "arista.io" not in cvp_ip %}
+{%             do cvp_on_prem.ips.append( cvp_ip ) %}
+{%       elif "arista.io" in cvp_ip %}
+{%             do cvaas.ips.append( cvp_ip ) %}
+{%    endif %}
+{% endfor %}
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl={% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} -cvcompression=gzip -ingestauth=key,{{ daemon_terminattr.ingestauth_key }} -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }}{% if daemon_terminattr.ingestvrf is ne 'default'%} -ingestvrf={{ daemon_terminattr.ingestvrf }}{% endif %} -taillogs
+{% if cvp_on_prem.ips|length > 0 %}
+   exec /usr/bin/TerminAttr -ingestgrpcurl={% for cvp_ip in cvp_on_prem.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} -cvcompression=gzip -ingestauth=key,{{ daemon_terminattr.ingestauth_key }} -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }}{% if daemon_terminattr.ingestvrf is ne 'default'%} -ingestvrf={{ daemon_terminattr.ingestvrf }}{% endif %} -taillogs
+{% elif cvaas.ips|length > 0 %}
+   exec /usr/bin/TerminAttr -cvaddr={% for cvp_ip in cvaas.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} -cvcompression=gzip -taillogs -cvauth=token-secure,/tmp/onboardingtoken1 -smashexcludes={{ daemon_terminattr.smashexcludes }} -ingestexclude={{ daemon_terminattr.ingestexclude }}  -cvvrf={{ daemon_terminattr.ingestvrf }}
+{% endif %}
    no shutdown
 {% endif %}
