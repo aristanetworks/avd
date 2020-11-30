@@ -818,7 +818,9 @@ svi_profiles:
   < profile_name >:
     mtu: < mtu >
     enabled: < true | false >
+    ip_virtual_router_address: < IPv4_address/Mask >
     ip_address_virtual: < IPv4_address/Mask >
+    ip_address_virtual_secondary: < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
       < IPv4 dhcp server IP >:
