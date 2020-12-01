@@ -4,7 +4,6 @@
 
 - [Ansible Role: dhcp_provisioner](#ansible-role-dhcp_provisioner)
   - [Overview](#overview)
-    - [Known limitations](#known-limitations)
   - [Role requirements](#role-requirements)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
     - [Inputs](#inputs)
@@ -20,10 +19,8 @@
 
 **dhcp_provisioner** is a role to build a DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices.
 
-### Known limitations
-
-- Only generate configuration for isc-dhcpd server
-- No interaction with DHCP server to not break existing configuration
+!!! tip
+    Role supports 2 modes: `offline` and `online`. Offline mode let you generate a configuration you can apply on your DHCP server after carrefully review it. Online mode shall be limited to testing and lab.
 
 ## Role requirements
 
@@ -111,11 +108,10 @@ spine:
 
 ### Tasks
 
-1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://cvp.avd.sh/roles/dhcp_configuration/)
-2. Load generated variables
-3. Create DHCP configuration file
-
-> Only support offline mode. Role generate a configuration file. Configuration deployment is not part of the role.
+1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://cvp.avd.sh/roles/dhcp_configuration/).
+2. Load generated variables.
+3. Create DHCP configuration file.
+4. If mode is online, apply configuration to DHCP server.
 
 ## Requirements
 
