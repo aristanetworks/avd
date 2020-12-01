@@ -1,5 +1,5 @@
 {# eos - prefix-lists #}
-{% if prefix_lists is defined %}
+{% if prefix_lists is defined and prefix_lists is not none %}
 {%     for prefix_list in prefix_lists | arista.avd.natural_sort %}
 !
 ip prefix-list {{ prefix_list }}

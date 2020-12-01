@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+
+    - name: generate device intended config and documention
+      delegate_to: 127.0.0.1
+      import_role:
+         name: arista.avd.eos_cli_config_gen

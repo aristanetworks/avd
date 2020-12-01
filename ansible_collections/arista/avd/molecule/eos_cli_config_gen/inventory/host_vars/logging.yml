@@ -1,0 +1,13 @@
+### Logging ###
+logging:
+  console: debugging
+  buffered:
+    size: 1000000
+    level: informational
+  trap: informational
+  source_interface:
+  vrfs:
+    mgt:
+      source_interface: Management0
+      hosts:
+        - 10.10.10.7

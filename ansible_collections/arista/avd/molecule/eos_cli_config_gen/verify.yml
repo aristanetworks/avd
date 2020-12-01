@@ -1,0 +1,19 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: detect git change in tracked files
+      delegate_to: 127.0.0.1
+      shell:
+        cmd: git status --short | grep -e "^ M" | wc -l | awk -F ' ' '{print $1}'
+      register: git_status
+
+    - name: fail if change detected
+      delegate_to: 127.0.0.1
+      debug:
+        msg: 'Change detected in output. Please check ! Found {{ git_status.stdout }} changes'
+      # when: '"0" in git_status.stdout'

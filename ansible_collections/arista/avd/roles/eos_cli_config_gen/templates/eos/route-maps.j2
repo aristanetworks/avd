@@ -1,5 +1,5 @@
 {# eos - route-maps #}
-{% if route_maps is defined %}
+{% if route_maps is defined and route_maps is not none %}
 {%     for route_map in route_maps | arista.avd.natural_sort %}
 {%         for sequence in route_maps[route_map].sequence_numbers | arista.avd.natural_sort %}
 !

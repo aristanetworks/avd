@@ -5,8 +5,10 @@ on:
       - 'devel'
     paths:
       - 'mkdocs.yml'
-      - 'ansible_collections/arista/avd/docs/**'
+      - 'ansible_collections/arista/avd/docs/**/*'
+      - 'ansible_collections/arista/avd/docs/*'
       - 'ansible_collections/arista/avd/roles/**/README.md'
+      - '.github/workflows/documentation-build.yml'
 jobs:
   publish:
     name: 'Update Public documentation'
@@ -14,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: 'Setup Python 3 on runner'
-        uses: actions/setup-python@v1.2.0
+        uses: actions/setup-python@v2.1.4
         with:
           python-version: '3.x'
       - name: 'Build mkdocs content to site folder'

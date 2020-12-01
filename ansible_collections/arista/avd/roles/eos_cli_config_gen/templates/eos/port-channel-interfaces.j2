@@ -47,6 +47,12 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].lacp_id is defined and port_channel_interfaces[port_channel_interface].lacp_id is not none %}
    lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].lacp_fallback_timeout is defined and port_channel_interfaces[port_channel_interface].lacp_fallback_timeout is not none %}
+   port-channel lacp fallback timeout {{ lacp_fallback_timeout }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].lacp_fallback_mode is defined and port_channel_interfaces[port_channel_interface].lacp_fallback_mode is not none %}
+   port-channel lacp fallback {{ lacp_fallback_mode }}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
    qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
 {%         endif %}
@@ -64,6 +70,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
+{%             if port_channel_interfaces[port_channel_interface].ip_proxy_arp is defined and port_channel_interfaces[port_channel_interface].ip_proxy_arp == true %}
+   ip proxy-arp 
+{%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
 {%         endif %}
@@ -107,6 +116,15 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].storm_control is defined and port_channel_interfaces[port_channel_interface].storm_control is not none %}
+{%             for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}
+{%                if port_channel_interfaces[port_channel_interface].storm_control[section].unit is defined and port_channel_interfaces[port_channel_interface].storm_control[section].unit == "pps" %}
+   storm-control {{ section }} level pps {{port_channel_interfaces[port_channel_interface].storm_control[section].level}}
+{%                else %}
+   storm-control {{ section }} level {{port_channel_interfaces[port_channel_interface].storm_control[section].level}}
+{%                endif %}
+{%             endfor %}
 {%         endif %}
 {%     endfor %}
 {% endif %}
