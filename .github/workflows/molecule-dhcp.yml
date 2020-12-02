@@ -1,4 +1,4 @@
-name: Ansible Molecule L3LS EVPN
+name: Ansible Molecule DHCP configuration
 on:
   push:
     branches:
@@ -12,7 +12,7 @@ on:
       - '.github/workflows/molecule-dhcp.yml'
 jobs:
   molecule:
-    name: Run CI test for eos_l3ls_evpn
+    name: Run CI test for dhcp_provisioner
     runs-on: ubuntu-latest
     # Deactivated as per GH changes
     # env:
