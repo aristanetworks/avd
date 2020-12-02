@@ -874,6 +874,12 @@ tenants:
     # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
     mac_vrf_vni_base: < 10000-16770000 >
 
+    # MLAG IBGP peering per VRF | Optional
+    # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
+    # Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
+    # This setting can be overridden per VRF.
+    enable_mlag_ibgp_peering_vrfs: < true | false > 
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
@@ -888,6 +894,11 @@ tenants:
           < IPv4 dhcp server IP >:
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
+        # MLAG IBGP peering per VRF | Optional
+        # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
+        # Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
+        enable_mlag_ibgp_peering_vrfs: < true | false > 
 
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
