@@ -870,8 +870,11 @@ tenants:
       < tenant_a_vrf_1 >:
 
         # VRF VNI | Required.
-        # The VRF VNI range is limited.
-        vrf_vni: <1-1024>
+        # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
+        # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
+        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan : < > } to a lower value (default 3000).
+        # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
+        vrf_vni: < 1-1024 >
 
         # IP Helper for DHCP relay
         ip_helpers:
@@ -957,7 +960,7 @@ tenants:
             ip_address_virtual: < IPv4_address/Mask >
 
       < tenant_a_vrf_2 >:
-        vrf_vni: <1-1024>
+        vrf_vni: < 1-1024 >
         svis:
           < 1-4096 >:
             name: < description >
@@ -994,7 +997,7 @@ tenants:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:
       < tenant_b_vrf_1 >:
-        vrf_vni: <1-1024>
+        vrf_vni: < 1-1024 >
         vtep_diagnostic:
           loopback: < 2-2100 >
           loopback_ip_range: < IPv4_address/Mask >
