@@ -14,7 +14,7 @@
   tags: [build, provision]
 
 - name: Generate EVPN fabric documentation in Markdown Format.
-  when: type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
+  when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
   template:
     src: documentation/dc-fabric-documentation.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}.md'
@@ -24,7 +24,7 @@
   tags: [build, provision]
 
 - name: Generate Leaf and Spine Point-To-Point Links summary in csv format.
-  when: type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
+  when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
   template:
     src: documentation/dc-fabric-p2p-links.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-p2p-links.csv'
@@ -34,7 +34,7 @@
   tags: [build, provision]
 
 - name: Generate Fabric Topology in csv format.
-  when: type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
+  when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
   template:
     src: documentation/dc-fabric-topology.j2
     dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-topology.csv'
@@ -44,7 +44,7 @@
   tags: [build, provision]
 
 - name: Generate DC Topology in csv format.
-  when: type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
+  when: type is defined and dc_name is defined and type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
   template:
     src: documentation/dc-topology.j2
     dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-topology.csv'
@@ -54,7 +54,7 @@
   tags: [build, provision]
 
 - name: Generate Spine and Super-Spine Point-To-Point Links summary in csv format.
-  when: type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
+  when: type is defined and dc_name is defined and type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
   template:
     src: documentation/dc-p2p-links.j2
     dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}-p2p-links.csv'
@@ -64,7 +64,7 @@
   tags: [build, provision]
 
 - name: Generate EVPN Spine-to-Super-Spine fabric documentation in Markdown Format.
-  when: type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
+  when: type is defined and dc_name is defined and type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
   template:
     src: documentation/dc-documentation.j2
     dest: '{{ root_dir }}/documentation/{{ dc_name }}/{{ dc_name }}.md'
