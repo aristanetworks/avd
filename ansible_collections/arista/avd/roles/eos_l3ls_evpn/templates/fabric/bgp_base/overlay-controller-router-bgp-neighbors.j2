@@ -9,7 +9,7 @@
       peer_group: IPv4-UNDERLAY-PEERS
 {%         endfor %}
 {%     endif %}
-{# Overlay network peerings based on evpn_overlay_controller variable #} 
+{# Overlay network peerings based on evpn_overlay_controller variable #}
 {%     for evpn_overlay_peer in switch.evpn_overlay_peers %}
     {{ evpn_overlay_peer.ip }}:
       peer_group: EVPN-OVERLAY-PEERS
