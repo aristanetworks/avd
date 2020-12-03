@@ -44,10 +44,11 @@
 {%     endfor %}
 {% endfor %}
 {# Point-to-Point Interfaces to Super Spine Switches #}
-  ### p2p Interfaces to Super Spine Switches
 {% if spine.nodes[inventory_hostname]['uplinks_to_super_spine_interfaces'] is defined %}
+### p2p Interfaces to Super Spine Switches ###
 {%     set spine_uplink_list = spine.nodes[inventory_hostname]['uplinks_to_super_spine_interfaces'] %}
 {% elif spine.uplinks_to_super_spine_interfaces is defined %}
+### p2p Interfaces to Super Spine Switches ###
 {%     set spine_uplink_list = spine.uplinks_to_super_spine_interfaces %}
 {% else %}
 {%     set spine_uplink_list = [] %}
