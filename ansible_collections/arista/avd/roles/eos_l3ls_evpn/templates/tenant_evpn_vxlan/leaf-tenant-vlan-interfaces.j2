@@ -92,12 +92,20 @@
 {%                 endif %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
 {%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
+{%                     set configure_mlag_ibgp_peering = true %}
+{%                     if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                         set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs %}
+{%                     elif tenants[tenant].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                         set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
+{%                     endif %}
+{%                     if configure_mlag_ibgp_peering %}
   Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
     tenant: {{ tenant }}
     type: underlay_peering
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
+{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}

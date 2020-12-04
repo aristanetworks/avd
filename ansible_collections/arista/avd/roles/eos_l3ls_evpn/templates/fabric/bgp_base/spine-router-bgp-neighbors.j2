@@ -65,7 +65,7 @@
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: {{ super_spine.bgp_as }}
 {% endfor %}
-{# Overlay network peerings based on evpn_overlay_controller_groups variable #} 
+{# Overlay network peerings based on evpn_overlay_controller_groups variable #}
 {% for evpn_overlay_peer in switch.evpn_overlay_peers %}
     {{ evpn_overlay_peer.ip }}:
       peer_group: EVPN-OVERLAY-PEERS

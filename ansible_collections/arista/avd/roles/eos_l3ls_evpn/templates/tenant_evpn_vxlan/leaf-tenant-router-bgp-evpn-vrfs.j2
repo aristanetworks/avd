@@ -14,9 +14,17 @@
           evpn:
             - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
 {%             if leaf.mlag == true %}
+{%                 set configure_mlag_ibgp_peering = true %}
+{%                 if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                     set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs %}
+{%                 elif tenants[tenant].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                     set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
+{%                 endif %}
+{%                 if configure_mlag_ibgp_peering %}
       neighbors:
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+{%                 endif %}
 {%             endif %}
       redistribute_routes:
         - connected
