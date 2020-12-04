@@ -9,6 +9,7 @@ logging-minimal
 logging
 loopbacks-interfaces
 management-gnmi
+management-ssh
 mcast-pim
 none_configuration
 platform
