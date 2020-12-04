@@ -54,9 +54,9 @@ Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eo
 
 When you update a template in `eos_cli_config_gen`, you should report a test case in molecule scenario [`ansible_collections/arista/avd/molecule/eos_cli_config_gen`](./eos_cli_config_gen/).
 
-1. Create or update a file related to uupdated section under `inventory/host_vars`
+1. Create or update a file related to updated section under `inventory/host_vars`
 2. If section is new, update inventory file to add a new host. Host SHALL be the name of your section and also file in your `host_vars`
-3. Run molecule scenario to generate artefacts:
+3. Run molecule scenario to generate artifacts:
 
 ```bash
 # Move to AVD collection
@@ -66,7 +66,7 @@ $ cd ansible_collections/arista/avd/
 $ molecule test --scenario-name eos_cli_config_gen
 ```
 
-4. Commit artefacts. They will be used by CI to validate their is no change in the future.
+4. Commit artifacts. They will be used by CI to validate their is no change in the future.
 
 ```bash
 $ git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
@@ -99,26 +99,26 @@ If your update is not related to underlay or overlay protocol, edit scenario `ev
 $ cd ansible_collections/arista/avd/
 
 # Copy existing molecule scenario
-$ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocole>_overlay_<overlay-protocol>
+$ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
 ```
 
-2. Edit files from your scneario's inventory
+2. Edit files from your scenario's inventory
 
 ```bash
-$ cd molecule/evpn_underlay_<underlay-protocole>_overlay_<overlay-protocol>/inventory
+$ cd molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>/inventory
 
 # Edit group_vars
 $ vim group_vars/DC1_FABRIC.yml
 ```
 
-3. Run your molecle scenario for validation
+3. Run your molecule scenario for validation
 
 ```bash
 # Move to AVD collection
 $ cd ../../../
 
 # Run Molecule scenario
-$ molecule test --scenario-name evpn_underlay_<underlay-protocole>_overlay_<overlay-protocol>
+$ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
 ```
 
 4. Edit CI file to include your scenario
@@ -136,7 +136,7 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ebgp'
-          - 'evpn_underlay_<underlay-protocole>_overlay_<overlay-protocol>'
+          - 'evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>'
           - 'upgrade_v1.0_to_v1.1'
 ```
 
