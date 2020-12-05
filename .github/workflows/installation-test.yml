@@ -8,7 +8,7 @@ jobs:
   'setup':
     name: 'One liner installation'
     runs-on: ubuntu-latest
-    container: avdteam/base:3.6
+    container: avdteam/base:3.6-v1.0
     steps:
       - uses: actions/checkout@master
       - name: Execute one-liner installation
