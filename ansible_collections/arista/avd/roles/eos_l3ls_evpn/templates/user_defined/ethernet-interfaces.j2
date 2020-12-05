@@ -1,0 +1,3 @@
+{% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+  {{ ethernet_interfaces | to_nice_yaml(indent=2) | indent(2) }}
+{% endif %}
