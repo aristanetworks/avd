@@ -6,6 +6,8 @@ pycodestyle
 flake8
 pylint==2.4.4
 twine
-pre-commit==2.3.0
+pre-commit==2.9.2
+pre-commit-hooks==3.3.0
+identify==1.4.20
 docker==4.2.2
 molecule==3.0.5
