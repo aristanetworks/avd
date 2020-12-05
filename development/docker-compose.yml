@@ -1,7 +1,7 @@
 version: "3"
 services:
   ansible:
-    image: avdteam/base:3.6
+    image: avdteam/base:3.6-v1.0
     container_name: ansible_avd
     volumes:
       - ./../../:/projects
