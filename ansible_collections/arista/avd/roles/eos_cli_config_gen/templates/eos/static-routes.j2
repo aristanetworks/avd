@@ -3,12 +3,13 @@
 !
 {%     for static_route in static_routes %}
 ip route
-{%- if static_route['vrf'] is defined and static_route['vrf'] != 'default' %} vrf {{ static_route['vrf'] }}{% endif %} {{ static_route['destination_address_prefix'] }}
+{%- if static_route['vrf'] is defined and static_route['vrf'] != 'default' and static_route['vrf'] is not none%} vrf {{ static_route['vrf'] }}{% endif %} {{ static_route['destination_address_prefix'] }}
 {%- if static_route['interface'] is defined and static_route['interface'] is not none and static_route['interface'] | capitalize != 'Null0' %} {{ static_route['interface'] | capitalize }}{% elif static_route['interface'] is defined and static_route['interface'] is not none and static_route['interface'] | capitalize == 'Null0' %} {{ static_route['interface'] | capitalize }}{%- endif -%}
 {%- if static_route['gateway'] is defined and static_route['gateway'] is not none and (static_route['interface'] is not defined or static_route['interface'] | capitalize != 'Null0') %} {{ static_route['gateway'] }}{% endif -%}
 {%- if static_route['distance'] is defined and static_route['distance'] is not none %} {{ static_route['distance'] }}{% endif -%}
 {%- if static_route['tag'] is defined and static_route['tag'] is not none %} tag {{ static_route['tag'] }}{% endif -%}
 {%- if static_route['name'] is defined and static_route['name'] is not none %} name {{ static_route['name'] }}{% endif %}
+{%- if static_route['metric'] is defined and static_route['metric'] is not none %} metric {{ static_route['metric'] }}{% endif %}
 
 {%          endfor %}
 {% endif %}
