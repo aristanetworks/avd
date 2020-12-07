@@ -1350,8 +1350,6 @@ CVP_TOPOLOGY:
     - DC1-SPINE4
     parent_container: DC1_FABRIC
   DC1_SVC3:
-    devices:
-    - DC1-SVC3A
-    - DC1-SVC3B
+    devices: []
     parent_container: DC1_LEAFS
 changed: false
