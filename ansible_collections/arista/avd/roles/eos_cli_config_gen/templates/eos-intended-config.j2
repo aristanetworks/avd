@@ -154,6 +154,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/banners.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
+{# management api gnmi #}
+{% include 'eos/management-api-gnmi.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
 {# management security #}
