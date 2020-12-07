@@ -1,7 +1,7 @@
 ---
 # Common action for all states.
 - name: generate intented variables
-  tags: [always, generate]
+  tags: [always]
   arista.avd.inventory_to_container:
     inventory: '{{ inventory_file }}'
     container_root: '{{ container_root }}'
@@ -20,7 +20,7 @@
   run_once: true
 
 - name: "Load CVP device information for {{ inventory_hostname }}"
-  tags: [build, provision]
+  tags: [build, provision, online]
   include_vars: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
   # delegate_to: localhost
 
@@ -29,7 +29,7 @@
 # If state=present launch creation/update process
 # If state=absent launch deletion process
 - name: Start creation/update process.
-  tags: [provision]
+  tags: [provision, online]
   include_tasks: "./{{ state }}.yml"
 
 #################################################
