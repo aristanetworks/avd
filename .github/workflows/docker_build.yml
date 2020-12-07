@@ -13,7 +13,7 @@ jobs:
   'rebuild-docker-avd':
     name: Instruct Docker Hub to build image
     runs-on: ubuntu-latest
-    container: avdteam/base:3.6
+    container: avdteam/base:3.6-v1.0
     steps:
       - uses: actions/checkout@master
       - name: 'Send Webhook'

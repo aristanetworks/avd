@@ -1,0 +1,23 @@
+{# Leaf P2P interfaces #}
+{% for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
+  {{ uplink_to_spine_interface }}:
+    peer: {{ leaf.spines[loop.index0] }}
+    peer_interface: {{ leaf.spine_interfaces[loop.index0 ] }}
+    peer_type: spine
+    description: P2P_LINK_TO_{{ leaf.spines[loop.index0] | upper }}_{{ leaf.spine_interfaces[loop.index0 ] }}
+{%     if leaf.p2p_link_interface_speed is defined %}
+    speed: {{ leaf.p2p_link_interface_speed }}
+{%     endif %}
+    mtu: {{ p2p_uplinks_mtu }}
+    type: routed
+    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}/31
+{%     if underlay_routing_protocol|lower == "ospf" %}
+    ospf_network_point_to_point: true
+    ospf_area: {{ underlay_ospf_area }}
+{%     endif %}
+{%     if underlay_routing_protocol|lower == "isis" %}
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+{%     endif %}
+{% endfor %}

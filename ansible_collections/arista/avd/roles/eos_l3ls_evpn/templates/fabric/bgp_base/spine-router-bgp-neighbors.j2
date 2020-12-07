@@ -1,0 +1,41 @@
+{# Spine router bgp neighbors configuration #}
+{% if type == "spine" %}
+{%     for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%         if l3leaf.node_groups[l3leaf_node_group].spines is defined %}
+{%             set leaf_spines = l3leaf.node_groups[l3leaf_node_group].spines %}
+{%         else %}
+{%             set leaf_spines = l3leaf.defaults.spines %}
+{%         endif %}
+{%         for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{# Underlay network peering #}
+{%             if switch.underlay_routing_protocol == "ebgp" %}
+{%                 for leaf_spine in leaf_spines %}
+{%                     if leaf_spine == inventory_hostname %}
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}:
+      peer_group: IPv4-UNDERLAY-PEERS
+{%                         if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+      remote_as: {{ l3leaf.node_groups[l3leaf_node_group].bgp_as }}
+{%                         else %}
+      remote_as: {{ l3leaf.defaults.bgp_as }}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%              endif %}
+{# Overlay network peering #}
+{%             if switch.overlay_routing_protocol == 'ebgp' %}
+    {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(l3leaf.node_groups[l3leaf_node_group].nodes[node].id + spine.nodes | length ) }}:
+      peer_group: EVPN-OVERLAY-PEERS
+{%                     if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+      remote_as: {{ l3leaf.node_groups[l3leaf_node_group].bgp_as }}
+{%                     else %}
+      remote_as: {{ l3leaf.defaults.bgp_as }}
+{%                     endif %}
+{%             endif %}
+{%             if switch.overlay_routing_protocol == 'ibgp' and switch.is_route_reflector == true %}
+    {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(l3leaf.node_groups[l3leaf_node_group].nodes[node].id + spine.nodes | length ) }}:
+      peer_group: EVPN-OVERLAY-PEERS
+      remote_as: {{ bgp_as }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

@@ -1,0 +1,34 @@
+{# Spine router bgp peer groups configuration #}
+{% if type == "spine" %}
+{# Underlay network peering #}
+{%     if switch.underlay_routing_protocol == "ebgp" %}
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      peer_filter: LEAF-AS-RANGE
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+{%     endif %}
+{# Overlay network peering #}
+{%     if switch.overlay_routing_protocol == "ebgp" %}
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      peer_filter: LEAF-AS-RANGE
+      next_hop_unchanged: true
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 3
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: true
+      maximum_routes: 0
+{%     elif switch.overlay_routing_protocol == 'ibgp' and switch.is_route_reflector == true %}
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: {{ bgp_as }}
+      update_source: Loopback0
+      route_reflector_client: true
+      bfd: true
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: true
+      maximum_routes: 0
+{%     endif %}
+{% endif %}

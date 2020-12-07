@@ -5,6 +5,12 @@
 | ------ | --------- |
 | {{ router_bgp.as }}|  {{ router_bgp.router_id }} |
 
+{% if router_bgp.bgp_cluster_id is defined and router_bgp.bgp_cluster_id is not none %}
+| BGP AS | Cluster ID |
+| ------ | --------- |
+| {{ router_bgp.as }}|  {{ router_bgp.bgp_cluster_id }} |
+{% endif %}
+
 | BGP Tuning |
 | ---------- |
 {%   for bgp_default in router_bgp.bgp_defaults %}
@@ -24,6 +30,9 @@
 {%          endif %}
 {%          if router_bgp.peer_groups[peer_group].remote_as is defined and router_bgp.peer_groups[peer_group].remote_as is not none %}
 | remote_as | {{ router_bgp.peer_groups[peer_group].remote_as }} |
+{%          endif %}
+{%          if router_bgp.peer_groups[peer_group].route_reflector_client is defined and router_bgp.peer_groups[peer_group].route_reflector_client is not none %}
+| Route Reflector Client | Yes |
 {%          endif %}
 {%          if router_bgp.peer_groups[peer_group].bgp_listen_range_prefix is defined and router_bgp.peer_groups[peer_group].bgp_listen_range_prefix is not none %}
 | listen range prefix | {{ router_bgp.peer_groups[peer_group].bgp_listen_range_prefix }} |

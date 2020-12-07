@@ -1,0 +1,16 @@
+{% if domain_list is defined and domain_list is not none %}
+
+### Domain-List: 
+{%     for domain in domain_list | sort %}
+ - {{ domain }}
+{%     endfor %}
+
+### Domain-List Device Configuration
+
+```eos
+{% include 'eos/domain-list.j2' %}
+!
+```
+{% else %}
+Domain-list not defined
+{% endif %}

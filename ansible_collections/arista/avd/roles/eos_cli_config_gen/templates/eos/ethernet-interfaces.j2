@@ -60,6 +60,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ip_proxy_arp is defined and ethernet_interfaces[ethernet_interface].ip_proxy_arp == true %}
+   ip proxy-arp 
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
 {%             endif %}
@@ -102,6 +105,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
    ip ospf area {{ ethernet_interfaces[ethernet_interface].ospf_area }}
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ospf_cost is defined and ethernet_interfaces[ethernet_interface].ospf_cost is not none %}
+   ip ospf cost {{ ethernet_interfaces[ethernet_interface].ospf_cost }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_authentication is defined and ethernet_interfaces[ethernet_interface].ospf_authentication is not none %}
 {%                 if ethernet_interfaces[ethernet_interface].ospf_authentication == "simple" %}
    ip ospf authentication
@@ -134,6 +140,15 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
+{%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
+{%                      if ethernet_interfaces[ethernet_interface].storm_control[section].unit is defined and ethernet_interfaces[ethernet_interface].storm_control[section].unit == "pps" %}
+   storm-control {{ section }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+{%                      else %}
+   storm-control {{ section }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+{%                      endif %}
+{%                   endfor %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}

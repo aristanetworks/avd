@@ -1,0 +1,62 @@
+### Snmp Settings ####
+snmp_server:
+  contact: DC1_OPS
+  location: DC1
+  local_interfaces:
+    - name: Management0
+      vrf: mgt
+  views:
+    - name: VW-WRITE
+      MIB_family_name: iso
+      included: true
+    - name: VW-READ
+      MIB_family_name: iso
+      included: true
+  groups:
+    - name: GRP-READ-ONLY
+      version: v3
+      authentication: priv
+      read: v3read
+    - name: GRP-READ-WRITE
+      version: v3
+      authentication: auth
+      read: v3read
+      write: v3write
+  users:
+    - name: USER-READ
+      group: GRP-READ-ONLY
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+    - name: USER-WRITE
+      group: GRP-READ-WRITE
+      version: v3
+      auth: sha
+      auth_passphrase: 7a07246a6e3467909098d01619e076adb4e2fe08
+      priv: aes
+      priv_passphrase: 7a07246a6e3467909098d01619e076ad
+  hosts:
+    - host: 10.6.75.99
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+        - username: USER-WRITE
+          authentication_level: auth
+          version: 3
+    - host: 10.6.75.121
+      vrf: mgt
+      users:
+        - username: USER-READ
+          authentication_level: auth
+          version: 3
+  traps:
+    enable: true
+  vrfs:
+    - name: default
+      enable: false
+    - name: mgt
+      enable: true

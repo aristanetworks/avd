@@ -26,11 +26,13 @@ terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 p2p_uplinks_mtu: 9000
 
 underlay_routing_protocol: BGP
+overlay_routing_protocol: BGP
 
-# Underlay OSFP Defaults
+# Underlay OSPF Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: false
 
 spine_bgp_defaults:
   - update wait-for-convergence
@@ -48,6 +50,8 @@ leaf_bgp_defaults:
   - graceful-restart
 
 vxlan_vlan_aware_bundles: false
+
+default_igmp_snooping_enabled: true
 
 bfd_multihop:
   interval: 300

@@ -1,0 +1,76 @@
+{# Leaf tenant IGMP snooping #}
+{% set igmp_snooping = namespace() %}
+{% set igmp_snooping.configured = false %}
+{% if leaf.igmp_snooping_enabled == true %}
+{% set igmp_snooping.configured = true %}
+{% endif %}
+{# Detect if igmp-snopping is globally activated #}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is defined %}
+{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
+{%                  if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping is defined %}
+{%                      set igmp_snooping.configured = true %}
+{%                  endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if tenants[tenant].l2vlans is defined %}
+{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort  %}
+{%             if tenants[tenant].l2vlans[l2vlan].igmp_snooping is defined %}
+{%                set igmp_snooping.configured = true %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# End igmp-snopping status detection #}
+  globally_enabled: {{ leaf.igmp_snooping_enabled }}
+{% if igmp_snooping.configured == true %}
+  vlans:
+{# ---------------------------- #}
+{# SVI & L3VLANs services       #}
+{# ---------------------------- #}
+{%      for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+## {{ tenant }} ##
+{%          if tenants[tenant].vrfs is defined %}
+{%              for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
+{# Tenant VLANs w/SVIs #}
+{%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if leaf.svis is not none and svi in leaf.svis %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%                      set per_svi = namespace() %}
+{%                      set profile = namespace() %}
+{%                      set per_svi.values = tenants[tenant].vrfs[vrf].svis[svi] %}
+{%                      if svi_profiles is defined and svi_profiles is not none %}
+{%                          if tenants[tenant].vrfs[vrf].svis[svi].profile is defined %}
+{%                              if tenants[tenant].vrfs[vrf].svis[svi].profile in svi_profiles %}
+{%                                  set profile.values = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
+{%                              endif %}
+{%                          endif %}
+{%                      endif %}
+{# End svi_profile detection #}
+{# IGMP SNOOPING detection #}
+{%                      if per_svi.values.igmp_snooping_enabled is defined or profile.values.igmp_snooping_enabled is defined %}
+{%                          if leaf.igmp_snooping_enabled == true %}
+    {{ svi|int }}:
+      enabled: {{ per_svi.values.igmp_snooping_enabled if per_svi.values.igmp_snooping_enabled is defined else profile.values.igmp_snooping_enabled|default(true) }}
+{%                          endif %}
+{%                      endif %}
+{%                  endfor %}
+{%              endfor %}
+{%          endif %}
+{# ---------------------------- #}
+{# L2VLANs services             #}
+{# ---------------------------- #}
+{%          if tenants[tenant].l2vlans is defined %}
+{%              for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%                  if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled is defined %}
+{%                      if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled == false and leaf.igmp_snooping_enabled == true %}
+    {{ l2vlan|int }}:
+      enabled: false
+{%                      endif %}
+{%                  endif %}
+{%              endfor %}
+{%          endif %}
+{%      endfor %}
+{% endif %}

@@ -8,6 +8,47 @@
 {% set switch.platform = spine.platform %}
 {% set switch.mgmt_ip = spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
+{% set switch.bgp_route_reflector = spine.nodes[inventory_hostname].bgp_route_reflector | default(false) %}
+{# Build variables for fabric protocols #}
+{# Logic for underlay routing protocol configured on device #}
+{% if underlay_routing_protocol is defined %}
+{%     if underlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.underlay_routing_protocol = 'ibgp'%}
+{%     elif underlay_routing_protocol|lower == 'isis' %}
+{%         set switch.underlay_routing_protocol = 'isis' %}
+{%     elif underlay_routing_protocol|lower == 'ospf' %}
+{%         set switch.underlay_routing_protocol = 'ospf' %}
+{%     else %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.underlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for overlay protocol definition #}
+{% if overlay_routing_protocol is defined %}
+{%     if overlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.overlay_routing_protocol = 'ibgp'%}
+{%     else %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for route_reflector role #}
+{% set switch.is_route_reflector = false %}
+{% for spine_node in spine.nodes | arista.avd.natural_sort %}
+{%     if spine.nodes[spine_node].bgp_route_reflector is defined and spine.nodes[spine_node].bgp_route_reflector == true %}
+{%         set switch.is_route_reflector = true %}
+{%     endif%}
+{% endfor %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -49,11 +90,6 @@ load_interval:
 ### Queue Monitor Lenght ###
 queue_monitor_length:
 {% include 'base/queue-monitor-length.j2' %}
-
-{# logging #}
-### Logging ###
-logging:
-{% include 'base/logging.j2' %}
 
 {# name servers #}
 ### Name Servers ###
@@ -107,13 +143,13 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{% include 'underlay-overlay/spine-p2p-interfaces.j2' %}
+{% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
 
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'underlay-overlay/spine-overlay-loopback.j2' %}
+{% include 'fabric/interfaces/spine-overlay-loopback.j2' %}
 
 
 {# Management Interfaces #}
@@ -139,48 +175,47 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'underlay-overlay/spine-prefix-lists.j2' %}
+{% include 'fabric/bgp_base/spine-prefix-lists.j2' %}
 
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'underlay-overlay/route-maps.j2' %}
+{% include 'fabric/bgp_base/route-maps.j2' %}
 
 
 {# peer-filter #}
 ### peer-filters ###
 peer_filters:
-{% include 'underlay-overlay/spine-peer-filters.j2' %}
 
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'underlay-overlay/spine-router-bgp-base.j2' %}
+{% include 'fabric/bgp_base/spine-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/spine-router-bgp-peer-groups.j2' %}
+{% include 'fabric/bgp_base/spine-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'underlay-overlay/spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/spine-router-bgp-neighbors.j2' %}
   redistribute_routes:
-{% include 'underlay-overlay/spine-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'underlay-overlay/spine-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/spine-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'underlay-overlay/spine-router-bgp-address-family-ipv4.j2' %}
+{% include 'fabric/ebgp_underlay/spine-router-bgp-address-family-ipv4.j2' %}
 
-{# OSPF Configurartion #}
+{# OSPF Configuration #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'underlay-overlay/router-ospf.j2' %}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
-{# OSPF Configurartion #}
+{# ISIS Configuration #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'underlay-overlay/router-isis.j2' %}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

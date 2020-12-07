@@ -117,6 +117,7 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < IPv4 address >
+  - < CV as a Service hostname >
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
@@ -161,6 +162,8 @@ redundancy:
 mac_address_table:
   aging_time: < time_in_seconds >
 ```
+
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
 
 **Example:**
 
@@ -235,9 +238,12 @@ mac_address_table:
 
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
-  - BGP (default)
+  - EBGP (default)
   - OSPF.
   - ISIS.
+- The following overlay routing protocols are supported:
+  - EBGP (default)
+  - IBGP (only with OSPF or ISIS in underlay)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
 - The variables should be applied to all devices in the fabric.
@@ -250,16 +256,21 @@ mac_address_table:
 fabric_name: < Fabric_Name >
 
 # Underlay routing protocol | Required.
-underlay_routing_protocol: < BGP or OSPF or ISIS | Default -> BGP >
+underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
+overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | Default -> 12000 >
+underlay_ospf_bfd_enable: < true | false | Default -> false >
 
 # Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
 isis_site_id: < isis site ID | Default -> "0001" >
+
+# AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
+bgp_as: < AS number >
 
 # Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
@@ -320,6 +331,10 @@ leaf_bgp_defaults:
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
 
+# Disable IGMP snooping at fabric level.
+# If set, it overrides per vlan settings
+default_igmp_snooping: < boolean | default -> true >
+
 # BFD Multihop tunning | Required.
 bfd_multihop:
   interval: < | default -> 300 >
@@ -341,6 +356,7 @@ fabric_name: DC1_FABRIC
 # underlay_ospf_process_id: 100
 # underlay_ospf_area: 0.0.0.0
 # underlay_ospf_max_lsa: 12000
+# underlay_ospf_bfd_enable: true
 
 # p2p_uplinks_mtu: 9000
 
@@ -451,11 +467,15 @@ spine:
       # Unique identifier | Required.
       id: < integer >
 
+      # Route Reflector when < overlay_routing_protocol > == IBGP
+      bgp_route_reflector: < boolean >
+
       # Node management IP address | Required.
       mgmt_ip: < IPv4_address/Mask >
     < inventory_hostname >:
       id: < integer >
       mgmt_ip: < IPv4_address/Mask >
+
 ```
 
 **Example:**
@@ -511,6 +531,9 @@ l3leaf:
     # Virtual router mac address for anycast gateway | Required.
     virtual_router_mac_address: < mac address >
 
+    # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -527,6 +550,9 @@ l3leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
@@ -654,6 +680,9 @@ l2leaf:
     # Spanning tree priority | Required.
     spanning_tree_priority: < spanning-tree priority >
 
+    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -667,6 +696,9 @@ l2leaf:
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+
+      # Activate or deactivate IGMP snooping for node groups devices
+      igmp_snooping_enabled: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname.
       # When two nodes are defined, this will create an MLAG pair.
@@ -757,6 +789,45 @@ l2leaf:
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
 
+# Specify RD type | Optional
+# Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
+# By configuring evpn_rd_type the Administrator subfield (first part of RD) can be set to other values.
+#
+# Note:
+# RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rd_type:
+  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+
+# Specify RT type | Optional
+# Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
+# By configuring evpn_rt_type the Administrator subfield (first part of RT) can be set to other values.
+#
+# Note:
+# RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
+# For 32-bit ASN/number the VNI can only be a 16-bit number.
+# For 16-bit ASN/number the VNI can be a 32-bit number.
+evpn_rt_type:
+  admin_subfield: < "leaf_asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
+
+# Optional profiles to apply on SVI interfaces
+# Each profile can support all or some of the following keys according your own needs.
+# Keys are the same used under SVI.
+svi_profiles:
+  < profile_name >:
+    mtu: < mtu >
+    enabled: < true | false >
+    ip_virtual_router_address: < IPv4_address/Mask >
+    ip_address_virtual: < IPv4_address/Mask >
+    ip_address_virtual_secondary: < IPv4_address/Mask >
+    igmp_snooping_enabled: < true | false | default true (eos) >
+    ip_helpers:
+      < IPv4 dhcp server IP >:
+        source_interface: < interface-name >
+        source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
+
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
 tenants:
@@ -780,6 +851,12 @@ tenants:
         # The VRF VNI range is limited.
         vrf_vni: <1-1024>
 
+        # IP Helper for DHCP relay
+        ip_helpers:
+          < IPv4 dhcp server IP >:
+            source_interface: < interface-name >
+            source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
@@ -802,6 +879,10 @@ tenants:
             # The vni_override allows us to override this value and statically define it. | Optional
             vni_override: < 1-16777215 >
 
+            # SVI profile to apply
+            # If variables are configured in profile AND SVI, SVI information will overwrite profile.
+            profile: < svi-profile-name >
+
             # vlan name + svi description. | Required
             name: < description >
 
@@ -811,15 +892,24 @@ tenants:
             # Enable or disable interface
             enabled: < true | false >
 
+            # Enable IGMP Snooping
+            igmp_snooping_enabled: < true | false | default true (eos) >
+
             # ip address virtual to configure VXLAN Anycast IP address
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
-            ip_address_virtual:: < IPv4_address/Mask >
+            ip_address_virtual: < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
             ip_virtual_router_address: < IPv4_address/Mask >
+
+            # IP Helper for DHCP relay
+            ip_helpers:
+              < IPv4 dhcp server IP >:
+                source_interface: < interface-name >
+                source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
@@ -829,6 +919,9 @@ tenants:
 
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
+
+            # Defined interface MTU
+            mtu: < mtu >
 
           < 1-4096 >:
             name: < description >
@@ -922,6 +1015,7 @@ tenants:
             tags: [ opzone ]
             enabled: true
             ip_address_virtual: 10.1.10.0/24
+            mtu: 1400
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
@@ -1234,7 +1328,7 @@ servers:
 
 #### EVPN A/A ESI dual-attached server scenario
 
-MLAG dual-homed connection:
+Active/Active multihoming connections:
 
 - From `E0` to `DC1-SVC3A` interface `Eth10`
 - From `E1` to `DC1-SVC4A` interface `Eth10`

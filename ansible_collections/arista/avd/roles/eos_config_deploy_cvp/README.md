@@ -78,6 +78,8 @@ all:
           ansible_python_interpreter: $(which python3)
 ```
 
+For complete list of authentication options available with Cloudvision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/docs/how-to/cvp-authentication/).
+
 ### Module variables
 
 - __`container_root`__: Inventory group name where Fabric devices are located. Default: `all`.

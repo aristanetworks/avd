@@ -60,3 +60,6 @@
   - development/requirements-dev.txt
   - development/requirements.txt
   - ansible_collections/arista/avd/docs/requirements.txt
+
+"state: CI Updated":
+  - ansible_collections/arista/avd/molecule/**/*

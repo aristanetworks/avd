@@ -1,0 +1,50 @@
+---
+scenario:
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: docker
+platforms:
+  - name: ethernet_interfaces
+    image: avdteam/base:3.6
+    pre_build_image: true
+    managed: false
+    groups:
+      - all
+provisioner:
+  name: ansible
+  env:
+    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+      command_warnings: False
+  inventory:
+    links:
+      hosts: 'inventory/hosts'
+      host_vars: 'inventory/host_vars/'
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --inventory=inventory/hosts
+verifier:
+  name: ansible
+  inventory:
+    links:
+      hosts: 'inventory/hosts'
+      host_vars: 'inventory/host_vars/'
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --inventory=inventory/hosts
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+      command_warnings: False
