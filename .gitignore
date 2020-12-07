@@ -120,3 +120,6 @@ ansible_collections/arista/avd/docs/*.rst
 
 # Molecule AVD build folders
 ansible_collections/arista/avd/molecule/*/config_backup
+
+# Ansible test folder
+ansible_collections/arista/avd/tests/
