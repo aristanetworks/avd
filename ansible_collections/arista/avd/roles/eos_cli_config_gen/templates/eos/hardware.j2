@@ -1,4 +1,6 @@
-{# eos - interface speed-group #}
+{# eos - hardware settings #}
+
+{# interface - speed-group #}
 {% if hardware is defined and hardware.speed_groups is defined and hardware.speed_groups is not none %}
 !
 {%   for speed_group in hardware.speed_groups %}
