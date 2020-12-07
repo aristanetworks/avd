@@ -66,17 +66,16 @@ dev-stop: ## Stop docker compose stack and remove containers
 .PHONY: stop
 stop: dev-stop ## Stop docker-compose stack
 
-.PHONY: dev-run
-dev-run: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible zsh
-
 .PHONY: shell
 shell: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible zsh
+
+.PHONY: dev-run
+dev-run: shell  ## Run a shell attached to ansible container
 
 .PHONY: ansible-upgrade
 ansible-upgrade: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec ansible pip install ansible==$(ANSIBLE_VERSION)
+	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible pip install --user --upgrade ansible==$(ANSIBLE_VERSION)
 
 .PHONY: dev-reload
 dev-reload: dev-stop dev-start  ## Stop and Start docker-compose stack
