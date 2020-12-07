@@ -5,21 +5,21 @@ CVP_DEVICES:
 {%     if (hostvars[device]['is_deployed'] is defined and hostvars[device]['is_deployed'] == true) or (hostvars[device]['is_deployed'] is not defined ) %}
   {{device}}:
     name: {{device}}
-{%     for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() %}
-{%         if 'devices' in container %}
-{%             for device_container in container['devices']%}
-{%                 if device == device_container %}
+{%         for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() %}
+{%             if 'devices' in container %}
+{%                 for device_container in container['devices']%}
+{%                     if device == device_container %}
     parentContainerName: {{container_name}}
-{%                 endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+    configlets:
+{%         if hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] is defined %}
+{%             for configlet in hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] %}
+      - {{ configlet }}
 {%             endfor %}
 {%         endif %}
-{%     endfor %}
-    configlets:
-{%     if hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] is defined %}
-{%         for configlet in hostvars[groups[container_root][0]]['cv_configlets']['devices'][device] %}
-      - {{ configlet }}
-{%         endfor %}
-{%      endif %}
       - {{configlets_prefix}}_{{device}}
     imageBundle: []
 {%     endif %}
