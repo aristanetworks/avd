@@ -482,7 +482,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True |
+| default |  True | 
 | MGMT | False |
 
 ### IP Routing Device Configuration
@@ -498,9 +498,9 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 | MGMT | False |
-
+ 
 
 
 ## Static Routes

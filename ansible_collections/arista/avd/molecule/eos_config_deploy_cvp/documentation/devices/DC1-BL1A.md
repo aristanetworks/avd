@@ -575,7 +575,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True |
+| default |  True | 
 | MGMT | False |
 | Tenant_A_WAN_Zone | True |
 | Tenant_B_WAN_Zone | True |
@@ -597,12 +597,12 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 | MGMT | False |
 | Tenant_A_WAN_Zone | False |
 | Tenant_B_WAN_Zone | False |
 | Tenant_C_WAN_Zone | False |
-
+ 
 
 
 ## Static Routes
