@@ -8,7 +8,6 @@ scenario:
     - syntax
     - create
     - converge
-    - idempotence
     - verify
   cleanup_sequence:
     - destroy
