@@ -91,8 +91,8 @@ appropriate labels will be applied for categorization.
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [__bug reports__](#bugs),
-[__features requests__](#features) and [__submitting pull
+The issue tracker is the preferred channel for [__bug reports__](#reporting-bugs),
+[__features requests__](#feature-requests) and [__submitting pull
 requests__](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests.
@@ -102,10 +102,7 @@ requests__](#pull-requests), but please respect the following restrictions:
 
 ## Branches
 
-- Current development branch: __`releases/v1.0.x`__
-- Stable branch: `master`
-- Branch namespace for issues: `issues/<IssueID>-<issue-name-shorten>`
-- Branch namespace for Feature: `features/<IssueID>-<issue-name-shorten>`
+- Current development branch: __`devel`__
 - Branch namespace for release & development: `releases/<release_id>`
 
 ## Pull requests
@@ -120,9 +117,9 @@ any work that's already in progress.
 
 * All major new functionality must include relevant tests where applicable.
 
-* When submitting a pull request, please be sure to work off of the `releases/grant-v1.x`
-branch, rather than `master`. The `releases/grant-v1.x` branch is used for ongoing
-development, while `master` is used for tagging new stable releases.
+* When submitting a pull request, please be sure to work off of the `devel`
+branch, rather than `master` (deprecated). The `devel` branch is used for ongoing
+development, while `releases/*` are used for tagging new stable releases.
 
 * All code submissions should meet the following criteria (CI will enforce
 these checks):
@@ -136,7 +133,7 @@ these checks):
 Adhering to the following this process is the best way to get your work
 merged:
 
-1. [Fork](http://help.github.com/fork-a-repo/) the repo, clone your fork,
+- [Fork](http://help.github.com/fork-a-repo/) the repo, clone your fork,
    and configure the remotes:
 
    ```bash
@@ -150,37 +147,37 @@ merged:
    git remote add upstream https://github.com/aristanetworks/ansible-avd.git
    ```
 
-2. If you cloned a while ago, get the latest changes from upstream:
+- If you cloned a while ago, get the latest changes from upstream:
 
    ```bash
    git checkout <dev-branch>
    git pull upstream <dev-branch>
    ```
 
-3. Create a new topic branch (off the main project development branch) to
+- Create a new topic branch (off the main project development branch) to
    contain your feature, change, or fix:
 
    ```bash
    git checkout -b <topic-branch-name>
    ```
 
-4. Commit your changes in logical chunks. Please adhere to these [git commit
+- Commit your changes in logical chunks. Please adhere to these [git commit
    message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
    or your code is unlikely be merged into the main project. Use Git's
-   [interactive rebase](https://help.github.com/articles/interactive-rebase)
+   [git rebase](https://docs.github.com/en/free-pro-team@latest/github/using-git/about-git-rebase)
    feature to tidy up your commits before making them public.
 
-5. Locally merge (or rebase) the upstream development branch into your topic branch:
+- Locally merge (or rebase) the upstream development branch into your topic branch:
 
    ```bash
    git pull [--rebase] upstream <dev-branch>
    ```
 
-6. Push your topic branch up to your fork:
+- Push your topic branch up to your fork:
 
    ```bash
    git push origin <topic-branch-name>
    ```
 
-10. [Open a Pull Request](https://github.com/aristanetworks/ansible-avd/pulls)
+- [Open a Pull Request](https://github.com/aristanetworks/ansible-avd/pulls)
     with a clear title and description.
