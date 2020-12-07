@@ -1,10 +1,12 @@
 version: "3"
 services:
   ansible:
-    image: avdteam/base:3.6-v1.0
+    image: avdteam/base:3.6
     container_name: ansible_avd
     volumes:
       - ./../../:/projects
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.gitconfig:/home/avd/.gitconfig
     command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
 
   webdoc_cvp:
