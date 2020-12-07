@@ -52,7 +52,7 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast is none %}
    spanning-tree portfast
-{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast is not none %}
+{%         elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast in ['auto', 'edge', 'network', 'normal']%}
    spanning-tree portfast {{ port_channel_interfaces[port_channel_interface].spanning_tree_portfast }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is defined and port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter == true %}

@@ -48,7 +48,7 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast is none %}
    spanning-tree portfast
-{%             elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast is not none %}
+{%             elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast in ['auto', 'edge', 'network', 'normal'] %}
    spanning-tree portfast {{ ethernet_interfaces[ethernet_interface].spanning_tree_portfast }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is defined and ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter == true %}
