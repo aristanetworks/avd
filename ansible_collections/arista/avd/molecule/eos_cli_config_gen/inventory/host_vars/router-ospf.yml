@@ -1,0 +1,12 @@
+### Routing - OSPF ###
+router_ospf:
+  process_ids:
+    100:
+      passive_interface_default: true
+      router_id: 192.168.255.3
+      no_passive_interfaces:
+        - Ethernet1
+        - Ethernet2
+        - Vlan4093
+      bfd_enable: true
+      max_lsa: 12000

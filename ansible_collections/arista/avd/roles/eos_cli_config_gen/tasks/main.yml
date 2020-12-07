@@ -1,9 +1,16 @@
 ---
+- name: Check if structure configuration file exists
+  tags: [build, provision]
+  stat:
+    path: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+  register: stat_result
+  delegate_to: localhost
 
-- name: include device intended structure configuration variables
+- name: Include device intended structure configuration variables
   include_vars: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
   delegate_to: localhost
   tags: [build, provision]
+  when: stat_result.stat.exists
 
 - name: Generate eos intended configuration
   template:

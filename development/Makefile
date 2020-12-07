@@ -1,5 +1,5 @@
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG = 3.6
+DOCKER_TAG = 3.6-v1.0
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
 PIP_REQ ?=

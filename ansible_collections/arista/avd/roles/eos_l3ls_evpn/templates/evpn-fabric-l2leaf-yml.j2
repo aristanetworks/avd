@@ -17,6 +17,13 @@
 {%             else %}
 {%                 set switch.spanning_tree_mode = l2leaf.defaults.spanning_tree_mode %}
 {%             endif %}
+{%             if l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled %}
+{%             elif l2leaf.defaults.igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l2leaf.defaults.igmp_snooping_enabled %}
+{%             else %}
+{%                 set leaf.igmp_snooping_enabled = default_igmp_snooping_enabled %}
+{%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
 {%                 set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
 {%             else %}
@@ -187,11 +194,6 @@ load_interval:
 queue_monitor_length:
 {% include 'base/queue-monitor-length.j2' %}
 
-{# logging #}
-### Logging ###
-logging:
-{% include 'base/logging.j2' %}
-
 {# name servers #}
 ### Name Servers ###
 name_server:
@@ -212,7 +214,7 @@ redundancy:
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
-{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
+{% include 'fabric/mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -236,10 +238,10 @@ clock:
 ### VLANs ###
 vlans:
 {# mlag VLANs #}
-{% include 'mlag/leaf-mlag-vlans.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -251,21 +253,21 @@ vrfs:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
-{% include 'mlag/leaf-mlag-peer-link.j2' %}
+{% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf-l2leafs-uplinks/l2leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
-{% include 'mlag/leaf-mlag-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -276,7 +278,7 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
-{% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -288,13 +290,17 @@ tcam_profile:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
+{# Tenant ip-igmp-snooping #}
+ip_igmp_snooping:
+{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
+
 {# static_routes #}
 ### static routes ###
 static_routes:
 {% include 'routing/static-routes.j2' %}
 
 {# MLAG Configuration #}
-{% include 'mlag/leaf-mlag-configuration.j2' %}
+{% include 'fabric/mlag/leaf-mlag-configuration.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

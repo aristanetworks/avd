@@ -1,0 +1,59 @@
+### Tacacs+ Servers
+tacacs_servers:
+  hosts:
+    - host: 10.10.10.157
+      vrf: mgt
+      key: 071B245F5A
+    - host: 10.10.10.249
+      key: 071B245F5A
+
+### AAA Server Groups
+aaa_server_groups:
+  - name: TACACS
+    type: tacacs+
+    servers:
+      - server: 10.10.10.157
+        vrf: mgt
+      - server: 10.10.10.249
+
+## AAA Authentication
+aaa_authentication:
+ login:
+  default: group TACACS local
+  serial_console: local
+
+## AAA Authorization
+aaa_authorization:
+  exec_default: local
+  config_commands: true
+
+## AAA Accounting
+aaa_accounting:
+  exec:
+    default:
+      type: start-stop
+      group: TACACS
+  commands:
+    commands_default:
+      - commands: all
+        type: start-stop
+        group: TACACS
+        logging: true
+      - commands: 0
+        type: start-stop
+        logging: true
+
+### Local Users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  ansible:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$.I7/ZR/zlLIUv8fr$vR/JvLTbq5amMt6Y1SE4CKlPDv/AzJYlFYHkUZ17BDovm0Oi4aLdBULe1EmZ0Y9xKjVLMKpxCSKmlrAioDxbQ0

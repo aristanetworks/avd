@@ -12,6 +12,9 @@ interface {{ loopback_interface }}
 {%         if loopback_interfaces[loopback_interface].vrf is defined and loopback_interfaces[loopback_interface].vrf is not none %}
    vrf {{ loopback_interfaces[loopback_interface].vrf }}
 {%         endif %}
+{%             if loopback_interfaces[loopback_interface].ip_proxy_arp is defined and loopback_interfaces[loopback_interface].ip_proxy_arp == true %}
+   ip proxy-arp 
+{%             endif %}
 {%         if loopback_interfaces[loopback_interface].ip_address is defined and loopback_interfaces[loopback_interface].ip_address is not none %}
    ip address {{ loopback_interfaces[loopback_interface].ip_address }}
 {%         endif %}

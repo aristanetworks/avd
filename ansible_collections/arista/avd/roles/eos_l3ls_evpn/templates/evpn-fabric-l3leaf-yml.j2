@@ -18,6 +18,13 @@
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled %}
+{%             elif l3leaf.defaults.igmp_snooping_enabled is defined %}
+{%                 set leaf.igmp_snooping_enabled = l3leaf.defaults.igmp_snooping_enabled %}
+{%             else %}
+{%                 set leaf.igmp_snooping_enabled = default_igmp_snooping_enabled %}
+{%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
 {%                 set leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
 {%             else %}
@@ -43,9 +50,11 @@
 {%             else %}
 {%                 set switch.platform = l3leaf.defaults.platform %}
 {%             endif %}
-{%             if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+{%             if bgp_as is defined and bgp_as is not none and overlay_routing_protocol|lower == 'ibgp' %}
+{%                  set leaf.bgp_as = bgp_as %}
+{%             elif l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
-{%             else %}
+{%             elif l3leaf.defaults.bgp_as is defined %}
 {%                 set leaf.bgp_as = l3leaf.defaults.bgp_as %}
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address is defined %}
@@ -123,7 +132,84 @@
 {%     endif %}
 {% endfor %}
 {% set leaf.vrfs = leaf.vrfs | unique  %}
-
+{# Setting evpn_rd_admin_subfield #}
+{% set leaf.evpn_rd_admin_subfield = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{% if evpn_rd_type is defined and evpn_rd_type is not none %}
+{%     if evpn_rd_type.admin_subfield is defined and evpn_rd_type.admin_subfield is not none %}
+{%         if evpn_rd_type.admin_subfield == "vtep_loopback" %}
+{%             if leaf.mlag == true and leaf.mlag_role == "primary" %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{%             elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) %}
+{%             else %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{%             endif %}
+{%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
+{%             set leaf.evpn_rd_admin_subfield = leaf.bgp_as %}
+{%         elif evpn_rd_type.admin_subfield == "spine_asn" %}
+{%             set leaf.evpn_rd_admin_subfield = spine.bgp_as %}
+{%         elif evpn_rd_type.admin_subfield | ipaddr %}
+{%             set leaf.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
+{%         elif evpn_rd_type.admin_subfield is number and evpn_rd_type.admin_subfield >= 0 and evpn_rd_type.admin_subfield <= 4294967295 %}
+{%             set leaf.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
+{%         endif %}
+{%     endif %}
+{% endif %}
+{# Setting evpn_rt_admin_subfield #}
+{% set leaf.evpn_rt_admin_subfield = false %}
+{% if evpn_rt_type is defined and evpn_rt_type is not none %}
+{%     if evpn_rt_type.admin_subfield is defined and evpn_rt_type.admin_subfield is not none %}
+{%         if evpn_rt_type.admin_subfield == "leaf_asn" %}
+{%             set leaf.evpn_rt_admin_subfield = leaf.bgp_as %}
+{%         elif evpn_rt_type.admin_subfield == "spine_asn" %}
+{%             set leaf.evpn_rt_admin_subfield = spine.bgp_as %}
+{%         elif evpn_rt_type.admin_subfield is number and evpn_rt_type.admin_subfield >= 0 and evpn_rt_type.admin_subfield <= 4294967295 %}
+{%             set leaf.evpn_rt_admin_subfield = evpn_rt_type.admin_subfield %}
+{%         endif %}
+{%     endif %}
+{% endif %}
+{# Build variables for fabric protocols #}
+{# Logic for underlay routing protocol configured on device #}
+{% if underlay_routing_protocol is defined %}
+{%     if underlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.underlay_routing_protocol = 'ibgp'%}
+{%     elif underlay_routing_protocol|lower == 'isis' %}
+{%         set switch.underlay_routing_protocol = 'isis' %}
+{%     elif underlay_routing_protocol|lower == 'ospf' %}
+{%         set switch.underlay_routing_protocol = 'ospf' %}
+{%     else %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.underlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for overlay protocol definition #}
+{% if overlay_routing_protocol is defined %}
+{%     if overlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.overlay_routing_protocol = 'ibgp'%}
+{%     else %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for route_reflector role #}
+{% set switch.is_route_reflector = false %}
+{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%         if l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector is defined and l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector == true %}
+{%             set switch.is_route_reflector = true %}
+{%         endif%}
+{%     endfor %}
+{% endfor %}
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
@@ -184,11 +270,6 @@ load_interval:
 queue_monitor_length:
 {% include 'base/queue-monitor-length.j2' %}
 
-{# logging #}
-### Logging ###
-logging:
-{% include 'base/logging.j2' %}
-
 {# name servers #}
 ### Name Servers ###
 name_server:
@@ -209,7 +290,7 @@ redundancy:
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
-{% include 'mlag/leaf-mlag-spanning-tree.j2' %}
+{% include 'fabric/mlag/leaf-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -233,10 +314,10 @@ clock:
 ### VLANs ###
 vlans:
 {# mlag VLANs #}
-{% include 'mlag/leaf-mlag-vlans.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -245,7 +326,7 @@ vrfs:
 {% include 'base/mgmt-vrf.j2' %}
 
 {# Tenant VRFS #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
 {# bfd multihop #}
 ### bfd multihop ###
@@ -256,36 +337,36 @@ bfd_multihop:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-port-channel-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
-{% include 'mlag/leaf-mlag-peer-link.j2' %}
+{% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
-{% include 'edge-ports/leaf-server-port-channels.j2' %}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# Point-to-Point Interfaces to Spine Switches #}
-{% include 'underlay-overlay/leaf-p2p-interfaces.j2'%}
+{% include 'fabric/interfaces/leaf-p2p-interfaces.j2'%}
 {# mlag interfaces #}
-{% include 'mlag/leaf-mlag-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
-{% include 'l3leaf-l2leafs-uplinks/l3leaf-ethernet-uplinks.j2' %}
+{% include 'l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Server - Interfaces Configuration #}
-{% include 'edge-ports/leaf-server-interfaces.j2' %}
+{% include 'edge_ports/leaf-server-interfaces.j2' %}
 
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
 {# overlay peering interface #}
-{% include 'underlay-overlay/leaf-overlay-loopback.j2'%}
+{% include 'fabric/interfaces/leaf-overlay-loopback.j2'%}
 {# intentional blank line #}
 
 {# VTEP VXLAN Tunnel Source #}
-{% include 'underlay-overlay/leaf-vtep-vxlan-tunnel-loopback.j2'%}
+{% include 'fabric/interfaces/leaf-vtep-vxlan-tunnel-loopback.j2'%}
 {# Tenant VRF Loopback - to allow VTEPs daignostics from switch #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vrf-loopbacks.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vrf-loopbacks.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -296,14 +377,14 @@ management_interfaces:
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
-{% include 'mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
 {# Tenant vlan interfaces #}
-{% include 'tenant-evpn-vxlan/leaf-tenant-vlan-interfaces.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
 
 {# vxlan interface #}
 ### VxLAN interface ###
 vxlan_tunnel_interface:
-{% include 'tenant-evpn-vxlan/leaf-vxlan-vtep-interface.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-vxlan-vtep-interface.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -320,7 +401,11 @@ ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+
+{# Tenant ip-igmp-snooping #}
+ip_igmp_snooping:
+{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
 
 {# static_routes #}
 ### static routes ###
@@ -330,50 +415,55 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'underlay-overlay/leaf-prefix-lists.j2' %}
+{% include 'fabric/bgp_base/leaf-prefix-lists.j2' %}
 
 {# MLAG Configuration #}
-{% include 'mlag/leaf-mlag-configuration.j2' %}
+{% include 'fabric/mlag/leaf-mlag-configuration.j2' %}
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'underlay-overlay/route-maps.j2' %}
+{% include 'fabric/bgp_base/route-maps.j2' %}
 
-{# BGP Configurartion #}
+{# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'underlay-overlay/leaf-router-bgp-base.j2' %}
+{% include 'fabric/bgp_base/leaf-router-bgp-base.j2' %}
   peer_groups:
-{% include 'underlay-overlay/leaf-router-bgp-peer-groups.j2' %}
+{% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
   neighbors:
-{% include 'underlay-overlay/leaf-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
   redistribute_routes:
-{% include 'underlay-overlay/leaf-router-bgp-redistribute-routes.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'underlay-overlay/leaf-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'underlay-overlay/leaf-router-bgp-address-family-ipv4.j2' %}
+{% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
   vlans:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
   vrfs:
-{% include 'tenant-evpn-vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
-{# OSPF Configurartion #}
+{# Extended Community Lists Configuration #}
+### Extended Community Lists ###
+ip_extcommunity_lists:
+{% include 'fabric/bgp_base/ip-extcommunity-lists.j2' %}
+
+{# OSPF Configuration #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'underlay-overlay/router-ospf.j2' %}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
 
-{# OSPF Configurartion #}
+{# ISIS Configuration #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'underlay-overlay/router-isis.j2' %}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

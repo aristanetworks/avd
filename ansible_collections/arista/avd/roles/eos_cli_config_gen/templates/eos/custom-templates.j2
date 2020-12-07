@@ -1,0 +1,6 @@
+{% if custom_templates is defined and custom_templates is not none %}
+{%     for custom_template in custom_templates %}
+{%         include custom_template %}
+
+{%     endfor %}
+{% endif %}
