@@ -77,6 +77,16 @@
 {%   endfor %}
 {% endif %}
 
+{%     if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}
+### BGP Route Aggregation
+
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
+| {{ aggregate_address }} |{% if router_bgp.aggregate_addresses[aggregate_address].as_set is defined and router_bgp.aggregate_addresses[aggregate_address].as_set == true %} True {% else %} False {% endif %}|{% if router_bgp.aggregate_addresses[aggregate_address].summary_only is defined and router_bgp.aggregate_addresses[aggregate_address].summary_only == true %} True {% else %} False {% endif %} |{% if router_bgp.aggregate_addresses[aggregate_address].attribute_map is defined and router_bgp.aggregate_addresses[aggregate_address].attribute_map is not none %} {{ router_bgp.aggregate_addresses[aggregate_address].attribute_map }} {% else %} Not Defined {% endif %}|{% if router_bgp.aggregate_addresses[aggregate_address].match_map is defined and router_bgp.aggregate_addresses[aggregate_address].match_map is not none %} {{ router_bgp.aggregate_addresses[aggregate_address].match_map }} {% else %} Not Defined {% endif %}|{% if router_bgp.aggregate_addresses[aggregate_address].advertise_only is defined and router_bgp.aggregate_addresses[aggregate_address].advertise_only == true %} True {% else %} False {% endif %}|
+{%         endfor %}
+{%     endif %}
+
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs

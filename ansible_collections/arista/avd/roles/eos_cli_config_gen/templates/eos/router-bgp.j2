@@ -95,6 +95,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}
+{%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
+   aggregate-address {{ aggregate_address }}{% if router_bgp.aggregate_addresses[aggregate_address].as_set is defined and router_bgp.aggregate_addresses[aggregate_address].as_set == true %} as-set{% endif %}{% if router_bgp.aggregate_addresses[aggregate_address].summary_only is defined and router_bgp.aggregate_addresses[aggregate_address].summary_only == true %} summary-only{% endif %}{% if router_bgp.aggregate_addresses[aggregate_address].attribute_map is defined and router_bgp.aggregate_addresses[aggregate_address].attribute_map is not none %} attribute-map {{ router_bgp.aggregate_addresses[aggregate_address].attribute_map }}{% endif %}{% if router_bgp.aggregate_addresses[aggregate_address].match_map is defined and router_bgp.aggregate_addresses[aggregate_address].match_map is not none %} match-map {{ router_bgp.aggregate_addresses[aggregate_address].match_map }}{% endif %}{% if router_bgp.aggregate_addresses[aggregate_address].advertise_only is defined and router_bgp.aggregate_addresses[aggregate_address].advertise_only == true %} advertise-only{% endif %}
+
+{%         endfor %}
+{%     endif %}
 {%     if router_bgp.redistribute_routes is defined and router_bgp.redistribute_routes is not none %}
 {%         for redistribute_route in router_bgp.redistribute_routes | arista.avd.natural_sort %}
    redistribute {{ redistribute_route }}{% if router_bgp.redistribute_routes[redistribute_route].route_map is defined and router_bgp.redistribute_routes[redistribute_route].route_map is not none %} route-map {{ router_bgp.redistribute_routes[redistribute_route].route_map }}{% endif %}
