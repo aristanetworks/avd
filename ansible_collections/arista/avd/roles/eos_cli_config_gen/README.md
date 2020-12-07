@@ -1174,7 +1174,7 @@ router_bgp:
       summary_only: < true | false >
       attribute_map: < route_map_name >
       match_map: < route_map_name >
-      advertise_only: true
+      advertise_only: < true | false >
   redistribute_routes:
     < route_type >:
       route_map: < route_map_name >
