@@ -1,4 +1,4 @@
-name: Ansible Molecule L3LS EVPN
+name: Ansible Molecule for CV Configuration build
 on:
   push:
     branches:
