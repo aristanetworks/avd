@@ -161,6 +161,13 @@ redundancy:
 # Use to change the EOS default of 300
 mac_address_table:
   aging_time: < time_in_seconds >
+
+# Direct configuration or overriding of Structured Configuration | Optional
+# This allows support of all features in eos_cli_config_gen without having to map them into l3ls role
+# Keys under eos_structured_config will be merged with the final structured config YAML before running documentation and eos_cli_config_gen roles.
+# The merge is a recursive combine of dictionaries so alloweing to add extra keys or override existing keys. Lists will always be replaced if defined.
+eos_structured_config:
+  < eos_structured_config >
 ```
 
 > In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
@@ -232,6 +239,20 @@ redundancy:
 # MAC address-table aging time
 mac_address_table:
   aging_time: 1500
+
+# Direct configuration or overriding of Structured Configuration | Optional
+# This allows support of all features in eos_cli_config_gen without having to map them into l3ls role
+# Keys under eos_structured_config will be merged with the final structured config YAML before running documentation and eos_cli_config_gen roles.
+# The merge is a recursive combine of dictionaries so alloweing to add extra keys or override existing keys. Lists will always be replaced if defined.
+eos_structured_config:
+  ethernet_interfaces:
+    Ethernet12:
+      description: My Extra Interface
+      ip_address: 1.2.3.4/24
+      mtu: 1500
+      peer: My_Peer
+      peer_interface: Ethernet123
+      peer_type: my_precious
 ```
 
 ### Fabric Underlay and Overlay Topology Variables
