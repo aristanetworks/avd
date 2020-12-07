@@ -1,0 +1,6 @@
+{{
+    lookup('template', root_dir ~ '/intended/structured_configs/' ~ inventory_hostname ~ '.yml') |
+    from_yaml |
+    combine((eos_structured_configuration if eos_structured_configuration is defined else {}), recursive=true) |
+    to_nice_yaml(indent=2,sort_keys=False)
+}}
