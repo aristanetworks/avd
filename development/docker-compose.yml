@@ -23,6 +23,6 @@ services:
     volumes:
       - ${PWD}/:/docs
     ports:
-      - 8002:8000
+      - 8000:8000
     entrypoint: ""
     command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]
