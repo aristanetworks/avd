@@ -465,6 +465,10 @@ spanning_tree:
 platform:
   trident:
     forwarding_table_partition: < partition >
+  sand:
+    lag:
+      hardware_only: < true | false >
+      mode: < mode | default -> 1024x16 >
 ```
 
 ### Tacacs+ Servers
