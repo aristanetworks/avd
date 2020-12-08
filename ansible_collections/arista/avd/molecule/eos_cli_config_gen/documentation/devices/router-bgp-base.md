@@ -286,7 +286,6 @@ Router ISIS not defined
 | maximum-paths 2 ecmp 2 |
 
 
-
 ### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
