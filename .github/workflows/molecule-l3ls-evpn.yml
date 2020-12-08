@@ -1,8 +1,5 @@
 name: Ansible Molecule L3LS EVPN
 on:
-  push:
-    branches:
-      - devel
   pull_request:
     paths:
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
@@ -10,11 +7,10 @@ on:
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-l3ls-evpn.yml'
-      # - '.github/git-repo-state-monitor.sh'
 jobs:
   molecule:
     name: Run CI test for eos_l3ls_evpn
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
       matrix:
