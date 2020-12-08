@@ -4,20 +4,22 @@
 | BGP AS | Router ID |
 | ------ | --------- |
 | {{ router_bgp.as }}|  {{ router_bgp.router_id }} |
-
 {% if router_bgp.bgp_cluster_id is defined and router_bgp.bgp_cluster_id is not none %}
+
 | BGP AS | Cluster ID |
 | ------ | --------- |
 | {{ router_bgp.as }}|  {{ router_bgp.bgp_cluster_id }} |
 {% endif %}
+{% if router_bgp.bgp_defaults is defined and router_bgp.bgp_defaults is not none %}
 
 | BGP Tuning |
 | ---------- |
-{% for bgp_default in router_bgp.bgp_defaults %}
+{%     for bgp_default in router_bgp.bgp_defaults %}
 | {{ bgp_default }} |
-{% endfor %}
-
+{%     endfor %}
+{% endif %}
 {% if router_bgp.peer_groups is defined and router_bgp.peer_groups is not none %}
+
 ### Router BGP Peer Groups
 {%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
 
@@ -61,8 +63,8 @@
 {%         endif %}
 {%     endfor %}
 {% endif %}
-
 {% if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS |
@@ -77,6 +79,7 @@
 {%     endfor %}
 {% endif %}
 {% if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}
+
 ### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
@@ -89,8 +92,8 @@
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
-
 {% if router_bgp.vlan_aware_bundles is defined and router_bgp.vlan_aware_bundles is not none %}
+
 **VLAN aware bundles:**
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
@@ -99,8 +102,8 @@
 | {{ vlan_aware_bundle }} | {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].rd }} | {% if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is not none %}{% for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both %} {{ route_target }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% endif %} | {% if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import is not none %}{% for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import %} {{ route_target }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% endif %} | {% if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export is defined and router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export is not none %} {% for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export %} {{ route_target }}{% if not loop.last %}<br>{% endif %}{% endfor %}{% endif %} | {%- for redistribute_route in router_bgp.vlan_aware_bundles[vlan_aware_bundle].redistribute_routes | arista.avd.natural_sort %} {{ redistribute_route }}{% if not loop.last %}<br>{% endif %} {% endfor -%} | {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan }} |
 {%     endfor %}
 {% endif %}
-
 {% if router_bgp.vlans is defined and router_bgp.vlans is not none %}
+
 **VLAN Based:**
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
@@ -111,8 +114,8 @@
 {% endif %}
 
 #### Router BGP EVPN VRFs
-
 {% if router_bgp.vrfs is defined and router_bgp.vrfs is not none %}
+
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 {%     for vrf in router_bgp.vrfs | arista.avd.natural_sort %}

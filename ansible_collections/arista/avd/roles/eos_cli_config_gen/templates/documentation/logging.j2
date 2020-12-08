@@ -35,23 +35,21 @@
 | Sequence-numbers | false |
 {%        endif %}
 {%     endif %}
+{%     if logging.vrfs is defined and logging.vrfs is not none %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
-{%     if logging.source_interface is defined and logging.source_interface is not none %}
+{%         if logging.source_interface is defined and logging.source_interface is not none %}
 | - | {{ logging.source_interface }} |
-{%     endif %}
-{%     if logging.vrfs is defined and logging.vrfs is not none %}
+{%         endif %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none %}
 | {{ vrf }} | {{ logging.vrfs[vrf].source_interface }} |
 {%              endif %}
 {%          endfor %}
-{%     endif %}
 
 | VRF | Hosts |
 | --- | ---------------- |
-{%     if logging.vrfs is defined and logging.vrfs is not none %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}

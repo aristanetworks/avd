@@ -1,9 +1,9 @@
 {# IP PIM Sparse Mode Summary #}
 {% if router_pim_sparse_mode is defined and router_pim_sparse_mode is not none %}
 ### IP Sparse Mode Information
-
 {%   if router_pim_sparse_mode.ipv4 is defined and router_pim_sparse_mode.ipv4 is not none %}
 {%          if router_pim_sparse_mode.ipv4.rp_addresses is defined and router_pim_sparse_mode.ipv4.rp_addresses is not none %}
+
 ### IP Rendez-vous Information
 
 | Rendez-vous Point Address | Group Address |
@@ -14,11 +14,10 @@
 {%                      endfor %}
 {%                endfor %}
 {%          endif %}
-
 {%          if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
 {%          endif %}
-
 {%          if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
+
 ### IP Anycast Information
 
 | IP Anycast Address | Other Rendez-vous Point Address | Register Count |

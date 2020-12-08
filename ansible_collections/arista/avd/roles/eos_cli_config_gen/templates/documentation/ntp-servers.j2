@@ -1,14 +1,13 @@
 {% if ntp_server is defined and ntp_server is not none %}
 ### NTP Summary
-
 {%   if ntp_server.local_interface.interface is defined and ntp_server.local_interface.interface is not none %}
+
 Local Interface: {{ ntp_server.local_interface.interface }}
 {%   endif %}
-
 {%   if ntp_server.local_interface.vrf is defined and ntp_server.local_interface.vrf is not none %}
+
 VRF: {{ ntp_server.local_interface.vrf }}
 {%   endif %}
-
 
 | Node | Primary |
 | ---- | ------- |
