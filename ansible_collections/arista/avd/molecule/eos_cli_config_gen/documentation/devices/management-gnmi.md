@@ -2,18 +2,14 @@
 
 # Table of Contents
 
-- [management-gnmi](#management-gnmi)
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-    - [Management Interfaces Summary](#management-interfaces-summary)
-    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
   - [DNS Domain](#dns-domain)
-  - [Domain-List](#domain-list)
   - [Name Servers](#name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -35,7 +31,6 @@
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-    - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
@@ -46,15 +41,11 @@
 - [Routing](#routing)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
-    - [IP Routing Summary](#ip-routing-summary)
-    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
-    - [IPv6 Routing Summary](#ipv6-routing-summary)
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
-- [Router BGP](#router-bgp)
+  - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
-    - [Router BFD Multihop Summary](#router-bfd-multihop-summary)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
   - [Router Multicast](#router-multicast)
@@ -76,7 +67,6 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
-  - [Custom Templates](#custom-templates)
 
 # Management
 
@@ -128,8 +118,31 @@ No NTP servers defined
 
 ## Management SSH
 
-
 Management SSH is not defined
+
+## Management API GNMI
+
+### Management API GNMI summary
+
+| VRF with GNMI | OCTA |
+| ---------- | ---------- |
+| MGMT |  Enabled  |
+| MONITORING |  Enabled  |
+
+### Management API gnmi configuration
+
+```eos
+!
+management api gnmi
+  transport grpc MGMT
+      ip access-group ACL-GNMI
+      vrf MGMT
+  !
+  transport grpc MONITORING
+      vrf MONITORING
+  !
+  provider eos-native
+```
 
 # Authentication
 
@@ -189,7 +202,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -210,14 +222,13 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
-
 
 # VLANs
 
@@ -227,6 +238,7 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
+No Ethernet interface defined
 
 ## Port-Channel Interfaces
 
@@ -256,7 +268,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -268,18 +280,19 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
-
-
+| default |  False | 
 
 ## Static Routes
+
+
+## IPv6 Static Routes
 
 
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 Router BGP not defined
 
@@ -297,6 +310,7 @@ Router BGP not defined
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 
@@ -370,6 +384,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined
