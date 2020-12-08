@@ -19,8 +19,8 @@ snmp-server view {{ view['name'] }} {{ view['MIB_family_name'] }} {% if view['in
 {%          endfor %}
 {%    endif %}
 {%    if snmp_server.communities is defined and snmp_server.communities is not none %}
-{%      for community in communities | arista.avd.natural_sort %}
-snmp-server community {{ community }} {% if snmp_server.communities[community].view is not none %}view {{ snmp_server.communities[community].view }}  {% endif %}{% if snmp_server.communities[community].access is defined %} {{ snmp_server.communities[community].access }} {% else %} ro {% endif %} {% if snmp_server.communities[community].access_list_ipv6.name is not none %} ipv6 {{ snmp_server.communities[community].access_list_ipv6.name }} {% endif %}{% if snmp_server.communities[community].access_list_ipv4.name is not none %}{{ snmp_server.communities[community].access_list_ipv4.name }} {% endif %}
+{%      for community in snmp_server.communities | arista.avd.natural_sort %}
+snmp-server community {{ community }} {% if snmp_server.communities[community].view is defined %}view {{ snmp_server.communities[community].view }}  {% endif %}{% if snmp_server.communities[community].access is defined %} {{ snmp_server.communities[community].access }} {% else %} ro {% endif %} {% if snmp_server.communities[community].access_list_ipv6.name is defined %} ipv6 {{ snmp_server.communities[community].access_list_ipv6.name }} {% endif %}{% if snmp_server.communities[community].access_list_ipv4.name is defined %}{{ snmp_server.communities[community].access_list_ipv4.name }} {% endif %}
 {%      endfor %}
 {%     endif %}
 {%     if snmp_server.groups is defined and snmp_server.groups is not none %}
