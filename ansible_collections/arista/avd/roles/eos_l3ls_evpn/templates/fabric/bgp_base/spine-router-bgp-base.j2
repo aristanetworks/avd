@@ -7,7 +7,13 @@
 {%         for bgp_default in spine_bgp_defaults %}
     - {{ bgp_default }}
 {%         endfor %}
+{%         if bgp_maximum_paths is defined and bgp_maximum_paths is not none and bgp_ecmp is defined and bgp_ecmp is not none %}
+    - maximum-paths {{ bgp_maximum_paths }} ecmp {{ bgp_ecmp }}
+{%         elif bgp_maximum_paths is defined and bgp_maximum_paths is not none %}
+    - maximum-paths {{ bgp_maximum_paths }}
+{%         else %}
     - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
+{%         endif %}
 {# Spine router bgp base configuration when IBGP route-reflector in the overlay #}
 {%     elif switch.overlay_routing_protocol == "ibgp" and switch.is_route_reflector == true %}
   as: {{ bgp_as }}
@@ -16,7 +22,6 @@
 {%         for bgp_default in spine_bgp_defaults %}
     - {{ bgp_default }}
 {%         endfor %}
-    - maximum-paths {{ spine.nodes | length }} ecmp {{ spine.nodes | length }}
   bgp_cluster_id: {{ overlay_loopback_network_summary  | ipaddr('network') | ipmath(spine.nodes[inventory_hostname].id) }}
 {%     endif %}
 {% endif %}

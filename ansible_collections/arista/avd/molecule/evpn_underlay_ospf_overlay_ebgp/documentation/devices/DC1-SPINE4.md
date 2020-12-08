@@ -456,7 +456,7 @@ Router ISIS not defined
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 10 ecmp 10 |
 
 ### Router BGP Peer Groups
 
@@ -484,6 +484,7 @@ Router ISIS not defined
 | 192.168.255.10 | 65104 |
 | 192.168.255.11 | 65104 |
 
+
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
@@ -501,7 +502,7 @@ router bgp 65001
    router-id 192.168.255.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
+   maximum-paths 10 ecmp 10
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
