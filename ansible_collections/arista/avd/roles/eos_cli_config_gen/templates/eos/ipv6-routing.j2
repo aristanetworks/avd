@@ -14,8 +14,7 @@ ipv6 unicast-routing vrf {{ vrf }}
 {%       endfor %}
 {% endif %}
 {% if ipv6_icmp_redirect is defined and ipv6_icmp_redirect is not none %}
-{%     if ipv6_icmp_redirect == false %}
+{%        if ipv6_icmp_redirect is defined and ipv6_icmp_redirect == false %}
 no ipv6 icmp redirect
-{%     else %}
-{%     endif %}
+{%        endif %}
 {% endif %}

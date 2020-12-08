@@ -18,8 +18,7 @@ no ip routing vrf {{ vrf }}
 {%     endfor %}
 {% endif %}
 {% if ip_icmp_redirect is defined and ip_icmp_redirect is not none %}
-{%     if ip_icmp_redirect == false %}
+{%        if ip_icmp_redirect is defined and ip_icmp_redirect == false %}
 no ip icmp redirect
-{%     else %}
-{%     endif %}
+{%        endif %}
 {% endif %}
