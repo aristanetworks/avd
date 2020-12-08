@@ -7,6 +7,12 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is defined and snmp_server.location is not none %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
+{%     if snmp_server.access_list_v4 is defined and snmp_server.access_list_v4 is not none %}
+snmp-server ipv4 access-list {{ snmp_server.access_list_v4 }}
+{%     endif %}
+{%     if snmp_server.access_list_v6 is defined and snmp_server.access_list_v6 is not none %}
+snmp-server ipv6 access-list {{ snmp_server.access_list_v6 }}
+{%     endif %}
 {%     if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
 {%          for local_interface in snmp_server.local_interfaces %}
 snmp-server {% if local_interface['vrf'] is defined and local_interface['vrf'] is not none %}vrf {{ local_interface['vrf'] }} {% endif %}local-interface {{ local_interface['name'] }}
