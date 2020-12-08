@@ -1,4 +1,4 @@
-name: Ansible Molecule L3LS EVPN
+name: Molecule validation for Release management
 on:
   pull_request:
     branches:
@@ -7,29 +7,9 @@ on:
     branches:
       - 'ci/git-status-molecule'
 jobs:
-  setup:
-    name: Build Molecule environement
-    runs-on: ubuntu-18.04
-    steps:
-      - name: 'set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v1
-      - name: Set up Python 3
-        uses: actions/setup-python@v2.1.4
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r development/requirements.txt
-          pip install -r development/requirements-dev.txt
-
   avd_eos_molecule:
     name: Run CI test for AVD EOS Configuration roles
     runs-on: ubuntu-18.04
-    needs: [setup]
     strategy:
       fail-fast: true
       matrix:
@@ -40,6 +20,24 @@ jobs:
           - 'eos_cli_config_gen'
           - 'upgrade_v1.0_to_v1.1'
     steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v1
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r development/requirements.txt
+          pip install -r development/requirements-dev.txt
+
       - name: Execute molecule
         run: |
           cd ansible_collections/arista/avd
