@@ -273,6 +273,9 @@ ip routing vrf TENANT_A_PROJECT02
 ## Static Routes
 
 
+## IPv6 Static Routes
+
+
 ## Router ISIS
 
 Router ISIS not defined

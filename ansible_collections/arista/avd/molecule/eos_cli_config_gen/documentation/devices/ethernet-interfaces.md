@@ -295,6 +295,9 @@ IP Virtual Router MAC Address is not defined
 ## Static Routes
 
 
+## IPv6 Static Routes
+
+
 ## Router ISIS
 
 Router ISIS not defined

@@ -1,4 +1,4 @@
-# test2
+# router-static
 
 # Table of Contents
 
@@ -201,37 +201,16 @@ Spanning-Tree Not Defined
 
 ### Internal VLAN Allocation Policy Summary
 
+**Default Allocation Policy**
+
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 1199 |
+| ascending | 1006 | 4094 |
 
-### Internal VLAN Allocation Policy Configuration
-
-```eos
-!
-vlan internal order ascending range 1006 1199
-```
 
 # VLANs
 
-### VLANs Summary
-
-| VLAN ID | Name | Trunk Groups |
-| ------- | ---- | ------------ |
-| 110 | PR01-DMZ | none  |
-| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
-
-### VLANs Device Configuration
-
-```eos
-!
-vlan 110
-   name PR01-DMZ
-!
-vlan 3010
-   name MLAG_iBGP_TENANT_A_PROJECT01
-   trunk group LEAF_PEER_L3
-```
+No VLANs defined
 
 # Interfaces
 
@@ -266,7 +245,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 
 ### IP Routing Device Configuration
 
@@ -278,12 +257,55 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
-
+| default |  False | 
+ 
 
 
 ## Static Routes
 
+
+### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| default  | 1.1.1.0/24 |  10.1.1.1  |  vlan101  |  Default  |  -  |  -  |  - |
+| default  | 1.1.2.0/24 |  10.1.1.1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DMZ  |  - |
+| customer01  | 1.2.1.0/24 |  10.1.2.1  |  vlan202  |  Default  |  -  |  -  |  - |
+| customer01  | 1.2.2.0/24 |  10.1.2.1  |  vlan101  |  201  |  667  |  RT-TO-FAKE-DMZ  |  - |
+
+### Static Routes Device Configuration
+
+```eos
+!
+ip route 1.1.1.0/24 Vlan101 10.1.1.1
+ip route 1.1.2.0/24 Vlan101 10.1.1.1 200 tag 666 name RT-TO-FAKE-DMZ
+ip route vrf customer01 1.2.1.0/24 Vlan202 10.1.2.1
+ip route vrf customer01 1.2.2.0/24 Vlan101 10.1.2.1 201 tag 667 name RT-TO-FAKE-DMZ
+```
+
+## IPv6 Static Routes
+
+
+### IPv6 Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| default  | 2a01:cb04:4e6:d300::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  Default  |  -  |  -  |  - |
+| default  | 2a01:cb04:4e6:d400::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DMZ  |  - |
+| default  | 2a01:cb04:4e6:d400::/64 |  2a01:cb04:4e6:d100::1  |  vlan101  |  200  |  666  |  RT-TO-FAKE-DB-ZONE  |  100 |
+| customer01  | 2a01:cb04:4e6:a300::/64 |  2a01:cb04:4e6:100::1  |  vlan101  |  Default  |  -  |  -  |  - |
+| customer01  | 2a01:cb04:4e6:a400::/64 |  2a01:cb04:4e6:100::1  |  vlan101  |  201  |  667  |  RT-TO-FAKE-DMZ  |  - |
+
+### Static Routes Device Configuration
+
+```eos
+!
+ipv6 route 2a01:cb04:4e6:d300::/64 Vlan101 2a01:cb04:4e6:d100::1
+ipv6 route 2a01:cb04:4e6:d400::/64 Vlan101 2a01:cb04:4e6:d100::1 200 tag 666 name RT-TO-FAKE-DMZ
+ipv6 route 2a01:cb04:4e6:d400::/64 Vlan101 2a01:cb04:4e6:d100::1 200 tag 666 name RT-TO-FAKE-DB-ZONE metric 100
+ipv6 route vrf customer01 2a01:cb04:4e6:a300::/64 Vlan101 2a01:cb04:4e6:100::1
+ipv6 route vrf customer01 2a01:cb04:4e6:a400::/64 Vlan101 2a01:cb04:4e6:100::1 201 tag 667 name RT-TO-FAKE-DMZ
+```
 
 ## Router ISIS
 

@@ -977,6 +977,7 @@ static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
 ```
@@ -992,6 +993,7 @@ ipv6_static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv6_network/Mask >
     gateway: < IPv6_address >
 ```
