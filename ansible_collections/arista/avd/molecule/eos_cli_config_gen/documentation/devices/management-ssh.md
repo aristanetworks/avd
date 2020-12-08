@@ -118,6 +118,7 @@ No NTP servers defined
 
 ## Management SSH
 
+
 ```eos
 !
 management ssh
@@ -190,6 +191,7 @@ No sFlow defined
 
 ## Hardware Counters
 
+
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -210,7 +212,7 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
