@@ -8,6 +8,7 @@ ethernet-interfaces
 logging-minimal
 logging
 loopbacks-interfaces
+management-gnmi
 mcast-pim
 none_configuration
 platform
