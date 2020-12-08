@@ -1,6 +1,6 @@
 {# spanning-tree #}
 {% if spanning_tree is defined and spanning_tree is not none %}
-### Spanning Tree Summary
+## Spanning Tree Summary
 
 Mode: {{ spanning_tree.mode }}
 {%     if spanning_tree.mode == "mstp" %}
@@ -12,7 +12,7 @@ Mode: {{ spanning_tree.mode }}
 | 0 | {{ spanning_tree.priority }} |
 {%     endif %}
 
-### Spanning Tree Device Configuration
+## Spanning Tree Device Configuration
 
 ```eos
 {% include 'eos/spanning-tree.j2' %}
