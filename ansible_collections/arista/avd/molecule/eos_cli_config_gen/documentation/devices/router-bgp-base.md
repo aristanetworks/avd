@@ -286,6 +286,13 @@ Router ISIS not defined
 | maximum-paths 2 ecmp 2 |
 
 
+### BGP Route Aggregation
+
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False  | Not Defined | Not Defined | True |
+| 1.12.1.0/24 | True | True  | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | False  | Not Defined | Not Defined | False |
 
 ### Router BGP EVPN Address Family
 
@@ -307,6 +314,9 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 2 ecmp 2
+   aggregate-address 1.1.1.0/24 advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 2.2.1.0/24
 ```
 
 ## Router BFD
