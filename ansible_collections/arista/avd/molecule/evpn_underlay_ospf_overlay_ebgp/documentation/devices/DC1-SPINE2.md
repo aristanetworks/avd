@@ -131,7 +131,6 @@ Local Interface: Management1
 
 VRF: MGMT
 
-
 | Node | Primary |
 | ---- | ------- |
 | 192.168.200.5 | true |
@@ -145,7 +144,6 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management SSH
-
 
 Management SSH is not defined
 
@@ -233,7 +231,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -253,7 +250,6 @@ MLAG not defined
 ### Spanning Tree Summary
 
 Mode: none
-
 
 ### Spanning Tree Device Configuration
 
@@ -403,8 +399,8 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True | 
-| MGMT | False |
+| default |  True| | MGMT | False |
+
 
 ### IP Routing Device Configuration
 
@@ -419,9 +415,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
- 
+| default |  False | | MGMT | False |
 
 
 ## Static Routes
@@ -450,7 +444,6 @@ Router ISIS not defined
 | BGP AS | Router ID |
 | ------ | --------- |
 | 65001|  192.168.255.2 |
-
 
 | BGP Tuning |
 | ---------- |
@@ -488,10 +481,7 @@ Router ISIS not defined
 
 #### Router BGP EVPN MAC-VRFs
 
-
-
 #### Router BGP EVPN VRFs
-
 
 ### Router BGP Device Configuration
 
@@ -552,6 +542,7 @@ router bfd
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 

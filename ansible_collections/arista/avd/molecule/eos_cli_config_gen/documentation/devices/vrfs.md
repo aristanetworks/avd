@@ -117,7 +117,6 @@ No NTP servers defined
 
 ## Management SSH
 
-
 Management SSH is not defined
 
 # Authentication
@@ -178,7 +177,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -207,7 +205,6 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-
 # VLANs
 
 No VLANs defined
@@ -216,6 +213,7 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
+No Ethernet interface defined
 
 ## Port-Channel Interfaces
 
@@ -245,10 +243,10 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
+| default |  False| | MGMT | False |
 | TENANT_A_PROJECT01 | True |
 | TENANT_A_PROJECT02 | True |
+
 
 ### IP Routing Device Configuration
 
@@ -263,11 +261,9 @@ ip routing vrf TENANT_A_PROJECT02
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
+| default |  False | | MGMT | False |
 | TENANT_A_PROJECT01 | False |
 | TENANT_A_PROJECT02 | False |
- 
 
 
 ## Static Routes
@@ -295,6 +291,7 @@ Router BGP not defined
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 
