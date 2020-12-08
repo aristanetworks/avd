@@ -9,6 +9,7 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -129,6 +130,10 @@ management ssh
       no shutdown
 ```
 
+## Management API GNMI
+
+Management API gnmi is not defined
+
 # Authentication
 
 ## Local Users
@@ -217,7 +222,7 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
@@ -287,7 +292,7 @@ IP Virtual Router MAC Address is not defined
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 Router BGP not defined
 
@@ -379,6 +384,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined

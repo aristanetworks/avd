@@ -31,7 +31,7 @@
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
-    - [Hardware Speed-Group Settings](#speed-group-settings)
+    - [Speed-Group Settings](#speed-group-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -80,6 +80,7 @@
     - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
+    - [GNMI Management API](#gnmi-management-api)
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
@@ -1457,7 +1458,17 @@ management_api_http:
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
 ```
+### GNMI Management API
 
+```yaml
+management_api_gnmi:
+  enable_vrfs:
+    < vrf_name_1 >:
+      access_group: < Standard IPv4 ACL name >
+    < vrf_name_2 >:
+      access_group: < Standard IPv4 ACL name >
+  octa:
+```
 ### Management Console
 
 ```yaml

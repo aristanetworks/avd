@@ -1,4 +1,4 @@
-# router-isis
+# management-gnmi
 
 # Table of Contents
 
@@ -122,7 +122,27 @@ Management SSH is not defined
 
 ## Management API GNMI
 
-Management API gnmi is not defined
+### Management API GNMI summary
+
+| VRF with GNMI | OCTA |
+| ---------- | ---------- |
+| MGMT |  Enabled  |
+| MONITORING |  Enabled  |
+
+### Management API gnmi configuration
+
+```eos
+!
+management api gnmi
+  transport grpc MGMT
+      ip access-group ACL-GNMI
+      vrf MGMT
+  !
+  transport grpc MONITORING
+      vrf MONITORING
+  !
+  provider eos-native
+```
 
 # Authentication
 
@@ -270,30 +290,7 @@ IP Virtual Router MAC Address is not defined
 
 ## Router ISIS
 
-### Router ISIS Summary
-
-| Settings | Value |
-| -------- | ----- |
-| Instance | EVPN_UNDERLAY |
-| Net-ID | 49.0001.0001.0001.0001.00 |
-| Type | level-2 |
-| Address Family | ipv4 unicast |
-
-### Router ISIS Device Configuration
-
-```eos
-router isis EVPN_UNDERLAY
-   net 49.0001.0001.0001.0001.00
-   is-type level-2
-   router-id ipv4 192.168.255.3
-   log-adjacency-changes
-   !
-   address-family ipv4 unicast
-      maximum-paths 2
-   !
-!
-```
-
+Router ISIS not defined
 
 ## Router BGP
 

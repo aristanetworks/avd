@@ -9,6 +9,7 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -128,6 +129,10 @@ management ssh
       no shutdown
 ```
 
+## Management API GNMI
+
+Management API gnmi is not defined
+
 # Authentication
 
 ## Local Users
@@ -215,7 +220,6 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-
 # VLANs
 
 No VLANs defined
@@ -224,6 +228,7 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
+No Ethernet interface defined
 
 ## Port-Channel Interfaces
 
@@ -253,7 +258,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -266,17 +271,18 @@ IP Virtual Router MAC Address is not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default |  False | 
- 
-
 
 ## Static Routes
+
+
+## IPv6 Static Routes
 
 
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 Router BGP not defined
 
@@ -294,6 +300,7 @@ Router BGP not defined
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 
@@ -367,6 +374,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined

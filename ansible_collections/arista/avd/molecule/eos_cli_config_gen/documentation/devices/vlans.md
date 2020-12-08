@@ -9,6 +9,7 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -119,6 +120,10 @@ No NTP servers defined
 
 Management SSH is not defined
 
+## Management API GNMI
+
+Management API gnmi is not defined
+
 # Authentication
 
 ## Local Users
@@ -197,13 +202,13 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
@@ -212,14 +217,14 @@ vlan internal order ascending range 1006 1199
 
 # VLANs
 
-### VLANs Summary
+## VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 110 | PR01-DMZ | none  |
 | 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
 
-### VLANs Device Configuration
+## VLANs Device Configuration
 
 ```eos
 !
@@ -289,7 +294,7 @@ IP Virtual Router MAC Address is not defined
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 Router BGP not defined
 
@@ -381,6 +386,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined
