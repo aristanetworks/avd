@@ -131,7 +131,6 @@ Local Interface: Management1
 
 VRF: MGMT
 
-
 | Node | Primary |
 | ---- | ------- |
 | 192.168.200.5 | true |
@@ -145,7 +144,6 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management SSH
-
 
 Management SSH is not defined
 
@@ -232,7 +230,6 @@ No logging settings defined
 No sFlow defined
 
 ## Hardware Counters
-
 
 No Hardware Counters defined
 
@@ -587,6 +584,7 @@ interface Vlan120
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
+   shutdown
    mtu 1560
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.10.254/24
@@ -756,14 +754,14 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True | 
-| MGMT | False |
+| default |  True| | MGMT | False |
 | Tenant_A_APP_Zone | True |
 | Tenant_A_DB_Zone | True |
 | Tenant_A_OP_Zone | True |
 | Tenant_A_WEB_Zone | True |
 | Tenant_B_OP_Zone | True |
 | Tenant_C_OP_Zone | True |
+
 
 ### IP Routing Device Configuration
 
@@ -784,15 +782,13 @@ ip routing vrf Tenant_C_OP_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
+| default |  False | | MGMT | False |
 | Tenant_A_APP_Zone | False |
 | Tenant_A_DB_Zone | False |
 | Tenant_A_OP_Zone | False |
 | Tenant_A_WEB_Zone | False |
 | Tenant_B_OP_Zone | False |
 | Tenant_C_OP_Zone | False |
- 
 
 
 ## Static Routes
@@ -821,7 +817,6 @@ Router ISIS not defined
 | BGP AS | Router ID |
 | ------ | --------- |
 | 65102|  192.168.255.7 |
-
 
 | BGP Tuning |
 | ---------- |
@@ -876,6 +871,7 @@ Router ISIS not defined
 | 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
 
+
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
@@ -890,7 +886,6 @@ Router ISIS not defined
 | Tenant_A_WEB_Zone | 192.168.255.7:11 |  11:11  |  |  | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.7:20 |  20:20  |  |  | learned | 210-211 |
 | Tenant_C_OP_Zone | 192.168.255.7:30 |  30:30  |  |  | learned | 310-311 |
-
 
 #### Router BGP EVPN VRFs
 
@@ -1197,7 +1192,6 @@ vrf instance Tenant_C_OP_Zone
 ```
 
 # Virtual Source NAT
-
 
 ### Virtual Source NAT Summary
 

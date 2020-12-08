@@ -117,7 +117,6 @@ No NTP servers defined
 
 ## Management SSH
 
-
 Management SSH is not defined
 
 # Authentication
@@ -178,7 +177,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -207,7 +205,6 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-
 # VLANs
 
 No VLANs defined
@@ -216,6 +213,7 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
+No Ethernet interface defined
 
 ## Port-Channel Interfaces
 
@@ -245,7 +243,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -258,10 +256,11 @@ IP Virtual Router MAC Address is not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default |  False | 
- 
-
 
 ## Static Routes
+
+
+## IPv6 Static Routes
 
 
 ## Router ISIS
@@ -275,7 +274,6 @@ Router ISIS not defined
 | BGP AS | Router ID |
 | ------ | --------- |
 | 65101|  192.168.255.3 |
-
 
 | BGP Tuning |
 | ---------- |
@@ -317,7 +315,6 @@ Router ISIS not defined
 | B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
-
 
 #### Router BGP EVPN VRFs
 
@@ -404,6 +401,7 @@ router bgp 65101
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 

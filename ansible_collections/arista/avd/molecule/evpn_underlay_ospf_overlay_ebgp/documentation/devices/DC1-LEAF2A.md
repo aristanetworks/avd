@@ -131,7 +131,6 @@ Local Interface: Management1
 
 VRF: MGMT
 
-
 | Node | Primary |
 | ---- | ------- |
 | 192.168.200.5 | true |
@@ -145,7 +144,6 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management SSH
-
 
 Management SSH is not defined
 
@@ -232,7 +230,6 @@ No logging settings defined
 No sFlow defined
 
 ## Hardware Counters
-
 
 No Hardware Counters defined
 
@@ -520,8 +517,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True | 
-| MGMT | False |
+| default |  True| | MGMT | False |
+
 
 ### IP Routing Device Configuration
 
@@ -536,9 +533,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
- 
+| default |  False | | MGMT | False |
 
 
 ## Static Routes
@@ -568,12 +563,11 @@ Router ISIS not defined
 | ------ | --------- |
 | 65102|  192.168.255.6 |
 
-
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
+| maximum-paths 10 ecmp 10 |
 
 ### Router BGP Peer Groups
 
@@ -598,14 +592,12 @@ Router ISIS not defined
 | 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
 
+
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
 
-
-
 #### Router BGP EVPN VRFs
-
 
 ### Router BGP Device Configuration
 
@@ -615,7 +607,7 @@ router bgp 65102
    router-id 192.168.255.6
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
+   maximum-paths 10 ecmp 10
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0

@@ -23,8 +23,10 @@
     tenant: {{ tenant }}
     tags: {{ tenants[tenant].vrfs[vrf].svis[svi].tags }}
     description: {{ per_svi.values.name }}
-{%                 if per_svi.values.enabled is defined or profile.values.enabled is defined %}
-    enabled: {{ per_svi.values.enabled if per_svi.values.enabled is defined else profile.values.enabled | default(true) }}
+{%                 if per_svi.values.enabled is defined and per_svi.values.enabled == true or profile.values.enabled is defined and profile.values.enabled == true %}
+    shutdown: false
+{%                 else %}
+    shutdown: true
 {%                 endif %}
     vrf: {{ vrf }}
 {# IP address configuration #}

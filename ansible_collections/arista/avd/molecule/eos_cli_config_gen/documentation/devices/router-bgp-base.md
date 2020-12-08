@@ -117,7 +117,6 @@ No NTP servers defined
 
 ## Management SSH
 
-
 Management SSH is not defined
 
 # Authentication
@@ -178,7 +177,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -207,7 +205,6 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-
 # VLANs
 
 No VLANs defined
@@ -216,6 +213,7 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
+No Ethernet interface defined
 
 ## Port-Channel Interfaces
 
@@ -245,7 +243,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -258,10 +256,11 @@ IP Virtual Router MAC Address is not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default |  False | 
- 
-
 
 ## Static Routes
+
+
+## IPv6 Static Routes
 
 
 ## Router ISIS
@@ -276,7 +275,6 @@ Router ISIS not defined
 | ------ | --------- |
 | 65101|  192.168.255.3 |
 
-
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
@@ -285,16 +283,19 @@ Router ISIS not defined
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
+### BGP Route Aggregation
 
+| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
+| ------ | ------ | ------------ | ------------- | --------- | -------------- |
+| 1.1.1.0/24 | False | False  | Not Defined | Not Defined | True |
+| 1.12.1.0/24 | True | True  | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | False  | Not Defined | Not Defined | False |
 
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
 
-
-
 #### Router BGP EVPN VRFs
-
 
 ### Router BGP Device Configuration
 
@@ -307,6 +308,9 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 2 ecmp 2
+   aggregate-address 1.1.1.0/24 advertise-only
+   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
+   aggregate-address 2.2.1.0/24
 ```
 
 ## Router BFD
@@ -323,6 +327,7 @@ router bgp 65101
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 

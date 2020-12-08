@@ -131,7 +131,6 @@ Local Interface: Management1
 
 VRF: MGMT
 
-
 | Node | Primary |
 | ---- | ------- |
 | 192.168.200.5 | true |
@@ -145,7 +144,6 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management SSH
-
 
 Management SSH is not defined
 
@@ -232,7 +230,6 @@ No logging settings defined
 No sFlow defined
 
 ## Hardware Counters
-
 
 No Hardware Counters defined
 
@@ -420,6 +417,7 @@ interface Vlan120
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
+   shutdown
    mtu 1560
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.10.254/24
@@ -495,10 +493,10 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True | 
-| MGMT | False |
+| default |  True| | MGMT | False |
 | Tenant_A_APP_Zone | True |
 | Tenant_A_WEB_Zone | True |
+
 
 ### IP Routing Device Configuration
 
@@ -515,11 +513,9 @@ ip routing vrf Tenant_A_WEB_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
+| default |  False | | MGMT | False |
 | Tenant_A_APP_Zone | False |
 | Tenant_A_WEB_Zone | False |
- 
 
 
 ## Static Routes
@@ -548,7 +544,6 @@ Router ISIS not defined
 | BGP AS | Router ID |
 | ------ | --------- |
 | 65101|  192.168.255.5 |
-
 
 | BGP Tuning |
 | ---------- |
@@ -592,6 +587,7 @@ Router ISIS not defined
 | 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
 
+
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
@@ -602,7 +598,6 @@ Router ISIS not defined
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.5:12 |  12:12  |  |  | learned | 130-131 |
 | Tenant_A_WEB_Zone | 192.168.255.5:11 |  11:11  |  |  | learned | 120-121 |
-
 
 #### Router BGP EVPN VRFs
 

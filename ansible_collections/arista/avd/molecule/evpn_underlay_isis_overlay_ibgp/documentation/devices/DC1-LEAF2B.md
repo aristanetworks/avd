@@ -131,7 +131,6 @@ Local Interface: Management1
 
 VRF: MGMT
 
-
 | Node | Primary |
 | ---- | ------- |
 | 192.168.200.5 | true |
@@ -145,7 +144,6 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management SSH
-
 
 Management SSH is not defined
 
@@ -232,7 +230,6 @@ No logging settings defined
 No sFlow defined
 
 ## Hardware Counters
-
 
 No Hardware Counters defined
 
@@ -527,8 +524,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True | 
-| MGMT | False |
+| default |  True| | MGMT | False |
+
 
 ### IP Routing Device Configuration
 
@@ -543,9 +540,7 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
-| MGMT | False |
- 
+| default |  False | | MGMT | False |
 
 
 ## Static Routes
@@ -598,7 +593,6 @@ router isis EVPN_UNDERLAY
 | ------ | --------- |
 | 65000|  192.168.255.7 |
 
-
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
@@ -630,10 +624,7 @@ router isis EVPN_UNDERLAY
 
 #### Router BGP EVPN MAC-VRFs
 
-
-
 #### Router BGP EVPN VRFs
-
 
 ### Router BGP Device Configuration
 

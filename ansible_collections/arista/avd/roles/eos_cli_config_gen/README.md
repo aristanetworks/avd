@@ -465,6 +465,10 @@ spanning_tree:
 platform:
   trident:
     forwarding_table_partition: < partition >
+  sand:
+    lag:
+      hardware_only: < true | false >
+      mode: < mode | default -> 1024x16 >
 ```
 
 ### Tacacs+ Servers
@@ -973,6 +977,7 @@ static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
 ```
@@ -988,6 +993,7 @@ ipv6_static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv6_network/Mask >
     gateway: < IPv6_address >
 ```
@@ -1165,6 +1171,16 @@ router_bgp:
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
+  aggregate_addresses:
+    < aggregate_address_1/mask >:
+      advertise_only: < true | false >
+    < aggregate_address_2/mask >:
+    < aggregate_address_3/mask >:
+      as_set: < true | false >
+      summary_only: < true | false >
+      attribute_map: < route_map_name >
+      match_map: < route_map_name >
+      advertise_only: < true | false >
   redistribute_routes:
     < route_type >:
       route_map: < route_map_name >

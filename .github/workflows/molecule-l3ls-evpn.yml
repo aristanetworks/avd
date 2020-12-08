@@ -1,8 +1,5 @@
 name: Ansible Molecule L3LS EVPN
 on:
-  push:
-    branches:
-      - devel
   pull_request:
     paths:
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
@@ -10,15 +7,10 @@ on:
       - 'ansible_collections/arista/avd/molecules/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-l3ls-evpn.yml'
-      # - '.github/git-repo-state-monitor.sh'
 jobs:
   molecule:
     name: Run CI test for eos_l3ls_evpn
-    runs-on: ubuntu-latest
-    # Deactivated as per GH changes
-    # env:
-    #   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-    #   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
       matrix:
@@ -46,12 +38,12 @@ jobs:
       - name: Execute molecule
         run: |
           cd ansible_collections/arista/avd
-          molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
+          molecule test --destroy=never --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
 
-      - name: Monitor git status
-        run: |
-          bash .github/git-repo-state-monitor.sh
+      # - name: Monitor git status
+      #   run: |
+      #     bash .github/git-repo-state-monitor.sh
 
       - uses: actions/upload-artifact@v1
         with:

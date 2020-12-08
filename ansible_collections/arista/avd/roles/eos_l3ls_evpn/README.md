@@ -299,6 +299,13 @@ mlag_ips:
   leaf_peer_l3: < IPv4_network/Mask >
   mlag_peer: < IPv4_network/Mask >
 
+# BGP multi-path
+# If not defined these values will be equal by default to the number of spines in the fabric
+# If defined the values defined will both be applied to leaf and spine switches
+# Note: these values are only relevant for an eBGP scenario
+bgp_maximum_paths: <number_of_max_paths>
+bgp_ecmp: <number_of_ecmp_paths>
+
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
 # EVPN_OVERLAY_PEERS | Required

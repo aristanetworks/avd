@@ -1,0 +1,51 @@
+name: Molecule validation for Release management
+on:
+  pull_request:
+    branches:
+      - 'releases/**'
+jobs:
+  avd_eos_molecule:
+    name: Run CI test for AVD EOS Configuration roles
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ibgp'
+          - 'eos_cli_config_gen'
+          - 'upgrade_v1.0_to_v1.1'
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v1
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r development/requirements.txt
+          pip install -r development/requirements-dev.txt
+
+      - name: Execute molecule
+        run: |
+          cd ansible_collections/arista/avd
+          molecule test --destroy=never --scenario-name ${{ matrix.avd_scenario }}
+          ls -alR molecule
+
+      - name: Monitor git status
+        run: |
+          bash .github/git-repo-state-monitor.sh
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: molecule-results-${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
