@@ -13,11 +13,7 @@ on:
 jobs:
   molecule:
     name: Run CI test for dhcp_provisioner
-    runs-on: ubuntu-latest
-    # Deactivated as per GH changes
-    # env:
-    #   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-    #   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
       matrix:
@@ -45,10 +41,6 @@ jobs:
           cd ansible_collections/arista/avd
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
-
-      - name: Monitor git status
-        run: |
-          bash .github/git-repo-state-monitor.sh
 
       - uses: actions/upload-artifact@v1
         with:
