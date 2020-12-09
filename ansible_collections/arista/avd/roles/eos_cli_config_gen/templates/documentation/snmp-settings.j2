@@ -1,9 +1,26 @@
 {% if snmp_server is defined and snmp_server is not none %}
 ### SNMP Configuration Summary
 
-| Contact | Location | Local Interface [VRF] | SNMP Traps | VRF | IPv4 ACL | IPv6 ACL |
-| ------- | -------- | --------------------- | ---------- | --- | -------- | -------- |
-| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}{% for interfaces in snmp_server.local_interfaces %}- {{interfaces.name}} [{{interfaces.vrf | default('default')}}]<br>{% endfor %}{% endif %} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% endif %} | {% if snmp_server.vrfs is defined and snmp_server.vrfs is not none %}{% for vrf in snmp_server.vrfs %}{% if vrf.enable %}- {{vrf.name}}<br>{% endif %}{% endfor %}{% endif %} | {{ snmp_server.access_list_v4 | default('-') }} | {{ snmp_server.access_list_v6 | default('-') }} |
+| Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
+| ------- | -------- | ---------- | -------- | -------- |
+| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% endif %} | {{ snmp_server.access_list_v4 | default('-') }} | {{ snmp_server.access_list_v6 | default('-') }} |
+
+
+| Local Interface | VRF |
+| --------------- | --- |
+{% if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
+{%      for interface in snmp_server.local_interfaces %}
+| {{interface.name}} | {{interface.vrf | default('default')}} |
+{%      endfor %}
+{% endif %}
+
+| VRF | Status |
+| --- | ------ |
+{% if snmp_server.vrfs is defined and snmp_server.vrfs is not none %}
+{%      for vrf in snmp_server.vrfs %}
+| {{vrf.name}} | {% if vrf.enable %} Enabled {% else %} Disabled {% endif %} |
+{%      endfor %}
+{% endif %}
 
 {%  if snmp_server.hosts is defined and snmp_server.hosts is not none %}
 ### SNMP Hosts Configuration
@@ -18,10 +35,8 @@
 {%      endfor %}
 {%  endif %}
 
-### SNMP Other Configuration
-
 {%  if snmp_server.views is defined and snmp_server.views is not none %}
-#### SNMP Views Configuration
+### SNMP Views Configuration
 
 | View | MIB Family Name | Status |  
 | ---- | --------------- | ------ | 
@@ -31,7 +46,7 @@
 {%  endif %}
 
 {%  if snmp_server.groups is defined and snmp_server.groups is not none %}
-#### SNMP Groups Configuration
+### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |  
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
@@ -41,7 +56,7 @@
 {%  endif %}
 
 {%  if snmp_server.users is defined and snmp_server.users is not none %}
-#### SNMP Users Configuration
+### SNMP Users Configuration
 
 | User | Group | Version | Authentication | Privacy | 
 | ---- | ----- | ------- | -------------- | ------- |
