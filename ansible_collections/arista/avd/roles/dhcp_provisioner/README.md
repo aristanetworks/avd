@@ -79,7 +79,7 @@ _Example_:
         ztp_mac_source: system
 ```
 
-This module also reads information from Favbric definition. For any node defined under __spine__, __l3leaf__ and __l2leaf__, role generate an DHCP entry if mac-address is found. Entry is based on the following fields:
+This module also reads information from Fabric definition. For any node defined under __spine__, __l3leaf__ and __l2leaf__, role generate an DHCP entry if mac-address is found. Entry is based on the following fields:
 
 - __`mgmt_ip`__: Management IP set as per `eos_l3ls_evpn`
 - __`mac_address`__: Mac address used for DHCP. it can be either interface mac-address or system-mac-address
