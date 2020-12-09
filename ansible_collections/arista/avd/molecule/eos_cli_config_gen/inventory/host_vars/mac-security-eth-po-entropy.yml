@@ -1,0 +1,75 @@
+### MACsec
+mac_security:
+  license:
+    license_name: license1
+    license_key: 123456
+  profiles:
+    A1:
+      connection_keys:
+        1:
+          encrypted_key: 123456
+          fallback: true
+        0124579:
+          encrypted_key: 123456
+          fallback: true
+        0124578:
+          encrypted_key: 7890123
+          fallback: false
+    A2:
+      connection_keys:
+        1:
+          encrypted_key: 123456
+          fallback: true
+        # 2:
+        #   encrypted_key: 123456
+        #   fallback: true
+    #     ckn:
+    #     encrypted_cak:
+    #     mka:
+    #       session:
+    #         rekey_period:
+    # A11:
+    #   key:
+    #     ckn:
+    #     encrypted_cak:
+    #   fallback_key:
+    #     ckn:
+    #     encrypted_cak:
+    #     mka:
+    #       session:
+    #         rekey_period:
+    # A21:
+    #   key:
+    #     ckn:
+    #     encrypted_cak:
+    #   fallback_key:
+    #     ckn:
+    #     encrypted_cak:
+    #     mka:
+    #       session:
+    #         rekey_period:
+
+### natural sort vs arista.avd.natural_sort
+
+### Mgmt sec
+management_security:
+  entropy_source: hardware
+
+
+### L2 portchannel
+port_channel_interfaces:
+  Port-Channel3:
+    description: L2-PORT
+    vlans: 1-5
+    mode: trunk
+    mac_security:
+      profiles: A1
+
+
+# Routed Interfaces
+ethernet_interfaces:
+  Ethernet1:
+    mode: routed
+    ip_address: 1.1.1.1/24
+    mac_security:
+        profiles: A1

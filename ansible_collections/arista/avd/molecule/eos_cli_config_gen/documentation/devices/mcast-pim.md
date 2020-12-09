@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 
@@ -254,7 +255,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
+| default |  False|
 
 ### IP Routing Device Configuration
 
@@ -266,7 +267,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False |
 
 ## Static Routes
 
@@ -335,7 +336,7 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.16/32
       rp address 10.238.1.161 239.12.12.20/32
       rp address 10.238.1.161 239.12.12.21/32
-      anycast-rp 10.38.1.161 10.50.64.16 register-count 15 
+      anycast-rp 10.38.1.161 10.50.64.16 register-count 15
 ```
 
 # Filters

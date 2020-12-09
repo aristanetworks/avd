@@ -1,4 +1,4 @@
-# terminattr-cloud
+# mac-security-eth-po-entropy
 
 # Table of Contents
 
@@ -9,8 +9,6 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -120,16 +118,8 @@ No NTP servers defined
 
 ## Management SSH
 
+
 Management SSH is not defined
-
-## Management API GNMI
-
-Management API gnmi is not defined
-
-## Management API HTTP
-
-
-Management API HTTP is not defined
 
 # Authentication
 
@@ -167,7 +157,16 @@ AAA accounting not defined
 
 # Management Security
 
-Management Security not defined
+### Management Security
+
+
+### Management Security Configuration
+
+```eos
+!
+management security
+   entropy source hardware
+```
 
 # Aliases
 
@@ -177,20 +176,7 @@ Aliases not defined
 
 ## TerminAttr Daemon
 
-### TerminAttr Daemon Summary
-
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- |
-| gzip | apiserver.corp.arista.io:9910 | magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | mgt |
-
-### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=apiserver.corp.arista.io:443 -cvcompression=gzip -taillogs -cvauth=token-secure,/tmp/cv-onboarding-token -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent  -cvvrf=mgt
-   no shutdown
-```
+TerminAttr Daemon not defined
 
 ## Logging
 
@@ -201,6 +187,7 @@ No logging settings defined
 No sFlow defined
 
 ## Hardware Counters
+
 
 No Hardware Counters defined
 
@@ -222,13 +209,14 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-## Internal VLAN Allocation Policy Summary
+### Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
+
 
 # VLANs
 
@@ -238,11 +226,41 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
-No Ethernet interface defined
+### Ethernet Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
+| Ethernet1 || 1500 | switched | routed | - | - | - | 1.1.1.1/24 | - | - |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   ip address 1.1.1.1/24
+   mac security profile A1
+```
 
 ## Port-Channel Interfaces
 
-No Port-Channels defined
+### Port-Channel Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
+| Port-Channel3 | L2-PORT | 1500 | switched | trunk | 1-5 | - | - | - | - | - | - | - | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel3
+   description L2-PORT
+   switchport trunk allowed vlan 1-5
+   switchport mode trunk
+   mac security profile A1
+```
 
 ## Loopback Interfaces
 
@@ -268,7 +286,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False|
+| default |  False | 
 
 ### IP Routing Device Configuration
 
@@ -280,19 +298,18 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
+ 
+
 
 ## Static Routes
-
-
-## IPv6 Static Routes
 
 
 ## Router ISIS
 
 Router ISIS not defined
 
-## Router BGP
+# Router BGP
 
 Router BGP not defined
 
@@ -310,7 +327,6 @@ Router BGP not defined
 
 ## IP IGMP Snooping
 
-No IP IGMP configuration
 
 ## Router Multicast
 
@@ -384,6 +400,38 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-# Custom Templates
+# MACsec
+
+### MACsec Summary
+
+License installed!
+
+### MACsec Profile Summary
+
+| Profile   |  CNK            | CNA          | Fallback  |
+| --------- | --------------- | ------------ | --------- |
+ profile A1 |
+ key 1 | 7 123456 | fallback |
+ key 0124579 | 7 123456 | fallback |
+ key 0124578 | 7 7890123 |  |
+ profile A2 |
+ key 1 | 7 123456 | fallback |
+
+### MACsec Device Configuration
+
+```eos
+!
+mac security
+   license license1 123456
+   !
+   profile A1
+      key 1 7 123456 fallback
+      key 0124579 7 123456 fallback
+      key 0124578 7 7890123 
+   profile A2
+      key 1 7 123456 fallback
+```
+
+## Custom Templates
 
 No Custom Templates Defined

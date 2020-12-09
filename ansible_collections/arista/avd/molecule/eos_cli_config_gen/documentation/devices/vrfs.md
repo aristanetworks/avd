@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 

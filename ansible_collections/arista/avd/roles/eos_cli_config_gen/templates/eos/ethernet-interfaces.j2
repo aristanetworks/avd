@@ -141,6 +141,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].mac_security.profiles is defined and ethernet_interfaces[ethernet_interface].mac_security.profiles is not none %}
+   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profiles }}
+{%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%                      if ethernet_interfaces[ethernet_interface].storm_control[section].unit is defined and ethernet_interfaces[ethernet_interface].storm_control[section].unit == "pps" %}

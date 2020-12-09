@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 
@@ -254,7 +255,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
+| default |  False|
 
 ### IP Routing Device Configuration
 
@@ -266,7 +267,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False |
 
 ## Static Routes
 
@@ -467,7 +468,7 @@ router bgp 65100
    address-family ipv4 multicast
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
-      redistribute attached-host 
+      redistribute attached-host
    !
    address-family ipv6
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in

@@ -71,7 +71,7 @@ interface {{ port_channel_interface }}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
 {%             if port_channel_interfaces[port_channel_interface].ip_proxy_arp is defined and port_channel_interfaces[port_channel_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
@@ -116,6 +116,9 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].mac_security.profiles is defined and port_channel_interfaces[port_channel_interface].mac_security.profiles is not none %}
+   mac security profile {{ port_channel_interfaces[port_channel_interface].mac_security.profiles }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].storm_control is defined and port_channel_interfaces[port_channel_interface].storm_control is not none %}
 {%             for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}

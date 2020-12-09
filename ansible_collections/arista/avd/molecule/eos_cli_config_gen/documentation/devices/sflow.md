@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 
@@ -289,7 +290,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
+| default |  False|
 
 ### IP Routing Device Configuration
 
@@ -301,7 +302,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False |
 
 ## Static Routes
 
@@ -405,6 +406,10 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-# Custom Templates
+# MACsec
+
+MACsec not defined
+
+## Custom Templates
 
 No Custom Templates Defined

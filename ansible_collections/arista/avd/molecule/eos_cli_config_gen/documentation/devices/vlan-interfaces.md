@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 
@@ -318,7 +319,7 @@ interface Vlan89
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
-   multicast ipv4 source route export 
+   multicast ipv4 source route export
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
@@ -380,7 +381,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
+| default |  False|
 
 ### IP Routing Device Configuration
 
@@ -392,7 +393,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False |
 
 ## Static Routes
 

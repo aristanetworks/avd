@@ -10,6 +10,7 @@ logging
 loopbacks-interfaces
 management-gnmi
 management-ssh
+mac-security-eth-po-entropy
 mcast-pim
 none_configuration
 platform

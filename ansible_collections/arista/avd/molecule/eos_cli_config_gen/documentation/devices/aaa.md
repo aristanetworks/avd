@@ -68,6 +68,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -124,7 +125,7 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
 
@@ -164,8 +165,8 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv
 
 ```eos
 !
-tacacs-server host 10.10.10.157 vrf mgt  key 7 071B245F5A 
-tacacs-server host 10.10.10.249  key 7 071B245F5A 
+tacacs-server host 10.10.10.157 vrf mgt  key 7 071B245F5A
+tacacs-server host 10.10.10.249  key 7 071B245F5A
 ```
 
 ## IP TACACS Source Interfaces
@@ -338,7 +339,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
+| default |  False|
 
 ### IP Routing Device Configuration
 
@@ -350,7 +351,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False |
 
 ## Static Routes
 

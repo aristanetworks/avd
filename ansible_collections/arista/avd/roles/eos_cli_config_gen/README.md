@@ -639,6 +639,8 @@ port_channel_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    mac_security:
+      profiles: < profile >
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
@@ -704,6 +706,8 @@ ethernet_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    mac_security:
+      profiles: < profile >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -885,6 +889,21 @@ tcam_profile:
 ```yaml
 mac_address_table:
   aging_time: < aging_time_in_seconds >
+```
+
+### MACsec
+
+```yaml
+mac-security:
+  license:
+    license_name: < license-name >
+    license_key: < license-number >
+  profiles:
+  < profile >:
+    connection_keys:
+      < connection_key >:
+        encrypted_key: < encrypted_key >
+        fallback: < true | false -> default >
 ```
 
 ### Router Virtual MAC Address
@@ -1482,6 +1501,7 @@ management_console:
 management_security:
   password:
     encryption_key_common : < true | false >
+  entropy_source: < entropy_source >
 ```
 
 ### Management SSH
