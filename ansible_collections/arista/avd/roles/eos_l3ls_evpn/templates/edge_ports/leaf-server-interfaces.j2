@@ -21,6 +21,14 @@
 {%                 if port_profiles[adapter.profile].spanning_tree_bpdufilter is defined %}
     spanning_tree_bpdufilter: {{ port_profiles[adapter.profile].spanning_tree_bpdufilter }}
 {%                 endif %}
+{%                 if port_profiles[adapter.profile].storm_control is defined and port_profiles[adapter.profile].storm_control is not none %}
+    storm_control:
+{%                     for section in port_profiles[adapter.profile].storm_control %}
+      {{ section }}:
+        level: {{ port_profiles[adapter.profile].storm_control[section].level }}
+        unit: {{ port_profiles[adapter.profile].storm_control[section].unit }}
+{%                     endfor %}
+{%                 endif %}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}
     native_vlan: {{ port_profiles[adapter.profile].native_vlan }}
 {%                 endif %}
