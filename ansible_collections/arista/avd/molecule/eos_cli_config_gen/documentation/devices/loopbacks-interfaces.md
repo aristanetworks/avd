@@ -66,6 +66,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -392,6 +393,10 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP Relay not defined
+
+# MACsec
+
+MACsec not defined
 
 ## Custom Templates
 

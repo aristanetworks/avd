@@ -61,7 +61,7 @@ interface {{ ethernet_interface }}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_proxy_arp is defined and ethernet_interfaces[ethernet_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
@@ -140,6 +140,9 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].mac_security.profiles is defined and ethernet_interfaces[ethernet_interface].mac_security.profiles is not none %}
+   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profiles }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}

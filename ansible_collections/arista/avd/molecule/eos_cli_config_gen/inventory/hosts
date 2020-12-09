@@ -8,6 +8,7 @@ ethernet-interfaces
 logging-minimal
 logging
 loopbacks-interfaces
+mac-security-eth-po-entropy
 mcast-pim
 none_configuration
 port-channel-interfaces

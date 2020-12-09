@@ -1,4 +1,4 @@
-# test2
+# mac-security-eth-po-entropy
 
 # Table of Contents
 
@@ -66,6 +66,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [MAC security] (#mac-security)
 
 # Management
 
@@ -156,7 +157,16 @@ AAA accounting not defined
 
 # Management Security
 
-Management Security not defined
+### Management Security
+
+
+### Management Security Configuration
+
+```eos
+!
+management security
+   entropy source hardware
+```
 
 # Aliases
 
@@ -201,46 +211,56 @@ Spanning-Tree Not Defined
 
 ### Internal VLAN Allocation Policy Summary
 
+**Default Allocation Policy**
+
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 1199 |
+| ascending | 1006 | 4094 |
 
-### Internal VLAN Allocation Policy Configuration
-
-```eos
-!
-vlan internal order ascending range 1006 1199
-```
 
 # VLANs
 
-### VLANs Summary
-
-| VLAN ID | Name | Trunk Groups |
-| ------- | ---- | ------------ |
-| 110 | PR01-DMZ | none  |
-| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
-
-### VLANs Device Configuration
-
-```eos
-!
-vlan 110
-   name PR01-DMZ
-!
-vlan 3010
-   name MLAG_iBGP_TENANT_A_PROJECT01
-   trunk group LEAF_PEER_L3
-```
+No VLANs defined
 
 # Interfaces
 
 ## Ethernet Interfaces
 
+### Ethernet Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
+| Ethernet1 || 1500 | switched | routed | - | - | - | 1.1.1.1/24 | - | - |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   ip address 1.1.1.1/24
+   mac security profile A1
+```
 
 ## Port-Channel Interfaces
 
-No Port-Channels defined
+### Port-Channel Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
+| Port-Channel3 | L2-PORT | 1500 | switched | trunk | 1-5 | - | - | - | - | - | - | - | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel3
+   description L2-PORT
+   switchport trunk allowed vlan 1-5
+   switchport mode trunk
+   mac security profile A1
+```
 
 ## Loopback Interfaces
 
@@ -266,7 +286,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 
 ### IP Routing Device Configuration
 
@@ -278,8 +298,8 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
-
+| default |  False | 
+ 
 
 
 ## Static Routes
@@ -379,6 +399,38 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP Relay not defined
+
+# MACsec
+
+### MACsec Summary
+
+License installed!
+
+### MACsec Profile Summary
+
+| Profile   |  CNK            | CNA          | Fallback  |
+| --------- | --------------- | ------------ | --------- |
+ profile A1 |
+ key 1 | 7 123456 | fallback |
+ key 0124579 | 7 123456 | fallback |
+ key 0124578 | 7 7890123 |  |
+ profile A2 |
+ key 1 | 7 123456 | fallback |
+
+### MACsec Device Configuration
+
+```eos
+!
+mac security
+   license license1 123456
+   !
+   profile A1
+      key 1 7 123456 fallback
+      key 0124579 7 123456 fallback
+      key 0124578 7 7890123 
+   profile A2
+      key 1 7 123456 fallback
+```
 
 ## Custom Templates
 
