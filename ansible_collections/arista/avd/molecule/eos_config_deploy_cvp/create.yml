@@ -11,9 +11,3 @@
       import_role:
          name: arista.avd.build_output_folders
       run_once: true
-    - name: generate intented variables
-      import_role:
-        name: eos_l3ls_evpn
-    - name: generate device intended config and documention
-      import_role:
-        name: eos_cli_config_gen
