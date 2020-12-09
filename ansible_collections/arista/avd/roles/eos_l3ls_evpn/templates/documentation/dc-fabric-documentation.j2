@@ -23,23 +23,25 @@
 
 ## Fabric Switches and Management IP
 
-| Node | Management IP | Platform |
-| ---- | ------------- | -------- |
+| Node | Management IP | Platform | Provisioned in Cloudvision |
+| ---- | ------------- | -------- | -------------------------- |
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type == "spine" %}
-| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} | {{ 'Not Available' if hostvars[node].is_deployed is defined and hostvars[node].is_deployed == false else 'Provisioned' }} |
 {%     endif %}
 {% endfor %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%    if hostvars[node].type == "l3leaf" %}
-| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} | {{ 'Not Available' if hostvars[node].is_deployed is defined and hostvars[node].is_deployed == false else 'Provisioned' }} |
 {%     endif %}
 {% endfor %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%    if hostvars[node].type == "l2leaf" %}
-| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} | {{ 'Not Available' if hostvars[node].is_deployed is defined and hostvars[node].is_deployed == false else 'Provisioned' }} |
 {%     endif %}
 {% endfor %}
+
+> Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
 
 ## Fabric Topology
 
