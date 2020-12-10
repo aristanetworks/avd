@@ -8,7 +8,8 @@ jobs:
     # https://github.com/actions/labeler
     runs-on: ubuntu-18.04
     steps:
-    - uses: actions/labeler@v3
+      # V3 is not used as we hit following issue: https://github.com/actions/labeler/issues/107
+    - uses: actions/labeler@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
         configuration-path: '.github/labeler.yml'
