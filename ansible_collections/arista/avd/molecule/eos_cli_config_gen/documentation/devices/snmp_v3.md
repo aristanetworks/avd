@@ -25,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -183,6 +184,76 @@ TerminAttr Daemon not defined
 
 No logging settings defined
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
+| ------- | -------- | ---------- | -------- | -------- |
+| DC1_OPS | DC1 |  Enabled  | - | - |
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+| Management0 | mgt |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+| default |  Disabled  |
+| mgt |  Enabled  |
+
+### SNMP Hosts Configuration
+
+| Host | VRF | Username | Authentication level | SNMP Version |
+| ---- |---- | -------- | -------------------- | ------------ |
+| 10.6.75.99 | mgt | USER-READ | auth | 3 |
+| 10.6.75.99 | mgt | USER-WRITE | auth | 3 |
+| 10.6.75.121 | mgt | USER-READ | auth | 3 |
+
+### SNMP Views Configuration
+
+| View | MIB Family Name | Status |  
+| ---- | --------------- | ------ | 
+| VW-WRITE | iso |  Included | VW-READ | iso |  Included 
+### SNMP Groups Configuration
+
+| Group | SNMP Version | Authentication | Read | Write | Notify |  
+| ----- | ------------ | -------------- | ---- | ----- | ------ |
+| GRP-READ-ONLY | v3 | priv | v3read | - | - |
+| GRP-READ-WRITE | v3 | auth | v3read | v3write | - |
+
+### SNMP Users Configuration
+
+| User | Group | Version | Authentication | Privacy | 
+| ---- | ----- | ------- | -------------- | ------- |
+| USER-READ | GRP-READ-ONLY | v3 | sha | aes |
+| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server contact DC1_OPS
+snmp-server location DC1
+snmp-server vrf mgt local-interface Management0
+snmp-server view VW-WRITE iso included
+snmp-server view VW-READ iso included
+snmp-server group GRP-READ-ONLY v3  priv read v3read 
+snmp-server group GRP-READ-WRITE v3  auth read v3read write v3write
+snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad 
+snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad 
+snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-READ 
+snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-WRITE 
+snmp-server host 10.6.75.121 vrf mgt version 3 auth USER-READ 
+snmp-server enable traps
+no snmp-server vrf default
+snmp-server vrf mgt
+```
+
 ## SFlow
 
 No sFlow defined
@@ -255,7 +326,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False|
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -267,7 +338,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 
 ## Static Routes
 
@@ -371,6 +442,10 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-# Custom Templates
+# MACsec
+
+MACsec not defined
+
+## Custom Templates
 
 No Custom Templates Defined

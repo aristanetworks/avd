@@ -9,6 +9,8 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -23,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -118,8 +121,16 @@ No NTP servers defined
 
 ## Management SSH
 
-
 Management SSH is not defined
+
+## Management API GNMI
+
+Management API gnmi is not defined
+
+## Management API HTTP
+
+
+Management API HTTP is not defined
 
 # Authentication
 
@@ -157,11 +168,11 @@ AAA accounting not defined
 
 # Management Security
 
-### Management Security
+## Management Security
 
  Management Security entropy source is hardware
 
-### Management Security Configuration
+## Management Security Configuration
 
 ```eos
 !
@@ -183,12 +194,15 @@ TerminAttr Daemon not defined
 
 No logging settings defined
 
+## SNMP
+
+No SNMP settings defined
+
 ## SFlow
 
 No sFlow defined
 
 ## Hardware Counters
-
 
 No Hardware Counters defined
 
@@ -210,14 +224,13 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
-
 
 # VLANs
 
@@ -286,7 +299,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -299,17 +312,18 @@ IP Virtual Router MAC Address is not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default |  False | 
- 
-
 
 ## Static Routes
+
+
+## IPv6 Static Routes
 
 
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 Router BGP not defined
 
@@ -327,6 +341,7 @@ Router BGP not defined
 
 ## IP IGMP Snooping
 
+No IP IGMP configuration
 
 ## Router Multicast
 

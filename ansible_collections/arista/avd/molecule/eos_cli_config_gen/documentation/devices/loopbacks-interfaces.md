@@ -25,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -183,6 +184,10 @@ TerminAttr Daemon not defined
 
 No logging settings defined
 
+## SNMP
+
+No SNMP settings defined
+
 ## SFlow
 
 No sFlow defined
@@ -289,7 +294,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False|
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -301,7 +306,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 
 ## Static Routes
 
@@ -405,6 +410,10 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-# Custom Templates
+# MACsec
+
+MACsec not defined
+
+## Custom Templates
 
 No Custom Templates Defined

@@ -25,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -183,6 +184,10 @@ TerminAttr Daemon not defined
 
 No logging settings defined
 
+## SNMP
+
+No SNMP settings defined
+
 ## SFlow
 
 No sFlow defined
@@ -319,7 +324,7 @@ interface Vlan89
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
-   multicast ipv4 source route export
+   multicast ipv4 source route export 
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
@@ -381,7 +386,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False|
+| default |  False| 
 
 ### IP Routing Device Configuration
 
@@ -393,7 +398,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False |
+| default |  False | 
 
 ## Static Routes
 
@@ -497,6 +502,10 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-# Custom Templates
+# MACsec
+
+MACsec not defined
+
+## Custom Templates
 
 No Custom Templates Defined
