@@ -5,6 +5,7 @@
 | ------- | -------- | ---------- | -------- | -------- |
 | {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% endif %} | {{ snmp_server.access_list_v4 | default('-') }} | {{ snmp_server.access_list_v6 | default('-') }} |
 
+### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
@@ -13,6 +14,8 @@
 | {{interface.name}} | {{interface.vrf | default('default')}} |
 {%      endfor %}
 {% endif %}
+
+### SNMP VRF Status
 
 | VRF | Status |
 | --- | ------ |
@@ -25,12 +28,12 @@
 {%  if snmp_server.hosts is defined and snmp_server.hosts is not none %}
 ### SNMP Hosts Configuration
 
-| Host [VRF] | Username | Authentication level | SNMP Version |
-| ---------- | -------- | -------------------- | ------------ |
+| Host | VRF | Username | Authentication level | SNMP Version |
+| ---- |---- | -------- | -------------------- | ------------ |
 {%      for host in snmp_server.hosts %}
-{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} [{{ host.vrf | default('default') }}] | {{user.username}} | {{user.authentication_level}} | {{user.version}} |
+{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{user.username}} | {{user.authentication_level}} | {{user.version}} |
 {% endfor %}
-{%          else %}| {{ host.host }} [{{ host.vrf | default('default') }}] | - | - | - |
+{%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | - |
 {%         endif %}
 {%      endfor %}
 {%  endif %}
