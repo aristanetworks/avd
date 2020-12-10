@@ -6,6 +6,9 @@
    Management Security password encryption is common.
 {%       endif %}
 {%     endif %}
+{%     if management_security.entropy_source is defined and management_security.entropy_source is not none %}
+ Management Security entropy source is {{ management_security.entropy_source }}
+{%     endif %}
 
 ## Management Security Configuration
 
