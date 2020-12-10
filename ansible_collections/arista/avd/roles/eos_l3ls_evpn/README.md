@@ -554,9 +554,9 @@ l3leaf:
     # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
     igmp_snooping_enabled: < true | false >
 
-    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
+    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
     # This allows support for centralized routing.
-    overlay_svis: < true | false >
+    evpn_services_l2_only: < false | true >
 
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
@@ -578,9 +578,9 @@ l3leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
+      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
-      overlay_svis: < true | false >
+      evpn_services_l2_only: < false | true >
 
       # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
