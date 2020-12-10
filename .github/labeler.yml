@@ -42,12 +42,15 @@
   - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
 
 "type: documentation":
-  - README.md
-  - contributing.md
-  - ansible_collections/arista/avd/**/*.md
-  - ansible_collections/arista/avd/README.md
-  - ansible_collections/arista/avd/docs/*
-  - ansible_collections/arista/avd/docs/**/*
+  - any:
+    - README.md
+    - contributing.md
+    - ansible_collections/arista/avd/**/*.md
+    - ansible_collections/arista/avd/README.md
+    - ansible_collections/arista/avd/docs/*
+    - ansible_collections/arista/avd/docs/**/*
+  - all:
+    - '!ansible_collections/arista/avd/roles/**/*.yml'
 
 "type: code quality":
   - .github/labeler.yml
@@ -62,4 +65,10 @@
   - ansible_collections/arista/avd/docs/requirements.txt
 
 "state: CI Updated":
+  - ansible_collections/arista/avd/molecule/*
   - ansible_collections/arista/avd/molecule/**/*
+
+"state: Documentation role Updated":
+  - all:
+    - 'ansible_collections/arista/avd/roles/**/*.yml'
+    - 'ansible_collections/arista/avd/roles/**/*.md'
