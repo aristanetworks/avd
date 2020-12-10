@@ -3,7 +3,6 @@
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default |{% if ipv6_unicast_routing is defined and ipv6_unicast_routing == true %} true | {% else %} false |{% endif %}
-
 {% set ipv6_configured_in_vrf = false %}
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
@@ -15,6 +14,7 @@
 {%         endif %}
 {%     endfor %}
 {% endif %}
+
 {% if (ipv6_unicast_routing is defined and ipv6_unicast_routing == true) or (ipv6_configured_in_vrf == true) %}
 ### IPv6 Routing Device Configuration
 

@@ -4,7 +4,7 @@
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-| {% if management_api_http.enable_http is defined and management_api_http.enable_http is not none %} {{ management_api_http.enable_http }} {% else %} default {% endif %} | {% if management_api_http.enable_https is defined and management_api_http.enable_https is not none %} {{ management_api_http.enable_https }} {% else %} default {% endif %} |
+| {% if management_api_http.enable_http is defined and management_api_http.enable_http is not none %} {{ management_api_http.enable_http | lower }} {% else %} default {% endif %} | {% if management_api_http.enable_https is defined and management_api_http.enable_https is not none %} {{ management_api_http.enable_https | lower }} {% else %} default {% endif %} |
 {%     if management_api_http.enable_vrfs is defined and management_api_http.enable_vrfs is not none %}
 
 ### Management API VRF Access
