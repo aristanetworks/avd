@@ -159,6 +159,7 @@ AAA accounting not defined
 
 ### Management Security
 
+ Management Security entropy source is hardware
 
 ### Management Security Configuration
 
@@ -259,7 +260,6 @@ interface Port-Channel3
    description L2-PORT
    switchport trunk allowed vlan 1-5
    switchport mode trunk
-   mac security profile A1
 ```
 
 ## Loopback Interfaces
@@ -406,16 +406,42 @@ IP DHCP Relay not defined
 
 License installed!
 
-### MACsec Profile Summary
+FIPS restrictions enabled.
 
-| Profile   |  CNK            | CNA          | Fallback  |
-| --------- | --------------- | ------------ | --------- |
- profile A1 |
- key 1 | 7 123456 | fallback |
- key 0124579 | 7 123456 | fallback |
- key 0124578 | 7 7890123 |  |
- profile A2 |
- key 1 | 7 123456 | fallback |
+### MACsec Profiles Summary
+
+**Profile A1:**
+
+Settings:
+
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| aes128-gcm | 30 | True |
+
+Keys:
+
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+| 1234a | 025756085F535976 | - |
+| 1234c | 10195F4C5144405A | True |
+
+
+**Profile A2:**
+
+Settings:
+
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| - | - | - |
+
+Keys:
+
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+| 1234b | 12485744465E5A53 | - |
+| 1234d | 091B185C4D564543 | True |
+
+
 
 ### MACsec Device Configuration
 
@@ -423,13 +449,17 @@ License installed!
 !
 mac security
    license license1 123456
+   fips restrictions
    !
    profile A1
-      key 1 7 123456 fallback
-      key 0124579 7 123456 fallback
-      key 0124578 7 7890123 
+      cipher aes128-gcm
+      key 1234a 7 025756085F535976 
+      key 1234c 7 10195F4C5144405A fallback
+      mka session rekey-period 30
+      sci
    profile A2
-      key 1 7 123456 fallback
+      key 1234b 7 12485744465E5A53 
+      key 1234d 7 091B185C4D564543 fallback
 ```
 
 ## Custom Templates
