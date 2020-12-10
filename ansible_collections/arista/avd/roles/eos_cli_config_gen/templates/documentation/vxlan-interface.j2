@@ -1,10 +1,11 @@
 {% if vxlan_tunnel_interface is defined %}
 ### VXLAN Interface Summary
 
-**Source Interface:** {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
-**UDP port:** {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+#### Source Interface: {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
 
-**VLAN to VNI Mappings:**
+#### UDP port: {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+
+#### VLAN to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
@@ -17,7 +18,7 @@
 {%      endif %}
 {% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
 
-**VRF to VNI Mappings:**
+#### VRF to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
@@ -32,5 +33,5 @@
 {% include 'eos/vxlan-interface.j2' %}
 ```
 {% else %}
-No VXLAN interface defined
+No VXLAN interfaces defined
 {% endif %}

@@ -2,7 +2,7 @@
 ### Peer Filters Summary
 {%     for peer_filter in peer_filters | arista.avd.natural_sort %}
 
-**{{ peer_filter }}:**
+#### {{ peer_filter }}
 
 | Sequence | Match |
 | -------- | ----- |
@@ -17,5 +17,5 @@
 {% include 'eos/peer-filters.j2' %}
 ```
 {% else %}
-No Peer Filters defined
+No peer filters defined
 {% endif %}
