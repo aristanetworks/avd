@@ -1,55 +1,30 @@
 ### MACsec
 mac_security:
+  fips_restrictions: true
   license:
     license_name: license1
     license_key: 123456
   profiles:
     A1:
+      sci: true
+      mka:
+        session:
+          rekey_period: 30
+      cipher: aes128-gcm
       connection_keys:
-        1:
-          encrypted_key: 123456
+        1234a:
+          encrypted_key: 025756085F535976
+        1234c:
+          encrypted_key: 10195F4C5144405A
           fallback: true
-        0124579:
-          encrypted_key: 123456
-          fallback: true
-        0124578:
-          encrypted_key: 7890123
-          fallback: false
     A2:
       connection_keys:
-        1:
-          encrypted_key: 123456
+        1234b:
+          encrypted_key: 12485744465E5A53
+        1234d:
+          encrypted_key: 091B185C4D564543
           fallback: true
-        # 2:
-        #   encrypted_key: 123456
-        #   fallback: true
-    #     ckn:
-    #     encrypted_cak:
-    #     mka:
-    #       session:
-    #         rekey_period:
-    # A11:
-    #   key:
-    #     ckn:
-    #     encrypted_cak:
-    #   fallback_key:
-    #     ckn:
-    #     encrypted_cak:
-    #     mka:
-    #       session:
-    #         rekey_period:
-    # A21:
-    #   key:
-    #     ckn:
-    #     encrypted_cak:
-    #   fallback_key:
-    #     ckn:
-    #     encrypted_cak:
-    #     mka:
-    #       session:
-    #         rekey_period:
 
-### natural sort vs arista.avd.natural_sort
 
 ### Mgmt sec
 management_security:
