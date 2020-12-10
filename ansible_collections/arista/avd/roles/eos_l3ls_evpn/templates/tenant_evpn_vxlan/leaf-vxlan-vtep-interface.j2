@@ -36,7 +36,7 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{% if leaf.overlay_svis == true %}
+{% if leaf.evpn_services_l2_only == false %}
       vrfs:
 {%     for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 ## {{ tenant }} ##
