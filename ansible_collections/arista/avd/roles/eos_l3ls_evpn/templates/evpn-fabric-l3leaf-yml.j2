@@ -365,10 +365,8 @@ vrfs:
 {# management #}
 {% include 'base/mgmt-vrf.j2' %}
 
-{% if leaf.evpn_services_l2_only == false %}
 {# Tenant VRFS #}
 {% include 'tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
-{% endif %}
 
 {# bfd multihop #}
 ### bfd multihop ###
@@ -422,10 +420,8 @@ management_interfaces:
 vlan_interfaces:
 {# mlag vlan interfaces #}
 {% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
-{% if leaf.evpn_services_l2_only == false %}
 {# Tenant vlan interfaces #}
-{%     include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
-{% endif %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
 
 {# vxlan interface #}
 ### VxLAN interface ###
@@ -445,11 +441,11 @@ mac_address_table:
 {% if leaf.evpn_services_l2_only == false %}
 {# virtual router mac address #}
 ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
+{% endif %}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
-{%     include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
-{% endif %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
 
 {# Tenant ip-igmp-snooping #}
 ip_igmp_snooping:
@@ -493,10 +489,8 @@ router_bgp:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
   vlans:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
-{% if leaf.evpn_services_l2_only == false %}
   vrfs:
-{%     include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
-{% endif %}
+{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
 {# Extended Community Lists Configuration #}
 ### Extended Community Lists ###

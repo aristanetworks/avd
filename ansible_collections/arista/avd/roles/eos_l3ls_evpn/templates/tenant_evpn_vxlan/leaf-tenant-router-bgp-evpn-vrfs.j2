@@ -1,5 +1,5 @@
 {# Leaf tenant router bgp evpn VRFs #}
-{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{% for tenant in tenants | arista.avd.natural_sort if ( tenant in leaf.filter_tenants or "all" in leaf.filter_tenants ) and leaf.evpn_services_l2_only == false %}
 ## {{ tenant }} ##
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
