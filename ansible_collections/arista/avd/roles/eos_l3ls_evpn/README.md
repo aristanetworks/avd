@@ -550,6 +550,10 @@ l3leaf:
     # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
     igmp_snooping_enabled: < true | false >
 
+    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
+    # This allows support for centralized routing.
+    overlay_svis: < true | false >
+
   # The node groups are group of one or two nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
@@ -569,6 +573,10 @@ l3leaf:
 
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
+
+      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
+      # This allows support for centralized routing.
+      overlay_svis: < true | false >
 
       # Define one or two nodes - same name as inventory_hostname | Required
       # When two nodes are defined, this will create an MLAG pair.
@@ -862,7 +870,7 @@ tenants:
     # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
     # Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
     # This setting can be overridden per VRF.
-    enable_mlag_ibgp_peering_vrfs: < true | false > 
+    enable_mlag_ibgp_peering_vrfs: < true | false >
 
     # Define L3 network services organized by vrf.
     vrfs:
@@ -885,7 +893,7 @@ tenants:
         # MLAG IBGP peering per VRF | Optional
         # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
         # Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
-        enable_mlag_ibgp_peering_vrfs: < true | false > 
+        enable_mlag_ibgp_peering_vrfs: < true | false >
 
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
@@ -1715,7 +1723,7 @@ Overlay peerings can be configured to any of the following options as well as co
 * super-spine <-> overlay-controller
 * overlay-controller <-> overlay-controller (in other DCs)
 The overlay peerings will be derived from the variable `evpn_overlay_controller_groups` on the "client".
-Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between 
+Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between
 all the l3leafs in this group and all devices in the group `DC1_SUPER_SPINES`. The devices in group `DC1_SUPER_SPINES` will detect that others are
 pointing at them, and configure the peering as well.
 
