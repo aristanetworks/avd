@@ -1,0 +1,57 @@
+options:
+  ignore_draft: true
+  ignored_keywords:
+    - DO NOT REVIEW
+  enable_group_assignment: false
+
+reviewers:
+  # The default reviewers
+  defaults:
+    - carlbuchmann
+    - titom73
+  # Reviewer groups each of which has a list of GitHub usernames
+  groups:
+    core-contributors:
+      - carlbuchmann
+      - titom73
+      - aphillipps
+    documentation:
+      - aphillipps
+      - titom73
+    eos-l3ls-evpn:
+      - carlbuchmann
+      - titom73
+    eos-cli-config-gen:
+      - carlbuchmann
+      - aphillipps
+    eos-validate-state:
+      - ksator
+      - carlbuchmann
+    eos-cvp-tools:
+      - titom73
+
+files:
+# Keys are glob expressions.
+# You can assign groups defined above as well as GitHub usernames.
+  'ansible_collections/arista/avd/roles/build_output_folders/**':
+    - eos-l3ls-evpn
+  'ansible_collections/arista/avd/roles/eos_l3ls_evpn/**':
+    - eos-l3ls-evpn
+  'ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**':
+    - eos-l3ls-evpn
+  'ansible_collections/arista/avd/roles/eos_cli_config_gen/**':
+    - eos-cli-config-gen
+  'ansible_collections/arista/avd/roles/eos_validate_state/**':
+    - eos-validate-state
+  'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**':
+    - eos-cvp-tools
+  'ansible_collections/arista/avd/roles/cvp_configlet_upload/**':
+    - eos-cvp-tools
+  'ansible_collections/arista/avd/roles/dhcp_provisioner/**':
+    - eos-cvp-tools
+  'ansible_collections/arista/avd/plugins/**':
+    - core-contributors
+  '**/*.md':
+    - documentation
+  '.github/**':
+    - core-contributors
