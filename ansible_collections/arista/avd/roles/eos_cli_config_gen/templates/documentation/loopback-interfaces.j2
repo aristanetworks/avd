@@ -8,7 +8,15 @@ IPv4
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
 | {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description }} |
 {%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
-{%-        if loopback_interfaces[loopback_interface].ip_address is defined %} {{ loopback_interfaces[loopback_interface].ip_address }} {% else %} - {% endif -%} |
+{%-        if loopback_interfaces[loopback_interface].ip_address is defined %}
+ {{ loopback_interfaces[loopback_interface].ip_address }}
+{%-            if loopback_interfaces[loopback_interface].ip_address_secondaries is defined and loopback_interfaces[loopback_interface].ip_address_secondaries is not none %}
+ <br> {{ loopback_interfaces[loopback_interface].ip_address_secondaries | join(' secondary <br> ') }} secondary
+{%-            endif %}
+{%-        else %}
+ -
+{%-        endif %}
+ |
 {%     endfor %}
 
 IPv6
