@@ -13,10 +13,15 @@ interface {{ loopback_interface }}
    vrf {{ loopback_interfaces[loopback_interface].vrf }}
 {%         endif %}
 {%             if loopback_interfaces[loopback_interface].ip_proxy_arp is defined and loopback_interfaces[loopback_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if loopback_interfaces[loopback_interface].ip_address is defined and loopback_interfaces[loopback_interface].ip_address is not none %}
    ip address {{ loopback_interfaces[loopback_interface].ip_address }}
+{%             if loopback_interfaces[loopback_interface].ip_address_secondaries is defined and loopback_interfaces[loopback_interface].ip_address_secondaries is not none %}
+{%                 for ip_address_secondary in loopback_interfaces[loopback_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%         if loopback_interfaces[loopback_interface].ipv6_enable is defined and loopback_interfaces[loopback_interface].ipv6_enable == true %}
    ipv6 enable

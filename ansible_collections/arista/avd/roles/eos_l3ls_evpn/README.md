@@ -295,6 +295,10 @@ overlay_loopback_network_summary: < IPv4_network/Mask >
 # Assign range larger then total L3 leafs
 vtep_loopback_network_summary: < IPv4_network/Mask >
 
+# IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
+# This is only needed for centralized routing designs
+vtep_vvtep_ip: < IPv4_address/Mask >
+
 # IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
 # * When MLAG leafs present in topology.
 # Assign range larger then total: L3 Leafs + 2 ]
