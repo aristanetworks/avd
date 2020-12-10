@@ -47,11 +47,11 @@
 {%     if vlan_interface_ospf.configured == true %}
 
 #### OSPF
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
+| Interface | Area | Cost | Mode |
+| --------- |----- | ---- |----- |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 {%             if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none %} {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %} point-to-point {% else %} broadcast {% endif %} |
 {%             endif %}
 {%          endfor %}
 {%     endif %}
@@ -68,8 +68,8 @@
 
 #### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| Interface | ISIS instance | ISIS metric | Mode |
+| --------- | ------------- | ----------- | ---- |
 {%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 {%             if vlan_interfaces[vlan_interface].isis_enable is defined and vlan_interfaces[vlan_interface].isis_enable is not none %}
 | {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} |  {{ vlan_interfaces[vlan_interface].isis_metric | default('-') }} | {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point is not none %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
