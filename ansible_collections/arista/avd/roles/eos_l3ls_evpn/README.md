@@ -1176,7 +1176,7 @@ port_profiles:
       multicast:
         level: < Configure maximum storm-control level >
         unit: < percent | pps >
-      'unknown-unicast':
+      unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent | pps >
 
