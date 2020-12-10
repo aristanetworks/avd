@@ -7,12 +7,4 @@
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
 {%     endif %}
-{%     if switch.underlay_routing_protocol == "ebgp" %}
-      IPv4-UNDERLAY-PEERS:
-        activate: false
-{%         if leaf.mlag == true %}
-      MLAG-IPv4-UNDERLAY-PEER:
-        activate: false
-{%         endif %}
-{%     endif %}
 {% endif %}
