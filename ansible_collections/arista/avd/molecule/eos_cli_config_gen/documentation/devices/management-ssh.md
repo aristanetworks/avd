@@ -10,6 +10,7 @@
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
   - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -118,7 +119,6 @@ No NTP servers defined
 
 ## Management SSH
 
-
 ```eos
 !
 management ssh
@@ -132,6 +132,11 @@ management ssh
 ## Management API GNMI
 
 Management API gnmi is not defined
+  
+## Management API HTTP
+
+
+Management API HTTP is not defined
 
 # Authentication
 
@@ -191,7 +196,6 @@ No sFlow defined
 
 ## Hardware Counters
 
-
 No Hardware Counters defined
 
 ## VM Tracer Sessions
@@ -212,7 +216,7 @@ Spanning-Tree Not Defined
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
