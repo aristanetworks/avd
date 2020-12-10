@@ -20,6 +20,7 @@ IPv6
 {%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
 {%-        if loopback_interfaces[loopback_interface].ipv6_address is defined %} {{ loopback_interfaces[loopback_interface].ipv6_address }} {% else %} - {% endif -%} |
 {%     endfor %}
+
 {%     set loopback_interface_isis = namespace() %}
 {%     set loopback_interface_isis.configured = false %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
@@ -28,8 +29,7 @@ IPv6
 {%          endif %}
 {%     endfor %}
 {%     if loopback_interface_isis.configured == true %}
-
-ISIS
+#### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
