@@ -526,6 +526,9 @@ l3leaf:
     # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed >
 
+    # Enable / Disable auto MLAG, when two nodes are defined in node group.
+    mlag: < true | false -> default true >
+
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
@@ -541,7 +544,7 @@ l3leaf:
     # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
     igmp_snooping_enabled: < true | false >
 
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
@@ -561,8 +564,9 @@ l3leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Define one or two nodes - same name as inventory_hostname | Required
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l3leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node
@@ -678,6 +682,9 @@ l2leaf:
     # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
     p2p_link_interface_speed: < interface_speed >
 
+    # Enable / Disable auto MLAG, when two nodes are defined in node group.
+    mlag: < true | false -> default true >
+
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
@@ -690,7 +697,7 @@ l2leaf:
     # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
     igmp_snooping_enabled: < true | false >
 
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
@@ -707,8 +714,9 @@ l2leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Define one or two nodes - same name as inventory_hostname.
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l2leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node
