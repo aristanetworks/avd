@@ -10,6 +10,7 @@
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
   - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -123,6 +124,11 @@ Management SSH is not defined
 ## Management API GNMI
 
 Management API gnmi is not defined
+  
+## Management API HTTP
+
+
+Management API HTTP is not defined
 
 # Authentication
 

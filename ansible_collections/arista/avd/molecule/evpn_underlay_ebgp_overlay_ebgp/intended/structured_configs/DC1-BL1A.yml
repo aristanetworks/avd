@@ -79,7 +79,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###
@@ -360,12 +360,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
-      20:
-        action: "permit 10.255.251.0/24 le 31"
 
 ### MLAG Configuration ###
 mlag_configuration:

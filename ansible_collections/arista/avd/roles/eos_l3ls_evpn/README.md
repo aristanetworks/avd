@@ -1165,6 +1165,21 @@ port_profiles:
     mode: < access | dot1q-tunnel | trunk >
     vlans: < vlans as string >
 
+    # Storm control settings applied on port toward server | Optional
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      unknown_unicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
 

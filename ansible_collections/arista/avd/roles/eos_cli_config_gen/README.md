@@ -732,16 +732,16 @@ ethernet_interfaces:
     storm_control:
       all:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
       broadcast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
       multicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
-      'unknown-unicast':
+        unit: < percent* | pps (optional and is hardware dependant - default is percent) >
+      unknown_unicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
 ```
 
 ### Loopback Interfaces
