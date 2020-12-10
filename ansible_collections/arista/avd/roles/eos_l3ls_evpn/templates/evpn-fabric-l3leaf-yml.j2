@@ -103,6 +103,13 @@
 {%             else %}
 {%                 set leaf.mlag = false %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].overlay_svis is defined %}
+{%                 set leaf.overlay_svis = l3leaf.node_groups[l3leaf_node_group].overlay_svis %}
+{%             elif l3leaf.defaults.overlay_svis is defined %}
+{%                 set leaf.overlay_svis = l3leaf.defaults.overlay_svis %}
+{%             else %}
+{%                 set leaf.overlay_svis = true %}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -250,6 +257,7 @@ switch_platform: {{ switch.platform }}
 leaf_bgp_as: {{ leaf.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
+leaf_overlay_svis: {{ leaf.overlay_svis }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -359,8 +367,10 @@ vrfs:
 {# management #}
 {% include 'base/mgmt-vrf.j2' %}
 
+{% if leaf.overlay_svis == true %}
 {# Tenant VRFS #}
 {% include 'tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
+{% endif %}
 
 {# bfd multihop #}
 ### bfd multihop ###
@@ -414,8 +424,10 @@ management_interfaces:
 vlan_interfaces:
 {# mlag vlan interfaces #}
 {% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% if leaf.overlay_svis == true %}
 {# Tenant vlan interfaces #}
-{% include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
+{%     include 'tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
+{% endif %}
 
 {# vxlan interface #}
 ### VxLAN interface ###
@@ -432,12 +444,14 @@ tcam_profile:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
+{% if leaf.overlay_svis == true %}
 {# virtual router mac address #}
 ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
-{% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+{%     include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
+{% endif %}
 
 {# Tenant ip-igmp-snooping #}
 ip_igmp_snooping:
@@ -481,8 +495,10 @@ router_bgp:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
   vlans:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
+{% if leaf.overlay_svis == true %}
   vrfs:
-{% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+{%     include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
+{% endif %}
 
 {# Extended Community Lists Configuration #}
 ### Extended Community Lists ###
