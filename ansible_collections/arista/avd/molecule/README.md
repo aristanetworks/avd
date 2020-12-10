@@ -5,17 +5,12 @@ This section provides a list of AVD scenario executed during Continuous Integrat
 - [AVD Unit test](#avd-unit-test)
   - [Ansible molecule](#ansible-molecule)
   - [Scenario](#scenario)
-  - [Create Molecule scenario](#create-molecule-scenario)
-    - [Create molecule structure](#create-molecule-structure)
-    - [Configure Molecule](#configure-molecule)
-    - [Ansible playbook for molecule](#ansible-playbook-for-molecule)
-      - [Create playbook](#create-playbook)
-      - [Converge playbook](#converge-playbook)
-      - [Destroy playbook](#destroy-playbook)
-      - [Verify playbook](#verify-playbook)
-    - [Inventory creation](#inventory-creation)
-  - [Manual execution](#manual-execution)
-  - [Continuous Integration](#continuous-integration)
+  - [How to use scenario](#how-to-use-scenario)
+    - [Which file to update](#which-file-to-update)
+      - [If you are updating `eos_cli_config_gen`](#if-you-are-updating-eos_cli_config_gen)
+      - [If you are updating `eos_l3ls_evpn`](#if-you-are-updating-eos_l3ls_evpn)
+        - [Update related to underlay or overlay protocol](#update-related-to-underlay-or-overlay-protocol)
+        - [General l3ls_evpn update](#general-l3ls_evpn-update)
 
 ## Ansible molecule
 
@@ -25,257 +20,124 @@ Molecule provides support for testing with multiple instances, operating systems
 
 Current molecule implementation provides following scenario:
 
-- AVD-L3LS-EBGP
-- AVD-L3LS-EBGP-JSON
-- AVD-L3LS-ISIS
-- EOS-CLI-CONFIG-GEN
+- `eos_l3ls_evpn` with standard eBGP as underlay and overlay: [evpn_underlay_ebgp_overlay_ebgp](./evpn_underlay_ebgp_overlay_ebgp/molecule.yml)
+- `eos_l3ls_evpn` with standard OSPF as underlay and eBGP overlay: [evpn_underlay_ospf_overlay_ebgp](./evpn_underlay_ospf_overlay_ebgp/molecule.yml)
+- `eos_cli_config_gen` scenario to run unit test
 
-## Create Molecule scenario
+## How to use scenario
 
-### Create molecule structure
+Molecule scenario are used to validate role execution and coverage of data-model. When you update a role or data-model, scenario must be updated to reflect your changes and validate it is not breaking other supported scenario.
 
-First create new molecule scenario:
+```bash
+# Go to test folder
+$ cd ansible_collections/arista/avd
 
-```shell
-$ molecule init scenario test
---> Initializing new scenario test...
-Initialized scenario in ./molecule/test successfully.
+# Edit molecule scenario
+$ vim molecule/<scenario-name>/<molecule-file>
+
+# Run testing
+$ molecule test --scenario-name <scenario-name>
+
+# Cleanup your environment
+$ molecule cleanup --scenario-name <scenario-name>
 ```
 
-### Configure Molecule
+### Which file to update
 
-Once, default structure is created by molecule itself, you can customize your molecule settings to define:
+#### If you are updating `eos_cli_config_gen`
 
-- Inventory
-- Scenario execution
-- Provisioner content
-- Verifier content
+Testing for `eos_cli_config_gen` is part of [scenario `eos_cli_config_gen`](./eos_cli_config_gen/molecule.yml). It is based on a in flat inventory with 1 host covering a specific section of templates like:
 
-First, let's define docker as molecule driver:
+- Ethernet Interfaces defined in [host_vars/ethernet_interfaces](./eos_cli_config_gen/inventory/host_vars/ethernet_interfaces.yml)
+- Loopback Interfaces defined in [host_vars/loopback-interfaces](./eos_cli_config_gen/inventory/host_vars/loopbacks.yml)
+- Vlans defined in [host_vars/vlans](./eos_cli_config_gen/inventory/host_vars/vlans.yml)
 
-```yaml
-# vim molecule.yml
-dependency:
-  name: galaxy
-driver:
-  name: docker
-```
+When you update a template in `eos_cli_config_gen`, you should report a test case in molecule scenario [`ansible_collections/arista/avd/molecule/eos_cli_config_gen`](./eos_cli_config_gen/).
 
-Define inventory for provisioner. This section will run a playbook to build AVD configurations
+1. Create or update a file related to updated section under `inventory/host_vars`
+2. If section is new, update inventory file to add a new host. Host SHALL be the name of your section and also file in your `host_vars`
+3. Run molecule scenario to generate artifacts:
 
-```yaml
-# vim molecule.yml
-provisioner:
-  name: ansible
-  env:
-    # Path to access to collection. Usually root of the repository
-    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
-  # Replicate specific ansible.cfg settings
-  config_options:
-    defaults:
-      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
-      gathering: explicit
-      command_warnings: False
-  # Define where inventory file is defined
-  inventory:
-    links:
-      hosts: 'inventory/hosts'
-      group_vars: 'inventory/group_vars/'
-      host_vars: 'inventory/host_vars/'
-  ansible_args:
-    - --inventory=inventory/hosts
-```
-
-Then we should define a platform to run molecule testing. In AVD context, this platform should be a device part of testing inventory
-
-```shell
-platforms:
-  - name: DC1-LEAF1A
-    # Docker image to run for that host
-    image: avdteam/base:3.6
-    pre_build_image: true
-    managed: false
-    # Inventory group for this specific host.
-    groups:
-      - DC1_LEAF1
-      - DC1_LEAFS
-      - DC1_FABRIC
-      - AVD_LAB
-```
-
-Then, configure sequence to run during molecule execution:
-
-```yaml
-scenario:
-  test_sequence:
-    - destroy
-    - create
-    - converge
-    - idempotence
-    - verify # Optional based on scenario we need to test
-```
-
-In this configuration, molecule will run playbooks in that specific order:
-
-- destroy: `destroy.yml` playbook
-- create: `create.yml` playbook
-- converge: `converge.yml` playbook
-- idempotency: `converge.yml` playbook with no change expected.
-
-Molecule provides more sequences as explained in [documentation](https://molecule.readthedocs.io/en/latest/configuration.html#scenario)
-
-### Ansible playbook for molecule
-
-#### Create playbook
-
-This playbook is a helper to prepare converge and test sequences. In AVD context, we leverage this playbook to build output directories:
-
-```yaml
----
-- name: Configure local folders
-  hosts: all
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: create local output folders
-      delegate_to: 127.0.0.1
-      import_role:
-         name: arista.avd.build_output_folders
-      run_once: true
-```
-
-#### Converge playbook
-
-This playbook builds AVD content:
-
-```yaml
----
-- name: Converge
-  hosts: all
-  gather_facts: false
-  connection: local
-  tasks:
-
-    - name: generate intented variables
-      delegate_to: 127.0.0.1
-      import_role:
-         name: arista.avd.eos_l3ls_evpn
-
-    - name: generate device intended config and documention
-      delegate_to: 127.0.0.1
-      import_role:
-         name: arista.avd.eos_cli_config_gen
-
-```
-
-This playbook will be run twice: first as __converge__ sequence and second as __idempotency__
-
-#### Destroy playbook
-
-Because we want to save content to CI, this sequence should not be added to the end of the scenario but only at the begining to cleanup pre-execution.
-
-```yaml
----
-- name: Remove output folders
-  hosts: all
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: delete local folders
-      delegate_to: 127.0.0.1
-      run_once: true
-      file:
-        path: "{{root_dir}}/{{ item }}"
-        state: absent
-      with_items:
-        - documentation
-        - intended
-        - config_backup
-
-```
-
-#### Verify playbook
-
-Not leverage in current implementation.
-
-### Inventory creation
-
-Inventory has no difference with [AVD documentation](https://aristanetworks.github.io/ansible-avd/roles/eos_l3ls_evpn/) provides:
-
-- inventory/hosts has list of devices using `YAML` structure.
-- inventory/group_vars has list of all AVD variables
-- inventory/host_vars/all.yml configure a specific variable to save all AVD output outside of inventory fo CI purpose
-
-```yaml
-# inventory/host_vars/all.yml
----
-root_dir: '{{playbook_dir}}'
-```
-
-## Manual execution
-
-To manually run molecule testing, follow commands:
-
-```shell
-# Install development requirements
-$ pip install -r development/requirements-dev.txt
-
+```bash
 # Move to AVD collection
-$ ansible-avd/ansible_collections/arista/avd
+$ cd ansible_collections/arista/avd/
 
-# Run molecule for a given test
-$ molecule test -s <scenario-name>
-
-# Run molecule for all test
-$ molecule test --all
+# Run molecule
+$ molecule test --scenario-name eos_cli_config_gen
 ```
 
-## Continuous Integration
+4. Commit artifacts. They will be used by CI to validate their is no change in the future.
 
-These scenario are all included in github actions and executed on `push` and `pull_request` when a file under `roles` and/or `molecule` is updated.
+```bash
+$ git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
+```
+
+> If you have `pre-commit` enabled, use `--no-verify` trigger to avoid any content change in your commit
+
+#### If you are updating `eos_l3ls_evpn`
+
+##### Update related to underlay or overlay protocol
+
+In such case, copy an existing scenario to create a new one:
+
+```bash
+# Move to AVD collection
+$ cd ansible_collections/arista/avd/
+
+# Run Molecule scenario
+$ molecule test --scenario-name eos_cli_config_gen
+```
+
+##### General l3ls_evpn update
+
+If your update is not related to underlay or overlay protocol, edit scenario `evpn_underlay_ebgp_overlay_ebgp` and edit group_vars accordingly. Then run molecule to validate it is working as expected
+
+1. Create your scenario
+
+```bash
+# Move to AVD collection
+$ cd ansible_collections/arista/avd/
+
+# Copy existing molecule scenario
+$ cp -r molecule/evpn_underlay_isis_overlay_ebgp molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
+```
+
+2. Edit files from your scenario's inventory
+
+```bash
+$ cd molecule/evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>/inventory
+
+# Edit group_vars
+$ vim group_vars/DC1_FABRIC.yml
+```
+
+3. Run your molecule scenario for validation
+
+```bash
+# Move to AVD collection
+$ cd ../../../
+
+# Run Molecule scenario
+$ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>
+```
+
+4. Edit CI file to include your scenario
 
 ```yaml
-name: Ansible Molecule
-on:
-  push:
-  pull_request:
-    paths:
-      - 'ansible_collections/arista/avd/roles/**'
-      - 'ansible_collections/arista/avd/molecules/**'
-      - 'requirements.txt'
+#.github/workflows/molecule-l3ls-evpn.yml
 jobs:
   molecule:
+    name: Run CI test for eos_l3ls_evpn
     runs-on: ubuntu-latest
-    env:
-      PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-      ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
     strategy:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'avd-l3ls-ebgp'
-          - 'avd-l3ls-ebgp-json'
-          - 'avd-l3ls-isis'
-          - 'eos-cli-config-gen'
-    steps:
-      - uses: actions/checkout@v1
-      - name: Set up Python 3
-        uses: actions/setup-python@v1
-        with:
-          python-version: '3.x'
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r development/requirements.txt
-          pip install -r development/requirements-dev.txt
-
-      - name: Execute molecule
-        run: |
-          cd ansible_collections/arista/avd
-          molecule test --scenario-name ${{ matrix.avd_scenario }}
-
-      - uses: actions/upload-artifact@v1
-        with:
-          name: molecule-results-${{ matrix.avd_scenario }}
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ebgp'
+          - 'evpn_underlay_<underlay-protocol>_overlay_<overlay-protocol>'
+          - 'upgrade_v1.0_to_v1.1'
 ```
+
+Once you are ready, commit your change and push to Github.

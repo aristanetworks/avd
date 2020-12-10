@@ -1,0 +1,9 @@
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - apiserver.corp.arista.io
+    port: 9910
+  ingestauth_key: magickey
+  ingestvrf: mgt
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"

@@ -1,5 +1,5 @@
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG = 3.6
+DOCKER_TAG = 3.6-v1.0
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
 PIP_REQ ?=
@@ -8,6 +8,7 @@ HOME_DIR = $(shell pwd)
 UID = $(shell id -u)
 GID = $(shell id -g)
 MUFFET_TIMEOUT ?= 60
+DOCKER_USER ?= avd
 
 .PHONY: help
 help: ## Display help message
@@ -27,7 +28,8 @@ run: ## Run ansible-avd container
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
 		-e AVD_ANSIBLE=$(ANSIBLE_VERSION) \
-		-v $(HOME)/.gitconfig:$(HOME_DIR_DOCKER)/.gitconfig \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v $(HOME)/.gitconfig:/home/avd/.gitconfig \
 		-v $(HOME_DIR)/:/projects \
 		-v /etc/hosts:/etc/hosts $(CONTAINER)
 
@@ -43,6 +45,7 @@ build: ## [DEPRECATED] visit https://github.com/arista-netdevops-community/docke
 
 .PHONY: dev-start
 dev-start: ## Start docker compose stack to develop with AVD and CVP collection
+	docker-compose -f $(COMPOSE_FILE) pull && \
 	docker-compose -f $(COMPOSE_FILE) up -d
 	@echo "---------------"
 	@echo " INFORMATION"
@@ -51,7 +54,7 @@ dev-start: ## Start docker compose stack to develop with AVD and CVP collection
 	@echo " * Webserver for CVP: http://127.0.0.1:8001"
 	@echo " * Ansible shell: make dev-run"
 	@echo "---------------"
-	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible zsh
 
 .PHONY: start
 start: dev-start ## Start docker-compose stack
@@ -63,17 +66,16 @@ dev-stop: ## Stop docker compose stack and remove containers
 .PHONY: stop
 stop: dev-stop ## Stop docker-compose stack
 
-.PHONY: dev-run
-dev-run: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
-
 .PHONY: shell
 shell: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec ansible zsh
+	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible zsh
+
+.PHONY: dev-run
+dev-run: shell  ## Run a shell attached to ansible container
 
 .PHONY: ansible-upgrade
 ansible-upgrade: ## Run a shell attached to ansible container
-	docker-compose -f $(COMPOSE_FILE) exec ansible pip install ansible==$(ANSIBLE_VERSION)
+	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible pip install --user --upgrade ansible==$(ANSIBLE_VERSION)
 
 .PHONY: dev-reload
 dev-reload: dev-stop dev-start  ## Stop and Start docker-compose stack

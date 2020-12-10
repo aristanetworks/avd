@@ -12,7 +12,7 @@ on:
 jobs:
   offline_validation:
     name: 'Validate mkdoc content'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@master
       - name: 'start docker-compose stack'

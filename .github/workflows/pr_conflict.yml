@@ -11,7 +11,7 @@ on:
 jobs:
   Conflict_Check:
     name: 'Check PR status: conflicts and resolution'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: check if PRs are dirty
         uses: eps1lon/actions-label-merge-conflict@releases/2.x

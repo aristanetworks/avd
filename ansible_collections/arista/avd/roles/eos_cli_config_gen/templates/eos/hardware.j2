@@ -1,0 +1,7 @@
+{# eos - hardware settings #}
+{% if hardware is defined and hardware.speed_groups is defined and hardware.speed_groups is not none %}
+!
+{%   for speed_group in hardware.speed_groups %}
+hardware speed-group{{ speed_group }} serdes {{ hardware.speed_groups[speed_group].serdes }}
+{%   endfor %}
+{% endif %}

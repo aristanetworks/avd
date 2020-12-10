@@ -1,8 +1,8 @@
 {% if platform is defined and platform is not none %}
 ### Platform
-
 {%     if platform.trident is defined and platform.trident is not none %}
 {%       if platform.trident.forwarding_table_partition is defined and platform.trident.forwarding_table_partition is not none %}
+
    The platform trident forwarding-table partition is {{ platform.trident.forwarding_table_partition }}.
 {%       endif %}
 {%     endif %}

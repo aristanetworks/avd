@@ -31,14 +31,20 @@ logging format sequence-numbers
 {%     if logging.source_interface is defined and logging.source_interface is not none %}
 logging source-interface {{ logging.source_interface }}
 {%     endif %}
-{%     if logging.vrfs is defined and logging.vrfs is not none %}
+{%     if logging.vrfs is defined and logging.vrfs is not none  %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
-{%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none %}
+{%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none and vrf is ne 'default' %}
 logging vrf {{ vrf }} source-interface {{ logging.vrfs[vrf].source_interface }}
+{%              elif logging.vrfs[vrf].source_interface is defined  and vrf == 'default' %}
+logging source-interface {{ logging.vrfs[vrf].source_interface }}
 {%              endif %}
-{%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
+{%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none and vrf is ne 'default' %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
 logging vrf {{ vrf }} host {{ host }}
+{%                  endfor %}
+{%              elif vrf == 'default' %}
+{%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
+logging host {{ host }}
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}

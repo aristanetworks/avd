@@ -31,6 +31,7 @@
     - [Sflow](#sflow)
     - [Redundancy](#redundancy)
     - [SNMP Settings](#snmp-settings)
+    - [Speed-Group Settings](#speed-group-settings)
     - [Spanning Tree](#spanning-tree)
     - [Platform](#platform)
     - [Tacacs+ Servers](#tacacs-servers)
@@ -79,6 +80,7 @@
     - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Banners](#banners)
     - [HTTP Management API](#http-management-api)
+    - [GNMI Management API](#gnmi-management-api)
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
@@ -435,6 +437,18 @@ snmp_server:
       enable: < true | false >
 ```
 
+### Speed-Group Settings
+
+```yaml
+hardware:
+  speed_groups:
+    1:
+      serdes: <10g | 25g>
+    2:
+      serdes: <10g | 25g>
+    ...
+```
+
 ### Spanning Tree
 
 ```yaml
@@ -452,6 +466,10 @@ spanning_tree:
 platform:
   trident:
     forwarding_table_partition: < partition >
+  sand:
+    lag:
+      hardware_only: < true | false >
+      mode: < mode | default -> 1024x16 >
 ```
 
 ### Tacacs+ Servers
@@ -711,6 +729,19 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      'unknown-unicast':
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
 ```
 
 ### Loopback Interfaces
@@ -756,6 +787,7 @@ vlan_interfaces:
     description: < description >
     shutdown: < true | false >
     vrf: < vrf_name >
+    arp_aging_timeout: < arp_timeout >
     ip_address: < IPv4_address/Mask >
     ip_address_secondary: < IPv4_address/Mask >
     ip_router_virtual_address: < IPv4_address >
@@ -946,6 +978,7 @@ static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv4_network/Mask >
     gateway: < IPv4_address >
 ```
@@ -961,6 +994,7 @@ ipv6_static_routes:
     distance: < 1-255 >
     tag: < 0-4294967295 >
     name: < description >
+    metric: < 0-4294967295 >
   - destination_address_prefix: < IPv6_network/Mask >
     gateway: < IPv6_address >
 ```
@@ -1138,6 +1172,16 @@ router_bgp:
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
+  aggregate_addresses:
+    < aggregate_address_1/mask >:
+      advertise_only: < true | false >
+    < aggregate_address_2/mask >:
+    < aggregate_address_3/mask >:
+      as_set: < true | false >
+      summary_only: < true | false >
+      attribute_map: < route_map_name >
+      match_map: < route_map_name >
+      advertise_only: < true | false >
   redistribute_routes:
     < route_type >:
       route_map: < route_map_name >
@@ -1414,7 +1458,17 @@ management_api_http:
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
 ```
+### GNMI Management API
 
+```yaml
+management_api_gnmi:
+  enable_vrfs:
+    < vrf_name_1 >:
+      access_group: < Standard IPv4 ACL name >
+    < vrf_name_2 >:
+      access_group: < Standard IPv4 ACL name >
+  octa:
+```
 ### Management Console
 
 ```yaml

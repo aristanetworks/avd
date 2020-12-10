@@ -2,20 +2,14 @@ name: Ansible Test
 on:
   pull_request:
     branches:
-      - 'devel'
       - 'releases/**'
     paths:
       - 'ansible_collections/arista/avd/**'
-      - '.github/workflows/ansible_test.yml'
 jobs:
   'ansible-test':
     name: Run ansible-test validation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     container: ubuntu:18.04
-    # Deactivated as per GH changes
-    # env:
-    #   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-    #   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
     steps:
       - uses: actions/checkout@master
       - name: 'set environment variables'

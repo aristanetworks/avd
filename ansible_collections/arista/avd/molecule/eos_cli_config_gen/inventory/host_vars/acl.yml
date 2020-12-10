@@ -1,0 +1,32 @@
+### Standard Access-Lists ###
+standard_access_lists:
+  ACL-API:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access to switch API to CVP and Ansible"
+      20:
+        action: "permit host 10.10.10.10"
+      30:
+        action: "permit host 10.10.10.11"
+      40:
+        action: "permit host 10.10.10.12"
+  ACL-SSH:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"
+  ACL-SSH-VRF:
+    sequence_numbers:
+      10:
+        action: "remark ACL to restrict access RFC1918 addresses"
+      20:
+        action: "permit 10.0.0.0/8"
+      30:
+        action: "permit 172.16.0.0/12"
+      40:
+        action: "permit 192.168.0.0/16"

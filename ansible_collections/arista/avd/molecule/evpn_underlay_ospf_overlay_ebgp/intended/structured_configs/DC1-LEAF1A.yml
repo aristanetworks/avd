@@ -1,0 +1,291 @@
+## Ansible Generated ##
+
+### DC1-LEAF1A ###
+
+### Leaf Info ###
+l3leaf_node_group: DC1_LEAF1
+switch_platform: vEOS-LAB
+leaf_bgp_as: 65101
+leaf_id: 1
+switch_mgmt_ip: 192.168.200.105/24
+leaf_filter_tenants: ['all']
+leaf_filter_tags: ['web', 'app']
+leaf_allowed_vrfs: []
+leaf_allowed_svis: []
+leaf_allowed_vlans: []
+leaf_mlag: False
+
+service_routing_protocols_model: multi-agent
+ip_routing: true
+
+### Hardware Counters
+hardware_counters:
+
+### Daemon TerminAttr
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - 192.168.200.11
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Event Handler ###
+event_handlers:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+    - 192.168.200.5
+    - 8.8.8.8
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+    - 192.168.200.5
+
+### Redundancy ###
+redundancy:
+
+### Spanning-tree ###
+spanning_tree:
+  mode: mstp
+  priority: 4096
+
+
+### AAA authorization ###
+aaa_authorization:
+
+### local users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: True
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
+
+### VLANs ###
+vlans:
+
+## fake_tenant ##
+
+### VRFs ###
+vrfs:
+  MGMT:
+    ip_routing: False
+
+### bfd multihop ###
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.1/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+  Ethernet2:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.3/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+  Ethernet3:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.5/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+  Ethernet4:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.7/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+
+
+### Loopback Interfaces ###
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    ip_address: 192.168.255.5/32
+    ospf_area: 0.0.0.0
+
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    ip_address: 192.168.254.5/32
+    ospf_area: 0.0.0.0
+
+### Management Interfaces ###
+management_interfaces:
+  Management1:
+    description: oob_management
+    vrf: MGMT
+    ip_address: 192.168.200.105/24
+    gateway: 192.168.200.5
+
+### VLAN Interfaces ###
+vlan_interfaces:
+## fake_tenant ##
+
+### VxLAN interface ###
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-LEAF1A_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+## fake_tenant ##
+      vrfs:
+## fake_tenant ##
+
+### TCAM Profiles ###
+tcam_profile:
+
+### MAC address table ###
+mac_address_table:
+
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+
+virtual_source_nat_vrfs:
+
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## fake_tenant ##
+
+### static routes ###
+static_routes:
+  - vrf: MGMT
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 192.168.200.5
+
+### prefix-lists ###
+prefix_lists:
+
+
+### route-maps ###
+route_maps:
+
+### Routing - BGP ###
+router_bgp:
+  as: 65101
+  router_id: 192.168.255.5
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - distance bgp 20 200 200
+    - maximum-paths 10 ecmp 10
+  peer_groups:
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: 65001
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 3
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+      send_community: true
+      maximum_routes: 0
+  neighbors:
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.3:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.4:
+      peer_group: EVPN-OVERLAY-PEERS
+  redistribute_routes:
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  vlan_aware_bundles:
+## fake_tenant ##
+  vlans:
+  vrfs:
+## fake_tenant ##
+
+### Extended Community Lists ###
+ip_extcommunity_lists:
+
+### Routing - OSPF ###
+router_ospf:
+  process_ids:
+    101:
+      passive_interface_default: true
+      router_id: 192.168.255.5
+      no_passive_interfaces:
+        - Ethernet1
+        - Ethernet2
+        - Ethernet3
+        - Ethernet4
+      bfd_enable: true
+      max_lsa: 12000
+
+### Routing - ISIS ###
+router_isis:
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:

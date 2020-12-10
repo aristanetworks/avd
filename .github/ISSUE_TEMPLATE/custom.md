@@ -24,10 +24,9 @@ Verify first that your issue/request is not already reported on GitHub. -->
 
 ## Role or Module Name
 
-<!--- Insert, BELOW THIS COMMENT, the name of the module, plugin, task or feature
--->
 
-`arista.avd` collection and Python libraries version
+<!-- IF NOT APPLICABLE, DELETE Next subsection-->
+### `arista.avd` collection and Python libraries version
 
 <!--- Paste, BELOW THIS COMMENT, verbatim output from "ansible --version" and  "pip freeze" between quotes below Also provide the version of arista.avd collection-->
 
@@ -36,7 +35,7 @@ $ pip freeze
 
 ```
 
-## OS / Environment
+### OS / Environment
 
 __EOS Version__
 
@@ -49,7 +48,6 @@ __Cloudvision version__
 __OS running Ansible__
 
 <!-- Define which OS and version you use to run ansible -->
-
 
 
 ## Steps to reproduce

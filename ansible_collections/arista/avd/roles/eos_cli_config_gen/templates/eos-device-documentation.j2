@@ -9,6 +9,8 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -96,6 +98,14 @@
 ## Management SSH
 
 {% include 'documentation/management-ssh.j2' %}
+
+## Management API GNMI
+
+{% include 'documentation/management-api-gnmi.j2' %}
+  
+## Management API HTTP
+
+{% include 'documentation/management-api-http.j2' %}
 
 # Authentication
 
@@ -221,11 +231,15 @@
 
 {% include 'documentation/static-routes.j2' %}
 
+## IPv6 Static Routes
+
+{% include 'documentation/ipv6-static-routes.j2' %}
+
 ## Router ISIS
 
 {% include 'documentation/router-isis.j2' %}
 
-# Router BGP
+## Router BGP
 
 {% include 'documentation/router-bgp.j2' %}
 
@@ -311,6 +325,6 @@
 
 {% include 'documentation/ip-dhcp-relay.j2' %}
 
-## Custom Templates
+# Custom Templates
 
 {% include 'documentation/custom-templates.j2' %}

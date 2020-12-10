@@ -48,14 +48,24 @@
     mode: 0755
   delegate_to: localhost
   run_once: True
-
-- name: 'Create folder {{ fabric_dir_name }} for Fabric documentation'
+  
+- name: "Create folders for Fabric documentation"
+  when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
   file:
-    path: '{{fabric_dir}}'
+    path: '{{ documentation_dir }}/{{ fabric_name }}'
     state: directory
     mode: 0755
   delegate_to: localhost
-  run_once: True
+  run_once: False
+
+- name: 'Create folders for DC documentation'
+  when: type is defined and dc_name is defined and type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
+  file:
+    path: '{{ documentation_dir }}/{{ dc_name }}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: False
 
 - name: 'Create folder {{ devices_dir_name }} for EOS documentation'
   file:

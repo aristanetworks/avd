@@ -1,6 +1,5 @@
 {% if domain_list is defined and domain_list is not none %}
-
-### Domain-List: 
+### Domain-List:
 {%     for domain in domain_list | sort %}
  - {{ domain }}
 {%     endfor %}

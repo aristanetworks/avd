@@ -5,6 +5,8 @@ services:
     container_name: ansible_avd
     volumes:
       - ./../../:/projects
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOME}/.gitconfig:/home/avd/.gitconfig
     command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
 
   webdoc_cvp:

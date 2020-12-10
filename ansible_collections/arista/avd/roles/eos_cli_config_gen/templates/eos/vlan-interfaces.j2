@@ -18,6 +18,9 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %}
    vrf {{ vlan_interfaces[vlan_interface].vrf }}
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].arp_aging_timeout is defined and vlan_interfaces[vlan_interface].arp_aging_timeout is not none %}
+   arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
+{%         endif %}
 {%             if vlan_interfaces[vlan_interface].ip_proxy_arp is defined and vlan_interfaces[vlan_interface].ip_proxy_arp == true %}
    ip proxy-arp 
 {%             endif %}
