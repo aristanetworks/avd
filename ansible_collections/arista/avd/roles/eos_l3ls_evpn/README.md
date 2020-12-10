@@ -557,14 +557,6 @@ l3leaf:
 
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
       spanning_tree_mode: < mstp >
-    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
-    # This allows support for centralized routing.
-    overlay_svis: < true | false >
-
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
-  # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
-  node_groups:
 
       # Spanning tree priority | Required.
       spanning_tree_priority: < spanning-tree priority >
@@ -572,7 +564,7 @@ l3leaf:
       # Virtual router mac address for anycast gateway | Required.
       virtual_router_mac_address: < mac address >
 
-      # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
+      # Activate or deactivate IGMP snooping | Optional, default is true
       igmp_snooping_enabled: < true | false >
 
       # L3 Leaf BGP AS. | Required.
@@ -585,18 +577,13 @@ l3leaf:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
 
-      # Activate or deactivate IGMP snooping for node groups devices
-      igmp_snooping_enabled: < true | false >
+      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
+      # This allows support for centralized routing.
+      evpn_services_l2_only: < false | true >
 
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
       # unless the "l3leaf.defaults.mlag:" key is set to false.
-      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is true
-      # This allows support for centralized routing.
-      overlay_svis: < true | false >
-
-      # Define one or two nodes - same name as inventory_hostname | Required
-      # When two nodes are defined, this will create an MLAG pair.
       nodes:
 
         # First node
