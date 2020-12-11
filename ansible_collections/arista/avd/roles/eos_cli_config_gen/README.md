@@ -543,6 +543,7 @@ tacacs_servers:
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
+  policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
 ### AAA Server Groups
@@ -571,6 +572,9 @@ aaa_authentication:
     serial_console: < group | local | none >
   dot1x:
     default: < group | local | none >
+  policies:
+    on_failure_log: < true | false >
+    on_success_log: < true | false >
 ```
 
 ### AAA Authorization

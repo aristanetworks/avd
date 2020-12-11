@@ -10,6 +10,15 @@
 | Login | serial-console | {{ aaa_authentication.login.serial_console }} |
 {%     endif %}
 
+{%     if aaa_authentication.policies is defined and aaa_authentication.policies is not none %}
+{%         if aaa_authentication.policies.on_failure_log is defined and aaa_authentication.policies.on_failure_log == true %}
+AAA Authentication on-failure log has been enabled
+{%         endif %}
+{%         if aaa_authentication.policies.on_success_log is defined and aaa_authentication.policies.on_success_log == true %}
+AAA Authentication on-success log has been enabled
+{%         endif %}
+{%     endif %}
+
 ### AAA Authentication Device Configuration
 
 ```eos
