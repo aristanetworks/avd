@@ -10,15 +10,15 @@
 ## Table of Contents
 
 - [{{ dc_name }}](#{{ dc_name|replace('_',"")|lower }} )
-  - [Spine and Super-Spine Switches and Management IP](#spine-and-super-spine-switches-and-management-ip)
-  - [Super Spine Fabric Topology](#super-spine-fabric-topology)
+  - [Spine, Super-Spine Switches and Overlay Controller Management IP](#spine-super-spine-switches-and-overlay-controller-management-ip)
+  - [Super Spine and Overlay Controller Fabric Topology](#super-spine-and-overlay-controller-fabric-topology)
   - [Super Spine Fabric IP Allocation](#super-spine-fabric-ip-allocation)
   - [Super Spine Fabric Point-To-Point Links](#super-spine-fabric-point-to-point-links)
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)](#super-spine-overlay-loopback-interfaces-bgp-evpn-peering-if-required)
   - [Loopback0 Interfaces To Super Spine Node Allocation](#loopback0-interfaces-to-super-spine-node-allocation)
 
-## Spine and Super-Spine Switches and Management IP
+## Spine, Super-Spine Switches and Overlay Controller Management IP
 
 | Node | Management IP | Platform |
 | ---- | ------------- | -------- |
@@ -32,8 +32,13 @@
 | {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
 {%     endif %}
 {% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%    if hostvars[node].type == "overlay-controller" %}
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+{%     endif %}
+{% endfor %}
 
-## Super Spine Fabric Topology
+## Super Spine and Overlay Controller Fabric Topology
 
 | Type | Node | Interface | Peer Node | Peer Interface |
 | ---- | --------- | -------------- | --------- | -------------- |
@@ -44,6 +49,15 @@
 {%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type == 'spine' %}
 | super-spine | {{ node }} | {{ ethernet_interface }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }} |
 {%                  endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+| overlay-controller | {{ node }} | {{ ethernet_interface }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }} |
 {%             endfor %}
 {%         endif %}
 {%     endif %}
