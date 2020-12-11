@@ -1,8 +1,8 @@
 {% if ipv6_prefix_lists is defined and ipv6_prefix_lists is not none %}
-### IPv6 Prefix Lists Summary
+### IPv6 Prefix-lists Summary
 
 {%     for ipv6_prefix_list in ipv6_prefix_lists | arista.avd.natural_sort %}
-**{{ ipv6_prefix_list }}:**
+#### {{ ipv6_prefix_list }}
 
 | Sequence | Action |
 | -------- | ------ |
@@ -11,11 +11,11 @@
 {%         endfor %}
 
 {%     endfor %}
-### IPv6 Prefix Lists Device Configuration
+### IPv6 Prefix-lists Device Configuration
 
 ```eos
 {% include 'eos/ipv6-prefix-lists.j2' %}
 ```
 {% else %}
-IPv6 Prefix lists not defined
+IPv6 prefix-lists not defined
 {% endif %}

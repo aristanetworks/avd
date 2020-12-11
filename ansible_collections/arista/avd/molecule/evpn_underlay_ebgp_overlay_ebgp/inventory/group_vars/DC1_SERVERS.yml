@@ -1,5 +1,4 @@
 port_profiles:
-
   TENANT_A_B:
     mode: trunk
     vlans: "110-111,210-211"
@@ -12,9 +11,27 @@ port_profiles:
     mode: trunk
     vlans: "210-211"
 
+  ALL_WITH_SECURITY:
+    mode: trunk
+    vlans: "1-4094"
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    spanning_tree_portfast: edge
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      'unknown-unicast':
+        level: 2
+        unit: percent
 
 servers:
-
   server01_MLAG:
     rack: RackB
     adapters:
@@ -33,7 +50,7 @@ servers:
       - server_ports: [ Eth1 ]
         switch_ports: [ Ethernet6 ]
         switches: [ DC1-LEAF1A ]
-        profile: TENANT_A_B
+        profile: ALL_WITH_SECURITY
 
   server02_SINGLE_NODE:
     rack: RackB

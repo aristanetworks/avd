@@ -22,6 +22,7 @@ refresh-facts: ## Run all molecule scenario and commit changes
 	molecule test --scenario-name evpn_underlay_isis_overlay_ibgp && \
 	molecule test --scenario-name evpn_underlay_ospf_overlay_ebgp && \
 	molecule test --scenario-name upgrade_v1.0_to_v1.1 && \
+	molecule test --scenario-name evpn_l3leaf_no_mlag && \
 	cd molecule
 
 .PHONY: commit-facts

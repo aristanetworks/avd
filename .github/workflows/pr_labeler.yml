@@ -1,12 +1,14 @@
-name: "Pull Request Labeler"
+name: "PR Labeller"
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, ready_for_review, locked]
-
 jobs:
-  triage:
-    runs-on: ubuntu-latest
+  pr_triage:
+    name: "PR triage"
+    # https://github.com/actions/labeler
+    runs-on: ubuntu-18.04
     steps:
+      # V3 is not used as we hit following issue: https://github.com/actions/labeler/issues/107
     - uses: actions/labeler@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"

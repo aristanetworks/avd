@@ -49,7 +49,12 @@
 {%             else %}
 {%                 set leaf.parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
 {%             endif %}
-{%             if loop.length == 2 %}
+{%             if l2leaf.node_groups[l2leaf_node_group].mlag is defined %}
+{%                 set switch.mlag = l2leaf.node_groups[l2leaf_node_group].mlag %}
+{%             else %}
+{%                 set switch.mlag = l2leaf.defaults.mlag | default(true) %}
+{%             endif %}
+{%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l2leaf_node_group %}
 {%                 if l2leaf.node_groups[l2leaf_node_group].mlag_interfaces is defined %}

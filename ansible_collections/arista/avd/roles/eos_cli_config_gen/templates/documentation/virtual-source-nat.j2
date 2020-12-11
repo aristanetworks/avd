@@ -1,6 +1,5 @@
 {% if virtual_source_nat_vrfs is defined and virtual_source_nat_vrfs is not none %}
-
-### Virtual Source NAT Summary
+## Virtual Source NAT Summary
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
@@ -8,11 +7,11 @@
 | {{ vrf }} | {{ virtual_source_nat_vrfs[vrf].ip_address }} |
 {%         endfor %}
 
-### Virtual Source NAT Configuration
+## Virtual Source NAT Configuration
 
 ```eos
 {% include 'eos/virtual-source-nat.j2' %}
 ```
 {% else %}
-Virtual Source NAT is not defined
+Virtual source NAT not defined
 {% endif %}

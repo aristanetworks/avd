@@ -1,0 +1,22 @@
+{# Management API GNMI #}
+{% if management_api_gnmi is defined and management_api_gnmi is not none %}
+### Management API GNMI Summary
+
+{% if management_api_gnmi.enable_vrfs is defined %}
+| VRF with GNMI | OCTA |
+| ---------- | ---------- |
+{%     for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort %}
+| {{ vrf }} | {% if management_api_gnmi.octa is defined  %} enabled {% else %} disabled {% endif %} |
+{%     endfor %}
+{% else %}
+GNMI is not configured on any VRF.
+{% endif %}
+
+### Management API gnmi configuration
+
+```eos
+{% include 'eos/management-api-gnmi.j2' %}
+```
+{% else %}
+Management API gnmi is not defined
+{% endif %}

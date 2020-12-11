@@ -9,6 +9,8 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -23,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -42,6 +45,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -50,11 +54,11 @@
   - [Router Multicast](#router-multicast)
   - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
+  - [Community-lists](#community-lists)
   - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
+  - [Prefix-lists](#prefix-lists)
+  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
+  - [Route-maps](#route-maps)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
@@ -77,7 +81,7 @@
 
 {% include 'documentation/dns-domain.j2' %}
 
-## Domain-List
+## Domain-list
 
 {% include 'documentation/domain-list.j2' %}
 
@@ -96,6 +100,14 @@
 ## Management SSH
 
 {% include 'documentation/management-ssh.j2' %}
+
+## Management API GNMI
+
+{% include 'documentation/management-api-gnmi.j2' %}
+
+## Management API HTTP
+
+{% include 'documentation/management-api-http.j2' %}
 
 # Authentication
 
@@ -148,6 +160,10 @@
 ## Logging
 
 {% include 'documentation/logging.j2' %}
+
+## SNMP
+
+{% include 'documentation/snmp-settings.j2' %}
 
 ## SFlow
 
@@ -221,11 +237,15 @@
 
 {% include 'documentation/static-routes.j2' %}
 
+## IPv6 Static Routes
+
+{% include 'documentation/ipv6-static-routes.j2' %}
+
 ## Router ISIS
 
 {% include 'documentation/router-isis.j2' %}
 
-# Router BGP
+## Router BGP
 
 {% include 'documentation/router-bgp.j2' %}
 
@@ -249,7 +269,7 @@
 
 # Filters
 
-## Community Lists
+## Community-lists
 
 {% include 'documentation/community-lists.j2' %}
 
@@ -257,15 +277,15 @@
 
 {% include 'documentation/peer-filters.j2' %}
 
-## Prefix Lists
+## Prefix-lists
 
 {% include 'documentation/prefix-lists.j2' %}
 
-## IPv6 Prefix Lists
+## IPv6 Prefix-lists
 
 {% include 'documentation/ipv6-prefix-lists.j2' %}
 
-## Route Maps
+## Route-maps
 
 {% include 'documentation/route-maps.j2' %}
 
@@ -311,6 +331,6 @@
 
 {% include 'documentation/ip-dhcp-relay.j2' %}
 
-## Custom Templates
+# Custom Templates
 
 {% include 'documentation/custom-templates.j2' %}

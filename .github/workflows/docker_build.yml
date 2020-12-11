@@ -4,7 +4,6 @@ on:
     branches:
       - devel
       - 'releases/**'
-      # - 'features/ci-build-docker-224'
     paths:
       - '.github/workflows/docker_build.yml'
       - 'development/requirements.txt'
@@ -12,8 +11,8 @@ on:
 jobs:
   'rebuild-docker-avd':
     name: Instruct Docker Hub to build image
-    runs-on: ubuntu-latest
-    container: avdteam/base:3.6
+    runs-on: ubuntu-18.04
+    container: avdteam/base:3.6-v1.0
     steps:
       - uses: actions/checkout@master
       - name: 'Send Webhook'

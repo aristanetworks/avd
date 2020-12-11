@@ -1,5 +1,5 @@
 {% if management_security is defined and management_security is not none %}
-### Management Security
+## Management Security
 
 {%     if management_security.password is defined and management_security.password is not none %}
 {%       if management_security.password.encryption_key_common is defined and management_security.password.encryption_key_common == true %}
@@ -7,11 +7,11 @@
 {%       endif %}
 {%     endif %}
 
-### Management Security Configuration
+## Management Security Configuration
 
 ```eos
 {% include 'eos/management-security.j2' %}
 ```
 {% else %}
-Management Security not defined
+Management security not defined
 {% endif %}

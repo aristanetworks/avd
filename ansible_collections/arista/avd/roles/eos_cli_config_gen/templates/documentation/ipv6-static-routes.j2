@@ -1,0 +1,18 @@
+{% if ipv6_static_routes is defined and ipv6_static_routes is not none %}
+
+### IPv6 Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+{%  for static_route in ipv6_static_routes %}
+|{% if static_route.vrf is defined and static_route.vrf is not none %} {{ static_route.vrf }} {% else %} default {%  endif %} | {{ static_route.destination_address_prefix }} | {% if static_route.gateway is defined and static_route.gateway is not none%} {{ static_route.gateway }} {% else %} - {% endif %} | {% if static_route.interface is defined and static_route.interface is not none%} {{ static_route.interface }} {% else %} - {% endif %} | {% if static_route.distance is defined and static_route.distance is not none %} {{ static_route.distance }} {% else %} 1 {% endif %} | {% if static_route.tag is defined and static_route.tag is not none %} {{ static_route.tag }} {% else %} - {% endif %} | {% if static_route.name is defined and static_route.name is not none %} {{ static_route.name }} {% else %} - {% endif %} | {% if static_route.metric is defined and static_route.metric is not none %} {{ static_route.metric }} {% else %} - {% endif %}|
+{%  endfor %}
+
+### Static Routes Device Configuration
+
+```eos
+{% include 'eos/ipv6-static-routes.j2' %}
+```
+{% else %}
+IPv6 static routes not defined
+{% endif %}

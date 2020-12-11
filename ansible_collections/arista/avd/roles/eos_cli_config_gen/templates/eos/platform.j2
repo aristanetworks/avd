@@ -1,9 +1,19 @@
 {# eos - platform #}
 {% if platform is defined and platform is not none %}
-{%   if platform.trident is defined and platform.trident is not none %}
-{%     if platform.trident.forwarding_table_partition is defined and platform.trident.forwarding_table_partition is not none %}
 !
+{%     if platform.trident is defined and platform.trident is not none %}
+{%         if platform.trident.forwarding_table_partition is defined and platform.trident.forwarding_table_partition is not none %}
 platform trident forwarding-table partition {{ platform.trident.forwarding_table_partition }}
+{%         endif %}
 {%     endif %}
-{%   endif %}
+{%     if platform.sand is defined and platform.sand is not none %}
+{%         if platform.sand.lag is defined and platform.sand.lag is not none %}
+{%             if platform.sand.lag.hardware_only is defined and platform.sand.lag.hardware_only == true %}
+platform sand lag hardware-only
+{%             endif %}
+{%             if platform.sand.lag.mode is defined and platform.sand.lag.mode is not none and platform.sand.lag.mode  != "1024x16" %}
+platform sand lag mode {{ platform.sand.lag.mode }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
 {% endif %}

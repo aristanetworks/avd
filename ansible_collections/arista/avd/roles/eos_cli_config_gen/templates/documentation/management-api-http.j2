@@ -1,0 +1,26 @@
+{# Management API HTTP #}
+{% if management_api_http is defined and management_api_http is not none %}
+### Management API HTTP Summary
+
+| HTTP | HTTPS |
+| ---------- | ---------- |
+| {% if management_api_http.enable_http is defined and management_api_http.enable_http is not none %} {{ management_api_http.enable_http | lower }} {% else %} default {% endif %} | {% if management_api_http.enable_https is defined and management_api_http.enable_https is not none %} {{ management_api_http.enable_https | lower }} {% else %} default {% endif %} |
+{%     if management_api_http.enable_vrfs is defined and management_api_http.enable_vrfs is not none %}
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+{%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort %}
+| {{ vrf }} | {% if management_api_http.enable_vrfs[vrf].access_group is defined and management_api_http.enable_vrfs[vrf].access_group is not none %} {{ management_api_http.enable_vrfs[vrf].access_group }} {% else %} - {% endif %} | {% if management_api_http.enable_vrfs[vrf].ipv6_access_group is defined and management_api_http.enable_vrfs[vrf].ipv6_access_group is not none %} {{ management_api_http.enable_vrfs[vrf].ipv6_access_group }} {% else %} - {% endif %} |
+{%         endfor %}
+{%     endif %}
+
+### Management API HTTP Configuration
+
+```eos
+{% include 'eos/management-api-http.j2' %}
+```
+{% else %}
+Management API HTTP not defined
+{% endif %}

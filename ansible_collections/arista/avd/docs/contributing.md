@@ -91,8 +91,8 @@ appropriate labels will be applied for categorization.
 
 ## Using the issue tracker
 
-The issue tracker is the preferred channel for [__bug reports__](#bugs),
-[__features requests__](#features) and [__submitting pull
+The issue tracker is the preferred channel for [__bug reports__](#reporting-bugs),
+[__features requests__](#feature-requests) and [__submitting pull
 requests__](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests.
@@ -102,10 +102,7 @@ requests__](#pull-requests), but please respect the following restrictions:
 
 ## Branches
 
-- Current development branch: __`releases/v1.0.x`__
-- Stable branch: `master`
-- Branch namespace for issues: `issues/<IssueID>-<issue-name-shorten>`
-- Branch namespace for Feature: `features/<IssueID>-<issue-name-shorten>`
+- Current development branch: __`devel`__
 - Branch namespace for release & development: `releases/<release_id>`
 
 ## Pull requests
@@ -120,9 +117,9 @@ any work that's already in progress.
 
 * All major new functionality must include relevant tests where applicable.
 
-* When submitting a pull request, please be sure to work off of the `releases/grant-v1.x`
-branch, rather than `master`. The `releases/grant-v1.x` branch is used for ongoing
-development, while `master` is used for tagging new stable releases.
+* When submitting a pull request, please be sure to work off of the `devel`
+branch, rather than `master` (deprecated). The `devel` branch is used for ongoing
+development, while `releases/*` are used for tagging new stable releases.
 
 * All code submissions should meet the following criteria (CI will enforce
 these checks):
