@@ -21,6 +21,25 @@
 {%-        if loopback_interfaces[loopback_interface].ipv6_address is defined %} {{ loopback_interfaces[loopback_interface].ipv6_address }} {% else %} - {% endif -%} |
 {%     endfor %}
 
+{%     set loopback_interface_isis = namespace() %}
+{%     set loopback_interface_isis.configured = false %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%          if loopback_interfaces[loopback_interface].isis_enable is defined %}
+{%              set loopback_interface_isis.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if loopback_interface_isis.configured == true %}
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+{%         for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%             if loopback_interfaces[loopback_interface].isis_enable is defined and loopback_interfaces[loopback_interface].isis_enable is not none %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].isis_enable }} |  {{ loopback_interfaces[loopback_interface].isis_metric | default('-') }} | {% if loopback_interfaces[loopback_interface].isis_network_point_to_point is defined and loopback_interfaces[loopback_interface].isis_network_point_to_point is not none %} point-to-point {% elif loopback_interfaces[loopback_interface].isis_passive is defined and loopback_interfaces[loopback_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%             endif %}
+{%          endfor %}
+{%     endif %}
+
 ### Loopback Interfaces Device Configuration
 
 ```eos

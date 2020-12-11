@@ -79,7 +79,7 @@ IPv4
 
 | Management Interface | description | VRF | IP Address | Gateway |
 | -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | oob_management | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
 IPv6
 
@@ -94,7 +94,7 @@ IPv6
 interface Management1
    description oob_management
    vrf MGMT
-   ip address 10.73.255.122/24
+   ip address 10.73.254.11/24
 ```
 
 ## DNS Domain
@@ -224,7 +224,40 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
-No Ethernet interface defined
+### Ethernet Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
+| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
+| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
+| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *1500 | *switched | *access | - | - | - | - | 3 | active |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description P2P_LINK_TO_EAPI-SPINE1_Ethernet1
+   no switchport
+   ip address 172.31.255.1/31
+   isis enable EVPN_UNDERLAY
+   isis metric 50
+   isis network point-to-point
+!
+interface Ethernet2
+   description P2P_LINK_TO_EAPI-SPINE2_Ethernet1
+   no switchport
+   ip address 172.31.255.3/31
+   isis enable EVPN_UNDERLAY
+   isis metric 50
+   isis network point-to-point
+!
+interface Ethernet3
+   description MLAG_PEER_EAPI-LEAF1B_Ethernet3
+   channel-group 3 mode active
+```
 
 ## Port-Channel Interfaces
 
@@ -232,11 +265,70 @@ No Port-Channels defined
 
 ## Loopback Interfaces
 
-No Loopback interfaces defined
+### Loopback Interfaces Summary
+
+IPv4
+
+| Interface | Description | VRF | IP Address |
+| --------- | ----------- | --- | ---------- |
+| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.3/32 |
+
+IPv6
+
+| Interface | Description | VRF | IPv6 Address |
+| --------- | ----------- | --- | ------------ |
+| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | - |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | - |
+
+### Loopback Interfaces Device Configuration
+
+```eos
+!
+interface Loopback0
+   description EVPN_Overlay_Peering
+   ip address 192.168.255.3/32
+   isis enable EVPN_UNDERLAY
+   isis passive
+!
+interface Loopback1
+   description VTEP_VXLAN_Tunnel_Source
+   ip address 192.168.254.3/32
+   isis enable EVPN_UNDERLAY
+   isis passive
+```
 
 ## VLAN Interfaces
 
-No VLAN interfaces defined
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
+| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
+| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - |
+| Vlan4093 | MLAG_PEER_L3_PEERING | Global Routing Table | 10.255.251.0/31 | - | - |
+| Vlan4094 | MLAG_PEER | Global Routing Table | 10.255.252.0/31 | - | - |
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan110
+   description PR01-DEMO
+   vrf TENANT_A_PROJECT01
+   ip address virtual 10.1.10.254/24
+!
+interface Vlan4093
+   description MLAG_PEER_L3_PEERING
+   ip address 10.255.251.0/31
+   isis enable EVPN_UNDERLAY
+   isis metric 50
+   isis network point-to-point
+!
+interface Vlan4094
+   description MLAG_PEER
+   no autostate
+   ip address 10.255.252.0/31
+```
 
 ## VXLAN Interface
 
@@ -284,6 +376,16 @@ IP Virtual Router MAC Address is not defined
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+
+### ISIS interfaces Summary
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Loopback0 | EVPN_UNDERLAY |  - |  passive |
+| Loopback1 | EVPN_UNDERLAY |  - |  passive |
 
 ### Router ISIS Device Configuration
 
