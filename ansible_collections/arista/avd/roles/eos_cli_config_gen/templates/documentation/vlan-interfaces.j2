@@ -5,7 +5,7 @@
 | --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 | {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].description }} |
-{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif -%} |
 {%-        if vlan_interfaces[vlan_interface].ip_address is defined %} {{ vlan_interfaces[vlan_interface].ip_address }} {% else %} - {% endif -%} |
 {%-        if vlan_interfaces[vlan_interface].ip_address_virtual is defined %} {{ vlan_interfaces[vlan_interface].ip_address_virtual }} {% else %} - {% endif -%} |
 {%-        if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %} {{ vlan_interfaces[vlan_interface].ip_virtual_router_address  }} {% else %} - {% endif -%} |

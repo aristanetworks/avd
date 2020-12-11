@@ -2,7 +2,7 @@
 ### Extended Access-lists Summary
 
 {%     for access_list in access_lists | arista.avd.natural_sort %}
-**{{ access_list }}:**
+#### {{ access_list }}
 
 | Sequence | Action |
 | -------- | ------ |
@@ -17,5 +17,5 @@
 {% include 'eos/access-lists.j2' %}
 ```
 {% else %}
-Extended Access-lists not defined
+Extended access-lists not defined
 {% endif %}

@@ -2,15 +2,15 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | {% if ipv6_unicast_routing is defined and ipv6_unicast_routing == true %} True | {% else %} False | {% endif %}
+| default |{% if ipv6_unicast_routing is defined and ipv6_unicast_routing == true %} true | {% else %} false |{% endif %}
 {% set ipv6_configured_in_vrf = false %}
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}
 {% set ipv6_configured_in_vrf = true %}
-| {{ vrf }} | True |
+| {{ vrf }} | true |
 {%         else %}
-| {{ vrf }} | False |
+| {{ vrf }} | false |
 {%         endif %}
 {%     endfor %}
 {% endif %}

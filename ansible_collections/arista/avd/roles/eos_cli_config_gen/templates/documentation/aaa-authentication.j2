@@ -4,10 +4,10 @@
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 {%     if aaa_authentication.login.default is defined and aaa_authentication.login.default is not none %}
-| Login | Default | {{ aaa_authentication.login.default }} |
+| Login | default | {{ aaa_authentication.login.default }} |
 {%     endif %}
 {%     if aaa_authentication.login.serial_console is defined and aaa_authentication.login.serial_console is not none %}
-| Login | Serial-console | {{ aaa_authentication.login.serial_console }} |
+| Login | serial-console | {{ aaa_authentication.login.serial_console }} |
 {%     endif %}
 
 ### AAA Authentication Device Configuration

@@ -7,11 +7,11 @@
 | {% if radius_server.vrf is defined %} {{ radius_server.vrf }} {% else %} default {% endif %}| {{ radius_server.host }} |
 {%  endfor %}
 
-### RADUIUS Servers Device Configuration
+### RADIUS Servers Device Configuration
 
 ```eos
 {% include 'eos/radius-servers.j2' %}
 ```
 {% else %}
-RADIUS servers not configured
+RADIUS servers not defined
 {% endif %}

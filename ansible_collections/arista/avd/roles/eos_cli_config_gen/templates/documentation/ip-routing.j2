@@ -2,20 +2,20 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | {% if ip_routing is defined and ip_routing is not none and ip_routing == true %} True| {% else %} False| {% endif %}
+| default |{% if ip_routing is defined and ip_routing is not none and ip_routing == true %} true| {% else %} false| {% endif %}
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ip_routing == true %}
-| {{ vrf }} | True |
+| {{ vrf }} | true |
 {%         elif vrfs[vrf].ip_routing == false %}
-| {{ vrf }} | False |
+| {{ vrf }} | false |
 {%         endif %}
 {%     endfor %}
 {% endif %}
-
 
 ### IP Routing Device Configuration
 
 ```eos
 {% include 'eos/ip-routing.j2' %}
 ```
+

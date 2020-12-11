@@ -5,7 +5,7 @@
 Mode: {{ spanning_tree.mode }}
 {%     if spanning_tree.mode == "mstp" %}
 
-**MSTP Instance and Priority**:
+### MSTP Instance and Priority
 
 | Instance | Priority |
 | -------- | -------- |
@@ -18,5 +18,5 @@ Mode: {{ spanning_tree.mode }}
 {% include 'eos/spanning-tree.j2' %}
 ```
 {% else %}
-Spanning-Tree Not Defined
+Spanning-tree not defined
 {% endif %}

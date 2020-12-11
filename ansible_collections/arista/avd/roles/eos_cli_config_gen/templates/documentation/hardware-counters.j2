@@ -1,7 +1,7 @@
 {% if hardware_counters is defined and hardware_counters is not none %}
 ### Hardware Counters Summary
 
-**Hardware Counter Features:**
+#### Hardware Counter Features
 
 | Feature | Flow Direction |
 | ------- | -------------- |
@@ -15,11 +15,11 @@
 {%     endif %}
 {% endif %}
 
-### Hardare Counters Configuration
+### Hardware Counters Configuration
 
 ```eos
 {% include 'eos/hardware-counters.j2' %}
 ```
 {% else %}
-No Hardware Counters defined
+No hardware counters defined
 {% endif %}
