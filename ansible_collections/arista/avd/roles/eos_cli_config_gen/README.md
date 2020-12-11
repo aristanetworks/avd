@@ -575,6 +575,8 @@ aaa_authentication:
   policies:
     on_failure_log: < true | false >
     on_success_log: < true | false >
+    local:
+        allow_nopassword: < false | true (default) >
 ```
 
 ### AAA Authorization
