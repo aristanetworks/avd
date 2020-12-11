@@ -1,0 +1,27 @@
+### ptp
+
+ptp:
+  clock_identity: 123.123.123.123
+  source:
+    ip: 1.1.1.1
+  priority1: 1
+  priority2: 2
+  ttl: 200
+  message_type:
+    general:
+      dscp: 4
+    event:
+      dscp: 8
+
+### interface
+ethernet_interfaces:
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.15/31
+    ptp:
+      enable: true
