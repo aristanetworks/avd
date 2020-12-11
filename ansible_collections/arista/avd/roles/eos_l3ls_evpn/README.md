@@ -23,6 +23,9 @@
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
+  - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
+    - [Inventory Structure](#inventory-structure)
+    - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
   - [License](#license)
 
 ## Overview
@@ -292,12 +295,23 @@ overlay_loopback_network_summary: < IPv4_network/Mask >
 # Assign range larger then total L3 leafs
 vtep_loopback_network_summary: < IPv4_network/Mask >
 
+# IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
+# This is only needed for centralized routing designs
+vtep_vvtep_ip: < IPv4_address/Mask >
+
 # IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
 # * When MLAG leafs present in topology.
 # Assign range larger then total: L3 Leafs + 2 ]
 mlag_ips:
   leaf_peer_l3: < IPv4_network/Mask >
   mlag_peer: < IPv4_network/Mask >
+
+# BGP multi-path
+# If not defined these values will be equal by default to the number of spines in the fabric
+# If defined the values defined will both be applied to leaf and spine switches
+# Note: these values are only relevant for an eBGP scenario
+bgp_maximum_paths: <number_of_max_paths>
+bgp_ecmp: <number_of_ecmp_paths>
 
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
@@ -426,7 +440,7 @@ The variables should be applied to all devices in the fabric.
 
 ```yaml
 # define the layer type
-type: < spine | l3leaf | l2leaf >
+type: < spine | l3leaf | l2leaf | super-spine | overlay-controller >
 ```
 
 **Example:**
@@ -440,6 +454,12 @@ type: l3leaf
 
 # Defined in L2LEAFS.yml
 type: l2leaf
+
+# Defined in SUPER-SPINES.yml
+type: super-spine
+
+# Defined in ROUTE-SERVERS.yml
+type: overlay-controller
 ```
 
 #### Spine Variables
@@ -503,59 +523,67 @@ spine:
 ```yaml
 l3leaf:
 
-  # L3 Leaf default variables, can be overridden when defined under < node_group >.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L3 leafs.
+  # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-    # Arista platform family. | Required
-    platform: < Arista Platform Family >
-
-    # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
-    spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
-
-    # Uplink to spine interfaces (list), interface located on L3 Leaf,
-    # corresponding to spines and spine_interfaces | Required.
-    uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-    p2p_link_interface_speed: < interface_speed >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-    spanning_tree_mode: < mstp >
-
-    # Spanning tree priority | Required.
-    spanning_tree_priority: < spanning-tree priority >
-
-    # Virtual router mac address for anycast gateway | Required.
-    virtual_router_mac_address: < mac address >
-
-    # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
-    igmp_snooping_enabled: < true | false >
-
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
+
+      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+
+      # Arista platform family. | Required
+      platform: < Arista Platform Family >
+
+      # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
+      spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
+
+      # Uplink to spine interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces | Required.
+      uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+      # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
+      p2p_link_interface_speed: < interface_speed >
+
+      # Enable / Disable auto MLAG, when two nodes are defined in node group.
+      mlag: < true | false -> default true >
+
+      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+      spanning_tree_mode: < mstp >
+
+      # Spanning tree priority | Required.
+      spanning_tree_priority: < spanning-tree priority >
+
+      # Virtual router mac address for anycast gateway | Required.
+      virtual_router_mac_address: < mac address >
+
+      # Activate or deactivate IGMP snooping | Optional, default is true
+      igmp_snooping_enabled: < true | false >
 
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
+      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
 
-      # Activate or deactivate IGMP snooping for node groups devices
-      igmp_snooping_enabled: < true | false >
+      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
+      # This allows support for centralized routing.
+      evpn_services_l2_only: < false | true >
 
-      # Define one or two nodes - same name as inventory_hostname | Required
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l3leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node
@@ -599,7 +627,7 @@ l3leaf:
 
 l3leaf:
   defaults:
-    platform: vEOS-LAB
+    platform: 7050X3
     bgp_as: 65100
     spines: [ DC1-SPINE1, DC1-SPINE2 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
@@ -634,6 +662,8 @@ l3leaf:
           spine_interfaces: [ Ethernet3, Ethernet3 ]
     DC1_SVC3:
       bgp_as: 65103
+      platform: 7280R
+      mlag: false
       filter:
         tenants: [ Tenant_A ]
         tags: [ erp1 ]
@@ -655,44 +685,50 @@ l3leaf:
 ```yaml
 l2leaf:
 
-  # L2 Leaf default variables, can be overridden when defined under < node_group >.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L2 leafs.
+  # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-    # Arista platform family. | Required
-    platform: < Arista Platform Family >
-
-    # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
-
-    # Uplink interfaces (list), interface located on L2 Leaf,
-    # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
-    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-    # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
-    p2p_link_interface_speed: < interface_speed >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-    spanning_tree_mode: < mstp >
-
-    # Spanning tree priority | Required.
-    spanning_tree_priority: < spanning-tree priority >
-
-    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
-    igmp_snooping_enabled: < true | false >
-
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
 
+      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+
+      # Arista platform family. | Required
+      platform: < Arista Platform Family >
+
+      # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
+      parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+
+      # Uplink interfaces (list), interface located on L2 Leaf,
+      # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+      # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
+      p2p_link_interface_speed: < interface_speed >
+
+      # Enable / Disable auto MLAG, when two nodes are defined in node group.
+      mlag: < true | false -> default true >
+
+      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+      spanning_tree_mode: < mstp >
+
+      # Spanning tree priority | Required.
+      spanning_tree_priority: < spanning-tree priority >
+
+      # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+      igmp_snooping_enabled: < true | false >
+
       # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
       # If filter is not defined will default to all
+      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
@@ -700,8 +736,9 @@ l2leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Define one or two nodes - same name as inventory_hostname.
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l2leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node
@@ -842,20 +879,34 @@ tenants:
     # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
     mac_vrf_vni_base: < 10000-16770000 >
 
+    # MLAG IBGP peering per VRF | Optional
+    # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
+    # Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.
+    # This setting can be overridden per VRF.
+    enable_mlag_ibgp_peering_vrfs: < true | false >
+
     # Define L3 network services organized by vrf.
     vrfs:
       # VRF name | Required
       < tenant_a_vrf_1 >:
 
         # VRF VNI | Required.
-        # The VRF VNI range is limited.
-        vrf_vni: <1-1024>
+        # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
+        # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
+        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan : < > } to a lower value (default 3000).
+        # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
+        vrf_vni: < 1-1024 >
 
         # IP Helper for DHCP relay
         ip_helpers:
           < IPv4 dhcp server IP >:
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
+        # MLAG IBGP peering per VRF | Optional
+        # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
+        # Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
+        enable_mlag_ibgp_peering_vrfs: < true | false >
 
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
@@ -930,7 +981,7 @@ tenants:
             ip_address_virtual: < IPv4_address/Mask >
 
       < tenant_a_vrf_2 >:
-        vrf_vni: <1-1024>
+        vrf_vni: < 1-1024 >
         svis:
           < 1-4096 >:
             name: < description >
@@ -967,7 +1018,7 @@ tenants:
     mac_vrf_vni_base: < 10000-16770000 >
     vrfs:
       < tenant_b_vrf_1 >:
-        vrf_vni: <1-1024>
+        vrf_vni: < 1-1024 >
         vtep_diagnostic:
           loopback: < 2-2100 >
           loopback_ip_range: < IPv4_address/Mask >
@@ -1157,6 +1208,21 @@ port_profiles:
   < port_profile_2 >:
     mode: < access | dot1q-tunnel | trunk >
     vlans: < vlans as string >
+
+    # Storm control settings applied on port toward server | Optional
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
+      unknown_unicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent | pps >
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
@@ -1489,6 +1555,239 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
+```
+
+## Role Enchancements for Super Spine Support
+
+The enchancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
+5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
+The logic to deploy every leaf-spine POD fabric remains unchanged. The enchancement only adds logic required to provision spine-to-super-spine fabric.
+Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
+Current AVD release supports single plane deployment only.
+
+Only BGP underlay is supported for super-spine deployment. Spines in every POD must have unique AS per POD.
+
+### Inventory Structure
+
+The inventory must have a dedicated group for super-spines and every leaf-spine POD. Example:
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Super Spines group name >:
+          hosts:
+            < super-spine name >:
+              ansible_host: < management IP >
+            < super-spine name >:
+              ansible_host: < management IP >
+            ...
+        < DC POD 1 group name >:
+          children:
+            < spines group >:
+              <-- omitted -->
+            < leaf group >:
+              <-- omitted -->
+```
+
+### Additional Variables Required For Super Spine Deployment
+
+Defaults:
+
+```yaml
+max_spine_to_super_spine_links: 1  # number of parallel links between spines and super-spines
+```
+
+Assigned to the DC group:
+
+```yaml
+dc_name: DC1  # data center fabric name
+              # this variable is required to identify devices in the same DC in case of multi-DC setup
+
+max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
+
+super_spine:
+  platform: vEOS-LAB  # super-spine platform
+  bgp_as: <super-spine BGP AS>
+  nodes:
+    SU-01:  # super-spine name
+      id: 1
+      mgmt_ip: 192.168.0.1/24
+    <-- etc. -->
+
+# IP address range for loopbacks for all super-spines in the DC,
+# assigned as /32s
+# Assign range larger then total super-spines
+super_spine_loopback_network_summary: 192.168.100.0/24
+
+# additional lines for super-spine BGP config
+super_spine_bgp_defaults:
+  #  - update wait-for-convergence
+  #  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+```
+
+Assigned to Super Spine Group:
+
+```yaml
+type: super-spine  # identifies every host in the group as super-spine
+```
+
+Assigned to Every POD Group:
+
+```yaml
+pod_number: 1  # leaf-spine POD number, starts with 1
+
+spine:
+  # list of spine interfaces used as uplinks to super-spines
+  # taking `max_spine_to_super_spine_links` into account
+  # for example: spine1, spine2, spine3, ...
+  # or spine1, spine1, spine2, spine2, etc.
+  uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+  nodes:
+    <spine-hostname>:
+      # super-spine interfaces to spines
+      # taking `max_spine_to_super_spine_links` into account
+      # for example: super-spine1, super-spine2, super-spine3, ...
+      # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
+      super_spine_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+    <-- etc. -->
+
+# Point to Point Network Summary range, assigned as /31 for each
+# uplink interfaces
+# Assign range larger then total
+# [ max_spines_in_a_POD * max_super_spines * max_spine_to_super_spine_links * 2 ]
+super_spine_underlay_p2p_network_summary: 172.31.1.0/24
+```
+
+Following variables must be now defined on DC and not POD level:
+
+- `p2p_uplinks_mtu`
+- `bgp_peer_groups`
+
+## Role Enchancements for dedicated Overlay Controllers
+
+This enhancement will allow support for dedicated Overlay Controllers connected to fabric nodes.
+Overlay Controllers can be connected to any other device type.
+Overlay Controllers can currently only be used as EVPN Overlay Controllers
+
+### Inventory Structure
+
+The inventory must have a dedicated group for Overlay Controllers. Example:
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Overlay Controllers group name >:
+          hosts:
+            < Overlay Controller name >:
+              ansible_host: < management IP >
+            < Overlay Controller name >:
+              ansible_host: < management IP >
+            ...
+```
+
+### Additional Variables Required For Overlay Controllers Deployment
+
+Defaults:
+```yaml
+max_overlay_controller_to_switch_links: 1
+```
+
+Assigned to the DC group:
+
+```yaml
+overlay_controller:
+  platform: <platform>   # overlay-controller platform
+  defaults: #Default variables, can be overridden when defined under each node
+    remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
+    uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
+    bgp_as: <BGP AS>
+  nodes:
+    <inventory_hostname>:
+      id: <number> # Starting from 1
+      mgmt_ip: < IPv4_address/Mask >
+      remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+# Point to Point Network Summary range, assigned as /31 for each uplink interfaces
+# Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
+overlay_controller_p2p_network_summary: < IPv4_network/Mask >
+# IP address summary for BGP evpn overlay peering loopback for Overlay Controllers | Required
+# Assigned as /32 to Loopback0
+# Assign range larger then:
+# [ total overlay_controllers ]
+overlay_controller_loopback_network_summary: < IPv4_network/Mask >
+# additional lines for overlay-controller BGP config
+overlay_controller_bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+```
+
+Assigned to Overlay Controller Group:
+
+```yaml
+type: overlay-controller # identifies every host in the group as overlay-controller
+```
+
+
+## Role Enhancements for Flexible EVPN Overlay peering design
+
+This enhancement will allow a more flexible EVPN Overlay peering design.
+Overlay peerings can be configured to any of the following options as well as combinations thereof:
+* l3leaf <-> spine
+* l3leaf <-> super-spine
+* l3leaf <-> overlay-controller
+* spine <-> spine (in other PODs)
+* spine <-> super-spine
+* spine <-> overlay-controller
+* super-spine <-> super-spine (in other DCs)
+* super-spine <-> overlay-controller
+* overlay-controller <-> overlay-controller (in other DCs)
+The overlay peerings will be derived from the variable `evpn_overlay_controller_groups` on the "client".
+Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between
+all the l3leafs in this group and all devices in the group `DC1_SUPER_SPINES`. The devices in group `DC1_SUPER_SPINES` will detect that others are
+pointing at them, and configure the peering as well.
+
+Currently all spines, super-spines and overlay-controllers will have the EVPN adress-family and EVPN BGP peer-group configured even if they have no
+EVPN overlay peerings.
+
+To be backward compatible the templates will use the old behavior of configuring EVPN Overlay between all spines and l3leafs if `evpn_overlay_controller_groups`
+is not defined on the l3leafs group.
+
+### Inventory Structure
+
+There are no specific requirements for this feature, so this is just an example for reference.
+
+```yaml
+all:
+  children:
+    < DC-group-name >:
+      children:
+        < Overlay Controllers group name >:
+          <-- omitted -->
+        < Super Spines group name >:
+          <-- omitted -->
+        < DC POD 1 group name >:
+          children:
+            < spines group >:
+              <-- omitted -->
+            < leaf group >:
+              <-- omitted -->
+```
+
+### Additional Variables For Flexible EVPN Overlay peerings
+
+Assigned to any device group:
+
+```yaml
+evpn_overlay_controller_groups: [ < inventory_group > ]  # One or more groups containing EVPN RR/RS.
 ```
 
 ## License

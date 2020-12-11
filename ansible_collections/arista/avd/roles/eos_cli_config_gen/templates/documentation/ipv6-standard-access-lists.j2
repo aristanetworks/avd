@@ -2,7 +2,7 @@
 ### IPv6 Standard Access-lists Summary
 
 {%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
-**{{ ipv6_standard_access_list }}:**
+#### {{ ipv6_standard_access_list }}
 
 | Sequence | Action |
 | -------- | ------ |
@@ -17,5 +17,5 @@
 {% include 'eos/ipv6-standard-access-lists.j2' %}
 ```
 {% else %}
-IPv6 Standard Access-lists not defined
+IPv6 standard access-lists not defined
 {% endif %}

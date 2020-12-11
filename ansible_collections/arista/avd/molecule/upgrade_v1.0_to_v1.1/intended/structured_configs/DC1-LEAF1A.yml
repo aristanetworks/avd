@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['web', 'app']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_WEB_Zone']
@@ -209,28 +210,28 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
   Vlan131:
     tenant: Tenant_A
     tags: ['app']
     description: Tenant_A_APP_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
   Vlan120:
     tenant: Tenant_A
     tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
   Vlan121:
     tenant: Tenant_A
     tags: ['web']
     description: Tenant_A_WEBZone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.21.1/24
 ## Tenant_B ##
@@ -295,10 +296,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
 
 
 ### route-maps ###

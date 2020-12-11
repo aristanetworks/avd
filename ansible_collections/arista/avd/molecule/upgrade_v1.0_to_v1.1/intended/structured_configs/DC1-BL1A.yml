@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 6
 switch_mgmt_ip: 192.168.200.110/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['wan']
 leaf_allowed_vrfs: ['Tenant_A_WAN_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_WAN_Zone']
@@ -79,7 +80,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###
@@ -261,7 +262,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['wan']
     description: Tenant_A_WAN_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
   Vlan3013:
@@ -275,7 +276,7 @@ vlan_interfaces:
     tenant: Tenant_B
     tags: ['wan']
     description: Tenant_B_WAN_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
   Vlan3020:
@@ -289,7 +290,7 @@ vlan_interfaces:
     tenant: Tenant_C
     tags: ['wan']
     description: Tenant_C_WAN_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
   Vlan3030:
@@ -360,12 +361,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
-      20:
-        action: "permit 10.255.251.0/24 le 31"
 
 ### MLAG Configuration ###
 mlag_configuration:

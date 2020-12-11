@@ -1,5 +1,5 @@
 {% if community_lists is defined and community_lists is not none %}
-### Community Lists Summary
+### Community-lists Summary
 
 | Name | Action |
 | -------- | ------ |
@@ -7,11 +7,11 @@
 | {{ community_list }} | {{ community_lists[community_list].action }} |
 {%     endfor %}
 
-### Community Lists Device Configuration
+### Community-lists Device Configuration
 
 ```eos
 {% include 'eos/community-lists.j2' %}
 ```
 {% else %}
-Community Lists not defined
+Community-lists not defined
 {% endif %}

@@ -1,7 +1,7 @@
 {% if mlag_configuration is defined and mlag_configuration is not none %}
-### MLAG Summary
+## MLAG Summary
 
-| domain-id | local-interface | peer-address | peer-link |
+| Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
 | {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
 
@@ -12,7 +12,7 @@ Dual primary detection is enabled. The detection delay is {{ mlag_configuration.
 Dual primary detection is disabled.
 {%   endif %}
 
-### MLAG Device Configuration
+## MLAG Device Configuration
 
 ```eos
 {% include 'eos/mlag-configuration.j2' %}

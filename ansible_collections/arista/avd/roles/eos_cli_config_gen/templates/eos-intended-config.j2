@@ -53,8 +53,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/redundancy.j2' %}
 {# snmp settings #}
 {% include 'eos/snmp-settings.j2' %}
-{# hardware speed-group configuration #}
-{% include 'eos/speed-group.j2' %}
+{# hardware configuration #}
+{% include 'eos/hardware.j2' %}
 {# spanning-tree #}
 {% include 'eos/spanning-tree.j2' %}
 {# platform #}
@@ -154,6 +154,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/banners.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
+{# management api gnmi #}
+{% include 'eos/management-api-gnmi.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
 {# management security #}

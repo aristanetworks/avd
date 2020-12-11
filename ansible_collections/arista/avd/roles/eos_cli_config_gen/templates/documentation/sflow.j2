@@ -1,7 +1,7 @@
 {% if sflow is defined and sflow is not none %}
 ### SFlow Summary
-
 {%   if ( (sflow.vrfs is defined and sflow.vrfs is not none) or (sflow.destinations is defined and sflow.destinations is not none) or (sflow.source_interface is defined and sflow.source_interface is not none) ) %}
+
 | VRF | SFlow Source Interface | SFlow Destination | Port |
 | --- | ---------------------- | ----------------- | ---- |
 {%      if sflow.vrfs is defined and sflow.vrfs is not none %}
@@ -18,21 +18,22 @@
 {%      endif %}
 {%      if sflow.destinations is defined and sflow.destinations is not none %}
 {%          for destination in sflow.destinations %}
-| GRT | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
+| default | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
 {%          endfor %}
 {%     endif %}
 {%     if sflow.source_interface is defined and sflow.source_interface is not none %}
-| GRT | {{ sflow.source_interface }} | - | - |
+| default | {{ sflow.source_interface }} | - | - |
 {%     endif %}
 {%   endif %}
-
 {%     if sflow.sample is defined and sflow.sample is not none %}
+
 sFlow Sample Rate: {{ sflow.sample }}
 {%     endif %}
+{%     if sflow.run is defined and sflow.run == true %}
 
-{%     if sflow.run is defined and sflow.run == True %}
 sFlow is enabled.
 {% else %}
+
 sFlow is disabled.
 {%     endif %}
 

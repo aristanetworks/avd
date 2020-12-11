@@ -1,8 +1,5 @@
 name: Ansible Molecule CLI CONFIG GEN
 on:
-  push:
-    branches:
-      - devel
   pull_request:
     paths:
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/tasks/**'
@@ -12,11 +9,10 @@ on:
       - 'ansible_collections/arista/avd/molecule/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-cli-config-gen.yml'
-      - '.github/git-repo-state-monitor.sh'
 jobs:
   molecule:
     name: Run CI test for eos_cli_config_gen
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
       matrix:
@@ -43,10 +39,6 @@ jobs:
           cd ansible_collections/arista/avd
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
-
-      - name: Monitor git status
-        run: |
-          bash .github/git-repo-state-monitor.sh
 
       - uses: actions/upload-artifact@v1
         with:

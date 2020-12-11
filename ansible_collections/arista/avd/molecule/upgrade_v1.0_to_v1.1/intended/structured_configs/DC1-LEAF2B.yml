@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['Tenant_A', 'Tenant_B', 'Tenant_C']
 leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion', 'nfs']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
@@ -79,7 +80,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###
@@ -363,14 +364,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['app', 'erp1']
     description: Tenant_A_APP_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.30.1/24
   Vlan131:
     tenant: Tenant_A
     tags: ['app']
     description: Tenant_A_APP_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
   Vlan3011:
@@ -383,14 +384,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['db', 'erp1']
     description: Tenant_A_DB_BZone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.40.1/24
   Vlan141:
     tenant: Tenant_A
     tags: ['db']
     description: Tenant_A_DB_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_DB_Zone
     ip_address_virtual: 10.1.41.1/24
   Vlan3012:
@@ -403,14 +404,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['opzone']
     description: Tenant_A_OP_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
   Vlan111:
     tenant: Tenant_A
     tags: ['opzone']
     description: Tenant_A_OP_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
   Vlan3009:
@@ -423,14 +424,14 @@ vlan_interfaces:
     tenant: Tenant_A
     tags: ['web', 'erp1']
     description: Tenant_A_WEB_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
   Vlan121:
     tenant: Tenant_A
     tags: ['web']
     description: Tenant_A_WEBZone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.21.1/24
   Vlan3010:
@@ -444,14 +445,14 @@ vlan_interfaces:
     tenant: Tenant_B
     tags: ['opzone']
     description: Tenant_B_OP_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.10.1/24
   Vlan211:
     tenant: Tenant_B
     tags: ['opzone']
     description: Tenant_B_OP_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_B_OP_Zone
     ip_address_virtual: 10.2.11.1/24
   Vlan3019:
@@ -465,14 +466,14 @@ vlan_interfaces:
     tenant: Tenant_C
     tags: ['opzone']
     description: Tenant_C_OP_Zone_1
-    enabled: True
+    shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.10.1/24
   Vlan311:
     tenant: Tenant_C
     tags: ['opzone']
     description: Tenant_C_OP_Zone_2
-    enabled: True
+    shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
   Vlan3029:
@@ -569,12 +570,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
-      20:
-        action: "permit 10.255.251.0/24 le 31"
 
 ### MLAG Configuration ###
 mlag_configuration:

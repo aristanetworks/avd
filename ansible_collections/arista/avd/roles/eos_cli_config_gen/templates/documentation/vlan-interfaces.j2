@@ -5,11 +5,38 @@
 | --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 | {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].description }} |
-{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif -%} |
 {%-        if vlan_interfaces[vlan_interface].ip_address is defined %} {{ vlan_interfaces[vlan_interface].ip_address }} {% else %} - {% endif -%} |
 {%-        if vlan_interfaces[vlan_interface].ip_address_virtual is defined %} {{ vlan_interfaces[vlan_interface].ip_address_virtual }} {% else %} - {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %} {{ vlan_interfaces[vlan_interface].ip_virtual_router_address  }} {% else %} - {% endif -%} |
+{%-        if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %}
+ {{ vlan_interfaces[vlan_interface].ip_virtual_router_address  }}
+{%-            if vlan_interfaces[vlan_interface].ip_address_secondaries is defined and vlan_interfaces[vlan_interface].ip_address_secondaries is not none %}
+ <br> {{ vlan_interfaces[vlan_interface].ip_address_secondaries | join(' secondary <br> ') }} secondary
+{%-            endif %}
+{%- else %}
+ -
+{%- endif %}
+ |
 {%     endfor %}
+
+{%     set vlan_interface_isis = namespace() %}
+{%     set vlan_interface_isis.configured = false %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].isis_enable is defined %}
+{%              set vlan_interface_isis.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if vlan_interface_isis.configured == true %}
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%             if vlan_interfaces[vlan_interface].isis_enable is defined and vlan_interfaces[vlan_interface].isis_enable is not none %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} |  {{ vlan_interfaces[vlan_interface].isis_metric | default('-') }} | {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point is not none %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%             endif %}
+{%          endfor %}
+{%     endif %}
 
 ### VLAN Interfaces Device Configuration
 

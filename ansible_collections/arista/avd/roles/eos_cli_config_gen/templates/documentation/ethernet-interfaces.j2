@@ -20,15 +20,44 @@
 {%-      if ethernet_interfaces[ethernet_interface].vlans is defined %} {{ ethernet_interfaces[ethernet_interface].vlans }} {% else %} - {% endif -%} |
 {%-      if ethernet_interfaces[ethernet_interface].trunk_groups is defined %} {% for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort  %}{{ trunk_group }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% else %} - {% endif -%} |
 {%-      if ethernet_interfaces[ethernet_interface].vrf is defined %} {{ ethernet_interfaces[ethernet_interface].vrf }} {% else %} - {% endif -%} |
-{%-      if ethernet_interfaces[ethernet_interface].ip_address is defined %} {{ ethernet_interfaces[ethernet_interface].ip_address }} {% else %} - {% endif -%} | - | - |
+{%-      if ethernet_interfaces[ethernet_interface].ip_address is defined %}
+ {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%-        if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
+ <br> {{ ethernet_interfaces[ethernet_interface].ip_address_secondaries | join(' secondary <br> ') }} secondary
+{%-        endif %}
+{%-       else %}
+ -
+{%- endif %}
+ | - | - |
 {%     endif %}
 {%   endfor %}
 
 *Inherited from Port-Channel Interface
+
+{%     set ethernet_interface_isis = namespace() %}
+{%     set ethernet_interface_isis.configured = false %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%          if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
+{%              set ethernet_interface_isis.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if ethernet_interface_isis.configured == true %}
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%             if ethernet_interfaces[ethernet_interface].isis_enable is defined and ethernet_interfaces[ethernet_interface].isis_enable is not none %}
+| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].isis_enable }} |  {{ ethernet_interfaces[ethernet_interface].isis_metric | default('-') }} | {% if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point is not none %} point-to-point {% elif ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%             endif %}
+{%          endfor %}
+{%     endif %}
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 {% include 'eos/ethernet-interfaces.j2' %}
 ```
+{% else %}
+No ethernet interface defined
 {% endif %}

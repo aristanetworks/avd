@@ -61,10 +61,15 @@ interface {{ ethernet_interface }}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_proxy_arp is defined and ethernet_interfaces[ethernet_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%             if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
+{%                 for ip_address_secondary in ethernet_interfaces[ethernet_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                 endfor %}
+{%             endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
    ipv6 enable
@@ -144,9 +149,9 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%                      if ethernet_interfaces[ethernet_interface].storm_control[section].unit is defined and ethernet_interfaces[ethernet_interface].storm_control[section].unit == "pps" %}
-   storm-control {{ section }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+   storm-control {{ section | replace("_", "-") }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
 {%                      else %}
-   storm-control {{ section }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+   storm-control {{ section | replace("_", "-") }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
 {%                      endif %}
 {%                   endfor %}
 {%             endif %}

@@ -31,6 +31,10 @@ mlag_ips:
 # Enable vlan aware bundles
 vxlan_vlan_aware_bundles: true
 
+# BGP multi-path options
+bgp_maximum_paths: 10
+bgp_ecmp: 10
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
