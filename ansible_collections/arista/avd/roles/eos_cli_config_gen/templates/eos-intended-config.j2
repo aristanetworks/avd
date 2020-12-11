@@ -43,6 +43,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/domain-list.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# ptp #}
+{% include 'eos/ptp.j2' %}
 {# radius servers #}
 {% include 'eos/radius-servers.j2' %}
 {# aaa server groups #}
