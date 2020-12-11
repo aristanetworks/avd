@@ -8,6 +8,9 @@
 {% else %}
     ip_address: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
 {% endif %}
+{% if vtep_vvtep_ip is defined and vtep_vvtep_ip is not none and leaf.evpn_services_l2_only == false %}
+    ip_address_secondaries : [ {{ vtep_vvtep_ip }} ]
+{% endif %}
 {% if underlay_routing_protocol|lower == "ospf" %}
     ospf_area: {{ underlay_ospf_area }}
 {% endif %}

@@ -38,12 +38,24 @@ To use this filter:
 {% endfor %}
 ```
 
+### **default filter**
+
+The `default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter required a value to be `not undefined` and `not None` to pass through.
+Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
+As a last resort the filter will return None.
+
+To use this filter:
+
+```jinja
+{{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
+```
+
 ## Modules
 
 ### **Inventory to CloudVision Containers**
 
 The `inventory_to_container` module provides following capabilities:
-- Transform inventory groups into CloudVision containers topology. 
+- Transform inventory groups into CloudVision containers topology.
 - Create list of configlets definition.
 
 It saves everything in a `YAML` file using **`destination`** keyword.

@@ -72,7 +72,12 @@
 {%             else %}
 {%                 set switch.spanning_tree_priority = l3leaf.defaults.spanning_tree_priority %}
 {%             endif %}
-{%             if loop.length == 2 %}
+{%             if l3leaf.node_groups[l3leaf_node_group].mlag is defined %}
+{%                 set switch.mlag = l3leaf.node_groups[l3leaf_node_group].mlag %}
+{%             else %}
+{%                 set switch.mlag = l3leaf.defaults.mlag | default(true) %}
+{%             endif %}
+{%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l3leaf_node_group %}
 {%                 if l3leaf.node_groups[l3leaf_node_group].mlag_interfaces is defined %}
@@ -97,6 +102,11 @@
 {%                 endif %}
 {%             else %}
 {%                 set leaf.mlag = false %}
+{%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].evpn_services_l2_only is defined %}
+{%                 set leaf.evpn_services_l2_only = l3leaf.node_groups[l3leaf_node_group].evpn_services_l2_only %}
+{%             else %}
+{%                 set leaf.evpn_services_l2_only = l3leaf.defaults.evpn_services_l2_only | default(false) %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
@@ -210,12 +220,42 @@
 {%         endif%}
 {%     endfor %}
 {% endfor %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for evpn_overlay_controller in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set evpn_overlay_controller_vars = hostvars[evpn_overlay_controller] %}
+{%             set peer = namespace() %}
+{%             set peer.description = evpn_overlay_controller %}
+{%             if evpn_overlay_controller_vars.type == 'spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.super_spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(evpn_overlay_controller_vars.super_spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'overlay-controller' %}
+{%                 if evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as is defined %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
 leaf_bgp_as: {{ leaf.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
+leaf_evpn_services_l2_only: {{ leaf.evpn_services_l2_only }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -354,6 +394,8 @@ ethernet_interfaces:
 {% include 'l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Server - Interfaces Configuration #}
 {% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Point-to-Point Interfaces to overlay-controller #}
+{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 
 
 {# loopback interfaces #}
@@ -396,8 +438,10 @@ tcam_profile:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
+{% if leaf.evpn_services_l2_only == false %}
 {# virtual router mac address #}
 ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
+{% endif %}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:

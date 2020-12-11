@@ -165,6 +165,7 @@
 {%              set ethernet_interface_isis.configured = true %}
 {%          endif %}
 {%     endfor %}
+
 {%     set port_channel_interface_isis = namespace() %}
 {%     set port_channel_interface_isis.configured = false %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}

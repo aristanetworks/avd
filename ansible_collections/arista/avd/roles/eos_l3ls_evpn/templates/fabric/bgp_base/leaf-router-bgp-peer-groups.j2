@@ -22,14 +22,18 @@
 {# Overlay network peering #}
     EVPN-OVERLAY-PEERS:
       type: evpn
-{% if bgp_as is defined %}
+{%     if bgp_as is defined %}
       remote_as: {{ bgp_as }}
-{% else %}
+{%     else %}
       remote_as: {{ spine.bgp_as }}
-{% endif %}
+{%     endif %}
       update_source: Loopback0
       bfd: true
+{%     if evpn_overlay_controller_groups is not defined %}
       ebgp_multihop: 3
+{%     else %}
+      ebgp_multihop: 15
+{%     endif %}
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true
       maximum_routes: 0

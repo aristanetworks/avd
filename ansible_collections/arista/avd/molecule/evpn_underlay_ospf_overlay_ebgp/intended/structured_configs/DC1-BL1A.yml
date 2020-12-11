@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 6
 switch_mgmt_ip: 192.168.200.110/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['wan']
 leaf_allowed_vrfs: []
@@ -79,7 +80,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###

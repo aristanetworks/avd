@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65000
 leaf_id: 5
 switch_mgmt_ip: 192.168.200.109/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['Tenant_A', 'Tenant_B', 'Tenant_C']
 leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion', 'nfs', 'wan']
 leaf_allowed_vrfs: []
@@ -79,7 +80,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###
@@ -333,7 +334,6 @@ router_bgp:
   bgp_defaults:
     - no bgp default ipv4-unicast
     - distance bgp 20 200 200
-    - maximum-paths 4 ecmp 4
   peer_groups:
     EVPN-OVERLAY-PEERS:
       type: evpn
