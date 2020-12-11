@@ -17,6 +17,8 @@
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
   - [Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)](#super-spine-overlay-loopback-interfaces-bgp-evpn-peering-if-required)
   - [Loopback0 Interfaces To Super Spine Node Allocation](#loopback0-interfaces-to-super-spine-node-allocation)
+  - [Overlay Controller IP Allocation](#overlay-controller-ip-allocation)
+  - [Overlay Controller Point-To-Point Links](#overlay-controller-point-to-point-links)
 
 ## Spine, Super-Spine Switches and Overlay Controller Management IP
 
@@ -120,3 +122,20 @@
 | {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
 {%     endif %}
 {% endfor %}
+
+## Overlay Controller IP Allocation
+
+### Overlay Controller Point-To-Point Links
+
+| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ----------- | ------------------- | ------------------ | ------------------ |
+{% set oc = namespace() %}
+{% set oc.eth_counter = 0 %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             set oc.eth_counter = oc.eth_counter + hostvars[node].ethernet_interfaces | length %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+| {{ overlay_controller_p2p_network_summary }} | {{ overlay_controller_p2p_network_summary | ipaddr('size') }} | {{ oc.eth_counter * 2 }} | {{ (( oc.eth_counter * 2 ) / overlay_controller_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
