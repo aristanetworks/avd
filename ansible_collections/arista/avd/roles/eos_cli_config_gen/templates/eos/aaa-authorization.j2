@@ -9,4 +9,7 @@ no aaa authorization config-commands
 {%     if aaa_authorization.console is defined and aaa_authorization.console == true %}
 aaa authorization serial-console
 {%     endif %}
+{%     if aaa_authorization.commands.all_default is defined and aaa_authorization.commands.all_default != 'local' %}
+aaa authorization commands all default {{ aaa_authorization.commands.all_default }}
+{%     endif %}
 {% endif %}
