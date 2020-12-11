@@ -1,5 +1,4 @@
 port_profiles:
-
   TENANT_A_B:
     mode: trunk
     vlans: "110-111,210-211"
@@ -32,11 +31,7 @@ port_profiles:
         level: 2
         unit: percent
 
-
-
-
 servers:
-
   server01_MLAG:
     rack: RackB
     adapters:
