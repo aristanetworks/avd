@@ -13,13 +13,17 @@
   - [Spine, Super-Spine Switches and Overlay Controller Management IP](#spine-super-spine-switches-and-overlay-controller-management-ip)
   - [Super Spine and Overlay Controller Fabric Topology](#super-spine-and-overlay-controller-fabric-topology)
   - [Super Spine Fabric IP Allocation](#super-spine-fabric-ip-allocation)
-  - [Super Spine Fabric Point-To-Point Links](#super-spine-fabric-point-to-point-links)
-  - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-  - [Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)](#super-spine-overlay-loopback-interfaces-bgp-evpn-peering-if-required)
-  - [Loopback0 Interfaces To Super Spine Node Allocation](#loopback0-interfaces-to-super-spine-node-allocation)
+    - [Super Spine Fabric Point-To-Point Links](#super-spine-fabric-point-to-point-links)
+    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)](#super-spine-overlay-loopback-interfaces-bgp-evpn-peering-if-required)
+    - [Loopback0 Interfaces To Super Spine Node Allocation](#loopback0-interfaces-to-super-spine-node-allocation)
   - [Overlay Controller IP Allocation](#overlay-controller-ip-allocation)
-  - [Overlay Controller Point-To-Point Links](#overlay-controller-point-to-point-links)
-  - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Overlay Controller Point-To-Point Links](#overlay-controller-point-to-point-links)
+    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Overlay Controller Loopback Interfaces (BGP EVPN Peering, if required)](#overlay-controller-loopback-interfaces-bgp-evpn-peering-if-required)
+    - [Loopback0 Interfaces To Overlay Controller Node Allocation](#loopback0-interfaces-to-overlay-controller-node-allocation)
+
+
 
 
 ## Spine, Super-Spine Switches and Overlay Controller Management IP
@@ -153,5 +157,21 @@
 | {{ node }} | {{ interface_name }} | {{ link.ip_address }}| {{ link.peer }}| {{ link.peer_interface }} | {{ link.ip_address | ipaddr('network') }}/31 |
 {%              endfor %}
 {%         endif %}
+{%     endif %}
+{% endfor %}
+
+### Overlay Controller Loopback Interfaces (BGP EVPN Peering, if required)
+
+| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------------------ | ------------------- | ------------------ | ------------------ |
+| {{ overlay_controller_loopback_network_summary  }} | {{ overlay_controller_loopback_network_summary | ipaddr('size') }} | {{ overlay_controller.nodes | length }} | {{ (( overlay_controller.nodes | length ) / overlay_controller_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Loopback0 Interfaces to Overlay Controller Node Allocation
+
+| Node | Loopback0 |
+| ---- | --------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
 {%     endif %}
 {% endfor %}
