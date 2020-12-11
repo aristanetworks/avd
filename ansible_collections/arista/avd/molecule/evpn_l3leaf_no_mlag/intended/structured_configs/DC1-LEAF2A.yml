@@ -1,0 +1,661 @@
+## Ansible Generated ##
+
+### DC1-LEAF2A ###
+
+### Leaf Info ###
+l3leaf_node_group: DC1_LEAF2
+switch_platform: vEOS-LAB
+leaf_bgp_as: 65102
+leaf_id: 2
+switch_mgmt_ip: 192.168.200.106/24
+leaf_filter_tenants: ['Tenant_A', 'Tenant_B', 'Tenant_C']
+leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion', 'nfs']
+leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
+leaf_allowed_svis: [130, 131, 140, 141, 110, 111, 120, 121, 210, 211, 310, 311]
+leaf_allowed_vlans: [130, 131, 140, 141, 110, 111, 120, 121, 210, 211, 310, 311]
+leaf_mlag: False
+
+service_routing_protocols_model: multi-agent
+ip_routing: true
+
+### Hardware Counters
+hardware_counters:
+
+### Daemon TerminAttr
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - 192.168.200.11
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+
+### Event Monitor ###
+event_monitor:
+
+### Event Handler ###
+event_handlers:
+
+### Load Interval ###
+load_interval:
+
+### Queue Monitor Lenght ###
+queue_monitor_length:
+
+### Name Servers ###
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+    - 192.168.200.5
+    - 8.8.8.8
+
+### NTP Servers ###
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+    - 192.168.200.5
+
+### Redundancy ###
+redundancy:
+
+### Spanning-tree ###
+spanning_tree:
+  mode: mstp
+  priority: 4096
+
+
+### AAA authorization ###
+aaa_authorization:
+
+### local users ###
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: True
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+
+### Clock Timezone ###
+clock:
+
+### VLANs ###
+vlans:
+
+## Tenant_A ##
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  140:
+    tenant: Tenant_A
+    name: Tenant_A_DB_BZone_1
+  141:
+    tenant: Tenant_A
+    name: Tenant_A_DB_Zone_2
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+## Tenant_B ##
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_2
+## Tenant_C ##
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_2
+
+### VRFs ###
+vrfs:
+  MGMT:
+    ip_routing: False
+## Tenant_A ##
+  Tenant_A_APP_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_A_DB_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_A_OP_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_A_WEB_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+## Tenant_B ##
+  Tenant_B_OP_Zone:
+    tenant: Tenant_B
+    ip_routing: true
+## Tenant_C ##
+  Tenant_C_OP_Zone:
+    tenant: Tenant_C
+    ip_routing: true
+
+### bfd multihop ###
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+## L2 LEAF Uplink DC1_L2LEAF1 ##
+  Port-Channel7:
+    description: DC1_L2LEAF1_Po1
+    vlans: 110-111,120-121,130-131
+    mode: trunk
+    mlag: 7
+  Port-Channel10:
+    description: server01_MLAG_PortChanne1
+    vlans: 210-211
+    mode: trunk
+    mlag: 10
+
+### Ethernet Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.9/31
+  Ethernet2:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.11/31
+  Ethernet3:
+    peer: DC1-SPINE3
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE3_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.13/31
+  Ethernet4:
+    peer: DC1-SPINE4
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE4_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.15/31
+## L2 LEAF link DC1_L2LEAF1 ##
+  Ethernet7:
+    peer: DC1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF1A_Ethernet1
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet10:
+    peer: server01_MLAG
+    peer_interface: Eth2
+    peer_type: server
+    description: server01_MLAG_Eth2
+    mode: trunk
+    vlans: 210-211
+    channel_group:
+      id: 10
+      mode: "active"
+    profile: TENANT_B
+
+
+### Loopback Interfaces ###
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    ip_address: 192.168.255.6/32
+
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    ip_address: 192.168.254.6/32
+  Loopback100:
+    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    vrf: Tenant_A_OP_Zone
+    ip_address: 10.255.1.6/32
+
+### Management Interfaces ###
+management_interfaces:
+  Management1:
+    description: oob_management
+    vrf: MGMT
+    ip_address: 192.168.200.106/24
+    gateway: 192.168.200.5
+
+### VLAN Interfaces ###
+vlan_interfaces:
+## Tenant_A ##
+  Vlan130:
+    tenant: Tenant_A
+    tags: ['app', 'erp1']
+    description: Tenant_A_APP_Zone_1
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.30.1/24
+  Vlan131:
+    tenant: Tenant_A
+    tags: ['app']
+    description: Tenant_A_APP_Zone_2
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.31.1/24
+  Vlan140:
+    tenant: Tenant_A
+    tags: ['db', 'erp1']
+    description: Tenant_A_DB_BZone_1
+    shutdown: false
+    vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.40.1/24
+  Vlan141:
+    tenant: Tenant_A
+    tags: ['db']
+    description: Tenant_A_DB_Zone_2
+    shutdown: false
+    vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.41.1/24
+  Vlan110:
+    tenant: Tenant_A
+    tags: ['opzone']
+    description: Tenant_A_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.10.1/24
+  Vlan111:
+    tenant: Tenant_A
+    tags: ['opzone']
+    description: Tenant_A_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.11.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        vrf: MGMT
+  Vlan120:
+    tenant: Tenant_A
+    tags: ['web', 'erp1']
+    description: Tenant_A_WEB_Zone_1
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.20.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        vrf: TEST
+  Vlan121:
+    tenant: Tenant_A
+    tags: ['web']
+    description: Tenant_A_WEBZone_2
+    shutdown: true
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.10.254/24
+    mtu: 1560
+## Tenant_B ##
+  Vlan210:
+    tenant: Tenant_B
+    tags: ['opzone']
+    description: Tenant_B_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.10.1/24
+  Vlan211:
+    tenant: Tenant_B
+    tags: ['opzone']
+    description: Tenant_B_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.11.1/24
+## Tenant_C ##
+  Vlan310:
+    tenant: Tenant_C
+    tags: ['opzone']
+    description: Tenant_C_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.10.1/24
+  Vlan311:
+    tenant: Tenant_C
+    tags: ['opzone']
+    description: Tenant_C_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.11.1/24
+
+### VxLAN interface ###
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-LEAF2A_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+## Tenant_A ##
+        130:
+          vni: 10130
+        131:
+          vni: 10131
+        140:
+          vni: 10140
+        141:
+          vni: 10141
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        120:
+          vni: 10120
+        121:
+          vni: 10121
+## Tenant_B ##
+        210:
+          vni: 20210
+        211:
+          vni: 20211
+## Tenant_C ##
+        310:
+          vni: 30310
+        311:
+          vni: 30311
+      vrfs:
+## Tenant_A ##
+        Tenant_A_APP_Zone:
+          vni: 12
+        Tenant_A_DB_Zone:
+          vni: 13
+        Tenant_A_OP_Zone:
+          vni: 10
+        Tenant_A_WEB_Zone:
+          vni: 11
+## Tenant_B ##
+        Tenant_B_OP_Zone:
+          vni: 20
+## Tenant_C ##
+        Tenant_C_OP_Zone:
+          vni: 30
+
+### TCAM Profiles ###
+tcam_profile:
+
+### MAC address table ###
+mac_address_table:
+
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+
+virtual_source_nat_vrfs:
+  Tenant_A_OP_Zone:
+    ip_address: 10.255.1.6
+
+ip_igmp_snooping:
+  globally_enabled: True
+  vlans:
+## Tenant_A ##
+    120:
+      enabled: False
+## Tenant_B ##
+## Tenant_C ##
+
+### static routes ###
+static_routes:
+  - vrf: MGMT
+    destination_address_prefix: 0.0.0.0/0
+    gateway: 192.168.200.5
+
+### prefix-lists ###
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: "permit 192.168.255.0/24 eq 32"
+      20:
+        action: "permit 192.168.254.0/24 eq 32"
+
+
+### route-maps ###
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+          - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+
+### Routing - BGP ###
+router_bgp:
+  as: 65102
+  router_id: 192.168.255.6
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - distance bgp 20 200 200
+    - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: 65001
+      password: "AQQvKeimxJu+uGQ/yYvv9w=="
+      maximum_routes: 12000
+      send_community: true
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      remote_as: 65001
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 3
+      password: "q+VNViP5i4rVjW1cxFv2wA=="
+      send_community: true
+      maximum_routes: 0
+  neighbors:
+    172.31.255.8:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.31.255.10:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.31.255.12:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.31.255.14:
+      peer_group: IPv4-UNDERLAY-PEERS
+    192.168.255.1:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.2:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.3:
+      peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.4:
+      peer_group: EVPN-OVERLAY-PEERS
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+      IPv4-UNDERLAY-PEERS:
+        activate: false
+  address_family_ipv4:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: false
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+  vlan_aware_bundles:
+## Tenant_A ##
+    Tenant_A_APP_Zone:
+      rd: "192.168.255.6:12"
+      route_targets:
+        both:
+          - "12:12"
+      redistribute_routes:
+        - learned
+      vlan: 130-131
+    Tenant_A_DB_Zone:
+      rd: "192.168.255.6:13"
+      route_targets:
+        both:
+          - "13:13"
+      redistribute_routes:
+        - learned
+      vlan: 140-141
+    Tenant_A_OP_Zone:
+      rd: "192.168.255.6:10"
+      route_targets:
+        both:
+          - "10:10"
+      redistribute_routes:
+        - learned
+      vlan: 110-111
+    Tenant_A_WEB_Zone:
+      rd: "192.168.255.6:11"
+      route_targets:
+        both:
+          - "11:11"
+      redistribute_routes:
+        - learned
+      vlan: 120-121
+## Tenant_B ##
+    Tenant_B_OP_Zone:
+      rd: "192.168.255.6:20"
+      route_targets:
+        both:
+          - "20:20"
+      redistribute_routes:
+        - learned
+      vlan: 210-211
+## Tenant_C ##
+    Tenant_C_OP_Zone:
+      rd: "192.168.255.6:30"
+      route_targets:
+        both:
+          - "30:30"
+      redistribute_routes:
+        - learned
+      vlan: 310-311
+  vlans:
+  vrfs:
+## Tenant_A ##
+    Tenant_A_APP_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:12"
+      route_targets:
+        import:
+          evpn:
+            - "12:12"
+        export:
+          evpn:
+            - "12:12"
+      redistribute_routes:
+        - connected
+    Tenant_A_DB_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:13"
+      route_targets:
+        import:
+          evpn:
+            - "13:13"
+        export:
+          evpn:
+            - "13:13"
+      redistribute_routes:
+        - connected
+    Tenant_A_OP_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:10"
+      route_targets:
+        import:
+          evpn:
+            - "10:10"
+        export:
+          evpn:
+            - "10:10"
+      redistribute_routes:
+        - connected
+    Tenant_A_WEB_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:11"
+      route_targets:
+        import:
+          evpn:
+            - "11:11"
+        export:
+          evpn:
+            - "11:11"
+      redistribute_routes:
+        - connected
+## Tenant_B ##
+    Tenant_B_OP_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:20"
+      route_targets:
+        import:
+          evpn:
+            - "20:20"
+        export:
+          evpn:
+            - "20:20"
+      redistribute_routes:
+        - connected
+## Tenant_C ##
+    Tenant_C_OP_Zone:
+      router_id: 192.168.255.6
+      rd: "192.168.255.6:30"
+      route_targets:
+        import:
+          evpn:
+            - "30:30"
+        export:
+          evpn:
+            - "30:30"
+      redistribute_routes:
+        - connected
+
+### Extended Community Lists ###
+ip_extcommunity_lists:
+
+### Routing - OSPF ###
+router_ospf:
+
+### Routing - ISIS ###
+router_isis:
+
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+
+### Management API http ###
+management_api_http:
+  enable_https: True
+  enable_vrfs:
+    MGMT:
