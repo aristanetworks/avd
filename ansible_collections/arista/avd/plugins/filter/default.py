@@ -13,7 +13,7 @@ def default(primary_value, *default_values ):
             #Return the result of another loop
             return default(default_values[0],*default_values[1:])
         else:
-            #Return undefined
+            #Return None
             return
     else:
         #Return the valid value
