@@ -6,4 +6,7 @@ aaa authorization exec default {{ aaa_authorization.exec_default }}
 {%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == false %}
 no aaa authorization config-commands
 {%     endif %}
+{%     if aaa_authorization.console is defined and aaa_authorization.console == true %}
+aaa authorization serial-console
+{%     endif %}
 {% endif %}

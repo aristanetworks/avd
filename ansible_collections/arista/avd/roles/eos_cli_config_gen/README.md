@@ -583,6 +583,7 @@ aaa_authentication:
 aaa_authorization:
   exec_default: < group | local | none >
   config_commands: < true | false >
+  console: < true | false >
 ```
 
 ### AAA Accounting
