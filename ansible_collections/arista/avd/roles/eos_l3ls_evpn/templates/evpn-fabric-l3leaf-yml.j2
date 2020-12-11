@@ -98,6 +98,11 @@
 {%             else %}
 {%                 set leaf.mlag = false %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].evpn_services_l2_only is defined %}
+{%                 set leaf.evpn_services_l2_only = l3leaf.node_groups[l3leaf_node_group].evpn_services_l2_only %}
+{%             else %}
+{%                 set leaf.evpn_services_l2_only = l3leaf.defaults.evpn_services_l2_only | default(false) %}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -245,6 +250,7 @@ switch_platform: {{ switch.platform }}
 leaf_bgp_as: {{ leaf.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
+leaf_evpn_services_l2_only: {{ leaf.evpn_services_l2_only }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -427,8 +433,10 @@ tcam_profile:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
+{% if leaf.evpn_services_l2_only == false %}
 {# virtual router mac address #}
 ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
+{% endif %}
 
 {# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
 virtual_source_nat_vrfs:
