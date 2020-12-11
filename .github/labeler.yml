@@ -44,8 +44,7 @@
 "type: documentation":
   - README.md
   - contributing.md
-  - ansible_collections/arista/avd/**/*.md
-  - ansible_collections/arista/avd/README.md
+  - ansible_collections/arista/avd/*.md
   - ansible_collections/arista/avd/docs/*
   - ansible_collections/arista/avd/docs/**/*
 
@@ -62,4 +61,8 @@
   - ansible_collections/arista/avd/docs/requirements.txt
 
 "state: CI Updated":
+  - ansible_collections/arista/avd/molecule/*
   - ansible_collections/arista/avd/molecule/**/*
+
+"state: Documentation role Updated":
+  - 'ansible_collections/arista/avd/roles/**/*.md'
