@@ -25,6 +25,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -44,6 +45,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -52,11 +54,11 @@
   - [Router Multicast](#router-multicast)
   - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
+  - [Community-lists](#community-lists)
   - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
+  - [Prefix-lists](#prefix-lists)
+  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
+  - [Route-maps](#route-maps)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
@@ -75,17 +77,17 @@
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
 | Management Interface | description | VRF | IP Address | Gateway |
 | -------------------- | ----------- | --- | ---------- | ------- |
 | Management1 | oob_management | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
-IPv6
+#### IPv6
 
 | Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management1 | oob_management | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -101,13 +103,13 @@ interface Management1
 
 DNS domain not defined
 
-## Domain-List
+## Domain-list
 
 Domain-list not defined
 
 ## Name Servers
 
-No Name Servers defined
+No name servers defined
 
 ## Domain Lookup
 
@@ -119,26 +121,25 @@ No NTP servers defined
 
 ## Management SSH
 
-Management SSH is not defined
+Management SSH not defined
 
 ## Management API GNMI
 
 Management API gnmi is not defined
-  
+
 ## Management API HTTP
 
-
-Management API HTTP is not defined
+Management API HTTP not defined
 
 # Authentication
 
 ## Local Users
 
-No Users Defined
+No users defined
 
 ## TACACS Servers
 
-TACACS servers not configured
+TACACS servers not defined
 
 ## IP TACACS Source Interfaces
 
@@ -146,7 +147,7 @@ IP TACACS source interfaces not defined
 
 ## RADIUS Servers
 
-RADIUS servers not configured
+RADIUS servers not defined
 
 ## AAA Server Groups
 
@@ -166,7 +167,7 @@ AAA accounting not defined
 
 # Management Security
 
-Management Security not defined
+Management security not defined
 
 # Aliases
 
@@ -176,11 +177,15 @@ Aliases not defined
 
 ## TerminAttr Daemon
 
-TerminAttr Daemon not defined
+TerminAttr daemon not defined
 
 ## Logging
 
 No logging settings defined
+
+## SNMP
+
+No SNMP settings defined
 
 ## SFlow
 
@@ -188,15 +193,15 @@ No sFlow defined
 
 ## Hardware Counters
 
-No Hardware Counters defined
+No hardware counters defined
 
 ## VM Tracer Sessions
 
-No VM tracer session defined
+No VM tracer sessions defined
 
 ## Event Handler
 
-No Event Handler Defined
+No event handler defined
 
 # MLAG
 
@@ -204,7 +209,7 @@ MLAG not defined
 
 # Spanning Tree
 
-Spanning-Tree Not Defined
+Spanning-tree not defined
 
 # Internal VLAN Allocation Policy
 
@@ -234,6 +239,13 @@ No VLANs defined
 
 *Inherited from Port-Channel Interface
 
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -261,25 +273,32 @@ interface Ethernet3
 
 ## Port-Channel Interfaces
 
-No Port-Channels defined
+No port-channels defined
 
 ## Loopback Interfaces
 
 ### Loopback Interfaces Summary
 
-IPv4
+#### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | 192.168.254.3/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 
-IPv6
+#### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | Global Routing Table | - |
+| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+| Loopback0 | EVPN_UNDERLAY |  - |  passive |
+| Loopback1 | EVPN_UNDERLAY |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -305,8 +324,14 @@ interface Loopback1
 | Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
 | --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
 | Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - |
-| Vlan4093 | MLAG_PEER_L3_PEERING | Global Routing Table | 10.255.251.0/31 | - | - |
-| Vlan4094 | MLAG_PEER | Global Routing Table | 10.255.252.0/31 | - | - |
+| Vlan4093 | MLAG_PEER_L3_PEERING | default | 10.255.251.0/31 | - | - |
+| Vlan4094 | MLAG_PEER | default | 10.255.252.0/31 | - | - |
+
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
 
 ### VLAN Interfaces Device Configuration
 
@@ -332,13 +357,13 @@ interface Vlan4094
 
 ## VXLAN Interface
 
-No VXLAN interface defined
+No VXLAN interfaces defined
 
 # Routing
 
 ## Virtual Router MAC Address
 
-IP Virtual Router MAC Address is not defined
+IP virtual router MAC address not defined
 
 ## IP Routing
 
@@ -346,25 +371,27 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
-
+| default | false| 
 ### IP Routing Device Configuration
 
 ```eos
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default | false |
 
 ## Static Routes
 
+Static routes not defined
 
 ## IPv6 Static Routes
 
+IPv6 static routes not defined
 
 ## Router ISIS
 
@@ -377,9 +404,9 @@ IP Virtual Router MAC Address is not defined
 | Type | level-2 |
 | Address Family | ipv4 unicast |
 
-### ISIS interfaces Summary
+### ISIS Interfaces Summary
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
+| Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | -------- | -------- | -------- | -------- |
 | Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
@@ -433,59 +460,59 @@ Router PIM sparse mode not defined
 
 # Filters
 
-## Community Lists
+## Community-lists
 
-Community Lists not defined
+Community-lists not defined
 
 ## Peer Filters
 
-No Peer Filters defined
+No peer filters defined
 
-## Prefix Lists
+## Prefix-lists
 
-Prefix lists not defined
+Prefix-lists not defined
 
-## IPv6 Prefix Lists
+## IPv6 Prefix-lists
 
-IPv6 Prefix lists not defined
+IPv6 prefix-lists not defined
 
-## Route Maps
+## Route-maps
 
-No route maps defined
+No route-maps defined
 
 ## IP Extended Communities
 
-No Extended community defined
+No extended community defined
 
 # ACL
 
 ## Standard Access-lists
 
-Standard Access-lists not defined
+Standard access-lists not defined
 
 ## Extended Access-lists
 
-Extended Access-lists not defined
+Extended access-lists not defined
 
 ## IPv6 Standard Access-lists
 
-IPv6 Standard Access-lists not defined
+IPv6 standard access-lists not defined
 
 ## IPv6 Extended Access-lists
 
-IPv6 Extended Access-lists not defined
+IPv6 extended access-lists not defined
 
 # VRF Instances
 
-No VRFs defined
+No VRF instances defined
 
 # Virtual Source NAT
 
-Virtual Source NAT is not defined
+Virtual source NAT not defined
 
 # Platform
 
-No Platform parameters defined
+No platform parameters defined
 
 # Router L2 VPN
 
@@ -493,8 +520,8 @@ Router L2 VPN not defined
 
 # IP DHCP Relay
 
-IP DHCP Relay not defined
+IP DHCP relay not defined
 
 # Custom Templates
 
-No Custom Templates Defined
+No custom templates defined
