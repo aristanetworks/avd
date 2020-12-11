@@ -2,7 +2,7 @@
 ### Standard Access-lists Summary
 
 {%     for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
-**{{ standard_access_list }}:**
+#### {{ standard_access_list }}
 
 | Sequence | Action |
 | -------- | ------ |
@@ -17,5 +17,5 @@
 {% include 'eos/standard-access-lists.j2' %}
 ```
 {% else %}
-Standard Access-lists not defined
+Standard access-lists not defined
 {% endif %}

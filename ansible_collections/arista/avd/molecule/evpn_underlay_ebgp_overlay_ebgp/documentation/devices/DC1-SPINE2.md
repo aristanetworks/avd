@@ -9,6 +9,8 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -147,6 +149,36 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 Management SSH is not defined
 
+## Management API GNMI
+
+Management API gnmi is not defined
+  
+## Management API HTTP
+
+
+### Management API HTTP Summary
+
+| HTTP | HTTPS |
+| ---------- | ---------- |
+|  default  |  True  |
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT |  Not defined  |  Not defined  |
+
+### Management API HTTP Configuration
+
+```eos
+!
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
+
 # Authentication
 
 ## Local Users
@@ -247,11 +279,11 @@ MLAG not defined
 
 # Spanning Tree
 
-### Spanning Tree Summary
+## Spanning Tree Summary
 
 Mode: none
 
-### Spanning Tree Device Configuration
+## Spanning Tree Device Configuration
 
 ```eos
 !
@@ -260,13 +292,13 @@ spanning-tree mode none
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
@@ -405,11 +437,12 @@ no ip routing vrf MGMT
 
 ## Static Routes
 
+
 ### Static Routes Summary
 
-| VRF | Destination Prefix | Fowarding Address / Interface |
-| --- | ------------------ | ----------------------------- |
-| MGMT | 0.0.0.0/0 | 192.168.200.5 |
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  Default  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
@@ -418,11 +451,14 @@ no ip routing vrf MGMT
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
+## IPv6 Static Routes
+
+
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 ### Router BGP Summary
 
@@ -475,7 +511,6 @@ Router ISIS not defined
 | 192.168.255.9 | 65103 |
 | 192.168.255.10 | 65104 |
 | 192.168.255.11 | 65104 |
-
 
 ### Router BGP EVPN Address Family
 
@@ -646,13 +681,13 @@ IPv6 Extended Access-lists not defined
 
 # VRF Instances
 
-### VRF Instances Summary
+## VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT |  disabled |
 
-### VRF Instances Device Configuration
+## VRF Instances Device Configuration
 
 ```eos
 !
@@ -675,6 +710,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined

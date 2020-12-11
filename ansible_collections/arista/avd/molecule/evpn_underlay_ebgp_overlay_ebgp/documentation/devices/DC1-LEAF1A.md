@@ -9,6 +9,8 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -147,6 +149,36 @@ ntp server vrf MGMT 192.168.200.5 prefer
 
 Management SSH is not defined
 
+## Management API GNMI
+
+Management API gnmi is not defined
+  
+## Management API HTTP
+
+
+### Management API HTTP Summary
+
+| HTTP | HTTPS |
+| ---------- | ---------- |
+|  default  |  True  |
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT |  Not defined  |  Not defined  |
+
+### Management API HTTP Configuration
+
+```eos
+!
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
+
 # Authentication
 
 ## Local Users
@@ -247,7 +279,7 @@ MLAG not defined
 
 # Spanning Tree
 
-### Spanning Tree Summary
+## Spanning Tree Summary
 
 Mode: mstp
 
@@ -257,7 +289,7 @@ Mode: mstp
 | -------- | -------- |
 | 0 | 4096 |
 
-### Spanning Tree Device Configuration
+## Spanning Tree Device Configuration
 
 ```eos
 !
@@ -267,13 +299,13 @@ spanning-tree mst 0 priority 4096
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
@@ -282,7 +314,7 @@ vlan internal order ascending range 1006 1199
 
 # VLANs
 
-### VLANs Summary
+## VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
@@ -291,7 +323,7 @@ vlan internal order ascending range 1006 1199
 | 130 | Tenant_A_APP_Zone_1 | none  |
 | 131 | Tenant_A_APP_Zone_2 | none  |
 
-### VLANs Device Configuration
+## VLANs Device Configuration
 
 ```eos
 !
@@ -320,7 +352,7 @@ vlan 131
 | Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.5/31 | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.7/31 | - | - |
-| Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | 1500 | switched | trunk | 110-111,210-211 | - | - | - | - | - |
+| Ethernet6 | server02_SINGLE_NODE_TRUNK_Eth1 | 1500 | switched | trunk | 1-4094 | - | - | - | - | - |
 | Ethernet7 | server02_SINGLE_NODE_Eth1 | 1500 | switched | access | 110 | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
@@ -351,8 +383,14 @@ interface Ethernet4
 !
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
-   switchport trunk allowed vlan 110-111,210-211
+   switchport trunk allowed vlan 1-4094
    switchport mode trunk
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
@@ -520,11 +558,12 @@ ip routing vrf Tenant_A_WEB_Zone
 
 ## Static Routes
 
+
 ### Static Routes Summary
 
-| VRF | Destination Prefix | Fowarding Address / Interface |
-| --- | ------------------ | ----------------------------- |
-| MGMT | 0.0.0.0/0 | 192.168.200.5 |
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  Default  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
@@ -533,11 +572,14 @@ ip routing vrf Tenant_A_WEB_Zone
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
+## IPv6 Static Routes
+
+
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 ### Router BGP Summary
 
@@ -586,7 +628,6 @@ Router ISIS not defined
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
-
 
 ### Router BGP EVPN Address Family
 
@@ -735,12 +776,6 @@ No Peer Filters defined
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
-**PL-P2P-UNDERLAY:**
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.31.255.0/24 le 31 |
-
 ### Prefix Lists Device Configuration
 
 ```eos
@@ -748,9 +783,6 @@ No Peer Filters defined
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
-!
-ip prefix-list PL-P2P-UNDERLAY
-   seq 10 permit 172.31.255.0/24 le 31
 ```
 
 ## IPv6 Prefix Lists
@@ -799,7 +831,7 @@ IPv6 Extended Access-lists not defined
 
 # VRF Instances
 
-### VRF Instances Summary
+## VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
@@ -807,7 +839,7 @@ IPv6 Extended Access-lists not defined
 | Tenant_A_APP_Zone |  enabled |
 | Tenant_A_WEB_Zone |  enabled |
 
-### VRF Instances Device Configuration
+## VRF Instances Device Configuration
 
 ```eos
 !
@@ -834,6 +866,6 @@ Router L2 VPN not defined
 
 IP DHCP Relay not defined
 
-## Custom Templates
+# Custom Templates
 
 No Custom Templates Defined

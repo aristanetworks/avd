@@ -1,7 +1,7 @@
 {% if mlag_configuration is defined and mlag_configuration is not none %}
 ## MLAG Summary
 
-| domain-id | local-interface | peer-address | peer-link |
+| Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
 | {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
 

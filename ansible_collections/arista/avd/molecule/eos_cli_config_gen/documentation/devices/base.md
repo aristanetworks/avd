@@ -10,6 +10,7 @@
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
   - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -133,6 +134,34 @@ management ssh
 ## Management API GNMI
 
 Management API gnmi is not defined
+  
+## Management API HTTP
+
+
+### Management API HTTP Summary
+
+| HTTP | HTTPS |
+| ---------- | ---------- |
+|  True  |  True  |
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| mgt |  ACL-API  |  Not defined  |
+
+### Management API HTTP Configuration
+
+```eos
+!
+management api http-commands
+   protocol http
+   no shutdown
+   !
+   vrf mgt
+      no shutdown
+      ip access-group ACL-API
+```
 
 # Authentication
 

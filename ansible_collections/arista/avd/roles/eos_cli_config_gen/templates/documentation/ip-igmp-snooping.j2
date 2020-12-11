@@ -6,7 +6,7 @@
 | --- | --------------- |
 {%       for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
 {%          if ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == false %}
-| {{ vlan }} | Disabled |
+| {{ vlan }} | disabled |
 {%          endif %}
 {%       endfor %}
 

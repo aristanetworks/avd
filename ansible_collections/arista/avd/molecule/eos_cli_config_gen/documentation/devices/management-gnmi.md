@@ -10,6 +10,7 @@
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
   - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [TACACS Servers](#tacacs-servers)
@@ -143,6 +144,11 @@ management api gnmi
   !
   provider eos-native
 ```
+  
+## Management API HTTP
+
+
+Management API HTTP is not defined
 
 # Authentication
 

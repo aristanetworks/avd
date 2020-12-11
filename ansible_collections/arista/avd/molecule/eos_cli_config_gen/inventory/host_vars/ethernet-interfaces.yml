@@ -30,7 +30,9 @@ ethernet_interfaces:
     storm_control:
       all:
         level: 10
-        unit: percent
       broadcast:
         level: 500
         unit: pps
+      unknown_unicast:
+        level: 1
+        unit: percent

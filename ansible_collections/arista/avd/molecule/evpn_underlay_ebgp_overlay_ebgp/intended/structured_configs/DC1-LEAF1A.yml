@@ -180,8 +180,23 @@ ethernet_interfaces:
     peer_type: server
     description: server02_SINGLE_NODE_TRUNK_Eth1
     mode: trunk
-    vlans: 110-111,210-211
-    profile: TENANT_A_B
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: True
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    profile: ALL_WITH_SECURITY
 
 
 ### Loopback Interfaces ###
@@ -302,10 +317,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
 
 
 ### route-maps ###
