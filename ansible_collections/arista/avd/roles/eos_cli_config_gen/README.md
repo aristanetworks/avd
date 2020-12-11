@@ -750,6 +750,8 @@ ethernet_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    ptp:
+      enable: < true | false >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -771,6 +773,8 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    ptp:
+      enable: < true | false >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
