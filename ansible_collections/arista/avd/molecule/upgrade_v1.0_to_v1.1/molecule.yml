@@ -22,8 +22,6 @@ platforms:
       - AVD_LAB
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
   inventory:
     links:
       hosts: 'inventory/hosts'

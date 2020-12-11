@@ -10,11 +10,19 @@
     name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
 {# VLAN for iBGP peering in overlay VRFs #}
 {%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
+{%                     set configure_mlag_ibgp_peering = true %}
+{%                     if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                         set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs %}
+{%                     elif tenants[tenant].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].enable_mlag_ibgp_peering_vrfs is not none %}
+{%                         set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
+{%                     endif %}
+{%                     if configure_mlag_ibgp_peering %}
   {{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
     tenant: {{ tenant }}
     name: MLAG_iBGP_{{ vrf }}
     trunk_groups:
       - LEAF_PEER_L3
+{%                     endif %}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
