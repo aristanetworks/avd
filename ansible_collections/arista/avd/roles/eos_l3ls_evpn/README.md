@@ -510,50 +510,56 @@ spine:
 ```yaml
 l3leaf:
 
-  # L3 Leaf default variables, can be overridden when defined under < node_group >.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L3 leafs.
+  # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-    # Arista platform family. | Required
-    platform: < Arista Platform Family >
-
-    # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
-    spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
-
-    # Uplink to spine interfaces (list), interface located on L3 Leaf,
-    # corresponding to spines and spine_interfaces | Required.
-    uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-    p2p_link_interface_speed: < interface_speed >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-    spanning_tree_mode: < mstp >
-
-    # Spanning tree priority | Required.
-    spanning_tree_priority: < spanning-tree priority >
-
-    # Virtual router mac address for anycast gateway | Required.
-    virtual_router_mac_address: < mac address >
-
-    # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
-    igmp_snooping_enabled: < true | false >
-
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
+
+      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+
+      # Arista platform family. | Required
+      platform: < Arista Platform Family >
+
+      # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
+      spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
+
+      # Uplink to spine interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces | Required.
+      uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+      # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
+      p2p_link_interface_speed: < interface_speed >
+
+      # Enable / Disable auto MLAG, when two nodes are defined in node group.
+      mlag: < true | false -> default true >
+
+      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+      spanning_tree_mode: < mstp >
+
+      # Spanning tree priority | Required.
+      spanning_tree_priority: < spanning-tree priority >
+
+      # Virtual router mac address for anycast gateway | Required.
+      virtual_router_mac_address: < mac address >
+
+      # Activate or deactivate IGMP snooping for all l3leaf devices | Optional default is true
+      igmp_snooping_enabled: < true | false >
 
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
+      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
@@ -561,8 +567,9 @@ l3leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Define one or two nodes - same name as inventory_hostname | Required
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l3leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node
@@ -606,7 +613,7 @@ l3leaf:
 
 l3leaf:
   defaults:
-    platform: vEOS-LAB
+    platform: 7050X3
     bgp_as: 65100
     spines: [ DC1-SPINE1, DC1-SPINE2 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
@@ -641,6 +648,8 @@ l3leaf:
           spine_interfaces: [ Ethernet3, Ethernet3 ]
     DC1_SVC3:
       bgp_as: 65103
+      platform: 7280R
+      mlag: false
       filter:
         tenants: [ Tenant_A ]
         tags: [ erp1 ]
@@ -662,44 +671,50 @@ l3leaf:
 ```yaml
 l2leaf:
 
-  # L2 Leaf default variables, can be overridden when defined under < node_group >.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L2 leafs.
+  # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-    # Arista platform family. | Required
-    platform: < Arista Platform Family >
-
-    # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
-
-    # Uplink interfaces (list), interface located on L2 Leaf,
-    # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
-    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-    # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
-    p2p_link_interface_speed: < interface_speed >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-    spanning_tree_mode: < mstp >
-
-    # Spanning tree priority | Required.
-    spanning_tree_priority: < spanning-tree priority >
-
-    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
-    igmp_snooping_enabled: < true | false >
-
-  # The node groups are group of one or two nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
-  # All variables defined under `defaults` dictionary can be defined under each node group to override it.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
 
+      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+
+      # Arista platform family. | Required
+      platform: < Arista Platform Family >
+
+      # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
+      parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+
+      # Uplink interfaces (list), interface located on L2 Leaf,
+      # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+      # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
+      p2p_link_interface_speed: < interface_speed >
+
+      # Enable / Disable auto MLAG, when two nodes are defined in node group.
+      mlag: < true | false -> default true >
+
+      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+      spanning_tree_mode: < mstp >
+
+      # Spanning tree priority | Required.
+      spanning_tree_priority: < spanning-tree priority >
+
+      # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+      igmp_snooping_enabled: < true | false >
+
       # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
       # If filter is not defined will default to all
+      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
@@ -707,8 +722,9 @@ l2leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
-      # Define one or two nodes - same name as inventory_hostname.
-      # When two nodes are defined, this will create an MLAG pair.
+      # The node name must be the same name as inventory_hostname | Required
+      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
+      # unless the "l2leaf.defaults.mlag:" key is set to false.
       nodes:
 
         # First node

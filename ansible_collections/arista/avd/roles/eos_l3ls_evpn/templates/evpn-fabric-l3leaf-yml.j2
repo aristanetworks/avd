@@ -72,7 +72,12 @@
 {%             else %}
 {%                 set switch.spanning_tree_priority = l3leaf.defaults.spanning_tree_priority %}
 {%             endif %}
-{%             if loop.length == 2 %}
+{%             if l3leaf.node_groups[l3leaf_node_group].mlag is defined %}
+{%                 set switch.mlag = l3leaf.node_groups[l3leaf_node_group].mlag %}
+{%             else %}
+{%                 set switch.mlag = l3leaf.defaults.mlag | default(true) %}
+{%             endif %}
+{%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l3leaf_node_group %}
 {%                 if l3leaf.node_groups[l3leaf_node_group].mlag_interfaces is defined %}
