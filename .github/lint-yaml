@@ -5,6 +5,8 @@
 #
 # $ ln -s -f ../../.github/lint-yaml .git/hooks/pre-commit
 
+# THIS IS A TEST DO NOT MERGE
+
 exec 1>&2
 
 echo "------------------------------------------------------------------------------------------------------------"
@@ -17,4 +19,3 @@ yamllint --strict -c .github/yamllintrc \
     ansible_collections/arista/avd/galaxy.yml
 
 echo "------------------------------------------------------------------------------------------------------------"
-
