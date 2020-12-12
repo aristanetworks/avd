@@ -1,5 +1,10 @@
 ---
 scenario:
+  converge_sequence:
+    - syntax
+    - create
+    - converge
+    - verifyg
   test_sequence:
     - syntax
     - create
