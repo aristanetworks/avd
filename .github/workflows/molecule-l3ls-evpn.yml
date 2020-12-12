@@ -18,7 +18,6 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
-          - 'evpn_l3leaf_no_mlag'
           - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
