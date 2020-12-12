@@ -67,3 +67,7 @@ jobs:
     - name: Create package
       run: |
         make collection-build
+
+    - uses: actions/upload-artifact@v2
+      with:
+        path: arista-avd.*.tar.gz

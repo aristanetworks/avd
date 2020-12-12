@@ -40,7 +40,7 @@ jobs:
           molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
           ls -alR molecule
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: molecule-results-${{ matrix.avd_scenario }}
           path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}

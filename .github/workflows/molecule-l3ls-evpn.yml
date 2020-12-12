@@ -45,7 +45,7 @@ jobs:
       #   run: |
       #     bash .github/git-repo-state-monitor.sh
 
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: molecule-results-${{ matrix.avd_scenario }}
           path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
