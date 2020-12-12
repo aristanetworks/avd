@@ -65,6 +65,11 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%             if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
+{%                 for ip_address_secondary in ethernet_interfaces[ethernet_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                 endfor %}
+{%             endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
    ipv6 enable

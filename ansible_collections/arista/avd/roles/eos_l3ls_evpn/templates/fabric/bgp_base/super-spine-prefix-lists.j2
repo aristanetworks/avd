@@ -1,0 +1,7 @@
+{# Super Spine prefix-lists #}
+{% if switch.overlay_routing_protocol == "ebgp" %}
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: "permit {{ super_spine_loopback_network_summary }} le 32"
+{% endif %}

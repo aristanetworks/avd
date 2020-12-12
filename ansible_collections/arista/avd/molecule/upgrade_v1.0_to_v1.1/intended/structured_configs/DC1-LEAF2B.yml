@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['Tenant_A', 'Tenant_B', 'Tenant_C']
 leaf_filter_tags: ['opzone', 'web', 'app', 'db', 'vmotion', 'nfs']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_DB_Zone', 'Tenant_A_OP_Zone', 'Tenant_A_WEB_Zone', 'Tenant_B_OP_Zone', 'Tenant_C_OP_Zone']
@@ -79,7 +80,7 @@ redundancy:
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4093-4094
 
 
 ### AAA authorization ###
@@ -569,12 +570,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
-      20:
-        action: "permit 10.255.251.0/24 le 31"
 
 ### MLAG Configuration ###
 mlag_configuration:

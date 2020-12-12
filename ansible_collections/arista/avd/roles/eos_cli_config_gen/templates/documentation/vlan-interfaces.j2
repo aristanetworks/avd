@@ -4,6 +4,7 @@
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+
 | {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %} {{ vlan_interfaces[vlan_interface].description }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu is not none %} {{ vlan_interfaces[vlan_interface].mtu }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown is not none %} {{ vlan_interfaces[vlan_interface].shutdown | lower }} {% else %} - {% endif %} |
 {%     endfor %}
 

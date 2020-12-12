@@ -16,7 +16,11 @@
       next_hop_unchanged: true
       update_source: Loopback0
       bfd: true
+{%         if evpn_overlay_controller_groups is not defined %}
       ebgp_multihop: 3
+{%         else %}
+      ebgp_multihop: 15
+{%         endif %}
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true
       maximum_routes: 0

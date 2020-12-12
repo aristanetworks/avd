@@ -8,6 +8,7 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
+leaf_evpn_services_l2_only: False
 leaf_filter_tenants: ['all']
 leaf_filter_tags: ['web', 'app']
 leaf_allowed_vrfs: ['Tenant_A_APP_Zone', 'Tenant_A_WEB_Zone']
@@ -295,10 +296,6 @@ prefix_lists:
         action: "permit 192.168.255.0/24 eq 32"
       20:
         action: "permit 192.168.254.0/24 eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit 172.31.255.0/24 le 31"
 
 
 ### route-maps ###

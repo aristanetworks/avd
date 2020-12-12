@@ -20,8 +20,6 @@ platforms:
       - all
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
   config_options:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'

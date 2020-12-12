@@ -18,6 +18,8 @@ internal_vlan_order:
     ending: 1199
 
 max_l3leaf_to_spine_links: 1
+max_spine_to_super_spine_links: 1
+max_overlay_controller_to_switch_links: 1
 
 terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
@@ -44,6 +46,20 @@ spine_bgp_defaults:
 
 leaf_bgp_defaults:
   - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+super_spine_bgp_defaults:
+  - update wait-for-convergence
+  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+overlay_controller_bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - graceful-restart restart-time 300

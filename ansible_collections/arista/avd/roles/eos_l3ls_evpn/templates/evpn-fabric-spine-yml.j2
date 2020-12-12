@@ -49,6 +49,77 @@
 {%         set switch.is_route_reflector = true %}
 {%     endif%}
 {% endfor %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for switches pointing to us as evpn_overlay_controller / server #}
+{% for some_switch in groups['all'] %}
+{%     set some_switch_vars = hostvars[some_switch] %}
+{%     if some_switch_vars.evpn_overlay_controller_groups is defined and some_switch_vars.evpn_overlay_controller_groups is not none %}
+{%         for evpn_overlay_controller_group in some_switch_vars.evpn_overlay_controller_groups %}
+{%             if inventory_hostname in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%                 set peer = namespace() %}
+{%                 set peer.description = some_switch %}
+{%                 if some_switch_vars.type == 'l3leaf' %}
+{%                     for l3leaf_node_group in some_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                         for node in some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                             if node == some_switch %}
+{%                                 set peer.id = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
+{%                                 if some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as %}
+{%                                 else %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.defaults.bgp_as %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endfor %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(peer.id + some_switch_vars.spine.nodes | length) %}
+{%                 elif some_switch_vars.type == 'spine' %}
+{%                     set peer.bgp_as = some_switch_vars.spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'super-spine' %}
+{%                     set peer.bgp_as = some_switch_vars.super_spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(some_switch_vars.super_spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'overlay-controller' %}
+{%                     if some_switch_vars.overlay_controller.nodes[some_switch].bgp_as is defined %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.nodes[some_switch].bgp_as %}
+{%                     else %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.defaults.bgp_as %}
+{%                     endif %}
+{%                     set peer.ip = some_switch_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.overlay_controller.nodes[some_switch].id) %}
+{%                 endif %}
+{%                 do switch.evpn_overlay_peers.append(peer) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for evpn_overlay_controller in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set evpn_overlay_controller_vars = hostvars[evpn_overlay_controller] %}
+{%             set peer = namespace() %}
+{%             set peer.description = evpn_overlay_controller %}
+{%             if evpn_overlay_controller_vars.type == 'spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.super_spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(evpn_overlay_controller_vars.super_spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'overlay-controller' %}
+{%                 if evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as is defined %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -143,7 +214,10 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
+{# Point-to-Point Interfaces to l3leaf #}
 {% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
+{# Point-to-Point Interfaces to overlay-controller #}
+{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 
 
 {# Loopback Interfaces #}

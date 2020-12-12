@@ -677,6 +677,9 @@ ethernet_interfaces:
     type: < routed | switched >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
+    ip_address_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
@@ -753,6 +756,9 @@ loopback_interfaces:
     shutdown: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
+    ip_address_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ospf_area: < ospf_area >
@@ -789,9 +795,10 @@ vlan_interfaces:
     vrf: < vrf_name >
     arp_aging_timeout: < arp_timeout >
     ip_address: < IPv4_address/Mask >
-    ip_address_secondary: < IPv4_address/Mask >
+    ip_address_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ip_router_virtual_address: < IPv4_address >
-    ip_router_virtual_address_secondary: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:

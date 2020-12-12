@@ -22,10 +22,15 @@ interface {{ vlan_interface }}
    arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
 {%         endif %}
 {%             if vlan_interfaces[vlan_interface].ip_proxy_arp is defined and vlan_interfaces[vlan_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if vlan_interfaces[vlan_interface].ip_address is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address }}
+{%             if vlan_interfaces[vlan_interface].ip_address_secondaries is defined and vlan_interfaces[vlan_interface].ip_address_secondaries is not none %}
+{%                 for ip_address_secondary in vlan_interfaces[vlan_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %}
    ip virtual-router address {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }}
