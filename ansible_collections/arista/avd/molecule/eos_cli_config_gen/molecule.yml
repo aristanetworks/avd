@@ -4,7 +4,6 @@ scenario:
     - syntax
     - create
     - converge
-    - verify
   test_sequence:
     - syntax
     - create
