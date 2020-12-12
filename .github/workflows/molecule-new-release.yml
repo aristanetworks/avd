@@ -49,3 +49,21 @@ jobs:
         with:
           name: molecule-results-${{ matrix.avd_scenario }}
           path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
+  build_collection:
+    name: Create Ansible Galaxy collection package
+    runs-on: ubuntu-18.04
+    container: avdteam/base:3.6-v1.0
+    needs: avd_eos_molecule
+    steps:
+
+    - name: 'set environment variables'
+      run: |
+        echo "PY_COLORS=1" >> $GITHUB_ENV
+        echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v1
+
+    - name: Create package
+      run: |
+        make collection-build
