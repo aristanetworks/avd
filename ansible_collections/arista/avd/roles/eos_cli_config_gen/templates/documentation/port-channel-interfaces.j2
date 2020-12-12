@@ -2,7 +2,7 @@
 ### Port-Channel Interfaces Summary
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- | ------------------ | ------- | -------- | --- | ---------- | ------------ |
 {%   for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 | {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].description }} |
 {%-    if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu  != 1500  %} {{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} 1500 {% endif -%} |
