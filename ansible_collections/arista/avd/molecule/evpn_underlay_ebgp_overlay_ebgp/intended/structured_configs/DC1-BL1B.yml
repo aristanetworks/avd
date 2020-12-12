@@ -3,30 +3,14 @@ switch_platform: vEOS-LAB
 leaf_bgp_as: 65104
 leaf_id: 7
 switch_mgmt_ip: 192.168.200.111/24
-leaf_evpn_services_l2_only: false
-leaf_filter_tenants:
-- all
-leaf_filter_tags:
-- wan
-leaf_allowed_vrfs:
-- Tenant_A_WAN_Zone
-- Tenant_B_WAN_Zone
-- Tenant_C_WAN_Zone
-leaf_allowed_svis:
-- 150
-- 250
-- 350
-leaf_allowed_vlans:
-- 150
-- 250
-- 350
-leaf_mlag: true
-leaf_mlag_group: DC1_BL1
-leaf_mlag_role: secondary
-leaf_mlag_peer: DC1-BL1A
-leaf_mlag_ip: 11
-leaf_mlag_peer_ip: 10
-leaf_mlag_peer_id: 6
+leaf_evpn_services_l2_only: False
+leaf_filter_tenants: ['all']
+leaf_filter_tags: ['wan']
+leaf_allowed_vrfs: ['Tenant_A_WAN_Zone', 'Tenant_B_WAN_Zone', 'Tenant_C_WAN_Zone']
+leaf_allowed_svis: [150, 250, 350]
+leaf_allowed_vlans: [150, 250, 350]
+leaf_mlag: False
+
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
@@ -64,8 +48,17 @@ redundancy: null
 spanning_tree:
   mode: mstp
   priority: 4096
+<<<<<<< HEAD
   no_spanning_tree_vlan: 4093-4094
 aaa_authorization: null
+=======
+
+
+### AAA authorization ###
+aaa_authorization:
+
+### local users ###
+>>>>>>> 514a4430... Update CI artifacts
 local_users:
   admin:
     privilege: 15
@@ -77,6 +70,7 @@ local_users:
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 clock: null
 vlans:
+<<<<<<< HEAD
   4093:
     tenant: system
     name: LEAF_PEER_L3
@@ -111,6 +105,23 @@ vlans:
     name: MLAG_iBGP_Tenant_C_WAN_Zone
     trunk_groups:
     - LEAF_PEER_L3
+=======
+
+## Tenant_A ##
+  150:
+    tenant: Tenant_A
+    name: Tenant_A_WAN_Zone_1
+## Tenant_B ##
+  250:
+    tenant: Tenant_B
+    name: Tenant_B_WAN_Zone_1
+## Tenant_C ##
+  350:
+    tenant: Tenant_C
+    name: Tenant_C_WAN_Zone_1
+
+### VRFs ###
+>>>>>>> 514a4430... Update CI artifacts
 vrfs:
   MGMT:
     ip_routing: false
@@ -128,6 +139,7 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 port_channel_interfaces:
+<<<<<<< HEAD
   Port-Channel5:
     description: MLAG_PEER_DC1-BL1A_Po5
     vlans: 2-4094
@@ -135,6 +147,10 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+=======
+
+### Ethernet Interfaces ###
+>>>>>>> 514a4430... Update CI artifacts
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -168,6 +184,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.55/31
+<<<<<<< HEAD
   Ethernet5:
     peer: DC1-BL1A
     peer_interface: Ethernet5
@@ -184,13 +201,24 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+=======
+
+
+### Loopback Interfaces ###
+>>>>>>> 514a4430... Update CI artifacts
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     ip_address: 192.168.255.11/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
+<<<<<<< HEAD
     ip_address: 192.168.254.10/32
+=======
+    ip_address: 192.168.254.11/32
+
+### Management Interfaces ###
+>>>>>>> 514a4430... Update CI artifacts
 management_interfaces:
   Management1:
     description: oob_management
@@ -198,6 +226,7 @@ management_interfaces:
     ip_address: 192.168.200.111/24
     gateway: 192.168.200.5
 vlan_interfaces:
+<<<<<<< HEAD
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.11/31
@@ -206,6 +235,9 @@ vlan_interfaces:
     ip_address: 10.255.252.11/31
     no_autostate: true
     mtu: 1500
+=======
+## Tenant_A ##
+>>>>>>> 514a4430... Update CI artifacts
   Vlan150:
     tenant: Tenant_A
     tags:
@@ -214,12 +246,16 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+<<<<<<< HEAD
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.255.251.11/31
+=======
+## Tenant_B ##
+>>>>>>> 514a4430... Update CI artifacts
   Vlan250:
     tenant: Tenant_B
     tags:
@@ -228,12 +264,16 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
+<<<<<<< HEAD
   Vlan3020:
     tenant: Tenant_B
     type: underlay_peering
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
     vrf: Tenant_B_WAN_Zone
     ip_address: 10.255.251.11/31
+=======
+## Tenant_C ##
+>>>>>>> 514a4430... Update CI artifacts
   Vlan350:
     tenant: Tenant_C
     tags:
@@ -242,18 +282,26 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+<<<<<<< HEAD
   Vlan3030:
     tenant: Tenant_C
     type: underlay_peering
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
     vrf: Tenant_C_WAN_Zone
     ip_address: 10.255.251.11/31
+=======
+
+### VxLAN interface ###
+>>>>>>> 514a4430... Update CI artifacts
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
     source_interface: Loopback1
+<<<<<<< HEAD
     virtual_router:
       encapsulation_mac_address: mlag-system-id
+=======
+>>>>>>> 514a4430... Update CI artifacts
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
@@ -287,6 +335,7 @@ prefix_lists:
       10:
         action: permit 192.168.255.0/24 eq 32
       20:
+<<<<<<< HEAD
         action: permit 192.168.254.0/24 eq 32
 mlag_configuration:
   domain_id: DC1_BL1
@@ -299,6 +348,12 @@ mlag_configuration:
   peer_link: Port-Channel5
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
+=======
+        action: "permit 192.168.254.0/24 eq 32"
+
+
+### route-maps ###
+>>>>>>> 514a4430... Update CI artifacts
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -320,6 +375,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: true
+<<<<<<< HEAD
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65104
@@ -327,6 +383,8 @@ router_bgp:
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: true
+=======
+>>>>>>> 514a4430... Update CI artifacts
     EVPN-OVERLAY-PEERS:
       type: evpn
       remote_as: 65001
@@ -345,8 +403,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
     172.31.255.54:
       peer_group: IPv4-UNDERLAY-PEERS
-    10.255.251.10:
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
     192.168.255.2:
@@ -364,15 +420,11 @@ router_bgp:
         activate: true
       IPv4-UNDERLAY-PEERS:
         activate: false
-      MLAG-IPv4-UNDERLAY-PEER:
-        activate: false
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
       IPv4-UNDERLAY-PEERS:
-        activate: true
-      MLAG-IPv4-UNDERLAY-PEER:
         activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
@@ -410,10 +462,14 @@ router_bgp:
           - '14:14'
         export:
           evpn:
+<<<<<<< HEAD
           - '14:14'
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+=======
+            - "14:14"
+>>>>>>> 514a4430... Update CI artifacts
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -425,10 +481,14 @@ router_bgp:
           - '21:21'
         export:
           evpn:
+<<<<<<< HEAD
           - '21:21'
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+=======
+            - "21:21"
+>>>>>>> 514a4430... Update CI artifacts
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -440,10 +500,14 @@ router_bgp:
           - '31:31'
         export:
           evpn:
+<<<<<<< HEAD
           - '31:31'
       neighbors:
         10.255.251.10:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+=======
+            - "31:31"
+>>>>>>> 514a4430... Update CI artifacts
       redistribute_routes:
       - connected
 ip_extcommunity_lists: null
