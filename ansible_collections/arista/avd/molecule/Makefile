@@ -21,14 +21,14 @@ converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. 
 
 .PHONY: refresh-facts
 refresh-facts: ## Run all molecule scenario
-	cd .. && \
-	molecule converge --scenario-name eos_cli_config_gen && \
-	molecule converge --scenario-name evpn_underlay_ebgp_overlay_ebgp && \
-	molecule converge --scenario-name evpn_underlay_isis_overlay_ibgp && \
-	molecule converge --scenario-name evpn_underlay_ospf_overlay_ebgp && \
-	molecule converge --scenario-name upgrade_v1.0_to_v1.1 && \
-	molecule converge --scenario-name evpn_l3leaf_no_mlag && \
-	cd molecule
+	@for MOLECULE_SCENARIO in * ; do \
+        if [ -d "$$MOLECULE_SCENARIO" ]; then\
+        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+		cd .. ; \
+		molecule converge --scenario-name $$MOLECULE_SCENARIO ; \
+		cd ./molecule ; \
+        fi \
+    done
 
 .PHONY: commit-facts
 commit-facts: ## Commit updated facts for CI
