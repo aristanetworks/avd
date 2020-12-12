@@ -57,11 +57,13 @@
 {%     endfor %}
 {%     set port_channel_interface_ipv4 = namespace() %}
 {%     set port_channel_interface_ipv4.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ip_address is defined %}
-{%              set port_channel_interface_ipv4.configured = true %}
-{%          endif %}
-{%     endfor %}
+{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%              if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%                  set port_channel_interface_ipv4.configured = true %}
+{%              endif %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface_ipv4.configured == true or port_channel_interface_ipv4.configured == true %}
 
 #### IPv4
@@ -94,11 +96,13 @@
 {%     endfor %}
 {%     set port_channel_interface_ipv6 = namespace() %}
 {%     set port_channel_interface_ipv6.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
-{%              set port_channel_interface_ipv6.configured = true %}
-{%          endif %}
-{%     endfor %}
+{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%              if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+{%                  set port_channel_interface_ipv6.configured = true %}
+{%              endif %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface_ipv6.configured == true or port_channel_interface_ipv6.configured == true %}
 
 #### IPv6
@@ -131,12 +135,14 @@
 {%     endfor %}
 {%     set port_channel_interface_ospf = namespace() %}
 {%     set port_channel_interface_ospf.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
-{%              set port_channel_interface_ospf.configured = true %}
-{%          endif %}
-{%     endfor %}
-{%     if ethernet_interface_ospf.configured == true or port_channel_ospf.configured == true %}
+{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%              if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
+{%                  set port_channel_interface_ospf.configured = true %}
+{%              endif %}
+{%         endfor %}
+{%     endif %}
+{%     if ethernet_interface_ospf.configured == true or port_channel_interface_ospf.configured == true %}
 
 #### OSPF
 | Interface | Channel Group | Area | Cost | Mode |
@@ -165,14 +171,15 @@
 {%              set ethernet_interface_isis.configured = true %}
 {%          endif %}
 {%     endfor %}
-
 {%     set port_channel_interface_isis = namespace() %}
 {%     set port_channel_interface_isis.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].isis_enable is defined %}
-{%              set port_channel_interface_isis.configured = true %}
-{%          endif %}
-{%     endfor %}
+{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%              if port_channel_interfaces[port_channel_interface].isis_enable is defined %}
+{%                  set port_channel_interface_isis.configured = true %}
+{%              endif %}
+{%         endfor %}
+{%     endif %}
 {%     if ethernet_interface_isis.configured == true or port_channel_isis.configured == true %}
 
 #### ISIS
