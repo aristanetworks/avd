@@ -3,7 +3,7 @@
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 !
 interface {{ port_channel_interface }}
-{%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %}
+{%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].description is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == true %}
@@ -71,7 +71,7 @@ interface {{ port_channel_interface }}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
 {%             if port_channel_interfaces[port_channel_interface].ip_proxy_arp is defined and port_channel_interfaces[port_channel_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
