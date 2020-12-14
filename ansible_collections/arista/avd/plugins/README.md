@@ -40,7 +40,7 @@ To use this filter:
 
 ### **default filter**
 
-The `default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter required a value to be `not undefined` and `not None` to pass through.
+The `default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
 Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
 As a last resort the filter will return None.
 
@@ -48,6 +48,26 @@ To use this filter:
 
 ```jinja
 {{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
+```
+
+### **is_valid filter**
+
+The `is_valid` will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
+
+To use this filter:
+
+```jinja
+{% if variable | arista.avd.is_valid %}
+text : {{ variable }}
+{% endif %}
+```
+
+The `is_valid` filter can be useful as an alternative to:
+
+```jinja
+{% if variable is defined and variable is not none %}
+text : {{ variable }}
+{% endif %}
 ```
 
 ## Modules
