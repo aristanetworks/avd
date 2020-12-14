@@ -749,7 +749,7 @@ ethernet_interfaces:
       ipv4:
         sparse_mode: < true | false >
     mac_security:
-      profiles: < profile >
+      profile: < profile >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -780,7 +780,7 @@ ethernet_interfaces:
     ptp:
       enable: < true | false >
     mac_security:
-      profiles: < profile >
+      profile: < profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >

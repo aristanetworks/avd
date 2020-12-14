@@ -37,7 +37,7 @@ port_channel_interfaces:
     vlans: 1-5
     mode: trunk
     mac_security:
-      profiles: A1
+      profile: A1
 
 
 # Routed Interfaces
@@ -46,4 +46,4 @@ ethernet_interfaces:
     mode: routed
     ip_address: 1.1.1.1/24
     mac_security:
-        profiles: A1
+        profile: A1
