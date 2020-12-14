@@ -952,12 +952,12 @@ mac-security:
     license_key: < license-number >
   fips_restrictions: < true | false >
   profiles:
-  < profile >:
-    cipher: < valid-cipher-string >
-    connection_keys:
-      < connection_key >:
-        encrypted_key: < encrypted_key >
-        fallback: < true | false -> default >
+    < profile >:
+      cipher: < valid-cipher-string >
+      connection_keys:
+        < connection_key >:
+          encrypted_key: < encrypted_key >
+          fallback: < true | false -> default >
 ```
 
 ### Router Virtual MAC Address
