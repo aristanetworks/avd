@@ -46,7 +46,6 @@
 {% endfor %}
 
 *Inherited from Port-Channel Interface
-
 {# IPv4 #}
 {%     set ethernet_interface_ipv4 = namespace() %}
 {%     set ethernet_interface_ipv4.configured = false %}
@@ -84,7 +83,6 @@
 {%         endfor %}
 {%     endif %}
 {% if port_channel_interface_ipv4.configured == true %} *Inherited from Port-Channel Interface {% endif %}
-
 {# IPv6 #}
 {%     set ethernet_interface_ipv6 = namespace() %}
 {%     set ethernet_interface_ipv6.configured = false %}
@@ -122,7 +120,6 @@
 {%         endfor %}
 {%     endif %}
 {% if port_channel_interface_ipv6.configured == true %} *Inherited from Port-Channel Interface {% endif %}
-
 {# OSPF #}
 {%     set ethernet_interface_ospf = namespace() %}
 {%     set ethernet_interface_ospf.configured = false %}
@@ -159,7 +156,6 @@
 {%          endfor %}
 {%     endif %}
 {% if port_channel_interface_ospf.configured == true %} *Inherited from Port-Channel Interface {% endif %}
-
 {# ISIS #}
 {%     set ethernet_interface_isis = namespace() %}
 {%     set ethernet_interface_isis.configured = false %}
@@ -181,7 +177,7 @@
 
 #### ISIS
 
-| Interface | Channel Group | ISIS instance | ISIS metric | Mode |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
@@ -196,7 +192,6 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 {% if port_channel_interface_isis.configured == true %} *Inherited from Port-Channel Interface {% endif %}
 
 ### Ethernet Interfaces Device Configuration
