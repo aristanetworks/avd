@@ -238,6 +238,8 @@ No logging settings defined
 !
 snmp-server contact DC1_OPS
 snmp-server location DC1
+snmp-server ipv4 access-list onur
+snmp-server ipv6 access-list onurv6
 snmp-server vrf mgt local-interface Management0
 snmp-server view VW-WRITE iso included
 snmp-server view VW-READ iso included

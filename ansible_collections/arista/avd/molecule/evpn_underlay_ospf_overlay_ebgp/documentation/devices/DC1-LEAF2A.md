@@ -367,18 +367,32 @@ vlan 4094
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | 1500 | routed | access | - | - | - | 172.31.255.9/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | 1500 | routed | access | - | - | - | 172.31.255.11/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | 1500 | routed | access | - | - | - | 172.31.255.13/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | 1500 | routed | access | - | - | - | 172.31.255.15/31 | - | - |
-| Ethernet5 | MLAG_PEER_DC1-LEAF2B_Ethernet5 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 5 | active |
-| Ethernet6 | MLAG_PEER_DC1-LEAF2B_Ethernet6 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 5 | active |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *1500 | *switched | *trunk | * | - | - | - | 7 | active |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet5 | MLAG_PEER_DC1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *- | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet2  |  routed  | - |  172.31.255.9/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.255.11/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet2  |  routed  | - |  172.31.255.13/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet2  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
+
+#### OSPF
+| Interface | Channel Group | Area | Cost | Mode |
+| --------- | ------------- | ---- | ---- |----- |
+| Ethernet1 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet2 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet3 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet4 | - | 0.0.0.0 |  -  |  point-to-point  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -429,10 +443,12 @@ interface Ethernet7
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2B_Po5 | 1500 | switched | trunk | 2-4094 | LEAF_PEER_L3<br> MLAG | - | - | - | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | 1500 | switched | trunk |  | - | - | - | 7 | - | - | - | - |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | MLAG_PEER_DC1-LEAF2B_Po5 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | access | - | - | - | - | - | 7 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -490,10 +506,23 @@ interface Loopback1
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 10.255.251.2/31 | - | - |
-| Vlan4094 | MLAG_PEER | default | 10.255.252.2/31 | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  -  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4093 |  default  |  10.255.251.2/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.2/31  |  -  |  -  |  -  |  -  |  -  |
+
+
+#### OSPF
+| Interface | Area | Cost | Mode |
+| --------- |----- | ---- |----- |
+| Vlan4093 | 0.0.0.0 |  -  |  point-to-point  |
 
 
 ### VLAN Interfaces Device Configuration

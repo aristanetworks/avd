@@ -320,18 +320,24 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.6/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.14/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.22/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.30/31 | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.38/31 | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.46/31 | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet4 | 1500 | routed | access | - | - | - | 172.31.255.54/31 | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet4  |  routed  | - |  172.31.255.6/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet4  |  routed  | - |  172.31.255.14/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet4  |  routed  | - |  172.31.255.22/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet4  |  routed  | - |  172.31.255.30/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet4  |  routed  | - |  172.31.255.38/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet4  |  routed  | - |  172.31.255.46/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet4  |  routed  | - |  172.31.255.54/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 

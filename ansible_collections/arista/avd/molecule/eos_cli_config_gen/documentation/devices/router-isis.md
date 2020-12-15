@@ -231,20 +231,27 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.3/31 | - | - |
-| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *1500 | *switched | *access | - | - | - | - | 3 | active |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 | MLAG_PEER_EAPI-LEAF1B_Ethernet3 | *access | *- | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_EAPI-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_EAPI-SPINE2_Ethernet1  |  routed  | - |  172.31.255.3/31  |  default  |  1500  |  -  |  -  |  -  |
+
 #### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ------------- | ----------- | ---- |
+| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -321,16 +328,26 @@ interface Loopback1
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan110 | PR01-DEMO | TENANT_A_PROJECT01 | - | 10.1.10.254/24 | - |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 10.255.251.0/31 | - | - |
-| Vlan4094 | MLAG_PEER | default | 10.255.252.0/31 | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan110 |  PR01-DEMO  |  TENANT_A_PROJECT01  |  -  |  false  |
+| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  -  |  -  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan110 |  TENANT_A_PROJECT01  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
+| Vlan4093 |  default  |  10.255.251.0/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+
+
 
 #### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
+| Interface | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ----------- | ---- |
 | Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
 
 ### VLAN Interfaces Device Configuration

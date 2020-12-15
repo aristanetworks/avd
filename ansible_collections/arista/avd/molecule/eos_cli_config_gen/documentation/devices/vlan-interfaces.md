@@ -243,24 +243,57 @@ No loopback interfaces defined
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan24 | SVI Description | default | - | 10.10.24.1/24 | - |
-| Vlan41 | SVI Description | default | - | 10.10.41.1/24 | - |
-| Vlan42 | SVI Description | default | - | 10.10.42.1/24 | - |
-| Vlan75 | SVI Description | default | - | 10.10.75.1/24 | - |
-| Vlan83 | SVI Description | default | - | 10.10.83.1/24 | - |
-| Vlan84 | SVI Description | default | - | 10.10.84.1/24 | - |
-| Vlan85 | SVI Description | default | 10.10.84.1/24 | - | - |
-| Vlan87 | SVI Description | default | 10.10.87.1/24 | - | - |
-| Vlan88 | SVI Description | default | - | 10.10.87.1/23 | - |
-| Vlan89 | SVI Description | default | - | 10.10.144.3/20 | - |
-| Vlan501 | SVI Description | default | 10.50.26.29/27 | - | - |
-| Vlan1001 | SVI Description | Tenant_A | - | 10.1.1.1/24 | - |
-| Vlan1002 | SVI Description | Tenant_A | - | 10.1.2.1/24 | - |
-| Vlan2001 | SVI Description | Tenant_B | - | 10.2.1.1/24 | - |
-| Vlan2002 | SVI Description | Tenant_B | - | 10.2.2.1/24 | - |
-| Vlan4094 | SVI Description | default | 169.254.252.0/31 | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan24 |  SVI Description  |  default  |  -  |  false  |
+| Vlan41 |  SVI Description  |  default  |  -  |  false  |
+| Vlan42 |  SVI Description  |  default  |  -  |  false  |
+| Vlan75 |  SVI Description  |  default  |  -  |  false  |
+| Vlan83 |  SVI Description  |  default  |  -  |  false  |
+| Vlan84 |  SVI Description  |  default  |  -  |  -  |
+| Vlan85 |  SVI Description  |  default  |  -  |  -  |
+| Vlan87 |  SVI Description  |  default  |  -  |  true  |
+| Vlan88 |  SVI Description  |  default  |  -  |  true  |
+| Vlan89 |  SVI Description  |  default  |  -  |  false  |
+| Vlan501 |  SVI Description  |  default  |  -  |  false  |
+| Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
+| Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
+| Vlan2001 |  SVI Description  |  Tenant_B  |  -  |  -  |
+| Vlan2002 |  SVI Description  |  Tenant_B  |  -  |  -  |
+| Vlan4094 |  SVI Description  |  default  |  9214  |  -  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
+| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
+| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan84 |  default  |  -  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
+| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
+| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
+| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
+| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
+| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+
+#### IPv6
+
+| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
+| Vlan24 |  default  |  1b11:3a00:22b0:6::15/64  |  1b11:3a00:22b0:6::1  |  -  |  -  |  true  |  -  |  -  |
+| Vlan75 |  default  |  1b11:3a00:22b0:1000::15/64  |  1b11:3a00:22b0:1000::1  |  -  |  -  |  true  |  -  |  -  |
+| Vlan89 |  default  |  1b11:3a00:22b0:5200::15/64  |  1b11:3a00:22b0:5200::3  |  -  |  -  |  true  |  -  |  -  |
+| Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
+
 
 
 ### VLAN Interfaces Device Configuration
