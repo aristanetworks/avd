@@ -29,7 +29,6 @@
 | {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%   endfor %}
-
 {# IPv4 #}
 {%   set port_channel_interface_ipv4 = namespace() %}
 {%   set port_channel_interface_ipv4.configured = false %}
@@ -57,13 +56,11 @@
 {%                set shutdown = port_channel_interfaces[port_channel_interface].shutdown | default ("-")%}
 {%                set acl_in = port_channel_interfaces[port_channel_interface].access_group_in | default ("-")%}
 {%                set acl_out = port_channel_interfaces[port_channel_interface].access_group_out | default ("-")%}
-| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ acl_in }} | {{ acl_out }} |
+| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
 {%            endif %}
 {%        endfor %}
 {%    endif %}
-
 {# IPv6 #}
-
 {%   set port_channel_interface_ipv6 = namespace() %}
 {%   set port_channel_interface_ipv6.configured = false %}
 {%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
@@ -96,7 +93,7 @@
 {%                endif %}
 {%                set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in | default ("-")%}
 {%                set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | default ("-")%}
-| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown }} | {{ ipv6_nd_ra_disabled }} | {{ ipv6_nd_managed_config_flag }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ ipv6_nd_ra_disabled | lower  }} | {{ ipv6_nd_managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%            endif %}
 {%        endfor %}
 {%    endif %}
