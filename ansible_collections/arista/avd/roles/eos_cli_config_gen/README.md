@@ -1214,6 +1214,8 @@ router_bgp:
         prefix_list_out: < prefix_list_name >
     neighbors:
       < neighbor_ip_address>:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
         activate: < true | false >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
