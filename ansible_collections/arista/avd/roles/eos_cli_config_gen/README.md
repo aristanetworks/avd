@@ -1255,6 +1255,8 @@ router_bgp:
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
+      router_id: "< router id >"
+      timers: "< keepalive_hold_timer_values >"
       route_targets:
         import:
           < address_family >:
@@ -1270,6 +1272,9 @@ router_bgp:
         neighbors:
           < neighbor_ip_address >:
             remote_as: < asn >
+            timers: < keepalive_hold_timer_values >
+            description: "< description as string >"
+            next_hop_self: < true | false >
           < neighbor_ip_address >:
             remote_as: < asn >
       redistribute_routes:

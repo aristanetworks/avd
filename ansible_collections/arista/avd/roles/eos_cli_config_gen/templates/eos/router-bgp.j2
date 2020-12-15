@@ -334,14 +334,26 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].router_id is defined %}
       router-id {{ router_bgp.vrfs[vrf].router_id }}
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].timers is defined and router_bgp.vrfs[vrf].timers is not none %}
+      timers bgp {{ router_bgp.vrfs[vrf].timers }}
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
-{%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
-{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
+{%                for neighbor in router_bgp.vrfs[vrf].neighbors %}
+{%                   if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
-{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is defined and router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is not none %}
+{%                   elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is defined and router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is not none %}
       neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
-{%                      endif %}
-{%                 endfor %}
+{%                   endif %}
+{%                   if router_bgp.vrfs[vrf].neighbors[neighbor].description is defined and router_bgp.vrfs[vrf].neighbors[neighbor].description is not none %}
+      neighbor {{ neighbor }} description {{ router_bgp.vrfs[vrf].neighbors[neighbor].description }}
+{%                   endif %}
+{%                   if router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self is defined and router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self == true %}
+      neighbor {{ neighbor }} next-hop-self
+{%                   endif %}
+{%                   if router_bgp.vrfs[vrf].neighbors[neighbor].timers is defined and router_bgp.vrfs[vrf].neighbors[neighbor].timers is not none %}
+      neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
+{%                   endif %}
+{%                endfor %}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}
 {%                for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
