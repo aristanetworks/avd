@@ -83,7 +83,6 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 {% if port_channel_interface_ipv4.configured == true %} *Inherited from Port-Channel Interface {% endif %}
 
 {# IPv6 #}
@@ -107,7 +106,7 @@
 
 #### IPv6
 
-| Interface | Description | Type | Channel Group | IPv6 address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
@@ -122,7 +121,6 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 {% if port_channel_interface_ipv6.configured == true %} *Inherited from Port-Channel Interface {% endif %}
 
 {# OSPF #}
@@ -160,7 +158,6 @@
 {%             endif %}
 {%          endfor %}
 {%     endif %}
-
 {% if port_channel_interface_ospf.configured == true %} *Inherited from Port-Channel Interface {% endif %}
 
 {# ISIS #}
