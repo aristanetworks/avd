@@ -383,17 +383,23 @@ vlan 311
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.17/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.19/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.21/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.23/31 | - | - |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *1500 | *switched | *trunk | *110-111,120-121,130-131 | - | - | - | 7 | active |
-| Ethernet10 | server01_MLAG_Eth3 | *1500 | *switched | *trunk | *210-211 | - | - | - | 10 | active |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131 | *- | *- | 7 |
+| Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet3  |  routed  | - |  172.31.255.17/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet3  |  routed  | - |  172.31.255.19/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet3  |  routed  | - |  172.31.255.21/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet3  |  routed  | - |  172.31.255.23/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -432,10 +438,12 @@ interface Ethernet10
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | 1500 | switched | trunk | 110-111,120-121,130-131 | - | - | - | 7 | - | - | - | - |
-| Port-Channel10 | server01_MLAG_PortChanne1 | 1500 | switched | trunk | 210-211 | - | - | - | 10 | - | - | - | - |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | access | 110-111,120-121,130-131 | - | - | - | - | 7 | - |
+| Port-Channel10 | server01_MLAG_PortChanne1 | switched | access | 210-211 | - | - | - | - | 10 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -497,20 +505,38 @@ interface Loopback100
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | 10.1.10.1/24 | - |
-| Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | 10.1.11.1/24 | - |
-| Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | 10.1.20.1/24 | - |
-| Vlan121 | Tenant_A_WEBZone_2 | Tenant_A_WEB_Zone | - | 10.1.10.254/24 | - |
-| Vlan130 | Tenant_A_APP_Zone_1 | Tenant_A_APP_Zone | - | 10.1.30.1/24 | - |
-| Vlan131 | Tenant_A_APP_Zone_2 | Tenant_A_APP_Zone | - | 10.1.31.1/24 | - |
-| Vlan140 | Tenant_A_DB_BZone_1 | Tenant_A_DB_Zone | - | 10.1.40.1/24 | - |
-| Vlan141 | Tenant_A_DB_Zone_2 | Tenant_A_DB_Zone | - | 10.1.41.1/24 | - |
-| Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone | - | 10.2.10.1/24 | - |
-| Vlan211 | Tenant_B_OP_Zone_2 | Tenant_B_OP_Zone | - | 10.2.11.1/24 | - |
-| Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | 10.3.10.1/24 | - |
-| Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | 10.3.11.1/24 | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
+| Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
+| Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
+| Vlan140 |  Tenant_A_DB_BZone_1  |  Tenant_A_DB_Zone  |  -  |  false  |
+| Vlan141 |  Tenant_A_DB_Zone_2  |  Tenant_A_DB_Zone  |  -  |  false  |
+| Vlan210 |  Tenant_B_OP_Zone_1  |  Tenant_B_OP_Zone  |  -  |  false  |
+| Vlan211 |  Tenant_B_OP_Zone_2  |  Tenant_B_OP_Zone  |  -  |  false  |
+| Vlan310 |  Tenant_C_OP_Zone_1  |  Tenant_C_OP_Zone  |  -  |  false  |
+| Vlan311 |  Tenant_C_OP_Zone_2  |  Tenant_C_OP_Zone  |  -  |  false  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan110 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
+| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
+| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
+| Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
+| Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
+| Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
+| Vlan141 |  Tenant_A_DB_Zone  |  -  |  10.1.41.1/24  |  -  |  -  |  -  |  -  |
+| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan211 |  Tenant_B_OP_Zone  |  -  |  10.2.11.1/24  |  -  |  -  |  -  |  -  |
+| Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
+| Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
+
 
 
 ### VLAN Interfaces Device Configuration

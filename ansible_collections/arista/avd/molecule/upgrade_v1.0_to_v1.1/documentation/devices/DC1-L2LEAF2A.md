@@ -320,7 +320,7 @@ Mode: mstp
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093-4094
+no spanning-tree vlan-id 4094
 spanning-tree mst 0 priority 16384
 ```
 
@@ -422,15 +422,16 @@ vlan 4094
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | DC1-SVC3A_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | active |
-| Ethernet2 | DC1-SVC3B_Ethernet7 | *1500 | *switched | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | active |
-| Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *MLAG | - | - | 3 | active |
-| Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *MLAG | - | - | 3 | active |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
-
 
 ### Ethernet Interfaces Device Configuration
 
@@ -457,10 +458,12 @@ interface Ethernet4
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel1 | DC1-SVC3A_Po7 | 1500 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | 1 | - | - | - | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | 1500 | switched | trunk | 2-4094 | MLAG | - | - | - | - | - | - | - |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | DC1-SVC3A_Po7 | switched | access | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | access | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -487,9 +490,16 @@ No loopback interfaces defined
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan4094 | MLAG_PEER | default | 10.255.252.16/31 | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4094 |  default  |  10.255.252.16/31  |  -  |  -  |  -  |  -  |  -  |
+
 
 
 ### VLAN Interfaces Device Configuration

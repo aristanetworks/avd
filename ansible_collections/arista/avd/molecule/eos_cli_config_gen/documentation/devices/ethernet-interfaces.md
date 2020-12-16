@@ -231,14 +231,20 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.1/31 | - | - |
-| Ethernet2 | SRV-POD02_Eth1 | 1500 | switched | trunk | 110-111,210-211 | - | - | - | - | - |
-| Ethernet6 | SRV-POD02_Eth1 | 1500 | switched | trunk | 110-111,210-211 | - | - | - | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet2 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 

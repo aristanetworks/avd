@@ -231,15 +231,16 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet5 | DC1-AGG01_Ethernet1 | *1500 | *switched | *trunk | *110,201 | - | - | - | 5 | active |
-| Ethernet50 | SRV-POD03_Eth1 | *1500 | *switched | *trunk | *110,201 | - | - | - | 5 | active |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
-
 
 ### Ethernet Interfaces Device Configuration
 
@@ -266,11 +267,13 @@ interface Ethernet50
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | 1500 | switched | trunk | 2-4094 | LEAF_PEER_L3<br> MLAG | - | - | - | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | 1500 | switched | trunk | 110,201 | - | - | - | 5 | - | - | - | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | 1500 | switched | trunk | 1-4000 | - | - | - | - | 0000:0000:0303:0202:0101 | - | - | - |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | access | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | switched | access | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 
 ### Port-Channel Interfaces Device Configuration
 

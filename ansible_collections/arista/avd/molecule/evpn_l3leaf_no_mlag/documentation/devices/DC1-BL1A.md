@@ -347,15 +347,21 @@ vlan 350
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | 1500 | routed | access | - | - | - | 172.31.255.41/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | 1500 | routed | access | - | - | - | 172.31.255.43/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | 1500 | routed | access | - | - | - | 172.31.255.45/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | 1500 | routed | access | - | - | - | 172.31.255.47/31 | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.41/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet6  |  routed  | - |  172.31.255.43/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet6  |  routed  | - |  172.31.255.45/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet6  |  routed  | - |  172.31.255.47/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -422,11 +428,20 @@ interface Loopback1
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | 10.1.40.1/24 | - |
-| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | 10.2.50.1/24 | - |
-| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | 10.3.50.1/24 | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan150 |  Tenant_A_WAN_Zone_1  |  Tenant_A_WAN_Zone  |  -  |  false  |
+| Vlan250 |  Tenant_B_WAN_Zone_1  |  Tenant_B_WAN_Zone  |  -  |  false  |
+| Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
+| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
+| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
+
 
 
 ### VLAN Interfaces Device Configuration

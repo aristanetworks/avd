@@ -320,29 +320,36 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.0/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.8/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.16/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.24/31 | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.32/31 | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.40/31 | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | 1500 | routed | access | - | - | - | 172.31.255.48/31 | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet1  |  routed  | - |  172.31.255.0/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet1  |  routed  | - |  172.31.255.8/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet1  |  routed  | - |  172.31.255.16/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet1  |  routed  | - |  172.31.255.24/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet1  |  routed  | - |  172.31.255.32/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet1  |  routed  | - |  172.31.255.40/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet1  |  routed  | - |  172.31.255.48/31  |  default  |  1500  |  -  |  -  |  -  |
+
 #### ISIS
 
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet5 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet6 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet7 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ------------- | ----------- | ---- |
+| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet3 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet4 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet5 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet6 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet7 | - | EVPN_UNDERLAY |  50 |  point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
