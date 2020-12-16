@@ -1,7 +1,6 @@
 name: Test Installation
 on:
   pull_request:
-    - devel
     - releases/v**
   schedule:
     - cron:  '0 6 * * *'
