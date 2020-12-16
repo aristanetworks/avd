@@ -30,13 +30,8 @@ jobs:
         uses: titom73/molecule-collection-actions@v2.0.0
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
+          molecule_command: 'converge'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: development/requirements.txt
           check_git: true
           check_git_enforced: false
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: molecule-results-${{ matrix.avd_scenario }}
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
