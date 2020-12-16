@@ -2,33 +2,17 @@
 
 # Table of Contents
 
-- [DC1-BL1B](#dc1-bl1b)
-- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-    - [Management Interfaces Summary](#management-interfaces-summary)
-      - [IPv4](#ipv4)
-      - [IPv6](#ipv6)
-    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
   - [DNS Domain](#dns-domain)
-  - [Domain-list](#domain-list)
   - [Name Servers](#name-servers)
-    - [Name Servers Summary](#name-servers-summary)
-    - [Name Servers Device Configuration](#name-servers-device-configuration)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
-    - [NTP Summary](#ntp-summary)
-    - [NTP Device Configuration](#ntp-device-configuration)
   - [Management SSH](#management-ssh)
-  - [Management API GNMI](#management-api-gnmi)
-  - [Management API HTTP](#management-api-http)
-    - [Management API HTTP Summary](#management-api-http-summary)
-    - [Management API VRF Access](#management-api-vrf-access)
-    - [Management API HTTP Configuration](#management-api-http-configuration)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-    - [Local Users Summary](#local-users-summary)
-    - [Local Users Device Configuration](#local-users-device-configuration)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Servers](#radius-servers)
@@ -40,8 +24,6 @@
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
-    - [TerminAttr Daemon Summary](#terminattr-daemon-summary)
-    - [TerminAttr Daemon Device Configuration](#terminattr-daemon-device-configuration)
   - [Logging](#logging)
   - [SNMP](#snmp)
   - [SFlow](#sflow)
@@ -50,84 +32,33 @@
   - [Event Handler](#event-handler)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
-  - [Spanning Tree Summary](#spanning-tree-summary)
-    - [MSTP Instance and Priority](#mstp-instance-and-priority)
-  - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
 - [VLANs](#vlans)
-  - [VLANs Summary](#vlans-summary)
-  - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-    - [Ethernet Interfaces Summary](#ethernet-interfaces-summary)
-      - [L2](#l2)
-      - [IPv4](#ipv4-1)
-    - [Ethernet Interfaces Device Configuration](#ethernet-interfaces-device-configuration)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
-    - [Loopback Interfaces Summary](#loopback-interfaces-summary)
-      - [IPv4](#ipv4-2)
-      - [IPv6](#ipv6-1)
-    - [Loopback Interfaces Device Configuration](#loopback-interfaces-device-configuration)
   - [VLAN Interfaces](#vlan-interfaces)
-    - [VLAN Interfaces Summary](#vlan-interfaces-summary)
-      - [IPv4](#ipv4-3)
-    - [VLAN Interfaces Device Configuration](#vlan-interfaces-device-configuration)
   - [VXLAN Interface](#vxlan-interface)
-    - [VXLAN Interface Summary](#vxlan-interface-summary)
-      - [Source Interface: Loopback1](#source-interface-loopback1)
-      - [UDP port: 4789](#udp-port-4789)
-      - [VLAN to VNI Mappings](#vlan-to-vni-mappings)
-      - [VRF to VNI Mappings](#vrf-to-vni-mappings)
-    - [VXLAN Interface Device Configuration](#vxlan-interface-device-configuration)
 - [Routing](#routing)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
-    - [Virtual Router MAC Address Summary](#virtual-router-mac-address-summary)
-      - [Virtual Router MAC Address: 00:dc:00:00:00:0a](#virtual-router-mac-address-00dc0000000a)
-    - [Virtual Router MAC Address Configuration](#virtual-router-mac-address-configuration)
   - [IP Routing](#ip-routing)
-    - [IP Routing Summary](#ip-routing-summary)
-    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
-    - [IPv6 Routing Summary](#ipv6-routing-summary)
   - [Static Routes](#static-routes)
-    - [Static Routes Summary](#static-routes-summary)
-    - [Static Routes Device Configuration](#static-routes-device-configuration)
   - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
-    - [Router BGP Summary](#router-bgp-summary)
-    - [Router BGP Peer Groups](#router-bgp-peer-groups)
-      - [EVPN-OVERLAY-PEERS](#evpn-overlay-peers)
-      - [IPv4-UNDERLAY-PEERS](#ipv4-underlay-peers)
-    - [BGP Neighbors](#bgp-neighbors)
-    - [Router BGP EVPN Address Family](#router-bgp-evpn-address-family)
-      - [Router BGP EVPN MAC-VRFs](#router-bgp-evpn-mac-vrfs)
-        - [VLAN aware bundles](#vlan-aware-bundles)
-      - [Router BGP EVPN VRFs](#router-bgp-evpn-vrfs)
-    - [Router BGP Device Configuration](#router-bgp-device-configuration)
   - [Router BFD](#router-bfd)
-    - [Router BFD Multihop Summary](#router-bfd-multihop-summary)
-    - [Router BFD Multihop Device Configuration](#router-bfd-multihop-device-configuration)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
-    - [IP IGMP Snooping Summary](#ip-igmp-snooping-summary)
   - [Router Multicast](#router-multicast)
   - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
   - [Community-lists](#community-lists)
   - [Peer Filters](#peer-filters)
   - [Prefix-lists](#prefix-lists)
-    - [Prefix-lists Summary](#prefix-lists-summary)
-      - [PL-LOOPBACKS-EVPN-OVERLAY](#pl-loopbacks-evpn-overlay)
-    - [Prefix-lists Device Configuration](#prefix-lists-device-configuration)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
-    - [Route-maps Summary](#route-maps-summary)
-      - [RM-CONN-2-BGP](#rm-conn-2-bgp)
-    - [Route-maps Device Configuration](#route-maps-device-configuration)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
@@ -135,13 +66,10 @@
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [VRF Instances](#vrf-instances)
-  - [VRF Instances Summary](#vrf-instances-summary)
-  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Virtual Source NAT](#virtual-source-nat)
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
-- [Custom Templates](#custom-templates)
 
 # Management
 
@@ -423,8 +351,6 @@ vlan 350
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-BL1A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-BL1A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -507,11 +433,6 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone_1  |  Tenant_A_WAN_Zone  |  -  |  false  |
 | Vlan250 |  Tenant_B_WAN_Zone_1  |  Tenant_B_WAN_Zone  |  -  |  false  |
 | Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
-| Vlan3013 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone  |  Tenant_A_WAN_Zone  |  -  |  -  |
-| Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  -  |  -  |
-| Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  -  |  -  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  -  |  -  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
 
 #### IPv4
 
@@ -520,17 +441,7 @@ interface Loopback1
 | Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
 | Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3013 |  Tenant_A_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3020 |  Tenant_B_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.11/31  |  -  |  -  |  -  |  -  |  -  |
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan150 | Tenant_A_WAN_Zone_1 | Tenant_A_WAN_Zone | - | 10.1.40.1/24 | - |
-| Vlan250 | Tenant_B_WAN_Zone_1 | Tenant_B_WAN_Zone | - | 10.2.50.1/24 | - |
-| Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | 10.3.50.1/24 | - |
 
 
 ### VLAN Interfaces Device Configuration
