@@ -112,14 +112,14 @@ hostname {{ inventory_hostname }}
 {% include 'eos/standard-access-lists.j2' %}
 {# IP Routing #}
 {% include 'eos/ip-routing.j2' %}
+{# IPv6 Routing #}
+{% include 'eos/ipv6-routing.j2' %}
 {# IP Extended Communities #}
 {% include 'eos/ip-extended-communities.j2' %}
 {# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
-{# IPv6 Routing #}
-{% include 'eos/ipv6-routing.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
 {# Static Route #}
