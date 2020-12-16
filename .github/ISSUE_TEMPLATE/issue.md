@@ -14,7 +14,7 @@ Verify first that your issue/request is not already reported on GitHub. -->
 
 <!--- Pick one below and delete the rest -->
 - Bug Report
-- Documentation Report
+- Documentation Issue Report
 - EOS Configuration error
 
 ## Summary
@@ -26,14 +26,6 @@ Verify first that your issue/request is not already reported on GitHub. -->
 
 
 <!-- IF NOT APPLICABLE, DELETE Next subsection-->
-### `arista.avd` collection and Python libraries version
-
-<!--- Paste, BELOW THIS COMMENT, verbatim output from "ansible --version" and  "pip freeze" between quotes below Also provide the version of arista.avd collection-->
-
-```shell
-$ pip freeze
-
-```
 
 ### OS / Environment
 
@@ -41,7 +33,7 @@ __EOS Version__
 
 <!-- Define which version of EOS and which platform you are using -->
 
-__Cloudvision version__
+__Cloudvision version__ (optional)
 
 <!-- Define which CVP version is your target -->
 

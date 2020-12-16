@@ -10,20 +10,25 @@ help: ## Display help message
 ###############################################################################
 
 .PHONY: run
-run: ## Execute molecule test. By default eos_cli_config_gen. Can be set with MOLECULE=
+run: ## Execute molecule TEST sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
 	cd .. && \
 	molecule test --scenario-name $(MOLECULE)
 
-.PHONY: refresh-facts
-refresh-facts: ## Run all molecule scenario and commit changes
+.PHONY: converge
+converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
 	cd .. && \
-	molecule test --scenario-name eos_cli_config_gen && \
-	molecule test --scenario-name evpn_underlay_ebgp_overlay_ebgp && \
-	molecule test --scenario-name evpn_underlay_isis_overlay_ibgp && \
-	molecule test --scenario-name evpn_underlay_ospf_overlay_ebgp && \
-	molecule test --scenario-name upgrade_v1.0_to_v1.1 && \
-	molecule test --scenario-name evpn_l3leaf_no_mlag && \
-	cd molecule
+	molecule converge --scenario-name $(MOLECULE)
+
+.PHONY: refresh-facts
+refresh-facts: ## Run all molecule scenario
+	@for MOLECULE_SCENARIO in * ; do \
+        if [ -d "$$MOLECULE_SCENARIO" ]; then\
+        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+		cd .. ; \
+		molecule converge --scenario-name $$MOLECULE_SCENARIO ; \
+		cd ./molecule ; \
+        fi \
+    done
 
 .PHONY: commit-facts
 commit-facts: ## Commit updated facts for CI

@@ -41,6 +41,13 @@
 "module: inventory_to_container":
   - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
 
+"type: Python filters":
+  - ansible_collections/arista/avd/plugins/filter/*.py
+
+"type: Ansible roles":
+  - ansible_collections/arista/avd/plugins/roles/**/*.yml
+  - ansible_collections/arista/avd/plugins/roles/**/*.j2
+
 "type: documentation":
   - README.md
   - contributing.md

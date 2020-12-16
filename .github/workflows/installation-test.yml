@@ -1,7 +1,7 @@
 name: Test Installation
 on:
-  push:
   pull_request:
+    - releases/v**
   schedule:
     - cron:  '0 6 * * *'
 jobs:

@@ -1,6 +1,5 @@
 name: Commit check
 on:
-  push:
   pull_request:
 jobs:
   'pre-commit':

@@ -110,6 +110,7 @@ l3leaf:
       filter:
         tenants: [ all ]
         tags: [ wan ]
+      mlag: false
       nodes:
         DC1-BL1A:
           id: 6

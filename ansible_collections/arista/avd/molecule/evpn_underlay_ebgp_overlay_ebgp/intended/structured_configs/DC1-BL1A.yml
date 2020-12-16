@@ -20,13 +20,7 @@ leaf_allowed_vlans:
 - 150
 - 250
 - 350
-leaf_mlag: true
-leaf_mlag_group: DC1_BL1
-leaf_mlag_role: primary
-leaf_mlag_peer: DC1-BL1B
-leaf_mlag_ip: 10
-leaf_mlag_peer_ip: 11
-leaf_mlag_peer_id: 7
+leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
@@ -64,7 +58,6 @@ redundancy: null
 spanning_tree:
   mode: mstp
   priority: 4096
-  no_spanning_tree_vlan: 4093-4094
 aaa_authorization: null
 local_users:
   admin:
@@ -77,40 +70,15 @@ local_users:
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 clock: null
 vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
-  4094:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
   150:
     tenant: Tenant_A
     name: Tenant_A_WAN_Zone_1
-  3013:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
   250:
     tenant: Tenant_B
     name: Tenant_B_WAN_Zone_1
-  3020:
-    tenant: Tenant_B
-    name: MLAG_iBGP_Tenant_B_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
-  3030:
-    tenant: Tenant_C
-    name: MLAG_iBGP_Tenant_C_WAN_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
 vrfs:
   MGMT:
     ip_routing: false
@@ -127,14 +95,7 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
-port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-BL1B_Po5
-    vlans: 2-4094
-    mode: trunk
-    trunk_groups:
-    - LEAF_PEER_L3
-    - MLAG
+port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -168,22 +129,6 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.47/31
-  Ethernet5:
-    peer: DC1-BL1B
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-BL1B_Ethernet5
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet6:
-    peer: DC1-BL1B
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-BL1B_Ethernet6
-    channel_group:
-      id: 5
-      mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -198,14 +143,6 @@ management_interfaces:
     ip_address: 192.168.200.110/24
     gateway: 192.168.200.5
 vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    ip_address: 10.255.251.10/31
-  Vlan4094:
-    description: MLAG_PEER
-    ip_address: 10.255.252.10/31
-    no_autostate: true
-    mtu: 1500
   Vlan150:
     tenant: Tenant_A
     tags:
@@ -214,12 +151,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
-  Vlan3013:
-    tenant: Tenant_A
-    type: underlay_peering
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
-    vrf: Tenant_A_WAN_Zone
-    ip_address: 10.255.251.10/31
   Vlan250:
     tenant: Tenant_B
     tags:
@@ -228,12 +159,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_B_WAN_Zone
     ip_address_virtual: 10.2.50.1/24
-  Vlan3020:
-    tenant: Tenant_B
-    type: underlay_peering
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
-    vrf: Tenant_B_WAN_Zone
-    ip_address: 10.255.251.10/31
   Vlan350:
     tenant: Tenant_C
     tags:
@@ -242,18 +167,10 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
-  Vlan3030:
-    tenant: Tenant_C
-    type: underlay_peering
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
-    vrf: Tenant_C_WAN_Zone
-    ip_address: 10.255.251.10/31
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP
     source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
@@ -288,17 +205,6 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
-mlag_configuration:
-  domain_id: DC1_BL1
-  local_interface: Vlan4094
-  peer_address: 10.255.252.11
-  peer_address_heartbeat:
-    peer_ip: 192.168.200.111
-    vrf: MGMT
-  dual_primary_detection_delay: 5
-  peer_link: Port-Channel5
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -320,13 +226,6 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: true
-    MLAG-IPv4-UNDERLAY-PEER:
-      type: ipv4
-      remote_as: 65104
-      next_hop_self: true
-      password: vnEaG8gMeQf3d3cN6PktXQ==
-      maximum_routes: 12000
-      send_community: true
     EVPN-OVERLAY-PEERS:
       type: evpn
       remote_as: 65001
@@ -345,8 +244,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
     172.31.255.46:
       peer_group: IPv4-UNDERLAY-PEERS
-    10.255.251.11:
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
     192.168.255.2:
@@ -364,15 +261,11 @@ router_bgp:
         activate: true
       IPv4-UNDERLAY-PEERS:
         activate: false
-      MLAG-IPv4-UNDERLAY-PEER:
-        activate: false
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
       IPv4-UNDERLAY-PEERS:
-        activate: true
-      MLAG-IPv4-UNDERLAY-PEER:
         activate: true
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
@@ -411,9 +304,6 @@ router_bgp:
         export:
           evpn:
           - '14:14'
-      neighbors:
-        10.255.251.11:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -426,9 +316,6 @@ router_bgp:
         export:
           evpn:
           - '21:21'
-      neighbors:
-        10.255.251.11:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -441,9 +328,6 @@ router_bgp:
         export:
           evpn:
           - '31:31'
-      neighbors:
-        10.255.251.11:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
 ip_extcommunity_lists: null
