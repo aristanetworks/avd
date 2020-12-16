@@ -304,7 +304,7 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
 
     for k1, v1 in dict_inventory.items():
         # Read a leaf
-        if k1 == search_container and 'hosts' in v1:
+        if k1 == search_container and isIterable(v1) and 'hosts' in v1:
             for dev, data in v1['hosts'].items():
                 if is_in_filter(
                     hostname_filter=device_filter,
