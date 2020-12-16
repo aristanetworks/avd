@@ -24,12 +24,23 @@ jobs:
           echo "PY_COLORS=1" >> $GITHUB_ENV
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v1
-
-      - name: Run molecule action
-        uses: inetsix/molecule-collection-actions@v2.0.0
+      - name: Set up Python 3
+        uses: actions/setup-python@v1
         with:
-          molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
-          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          check_git: true
-          check_git_enforced: false
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r development/requirements.txt
+          pip install -r development/requirements-dev.txt
+
+      - name: Execute molecule
+        run: |
+          cd ansible_collections/arista/avd
+          molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
+          ls -alR molecule
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: molecule-results-${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
