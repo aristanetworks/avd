@@ -24,26 +24,18 @@ jobs:
 
       - uses: actions/checkout@v1
 
-      - name: Set up Python 3
-        uses: actions/setup-python@v2.1.4
+      - name: Run molecule action
+        uses: inetsix/molecule-collection-actions@v2.0.0
         with:
-          python-version: '3.x'
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          check_git: true
+          check_git_enforced: true
 
-      - name: Install dependencies
+      - name: 'Fix files permission for upload'
         run: |
-          python -m pip install --upgrade pip
-          pip install -r development/requirements.txt
-          pip install -r development/requirements-dev.txt
-
-      - name: Execute molecule
-        run: |
-          cd ansible_collections/arista/avd
-          molecule test --destroy=never --scenario-name ${{ matrix.avd_scenario }}
-          ls -alR molecule
-
-      - name: Monitor git status
-        run: |
-          bash .github/git-repo-state-monitor.sh
+          sudo chown runner:docker -R *
 
       - uses: actions/upload-artifact@v1
         with:
