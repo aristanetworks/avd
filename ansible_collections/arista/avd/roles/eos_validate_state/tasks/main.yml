@@ -43,10 +43,17 @@
   tags:
     - interfaces_state
 
-- name: Load LLDP Topology tasks
-  include_tasks: "lldp_topology.yml"
+- name: Load LLDP Topology tasks when dns domain is defined
+  include_tasks: "lldp_topology_fqdn.yml"
   tags:
     - lldp_topology
+  when: dns_domain is defined
+
+- name: Load LLDP Topology tasks when dns domain is not defined
+  include_tasks: "lldp_topology_no_fqdn.yml"
+  tags:
+    - lldp_topology
+  when: dns_domain is not defined
 
 - name: Load mlag tasks
   include_tasks: "mlag.yml"
