@@ -1,0 +1,13 @@
+---
+# defaults file for eos_commands_collect
+
+root_dir: '{{ inventory_dir }}'
+commands_backup_dir_name: 'commands'
+commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+
+commands_to_collect:
+  - show lldp neighbors
+  - show ip interface brief
+  - show interfaces description
+  - show version
+  - show running-config

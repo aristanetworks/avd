@@ -1,0 +1,31 @@
+---
+# tasks file for eos_commands_collect
+
+- name: Create output directory for each EOS device
+  file:
+    path: "{{ commands_backup_dir }}/{{ inventory_hostname }}"
+    state: directory
+
+- name: run show commands on remote EOS devices
+  eos_command:
+    commands: "{{ item }}"
+  with_items: "{{ commands_to_collect }}"
+  ignore_errors: true
+  register: cli_output
+
+#- name: copy commands output in the save directory
+#  copy:
+#    content: "{{ item.stdout.0 }}"
+#    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
+#  loop: "{{ cli_output.results }}"
+
+- name: save collected commands
+  template:
+    src: command.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
+  loop: "{{ cli_output.results }}"
+
+- name: generate md report with collected commands
+  template:
+    src: report.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/report.md"
