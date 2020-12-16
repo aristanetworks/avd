@@ -27,7 +27,7 @@ jobs:
       - name: Set up Python 3
 
       - name: Run molecule action
-        uses: titom73/molecule-collection-actions@v2.0.0
+        uses: arista-netdevops-community/action-molecule-avd@v1.0
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'converge'

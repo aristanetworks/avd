@@ -18,7 +18,7 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
-          - 'upgrade_v1.0_to_v1.1'
+          # - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
         run: |
@@ -27,7 +27,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Run molecule action
-        uses: titom73/molecule-collection-actions@v2.0.0
+        uses: arista-netdevops-community/action-molecule-avd@v1.0
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'converge'
