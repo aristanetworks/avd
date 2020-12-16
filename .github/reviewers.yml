@@ -30,6 +30,7 @@ ansible_collections/arista/avd/roles/dhcp_provisioner/**/*:
 ansible_collections/arista/avd/plugins/**/*:
   - carlbuchmann
   - titom73
+  - ClausHolbechArista
 ansible_collections/arista/avd/molecule/**/*:
   - carlbuchmann
   - titom73
