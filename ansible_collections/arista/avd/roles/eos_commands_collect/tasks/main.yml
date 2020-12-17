@@ -3,7 +3,7 @@
 
 - name: Create output directory for each EOS device
   file:
-    path: "{{ commands_backup_dir }}/{{ inventory_hostname }}"
+    path: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments"
     state: directory
 
 - name: run show commands on remote EOS devices
@@ -13,19 +13,24 @@
   ignore_errors: true
   register: cli_output
 
-#- name: copy commands output in the save directory
-#  copy:
-#    content: "{{ item.stdout.0 }}"
-#    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
-#  loop: "{{ cli_output.results }}"
-
-- name: save collected commands
+- name: save collected commands in text files
   template:
     src: command.j2
     dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
   loop: "{{ cli_output.results }}"
 
-- name: generate md report with collected commands
+- name: save collected commands in md files
   template:
     src: report.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments/{{ item.item }}.md"
+  loop: "{{ cli_output.results }}"
+
+- name: generate table of content report
+  template:
+    src: table_of_content.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments/0_table_of_content.md"
+
+- name: Assembling fragments
+  assemble:
+    src: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments"
     dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/report.md"

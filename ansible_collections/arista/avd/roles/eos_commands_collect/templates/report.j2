@@ -1,16 +1,5 @@
-# {{ inventory_hostname }} Commands Output
-
-## Table of Contents
-
-{% for command in commands_to_collect %}
-- [{{ command }}](#{{ command | replace(" ","-") }})
-{% endfor %}
-
-{% for command in commands_to_collect %}
-## {{ command }}
+## {{ item.item }}
 
 ```
-{{ cli_output.results[0].stdout[0] | default ('not supported command') }}
+{{ item.stdout[0] | default ('not supported command') }}
 ```
-
-{% endfor %}
