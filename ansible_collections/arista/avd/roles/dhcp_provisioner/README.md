@@ -20,7 +20,7 @@
 **dhcp_provisioner** is a role to build a DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices.
 
 !!! tip
-    Role supports 2 modes: `offline` and `online`. Offline mode let you generate a configuration you can apply on your DHCP server after carrefully review it. Online mode shall be limited to testing and lab.
+    Role supports 2 modes: `offline` and `online`. Offline mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it. Online mode shall be limited to testing and lab.
 
 ## Role requirements
 
