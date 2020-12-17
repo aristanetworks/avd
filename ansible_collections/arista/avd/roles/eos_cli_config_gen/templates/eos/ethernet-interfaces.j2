@@ -9,8 +9,17 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
    shutdown
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
-   speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
+{%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed.mode is defined and ethernet_interfaces[ethernet_interface].speed.mode == 'no-auto' %}
+{%           if ethernet_interfaces[ethernet_interface].speed.speed is defined and ethernet_interfaces[ethernet_interface].speed.speed is not none %}
+   speed {{ ethernet_interfaces[ethernet_interface].speed.speed }}
+{%           endif %}
+{%         elif ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed.mode is defined and ethernet_interfaces[ethernet_interface].speed.mode == 'forced' %}
+{%           if ethernet_interfaces[ethernet_interface].speed.speed is defined and ethernet_interfaces[ethernet_interface].speed.speed is not none %}
+   speed forced {{ ethernet_interfaces[ethernet_interface].speed.speed }}
+{%           endif %}
+{%         elif ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed.mode is defined and ethernet_interfaces[ethernet_interface].speed.mode == 'auto' %}
+   speed auto {% if ethernet_interfaces[ethernet_interface].speed.speed is defined and ethernet_interfaces[ethernet_interface].speed.speed is not none %}{{ ethernet_interfaces[ethernet_interface].speed.speed }}{% endif %}
+
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}

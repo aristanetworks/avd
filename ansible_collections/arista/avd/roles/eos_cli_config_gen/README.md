@@ -674,7 +674,9 @@ ethernet_interfaces:
   <Ethernet_interface_1 >:
     description: < description >
     shutdown: < true | false >
-    speed: < interface_speed >
+    speed:
+      mode: < no-auto | forced | auto >
+      speed: < interface_speed >
     mtu: < mtu >
     type: < routed | switched >
     vrf: < vrf_name >
@@ -718,7 +720,9 @@ ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
-    speed: < interface_speed >
+    speed:
+      mode: < no-auto | forced | auto >
+      speed: < interface_speed >
     mtu: < mtu >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
