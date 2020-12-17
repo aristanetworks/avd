@@ -10,8 +10,7 @@
 ## {{ command }}
 
 ```
-{{ cli_output.results[0].stdout[0] }}
+{{ cli_output.results[0].stdout[0] | default ('not supported command') }}
 ```
 
 {% endfor %}
-
