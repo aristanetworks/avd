@@ -26,8 +26,8 @@
 | DC1-LEAF1A | 192.168.200.105/24 | vEOS-LAB | Provisioned |
 | DC1-LEAF2A | 192.168.200.106/24 | vEOS-LAB | Provisioned |
 | DC1-LEAF2B | 192.168.200.107/24 | vEOS-LAB | Provisioned |
-| DC1-SVC3A | 192.168.200.108/24 | vEOS-LAB | Provisioned |
-| DC1-SVC3B | 192.168.200.109/24 | vEOS-LAB | Provisioned |
+| DC1-SVC3A | 192.168.200.108/24 | vEOS-LAB | Not Available |
+| DC1-SVC3B | 192.168.200.109/24 | vEOS-LAB | Not Available |
 | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
 | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
 | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned |

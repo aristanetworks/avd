@@ -1,0 +1,52 @@
+name: Ansible Molecule for CV Configuration build
+on:
+  push:
+    branches:
+      - devel
+  pull_request:
+    paths:
+      - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/templates/**'
+      - 'ansible_collections/arista/avd/molecules/eos_config_deploy_cvp/**'
+      - 'development/requirements**'
+      - '.github/workflows/molecule-cvp-deployment.yml'
+      # - '.github/git-repo-state-monitor.sh'
+jobs:
+  molecule:
+    name: Run CI test for eos_config_deploy_cvp
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'eos_config_deploy_cvp'
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v1
+      - name: Set up Python 3
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: '3.x'
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r development/requirements.txt
+          pip install -r development/requirements-dev.txt
+
+      - name: Execute molecule
+        run: |
+          cd ansible_collections/arista/avd
+          molecule test --destroy=never  --scenario-name ${{ matrix.avd_scenario }}
+          ls -alR molecule
+
+      # - name: Monitor git status
+      #   run: |
+      #     bash .github/git-repo-state-monitor.sh
+
+      - uses: actions/upload-artifact@v1
+        with:
+          name: molecule-results-${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}

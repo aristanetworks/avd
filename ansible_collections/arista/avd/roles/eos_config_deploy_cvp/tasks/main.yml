@@ -12,7 +12,7 @@
   register: CVP_VARS
 
 - name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
-  tags: [build, provision]
+  tags: [generate, build, provision]
   template:
     src: "cvp-devices.j2"
     dest: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
@@ -20,7 +20,7 @@
   run_once: true
 
 - name: "Load CVP device information for {{ inventory_hostname }}"
-  tags: [build, provision]
+  tags: [build, provision, online]
   include_vars: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
   # delegate_to: localhost
 
@@ -29,7 +29,7 @@
 # If state=present launch creation/update process
 # If state=absent launch deletion process
 - name: Start creation/update process.
-  tags: [provision]
+  tags: [provision, online]
   include_tasks: "./{{ state }}.yml"
 
 #################################################
