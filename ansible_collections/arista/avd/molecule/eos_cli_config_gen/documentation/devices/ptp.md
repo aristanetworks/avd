@@ -131,7 +131,6 @@ No NTP servers defined
 | TTL | 200 |
 | Msg General | DSCP 4 |
 | Msg Event | DSCP 8 |
-
 ### PTP Device Configuration
 
 ```eos

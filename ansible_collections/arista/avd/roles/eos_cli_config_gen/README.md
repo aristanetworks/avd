@@ -86,6 +86,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [PTP](#ptp)
     - [Custom Templates](#custom-templates)
   - [License](#license)
 
@@ -1563,7 +1564,22 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
+### PTP
 
+```yaml
+ptp:
+  clock_identity: < clock-id >
+  source:
+    ip: < source-ip>
+  priority1: < priority1 >
+  priority2: < priority2 >
+  ttl: < ttl >
+  message_type:
+    general:
+      dscp: < dscp-value >
+    event:
+      dscp: < dscp-Value >
+```
 ### Custom Templates
 
 ```yaml
