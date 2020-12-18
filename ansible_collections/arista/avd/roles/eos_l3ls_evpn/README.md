@@ -26,6 +26,13 @@
   - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
     - [Inventory Structure](#inventory-structure)
     - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
+  - [Role Enchancements for dedicated Overlay Controllers](#role-enchancements-for-dedicated-overlay-controllers)
+    - [Inventory Structure](#inventory-structure-1)
+    - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
+  - [Role Enhancements for Flexible EVPN Overlay peering design](#role-enhancements-for-flexible-evpn-overlay-peering-design)
+    - [Inventory Structure](#inventory-structure-2)
+    - [Additional Variables For Flexible EVPN Overlay peerings](#additional-variables-for-flexible-evpn-overlay-peerings)
+  - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
   - [License](#license)
 
 ## Overview
@@ -125,6 +132,7 @@ cvp_ingestauth_key: < CloudVision Ingest Authentication key >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
+terminattr_noaaa: "< boolean | default -> false >"
 
 
 # Management interface configuration | Required
