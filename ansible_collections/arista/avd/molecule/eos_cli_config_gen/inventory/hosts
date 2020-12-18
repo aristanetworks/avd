@@ -27,6 +27,7 @@ sflow
 snmp_v3
 terminattr-cloud
 terminattr-prem
+terminattr-prem-noaaa
 vlan-interfaces
 vlans
 vrfs
