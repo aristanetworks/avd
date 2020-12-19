@@ -1325,6 +1325,8 @@ router_bgp:
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
         route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
