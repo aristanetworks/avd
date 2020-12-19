@@ -500,7 +500,18 @@ spanning_tree:
   edge_port:
     bpduguard_default: < true | false >
   mode: < spanning_tree_mode >
-  priority: < priority_level >
+  mst:
+    pvst_border: < true | false >
+    configuration:
+      name: < name >
+      revision: < 0-65535 >
+      instances:
+        < instance_id >: < vlan_id >, < vlan_id >-< vlan_id >
+  mst_instances:
+    < instance_id >:
+      priority: < priority >
+    < instance_id >:
+      priority: < priority >
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
 ```
 
