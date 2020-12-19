@@ -2,14 +2,48 @@
 {% if spanning_tree is defined and spanning_tree is not none %}
 ## Spanning Tree Summary
 
-Mode: {{ spanning_tree.mode }}
+STP mode running: **{{ spanning_tree.mode }}**
 {%     if spanning_tree.mode == "mstp" %}
+{%         if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
+Global BPDU Guard for Edge ports is enabled.
+{%         endif %}
+{%         if spanning_tree.mst is defined and spanning_tree.mst is not none %}
+{%             if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
+MST PSVT Border is enabled.
+{%             endif %}
+{%         endif %}
+{%     if spanning_tree.no_spanning_tree_vlan is defined %}
+Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
+{%     endif %}
 
 ### MSTP Instance and Priority
 
-| Instance | Priority |
+| Instance(s) | Priority |
 | -------- | -------- |
-| 0 | {{ spanning_tree.priority }} |
+{%         if spanning_tree.mst_instances is defined and spanning_tree.mst_instances is not none %}
+{%            for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
+| {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority }} |
+{%            endfor %}
+{%         endif %}
+{%     endif %}
+
+### MST Configuration
+
+{%     if spanning_tree.mst.configuration is defined and spanning_tree.configuration is not none %}
+| Variable | Value |
+| -------- | -------- |
+{%         if spanning_tree.mst.configuration.name is defined and spanning_tree.configuration.name is not none %}
+| Name | {{ spanning_tree.mst.configuration.name }} |
+{%         endif %}
+{%         if spanning_tree.mst.configuration.revision is defined and spanning_tree.configuration.revision is not none %}
+| Revision | {{ spanning_tree.mst.configuration.revision }} |
+{%         endif %}
+{%         if spanning_tree.mst.configuration.instances is defined and spanning_tree.configuration.instances is not none %}
+{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
+| Instance {{ instance }} | VLAN(s) {% if spanning_tree.mst.configuration.instances[instance].vlans is defined and spanning_tree.mst.configuration.instances[instance].vlans is not none %}{{ spanning_tree.mst.configuration.instances[instance].vlans }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 
 ## Spanning Tree Device Configuration
