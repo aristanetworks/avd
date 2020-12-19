@@ -24,6 +24,7 @@ ptp
 route-maps
 router-bgp-base
 router-bgp-evpn
+router-bgp-rtc
 router-bgp-v4-evpn
 router-bgp-v4-v6-evpn
 router-isis
