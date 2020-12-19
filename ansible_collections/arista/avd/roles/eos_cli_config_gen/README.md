@@ -1250,6 +1250,8 @@ router_bgp:
   address_family_evpn:
     peer_groups:
       < peer_group_name >:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
         activate: < true | false >
   address_family_rtc:
     peer_groups:
