@@ -1329,10 +1329,10 @@ router_bgp:
       < peer_group_name >:
         activate: < true | false >
         default_route_target:
-          only:
-          disabled:
+          only: < true | false >
+          disabled: < true | false >
           encoding_origin_as_omit:
-            disabled:
+            disabled: < true | false >
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
