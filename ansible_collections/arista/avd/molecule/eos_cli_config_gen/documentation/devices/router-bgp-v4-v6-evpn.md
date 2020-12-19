@@ -463,6 +463,8 @@ router bgp 65100
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH in
+      neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH out
       neighbor EVPN-OVERLAY activate
    !
    address-family ipv4
