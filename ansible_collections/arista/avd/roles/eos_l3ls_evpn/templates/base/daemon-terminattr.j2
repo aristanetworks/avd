@@ -37,5 +37,5 @@
   ingestvrf: {{ mgmt_interface_vrf }}
   smashexcludes: "{{ terminattr_smashexcludes }}"
   ingestexclude: "{{ terminattr_ingestexclude }}"
-  noaaa: {{ terminattr_noaaa | default(false) }}
+  disable_aaa: {{ terminattr_disable_aaa | default(false) }}
 {% endif %}
