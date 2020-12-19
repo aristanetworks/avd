@@ -36,11 +36,9 @@ Keys:
 {%                     set fallback = mac_security.profiles[profile].connection_keys[connection_key].fallback | default('-') %}
 | {{ connection_key }} | {{ encrypted_key }} | {{ fallback }} |
 {%                 endfor %}
-
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 
 ### MACsec Device Configuration
 
