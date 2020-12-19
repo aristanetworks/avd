@@ -1230,7 +1230,7 @@ router_bgp:
     - "< bgp command as string >"
   peer_groups:
     < peer_group_name_1>:
-      type: < ipv4 | evpn >
+      type: < ipv4 | evpn | rtc >
       description: "< description as string >"
       shutdown: < true | false >
       peer_filter: < peer_filter >
