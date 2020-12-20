@@ -18,9 +18,17 @@
     src: command.j2
     dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
   loop: "{{ cli_output.results }}"
-  when: '"text_files" in output_format'
+  when: '"text" in output_format'
 
-- name: Generate markdown report
+- name: Generate json report for fabric
+  template:
+    src: fabric_json_output.j2
+    dest: "{{ commands_backup_dir }}/report.json"
+  delegate_to: localhost
+  run_once: true
+  when: '"json" in output_format'
+
+- name: Generate markdown report for fabric
   include_tasks: "markdown.yml"
   when:
-    - '"markdown_report" in output_format'
+    - '"markdown" in output_format'
