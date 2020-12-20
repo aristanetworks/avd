@@ -1,21 +1,30 @@
 {% if ip_igmp_snooping is defined and ip_igmp_snooping is not none %}
 ### IP IGMP Snooping Summary
-{%   if ip_igmp_snooping.vlans is defined and ip_igmp_snooping.vlans is not none %}
+
+{%     if ip_igmp_snooping.globally_enabled is defined and ip_igmp_snooping.globally_enabled == false %}
+IGMP snooping is globally disabled
+{%     else %}
+IGMP snooping is globally enabled.
+{%     endif %}
+{%     if ip_igmp_snooping.vlans is defined and ip_igmp_snooping.vlans is not none %}
 
 | VLAN | IGMP Snooping |
 | --- | --------------- |
-{%       for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
-{%          if ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == false %}
+{%         for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
+{%             if ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == false %}
 | {{ vlan }} | disabled |
-{%          endif %}
-{%       endfor %}
+{%             elif ip_igmp_snooping.vlans[vlan].enabled is defined and ip_igmp_snooping.vlans[vlan].enabled == true %}
+| {{ vlan }} | enabled |
+{%             endif %}
+{%         endfor %}
+{%       endif %}
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 {% include 'eos/ip-igmp-snooping.j2' %}
 ```
-{%   endif %}
+
 {% else %}
 No IP IGMP configuration
 {% endif %}
