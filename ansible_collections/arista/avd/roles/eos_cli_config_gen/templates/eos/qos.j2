@@ -1,0 +1,50 @@
+{# eos - qos #}
+
+{% if qos.rewrite_dscp is defined and qos.rewrite_dscp == true %}
+!
+qos rewrite dscp
+{% endif %}
+{% if qos.map is defined and qos is not none %}
+{%     if qos.map.cos is defined and qos.map.cos is not none%}
+{%         for cos_map in qos.map.cos | arista.avd.natural_sort %}
+qos map cos {{ cos_map }}
+{%         endfor %}
+{%     endif %}
+{%     if qos.map.dscp is defined and qos.map.dscp is not none%}
+{%         for dscp_map in qos.map.dscp | arista.avd.natural_sort %}
+qos map dscp {{ dscp_map }}
+{%         endfor %}
+{%     endif %}
+{%     if qos.map.traffic_class is defined and qos.map.traffic_class is not none%}
+{%         for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
+qos map traffic-class {{ tc_map }}
+{%         endfor %}
+{%     endif %}
+{% endif %}
+{% if qos.profiles is defined and qos.profiles is not none%}
+{%     for profile in qos.profiles | arista.avd.natural_sort %}
+!
+qos profile {{ profile }}
+{%         if qos.profiles[profile].qos_trust is defined and qos.profiles[profile].qos_trust is not none %}
+   qos trust {{ qos.profiles[profile].qos_trust }}
+{%         endif %}
+{%         if qos.profiles[profile].qos_set_default_cos is defined and qos.profiles[profile].qos_set_default_cos is not none %}
+   qos cos {{ qos.profiles[profile].qos_set_default_cos }}
+{%         endif %}
+{%         if qos.profiles[profile].qos_set_default_dscp is defined and qos.profiles[profile].qos_set_default_dscp is not none %}
+   qos dscp {{ qos.profiles[profile].qos_set_default_dscp }}
+{%         endif %}
+{%         if qos.profiles[profile].tx_queues is defined and qos.profiles[profile].tx_queues is not none %}
+{%             for tx_queue in qos.profiles[profile].tx_queues | arista.avd.natural_sort %}
+   !
+   tx-queue {{ tx_queue }}
+{%                 if qos.profiles[profile].tx_queues[tx_queue].bandwidth_percent is defined and qos.profiles[profile].tx_queues[tx_queue].bandwidth_percent is not none %}
+      bandwidth percent {{ qos.profiles[profile].tx_queues[tx_queue].bandwidth_percent }}
+{%                 endif %}
+{%                 if qos.profiles[profile].tx_queues[tx_queue].priority is defined and qos.profiles[profile].tx_queues[tx_queue].priority is not none %}
+      {{ qos.profiles[profile].tx_queues[tx_queue].priority }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

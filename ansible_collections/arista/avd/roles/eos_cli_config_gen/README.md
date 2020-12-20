@@ -1620,6 +1620,46 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
+### QOS
+
+```yaml
+qos:
+  map:
+    cos:
+      - "< cos_mapping_to_tc >"
+      - "< cos_mapping_to_tc >"
+    dscp:
+      - "< dscp_mapping_to_tc >"
+      - "< dscp_mapping_to_tc >"
+    traffic_class:
+      - "< tc_mapping_to_cos >"
+      - "< tc_mapping_to_dscp >"
+      - "< tc_mapping_to_tx_queue >"
+  rewrite_dscp: < true | false >
+  profiles:
+    < profile-1 >:
+      qos_trust: < dscp or cos >
+      qos_set_default_cos: < cos-value >
+      qos_set_default_dscp: < dscp-value >
+      tx-queues:
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+    < profile-2 >:
+      qos_trust: < dscp or cos >
+      qos_set_default_cos: < cos-value >
+      qos_set_default_dscp: < dscp-value >
+      tx-queues:
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+```
 ### PTP
 
 ```yaml
