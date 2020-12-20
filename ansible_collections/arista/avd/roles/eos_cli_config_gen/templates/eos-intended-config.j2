@@ -21,6 +21,8 @@
 {# cannot be disabled in current EOS releases #}
 !
 transceiver qsfp default-mode 4x10G
+{# errdisable #}
+{% include 'eos/errdisable.j2' %}
 {# service routing protocols model #}
 {% include 'eos/service-routing-protocols-model.j2' %}
 {# queue monitor length #}

@@ -231,6 +231,41 @@ load_interval:
 
 ```
 
+### Errdisable
+
+```yaml
+errdisable:
+  detect:
+    causes:
+      - acl
+      - arp-inspection
+      - dot1x
+      - link-change
+      - tapagg
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+  recovery:
+    causes:
+      - arp-inspection
+      - bpduguard
+      - dot1x
+      - hitless-reload-down
+      - lacp-rate-limit
+      - link-flap
+      - no-internal-vlan
+      - portchannelguard
+      - portsec
+      - speed-misconfigured
+      - tapagg
+      - uplink-failure-detection
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+      - xcvr-unsupported
+    interval: < seconds | default = 300 >
+
+
 ### Service Routing Protocols Model
 
 ```yaml
