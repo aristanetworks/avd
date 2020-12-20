@@ -81,11 +81,18 @@
     - optional
     - never
 
+- name: Generate loopback1 addresses
+  template:
+    src: loopback1.j2
+    dest: "{{ eos_validate_state_dir }}/loopback1.yml"
+  delegate_to: localhost
+  run_once: true
+
   ####################################
   ##       Validation Reports       ##
   ####################################
 
-- name: Validate reload cause
+- name: Create reports
   include_tasks: "reports.yml"
   tags:
     - always
