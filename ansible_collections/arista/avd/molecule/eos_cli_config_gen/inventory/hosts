@@ -21,6 +21,7 @@ platform
 port-channel-interfaces
 prefix-lists
 ptp
+qos
 route-maps
 router-bgp-base
 router-bgp-evpn

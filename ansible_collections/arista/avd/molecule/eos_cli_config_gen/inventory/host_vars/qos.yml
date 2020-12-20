@@ -1,0 +1,39 @@
+### QOS ###
+qos:
+  map:
+    cos:
+      - "1 2 3 4 to traffic-class 2"
+      - "3 to traffic-class 3"
+    dscp:
+      - "8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1"
+      - "46 to traffic-class 5"
+      - "18 20 22 26 28 30 34 36 38 to traffic-class 4 drop-precedence 2"
+    traffic_class:
+      - "2 4 5 to cos 7"
+      - "1 to dscp 56"
+      - "6 to tx-queue 2"
+  rewrite_dscp: true
+  profiles:
+    test:
+      qos_trust: dscp
+      qos_set_default_dscp: 46
+      tx_queues:
+        1:
+          bandwidth_percent: 50
+          priority: 'no priority'
+        2:
+          bandwidth_percent: 10
+          priority: 'priority strict'
+        6:
+          bandwidth_percent: 20
+    experiment:
+      qos_trust: cos
+      qos_set_default_cos: 2
+      tx_queues:
+        3:
+          bandwidth_percent: 30
+          priority: 'no priority'
+        5:
+          bandwidth_percent: 40
+        7:
+          bandwidth_percent: 30
