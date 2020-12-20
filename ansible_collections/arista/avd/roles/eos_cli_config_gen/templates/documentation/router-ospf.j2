@@ -16,27 +16,6 @@
 {% if router_ospf.process_ids[process].redistribute is defined and router_ospf.process_ids[process].redistribute is not none %}| {{process}} | {%if router_ospf.process_ids[process].redistribute.connected is defined %} enabled {% else %} disabled {% endif %}| {{ router_ospf.process_ids[process].redistribute.connected.route_map | default('-')}} | {%if router_ospf.process_ids[process].redistribute.static is defined %} enabled {% else %} disabled {% endif %}| {{ router_ospf.process_ids[process].redistribute.static.route_map | default('-')}} |{% endif %} 
 {%      endfor %}
 
-{%  if vlan_interfaces is defined and vlan_interfaces is not none %}
-{# OSPF #}
-{%     set vlan_interface_ospf = namespace() %}
-{%     set vlan_interface_ospf.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%          if vlan_interfaces[vlan_interface].ospf_area is defined %}
-{%              set vlan_interface_ospf.configured = true %}
-{%          endif %}
-{%     endfor %}
-{%     if vlan_interface_ospf.configured == true %}
-
-### OSPF Interfaces
-| Interface | Area | Cost | Point To Point |
-| -------- | -------- | -------- | -------- |
-{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%             if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none %} {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
-{%             endif %}
-{%          endfor %}
-{%     endif %}
-{%  endif %}
 
 ### Router OSPF Device Configuration
 
