@@ -376,7 +376,7 @@ Router ISIS not defined
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>  static |
 
 ### Router BGP Device Configuration
 
@@ -456,8 +456,13 @@ router bgp 65101
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.3
+      timers bgp 5 15
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.1 description ABCDEFG
+      neighbor 10.255.251.1 next-hop-self
+      neighbor 10.255.251.1 send-community standard
       redistribute connected
+      redistribute static route-map RM-CONN-2-BGP
 ```
 
 ## Router BFD
