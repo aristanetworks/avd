@@ -5,6 +5,7 @@ acl
 base
 dns-ntp
 ethernet-interfaces
+igmp-snooping
 logging-minimal
 logging
 loopbacks-interfaces
