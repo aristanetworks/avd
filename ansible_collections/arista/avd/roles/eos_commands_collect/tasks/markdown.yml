@@ -1,0 +1,25 @@
+- name: Create fragments directory for each EOS device
+  file:
+    path: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments"
+    state: directory
+
+- name: save collected commands in md files
+  template:
+    src: report.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments/{{ item.item }}.md"
+  loop: "{{ cli_output.results }}"
+
+- name: generate table of content report
+  template:
+    src: table_of_content.j2
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments/0_table_of_content.md"
+
+- name: Assembling fragments
+  assemble:
+    src: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments"
+    dest: "{{ commands_backup_dir }}/{{ inventory_hostname }}/report.md"
+
+- name: Delete fragments directory for each EOS device
+  file:
+    path: "{{ commands_backup_dir }}/{{ inventory_hostname }}/fragments"
+    state: absent

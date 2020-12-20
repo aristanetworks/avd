@@ -5,6 +5,11 @@ root_dir: '{{ inventory_dir }}'
 commands_backup_dir_name: 'commands'
 commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
 
+# list of desired formats. Supported values are markdown_report and text_files.
+output_format:
+ - text_files
+ - markdown_report
+
 commands_to_collect:
   - show lldp neighbors
   - show ip interface brief
