@@ -1319,18 +1319,11 @@ router_bgp:
           < address_family >:
             - "< route_target >"
             - "< route_target >"
-        timers: < keepalive_hold_timer_values >
         neighbors:
           < neighbor_ip_address >:
             remote_as: < asn >
-            description: < description >
-            next_hop_self: < true >
-            send_community: < standard | extended | leave empty for both >
           < neighbor_ip_address >:
             remote_as: < asn >
-            description: < description >
-            next_hop_self: < true >
-            send_community: < standard | extended | leave empty for both >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
