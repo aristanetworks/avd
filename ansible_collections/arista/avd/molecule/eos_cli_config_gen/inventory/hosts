@@ -4,6 +4,7 @@ aaa
 acl
 base
 dns-ntp
+errdisable
 ethernet-interfaces
 logging-minimal
 logging
