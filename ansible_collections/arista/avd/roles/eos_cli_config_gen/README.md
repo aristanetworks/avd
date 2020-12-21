@@ -703,6 +703,10 @@ port_channel_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    service_profile: < qos_profile >
+    qos_trust: < dscp defualt(L3) | cos default(L2) >
+    qos_dscp: < dscp_value >
+    qos_cos: < cos_value >
 ```
 
 ### Ethernet Interfaces
