@@ -6,6 +6,23 @@
   tags:
     - always
 
+- name: Generate variables for testing
+  template:
+    src: generate_vars_for_testing.j2
+    dest: "{{ eos_validate_state_dir }}/vars_generated.yml"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+- name: Include vars from vars_generated.yml
+  include_vars:
+    file: "{{ eos_validate_state_dir }}/vars_generated.yml"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
 - name: Gather EOS platform and version details
   eos_command:
     commands: "show version | json"
@@ -81,12 +98,10 @@
     - optional
     - never
 
-- name: Generate loopback1 addresses
-  template:
-    src: loopback1.j2
-    dest: "{{ eos_validate_state_dir }}/loopback1.yml"
-  delegate_to: localhost
-  run_once: true
+- name: Validate loopback0 reachability
+  include_tasks: "loopback0.yml"
+  tags:
+    - loopback0_reachability
 
   ####################################
   ##       Validation Reports       ##
