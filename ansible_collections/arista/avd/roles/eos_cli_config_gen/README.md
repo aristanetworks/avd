@@ -756,6 +756,10 @@ ethernet_interfaces:
     isis_network_point_to_point: < boolean >
     ptp:
       enable: < true | false >
+    service_profile: < qos_profile >
+    qos_trust: < dscp defualt(L3) | cos default(L2) >
+    qos_dscp: < dscp_value >
+    qos_cos: < cos_value >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -781,6 +785,10 @@ ethernet_interfaces:
       enable: < true | false >
     mac_security:
       profile: < profile >
+    service_profile: < qos_profile >
+    qos_trust: < dscp defualt(L3) | cos default(L2) >
+    qos_dscp: < dscp_value >
+    qos_cos: < cos_value >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
