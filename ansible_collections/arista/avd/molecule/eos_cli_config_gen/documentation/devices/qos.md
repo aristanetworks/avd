@@ -229,7 +229,42 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
-No ethernet interface defined
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+
+*Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   no switchport
+   ip address 172.31.255.1/31
+   service-profile test
+   qos trust dscp
+   qos dscp 48
+!
+interface Ethernet6
+   description SRV-POD02_Eth1
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   service-profile experiment
+   qos trust cos
+   qos cos 2
+```
 
 ## Port-Channel Interfaces
 
