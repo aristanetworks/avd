@@ -122,7 +122,6 @@ No NTP servers defined
 
 ## PTP
 
-### PTP Summary
 PTP is not defined.
 
 ## Management SSH

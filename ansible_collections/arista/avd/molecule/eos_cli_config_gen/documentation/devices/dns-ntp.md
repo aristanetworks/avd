@@ -169,7 +169,6 @@ ntp server vrf mgt 10.10.111.2
 
 ## PTP
 
-### PTP Summary
 PTP is not defined.
 
 ## Management SSH

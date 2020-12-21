@@ -122,6 +122,7 @@ No NTP servers defined
 ## PTP
 
 ### PTP Summary
+
 | PTP setting | Value |
 | ----------- | ----- |
 | Clock-identity | 123.123.123.123 |
@@ -131,6 +132,7 @@ No NTP servers defined
 | TTL | 200 |
 | Msg General | DSCP 4 |
 | Msg Event | DSCP 8 |
+
 ### PTP Device Configuration
 
 ```eos
