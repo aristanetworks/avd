@@ -99,7 +99,7 @@
     - never
 
 - name: Validate loopback0 reachability
-  include_tasks: "loopback0.yml"
+  include_tasks: "loopback0_reachability.yml"
   tags:
     - loopback0_reachability
 
