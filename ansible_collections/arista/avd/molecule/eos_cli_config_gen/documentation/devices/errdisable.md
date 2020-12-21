@@ -1,4 +1,4 @@
-# terminattr-prem-noaaa
+# errdisable
 
 # Table of Contents
 
@@ -70,6 +70,7 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
 
 # Management
 
@@ -177,20 +178,7 @@ Aliases not defined
 
 ## TerminAttr Daemon
 
-### TerminAttr Daemon Summary
-
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | No AAA |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | mgt | True |
-
-### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvcompression=gzip -ingestauth=key,magickey -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=mgt -noaaa -taillogs
-   no shutdown
-```
+TerminAttr daemon not defined
 
 ## Logging
 
@@ -389,6 +377,62 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP relay not defined
+
+# Errdisable
+
+|  Detect Cause | Enabled |
+| ------------- | ------- |
+| arp-inspection | True |
+| dot1x | True |
+| link-change | True |
+| tapagg | True |
+| xcvr-misconfigured | True |
+| xcvr-overheat | True |
+| xcvr-power-unsupported | True |
+
+|  Detect Cause | Enabled | Interval |
+| ------------- | ------- | -------- |
+| bpduguard | True | 300 |
+| dot1x | True | 300 |
+| hitless-reload-down | True | 300 |
+| lacp-rate-limit | True | 300 |
+| link-flap | True | 300 |
+| no-internal-vlan | True | 300 |
+| portchannelguard | True | 300 |
+| portsec | True | 300 |
+| speed-misconfigured | True | 300 |
+| tapagg | True | 300 |
+| uplink-failure-detection | True | 300 |
+| xcvr-misconfigured | True | 300 |
+| xcvr-overheat | True | 300 |
+| xcvr-power-unsupported | True | 300 |
+| xcvr-unsupported | True | 300 |
+
+```eos
+errdisable detect cause arp-inspection
+errdisable detect cause dot1x
+errdisable detect cause link-change
+errdisable detect cause tapagg
+errdisable detect cause xcvr-misconfigured
+errdisable detect cause xcvr-overheat
+errdisable detect cause xcvr-power-unsupported
+errdisable recovery cause bpduguard
+errdisable recovery cause dot1x
+errdisable recovery cause hitless-reload-down
+errdisable recovery cause lacp-rate-limit
+errdisable recovery cause link-flap
+errdisable recovery cause no-internal-vlan
+errdisable recovery cause portchannelguard
+errdisable recovery cause portsec
+errdisable recovery cause speed-misconfigured
+errdisable recovery cause tapagg
+errdisable recovery cause uplink-failure-detection
+errdisable recovery cause xcvr-misconfigured
+errdisable recovery cause xcvr-overheat
+errdisable recovery cause xcvr-power-unsupported
+errdisable recovery cause xcvr-unsupported
+errdisable recovery interval 300
+```
 
 # Custom Templates
 

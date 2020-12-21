@@ -1,0 +1,66 @@
+{# eos - Errdisable #}
+{% if errdisable is defined and errdisable is not none %}
+{%     if errdisable.recovery is defined %}
+{%         if errdisable.detect.causes is defined %}
+{%             for cause in errdisable.detect.causes | arista.avd.natural_sort %}
+{%                 if cause == 'acl' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'arp-inspection' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'dot1x' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'link-change' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'tapagg' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'xcvr-misconfigured' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'xcvr-overheat' %}
+errdisable detect cause {{ cause }}
+{%                 elif cause == 'xcvr-power-unsupported' %}
+errdisable detect cause {{ cause }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if errdisable.recovery.causes is defined %}
+{%             for cause in errdisable.recovery.causes | arista.avd.natural_sort %}
+{%                 if cause == 'arp-inspection' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'bpduguard' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'dot1x' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'hitless-reload-down' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'lacp-rate-limit' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'link-flap' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'no-internal-vlan' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'portchannelguard' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'portsec' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'speed-misconfigured' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'tapagg' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'uplink-failure-detection' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'xcvr-misconfigured' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'xcvr-overheat' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'xcvr-power-unsupported' %}
+errdisable recovery cause {{ cause }}
+{%                 elif cause == 'xcvr-unsupported' %}
+errdisable recovery cause {{ cause }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if errdisable.recovery.interval is defined and errdisable.recovery.interval is not none  %}
+errdisable recovery interval {{ errdisable.recovery.interval }}
+{%         endif %}
+{%     endif %}
+{% endif %}
