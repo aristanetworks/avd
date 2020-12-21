@@ -37,3 +37,29 @@ qos:
           bandwidth_percent: 40
         7:
           bandwidth_percent: 30
+
+### Port-Channel Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.1/31
+    service_profile: test
+    qos_trust: dscp
+    qos_dscp: 48
+
+  Ethernet6:
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    profile: ALL
+    service_profile: experiment
+    qos_trust: cos
+    qos_cos: 2
