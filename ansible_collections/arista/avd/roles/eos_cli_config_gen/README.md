@@ -17,6 +17,7 @@
     - [Event Monitor](#event-monitor)
     - [Event Handler](#event-handler)
     - [Load Interval](#load-interval)
+    - [Errdisable](#errdisable)
     - [Service Routing Protocols Model](#service-routing-protocols-model)
     - [Queue Monitor Length](#queue-monitor-length)
     - [LLDP](#lldp)
@@ -62,6 +63,7 @@
     - [Static Routes](#static-routes)
     - [IPv6 Static Routes](#ipv6-static-routes)
     - [IP Routing](#ip-routing)
+    - [ARP](#arp)
     - [Prefix Lists](#prefix-lists)
     - [IPv6 Prefix Lists](#ipv6-prefix-lists)
     - [IPv6 Routing](#ipv6-routing)
@@ -264,7 +266,7 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
     interval: < seconds | default = 300 >
-
+```
 
 ### Service Routing Protocols Model
 
