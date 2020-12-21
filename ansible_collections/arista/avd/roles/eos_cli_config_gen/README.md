@@ -1013,6 +1013,13 @@ ipv6_static_routes:
 ```yaml
 ip_routing: < true | false >
 ```
+### ARP
+
+```yaml
+arp:
+  aging:
+    timeout_default: < timeout-in-seconds >
+```
 
 ### Prefix Lists
 

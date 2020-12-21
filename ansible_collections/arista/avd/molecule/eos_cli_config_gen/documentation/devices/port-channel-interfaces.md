@@ -350,6 +350,10 @@ Static routes not defined
 
 IPv6 static routes not defined
 
+## IP Routing
+
+Global ARP timeout not defined.
+
 ## Router ISIS
 
 Router ISIS not defined

@@ -1,4 +1,4 @@
-# router-bgp-base
+# arp
 
 # Table of Contents
 
@@ -283,7 +283,7 @@ IPv6 static routes not defined
 
 ## IP Routing
 
-Global ARP timeout not defined.
+Global ARP timeout: 300
 
 ## Router ISIS
 
@@ -291,49 +291,7 @@ Router ISIS not defined
 
 ## Router BGP
 
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65101|  192.168.255.3 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 2 ecmp 2 |
-
-### BGP Route Aggregation
-
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False  | - | - | True |
-| 1.12.1.0/24 | True | True  | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False  | - | - | False |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65101
-   router-id 192.168.255.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 2 ecmp 2
-   aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
-   aggregate-address 2.2.1.0/24
-```
+Router BGP not defined
 
 ## Router BFD
 
