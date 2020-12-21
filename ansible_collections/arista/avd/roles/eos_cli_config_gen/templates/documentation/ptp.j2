@@ -1,5 +1,6 @@
-### PTP Summary
 {% if ptp is defined and ptp is not none %}
+### PTP Summary
+
 | PTP setting | Value |
 | ----------- | ----- |
 {%     if ptp.clock_identity is defined and ptp.clock_identity is not none %}
@@ -31,6 +32,7 @@
 {%             endif %}
 {%         endif %}
 {%     endif %}
+
 ### PTP Device Configuration
 
 ```eos
