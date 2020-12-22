@@ -123,6 +123,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
           description: ABCDEFG
           next_hop_self: true
+          timers: 1 3
           send_community: standard
       redistribute_routes:
         connected:
