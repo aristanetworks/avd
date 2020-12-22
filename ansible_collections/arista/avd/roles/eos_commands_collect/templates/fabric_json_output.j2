@@ -1,5 +1,5 @@
 {
-    "duts": {
+    "devices": {
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
         "{{ node }}": {
 {%     for command_to_collect in commands_to_collect %}
