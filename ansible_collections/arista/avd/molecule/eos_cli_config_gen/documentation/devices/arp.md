@@ -121,6 +121,10 @@ DNS domain lookup not defined
 
 No NTP servers defined
 
+## PTP
+
+PTP is not defined.
+
 ## Management SSH
 
 Management SSH not defined

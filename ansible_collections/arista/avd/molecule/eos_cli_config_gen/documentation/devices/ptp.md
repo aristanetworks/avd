@@ -70,6 +70,8 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -258,12 +260,18 @@ No VLANs defined
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | 1500 | routed | access | - | - | - | 172.31.255.15/31 | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -325,6 +333,10 @@ Static routes not defined
 ## IPv6 Static Routes
 
 IPv6 static routes not defined
+
+## ARP
+
+Global ARP timeout not defined.
 
 ## Router ISIS
 
@@ -421,6 +433,13 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP relay not defined
+
+# Errdisable
+
+Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 
