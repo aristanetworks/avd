@@ -1,5 +1,5 @@
 ---
-# Tasks to build offling dhcpd.conf file
+# Tasks to build offline dhcpd.conf file
 
 - name: 'Execute DHCP configuration role'
   import_role:
