@@ -48,7 +48,7 @@
     mode: 0755
   delegate_to: localhost
   run_once: True
-  
+
 - name: "Create folders for Fabric documentation"
   when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
   file:
@@ -94,6 +94,14 @@
 - name: 'Create folder {{ eos_validate_state_name }} for EOS state report dir'
   file:
     path: '{{ eos_validate_state_dir }}'
+    state: directory
+    mode: 0755
+  delegate_to: localhost
+  run_once: True
+
+- name: Create output directory for each EOS device
+  file:
+    path: "{{ commands_backup_dir }}"
     state: directory
     mode: 0755
   delegate_to: localhost

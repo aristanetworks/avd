@@ -5,6 +5,7 @@
   file:
     path: "{{ commands_backup_dir }}/{{ inventory_hostname }}"
     state: directory
+  when: ("text" in output_format or "markdown" in output_format)
 
 - name: run show commands on remote EOS devices
   eos_command:

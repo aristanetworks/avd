@@ -40,3 +40,7 @@ pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_
 # EOS state validation directory name
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+
+# EOS commands collect directory name
+commands_backup_dir_name: 'commands'
+commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
