@@ -58,7 +58,8 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
    - ([interface_state](tasks/interface_state.yml)) Validate Vlan interfaces admin and operational status.
    - ([interface_state](tasks/interface_state.yml)) Validate Vxlan interfaces admin and operational status.
    - ([interface_state](tasks/interface_state.yml)) Validate Loopback interfaces admin and operational status.
-   - ([lldp_topology](tasks/lldp_topology.yml)) Validate LLDP topology.
+   - ([lldp_topology_fqdn](tasks/lldp_topology_fqdn.yml)) Validate LLDP topology when there is a domain name configured.
+   - ([lldp_topology_no_fqdn](tasks/lldp_topology_no_fqdn.yml)) Validate LLDP topology when there is no domain name configured.
    - ([mlag](tasks/mlag.yml)) Validate MLAG status.
    - ([ip_reachability](tasks/ip_reachability.yml)) Validate IP reachability (on directly connected interfaces).
    - ([loopback0_reachability](tasks/loopback0_reachability.yml)) Validate loopback0 reachability (between devices).
