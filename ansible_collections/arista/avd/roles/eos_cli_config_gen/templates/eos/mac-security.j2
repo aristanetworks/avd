@@ -17,14 +17,15 @@ mac security
 {%             endif %}
 {%             if mac_security.profiles[profile].connection_keys is defined and mac_security.profiles[profile].connection_keys is not none %}
 {%                 for connection_key in mac_security.profiles[profile].connection_keys | arista.avd.natural_sort %}
-      key {{ connection_key }} 7 {{ mac_security.profiles[profile].connection_keys[connection_key].encrypted_key }} {{ 'fallback' if mac_security.profiles[profile].connection_keys[connection_key].fallback is defined and mac_security.profiles[profile].connection_keys[connection_key].fallback == true else ''}}
+      key {{ connection_key }} 7 {{ mac_security.profiles[profile].connection_keys[connection_key].encrypted_key }}{% if mac_security.profiles[profile].connection_keys[connection_key].fallback is defined and mac_security.profiles[profile].connection_keys[connection_key].fallback == true %} fallback{% endif %}
+
 {%                 endfor %}
-{%             if mac_security.profiles[profile].mka.session.rekey_period is defined and mac_security.profiles[profile].mka.session.rekey_period is not none %}
+{%                 if mac_security.profiles[profile].mka.session.rekey_period is defined and mac_security.profiles[profile].mka.session.rekey_period is not none %}
       mka session rekey-period {{ mac_security.profiles[profile].mka.session.rekey_period }}
-{%             endif %}
-{%             if mac_security.profiles[profile].sci is defined and mac_security.profiles[profile].sci == true %}
+{%                 endif %}
+{%                 if mac_security.profiles[profile].sci is defined and mac_security.profiles[profile].sci == true %}
       sci
-{%             endif %}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
