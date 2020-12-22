@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: TOOLS
+  gather_facts: true
+  tasks:
+    - name: create local output folders
+      import_role:
+         name: arista.avd.build_output_folders
+      run_once: true
+    - name: generate intended variables
+      import_role:
+         name: arista.avd.dhcp_provisioner

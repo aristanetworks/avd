@@ -381,6 +381,7 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.6/31
+    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.6/31

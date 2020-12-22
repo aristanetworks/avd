@@ -1,0 +1,16 @@
+---
+# tasks file for dhcp_provisioner
+- name: 'build DHCP intended variables'
+  template:
+    src: ztp_configuration.j2
+    dest: '{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml'
+  delegate_to: localhost
+  run_once: true
+
+- name: 'include DHCP variables to build dhcpd.conf file'
+  include_vars: '{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml'
+  run_once: true
+
+- name: start creation/update process.
+  tags: [provision]
+  include_tasks: "./{{ ztp_mode }}.yml"

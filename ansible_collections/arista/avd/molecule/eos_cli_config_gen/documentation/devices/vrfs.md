@@ -291,7 +291,7 @@ Static routes not defined
 
 IPv6 static routes not defined
 
-## IP Routing
+## ARP
 
 Global ARP timeout not defined.
 

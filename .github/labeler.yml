@@ -26,6 +26,10 @@
   - ansible_collections/arista/avd/roles/eos_validate_state/*
   - ansible_collections/arista/avd/roles/eos_validate_state/**/*
 
+"role: dhcp_provisioner":
+  - ansible_collections/arista/avd/roles/dhcp_provisioner/*
+  - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
+
 "filter: natural_sort":
   - ansible_collections/arista/avd/plugins/filter/natural_sort.py
 

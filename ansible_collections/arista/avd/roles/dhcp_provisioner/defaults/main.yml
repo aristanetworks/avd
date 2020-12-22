@@ -1,0 +1,17 @@
+---
+# defaults file for dhcp_provisioner
+
+# Root directory where to build output structure
+root_dir: '{{inventory_dir}}'
+
+# Default inventory group with Fabric definition
+fabric_group: DC1_FABRIC
+
+# Default DHCP Lease time
+ztp_lease_time: 300
+
+# Default MAC address used for DHCP
+ztp_mac_source: system
+
+# Default value to build config or deploy config
+ztp_mode: offline

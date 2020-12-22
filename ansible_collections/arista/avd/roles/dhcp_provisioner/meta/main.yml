@@ -1,0 +1,15 @@
+galaxy_info:
+  author: Arista Ansible Team <ansible@arista.com>
+  description: Build and deploy DHCP configuration file to support Zero Touch Provisioning with Arista EOS devices
+  issue_tracker_url: https://github.com/aristanetworks/ansible-avd/issues
+  company: Arista Networks
+  license: Apache-2.0
+  min_ansible_version: 2.9
+  galaxy_tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
+  platforms:
+    - name: EL
+      versions: [7, 8]
+    - name: Ubuntu
+      versions: [ 18.04 ]
+  dependencies:
+    "arista.cvp": "*"
