@@ -65,11 +65,11 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
-{%             if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
-{%                 for ip_address_secondary in ethernet_interfaces[ethernet_interface].ip_address_secondaries %}
+{%                 if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
+{%                     for ip_address_secondary in ethernet_interfaces[ethernet_interface].ip_address_secondaries %}
    ip address {{ ip_address_secondary }} secondary
-{%                 endfor %}
-{%             endif %}
+{%                     endfor %}
+{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
    ipv6 enable
@@ -150,6 +150,9 @@ interface {{ ethernet_interface }}
 {%                 if ethernet_interfaces[ethernet_interface].ptp.enable is defined and ethernet_interfaces[ethernet_interface].ptp.enable == true %}
    ptp enable
 {%                 endif %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].mac_security.profile is defined and ethernet_interfaces[ethernet_interface].mac_security.profile is not none %}
+   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profile }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}

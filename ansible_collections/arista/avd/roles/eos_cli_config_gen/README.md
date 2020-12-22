@@ -54,6 +54,7 @@
     - [VxLAN Interface](#vxlan-interface)
     - [Hardware TCAM Profiles](#hardware-tcam-profiles)
     - [MAC Address-table](#mac-address-table)
+    - [MACsec](#macsec)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
     - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
@@ -747,6 +748,8 @@ ethernet_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    mac_security:
+      profile: < profile >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -776,6 +779,8 @@ ethernet_interfaces:
     vmtracer: < true | false >
     ptp:
       enable: < true | false >
+    mac_security:
+      profile: < profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -936,6 +941,23 @@ tcam_profile:
 ```yaml
 mac_address_table:
   aging_time: < aging_time_in_seconds >
+```
+
+### MACsec
+
+```yaml
+mac_security:
+  license:
+    license_name: < license-name >
+    license_key: < license-number >
+  fips_restrictions: < true | false >
+  profiles:
+    < profile >:
+      cipher: < valid-cipher-string >
+      connection_keys:
+        < connection_key >:
+          encrypted_key: < encrypted_key >
+          fallback: < true | false -> default >
 ```
 
 ### Router Virtual MAC Address
@@ -1542,6 +1564,7 @@ management_console:
 management_security:
   password:
     encryption_key_common : < true | false >
+  entropy_source: < entropy_source >
 ```
 
 ### Management SSH

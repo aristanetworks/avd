@@ -31,6 +31,8 @@ transceiver qsfp default-mode 4x10G
 {% include 'eos/lldp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
+{# macsec #}
+{% include 'eos/mac-security.j2' %}
 !
 hostname {{ inventory_hostname }}
 {# domain lookup #}

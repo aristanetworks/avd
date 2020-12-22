@@ -1,4 +1,4 @@
-# router-bgp-v4-v6-evpn
+# mac-security-eth-po-entropy
 
 # Table of Contents
 
@@ -173,7 +173,18 @@ AAA accounting not defined
 
 # Management Security
 
-Management security not defined
+## Management Security
+
+
+ Management Security entropy source is hardware
+
+## Management Security Configuration
+
+```eos
+!
+management security
+   entropy source hardware
+```
 
 # Aliases
 
@@ -235,11 +246,44 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
-No ethernet interface defined
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 |  - | routed | - | - | - | - |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   ip address 1.1.1.1/24
+   mac security profile A1
+```
 
 ## Port-Channel Interfaces
 
-No port-channels defined
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | L2-PORT | switched | access | 1-5 | - | - | - | - | - | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel3
+   description L2-PORT
+   switchport trunk allowed vlan 1-5
+   switchport mode trunk
+```
 
 ## Loopback Interfaces
 
@@ -297,212 +341,7 @@ Router ISIS not defined
 
 ## Router BGP
 
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65100|  10.50.64.15 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| update wait-install |
-| distance bgp 20 200 200 |
-| maximum-paths 4 ecmp 4 |
-
-### Router BGP Peer Groups
-
-#### EVPN-OVERLAY
-
-| Settings | Value |
-| -------- | ----- |
-| Remote_as | 65000 |
-| Next-hop unchanged | True |
-| Source | Loopback0 |
-| Bfd | true |
-| Ebgp multihop | 5 |
-| Send community | true |
-| Maximum routes | 0 (no limit) |
-
-#### IPV4-UNDERLAY
-
-| Settings | Value |
-| -------- | ----- |
-| Remote_as | 65000 |
-| Send community | true |
-| Maximum routes | 12000 |
-
-#### IPV4-UNDERLAY-MLAG
-
-| Settings | Value |
-| -------- | ----- |
-| Remote_as | 65100 |
-| Next-hop self | True |
-| Send community | true |
-| Maximum routes | 12000 |
-
-#### IPV6-UNDERLAY
-
-| Settings | Value |
-| -------- | ----- |
-| Remote_as | 65000 |
-| Send community | true |
-| Maximum routes | 12000 |
-
-#### IPV6-UNDERLAY-MLAG
-
-| Settings | Value |
-| -------- | ----- |
-| Remote_as | 65100 |
-| Next-hop self | True |
-| Send community | true |
-| Maximum routes | 12000 |
-
-### BGP Neighbors
-
-| Neighbor | Remote AS |
-| -------- | ---------
-| 1.1.1.1 | 1 |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN Based
-
-| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
-| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 24 | 10.50.64.15:10024 |  1:10024 |  -  | -  | learned |
-| 41 | 10.50.64.15:10041 |  1:10041 |  -  | -  | learned |
-| 42 | 10.50.64.15:10042 |  1:10042 |  -  | -  | learned |
-| 65 | 10.50.64.15:10065 |  1:10065 |  -  | -  | learned |
-
-#### Router BGP EVPN VRFs
-
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A | 10.50.64.15:30001 | connected |
-| Tenant_B | 10.50.64.15:30002 ||
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65100
-   router-id 10.50.64.15
-   no bgp default ipv4-unicast
-   update wait-install
-   distance bgp 20 200 200
-   maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY peer group
-   neighbor EVPN-OVERLAY remote-as 65000
-   neighbor EVPN-OVERLAY next-hop-unchanged
-   neighbor EVPN-OVERLAY update-source Loopback0
-   neighbor EVPN-OVERLAY bfd
-   neighbor EVPN-OVERLAY ebgp-multihop 5
-   neighbor EVPN-OVERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
-   neighbor EVPN-OVERLAY send-community
-   neighbor EVPN-OVERLAY maximum-routes 0
-   neighbor IPV4-UNDERLAY peer group
-   neighbor IPV4-UNDERLAY remote-as 65000
-   neighbor IPV4-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
-   neighbor IPV4-UNDERLAY send-community
-   neighbor IPV4-UNDERLAY maximum-routes 12000
-   neighbor IPV4-UNDERLAY-MLAG peer group
-   neighbor IPV4-UNDERLAY-MLAG remote-as 65100
-   neighbor IPV4-UNDERLAY-MLAG next-hop-self
-   neighbor IPV4-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
-   neighbor IPV4-UNDERLAY-MLAG send-community
-   neighbor IPV4-UNDERLAY-MLAG maximum-routes 12000
-   neighbor IPV6-UNDERLAY peer group
-   neighbor IPV6-UNDERLAY remote-as 65000
-   neighbor IPV6-UNDERLAY password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
-   neighbor IPV6-UNDERLAY send-community
-   neighbor IPV6-UNDERLAY maximum-routes 12000
-   neighbor IPV6-UNDERLAY-MLAG peer group
-   neighbor IPV6-UNDERLAY-MLAG remote-as 65100
-   neighbor IPV6-UNDERLAY-MLAG next-hop-self
-   neighbor IPV6-UNDERLAY-MLAG password 7 $1c$G8BQN0ezkiJOX2cuAYpsEA==
-   neighbor IPV6-UNDERLAY-MLAG send-community
-   neighbor IPV6-UNDERLAY-MLAG maximum-routes 12000
-   neighbor 1.1.1.1 remote-as 1
-   neighbor 1.1.1.1 description TEST
-   neighbor 1b11:3a00:22b0:0088::1 peer group IPV6-UNDERLAY
-   neighbor 1b11:3a00:22b0:0088::3 peer group IPV6-UNDERLAY
-   neighbor 1b11:3a00:22b0:0088::5 peer group IPV6-UNDERLAY
-   neighbor 10.50.2.1 peer group IPV4-UNDERLAY
-   neighbor 10.50.2.3 peer group IPV4-UNDERLAY
-   neighbor 10.50.2.5 peer group IPV4-UNDERLAY
-   neighbor 10.50.64.11 peer group EVPN-OVERLAY
-   neighbor 10.50.64.12 peer group EVPN-OVERLAY
-   neighbor 10.50.64.13 peer group EVPN-OVERLAY
-   neighbor 169.254.252.1 peer group IPV4-UNDERLAY-MLAG
-   neighbor fe80::b%Vl4094 peer group IPV6-UNDERLAY-MLAG
-   redistribute connected route-map RM-CONN-2-BGP
-   redistribute static route-map RM-STATIC-2-BGP
-   !
-   vlan 24
-      rd 10.50.64.15:10024
-      route-target both 1:10024
-      redistribute learned
-   !
-   vlan 41
-      rd 10.50.64.15:10041
-      route-target both 1:10041
-      redistribute learned
-   !
-   vlan 42
-      rd 10.50.64.15:10042
-      route-target both 1:10042
-      redistribute learned
-   !
-   vlan 65
-      rd 10.50.64.15:10065
-      route-target both 1:10065
-      redistribute learned
-   !
-   address-family evpn
-      neighbor EVPN-OVERLAY activate
-   !
-   address-family ipv4
-      neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH in
-      neighbor IPV4-UNDERLAY route-map RM-HIDE-AS-PATH out
-      neighbor IPV4-UNDERLAY activate
-      neighbor IPV4-UNDERLAY-MLAG activate
-   !
-   address-family ipv4 multicast
-      neighbor IPV4-UNDERLAY activate
-      neighbor IPV4-UNDERLAY-MLAG activate
-      redistribute attached-host 
-   !
-   address-family ipv6
-      neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
-      neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH out
-      neighbor IPV6-UNDERLAY activate
-      neighbor IPV6-UNDERLAY-MLAG activate
-   !
-   vrf Tenant_A
-      rd 10.50.64.15:30001
-      route-target import evpn 1:30001
-      route-target export evpn 1:30001
-      redistribute connected
-   !
-   vrf Tenant_B
-      rd 10.50.64.15:30002
-      route-target import evpn 1:30002
-      route-target export evpn 1:30002
-```
+Router BGP not defined
 
 ## Router BFD
 
@@ -597,7 +436,60 @@ IP DHCP relay not defined
 Errdisable is not defined.
 # MACsec
 
-MACsec not defined
+### MACsec Summary
+
+License is installed.
+
+FIPS restrictions enabled.
+
+### MACsec Profiles Summary
+
+**Profile A1:**
+
+Settings:
+
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| aes128-gcm | 30 | True |
+
+Keys:
+
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+| 1234a | 025756085F535976 | - |
+| 1234c | 10195F4C5144405A | True |
+
+**Profile A2:**
+
+Settings:
+
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+| - | - | - |
+
+Keys:
+
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+| 1234b | 12485744465E5A53 | - |
+
+### MACsec Device Configuration
+
+```eos
+!
+mac security
+   license license1 123456
+   fips restrictions
+   !
+   profile A1
+      cipher aes128-gcm
+      key 1234a 7 025756085F535976
+      key 1234c 7 10195F4C5144405A fallback
+      mka session rekey-period 30
+      sci
+   profile A2
+      key 1234b 7 12485744465E5A53
+```
 
 # Custom Templates
 
