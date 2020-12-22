@@ -74,6 +74,8 @@ router_bgp:
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY:
+        route_map_in: RM-HIDE-AS-PATH
+        route_map_out: RM-HIDE-AS-PATH
         activate: true
   address_family_ipv4:
     peer_groups:
