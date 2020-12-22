@@ -3,12 +3,12 @@
 - name: Gather ip reachability state between devices (loopback0 <-> loopback0)
   eos_command:
     commands: "ping {{ loopback0_address | ipaddr('address')}} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address')}} repeat 1"
-  loop: "{{ loopback0_range }}"
+  loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (loopback0_range is defined and loopback0_range is not none) and
+    (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
     (loopback_interfaces.Loopback0.ip_address is defined and loopback_interfaces.Loopback0.ip_address is not none)
   register: loopback0_reachability_state
   tags:
