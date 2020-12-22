@@ -319,7 +319,7 @@ ipv6 route vrf customer01 2a01:cb04:4e6:a300::/64 Vlan101 2a01:cb04:4e6:100::1
 ipv6 route vrf customer01 2a01:cb04:4e6:a400::/64 Vlan101 2a01:cb04:4e6:100::1 201 tag 667 name RT-TO-FAKE-DMZ
 ```
 
-## IP Routing
+## ARP
 
 Global ARP timeout not defined.
 
