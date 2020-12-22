@@ -1410,11 +1410,13 @@ router_bgp:
             remote_as: < asn >
             description: < description >
             next_hop_self: < true >
+            timers: < keepalive_hold_timer_values >
             send_community: < standard | extended | leave empty for both >
           < neighbor_ip_address >:
             remote_as: < asn >
             description: < description >
             next_hop_self: < true >
+            timers: < keepalive_hold_timer_values >
             send_community: < standard | extended | leave empty for both >
       redistribute_routes:
         < route_type >:
