@@ -1,0 +1,8 @@
+devices:
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+  {{ node }}:
+{%     for command_to_collect in commands_to_collect %}
+    "{{ command_to_collect }}":
+      {{ hostvars[node].cli_output.results[0].stdout[0] | to_nice_yaml(indent=2) | trim | indent(6) }}
+{%     endfor %}
+{% endfor %}

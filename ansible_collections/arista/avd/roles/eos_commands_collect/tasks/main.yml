@@ -28,6 +28,14 @@
   run_once: true
   when: '"json" in output_format'
 
+- name: Generate yaml report for fabric
+  template:
+    src: fabric_yaml_output.j2
+    dest: "{{ commands_backup_dir }}/report.yaml"
+  delegate_to: localhost
+  run_once: true
+  when: '"yaml" in output_format'
+
 - name: Generate markdown report for fabric
   include_tasks: "markdown.yml"
   when:

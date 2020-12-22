@@ -9,10 +9,12 @@ commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
 # text: one file per device and show command
 # markdown: one report per device
 # json: one report per fabric
+# yaml: one report per fabric
 output_format:
  - text
  - markdown
  # - json
+ # - yaml
 
 commands_to_collect:
   - show lldp neighbors
