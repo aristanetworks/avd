@@ -6,6 +6,23 @@
   tags:
     - always
 
+- name: Generate variables for testing
+  template:
+    src: generate_vars_for_testing.j2
+    dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+- name: Include vars from validate_state_vars.yml
+  include_vars:
+    file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
 - name: Gather EOS platform and version details
   eos_command:
     commands: "show version | json"
@@ -81,11 +98,16 @@
     - optional
     - never
 
+- name: Validate loopback0 reachability
+  include_tasks: "loopback0_reachability.yml"
+  tags:
+    - loopback0_reachability
+
   ####################################
   ##       Validation Reports       ##
   ####################################
 
-- name: Validate reload cause
+- name: Create reports
   include_tasks: "reports.yml"
   tags:
     - always
