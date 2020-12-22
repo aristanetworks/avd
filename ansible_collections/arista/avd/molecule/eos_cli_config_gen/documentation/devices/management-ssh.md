@@ -120,6 +120,10 @@ DNS domain lookup not defined
 
 No NTP servers defined
 
+## PTP
+
+PTP is not defined.
+
 ## Management SSH
 
 ```eos

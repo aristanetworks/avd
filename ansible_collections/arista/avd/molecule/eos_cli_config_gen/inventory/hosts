@@ -18,6 +18,7 @@ none_configuration
 platform
 port-channel-interfaces
 prefix-lists
+ptp
 route-maps
 router-bgp-base
 router-bgp-evpn

@@ -1,0 +1,34 @@
+{# eos - PTP #}
+{% if ptp is defined and ptp is not none %}
+!
+{%     if ptp.clock_identity is defined and ptp.clock_identity is not none %}
+ptp clock-identity {{ ptp.clock_identity }}
+{%     endif %}
+{%     if ptp.source is defined and ptp.source is not none %}
+{%         if ptp.source.ip is defined and ptp.source.ip is not none %}
+ptp source ip {{ ptp.source.ip }}
+{%         endif %}
+{%     endif %}
+{%     if ptp.priority1 is defined and ptp.priority1 is not none %}
+ptp priority1 {{ ptp.priority1 }}
+{%     endif %}
+{%     if ptp.priority2 is defined and ptp.priority2 is not none %}
+ptp priority2 {{ ptp.priority2 }}
+{%     endif %}
+{%     if ptp.ttl is defined and ptp.ttl is not none %}
+ptp ttl {{ ptp.ttl }}
+{%     endif %}
+{%     if ptp.message_type is defined and ptp.message_type is not none %}
+{%         if ptp.message_type.general is defined and ptp.message_type.general is not none %}
+{%             if ptp.message_type.general.dscp is defined and ptp.message_type.general.dscp is not none %}
+ptp message-type general dscp {{ ptp.message_type.general.dscp }}
+{%             endif %}
+{%         endif %}
+{%         if ptp.message_type.event is defined and ptp.message_type.event is not none %}
+{%             if ptp.message_type.event.dscp is defined and ptp.message_type.event.dscp is not none %}
+ptp message-type event dscp {{ ptp.message_type.event.dscp }}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{% endif %}
+

@@ -86,6 +86,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [PTP](#ptp)
     - [Custom Templates](#custom-templates)
   - [License](#license)
 
@@ -750,6 +751,8 @@ ethernet_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    ptp:
+      enable: < true | false >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -771,6 +774,8 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    ptp:
+      enable: < true | false >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -1559,7 +1564,22 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
+### PTP
 
+```yaml
+ptp:
+  clock_identity: < clock-id >
+  source:
+    ip: < source-ip>
+  priority1: < priority1 >
+  priority2: < priority2 >
+  ttl: < ttl >
+  message_type:
+    general:
+      dscp: < dscp-value >
+    event:
+      dscp: < dscp-Value >
+```
 ### Custom Templates
 
 ```yaml

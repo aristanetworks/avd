@@ -1,4 +1,4 @@
-# mcast-pim
+# ptp
 
 # Table of Contents
 
@@ -70,7 +70,6 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
-- [Errdisable](#errdisable)
 
 # Management
 
@@ -122,7 +121,30 @@ No NTP servers defined
 
 ## PTP
 
-PTP is not defined.
+### PTP Summary
+
+| PTP setting | Value |
+| ----------- | ----- |
+| Clock-identity | 123.123.123.123 |
+| Source IP | 1.1.1.1 |
+| Priority1 | 1 |
+| Priority2 | 2 |
+| TTL | 200 |
+| Msg General | DSCP 4 |
+| Msg Event | DSCP 8 |
+
+### PTP Device Configuration
+
+```eos
+!
+ptp clock-identity 123.123.123.123
+ptp source ip 1.1.1.1
+ptp priority1 1
+ptp priority2 2
+ptp ttl 200
+ptp message-type general dscp 4
+ptp message-type event dscp 8
+```
 
 ## Management SSH
 
@@ -234,7 +256,25 @@ No VLANs defined
 
 ## Ethernet Interfaces
 
-No ethernet interface defined
+### Ethernet Interfaces Summary
+
+| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
+| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | 1500 | routed | access | - | - | - | 172.31.255.15/31 | - | - |
+
+*Inherited from Port-Channel Interface
+
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   no switchport
+   ip address 172.31.255.15/31
+   ptp enable
+```
 
 ## Port-Channel Interfaces
 
@@ -286,10 +326,6 @@ Static routes not defined
 
 IPv6 static routes not defined
 
-## ARP
-
-Global ARP timeout not defined.
-
 ## Router ISIS
 
 Router ISIS not defined
@@ -320,39 +356,7 @@ Routing multicast not defined
 
 ## Router PIM Sparse Mode
 
-### IP Sparse Mode Information
-
-### IP Rendez-vous Information
-
-| Rendez-vous Point Address | Group Address |
-| ------------------------- | ------------- |
-| 10.238.1.161 | 239.12.12.12/32 |
-| 10.238.1.161 | 239.12.12.13/32 |
-| 10.238.1.161 | 239.12.12.14/32 |
-| 10.238.1.161 | 239.12.12.16/32 |
-| 10.238.1.161 | 239.12.12.20/32 |
-| 10.238.1.161 | 239.12.12.21/32 |
-
-### IP Anycast Information
-
-| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
-| ------------------ | ------------------------------- | -------------- |
-| 10.38.1.161 | 10.50.64.16 |  15 | |
-
-### Router Multicast Device Configuration
-
-```eos
-!
-router pim sparse-mode
-   ipv4
-      rp address 10.238.1.161 239.12.12.12/32
-      rp address 10.238.1.161 239.12.12.13/32
-      rp address 10.238.1.161 239.12.12.14/32
-      rp address 10.238.1.161 239.12.12.16/32
-      rp address 10.238.1.161 239.12.12.20/32
-      rp address 10.238.1.161 239.12.12.21/32
-      anycast-rp 10.38.1.161 10.50.64.16 register-count 15 
-```
+Router PIM sparse mode not defined
 
 # Filters
 
@@ -417,10 +421,6 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP relay not defined
-
-# Errdisable
-
-Errdisable is not defined.
 
 # Custom Templates
 

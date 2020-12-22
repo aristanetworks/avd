@@ -167,6 +167,10 @@ ntp server vrf mgt 10.10.111.1 prefer
 ntp server vrf mgt 10.10.111.2
 ```
 
+## PTP
+
+PTP is not defined.
+
 ## Management SSH
 
 Management SSH not defined
