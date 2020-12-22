@@ -21,6 +21,10 @@ It supports reports with the following format: text, markdown, json and yaml.
 
 ## Role Inputs and Outputs
 
+Figure 1 below provides a visualization of the roles inputs, and outputs and tasks.
+
+![Figure 1: Ansible Role eos_commands_collect](media/role_eos_commands_collect.png)  
+
 **Inputs:**
 
 Ansible inventory to connect to EOS devices.
