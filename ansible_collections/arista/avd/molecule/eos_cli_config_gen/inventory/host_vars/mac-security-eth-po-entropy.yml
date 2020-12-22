@@ -20,9 +20,9 @@ mac_security:
       connection_keys:
         1234b:
           encrypted_key: 12485744465E5A53
-        1234d:
-          encrypted_key: 091B185C4D564543
-          fallback: true
+        # 1234d:
+        #   encrypted_key: 091B185C4D564543
+        #   fallback: true
 
 
 ### Mgmt sec
