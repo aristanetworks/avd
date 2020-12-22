@@ -946,7 +946,7 @@ mac_address_table:
 ### MACsec
 
 ```yaml
-mac-security:
+mac_security:
   license:
     license_name: < license-name >
     license_key: < license-number >
