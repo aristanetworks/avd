@@ -1,38 +1,156 @@
-Role Name
-=========
+# Ansible Role: eos_validate_state
 
-A brief description of the role goes here.
+**Table of Contents:**
 
-Requirements
-------------
+- [Ansible Role: eos_validate_state](#ansible-role-eos_validate_state)
+  - [Overview](#overview)
+  - [Role Inputs and Outputs](#role-inputs-and-outputs)
+  - [Default Variables](#default-variables)
+  - [Requirements](#requirements)
+  - [Example Playbook](#example-playbook)
+  - [Input example](#input-example)
+    - [inventory/inventory.ini](#inventoryinventoryini)
+    - [inventory/group_vars/DC1.yml](#inventorygroup_varsdc1yml)
+  - [Usage example](#usage-example)
+  - [License](#license)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+## Overview
 
-Role Variables
---------------
+**eos_commands_collect** is a role leveraged to collect commands on Arista EOS devices and generate a report.
+It supports reports with the following format: text, markdown, json and yaml.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Role Inputs and Outputs
 
-Dependencies
-------------
+**Inputs:**
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+Ansible inventory to connect to EOS devices.
+The default variables can be changed to select a report format and include others commands.
 
-Example Playbook
-----------------
+**Outputs:**
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+- text files: one file per device and show command
+- markdown file: one report per device. There is a table of content at the begining of the file.
+- json file: one report per fabric
+- yaml file: one report per fabric
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+**Tasks:**
 
-License
--------
+1. Create output structure
+2. Collect show commands on device
+3. Save the collected commands
+4. Generate a JSON report
+5. Generate a YAML report
+6. Generate a markdown report
 
-BSD
+## Default Variables
 
-Author Information
-------------------
+The following default variables are defined, and can be modified as desired:
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+```yaml
+---
+
+root_dir: '{{ inventory_dir }}'
+commands_backup_dir_name: 'commands'
+commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+
+# list of desired formats. Supported values are markdown, json and text.
+# text: one file per device and show command
+# markdown: one report per device
+# json: one report per fabric
+# yaml: one report per fabric
+output_format:
+ - text
+ - markdown
+ # - json
+ # - yaml
+
+commands_to_collect:
+  - show lldp neighbors
+  - show ip interface brief
+  - show interfaces description
+  - show version
+  - show running-config
+```
+
+## Requirements
+
+Requirements are located here: [avd-requirements](../../README.md#Requirements)
+
+## Example Playbook
+
+```yaml
+---
+- name: Collect commands
+  hosts: DC1_FABRIC
+  connection: local
+  gather_facts: false
+  collections:
+    - arista.avd
+  tasks:
+    - name: Collect commands
+      import_role:
+        name: eos_commands_collect
+```
+
+## Input example
+
+### inventory/inventory.ini
+
+```yaml
+---
+all:
+  children:
+    DC1:
+      children:
+        DC1_FABRIC:
+          children:
+            DC1_SPINES:
+              hosts:
+                switch2:
+                  ansible_host: 10.83.28.190
+            DC1_L3LEAFS:
+              children:
+                DC1_LEAF1:
+                  hosts:
+                    switch1:
+                      ansible_host: 10.83.28.216
+                DC1_LEAF2:
+                  hosts:
+                    switch3:
+                      ansible_host: 10.83.28.191
+```
+
+### inventory/group_vars/DC1.yml
+
+```yaml
+ansible_user: 'arista'
+ansible_password: 'arista'
+ansible_network_os: eos
+ansible_become: yes
+ansible_become_method: enable
+```
+
+```yaml
+output_format:
+ - text
+ - markdown
+ # - json
+ # - yaml
+
+commands_to_collect:
+  - show lldp neighbors
+  - show ip interface brief
+  - show interfaces description
+  - show version
+  - show running-config
+```
+
+## Usage example
+
+```shell
+ansible-playbook playbooks/pb_collect_yml --inventory inventory/inventory.yml
+```
+
+## License
+
+Project is published under [Apache 2.0 License](../../LICENSE)

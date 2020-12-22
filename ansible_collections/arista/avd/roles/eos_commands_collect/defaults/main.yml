@@ -5,7 +5,7 @@ root_dir: '{{ inventory_dir }}'
 commands_backup_dir_name: 'commands'
 commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
 
-# list of desired formats. Supported values are markdown, json and text.
+# list of desired formats. Supported values are markdown, yaml, json and text.
 # text: one file per device and show command
 # markdown: one report per device
 # json: one report per fabric

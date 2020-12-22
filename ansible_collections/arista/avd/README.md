@@ -23,7 +23,8 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 - [__arista.avd.eos_config_deploy_cvp__](roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
 - [__arista.avd.cvp_configlet_upload__](roles/cvp_configlet_upload/README.md) - Uploads configlets from a local folder to CloudVision Server.
-- [__arista.avd.eos_validate_state__](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices
+- [__arista.avd.eos_validate_state__](roles/eos_validate_state/README.md) - Validate operational states of Arista EOS devices.
+- [__arista.avd.eos_commands_collect__](roles/eos_commands_collect/README.md) - Collect commands on EOS devices and generate reports.
 
 ![Arista AVD Overview](media/example-playbook-evpn-deploy-cvp.gif)
 
