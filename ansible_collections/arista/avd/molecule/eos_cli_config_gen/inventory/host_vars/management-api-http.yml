@@ -1,0 +1,18 @@
+# Management API HTTP
+management_api_http:
+  enable_http: false
+  enable_https: true
+  enable_vrfs:
+    default:
+      access_group: ACL-API
+    MGMT:
+      access_group: ACL-API
+
+# Standard ACLs
+standard_access_lists:
+  ACL-API:
+    sequence_numbers:
+      10:
+        action: "permit 10.0.0.0/8"
+      20:
+        action: "permit 100.0.0.0/8"
