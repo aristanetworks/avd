@@ -9,15 +9,15 @@
 - name: Generate variables for testing
   template:
     src: generate_vars_for_testing.j2
-    dest: "{{ eos_validate_state_dir }}/vars_generated.yml"
+    dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
   delegate_to: localhost
   run_once: true
   tags:
     - always
 
-- name: Include vars from vars_generated.yml
+- name: Include vars from validate_state_vars.yml
   include_vars:
-    file: "{{ eos_validate_state_dir }}/vars_generated.yml"
+    file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
   delegate_to: localhost
   run_once: true
   tags:
