@@ -110,7 +110,7 @@ spine:
 
 ### Tasks
 
-1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://cvp.avd.sh/roles/dhcp_configuration/).
+1. Generate structured configuration for DHCP configuration as documented in [`arista.cvp.dhcp_configuration`](https://cvp.avd.sh/en/latest/roles/dhcp_configuration/).
 2. Load generated variables.
 3. Create DHCP configuration file.
 4. If mode is online, apply configuration to DHCP server.
