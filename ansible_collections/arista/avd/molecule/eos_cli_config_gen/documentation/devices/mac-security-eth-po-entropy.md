@@ -468,7 +468,6 @@ Keys:
 | Key ID | Encrypted (Type 7) Key | Fallback |
 | ------ | ---------------------- | -------- |
 | 1234b | 12485744465E5A53 | - |
-| 1234d | 091B185C4D564543 | True |
 
 ### MACsec Device Configuration
 
@@ -480,13 +479,12 @@ mac security
    !
    profile A1
       cipher aes128-gcm
-      key 1234a 7 025756085F535976 
+      key 1234a 7 025756085F535976
       key 1234c 7 10195F4C5144405A fallback
       mka session rekey-period 30
       sci
    profile A2
-      key 1234b 7 12485744465E5A53 
-      key 1234d 7 091B185C4D564543 fallback
+      key 1234b 7 12485744465E5A53
 ```
 
 # Custom Templates
