@@ -576,16 +576,17 @@ aaa_authentication:
     on_failure_log: < true | false >
     on_success_log: < true | false >
     local:
-        allow_nopassword: < false | true (default) >
+      allow_nopassword: < false (default) | true >
 ```
 
 ### AAA Authorization
 
 ```yaml
 aaa_authorization:
-  exec_default: < group name > | local | none >
+  exec:
+    default: < group name > | local | none >
   config_commands: < true | false >
-  console: < true | false >
+  serial_console: < true | false >
   commands:
     all_default: < group name > | local | none >
 ```
