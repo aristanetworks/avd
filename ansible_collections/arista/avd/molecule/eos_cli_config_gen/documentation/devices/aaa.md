@@ -213,12 +213,22 @@ aaa group server tacacs+ TACACS
 | Login | default | group TACACS local |
 | Login | serial-console | local |
 
+AAA Authentication on-failure log has been enabled
+
+AAA Authentication on-success log has been enabled
+
+Policy local allow-nopassword-remote-login has been enabled.
+
+
 ### AAA Authentication Device Configuration
 
 ```eos
 !
 aaa authentication login default group TACACS local
 aaa authentication login serial-console local
+aaa authentication policy on-failure log
+aaa authentication policy on-success log
+aaa authentication policy local allow-nopassword-remote-login
 !
 ```
 
@@ -228,14 +238,17 @@ aaa authentication login serial-console local
 
 | Type | User Stores |
 | ---- | ----------- |
-| Exec | local |
+| Exec | group CUST local |
 
 Authorization for configuration commands is enabled.
+
+Authorization for serial console is enabled.
 
 ### AAA Authorization Device Configuration
 
 ```eos
-aaa authorization exec default local
+aaa authorization exec default group CUST local
+aaa authorization serial-console
 !
 ```
 

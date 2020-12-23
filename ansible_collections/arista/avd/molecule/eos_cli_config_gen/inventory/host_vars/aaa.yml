@@ -18,14 +18,21 @@ aaa_server_groups:
 
 ## AAA Authentication
 aaa_authentication:
- login:
-  default: group TACACS local
-  serial_console: local
+  login:
+    default: group TACACS local
+    serial_console: local
+  policies:
+    on_failure_log: true
+    on_success_log: true
+    local:
+      allow_nopassword: true
 
 ## AAA Authorization
 aaa_authorization:
-  exec_default: local
+  exec:
+    default: group CUST local
   config_commands: true
+  serial_console: true
 
 ## AAA Accounting
 aaa_accounting:
