@@ -414,6 +414,12 @@ def main():
                            supports_check_mode=False)
     result = dict(changed=False)
 
+    if not HAS_YAML:
+        module.fail_json(msg='yaml lib is required for this module')
+
+    if not HAS_TREELIB:
+        module.fail_json(msg='Treelib lib is required for this module')
+
     # Build cv_container structure from YAML inventory.
     if (module.params['inventory'] is not None and
             module.params['container_root'] is not None):
