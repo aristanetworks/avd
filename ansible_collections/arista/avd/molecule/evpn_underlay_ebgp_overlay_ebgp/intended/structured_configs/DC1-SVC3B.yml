@@ -52,6 +52,8 @@ leaf_allowed_vlans:
 - 150
 - 120
 - 121
+- 160
+- 161
 - 210
 - 211
 - 250
@@ -178,6 +180,12 @@ vlans:
     name: MLAG_iBGP_Tenant_A_WEB_Zone
     trunk_groups:
     - LEAF_PEER_L3
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -253,7 +261,7 @@ bfd_multihop:
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF2_Po1
-    vlans: 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
+    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel5:
@@ -568,6 +576,10 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        160:
+          vni: 10160
+        161:
+          vni: 10161
         210:
           vni: 20210
         211:
@@ -748,6 +760,24 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 120-121
+    Tenant_A_VMOTION:
+      tenant: Tenant_A
+      rd: 192.168.255.9:10160
+      route_targets:
+        both:
+        - 10160:10160
+      redistribute_routes:
+      - learned
+      vlan: 160
+    Tenant_A_NFS:
+      tenant: Tenant_A
+      rd: 192.168.255.9:10161
+      route_targets:
+        both:
+        - 10161:10161
+      redistribute_routes:
+      - learned
+      vlan: 161
     Tenant_B_OP_Zone:
       rd: 192.168.255.9:20
       route_targets:
