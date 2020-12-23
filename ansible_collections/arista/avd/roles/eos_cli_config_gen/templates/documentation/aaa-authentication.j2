@@ -13,16 +13,20 @@
 {%     if aaa_authentication.policies is defined and aaa_authentication.policies is not none %}
 {%         if aaa_authentication.policies.on_failure_log is defined and aaa_authentication.policies.on_failure_log == true %}
 AAA Authentication on-failure log has been enabled
+
 {%         endif %}
 {%         if aaa_authentication.policies.on_success_log is defined and aaa_authentication.policies.on_success_log == true %}
 AAA Authentication on-success log has been enabled
+
 {%         endif %}
 {%         if aaa_authentication.policies.local is defined %}
-{%             if aaa_authentication.policies.local.allow_nopassword is defined and aaa_authentication.policies.local.allow_nopassword == false %}
-Policy local allow-nopassword-remote-login has been disabled.
+{%             if aaa_authentication.policies.local.allow_nopassword is defined and aaa_authentication.policies.local.allow_nopassword == true %}
+Policy local allow-nopassword-remote-login has been enabled.
+
 {%             endif %}
 {%         endif %}
 {%     endif %}
+
 ### AAA Authentication Device Configuration
 
 ```eos
