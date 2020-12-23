@@ -3,8 +3,8 @@
 
 | Type | User Stores |
 | ---- | ----------- |
-{%     if aaa_authorization.exec_default is defined and aaa_authorization.exec_default is not none %}
-| Exec | {{ aaa_authorization.exec_default }} |
+{%     if aaa_authorization.exec.default is defined and aaa_authorization.exec.default != 'local' %}
+| Exec | {{ aaa_authorization.exec.default }} |
 {%     endif %}
 
 {%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == true %}
@@ -13,8 +13,9 @@ Authorization for configuration commands is enabled.
 Authorization for configuration commands is disabled.
 {%     endif %}
 
-{%     if aaa_authorization.console is defined and aaa_authorization.console == true %}
+{%     if aaa_authorization.serial_console is defined and aaa_authorization.serial_console == true %}
 Authorization for serial console is enabled.
+
 {%     endif %}
 ### AAA Authorization Device Configuration
 
