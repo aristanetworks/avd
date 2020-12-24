@@ -71,6 +71,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -147,6 +148,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -354,6 +359,8 @@ vlan internal order ascending range 1006 1199
 | 131 | Tenant_A_APP_Zone_2 | none  |
 | 140 | Tenant_A_DB_BZone_1 | none  |
 | 141 | Tenant_A_DB_Zone_2 | none  |
+| 160 | Tenant_A_VMOTION | none  |
+| 161 | Tenant_A_NFS | none  |
 | 210 | Tenant_B_OP_Zone_1 | none  |
 | 211 | Tenant_B_OP_Zone_2 | none  |
 | 310 | Tenant_C_OP_Zone_1 | none  |
@@ -394,6 +401,12 @@ vlan 140
 !
 vlan 141
    name Tenant_A_DB_Zone_2
+!
+vlan 160
+   name Tenant_A_VMOTION
+!
+vlan 161
+   name Tenant_A_NFS
 !
 vlan 210
    name Tenant_B_OP_Zone_1
@@ -452,7 +465,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131 | *- | *- | 7 |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
@@ -516,7 +529,7 @@ interface Ethernet10
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | access | 110-111,120-121,130-131 | - | - | - | - | 7 | - |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | access | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | access | 210-211 | - | - | - | - | 10 | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -532,7 +545,7 @@ interface Port-Channel5
 !
 interface Port-Channel7
    description DC1_L2LEAF1_Po1
-   switchport trunk allowed vlan 110-111,120-121,130-131
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
    mlag 7
 !
@@ -764,6 +777,8 @@ interface Vlan4094
 | 131 | 10131 |
 | 140 | 10140 |
 | 141 | 10141 |
+| 160 | 10160 |
+| 161 | 10161 |
 | 210 | 20210 |
 | 211 | 20211 |
 | 310 | 30310 |
@@ -796,6 +811,8 @@ interface Vxlan1
    vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
+   vxlan vlan 160 vni 10160
+   vxlan vlan 161 vni 10161
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 310 vni 30310
@@ -965,7 +982,9 @@ Router ISIS not defined
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.7:12 |  12:12  |  |  | learned | 130-131 |
 | Tenant_A_DB_Zone | 192.168.255.7:13 |  13:13  |  |  | learned | 140-141 |
+| Tenant_A_NFS | 192.168.255.7:10161 |  10161:10161  |  |  | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.7:10 |  10:10  |  |  | learned | 110-111 |
+| Tenant_A_VMOTION | 192.168.255.7:10160 |  10160:10160  |  |  | learned | 160 |
 | Tenant_A_WEB_Zone | 192.168.255.7:11 |  11:11  |  |  | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.7:20 |  20:20  |  |  | learned | 210-211 |
 | Tenant_C_OP_Zone | 192.168.255.7:30 |  30:30  |  |  | learned | 310-311 |
@@ -1032,11 +1051,23 @@ router bgp 65102
       redistribute learned
       vlan 140-141
    !
+   vlan-aware-bundle Tenant_A_NFS
+      rd 192.168.255.7:10161
+      route-target both 10161:10161
+      redistribute learned
+      vlan 161
+   !
    vlan-aware-bundle Tenant_A_OP_Zone
       rd 192.168.255.7:10
       route-target both 10:10
       redistribute learned
       vlan 110-111
+   !
+   vlan-aware-bundle Tenant_A_VMOTION
+      rd 192.168.255.7:10160
+      route-target both 10160:10160
+      redistribute learned
+      vlan 160
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.7:11
@@ -1297,6 +1328,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

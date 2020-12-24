@@ -42,6 +42,8 @@ leaf_allowed_vlans:
 - 150
 - 120
 - 121
+- 160
+- 161
 - 210
 - 211
 - 250
@@ -138,6 +140,12 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -162,7 +170,7 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-SVC3B_Po7
-    vlans: 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
+    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
     mlag: 1
   Port-Channel3:
