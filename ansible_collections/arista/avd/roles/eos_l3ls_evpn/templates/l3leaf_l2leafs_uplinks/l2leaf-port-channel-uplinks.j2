@@ -23,7 +23,9 @@
     description: {{ parent_l3leafs[loop.index0]}}_{{ 'Po' + l3leaf.channel_group_id }}
     vlans: {{ leaf.vlans | arista.avd.list_compress }}
     mode: trunk
+{%             if leaf.mlag == true %}
     mlag: {{ channel_group_id }}
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
