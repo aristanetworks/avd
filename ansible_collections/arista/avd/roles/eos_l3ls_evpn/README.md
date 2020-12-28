@@ -559,7 +559,8 @@ l3leaf:
 
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
-
+      # Enable / Disable MLAG dual primary detectiom
+      mlag_dual_primary_detection: < true | false -> default true >
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
@@ -722,6 +723,9 @@ l2leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
+      # Enable / Disable MLAG dual primary detectiom
+      mlag_dual_primary_detection: < true | false -> default true >
+      
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
