@@ -111,7 +111,6 @@ port_channel_interfaces:
     description: DC1-LEAF2A_Po7
     vlans: 110-111,120-121,130-131,160-161
     mode: trunk
-    mlag: 1
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF2A
