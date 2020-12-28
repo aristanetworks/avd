@@ -6,7 +6,7 @@ mlag_configuration:
   domain_id: {{ leaf.mlag_group }}
   local_interface: Vlan4094
   peer_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}
-{%     if leaf.dual_primary_detection == true %}
+{%     if leaf.mlag_dual_primary_detection == true %}
   peer_address_heartbeat:
     peer_ip: {{ leaf.mlag_peer_mgmt_ip }}
     vrf: {{ mgmt_interface_vrf }}
