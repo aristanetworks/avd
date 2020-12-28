@@ -57,6 +57,13 @@
 {%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l2leaf_node_group %}
+{%                 if l2leaf.node_groups[l2leaf_node_group].dual_primary_detection is defined %}
+{%                     set leaf.dual_primary_detection = l2leaf.node_groups[l2leaf_node_group].dual_primary_detection %}
+{%                 elif l2leaf.defaults.dual_primary_detection is defined %}
+{%                     set leaf.dual_primary_detection = l2leaf.defaults.dual_primary_detection %}
+{%                 else %}
+{%                     set leaf.dual_primary_detection = true %}
+{%                 endif %}
 {%                 if l2leaf.node_groups[l2leaf_node_group].mlag_interfaces is defined %}
 {%                     set leaf.mlag_interfaces = l2leaf.node_groups[l2leaf_node_group].mlag_interfaces %}
 {%                 else %}
