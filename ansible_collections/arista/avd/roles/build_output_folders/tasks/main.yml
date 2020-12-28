@@ -101,7 +101,7 @@
 
 - name: Create output directory for each EOS device
   file:
-    path: "{{ commands_backup_dir }}"
+    path: "{{ snapshots_backup_dir }}"
     state: directory
     mode: 0755
   delegate_to: localhost

@@ -1,6 +1,6 @@
 galaxy_info:
   author: Arista Ansible Team <ansible@arista.com>
-  description: Collect show commands on EOS devices
+  description: Collect show commands on EOS devices and generate reports
   issue_tracker_url: https://github.com/aristanetworks/ansible-avd/issues
   company: Arista Networks
   license: Apache-2.0

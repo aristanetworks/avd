@@ -1,9 +1,9 @@
 ---
-# defaults file for eos_commands_collect
+# defaults file for eos_snapshot
 
 root_dir: '{{ inventory_dir }}'
-commands_backup_dir_name: 'commands'
-commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+snapshots_backup_dir_name: 'snapshots'
+snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
 
 # list of desired formats. Supported values are markdown, yaml, json and text.
 # text: one file per device and show command
@@ -16,7 +16,7 @@ output_format:
  # - json
  # - yaml
 
-commands_to_collect:
+commands_list:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description
