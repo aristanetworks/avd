@@ -1,8 +1,8 @@
-# Ansible Role: eos_validate_state
+# Ansible Role: eos_snapshot
 
 **Table of Contents:**
 
-- [Ansible Role: eos_validate_state](#ansible-role-eos_validate_state)
+- [Ansible Role: eos_snapshot](#ansible-role-eos_snapshot)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Default Variables](#default-variables)
@@ -16,14 +16,14 @@
 
 ## Overview
 
-**eos_commands_collect** is a role leveraged to collect commands on Arista EOS devices and generate a report.
+**eos_snapshot** is a role leveraged to collect commands on Arista EOS devices and generate a report.
 It supports reports with the following format: text, markdown, json and yaml.
 
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks.
 
-![Figure 1: Ansible Role eos_commands_collect](media/role_eos_commands_collect.png)  
+![Figure 1: Ansible Role eos_snapshot](media/role_eos_snapshot.png)
 
 **Inputs:**
 
@@ -93,7 +93,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
   tasks:
     - name: Collect commands
       import_role:
-        name: eos_commands_collect
+        name: eos_snapshot
 ```
 
 ## Input example
