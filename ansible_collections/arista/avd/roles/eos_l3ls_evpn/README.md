@@ -340,7 +340,7 @@ vxlan_vlan_aware_bundles: < boolean | default -> false >
 
 # Disable IGMP snooping at fabric level.
 # If set, it overrides per vlan settings
-default_igmp_snooping: < boolean | default -> true >
+default_igmp_snooping_enabled: < boolean | default -> true >
 
 # BFD Multihop tunning | Required.
 bfd_multihop:
@@ -984,7 +984,8 @@ tenants:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-
+        # Activate or deactivate IGMP snooping | Optional, default is true
+        igmp_snooping_enabled: < true | false >
 
   < tenant_a >:
     mac_vrf_vni_base: < 10000-16770000 >
