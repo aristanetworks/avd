@@ -695,14 +695,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-      IPv4-UNDERLAY-PEERS:
-        activate: false
-      MLAG-IPv4-UNDERLAY-PEER:
-        activate: false
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
       IPv4-UNDERLAY-PEERS:
         activate: true
       MLAG-IPv4-UNDERLAY-PEER:

@@ -708,7 +708,6 @@ router bgp 65103
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
 ```
 
 ## Router BFD

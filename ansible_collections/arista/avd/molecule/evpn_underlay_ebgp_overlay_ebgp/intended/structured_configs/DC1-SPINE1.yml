@@ -212,16 +212,12 @@ router_bgp:
       route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: false
       EVPN-OVERLAY-PEERS:
         activate: true
   address_family_ipv4:
     peer_groups:
       IPv4-UNDERLAY-PEERS:
         activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
 router_ospf: null
 router_isis: null
 queue_monitor_streaming: null

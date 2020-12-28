@@ -196,9 +196,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
   address_family_ipv4:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    peer_groups: null
 router_ospf:
   process_ids:
     101:

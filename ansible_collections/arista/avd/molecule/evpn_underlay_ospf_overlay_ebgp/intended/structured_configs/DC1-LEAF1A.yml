@@ -181,9 +181,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
   address_family_ipv4:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
+    peer_groups: null
   vlan_aware_bundles: null
   vlans: null
   vrfs: null

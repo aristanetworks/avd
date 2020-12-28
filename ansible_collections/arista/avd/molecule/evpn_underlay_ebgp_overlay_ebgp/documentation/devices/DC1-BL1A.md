@@ -703,10 +703,8 @@ router bgp 65104
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Tenant_A_WAN_Zone

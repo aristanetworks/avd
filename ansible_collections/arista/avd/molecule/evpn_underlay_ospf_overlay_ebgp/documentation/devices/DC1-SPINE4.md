@@ -584,7 +584,6 @@ router bgp 65001
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
 ```
 
 ## Router BFD

@@ -1177,11 +1177,8 @@ router bgp 65103
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
-      no neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !

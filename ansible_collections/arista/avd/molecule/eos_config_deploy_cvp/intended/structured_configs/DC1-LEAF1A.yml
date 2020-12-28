@@ -295,12 +295,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-      IPv4-UNDERLAY-PEERS:
-        activate: false
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
       IPv4-UNDERLAY-PEERS:
         activate: true
   vlan_aware_bundles:

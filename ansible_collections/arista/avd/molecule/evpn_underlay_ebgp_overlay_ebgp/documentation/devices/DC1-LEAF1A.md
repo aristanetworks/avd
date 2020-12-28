@@ -723,10 +723,8 @@ router bgp 65101
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Tenant_A_APP_Zone
