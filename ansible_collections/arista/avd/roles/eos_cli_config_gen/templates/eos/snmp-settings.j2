@@ -15,9 +15,14 @@ snmp-server ipv6 access-list {{ snmp_server.ipv6_access_list }}
 {%     endif %}
 {%     if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
 {%          for local_interface in snmp_server.local_interfaces %}
-snmp-server {% if local_interface['vrf'] is defined and local_interface['vrf'] is not none %}vrf {{ local_interface['vrf'] }} {% endif %}local-interface {{ local_interface['name'] }}
+snmp-server {% if snmp_server.local_interfaces[local_interface]['vrf'] is defined and snmp_server.local_interfaces[local_interface]['vrf'] is not none %}vrf {{ snmp_server.local_interfaces[local_interface]['vrf'] }} {% endif %}local-interface {{ local_interface }}
 {%          endfor %}
 {%     endif %}
+{# {%     if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
+{%          for local_interface in snmp_server.local_interfaces %}
+snmp-server {% if local_interface['vrf'] is defined and local_interface['vrf'] is not none %}vrf {{ local_interface['vrf'] }} {% endif %}local-interface {{ local_interface['name'] }}
+{%          endfor %}
+{%     endif %} #}
 {%     if snmp_server.views is defined and snmp_server.views is not none %}
 {%          for view in snmp_server.views %}
 snmp-server view {{ view['name'] }} {{ view['MIB_family_name'] }} {% if view['included'] == true %}included{% else %}excluded {% endif %}
