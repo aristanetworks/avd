@@ -684,6 +684,9 @@ port_channel_interfaces:
     description: < description >
     mtu: < mtu >
     type: < switched | routed >
+    encapsulation:
+      dot1q:
+        vlan: < vlan-id >
     ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
@@ -716,6 +719,9 @@ ethernet_interfaces:
     speed: < interface_speed >
     mtu: < mtu >
     type: < routed | switched >
+    encapsulation:
+      dot1q:
+        vlan: < vlan-id >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:

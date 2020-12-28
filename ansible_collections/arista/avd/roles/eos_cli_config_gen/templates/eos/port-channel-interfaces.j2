@@ -27,6 +27,9 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "trunk" %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%         endif %}
+{%             if port_channel_interfaces[port_channel_interface].encapsulation.dot1q.vlan is defined %}
+   encapsulation dot1q vlan {{ port_channel_interfaces[port_channel_interface].encapsulation.dot1q.vlan }}
+{%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
 {%             for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}

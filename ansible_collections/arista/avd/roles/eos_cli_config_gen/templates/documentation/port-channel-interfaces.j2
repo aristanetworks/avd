@@ -6,7 +6,7 @@
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type != "routed" %}
+{%         if (port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type != "routed") and port_channel_interfaces[port_channel_interface].encapsulation is not defined %}
 {%             set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%             set type = port_channel_interfaces[port_channel_interface].type | default ("switched")%}
 {%             set mode = port_channel_interfaces[port_channel_interface].type | default ("access")%}
@@ -34,7 +34,7 @@
 {%   set port_channel_interface_ipv4.configured = false %}
 {%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%       for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%           if (port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed') or  port_channel_interfaces[port_channel_interface].encapsulation is defined %}
 {%               set port_channel_interface_ipv4.configured = true %}
 {%           endif %}
 {%        endfor %}
@@ -46,7 +46,7 @@
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 {%        for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" and port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
+{%            if (port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" or port_channel_interfaces[port_channel_interface].encapsulation is defined) and port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
 {%                set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%                set type = "routed" %}
 {%                set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}

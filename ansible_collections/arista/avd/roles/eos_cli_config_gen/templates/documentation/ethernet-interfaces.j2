@@ -26,7 +26,7 @@
 {%             endif %}
 | {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%         endif %}
-{%     elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type != "routed" %}
+{%     elif (ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type != "routed") or ethernet_interfaces[ethernet_interface].encapsulation is not defined %}
 {%         set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
 {%         set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
 {%         set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}
@@ -50,7 +50,7 @@
 {%     set ethernet_interface_ipv4 = namespace() %}
 {%     set ethernet_interface_ipv4.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == 'routed' and ethernet_interfaces[ethernet_interface].ip_address is defined %}
+{%          if (ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == 'routed') and ethernet_interfaces[ethernet_interface].encapsulation is defined %}
 {%              set ethernet_interface_ipv4.configured = true %}
 {%          endif %}
 {%     endfor %}
