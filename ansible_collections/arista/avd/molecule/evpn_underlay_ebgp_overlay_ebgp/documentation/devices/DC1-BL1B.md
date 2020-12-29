@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.111/24
 ```
@@ -364,10 +365,10 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet7  |  routed  | - |  172.31.255.49/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.51/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.53/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.55/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet7  |  routed  | - |  172.31.255.49/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.51/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.53/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.55/31  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -375,21 +376,25 @@ vlan 350
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet7
+   no shutdown
    no switchport
    ip address 172.31.255.49/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet7
+   no shutdown
    no switchport
    ip address 172.31.255.51/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet7
+   no shutdown
    no switchport
    ip address 172.31.255.53/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet7
+   no shutdown
    no switchport
    ip address 172.31.255.55/31
 ```
@@ -423,10 +428,12 @@ No port-channels defined
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.11/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
+   no shutdown
    ip address 192.168.254.11/32
 ```
 

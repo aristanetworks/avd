@@ -274,7 +274,7 @@ interface Ethernet1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | L2-PORT | switched | access | 1-5 | - | - | - | - | - | - |
+| Port-Channel3 | L2-PORT | switched | trunk | 1-5 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 

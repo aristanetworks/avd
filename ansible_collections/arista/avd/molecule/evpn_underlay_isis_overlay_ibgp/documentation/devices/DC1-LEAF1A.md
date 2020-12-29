@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.105/24
 ```
@@ -344,10 +345,10 @@ No VLANs defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet1  |  routed  | - |  172.31.255.3/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet1  |  routed  | - |  172.31.255.5/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet1  |  routed  | - |  172.31.255.7/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet1  |  routed  | - |  172.31.255.3/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet1  |  routed  | - |  172.31.255.5/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet1  |  routed  | - |  172.31.255.7/31  |  default  |  1500  |  false  |  -  |  -  |
 
 #### ISIS
 
@@ -364,6 +365,7 @@ No VLANs defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
@@ -372,6 +374,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
@@ -380,6 +383,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.5/31
    isis enable EVPN_UNDERLAY
@@ -388,6 +392,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.7/31
    isis enable EVPN_UNDERLAY
@@ -430,12 +435,14 @@ No port-channels defined
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.5/32
    isis enable EVPN_UNDERLAY
    isis passive
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
+   no shutdown
    ip address 192.168.254.5/32
    isis enable EVPN_UNDERLAY
    isis passive

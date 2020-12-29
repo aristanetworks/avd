@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.109/24
 ```
@@ -501,10 +502,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet5  |  routed  | - |  172.31.255.33/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.35/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet5  |  routed  | - |  172.31.255.37/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet5  |  routed  | - |  172.31.255.39/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet5  |  routed  | - |  172.31.255.33/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.35/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet5  |  routed  | - |  172.31.255.37/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet5  |  routed  | - |  172.31.255.39/31  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -512,38 +513,46 @@ vlan 4094
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   no shutdown
    no switchport
    ip address 172.31.255.33/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   no shutdown
    no switchport
    ip address 172.31.255.35/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   no shutdown
    no switchport
    ip address 172.31.255.37/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   no shutdown
    no switchport
    ip address 172.31.255.39/31
 !
 interface Ethernet5
    description MLAG_PEER_DC1-SVC3A_Ethernet5
+   no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
    description MLAG_PEER_DC1-SVC3A_Ethernet6
+   no shutdown
    channel-group 5 mode active
 !
 interface Ethernet7
    description DC1-L2LEAF2A_Ethernet2
+   no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
    description DC1-L2LEAF2B_Ethernet2
+   no shutdown
    channel-group 7 mode active
 ```
 
@@ -555,8 +564,8 @@ interface Ethernet8
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | access | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -564,6 +573,7 @@ interface Ethernet8
 !
 interface Port-Channel5
    description MLAG_PEER_DC1-SVC3A_Po5
+   no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
@@ -572,6 +582,7 @@ interface Port-Channel5
 !
 interface Port-Channel7
    description DC1_L2LEAF2_Po1
+   no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
@@ -605,14 +616,17 @@ interface Port-Channel7
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.9/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
+   no shutdown
    ip address 192.168.254.8/32
 !
 interface Loopback100
    description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.9/32
 ```
@@ -638,17 +652,17 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone_1  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan311 |  Tenant_C_OP_Zone_2  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
-| Vlan3009 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  -  |  -  |
-| Vlan3010 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone  |  Tenant_A_WEB_Zone  |  -  |  -  |
-| Vlan3011 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone  |  Tenant_A_APP_Zone  |  -  |  -  |
-| Vlan3012 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone  |  Tenant_A_DB_Zone  |  -  |  -  |
-| Vlan3013 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone  |  Tenant_A_WAN_Zone  |  -  |  -  |
-| Vlan3019 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone  |  Tenant_B_OP_Zone  |  -  |  -  |
-| Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  -  |  -  |
-| Vlan3029 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone  |  Tenant_C_OP_Zone  |  -  |  -  |
-| Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  -  |  -  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  -  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan3009 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan3010 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan3011 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone  |  Tenant_A_APP_Zone  |  -  |  false  |
+| Vlan3012 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone  |  Tenant_A_DB_Zone  |  -  |  false  |
+| Vlan3013 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone  |  Tenant_A_WAN_Zone  |  -  |  false  |
+| Vlan3019 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone  |  Tenant_B_OP_Zone  |  -  |  false  |
+| Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  -  |  false  |
+| Vlan3029 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone  |  Tenant_C_OP_Zone  |  -  |  false  |
+| Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  -  |  false  |
+| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -782,55 +796,66 @@ interface Vlan350
 !
 interface Vlan3009
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3010
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   no shutdown
    vrf Tenant_A_WEB_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3011
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   no shutdown
    vrf Tenant_A_APP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3012
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   no shutdown
    vrf Tenant_A_DB_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3013
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   no shutdown
    vrf Tenant_A_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3019
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
+   no shutdown
    vrf Tenant_B_OP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3020
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   no shutdown
    vrf Tenant_B_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3029
    description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
+   no shutdown
    vrf Tenant_C_OP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3030
    description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   no shutdown
    vrf Tenant_C_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
+   no shutdown
    ip address 10.255.251.7/31
 !
 interface Vlan4094
    description MLAG_PEER
+   no shutdown
    no autostate
    ip address 10.255.252.7/31
 ```

@@ -101,6 +101,8 @@ vrfs:
 port_channel_interfaces:
   Port-Channel1:
     description: DC1-LEAF2A_Po7
+    type: switched
+    shutdown: false
     vlans: 110-111,120-121,130-131
     mode: trunk
 ethernet_interfaces:
@@ -109,6 +111,8 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: l3leaf
     description: DC1-LEAF2A_Ethernet7
+    type: switched
+    shutdown: false
     channel_group:
       id: 1
       mode: active
@@ -117,12 +121,15 @@ ethernet_interfaces:
     peer_interface: Ethernet7
     peer_type: l3leaf
     description: DC1-LEAF2B_Ethernet7
+    type: switched
+    shutdown: false
     channel_group:
       id: 1
       mode: active
 management_interfaces:
   Management1:
     description: oob_management
+    shutdown: false
     vrf: MGMT
     ip_address: 192.168.200.112/24
     gateway: 192.168.200.5

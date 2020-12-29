@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.110/24
 ```
@@ -386,10 +387,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.41/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet6  |  routed  | - |  172.31.255.43/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet6  |  routed  | - |  172.31.255.45/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet6  |  routed  | - |  172.31.255.47/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.41/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet6  |  routed  | - |  172.31.255.43/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet6  |  routed  | - |  172.31.255.45/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet6  |  routed  | - |  172.31.255.47/31  |  default  |  1500  |  false  |  -  |  -  |
 
 #### ISIS
 
@@ -406,6 +407,7 @@ vlan 4094
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   no shutdown
    no switchport
    ip address 172.31.255.41/31
    isis enable EVPN_UNDERLAY
@@ -414,6 +416,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet6
+   no shutdown
    no switchport
    ip address 172.31.255.43/31
    isis enable EVPN_UNDERLAY
@@ -422,6 +425,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet6
+   no shutdown
    no switchport
    ip address 172.31.255.45/31
    isis enable EVPN_UNDERLAY
@@ -430,6 +434,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet6
+   no shutdown
    no switchport
    ip address 172.31.255.47/31
    isis enable EVPN_UNDERLAY
@@ -438,10 +443,12 @@ interface Ethernet4
 !
 interface Ethernet5
    description MLAG_PEER_DC1-BL1B_Ethernet5
+   no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
    description MLAG_PEER_DC1-BL1B_Ethernet6
+   no shutdown
    channel-group 5 mode active
 ```
 
@@ -453,7 +460,7 @@ interface Ethernet6
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-BL1B_Po5 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-BL1B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -461,6 +468,7 @@ interface Ethernet6
 !
 interface Port-Channel5
    description MLAG_PEER_DC1-BL1B_Po5
+   no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
@@ -499,12 +507,14 @@ interface Port-Channel5
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.10/32
    isis enable EVPN_UNDERLAY
    isis passive
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
+   no shutdown
    ip address 192.168.254.10/32
    isis enable EVPN_UNDERLAY
    isis passive
@@ -516,8 +526,8 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  -  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -540,6 +550,7 @@ interface Loopback1
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
+   no shutdown
    ip address 10.255.251.10/31
    isis enable EVPN_UNDERLAY
    isis metric 50
@@ -547,6 +558,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   no shutdown
    no autostate
    ip address 10.255.252.10/31
 ```

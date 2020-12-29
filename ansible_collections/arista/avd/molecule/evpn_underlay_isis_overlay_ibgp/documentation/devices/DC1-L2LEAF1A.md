@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.112/24
 ```
@@ -348,10 +349,12 @@ No VLANs defined
 !
 interface Ethernet1
    description DC1-LEAF2A_Ethernet7
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
    description DC1-LEAF2B_Ethernet7
+   no shutdown
    channel-group 1 mode active
 ```
 
@@ -363,7 +366,7 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | - | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -371,6 +374,7 @@ interface Ethernet2
 !
 interface Port-Channel1
    description DC1-LEAF2A_Po7
+   no shutdown
    switchport
    switchport trunk allowed vlan 
    switchport mode trunk

@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.101/24
 ```
@@ -337,13 +338,13 @@ No VLANs defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet1  |  routed  | - |  172.31.255.0/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet1  |  routed  | - |  172.31.255.8/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet1  |  routed  | - |  172.31.255.16/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet1  |  routed  | - |  172.31.255.24/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet1  |  routed  | - |  172.31.255.32/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet1  |  routed  | - |  172.31.255.40/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet1  |  routed  | - |  172.31.255.48/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet1  |  routed  | - |  172.31.255.0/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet1  |  routed  | - |  172.31.255.8/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet1  |  routed  | - |  172.31.255.16/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet1  |  routed  | - |  172.31.255.24/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet1  |  routed  | - |  172.31.255.32/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet1  |  routed  | - |  172.31.255.40/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet1  |  routed  | - |  172.31.255.48/31  |  default  |  1500  |  false  |  -  |  -  |
 
 #### OSPF
 | Interface | Channel Group | Area | Cost | Mode |
@@ -362,6 +363,7 @@ No VLANs defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.0/31
    ip ospf network point-to-point
@@ -369,6 +371,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.8/31
    ip ospf network point-to-point
@@ -376,6 +379,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.16/31
    ip ospf network point-to-point
@@ -383,6 +387,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.24/31
    ip ospf network point-to-point
@@ -390,6 +395,7 @@ interface Ethernet4
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.32/31
    ip ospf network point-to-point
@@ -397,6 +403,7 @@ interface Ethernet5
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.40/31
    ip ospf network point-to-point
@@ -404,6 +411,7 @@ interface Ethernet6
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet1
+   no shutdown
    no switchport
    ip address 172.31.255.48/31
    ip ospf network point-to-point
@@ -437,6 +445,7 @@ No port-channels defined
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.1/32
    ip ospf area 0.0.0.0
 ```
