@@ -1230,7 +1230,7 @@ router_bgp:
     - "< bgp command as string >"
   peer_groups:
     < peer_group_name_1>:
-      type: < ipv4 | evpn | rtc >
+      type: < ipv4 | evpn >
       description: "< description as string >"
       shutdown: < true | false >
       peer_filter: < peer_filter >
@@ -1344,9 +1344,7 @@ router_bgp:
         activate: < true | false >
         default_route_target:
           only: < true | false >
-          disabled: < true | false >
-          encoding_origin_as_omit:
-            disabled: < true | false >
+          encoding_origin_as_omit: < true | false >
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
