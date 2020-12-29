@@ -4,17 +4,11 @@
 
 STP mode running: **{{ spanning_tree.mode }}**
 {%     if spanning_tree.mode == "mstp" %}
-{%         if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
-Global BPDU Guard for Edge ports is enabled.
-{%         endif %}
 {%         if spanning_tree.mst is defined and spanning_tree.mst is not none %}
 {%             if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
 MST PSVT Border is enabled.
 {%             endif %}
 {%         endif %}
-{%     if spanning_tree.no_spanning_tree_vlan is defined %}
-Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
-{%     endif %}
 
 ### MSTP Instance and Priority
 
@@ -25,25 +19,52 @@ Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
 | {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority }} |
 {%            endfor %}
 {%         endif %}
-{%     endif %}
 
 ### MST Configuration
 
-{%     if spanning_tree.mst.configuration is defined and spanning_tree.configuration is not none %}
+{%         if spanning_tree.mst.configuration is defined and spanning_tree.configuration is not none %}
 | Variable | Value |
 | -------- | -------- |
-{%         if spanning_tree.mst.configuration.name is defined and spanning_tree.configuration.name is not none %}
+{%             if spanning_tree.mst.configuration.name is defined and spanning_tree.configuration.name is not none %}
 | Name | {{ spanning_tree.mst.configuration.name }} |
-{%         endif %}
-{%         if spanning_tree.mst.configuration.revision is defined and spanning_tree.configuration.revision is not none %}
+{%             endif %}
+{%             if spanning_tree.mst.configuration.revision is defined and spanning_tree.configuration.revision is not none %}
 | Revision | {{ spanning_tree.mst.configuration.revision }} |
-{%         endif %}
-{%         if spanning_tree.mst.configuration.instances is defined and spanning_tree.configuration.instances is not none %}
-{%             for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
+{%             endif %}
+{%             if spanning_tree.mst.configuration.instances is defined and spanning_tree.configuration.instances is not none %}
+{%                 for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
 | Instance {{ instance }} | VLAN(s) {% if spanning_tree.mst.configuration.instances[instance].vlans is defined and spanning_tree.mst.configuration.instances[instance].vlans is not none %}{{ spanning_tree.mst.configuration.instances[instance].vlans }} |
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+{%     if spanning_tree.mode == "rapid-pvst" %}
+### Rapid-PVST Instance and Priority
+
+| Instance(s) | Priority |
+| -------- | -------- |
+{%         if spanning_tree.rapid_pvst_instances is defined and spanning_tree.rapid_pvst_instances is not none  %}
+{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
+| {{ vlan_id }} | {% if spanning_tree.rapid_pvst_instances[vlan_id].priority is defined and spanning_tree.rapid_pvst_instances[vlan_id].priority is not none %} | {{ spanning_tree.rapid_pvst_instances[vlan_id].priority }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%     endif %}
+
+### Global Spanning-Tree Settings
+
+{%     if spanning_tree.mode == "rstp" %}
+{%         if spanning_tree.rstp_priority is defined and spanning_tree.rstp_priority is not none  %}
+Global RSTP priority: {{ spanning_tree.rstp_priority }}
+{%         endif %}
+{%     endif %}
+{%     if spanning_tree.no_spanning_tree_vlan is defined %}
+Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
+{%     endif %}
+{%     if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
+Global BPDU Guard for Edge ports is enabled.
 {%     endif %}
 
 ## Spanning Tree Device Configuration
