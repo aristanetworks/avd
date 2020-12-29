@@ -185,30 +185,26 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_rtc is defined and router_bgp.address_family_rtc is not none %}
    !
    address-family rt-membership
-{%       if router_bgp.address_family_rtc.peer_groups is defined and router_bgp.address_family_rtc.peer_groups is not none %}
-{%          for peer_group in router_bgp.address_family_rtc.peer_groups | arista.avd.natural_sort %}
-{%             if router_bgp.address_family_rtc.peer_groups[peer_group].activate == true %}
+{%         if router_bgp.address_family_rtc.peer_groups is defined and router_bgp.address_family_rtc.peer_groups is not none %}
+{%            for peer_group in router_bgp.address_family_rtc.peer_groups | arista.avd.natural_sort %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].activate == true %}
       neighbor {{ peer_group }} activate
-{%             elif router_bgp.address_family_rtc.peer_groups[peer_group].activate == false %}
+{%               elif router_bgp.address_family_rtc.peer_groups[peer_group].activate == false %}
       no neighbor {{ peer_group }} activate
-{%             endif %}
-{%             if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target is defined %}
-{%                 if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only is defined and router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only == true %}
+{%               endif %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target is defined %}
+{%                   if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only is defined and router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only == true %}
       neighbor {{ peer_group }} default-route-target only
-{%                 elif router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.disabled is defined and router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.disabled is defined == true %}
-      neighbor {{ peer_group }} default-route-target disabled
-{%                 endif %}
-{%             else %}
+{%                   else %}
       neighbor {{ peer_group }} default-route-target
-{%             endif %}
-{%             if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.encoding_origin_as_omit is defined %}
+{%                   endif %}
+{%               endif %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.encoding_origin_as_omit is defined %}
       neighbor {{ peer_group }} default-route-target encoding origin-as omit
-{%             elif router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.encoding_origin_as_omit.disabled is defined and router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.encoding_origin_as_omit.disabled is defined == true %}
-      neighbor {{ peer_group }} default-route-target encoding origin-as omit disabled
-{%             endif %}
-{%          endfor %}
+{%               endif %}
+{%            endfor %}
+{%         endif %}
 {%       endif %}
-{%     endif %}
 {# address family ipv4 activation #}
 {%     if router_bgp.address_family_ipv4 is defined and router_bgp.address_family_ipv4 is not none %}
    !
