@@ -16,7 +16,7 @@
 
 - name: save collected commands in text files
   template:
-    src: command.j2
+    src: device_text_command.j2
     dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
   loop: "{{ cli_output.results }}"
   when: '"text" in output_format'
