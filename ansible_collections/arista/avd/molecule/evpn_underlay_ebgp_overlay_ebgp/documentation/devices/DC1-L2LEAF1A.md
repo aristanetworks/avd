@@ -403,7 +403,7 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | access | 110-111,120-121,130-131,160-161 | - | - | - | - | 1 | - |
+| Port-Channel1 | DC1-LEAF2A_Po7 | switched | access | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -413,7 +413,6 @@ interface Port-Channel1
    description DC1-LEAF2A_Po7
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
-   mlag 1
 ```
 
 ## Loopback Interfaces
