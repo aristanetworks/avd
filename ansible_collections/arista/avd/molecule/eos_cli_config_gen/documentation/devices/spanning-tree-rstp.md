@@ -1,4 +1,4 @@
-# spanning-tree
+# spanning-tree-rstp
 
 # Table of Contents
 
@@ -211,49 +211,19 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
-STP mode running: **mstp**
-MST PSVT Border is enabled.
-
-### MSTP Instance and Priority
-
-| Instance(s) | Priority |
-| -------- | -------- |
-| 0 | 4096 |
-| 100-200 | 8192 |
-
-### MST Configuration
-
-| Variable | Value |
-| -------- | -------- |
-| Name | test |
-| Revision | 5 |
-| Instance 2 | VLAN(s) 15,16,17,18 |
-| Instance 3 | VLAN(s) 15 |
-| Instance 4 | VLAN(s) 200-300 |
+STP mode running: **rstp**
 
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **105,202,505-506**
-Global BPDU Guard for Edge ports is enabled.
+Global RSTP priority: 8192
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
-spanning-tree edge-port bpduguard default
-spanning-tree mode mstp
-no spanning-tree vlan-id 105,202,505-506
-spanning-tree mst 0 priority 4096
-spanning-tree mst 100-200 priority 8192
-spanning-tree mst pvst border
-!
-spanning-tree mst configuration
-   name test
-   revision 5
-   instance 2 vlan 15,16,17,18
-   instance 3 vlan 15
-   instance 4 vlan 200-300
+spanning-tree mode rstp
+spanning-tree priority 8192
 ```
 
 # Internal VLAN Allocation Policy
