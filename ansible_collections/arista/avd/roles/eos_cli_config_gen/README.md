@@ -1409,15 +1409,15 @@ router_bgp:
           < neighbor_ip_address >:
             remote_as: < asn >
             description: < description >
-            next_hop_self: < true >
+            next_hop_self: < true | false >
             timers: < keepalive_hold_timer_values >
-            send_community: < standard | extended | leave empty for both >
+            send_community: < string | leave empty for all communitiesniy >
           < neighbor_ip_address >:
             remote_as: < asn >
             description: < description >
-            next_hop_self: < true >
+            next_hop_self: < true | false >
             timers: < keepalive_hold_timer_values >
-            send_community: < standard | extended | leave empty for both >
+            send_community: < string | leave empty for all communities >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >

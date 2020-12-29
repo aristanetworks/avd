@@ -366,13 +366,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
-{%                          if router_bgp.vrfs[vrf].neighbors[neighbor].send_community == 'standard' %}
-      neighbor {{ neighbor }} send-community standard
-{%                          elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community == 'extended' %}
-      neighbor {{ neighbor }} send-community extended
-{%                          else %}
-      neighbor {{ neighbor }} send-community
-{%                          endif %}
+      neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
 {%                      endif %}
 {%                 endfor %}
 {%             endif %}
