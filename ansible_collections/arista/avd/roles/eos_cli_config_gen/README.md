@@ -820,12 +820,24 @@ loopback_interfaces:
     isis_network_point_to_point: < boolean >
 ```
 
+### Interface Defaults
+
+```yaml
+interface_defaults:
+  ethernet:
+    shutdown: < true | false >
+  mtu: < mtu >
+  switchport:
+    type: < routed | switched >
+```
+
 ### Management Interfaces
 
 ```yaml
 management_interfaces:
   < Management_interface_1 >:
     description: < description >
+    shutdown: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
