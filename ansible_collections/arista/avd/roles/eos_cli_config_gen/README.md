@@ -499,7 +499,7 @@ hardware:
 spanning_tree:
   edge_port:
     bpduguard_default: < true | false >
-  mode: < mstp | rstp | rapid-pvst >
+  mode: < mstp | rstp | rapid-pvst | none >
   rstp_priority: < priority >
   mst:
     pvst_border: < true | false >
