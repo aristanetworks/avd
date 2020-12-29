@@ -251,6 +251,8 @@ No VLANs defined
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet100.101 |  IFL for TENANT01  |  switchport  | - |  10.1.1.3/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet100.102 |  IFL for TENANT02  |  switchport  | - |  10.1.2.3/31  |  C2  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -273,6 +275,20 @@ interface Ethernet6
    description SRV-POD02_Eth1
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+!
+interface Ethernet100
+   no switchport
+!
+interface Ethernet100.101
+   description IFL for TENANT01
+   encapsulation dot1q vlan 101
+   ip address 10.1.1.3/31
+!
+interface Ethernet100.102
+   description IFL for TENANT02
+   encapsulation dot1q vlan 102
+   vrf C2
+   ip address 10.1.2.3/31
 ```
 
 ## Port-Channel Interfaces

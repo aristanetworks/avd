@@ -36,3 +36,21 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+
+  Ethernet100:
+    type: routed
+  Ethernet100.101:
+    description: IFL for TENANT01
+    mtu: 1500
+    ip_address: 10.1.1.3/31
+    encapsulation:
+      dot1q:
+        vlan: 101
+  Ethernet100.102:
+    description: IFL for TENANT02
+    mtu: 1500
+    ip_address: 10.1.2.3/31
+    vrf: C2
+    encapsulation:
+      dot1q:
+        vlan: 102

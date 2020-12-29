@@ -281,6 +281,13 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | access | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | access | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel100.101 | IFL for TENANT01 | routed | - | 10.1.1.3/31 | default | 1500 | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | routed | - | 10.1.2.3/31 | C2 | 1500 | - | - | - |
+
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -308,6 +315,22 @@ interface Port-Channel50
        route-target import 03:03:02:02:01:01
    !
    lacp system-id 0303.0202.0101
+!
+interface Port-Channel100
+   no switchport
+!
+interface Port-Channel100.101
+   description IFL for TENANT01
+   mtu 1500
+   encapsulation dot1q vlan 101
+   ip address 10.1.1.3/31
+!
+interface Port-Channel100.102
+   description IFL for TENANT02
+   mtu 1500
+   encapsulation dot1q vlan 102
+   vrf C2
+   ip address 10.1.2.3/31
 ```
 
 ## Loopback Interfaces
