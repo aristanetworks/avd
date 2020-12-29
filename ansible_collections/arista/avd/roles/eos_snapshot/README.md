@@ -54,8 +54,8 @@ The following default variables are defined, and can be modified as desired:
 ---
 
 root_dir: '{{ inventory_dir }}'
-commands_backup_dir_name: 'commands'
-commands_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
+snapshots_backup_dir_name: 'commands'
+snapshots_backup_dir: '{{ root_dir }}/{{ commands_backup_dir_name }}'
 
 # list of desired formats. Supported values are markdown, json and text.
 # text: one file per device and show command
@@ -68,7 +68,7 @@ output_format:
  # - json
  # - yaml
 
-commands_to_collect:
+commands_list:
   - show lldp neighbors
   - show ip interface brief
   - show interfaces description
