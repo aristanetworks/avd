@@ -8,6 +8,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
    shutdown
+{%         elif ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == false %}
+   no shutdown
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
    speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
@@ -20,6 +22,8 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}
    no switchport
+{%             else %}
+   switchport
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined and ethernet_interfaces[ethernet_interface].flowcontrol is not none %}
 {%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined and ethernet_interfaces[ethernet_interface].flowcontrol.received is not none %}

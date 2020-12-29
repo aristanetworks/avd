@@ -8,12 +8,16 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == true %}
    shutdown
+{%         elif port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == false %}
+   no shutdown
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %}
    mtu {{ port_channel_interfaces[port_channel_interface].mtu }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
    no switchport
+{%         else %}
+   switchport
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "access" %}
    switchport access vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
