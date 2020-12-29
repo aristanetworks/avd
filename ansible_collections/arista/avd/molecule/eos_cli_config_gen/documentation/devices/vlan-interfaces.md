@@ -308,6 +308,7 @@ No loopback interfaces defined
 !
 interface Vlan24
    description SVI Description
+   no shutdown
    ip address virtual 10.10.24.1/24
    ipv6 address 1b11:3a00:22b0:6::15/64
    ipv6 nd managed-config-flag
@@ -316,6 +317,7 @@ interface Vlan24
 !
 interface Vlan41
    description SVI Description
+   no shutdown
    ip address virtual 10.10.41.1/24
    ip helper-address 10.10.64.150  source-interface Loopback0
    ip helper-address 10.10.96.150  source-interface Loopback0
@@ -323,10 +325,12 @@ interface Vlan41
 !
 interface Vlan42
    description SVI Description
+   no shutdown
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
    description SVI Description
+   no shutdown
    ip address virtual 10.10.75.1/24
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
@@ -335,6 +339,7 @@ interface Vlan75
 !
 interface Vlan83
    description SVI Description
+   no shutdown
    ip address virtual 10.10.83.1/24
 !
 interface Vlan84
@@ -359,6 +364,7 @@ interface Vlan88
 !
 interface Vlan89
    description SVI Description
+   no shutdown
    ip address virtual 10.10.144.3/20
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
@@ -370,12 +376,14 @@ interface Vlan89
 !
 interface Vlan501
    description SVI Description
+   no shutdown
    ip address 10.50.26.29/27
    ipv6 address 1b11:3a00:22b0:0088::207/127
    ipv6 nd ra disabled
 !
 interface Vlan1001
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.1.1/24
    ipv6 address a1::1/64
@@ -384,6 +392,7 @@ interface Vlan1001
 !
 interface Vlan1002
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.2.1/24
    ipv6 address a2::1/64

@@ -362,6 +362,7 @@ interface Loopback1
 !
 interface Vlan110
    description PR01-DEMO
+   no shutdown
    vrf TENANT_A_PROJECT01
    ip address virtual 10.1.10.254/24
 !

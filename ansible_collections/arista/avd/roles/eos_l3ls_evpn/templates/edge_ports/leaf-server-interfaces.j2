@@ -13,6 +13,8 @@
 {%                 if adapter.speed is defined %}
     speed: {{ adapter.speed }}
 {%                 endif %}
+    type: switched
+    shutdown: false
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
 {%                 if port_profiles[adapter.profile].spanning_tree_portfast is defined %}

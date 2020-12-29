@@ -97,6 +97,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.113/24
 ```
@@ -451,18 +452,22 @@ vlan 4094
 !
 interface Ethernet1
    description DC1-SVC3A_Ethernet7
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
    description DC1-SVC3B_Ethernet7
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet3
    description MLAG_PEER_DC1-L2LEAF2B_Ethernet3
+   no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
    description MLAG_PEER_DC1-L2LEAF2B_Ethernet4
+   no shutdown
    channel-group 3 mode active
 ```
 
@@ -474,8 +479,8 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-SVC3A_Po7 | switched | access | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | access | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel1 | DC1-SVC3A_Po7 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -483,12 +488,16 @@ interface Ethernet4
 !
 interface Port-Channel1
    description DC1-SVC3A_Po7
+   no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
    mlag 1
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-L2LEAF2B_Po3
+   no shutdown
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
@@ -504,7 +513,7 @@ No loopback interfaces defined
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -520,6 +529,7 @@ No loopback interfaces defined
 !
 interface Vlan4094
    description MLAG_PEER
+   no shutdown
    no autostate
    ip address 10.255.252.16/31
 ```

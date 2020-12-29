@@ -8,6 +8,7 @@
 {%                 endif %}
   Loopback{{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback }}:
     description: {{ vrf }}_VTEP_DIAGNOSTICS
+    shutdown: false
     vrf: {{ vrf }}
     ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
 {%             endif %}

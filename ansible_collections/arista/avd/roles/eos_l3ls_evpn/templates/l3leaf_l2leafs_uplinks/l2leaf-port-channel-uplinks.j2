@@ -21,6 +21,8 @@
 {%             endif %}
   Port-Channel{{ channel_group_id }}:
     description: {{ parent_l3leafs[loop.index0]}}_{{ 'Po' + l3leaf.channel_group_id }}
+    type: switched
+    shutdown: false
     vlans: {{ leaf.vlans | arista.avd.list_compress }}
     mode: trunk
 {%             if leaf.mlag == true %}

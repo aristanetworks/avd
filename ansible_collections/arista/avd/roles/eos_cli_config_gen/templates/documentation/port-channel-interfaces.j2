@@ -9,7 +9,7 @@
 {%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type != "routed" %}
 {%             set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%             set type = port_channel_interfaces[port_channel_interface].type | default ("switched")%}
-{%             set mode = port_channel_interfaces[port_channel_interface].type | default ("access")%}
+{%             set mode = port_channel_interfaces[port_channel_interface].mode | default ("access")%}
 {%             set vlans = port_channel_interfaces[port_channel_interface].vlans | default ("-")%}
 {%             set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ("-")%}
 {%             if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
