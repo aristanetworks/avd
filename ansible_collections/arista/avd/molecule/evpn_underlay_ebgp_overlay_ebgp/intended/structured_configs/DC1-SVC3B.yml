@@ -409,6 +409,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
     vrf: Tenant_A_APP_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan140:
     tenant: Tenant_A
     tags:
@@ -433,6 +434,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
     vrf: Tenant_A_DB_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan110:
     tenant: Tenant_A
     tags:
@@ -460,6 +462,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
     vrf: Tenant_A_OP_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan150:
     tenant: Tenant_A
     tags:
@@ -475,6 +478,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan120:
     tenant: Tenant_A
     tags:
@@ -504,6 +508,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
     vrf: Tenant_A_WEB_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan210:
     tenant: Tenant_B
     tags:
@@ -527,6 +532,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
     vrf: Tenant_B_OP_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan250:
     tenant: Tenant_B
     tags:
@@ -542,6 +548,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
     vrf: Tenant_B_WAN_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan310:
     tenant: Tenant_C
     tags:
@@ -565,6 +572,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
     vrf: Tenant_C_OP_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
   Vlan350:
     tenant: Tenant_C
     tags:
@@ -580,6 +588,7 @@ vlan_interfaces:
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
     vrf: Tenant_C_WAN_Zone
     ip_address: 10.255.251.7/31
+    mtu: 1500
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
