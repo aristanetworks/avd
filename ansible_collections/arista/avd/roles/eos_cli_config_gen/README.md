@@ -1437,6 +1437,7 @@ router_multicast:
 router_ospf:
   process_ids:
     < process_id >:
+      vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
