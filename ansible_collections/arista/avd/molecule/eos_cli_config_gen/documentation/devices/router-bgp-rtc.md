@@ -70,6 +70,8 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -118,6 +120,10 @@ DNS domain lookup not defined
 ## NTP
 
 No NTP servers defined
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -281,6 +287,10 @@ Static routes not defined
 
 IPv6 static routes not defined
 
+## ARP
+
+Global ARP timeout not defined.
+
 ## Router ISIS
 
 Router ISIS not defined
@@ -304,6 +314,18 @@ Router ISIS not defined
 ### Router BGP Peer Groups
 
 #### EVPN-OVERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Remote_as | 65001 |
+| Source | Loopback0 |
+| Bfd | true |
+| Ebgp multihop | 3 |
+| Send community | true |
+| Maximum routes | 0 (no limit) |
+
+#### EVPN-OVERLAY-RS-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -360,6 +382,14 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS peer group
+   neighbor EVPN-OVERLAY-RS-PEERS remote-as 65001
+   neighbor EVPN-OVERLAY-RS-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-RS-PEERS bfd
+   neighbor EVPN-OVERLAY-RS-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-RS-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-RS-PEERS send-community
+   neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    !
@@ -387,8 +417,10 @@ router bgp 65101
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target only
-      neighbor EVPN-OVERLAY-PEERS default-route-target encoding origin-as omit
+      neighbor EVPN-OVERLAY-PEERS default-route-target
+      neighbor EVPN-OVERLAY-RS-PEERS activate
+      neighbor EVPN-OVERLAY-RS-PEERS default-route-target only
+      neighbor EVPN-OVERLAY-RS-PEERS default-route-target encoding origin-as omit
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -497,6 +529,13 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP relay not defined
+
+# Errdisable
+
+Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 
