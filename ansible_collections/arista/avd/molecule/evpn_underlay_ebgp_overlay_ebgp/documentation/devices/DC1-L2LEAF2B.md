@@ -292,7 +292,7 @@ No event handler defined
 | --------- | --------------- | ------------ | --------- |
 | DC1_L2LEAF2 | Vlan4094 | 10.255.252.16 | Port-Channel3 |
 
-Dual primary detection is enabled. The detection delay is 5 seconds.
+Dual primary detection is disabled.
 
 ## MLAG Device Configuration
 
@@ -302,9 +302,7 @@ mlag configuration
    domain-id DC1_L2LEAF2
    local-interface Vlan4094
    peer-address 10.255.252.16
-   peer-address heartbeat 192.168.200.113 vrf MGMT
    peer-link Port-Channel3
-   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```

@@ -153,6 +153,7 @@ l2leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
     DC1_L2LEAF2:
+      mlag_dual_primary_detection: false
       nodes:
         DC1-L2LEAF2A:
           id: 9
