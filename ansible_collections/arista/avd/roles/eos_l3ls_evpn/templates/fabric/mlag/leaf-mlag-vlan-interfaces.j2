@@ -3,6 +3,7 @@
 {%     if type == 'l3leaf' %}
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
+    shutdown: false
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%         if underlay_routing_protocol|lower == "ospf" %}
@@ -17,6 +18,7 @@
 {%     endif %}
   Vlan4094:
     description: MLAG_PEER
+    shutdown: false
     ip_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(leaf.mlag_ip) }}/31
     no_autostate: true
     mtu: {{ p2p_uplinks_mtu }}
