@@ -71,6 +71,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -147,6 +148,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -462,6 +467,7 @@ interface Ethernet7
 !
 interface Port-Channel5
    description MLAG_PEER_DC1-LEAF2A_Po5
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -469,6 +475,7 @@ interface Port-Channel5
 !
 interface Port-Channel7
    description DC1_L2LEAF1_Po1
+   switchport
    switchport trunk allowed vlan 
    switchport mode trunk
    mlag 7
@@ -744,6 +751,8 @@ router bgp 65000
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    !
    address-family evpn
+      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
+      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
@@ -903,6 +912,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

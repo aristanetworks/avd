@@ -71,6 +71,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -147,6 +148,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -396,11 +401,13 @@ interface Ethernet4
 !
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
+   switchport
    switchport access vlan 110
 ```
 
@@ -468,6 +475,7 @@ interface Loopback1
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1
+   no shutdown
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.20.1/24
    ip helper-address 1.1.1.1 vrf TEST  source-interface lo100
@@ -481,11 +489,13 @@ interface Vlan121
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
+   no shutdown
    vrf Tenant_A_APP_Zone
    ip address virtual 10.1.30.1/24
 !
 interface Vlan131
    description Tenant_A_APP_Zone_2
+   no shutdown
    vrf Tenant_A_APP_Zone
    ip address virtual 10.1.31.1/24
 ```
@@ -897,6 +907,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

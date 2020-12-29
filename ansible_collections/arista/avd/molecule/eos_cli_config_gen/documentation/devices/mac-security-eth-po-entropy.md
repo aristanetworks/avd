@@ -261,6 +261,7 @@ No VLANs defined
 ```eos
 !
 interface Ethernet1
+   switchport
    ip address 1.1.1.1/24
    mac security profile A1
 ```
@@ -281,6 +282,7 @@ interface Ethernet1
 !
 interface Port-Channel3
    description L2-PORT
+   switchport
    switchport trunk allowed vlan 1-5
    switchport mode trunk
 ```

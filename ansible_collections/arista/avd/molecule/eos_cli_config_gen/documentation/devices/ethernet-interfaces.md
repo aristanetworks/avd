@@ -263,6 +263,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description SRV-POD02_Eth1
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    storm-control all level 10
@@ -271,6 +272,7 @@ interface Ethernet2
 !
 interface Ethernet6
    description SRV-POD02_Eth1
+   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
 ```

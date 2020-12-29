@@ -401,6 +401,7 @@ interface Ethernet4
 !
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
+   switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
@@ -412,6 +413,7 @@ interface Ethernet6
 !
 interface Ethernet7
    description server02_SINGLE_NODE_Eth1
+   switchport
    switchport access vlan 110
 ```
 
@@ -479,6 +481,7 @@ interface Loopback1
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1
+   no shutdown
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.20.1/24
    ip helper-address 1.1.1.1 vrf TEST  source-interface lo100
@@ -492,11 +495,13 @@ interface Vlan121
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
+   no shutdown
    vrf Tenant_A_APP_Zone
    ip address virtual 10.1.30.1/24
 !
 interface Vlan131
    description Tenant_A_APP_Zone_2
+   no shutdown
    vrf Tenant_A_APP_Zone
    ip address virtual 10.1.31.1/24
 ```

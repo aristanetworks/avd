@@ -411,6 +411,7 @@ interface Ethernet2
 !
 interface Port-Channel1
    description DC1-LEAF2A_Po7
+   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
 ```

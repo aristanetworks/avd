@@ -70,7 +70,6 @@ port_channel_interfaces:
     description: DC1-LEAF2A_Po7
     vlans: null
     mode: trunk
-    mlag: 1
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF2A
