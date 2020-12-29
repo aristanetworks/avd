@@ -500,6 +500,7 @@ spanning_tree:
   edge_port:
     bpduguard_default: < true | false >
   mode: < spanning_tree_mode >
+  rstp_priority: < priority >
   mst:
     pvst_border: < true | false >
     configuration:
@@ -513,6 +514,11 @@ spanning_tree:
     < instance_id >:
       priority: < priority >
   no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
+  rapid_pvst_instances:
+    < vlan_id >:
+      priority: < priority >
+    < vlan_id >, < vlan_id >-< vlan_id >:
+      priority: < priority >
 ```
 
 ### Platform

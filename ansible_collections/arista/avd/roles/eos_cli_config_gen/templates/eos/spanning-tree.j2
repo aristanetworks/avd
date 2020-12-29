@@ -15,6 +15,17 @@ spanning-tree mst {{ mst_instance }} priority {% if spanning_tree.mst_instances[
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%     elif spanning_tree.mode == "rapid-pvst" %}
+{%         if spanning_tree.rapid_pvst_instances is defined and spanning_tree.rapid_pvst_instances is not none  %}
+{%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
+spanning-tree vlan-id {{ vlan_id }} priority {% if spanning_tree.rapid_pvst_instances[vlan_id].priority is defined and spanning_tree.rapid_pvst_instances[vlan_id].priority is not none %}{{ spanning_tree.rapid_pvst_instances[vlan_id].priority }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     else %}
+{%         if spanning_tree.rstp_priority is defined and spanning_tree.rstp_priority is not none  %}
+spanning-tree priority {{ spanning_tree.rstp_priority }}
+{%         endif %}
 {%     endif %}
 {%     if spanning_tree.mst is defined and spanning_tree.mst is not none %}
 {%         if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
