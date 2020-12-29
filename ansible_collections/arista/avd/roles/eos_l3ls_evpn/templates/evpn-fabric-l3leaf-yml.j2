@@ -15,6 +15,8 @@
 {%             set leaf.spine_interfaces = l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants %}
+{%             elif l3leaf.defaults.filter.tenants is defined %}
+{%                 set leaf.filter_tenants = l3leaf.defaults.filter.tenants %}
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
@@ -27,6 +29,8 @@
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
 {%                 set leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
+{%             elif l3leaf.defaults.filter.tags is defined %}
+{%                 set leaf.filter_tags = l3leaf.defaults.filter.tags %}
 {%             else %}
 {%                 set leaf.filter_tags = [ 'all' ] %}
 {%             endif %}
