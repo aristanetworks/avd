@@ -559,8 +559,10 @@ l3leaf:
 
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
+
       # Enable / Disable MLAG dual primary detectiom
       mlag_dual_primary_detection: < true | false -> default true >
+
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
@@ -650,6 +652,7 @@ l3leaf:
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone ]
+      mlag_dual_primary_detection: false
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -725,7 +728,7 @@ l2leaf:
 
       # Enable / Disable MLAG dual primary detectiom
       mlag_dual_primary_detection: < true | false -> default true >
-      
+
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
