@@ -103,6 +103,11 @@
   tags:
     - loopback0_reachability
 
+- name: Validate loopback1 reachability
+  include_tasks: "loopback1_reachability.yml"
+  tags:
+    - loopback1_reachability
+
   ####################################
   ##       Validation Reports       ##
   ####################################
