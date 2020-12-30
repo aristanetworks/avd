@@ -4,6 +4,11 @@
 !
 interface {{ management_interface }}
    description {{ management_interfaces[management_interface].description }}
+{%       if management_interfaces[management_interface].shutdown is defined and management_interfaces[management_interface].shutdown == true %}
+   shutdown
+{%       elif management_interfaces[management_interface].shutdown is defined and management_interfaces[management_interface].shutdown == false %}
+   no shutdown
+{%       endif %}
 {%       if management_interfaces[management_interface].vrf is defined and management_interfaces[management_interface].vrf is ne 'default' %}
    vrf {{ management_interfaces[management_interface].vrf }}
 {%       endif %}

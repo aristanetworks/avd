@@ -7,6 +7,8 @@
     peer_interface: {{ mlag_interface }}
     peer_type: mlag_peer
     description: MLAG_PEER_{{ leaf.mlag_peer }}_{{ mlag_interface }}
+    type: switched
+    shutdown: false
     channel_group:
       id: {{ leaf.mlag_interfaces[0] | regex_findall("\d") | join }}
       mode: active

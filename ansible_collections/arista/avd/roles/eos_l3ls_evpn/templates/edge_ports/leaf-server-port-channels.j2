@@ -8,6 +8,8 @@
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ server }}_{{ adapter.port_channel.description }}
+    type: switched
+    shutdown: false
     vlans: {{ port_profiles[adapter.profile].vlans }}
     mode: {{ port_profiles[adapter.profile].mode }}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}

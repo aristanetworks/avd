@@ -1,0 +1,43 @@
+---
+# tasks file for eos_snapshot
+
+- name: Create output directory for each EOS device
+  file:
+    path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
+    state: directory
+  when: ("text" in output_format or "markdown" in output_format)
+
+- name: run show commands on remote EOS devices
+  eos_command:
+    commands: "{{ item }}"
+  with_items: "{{ commands_list }}"
+  ignore_errors: true
+  register: cli_output
+
+- name: save collected commands in text files
+  template:
+    src: device_text_command.j2
+    dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
+  loop: "{{ cli_output.results }}"
+  when: '"text" in output_format'
+
+- name: Generate json report for fabric
+  template:
+    src: fabric_json_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.json"
+  delegate_to: localhost
+  run_once: true
+  when: '"json" in output_format'
+
+- name: Generate yaml report for fabric
+  template:
+    src: fabric_yaml_output.j2
+    dest: "{{ snapshots_backup_dir }}/report.yaml"
+  delegate_to: localhost
+  run_once: true
+  when: '"yaml" in output_format'
+
+- name: Generate markdown report for fabric
+  include_tasks: "markdown.yml"
+  when:
+    - '"markdown" in output_format'

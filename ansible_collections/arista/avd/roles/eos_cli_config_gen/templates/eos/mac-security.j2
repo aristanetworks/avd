@@ -1,0 +1,32 @@
+{# eos - MAC security #}
+{% if mac_security is defined and mac_security is not none %}
+!
+mac security
+{%     if mac_security.license is defined and mac_security.license is not none %}
+   license {{ mac_security.license.license_name }} {{ mac_security.license.license_key }}
+{%     endif %}
+{%     if mac_security.fips_restrictions is defined and mac_security.fips_restrictions == true %}
+   fips restrictions
+{%     endif %}
+   !
+{%     if mac_security.profiles is defined and mac_security.profiles is not none %}
+{%         for profile in mac_security.profiles | arista.avd.natural_sort %}
+   profile {{ profile }}
+{%             if mac_security.profiles[profile].cipher is defined and mac_security.profiles[profile].cipher is not none %}
+      cipher {{ mac_security.profiles[profile].cipher }}
+{%             endif %}
+{%             if mac_security.profiles[profile].connection_keys is defined and mac_security.profiles[profile].connection_keys is not none %}
+{%                 for connection_key in mac_security.profiles[profile].connection_keys | arista.avd.natural_sort %}
+      key {{ connection_key }} 7 {{ mac_security.profiles[profile].connection_keys[connection_key].encrypted_key }}{% if mac_security.profiles[profile].connection_keys[connection_key].fallback is defined and mac_security.profiles[profile].connection_keys[connection_key].fallback == true %} fallback{% endif %}
+
+{%                 endfor %}
+{%                 if mac_security.profiles[profile].mka.session.rekey_period is defined and mac_security.profiles[profile].mka.session.rekey_period is not none %}
+      mka session rekey-period {{ mac_security.profiles[profile].mka.session.rekey_period }}
+{%                 endif %}
+{%                 if mac_security.profiles[profile].sci is defined and mac_security.profiles[profile].sci == true %}
+      sci
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

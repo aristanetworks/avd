@@ -1,6 +1,7 @@
 {# Leaf VTEP vxlan tunnel loopback source interface #}
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
 {% if leaf.mlag == true and leaf.mlag_role == "primary" %}
     ip_address: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}/32
 {% elif leaf.mlag == true and leaf.mlag_role == "secondary" %}

@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -119,6 +121,10 @@ DNS domain lookup not defined
 ## NTP
 
 No NTP servers defined
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -228,6 +234,10 @@ No VLANs defined
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
@@ -272,9 +282,9 @@ interface Ethernet50
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | access | 110,201 | - | - | - | - | 5 | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | switched | access | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -282,6 +292,7 @@ interface Ethernet50
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -289,12 +300,14 @@ interface Port-Channel3
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
+   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
+   switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    !
@@ -454,6 +467,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

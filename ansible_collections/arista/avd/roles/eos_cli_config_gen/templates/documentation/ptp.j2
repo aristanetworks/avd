@@ -1,0 +1,44 @@
+{% if ptp is defined and ptp is not none %}
+### PTP Summary
+
+| PTP setting | Value |
+| ----------- | ----- |
+{%     if ptp.clock_identity is defined and ptp.clock_identity is not none %}
+| Clock-identity | {{ ptp.clock_identity }} |
+{%     endif %}
+{%     if ptp.source is defined and ptp.source is not none %}
+{%         if ptp.source.ip is defined and ptp.source.ip is not none %}
+| Source IP | {{ ptp.source.ip }} |
+{%         endif %}
+{%     endif %}
+{%     if ptp.priority1 is defined and ptp.priority1 is not none %}
+| Priority1 | {{ ptp.priority1 }} |
+{%     endif %}
+{%     if ptp.priority2 is defined and ptp.priority2 is not none %}
+| Priority2 | {{ ptp.priority2 }} |
+{%     endif %}
+{%     if ptp.ttl is defined and ptp.ttl is not none %}
+| TTL | {{ ptp.ttl }} |
+{%     endif %}
+{%     if ptp.message_type is defined and ptp.message_type is not none %}
+{%         if ptp.message_type.general is defined and ptp.message_type.general is not none %}
+{%             if ptp.message_type.general.dscp is defined and ptp.message_type.general.dscp is not none %}
+| Msg General | DSCP {{ ptp.message_type.general.dscp }} |
+{%             endif %}
+{%         endif %}
+{%         if ptp.message_type.event is defined and ptp.message_type.event is not none %}
+{%             if ptp.message_type.event.dscp is defined and ptp.message_type.event.dscp is not none %}
+| Msg Event | DSCP {{ ptp.message_type.event.dscp }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
+
+### PTP Device Configuration
+
+```eos
+{% include 'eos/ptp.j2' %}
+```
+{% else %}
+PTP is not defined.
+{% endif %}
+

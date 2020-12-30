@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -119,6 +121,10 @@ DNS domain lookup not defined
 ## NTP
 
 No NTP servers defined
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -228,6 +234,10 @@ No VLANs defined
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 No ethernet interface defined
@@ -303,6 +313,7 @@ No loopback interfaces defined
 !
 interface Vlan24
    description SVI Description
+   no shutdown
    ip address virtual 10.10.24.1/24
    ipv6 address 1b11:3a00:22b0:6::15/64
    ipv6 nd managed-config-flag
@@ -311,6 +322,7 @@ interface Vlan24
 !
 interface Vlan41
    description SVI Description
+   no shutdown
    ip address virtual 10.10.41.1/24
    ip helper-address 10.10.64.150  source-interface Loopback0
    ip helper-address 10.10.96.150  source-interface Loopback0
@@ -318,10 +330,12 @@ interface Vlan41
 !
 interface Vlan42
    description SVI Description
+   no shutdown
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
    description SVI Description
+   no shutdown
    ip address virtual 10.10.75.1/24
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
@@ -330,6 +344,7 @@ interface Vlan75
 !
 interface Vlan83
    description SVI Description
+   no shutdown
    ip address virtual 10.10.83.1/24
 !
 interface Vlan84
@@ -354,6 +369,7 @@ interface Vlan88
 !
 interface Vlan89
    description SVI Description
+   no shutdown
    ip address virtual 10.10.144.3/20
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
@@ -365,12 +381,14 @@ interface Vlan89
 !
 interface Vlan501
    description SVI Description
+   no shutdown
    ip address 10.50.26.29/27
    ipv6 address 1b11:3a00:22b0:0088::207/127
    ipv6 nd ra disabled
 !
 interface Vlan1001
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.1.1/24
    ipv6 address a1::1/64
@@ -379,6 +397,7 @@ interface Vlan1001
 !
 interface Vlan1002
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.2.1/24
    ipv6 address a2::1/64
@@ -545,6 +564,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

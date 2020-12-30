@@ -34,6 +34,8 @@
 {%                         if p2p_link_interface_speed is defined %}
     speed: {{ p2p_link_interface_speed }}
 {%                         endif %}
+    type: switched
+    shutdown: false
     channel_group:
       id: {{ l3leaf.channel_group_id }}
       mode: active

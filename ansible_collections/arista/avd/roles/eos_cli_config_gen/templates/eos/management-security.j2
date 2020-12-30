@@ -7,4 +7,7 @@ management security
    password encryption-key common
 {%       endif %}
 {%     endif %}
+{%     if management_security.entropy_source is defined and management_security.entropy_source is not none %}
+   entropy source {{ management_security.entropy_source }}
+{%     endif %}
 {% endif %}

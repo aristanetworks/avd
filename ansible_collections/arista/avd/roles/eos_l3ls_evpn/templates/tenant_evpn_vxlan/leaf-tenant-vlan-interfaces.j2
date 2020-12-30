@@ -5,7 +5,7 @@
 {%             if loop.first %}
 ## {{ tenant }} ##
 {%             endif %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi in leaf.svis %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi|int in leaf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 set per_svi = namespace() %}
@@ -104,6 +104,7 @@
   Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
     tenant: {{ tenant }}
     type: underlay_peering
+    shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
     ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_ip ) }}/31

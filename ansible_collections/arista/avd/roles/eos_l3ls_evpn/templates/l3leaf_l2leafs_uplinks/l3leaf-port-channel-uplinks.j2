@@ -67,6 +67,8 @@
 ## L2 LEAF Uplink {{ l2leaf_node_group }} ##
   Port-Channel{{ l3_leaf.channel_group_id }}:
     description: {{ l2leaf_node_group }}_{{ 'Po' + l2leaf_uplink_interfaces[loop.index0] | regex_findall("\d") | join }}
+    type: switched
+    shutdown: false
     vlans: {{ l2_leaf.vlans | arista.avd.list_compress }}
     mode: trunk
     mlag: {{ l3_leaf.channel_group_id }}

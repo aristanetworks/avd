@@ -1,0 +1,27 @@
+{# eos - interface defaults #}
+{% if interface_defaults is defined and interface_defaults is not none %}
+{%     if ( interface_defaults.mtu is defined and interface_defaults.mtu is not none ) or ( interface_defaults.switchport is defined and interface_defaults.switchport is not none ) %}
+!
+interface defaults
+{%         if interface_defaults.ethernet is defined and interface_defaults.ethernet is not none %}
+   ethernet
+{%             if interface_defaults.ethernet.shutdown is defined and interface_defaults.ethernet.shutdown == true %}
+      shutdown
+{%             elif interface_defaults.ethernet.shutdown is defined and interface_defaults.ethernet.shutdown == false %}
+      no shutdown
+{%             endif %}
+{%         endif %}
+{%         if interface_defaults.mtu is defined and interface_defaults.mtu is not none %}
+   mtu {{ interface_defaults.mtu }}
+{%         endif %}
+{%     endif %}
+{%     if interface_defaults.switchport is defined and interface_defaults.switchport is not none %}
+{%         if interface_defaults.switchport.type is defined and interface_defaults.switchport.type == "routed" %}
+!
+switchport default mode routed
+{%         elif interface_defaults.switchport.type is defined and interface_defaults.switchport.type == "switched" %}
+!
+switchport default mode access
+{%         endif %}
+{%     endif %}
+{% endif %}

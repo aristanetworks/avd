@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -97,6 +99,10 @@
 ## NTP
 
 {% include 'documentation/ntp-servers.j2' %}
+
+## PTP
+
+{% include 'documentation/ptp.j2' %}
 
 ## Management SSH
 
@@ -199,6 +205,10 @@
 {% include 'documentation/vlans.j2' %}
 
 # Interfaces
+
+## Interface Defaults
+
+{% include 'documentation/interface-defaults.j2' %}
 
 ## Ethernet Interfaces
 
@@ -339,6 +349,9 @@
 # Errdisable
 
 {% include 'documentation/errdisable.j2' %}
+# MACsec
+
+{% include 'documentation/mac-security.j2' %}
 
 # Custom Templates
 

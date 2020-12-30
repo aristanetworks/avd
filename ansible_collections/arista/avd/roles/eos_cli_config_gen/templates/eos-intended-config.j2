@@ -18,6 +18,8 @@
 {% include 'eos/event-monitor.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
+{# interface defaults #}
+{% include 'eos/interface-defaults.j2' %}
 {# cannot be disabled in current EOS releases #}
 !
 transceiver qsfp default-mode 4x10G
@@ -31,6 +33,8 @@ transceiver qsfp default-mode 4x10G
 {% include 'eos/lldp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
+{# macsec #}
+{% include 'eos/mac-security.j2' %}
 !
 hostname {{ inventory_hostname }}
 {# domain lookup #}
@@ -43,6 +47,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/domain-list.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# ptp #}
+{% include 'eos/ptp.j2' %}
 {# radius servers #}
 {% include 'eos/radius-servers.j2' %}
 {# aaa server groups #}

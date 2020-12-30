@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -119,6 +121,10 @@ DNS domain lookup not defined
 ## NTP
 
 No NTP servers defined
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -262,6 +268,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Interface Defaults
+
+No Interface Defaults defined
 
 ## Ethernet Interfaces
 
@@ -420,6 +430,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

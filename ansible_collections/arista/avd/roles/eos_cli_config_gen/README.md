@@ -54,6 +54,7 @@
     - [VxLAN Interface](#vxlan-interface)
     - [Hardware TCAM Profiles](#hardware-tcam-profiles)
     - [MAC Address-table](#mac-address-table)
+    - [MACsec](#macsec)
     - [Router Virtual MAC Address](#router-virtual-mac-address)
     - [Virtual Source NAT](#virtual-source-nat)
     - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
@@ -86,6 +87,7 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [PTP](#ptp)
     - [Custom Templates](#custom-templates)
   - [License](#license)
 
@@ -746,10 +748,14 @@ ethernet_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    mac_security:
+      profile: < profile >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    ptp:
+      enable: < true | false >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -771,6 +777,10 @@ ethernet_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    ptp:
+      enable: < true | false >
+    mac_security:
+      profile: < profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -810,12 +820,24 @@ loopback_interfaces:
     isis_network_point_to_point: < boolean >
 ```
 
+### Interface Defaults
+
+```yaml
+interface_defaults:
+  ethernet:
+    shutdown: < true | false >
+  mtu: < mtu >
+  switchport:
+    type: < routed | switched >
+```
+
 ### Management Interfaces
 
 ```yaml
 management_interfaces:
   < Management_interface_1 >:
     description: < description >
+    shutdown: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
@@ -931,6 +953,23 @@ tcam_profile:
 ```yaml
 mac_address_table:
   aging_time: < aging_time_in_seconds >
+```
+
+### MACsec
+
+```yaml
+mac_security:
+  license:
+    license_name: < license-name >
+    license_key: < license-number >
+  fips_restrictions: < true | false >
+  profiles:
+    < profile >:
+      cipher: < valid-cipher-string >
+      connection_keys:
+        < connection_key >:
+          encrypted_key: < encrypted_key >
+          fallback: < true | false -> default >
 ```
 
 ### Router Virtual MAC Address
@@ -1295,6 +1334,8 @@ router_bgp:
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
@@ -1408,6 +1449,7 @@ router_multicast:
 router_ospf:
   process_ids:
     < process_id >:
+      vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
@@ -1537,6 +1579,7 @@ management_console:
 management_security:
   password:
     encryption_key_common : < true | false >
+  entropy_source: < entropy_source >
 ```
 
 ### Management SSH
@@ -1559,7 +1602,22 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
+### PTP
 
+```yaml
+ptp:
+  clock_identity: < clock-id >
+  source:
+    ip: < source-ip>
+  priority1: < priority1 >
+  priority2: < priority2 >
+  ttl: < ttl >
+  message_type:
+    general:
+      dscp: < dscp-value >
+    event:
+      dscp: < dscp-Value >
+```
 ### Custom Templates
 
 ```yaml

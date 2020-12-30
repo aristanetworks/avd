@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -96,6 +98,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.114/24
 ```
@@ -147,6 +150,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -419,6 +426,10 @@ vlan 4094
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
@@ -440,18 +451,22 @@ vlan 4094
 !
 interface Ethernet1
    description DC1-SVC3A_Ethernet8
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
    description DC1-SVC3B_Ethernet8
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet3
    description MLAG_PEER_DC1-L2LEAF2A_Ethernet3
+   no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
    description MLAG_PEER_DC1-L2LEAF2A_Ethernet4
+   no shutdown
    channel-group 3 mode active
 ```
 
@@ -463,8 +478,8 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-SVC3B_Po7 | switched | access | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | switched | access | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel1 | DC1-SVC3B_Po7 | switched | trunk | 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF2A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -472,12 +487,16 @@ interface Ethernet4
 !
 interface Port-Channel1
    description DC1-SVC3B_Po7
+   no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350
    switchport mode trunk
    mlag 1
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-L2LEAF2A_Po3
+   no shutdown
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group MLAG
@@ -493,7 +512,7 @@ No loopback interfaces defined
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -509,6 +528,7 @@ No loopback interfaces defined
 !
 interface Vlan4094
    description MLAG_PEER
+   no shutdown
    no autostate
    ip address 10.255.252.17/31
 ```
@@ -696,6 +716,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

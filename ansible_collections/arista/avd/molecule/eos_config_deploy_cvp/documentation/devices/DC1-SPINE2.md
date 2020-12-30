@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -96,6 +98,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.102/24
 ```
@@ -147,6 +150,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -317,6 +324,10 @@ No VLANs defined
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
@@ -332,13 +343,13 @@ No VLANs defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet2  |  routed  | - |  172.31.255.2/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet2  |  routed  | - |  172.31.255.10/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet2  |  routed  | - |  172.31.255.18/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet2  |  routed  | - |  172.31.255.26/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet2  |  routed  | - |  172.31.255.34/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet2  |  routed  | - |  172.31.255.42/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet2  |  routed  | - |  172.31.255.50/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet2  |  routed  | - |  172.31.255.2/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet2  |  routed  | - |  172.31.255.10/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet2  |  routed  | - |  172.31.255.18/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet2  |  routed  | - |  172.31.255.26/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet2  |  routed  | - |  172.31.255.34/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet2  |  routed  | - |  172.31.255.42/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet2  |  routed  | - |  172.31.255.50/31  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -346,36 +357,43 @@ No VLANs defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.2/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.10/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.18/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.26/31
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.34/31
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.42/31
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet2
+   no shutdown
    no switchport
    ip address 172.31.255.50/31
 ```
@@ -407,6 +425,7 @@ No port-channels defined
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.2/32
 ```
 
@@ -729,6 +748,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

@@ -11,13 +11,16 @@ igmp-snooping
 logging-minimal
 logging
 loopbacks-interfaces
+management-api-http
 management-gnmi
 management-ssh
+mac-security-eth-po-entropy
 mcast-pim
 none_configuration
 platform
 port-channel-interfaces
 prefix-lists
+ptp
 route-maps
 router-bgp-base
 router-bgp-evpn

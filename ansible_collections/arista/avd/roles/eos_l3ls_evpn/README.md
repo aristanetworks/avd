@@ -355,7 +355,7 @@ vxlan_vlan_aware_bundles: < boolean | default -> false >
 
 # Disable IGMP snooping at fabric level.
 # If set, it overrides per vlan settings
-default_igmp_snooping: < boolean | default -> true >
+default_igmp_snooping_enabled: < boolean | default -> true >
 
 # BFD Multihop tunning | Required.
 bfd_multihop:
@@ -560,6 +560,9 @@ l3leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
+      # Enable / Disable MLAG dual primary detectiom
+      mlag_dual_primary_detection: < true | false -> default true >
+
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
@@ -649,6 +652,7 @@ l3leaf:
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone ]
+      mlag_dual_primary_detection: false
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -721,6 +725,9 @@ l2leaf:
 
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
+
+      # Enable / Disable MLAG dual primary detectiom
+      mlag_dual_primary_detection: < true | false -> default true >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
@@ -1020,7 +1027,8 @@ tenants:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-
+        # Activate or deactivate IGMP snooping | Optional, default is true
+        igmp_snooping_enabled: < true | false >
 
   < tenant_a >:
     mac_vrf_vni_base: < 10000-16770000 >

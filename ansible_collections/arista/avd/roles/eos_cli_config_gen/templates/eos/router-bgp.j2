@@ -167,6 +167,12 @@ router bgp {{ router_bgp.as }}
    address-family evpn
 {%       if router_bgp.address_family_evpn.peer_groups is defined and router_bgp.address_family_evpn.peer_groups is not none %}
 {%          for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
+{%             if router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in is defined and router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in is not none %}
+      neighbor {{ peer_group }} route-map {{ router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in }} in
+{%             endif %}
+{%             if router_bgp.address_family_evpn.peer_groups[peer_group].route_map_out is defined and router_bgp.address_family_evpn.peer_groups[peer_group].route_map_out is not none %}
+      neighbor {{ peer_group }} route-map {{ router_bgp.address_family_evpn.peer_groups[peer_group].route_map_out }} out
+{%             endif %}
 {%             if router_bgp.address_family_evpn.peer_groups[peer_group].activate == true %}
       neighbor {{ peer_group }} activate
 {%             elif router_bgp.address_family_evpn.peer_groups[peer_group].activate == false %}

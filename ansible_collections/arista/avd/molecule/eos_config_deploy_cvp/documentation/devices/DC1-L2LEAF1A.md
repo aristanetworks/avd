@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -96,6 +98,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.112/24
 ```
@@ -147,6 +150,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -356,6 +363,10 @@ vlan 131
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
@@ -375,10 +386,12 @@ vlan 131
 !
 interface Ethernet1
    description DC1-LEAF2A_Ethernet7
+   no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
    description DC1-LEAF2B_Ethernet7
+   no shutdown
    channel-group 1 mode active
 ```
 
@@ -390,7 +403,7 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | access | 110-111,120-121,130-131 | - | - | - | - | 1 | - |
+| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | 110-111,120-121,130-131 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -398,9 +411,10 @@ interface Ethernet2
 !
 interface Port-Channel1
    description DC1-LEAF2A_Po7
+   no shutdown
+   switchport
    switchport trunk allowed vlan 110-111,120-121,130-131
    switchport mode trunk
-   mlag 1
 ```
 
 ## Loopback Interfaces
@@ -600,6 +614,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 

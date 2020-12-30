@@ -1,0 +1,50 @@
+{% if mac_security is defined and mac_security is not none %}
+### MACsec Summary
+
+{%     if mac_security.license is defined and mac_security.license is not none %}
+License is installed.
+{%     else %}
+License is not installed.
+{%     endif %}
+
+{%     if mac_security.fips_restrictions is defined and mac_security.fips_restrictions == true %}
+FIPS restrictions enabled.
+{%     endif %}
+
+### MACsec Profiles Summary
+{%     if mac_security.profiles is defined and mac_security.profiles is not none %}
+{%         for profile in mac_security.profiles | arista.avd.natural_sort %}
+
+**Profile {{ profile }}:**
+
+Settings:
+
+| Cipher | Rekey-Period | SCI |
+| ------ | ------------ | --- |
+{%             set cipher = mac_security.profiles[profile].cipher | default('-') %}
+{%             set rekey_period = mac_security.profiles[profile].mka.session.rekey_period | default('-') %}
+{%             set sci = mac_security.profiles[profile].sci | default('-') %}
+| {{ cipher }} | {{ rekey_period }} | {{ sci }} |
+
+Keys:
+
+{%             if mac_security.profiles[profile].connection_keys is defined and mac_security.profiles[profile].connection_keys is not none %}
+| Key ID | Encrypted (Type 7) Key | Fallback |
+| ------ | ---------------------- | -------- |
+{%                 for connection_key in mac_security.profiles[profile].connection_keys | arista.avd.natural_sort %}
+{%                     set encrypted_key = mac_security.profiles[profile].connection_keys[connection_key].encrypted_key %}
+{%                     set fallback = mac_security.profiles[profile].connection_keys[connection_key].fallback | default('-') %}
+| {{ connection_key }} | {{ encrypted_key }} | {{ fallback }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+### MACsec Device Configuration
+
+```eos
+{% include 'eos/mac-security.j2' %}
+```
+{% else %}
+MACsec not defined
+{% endif %}

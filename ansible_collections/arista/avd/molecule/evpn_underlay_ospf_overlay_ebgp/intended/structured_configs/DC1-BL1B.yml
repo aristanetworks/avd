@@ -89,6 +89,8 @@ bfd_multihop:
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-BL1A_Po5
+    type: switched
+    shutdown: false
     vlans: 2-4094
     mode: trunk
     trunk_groups:
@@ -102,6 +104,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
     mtu: 1500
     type: routed
+    shutdown: false
     ip_address: 172.31.255.49/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -112,6 +115,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
     mtu: 1500
     type: routed
+    shutdown: false
     ip_address: 172.31.255.51/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -122,6 +126,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
     mtu: 1500
     type: routed
+    shutdown: false
     ip_address: 172.31.255.53/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -132,6 +137,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
     mtu: 1500
     type: routed
+    shutdown: false
     ip_address: 172.31.255.55/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
@@ -140,6 +146,8 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: mlag_peer
     description: MLAG_PEER_DC1-BL1A_Ethernet5
+    type: switched
+    shutdown: false
     channel_group:
       id: 5
       mode: active
@@ -148,33 +156,40 @@ ethernet_interfaces:
     peer_interface: Ethernet6
     peer_type: mlag_peer
     description: MLAG_PEER_DC1-BL1A_Ethernet6
+    type: switched
+    shutdown: false
     channel_group:
       id: 5
       mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
+    shutdown: false
     ip_address: 192.168.255.11/32
     ospf_area: 0.0.0.0
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
     ip_address: 192.168.254.10/32
     ospf_area: 0.0.0.0
 management_interfaces:
   Management1:
     description: oob_management
+    shutdown: false
     vrf: MGMT
     ip_address: 192.168.200.111/24
     gateway: 192.168.200.5
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
+    shutdown: false
     ip_address: 10.255.251.11/31
     mtu: 1500
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
   Vlan4094:
     description: MLAG_PEER
+    shutdown: false
     ip_address: 10.255.252.11/31
     no_autostate: true
     mtu: 1500

@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -71,6 +72,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [MAC security](#mac-security)
 
 # Management
 
@@ -96,6 +98,7 @@
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.107/24
 ```
@@ -147,6 +150,10 @@ DNS domain lookup not defined
 ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -364,6 +371,10 @@ vlan 4094
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
@@ -382,10 +393,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet3  |  routed  | - |  172.31.255.17/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet3  |  routed  | - |  172.31.255.19/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet3  |  routed  | - |  172.31.255.21/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet3  |  routed  | - |  172.31.255.23/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet3  |  routed  | - |  172.31.255.17/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet3  |  routed  | - |  172.31.255.19/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet3  |  routed  | - |  172.31.255.21/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet3  |  routed  | - |  172.31.255.23/31  |  default  |  1500  |  false  |  -  |  -  |
 
 #### OSPF
 | Interface | Channel Group | Area | Cost | Mode |
@@ -401,6 +412,7 @@ vlan 4094
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.17/31
    ip ospf network point-to-point
@@ -408,6 +420,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.19/31
    ip ospf network point-to-point
@@ -415,6 +428,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.21/31
    ip ospf network point-to-point
@@ -422,6 +436,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.23/31
    ip ospf network point-to-point
@@ -429,14 +444,17 @@ interface Ethernet4
 !
 interface Ethernet5
    description MLAG_PEER_DC1-LEAF2A_Ethernet5
+   no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
    description MLAG_PEER_DC1-LEAF2A_Ethernet6
+   no shutdown
    channel-group 5 mode active
 !
 interface Ethernet7
    description DC1-L2LEAF1A_Ethernet2
+   no shutdown
    channel-group 7 mode active
 ```
 
@@ -448,8 +466,8 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | access | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | access | - | - | - | - | - | 7 | - |
+| Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | - | - | - | - | - | 7 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -457,6 +475,8 @@ interface Ethernet7
 !
 interface Port-Channel5
    description MLAG_PEER_DC1-LEAF2A_Po5
+   no shutdown
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -464,6 +484,8 @@ interface Port-Channel5
 !
 interface Port-Channel7
    description DC1_L2LEAF1_Po1
+   no shutdown
+   switchport
    switchport trunk allowed vlan 
    switchport mode trunk
    mlag 7
@@ -494,11 +516,13 @@ interface Port-Channel7
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.7/32
    ip ospf area 0.0.0.0
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
+   no shutdown
    ip address 192.168.254.6/32
    ip ospf area 0.0.0.0
 ```
@@ -509,8 +533,8 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  -  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  -  |
+| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -532,12 +556,14 @@ interface Loopback1
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
+   no shutdown
    ip address 10.255.251.3/31
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
 interface Vlan4094
    description MLAG_PEER
+   no shutdown
    no autostate
    ip address 10.255.252.3/31
 ```
@@ -822,6 +848,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+# MACsec
+
+MACsec not defined
 
 # Custom Templates
 
