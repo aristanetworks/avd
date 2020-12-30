@@ -70,6 +70,36 @@ text : {{ variable }}
 {% endif %}
 ```
 
+## Plugin Tests
+
+Arista AVD provides built-in filters to help extend jinja2 templates
+
+### **value test**
+
+The `value` will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
+`value` test also accepts an optional argument to test if the value equals this argument.
+
+To use this test:
+
+```jinja
+{% if variable is arista.avd.value %}
+text : {{ variable }}
+{% endif %}
+{% if variable is arista.avd.value("something") %}
+text : {{ variable }}
+{% endif %}
+```
+
+The `valid` test can be useful as an alternative to:
+
+```jinja
+{% if variable is defined and variable is not none %}
+text : {{ variable }}
+{% endif %}
+{% if variable is defined and variable == "something" %}
+text : {{ variable }}
+{% endif %}
+```
 ## Modules
 
 ### **Inventory to CloudVision Containers**
