@@ -583,7 +583,6 @@ l3leaf:
 
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
-      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]
@@ -743,7 +742,6 @@ l2leaf:
 
       # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
       # If filter is not defined will default to all
-      # This variable can only be set under the node group.
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]]

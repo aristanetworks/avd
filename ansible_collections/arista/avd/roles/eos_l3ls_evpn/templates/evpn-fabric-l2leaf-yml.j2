@@ -36,11 +36,15 @@
 {%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].filter.tenants is defined %}
 {%                 set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants %}
+{%             elif l2leaf.defaults.filter.tenants is defined %}
+{%                 set leaf.filter_tenants = l2leaf.defaults.filter.tenants %}
 {%             else %}
 {%                 set leaf.filter_tenants = [ 'all' ] %}
 {%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].filter.tags is defined %}
 {%                 set leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags %}
+{%             elif l2leaf.defaults.filter.tags is defined %}
+{%                 set leaf.filter_tags = l2leaf.defaults.filter.tags %}
 {%             else %}
 {%                 set leaf.filter_tags = [ 'all' ] %}
 {%             endif %}
