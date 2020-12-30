@@ -6,6 +6,13 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %}
    description {{ ethernet_interfaces[ethernet_interface].description }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].logging is defined and ethernet_interfaces[ethernet_interface].logging is not none %}
+{%             if ethernet_interfaces[ethernet_interface].logging.event is defined and ethernet_interfaces[ethernet_interface].logging.event is not none %}
+{%                 if ethernet_interfaces[ethernet_interface].logging.event.link_status is defined and ethernet_interfaces[ethernet_interface].logging.event.link_status == true %}
+   logging event link-status
+{%                 endif %}
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
    shutdown
 {%         elif ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == false %}

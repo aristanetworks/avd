@@ -6,6 +6,13 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].description is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].logging is defined and port_channel_interfaces[port_channel_interface].logging is not none %}
+{%             if port_channel_interfaces[port_channel_interface].logging.event is defined and port_channel_interfaces[port_channel_interface].logging.event is not none %}
+{%                 if port_channel_interfaces[port_channel_interface].logging.event.link_status is defined and port_channel_interfaces[port_channel_interface].logging.event.link_status == true %}
+   logging event link-status
+{%                 endif %}
+{%             endif %}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == true %}
    shutdown
 {%         elif port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == false %}
