@@ -98,15 +98,15 @@
     - optional
     - never
 
+- name: Validate routing table
+  include_tasks: "routing_table.yml"
+  tags:
+    - routing_table
+
 - name: Validate loopback0 reachability
   include_tasks: "loopback0_reachability.yml"
   tags:
     - loopback0_reachability
-
-- name: Validate loopback1 reachability
-  include_tasks: "loopback1_reachability.yml"
-  tags:
-    - loopback1_reachability
 
   ####################################
   ##       Validation Reports       ##

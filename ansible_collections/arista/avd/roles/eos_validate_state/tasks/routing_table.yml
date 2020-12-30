@@ -2,7 +2,6 @@
 
 - name: run show ip route lo1
   eos_command:
-  #   commands: "show ip route {{ loopback1_address | ipaddr('address')}} | json"
     commands: "show ip route {{ loopback1_address }}"
   loop: "{{ loopback1_reachability.loopback1_range }}"
   loop_control:
@@ -15,22 +14,11 @@
   tags:
     - loopback1_reachability
 
-# - name: test
-#   debug:
-#    msg: "{{ loopback1_reachability_test['stdout'][0]['vrfs']['default']['routes'] }}"
-#   loop: "{{ loopback1_reachability_state.results }}"
-#   loop_control:
-#     loop_var: loopback1_reachability_test
-#   tags:
-#     - loopback1_reachability
-#   when: ( loopback1_reachability_test.skipped is not defined )
-
 - name: Validate lo1 is in routing table
   assert:
     that:
- #     - loopback1_reachability_test['stdout'][0]['vrfs']['default']['routes'] | ipaddr('address') == loopback1_reachability_test.loopback1_address
       - loopback1_reachability_test['stdout'][0] | regex_search(loopback1_reachability_test.loopback1_address)
-    fail_msg: "lo1 not in routing table"
+    fail_msg: "{{ loopback1_reachability_test.loopback1_address }} is not in the routing table"
     quiet: true
   loop: "{{ loopback1_reachability_state.results }}"
   loop_control:
