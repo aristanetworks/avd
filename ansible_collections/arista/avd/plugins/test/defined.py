@@ -1,5 +1,5 @@
 #
-# arista.avd.value
+# arista.avd.defined
 #
 # Example:
 # A is undefined
@@ -8,22 +8,22 @@
 # D is "d"
 #
 # Jinja test examples:
-# {% if A is arista.avd.value %}  =>  false
-# {% if B is arista.avd.value %}  =>  false
-# {% if C is arista.avd.value %}  =>  true
-# {% if D is arista.avd.value %}  =>  true
+# {% if A is arista.avd.defined %}  =>  false
+# {% if B is arista.avd.defined %}  =>  false
+# {% if C is arista.avd.defined %}  =>  true
+# {% if D is arista.avd.defined %}  =>  true
 #
-# {% if A is arista.avd.value("c") %}  =>  false
-# {% if B is arista.avd.value("c") %}  =>  false
-# {% if C is arista.avd.value("c") %}  =>  true
-# {% if D is arista.avd.value("c") %}  =>  false
+# {% if A is arista.avd.defined("c") %}  =>  false
+# {% if B is arista.avd.defined("c") %}  =>  false
+# {% if C is arista.avd.defined("c") %}  =>  true
+# {% if D is arista.avd.defined("c") %}  =>  false
 
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 from jinja2.runtime import Undefined
 
-def value(value, test_value=None):
+def defined(value, test_value=None):
     if isinstance(value, Undefined) or value is None:
         #Invalid value - return false
         return False
@@ -37,5 +37,5 @@ def value(value, test_value=None):
 class TestModule(object):
     def tests(self):
         return {
-            'value': value,
+            'defined': defined,
         }

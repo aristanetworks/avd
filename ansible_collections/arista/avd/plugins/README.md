@@ -50,55 +50,39 @@ To use this filter:
 {{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
 ```
 
-### **is_valid filter**
-
-The `is_valid` will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
-
-To use this filter:
-
-```jinja
-{% if variable | arista.avd.is_valid %}
-text : {{ variable }}
-{% endif %}
-```
-
-The `is_valid` filter can be useful as an alternative to:
-
-```jinja
-{% if variable is defined and variable is not none %}
-text : {{ variable }}
-{% endif %}
-```
-
 ## Plugin Tests
 
-Arista AVD provides built-in filters to help extend jinja2 templates
+Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates
 
-### **value test**
+### **defined test**
 
-The `value` will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
-`value` test also accepts an optional argument to test if the value equals this argument.
+The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
+`arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
+
+Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value.
 
 To use this test:
 
 ```jinja
-{% if variable is arista.avd.value %}
-text : {{ variable }}
+{% if extremely_long_variable_name is arista.avd.defined %}
+text : {{ extremely_long_variable_name }}
 {% endif %}
-{% if variable is arista.avd.value("something") %}
-text : {{ variable }}
+{% if extremely_long_variable_name is arista.avd.defined("something") %}
+text : {{ extremely_long_variable_name }}
 {% endif %}
+Feature is {{ "not " if extremely_long_variable_name is not arista.avd.defined }}configured
 ```
 
-The `valid` test can be useful as an alternative to:
+The `arista.avd.defined` test can be useful as an alternative to:
 
 ```jinja
-{% if variable is defined and variable is not none %}
-text : {{ variable }}
+{% if extremely_long_variable_name is defined and extremely_long_variable_name is not none %}
+text : {{ extremely_long_variable_name }}
 {% endif %}
-{% if variable is defined and variable == "something" %}
-text : {{ variable }}
+{% if extremely_long_variable_name is defined and extremely_long_variable_name == "something" %}
+text : {{ extremely_long_variable_name }}
 {% endif %}
+Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
 ```
 ## Modules
 
