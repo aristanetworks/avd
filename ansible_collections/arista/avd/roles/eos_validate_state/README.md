@@ -66,7 +66,7 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
    - ([bgp_check](tasks/bgp_check.yml)) Validate ArBGP is configured and operating.
    - ([bgp_check](tasks/bgp_check.yml)) Validate ip bgp and bgp evpn sessions state.
    - ([reload_cause](tasks/reload_cause.yml)) Validate last reload cause. (Optional)
-   - ([routing_table](tasks/routing_table)) Validate remote Lo0 addresses and remote Lo1 addresses are in the routing table (based on devices type).
+   - ([routing_table](tasks/routing_table.yml)) Validate remote Lo0 addresses and remote Lo1 addresses are in the routing table (based on devices type).
 
 3. Create CSV report.
 4. Read CSV file (leveraged to generate summary report).
