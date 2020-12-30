@@ -30,6 +30,24 @@ CVP_DEVICES:
     configlets:
       - AVD_DC1-SPINE4
     imageBundle: []
+  DC1-L2LEAF1A:
+    name: DC1-L2LEAF1A
+    parentContainerName: DC1_L2LEAF1
+    configlets:
+      - AVD_DC1-L2LEAF1A
+    imageBundle: []
+  DC1-L2LEAF2A:
+    name: DC1-L2LEAF2A
+    parentContainerName: DC1_L2LEAF2
+    configlets:
+      - AVD_DC1-L2LEAF2A
+    imageBundle: []
+  DC1-L2LEAF2B:
+    name: DC1-L2LEAF2B
+    parentContainerName: DC1_L2LEAF2
+    configlets:
+      - AVD_DC1-L2LEAF2B
+    imageBundle: []
   DC1-LEAF2A:
     name: DC1-LEAF2A
     parentContainerName: DC1_LEAF2
@@ -53,24 +71,6 @@ CVP_DEVICES:
     parentContainerName: DC1_BL1
     configlets:
       - AVD_DC1-BL1B
-    imageBundle: []
-  DC1-L2LEAF1A:
-    name: DC1-L2LEAF1A
-    parentContainerName: DC1_L2LEAF1
-    configlets:
-      - AVD_DC1-L2LEAF1A
-    imageBundle: []
-  DC1-L2LEAF2A:
-    name: DC1-L2LEAF2A
-    parentContainerName: DC1_L2LEAF2
-    configlets:
-      - AVD_DC1-L2LEAF2A
-    imageBundle: []
-  DC1-L2LEAF2B:
-    name: DC1-L2LEAF2B
-    parentContainerName: DC1_L2LEAF2
-    configlets:
-      - AVD_DC1-L2LEAF2B
     imageBundle: []
 CVP_CONTAINERS:
   DC1_FABRIC:
