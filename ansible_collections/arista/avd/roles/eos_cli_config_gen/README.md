@@ -1411,7 +1411,7 @@ router_bgp:
             description: < description >
             next_hop_self: < true | false >
             timers: < keepalive_hold_timer_values >
-            send_community: < string | leave empty for all communitiesniy >
+            send_community: < string | leave empty for all communities >
           < neighbor_ip_address >:
             remote_as: < asn >
             description: < description >
