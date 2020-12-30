@@ -149,5 +149,8 @@ interface {{ vlan_interface }}
 {%             endif %}
 {%           endif %}
 {%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_attached_host_route_export is defined and vlan_interfaces[vlan_interface].ip_attached_host_route_export is not none %}
+   ip attached-host route export {{ vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance | arista.avd.default("") }}
+{%         endif %}
 {%     endfor %}
 {% endif %}
