@@ -1,6 +1,10 @@
 CONTAINER_NAME = avdteam/base
 DOCKER_TAG = 3.6-v1.0
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
+VSCODE_CONTAINER_NAME ?= avdteam/vscode
+VSCODE_DOCKER_TAG ?= latest
+VSCODE_CONTAINER = $(VSCODE_CONTAINER_NAME):$(VSCODE_DOCKER_TAG)
+VSCODE_PORT ?= 8080
 COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
 PIP_REQ ?=
 ANSIBLE_VERSION ?=
@@ -23,6 +27,11 @@ update: ## Get latest version of AVD runner and MKDOCs server
 	docker pull $(CONTAINER_NAME):$(DOCKER_TAG) && \
 	docker-compose -f ansible-avd/development/docker-compose.yml pull
 
+.PHONY: refresh
+refresh: ## Refresh Makefile with new version from AVD
+	cp ansible-avd/development/Makefile Makefile
+	@echo "Makefile update from AVD repository"
+
 .PHONY: run
 run: ## Run ansible-avd container
 	docker run --rm -it \
@@ -32,6 +41,20 @@ run: ## Run ansible-avd container
 		-v $(HOME)/.gitconfig:/home/avd/.gitconfig \
 		-v $(HOME_DIR)/:/projects \
 		-v /etc/hosts:/etc/hosts $(CONTAINER)
+
+.PHONY: vscode
+vscode: ## Run a VSCODE container
+	docker run --rm -it -d \
+		-e AVD_GIT_USER="$(git config --get user.name)" \
+		-e AVD_GIT_EMAIL="$(git config --get user.email)" \
+		-v ${PWD}/:/home/avd/arista-ansible \
+		-v /var/run/docker.sock:/var/run/docker.sock \
+		-p $(VSCODE_PORT):8080 \
+		$(VSCODE_CONTAINER)
+	@echo "---------------"
+	@echo " INFORMATION"
+	@echo "---------------"
+	@echo "VScode for AVD: http://127.0.0.1:$(VSCODE_PORT)/?folder=/home/avd/arista-ansible"
 
 .PHONY: clean
 clean: ## Remove avd image from local repository
