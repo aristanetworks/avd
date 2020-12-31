@@ -1,4 +1,5 @@
 <!-- All PR should follow this template to allow a clean and transparent review -->
+<!-- Bot will manage tag, ownership and code review, you should not update these fields-->
 ## Change Summary
 <!--- Provide a general summary of your changes in the Title above -->
 
@@ -28,8 +29,9 @@
 ## Checklist:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
+- [ ] My code has been rebased from devel before I start
 - [ ] I have read the [**CONTRIBUTING**](https://www.avd.sh/docs/contributing/) document.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
-- [ ] All new and existing tests passed ([`pre-commit`](https://www.avd.sh/docs/installation/development/#python-virtual-environment), `make linting` and `make sanity-lint`).
 - [ ] I have updated [molecule CI](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/molecule) testing accordingly
+- [ ] All new and existing tests passed ([`pre-commit`](https://www.avd.sh/docs/installation/development/#python-virtual-environment), `make linting` and `make sanity-lint`).
