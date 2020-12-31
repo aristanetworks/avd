@@ -26,6 +26,10 @@
   - ansible_collections/arista/avd/roles/eos_validate_state/*
   - ansible_collections/arista/avd/roles/eos_validate_state/**/*
 
+"role: eos_snapshot":
+  - ansible_collections/arista/avd/roles/eos_snapshot/*
+  - ansible_collections/arista/avd/roles/eos_snapshot/**/*
+
 "role: dhcp_provisioner":
   - ansible_collections/arista/avd/roles/dhcp_provisioner/*
   - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
@@ -55,6 +59,9 @@
   - ansible_collections/arista/avd/plugins/roles/**/*.yml
   - ansible_collections/arista/avd/plugins/roles/**/*.j2
 
+"state: Documentation role Updated":
+  - 'ansible_collections/arista/avd/roles/**/*.md'
+
 "type: documentation":
   - README.md
   - contributing.md
@@ -77,6 +84,3 @@
 "state: CI Updated":
   - ansible_collections/arista/avd/molecule/*
   - ansible_collections/arista/avd/molecule/**/*
-
-"state: Documentation role Updated":
-  - 'ansible_collections/arista/avd/roles/**/*.md'
