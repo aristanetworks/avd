@@ -13,33 +13,16 @@ Verify first that your issue/request is not already reported on GitHub. -->
 ## Issue Type
 
 <!--- Pick one below and delete the rest -->
-- Bug Report
-- Documentation Issue Report
-- EOS Configuration error
+- [ ] Bug Report
+- [ ] EOS Configuration rendering error
+- [ ] Documentation Issue Report
 
 ## Summary
 
 <!--- Explain the problem briefly -->
 
 
-## Role or Module Name
-
-
-<!-- IF NOT APPLICABLE, DELETE Next subsection-->
-
-### OS / Environment
-
-__EOS Version__
-
-<!-- Define which version of EOS and which platform you are using -->
-
-__Cloudvision version__ (optional)
-
-<!-- Define which CVP version is your target -->
-
-__OS running Ansible__
-
-<!-- Define which OS and version you use to run ansible -->
+## Component Name
 
 
 ## Steps to reproduce

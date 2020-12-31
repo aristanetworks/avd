@@ -7,10 +7,10 @@ assignees: ''
 ---
 
 **Issue Type**
-<!--- Pick one below and delete the rest -->
-- Template enhancement
-- Role enhancement
-- Documentatin enhancement (avd.sh)
+
+- [ ] Template enhancement
+- [ ] Role enhancement
+- [ ] Documentatoin enhancement (avd.sh)
 
 **Is your feature request related to a problem? Please describe.**
 
