@@ -29,23 +29,11 @@ These settings must be used to mount and edit file from your physical host.
 
 Container also comes with docker installed and in case you want to run docker from your container, you can expose your local docker socket from your host to your container:
 
-__Docker Socket on Linux / Macos__
-
-```bash
--v /var/run/docker.sock:/var/run/docker.sock
-```
-
-__Docker Socket on Windows__
-
-```bash
--v //var/run/docker.sock:/var/run/docker.sock
-```
-
 ## Requirements
 
 To run this container, few requirements are expected:
 
-- Docker installed on a host: laptop, VM, server or anything that run docker
+- Docker [installed on a host](https://docs.docker.com/get-docker/): laptop, VM, server or anything that run docker
 - Git configured with at least username and email
 
 ```bash
@@ -78,3 +66,71 @@ docker run --rm -it -d \
 
 !!! warning Storage management
     In this setup, container will be destroyed after you stop it. And because we do not share any volume, all changes will be lost.
+
+Once your container is started, confirm with docker command:
+
+```bash
+$ docker ps
+CONTAINER ID   IMAGE                   COMMAND                  CREATED          STATUS          PORTS                    NAMES
+0fd39cc2dd3d   avdteam/vscode:latest   "/bin/entrypoint.sh"     10 seconds ago   Up 9 seconds    0.0.0.0:8080->8080/tcp   inspiring_germain
+```
+
+And you can now connect to your VSCode instance using your favorite browser with following URL:
+
+```bash
+http://<IP ADDR of DOCKER Machine>:8080/?folder=/home/avd/arista-ansible
+```
+
+![VSCode demo Overview](../_media/vscode-container-demo-overview.png)
+
+## Customize your container
+
+Once you run your first AVD demo, you may want to not use volatile storage or install you own repositories.
+
+### Mount your local folder
+
+First option is to mount one of your local folder to save your work from your container. Considering your local folder is empty, you can add this line to your docker CLI:
+
+```bash
+-v ${PWD}/:/home/avd/arista-ansible
+```
+
+So complete CLI should be:
+
+```bash
+docker run --rm -it -d \
+    -e AVD_MODE=demo \
+    -e AVD_GIT_USER="$(git config --get user.name)" \
+    -e AVD_GIT_EMAIL="$(git config --get user.email)" \
+    -v ${PWD}/:/home/avd/arista-ansible \
+    -p 8080:8080 \
+    avdteam/vscode:latest
+```
+
+### Install additional repositories
+
+Now, you want to ship your own demo in your container with git clone instead of local file sharing, you can leverage the following option: __`AVD_USER_REPOS`__
+
+```bash
+docker run --rm -it -d \
+    -e AVD_MODE=demo \
+    -e AVD_GIT_USER="$(git config --get user.name)" \
+    -e AVD_GIT_EMAIL="$(git config --get user.email)" \
+    -e AVD_USER_REPOS=/home/avd/arista-ansible/my_repos.txt \
+    -v ${PWD}/:/home/avd/arista-ansible \
+    -p 8080:8080 \
+    avdteam/vscode:latest
+```
+
+And then your [`my_repos.txt`](https://github.com/arista-netdevops-community/docker-avd-vscode/blob/master/tests/user-repos.txt) file should be like:
+
+```text
+https://github.com/aristanetworks/ansible-avd.git
+https://github.com/aristanetworks/ansible-cvp.git
+
+```
+
+!!! note Repository file path
+    By default Docker cannot load a file from your host, the path you provide in `AVD_USER_REPOS` must be configured using a shared volume.
+
+For more details and options, you can check our repository for this container: __[arista-netdevops-community/docker-avd-vscode](https://github.com/arista-netdevops-community/docker-avd-vscode)__
