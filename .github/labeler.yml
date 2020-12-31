@@ -39,6 +39,9 @@
 "filter: list_compress":
   - ansible_collections/arista/avd/plugins/filter/list_compress.py
 
+"filter: defined":
+  - ansible_collections/arista/avd/plugins/filter/defined.py
+
 "module: configlet_build_config":
   - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
 
