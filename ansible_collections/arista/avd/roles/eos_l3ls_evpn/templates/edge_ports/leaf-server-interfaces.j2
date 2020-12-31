@@ -28,7 +28,9 @@
 {%                     for section in port_profiles[adapter.profile].storm_control %}
       {{ section }}:
         level: {{ port_profiles[adapter.profile].storm_control[section].level }}
+{%                         if port_profiles[adapter.profile].storm_control[section].unit is defined and port_profiles[adapter.profile].storm_control[section].unit is not none %}
         unit: {{ port_profiles[adapter.profile].storm_control[section].unit }}
+{%                         endif %}
 {%                     endfor %}
 {%                 endif %}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}

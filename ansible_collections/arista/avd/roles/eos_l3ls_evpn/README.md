@@ -1242,16 +1242,16 @@ port_profiles:
     storm_control:
       all:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       broadcast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       multicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       unknown_unicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
