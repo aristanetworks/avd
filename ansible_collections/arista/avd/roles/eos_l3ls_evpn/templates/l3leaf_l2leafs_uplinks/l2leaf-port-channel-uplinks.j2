@@ -19,11 +19,15 @@
 {%             else %}
 {%                 set parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
 {%             endif %}
+{%             set uplink_vlans = leaf.vlans %}
+{%             if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+{%                 do uplink_vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
+{%             endif %}
   Port-Channel{{ channel_group_id }}:
     description: {{ parent_l3leafs[loop.index0]}}_{{ 'Po' + l3leaf.channel_group_id }}
     type: switched
     shutdown: false
-    vlans: {{ leaf.vlans | arista.avd.list_compress }}
+    vlans: {{ uplink_vlans | arista.avd.list_compress }}
     mode: trunk
 {%             if leaf.mlag == true %}
     mlag: {{ channel_group_id }}
