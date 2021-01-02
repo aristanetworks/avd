@@ -10,7 +10,7 @@ assignees: ''
 
 - [ ] Template enhancement
 - [ ] Role enhancement
-- [ ] Documentatoin enhancement (avd.sh)
+- [ ] Documentation enhancement (avd.sh)
 
 **Is your feature request related to a problem? Please describe.**
 
