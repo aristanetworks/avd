@@ -32,6 +32,9 @@
 {%             endif %}
 {# Create allowed vlan lan list based on vlans being provisioned on L2 Leaf #}
 {%             set l2_leaf.vlans = []  %}
+{%             if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+{%                 do l2_leaf.vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
+{%             endif %}
 {%             for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 {%                 if tenant in l2_leaf.filter_tenants or "all" in l2_leaf.filter_tenants %}
 {%                     if tenants[tenant].vrfs is defined %}
