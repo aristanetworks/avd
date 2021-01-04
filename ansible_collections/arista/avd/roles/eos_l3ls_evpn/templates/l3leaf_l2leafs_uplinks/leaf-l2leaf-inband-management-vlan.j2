@@ -1,0 +1,5 @@
+{# L2leaf Inband Management VLAN #}
+{% if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+  {{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}:
+    name: L2LEAF_INBAND_MGMT
+{% endif %}

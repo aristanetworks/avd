@@ -6,6 +6,12 @@
         type: permit
         match:
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+{%     if type == "l3leaf" and l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+      20:
+        type: permit
+        match:
+          - "ip address prefix-list PL-L2LEAF-INBAND-MGMT"
+{%     endif %}
 {% endif %}
 {# Leaf route-maps for the overlay#}
 {% if switch.overlay_routing_protocol == "ibgp" %}

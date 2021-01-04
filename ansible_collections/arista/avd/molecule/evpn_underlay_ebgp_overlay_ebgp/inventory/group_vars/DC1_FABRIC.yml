@@ -70,6 +70,9 @@ l3leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
+    filter:
+      tenants: [ Tenant_A, Tenant_B, Tenant_C ]
+      tags: [ opzone, web, app, db, vmotion, nfs ]
   node_groups:
     DC1_LEAF1:
       bgp_as: 65101
@@ -84,9 +87,6 @@ l3leaf:
           spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     DC1_LEAF2:
       bgp_as: 65102
-      filter:
-        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone, web, app, db, vmotion, nfs ]
       nodes:
         DC1-LEAF2A:
           id: 2

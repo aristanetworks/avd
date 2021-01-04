@@ -913,6 +913,8 @@ vlan_interfaces:
       preempt_delay_minimum: < minimum_preemption_delay >
       ipv4: < virtual_ip_address >
       ipv6: < virtual_ip_address >
+    ip_attached_host_route_export:
+      distance: < distance >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
