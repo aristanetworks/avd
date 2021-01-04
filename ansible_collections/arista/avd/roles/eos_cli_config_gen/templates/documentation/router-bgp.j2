@@ -119,7 +119,7 @@
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 {%     for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {{ router_bgp.vrfs[vrf].rd }} |{%- if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}{%- for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %} {{ redistribute_route }}{% if not loop.last %}{% endif %} {% endfor -%}{% endif %}|
+| {{ vrf }} | {{ router_bgp.vrfs[vrf].rd }} |{%- if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}{%- for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %} {{ redistribute_route }} {% endfor -%}{% endif %}|
 {%     endfor %}
 {% endif %}
 
