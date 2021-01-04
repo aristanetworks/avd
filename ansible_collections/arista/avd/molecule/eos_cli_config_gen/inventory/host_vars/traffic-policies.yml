@@ -1,0 +1,71 @@
+---
+traffic_policies:
+  ipv4:
+    BLUE-C1-POLICY:
+      matchs:
+        BLUE-C1-POLICY-01:
+          source:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+          protocols:
+            tcp:
+              src_port: "1,10-20"
+            icmp:
+          actions:
+            traffic_class: 5
+        BLUE-C1-POLICY-02:
+          source:
+            prefix_lists:
+              - PL-BOGONS01
+              - PL-BOGONS02
+          protocols:
+            tcp:
+              dst_port: "80,443"
+            icmp:
+          actions:
+            count: BOGONS-TRAFFIC
+            dscp: 60
+        BLUE-C1-POLICY-03:
+          source:
+            prefix_lists:
+              - PL-BOGONS
+          protocols:
+            tcp:
+          actions:
+            drop: true
+            log: true
+    BLUE-C2-POLICY:
+      matchs:
+        BLUE-C1-POLICY-01:
+          source:
+            prefixes:
+              - 10.0.0.0/8
+              - 192.168.0.0/16
+          protocols:
+            tcp:
+              src_port: "1,10-20"
+            icmp:
+          actions:
+            traffic_class: 5
+        BLUE-C1-POLICY-02:
+          source:
+            prefix_lists:
+              - PL-BOGONS01
+              - PL-BOGONS02
+          protocols:
+            tcp:
+              dst_port: "80,443"
+            icmp:
+          actions:
+            count: BOGONS-TRAFFIC
+            dscp: 60
+        BLUE-C1-POLICY-03:
+          source:
+            prefix_lists:
+              - PL-BOGONS
+          protocols:
+            tcp:
+          actions:
+            drop: true
+            log: true

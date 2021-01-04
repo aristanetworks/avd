@@ -1,4 +1,4 @@
-# ethernet_interfaces
+# traffic-policies
 
 # Table of Contents
 
@@ -13,7 +13,6 @@
   - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Servers](#radius-servers)
@@ -48,7 +47,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
-  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -148,10 +146,6 @@ Management API HTTP not defined
 ## Local Users
 
 No users defined
-
-## Enable Password
-
-Enable password not defined
 
 ## TACACS Servers
 
@@ -279,7 +273,7 @@ IP virtual router MAC address not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false| 
 ### IP Routing Device Configuration
 
 ```eos
@@ -304,10 +298,6 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
-
-## Router OSPF
-
-Router OSPF not defined
 
 ## Router ISIS
 
@@ -411,7 +401,84 @@ Errdisable is not defined.
 
 # Traffic Policies
 
-Traffic Policies not defined
+### Policies information
+
+**BLUE-C1-POLICY:**
+
+| Match set | Source prefixes | Ports | Action |
+| --------- | --------------- | ----- | ------ |
+| BLUE-C1-POLICY-01 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
+| BLUE-C1-POLICY-02 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
+| BLUE-C1-POLICY-03 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+
+**BLUE-C2-POLICY:**
+
+| Match set | Source prefixes | Ports | Action |
+| --------- | --------------- | ----- | ------ |
+| BLUE-C1-POLICY-01 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
+| BLUE-C1-POLICY-02 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
+| BLUE-C1-POLICY-03 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+
+### Traffic Policies Device Configuration
+
+```eos
+!
+traffic-policies
+   traffic-policy BLUE-C1-POLICY
+      match BLUE-C1-POLICY-01 ipv4
+         source prefix 10.0.0.0/8 192.168.0.0/16
+         protocol tcp source port 1,10-20
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+      match BLUE-C1-POLICY-02 ipv4
+         source prefix field-set PL-BOGONS01 PL-BOGONS02
+         protocol tcp destination port 80,443
+         protocol icmp
+         actions
+            count BOGONS-TRAFFIC
+            set dscp 60
+         !
+      !
+      match BLUE-C1-POLICY-03 ipv4
+         source prefix field-set PL-BOGONS
+         protocol tcp
+         actions
+            drop
+            log
+         !
+      !
+   !
+   traffic-policy BLUE-C2-POLICY
+      match BLUE-C1-POLICY-01 ipv4
+         source prefix 10.0.0.0/8 192.168.0.0/16
+         protocol tcp source port 1,10-20
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+      match BLUE-C1-POLICY-02 ipv4
+         source prefix field-set PL-BOGONS01 PL-BOGONS02
+         protocol tcp destination port 80,443
+         protocol icmp
+         actions
+            count BOGONS-TRAFFIC
+            set dscp 60
+         !
+      !
+      match BLUE-C1-POLICY-03 ipv4
+         source prefix field-set PL-BOGONS
+         protocol tcp
+         actions
+            drop
+            log
+         !
+      !
+   !
+```
 
 # MACsec
 

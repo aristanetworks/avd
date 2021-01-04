@@ -74,6 +74,7 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
+- [Traffic Policies](#traffic-policies)
 - [MAC security](#mac-security)
 - [QOS](#qos)
 - [QOS Profiles](#qos-profiles)
@@ -433,6 +434,10 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+
+# Traffic Policies
+
+Traffic Policies not defined
 
 # MACsec
 
