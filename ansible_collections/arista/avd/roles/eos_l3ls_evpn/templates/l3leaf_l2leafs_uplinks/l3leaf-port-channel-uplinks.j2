@@ -74,6 +74,9 @@
     shutdown: false
     vlans: {{ l2_leaf.vlans | arista.avd.list_compress }}
     mode: trunk
+{%                 if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%                 endif %}
     mlag: {{ l3_leaf.channel_group_id }}
 {%             break %}
 {%             endfor %}

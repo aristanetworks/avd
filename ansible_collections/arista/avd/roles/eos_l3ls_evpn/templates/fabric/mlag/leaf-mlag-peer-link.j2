@@ -7,6 +7,9 @@
     shutdown: false
     vlans: "2-4094"
     mode: trunk
+{%     if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%     endif %}
     trunk_groups:
 {%     if type == 'l3leaf' %}
       - LEAF_PEER_L3

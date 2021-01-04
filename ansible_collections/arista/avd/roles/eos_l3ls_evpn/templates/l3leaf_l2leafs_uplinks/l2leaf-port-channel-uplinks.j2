@@ -29,6 +29,9 @@
     shutdown: false
     vlans: {{ uplink_vlans | arista.avd.list_compress }}
     mode: trunk
+{%             if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%             endif %}
 {%             if leaf.mlag == true %}
     mlag: {{ channel_group_id }}
 {%             endif %}

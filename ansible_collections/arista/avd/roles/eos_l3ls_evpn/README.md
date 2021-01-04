@@ -377,6 +377,9 @@ l2leaf_inband_management_subnet: < IPv4_network/Mask >
 # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
 # Optional - default -> 4092
 l2leaf_inband_management_vlan: < vlan_id >
+
+# QOS Profile assigned on all infrastructure links | Optional
+p2p_uplinks_qos_profile: < qos_profile_name >
 ```
 
 **Example:**
@@ -1234,6 +1237,9 @@ port_profiles:
     flowcontrol:
       received: < received | send | on >
 
+    # QOS Profile | Optional
+    qos_profile: < qos_profile_name >
+
   < port_profile_2 >:
     mode: < access | dot1q-tunnel | trunk >
     vlans: < vlans as string >
@@ -1281,6 +1287,9 @@ servers:
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
+
+        # QOS Profile | Optional
+        qos_profile: < qos_profile_name >
 
       # Example of port-channel adpater
       - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
