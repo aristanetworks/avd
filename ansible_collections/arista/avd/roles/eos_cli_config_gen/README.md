@@ -1338,6 +1338,13 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+  address_family_rtc:
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+        default_route_target:
+          only: < true | false >
+          encoding_origin_as_omit:
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
