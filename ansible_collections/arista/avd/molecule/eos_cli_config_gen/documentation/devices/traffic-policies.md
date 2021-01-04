@@ -405,19 +405,19 @@ Errdisable is not defined.
 
 **BLUE-C1-POLICY:**
 
-| Match set | Source prefixes | Ports | Action |
-| --------- | --------------- | ----- | ------ |
-| BLUE-C1-POLICY-01 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
-| BLUE-C1-POLICY-02 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
-| BLUE-C1-POLICY-03 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+| Match set | Type | Source prefixes | Ports | Action |
+| --------- | ---- | --------------- | ----- | ------ |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
+| BLUE-C1-POLICY-02 | ipv4 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
+| BLUE-C1-POLICY-03 | ipv4 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
 
 **BLUE-C2-POLICY:**
 
-| Match set | Source prefixes | Ports | Action |
-| --------- | --------------- | ----- | ------ |
-| BLUE-C1-POLICY-01 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
-| BLUE-C1-POLICY-02 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
-| BLUE-C1-POLICY-03 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+| Match set | Type | Source prefixes | Ports | Action |
+| --------- | ---- | --------------- | ----- | ------ |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
+| BLUE-C2-POLICY-02 | ipv4 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
+| BLUE-C2-POLICY-03 | ipv4 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
 
 ### Traffic Policies Device Configuration
 
@@ -452,7 +452,7 @@ traffic-policies
       !
    !
    traffic-policy BLUE-C2-POLICY
-      match BLUE-C1-POLICY-01 ipv4
+      match BLUE-C2-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
          protocol tcp source port 1,10-20
          protocol icmp
@@ -460,7 +460,7 @@ traffic-policies
             set traffic class 5
          !
       !
-      match BLUE-C1-POLICY-02 ipv4
+      match BLUE-C2-POLICY-02 ipv4
          source prefix field-set PL-BOGONS01 PL-BOGONS02
          protocol tcp destination port 80,443
          protocol icmp
@@ -469,7 +469,7 @@ traffic-policies
             set dscp 60
          !
       !
-      match BLUE-C1-POLICY-03 ipv4
+      match BLUE-C2-POLICY-03 ipv4
          source prefix field-set PL-BOGONS
          protocol tcp
          actions

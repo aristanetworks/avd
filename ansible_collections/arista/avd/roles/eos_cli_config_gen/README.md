@@ -1758,39 +1758,39 @@ ptp:
 
 ```yaml
 traffic_policies:
-  ipv4:
-    < TRAFFIC POLICY NAME >:
-      matchs:
-        < TRAFFIC POLICY ITEM >:
-          source:
-            prefixes:
-              - < prefix 01 >
-              - < prefix 02 >
-            prefix_lists:
-              - < Prefix List 01 >
-              - < Prefix List 02 >
-          protocols:
-            tcp:
-              src_port: "< vlan range >"
-              dst_port: "< vlan range >"
-            icmp:
-            udp:
-              src_port: "< vlan range >"
-              dst_port: "< vlan range >"
-            ahp:
-            bgp:
-            icmp:
-            igmp:
-            ospf:
-            pim:
-            rsvp:
-            vrrp:
-          actions:
-            dscp: < dscp code value >
-            traffic_class: < traffic class id >
-            count: < counter name >
-            drop: < true | false (default false) >
-            log: < true | false (default false) >
+  < TRAFFIC POLICY NAME >:
+    matchs:
+      < TRAFFIC POLICY ITEM >:
+        type: < ipv4 | ipv6 >
+        source:
+          prefixes:
+            - < prefix 01 >
+            - < prefix 02 >
+          prefix_lists:
+            - < Prefix List 01 >
+            - < Prefix List 02 >
+        protocols:
+          tcp:
+            src_port: "< vlan range >"
+            dst_port: "< vlan range >"
+          icmp:
+          udp:
+            src_port: "< vlan range >"
+            dst_port: "< vlan range >"
+          ahp:
+          bgp:
+          icmp:
+          igmp:
+          ospf:
+          pim:
+          rsvp:
+          vrrp:
+        actions:
+          dscp: < dscp code value >
+          traffic_class: < traffic class id >
+          count: < counter name >
+          drop: < true | false (default false) >
+          log: < true | false (default false) >
 ```
 
 ### Custom Templates

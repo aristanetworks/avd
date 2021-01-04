@@ -1,9 +1,9 @@
 ---
 traffic_policies:
-  ipv4:
     BLUE-C1-POLICY:
       matchs:
         BLUE-C1-POLICY-01:
+          type: ipv4
           source:
             prefixes:
               - 10.0.0.0/8
@@ -15,6 +15,7 @@ traffic_policies:
           actions:
             traffic_class: 5
         BLUE-C1-POLICY-02:
+          type: ipv4
           source:
             prefix_lists:
               - PL-BOGONS01
@@ -27,6 +28,7 @@ traffic_policies:
             count: BOGONS-TRAFFIC
             dscp: 60
         BLUE-C1-POLICY-03:
+          type: ipv4
           source:
             prefix_lists:
               - PL-BOGONS
@@ -37,7 +39,8 @@ traffic_policies:
             log: true
     BLUE-C2-POLICY:
       matchs:
-        BLUE-C1-POLICY-01:
+        BLUE-C2-POLICY-01:
+          type: ipv4
           source:
             prefixes:
               - 10.0.0.0/8
@@ -48,7 +51,8 @@ traffic_policies:
             icmp:
           actions:
             traffic_class: 5
-        BLUE-C1-POLICY-02:
+        BLUE-C2-POLICY-02:
+          type: ipv4
           source:
             prefix_lists:
               - PL-BOGONS01
@@ -60,7 +64,8 @@ traffic_policies:
           actions:
             count: BOGONS-TRAFFIC
             dscp: 60
-        BLUE-C1-POLICY-03:
+        BLUE-C2-POLICY-03:
+          type: ipv4
           source:
             prefix_lists:
               - PL-BOGONS
