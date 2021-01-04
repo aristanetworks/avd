@@ -1344,7 +1344,7 @@ router_bgp:
         activate: < true | false >
         default_route_target:
           only: < true | false >
-          encoding_origin_as_omit: < true | false >
+          encoding_origin_as_omit:
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
