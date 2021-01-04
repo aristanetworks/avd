@@ -166,6 +166,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ip-tacacs-source-interfaces.j2' %}
 {# vmtracer sessions #}
 {% include 'eos/vmtracer-sessions.j2' %}
+{# traffic policies #}
+{% include 'eos/traffic-policies.j2' %}
 {# banner #}
 {% include 'eos/banners.j2' %}
 {# management api http #}

@@ -1,0 +1,64 @@
+{% if traffic_policies is arista.avd.defined %}
+!
+traffic-policies
+{%     if traffic_policies.ipv4 is arista.avd.defined %}
+{%         for traffic_policy in traffic_policies.ipv4 %}
+   traffic-policy {{ traffic_policy }}
+{%             if traffic_policies.ipv4[traffic_policy].matchs is arista.avd.defined %}
+{# MATCH SECTION #}
+{%                 for match in traffic_policies.ipv4[traffic_policy].matchs %}
+      match {{ match }} ipv4
+{#                     -- PREFIX MANAGEMENT -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].source is arista.avd.defined %}
+{%                         if traffic_policies.ipv4[traffic_policy].matchs[match].source.prefixes is arista.avd.defined %}
+         source prefix{% for prefix in traffic_policies.ipv4[traffic_policy].matchs[match].source.prefixes %} {{ prefix }}{% endfor %}
+
+{%                         endif %}
+{%                         if traffic_policies.ipv4[traffic_policy].matchs[match].source.prefix_lists is arista.avd.defined %}
+         source prefix field-set{% for prefix in traffic_policies.ipv4[traffic_policy].matchs[match].source.prefix_lists %} {{ prefix }}{% endfor %}
+
+{%                         endif %}
+{%                     endif %}
+{#                     -- PROTOCOL MANAGEMENT -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].protocols is arista.avd.defined %}
+{%                         for protocol in traffic_policies.ipv4[traffic_policy].matchs[match].protocols %}
+{%                             if traffic_policies.ipv4[traffic_policy].matchs[match].protocols[protocol].dst_port is arista.avd.defined %}
+         protocol {{ protocol }} destination port {{ traffic_policies.ipv4[traffic_policy].matchs[match].protocols[protocol].dst_port }}
+{%                             elif traffic_policies.ipv4[traffic_policy].matchs[match].protocols[protocol].src_port is arista.avd.defined %}
+         protocol {{ protocol }} source port {{ traffic_policies.ipv4[traffic_policy].matchs[match].protocols[protocol].src_port }}
+{%                             else %}
+         protocol {{ protocol }}
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
+{#       -- ACTIONS SECTION -- #}
+         actions
+{#                     -- COUNT packets -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].actions.count is arista.avd.defined %}
+            count {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.count }}
+{%                     endif %}
+{#                     -- Traffic Class -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].actions.traffic_class is arista.avd.defined %}
+            set traffic class {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.traffic_class }}
+{%                     endif %}
+{#                     -- DSCP -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].actions.dscp is arista.avd.defined %}
+            set dscp {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.dscp }}
+{%                     endif %}
+{#                     -- DROP Action -- #}
+{%                     if traffic_policies.ipv4[traffic_policy].matchs[match].actions.drop is arista.avd.defined(true) %}
+            drop
+{#                         -- LOGGING only if DROP is set-- #}
+{%                         if traffic_policies.ipv4[traffic_policy].matchs[match].actions.log is arista.avd.defined(true) %}
+            log
+{%                         endif %}
+{%                     endif %}
+{# END OF MATCH Section #}
+         !
+      !
+{%                 endfor %}
+{%             endif %}
+   !
+{%         endfor %}
+{%     endif %}
+{% endif %}

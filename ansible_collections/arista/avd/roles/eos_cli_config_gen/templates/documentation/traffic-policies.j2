@@ -1,0 +1,24 @@
+{% if traffic_policies is arista.avd.defined %}
+### Policies information
+
+{%     if traffic_policies.ipv4 is arista.avd.defined %}
+{%         for traffic_policy in traffic_policies.ipv4 | arista.avd.natural_sort %}
+**{{ traffic_policy }}:**
+
+| Match set | Source prefixes | Ports | Action |
+| --------- | --------------- | ----- | ------ |
+{%             for match in traffic_policies.ipv4[traffic_policy].matchs | arista.avd.natural_sort %}
+| {{ match }} | {% if traffic_policies.ipv4[traffic_policy].matchs[match].source.prefix_lists is arista.avd.defined %}{% for prefix_list in traffic_policies.ipv4[traffic_policy].matchs[match].source.prefix_lists %}{{ prefix_list }}<br/>{% endfor %} {% endif %}{% if traffic_policies.ipv4[traffic_policy].matchs[match].source.prefixes is arista.avd.defined %}{% for prefix in traffic_policies.ipv4[traffic_policy].matchs[match].source.prefixes %}{{ prefix }}<br/> {% endfor %} {% endif %}  | {% if traffic_policies.ipv4[traffic_policy].matchs[match].protocols is arista.avd.defined %}{% for protocol in traffic_policies.ipv4[traffic_policy].matchs[match].protocols %}{{ protocol }}<br/>{% endfor %} {% else %} - {% endif %} | {% if traffic_policies.ipv4[traffic_policy].matchs[match].actions.count is arista.avd.defined %}counter: {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.count }}<br/>{% endif %}{% if traffic_policies.ipv4[traffic_policy].matchs[match].actions.traffic_class is arista.avd.defined %}traffic-class: {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.traffic_class }}<br/>{% endif %}
+{% if traffic_policies.ipv4[traffic_policy].matchs[match].actions.dscp is arista.avd.defined %}dscp code: {{ traffic_policies.ipv4[traffic_policy].matchs[match].actions.dscp }}<br/>{% endif %}{% if traffic_policies.ipv4[traffic_policy].matchs[match].actions.log is arista.avd.defined(true) %}logging: enabled<br/>{% endif %} {% if traffic_policies.ipv4[traffic_policy].matchs[match].actions.drop is arista.avd.defined(true) %}action: drop<br/>{% else %}action: pass{% endif %}|
+{%             endfor %}
+
+{%         endfor %}
+{%     endif %}
+### Traffic Policies Device Configuration
+
+```eos
+{% include 'eos/traffic-policies.j2' %}
+```
+{% else %}
+Traffic Policies not defined
+{% endif %}
