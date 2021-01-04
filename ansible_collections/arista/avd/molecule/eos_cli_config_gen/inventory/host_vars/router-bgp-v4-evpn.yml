@@ -109,6 +109,7 @@ router_bgp:
         - connected
     TENANT_A_PROJECT02:
       router_id: 192.168.255.3
+      timers: 5 15
       rd: "192.168.255.3:12"
       route_targets:
         import:
@@ -120,5 +121,23 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: ABCDEFG
+          next_hop_self: true
+          timers: 1 3
+          send_community: standard
+        10.255.251.2:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: ABCDEFGfg
+          next_hop_self: false
+          timers: 1 3
+          send_community:
+        10.255.251.3:
+          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          description: ABCDEFGfgLCLCLCLC
+          next_hop_self: true
+          timers: 1 3
+          send_community: link-bandwidth aggregate 2
       redistribute_routes:
-        - connected
+        connected:
+        static:
+          route_map: RM-CONN-2-BGP
