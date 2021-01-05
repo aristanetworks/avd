@@ -10,9 +10,9 @@ QOS Profile: **{{ profile }}**
 
 | Default COS | Default DSCP | Trust |
 | ----------- | ------------ | ----- |
-{%         set cos = qos_profiles[profile].qos_set_default_cos | default('-') %}
-{%         set dscp = qos_profiles[profile].qos_set_default_dscp | default('-') %}
-{%         set trust = qos_profiles[profile].qos_trust | default('-') %}
+{%         set cos = qos_profiles[profile].cos | default('-') %}
+{%         set dscp = qos_profiles[profile].dscp | default('-') %}
+{%         set trust = qos_profiles[profile].trust | default('-') %}
 | {{ cos }} | {{ dscp }} | {{ trust }} |
 
 **Tx-queues**

@@ -16,8 +16,8 @@ qos:
 
 qos_profiles:
   test:
-    qos_trust: dscp
-    qos_set_default_dscp: 46
+    trust: dscp
+    dscp: 46
     tx_queues:
       1:
         bandwidth_percent: 50
@@ -28,8 +28,8 @@ qos_profiles:
       6:
         bandwidth_percent: 20
   experiment:
-    qos_trust: cos
-    qos_set_default_cos: 2
+    trust: cos
+    cos: 2
     tx_queues:
       3:
         bandwidth_percent: 30

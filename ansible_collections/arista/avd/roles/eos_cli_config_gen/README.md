@@ -1649,9 +1649,9 @@ qos:
   rewrite_dscp: < true | false >
   qos_profiles:
     < profile-1 >:
-      qos_trust: < dscp or cos >
-      qos_set_default_cos: < cos-value >
-      qos_set_default_dscp: < dscp-value >
+      trust: < dscp or cos >
+      cos: < cos-value >
+      dscp: < dscp-value >
       tx-queues:
         < tx-queue-id >:
           bandwidth_percent: < value >
@@ -1660,9 +1660,9 @@ qos:
           bandwidth_percent: < value >
           priority: < string >
     < profile-2 >:
-      qos_trust: < dscp or cos >
-      qos_set_default_cos: < cos-value >
-      qos_set_default_dscp: < dscp-value >
+      trust: < dscp or cos >
+      cos: < cos-value >
+      dscp: < dscp-value >
       tx-queues:
         < tx-queue-id >:
           bandwidth_percent: < value >
@@ -1676,9 +1676,9 @@ qos:
 ```yaml
 qos_profiles:
   < profile-1 >:
-    qos_trust: < dscp or cos >
-    qos_set_default_cos: < cos-value >
-    qos_set_default_dscp: < dscp-value >
+    trust: < dscp or cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
     tx-queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
@@ -1687,9 +1687,9 @@ qos_profiles:
         bandwidth_percent: < value >
         priority: < string >
   < profile-2 >:
-    qos_trust: < dscp or cos >
-    qos_set_default_cos: < cos-value >
-    qos_set_default_dscp: < dscp-value >
+    trust: < dscp or cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
     tx-queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
