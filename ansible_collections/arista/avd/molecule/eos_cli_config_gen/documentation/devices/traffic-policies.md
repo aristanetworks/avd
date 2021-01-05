@@ -441,11 +441,9 @@ No IPv6 field-set configured.
 traffic-policies
    field-set ipv4 prefix DEMO-01
       10.0.0.0/8 192.168.0.0/16
-
    !
    field-set ipv4 prefix DEMO-02
       172.16.0.0/12 224.0.0.0/8
-
    !
    field-set l4-port SERVICE-DEMO
       10,20,80,440-450
@@ -463,7 +461,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-02 ipv4
          source prefix field-set DEMO-01 DEMO-02
-         protocol tcpestablished destination port field-set SERVICE-DEMO
+         protocol tcp flags established destination port field-set SERVICE-DEMO
          protocol icmp
          actions
             count DEMO-TRAFFIC
@@ -480,9 +478,9 @@ traffic-policies
          !
       !
       match BLUE-C1-POLICY-04 ipv4
-         source prefix DEMO-02
+         source prefix field-set DEMO-02
          destination prefix field-set DEMO-01
-         protocol tcpestablished source port 22
+         protocol tcp flags established source port 22
          protocol icmp
          actions
             set traffic class 5

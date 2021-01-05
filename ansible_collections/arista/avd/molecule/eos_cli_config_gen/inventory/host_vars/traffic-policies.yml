@@ -59,7 +59,7 @@ traffic_policies:
         BLUE-C1-POLICY-04:
           type: ipv4
           source:
-            prefixes:
+            prefix_lists:
               - DEMO-02
           destination:
             prefix_lists:
