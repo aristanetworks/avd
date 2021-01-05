@@ -664,7 +664,9 @@ port_channel_interfaces:
     lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
     lacp_fallback_mode: < individual | static >
     qos:
-      trust: < cos | dscp >
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
@@ -704,9 +706,6 @@ port_channel_interfaces:
       ipv4:
         sparse_mode: < true | false >
     service_profile: < qos_profile >
-    qos_trust: < dscp defualt(L3) | cos default(L2) >
-    qos_dscp: < dscp_value >
-    qos_cos: < cos_value >
 ```
 
 ### Ethernet Interfaces
@@ -761,9 +760,10 @@ ethernet_interfaces:
     ptp:
       enable: < true | false >
     service_profile: < qos_profile >
-    qos_trust: < dscp defualt(L3) | cos default(L2) >
-    qos_dscp: < dscp_value >
-    qos_cos: < cos_value >
+    qos:
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -780,7 +780,9 @@ ethernet_interfaces:
       id: < Port-Channel_id >
       mode: < on | active | passive >
     qos:
-      trust: < cos | dscp >
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
@@ -790,9 +792,6 @@ ethernet_interfaces:
     mac_security:
       profile: < profile >
     service_profile: < qos_profile >
-    qos_trust: < dscp defualt(L3) | cos default(L2) >
-    qos_dscp: < dscp_value >
-    qos_cos: < cos_value >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -1648,7 +1647,7 @@ qos:
       - "< tc_mapping_to_dscp >"
       - "< tc_mapping_to_tx_queue >"
   rewrite_dscp: < true | false >
-  profiles:
+  qos_profiles:
     < profile-1 >:
       qos_trust: < dscp or cos >
       qos_set_default_cos: < cos-value >
@@ -1671,6 +1670,33 @@ qos:
         < tx-queue-id >:
           bandwidth_percent: < value >
           priority: < string >
+```
+### QOS Profiles
+
+```yaml
+qos_profiles:
+  < profile-1 >:
+    qos_trust: < dscp or cos >
+    qos_set_default_cos: < cos-value >
+    qos_set_default_dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+  < profile-2 >:
+    qos_trust: < dscp or cos >
+    qos_set_default_cos: < cos-value >
+    qos_set_default_dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
 ```
 ### PTP
 
