@@ -13,30 +13,31 @@ qos:
       - "1 to dscp 56"
       - "6 to tx-queue 2"
   rewrite_dscp: true
-  profiles:
-    test:
-      qos_trust: dscp
-      qos_set_default_dscp: 46
-      tx_queues:
-        1:
-          bandwidth_percent: 50
-          priority: 'no priority'
-        2:
-          bandwidth_percent: 10
-          priority: 'priority strict'
-        6:
-          bandwidth_percent: 20
-    experiment:
-      qos_trust: cos
-      qos_set_default_cos: 2
-      tx_queues:
-        3:
-          bandwidth_percent: 30
-          priority: 'no priority'
-        5:
-          bandwidth_percent: 40
-        7:
-          bandwidth_percent: 30
+
+qos_profiles:
+  test:
+    qos_trust: dscp
+    qos_set_default_dscp: 46
+    tx_queues:
+      1:
+        bandwidth_percent: 50
+        priority: 'no priority'
+      2:
+        bandwidth_percent: 10
+        priority: 'priority strict'
+      6:
+        bandwidth_percent: 20
+  experiment:
+    qos_trust: cos
+    qos_set_default_cos: 2
+    tx_queues:
+      3:
+        bandwidth_percent: 30
+        priority: 'no priority'
+      5:
+        bandwidth_percent: 40
+      7:
+        bandwidth_percent: 30
 
 ### Port-Channel Interfaces ###
 ethernet_interfaces:
@@ -49,8 +50,9 @@ ethernet_interfaces:
     type: routed
     ip_address: 172.31.255.1/31
     service_profile: test
-    qos_trust: dscp
-    qos_dscp: 48
+    qos:
+      trust: dscp
+      dscp: 48
 
   Ethernet6:
     peer: SRV-POD02
@@ -61,8 +63,9 @@ ethernet_interfaces:
     vlans: 110-111,210-211
     profile: ALL
     service_profile: experiment
-    qos_trust: cos
-    qos_cos: 2
+    qos:
+      trust: cos
+      cos: 2
 
   Ethernet3:
     peer: DC1-LEAF1B
@@ -92,5 +95,6 @@ port_channel_interfaces:
       - LEAF_PEER_L3
       - MLAG
     service_profile: experiment
-    qos_trust: cos
-    qos_cos: 2
+    qos:
+      trust: cos
+      cos: 2
