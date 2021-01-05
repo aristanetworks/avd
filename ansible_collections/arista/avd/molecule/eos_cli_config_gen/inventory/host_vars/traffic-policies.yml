@@ -1,5 +1,18 @@
 ---
 traffic_policies:
+  options:
+    counter_per_interface: true
+  field_sets:
+    ports:
+      SERVICE-DEMO: "10,20,80,440-450"
+    ipv4:
+      DEMO-01:
+        - 10.0.0.0/8
+        - 192.168.0.0/16
+      DEMO-02:
+        - 172.16.0.0/12
+        - 224.0.0.0/8
+  policies:
     BLUE-C1-POLICY:
       matchs:
         BLUE-C1-POLICY-01:
@@ -8,6 +21,9 @@ traffic_policies:
             prefixes:
               - 10.0.0.0/8
               - 192.168.0.0/16
+          destination:
+            prefix_lists:
+              - DEMO-01
           protocols:
             tcp:
               src_port: "1,10-20"
@@ -18,25 +34,44 @@ traffic_policies:
           type: ipv4
           source:
             prefix_lists:
-              - PL-BOGONS01
-              - PL-BOGONS02
+              - DEMO-01
+              - DEMO-02
           protocols:
             tcp:
-              dst_port: "80,443"
+              dst_field: SERVICE-DEMO
+              flags:
+                - established
             icmp:
           actions:
-            count: BOGONS-TRAFFIC
+            count: DEMO-TRAFFIC
             dscp: 60
         BLUE-C1-POLICY-03:
           type: ipv4
           source:
             prefix_lists:
-              - PL-BOGONS
+              - DEMO-01
           protocols:
             tcp:
           actions:
+            count: DROP-PACKETS
             drop: true
             log: true
+        BLUE-C1-POLICY-04:
+          type: ipv4
+          source:
+            prefixes:
+              - DEMO-02
+          destination:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+              src_port: "22"
+              flags:
+                - established
+            icmp:
+          actions:
+            traffic_class: 5
     BLUE-C2-POLICY:
       matchs:
         BLUE-C2-POLICY-01:
@@ -55,20 +90,20 @@ traffic_policies:
           type: ipv4
           source:
             prefix_lists:
-              - PL-BOGONS01
-              - PL-BOGONS02
+              - DEMO-01
+              - DEMO-02
           protocols:
             tcp:
-              dst_port: "80,443"
+              src_field: SERVICE-DEMO
             icmp:
           actions:
-            count: BOGONS-TRAFFIC
+            count: DEMO-TRAFFIC
             dscp: 60
         BLUE-C2-POLICY-03:
           type: ipv4
           source:
             prefix_lists:
-              - PL-BOGONS
+              - DEMO-01
           protocols:
             tcp:
           actions:

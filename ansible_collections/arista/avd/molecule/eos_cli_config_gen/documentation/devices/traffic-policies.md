@@ -401,32 +401,60 @@ Errdisable is not defined.
 
 # Traffic Policies
 
-### Policies information
+### Traffic Policies information
+**IPv4 Field sets**
 
+| Field Set Name | Values |
+| -------------- | ------ |
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16| | DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8| 
+**IPv6 Field sets**
+
+No IPv6 field-set configured.
+
+**L4 Port Field sets**
+
+| Field Set Name | Values |
+| -------------- | ------ |
+| SERVICE-DEMO | 10,20,80,440-450 | 
+#### Traffic Policies
 **BLUE-C1-POLICY:**
 
-| Match set | Type | Source prefixes | Ports | Action |
-| --------- | ---- | --------------- | ----- | ------ |
-| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
-| BLUE-C1-POLICY-02 | ipv4 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
-| BLUE-C1-POLICY-03 | ipv4 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+| Match set | Type | Sources | Destinations | Protocol | Action |
+| --------- | ---- | ------- | ------------ | -------- | ------ |
+ | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  | DEMO-01 |  tcp  (src: 1,10-20 )<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+ | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO / flags: established)<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
+ | BLUE-C1-POLICY-03 | ipv4 | DEMO-01  |  |  tcp <br/>|  counter: DROP-PACKETS<br/>logging: enabled<br/> action: drop<br/> |
+ | BLUE-C1-POLICY-04 | ipv4 | DEMO-02  | DEMO-01 |  tcp  (src: 22 / flags: established)<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
 
 **BLUE-C2-POLICY:**
 
-| Match set | Type | Source prefixes | Ports | Action |
-| --------- | ---- | --------------- | ----- | ------ |
-| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/> 192.168.0.0/16<br/>    | tcp<br/>icmp<br/>  | traffic-class: 5<br/> action: pass|
-| BLUE-C2-POLICY-02 | ipv4 | PL-BOGONS01<br/>PL-BOGONS02<br/>   | tcp<br/>icmp<br/>  | counter: BOGONS-TRAFFIC<br/>dscp code: 60<br/> action: pass|
-| BLUE-C2-POLICY-03 | ipv4 | PL-BOGONS<br/>   | tcp<br/>  | logging: enabled<br/> action: drop<br/>|
+| Match set | Type | Sources | Destinations | Protocol | Action |
+| --------- | ---- | ------- | ------------ | -------- | ------ |
+ | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  |  |  tcp  (src: 1,10-20 )<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+ | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO )<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
+ | BLUE-C2-POLICY-03 | ipv4 | DEMO-01  |  |  tcp <br/>|  logging: enabled<br/> action: drop<br/> |
 
 ### Traffic Policies Device Configuration
 
 ```eos
 !
 traffic-policies
+   field-set ipv4 prefix DEMO-01
+      10.0.0.0/8 192.168.0.0/16
+
+   !
+   field-set ipv4 prefix DEMO-02
+      172.16.0.0/12 224.0.0.0/8
+
+   !
+   field-set l4-port SERVICE-DEMO
+      10,20,80,440-450
+   !
    traffic-policy BLUE-C1-POLICY
+      counter DEMO-TRAFFIC DROP-PACKETS
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
+         destination prefix field-set DEMO-01
          protocol tcp source port 1,10-20
          protocol icmp
          actions
@@ -434,24 +462,35 @@ traffic-policies
          !
       !
       match BLUE-C1-POLICY-02 ipv4
-         source prefix field-set PL-BOGONS01 PL-BOGONS02
-         protocol tcp destination port 80,443
+         source prefix field-set DEMO-01 DEMO-02
+         protocol tcpestablished destination port field-set SERVICE-DEMO
          protocol icmp
          actions
-            count BOGONS-TRAFFIC
+            count DEMO-TRAFFIC
             set dscp 60
          !
       !
       match BLUE-C1-POLICY-03 ipv4
-         source prefix field-set PL-BOGONS
+         source prefix field-set DEMO-01
          protocol tcp
          actions
+            count DROP-PACKETS
             drop
             log
          !
       !
+      match BLUE-C1-POLICY-04 ipv4
+         source prefix DEMO-02
+         destination prefix field-set DEMO-01
+         protocol tcpestablished source port 22
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
    !
    traffic-policy BLUE-C2-POLICY
+      counter DEMO-TRAFFIC
       match BLUE-C2-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
          protocol tcp source port 1,10-20
@@ -461,16 +500,16 @@ traffic-policies
          !
       !
       match BLUE-C2-POLICY-02 ipv4
-         source prefix field-set PL-BOGONS01 PL-BOGONS02
-         protocol tcp destination port 80,443
+         source prefix field-set DEMO-01 DEMO-02
+         protocol tcp source port field-set SERVICE-DEMO
          protocol icmp
          actions
-            count BOGONS-TRAFFIC
+            count DEMO-TRAFFIC
             set dscp 60
          !
       !
       match BLUE-C2-POLICY-03 ipv4
-         source prefix field-set PL-BOGONS
+         source prefix field-set DEMO-01
          protocol tcp
          actions
             drop
