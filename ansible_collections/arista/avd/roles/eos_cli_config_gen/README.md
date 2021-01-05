@@ -1758,39 +1758,62 @@ ptp:
 
 ```yaml
 traffic_policies:
-  < TRAFFIC POLICY NAME >:
-    matchs:
-      < TRAFFIC POLICY ITEM >:
-        type: < ipv4 | ipv6 >
-        source:
-          prefixes:
-            - < prefix 01 >
-            - < prefix 02 >
-          prefix_lists:
-            - < Prefix List 01 >
-            - < Prefix List 02 >
-        protocols:
-          tcp:
-            src_port: "< vlan range >"
-            dst_port: "< vlan range >"
-          icmp:
-          udp:
-            src_port: "< vlan range >"
-            dst_port: "< vlan range >"
-          ahp:
-          bgp:
-          icmp:
-          igmp:
-          ospf:
-          pim:
-          rsvp:
-          vrrp:
-        actions:
-          dscp: < dscp code value >
-          traffic_class: < traffic class id >
-          count: < counter name >
-          drop: < true | false (default false) >
-          log: < true | false (default false) >
+  options:
+    counter_per_interface: < true | false >
+  field_sets:
+    ipv4:
+      < PREFIX FIELD SET NAME >:
+        - < IPv4 prefix 01>
+        - < IPv4 prefix 02>
+        - < IPv4 prefix 03>
+    ipv6:
+      < PREFIX FIELD SET NAME >:
+        - < IPv6 prefix 01>
+        - < IPv6 prefix 02>
+        - < IPv6 prefix 03>
+    ports:
+      < L4 PORT FIELD SET NAME >: "< vlan range >"
+  policies:
+    < TRAFFIC POLICY NAME >:
+      matchs:
+        < TRAFFIC POLICY ITEM >:
+          type: < ipv4 | ipv6 >
+          source:
+            prefixes:
+              - < prefix 01 >
+              - < prefix 02 >
+            prefix_lists:
+              - < Field Set List 01 >
+              - < Field Set List 02 >
+          protocols:
+            tcp:
+              src_port: "< vlan range >"
+              dst_port: "< vlan range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+              flags:
+                - established
+                - initial
+            icmp:
+            udp:
+              src_port: "< vlan range >"
+              dst_port: "< vlan range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+            ahp:
+            bgp:
+            icmp:
+            igmp:
+            ospf:
+            pim:
+            rsvp:
+            vrrp:
+          actions:
+            dscp: < dscp code value >
+            traffic_class: < traffic class id >
+            count: < counter name >
+            drop: < true | false (default false) >
+            log: < true | false (default false) >
 ```
 
 ### Custom Templates
