@@ -73,6 +73,8 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
 - [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -447,9 +449,18 @@ errdisable recovery cause xcvr-power-unsupported
 errdisable recovery cause xcvr-unsupported
 errdisable recovery interval 300
 ```
+
 # MACsec
 
 MACsec not defined
+
+# QOS
+
+QOS is not defined.
+
+# QOS Profiles
+
+QOS Profiles are not defined
 
 # Custom Templates
 

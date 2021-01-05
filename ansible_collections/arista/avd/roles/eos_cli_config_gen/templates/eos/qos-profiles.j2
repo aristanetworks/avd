@@ -1,0 +1,28 @@
+{# eos - qos profiles #}
+{% if qos_profiles is defined %}
+{%     for profile in qos_profiles | arista.avd.natural_sort %}
+!
+qos profile {{ profile }}
+{%         if qos_profiles[profile].trust is defined and qos_profiles[profile].trust is not none %}
+   qos trust {{ qos_profiles[profile].trust }}
+{%         endif %}
+{%         if qos_profiles[profile].cos is defined and qos_profiles[profile].cos is not none %}
+   qos cos {{ qos_profiles[profile].cos }}
+{%         endif %}
+{%         if qos_profiles[profile].dscp is defined and qos_profiles[profile].dscp is not none %}
+   qos dscp {{ qos_profiles[profile].dscp }}
+{%         endif %}
+{%         if qos_profiles[profile].tx_queues is defined and qos_profiles[profile].tx_queues is not none %}
+{%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
+   !
+   tx-queue {{ tx_queue }}
+{%                 if qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent is defined and qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent is not none %}
+      bandwidth percent {{ qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent }}
+{%                 endif %}
+{%                 if qos_profiles[profile].tx_queues[tx_queue].priority is defined and qos_profiles[profile].tx_queues[tx_queue].priority is not none %}
+      {{ qos_profiles[profile].tx_queues[tx_queue].priority }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

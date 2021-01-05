@@ -47,8 +47,16 @@ interface {{ ethernet_interface }}
    switchport trunk group {{ trunk_group }}
 {%                 endfor %}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
+{%             if ethernet_interfaces[ethernet_interface].qos is defined %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
    qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.dscp is defined and ethernet_interfaces[ethernet_interface].qos.dscp is not none %}
+   qos dscp {{ ethernet_interfaces[ethernet_interface].qos.dscp }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.cos is defined and ethernet_interfaces[ethernet_interface].qos.cos is not none %}
+   qos cos {{ ethernet_interfaces[ethernet_interface].qos.cos }}
+{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'edge' %}
    spanning-tree portfast
@@ -157,6 +165,9 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mac_security.profile is defined and ethernet_interfaces[ethernet_interface].mac_security.profile is not none %}
    mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profile }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].service_profile is defined and ethernet_interfaces[ethernet_interface].service_profile is not none %}
+   service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}

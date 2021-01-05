@@ -73,6 +73,8 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
 - [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -441,6 +443,7 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+
 # MACsec
 
 ### MACsec Summary
@@ -497,6 +500,14 @@ mac security
    profile A2
       key 1234b 7 12485744465E5A53
 ```
+
+# QOS
+
+QOS is not defined.
+
+# QOS Profiles
+
+QOS Profiles are not defined
 
 # Custom Templates
 
