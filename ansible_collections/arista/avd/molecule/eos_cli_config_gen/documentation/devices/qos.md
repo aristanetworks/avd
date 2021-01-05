@@ -501,7 +501,6 @@ QOS rewrite DSCP: **enabled**
 ### QOS Device Configuration
 
 ```eos
-
 !
 qos rewrite dscp
 qos map cos 1 2 3 4 to traffic-class 2
@@ -555,7 +554,6 @@ QOS Profile: **test**
 ### QOS Profile Device Configuration
 
 ```eos
-
 !
 qos profile experiment
    qos trust cos
