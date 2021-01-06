@@ -2,7 +2,7 @@
 {% if spanning_tree is defined and spanning_tree is not none %}
 ## Spanning Tree Summary
 
-STP mode running: **{{ spanning_tree.mode }}**
+STP mode: **{{ spanning_tree.mode }}**
 {%     if spanning_tree.mode == "mstp" %}
 {%         if spanning_tree.mst is defined and spanning_tree.mst is not none %}
 {%             if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
