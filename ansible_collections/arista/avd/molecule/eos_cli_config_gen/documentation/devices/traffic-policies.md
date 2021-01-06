@@ -421,10 +421,11 @@ No IPv6 field-set configured.
 
 | Match set | Type | Sources | Destinations | Protocol | Action |
 | --------- | ---- | ------- | ------------ | -------- | ------ |
- | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  | DEMO-01 |  tcp  (src: 1,10-20 )<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+ | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  | DEMO-01 |  tcp  (src: 1,10-20 )<br/>|  traffic-class: 5<br/> action: pass |
  | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO / flags: established)<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
- | BLUE-C1-POLICY-03 | ipv4 | DEMO-01  |  |  tcp <br/>|  counter: DROP-PACKETS<br/>logging: enabled<br/> action: drop<br/> |
+ | BLUE-C1-POLICY-03 | ipv4 | DEMO-01  |  |  icmp <br/>|  counter: DROP-PACKETS<br/>logging: enabled<br/> action: drop<br/> |
  | BLUE-C1-POLICY-04 | ipv4 | DEMO-02  | DEMO-01 |  tcp  (src: 22 / flags: established)<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+ | BLUE-C1-POLICY-05 | ipv4 | DEMO-02  | DEMO-01 |  tcp <br/>|  traffic-class: 5<br/> action: pass |
 
 **BLUE-C2-POLICY:**
 
@@ -453,15 +454,15 @@ traffic-policies
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
          destination prefix field-set DEMO-01
-         protocol tcp source port 1,10-20
-         protocol icmp
+         protocol tcp
+         ttl 10, 20-30
          actions
             set traffic class 5
          !
       !
       match BLUE-C1-POLICY-02 ipv4
          source prefix field-set DEMO-01 DEMO-02
-         protocol tcp flags established destination port field-set SERVICE-DEMO
+         protocol tcp
          protocol icmp
          actions
             count DEMO-TRAFFIC
@@ -470,7 +471,8 @@ traffic-policies
       !
       match BLUE-C1-POLICY-03 ipv4
          source prefix field-set DEMO-01
-         protocol tcp
+         protocol icmp
+         fragment offset 1124, 2000-2010
          actions
             count DROP-PACKETS
             drop
@@ -480,8 +482,17 @@ traffic-policies
       match BLUE-C1-POLICY-04 ipv4
          source prefix field-set DEMO-02
          destination prefix field-set DEMO-01
-         protocol tcp flags established source port 22
+         protocol tcp
          protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+      match BLUE-C1-POLICY-05 ipv4
+         source prefix field-set DEMO-02
+         destination prefix field-set DEMO-01
+         protocol tcp
+         fragment
          actions
             set traffic class 5
          !
@@ -491,7 +502,7 @@ traffic-policies
       counter DEMO-TRAFFIC
       match BLUE-C2-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
-         protocol tcp source port 1,10-20
+         protocol tcp
          protocol icmp
          actions
             set traffic class 5
@@ -514,6 +525,10 @@ traffic-policies
             log
          !
       !
+      match ipv4-all-default ipv4
+         actions
+            drop
+            log
    !
 ```
 

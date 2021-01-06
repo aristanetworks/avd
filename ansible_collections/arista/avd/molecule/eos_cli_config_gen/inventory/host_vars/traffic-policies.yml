@@ -27,7 +27,7 @@ traffic_policies:
           protocols:
             tcp:
               src_port: "1,10-20"
-            icmp:
+          ttl: "10, 20-30"
           actions:
             traffic_class: 5
         BLUE-C1-POLICY-02:
@@ -51,7 +51,12 @@ traffic_policies:
             prefix_lists:
               - DEMO-01
           protocols:
-            tcp:
+            icmp:
+              icmp_type:
+                - echo
+                - echo-reply
+          fragment:
+            offset: "1124, 2000-2010"
           actions:
             count: DROP-PACKETS
             drop: true
@@ -72,7 +77,24 @@ traffic_policies:
             icmp:
           actions:
             traffic_class: 5
+        BLUE-C1-POLICY-05:
+          type: ipv4
+          source:
+            prefix_lists:
+              - DEMO-02
+          destination:
+            prefix_lists:
+              - DEMO-01
+          protocols:
+            tcp:
+          fragment:
+          actions:
+            traffic_class: 5
     BLUE-C2-POLICY:
+      default_actions:
+        ipv4:
+          drop: true
+          log: true
       matchs:
         BLUE-C2-POLICY-01:
           type: ipv4
