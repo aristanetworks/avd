@@ -48,6 +48,9 @@
 {%                     endif %}
 {%                 endif %}
     profile: {{ adapter.profile }}
+{%                 if adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) is arista.avd.defined %}
+    service_profile: {{ adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
