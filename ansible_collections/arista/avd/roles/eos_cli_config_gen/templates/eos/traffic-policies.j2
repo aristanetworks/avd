@@ -71,27 +71,35 @@ traffic-policies
 {%                     if traffic_policies.policies[policy].matchs[match].protocols is arista.avd.defined %}
 {%                         for protocol in traffic_policies.policies[policy].matchs[match].protocols %}
 {#                             -- destination port-list -- #}
-{%                             if traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_port is arista.avd.defined %}
+{%                             if traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_port is arista.avd.defined protocol | lower in ['tcp','udp'] %}
          protocol {{ protocol }}{% if traffic_policies.policies[policy].matchs[match].protocols[protocol].flags is arista.avd.defined %} flags {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].flags  | join(' ') }}{% endif %} destination port {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_port }}
 {#                             -- source port-list -- #}
-{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].src_port is arista.avd.defined %}
+{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].src_port is arista.avd.defined protocol | lower in ['tcp','udp'] %}
          protocol {{ protocol }}{% if traffic_policies.policies[policy].matchs[match].protocols[protocol].flags is arista.avd.defined %} flags {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].flags  | join(' ') }}{% endif %} source port {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].src_port }}
 {#                             -- destination field-set -- #}
-{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_field is arista.avd.defined %}
+{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_field is arista.avd.defined protocol | lower in ['tcp','udp'] %}
          protocol {{ protocol }}{% if traffic_policies.policies[policy].matchs[match].protocols[protocol].flags is arista.avd.defined %} flags {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].flags  | join(' ') }}{% endif %} destination port field-set {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].dst_field }}
 {#                             -- source field-set -- #}
-{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].src_field is arista.avd.defined %}
+{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].src_field is arista.avd.defined and protocol | lower in ['tcp','udp'] %}
          protocol {{ protocol }}{% if traffic_policies.policies[policy].matchs[match].protocols[protocol].flags is arista.avd.defined %} flags {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].flags  | join(' ') }}{% endif %} source port field-set {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].src_field }}
-{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type is arista.avd.defined %}
+{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type is arista.avd.defined protocol | lower == 'icmp' %}
          protocol icmp type {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type | join(' ') }} code all
+{%                             elif protocol | lower == 'neighbors' %}
+         protocol neighbors bgp
 {%                             else %}
          protocol {{ protocol }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
-{#                     -- PROTOCOL MANAGEMENT -- #}
+{#                     -- TTL MANAGEMENT -- #}
 {%                     if traffic_policies.policies[policy].matchs[match].ttl is arista.avd.defined %}
          ttl {{ traffic_policies.policies[policy].matchs[match].ttl }}
+{%                     endif %}
+{#                     -- FRAGMENT MANAGEMENT -- #}
+{%                     if traffic_policies.policies[policy].matchs[match].fragment.offset is arista.avd.defined %}
+         fragment offset {{ traffic_policies.policies[policy].matchs[match].fragment.offset }}
+{%                     elif  traffic_policies.policies[policy].matchs[match].fragment is defined %}
+         fragment
 {%                     endif %}
 {#       -- ACTIONS SECTION -- #}
          actions
@@ -120,6 +128,34 @@ traffic-policies
       !
 {%                 endfor %}
 {%             endif %}
+{# DEFAULT MATCH Section #}
+{%             if traffic_policies.policies[policy].default_actions is arista.avd.defined %}
+{%                 for version in traffic_policies.policies[policy].default_actions %}
+      match {{ version | lower }}-all-default {{ version | lower }}
+         actions
+{#                     -- COUNT packets -- #}
+{%                     if traffic_policies.policies[policy].default_actions[version].count is arista.avd.defined %}
+            count {{ traffic_policies.policies[policy].default_actions[version].count }}
+{%                     endif %}
+{#                     -- Traffic Class -- #}
+{%                     if traffic_policies.policies[policy].default_actions[version].traffic_class is arista.avd.defined %}
+            set traffic class {{ traffic_policies.policies[policy].default_actions[version].traffic_class }}
+{%                     endif %}
+{#                     -- DSCP -- #}
+{%                     if traffic_policies.policies[policy].default_actions[version].dscp is arista.avd.defined %}
+            set dscp {{ traffic_policies.policies[policy].default_actions[version].dscp }}
+{%                     endif %}
+{#                     -- DROP Action -- #}
+{%                     if traffic_policies.policies[policy].default_actions[version].drop is arista.avd.defined(true) %}
+            drop
+{#                         -- LOGGING only if DROP is set-- #}
+{%                         if traffic_policies.policies[policy].default_actions[version].log is arista.avd.defined(true) %}
+            log
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{# END of DEFAULT MATCH Section #}
    !
 {%         endfor %}
 {%     endif %}

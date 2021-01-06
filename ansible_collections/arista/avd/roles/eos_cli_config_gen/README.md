@@ -1786,10 +1786,14 @@ traffic_policies:
               - < Field Set List 01 >
               - < Field Set List 02 >
           ttl: "< ttl range>"
+          # The 'fragment' command is not supported when 'source port'
+          # or 'destination port' command is configured
+          fragment:
+            offset: "< fragment offset range >"
           protocols:
             tcp:
-              src_port: "< vlan range >"
-              dst_port: "< vlan range >"
+              src_port: "< port range >"
+              dst_port: "< port range >"
               src_field: "< L4 port range field set >"
               dst_field: "< L4 port range field set >"
               flags:
@@ -1800,8 +1804,8 @@ traffic_policies:
                 - < ICMP message type >
                 - < ICMP message type >
             udp:
-              src_port: "< vlan range >"
-              dst_port: "< vlan range >"
+              src_port: "< port range >"
+              dst_port: "< port range >"
               src_field: "< L4 port range field set >"
               dst_field: "< L4 port range field set >"
             ahp:
@@ -1812,12 +1816,25 @@ traffic_policies:
             pim:
             rsvp:
             vrrp:
+            # The 'protocol neighbors' subcommand is not supported when any
+            # other match subcommands are configured
+            neighbors:
           actions:
             dscp: < dscp code value >
             traffic_class: < traffic class id >
             count: < counter name >
             drop: < true | false (default false) >
+            # Only supported when action is set to drop
             log: < true | false (default false) >
+          # Last resort policy
+          default_actions:
+            < ipv4 | ipv6 >:
+              dscp: < dscp code value >
+              traffic_class: < traffic class id >
+              count: < counter name >
+              drop: < true | false (default false) >
+              # Only supported when action is set to drop
+              log: < true | false (default false) >
 ```
 
 ### Custom Templates
