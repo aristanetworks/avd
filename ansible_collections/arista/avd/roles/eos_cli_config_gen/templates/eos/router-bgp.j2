@@ -181,6 +181,30 @@ router bgp {{ router_bgp.as }}
 {%          endfor %}
 {%       endif %}
 {%     endif %}
+{# address family rt-membership activation #}
+{%     if router_bgp.address_family_rtc is defined and router_bgp.address_family_rtc is not none %}
+   !
+   address-family rt-membership
+{%         if router_bgp.address_family_rtc.peer_groups is defined and router_bgp.address_family_rtc.peer_groups is not none %}
+{%            for peer_group in router_bgp.address_family_rtc.peer_groups | arista.avd.natural_sort %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].activate == true %}
+      neighbor {{ peer_group }} activate
+{%               elif router_bgp.address_family_rtc.peer_groups[peer_group].activate == false %}
+      no neighbor {{ peer_group }} activate
+{%               endif %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target is defined %}
+{%                   if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only is defined and router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.only == true %}
+      neighbor {{ peer_group }} default-route-target only
+{%                   else %}
+      neighbor {{ peer_group }} default-route-target
+{%                   endif %}
+{%               endif %}
+{%               if router_bgp.address_family_rtc.peer_groups[peer_group].default_route_target.encoding_origin_as_omit is defined %}
+      neighbor {{ peer_group }} default-route-target encoding origin-as omit
+{%               endif %}
+{%            endfor %}
+{%         endif %}
+{%       endif %}
 {# address family ipv4 activation #}
 {%     if router_bgp.address_family_ipv4 is defined and router_bgp.address_family_ipv4 is not none %}
    !
@@ -346,12 +370,27 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].router_id is defined %}
       router-id {{ router_bgp.vrfs[vrf].router_id }}
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].timers is defined %}
+      timers bgp {{ router_bgp.vrfs[vrf].timers }}
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
 {%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is defined and router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is not none %}
       neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].description is defined and router_bgp.vrfs[vrf].neighbors[neighbor].description is not none %}
+      neighbor {{ neighbor }} description {{ router_bgp.vrfs[vrf].neighbors[neighbor].description }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self is defined and router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self == true %}
+      neighbor {{ neighbor }} next-hop-self
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].timers is defined and router_bgp.vrfs[vrf].neighbors[neighbor].timers is not none %}
+      neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
+      neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
 {%                      endif %}
 {%                 endfor %}
 {%             endif %}

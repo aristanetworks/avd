@@ -1,0 +1,39 @@
+{% if qos_profiles is defined %}
+
+### QOS Profiles Summary
+
+{%     for profile in qos_profiles | arista.avd.natural_sort %}
+
+QOS Profile: **{{ profile }}**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust |
+| ----------- | ------------ | ----- |
+{%         set cos = qos_profiles[profile].cos | default('-') %}
+{%         set dscp = qos_profiles[profile].dscp | default('-') %}
+{%         set trust = qos_profiles[profile].trust | default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} |
+
+**Tx-queues**
+
+{%         if qos_profiles[profile].tx_queues is defined and qos_profiles[profile].tx_queues is not none %}
+| Tx-queue | Bandwidth | Priority |
+| -------- | --------- | -------- |
+{%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
+{%                 set queue = qos_profiles[profile].tx_queues[tx_queue] | default('-') %}
+{%                 set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent | default('-') %}
+{%                 set priority = qos_profiles[profile].tx_queues[tx_queue].priority | default('-') %}
+| {{ tx_queue }} | {{ bw_percent }} | {{ priority }} |
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+### QOS Profile Device Configuration
+
+```eos
+{% include 'eos/qos-profiles.j2' %}
+```
+{% else %}
+QOS Profiles are not defined
+{% endif %}

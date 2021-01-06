@@ -362,6 +362,21 @@ bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
+
+# Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
+# Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
+# SVI IP address will be assigned as follows:
+# virtual-router: <subnet> + 1
+# l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+# l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+# l2leafs       : <subnet> + 3 + <l2leaf id>
+# GW on l2leafs : <subnet> + 1
+# Assign range larger than total l2leafs + 5
+l2leaf_inband_management_subnet: < IPv4_network/Mask >
+
+# VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
+# Optional - default -> 4092
+l2leaf_inband_management_vlan: < vlan_id >
 ```
 
 **Example:**
@@ -1227,16 +1242,16 @@ port_profiles:
     storm_control:
       all:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       broadcast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       multicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
       unknown_unicast:
         level: < Configure maximum storm-control level >
-        unit: < percent | pps >
+        unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:

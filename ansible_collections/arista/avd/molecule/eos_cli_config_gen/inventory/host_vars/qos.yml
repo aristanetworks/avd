@@ -1,0 +1,100 @@
+### QOS ###
+qos:
+  map:
+    cos:
+      - "1 2 3 4 to traffic-class 2"
+      - "3 to traffic-class 3"
+    dscp:
+      - "8 9 10 11 12 13 14 15 16 17 19 21 23 24 25 27 29 31 32 33 35 37 39 40 41 42 43 44 45 47 49 50 51 52 53 54 55 57 58 59 60 61 62 63 to traffic-class 1"
+      - "46 to traffic-class 5"
+      - "18 20 22 26 28 30 34 36 38 to traffic-class 4 drop-precedence 2"
+    traffic_class:
+      - "2 4 5 to cos 7"
+      - "1 to dscp 56"
+      - "6 to tx-queue 2"
+  rewrite_dscp: true
+
+qos_profiles:
+  test:
+    trust: dscp
+    dscp: 46
+    tx_queues:
+      1:
+        bandwidth_percent: 50
+        priority: 'no priority'
+      2:
+        bandwidth_percent: 10
+        priority: 'priority strict'
+      6:
+        bandwidth_percent: 20
+  experiment:
+    trust: cos
+    cos: 2
+    tx_queues:
+      3:
+        bandwidth_percent: 30
+        priority: 'no priority'
+      5:
+        bandwidth_percent: 40
+      7:
+        bandwidth_percent: 30
+
+### Port-Channel Interfaces ###
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SPINE1
+    peer_interface: Ethernet1
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.255.1/31
+    service_profile: test
+    qos:
+      trust: dscp
+      dscp: 48
+
+  Ethernet6:
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    profile: ALL
+    service_profile: experiment
+    qos:
+      trust: cos
+      cos: 2
+
+  Ethernet3:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet3
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-LEAF1B_Ethernet3
+    channel_group:
+      id: 3
+      mode: active
+
+  Ethernet4:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-LEAF1B_Ethernet4
+    channel_group:
+      id: 3
+      mode: active
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+  Port-Channel3:
+    description: MLAG_PEER_DC1-LEAF1B_Po3
+    vlans: "2-4094"
+    mode: trunk
+    trunk_groups:
+      - LEAF_PEER_L3
+      - MLAG
+    service_profile: experiment
+    qos:
+      trust: cos
+      cos: 2

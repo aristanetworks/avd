@@ -664,7 +664,9 @@ port_channel_interfaces:
     lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
     lacp_fallback_mode: < individual | static >
     qos:
-      trust: < cos | dscp >
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
@@ -703,6 +705,7 @@ port_channel_interfaces:
     pim:
       ipv4:
         sparse_mode: < true | false >
+    service_profile: < qos_profile >
 ```
 
 ### Ethernet Interfaces
@@ -759,6 +762,11 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+    service_profile: < qos_profile >
+    qos:
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
 
 # Switched Interfaces
   <Ethernet_interface_2 >:
@@ -775,7 +783,9 @@ ethernet_interfaces:
       id: < Port-Channel_id >
       mode: < on | active | passive >
     qos:
-      trust: < cos | dscp >
+      trust: < dscp | cos >
+      dscp: < dscp-value >
+      cos: < cos-value >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
@@ -784,6 +794,7 @@ ethernet_interfaces:
       enable: < true | false >
     mac_security:
       profile: < profile >
+    service_profile: < qos_profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -916,6 +927,8 @@ vlan_interfaces:
       preempt_delay_minimum: < minimum_preemption_delay >
       ipv4: < virtual_ip_address >
       ipv6: < virtual_ip_address >
+    ip_attached_host_route_export:
+      distance: < distance >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1339,6 +1352,13 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+  address_family_rtc:
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+        default_route_target:
+          only: < true | false >
+          encoding_origin_as_omit:
   address_family_ipv4:
     networks:
       < prefix_ipv4 >:
@@ -1407,11 +1427,20 @@ router_bgp:
           < address_family >:
             - "< route_target >"
             - "< route_target >"
+        timers: < keepalive_hold_timer_values >
         neighbors:
           < neighbor_ip_address >:
             remote_as: < asn >
+            description: < description >
+            next_hop_self: < true | false >
+            timers: < keepalive_hold_timer_values >
+            send_community: < string | leave empty for all communities >
           < neighbor_ip_address >:
             remote_as: < asn >
+            description: < description >
+            next_hop_self: < true | false >
+            timers: < keepalive_hold_timer_values >
+            send_community: < string | leave empty for all communities >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -1604,6 +1633,73 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+### QOS
+
+```yaml
+qos:
+  map:
+    cos:
+      - "< cos_mapping_to_tc >"
+      - "< cos_mapping_to_tc >"
+    dscp:
+      - "< dscp_mapping_to_tc >"
+      - "< dscp_mapping_to_tc >"
+    traffic_class:
+      - "< tc_mapping_to_cos >"
+      - "< tc_mapping_to_dscp >"
+      - "< tc_mapping_to_tx_queue >"
+  rewrite_dscp: < true | false >
+  qos_profiles:
+    < profile-1 >:
+      trust: < dscp or cos >
+      cos: < cos-value >
+      dscp: < dscp-value >
+      tx-queues:
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+    < profile-2 >:
+      trust: < dscp or cos >
+      cos: < cos-value >
+      dscp: < dscp-value >
+      tx-queues:
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+        < tx-queue-id >:
+          bandwidth_percent: < value >
+          priority: < string >
+```
+### QOS Profiles
+
+```yaml
+qos_profiles:
+  < profile-1 >:
+    trust: < dscp or cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+  < profile-2 >:
+    trust: < dscp or cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
 ```
 ### PTP
 
