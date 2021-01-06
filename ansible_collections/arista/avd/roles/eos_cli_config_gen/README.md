@@ -1796,6 +1796,9 @@ traffic_policies:
                 - established
                 - initial
             icmp:
+              icmp_type:
+                - < ICMP message type >
+                - < ICMP message type >
             udp:
               src_port: "< vlan range >"
               dst_port: "< vlan range >"

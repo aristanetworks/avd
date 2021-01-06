@@ -82,6 +82,8 @@ traffic-policies
 {#                             -- source field-set -- #}
 {%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].src_field is arista.avd.defined %}
          protocol {{ protocol }}{% if traffic_policies.policies[policy].matchs[match].protocols[protocol].flags is arista.avd.defined %} flags {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].flags  | join(' ') }}{% endif %} source port field-set {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].src_field }}
+{%                             elif traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type is arista.avd.defined %}
+         protocol icmp type {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type | join(' ') }} code all
 {%                             else %}
          protocol {{ protocol }}
 {%                             endif %}
