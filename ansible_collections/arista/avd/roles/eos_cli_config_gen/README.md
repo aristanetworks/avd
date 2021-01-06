@@ -759,6 +759,9 @@ ethernet_interfaces:
     isis_network_point_to_point: < boolean >
     ptp:
       enable: < true | false >
+    logging:
+      event:
+        link_status: < true | false >
     service_profile: < qos_profile >
     qos:
       trust: < dscp | cos >
