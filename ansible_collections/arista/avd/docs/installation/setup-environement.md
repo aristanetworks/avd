@@ -30,7 +30,7 @@ $ cd git_projects
 
 $ git clone https://github.com/aristanetworks/ansible-avd.git
 $ git clone https://github.com/aristanetworks/ansible-cvp.git
-$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git
+$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git4
 
 # Copy Makefile at the root position
 $ cp ansible-avd/development/Makefile ./

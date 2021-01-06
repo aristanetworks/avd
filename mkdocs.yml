@@ -65,6 +65,7 @@ nav:
     - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
     - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
     - AWX & Tower Integration: docs/how-to/tower-integration.md
+    - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
     - eos_l3ls_evpn: roles/eos_l3ls_evpn/README.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
