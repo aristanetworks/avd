@@ -87,6 +87,10 @@ traffic-policies
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
+{#                     -- PROTOCOL MANAGEMENT -- #}
+{%                     if traffic_policies.policies[policy].matchs[match].ttl is arista.avd.defined %}
+         ttl {{ traffic_policies.policies[policy].matchs[match].ttl }}
+{%                     endif %}
 {#       -- ACTIONS SECTION -- #}
          actions
 {#                     -- COUNT packets -- #}
