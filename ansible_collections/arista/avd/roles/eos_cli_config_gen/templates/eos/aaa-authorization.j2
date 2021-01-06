@@ -1,6 +1,6 @@
 {# eos - aaa authorization #}
 {% if aaa_authorization is defined and aaa_authorization is not none %}
-{%     if aaa_authorization.exec.default is defined and aaa_authorization.exec.default != 'local' %}
+{%     if aaa_authorization.exec.default is defined and aaa_authorization.exec.default is not none %}
 aaa authorization exec default {{ aaa_authorization.exec.default }}
 {%     endif %}
 {%     if aaa_authorization.serial_console is defined and aaa_authorization.serial_console == true %}
@@ -9,7 +9,7 @@ aaa authorization serial-console
 {%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == false %}
 no aaa authorization config-commands
 {%     endif %}
-{%     if aaa_authorization.commands.all_default is defined and aaa_authorization.commands.all_default != 'local' %}
+{%     if aaa_authorization.commands.all_default is defined and aaa_authorization.commands.all_default is not none %}
 aaa authorization commands all default {{ aaa_authorization.commands.all_default }}
 {%     endif %}
 {% endif %}

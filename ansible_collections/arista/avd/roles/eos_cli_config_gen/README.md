@@ -568,15 +568,15 @@ aaa_server_groups:
 ```yaml
 aaa_authentication:
   login:
-    default: < group name >  | local | none >
-    serial_console: < group name >  | local | none >
+    default: < group group_name | local | none > < group group_name | local | none >
+    serial_console: < group group_name | local | none > < group group_name | local | none >
   dot1x:
-    default: < group name > | local | none >
+    default: < group group_name >
   policies:
     on_failure_log: < true | false >
     on_success_log: < true | false >
     local:
-      allow_nopassword: < false (default) | true >
+      allow_nopassword: < false | true >
 ```
 
 ### AAA Authorization
@@ -584,11 +584,11 @@ aaa_authentication:
 ```yaml
 aaa_authorization:
   exec:
-    default: < group name > | local | none >
+    default: < group group_name | local | none > < group group_name | local | none >
   config_commands: < true | false >
   serial_console: < true | false >
   commands:
-    all_default: < group name > | local | none >
+    all_default: < group group_name | local | none > < group group_name | local | none >
 ```
 
 ### AAA Accounting
@@ -598,15 +598,15 @@ aaa_accounting:
   exec:
     default:
       type: < none | start-stop | stop-only >
-      group: < group name >
   commands:
     commands_default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
-        group: < group name >
+        group: < group group_name >
         logging: < true | false >
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
+        group: < group group_name >
         logging: < true | false >
 ```
 

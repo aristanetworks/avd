@@ -3,7 +3,7 @@
 
 | Type | User Stores |
 | ---- | ----------- |
-{%     if aaa_authorization.exec.default is defined and aaa_authorization.exec.default != 'local' %}
+{%     if aaa_authorization.exec.default is defined %}
 | Exec | {{ aaa_authorization.exec.default }} |
 {%     endif %}
 
