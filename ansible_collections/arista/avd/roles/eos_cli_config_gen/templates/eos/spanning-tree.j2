@@ -11,14 +11,16 @@ no spanning-tree vlan-id {{ spanning_tree.no_spanning_tree_vlan }}
 {%     if spanning_tree.mode == "mstp" %}
 {%         if spanning_tree.mst_instances is defined and spanning_tree.mst_instances is not none  %}
 {%             for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
-spanning-tree mst {{ mst_instance }} priority {% if spanning_tree.mst_instances[mst_instance].priority is defined and spanning_tree.mst_instances[mst_instance].priority is not none %}{{ spanning_tree.mst_instances[mst_instance].priority }}
+{%                 if spanning_tree.mst_instances[mst_instance].priority is defined and spanning_tree.mst_instances[mst_instance].priority is not none %}
+spanning-tree mst {{ mst_instance }} priority {{ spanning_tree.mst_instances[mst_instance].priority }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     elif spanning_tree.mode == "rapid-pvst" %}
 {%         if spanning_tree.rapid_pvst_instances is defined and spanning_tree.rapid_pvst_instances is not none  %}
 {%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
-spanning-tree vlan-id {{ vlan_id }} priority {% if spanning_tree.rapid_pvst_instances[vlan_id].priority is defined and spanning_tree.rapid_pvst_instances[vlan_id].priority is not none %}{{ spanning_tree.rapid_pvst_instances[vlan_id].priority }}
+{%                 if spanning_tree.rapid_pvst_instances[vlan_id].priority is defined and spanning_tree.rapid_pvst_instances[vlan_id].priority is not none %}
+spanning-tree vlan-id {{ vlan_id }} priority {{ spanning_tree.rapid_pvst_instances[vlan_id].priority }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
@@ -42,7 +44,8 @@ spanning-tree mst configuration
 {%             endif %}
 {%             if spanning_tree.mst.configuration.instances is defined and spanning_tree.configuration.instances is not none %}
 {%                 for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
-   instance {{ instance }} vlan {% if spanning_tree.mst.configuration.instances[instance].vlans is defined and spanning_tree.mst.configuration.instances[instance].vlans is not none %}{{ spanning_tree.mst.configuration.instances[instance].vlans }}
+{%                     if spanning_tree.mst.configuration.instances[instance].vlans is defined and spanning_tree.mst.configuration.instances[instance].vlans is not none %}
+   instance {{ instance }} vlan {{ spanning_tree.mst.configuration.instances[instance].vlans }}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

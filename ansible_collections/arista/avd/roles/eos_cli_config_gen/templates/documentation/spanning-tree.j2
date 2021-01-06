@@ -16,7 +16,7 @@ MST PSVT Border is enabled.
 | -------- | -------- |
 {%         if spanning_tree.mst_instances is defined and spanning_tree.mst_instances is not none %}
 {%            for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
-| {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority }} |
+| {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority | arista.avd.default("-") }} |
 {%            endfor %}
 {%         endif %}
 
