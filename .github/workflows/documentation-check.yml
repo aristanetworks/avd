@@ -8,11 +8,10 @@ on:
       - 'ansible_collections/arista/avd/docs/**'
       - 'ansible_collections/arista/avd/roles/**/README.md'
       - '.github/workflows/documentation-check.yml'
-      - '.github/workflows/documentation-build.yml'
 jobs:
   offline_validation:
     name: 'Validate mkdoc content'
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master
       - name: 'start docker-compose stack'
