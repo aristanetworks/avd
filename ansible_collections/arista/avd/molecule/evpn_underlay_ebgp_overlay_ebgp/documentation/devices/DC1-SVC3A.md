@@ -73,6 +73,8 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
 - [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -307,8 +309,8 @@ mlag configuration
    peer-address heartbeat 192.168.200.109 vrf MGMT
    peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
-   reload-delay mlag 300
-   reload-delay non-mlag 330
+   reload-delay mlag 780
+   reload-delay non-mlag 1020
 ```
 
 # Spanning Tree
@@ -1516,7 +1518,14 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.8
 
 # Platform
 
-No platform parameters defined
+### Platform
+
+### Platform Configuration
+
+```eos
+!
+platform sand lag hardware-only
+```
 
 # Router L2 VPN
 
@@ -1529,9 +1538,18 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
+
 # MACsec
 
 MACsec not defined
+
+# QOS
+
+QOS is not defined.
+
+# QOS Profiles
+
+QOS Profiles are not defined
 
 # Custom Templates
 
