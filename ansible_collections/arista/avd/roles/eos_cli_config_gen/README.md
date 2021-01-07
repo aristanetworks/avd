@@ -49,6 +49,7 @@
     - [Port-Channel Interfaces](#port-channel-interfaces)
     - [Ethernet Interfaces](#ethernet-interfaces)
     - [Loopback Interfaces](#loopback-interfaces)
+    - [Interface Defaults](#interface-defaults)
     - [Management Interfaces](#management-interfaces)
     - [VLAN Interfaces](#vlan-interfaces)
     - [VxLAN Interface](#vxlan-interface)
@@ -87,6 +88,8 @@
     - [Management Console](#management-console)
     - [Management Security](#management-security)
     - [Management SSH](#management-ssh)
+    - [QOS](#qos)
+    - [QOS Profiles](#qos-profiles)
     - [PTP](#ptp)
     - [Custom Templates](#custom-templates)
   - [License](#license)
@@ -1650,36 +1653,13 @@ qos:
       - "< tc_mapping_to_dscp >"
       - "< tc_mapping_to_tx_queue >"
   rewrite_dscp: < true | false >
-  qos_profiles:
-    < profile-1 >:
-      trust: < dscp or cos >
-      cos: < cos-value >
-      dscp: < dscp-value >
-      tx-queues:
-        < tx-queue-id >:
-          bandwidth_percent: < value >
-          priority: < string >
-        < tx-queue-id >:
-          bandwidth_percent: < value >
-          priority: < string >
-    < profile-2 >:
-      trust: < dscp or cos >
-      cos: < cos-value >
-      dscp: < dscp-value >
-      tx-queues:
-        < tx-queue-id >:
-          bandwidth_percent: < value >
-          priority: < string >
-        < tx-queue-id >:
-          bandwidth_percent: < value >
-          priority: < string >
 ```
 ### QOS Profiles
 
 ```yaml
 qos_profiles:
   < profile-1 >:
-    trust: < dscp or cos >
+    trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
     tx-queues:
@@ -1690,7 +1670,7 @@ qos_profiles:
         bandwidth_percent: < value >
         priority: < string >
   < profile-2 >:
-    trust: < dscp or cos >
+    trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
     tx-queues:
