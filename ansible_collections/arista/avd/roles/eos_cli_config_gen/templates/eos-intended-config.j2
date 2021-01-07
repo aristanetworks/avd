@@ -124,6 +124,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ip-routing.j2' %}
 {# IPv6 Routing #}
 {% include 'eos/ipv6-routing.j2' %}
+{# qos #}
+{% include 'eos/qos.j2' %}
 {# IP Extended Communities #}
 {% include 'eos/ip-extended-communities.j2' %}
 {# Prefix-lists #}
@@ -174,8 +176,6 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
-{# qos #}
-{% include 'eos/qos.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}
 !
