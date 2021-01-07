@@ -1414,6 +1414,9 @@ router_bgp:
             - "< route_target >"
             - "< route_target >"
       timers: < keepalive_hold_timer_values >
+      networks:
+        < prefix_ipv4 >:
+          route_map: < route_map_name >
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
