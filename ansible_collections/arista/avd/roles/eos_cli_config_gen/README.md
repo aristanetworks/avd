@@ -1421,6 +1421,9 @@ router_bgp:
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < string | leave empty for all communities >
+          default_originate:
+            always: < true | false >
+            route_map: < route_map_name >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
