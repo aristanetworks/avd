@@ -448,6 +448,8 @@ router bgp 65101
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3
+      network 10.0.0.0/8
+      network 100.64.0.0/10
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
    !
@@ -471,6 +473,7 @@ router bgp 65101
       neighbor 10.255.251.3 next-hop-self
       neighbor 10.255.251.3 timers 1 3
       neighbor 10.255.251.3 send-community link-bandwidth aggregate 2
+      neighbor 10.255.251.3 default-originate always
       redistribute connected
       redistribute static route-map RM-CONN-2-BGP
 ```
