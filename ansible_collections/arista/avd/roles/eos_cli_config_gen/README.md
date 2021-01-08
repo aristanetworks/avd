@@ -602,11 +602,11 @@ aaa_accounting:
     commands_default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
-        group: < group group_name >
+        group: < group_name >
         logging: < true | false >
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
-        group: < group group_name >
+        group: < group_name >
         logging: < true | false >
 ```
 
