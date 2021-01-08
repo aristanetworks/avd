@@ -33,6 +33,9 @@ router-ospf
 router-static
 sflow
 snmp_v3
+spanning-tree
+spanning-tree-rstp
+spanning-tree-rapid-pvst
 terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
