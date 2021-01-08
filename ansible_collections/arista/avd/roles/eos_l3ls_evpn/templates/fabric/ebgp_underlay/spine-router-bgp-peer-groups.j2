@@ -7,7 +7,9 @@
       peer_filter: LEAF-AS-RANGE
       password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
       maximum_routes: 12000
-{%     endif %}
+      send_community: true
+{% endif %}
+{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_overlay_peers | length > 0 %}
     EVPN-OVERLAY-PEERS:
       type: evpn
       peer_filter: LEAF-AS-RANGE
