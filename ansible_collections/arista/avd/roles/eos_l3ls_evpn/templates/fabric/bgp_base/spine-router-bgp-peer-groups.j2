@@ -7,6 +7,7 @@
       peer_filter: LEAF-AS-RANGE
       password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
       maximum_routes: 12000
+      send_community: true
 {%     endif %}
 {# Overlay network peering #}
 {%     if switch.overlay_routing_protocol == "ebgp" %}
