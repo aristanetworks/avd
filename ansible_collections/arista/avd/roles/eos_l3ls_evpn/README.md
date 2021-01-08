@@ -584,11 +584,11 @@ l3leaf:
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
-      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-      spanning_tree_mode: < mstp >
+      # Spanning tree mode | Required.
+      spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
 
-      # Spanning tree priority | Required.
-      spanning_tree_priority: < spanning-tree priority >
+      # Spanning tree priority.
+      spanning_tree_priority: < spanning-tree priority -> default 32768 >
 
       # Virtual router mac address for anycast gateway | Required.
       virtual_router_mac_address: < mac address >
