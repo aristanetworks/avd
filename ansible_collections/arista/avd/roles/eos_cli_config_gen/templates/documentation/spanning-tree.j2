@@ -3,12 +3,6 @@
 ## Spanning Tree Summary
 
 STP mode: **{{ spanning_tree.mode }}**
-{%     if spanning_tree.mode == "mstp" %}
-{%         if spanning_tree.mst is defined and spanning_tree.mst is not none %}
-{%             if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
-MST PSVT Border is enabled.
-{%             endif %}
-{%         endif %}
 
 ### MSTP Instance and Priority
 
@@ -66,6 +60,12 @@ Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
 {%     if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
 Global BPDU Guard for Edge ports is enabled.
 {%     endif %}
+{%     if spanning_tree.mode == "mstp" %}
+{%         if spanning_tree.mst is defined and spanning_tree.mst is not none %}
+{%             if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
+MST PSVT Border is enabled.
+{%             endif %}
+{%         endif %}
 
 ## Spanning Tree Device Configuration
 
