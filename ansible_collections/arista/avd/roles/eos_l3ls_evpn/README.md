@@ -749,6 +749,9 @@ l2leaf:
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
+      # Set origin of routes received from MLAG iBGP peer to incomplete
+      mlag_ibgp_origin_incomplete: < true | false -> default true >
+
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
       spanning_tree_mode: < mstp >
 

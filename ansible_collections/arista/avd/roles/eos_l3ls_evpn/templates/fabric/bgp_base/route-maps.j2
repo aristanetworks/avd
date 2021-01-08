@@ -38,3 +38,16 @@
 {%         endif %}
 {%     endif %}
 {% endif %}
+{# Origin Incomplete for MLAG iBGP learned routes #}
+{% if type == "l3leaf" %}
+{%     if leaf.mlag == true %}
+{%         if leaf.mlag_ibgp_origin_incomplete == true %}
+  RM-MLAG-PEER:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - "origin incomplete"
+{%         endif %}
+{%     endif %}
+{% endif %}

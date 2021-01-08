@@ -81,6 +81,13 @@
 {%             else %}
 {%                 set switch.mlag = l3leaf.defaults.mlag | default(true) %}
 {%             endif %}
+{%             if l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete is defined and l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete is not none %}
+{%                 set leaf.mlag_ibgp_origin_incomplete = l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete %}
+{%             elif l3leaf.defaults.mlag_ibgp_origin_incomplete is defined and l3leaf.defaults.mlag_ibgp_origin_incomplete is not none %}
+{%                 set leaf.mlag_ibgp_origin_incomplete = l3leaf.defaults.mlag_ibgp_origin_incomplete %}
+{%             else %}
+{%                 set leaf.mlag_ibgp_origin_incomplete = true %}
+{%             endif %}
 {%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l3leaf_node_group %}
