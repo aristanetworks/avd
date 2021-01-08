@@ -35,6 +35,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -70,6 +71,10 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
+- [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -118,6 +123,10 @@ DNS domain lookup not defined
 ## NTP
 
 No NTP servers defined
+
+## PTP
+
+PTP is not defined.
 
 ## Management SSH
 
@@ -211,7 +220,7 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
-STP mode running: **rstp**
+STP mode: **rstp**
 
 
 ### Global Spanning-Tree Settings
@@ -241,6 +250,10 @@ spanning-tree priority 8192
 No VLANs defined
 
 # Interfaces
+
+## Interface Defaults
+
+No Interface Defaults defined
 
 ## Ethernet Interfaces
 
@@ -295,6 +308,10 @@ Static routes not defined
 ## IPv6 Static Routes
 
 IPv6 static routes not defined
+
+## ARP
+
+Global ARP timeout not defined.
 
 ## Router ISIS
 
@@ -391,6 +408,22 @@ Router L2 VPN not defined
 # IP DHCP Relay
 
 IP DHCP relay not defined
+
+# Errdisable
+
+Errdisable is not defined.
+
+# MACsec
+
+MACsec not defined
+
+# QOS
+
+QOS is not defined.
+
+# QOS Profiles
+
+QOS Profiles are not defined
 
 # Custom Templates
 
