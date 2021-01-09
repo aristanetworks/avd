@@ -3,6 +3,8 @@
   hosts: all
   connection: local
   gather_facts: false
+  vars:
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
     - name: Upgrade AVD datamodel from v1.0 to v1.1
       run_once: true
