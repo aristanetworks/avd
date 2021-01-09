@@ -486,10 +486,10 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
-| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.21.1/24  |  -  |  -  |  -  |  -  |
-| Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
-| Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
+| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan130 |  Tenant_A_APP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan131 |  Tenant_A_APP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 
 
 
@@ -501,25 +501,21 @@ interface Vlan120
    description Tenant_A_WEB_Zone_1
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.20.1/24
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.21.1/24
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
    no shutdown
    vrf Tenant_A_APP_Zone
-   ip address virtual 10.1.30.1/24
 !
 interface Vlan131
    description Tenant_A_APP_Zone_2
    no shutdown
    vrf Tenant_A_APP_Zone
-   ip address virtual 10.1.31.1/24
 ```
 
 ## VXLAN Interface

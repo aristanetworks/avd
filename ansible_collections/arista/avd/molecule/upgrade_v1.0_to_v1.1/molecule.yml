@@ -2,9 +2,9 @@
 scenario:
   converge_sequence:
     - syntax
-    - create
+    # - create
     - converge
-    - verify
+    # - verify
   test_sequence:
     - syntax
     - create

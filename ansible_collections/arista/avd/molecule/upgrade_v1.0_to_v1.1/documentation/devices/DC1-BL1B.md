@@ -550,9 +550,9 @@ interface Loopback1
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
-| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
+| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3013 |  Tenant_A_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3020 |  Tenant_B_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.11/31  |  -  |  -  |  -  |  -  |  -  |
@@ -569,19 +569,16 @@ interface Vlan150
    description Tenant_A_WAN_Zone_1
    no shutdown
    vrf Tenant_A_WAN_Zone
-   ip address virtual 10.1.40.1/24
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
    no shutdown
    vrf Tenant_B_WAN_Zone
-   ip address virtual 10.2.50.1/24
 !
 interface Vlan350
    description Tenant_C_WAN_Zone_1
    no shutdown
    vrf Tenant_C_WAN_Zone
-   ip address virtual 10.3.50.1/24
 !
 interface Vlan3013
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone

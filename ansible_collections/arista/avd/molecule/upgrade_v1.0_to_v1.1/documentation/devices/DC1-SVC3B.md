@@ -705,21 +705,21 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan110 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
-| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.21.1/24  |  -  |  -  |  -  |  -  |
-| Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
-| Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
-| Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
-| Vlan141 |  Tenant_A_DB_Zone  |  -  |  10.1.41.1/24  |  -  |  -  |  -  |  -  |
-| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
-| Vlan210 |  Tenant_B_OP_Zone  |  -  |  10.2.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan211 |  Tenant_B_OP_Zone  |  -  |  10.2.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  10.2.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan111 |  Tenant_A_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan120 |  Tenant_A_WEB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan121 |  Tenant_A_WEB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan130 |  Tenant_A_APP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan131 |  Tenant_A_APP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan140 |  Tenant_A_DB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan141 |  Tenant_A_DB_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan150 |  Tenant_A_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan210 |  Tenant_B_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan211 |  Tenant_B_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan250 |  Tenant_B_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan310 |  Tenant_C_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan311 |  Tenant_C_OP_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan350 |  Tenant_C_WAN_Zone  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.7/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3010 |  Tenant_A_WEB_Zone  |  10.255.251.7/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3011 |  Tenant_A_APP_Zone  |  10.255.251.7/31  |  -  |  -  |  -  |  -  |  -  |
@@ -742,91 +742,76 @@ interface Vlan110
    description Tenant_A_OP_Zone_1
    no shutdown
    vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.10.1/24
 !
 interface Vlan111
    description Tenant_A_OP_Zone_2
    no shutdown
    vrf Tenant_A_OP_Zone
-   ip address virtual 10.1.11.1/24
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.20.1/24
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
    no shutdown
    vrf Tenant_A_WEB_Zone
-   ip address virtual 10.1.21.1/24
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
    no shutdown
    vrf Tenant_A_APP_Zone
-   ip address virtual 10.1.30.1/24
 !
 interface Vlan131
    description Tenant_A_APP_Zone_2
    no shutdown
    vrf Tenant_A_APP_Zone
-   ip address virtual 10.1.31.1/24
 !
 interface Vlan140
    description Tenant_A_DB_BZone_1
    no shutdown
    vrf Tenant_A_DB_Zone
-   ip address virtual 10.1.40.1/24
 !
 interface Vlan141
    description Tenant_A_DB_Zone_2
    no shutdown
    vrf Tenant_A_DB_Zone
-   ip address virtual 10.1.41.1/24
 !
 interface Vlan150
    description Tenant_A_WAN_Zone_1
    no shutdown
    vrf Tenant_A_WAN_Zone
-   ip address virtual 10.1.40.1/24
 !
 interface Vlan210
    description Tenant_B_OP_Zone_1
    no shutdown
    vrf Tenant_B_OP_Zone
-   ip address virtual 10.2.10.1/24
 !
 interface Vlan211
    description Tenant_B_OP_Zone_2
    no shutdown
    vrf Tenant_B_OP_Zone
-   ip address virtual 10.2.11.1/24
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
    no shutdown
    vrf Tenant_B_WAN_Zone
-   ip address virtual 10.2.50.1/24
 !
 interface Vlan310
    description Tenant_C_OP_Zone_1
    no shutdown
    vrf Tenant_C_OP_Zone
-   ip address virtual 10.3.10.1/24
 !
 interface Vlan311
    description Tenant_C_OP_Zone_2
    no shutdown
    vrf Tenant_C_OP_Zone
-   ip address virtual 10.3.11.1/24
 !
 interface Vlan350
    description Tenant_C_WAN_Zone_1
    no shutdown
    vrf Tenant_C_WAN_Zone
-   ip address virtual 10.3.50.1/24
 !
 interface Vlan3009
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone

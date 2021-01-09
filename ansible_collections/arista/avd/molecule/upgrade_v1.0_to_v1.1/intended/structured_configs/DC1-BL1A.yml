@@ -232,7 +232,6 @@ vlan_interfaces:
     description: Tenant_A_WAN_Zone_1
     shutdown: false
     vrf: Tenant_A_WAN_Zone
-    ip_address_virtual: 10.1.40.1/24
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
@@ -248,7 +247,6 @@ vlan_interfaces:
     description: Tenant_B_WAN_Zone_1
     shutdown: false
     vrf: Tenant_B_WAN_Zone
-    ip_address_virtual: 10.2.50.1/24
   Vlan3020:
     tenant: Tenant_B
     type: underlay_peering
@@ -264,7 +262,6 @@ vlan_interfaces:
     description: Tenant_C_WAN_Zone_1
     shutdown: false
     vrf: Tenant_C_WAN_Zone
-    ip_address_virtual: 10.3.50.1/24
   Vlan3030:
     tenant: Tenant_C
     type: underlay_peering

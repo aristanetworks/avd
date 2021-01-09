@@ -298,16 +298,18 @@ MLAG not defined
 
 STP mode: **none**
 
+### MSTP Instance and Priority
+
+| Instance(s) | Priority |
+| -------- | -------- |
+
+### MST Configuration
+
+
 
 ### Global Spanning-Tree Settings
 
-
-## Spanning Tree Device Configuration
-
-```eos
-!
-spanning-tree mode none
-```
+Spanning-tree not defined
 
 # Internal VLAN Allocation Policy
 
