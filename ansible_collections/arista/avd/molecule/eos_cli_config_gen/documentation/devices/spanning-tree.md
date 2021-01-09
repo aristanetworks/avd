@@ -221,7 +221,6 @@ MLAG not defined
 ## Spanning Tree Summary
 
 STP mode: **mstp**
-MST PSVT Border is enabled.
 
 ### MSTP Instance and Priority
 
@@ -240,11 +239,11 @@ MST PSVT Border is enabled.
 | Instance 3 | VLAN(s) 15 |
 | Instance 4 | VLAN(s) 200-300 |
 
-
 ### Global Spanning-Tree Settings
 
 Spanning Tree disabled for VLANs: **105,202,505-506**
 Global BPDU Guard for Edge ports is enabled.
+MST PSVT Border is enabled.
 
 ## Spanning Tree Device Configuration
 
