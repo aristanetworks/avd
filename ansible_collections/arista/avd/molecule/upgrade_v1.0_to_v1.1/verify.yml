@@ -4,6 +4,9 @@
   hosts: all
   connection: local
   gather_facts: false
+  vars:
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
     # - name: Deploy new file version
     #   delegate_to: 127.0.0.1
@@ -16,6 +19,9 @@
   hosts: all
   gather_facts: false
   connection: local
+  vars:
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
     - name: generate intented variables
       delegate_to: 127.0.0.1

@@ -2,7 +2,7 @@
 scenario:
   converge_sequence:
     - syntax
-    # - create
+    - create
     - converge
     # - verify
   test_sequence:
@@ -11,6 +11,7 @@ scenario:
     - converge
     - idempotence
     - verify
+    - cleanup
 dependency:
   name: galaxy
 driver:

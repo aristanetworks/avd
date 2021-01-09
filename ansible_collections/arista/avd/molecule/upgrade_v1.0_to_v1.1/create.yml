@@ -4,7 +4,8 @@
   gather_facts: false
   connection: local
   vars:
-    root_dir: '{{playbook_dir}}'
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
     - name: Deploy old data model version for tenants
       delegate_to: 127.0.0.1
