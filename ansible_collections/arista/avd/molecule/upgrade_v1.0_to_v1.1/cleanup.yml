@@ -3,6 +3,9 @@
   hosts: all
   gather_facts: false
   connection: local
+  vars:
+    inventory_dir: '{{playbook_dir}}/inventory'
+    root_dir: '{{playbook_dir}}/inventory'
   tasks:
     - name: delete local folders
       delegate_to: 127.0.0.1
@@ -15,4 +18,5 @@
         - intended
         - config_backup
         - reports
-        - upgrade_1.0_to_1.1
+        - snapshots
+        - upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml

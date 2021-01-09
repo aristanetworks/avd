@@ -16,13 +16,13 @@ tenants:
             name: Tenant_A_OP_Zone_1
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.1.10.1/24
+            ip_subnet: 10.1.10.0/24
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.1.11.1/24
+            ip_subnet: 10.1.11.0/24
       Tenant_A_WEB_Zone:
         vrf_vni: 11
         svis:
@@ -30,12 +30,12 @@ tenants:
             name: Tenant_A_WEB_Zone_1
             tags: ['web', 'erp1']
             enabled: True
-            ip_address_virtual: 10.1.20.1/24
+            ip_subnet: 10.1.20.0/24
           121:
             name: Tenant_A_WEBZone_2
             tags: ['web']
             enabled: True
-            ip_address_virtual: 10.1.21.1/24
+            ip_subnet: 10.1.21.0/24
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -43,12 +43,12 @@ tenants:
             name: Tenant_A_APP_Zone_1
             tags: ['app', 'erp1']
             enabled: True
-            ip_address_virtual: 10.1.30.1/24
+            ip_subnet: 10.1.30.0/24
           131:
             name: Tenant_A_APP_Zone_2
             tags: ['app']
             enabled: True
-            ip_address_virtual: 10.1.31.1/24
+            ip_subnet: 10.1.31.0/24
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -56,12 +56,12 @@ tenants:
             name: Tenant_A_DB_BZone_1
             tags: ['db', 'erp1']
             enabled: True
-            ip_address_virtual: 10.1.40.1/24
+            ip_subnet: 10.1.40.0/24
           141:
             name: Tenant_A_DB_Zone_2
             tags: ['db']
             enabled: True
-            ip_address_virtual: 10.1.41.1/24
+            ip_subnet: 10.1.41.0/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
@@ -69,7 +69,7 @@ tenants:
             name: Tenant_A_WAN_Zone_1
             tags: ['wan']
             enabled: True
-            ip_address_virtual: 10.1.40.1/24
+            ip_subnet: 10.1.40.0/24
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:
     mac_vrf_vni_base: 20000
@@ -81,12 +81,12 @@ tenants:
             name: Tenant_B_OP_Zone_1
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.2.10.1/24
+            ip_subnet: 10.2.10.0/24
           211:
             name: Tenant_B_OP_Zone_2
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.2.11.1/24
+            ip_subnet: 10.2.11.0/24
       Tenant_B_WAN_Zone:
         vrf_vni: 21
         svis:
@@ -94,7 +94,7 @@ tenants:
             name: Tenant_B_WAN_Zone_1
             tags: ['wan']
             enabled: True
-            ip_address_virtual: 10.2.50.1/24
+            ip_subnet: 10.2.50.0/24
   # Tenant_C Specific Information - VRFs / VLANs
   Tenant_C:
     mac_vrf_vni_base: 30000
@@ -106,12 +106,12 @@ tenants:
             name: Tenant_C_OP_Zone_1
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.3.10.1/24
+            ip_subnet: 10.3.10.0/24
           311:
             name: Tenant_C_OP_Zone_2
             tags: ['opzone']
             enabled: True
-            ip_address_virtual: 10.3.11.1/24
+            ip_subnet: 10.3.11.0/24
       Tenant_C_WAN_Zone:
         vrf_vni: 31
         svis:
@@ -119,4 +119,4 @@ tenants:
             name: Tenant_C_WAN_Zone_1
             tags: ['wan']
             enabled: True
-            ip_address_virtual: 10.3.50.1/24
+            ip_subnet: 10.3.50.0/24

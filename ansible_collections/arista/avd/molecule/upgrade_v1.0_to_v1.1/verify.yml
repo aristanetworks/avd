@@ -4,18 +4,24 @@
   hosts: all
   connection: local
   gather_facts: false
+  vars:
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
-    - name: Deploy new file version
-      delegate_to: 127.0.0.1
-      run_once: true
-      copy:
-        src: '{{ playbook_dir }}/inventory/upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml'
-        dest: '{{ playbook_dir }}/inventory/group_vars/DC1_TENANTS_NETWORKS.yml'
+    # - name: Deploy new file version
+    #   delegate_to: 127.0.0.1
+    #   run_once: true
+    #   copy:
+    #     src: '{{ playbook_dir }}/inventory/upgrade_1.0_to_1.1/group_vars/DC1_TENANTS_NETWORKS.yml'
+    #     dest: '{{ playbook_dir }}/inventory/group_vars/DC1_TENANTS_NETWORKS.yml'
 
 - name: Run AVD process in Verify section
   hosts: all
   gather_facts: false
   connection: local
+  vars:
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
     - name: generate intented variables
       delegate_to: 127.0.0.1

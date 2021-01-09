@@ -4,13 +4,14 @@ scenario:
     - syntax
     - create
     - converge
-    - verify
+    # - verify
   test_sequence:
     - syntax
     - create
     - converge
     - idempotence
     - verify
+    - cleanup
 dependency:
   name: galaxy
 driver:
