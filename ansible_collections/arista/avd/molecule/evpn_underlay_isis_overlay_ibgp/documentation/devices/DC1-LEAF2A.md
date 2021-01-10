@@ -325,10 +325,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 4096 |
 
-### MST Configuration
-
-
-
 ### Global Spanning-Tree Settings
 
 Spanning Tree disabled for VLANs: **4093-4094**

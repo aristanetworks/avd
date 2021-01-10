@@ -304,10 +304,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 16384 |
 
-### MST Configuration
-
-
-
 ### Global Spanning-Tree Settings
 
 

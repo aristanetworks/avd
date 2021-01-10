@@ -222,7 +222,6 @@ MLAG not defined
 
 STP mode: **rstp**
 
-
 ### Global Spanning-Tree Settings
 
 Global RSTP priority: 8192
