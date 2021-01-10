@@ -543,6 +543,7 @@ tacacs_servers:
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
+  policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
 ### AAA Server Groups
@@ -567,18 +568,27 @@ aaa_server_groups:
 ```yaml
 aaa_authentication:
   login:
-    default: < group | local | none >
-    serial_console: < group | local | none >
+    default: < group group_name | local | none > < group group_name | local | none >
+    serial_console: < group group_name | local | none > < group group_name | local | none >
   dot1x:
-    default: < group | local | none >
+    default: < group group_name >
+  policies:
+    on_failure_log: < true | false >
+    on_success_log: < true | false >
+    local:
+      allow_nopassword: < false | true >
 ```
 
 ### AAA Authorization
 
 ```yaml
 aaa_authorization:
-  exec_default: < group | local | none >
+  exec:
+    default: < group group_name | local | none > < group group_name | local | none >
   config_commands: < true | false >
+  serial_console: < true | false >
+  commands:
+    all_default: < group group_name | local | none > < group group_name | local | none >
 ```
 
 ### AAA Accounting
@@ -588,7 +598,6 @@ aaa_accounting:
   exec:
     default:
       type: < none | start-stop | stop-only >
-      group: < group_name >
   commands:
     commands_default:
       - commands: < all | 0-15 >
@@ -597,6 +606,7 @@ aaa_accounting:
         logging: < true | false >
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
+        group: < group_name >
         logging: < true | false >
 ```
 

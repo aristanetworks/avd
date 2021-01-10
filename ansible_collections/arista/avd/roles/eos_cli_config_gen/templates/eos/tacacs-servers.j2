@@ -7,4 +7,7 @@ tacacs-server host {{ host['host'] }} {% if host['vrf'] is defined and host['vrf
 
 {%       endfor %}
 {%    endif %}
+{%    if tacacs_servers.policy_unknown_mandatory_attribute_ignore is defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
+tacacs-server policy unknown-mandatory-attribute ignore
+{%    endif %}
 {% endif %}
