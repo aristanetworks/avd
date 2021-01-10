@@ -219,7 +219,6 @@ AAA Authentication on-success log has been enabled
 
 Policy local allow-nopassword-remote-login has been enabled.
 
-
 ### AAA Authentication Device Configuration
 
 ```eos
