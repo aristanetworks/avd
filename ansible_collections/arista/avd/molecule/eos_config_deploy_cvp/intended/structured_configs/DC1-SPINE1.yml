@@ -163,6 +163,7 @@ router_bgp:
       peer_filter: LEAF-AS-RANGE
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
+      send_community: true
     EVPN-OVERLAY-PEERS:
       type: evpn
       peer_filter: LEAF-AS-RANGE

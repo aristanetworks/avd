@@ -754,30 +754,31 @@ CVP_CONFIGLETS:
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes\
-    \ 12000\n   neighbor 172.31.255.1 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.1 remote-as 65101\n   neighbor 172.31.255.9 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.9 remote-as 65102\n   neighbor 172.31.255.17 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.17 remote-as 65102\n   neighbor\
-    \ 172.31.255.25 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.25 remote-as\
-    \ 65103\n   neighbor 172.31.255.33 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.33 remote-as 65103\n   neighbor 172.31.255.41 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.41 remote-as 65104\n   neighbor 172.31.255.49 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.49 remote-as 65104\n   neighbor\
-    \ 192.168.255.5 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as\
-    \ 65101\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.8 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n \
-    \  neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10\
-    \ remote-as 65104\n   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.11 remote-as 65104\n   redistribute connected route-map\
-    \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      no neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf MGMT\n\
-    \      no shutdown\n!\nend"
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.1\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.1 remote-as 65101\n \
+    \  neighbor 172.31.255.9 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.9\
+    \ remote-as 65102\n   neighbor 172.31.255.17 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.17 remote-as 65102\n   neighbor 172.31.255.25 peer group\
+    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.25 remote-as 65103\n   neighbor\
+    \ 172.31.255.33 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.33 remote-as\
+    \ 65103\n   neighbor 172.31.255.41 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
+    \ 172.31.255.41 remote-as 65104\n   neighbor 172.31.255.49 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.49 remote-as 65104\n   neighbor 192.168.255.5 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
+    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
+    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
+    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
+    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
+    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
+    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
+    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
+    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
+    !\nend"
   AVD_DC1-SPINE2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -814,30 +815,31 @@ CVP_CONFIGLETS:
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes\
-    \ 12000\n   neighbor 172.31.255.3 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.3 remote-as 65101\n   neighbor 172.31.255.11 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.11 remote-as 65102\n   neighbor 172.31.255.19 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.19 remote-as 65102\n   neighbor\
-    \ 172.31.255.27 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.27 remote-as\
-    \ 65103\n   neighbor 172.31.255.35 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.35 remote-as 65103\n   neighbor 172.31.255.43 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.43 remote-as 65104\n   neighbor 172.31.255.51 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.51 remote-as 65104\n   neighbor\
-    \ 192.168.255.5 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as\
-    \ 65101\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.8 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n \
-    \  neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10\
-    \ remote-as 65104\n   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.11 remote-as 65104\n   redistribute connected route-map\
-    \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      no neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf MGMT\n\
-    \      no shutdown\n!\nend"
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.3\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.3 remote-as 65101\n \
+    \  neighbor 172.31.255.11 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.11\
+    \ remote-as 65102\n   neighbor 172.31.255.19 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.19 remote-as 65102\n   neighbor 172.31.255.27 peer group\
+    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.27 remote-as 65103\n   neighbor\
+    \ 172.31.255.35 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.35 remote-as\
+    \ 65103\n   neighbor 172.31.255.43 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
+    \ 172.31.255.43 remote-as 65104\n   neighbor 172.31.255.51 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.51 remote-as 65104\n   neighbor 192.168.255.5 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
+    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
+    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
+    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
+    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
+    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
+    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
+    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
+    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
+    !\nend"
   AVD_DC1-SPINE3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -874,30 +876,31 @@ CVP_CONFIGLETS:
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes\
-    \ 12000\n   neighbor 172.31.255.5 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.5 remote-as 65101\n   neighbor 172.31.255.13 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.13 remote-as 65102\n   neighbor 172.31.255.21 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.21 remote-as 65102\n   neighbor\
-    \ 172.31.255.29 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.29 remote-as\
-    \ 65103\n   neighbor 172.31.255.37 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.37 remote-as 65103\n   neighbor 172.31.255.45 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.45 remote-as 65104\n   neighbor 172.31.255.53 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.53 remote-as 65104\n   neighbor\
-    \ 192.168.255.5 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as\
-    \ 65101\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.8 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n \
-    \  neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10\
-    \ remote-as 65104\n   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.11 remote-as 65104\n   redistribute connected route-map\
-    \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      no neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf MGMT\n\
-    \      no shutdown\n!\nend"
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.5\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.5 remote-as 65101\n \
+    \  neighbor 172.31.255.13 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.13\
+    \ remote-as 65102\n   neighbor 172.31.255.21 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.21 remote-as 65102\n   neighbor 172.31.255.29 peer group\
+    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.29 remote-as 65103\n   neighbor\
+    \ 172.31.255.37 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.37 remote-as\
+    \ 65103\n   neighbor 172.31.255.45 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
+    \ 172.31.255.45 remote-as 65104\n   neighbor 172.31.255.53 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.53 remote-as 65104\n   neighbor 192.168.255.5 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
+    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
+    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
+    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
+    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
+    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
+    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
+    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
+    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
+    !\nend"
   AVD_DC1-SPINE4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -934,30 +937,31 @@ CVP_CONFIGLETS:
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS maximum-routes\
-    \ 12000\n   neighbor 172.31.255.7 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.7 remote-as 65101\n   neighbor 172.31.255.15 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.15 remote-as 65102\n   neighbor 172.31.255.23 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.23 remote-as 65102\n   neighbor\
-    \ 172.31.255.31 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.31 remote-as\
-    \ 65103\n   neighbor 172.31.255.39 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
-    \ 172.31.255.39 remote-as 65103\n   neighbor 172.31.255.47 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.47 remote-as 65104\n   neighbor 172.31.255.55 peer group\
-    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.55 remote-as 65104\n   neighbor\
-    \ 192.168.255.5 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as\
-    \ 65101\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.8 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n \
-    \  neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10\
-    \ remote-as 65104\n   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.11 remote-as 65104\n   redistribute connected route-map\
-    \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      no neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf MGMT\n\
-    \      no shutdown\n!\nend"
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.7\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.7 remote-as 65101\n \
+    \  neighbor 172.31.255.15 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.15\
+    \ remote-as 65102\n   neighbor 172.31.255.23 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.23 remote-as 65102\n   neighbor 172.31.255.31 peer group\
+    \ IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.31 remote-as 65103\n   neighbor\
+    \ 172.31.255.39 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.39 remote-as\
+    \ 65103\n   neighbor 172.31.255.47 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
+    \ 172.31.255.47 remote-as 65104\n   neighbor 172.31.255.55 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.55 remote-as 65104\n   neighbor 192.168.255.5 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
+    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
+    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
+    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
+    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
+    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
+    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
+    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
+    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
+    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
+    !\nend"
   AVD_DC1-SVC3A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
