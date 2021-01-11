@@ -2,7 +2,7 @@ CURRENT_DIR = $(shell pwd)
 # ansible-test path
 ANSIBLE_TEST ?= $(shell which ansible-test)
 # option to run ansible-test sanity: must be either venv or docker (default is docker)
-ANSIBLE_TEST_MODE ?= venv
+ANSIBLE_TEST_MODE ?= docker
 # Root path for MKDOCS content
 WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 COMPOSE_FILE ?= development/docker-compose.yml

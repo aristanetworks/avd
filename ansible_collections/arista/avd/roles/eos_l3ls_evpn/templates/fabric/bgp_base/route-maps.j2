@@ -41,7 +41,8 @@
 {# Origin Incomplete for MLAG iBGP learned routes #}
 {% if type == "l3leaf" %}
 {%     if leaf.mlag == true %}
-{%         if leaf.mlag_ibgp_origin_incomplete == true %}
+{%         if switch.underlay_routing_protocol == "ebgp" %}
+{%             if leaf.mlag_ibgp_origin_incomplete == true %}
   RM-MLAG-PEER-IN:
     sequence_numbers:
       10:
@@ -49,6 +50,7 @@
         set:
           - "origin incomplete"
         description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endif %}

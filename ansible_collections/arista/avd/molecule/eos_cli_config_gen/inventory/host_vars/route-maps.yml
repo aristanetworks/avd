@@ -32,7 +32,7 @@ route_maps:
         type: permit
         set:
           - as-path match all replacement auto
-  RM-MLAG-PEER:
+  RM-MLAG-PEER-IN:
     sequence_numbers:
       10:
         type: permit
