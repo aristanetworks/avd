@@ -3,7 +3,7 @@
 
 | Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
 | ------- | -------- | ---------- | -------- | -------- |
-| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% endif %} | {{ snmp_server.access_list_v4 | default('-') }} | {{ snmp_server.access_list_v6 | default('-') }} |
+| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% else %} Disabled {% endif %} | {{ snmp_server.ipv4_access_list | default('-') }} | {{ snmp_server.ipv6_access_list | default('-') }} |
 
 ### SNMP Local Interfaces
 
