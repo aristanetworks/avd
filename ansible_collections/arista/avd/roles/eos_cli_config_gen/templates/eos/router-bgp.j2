@@ -373,6 +373,15 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].timers is defined %}
       timers bgp {{ router_bgp.vrfs[vrf].timers }}
 {%             endif %}
+{%              if router_bgp.vrfs[vrf].networks is defined and router_bgp.vrfs[vrf].networks is not none %}
+{%                  for network in router_bgp.vrfs[vrf].networks | arista.avd.natural_sort %}
+{%                      if router_bgp.vrfs[vrf].networks[network].route_map is defined and router_bgp.vrfs[vrf].networks[network].route_map is not none %}
+      network {{ network }} route-map {{ router_bgp.vrfs[vrf].networks[network].route_map }}
+{%                      else %}
+      network {{ network }}
+{%                      endif %}
+{%                  endfor %}
+{%              endif %}
 {%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
@@ -391,6 +400,10 @@ router bgp {{ router_bgp.as }}
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is defined %}
+      neighbor {{ neighbor }} default-originate{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always == true %} always{% endif %}
+
 {%                      endif %}
 {%                 endfor %}
 {%             endif %}

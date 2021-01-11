@@ -1457,20 +1457,26 @@ router_bgp:
           < address_family >:
             - "< route_target >"
             - "< route_target >"
-        timers: < keepalive_hold_timer_values >
-        neighbors:
-          < neighbor_ip_address >:
-            remote_as: < asn >
-            description: < description >
-            next_hop_self: < true | false >
-            timers: < keepalive_hold_timer_values >
-            send_community: < string | leave empty for all communities >
-          < neighbor_ip_address >:
-            remote_as: < asn >
-            description: < description >
-            next_hop_self: < true | false >
-            timers: < keepalive_hold_timer_values >
-            send_community: < string | leave empty for all communities >
+      timers: < keepalive_hold_timer_values >
+      networks:
+        < prefix_ipv4 >:
+          route_map: < route_map_name >
+      neighbors:
+        < neighbor_ip_address >:
+          remote_as: < asn >
+          description: < description >
+          next_hop_self: < true | false >
+          timers: < keepalive_hold_timer_values >
+          send_community: < string | leave empty for all communities >
+          default_originate:
+            always: < true | false >
+            route_map: < route_map_name >
+        < neighbor_ip_address >:
+          remote_as: < asn >
+          description: < description >
+          next_hop_self: < true | false >
+          timers: < keepalive_hold_timer_values >
+          send_community: < string | leave empty for all communities >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
