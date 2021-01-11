@@ -16,7 +16,7 @@ scenario:
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: delegated
 platforms:
   - name: DC1-LEAF1A
     image: avdteam/base:3.6
