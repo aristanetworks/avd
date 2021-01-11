@@ -154,6 +154,26 @@
 {%     endif %}
 {% endfor %}
 {% set leaf.vrfs = leaf.vrfs | unique  %}
+{# Setting tenant static routes #}
+{% set leaf.static_routes = [] %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs if vrf in leaf.vrfs %}
+{%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%                 for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                     if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
+{%                         set entry = static_route %}
+{%                         do entry.update( {'vrf':vrf} )%}
+{%                         if entry.nodes is arista.avd.defined %}
+{%                             do entry.pop( 'nodes' ) %}
+{%                         endif %}
+{%                         do leaf.static_routes.append( entry )%}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
 {# Setting evpn_rd_admin_subfield #}
 {% set leaf.evpn_rd_admin_subfield = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
 {% if evpn_rd_type is defined and evpn_rd_type is not none %}
@@ -477,6 +497,11 @@ ip_igmp_snooping:
 ### static routes ###
 static_routes:
 {% include 'routing/static-routes.j2' %}
+{% if leaf.static_routes is arista.avd.defined %}
+{%     for static_route in leaf.static_routes %}
+  - {{ static_route }}
+{%     endfor %}
+{% endif %}
 
 {# prefix_lists #}
 ### prefix-lists ###

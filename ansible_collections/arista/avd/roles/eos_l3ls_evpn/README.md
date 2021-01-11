@@ -1023,6 +1023,13 @@ tenants:
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
 
+        # Dictionary of static routes | Optional.
+        # This will create static routes inside the tenant VRF, if no nodes are specified, all l3leafs that carry the VRF also get the static routes.
+        static_routes:
+          - destination_address_prefix: < IPv4_address/Mask >
+            gateway: < IPv4_address >
+            nodes: [ < node_1 >, < node_2 >]
+
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
         svis:
