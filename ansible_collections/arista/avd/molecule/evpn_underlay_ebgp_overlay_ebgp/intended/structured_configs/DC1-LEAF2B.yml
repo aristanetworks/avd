@@ -1,5 +1,5 @@
 l3leaf_node_group: DC1_LEAF2
-switch_platform: vEOS-LAB
+switch_platform: 7280R
 leaf_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
@@ -560,7 +560,12 @@ vxlan_tunnel_interface:
           vni: 20
         Tenant_C_OP_Zone:
           vni: 30
-tcam_profile: null
+tcam_profile:
+- vxlan-routing
+platform:
+  sand:
+    lag:
+      hardware_only: true
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs:
@@ -591,8 +596,8 @@ mlag_configuration:
     vrf: MGMT
   dual_primary_detection_delay: 5
   peer_link: Port-Channel5
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
+  reload_delay_mlag: 780
+  reload_delay_non_mlag: 1020
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:

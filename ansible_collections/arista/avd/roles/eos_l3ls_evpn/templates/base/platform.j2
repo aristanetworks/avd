@@ -1,0 +1,24 @@
+{# platform #}
+{% set ns = namespace() %}
+{% for platform_setting in platform_settings %}
+{%     set ns.platform_defined = false %}
+{%     if switch.platform in platform_setting.platforms %}
+{%         set ns.platform_defined = true %}
+{%         if platform_setting.lag_hardware_only is arista.avd.defined %}
+  sand:
+    lag:
+      hardware_only: {{ platform_setting.lag_hardware_only }}
+{%         endif %}
+{%         break %}
+{%     endif %}
+{% endfor %}
+{% for platform_setting in platform_settings if ns.platform_defined == false %}
+{%     if 'default' in platform_setting.platforms %}
+{%         if platform_setting.lag_hardware_only is arista.avd.defined %}
+  sand:
+    lag:
+      hardware_only: {{ platform_setting.lag_hardware_only }}
+{%         endif %}
+{%         break %}
+{%     endif %}
+{% endfor %}

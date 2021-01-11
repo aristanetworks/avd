@@ -919,7 +919,14 @@ Virtual source NAT not defined
 
 # Platform
 
-No platform parameters defined
+### Platform
+
+### Platform Configuration
+
+```eos
+!
+platform sand lag hardware-only
+```
 
 # Router L2 VPN
 

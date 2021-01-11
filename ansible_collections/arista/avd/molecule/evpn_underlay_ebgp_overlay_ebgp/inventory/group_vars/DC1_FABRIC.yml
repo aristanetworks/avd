@@ -62,7 +62,7 @@ spine:
 
 l3leaf:
   defaults:
-    platform: vEOS-LAB
+    platform: 7280R
     bgp_as: 65100
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]

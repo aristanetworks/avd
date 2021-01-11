@@ -309,8 +309,8 @@ mlag configuration
    peer-address heartbeat 192.168.200.106 vrf MGMT
    peer-link Port-Channel5
    dual-primary detection delay 5 action errdisable all-interfaces
-   reload-delay mlag 300
-   reload-delay non-mlag 330
+   reload-delay mlag 780
+   reload-delay non-mlag 1020
 ```
 
 # Spanning Tree
@@ -1363,7 +1363,14 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.7
 
 # Platform
 
-No platform parameters defined
+### Platform
+
+### Platform Configuration
+
+```eos
+!
+platform sand lag hardware-only
+```
 
 # Router L2 VPN
 

@@ -1,5 +1,5 @@
 l3leaf_node_group: DC1_BL1
-switch_platform: vEOS-LAB
+switch_platform: 7280R
 leaf_bgp_as: 65104
 leaf_id: 7
 switch_mgmt_ip: 192.168.200.111/24
@@ -197,7 +197,12 @@ vxlan_tunnel_interface:
           vni: 21
         Tenant_C_WAN_Zone:
           vni: 31
-tcam_profile: null
+tcam_profile:
+- vxlan-routing
+platform:
+  sand:
+    lag:
+      hardware_only: true
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs: null

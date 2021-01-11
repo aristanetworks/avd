@@ -241,6 +241,7 @@ vlan_interfaces:
     no_autostate: true
     mtu: 1500
 tcam_profile: null
+platform: null
 mac_address_table: null
 ip_igmp_snooping:
   globally_enabled: true
