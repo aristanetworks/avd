@@ -1,13 +1,12 @@
-name: Ansible Test for release management
+name: Ansible Test for Python update
 on:
   pull_request:
-    branches:
-      - devel
     paths:
       - 'ansible_collections/arista/avd/plugins/filter/**'
       - 'ansible_collections/arista/avd/plugins/test/**'
+      - '.github/workflows/ansible_test_python.yml'
 jobs:
-  'ansible-test for python content':
+  'ansible-test':
     name: Run ansible-test validation
     runs-on: ubuntu-18.04
     container: ubuntu:18.04

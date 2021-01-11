@@ -10,15 +10,17 @@ repos:
       - id: check-yaml
       - id: check-added-large-files
       - id: check-merge-conflict
-  - repo: https://github.com/pre-commit/mirrors-pylint
-    rev: 'v2.5.0'
+  - repo: https://github.com/pycqa/pylint
+    rev: 'pylint-2.6.0'
     hooks:
     - id: pylint # Use pylintrc file in repository
       name: Check for Linting error on Python files
       description: This hook runs pylint.
+      types: [python]
       args:
         # Suppress duplicate code for modules header
         - -d duplicate-code
+
   - repo: https://github.com/adrienverge/yamllint.git
     rev: 'v1.23.0'
     hooks:
@@ -29,18 +31,3 @@ repos:
       language: python
       types: [file, yaml]
       args: [-c=.github/yamllintrc]
-  - repo: https://github.com/ansible/ansible-lint.git
-    rev: v4.2.0
-    hooks:
-      - id: ansible-lint
-        name: Check for ansible-lint errors
-        files: \.(yaml|yml)$
-  # - repo: https://github.com/markdownlint/markdownlint.git
-  #   rev: v0.9.0
-  #   hooks:
-  #     - id: markdownlint
-  #       name: Markdownlint
-  #       description: Run markdownlint on your Markdown files
-  #       entry: mdl
-  #       language: ruby
-  #       files: \.(md|mdown|markdown)$
