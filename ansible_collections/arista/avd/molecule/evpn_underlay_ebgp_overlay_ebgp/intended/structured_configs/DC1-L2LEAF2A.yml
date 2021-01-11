@@ -95,7 +95,7 @@ redundancy: null
 spanning_tree:
   mode: mstp
   mst_instances:
-    0:
+    '0':
       priority: 16384
   no_spanning_tree_vlan: 4094
 aaa_authorization: null

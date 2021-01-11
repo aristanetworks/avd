@@ -3,7 +3,7 @@
   mode: {{ switch.spanning_tree_mode }}
 {%     if switch.spanning_tree_mode == "mstp" %}
   mst_instances:
-    0:
+    "0":
       priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
 {%     elif switch.spanning_tree_mode == "rapid-pvst" %}
   rapid_pvst_instances:

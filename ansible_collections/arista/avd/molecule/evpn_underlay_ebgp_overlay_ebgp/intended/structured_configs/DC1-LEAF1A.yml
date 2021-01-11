@@ -61,7 +61,7 @@ redundancy: null
 spanning_tree:
   mode: mstp
   mst_instances:
-    0:
+    '0':
       priority: 4096
 aaa_authorization: null
 local_users:
