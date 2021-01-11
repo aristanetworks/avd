@@ -507,17 +507,17 @@ spanning_tree:
       name: < name >
       revision: < 0-65535 >
       instances:
-        "< instance_id >": "< vlan_id >, < vlan_id >-< vlan_id >"
+        < instance_id >: < vlan_id >, < vlan_id >-< vlan_id >
   mst_instances:
-    "< instance_id >":
+    < instance_id >:
       priority: < priority >
-    "< instance_id >":
+    < instance_id >:
       priority: < priority >
-  no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
+  no_spanning_tree_vlan: < vlan_id >, < vlan_id >-< vlan_id >
   rapid_pvst_instances:
-    "< vlan_id >":
+    < vlan_id >:
       priority: < priority >
-    "< vlan_id >, < vlan_id >-< vlan_id >":
+    < vlan_id >, < vlan_id >-< vlan_id >:
       priority: < priority >
 ```
 
@@ -598,6 +598,7 @@ aaa_accounting:
   exec:
     default:
       type: < none | start-stop | stop-only >
+      group: < group_name >
   commands:
     commands_default:
       - commands: < all | 0-15 >
