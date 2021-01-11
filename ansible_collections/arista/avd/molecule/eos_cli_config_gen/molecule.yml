@@ -14,7 +14,7 @@ scenario:
 dependency:
   name: galaxy
 driver:
-  name: delegated
+  name: docker
 platforms:
   - name: ethernet_interfaces
     image: avdteam/base:3.6
