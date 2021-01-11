@@ -34,7 +34,7 @@ def default(primary_value, *default_values):
     if isinstance(primary_value, Undefined) or primary_value is None:
         # Invalid value - try defaults
         if len(default_values) >= 1:
-            #Return the result of another loop
+            # Return the result of another loop
             return default(default_values[0], *default_values[1:])
         else:
             # Return None
