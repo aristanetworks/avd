@@ -19,7 +19,7 @@ interface {{ ethernet_interface }}
    no shutdown
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
-   speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
+   speed {{ ethernet_interfaces[ethernet_interface].speed }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}

@@ -573,7 +573,7 @@ l3leaf:
       uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
       # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-      p2p_link_interface_speed: < interface_speed >
+      p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
@@ -738,7 +738,7 @@ l2leaf:
       uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
       # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
-      p2p_link_interface_speed: < interface_speed >
+      p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
@@ -1274,7 +1274,7 @@ servers:
       # Example of stand-alone adapter
 
         # Adapter speed - if not specified will be auto.
-      - speed: < adapter speed >
+      - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
         # Local server port(s)
         server_ports: [ < interface_name > ]
@@ -1312,7 +1312,7 @@ servers:
   < server_2 >:
     rack: RackC
     adapters:
-      - speed: < adapter speed >
+      - speed: < interface_speed | forced interface_speed | auto interface_speed >
         server_ports: [ < interface_name > ]
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
