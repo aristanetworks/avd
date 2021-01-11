@@ -425,8 +425,16 @@ Redundancy:
 snmp_server:
   contact: < contact_name >
   location: < location >
-  ipv4_access_list: < ipv4-access-list >
-  ipv6_access_list: < ipv6-access-list >
+  ipv4_ACLs: 
+    - name: < ipv4-access-list >
+      vrf: < vrf >
+    - name: < ipv4-access-list >
+      vrf: < vrf >
+  ipv6_ACLs: 
+    - name: < ipv6-access-list >
+      vrf: < vrf >
+    - name: < ipv6-access-list >
+      vrf: < vrf >
   local_interfaces:
     < interface_name_1 >:
       vrf: < vrf_name >
