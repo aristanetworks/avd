@@ -32,3 +32,9 @@ route_maps:
         type: permit
         set:
           - as-path match all replacement auto
+  RM-MLAG-PEER:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - "origin incomplete"
