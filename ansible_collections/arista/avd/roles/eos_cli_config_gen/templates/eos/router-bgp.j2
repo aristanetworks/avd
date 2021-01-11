@@ -59,7 +59,7 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.peer_groups[peer_group].timers is defined and router_bgp.peer_groups[peer_group].timers is not none %}
    neighbor {{ peer_group }} timers {{ router_bgp.peer_groups[peer_group].timers }}
 {%             endif %}
-{%             if router_bgp.peer_groups[peer_group].route_map_in is defined and router_bgp.peer_groups[peer_group].route_map_in is not none %}
+{%             if router_bgp.peer_groups[peer_group].route_map_in is arista.avd.defined %}
    neighbor {{ peer_group }} route-map {{ router_bgp.peer_groups[peer_group].route_map_in }} in
 {%             endif %}
 {%       endfor %}
