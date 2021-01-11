@@ -15,6 +15,10 @@ def default(primary_value, *default_values):
     Test of default_value1 if defined and is not none. If true return default_value1 else test default_value2.
     If we run out of default values we return none.
 
+    Example
+    -------
+    priority: {{ switch.spanning_tree_priority | arista.avd.default("32768") }}
+
     Parameters
     ----------
     primary_value : any

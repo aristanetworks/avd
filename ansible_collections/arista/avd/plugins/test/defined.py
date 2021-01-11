@@ -31,6 +31,16 @@ def defined(value, test_value=None):
     Arista.avd.defined will test value if defined and is not none and return true or false.
     If test_value is supplied, the value must also pass == test_value to return true.
 
+    Example:
+    1. Test if var is defined and not none:
+    {% if spanning_tree is arista.avd.defined %}
+    ...
+    {% endif %}
+    2. Test if variable is defined, not none and has value "something"
+    {% if extremely_long_variable_name is arista.avd.defined("something") %}
+    ...
+    {% endif %}
+
     Parameters
     ----------
     value : any

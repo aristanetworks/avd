@@ -2,8 +2,10 @@ name: Ansible Test for release management
 on:
   pull_request:
     branches:
+      - devel
     paths:
-      - 'ansible_collections/arista/avd/plugins/**'
+      - 'ansible_collections/arista/avd/plugins/filter/**'
+      - 'ansible_collections/arista/avd/plugins/test/**'
 jobs:
   'ansible-test for python content':
     name: Run ansible-test validation
