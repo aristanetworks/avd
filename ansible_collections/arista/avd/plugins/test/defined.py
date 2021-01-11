@@ -23,16 +23,36 @@ __metaclass__ = type
 
 from jinja2.runtime import Undefined
 
+
 def defined(value, test_value=None):
+    """
+    defined - Ansible test plugin to test if a variable is defined and not none
+
+    Arista.avd.defined will test value if defined and is not none and return true or false.
+    If test_value is supplied, the value must also pass == test_value to return true.
+
+    Parameters
+    ----------
+    value : any
+        Value to test from ansible
+    test_value : any, optional
+        value to test in addition of defined and not none, by default None
+
+    Returns
+    -------
+    boolean
+        True if variable matches criteria, False in other cases.
+    """
     if isinstance(value, Undefined) or value is None:
-        #Invalid value - return false
+        # Invalid value - return false
         return False
     elif test_value is not None and value != test_value:
-        #Valid value but not matching the optional argument
+        # Valid value but not matching the optional argument
         return False
     else:
-        #Valid value and is matching optional argument if provided - return true
+        # Valid value and is matching optional argument if provided - return true
         return True
+
 
 class TestModule(object):
     def tests(self):
