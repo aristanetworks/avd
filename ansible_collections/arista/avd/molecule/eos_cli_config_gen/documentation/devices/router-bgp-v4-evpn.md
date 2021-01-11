@@ -410,7 +410,8 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER in
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
