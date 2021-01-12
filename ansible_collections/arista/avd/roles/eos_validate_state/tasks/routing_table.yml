@@ -1,0 +1,59 @@
+---
+
+- name: run show ip route lo1
+  eos_command:
+    commands: "show ip route {{ loopback1_address }}"
+  loop: "{{ loopback1_reachability.loopback1_range }}"
+  loop_control:
+    loop_var: loopback1_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (loopback1_reachability.loopback1_range is defined and loopback1_reachability.loopback1_range is not none) and
+    (type is defined and type == "l3leaf")
+  register: routing_table_loopback1_state
+  tags:
+    - routing_table_check
+
+- name: Validate lo1 is in routing table
+  assert:
+    that:
+      - loopback1_reachability_test['stdout'][0] | regex_search(loopback1_reachability_test.loopback1_address)
+    fail_msg: "Lo1 {{ loopback1_reachability_test.loopback1_address }} is not in the routing table"
+    quiet: true
+  loop: "{{ routing_table_loopback1_state.results }}"
+  loop_control:
+    loop_var: loopback1_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: ( loopback1_reachability_test.skipped is not defined )
+  register: routing_table_loopback1_results
+  tags:
+    - routing_table_check
+
+- name: run show ip route lo0
+  eos_command:
+    commands: "show ip route {{ loopback0_address }}"
+  loop: "{{ loopback0_reachability.loopback0_range }}"
+  loop_control:
+    loop_var: loopback0_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
+    (type is defined and type != "l2leaf")
+  register: routing_table_loopback0_state
+  tags:
+    - routing_table_check
+
+- name: Validate lo0 is in routing table
+  assert:
+    that:
+      - routing_table_loopback0_test['stdout'][0] | regex_search(routing_table_loopback0_test.loopback0_address)
+    fail_msg: "Lo0 {{ routing_table_loopback0_test.loopback0_address }} is not in the routing table"
+    quiet: true
+  loop: "{{ routing_table_loopback0_state.results }}"
+  loop_control:
+    loop_var: routing_table_loopback0_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: ( routing_table_loopback0_test.skipped is not defined )
+  register: routing_table_loopback0_results
+  tags:
+    - routing_table_check
