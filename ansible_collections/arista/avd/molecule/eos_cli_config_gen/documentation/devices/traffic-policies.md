@@ -421,19 +421,19 @@ No IPv6 field-set configured.
 
 | Match set | Type | Sources | Destinations | Protocol | Action |
 | --------- | ---- | ------- | ------------ | -------- | ------ |
- | BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  | DEMO-01 |  tcp  (src: 1,10-20 )<br/>|  traffic-class: 5<br/> action: pass |
- | BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO / flags: established)<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
- | BLUE-C1-POLICY-03 | ipv4 | DEMO-01  |  |  icmp <br/>|  counter: DROP-PACKETS<br/>logging: enabled<br/> action: drop<br/> |
- | BLUE-C1-POLICY-04 | ipv4 | DEMO-02  | DEMO-01 |  tcp  (src: 22 / flags: established)<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
- | BLUE-C1-POLICY-05 | ipv4 | DEMO-02  | DEMO-01 |  tcp <br/>|  traffic-class: 5<br/> action: pass |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  | DEMO-01 |  tcp  (src: 1,10-20 )<br/>|  traffic-class: 5<br/> action: pass |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO / flags: established)<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01  |  |  icmp <br/>|  counter: DROP-PACKETS<br/>logging: enabled<br/> action: drop<br/> |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02  | DEMO-01 |  tcp  (src: 22 / flags: established)<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+| BLUE-C1-POLICY-05 | ipv4 | DEMO-02  | DEMO-01 |  tcp <br/>|  traffic-class: 5<br/> action: pass |
 
 **BLUE-C2-POLICY:**
 
 | Match set | Type | Sources | Destinations | Protocol | Action |
 | --------- | ---- | ------- | ------------ | -------- | ------ |
- | BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  |  |  tcp  (src: 1,10-20 )<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
- | BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO )<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
- | BLUE-C2-POLICY-03 | ipv4 | DEMO-01  |  |  tcp <br/>|  logging: enabled<br/> action: drop<br/> |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16  |  |  tcp  (src: 1,10-20 )<br/> icmp <br/>|  traffic-class: 5<br/> action: pass |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02  |  |  tcp  (dst: SERVICE-DEMO )<br/> icmp <br/>|  counter: DEMO-TRAFFIC<br/>dscp code: 60<br/> action: pass |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01  |  |  tcp <br/>|  logging: enabled<br/> action: drop<br/> |
 
 ### Traffic Policies Device Configuration
 
