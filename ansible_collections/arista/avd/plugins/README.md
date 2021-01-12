@@ -30,6 +30,8 @@ To use this filter:
 
 The `natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
 
+The filter will return an empty list if the value parsed to `natural_sort` is `none` or `undefined`.
+
 To use this filter:
 
 ```jinja
