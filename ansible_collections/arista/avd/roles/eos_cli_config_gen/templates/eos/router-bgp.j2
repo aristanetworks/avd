@@ -413,6 +413,12 @@ router bgp {{ router_bgp.as }}
 
 {%                endfor %}
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].aggregate_addresses is defined and router_bgp.vrfs[vrf].aggregate_addresses is not none %}
+{%                 for aggregate_address in router_bgp.vrfs[vrf].aggregate_addresses | arista.avd.natural_sort %}
+      aggregate-address {{ aggregate_address }}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].as_set is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].as_set == true %} as-set{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].summary_only is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].summary_only == true %} summary-only{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map is not none %} attribute-map {{ router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map }}{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map is not none %} match-map {{ router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map }}{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].advertise_only is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].advertise_only == true %} advertise-only{% endif %}
+
+{%                 endfor %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {% endif %}

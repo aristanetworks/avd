@@ -1482,6 +1482,16 @@ router_bgp:
           route_map: < route_map_name >
         < route_type >:
           route_map: < route_map_name >
+      aggregate_addresses:
+        < aggregate_address_1/mask >:
+          advertise_only: < true | false >
+        < aggregate_address_2/mask >:
+        < aggregate_address_3/mask >:
+          as_set: < true | false >
+          summary_only: < true | false >
+          attribute_map: < route_map_name >
+          match_map: < route_map_name >
+          advertise_only: < true | false >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
