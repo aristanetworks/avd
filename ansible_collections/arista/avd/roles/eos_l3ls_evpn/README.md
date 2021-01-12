@@ -1247,7 +1247,6 @@ port_profiles:
         level: < Configure maximum storm-control level >
         unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
     port_channel:
-      state: < present | absent >
       description: < port_channel_description >
       mode: < active | passive | on >
 
@@ -1329,9 +1328,6 @@ servers:
         # Port- Channel
         port_channel:
 
-          # State, create or remove port-channel.
-          state: < present | absent >
-
           # Port-Channel Description.
           description: < port_channel_description >
 
@@ -1351,7 +1347,6 @@ servers:
         switches: [ < device_1 >, < device_2 >  ]
         profile: < port_profile_name >
         port_channel:
-          state: < present | absent >
           description: < port_channel_description >
           mode: < active | passive | on >
           short_esi: < 0000:0000:0000 >
@@ -1401,7 +1396,6 @@ servers:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: DB_Clusters
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 
@@ -1416,7 +1410,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 ```
@@ -1454,7 +1447,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 ```
@@ -1477,7 +1469,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC4A ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
           short_esi: 0303:0202:0101
