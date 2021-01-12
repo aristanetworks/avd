@@ -5,6 +5,7 @@ on:
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
       - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
       - 'ansible_collections/arista/avd/molecules/upgrade_v1.0_to_v1.1/**'
+      - 'ansible_collections/arista/avd/plugins/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-avd-upgrade.yml'
 jobs:
