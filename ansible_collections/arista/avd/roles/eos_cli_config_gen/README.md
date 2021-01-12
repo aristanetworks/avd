@@ -598,6 +598,7 @@ aaa_accounting:
   exec:
     default:
       type: < none | start-stop | stop-only >
+      group: < group_name >
   commands:
     commands_default:
       - commands: < all | 0-15 >
