@@ -8,6 +8,7 @@ on:
       - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/tasks/**'
       - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/templates/**'
       - 'ansible_collections/arista/avd/molecules/eos_config_deploy_cvp/**'
+      - 'ansible_collections/arista/avd/plugins/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-cvp-deployment.yml'
       # - '.github/git-repo-state-monitor.sh'
