@@ -373,6 +373,15 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].timers is defined %}
       timers bgp {{ router_bgp.vrfs[vrf].timers }}
 {%             endif %}
+{%              if router_bgp.vrfs[vrf].networks is defined and router_bgp.vrfs[vrf].networks is not none %}
+{%                  for network in router_bgp.vrfs[vrf].networks | arista.avd.natural_sort %}
+{%                      if router_bgp.vrfs[vrf].networks[network].route_map is defined and router_bgp.vrfs[vrf].networks[network].route_map is not none %}
+      network {{ network }} route-map {{ router_bgp.vrfs[vrf].networks[network].route_map }}
+{%                      else %}
+      network {{ network }}
+{%                      endif %}
+{%                  endfor %}
+{%              endif %}
 {%             if router_bgp.vrfs[vrf].neighbors is defined and router_bgp.vrfs[vrf].neighbors is not none %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is defined and router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is not none %}
@@ -392,6 +401,10 @@ router bgp {{ router_bgp.as }}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
 {%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is defined %}
+      neighbor {{ neighbor }} default-originate{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always == true %} always{% endif %}
+
+{%                      endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}
@@ -399,6 +412,12 @@ router bgp {{ router_bgp.as }}
       redistribute {{ redistribute_route }}{% if router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is defined and router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map is not none %} route-map {{ router_bgp.vrfs[vrf].redistribute_routes[redistribute_route].route_map }}{% endif %}
 
 {%                endfor %}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].aggregate_addresses is defined and router_bgp.vrfs[vrf].aggregate_addresses is not none %}
+{%                 for aggregate_address in router_bgp.vrfs[vrf].aggregate_addresses | arista.avd.natural_sort %}
+      aggregate-address {{ aggregate_address }}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].as_set is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].as_set == true %} as-set{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].summary_only is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].summary_only == true %} summary-only{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map is not none %} attribute-map {{ router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].attribute_map }}{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map is not none %} match-map {{ router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].match_map }}{% endif %}{% if router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].advertise_only is defined and router_bgp.vrfs[vrf].aggregate_addresses[aggregate_address].advertise_only == true %} advertise-only{% endif %}
+
+{%                 endfor %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

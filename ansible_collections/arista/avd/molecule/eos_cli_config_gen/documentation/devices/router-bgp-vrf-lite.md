@@ -1,4 +1,4 @@
-# router-bgp-v4-evpn
+# router-bgp-vrf-lite
 
 # Table of Contents
 
@@ -73,8 +73,6 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
 - [MAC security](#mac-security)
-- [QOS](#qos)
-- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -288,7 +286,22 @@ IP virtual router MAC address not defined
 
 ## Static Routes
 
-Static routes not defined
+### Static Routes Summary
+
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| BLUE-C1  | 193.1.0.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
+| BLUE-C1  | 193.1.1.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
+| BLUE-C1  | 193.1.2.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
+
+### Static Routes Device Configuration
+
+```eos
+!
+ip route vrf BLUE-C1 193.1.0.0/24 Null0
+ip route vrf BLUE-C1 193.1.1.0/24 Null0
+ip route vrf BLUE-C1 193.1.2.0/24 Null0
+```
 
 ## IPv6 Static Routes
 
@@ -308,7 +321,7 @@ Router ISIS not defined
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65001|  1.0.1.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -316,168 +329,79 @@ Router ISIS not defined
 | distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 2 ecmp 2 |
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+#### OBS_WAN
 
 | Settings | Value |
 | -------- | ----- |
-| Address Family | evpn |
-| Remote_as | 65001 |
-| Source | Loopback0 |
-| Bfd | true |
-| Ebgp multihop | 3 |
-| Send community | true |
-| Maximum routes | 0 (no limit) |
+| Address Family | ipv4 |
+| Remote_as | 65000 |
 
-#### IPv4-UNDERLAY-PEERS
+#### SEDI
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote_as | 65003 |
+| Source | Loopback101 |
+| Ebgp multihop | 10 |
+
+#### WELCOME_ROUTERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote_as | 65001 |
-| Send community | true |
-| Maximum routes | 12000 |
-
-#### MLAG-IPv4-UNDERLAY-PEER
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote_as | 65101 |
-| Next-hop self | True |
-| Send community | true |
-| Maximum routes | 12000 |
-
-### BGP Neighbors
-
-| Neighbor | Remote AS |
-| -------- | ---------
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
 
-##### VLAN aware bundles
-
-| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
-| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
-
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected  static |
+| BLUE-C1 | 1.0.1.1:101 | static |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65101
-   router-id 192.168.255.3
+router bgp 65001
+   router-id 1.0.1.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 2 ecmp 2
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65001
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
-   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
-   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
-   neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   redistribute connected route-map RM-CONN-2-BGP
-   !
-   vlan-aware-bundle B-ELAN-201
-      rd 192.168.255.3:20201
-      route-target both 20201:20201
-      redistribute learned
-      vlan 201
-   !
-   vlan-aware-bundle TENANT_A_PROJECT01
-      rd 192.168.255.3:11
-      route-target both 11:11
-      redistribute learned
-      vlan 110
-   !
-   vlan-aware-bundle TENANT_A_PROJECT02
-      rd 192.168.255.3:12
-      route-target both 12:12
-      redistribute learned
-      vlan 112
-   !
-   address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
-      no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+   neighbor OBS_WAN description BGP Connection to OBS WAN CPE
+   neighbor OBS_WAN peer group
+   neighbor OBS_WAN remote-as 65000
+   neighbor SEDI description BGP Connection to OBS WAN CPE
+   neighbor SEDI peer group
+   neighbor SEDI remote-as 65003
+   neighbor SEDI update-source Loopback101
+   neighbor SEDI ebgp-multihop 10
+   neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
+   neighbor WELCOME_ROUTERS peer group
+   neighbor WELCOME_ROUTERS remote-as 65001
+   redistribute static
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS activate
-      neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor OBS_WAN activate
+      neighbor SEDI route-map RM-BGP-EXPORT-DEFAULT-BLUE-C1 out
+      neighbor SEDI activate
+      neighbor WELCOME_ROUTERS activate
    !
-   vrf TENANT_A_PROJECT01
-      rd 192.168.255.3:11
-      route-target import evpn 11:11
-      route-target export evpn 11:11
-      router-id 192.168.255.3
-      network 10.0.0.0/8
-      network 100.64.0.0/10
-      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
-   !
-   vrf TENANT_A_PROJECT02
-      rd 192.168.255.3:12
-      route-target import evpn 12:12
-      route-target export evpn 12:12
-      router-id 192.168.255.3
-      timers bgp 5 15
-      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.1 description ABCDEFG
-      neighbor 10.255.251.1 next-hop-self
-      neighbor 10.255.251.1 timers 1 3
-      neighbor 10.255.251.1 send-community standard
-      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.2 description ABCDEFGfg
-      neighbor 10.255.251.2 timers 1 3
-      neighbor 10.255.251.2 send-community 
-      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description ABCDEFGfgLCLCLCLC
-      neighbor 10.255.251.3 next-hop-self
-      neighbor 10.255.251.3 timers 1 3
-      neighbor 10.255.251.3 send-community link-bandwidth aggregate 2
-      neighbor 10.255.251.3 default-originate always
-      redistribute connected
-      redistribute static route-map RM-CONN-2-BGP
+   vrf BLUE-C1
+      rd 1.0.1.1:101
+      neighbor 10.1.1.0 peer group OBS_WAN
+      neighbor 10.255.1.1 peer group WELCOME_ROUTERS
+      neighbor 101.0.3.1 peer group SEDI
+      redistribute static
+      aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
+      aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
 ```
 
 ## Router BFD
@@ -516,7 +440,21 @@ No peer filters defined
 
 ## Prefix-lists
 
-Prefix-lists not defined
+### Prefix-lists Summary
+
+#### PL-BGP-DEFAULT-BLUE-C1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 0.0.0.0/0 le 1 |
+
+### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-BGP-DEFAULT-BLUE-C1
+   seq 10 permit 0.0.0.0/0 le 1
+```
 
 ## IPv6 Prefix-lists
 
@@ -524,7 +462,32 @@ IPv6 prefix-lists not defined
 
 ## Route-maps
 
-No route-maps defined
+### Route-maps Summary
+
+#### RM-BGP-AGG-APPLY-SET
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set local-preference 50 |
+
+#### RM-BGP-EXPORT-DEFAULT-BLUE-C1
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | match ip address prefix-list PL-BGP-DEFAULT-BLUE-C1 |
+
+### Route-maps Device Configuration
+
+```eos
+!
+route-map RM-BGP-AGG-APPLY-SET permit 10
+   description RM for BGP AGG Set
+   set local-preference 50
+!
+route-map RM-BGP-EXPORT-DEFAULT-BLUE-C1 permit 10
+   description RM for BGP default route in BLUE-C1
+   match ip address prefix-list PL-BGP-DEFAULT-BLUE-C1
+```
 
 ## IP Extended Communities
 
@@ -571,18 +534,9 @@ IP DHCP relay not defined
 # Errdisable
 
 Errdisable is not defined.
-
 # MACsec
 
 MACsec not defined
-
-# QOS
-
-QOS is not defined.
-
-# QOS Profiles
-
-QOS Profiles are not defined
 
 # Custom Templates
 

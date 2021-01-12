@@ -5,6 +5,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import re
+from jinja2.runtime import Undefined
 
 
 def convert(text):
@@ -18,6 +19,8 @@ def alphanum_key(key):
 class FilterModule(object):
 
     def natural_sort(self, iterable):
+        if isinstance(iterable, Undefined) or iterable is None:
+            return list()
         return sorted(iterable, key=alphanum_key)
 
     def filters(self):

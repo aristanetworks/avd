@@ -1,0 +1,46 @@
+name: Ansible Test for Python update
+on:
+  pull_request:
+    paths:
+      - 'ansible_collections/arista/avd/plugins/filter/**'
+      - 'ansible_collections/arista/avd/plugins/test/**'
+      - '.github/workflows/ansible_test_python.yml'
+jobs:
+  'ansible-test':
+    name: Run ansible-test validation
+    runs-on: ubuntu-18.04
+    container: ubuntu:18.04
+    steps:
+      - uses: actions/checkout@master
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - name: Setup Python 3 on runner
+        uses: actions/setup-python@v2.1.4
+        with:
+          python-version: '3.x'
+
+      - name: update packages
+        run: apt-get update
+
+      - name: 'Install sudo'
+        run: apt-get -q -y install sudo
+
+      - name: 'Install build essentials'
+        run: sudo apt-get install -q -y build-essential
+
+      - name: 'Install requirements'
+        run: make github-configure-ci
+
+      - name: 'Install docker'
+        run: make install-docker
+
+      - name: 'Install Python requirements'
+        run: make install-requirements
+
+      - name: 'ansible-test linting'
+        run: make sanity-lint
+
+      - name: 'ansible-test import'
+        run: make sanity-import

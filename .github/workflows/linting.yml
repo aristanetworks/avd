@@ -8,9 +8,13 @@ jobs:
     container: avdteam/base:3.6-v1.0
     steps:
       - uses: actions/checkout@master
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
       - name: Install Pre Commit
         run: |
           pip --no-cache-dir install -r development/requirements-dev.txt
       - name: 'Pre Commit run'
         run: |
+          git reset --soft origin/devel
           make pre-commit

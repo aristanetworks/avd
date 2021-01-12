@@ -1,0 +1,91 @@
+prefix_lists:
+  PL-BGP-DEFAULT-BLUE-C1:
+    sequence_numbers:
+      10:
+        action: permit 0.0.0.0/0 le 1
+
+route_maps:
+  RM-BGP-AGG-APPLY-SET:
+    sequence_numbers:
+      10:
+        type: permit
+        description: RM for BGP AGG Set
+        set:
+          - "local-preference 50"
+
+  RM-BGP-EXPORT-DEFAULT-BLUE-C1:
+    sequence_numbers:
+      10:
+        type: permit
+        description: RM for BGP default route in BLUE-C1
+        match:
+          - ip address prefix-list PL-BGP-DEFAULT-BLUE-C1
+
+router_bgp:
+  as: 65001
+  router_id: 1.0.1.1
+  bgp_defaults:
+    - no bgp default ipv4-unicast
+    - distance bgp 20 200 200
+    - graceful-restart restart-time 300
+    - graceful-restart
+  peer_groups:
+    OBS_WAN:
+      type: ipv4
+      description: 'BGP Connection to OBS WAN CPE'
+      remote_as: 65000
+    WELCOME_ROUTERS:
+      type: ipv4
+      description: 'BGP Connection to WELCOME ROUTER 02'
+      remote_as: 65001
+    SEDI:
+      type: ipv4
+      description: 'BGP Connection to OBS WAN CPE'
+      remote_as: 65003
+      update_source: Loopback101
+      ebgp_multihop: 10
+  redistribute_routes:
+    - static
+  address_family_ipv4:
+    peer_groups:
+      OBS_WAN:
+        activate: true
+      WELCOME_ROUTERS:
+        activate: true
+      SEDI:
+        activate: true
+        route_map_out: RM-BGP-EXPORT-DEFAULT-BLUE-C1
+  vrfs:
+    BLUE-C1:
+      rd: 1.0.1.1:101
+      neighbors:
+        10.1.1.0:
+          peer_group: OBS_WAN
+        10.255.1.1:
+          peer_group: WELCOME_ROUTERS
+        101.0.3.1:
+          peer_group: SEDI
+      redistribute_routes:
+        - static
+      aggregate_addresses:
+        193.1.0.0/16:
+          as_set: true
+          summary_only: true
+          attribute_map: RM-BGP-AGG-APPLY-SET
+          advertise_only: false
+        0.0.0.0/0:
+          as_set: true
+          summary_only: true
+          attribute_map: RM-BGP-AGG-APPLY-SET
+          advertise_only: false
+
+static_routes:
+  - vrf: BLUE-C1
+    destination_address_prefix: 193.1.0.0/24
+    interface: Null0
+  - vrf: BLUE-C1
+    destination_address_prefix: 193.1.1.0/24
+    interface: Null0
+  - vrf: BLUE-C1
+    destination_address_prefix: 193.1.2.0/24
+    interface: Null0
