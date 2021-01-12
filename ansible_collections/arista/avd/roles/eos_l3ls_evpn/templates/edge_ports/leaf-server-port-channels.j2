@@ -1,7 +1,7 @@
 {# Leaf server port-channels #}
 {% for server in servers | arista.avd.natural_sort %}
 {%     for adapter in servers[server].adapters | arista.avd.natural_sort %}
-{%         set adapter_port_channel = adapter.vlans | arista.avd.default( port_profiles[adapter.profile].port_channel ) %}
+{%         set adapter_port_channel = adapter.port_channel | arista.avd.default( port_profiles[adapter.profile].port_channel ) %}
 {%         if adapter_port_channel is arista.avd.defined and adapter_port_channel.mode is arista.avd.defined %}
 {%             for switch in adapter.switches | arista.avd.natural_sort %}
 {%                 if switch == inventory_hostname %}
@@ -40,7 +40,7 @@
 {%                         endfor %}
 {%                     endif %}
 {%                     if adapter.switches | unique | list | length > 1 %}
-                           if adapter_port_channel.short_esi is arista.avd.defined %}
+{%                         if adapter_port_channel.short_esi is arista.avd.defined %}
 {%                             if adapter_port_channel.short_esi.split(':') | length == 3 %}
     esi: {{ adapter_port_channel.short_esi | arista.avd.generate_esi }}
     rt: {{ adapter_port_channel.short_esi | arista.avd.generate_route_target }}
