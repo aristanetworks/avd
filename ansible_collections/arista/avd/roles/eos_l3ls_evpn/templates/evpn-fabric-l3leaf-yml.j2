@@ -497,11 +497,6 @@ ip_igmp_snooping:
 ### static routes ###
 static_routes:
 {% include 'routing/static-routes.j2' %}
-{% if leaf.static_routes is arista.avd.defined %}
-{%     for static_route in leaf.static_routes %}
-  - {{ static_route }}
-{%     endfor %}
-{% endif %}
 
 {# prefix_lists #}
 ### prefix-lists ###
