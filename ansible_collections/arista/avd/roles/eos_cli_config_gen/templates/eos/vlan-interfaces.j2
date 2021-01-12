@@ -68,7 +68,7 @@ interface {{ vlan_interface }}
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled == true %}
-   multicast ipv4 source route export {% if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is not none %}{{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}{% endif %}
+   multicast ipv4 source route export{% if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is not none %} {{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}{% endif %}
 
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].access_group_in is defined and vlan_interfaces[vlan_interface].access_group_in is not none %}
