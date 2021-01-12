@@ -1218,37 +1218,21 @@ tenants:
 **Variables and Options:**
 
 ```yaml
-# Dictionary of port_profiles to be applied to elements defined in the servers variables.
+# Optional profiles to apply on Server facing interfaces
+# Each profile can support all or some of the following keys according your own needs.
+# Keys are the same used under Server Adapters.
+# Keys defined under Server Adapters take precedence.
 port_profiles:
-
-  # Port-profile name
   < port_profile_1 >:
-
-    # Interface mode | required
+    speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
-
-    # Native VLAN for a trunk port | optional
     native_vlan: <native vlan number>
-
-    # Interface vlans | required
     vlans: < vlans as string >
-
-    # Spanning Tree
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < true | false >
-
-    # Flow control | Optional
     flowcontrol:
       received: < received | send | on >
-
-    # QOS Profile | Optional
     qos_profile: < qos_profile_name >
-
-  < port_profile_2 >:
-    mode: < access | dot1q-tunnel | trunk >
-    vlans: < vlans as string >
-
-    # Storm control settings applied on port toward server | Optional
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -1262,6 +1246,10 @@ port_profiles:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+    port_channel:
+      state: < present | absent >
+      description: < port_channel_description >
+      mode: < active | passive | on >
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
@@ -1292,8 +1280,45 @@ servers:
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
+        # Interface mode | required
+        mode: < access | dot1q-tunnel | trunk >
+
+        # Native VLAN for a trunk port | optional
+        native_vlan: <native vlan number>
+
+        # Interface vlans | required
+        vlans: < vlans as string >
+
+        # Spanning Tree
+        spanning_tree_portfast: < edge | network >
+        spanning_tree_bpdufilter: < true | false >
+
+        # Flow control | Optional
+        flowcontrol:
+          received: < received | send | on >
+
         # QOS Profile | Optional
         qos_profile: < qos_profile_name >
+
+      < port_profile_2 >:
+        mode: < access | dot1q-tunnel | trunk >
+        vlans: < vlans as string >
+
+        # Storm control settings applied on port toward server | Optional
+        storm_control:
+          all:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          broadcast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          multicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          unknown_unicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+
 
       # Example of port-channel adpater
       - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
