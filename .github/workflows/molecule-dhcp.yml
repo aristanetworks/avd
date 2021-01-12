@@ -8,6 +8,7 @@ on:
       - 'ansible_collections/arista/avd/roles/dhcp_provisioner/tasks/**'
       - 'ansible_collections/arista/avd/roles/dhcp_provisioner/templates/**'
       - 'ansible_collections/arista/avd/molecules/dhcp_*/**'
+      - 'ansible_collections/arista/avd/plugins/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-dhcp.yml'
 jobs:

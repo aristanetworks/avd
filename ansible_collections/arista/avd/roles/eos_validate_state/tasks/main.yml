@@ -98,10 +98,24 @@
     - optional
     - never
 
+- name: Validate routing table
+  include_tasks: "routing_table.yml"
+  tags:
+    - routing_table
+
 - name: Validate loopback0 reachability
   include_tasks: "loopback0_reachability.yml"
   tags:
     - loopback0_reachability
+
+- name: Remove generated vars for testing
+  file:
+    path: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    state: absent
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
 
   ####################################
   ##       Validation Reports       ##
