@@ -28,6 +28,21 @@
 {%             endif %}
       redistribute_routes:
         - connected
+{%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%                 if tenants[tenant].vrfs[vrf].redistribute_static is not arista.avd.defined %}
+{%                     for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                         if static_route.nodes is not arista.avd.defined %}
+        - static
+{%                             break %}
+{%                         elif inventory_hostname in static_route.nodes %}
+        - static
+{%                             break %}
+{%                         endif %}
+{%                     endfor %}
+{%                 elif tenants[tenant].vrfs[vrf].redistribute_static == true %}
+        - static
+{%                 endif %}
+{%             endif %}
 {%         endfor %}
 {%    endif %}
 {% endfor %}
