@@ -21,6 +21,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
    speed {{ ethernet_interfaces[ethernet_interface].speed }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mac_security.profile is defined and ethernet_interfaces[ethernet_interface].mac_security.profile is not none %}
+   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profile }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
 {%         else %}
@@ -169,9 +172,6 @@ interface {{ ethernet_interface }}
 {%                 if ethernet_interfaces[ethernet_interface].ptp.enable is defined and ethernet_interfaces[ethernet_interface].ptp.enable == true %}
    ptp enable
 {%                 endif %}
-{%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].mac_security.profile is defined and ethernet_interfaces[ethernet_interface].mac_security.profile is not none %}
-   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profile }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].service_profile is defined and ethernet_interfaces[ethernet_interface].service_profile is not none %}
    service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
