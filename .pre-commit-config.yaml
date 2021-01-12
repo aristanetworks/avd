@@ -5,11 +5,16 @@ repos:
     rev: v2.4.0
     hooks:
       - id: trailing-whitespace
+        exclude: ansible_collections/arista/avd/molecule
       - id: end-of-file-fixer
         exclude_types:  [jinja, text]
+        exclude: ansible_collections/arista/avd/molecule
       - id: check-yaml
+        exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
+        exclude: ansible_collections/arista/avd/molecule
       - id: check-merge-conflict
+        exclude: ansible_collections/arista/avd/molecule
 
   # - repo: https://github.com/pre-commit/pre-commit-hooks
   #   rev: v2.3.0
@@ -41,4 +46,5 @@ repos:
       entry: yamllint
       language: python
       types: [file, yaml]
+      exclude: ansible_collections/arista/avd/molecule
       args: [-c=.github/yamllintrc]
