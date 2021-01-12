@@ -42,6 +42,7 @@
     - [AAA Accounting](#aaa-accounting)
     - [AAA Root](#aaa-root)
     - [Local Users](#local-users)
+    - [Enable Password](#enable-password)
     - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
     - [VRF Instances](#vrf-instances)
@@ -633,6 +634,14 @@ local_users:
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+```
+
+### Enable Password
+
+```yaml
+enable_password:
+  hash_algorithm: < md5 | sha512 >
+  key: "< hashed_password >"
 ```
 
 ### Clock Timezone
