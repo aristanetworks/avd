@@ -810,6 +810,8 @@ ethernet_interfaces:
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
       received: < received | send | on >
+    mac_security:
+      profile: < profile >
     channel_group:
       id: < Port-Channel_id >
       mode: < on | active | passive >
@@ -823,8 +825,6 @@ ethernet_interfaces:
     vmtracer: < true | false >
     ptp:
       enable: < true | false >
-    mac_security:
-      profile: < profile >
     service_profile: < qos_profile >
     storm_control:
       all:

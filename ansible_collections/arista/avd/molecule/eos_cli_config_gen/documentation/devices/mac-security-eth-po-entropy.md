@@ -260,6 +260,7 @@ No Interface Defaults defined
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 |  - | routed | - | - | - | - |
+| Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -268,9 +269,14 @@ No Interface Defaults defined
 ```eos
 !
 interface Ethernet1
+   mac security profile A1
    switchport
    ip address 1.1.1.1/24
+!
+interface Ethernet3
+   description DC1-AGG01_Ethernet1
    mac security profile A1
+   channel-group 3 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -318,7 +324,7 @@ IP virtual router MAC address not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false| 
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos

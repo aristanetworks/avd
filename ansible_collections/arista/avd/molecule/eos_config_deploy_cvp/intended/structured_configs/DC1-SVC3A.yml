@@ -103,7 +103,7 @@ redundancy: null
 spanning_tree:
   mode: mstp
   mst_instances:
-    0:
+    '0':
       priority: 4096
   no_spanning_tree_vlan: 4093-4094
 aaa_authorization: null
@@ -662,6 +662,7 @@ vxlan_tunnel_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 tcam_profile: null
+platform: null
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs:

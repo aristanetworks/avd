@@ -174,8 +174,8 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv
 
 ```eos
 !
-tacacs-server host 10.10.10.157 vrf mgt  key 7 071B245F5A 
-tacacs-server host 10.10.10.249  key 7 071B245F5A 
+tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+tacacs-server host 10.10.10.249 key 7 071B245F5A
 ```
 
 ## IP TACACS Source Interfaces
@@ -368,7 +368,7 @@ IP virtual router MAC address not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false| 
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
