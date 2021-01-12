@@ -111,13 +111,13 @@ No Field-set configured on device.
 {%                            do row.actions.append("counter: " + traffic_policies.policies[policy].matchs[match].actions.count ) %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matchs[match].actions.log is arista.avd.defined(true) %}
-{%                            do row.actions.append("log") %}
+{%                            do row.actions.append("logging") %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matchs[match].actions.dscp is arista.avd.defined() %}
-{%                            do row.actions.append("dscp marking: " + traffic_policies.policies[policy].matchs[match].actions.dscp ) %}
+{%                            do row.actions.append("dscp marking: " + traffic_policies.policies[policy].matchs[match].actions.dscp | string ) %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matchs[match].actions.traffic_class is arista.avd.defined() %}
-{%                            do row.actions.append("traffic-class: " + traffic_policies.policies[policy].matchs[match].actions.traffic_class ) %}
+{%                            do row.actions.append("traffic-class: " + traffic_policies.policies[policy].matchs[match].actions.traffic_class | string ) %}
 {%                        endif %}
 {%                    else %}
 {%                       do row.actions.append("default action: PASS") %}
