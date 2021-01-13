@@ -210,7 +210,9 @@ No logging settings defined
 
 | Local Interface | VRF |
 | --------------- | --- |
-| Management0 | mgt |
+| Management1 | MGMT |
+| Loopback0 | default |
+| Loopback12 | Tenant_A_APP_Zone |
 
 ### SNMP VRF Status
 
@@ -229,19 +231,19 @@ No logging settings defined
 
 ### SNMP Views Configuration
 
-| View | MIB Family Name | Status |  
-| ---- | --------------- | ------ | 
+| View | MIB Family Name | Status |
+| ---- | --------------- | ------ |
 | VW-WRITE | iso |  Included | VW-READ | iso |  Included 
 ### SNMP Groups Configuration
 
-| Group | SNMP Version | Authentication | Read | Write | Notify |  
+| Group | SNMP Version | Authentication | Read | Write | Notify |
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
 | GRP-READ-ONLY | v3 | priv | v3read | - | - |
 | GRP-READ-WRITE | v3 | auth | v3read | v3write | - |
 
 ### SNMP Users Configuration
 
-| User | Group | Version | Authentication | Privacy | 
+| User | Group | Version | Authentication | Privacy |
 | ---- | ----- | ------- | -------------- | ------- |
 | USER-READ | GRP-READ-ONLY | v3 | sha | aes |
 | USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
@@ -255,7 +257,9 @@ snmp-server contact DC1_OPS
 snmp-server location DC1
 snmp-server ipv4 access-list onur
 snmp-server ipv6 access-list onurv6
-snmp-server vrf mgt local-interface Management0
+snmp-server vrf MGMT local-interface Management1
+snmp-server local-interface Loopback0
+snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
 snmp-server view VW-READ iso included
 snmp-server group GRP-READ-ONLY v3  priv read v3read 

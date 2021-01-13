@@ -428,9 +428,11 @@ snmp_server:
   ipv4_access_list: < ipv4-access-list >
   ipv6_access_list: < ipv6-access-list >
   local_interfaces:
-    - name: < interface_name_1 >
+    < interface_name_1 >:
       vrf: < vrf_name >
-    - name: < interface_name_2 >
+    < interface_name_2 >:
+    < interface_name_3 >:
+      vrf: < vrf_name >
   views:
     - name: < view_name >
       MIB_family_name: < MIB_family_name >
