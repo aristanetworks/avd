@@ -377,6 +377,12 @@ IPv6 prefix-lists not defined
 | 10 | deny | match community LIST-COM |
 | 20 | permit | set as-path match all replacement auto |
 
+#### RM-MLAG-PEER-IN
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set origin incomplete |
+
 #### RM-STATIC-2-BGP
 
 | Sequence | Type | Match and/or Set |
@@ -401,6 +407,9 @@ route-map RM-HIDE-ASPATH-OUT deny 10
 !
 route-map RM-HIDE-ASPATH-OUT permit 20
    set as-path match all replacement auto
+!
+route-map RM-MLAG-PEER-IN permit 10
+   set origin incomplete
 !
 route-map RM-STATIC-2-BGP permit 10
    description tag for static routes

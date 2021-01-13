@@ -31,6 +31,8 @@ router_bgp:
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
       maximum_routes: 12000
       send_community: true
+      route_map_in: RM-MLAG-PEER-IN
+      route_map_out: RM-MLAG-PEER-OUT
   neighbors:
     172.31.255.0:
       peer_group: IPv4-UNDERLAY-PEERS

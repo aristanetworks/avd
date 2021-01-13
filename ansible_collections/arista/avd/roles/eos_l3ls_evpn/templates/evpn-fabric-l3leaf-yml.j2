@@ -81,6 +81,7 @@
 {%             else %}
 {%                 set switch.mlag = l3leaf.defaults.mlag | default(true) %}
 {%             endif %}
+{%             set leaf.mlag_ibgp_origin_incomplete = l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete | arista.avd.default(l3leaf.defaults.mlag_ibgp_origin_incomplete, true) %}
 {%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l3leaf_node_group %}
