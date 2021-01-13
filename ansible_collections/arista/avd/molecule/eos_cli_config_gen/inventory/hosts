@@ -5,6 +5,7 @@ acl
 arp
 base
 dns-ntp
+enable-password
 errdisable
 ethernet-interfaces
 igmp-snooping
