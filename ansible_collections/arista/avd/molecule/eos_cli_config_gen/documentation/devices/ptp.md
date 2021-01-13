@@ -13,6 +13,7 @@
   - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Servers](#radius-servers)
@@ -168,6 +169,10 @@ Management API HTTP not defined
 ## Local Users
 
 No users defined
+
+## Enable Password
+
+Enable password not defined
 
 ## TACACS Servers
 
