@@ -1,4 +1,4 @@
-# loopbacks-interfaces
+# event-handlers
 
 # Table of Contents
 
@@ -216,7 +216,21 @@ No VM tracer sessions defined
 
 ## Event Handler
 
-No event handler defined
+### Event Handler Summary
+
+| Handler | Action Type | Action | Trigger |
+| ------- | ----------- | ------ | ------- |
+| tracking | bash | /mnt/flash/tracking.sh | on-boot |
+
+### Event Handler Device Configuration
+
+```eos
+!
+event-handler tracking
+   trigger on-boot
+   action bash /mnt/flash/tracking.sh
+   delay 300
+```
 
 # MLAG
 
@@ -256,42 +270,7 @@ No port-channels defined
 
 ## Loopback Interfaces
 
-### Loopback Interfaces Summary
-
-#### IPv4
-
-| Interface | Description | VRF | IP Address |
-| --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
-
-#### IPv6
-
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
-
-
-### Loopback Interfaces Device Configuration
-
-```eos
-!
-interface Loopback0
-   description EVPN_Overlay_Peering
-   ip address 192.168.255.3/32
-!
-interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
-   ip address 192.168.254.3/32
-!
-interface Loopback100
-   description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
-   vrf TENANT_A_PROJECT02
-   ip address 10.1.255.3/32
-```
+No loopback interfaces defined
 
 ## VLAN Interfaces
 
