@@ -94,7 +94,7 @@
 {%                 endif %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
 {%                 if loop.last and type == "l3leaf" and leaf.mlag == true %}
-  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
+  Vlan{{ tenants[tenant].vrfs[vrf].custom_mlag_ibgp_peering_vrfs | default (mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
     tenant: {{ tenant }}
     type: underlay_peering
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"

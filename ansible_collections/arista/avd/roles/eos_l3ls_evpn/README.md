@@ -863,6 +863,9 @@ tenants:
           < IPv4 dhcp server IP >:
             source_interface: < interface-name >
             source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+        
+        # Manually define the VLAN used on the MLAG pair for the iBGP session
+        custom_mlag_ibgp_peering_vrfs: <1-4096>
 
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
