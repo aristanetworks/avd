@@ -1,0 +1,107 @@
+{% if router_ospf is defined and router_ospf is not none %}
+{%  if router_ospf.process_ids is defined and router_ospf.process_ids is not none %}
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
+{%      for process in router_ospf.process_ids %}
+| {{ process }} | {{ router_ospf.process_ids[process].router_id }} | {% if router_ospf.process_ids[process].passive_interface_default is defined and router_ospf.process_ids[process].passive_interface_default is not none %}{% if router_ospf.process_ids[process].passive_interface_default %} enabled {% else %} disabled {% endif %} {% else %} disabled {% endif %} | {% if router_ospf.process_ids[process].no_passive_interfaces is defined and router_ospf.process_ids[process].no_passive_interfaces is not none %} {% for interface in router_ospf.process_ids[process].no_passive_interfaces %} {{interface}} <br>{% endfor %}{% else %} - {% endif %}| {% if router_ospf.process_ids[process].bfd_enable is defined and router_ospf.process_ids[process].bfd_enable is not none %} {% if router_ospf.process_ids[process].bfd_enable %} enabled {% else %} disabled {% endif %} {% else %} disabled {% endif %} | {{ router_ospf.process_ids[process].max_lsa | default('default') }} | {% if router_ospf.process_ids[process].default_information_originate is defined %} {% if router_ospf.process_ids[process].default_information_originate.always is defined %}{% if router_ospf.process_ids[process].default_information_originate.always %} Always {% else %} enabled {% endif %} {% else %} enabled {% endif %} {% else %} disabled {% endif %} | {% if router_ospf.process_ids[process].log_adjacency_changes_detail is defined and router_ospf.process_ids[process].log_adjacency_changes_detail is not none %} {% if router_ospf.process_ids[process].log_adjacency_changes_detail %} enabled {% else %} disabled {% endif %}{% else %} disabled {% endif %}|
+{%      endfor %}
+
+{%  set has = namespace() %}
+{%  set has.found = false %}
+{%    for process in router_ospf.process_ids %}
+{%      if router_ospf.process_ids[process].redistribute is arista.avd.defined %}
+{%         set has.found = true %}
+{%      endif %}
+{%    endfor %}
+### Router OSPF Router Redistribution
+
+{% if has.found is arista.avd.defined(true) %}
+| Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
+| ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
+{%      for process in router_ospf.process_ids %}
+{% if router_ospf.process_ids[process].redistribute is arista.avd.defined %}| {{process}} | {%if router_ospf.process_ids[process].redistribute.connected is defined %} enabled {% else %} disabled {% endif %}| {{ router_ospf.process_ids[process].redistribute.connected.route_map | default('-')}} | {%if router_ospf.process_ids[process].redistribute.static is defined %} enabled {% else %} disabled {% endif %}| {{ router_ospf.process_ids[process].redistribute.static.route_map | default('-')}} |{% endif %}
+{%      endfor %}
+{%    else %}
+No redsitribution configured
+{%    endif %}
+{# Interfaces #}
+{%  set ethernet_interface_ospf = namespace(configured=false) %}
+{%  set port_channel_interface_ospf = namespace(configured=false) %}
+{%  set vlan_interface_ospf = namespace(configured=false) %}
+{%  set loopback_interface_ospf = namespace(configured=false) %}
+{%  if vlan_interfaces is defined and vlan_interfaces is not none %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].ospf_area is defined %}
+{%              set vlan_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%  endif %}
+{%  if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%          if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
+{%              set ethernet_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{% endif %}
+{%  if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
+{%              set port_channel_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{% endif %}
+{%  if loopback_interfaces is defined and loopback_interfaces is not none %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%          if loopback_interfaces[loopback_interface].ospf_area is defined %}
+{%              set loopback_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{% endif %}
+{% if vlan_interface_ospf.configured or ethernet_interface_ospf.configured or port_channel_interface_ospf.configured or loopback_interface_ospf.configured %}
+
+### OSPF Interfaces
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+{%  if ethernet_interface_ospf.configured %}
+{%      for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%          if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
+| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].ospf_area }} | {% if ethernet_interfaces[ethernet_interface].ospf_cost is defined and ethernet_interfaces[ethernet_interface].ospf_cost is not none %} {{ ethernet_interfaces[ethernet_interface].ospf_cost }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is not none %} {{ ethernet_interfaces[ethernet_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%          endif %}
+{%      endfor %}
+{%  endif %}
+{%  if port_channel_interface_ospf.configured %}
+{%      for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].ospf_area is defined and port_channel_interfaces[port_channel_interface].ospf_area is not none %}
+| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {% if port_channel_interfaces[port_channel_interface].ospf_cost is defined and port_channel_interfaces[port_channel_interface].ospf_cost is not none %} {{ port_channel_interfaces[port_channel_interface].ospf_cost }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is defined and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is not none %} {{ port_channel_interfaces[port_channel_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%          endif %}
+{%      endfor %}
+{%  endif %}
+{%  if vlan_interface_ospf.configured %}
+{%      for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none %} {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%          endif %}
+{%      endfor %}
+{%  endif %}
+{%  if loopback_interface_ospf.configured %}
+{%      for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%          if loopback_interfaces[loopback_interface].ospf_area is defined and loopback_interfaces[loopback_interface].ospf_area is not none %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].ospf_area }} | {% if loopback_interfaces[loopback_interface].ospf_cost is defined and loopback_interfaces[loopback_interface].ospf_cost is not none %} {{ loopback_interfaces[loopback_interface].ospf_cost }} {% else %} - {% endif %} | {% if loopback_interfaces[loopback_interface].ospf_network_point_to_point is defined and loopback_interfaces[loopback_interface].ospf_network_point_to_point is not none %} {{ loopback_interfaces[loopback_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%          endif %}
+{%      endfor %}
+{%  endif %}
+{% endif %}
+
+### Router OSPF Device Configuration
+
+```eos
+{% include 'eos/router-ospf.j2' %}
+```
+{%  else %}
+No process IDs configured under Router OSPF
+{%  endif %}
+{% else %}
+Router OSPF not defined
+{% endif %}

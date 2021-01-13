@@ -33,7 +33,7 @@ router ospf {{ process_id }}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%         endif %}
 {%         if router_ospf.process_ids[process_id].default_information_originate is defined %}
-   default-information originate{% if router_ospf.process_ids[process_id].default_information_originate.always == true %} always{% endif %}
+   default-information originate {% if router_ospf.process_ids[process_id].default_information_originate.always is defined and router_ospf.process_ids[process_id].default_information_originate.always == true %} always{% endif %}
 
 {%         endif %}
 {%         if router_ospf.process_ids[process_id].redistribute.static is defined %}
