@@ -26,6 +26,25 @@
           peer_group: MLAG-IPv4-UNDERLAY-PEER
 {%                 endif %}
 {%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined %}
+{%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
+{%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
+{%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
+{%                             set neighbor = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
+{%                             if neighbor.address_family is not arista.avd.defined %}
+{%                                 do neighbor.update({'address_family': ['ipv4']}) %}
+{%                             endif %}
+{%                             if neighbor.set_next_hop is arista.avd.defined %}
+{%                                 set neighbor.route_map_out = 'RM-'neighbor'-SET-NEXT-HOP-OUT' %}
+{%                                 do neighbor.pop('set_next_hop') %}
+{%                             endif%}
+{%                             do neighbor.pop('nodes') %}
+        {{ bgp_peer }}:
+          {{ neighbor }}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
       redistribute_routes:
         - connected
 {%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}

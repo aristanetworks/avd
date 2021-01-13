@@ -411,6 +411,21 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} default-originate{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always == true %} always{% endif %}
 
 {%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop is arista.avd.defined %}
+      neighbor {{ neighbor }} ebgp-multihop {{ router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop if router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop is number else none }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].update_source is arista.avd.defined %}
+      neighbor {{ neighbor }} update-source {{ router_bgp.vrfs[vrf].neighbors[neighbor].update_source }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].local_as is arista.avd.defined and router_bgp.vrfs[vrf].neighbors[neighbor].local_as is number %}
+      neighbor {{ neighbor }} local-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].local_as }} no-prepend replace-as
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].address_family is arista.avd.defined %}
+{%                          for family in router_bgp.vrfs[vrf].neighbors[neighbor].address_family %}
+      address-family {{ family }}
+         neighbor {{ neighbor }} activate
+{%                          endfor %}
+{%                      endif %}
 {%                 endfor %}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].redistribute_routes is defined and router_bgp.vrfs[vrf].redistribute_routes is not none %}
