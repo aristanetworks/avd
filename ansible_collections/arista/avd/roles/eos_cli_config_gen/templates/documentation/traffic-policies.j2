@@ -6,7 +6,9 @@
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{% for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}| {{field_set_ipv4}} | {{ traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') }}| {%endfor%}
+{%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
+| {{field_set_ipv4}} | {% if traffic_policies.field_sets.ipv4[field_set_ipv4] |length > 1 %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4][0] }}{% endif %}|
+{%             endfor %}
 {%         else %}
 No IPv4 field-set configured.
 {%         endif %}
@@ -16,7 +18,9 @@ No IPv4 field-set configured.
 {%         if traffic_policies.field_sets.ipv6 is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{% for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}| {{field_set_ipv6}} | {{ traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') }}| {%endfor%}
+{%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
+| {{field_set_ipv6}} | {% if traffic_policies.field_sets.ipv6[field_set_ipv6] |length > 1 %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6][0] }}{% endif %}|
+{%             endfor%}
 {%         else %}
 No IPv6 field-set configured.
 {%         endif %}
@@ -26,7 +30,9 @@ No IPv6 field-set configured.
 {%         if traffic_policies.field_sets.ports is arista.avd.defined %}
 | Field Set Name | Values |
 | -------------- | ------ |
-{% for field_set_port in traffic_policies.field_sets.ports %}| {{field_set_port}} | {{traffic_policies.field_sets.ports[field_set_port] }} | {%endfor%}
+{%             for field_set_port in traffic_policies.field_sets.ports %}
+| {{field_set_port}} | {{ traffic_policies.field_sets.ports[field_set_port] }}|
+{%             endfor %}
 {%         else %}
 No L4 Port field-set configured.
 {%         endif %}
