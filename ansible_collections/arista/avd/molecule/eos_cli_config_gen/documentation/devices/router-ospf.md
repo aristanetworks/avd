@@ -48,6 +48,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -302,6 +303,32 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
+
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
+| 100 | 192.168.255.3 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Vlan4093 <br>|   enabled   | 12000 |  disabled  |  disabled |
+
+### Router OSPF Router Redistribution
+
+No redsitribution configured
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 100
+   router-id 192.168.255.3
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Vlan4093
+   bfd default
+   max-lsa 12000
+```
 
 ## Router ISIS
 

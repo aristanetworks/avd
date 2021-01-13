@@ -48,6 +48,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -324,6 +325,10 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
+
+## Router OSPF
+
+Router OSPF not defined
 
 ## Router ISIS
 
