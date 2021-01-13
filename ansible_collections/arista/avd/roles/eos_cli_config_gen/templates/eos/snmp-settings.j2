@@ -7,15 +7,15 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is defined and snmp_server.location is not none %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
-{%     if snmp_server.ipv4_ACLs is defined and snmp_server.ipv4_ACLs is not none %}
-{%         for ACL in snmp_server.ipv4_ACLs %}
-snmp-server ipv4 access-list {{ ACL.name }}{% if ACL.vrf is defined and ACL.vrf is not none %} vrf {{ ACL.vrf }} {% endif %}
+{%     if snmp_server.ipv4_acls is defined and snmp_server.ipv4_acls is not none %}
+{%         for acl in snmp_server.ipv4_acls %}
+snmp-server ipv4 access-list {{ acl.name }}{% if acl.vrf is defined and acl.vrf is not none %} vrf {{ acl.vrf }} {% endif %}
 
 {%         endfor %}
 {%     endif %}
-{%     if snmp_server.ipv6_ACLs is defined and snmp_server.ipv6_ACLs is not none %}
-{%         for ACL in snmp_server.ipv6_ACLs %}
-snmp-server ipv6 access-list {{ ACL.name }}{% if ACL.vrf is defined and ACL.vrf is not none %} vrf {{ ACL.vrf }} {% endif %}
+{%     if snmp_server.ipv6_acls is defined and snmp_server.ipv6_acls is not none %}
+{%         for acl in snmp_server.ipv6_acls %}
+snmp-server ipv6 access-list {{ acl.name }}{% if acl.vrf is defined and acl.vrf is not none %} vrf {{ acl.vrf }} {% endif %}
 
 {%         endfor %}
 {%     endif %}
