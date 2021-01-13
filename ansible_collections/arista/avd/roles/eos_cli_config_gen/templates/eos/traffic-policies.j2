@@ -86,7 +86,7 @@ traffic-policies
          protocol icmp type {{ traffic_policies.policies[policy].matchs[match].protocols[protocol].icmp_type | join(' ') }} code all
 {%                             elif protocol | lower == 'neighbors' %}
          protocol neighbors bgp
-{%                             else %}
+{%                             elif protocol | lower != 'ip' %}
          protocol {{ protocol }}
 {%                             endif %}
 {%                         endfor %}
@@ -102,25 +102,27 @@ traffic-policies
          fragment
 {%                     endif %}
 {#       -- ACTIONS SECTION -- #}
+{%                     if traffic_policies.policies[policy].matchs[match].actions.count is arista.avd.defined or traffic_policies.policies[policy].matchs[match].actions.traffic_class is arista.avd.defined or traffic_policies.policies[policy].matchs[match].actions.dscp is arista.avd.defined or traffic_policies.policies[policy].matchs[match].actions.drop is arista.avd.defined(true)  %}
          actions
-{#                     -- COUNT packets -- #}
-{%                     if traffic_policies.policies[policy].matchs[match].actions.count is arista.avd.defined %}
+{#                         -- COUNT packets -- #}
+{%                         if traffic_policies.policies[policy].matchs[match].actions.count is arista.avd.defined %}
             count {{ traffic_policies.policies[policy].matchs[match].actions.count }}
-{%                     endif %}
-{#                     -- Traffic Class -- #}
-{%                     if traffic_policies.policies[policy].matchs[match].actions.traffic_class is arista.avd.defined %}
+{%                         endif %}
+{#                         -- Traffic Class -- #}
+{%                         if traffic_policies.policies[policy].matchs[match].actions.traffic_class is arista.avd.defined %}
             set traffic class {{ traffic_policies.policies[policy].matchs[match].actions.traffic_class }}
-{%                     endif %}
-{#                     -- DSCP -- #}
-{%                     if traffic_policies.policies[policy].matchs[match].actions.dscp is arista.avd.defined %}
+{%                         endif %}
+{#                         -- DSCP -- #}
+{%                         if traffic_policies.policies[policy].matchs[match].actions.dscp is arista.avd.defined %}
             set dscp {{ traffic_policies.policies[policy].matchs[match].actions.dscp }}
-{%                     endif %}
-{#                     -- DROP Action -- #}
-{%                     if traffic_policies.policies[policy].matchs[match].actions.drop is arista.avd.defined(true) %}
+{%                         endif %}
+{#                         -- DROP Action -- #}
+{%                         if traffic_policies.policies[policy].matchs[match].actions.drop is arista.avd.defined(true) %}
             drop
-{#                         -- LOGGING only if DROP is set-- #}
-{%                         if traffic_policies.policies[policy].matchs[match].actions.log is arista.avd.defined(true) %}
+{#                             -- LOGGING only if DROP is set-- #}
+{%                             if traffic_policies.policies[policy].matchs[match].actions.log is arista.avd.defined(true) %}
             log
+{%                             endif %}
 {%                         endif %}
 {%                     endif %}
 {# END OF MATCH Section #}
