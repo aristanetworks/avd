@@ -1693,6 +1693,7 @@ management_ssh:
     < vrf_name_2 >:
       enable: < true | false >
 ```
+
 ### QOS
 
 ```yaml
@@ -1710,6 +1711,7 @@ qos:
       - "< tc_mapping_to_tx_queue >"
   rewrite_dscp: < true | false >
 ```
+
 ### QOS Profiles
 
 ```yaml
