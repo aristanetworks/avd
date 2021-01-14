@@ -1,4 +1,4 @@
-# router-bgp-rtc
+# tcam
 
 # Table of Contents
 
@@ -31,12 +31,16 @@
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
+- [Hardware TCAM Profile](#hardware-tcam-profile)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+<<<<<<< HEAD:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/router-bgp-rtc.md
   - [Interface Defaults](#interface-defaults)
+=======
+>>>>>>> de8de93d... Update CI artifacts:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/tcam.md
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -218,6 +222,134 @@ No VM tracer sessions defined
 
 No event handler defined
 
+# Hardware TCAM Profile
+
+## Hardware TCAM profile
+
+TCAM profile __`traffic_policy`__ is active
+
+## Custom TCAM profiles
+
+Following TCAM profiles are configured on device:
+
+- Profile Name: `traffic_policy`
+## Hardware TCAM configuration
+
+```eos
+!
+hardware tcam
+   profile traffic_policy
+      feature acl port mac
+          sequence 55
+          key size limit 160
+          key field dst-mac ether-type src-mac
+          action count drop
+          packet ipv4 forwarding bridged
+          packet ipv4 forwarding routed
+          packet ipv4 forwarding routed multicast
+          packet ipv4 mpls ipv4 forwarding mpls decap
+          packet ipv4 mpls ipv6 forwarding mpls decap
+          packet ipv4 non-vxlan forwarding routed decap
+          packet ipv4 vxlan forwarding bridged decap
+          packet ipv6 forwarding bridged
+          packet ipv6 forwarding routed
+          packet ipv6 forwarding routed decap
+          packet ipv6 forwarding routed multicast
+          packet ipv6 ipv6 forwarding routed decap
+          packet mpls forwarding bridged decap
+          packet mpls ipv4 forwarding mpls
+          packet mpls ipv6 forwarding mpls
+          packet mpls non-ip forwarding mpls
+          packet non-ip forwarding bridged
+      !
+      feature forwarding-destination mpls
+          sequence 100
+      !
+      feature mirror ip
+          sequence 80
+          key size limit 160
+          key field dscp dst-ip ip-frag ip-protocol l4-dst-port l4-ops l4-src-port src-ip tcp-control
+          action count mirror set-policer
+          packet ipv4 forwarding bridged
+          packet ipv4 forwarding routed
+          packet ipv4 forwarding routed multicast
+          packet ipv4 non-vxlan forwarding routed decap
+      !
+      feature mpls
+          sequence 5
+          key size limit 160
+          action drop redirect set-ecn
+          packet ipv4 mpls ipv4 forwarding mpls decap
+          packet ipv4 mpls ipv6 forwarding mpls decap
+          packet mpls ipv4 forwarding mpls
+          packet mpls ipv6 forwarding mpls
+          packet mpls non-ip forwarding mpls
+      !
+      feature pbr ip
+          sequence 60
+          key size limit 160
+          key field dscp dst-ip ip-frag ip-protocol l4-dst-port l4-ops-18b l4-src-port src-ip tcp-control
+          action count redirect
+          packet ipv4 forwarding routed
+          packet ipv4 mpls ipv4 forwarding mpls decap
+          packet ipv4 mpls ipv6 forwarding mpls decap
+          packet ipv4 non-vxlan forwarding routed decap
+          packet ipv4 vxlan forwarding bridged decap
+      !
+      feature pbr ipv6
+          sequence 30
+          key field dst-ipv6 ipv6-next-header l4-dst-port l4-src-port src-ipv6-high src-ipv6-low tcp-control
+          action count redirect
+          packet ipv6 forwarding routed
+      !
+      feature pbr mpls
+          sequence 65
+          key size limit 160
+          key field mpls-inner-ip-tos
+          action count drop redirect
+          packet mpls ipv4 forwarding mpls
+          packet mpls ipv6 forwarding mpls
+          packet mpls non-ip forwarding mpls
+      !
+      feature qos ip
+          sequence 75
+          key size limit 160
+          key field dscp dst-ip ip-frag ip-protocol l4-dst-port l4-ops l4-src-port src-ip tcp-control
+          action set-dscp set-policer set-tc
+          packet ipv4 forwarding routed
+          packet ipv4 forwarding routed multicast
+          packet ipv4 mpls ipv4 forwarding mpls decap
+          packet ipv4 mpls ipv6 forwarding mpls decap
+          packet ipv4 non-vxlan forwarding routed decap
+      !
+      feature qos ipv6
+          sequence 70
+          key field dst-ipv6 ipv6-next-header ipv6-traffic-class l4-dst-port l4-src-port src-ipv6-high src-ipv6-low
+          action set-dscp set-policer set-tc
+          packet ipv6 forwarding routed
+      !
+      feature traffic-policy port ipv4
+          sequence 45
+          key size limit 160
+          key field dscp dst-ip-label icmp-type-code ip-frag ip-fragment-offset ip-length ip-protocol l4-dst-port l4-src-port src-ip-label tcp-control ttl
+          action count drop log set-dscp set-tc
+          packet ipv4 forwarding routed
+      !
+      feature traffic-policy port ipv6
+          sequence 25
+          key field dst-ipv6-label hop-limit icmp-type-code ipv6-length ipv6-next-header ipv6-traffic-class l4-dst-port l4-src-port src-ipv6-label tcp-control
+          action count drop log set-dscp set-tc
+          packet ipv6 forwarding routed
+      !
+      feature tunnel vxlan
+          sequence 50
+          key size limit 160
+          packet ipv4 vxlan eth ipv4 forwarding routed decap
+          packet ipv4 vxlan forwarding bridged decap
+   !
+   system profile traffic_policy
+```
+
 # MLAG
 
 MLAG not defined
@@ -241,10 +373,6 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
-
-## Interface Defaults
-
-No Interface Defaults defined
 
 ## Ethernet Interfaces
 
@@ -314,150 +442,7 @@ Router ISIS not defined
 
 ## Router BGP
 
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65101|  192.168.255.3 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 2 ecmp 2 |
-
-### Router BGP Peer Groups
-
-#### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Remote_as | 65001 |
-| Source | Loopback0 |
-| Bfd | true |
-| Ebgp multihop | 3 |
-| Send community | true |
-| Maximum routes | 0 (no limit) |
-
-#### EVPN-OVERLAY-RS-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Remote_as | 65001 |
-| Source | Loopback0 |
-| Bfd | true |
-| Ebgp multihop | 3 |
-| Send community | true |
-| Maximum routes | 0 (no limit) |
-
-### BGP Neighbors
-
-| Neighbor | Remote AS |
-| -------- | ---------
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
-
-| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
-| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
-
-#### Router BGP EVPN VRFs
-
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65101
-   router-id 192.168.255.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 2 ecmp 2
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65001
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor EVPN-OVERLAY-RS-PEERS peer group
-   neighbor EVPN-OVERLAY-RS-PEERS remote-as 65001
-   neighbor EVPN-OVERLAY-RS-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-RS-PEERS bfd
-   neighbor EVPN-OVERLAY-RS-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-RS-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-RS-PEERS send-community
-   neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   !
-   vlan-aware-bundle B-ELAN-201
-      rd 192.168.255.3:20201
-      route-target both 20201:20201
-      redistribute learned
-      vlan 201
-   !
-   vlan-aware-bundle TENANT_A_PROJECT01
-      rd 192.168.255.3:11
-      route-target both 11:11
-      redistribute learned
-      vlan 110
-   !
-   vlan-aware-bundle TENANT_A_PROJECT02
-      rd 192.168.255.3:12
-      route-target both 12:12
-      redistribute learned
-      vlan 112
-   !
-   address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor MLAG-IPv4-UNDERLAY-PEER activate
-   !
-   address-family rt-membership
-      neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target
-      neighbor EVPN-OVERLAY-RS-PEERS activate
-      neighbor EVPN-OVERLAY-RS-PEERS default-route-target only
-      neighbor EVPN-OVERLAY-RS-PEERS default-route-target encoding origin-as omit
-   !
-   address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
-   !
-   vrf TENANT_A_PROJECT01
-      rd 192.168.255.3:11
-      route-target import evpn 11:11
-      route-target export evpn 11:11
-      router-id 192.168.255.3
-      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
-   !
-   vrf TENANT_A_PROJECT02
-      rd 192.168.255.3:12
-      route-target import evpn 12:12
-      route-target export evpn 12:12
-      router-id 192.168.255.3
-      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
-      redistribute connected
-```
+Router BGP not defined
 
 ## Router BFD
 

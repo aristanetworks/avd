@@ -31,12 +31,16 @@
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
+- [Hardware TCAM Profile](#hardware-tcam-profile)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+<<<<<<< HEAD:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/enable-password.md
   - [Interface Defaults](#interface-defaults)
+=======
+>>>>>>> de8de93d... Update CI artifacts:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/traffic-policies.md
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -226,6 +230,10 @@ No VM tracer sessions defined
 
 No event handler defined
 
+# Hardware TCAM Profile
+
+Hardware TCAM profile is not defined
+
 # MLAG
 
 MLAG not defined
@@ -249,10 +257,6 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
-
-## Interface Defaults
-
-No Interface Defaults defined
 
 ## Ethernet Interfaces
 
@@ -416,13 +420,136 @@ IP DHCP relay not defined
 
 Errdisable is not defined.
 
+<<<<<<< HEAD:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/enable-password.md
 # MACsec
 
 MACsec not defined
+=======
+# Traffic Policies
+
+### Traffic Policies information
+**IPv4 Field sets**
+
+| Field Set Name | Values |
+| -------------- | ------ |
+| DEMO-01 | 10.0.0.0/8<br/>192.168.0.0/16|
+| DEMO-02 | 172.16.0.0/12<br/>224.0.0.0/8|
+
+**IPv6 Field sets**
+
+No IPv6 field-set configured.
+
+**L4 Port Field sets**
+
+| Field Set Name | Values |
+| -------------- | ------ |
+| SERVICE-DEMO | 10,20,80,440-450|
+
+#### Traffic Policies
+**BLUE-C1-POLICY:**
+
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
+| BLUE-C1-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | DEMO-01 | tcp<br/>icmp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
+| BLUE-C1-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | ANY | SERVICE-DEMO | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
+| BLUE-C1-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>counter: DROP-PACKETS<br/>logging |
+| BLUE-C1-POLICY-04 | ipv4 | DEMO-02 | DEMO-01 | tcp<br/>icmp | 22 | ANY | action: PASS<br/>traffic-class: 5 |
+
+**BLUE-C2-POLICY:**
+
+| Match set | Type | Sources | Destinations | Protocol | Source Port(s) | Destination port(s) | Action |
+| --------- | ---- | ------- | ------------ | -------- | -------------- | ------------------- | ------ |
+| BLUE-C2-POLICY-01 | ipv4 | 10.0.0.0/8<br/>192.168.0.0/16 | ANY | tcp<br/>icmp | 1,10-20 | ANY | action: PASS<br/>traffic-class: 5 |
+| BLUE-C2-POLICY-02 | ipv4 | DEMO-01<br/>DEMO-02 | ANY | tcp<br/>icmp | SERVICE-DEMO | ANY | action: PASS<br/>counter: DEMO-TRAFFIC<br/>dscp marking: 60 |
+| BLUE-C2-POLICY-03 | ipv4 | DEMO-01 | ANY | tcp | ANY | ANY | action: DROP<br/>logging |
+>>>>>>> de8de93d... Update CI artifacts:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/traffic-policies.md
 
 # QOS
 
+<<<<<<< HEAD:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/enable-password.md
 QOS is not defined.
+=======
+```eos
+!
+traffic-policies
+   field-set ipv4 prefix DEMO-01
+      10.0.0.0/8 192.168.0.0/16
+   !
+   field-set ipv4 prefix DEMO-02
+      172.16.0.0/12 224.0.0.0/8
+   !
+   field-set l4-port SERVICE-DEMO
+      10,20,80,440-450
+   !
+   traffic-policy BLUE-C1-POLICY
+      counter DEMO-TRAFFIC DROP-PACKETS
+      match BLUE-C1-POLICY-01 ipv4
+         source prefix 10.0.0.0/8 192.168.0.0/16
+         destination prefix field-set DEMO-01
+         protocol tcp
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+      match BLUE-C1-POLICY-02 ipv4
+         source prefix field-set DEMO-01 DEMO-02
+         protocol tcp
+         protocol icmp
+         actions
+            count DEMO-TRAFFIC
+            set dscp 60
+         !
+      !
+      match BLUE-C1-POLICY-03 ipv4
+         source prefix field-set DEMO-01
+         protocol tcp
+         actions
+            count DROP-PACKETS
+            drop
+            log
+         !
+      !
+      match BLUE-C1-POLICY-04 ipv4
+         source prefix field-set DEMO-02
+         destination prefix field-set DEMO-01
+         protocol tcp
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+   !
+   traffic-policy BLUE-C2-POLICY
+      counter DEMO-TRAFFIC
+      match BLUE-C2-POLICY-01 ipv4
+         source prefix 10.0.0.0/8 192.168.0.0/16
+         protocol tcp
+         protocol icmp
+         actions
+            set traffic class 5
+         !
+      !
+      match BLUE-C2-POLICY-02 ipv4
+         source prefix field-set DEMO-01 DEMO-02
+         protocol tcp source port field-set SERVICE-DEMO
+         protocol icmp
+         actions
+            count DEMO-TRAFFIC
+            set dscp 60
+         !
+      !
+      match BLUE-C2-POLICY-03 ipv4
+         source prefix field-set DEMO-01
+         protocol tcp
+         actions
+            drop
+            log
+         !
+      !
+   !
+```
+>>>>>>> de8de93d... Update CI artifacts:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/traffic-policies.md
 
 # QOS Profiles
 
