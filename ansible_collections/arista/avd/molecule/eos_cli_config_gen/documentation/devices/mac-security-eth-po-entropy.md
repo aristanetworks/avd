@@ -270,10 +270,6 @@ No Interface Defaults defined
 
 *Inherited from Port-Channel Interface
 
-
-
-
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -297,6 +293,7 @@ interface Ethernet3
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2-PORT | switched | trunk | 1-5 | - | - | - | - | - | - |
+
 
 ### Port-Channel Interfaces Device Configuration
 

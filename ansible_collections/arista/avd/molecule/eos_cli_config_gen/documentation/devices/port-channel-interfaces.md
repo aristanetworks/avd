@@ -266,14 +266,14 @@ No Interface Defaults defined
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 
- *Inherited from Port-Channel Interface 
-
+ *Inherited from Port-Channel Interface
+ 
 #### OSPF
 
 | Interface | Channel Group | Area | Cost | Mode |
 | --------- | ------------- | ---- | ---- |----- |
 
- *Inherited from Port-Channel Interface 
+ *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 
@@ -318,6 +318,7 @@ interface Ethernet50
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel8.101 | SUB TEST | l3dot1q | - | 10.255.1.0/31 | C1 | 1500 | - | - | - |
+
 
 #### OSPF
 

@@ -290,10 +290,6 @@ No Interface Defaults defined
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet6 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
 
-
-
-
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos

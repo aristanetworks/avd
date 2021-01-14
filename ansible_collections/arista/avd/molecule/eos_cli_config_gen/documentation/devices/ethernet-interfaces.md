@@ -266,10 +266,6 @@ No Interface Defaults defined
 | Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
 | Ethernet10.101 |  SUB Test  |  l3dot1q  | - |  10.1.1.1/31  |  C1  |  1500  |  -  |  -  |  -  |
 
-
-
-
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
