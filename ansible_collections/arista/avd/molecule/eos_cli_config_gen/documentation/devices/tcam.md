@@ -221,7 +221,6 @@ No event handler defined
 
 # Hardware TCAM Profile
 
-## Hardware TCAM profile
 
 TCAM profile __`traffic_policy`__ is active
 
@@ -230,6 +229,7 @@ TCAM profile __`traffic_policy`__ is active
 Following TCAM profiles are configured on device:
 
 - Profile Name: `traffic_policy`
+
 ## Hardware TCAM configuration
 
 ```eos
