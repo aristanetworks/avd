@@ -36,7 +36,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
-  - [Interface Defaults](#internet-defaults)
+  - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -511,6 +511,12 @@ No Interface Defaults defined
 | Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
+| Ethernet11 |  server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet12 |  server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet13 |  server06_override_profile_Eth1 | access | 210 | - | - | - |
+| Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 14 |
+| Ethernet15 | server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
+| Ethernet16 |  server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -575,6 +581,64 @@ interface Ethernet10
    description server03_ESI_Eth1
    no shutdown
    channel-group 10 mode active
+!
+interface Ethernet11
+   description server04_inherit_all_from_profile_Eth1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Ethernet12
+   description server05_no_profile_Eth1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Ethernet13
+   description server06_override_profile_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 210
+   spanning-tree portfast network
+   storm-control all level pps 20
+   storm-control broadcast level 200
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Ethernet14
+   description server07_inherit_all_from_profile_port_channel_Eth1
+   no shutdown
+   channel-group 14 mode active
+!
+interface Ethernet15
+   description server08_no_profile_port_channel_Eth1
+   no shutdown
+   channel-group 15 mode active
+!
+interface Ethernet16
+   description server09_override_profile_no_port_channel_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 210
+   spanning-tree portfast network
+   storm-control all level pps 20
+   storm-control broadcast level 200
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
 ```
 
 ## Port-Channel Interfaces
@@ -588,6 +652,8 @@ interface Ethernet10
 | Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 10 | - |
+| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -617,6 +683,34 @@ interface Port-Channel10
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    mlag 10
+!
+interface Port-Channel14
+   description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 14
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Port-Channel15
+   description server08_no_profile_port_channel_server08_no_profile_port_channel
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 15
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
 ```
 
 ## Loopback Interfaces
