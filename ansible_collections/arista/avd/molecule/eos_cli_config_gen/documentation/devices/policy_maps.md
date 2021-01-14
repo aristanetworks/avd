@@ -1,4 +1,4 @@
-# platform
+# policy_maps
 
 # Table of Contents
 
@@ -395,18 +395,7 @@ Virtual source NAT not defined
 
 # Platform
 
-### Platform
-
-   The platform trident forwarding-table partition is 2.
-
-### Platform Configuration
-
-```eos
-!
-platform trident forwarding-table partition 2
-platform sand lag hardware-only
-platform sand lag mode 512x32
-```
+No platform parameters defined
 
 # Router L2 VPN
 
@@ -442,4 +431,41 @@ Class-maps not defined
 
 # Policy Maps
 
-Class-maps not defined
+## QOS Policy Maps
+
+**PM_REPLICATION_LD**
+
+| class | Set | Value |
+| ---- | ----- | ----- |
+| CM_REPLICATION_LD | dscp | af11 |
+| CM_REPLICATION_LD | traffic_class | 2 |
+| CM_REPLICATION_LD | drop_precedence | 1 |
+| CM_REPLICATION_LD_2 | dscp | af11 |
+| CM_REPLICATION_LD_2 | traffic_class | 2 |
+
+**PM_REPLICATION_LD2**
+
+| class | Set | Value |
+| ---- | ----- | ----- |
+| CM_REPLICATION_LD | dscp | af11 |
+
+## Policy Maps configuration
+
+```eos
+!
+policy-map type quality-of-service PM_REPLICATION_LD
+   class CM_REPLICATION_LD
+       dscp: af11
+       traffic_class: 2
+       drop_precedence: 1
+   !
+   class CM_REPLICATION_LD_2
+       dscp: af11
+       traffic_class: 2
+   !
+!
+policy-map type quality-of-service PM_REPLICATION_LD2
+   class CM_REPLICATION_LD
+       dscp: af11
+   !
+```
