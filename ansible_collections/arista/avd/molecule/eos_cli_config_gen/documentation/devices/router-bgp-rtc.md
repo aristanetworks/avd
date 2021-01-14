@@ -1,4 +1,4 @@
-# enable-password
+# router-bgp-rtc
 
 # Table of Contents
 
@@ -151,15 +151,7 @@ No users defined
 
 ## Enable Password
 
-sha512 encrypted enable password is configured
-### Enable password configuration
-
-```eos
-!
-enable password sha512 $6$nXycSRhVPaxRINPL$tM1MNjjRCbFD5di4XWsj8CPkm8Pdwmf9fVqRV015y3DXD4t1vi8CAWQpFP8Vbi9Y2i7.JuFey5UaafXvI6quD1
-!
-```
-
+Enable password not defined
 
 ## TACACS Servers
 
@@ -327,7 +319,150 @@ Router ISIS not defined
 
 ## Router BGP
 
-Router BGP not defined
+### Router BGP Summary
+
+| BGP AS | Router ID |
+| ------ | --------- |
+| 65101|  192.168.255.3 |
+
+| BGP Tuning |
+| ---------- |
+| no bgp default ipv4-unicast |
+| distance bgp 20 200 200 |
+| graceful-restart restart-time 300 |
+| graceful-restart |
+| maximum-paths 2 ecmp 2 |
+
+### Router BGP Peer Groups
+
+#### EVPN-OVERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Remote_as | 65001 |
+| Source | Loopback0 |
+| Bfd | true |
+| Ebgp multihop | 3 |
+| Send community | true |
+| Maximum routes | 0 (no limit) |
+
+#### EVPN-OVERLAY-RS-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | evpn |
+| Remote_as | 65001 |
+| Source | Loopback0 |
+| Bfd | true |
+| Ebgp multihop | 3 |
+| Send community | true |
+| Maximum routes | 0 (no limit) |
+
+### BGP Neighbors
+
+| Neighbor | Remote AS |
+| -------- | ---------
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
+
+### Router BGP EVPN Address Family
+
+#### Router BGP EVPN MAC-VRFs
+
+##### VLAN aware bundles
+
+| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
+| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
+| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
+
+#### Router BGP EVPN VRFs
+
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+
+### Router BGP Device Configuration
+
+```eos
+!
+router bgp 65101
+   router-id 192.168.255.3
+   no bgp default ipv4-unicast
+   distance bgp 20 200 200
+   graceful-restart restart-time 300
+   graceful-restart
+   maximum-paths 2 ecmp 2
+   neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65001
+   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-PEERS send-community
+   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-RS-PEERS peer group
+   neighbor EVPN-OVERLAY-RS-PEERS remote-as 65001
+   neighbor EVPN-OVERLAY-RS-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-RS-PEERS bfd
+   neighbor EVPN-OVERLAY-RS-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-RS-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor EVPN-OVERLAY-RS-PEERS send-community
+   neighbor EVPN-OVERLAY-RS-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   !
+   vlan-aware-bundle B-ELAN-201
+      rd 192.168.255.3:20201
+      route-target both 20201:20201
+      redistribute learned
+      vlan 201
+   !
+   vlan-aware-bundle TENANT_A_PROJECT01
+      rd 192.168.255.3:11
+      route-target both 11:11
+      redistribute learned
+      vlan 110
+   !
+   vlan-aware-bundle TENANT_A_PROJECT02
+      rd 192.168.255.3:12
+      route-target both 12:12
+      redistribute learned
+      vlan 112
+   !
+   address-family evpn
+      neighbor EVPN-OVERLAY-PEERS activate
+      no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+   !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS default-route-target
+      neighbor EVPN-OVERLAY-RS-PEERS activate
+      neighbor EVPN-OVERLAY-RS-PEERS default-route-target only
+      neighbor EVPN-OVERLAY-RS-PEERS default-route-target encoding origin-as omit
+   !
+   address-family ipv4
+      no neighbor EVPN-OVERLAY-PEERS activate
+   !
+   vrf TENANT_A_PROJECT01
+      rd 192.168.255.3:11
+      route-target import evpn 11:11
+      route-target export evpn 11:11
+      router-id 192.168.255.3
+      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+   !
+   vrf TENANT_A_PROJECT02
+      rd 192.168.255.3:12
+      route-target import evpn 12:12
+      route-target export evpn 12:12
+      router-id 192.168.255.3
+      neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      redistribute connected
+```
 
 ## Router BFD
 

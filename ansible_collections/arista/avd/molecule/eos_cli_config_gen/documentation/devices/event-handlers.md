@@ -31,6 +31,7 @@
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
+- [Hardware TCAM Profile](#hardware-tcam-profile)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -231,6 +232,10 @@ event-handler tracking
    action bash /mnt/flash/tracking.sh
    delay 300
 ```
+
+# Hardware TCAM Profile
+
+Hardware TCAM profile is not defined
 
 # MLAG
 

@@ -37,10 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
-<<<<<<< HEAD:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/router-bgp-rtc.md
   - [Interface Defaults](#interface-defaults)
-=======
->>>>>>> de8de93d... Update CI artifacts:ansible_collections/arista/avd/molecule/eos_cli_config_gen/documentation/devices/tcam.md
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -373,6 +370,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Interface Defaults
+
+No Interface Defaults defined
 
 ## Ethernet Interfaces
 
