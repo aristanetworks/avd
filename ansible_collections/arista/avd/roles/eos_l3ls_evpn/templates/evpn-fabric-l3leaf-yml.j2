@@ -90,7 +90,7 @@
 {%                 elif l3leaf.defaults.mlag_dual_primary_detection is defined %}
 {%                     set leaf.mlag_dual_primary_detection = l3leaf.defaults.mlag_dual_primary_detection %}
 {%                 else %}
-{%                     set leaf.mlag_dual_primary_detection = true %}
+{%                     set leaf.mlag_dual_primary_detection = false %}
 {%                 endif %}
 {%                 if l3leaf.node_groups[l3leaf_node_group].mlag_interfaces is defined %}
 {%                     set leaf.mlag_interfaces = l3leaf.node_groups[l3leaf_node_group].mlag_interfaces %}

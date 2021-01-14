@@ -48,6 +48,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -301,7 +302,7 @@ No event handler defined
 | --------- | --------------- | ------------ | --------- |
 | DC1_L2LEAF2 | Vlan4094 | 10.255.252.16 | Port-Channel3 |
 
-Dual primary detection is disabled.
+Dual primary detection is enabled. The detection delay is 5 seconds.
 
 ## MLAG Device Configuration
 
@@ -311,7 +312,9 @@ mlag configuration
    domain-id DC1_L2LEAF2
    local-interface Vlan4094
    peer-address 10.255.252.16
+   peer-address heartbeat 192.168.200.113 vrf MGMT
    peer-link Port-Channel3
+   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
@@ -607,6 +610,10 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
+
+## Router OSPF
+
+Router OSPF not defined
 
 ## Router ISIS
 
