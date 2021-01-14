@@ -2,40 +2,11 @@
 # Documentation of Tenant specific information - Vlans/VRFs
 
 tenants:
+
   # Tenant_A Specific Information - VRFs / VLANs
   Tenant_A:
     mac_vrf_vni_base: 10000
     vrfs:
-      Tenant_A_OP_Zone:
-        vrf_vni: 10
-        vtep_diagnostic:
-          loopback: 100
-          loopback_ip_range: 10.255.1.0/24
-        svis:
-          110:
-            name: Tenant_A_OP_Zone_1
-            tags: ['opzone']
-            enabled: True
-            ip_address_virtual: 10.1.10.1/24
-          111:
-            vni_override: 50111
-            name: Tenant_A_OP_Zone_2
-            tags: ['opzone']
-            enabled: True
-            ip_address_virtual: 10.1.11.1/24
-      Tenant_A_WEB_Zone:
-        vrf_vni: 11
-        svis:
-          120:
-            name: Tenant_A_WEB_Zone_1
-            tags: ['web', 'erp1']
-            enabled: True
-            ip_address_virtual: 10.1.20.1/24
-          121:
-            name: Tenant_A_WEBZone_2
-            tags: ['web']
-            enabled: True
-            ip_address_virtual: 10.1.21.1/24
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -62,6 +33,23 @@ tenants:
             tags: ['db']
             enabled: True
             ip_address_virtual: 10.1.41.1/24
+      Tenant_A_OP_Zone:
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          110:
+            name: Tenant_A_OP_Zone_1
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.1.10.1/24
+          111:
+            vni_override: 50111
+            name: Tenant_A_OP_Zone_2
+            tags: ['opzone']
+            enabled: True
+            ip_address_virtual: 10.1.11.1/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
         svis:
@@ -70,6 +58,19 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.1.40.1/24
+      Tenant_A_WEB_Zone:
+        vrf_vni: 11
+        svis:
+          120:
+            name: Tenant_A_WEB_Zone_1
+            tags: ['web', 'erp1']
+            enabled: True
+            ip_address_virtual: 10.1.20.1/24
+          121:
+            name: Tenant_A_WEBZone_2
+            tags: ['web']
+            enabled: True
+            ip_address_virtual: 10.1.21.1/24
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:
     mac_vrf_vni_base: 20000

@@ -1,0 +1,32 @@
+---
+- name: Configure local folders
+  hosts: DC1_FABRIC
+  gather_facts: false
+  connection: local
+  vars:
+    root_dir: '{{playbook_dir}}'
+  tasks:
+    - name: generate intented variables
+      import_role:
+        name: arista.avd.eos_l3ls_evpn
+    - name: generate device intended config and documention
+      import_role:
+        name: arista.avd.eos_cli_config_gen
+
+- name: Converge
+  hosts: cv_server
+  gather_facts: false
+  connection: local
+  vars:
+    root_dir: '{{playbook_dir}}'
+  tasks:
+    - name: run CVP provisioning
+      tags: generate
+      import_role:
+        name: arista.avd.eos_config_deploy_cvp
+      vars:
+        container_root: 'DC1_FABRIC'
+        configlets_prefix: 'AVD'
+        device_filter: 'DC1'
+        execute_tasks: false
+        state: present

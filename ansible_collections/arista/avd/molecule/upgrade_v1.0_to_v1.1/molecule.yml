@@ -1,15 +1,21 @@
 ---
 scenario:
+  converge_sequence:
+    - syntax
+    - create
+    - converge
+    # - verify
   test_sequence:
     - syntax
     - create
     - converge
     - idempotence
     - verify
+    - cleanup
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: delegated
 platforms:
   - name: DC1-LEAF1A
     image: avdteam/base:3.6
@@ -22,8 +28,6 @@ platforms:
       - AVD_LAB
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
   inventory:
     links:
       hosts: 'inventory/hosts'

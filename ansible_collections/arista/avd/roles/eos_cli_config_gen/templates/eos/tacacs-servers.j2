@@ -3,8 +3,11 @@
 !
 {%    if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
 {%       for host in tacacs_servers.hosts %}
-tacacs-server host {{ host['host'] }} {% if host['vrf'] is defined and host['vrf'] is not none %}vrf {{ host['vrf'] }} {% endif %} {% if host['key'] is defined and host['key'] is not none %}key 7 {{ host['key'] }} {% endif %}
+tacacs-server host {{ host['host'] }}{% if host['vrf'] is defined and host['vrf'] is not none %} vrf {{ host['vrf'] }}{% endif %}{% if host['key'] is defined and host['key'] is not none %} key 7 {{ host['key'] }}{% endif %}
 
 {%       endfor %}
+{%    endif %}
+{%    if tacacs_servers.policy_unknown_mandatory_attribute_ignore is defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
+tacacs-server policy unknown-mandatory-attribute ignore
 {%    endif %}
 {% endif %}

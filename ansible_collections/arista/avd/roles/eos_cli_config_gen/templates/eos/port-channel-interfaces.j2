@@ -3,17 +3,28 @@
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 !
 interface {{ port_channel_interface }}
-{%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %}
+{%         if port_channel_interfaces[port_channel_interface].description is defined and port_channel_interfaces[port_channel_interface].description is not none %}
    description {{ port_channel_interfaces[port_channel_interface].description }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].logging is defined and port_channel_interfaces[port_channel_interface].logging is not none %}
+{%             if port_channel_interfaces[port_channel_interface].logging.event is defined and port_channel_interfaces[port_channel_interface].logging.event is not none %}
+{%                 if port_channel_interfaces[port_channel_interface].logging.event.link_status is defined and port_channel_interfaces[port_channel_interface].logging.event.link_status == true %}
+   logging event link-status
+{%                 endif %}
+{%             endif %}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == true %}
    shutdown
+{%         elif port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown == false %}
+   no shutdown
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %}
    mtu {{ port_channel_interfaces[port_channel_interface].mtu }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
    no switchport
+{%         else %}
+   switchport
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is defined and port_channel_interfaces[port_channel_interface].mode == "access" %}
    switchport access vlan {{ port_channel_interfaces[port_channel_interface].vlans }}
@@ -53,8 +64,16 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].lacp_fallback_mode is defined and port_channel_interfaces[port_channel_interface].lacp_fallback_mode is not none %}
    port-channel lacp fallback {{ lacp_fallback_mode }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
+{%         if port_channel_interfaces[port_channel_interface].qos is defined %}
+{%             if port_channel_interfaces[port_channel_interface].qos.trust is defined and port_channel_interfaces[port_channel_interface].qos.trust is not none %}
    qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].qos.dscp is defined and port_channel_interfaces[port_channel_interface].qos.dscp is not none %}
+   qos dscp {{ port_channel_interfaces[port_channel_interface].qos.dscp }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].qos.cos is defined and port_channel_interfaces[port_channel_interface].qos.cos is not none %}
+   qos cos {{ port_channel_interfaces[port_channel_interface].qos.cos }}
+{%             endif %}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is defined and port_channel_interfaces[port_channel_interface].spanning_tree_portfast == 'edge' %}
    spanning-tree portfast
@@ -71,7 +90,7 @@ interface {{ port_channel_interface }}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%         endif %}
 {%             if port_channel_interfaces[port_channel_interface].ip_proxy_arp is defined and port_channel_interfaces[port_channel_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
    ip address {{ port_channel_interfaces[port_channel_interface].ip_address }}
@@ -116,6 +135,9 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].service_profile is defined and port_channel_interfaces[port_channel_interface].service_profile is not none %}
+   service-profile {{ port_channel_interfaces[port_channel_interface].service_profile }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].storm_control is defined and port_channel_interfaces[port_channel_interface].storm_control is not none %}
 {%             for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}

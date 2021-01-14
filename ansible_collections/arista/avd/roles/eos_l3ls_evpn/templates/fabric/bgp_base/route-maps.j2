@@ -6,6 +6,12 @@
         type: permit
         match:
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
+{%     if type == "l3leaf" and l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+      20:
+        type: permit
+        match:
+          - "ip address prefix-list PL-L2LEAF-INBAND-MGMT"
+{%     endif %}
 {% endif %}
 {# Leaf route-maps for the overlay#}
 {% if switch.overlay_routing_protocol == "ibgp" %}
@@ -29,6 +35,22 @@
           - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) }}:1 additive"
 {%         else %}
           - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1 additive"
+{%         endif %}
+{%     endif %}
+{% endif %}
+{# Origin Incomplete for MLAG iBGP learned routes #}
+{% if type == "l3leaf" %}
+{%     if leaf.mlag == true %}
+{%         if switch.underlay_routing_protocol == "ebgp" %}
+{%             if leaf.mlag_ibgp_origin_incomplete == true %}
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - "origin incomplete"
+        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endif %}

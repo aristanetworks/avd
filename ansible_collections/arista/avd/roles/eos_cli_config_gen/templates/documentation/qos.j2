@@ -1,0 +1,48 @@
+{% if qos is defined %}
+### QOS Summary
+
+{%     if qos.rewrite_dscp is defined and qos.rewrite_dscp == true %}
+QOS rewrite DSCP: **enabled**
+{%     else %}
+QOS rewrite DSCP: **disabled**
+{%     endif %}
+
+{%     if qos.map is defined and qos is not none %}
+### QOS Mappings
+
+{%         if qos.map.cos is defined and qos.map.cos is not none %}
+
+| COS to Traffic Class mappings |
+| ----------------------------- |
+{%             for cos_map in qos.map.cos | arista.avd.natural_sort %}
+| {{ cos_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
+
+{%         if qos.map.dscp is defined and qos.map.dscp is not none %}
+
+| DSCP to Traffic Class mappings |
+| ------------------------------ |
+{%             for dscp_map in qos.map.dscp | arista.avd.natural_sort %}
+| {{ dscp_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
+
+{%         if qos.map.traffic_class is defined and qos.map.traffic_class is not none %}
+
+| Traffic Class to DSCP or COS mappings |
+| ------------------------------------- |
+{%             for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
+| {{ tc_map | default('-') }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+
+### QOS Device Configuration
+
+```eos
+{% include 'eos/qos.j2' %}
+```
+{% else %}
+QOS is not defined.
+{% endif %}

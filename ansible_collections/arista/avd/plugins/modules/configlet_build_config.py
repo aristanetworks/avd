@@ -121,6 +121,9 @@ def main():
                            supports_check_mode=False)
     result = dict(changed=False)
 
+    if not HAS_YAML:
+        module.fail_json(msg='yaml lib is required for this module')
+
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:
         result['CVP_CONFIGLETS'] = get_configlet(src_folder=module.params['configlet_dir'],

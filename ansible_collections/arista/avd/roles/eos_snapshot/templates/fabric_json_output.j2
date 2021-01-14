@@ -1,0 +1,22 @@
+{
+    "devices": {
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+        "{{ node }}": {
+{%     for command in commands_list %}
+            "{{ command | replace(" ","_") }}":
+                {{ hostvars[node].cli_output.results[0].stdout[0] | to_nice_json | indent(12) }}
+{%-        if not loop.last %}
+,
+{%         else %}
+
+        }
+{%-        endif %}
+{%-    endfor %}
+{%-    if not loop.last %}
+,
+{%     else %}
+
+    }
+{%     endif %}
+{% endfor %}
+}

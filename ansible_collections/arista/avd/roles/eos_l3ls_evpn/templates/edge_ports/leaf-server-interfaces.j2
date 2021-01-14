@@ -13,6 +13,8 @@
 {%                 if adapter.speed is defined %}
     speed: {{ adapter.speed }}
 {%                 endif %}
+    type: switched
+    shutdown: false
     mode: {{ port_profiles[adapter.profile].mode }}
     vlans: {{ port_profiles[adapter.profile].vlans }}
 {%                 if port_profiles[adapter.profile].spanning_tree_portfast is defined %}
@@ -26,7 +28,9 @@
 {%                     for section in port_profiles[adapter.profile].storm_control %}
       {{ section }}:
         level: {{ port_profiles[adapter.profile].storm_control[section].level }}
+{%                         if port_profiles[adapter.profile].storm_control[section].unit is defined and port_profiles[adapter.profile].storm_control[section].unit is not none %}
         unit: {{ port_profiles[adapter.profile].storm_control[section].unit }}
+{%                         endif %}
 {%                     endfor %}
 {%                 endif %}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}
@@ -44,6 +48,9 @@
 {%                     endif %}
 {%                 endif %}
     profile: {{ adapter.profile }}
+{%                 if adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) is arista.avd.defined %}
+    service_profile: {{ adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) }}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

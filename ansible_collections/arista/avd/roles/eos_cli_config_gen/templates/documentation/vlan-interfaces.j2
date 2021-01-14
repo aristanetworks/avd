@@ -1,15 +1,81 @@
 {% if vlan_interfaces is defined and vlan_interfaces is not none %}
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].description }} |
-{%-        if vlan_interfaces[vlan_interface].vrf is defined %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} Global Routing Table {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_address is defined %} {{ vlan_interfaces[vlan_interface].ip_address }} {% else %} - {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_address_virtual is defined %} {{ vlan_interfaces[vlan_interface].ip_address_virtual }} {% else %} - {% endif -%} |
-{%-        if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %} {{ vlan_interfaces[vlan_interface].ip_virtual_router_address  }} {% else %} - {% endif -%} |
+| {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %} {{ vlan_interfaces[vlan_interface].description }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu is not none %} {{ vlan_interfaces[vlan_interface].mtu }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown is not none %} {{ vlan_interfaces[vlan_interface].shutdown | lower }} {% else %} - {% endif %} |
 {%     endfor %}
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+| {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].ip_address is defined and vlan_interfaces[vlan_interface].ip_address is not none %} {{ vlan_interfaces[vlan_interface].ip_address }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ip_address_virtual is defined and vlan_interfaces[vlan_interface].ip_address_virtual is not none %} {{ vlan_interfaces[vlan_interface].ip_address_virtual }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined and vlan_interfaces[vlan_interface].ip_virtual_router_address is not none %} {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrrp.ipv4 is defined and vlan_interfaces[vlan_interface].vrrp.ipv4 is not none %} {{ vlan_interfaces[vlan_interface].vrrp.ipv4 }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].access_group_in is defined and vlan_interfaces[vlan_interface].access_group_in is not none %} {{ vlan_interfaces[vlan_interface].access_group_in }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].access_group_out is defined and vlan_interfaces[vlan_interface].access_group_out is not none %} {{ vlan_interfaces[vlan_interface].access_group_out }} {% else %} - {% endif %} |
+{%     endfor %}
+{# IPv6 #}
+{%     set vlan_interface_ipv6 = namespace() %}
+{%     set vlan_interface_ipv6.configured = false %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].ipv6_address is defined %}
+{# add also a test against ipv6_address_virtual when supported #}
+{%              set vlan_interface_ipv6.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if vlan_interface_ipv6.configured == true %}
+
+#### IPv6
+
+| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%             if vlan_interfaces[vlan_interface].ipv6_address is defined and vlan_interfaces[vlan_interface].ipv6_address is not none %}
+| {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_address is defined and vlan_interfaces[vlan_interface].ipv6_address is not none %} {{ vlan_interfaces[vlan_interface].ipv6_address }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is defined and vlan_interfaces[vlan_interface].ipv6_virtual_router_address is not none %} {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrrp.ipv6 is defined and vlan_interfaces[vlan_interface].vrrp.ipv6 is not none %} {{ vlan_interfaces[vlan_interface].vrrp.ipv6 }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is defined and vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is not none %} {{ vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled | lower }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_nd_managed_config_flag is defined and vlan_interfaces[vlan_interface].ipv6_nd_managed_config_flag is not none %} {{ vlan_interfaces[vlan_interface].ipv6_nd_managed_config_flag | lower }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_access_group_in is defined and vlan_interfaces[vlan_interface].ipv6_access_group_in is not none %} {{ vlan_interfaces[vlan_interface].ipv6_access_group_in }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ipv6_access_group_out is defined and vlan_interfaces[vlan_interface].ipv6_access_group_out is not none %} {{ vlan_interfaces[vlan_interface].ipv6_access_group_out }} {% else %} - {% endif %} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+{# OSPF #}
+{%     set vlan_interface_ospf = namespace() %}
+{%     set vlan_interface_ospf.configured = false %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].ospf_area is defined %}
+{%              set vlan_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if vlan_interface_ospf.configured == true %}
+
+#### OSPF
+| Interface | Area | Cost | Mode |
+| --------- |----- | ---- |----- |
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%             if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %} point-to-point {% else %} broadcast {% endif %} |
+{%             endif %}
+{%          endfor %}
+{%     endif %}
+
+{# ISIS #}
+{%     set vlan_interface_isis = namespace() %}
+{%     set vlan_interface_isis.configured = false %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].isis_enable is defined %}
+{%              set vlan_interface_isis.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if vlan_interface_isis.configured == true %}
+
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode |
+| --------- | ------------- | ----------- | ---- |
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%             if vlan_interfaces[vlan_interface].isis_enable is defined and vlan_interfaces[vlan_interface].isis_enable is not none %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} | {% if vlan_interfaces[vlan_interface].isis_metric is defined and vlan_interfaces[vlan_interface].isis_metric is not none %} {{ vlan_interfaces[vlan_interface].isis_metric }} {% else %} - {% endif %}| {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point is not none %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 ### VLAN Interfaces Device Configuration
 

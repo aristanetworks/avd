@@ -30,6 +30,8 @@ To use this filter:
 
 The `natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
 
+The filter will return an empty list if the value parsed to `natural_sort` is `none` or `undefined`.
+
 To use this filter:
 
 ```jinja
@@ -38,12 +40,58 @@ To use this filter:
 {% endfor %}
 ```
 
+### **default filter**
+
+The `default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
+Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
+As a last resort the filter will return None.
+
+To use this filter:
+
+```jinja
+{{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
+```
+
+## Plugin Tests
+
+Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates
+
+### **defined test**
+
+The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
+`arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
+
+Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value.
+
+To use this test:
+
+```jinja
+{% if extremely_long_variable_name is arista.avd.defined %}
+text : {{ extremely_long_variable_name }}
+{% endif %}
+{% if extremely_long_variable_name is arista.avd.defined("something") %}
+text : {{ extremely_long_variable_name }}
+{% endif %}
+Feature is {{ "not " if extremely_long_variable_name is not arista.avd.defined }}configured
+```
+
+The `arista.avd.defined` test can be useful as an alternative to:
+
+```jinja
+{% if extremely_long_variable_name is defined and extremely_long_variable_name is not none %}
+text : {{ extremely_long_variable_name }}
+{% endif %}
+{% if extremely_long_variable_name is defined and extremely_long_variable_name == "something" %}
+text : {{ extremely_long_variable_name }}
+{% endif %}
+Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
+```
 ## Modules
 
 ### **Inventory to CloudVision Containers**
 
 The `inventory_to_container` module provides following capabilities:
-- Transform inventory groups into CloudVision containers topology. 
+- Transform inventory groups into CloudVision containers topology.
 - Create list of configlets definition.
 
 It saves everything in a `YAML` file using **`destination`** keyword.

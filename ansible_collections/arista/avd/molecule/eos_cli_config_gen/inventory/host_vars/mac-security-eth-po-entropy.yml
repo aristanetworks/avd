@@ -1,0 +1,57 @@
+mac_security:
+  fips_restrictions: true
+  license:
+    license_name: license1
+    license_key: 123456
+  profiles:
+    A1:
+      sci: true
+      mka:
+        session:
+          rekey_period: 30
+      cipher: aes128-gcm
+      connection_keys:
+        1234a:
+          encrypted_key: 025756085F535976
+        1234c:
+          encrypted_key: 10195F4C5144405A
+          fallback: true
+    A2:
+      connection_keys:
+        1234b:
+          encrypted_key: 12485744465E5A53
+        # 1234d:
+        #   encrypted_key: 091B185C4D564543
+        #   fallback: true
+
+
+### Mgmt sec
+management_security:
+  entropy_source: hardware
+
+
+### L2 portchannel
+port_channel_interfaces:
+  Port-Channel3:
+    description: L2-PORT
+    vlans: 1-5
+    mode: trunk
+
+# Children interfaces
+ethernet_interfaces:
+  Ethernet3:
+    peer: DC1-AGG01
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: DC1-AGG01_Ethernet1
+    mac_security:
+      profile: A1
+    channel_group:
+      id: 3
+      mode: active
+# Routed Interfaces
+  Ethernet1:
+    mode: routed
+    ip_address: 1.1.1.1/24
+    mac_security:
+      profile: A1

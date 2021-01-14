@@ -9,7 +9,11 @@
     speed: {{ leaf.p2p_link_interface_speed }}
 {%     endif %}
     mtu: {{ p2p_uplinks_mtu }}
+{%     if p2p_uplinks_qos_profile is arista.avd.defined %}
+    service_profile: {{ p2p_uplinks_qos_profile }}
+{%     endif %}
     type: routed
+    shutdown: false
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}/31
 {%     if underlay_routing_protocol|lower == "ospf" %}
     ospf_network_point_to_point: true

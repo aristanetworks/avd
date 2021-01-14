@@ -1,0 +1,76 @@
+{# eos - Errdisable #}
+{% if errdisable is defined and errdisable is not none %}
+{%     if errdisable.recovery is defined %}
+{%         if errdisable.detect.causes is defined %}
+|  Detect Cause | Enabled |
+| ------------- | ------- |
+{%             for cause in errdisable.detect.causes | arista.avd.natural_sort %}
+{%                 if cause == 'acl' %}
+| {{ cause }} | True |
+{%                 elif cause == 'arp-inspection' %}
+| {{ cause }} | True |
+{%                 elif cause == 'dot1x' %}
+| {{ cause }} | True |
+{%                 elif cause == 'link-change' %}
+| {{ cause }} | True |
+{%                 elif cause == 'tapagg' %}
+| {{ cause }} | True |
+{%                 elif cause == 'xcvr-misconfigured' %}
+| {{ cause }} | True |
+{%                 elif cause == 'xcvr-overheat' %}
+| {{ cause }} | True |
+{%                 elif cause == 'xcvr-power-unsupported' %}
+| {{ cause }} | True |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+
+{%         if errdisable.recovery.interval is defined and errdisable.recovery.interval is not none  %}
+{%         endif %}
+{%         if errdisable.recovery.causes is defined %}
+|  Detect Cause | Enabled | Interval |
+| ------------- | ------- | -------- |
+{%             for cause in errdisable.recovery.causes | arista.avd.natural_sort %}
+{%                 if cause == 'arp-inspection' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'bpduguard' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'dot1x' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'hitless-reload-down' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'lacp-rate-limit' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'link-flap' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'no-internal-vlan' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'portchannelguard' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'portsec' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'speed-misconfigured' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'tapagg' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'uplink-failure-detection' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'xcvr-misconfigured' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'xcvr-overheat' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'xcvr-power-unsupported' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 elif cause == 'xcvr-unsupported' %}
+| {{ cause }} | True | {{ errdisable.recovery.interval }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+
+```eos
+{% include 'eos/errdisable.j2' %}
+```
+{% else %}
+Errdisable is not defined.
+{% endif %}

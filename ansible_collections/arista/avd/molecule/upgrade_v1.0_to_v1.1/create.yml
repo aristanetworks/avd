@@ -4,8 +4,15 @@
   gather_facts: false
   connection: local
   vars:
-    root_dir: '{{playbook_dir}}'
+    root_dir: '{{playbook_dir}}/inventory'
+    inventory_dir: '{{playbook_dir}}/inventory'
   tasks:
+    - name: Deploy old data model version for tenants
+      delegate_to: 127.0.0.1
+      run_once: true
+      copy:
+        src: '{{ playbook_dir }}/inventory/upgrade_1.0_to_1.1/DC1_TENANTS_NETWORKS_v1.0.x.yml'
+        dest: '{{ playbook_dir }}/inventory/group_vars/DC1_TENANTS_NETWORKS.yml'
     - name: create local output folders
       delegate_to: 127.0.0.1
       import_role:

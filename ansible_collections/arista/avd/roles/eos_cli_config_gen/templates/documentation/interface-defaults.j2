@@ -1,0 +1,29 @@
+{% if interface_defaults is defined and interface_defaults is not none %}
+### Interface Defaults Summary
+{%     if ( interface_defaults.mtu is defined and interface_defaults.mtu is not none ) or ( interface_defaults.switchport is defined and interface_defaults.switchport is not none ) %}
+{%         if interface_defaults.ethernet is defined and interface_defaults.ethernet is not none %}
+{%             if interface_defaults.ethernet.shutdown is defined and interface_defaults.ethernet.shutdown is not none %}
+
+- Default Ethernet Interface Shutdown: {{ interface_defaults.ethernet.shutdown }}
+{%             endif %}
+{%         endif %}
+{%         if interface_defaults.mtu is defined and interface_defaults.mtu is not none %}
+
+- Default Routed Interface MTU: {{ interface_defaults.mtu }}
+{%         endif %}
+{%     endif %}
+{%     if interface_defaults.switchport is defined and interface_defaults.switchport is not none %}
+{%         if interface_defaults.switchport.type is defined and interface_defaults.switchport.type is not none %}
+
+- Default Switchport Mode: {{ interface_defaults.switchport.type }}
+{%         endif %}
+{%     endif %}
+
+### Interface Defaults Configuration
+
+```eos
+{% include 'eos/interface-defaults.j2' %}
+```
+{% else %}
+No Interface Defaults defined
+{% endif %}

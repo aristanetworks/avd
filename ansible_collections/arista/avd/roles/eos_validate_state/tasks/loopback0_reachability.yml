@@ -1,0 +1,31 @@
+---
+
+- name: Gather ip reachability state between devices (loopback0 <-> loopback0)
+  eos_command:
+    commands: "ping {{ loopback0_address | ipaddr('address')}} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address')}} repeat 1"
+  loop: "{{ loopback0_reachability.loopback0_range }}"
+  loop_control:
+    loop_var: loopback0_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
+    (loopback_interfaces.Loopback0.ip_address is defined and loopback_interfaces.Loopback0.ip_address is not none) and
+    (type is defined and type != "l2leaf")
+  register: loopback0_reachability_state
+  tags:
+    - loopback0_reachability
+
+- name: Validate ip reachability between devices (loopback0 <-> loopback0)
+  assert:
+    that:
+      - loopback0_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: ( loopback0_reachability_test.skipped is not defined )
+  register: loopback0_reachability_results
+  tags:
+    - loopback0_reachability

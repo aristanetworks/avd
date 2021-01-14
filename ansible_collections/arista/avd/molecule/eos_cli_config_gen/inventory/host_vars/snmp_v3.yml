@@ -3,8 +3,13 @@ snmp_server:
   contact: DC1_OPS
   location: DC1
   local_interfaces:
-    - name: Management0
-      vrf: mgt
+    Management1:
+      vrf: MGMT
+    Loopback0:
+    Loopback12:
+      vrf: Tenant_A_APP_Zone
+  ipv4_access_list: onur
+  ipv6_access_list: onurv6
   views:
     - name: VW-WRITE
       MIB_family_name: iso

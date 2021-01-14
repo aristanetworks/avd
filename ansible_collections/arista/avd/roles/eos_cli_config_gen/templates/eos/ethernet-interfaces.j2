@@ -6,11 +6,23 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %}
    description {{ ethernet_interfaces[ethernet_interface].description }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].logging is defined and ethernet_interfaces[ethernet_interface].logging is not none %}
+{%             if ethernet_interfaces[ethernet_interface].logging.event is defined and ethernet_interfaces[ethernet_interface].logging.event is not none %}
+{%                 if ethernet_interfaces[ethernet_interface].logging.event.link_status is defined and ethernet_interfaces[ethernet_interface].logging.event.link_status == true %}
+   logging event link-status
+{%                 endif %}
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == true %}
    shutdown
+{%         elif ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown == false %}
+   no shutdown
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].speed is defined and ethernet_interfaces[ethernet_interface].speed is not none %}
-   speed forced {{ ethernet_interfaces[ethernet_interface].speed }}
+   speed {{ ethernet_interfaces[ethernet_interface].speed }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mac_security.profile is defined and ethernet_interfaces[ethernet_interface].mac_security.profile is not none %}
+   mac security profile {{ ethernet_interfaces[ethernet_interface].mac_security.profile }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].channel_group is defined and ethernet_interfaces[ethernet_interface].channel_group is not none %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
@@ -20,6 +32,8 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}
    no switchport
+{%             else %}
+   switchport
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].flowcontrol is defined and ethernet_interfaces[ethernet_interface].flowcontrol is not none %}
 {%                 if ethernet_interfaces[ethernet_interface].flowcontrol.received is defined and ethernet_interfaces[ethernet_interface].flowcontrol.received is not none %}
@@ -43,8 +57,16 @@ interface {{ ethernet_interface }}
    switchport trunk group {{ trunk_group }}
 {%                 endfor %}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
+{%             if ethernet_interfaces[ethernet_interface].qos is defined %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.trust is defined and ethernet_interfaces[ethernet_interface].qos.trust is not none %}
    qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.dscp is defined and ethernet_interfaces[ethernet_interface].qos.dscp is not none %}
+   qos dscp {{ ethernet_interfaces[ethernet_interface].qos.dscp }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].qos.cos is defined and ethernet_interfaces[ethernet_interface].qos.cos is not none %}
+   qos cos {{ ethernet_interfaces[ethernet_interface].qos.cos }}
+{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is defined and ethernet_interfaces[ethernet_interface].spanning_tree_portfast == 'edge' %}
    spanning-tree portfast
@@ -65,6 +87,11 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
    ip address {{ ethernet_interfaces[ethernet_interface].ip_address }}
+{%                 if ethernet_interfaces[ethernet_interface].ip_address_secondaries is defined and ethernet_interfaces[ethernet_interface].ip_address_secondaries is not none %}
+{%                     for ip_address_secondary in ethernet_interfaces[ethernet_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                     endfor %}
+{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ipv6_enable is defined and ethernet_interfaces[ethernet_interface].ipv6_enable == true %}
    ipv6 enable
@@ -140,6 +167,14 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is defined and ethernet_interfaces[ethernet_interface].vmtracer == true %}
    vmtracer vmware-esx
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp is defined %}
+{%                 if ethernet_interfaces[ethernet_interface].ptp.enable is defined and ethernet_interfaces[ethernet_interface].ptp.enable == true %}
+   ptp enable
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].service_profile is defined and ethernet_interfaces[ethernet_interface].service_profile is not none %}
+   service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is defined and ethernet_interfaces[ethernet_interface].storm_control is not none %}
 {%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}

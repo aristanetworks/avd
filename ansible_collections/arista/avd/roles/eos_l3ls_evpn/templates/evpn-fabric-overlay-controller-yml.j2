@@ -1,0 +1,326 @@
+{# Overlay Controller Configuration #}
+## Ansible Generated ##
+
+### {{ inventory_hostname }} ###
+{# Set Overlay Controller Variables #}
+{% set switch = namespace() %}
+{% set switch.platform = overlay_controller.platform %}
+{% set switch.mgmt_ip = overlay_controller.nodes[inventory_hostname].mgmt_ip %}
+{% set switch.spanning_tree_mode = "none" %}
+{% for node in overlay_controller.nodes | arista.avd.natural_sort %}
+{%     if node == inventory_hostname %}
+{%         set switch.id = overlay_controller.nodes[node].id %}
+{%         if overlay_controller.nodes[node].bgp_as is defined %}
+{%             set switch.bgp_as = overlay_controller.nodes[node].bgp_as %}
+{%         else %}
+{%             set switch.bgp_as = overlay_controller.defaults.bgp_as %}
+{%         endif %}
+{# Get local RR/RS interface to configure #}
+{%         if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
+{%         else %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
+{%         endif %}
+{# Get remote switch interface to configure #}
+{%         if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
+{%             set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
+{%         endif %}
+{# Get remote hostname #}
+{%         if overlay_controller.nodes[node].remote_switches is defined %}
+{%             set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
+{%         else %}
+{%             set switch.remote_switches = overlay_controller.defaults.remote_switches %}
+{%         endif %}
+{# Get group of remote devices where RS/RR are connected #}
+{%         if overlay_controller.nodes[node].remote_switches_group is defined %}
+{%             set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
+{%         else %}
+{%             set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{# Build variables for fabric protocols #}
+{# Logic for underlay routing protocol configured on device #}
+{% if underlay_routing_protocol is defined %}
+{%     if underlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     elif underlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.underlay_routing_protocol = 'ibgp'%}
+{%     elif underlay_routing_protocol|lower == 'isis' %}
+{%         set switch.underlay_routing_protocol = 'isis' %}
+{%     elif underlay_routing_protocol|lower == 'ospf' %}
+{%         set switch.underlay_routing_protocol = 'ospf' %}
+{%     else %}
+{%         set switch.underlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.underlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Logic for overlay protocol definition #}
+{% if overlay_routing_protocol is defined %}
+{%     if overlay_routing_protocol|lower == 'ebgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'bgp' %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     elif overlay_routing_protocol|lower == 'ibgp' %}
+{%         set switch.overlay_routing_protocol = 'ibgp'%}
+{%     else %}
+{%         set switch.overlay_routing_protocol = 'ebgp' %}
+{%     endif %}
+{% else %}
+{%     set switch.overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+{# Gather overlay peering information #}
+{% set switch.evpn_overlay_peers = [] %}
+{# #}
+{# Look for switches pointing to us as evpn_overlay_controller / server #}
+{% for some_switch in groups['all'] %}
+{%     set some_switch_vars = hostvars[some_switch] %}
+{%     if some_switch_vars.evpn_overlay_controller_groups is defined and some_switch_vars.evpn_overlay_controller_groups is not none %}
+{%         for evpn_overlay_controller_group in some_switch_vars.evpn_overlay_controller_groups %}
+{%             if inventory_hostname in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%                 set peer = namespace() %}
+{%                 set peer.description = some_switch %}
+{%                 if some_switch_vars.type == 'l3leaf' %}
+{%                     for l3leaf_node_group in some_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                         for node in some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                             if node == some_switch %}
+{%                                 set peer.id = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
+{%                                 if some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as %}
+{%                                 else %}
+{%                                     set peer.bgp_as = some_switch_vars.l3leaf.defaults.bgp_as %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endfor %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(peer.id + some_switch_vars.spine.nodes | length) %}
+{%                 elif some_switch_vars.type == 'spine' %}
+{%                     set peer.bgp_as = some_switch_vars.spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'super-spine' %}
+{%                     set peer.bgp_as = some_switch_vars.super_spine.bgp_as %}
+{%                     set peer.ip = some_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(some_switch_vars.super_spine.nodes[some_switch].id) %}
+{%                 elif some_switch_vars.type == 'overlay-controller' %}
+{%                     if some_switch_vars.overlay_controller.nodes[some_switch].bgp_as is defined %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.nodes[some_switch].bgp_as %}
+{%                     else %}
+{%                         set peer.bgp_as = some_switch_vars.overlay_controller.defaults.bgp_as %}
+{%                     endif %}
+{%                     set peer.ip = some_switch_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(some_switch_vars.overlay_controller.nodes[some_switch].id) %}
+{%                 endif %}
+{%                 do switch.evpn_overlay_peers.append(peer) %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# Look for evpn_overlay_controllers / servers where we are client #}
+{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
+{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
+{%         for evpn_overlay_controller in groups[evpn_overlay_controller_group] %}
+{# Found a match. Gathering information for this peer #}
+{%             set evpn_overlay_controller_vars = hostvars[evpn_overlay_controller] %}
+{%             set peer = namespace() %}
+{%             set peer.description = evpn_overlay_controller %}
+{%             if evpn_overlay_controller_vars.type == 'spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'super-spine' %}
+{%                 set peer.bgp_as = evpn_overlay_controller_vars.super_spine.bgp_as %}
+{%                 set peer.ip = evpn_overlay_controller_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(evpn_overlay_controller_vars.super_spine.nodes[evpn_overlay_controller].id) %}
+{%             elif evpn_overlay_controller_vars.type == 'overlay-controller' %}
+{%                 if evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as is defined %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as %}
+{%                 else %}
+{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.defaults.bgp_as %}
+{%                 endif %}
+{%                 set peer.ip = evpn_overlay_controller_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].id) %}
+{%             endif %}
+{%             do switch.evpn_overlay_peers.append(peer) %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+
+### Overlay Controller Info ###
+switch_platform: {{ switch.platform }}
+switch_mgmt_ip: {{ switch.mgmt_ip }}
+
+{# routing protocol model multi-agent needed for EVPN address family #}
+service_routing_protocols_model: multi-agent
+ip_routing: true
+
+{# Hardware Counter #}
+### Hardware Counters
+hardware_counters:
+{% include 'base/hardware-counters.j2' %}
+
+{# Daemon TerminAttr #}
+### Daemon TerminAttr
+daemon_terminattr:
+{% include 'base/daemon-terminattr.j2' %}
+
+{# vlan allocation policy #}
+vlan_internal_order:
+{% include 'base/vlan-internal-order.j2' %}
+
+{# event monitor #}
+### Event Monitor ###
+event_monitor:
+{% include 'base/event-monitor.j2' %}
+
+{# event handler #}
+### Event Handler ###
+event_handlers:
+{% include 'base/event-handler.j2' %}
+
+{# load interval #}
+### Load Interval ###
+load_interval:
+{% include 'base/load-interval.j2' %}
+
+{# queue monitor length #}
+### Queue Monitor Lenght ###
+queue_monitor_length:
+{% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
+
+{# name servers #}
+### Name Servers ###
+name_server:
+{% include 'base/name-servers.j2' %}
+
+{# NTP servers #}
+### NTP Servers ###
+ntp_server:
+{% include 'base/ntp-servers.j2' %}
+
+{# redundancy #}
+### Redundancy ###
+redundancy:
+{% include 'base/redundancy.j2' %}
+
+{# spanning-tree #}
+### Spanning-tree ###
+spanning_tree:
+{% include 'base/spanning-tree.j2' %}
+
+{# unsupported transceiver #}
+{% include 'base/unsupported-transeiver.j2' %}
+
+{# aaa authorization #}
+### AAA authorization ###
+aaa_authorization:
+{% include 'base/aaa-authorization.j2' %}
+
+{# local users #}
+### local users ###
+local_users:
+{% include 'base/local-users.j2' %}
+
+{# clock timezone #}
+### Clock Timezone ###
+clock:
+{% include 'base/clock-timezone.j2' %}
+
+
+{# VRFs #}
+### VRFs ###
+vrfs:
+{% include 'base/mgmt-vrf.j2' %}
+
+{# bfd multihop #}
+### bfd multihop ###
+bfd_multihop:
+{% include 'base/bfd-multihop.j2' %}
+
+{# Ethernet Interfaces #}
+### Ethernet Interfaces ###
+ethernet_interfaces:
+{% include 'fabric/interfaces/overlay-controller-p2p-interfaces.j2' %}
+
+{# loopback interfaces #}
+### Loopback Interfaces ###
+loopback_interfaces:
+{# overlay peering interface #}
+{% include 'fabric/interfaces/overlay-controller-loopback.j2'%}
+{# intentional blank line #}
+
+{# Management Interfaces #}
+### Management Interfaces ###
+management_interfaces:
+{% include 'base/mgmt-interface.j2' %}
+
+{# TCAM Profiles #}
+### TCAM Profiles ###
+tcam_profile:
+{% include 'base/tcam-profile.j2' %}
+
+{# Platform #}
+### Platform ###
+platform:
+{% include 'base/platform.j2' %}
+
+{# mac address-table #}
+### MAC address table ###
+mac_address_table:
+{% include 'base/mac-address-table.j2' %}
+
+{# static_routes #}
+### static routes ###
+static_routes:
+{% include 'routing/static-routes.j2' %}
+
+{# prefix_lists #}
+### prefix-lists ###
+prefix_lists:
+{% include 'fabric/bgp_base/overlay-controller-prefix-lists.j2' %}
+
+{# route maps #}
+### route-maps ###
+route_maps:
+{% include 'fabric/bgp_base/route-maps.j2' %}
+
+{# ##### BGP Configurartion ##### #}
+### Routing - BGP ###
+router_bgp:
+{# underlay and overlay #}
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-base.j2' %}
+  peer_groups:
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-peer-groups.j2' %}
+  neighbors:
+{% include 'fabric/bgp_base/overlay-controller-router-bgp-neighbors.j2' %}
+  redistribute_routes:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-redistribute-routes.j2' %}
+  address_family_evpn:
+{% include 'fabric/bgp_overlay/overlay-controller-router-bgp-address-family-evpn.j2' %}
+  address_family_ipv4:
+{% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
+
+{# OSPF Configurartion #}
+### Routing - OSPF ###
+router_ospf:
+{# underlay #}
+{% include 'fabric/ospf_underlay/router-ospf.j2' %}
+
+{# OSPF Configurartion #}
+### Routing - ISIS ###
+router_isis:
+{# underlay #}
+{% include 'fabric/isis_underlay/router-isis.j2' %}
+
+{# queue monitor streaming #}
+### Queue Monitor Streaming ###
+queue_monitor_streaming:
+{% include 'base/queue-monitor-streaming.j2' %}
+
+{# management api http #}
+### Management API http ###
+management_api_http:
+{% include 'base/management-api-http.j2' %}

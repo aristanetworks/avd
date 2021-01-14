@@ -24,6 +24,30 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
+  Port-Channel100:
+    type: routed
+    logging:
+      event:
+        link_status: true
+  Port-Channel100.101:
+    logging:
+      event:
+        link_status: true
+    description: IFL for TENANT01
+    mtu: 1500
+    ip_address: 10.1.1.3/31
+    encapsulation:
+      dot1q:
+        vlan: 101
+  Port-Channel100.102:
+    description: IFL for TENANT02
+    mtu: 1500
+    ip_address: 10.1.2.3/31
+    vrf: C2
+    encapsulation:
+      dot1q:
+        vlan: 102
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:

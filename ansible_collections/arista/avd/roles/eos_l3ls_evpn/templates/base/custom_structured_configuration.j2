@@ -1,0 +1,13 @@
+{% set tmp_custom_structured_configuration = {} %}
+{% for key_name in hostvars[inventory_hostname].keys() %}
+{%     if key_name | regex_search('^' ~ custom_structured_configuration_prefix) %}
+{%         set tmp_key_name = key_name | regex_replace('^' ~ custom_structured_configuration_prefix) %}
+{%         do tmp_custom_structured_configuration.update( { tmp_key_name : hostvars[inventory_hostname][key_name] } ) %}
+{%     endif %}
+{% endfor %}
+{{
+    lookup('template', root_dir ~ '/intended/structured_configs/' ~ inventory_hostname ~ '.yml') |
+    from_yaml |
+    combine(tmp_custom_structured_configuration, recursive=true) |
+    to_nice_yaml(indent=2,sort_keys=False)
+}}

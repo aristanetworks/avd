@@ -13,6 +13,7 @@
   - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Servers](#radius-servers)
@@ -35,6 +36,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -45,6 +47,8 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -53,11 +57,11 @@
   - [Router Multicast](#router-multicast)
   - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
+  - [Community-lists](#community-lists)
   - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
+  - [Prefix-lists](#prefix-lists)
+  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
+  - [Route-maps](#route-maps)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
@@ -69,6 +73,10 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
+- [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -80,7 +88,7 @@
 
 {% include 'documentation/dns-domain.j2' %}
 
-## Domain-List
+## Domain-list
 
 {% include 'documentation/domain-list.j2' %}
 
@@ -96,6 +104,10 @@
 
 {% include 'documentation/ntp-servers.j2' %}
 
+## PTP
+
+{% include 'documentation/ptp.j2' %}
+
 ## Management SSH
 
 {% include 'documentation/management-ssh.j2' %}
@@ -103,7 +115,7 @@
 ## Management API GNMI
 
 {% include 'documentation/management-api-gnmi.j2' %}
-  
+
 ## Management API HTTP
 
 {% include 'documentation/management-api-http.j2' %}
@@ -113,6 +125,10 @@
 ## Local Users
 
 {% include 'documentation/local-users.j2' %}
+
+## Enable Password
+
+{% include 'documentation/enable-password.j2' %}
 
 ## TACACS Servers
 
@@ -198,6 +214,10 @@
 
 # Interfaces
 
+## Interface Defaults
+
+{% include 'documentation/interface-defaults.j2' %}
+
 ## Ethernet Interfaces
 
 {% include 'documentation/ethernet-interfaces.j2' %}
@@ -240,6 +260,14 @@
 
 {% include 'documentation/ipv6-static-routes.j2' %}
 
+## ARP
+
+{% include 'documentation/arp.j2' %}
+
+## Router OSPF
+
+{% include 'documentation/router-ospf.j2' %}
+
 ## Router ISIS
 
 {% include 'documentation/router-isis.j2' %}
@@ -268,7 +296,7 @@
 
 # Filters
 
-## Community Lists
+## Community-lists
 
 {% include 'documentation/community-lists.j2' %}
 
@@ -276,15 +304,15 @@
 
 {% include 'documentation/peer-filters.j2' %}
 
-## Prefix Lists
+## Prefix-lists
 
 {% include 'documentation/prefix-lists.j2' %}
 
-## IPv6 Prefix Lists
+## IPv6 Prefix-lists
 
 {% include 'documentation/ipv6-prefix-lists.j2' %}
 
-## Route Maps
+## Route-maps
 
 {% include 'documentation/route-maps.j2' %}
 
@@ -329,6 +357,22 @@
 # IP DHCP Relay
 
 {% include 'documentation/ip-dhcp-relay.j2' %}
+
+# Errdisable
+
+{% include 'documentation/errdisable.j2' %}
+
+# MACsec
+
+{% include 'documentation/mac-security.j2' %}
+
+# QOS
+
+{% include 'documentation/qos.j2' %}
+
+# QOS Profiles
+
+{% include 'documentation/qos-profiles.j2' %}
 
 # Custom Templates
 

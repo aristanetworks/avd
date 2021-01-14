@@ -26,10 +26,6 @@ eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
 documentation_dir_name: 'documentation'
 documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
 
-# Fabric documentation
-fabric_dir_name: 'DC1_FABRIC'
-fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
-
 # Device documentation
 devices_dir_name: 'devices'
 devices_dir: '{{ documentation_dir }}/{{ devices_dir_name }}'
@@ -44,3 +40,7 @@ pre_running_config_backup_dir: '{{ root_dir }}/{{ pre_running_config_backup_dir_
 # EOS state validation directory name
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
+
+# EOS snapshots directory name
+snapshots_backup_dir_name: 'snapshots'
+snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'

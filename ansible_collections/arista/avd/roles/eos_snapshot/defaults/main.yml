@@ -1,0 +1,24 @@
+---
+# defaults file for eos_snapshot
+
+root_dir: '{{ inventory_dir }}'
+snapshots_backup_dir_name: 'snapshots'
+snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
+
+# list of desired formats. Supported values are markdown, yaml, json and text.
+# text: one file per device and show command
+# markdown: one report per device
+# json: one report per fabric
+# yaml: one report per fabric
+output_format:
+ - text
+ - markdown
+ # - json
+ # - yaml
+
+commands_list:
+  - show lldp neighbors
+  - show ip interface brief
+  - show interfaces description
+  - show version
+  - show running-config

@@ -1,0 +1,20 @@
+{# L2leaf Inband Management VLAN interfaces #}
+{% if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+  Vlan{{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: {{ p2p_uplinks_mtu }}
+{%     if type == 'l3leaf' %}
+{%         if leaf.mlag == true and leaf.mlag_role == 'secondary' %}
+    ip_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+{%         else %}
+    ip_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(2) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+{%         endif %}
+    ip_virtual_router_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(1) }}
+    ip_attached_host_route_export:
+      distance: 19
+{%     elif type == 'l2leaf' %}
+    ip_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + leaf.id) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+    gateway: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(1) }}
+{%     endif %}
+{% endif %}

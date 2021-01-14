@@ -1,5 +1,9 @@
 ---
 scenario:
+  converge_sequence:
+    - syntax
+    - create
+    - converge
   test_sequence:
     - syntax
     - create
@@ -10,7 +14,7 @@ scenario:
 dependency:
   name: galaxy
 driver:
-  name: docker
+  name: delegated
 platforms:
   - name: ethernet_interfaces
     image: avdteam/base:3.6
@@ -20,8 +24,6 @@ platforms:
       - all
 provisioner:
   name: ansible
-  env:
-    ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
   config_options:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'

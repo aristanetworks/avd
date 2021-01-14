@@ -226,6 +226,32 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter
     return configlets
 
 
+def get_device_option_value(device_data_dict, option_name):
+    """
+    get_device_option_value Extract value of a host_var defined in inventory file.
+
+    Read all variables under device in inventory.yml and return value.
+    If not found return None
+
+    Parameters
+    ----------
+    device_data_dict : dict
+        List of options defined under device.
+    option_name : string
+        Name of option searched by function.
+
+    Returns
+    -------
+    string
+        Value set for variable, else None
+    """
+    if isIterable(device_data_dict):
+        for option in device_data_dict:
+            if option_name == option:
+                return device_data_dict[option]
+        return None
+
+
 def serialize(dict_inventory, parent_container=None, tree_topology=None):
     """
     Build a tree topology from inventory.
@@ -304,12 +330,14 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
 
     for k1, v1 in dict_inventory.items():
         # Read a leaf
-        if k1 == search_container and 'hosts' in v1:
+        if k1 == search_container and isIterable(v1) and 'hosts' in v1:
             for dev, data in v1['hosts'].items():
                 if is_in_filter(
                     hostname_filter=device_filter,
                     hostname=dev
-                ):
+                ) and get_device_option_value(
+                        device_data_dict=data,
+                        option_name='is_deployed') is not False:
                     devices.append(dev)
         # If subgroup has kids
         if isIterable(v1) and 'children' in v1:
@@ -385,6 +413,12 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=False)
     result = dict(changed=False)
+
+    if not HAS_YAML:
+        module.fail_json(msg='yaml lib is required for this module')
+
+    if not HAS_TREELIB:
+        module.fail_json(msg='Treelib lib is required for this module')
 
     # Build cv_container structure from YAML inventory.
     if (module.params['inventory'] is not None and

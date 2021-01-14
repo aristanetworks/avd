@@ -1,0 +1,174 @@
+{% set dc_doc = namespace() %}
+{% set dc_doc.spine_total = 0 %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+{%     set dc_doc.spine_total = dc_doc.spine_total + 1 %}
+{%     endif %}
+{% endfor %}
+# {{ dc_name }}
+
+## Table of Contents
+
+- [{{ dc_name }}](#{{ dc_name|replace('_',"")|lower }} )
+  - [Spine, Super-Spine Switches and Overlay Controller Management IP](#spine-super-spine-switches-and-overlay-controller-management-ip)
+  - [Super Spine and Overlay Controller Fabric Topology](#super-spine-and-overlay-controller-fabric-topology)
+  - [Super Spine Fabric IP Allocation](#super-spine-fabric-ip-allocation)
+    - [Super Spine Fabric Point-To-Point Links](#super-spine-fabric-point-to-point-links)
+    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)](#super-spine-overlay-loopback-interfaces-bgp-evpn-peering-if-required)
+    - [Loopback0 Interfaces To Super Spine Node Allocation](#loopback0-interfaces-to-super-spine-node-allocation)
+  - [Overlay Controller IP Allocation](#overlay-controller-ip-allocation)
+    - [Overlay Controller Point-To-Point Links](#overlay-controller-point-to-point-links)
+    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+    - [Overlay Controller Loopback Interfaces (BGP EVPN Peering, if required)](#overlay-controller-loopback-interfaces-bgp-evpn-peering-if-required)
+    - [Loopback0 Interfaces To Overlay Controller Node Allocation](#loopback0-interfaces-to-overlay-controller-node-allocation)
+
+## Spine, Super-Spine Switches and Overlay Controller Management IP
+
+| Node | Management IP | Platform |
+| ---- | ------------- | -------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "super-spine" %}
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%    if hostvars[node].type == "spine" %}
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%    if hostvars[node].type == "overlay-controller" %}
+| {{ node }} | {{ hostvars[node].switch_mgmt_ip }} | {{ hostvars[node].switch_platform }} |
+{%     endif %}
+{% endfor %}
+
+## Super Spine and Overlay Controller Fabric Topology
+
+| Type | Node | Interface | Peer Node | Peer Interface |
+| ---- | --------- | -------------- | --------- | -------------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "super-spine" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type == 'spine' %}
+| super-spine | {{ node }} | {{ ethernet_interface }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }} |
+{%                  endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+| overlay-controller | {{ node }} | {{ ethernet_interface }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }} | {{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+
+## Super Spine Fabric IP Allocation
+
+### Super Spine Fabric Point-To-Point Links
+
+| POD Number | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ----------- | ----------- | ------------------- | ------------------ | ------------------ |
+{% set dc_doc = namespace() %}
+{% set dc_doc.pod = dict() %}
+{% for host in groups[dc_name] | arista.avd.natural_sort %}
+{%      if hostvars[host]['type'] == 'spine' %}
+{%          set pod_number = hostvars[host]['pod_number'] %}
+{%          if hostvars[host]['pod_number'] not in dc_doc.pod.keys() %}
+{%              set __ = dc_doc.pod.update({ pod_number: { 'p2p_summary': hostvars[host]['super_spine_underlay_p2p_network_summary'], 'number_of_spines_in_a_pod': 0 } }) %}
+{%          endif %}
+{% set __ = dc_doc.pod[pod_number].update({ 'number_of_spines_in_a_pod': (dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] + 1) }) %}
+{%      endif %}
+{% endfor %}
+{% for pod_number in dc_doc.pod | sort %}
+| {{ pod_number }} | {{ dc_doc.pod[pod_number]['p2p_summary'] }} | {{ dc_doc.pod[pod_number]['p2p_summary'] | ipaddr('size') }} | {{
+  super_spine.nodes | length * dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] * 2 * max_spine_to_super_spine_links }} | {{
+  ((super_spine.nodes | length * dc_doc.pod[pod_number]['number_of_spines_in_a_pod'] * 2 * max_spine_to_super_spine_links) / dc_doc.pod[pod_number]['p2p_summary']|ipaddr('size') * 100) | round(2,'ceil') }} % |
+{% endfor %}
+
+### Point-To-Point Links Node Allocation
+
+| Super-Spine Node | Super-Spine Interface | Super-Spine IP Address | Spine Node | Spine Interface | Spine IP Address |
+| --------- | -------------- | --------------- | ---------- | --------------- | ---------------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "super-spine" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%              for interface_name, link in hostvars[node].ethernet_interfaces.items() %}
+| {{ node }} | {{ interface_name }} | {{ link.ip_address }}| {{ link.peer }}| {{ link.peer_interface }} | {{ link.ip_address | ipaddr('network') | ipmath(+1) }}/31 |
+{%              endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+
+### Super Spine Overlay Loopback Interfaces (BGP EVPN Peering, if required)
+
+| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------------------ | ------------------- | ------------------ | ------------------ |
+| {{ super_spine_loopback_network_summary  }} | {{ super_spine_loopback_network_summary | ipaddr('size') }} | {{ super_spine.nodes | length }} | {{ (( super_spine.nodes | length ) / super_spine_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Loopback0 Interfaces to Super Spine Node Allocation
+
+| Node | Loopback0 |
+| ---- | --------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "super-spine" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{%     endif %}
+{% endfor %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{%     endif %}
+{% endfor %}
+
+## Overlay Controller IP Allocation
+
+### Overlay Controller Point-To-Point Links
+
+| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ----------- | ------------------- | ------------------ | ------------------ |
+{% set oc = namespace() %}
+{% set oc.eth_counter = 0 %}
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             set oc.eth_counter = oc.eth_counter + hostvars[node].ethernet_interfaces | length %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+| {{ overlay_controller_p2p_network_summary }} | {{ overlay_controller_p2p_network_summary | ipaddr('size') }} | {{ oc.eth_counter * 2 }} | {{ (( oc.eth_counter * 2 ) / overlay_controller_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Point-To-Point Links Node Allocation
+
+| Overlay-Controller Node | Overlay-Controller Interface | Overlay-Controller IP Address | Node | Interface | IP Address |
+| ----------------------- | ---------------------------- | ----------------------------- | ---- | --------- | ---------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%              for interface_name, link in hostvars[node].ethernet_interfaces.items() %}
+| {{ node }} | {{ interface_name }} | {{ link.ip_address }}| {{ link.peer }}| {{ link.peer_interface }} | {{ link.ip_address | ipaddr('network') }}/31 |
+{%              endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+
+### Overlay Controller Loopback Interfaces (BGP EVPN Peering, if required)
+
+| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------------------ | ------------------- | ------------------ | ------------------ |
+| {{ overlay_controller_loopback_network_summary  }} | {{ overlay_controller_loopback_network_summary | ipaddr('size') }} | {{ overlay_controller.nodes | length }} | {{ (( overlay_controller.nodes | length ) / overlay_controller_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+
+### Loopback0 Interfaces to Overlay Controller Node Allocation
+
+| Node | Loopback0 |
+| ---- | --------- |
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "overlay-controller" %}
+| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{%     endif %}
+{% endfor %}

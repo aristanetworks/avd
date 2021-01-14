@@ -9,8 +9,11 @@
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
   - [Management SSH](#management-ssh)
+  - [Management GNMI](#management-api-gnmi)
+  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [TACACS Servers](#tacacs-servers)
   - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
   - [RADIUS Servers](#radius-servers)
@@ -23,6 +26,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Logging](#logging)
+  - [SNMP](#snmp)
   - [SFlow](#sflow)
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -32,6 +36,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Interface Defaults](#internet-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -42,6 +47,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [IPv6 Static Routes](#ipv6-static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -50,11 +56,11 @@
   - [Router Multicast](#router-multicast)
   - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
+  - [Community-lists](#community-lists)
   - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
+  - [Prefix-lists](#prefix-lists)
+  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
+  - [Route-maps](#route-maps)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
@@ -66,6 +72,10 @@
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
+- [Errdisable](#errdisable)
+- [MAC security](#mac-security)
+- [QOS](#qos)
+- [QOS Profiles](#qos-profiles)
 
 # Management
 
@@ -73,17 +83,17 @@
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
 | Management Interface | description | VRF | IP Address | Gateway |
 | -------------------- | ----------- | --- | ---------- | ------- |
 | Management1 | oob_management | MGMT | 192.168.200.103/24 | 192.168.200.5 |
 
-IPv6
+#### IPv6
 
 | Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management1 | oob_management | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -91,6 +101,7 @@ IPv6
 !
 interface Management1
    description oob_management
+   no shutdown
    vrf MGMT
    ip address 192.168.200.103/24
 ```
@@ -99,7 +110,7 @@ interface Management1
 
 DNS domain not defined
 
-## Domain-List
+## Domain-list
 
 Domain-list not defined
 
@@ -127,9 +138,9 @@ DNS domain lookup not defined
 
 ### NTP Summary
 
-Local Interface: Management1
+- Local Interface: Management1
 
-VRF: MGMT
+- VRF: MGMT
 
 | Node | Primary |
 | ---- | ------- |
@@ -143,9 +154,42 @@ ntp local-interface vrf MGMT Management1
 ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
+## PTP
+
+PTP is not defined.
+
 ## Management SSH
 
-Management SSH is not defined
+Management SSH not defined
+
+## Management API GNMI
+
+Management API gnmi is not defined
+
+## Management API HTTP
+
+### Management API HTTP Summary
+
+| HTTP | HTTPS |
+| ---------- | ---------- |
+|  default  |  true  |
+
+### Management API VRF Access
+
+| VRF Name | IPv4 ACL | IPv6 ACL |
+| -------- | -------- | -------- |
+| MGMT |  -  |  -  |
+
+### Management API HTTP Configuration
+
+```eos
+!
+management api http-commands
+   no shutdown
+   !
+   vrf MGMT
+      no shutdown
+```
 
 # Authentication
 
@@ -153,7 +197,7 @@ Management SSH is not defined
 
 ### Local Users Summary
 
-| User | Privilege | role |
+| User | Privilege | Role |
 | ---- | --------- | ---- |
 | admin | 15 | network-admin |
 | cvpadmin | 15 | network-admin |
@@ -166,9 +210,13 @@ username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 ```
 
+## Enable Password
+
+Enable password not defined
+
 ## TACACS Servers
 
-TACACS servers not configured
+TACACS servers not defined
 
 ## IP TACACS Source Interfaces
 
@@ -176,7 +224,7 @@ IP TACACS source interfaces not defined
 
 ## RADIUS Servers
 
-RADIUS servers not configured
+RADIUS servers not defined
 
 ## AAA Server Groups
 
@@ -196,7 +244,7 @@ AAA accounting not defined
 
 # Management Security
 
-Management Security not defined
+Management security not defined
 
 # Aliases
 
@@ -208,9 +256,9 @@ Aliases not defined
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT |
+| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
+| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
+| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
 
 ### TerminAttr Daemon Device Configuration
 
@@ -225,21 +273,25 @@ daemon TerminAttr
 
 No logging settings defined
 
+## SNMP
+
+No SNMP settings defined
+
 ## SFlow
 
 No sFlow defined
 
 ## Hardware Counters
 
-No Hardware Counters defined
+No hardware counters defined
 
 ## VM Tracer Sessions
 
-No VM tracer session defined
+No VM tracer sessions defined
 
 ## Event Handler
 
-No Event Handler Defined
+No event handler defined
 
 # MLAG
 
@@ -247,11 +299,14 @@ MLAG not defined
 
 # Spanning Tree
 
-### Spanning Tree Summary
+## Spanning Tree Summary
 
-Mode: none
+STP mode: **none**
 
-### Spanning Tree Device Configuration
+### Global Spanning-Tree Settings
+
+
+## Spanning Tree Device Configuration
 
 ```eos
 !
@@ -260,13 +315,13 @@ spanning-tree mode none
 
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+## Internal VLAN Allocation Policy Configuration
 
 ```eos
 !
@@ -279,21 +334,43 @@ No VLANs defined
 
 # Interfaces
 
+## Interface Defaults
+
+No Interface Defaults defined
+
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.4/31 | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.12/31 | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.20/31 | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.28/31 | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.36/31 | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.44/31 | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | 1500 | routed | access | - | - | - | 172.31.255.52/31 | - | - |
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 
 *Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet3  |  routed  | - |  172.31.255.4/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet3  |  routed  | - |  172.31.255.12/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet3  |  routed  | - |  172.31.255.20/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet3  |  routed  | - |  172.31.255.28/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet3  |  routed  | - |  172.31.255.36/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet3  |  routed  | - |  172.31.255.44/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet3  |  routed  | - |  172.31.255.52/31  |  default  |  1500  |  false  |  -  |  -  |
+
+#### OSPF
+| Interface | Channel Group | Area | Cost | Mode |
+| --------- | ------------- | ---- | ---- |----- |
+| Ethernet1 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet2 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet3 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet4 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet5 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet6 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet7 | - | 0.0.0.0 |  -  |  point-to-point  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -301,6 +378,7 @@ No VLANs defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.4/31
    ip ospf network point-to-point
@@ -308,6 +386,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.12/31
    ip ospf network point-to-point
@@ -315,6 +394,7 @@ interface Ethernet2
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.20/31
    ip ospf network point-to-point
@@ -322,6 +402,7 @@ interface Ethernet3
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.28/31
    ip ospf network point-to-point
@@ -329,6 +410,7 @@ interface Ethernet4
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.36/31
    ip ospf network point-to-point
@@ -336,6 +418,7 @@ interface Ethernet5
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.44/31
    ip ospf network point-to-point
@@ -343,6 +426,7 @@ interface Ethernet6
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet3
+   no shutdown
    no switchport
    ip address 172.31.255.52/31
    ip ospf network point-to-point
@@ -351,23 +435,24 @@ interface Ethernet7
 
 ## Port-Channel Interfaces
 
-No Port-Channels defined
+No port-channels defined
 
 ## Loopback Interfaces
 
 ### Loopback Interfaces Summary
 
-IPv4
+#### IPv4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | 192.168.255.3/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 
-IPv6
+#### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | Global Routing Table | - |
+| Loopback0 | EVPN_Overlay_Peering | default | - |
+
 
 ### Loopback Interfaces Device Configuration
 
@@ -375,6 +460,7 @@ IPv6
 !
 interface Loopback0
    description EVPN_Overlay_Peering
+   no shutdown
    ip address 192.168.255.3/32
    ip ospf area 0.0.0.0
 ```
@@ -385,13 +471,13 @@ No VLAN interfaces defined
 
 ## VXLAN Interface
 
-No VXLAN interface defined
+No VXLAN interfaces defined
 
 # Routing
 
 ## Virtual Router MAC Address
 
-IP Virtual Router MAC Address is not defined
+IP virtual router MAC address not defined
 
 ## IP Routing
 
@@ -399,8 +485,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  True| | MGMT | False |
-
+| default | true|| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -409,22 +494,23 @@ IP Virtual Router MAC Address is not defined
 ip routing
 no ip routing vrf MGMT
 ```
+
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | | MGMT | False |
+| default | false || MGMT | false |
 
 
 ## Static Routes
 
 ### Static Routes Summary
 
-| VRF | Destination Prefix | Fowarding Address / Interface |
-| --- | ------------------ | ----------------------------- |
-| MGMT | 0.0.0.0/0 | 192.168.200.5 |
+| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
+| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
@@ -433,11 +519,19 @@ no ip routing vrf MGMT
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
+## IPv6 Static Routes
+
+IPv6 static routes not defined
+
+## ARP
+
+Global ARP timeout not defined.
+
 ## Router ISIS
 
 Router ISIS not defined
 
-# Router BGP
+## Router BGP
 
 ### Router BGP Summary
 
@@ -453,17 +547,17 @@ Router ISIS not defined
 
 ### Router BGP Peer Groups
 
-**EVPN-OVERLAY-PEERS**:
+#### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| next-hop unchanged | true |
-| source | Loopback0 |
-| bfd | true |
-| ebgp multihop | 3 |
-| send community | true |
-| maximum routes | 0 (no limit) |
+| Next-hop unchanged | True |
+| Source | Loopback0 |
+| Bfd | true |
+| Ebgp multihop | 3 |
+| Send community | true |
+| Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
 
@@ -476,7 +570,6 @@ Router ISIS not defined
 | 192.168.255.9 | 65103 |
 | 192.168.255.10 | 65104 |
 | 192.168.255.11 | 65104 |
-
 
 ### Router BGP EVPN Address Family
 
@@ -555,25 +648,25 @@ Router PIM sparse mode not defined
 
 # Filters
 
-## Community Lists
+## Community-lists
 
-Community Lists not defined
+Community-lists not defined
 
 ## Peer Filters
 
-No Peer Filters defined
+No peer filters defined
 
-## Prefix Lists
+## Prefix-lists
 
-### Prefix Lists Summary
+### Prefix-lists Summary
 
-**PL-LOOPBACKS-EVPN-OVERLAY:**
+#### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 192.168.255.0/24 le 32 |
 
-### Prefix Lists Device Configuration
+### Prefix-lists Device Configuration
 
 ```eos
 !
@@ -581,45 +674,45 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 le 32
 ```
 
-## IPv6 Prefix Lists
+## IPv6 Prefix-lists
 
-IPv6 Prefix lists not defined
+IPv6 prefix-lists not defined
 
-## Route Maps
+## Route-maps
 
-No route maps defined
+No route-maps defined
 
 ## IP Extended Communities
 
-No Extended community defined
+No extended community defined
 
 # ACL
 
 ## Standard Access-lists
 
-Standard Access-lists not defined
+Standard access-lists not defined
 
 ## Extended Access-lists
 
-Extended Access-lists not defined
+Extended access-lists not defined
 
 ## IPv6 Standard Access-lists
 
-IPv6 Standard Access-lists not defined
+IPv6 standard access-lists not defined
 
 ## IPv6 Extended Access-lists
 
-IPv6 Extended Access-lists not defined
+IPv6 extended access-lists not defined
 
 # VRF Instances
 
-### VRF Instances Summary
+## VRF Instances Summary
 
 | VRF Name | IP Routing |
 | -------- | ---------- |
-| MGMT |  disabled |
+| MGMT | disabled |
 
-### VRF Instances Device Configuration
+## VRF Instances Device Configuration
 
 ```eos
 !
@@ -628,11 +721,11 @@ vrf instance MGMT
 
 # Virtual Source NAT
 
-Virtual Source NAT is not defined
+Virtual source NAT not defined
 
 # Platform
 
-No Platform parameters defined
+No platform parameters defined
 
 # Router L2 VPN
 
@@ -640,8 +733,24 @@ Router L2 VPN not defined
 
 # IP DHCP Relay
 
-IP DHCP Relay not defined
+IP DHCP relay not defined
 
-## Custom Templates
+# Errdisable
 
-No Custom Templates Defined
+Errdisable is not defined.
+
+# MACsec
+
+MACsec not defined
+
+# QOS
+
+QOS is not defined.
+
+# QOS Profiles
+
+QOS Profiles are not defined
+
+# Custom Templates
+
+No custom templates defined

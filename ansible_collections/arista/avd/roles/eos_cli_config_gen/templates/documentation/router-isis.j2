@@ -16,6 +16,40 @@
 | Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|
 {%     endif %}
 
+### ISIS Interfaces Summary
+
+| Interface | ISIS Instance | ISIS Metric | Interface Mode |
+| -------- | -------- | -------- | -------- |
+{# ethernet interfaces #}
+{# ------- #}
+{%      if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+{%          for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%              if ethernet_interfaces[ethernet_interface].isis_enable is defined and ethernet_interfaces[ethernet_interface].isis_enable is not none %}
+| {{  ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].isis_enable }} |  {{ ethernet_interfaces[ethernet_interface].isis_metric | default('-') }} | {% if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point is not none %} point-to-point {% elif ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%              endif %}
+{%          endfor %}
+{%      endif %}
+{# ------- #}
+{# vlan interfaces #}
+{# ------- #}
+{%      if vlan_interfaces is defined and vlan_interfaces is not none %}
+{%          for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%              if vlan_interfaces[vlan_interface].isis_enable is defined and vlan_interfaces[vlan_interface].isis_enable is not none %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} |  {{ vlan_interfaces[vlan_interface].isis_metric | default('-') }} | {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is defined and vlan_interfaces[vlan_interface].isis_network_point_to_point is not none %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is defined and vlan_interfaces[vlan_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%              endif %}
+{%          endfor %}
+{%      endif %}
+{# ------- #}
+{# loopback interfaces #}
+{# ------- #}
+{%      if loopback_interfaces is defined and loopback_interfaces is not none %}
+{%          for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%              if loopback_interfaces[loopback_interface].isis_enable is defined and loopback_interfaces[loopback_interface].isis_enable is not none %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].isis_enable }} |  {{ loopback_interfaces[loopback_interface].isis_metric | default('-') }} | {% if loopback_interfaces[loopback_interface].isis_network_point_to_point is defined and loopback_interfaces[loopback_interface].isis_network_point_to_point is not none %} point-to-point {% elif loopback_interfaces[loopback_interface].isis_passive is defined and loopback_interfaces[loopback_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%              endif %}
+{%          endfor %}
+{%      endif %}
+
 ### Router ISIS Device Configuration
 
 ```eos

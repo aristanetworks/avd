@@ -1,0 +1,28 @@
+Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
+{% for node in groups[dc_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == "spine" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type == 'super-spine' %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%                  endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if hostvars[node].type == "super-spine" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type == 'spine' %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%                  endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{%     if hostvars[node].type == "overlay-controller" %}
+{%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
+{%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endfor %}

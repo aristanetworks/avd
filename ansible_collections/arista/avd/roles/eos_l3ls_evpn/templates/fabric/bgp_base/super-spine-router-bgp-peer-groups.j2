@@ -1,0 +1,20 @@
+{# Spine router bgp peer groups configuration #}
+{# Underlay network peering #}
+{% if switch.underlay_routing_protocol == "ebgp" %}
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: true
+{% endif %}
+{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_overlay_peers | length > 0 %}
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      next_hop_unchanged: true
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: 15
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: true
+      maximum_routes: 0
+{% endif %}

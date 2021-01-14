@@ -7,11 +7,15 @@
 {%       endif %}
 {%     endif %}
 
+{%     if management_security.entropy_source is defined and management_security.entropy_source is not none %}
+ Management Security entropy source is {{ management_security.entropy_source }}
+{%     endif %}
+
 ## Management Security Configuration
 
 ```eos
 {% include 'eos/management-security.j2' %}
 ```
 {% else %}
-Management Security not defined
+Management security not defined
 {% endif %}

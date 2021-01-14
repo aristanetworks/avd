@@ -8,6 +8,8 @@
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ server }}_{{ adapter.port_channel.description }}
+    type: switched
+    shutdown: false
     vlans: {{ port_profiles[adapter.profile].vlans }}
     mode: {{ port_profiles[adapter.profile].mode }}
 {%                 if port_profiles[adapter.profile].native_vlan is defined %}
@@ -31,6 +33,9 @@
 {%                     endif %}
 {%                     if port_profiles[adapter.profile].spanning_tree_bpdufilter is defined %}
     spanning_tree_bpdufilter: {{ port_profiles[adapter.profile].spanning_tree_bpdufilter }}
+{%                     endif %}
+{%                     if adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) is arista.avd.defined %}
+    service_profile: {{ adapter.qos_profile | arista.avd.default(port_profiles[adapter.profile].qos_profile) }}
 {%                     endif %}
 {%                 break %}
 {%                 endif %}

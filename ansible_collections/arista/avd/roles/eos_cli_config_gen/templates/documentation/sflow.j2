@@ -18,18 +18,18 @@
 {%      endif %}
 {%      if sflow.destinations is defined and sflow.destinations is not none %}
 {%          for destination in sflow.destinations %}
-| GRT | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
+| default | - | {{ destination }} |{% if sflow.destinations[destination].port is defined and sflow.destinations[destination].port is not none %} {{ sflow.destinations[destination].port }} {% else %} 6343 {% endif %} |
 {%          endfor %}
 {%     endif %}
 {%     if sflow.source_interface is defined and sflow.source_interface is not none %}
-| GRT | {{ sflow.source_interface }} | - | - |
+| default | {{ sflow.source_interface }} | - | - |
 {%     endif %}
 {%   endif %}
 {%     if sflow.sample is defined and sflow.sample is not none %}
 
 sFlow Sample Rate: {{ sflow.sample }}
 {%     endif %}
-{%     if sflow.run is defined and sflow.run == True %}
+{%     if sflow.run is defined and sflow.run == true %}
 
 sFlow is enabled.
 {% else %}

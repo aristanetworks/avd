@@ -1,0 +1,9 @@
+---
+- name: Converge - generate DHCP configuration offline
+  hosts: TOOLS
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: generate intented configuration
+      import_role:
+         name: arista.avd.dhcp_provisioner

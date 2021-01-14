@@ -1,0 +1,23 @@
+{# loopback0 reachability test #}
+{% set address = [] %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == 'l3leaf' %}
+{%         if hostvars[node].loopback_interfaces.Loopback0.ip_address is defined and hostvars[node].loopback_interfaces.Loopback0.ip_address is not none %}
+{%             do address.append(hostvars[node].loopback_interfaces.Loopback0.ip_address | ipaddr('address')) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+loopback0_reachability:
+  loopback0_range: {{ address | unique }}
+
+{# loopback1 reachability test #}
+{% set address = [] %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type == 'l3leaf' %}
+{%         if hostvars[node].loopback_interfaces.Loopback1.ip_address is defined and hostvars[node].loopback_interfaces.Loopback1.ip_address is not none %}
+{%             do address.append(hostvars[node].loopback_interfaces.Loopback1.ip_address | ipaddr('address')) %}
+{%         endif %}
+{%     endif %}
+{% endfor %}
+loopback1_reachability:
+  loopback1_range: {{ address | unique }}

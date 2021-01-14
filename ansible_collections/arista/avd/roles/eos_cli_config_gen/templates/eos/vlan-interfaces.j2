@@ -8,6 +8,8 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown == true %}
    shutdown
+{%         elif vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown == false %}
+   no shutdown
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu != 1500 %}
    mtu {{ vlan_interfaces[vlan_interface].mtu }}
@@ -22,10 +24,15 @@ interface {{ vlan_interface }}
    arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
 {%         endif %}
 {%             if vlan_interfaces[vlan_interface].ip_proxy_arp is defined and vlan_interfaces[vlan_interface].ip_proxy_arp == true %}
-   ip proxy-arp 
+   ip proxy-arp
 {%             endif %}
 {%         if vlan_interfaces[vlan_interface].ip_address is defined %}
    ip address {{ vlan_interfaces[vlan_interface].ip_address }}
+{%             if vlan_interfaces[vlan_interface].ip_address_secondaries is defined and vlan_interfaces[vlan_interface].ip_address_secondaries is not none %}
+{%                 for ip_address_secondary in vlan_interfaces[vlan_interface].ip_address_secondaries %}
+   ip address {{ ip_address_secondary }} secondary
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].ip_virtual_router_address is defined %}
    ip virtual-router address {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }}
@@ -61,7 +68,7 @@ interface {{ vlan_interface }}
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled == true %}
-   multicast ipv4 source route export {% if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is not none %}{{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}{% endif %}
+   multicast ipv4 source route export{% if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is defined and vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is not none %} {{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}{% endif %}
 
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].access_group_in is defined and vlan_interfaces[vlan_interface].access_group_in is not none %}
@@ -141,6 +148,9 @@ interface {{ vlan_interface }}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} ipv6 {{ vlan_interfaces[vlan_interface].vrrp.ipv6 }}
 {%             endif %}
 {%           endif %}
+{%         endif %}
+{%         if vlan_interfaces[vlan_interface].ip_attached_host_route_export is defined and vlan_interfaces[vlan_interface].ip_attached_host_route_export is not none %}
+   ip attached-host route export {{ vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance | arista.avd.default("") }}
 {%         endif %}
 {%     endfor %}
 {% endif %}
