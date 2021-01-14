@@ -238,8 +238,8 @@ port_channel_interfaces:
     description: server01_MLAG_PortChanne1
     type: switched
     shutdown: false
-    vlans: 210-211
     mode: trunk
+    vlans: 210-211
     mlag: 10
 ethernet_interfaces:
   Ethernet1:
