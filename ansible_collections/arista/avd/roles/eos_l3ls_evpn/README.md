@@ -750,7 +750,7 @@ l2leaf:
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
-      # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic. 
+      # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
       mlag_ibgp_origin_incomplete: < true | false -> default true >
 
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
