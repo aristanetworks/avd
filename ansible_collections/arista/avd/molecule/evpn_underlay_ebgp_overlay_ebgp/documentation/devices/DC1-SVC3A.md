@@ -363,6 +363,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
+| 2 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3  |
 | 110 | Tenant_A_OP_Zone_1 | none  |
 | 111 | Tenant_A_OP_Zone_2 | none  |
 | 120 | Tenant_A_WEB_Zone_1 | none  |
@@ -387,7 +388,6 @@ vlan internal order ascending range 1006 1199
 | 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3  |
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3  |
 | 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3  |
-| 3029 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3  |
 | 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3  |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
 | 4094 | MLAG_PEER | MLAG  |
@@ -395,6 +395,10 @@ vlan internal order ascending range 1006 1199
 ## VLANs Device Configuration
 
 ```eos
+!
+vlan 2
+   name MLAG_iBGP_Tenant_C_OP_Zone
+   trunk group LEAF_PEER_L3
 !
 vlan 110
    name Tenant_A_OP_Zone_1
@@ -473,10 +477,6 @@ vlan 3019
 !
 vlan 3020
    name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
-!
-vlan 3029
-   name MLAG_iBGP_Tenant_C_OP_Zone
    trunk group LEAF_PEER_L3
 !
 vlan 3030
@@ -761,6 +761,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
+| Vlan2 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone  |  Tenant_C_OP_Zone  |  1500  |  false  |
 | Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
@@ -783,7 +784,6 @@ interface Loopback100
 | Vlan3013 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone  |  Tenant_A_WAN_Zone  |  1500  |  false  |
 | Vlan3019 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone  |  Tenant_B_OP_Zone  |  1500  |  false  |
 | Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  1500  |  false  |
-| Vlan3029 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone  |  Tenant_C_OP_Zone  |  1500  |  false  |
 | Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  1500  |  false  |
 | Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
@@ -792,6 +792,7 @@ interface Loopback100
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan2 |  Tenant_C_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan110 |  Tenant_A_OP_Zone  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
@@ -814,7 +815,6 @@ interface Loopback100
 | Vlan3013 |  Tenant_A_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3020 |  Tenant_B_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan3029 |  Tenant_C_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4093 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
@@ -824,6 +824,12 @@ interface Loopback100
 ### VLAN Interfaces Device Configuration
 
 ```eos
+!
+interface Vlan2
+   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
+   no shutdown
+   vrf Tenant_C_OP_Zone
+   ip address 10.255.251.6/31
 !
 interface Vlan110
    description Tenant_A_OP_Zone_1
@@ -958,12 +964,6 @@ interface Vlan3020
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
    no shutdown
    vrf Tenant_B_WAN_Zone
-   ip address 10.255.251.6/31
-!
-interface Vlan3029
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
-   no shutdown
-   vrf Tenant_C_OP_Zone
    ip address 10.255.251.6/31
 !
 interface Vlan3030

@@ -943,6 +943,10 @@ tenants:
         # Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
         enable_mlag_ibgp_peering_vrfs: < true | false >
 
+        # Manually define the VLAN used on the MLAG pair for the iBGP session. | Optional
+        # By default this parameter is calculated using the following formula: <base_vlan> + <vrf_vni>
+        mlag_ibgp_peering_vlan: <1-4096>
+
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
         vtep_diagnostic:
