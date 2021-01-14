@@ -29,6 +29,7 @@
 | {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%   endfor %}
+
 {# IPv4 #}
 {%   set port_channel_interface_ipv4 = namespace() %}
 {%   set port_channel_interface_ipv4.configured = false %}
@@ -40,7 +41,6 @@
 {%        endfor %}
 {%    endif %}
 {%    if port_channel_interface_ipv4.configured == true %}
-
 #### IPv4
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
@@ -59,6 +59,7 @@
 | {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
 {%            endif %}
 {%        endfor %}
+
 {%    endif %}
 {# IPv6 #}
 {%   set port_channel_interface_ipv6 = namespace() %}
@@ -71,7 +72,6 @@
 {%        endfor %}
 {%    endif %}
 {%    if port_channel_interface_ipv6.configured == true %}
-
 #### IPv6
 
 | Interface | Description | Type | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
@@ -113,9 +113,9 @@
 {%                  set port_channel_interface_ospf.configured = true %}
 {%              endif %}
 {%         endfor %}
+
 {%     endif %}
 {%     if po_interface_ospf.configured == true or port_channel_interface_ospf.configured == true %}
-
 #### OSPF
 
 | Interface | Channel Group | Area | Cost | Mode |
@@ -132,8 +132,8 @@
 {%                endif %}
 {%             endif %}
 {%          endfor %}
-{%     endif %}
 
+{%     endif %}
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
