@@ -77,6 +77,7 @@
 - [MAC security](#mac-security)
 - [QOS](#qos)
 - [QOS Profiles](#qos-profiles)
+- [Class Maps](#class-maps)
 
 # Management
 
@@ -598,3 +599,7 @@ qos profile test
 # Custom Templates
 
 No custom templates defined
+
+# Class Maps
+
+Class-maps not defined

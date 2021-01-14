@@ -1,4 +1,4 @@
-# event-handlers
+# class_maps
 
 # Table of Contents
 
@@ -217,21 +217,7 @@ No VM tracer sessions defined
 
 ## Event Handler
 
-### Event Handler Summary
-
-| Handler | Action Type | Action | Trigger |
-| ------- | ----------- | ------ | ------- |
-| tracking | bash | /mnt/flash/tracking.sh | on-boot |
-
-### Event Handler Device Configuration
-
-```eos
-!
-event-handler tracking
-   trigger on-boot
-   action bash /mnt/flash/tracking.sh
-   delay 300
-```
+No event handler defined
 
 # MLAG
 
@@ -441,4 +427,24 @@ No custom templates defined
 
 # Class Maps
 
-Class-maps not defined
+## QOS Class Maps
+
+| Name | Field | Value |
+| ---- | ----- | ----- |
+| CM_REPLICATION_LD | acl | ACL_REPLICATION_LD |
+| CM_REPLICATION_LD2 | vlan | 200 |
+| CM_REPLICATION_LD3 | cos | 3 |
+
+## Class-maps Device Configuration
+
+```eos
+!
+class-map type qos match-any CM_REPLICATION_LD
+   match ip access-group ACL_REPLICATION_LD
+!
+class-map type qos match-any CM_REPLICATION_LD2
+   match vlan 200
+!
+class-map type qos match-any CM_REPLICATION_LD3
+   match cos 3
+```

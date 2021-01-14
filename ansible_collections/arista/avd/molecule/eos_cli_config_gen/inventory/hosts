@@ -24,6 +24,7 @@ port-channel-interfaces
 prefix-lists
 ptp
 qos
+class_maps
 route-maps
 router-bgp-base
 router-bgp-evpn
