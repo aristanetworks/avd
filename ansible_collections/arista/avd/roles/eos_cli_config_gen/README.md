@@ -781,7 +781,7 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
-    type: < routed | switched >
+    type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
@@ -841,10 +841,38 @@ ethernet_interfaces:
       dscp: < dscp-value >
       cos: < cos-value >
 
-# Switched Interfaces
+  # Sub L3 interface
+  <Ethernet_interface_10>:
+    description: < description >
+    type: < routed >
+  <Ethernet_interface_10:101>:
+    description: < description >
+    type: < l3dot1q >
+    encapsulation:
+      dot1q:
+        vlan: < dot1q tag to mark packets >
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+    ip_address_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
+    ipv6_enable: < true | false >
+    ipv6_address: < IPv6_address/Mask >
+    ipv6_address_link_local: < link_local_IPv6_address/Mask >
+    ipv6_nd_ra_disabled: < true | false >
+    ipv6_nd_managed_config_flag: < true | false >
+    ipv6_nd_prefixes:
+      < IPv6_address_1/Mask >:
+        valid_lifetime: < infinite or lifetime in seconds >
+        preferred_lifetime: < infinite or lifetime in seconds >
+        no_autoconfig_flag: < true | false >
+      < IPv6_address_2/Mask >:
+
+  # Switched Interfaces
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
+    type: < routed | switched | l3dot1q >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
     vlans: "< list of vlans as string >"
