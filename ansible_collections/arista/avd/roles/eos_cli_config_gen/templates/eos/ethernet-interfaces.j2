@@ -32,7 +32,7 @@ interface {{ ethernet_interface }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].type is arista.avd.defined("routed") %}
    no switchport
-{%             else %}
+{%             elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined("switched") %}
    switchport
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].flowcontrol is arista.avd.defined %}
@@ -56,6 +56,9 @@ interface {{ ethernet_interface }}
 {%                 for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%                 endfor %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan is defined %}
+   encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].qos is arista.avd.defined %}
 {%                 if ethernet_interfaces[ethernet_interface].qos.trust is arista.avd.defined %}
