@@ -1,5 +1,16 @@
 {% if tcam_profile is defined and tcam_profile is not none %}
 !
 hardware tcam
-   system profile {{ tcam_profile[0] }}
+{%     if tcam_profile.profiles is arista.avd.defined %}
+{%         for profile in tcam_profile.profiles %}
+   profile {{ profile }}
+{{ tcam_profile.profiles[profile] }}
+   !
+{%         endfor %}
+{%     else %}
+   !
+{%     endif %}
+{%     if tcam_profile.system is arista.avd.defined %}
+   system profile {{ tcam_profile.system }}
+{%     endif %}
 {% endif %}
