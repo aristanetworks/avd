@@ -140,6 +140,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# class-map #}
+{% include 'eos/class-map.j2' %}
 {# ARP #}
 {% include 'eos/arp.j2' %}
 {# Community-lists #}
