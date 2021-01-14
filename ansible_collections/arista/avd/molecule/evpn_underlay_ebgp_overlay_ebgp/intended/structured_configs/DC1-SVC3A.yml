@@ -213,7 +213,7 @@ vlans:
   311:
     tenant: Tenant_C
     name: Tenant_C_OP_Zone_2
-  3029:
+  2:
     tenant: Tenant_C
     name: MLAG_iBGP_Tenant_C_OP_Zone
     trunk_groups:
@@ -587,7 +587,7 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
-  Vlan3029:
+  Vlan2:
     tenant: Tenant_C
     type: underlay_peering
     shutdown: false
