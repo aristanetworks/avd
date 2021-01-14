@@ -278,7 +278,8 @@ IP virtual router MAC address not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|| MGMT | false |
+| default | false|
+| MGMT | false |
 | TENANT_A_PROJECT01 | true |
 | TENANT_A_PROJECT02 | true |
 

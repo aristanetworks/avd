@@ -302,6 +302,7 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false|
+
 ### IP Routing Device Configuration
 
 ```eos

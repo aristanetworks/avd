@@ -261,6 +261,20 @@ No Interface Defaults defined
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+
+ *Inherited from Port-Channel Interface 
+
+#### OSPF
+
+| Interface | Channel Group | Area | Cost | Mode |
+| --------- | ------------- | ---- | ---- |----- |
+
+ *Inherited from Port-Channel Interface 
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -276,6 +290,11 @@ interface Ethernet4
 interface Ethernet5
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
+!
+interface Ethernet8
+   description Child TEST
+   logging event link-status
+   channel-group 8 mode active
 !
 interface Ethernet50
    description SRV-POD03_Eth1
@@ -293,8 +312,18 @@ interface Ethernet50
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
-| Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
-| Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | SUB TEST | l3dot1q | - | 10.255.1.0/31 | C1 | 1500 | - | - | - |
+
+#### OSPF
+
+| Interface | Channel Group | Area | Cost | Mode |
+| --------- | ------------- | ---- | ---- |----- |
+| Port-Channel8.101 | - | 0.0.0.0 |  -  |  point-to-point  |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -302,7 +331,6 @@ interface Ethernet50
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
-   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -310,7 +338,6 @@ interface Port-Channel3
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
-   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5
@@ -318,9 +345,23 @@ interface Port-Channel5
    storm-control multicast level 1
    storm-control unknown-unicast level 1
 !
+interface Port-Channel8
+   description TEST
+   logging event link-status
+   no switchport
+!
+interface Port-Channel8.101
+   description SUB TEST
+   logging event link-status
+   mtu 1500
+   encapsulation dot1q vlan 101
+   vrf C1
+   ip address 10.255.1.0/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
+!
 interface Port-Channel50
    description SRV-POD03_PortChanne1
-   switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    !
@@ -329,24 +370,6 @@ interface Port-Channel50
        route-target import 03:03:02:02:01:01
    !
    lacp system-id 0303.0202.0101
-!
-interface Port-Channel100
-   logging event link-status
-   no switchport
-!
-interface Port-Channel100.101
-   description IFL for TENANT01
-   logging event link-status
-   mtu 1500
-   switchport
-   ip address 10.1.1.3/31
-!
-interface Port-Channel100.102
-   description IFL for TENANT02
-   mtu 1500
-   switchport
-   vrf C2
-   ip address 10.1.2.3/31
 ```
 
 ## Loopback Interfaces
@@ -374,6 +397,7 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false|
+
 ### IP Routing Device Configuration
 
 ```eos

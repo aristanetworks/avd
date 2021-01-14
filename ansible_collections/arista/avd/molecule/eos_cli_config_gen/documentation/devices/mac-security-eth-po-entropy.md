@@ -270,13 +270,16 @@ No Interface Defaults defined
 
 *Inherited from Port-Channel Interface
 
+
+
+
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
    mac security profile A1
-   switchport
    ip address 1.1.1.1/24
 !
 interface Ethernet3
@@ -301,7 +304,6 @@ interface Ethernet3
 !
 interface Port-Channel3
    description L2-PORT
-   switchport
    switchport trunk allowed vlan 1-5
    switchport mode trunk
 ```
@@ -331,6 +333,7 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false|
+
 ### IP Routing Device Configuration
 
 ```eos

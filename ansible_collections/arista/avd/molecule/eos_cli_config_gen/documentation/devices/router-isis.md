@@ -265,6 +265,10 @@ No Interface Defaults defined
 | Ethernet1 |  P2P_LINK_TO_EAPI-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
 | Ethernet2 |  P2P_LINK_TO_EAPI-SPINE2_Ethernet1  |  routed  | - |  172.31.255.3/31  |  default  |  1500  |  -  |  -  |  -  |
 
+
+
+
+
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
@@ -409,6 +413,7 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false|
+
 ### IP Routing Device Configuration
 
 ```eos

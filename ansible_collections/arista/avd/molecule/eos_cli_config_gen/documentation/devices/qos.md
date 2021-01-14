@@ -266,6 +266,10 @@ No Interface Defaults defined
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
 
+
+
+
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -288,7 +292,6 @@ interface Ethernet4
 !
 interface Ethernet6
    description SRV-POD02_Eth1
-   switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    qos trust cos
@@ -312,7 +315,6 @@ interface Ethernet6
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
-   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -347,6 +349,7 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false|
+
 ### IP Routing Device Configuration
 
 ```eos

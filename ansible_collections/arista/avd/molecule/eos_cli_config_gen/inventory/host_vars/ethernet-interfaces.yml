@@ -39,3 +39,23 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+
+  Ethernet10:
+    description: TEST
+    type: routed
+    logging:
+      event:
+        link_status: true
+
+  Ethernet10.101:
+    description: SUB Test
+    type: l3dot1q
+    logging:
+      event:
+        link_status: true
+    mtu: 1500
+    ip_address: 10.1.1.1/31
+    vrf: C1
+    encapsulation:
+      dot1q:
+        vlan: 101
