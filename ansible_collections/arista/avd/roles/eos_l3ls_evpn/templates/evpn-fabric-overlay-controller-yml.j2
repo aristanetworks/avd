@@ -302,6 +302,8 @@ router_bgp:
 {% include 'fabric/bgp_overlay/overlay-controller-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
+  address_family_rtc:
+{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###

@@ -1846,10 +1846,17 @@ all:
 
 ### Additional Variables For Flexible EVPN Overlay peerings
 
-Assigned to any device group:
+Assigned to any EVPN client device group:
 
 ```yaml
-evpn_overlay_controller_groups: [ < inventory_group > ]  # One or more groups containing EVPN RR/RS.
+# One or more groups containing EVPN RR/RS.
+evpn_overlay_controller_groups: [ < inventory_group > ]
+```
+
+Assigned to fabric group:
+```yaml
+# Enable Route Target Memebership Contraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+evpn_overlay_bgp_rtc: < true | false , default -> false >
 ```
 
 ## Custom EOS Structured Configuration
