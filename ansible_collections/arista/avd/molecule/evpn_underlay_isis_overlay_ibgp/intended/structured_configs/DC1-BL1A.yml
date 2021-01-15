@@ -279,6 +279,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
   vlan_aware_bundles: null
   vlans: null
   vrfs: null

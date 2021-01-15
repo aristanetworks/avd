@@ -1855,7 +1855,8 @@ evpn_overlay_controller_groups: [ < inventory_group > ]
 
 Assigned to fabric group:
 ```yaml
-# Enable Route Target Memebership Contraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Enable Route Target Memebership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Requires use of evpn_overlay_controller_groups and eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
 ```
 

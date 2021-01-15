@@ -405,6 +405,7 @@ router_bgp:
         activate: true
       MLAG-IPv4-UNDERLAY-PEER:
         activate: true
+  address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.11:14

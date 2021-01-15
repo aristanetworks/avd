@@ -212,6 +212,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
