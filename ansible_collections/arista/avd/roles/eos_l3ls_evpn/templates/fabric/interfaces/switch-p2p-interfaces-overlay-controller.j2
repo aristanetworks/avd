@@ -24,7 +24,7 @@
     peer: {{ overlay_controller_node }}
     peer_interface: {{ uplink_to_remote_switches[loop.index0] }}
     peer_type: overlay_controller
-    description: P2P_LINK_TO_{{ overlay_controller_remote_switch | upper }}_{{ uplink_to_remote_switches[loop.index0] }}
+    description: P2P_LINK_TO_{{ overlay_controller_node | upper }}_{{ uplink_to_remote_switches[loop.index0] }}
 {%                 if p2p_link_interface_speed is defined %}
     speed: {{ p2p_link_interface_speed }}
 {%                 endif %}
