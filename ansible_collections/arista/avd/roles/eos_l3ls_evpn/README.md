@@ -1784,6 +1784,8 @@ overlay_controller_p2p_network_summary: < IPv4_network/Mask >
 # Assign range larger then:
 # [ total overlay_controllers ]
 overlay_controller_loopback_network_summary: < IPv4_network/Mask >
+# Enable BFD for p2p BGP sessions - useful if the overlay_controller is a VM | Optional
+overlay_controller_p2p_bfd: < true | false | default -> false >
 # additional lines for overlay-controller BGP config
 overlay_controller_bgp_defaults:
   - no bgp default ipv4-unicast
