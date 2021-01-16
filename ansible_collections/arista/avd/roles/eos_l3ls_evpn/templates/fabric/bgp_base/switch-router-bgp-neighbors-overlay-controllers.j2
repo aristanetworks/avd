@@ -8,6 +8,9 @@
       peer_group: IPv4-UNDERLAY-PEERS
       description: {{ overlay_controller_node }}
       remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default( overlay_controller.defaults.bgp_as ) }}
+{%                 if overlay_controller_p2p_bfd is arista.avd.defined(true) %}
+      bfd: true
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}
