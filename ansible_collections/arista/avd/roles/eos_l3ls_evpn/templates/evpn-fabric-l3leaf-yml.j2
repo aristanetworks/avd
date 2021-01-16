@@ -500,6 +500,7 @@ router_bgp:
 {% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
   neighbors:
 {% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
