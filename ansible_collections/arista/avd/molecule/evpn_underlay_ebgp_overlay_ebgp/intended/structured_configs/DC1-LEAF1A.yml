@@ -336,6 +336,7 @@ router_bgp:
         activate: false
       IPv4-UNDERLAY-PEERS:
         activate: true
+  address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.5:12
