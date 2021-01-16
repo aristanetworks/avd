@@ -141,7 +141,7 @@ hostname {{ inventory_hostname }}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
 {# class-map #}
-{% include 'eos/class-map.j2' %}
+{% include 'eos/class-maps.j2' %}
 {# policy-map #}
 {% include 'eos/policy-maps.j2' %}
 {# ARP #}
