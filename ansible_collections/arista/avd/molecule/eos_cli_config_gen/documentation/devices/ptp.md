@@ -149,8 +149,8 @@ ptp source ip 1.1.1.1
 ptp priority1 1
 ptp priority2 2
 ptp ttl 200
-ptp message-type general dscp 4
-ptp message-type event dscp 8
+ptp message-type general dscp 4 default
+ptp message-type event dscp 8 default
 ```
 
 ## Management SSH
@@ -277,6 +277,8 @@ No Interface Defaults defined
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -284,7 +286,7 @@ No Interface Defaults defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -292,14 +294,61 @@ No Interface Defaults defined
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   switchport
+   switchport trunk allowed vlan 2,14
+   switchport mode trunk
+   ptp enable
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp vlan 2
+   ptp transport layer2
+!
+interface Ethernet5
+   description DC1-AGG01_Ethernet1
+   channel-group 5 mode active
+!
+interface Ethernet6
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
    no switchport
    ip address 172.31.255.15/31
    ptp enable
+   ptp announce interval 3
+   ptp announce timeout 9
+   ptp delay-req interval -7
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp transport ipv4
 ```
 
 ## Port-Channel Interfaces
 
-No port-channels defined
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel5
+   description DC1_L2LEAF1_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 5
+   ptp enable
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp vlan 2
+   ptp transport layer2
+```
 
 ## Loopback Interfaces
 
