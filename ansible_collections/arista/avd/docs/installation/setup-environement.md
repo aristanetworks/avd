@@ -30,7 +30,7 @@ $ cd git_projects
 
 $ git clone https://github.com/aristanetworks/ansible-avd.git
 $ git clone https://github.com/aristanetworks/ansible-cvp.git
-$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git4
+$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git
 
 # Copy Makefile at the root position
 $ cp ansible-avd/development/Makefile ./
@@ -44,11 +44,26 @@ Or you can use a one-liner script available in ansible-avd repository to create 
 - Clone AVD and CVP collections
 - Deploy Makefile
 
+Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+
+__To use AVD only__
+
+This one-liner will install AVD and CVP collection using latest version released on github. These branches might have some difference with the devel branch.
+
 ```shell
 $ sh -c "$(curl -fsSL https://get.avd.sh)"
 ```
 
-Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+__To develop with AVD__
+
+This one-liner will install AVD using `devel` branch.
+
+```shell
+$ sh -c "$(curl -fsSL https://get.avd.sh/dev/)"
+```
+
+!!! warning
+    As devel branch is always moving on, datamodel might change and demo content could be broken. It should be used for development only.
 
 ## Use docker as AVD shell
 
