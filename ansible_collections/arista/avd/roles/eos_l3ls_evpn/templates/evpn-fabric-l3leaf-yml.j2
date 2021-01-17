@@ -81,6 +81,7 @@
 {%             else %}
 {%                 set switch.mlag = l3leaf.defaults.mlag | default(true) %}
 {%             endif %}
+{%             set leaf.mlag_ibgp_origin_incomplete = l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete | arista.avd.default(l3leaf.defaults.mlag_ibgp_origin_incomplete, true) %}
 {%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l3leaf_node_group %}
@@ -89,7 +90,7 @@
 {%                 elif l3leaf.defaults.mlag_dual_primary_detection is defined %}
 {%                     set leaf.mlag_dual_primary_detection = l3leaf.defaults.mlag_dual_primary_detection %}
 {%                 else %}
-{%                     set leaf.mlag_dual_primary_detection = true %}
+{%                     set leaf.mlag_dual_primary_detection = false %}
 {%                 endif %}
 {%                 if l3leaf.node_groups[l3leaf_node_group].mlag_interfaces is defined %}
 {%                     set leaf.mlag_interfaces = l3leaf.node_groups[l3leaf_node_group].mlag_interfaces %}
@@ -499,12 +500,15 @@ router_bgp:
 {% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
   neighbors:
 {% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
 {% include 'fabric/bgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
+  address_family_rtc:
+{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
 {% include 'tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}

@@ -142,6 +142,8 @@ tenants:
     vrfs:
       Tenant_C_OP_Zone:
         vrf_vni: 30
+        enable_mlag_ibgp_peering_vrfs: true
+        mlag_ibgp_peering_vlan: 2
         svis:
           310:
             name: Tenant_C_OP_Zone_1

@@ -7,9 +7,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-BL1A\nip name-server vrf MGMT 192.168.200.5\n\
     ip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT Management1\n\
     ntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\n!\nusername\
-    \ admin privilege 15 role network-admin nopassword\nusername cvpadmin privilege\
-    \ 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
+    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
+    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
     !\nvlan 350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_iBGP_Tenant_A_WAN_Zone\n\
     \   trunk group LEAF_PEER_L3\n!\nvlan 3020\n   name MLAG_iBGP_Tenant_B_WAN_Zone\n\
@@ -56,16 +56,17 @@ CVP_CONFIGLETS:
     \ vrf Tenant_A_WAN_Zone\nip routing vrf Tenant_B_WAN_Zone\nip routing vrf Tenant_C_WAN_Zone\n\
     !\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24\
     \ eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id\
-    \ DC1_BL1\n   local-interface Vlan4094\n   peer-address 10.255.252.11\n   peer-address\
-    \ heartbeat 192.168.200.111 vrf MGMT\n   peer-link Port-Channel5\n   dual-primary\
-    \ detection delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n\
-    \   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
-    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
-    !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
-    \ 65104\n   router-id 192.168.255.10\n   no bgp default ipv4-unicast\n   distance\
-    \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
-    \ group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \ DC1_BL1\n   local-interface Vlan4094\n   peer-address 10.255.252.11\n   peer-link\
+    \ Port-Channel5\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip\
+    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
+    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN\
+    \ permit 10\n   description Make routes learned over MLAG Peer-link less preferred\
+    \ on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n\
+    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n   router-id\
+    \ 192.168.255.10\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
+    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
+    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
+    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -75,9 +76,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.42\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.44 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.42 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.44 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.46 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
@@ -111,9 +113,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-BL1B\nip name-server vrf MGMT 192.168.200.5\n\
     ip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT Management1\n\
     ntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\n!\nusername\
-    \ admin privilege 15 role network-admin nopassword\nusername cvpadmin privilege\
-    \ 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
+    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
+    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
     !\nvlan 350\n   name Tenant_C_WAN_Zone_1\n!\nvlan 3013\n   name MLAG_iBGP_Tenant_A_WAN_Zone\n\
     \   trunk group LEAF_PEER_L3\n!\nvlan 3020\n   name MLAG_iBGP_Tenant_B_WAN_Zone\n\
@@ -160,16 +162,17 @@ CVP_CONFIGLETS:
     \ vrf Tenant_A_WAN_Zone\nip routing vrf Tenant_B_WAN_Zone\nip routing vrf Tenant_C_WAN_Zone\n\
     !\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24\
     \ eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id\
-    \ DC1_BL1\n   local-interface Vlan4094\n   peer-address 10.255.252.10\n   peer-address\
-    \ heartbeat 192.168.200.110 vrf MGMT\n   peer-link Port-Channel5\n   dual-primary\
-    \ detection delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n\
-    \   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
-    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
-    !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
-    \ 65104\n   router-id 192.168.255.11\n   no bgp default ipv4-unicast\n   distance\
-    \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
-    \ group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \ DC1_BL1\n   local-interface Vlan4094\n   peer-address 10.255.252.10\n   peer-link\
+    \ Port-Channel5\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip\
+    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
+    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN\
+    \ permit 10\n   description Make routes learned over MLAG Peer-link less preferred\
+    \ on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n\
+    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n   router-id\
+    \ 192.168.255.11\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
+    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
+    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
+    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -179,9 +182,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.50\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.50 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.54 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
@@ -216,8 +220,8 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nspanning-tree mst 0 priority 16384\n!\nno aaa root\n\
-    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
-    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    no enable password\n!\nusername admin privilege 15 role network-admin nopassword\n\
+    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -240,9 +244,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\nspanning-tree mst 0\
-    \ priority 16384\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ priority 16384\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -266,12 +270,11 @@ CVP_CONFIGLETS:
     \ MGMT\n   ip address 192.168.200.113/24\n!\ninterface Vlan4094\n   description\
     \ MLAG_PEER\n   no shutdown\n   no autostate\n   ip address 10.255.252.16/31\n\
     !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
-    \   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-address heartbeat\
-    \ 192.168.200.114 vrf MGMT\n   peer-link Port-Channel3\n   dual-primary detection\
-    \ delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n   reload-delay\
-    \ non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n\
-    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nmanagement api http-commands\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-link Port-Channel3\n\
+    \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
+    \ 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200\
+    \ multiplier 3\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf\
+    \ MGMT\n      no shutdown\n!\nend"
   AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -281,9 +284,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4094\nspanning-tree mst 0\
-    \ priority 16384\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ priority 16384\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -307,12 +310,11 @@ CVP_CONFIGLETS:
     \ MGMT\n   ip address 192.168.200.114/24\n!\ninterface Vlan4094\n   description\
     \ MLAG_PEER\n   no shutdown\n   no autostate\n   ip address 10.255.252.17/31\n\
     !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
-    \   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-address heartbeat\
-    \ 192.168.200.113 vrf MGMT\n   peer-link Port-Channel3\n   dual-primary detection\
-    \ delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n   reload-delay\
-    \ non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n\
-    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nmanagement api http-commands\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-link Port-Channel3\n\
+    \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
+    \ 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200\
+    \ multiplier 3\n!\nmanagement api http-commands\n   no shutdown\n   !\n   vrf\
+    \ MGMT\n      no shutdown\n!\nend"
   AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -322,8 +324,8 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nspanning-tree mst 0 priority 4096\n!\nno aaa root\n\
-    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
-    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    no enable password\n!\nusername admin privilege 15 role network-admin nopassword\n\
+    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
     !\nvrf instance MGMT\n!\nvrf instance Tenant_A_APP_Zone\n!\nvrf instance Tenant_A_WEB_Zone\n\
@@ -395,9 +397,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -490,16 +492,17 @@ CVP_CONFIGLETS:
     \ Tenant_A_WEB_Zone\nip routing vrf Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n\
     !\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24\
     \ eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id\
-    \ DC1_LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.3\n   peer-address\
-    \ heartbeat 192.168.200.107 vrf MGMT\n   peer-link Port-Channel5\n   dual-primary\
-    \ detection delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n\
-    \   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
-    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
-    !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
-    \ 65102\n   router-id 192.168.255.6\n   no bgp default ipv4-unicast\n   distance\
-    \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
-    \ group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \ DC1_LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.3\n   peer-link\
+    \ Port-Channel5\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip\
+    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
+    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN\
+    \ permit 10\n   description Make routes learned over MLAG Peer-link less preferred\
+    \ on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n\
+    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id\
+    \ 192.168.255.6\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
+    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
+    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
+    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -509,9 +512,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.10\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.10 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
@@ -561,9 +565,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -656,16 +660,17 @@ CVP_CONFIGLETS:
     \ Tenant_A_WEB_Zone\nip routing vrf Tenant_B_OP_Zone\nip routing vrf Tenant_C_OP_Zone\n\
     !\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10 permit 192.168.255.0/24\
     \ eq 32\n   seq 20 permit 192.168.254.0/24 eq 32\n!\nmlag configuration\n   domain-id\
-    \ DC1_LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.2\n   peer-address\
-    \ heartbeat 192.168.200.106 vrf MGMT\n   peer-link Port-Channel5\n   dual-primary\
-    \ detection delay 5 action errdisable all-interfaces\n   reload-delay mlag 300\n\
-    \   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
-    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
-    !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
-    \ 65102\n   router-id 192.168.255.7\n   no bgp default ipv4-unicast\n   distance\
-    \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
-    \ group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \ DC1_LEAF2\n   local-interface Vlan4094\n   peer-address 10.255.252.2\n   peer-link\
+    \ Port-Channel5\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip\
+    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
+    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nroute-map RM-MLAG-PEER-IN\
+    \ permit 10\n   description Make routes learned over MLAG Peer-link less preferred\
+    \ on spines to ensure optimal routing\n   set origin incomplete\n!\nrouter bfd\n\
+    \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id\
+    \ 192.168.255.7\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
+    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
+    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
+    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -675,9 +680,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.18\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.18 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.22 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
@@ -726,8 +732,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-SPINE1\nip name-server vrf MGMT\
     \ 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT\
     \ Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode\
-    \ none\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin nopassword\n\
-    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ none\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet1\n\
     \   no shutdown\n   no switchport\n   ip address 172.31.255.0/31\n!\ninterface\
     \ Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet1\n   no shutdown\n\
@@ -787,8 +794,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-SPINE2\nip name-server vrf MGMT\
     \ 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT\
     \ Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode\
-    \ none\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin nopassword\n\
-    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ none\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2\n\
     \   no shutdown\n   no switchport\n   ip address 172.31.255.2/31\n!\ninterface\
     \ Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet2\n   no shutdown\n\
@@ -848,8 +856,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-SPINE3\nip name-server vrf MGMT\
     \ 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT\
     \ Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode\
-    \ none\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin nopassword\n\
-    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ none\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet3\n\
     \   no shutdown\n   no switchport\n   ip address 172.31.255.4/31\n!\ninterface\
     \ Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet3\n   no shutdown\n\
@@ -909,8 +918,9 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-SPINE4\nip name-server vrf MGMT\
     \ 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp local-interface vrf MGMT\
     \ Management1\nntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode\
-    \ none\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin nopassword\n\
-    username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ none\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet4\n\
     \   no shutdown\n   no switchport\n   ip address 172.31.255.6/31\n!\ninterface\
     \ Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet4\n   no shutdown\n\
@@ -971,9 +981,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -1089,16 +1099,16 @@ CVP_CONFIGLETS:
     \ vrf Tenant_C_OP_Zone\nip routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     \   seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq\
     \ 32\n!\nmlag configuration\n   domain-id DC1_SVC3\n   local-interface Vlan4094\n\
-    \   peer-address 10.255.252.7\n   peer-address heartbeat 192.168.200.109 vrf MGMT\n\
-    \   peer-link Port-Channel5\n   dual-primary detection delay 5 action errdisable\
-    \ all-interfaces\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\n\
-    ip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
-    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n  \
-    \ multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65103\n   router-id\
-    \ 192.168.255.8\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
-    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \   peer-address 10.255.252.7\n   peer-link Port-Channel5\n   reload-delay mlag\
+    \ 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
+    !\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned over\
+    \ MLAG Peer-link less preferred on spines to ensure optimal routing\n   set origin\
+    \ incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier\
+    \ 3\n!\nrouter bgp 65103\n   router-id 192.168.255.8\n   no bgp default ipv4-unicast\n\
+    \   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS\
+    \ peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
+    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -1108,9 +1118,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65103\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.26\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.28 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.26 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.28 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.30 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
@@ -1174,9 +1185,9 @@ CVP_CONFIGLETS:
     ip name-server vrf MGMT 192.168.200.5\nip name-server vrf MGMT 8.8.8.8\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
     !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\n!\nusername admin privilege 15 role network-admin\
-    \ nopassword\nusername cvpadmin privilege 15 role network-admin secret sha512\
-    \ $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -1288,16 +1299,16 @@ CVP_CONFIGLETS:
     \ vrf Tenant_C_OP_Zone\nip routing vrf Tenant_C_WAN_Zone\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     \   seq 10 permit 192.168.255.0/24 eq 32\n   seq 20 permit 192.168.254.0/24 eq\
     \ 32\n!\nmlag configuration\n   domain-id DC1_SVC3\n   local-interface Vlan4094\n\
-    \   peer-address 10.255.252.6\n   peer-address heartbeat 192.168.200.108 vrf MGMT\n\
-    \   peer-link Port-Channel5\n   dual-primary detection delay 5 action errdisable\
-    \ all-interfaces\n   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\n\
-    ip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nroute-map RM-CONN-2-BGP permit 10\n\
-    \   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n  \
-    \ multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65103\n   router-id\
-    \ 192.168.255.9\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
-    \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \   peer-address 10.255.252.6\n   peer-link Port-Channel5\n   reload-delay mlag\
+    \ 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
+    !\nroute-map RM-MLAG-PEER-IN permit 10\n   description Make routes learned over\
+    \ MLAG Peer-link less preferred on spines to ensure optimal routing\n   set origin\
+    \ incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier\
+    \ 3\n!\nrouter bgp 65103\n   router-id 192.168.255.9\n   no bgp default ipv4-unicast\n\
+    \   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS\
+    \ peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
+    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
     \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
@@ -1307,9 +1318,10 @@ CVP_CONFIGLETS:
     \ MLAG-IPv4-UNDERLAY-PEER remote-as 65103\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
     \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
     \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
-    \   neighbor 172.31.255.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.34\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.36 peer group IPv4-UNDERLAY-PEERS\n\
+    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
+    \ in\n   neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
+    \ 172.31.255.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.34 peer\
+    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.36 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.38 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
     \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\

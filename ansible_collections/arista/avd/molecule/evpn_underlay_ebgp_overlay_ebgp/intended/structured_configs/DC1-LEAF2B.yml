@@ -187,7 +187,7 @@ vlans:
   311:
     tenant: Tenant_C
     name: Tenant_C_OP_Zone_2
-  3029:
+  2:
     tenant: Tenant_C
     name: MLAG_iBGP_Tenant_C_OP_Zone
     trunk_groups:
@@ -238,8 +238,8 @@ port_channel_interfaces:
     description: server01_MLAG_PortChanne1
     type: switched
     shutdown: false
-    vlans: 210-211
     mode: trunk
+    vlans: 210-211
     mlag: 10
 ethernet_interfaces:
   Ethernet1:
@@ -502,7 +502,7 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
-  Vlan3029:
+  Vlan2:
     tenant: Tenant_C
     type: underlay_peering
     shutdown: false
@@ -591,10 +591,6 @@ mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094
   peer_address: 10.255.252.2
-  peer_address_heartbeat:
-    peer_ip: 192.168.200.106
-    vrf: MGMT
-  dual_primary_detection_delay: 5
   peer_link: Port-Channel5
   reload_delay_mlag: 780
   reload_delay_non_mlag: 1020
@@ -605,6 +601,14 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - origin incomplete
+        description: Make routes learned over MLAG Peer-link less preferred on spines
+          to ensure optimal routing
 router_bgp:
   as: 65102
   router_id: 192.168.255.7
@@ -626,6 +630,7 @@ router_bgp:
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
       send_community: true
+      route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
       remote_as: 65001
@@ -673,6 +678,7 @@ router_bgp:
         activate: true
       MLAG-IPv4-UNDERLAY-PEER:
         activate: true
+  address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.7:12

@@ -54,7 +54,7 @@ redundancy: null
 spanning_tree:
   mode: mstp
   mst_instances:
-    0:
+    '0':
       priority: 16384
   no_spanning_tree_vlan: 4094
 aaa_authorization: null
@@ -149,6 +149,7 @@ vlan_interfaces:
     no_autostate: true
     mtu: 1500
 tcam_profile: null
+platform: null
 mac_address_table: null
 ip_igmp_snooping:
   globally_enabled: true
@@ -161,10 +162,6 @@ mlag_configuration:
   domain_id: DC1_L2LEAF2
   local_interface: Vlan4094
   peer_address: 10.255.252.16
-  peer_address_heartbeat:
-    peer_ip: 192.168.200.113
-    vrf: MGMT
-  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330

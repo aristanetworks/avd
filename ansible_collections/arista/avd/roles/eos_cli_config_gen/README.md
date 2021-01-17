@@ -42,6 +42,7 @@
     - [AAA Accounting](#aaa-accounting)
     - [AAA Root](#aaa-root)
     - [Local Users](#local-users)
+    - [Enable Password](#enable-password)
     - [Clock Timezone](#clock-timezone)
     - [VLANs](#vlans)
     - [VRF Instances](#vrf-instances)
@@ -427,9 +428,11 @@ snmp_server:
   ipv4_access_list: < ipv4-access-list >
   ipv6_access_list: < ipv6-access-list >
   local_interfaces:
-    - name: < interface_name_1 >
+    < interface_name_1 >:
       vrf: < vrf_name >
-    - name: < interface_name_2 >
+    < interface_name_2 >:
+    < interface_name_3 >:
+      vrf: < vrf_name >
   views:
     - name: < view_name >
       MIB_family_name: < MIB_family_name >
@@ -635,6 +638,14 @@ local_users:
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
 ```
 
+### Enable Password
+
+```yaml
+enable_password:
+  hash_algorithm: < md5 | sha512 >
+  key: "< hashed_password >"
+```
+
 ### Clock Timezone
 
 ```yaml
@@ -810,6 +821,8 @@ ethernet_interfaces:
     mode: < access | dot1q-tunnel | trunk >
     flowcontrol:
       received: < received | send | on >
+    mac_security:
+      profile: < profile >
     channel_group:
       id: < Port-Channel_id >
       mode: < on | active | passive >
@@ -823,8 +836,6 @@ ethernet_interfaces:
     vmtracer: < true | false >
     ptp:
       enable: < true | false >
-    mac_security:
-      profile: < profile >
     service_profile: < qos_profile >
     storm_control:
       all:
@@ -1289,6 +1300,8 @@ router_bgp:
       maximum_routes: < integer >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      route_map_in: < inbound route-map >
+      route_map_out: < outbound route-map >
     < peer_group_name_2 >:
       type: < ipv4 | evpn >
       bgp_listen_range_prefix: < IP prefix range >

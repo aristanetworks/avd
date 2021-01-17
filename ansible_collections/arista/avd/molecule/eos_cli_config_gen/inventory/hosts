@@ -5,8 +5,10 @@ acl
 arp
 base
 dns-ntp
+enable-password
 errdisable
 ethernet-interfaces
+event-handlers
 igmp-snooping
 logging-minimal
 logging

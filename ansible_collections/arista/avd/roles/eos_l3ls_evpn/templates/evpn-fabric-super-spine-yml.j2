@@ -268,12 +268,15 @@ router_bgp:
 {% include 'fabric/bgp_base/super-spine-router-bgp-peer-groups.j2' %}
   neighbors:
 {% include 'fabric/bgp_base/super-spine-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/super-spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
 {% include 'fabric/bgp_overlay/super-spine-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/super-spine-router-bgp-address-family-ipv4.j2' %}
+  address_family_rtc:
+{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 
 {# OSPF Configuration #}
 ### Routing - OSPF ###

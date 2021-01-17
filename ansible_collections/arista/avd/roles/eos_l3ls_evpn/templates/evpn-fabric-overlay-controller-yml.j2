@@ -9,34 +9,47 @@
 {% set switch.spanning_tree_mode = "none" %}
 {% for node in overlay_controller.nodes | arista.avd.natural_sort %}
 {%     if node == inventory_hostname %}
-{%         set switch.id = overlay_controller.nodes[node].id %}
-{%         if overlay_controller.nodes[node].bgp_as is defined %}
-{%             set switch.bgp_as = overlay_controller.nodes[node].bgp_as %}
+{%         set switch.id = overlay_controller.nodes[ node ].id %}
+{%         if overlay_controller.nodes[ node ].bgp_as is defined %}
+{%             set switch.bgp_as = overlay_controller.nodes[ node ].bgp_as %}
 {%         else %}
 {%             set switch.bgp_as = overlay_controller.defaults.bgp_as %}
 {%         endif %}
 {# Get local RR/RS interface to configure #}
-{%         if overlay_controller.nodes[node].uplink_to_remote_switches is defined %}
-{%             set switch.uplink_to_remote_switches = overlay_controller.nodes[node].uplink_to_remote_switches %}
+{%         if overlay_controller.nodes[ node ].uplink_to_remote_switches is defined %}
+{%             set switch.uplink_to_remote_switches = overlay_controller.nodes[ node ].uplink_to_remote_switches %}
 {%         else %}
 {%             set switch.uplink_to_remote_switches = overlay_controller.defaults.uplink_to_remote_switches %}
 {%         endif %}
 {# Get remote switch interface to configure #}
-{%         if overlay_controller.nodes[node].remote_switches_interfaces is defined %}
-{%             set switch.remote_switches_interfaces = overlay_controller.nodes[node].remote_switches_interfaces %}
+{%         if overlay_controller.nodes[ node ].remote_switches_interfaces is defined %}
+{%             set switch.remote_switches_interfaces = overlay_controller.nodes[ node ].remote_switches_interfaces %}
 {%         endif %}
 {# Get remote hostname #}
-{%         if overlay_controller.nodes[node].remote_switches is defined %}
-{%             set switch.remote_switches = overlay_controller.nodes[node].remote_switches %}
+{%         if overlay_controller.nodes[ node ].remote_switches is defined %}
+{%             set switch.remote_switches = overlay_controller.nodes[ node ].remote_switches %}
 {%         else %}
 {%             set switch.remote_switches = overlay_controller.defaults.remote_switches %}
 {%         endif %}
-{# Get group of remote devices where RS/RR are connected #}
-{%         if overlay_controller.nodes[node].remote_switches_group is defined %}
-{%             set switch.remote_switches_group = overlay_controller.nodes[node].remote_switches_group %}
-{%         else %}
-{%             set switch.remote_switches_group = overlay_controller.defaults.remote_switches_group %}
-{%         endif %}
+{# Get ASN of remote devices where RS/RR are connected #}
+{%         set switch.remote_switches_asn = [] %}
+{%         for remote_switch in switch.remote_switches %}
+{%             set remote_switch_vars = hostvars[ remote_switch ] %}
+{%             if remote_switch_vars.type == 'l3leaf' %}
+{%                 for l3leaf_node_group in remote_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                     if remote_switch in remote_switch_vars.l3leaf.node_groups[ l3leaf_node_group ].nodes | arista.avd.natural_sort %}
+{%                         do switch.remote_switches_asn.append( remote_switch_vars.l3leaf.node_groups[ l3leaf_node_group ].bgp_as | arista.avd.default ( remote_switch_vars.l3leaf.defaults.bgp_as ) ) %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%             elif remote_switch_vars.type == 'spine' %}
+{%                 do switch.remote_switches_asn.append( remote_switch_vars.spine.bgp_as ) %}
+{%             elif remote_switch_vars.type == 'super-spine' %}
+{%                 do switch.remote_switches_asn.append( remote_switch_vars.super_spine.bgp_as ) %}
+{%             elif remote_switch_vars.type == 'overlay-controller' %}
+{%                 do switch.remote_switches_asn.append( remote_switch_vars.overlay_controller.nodes[ some_switch ].bgp_as | arista.avd.default ( remote_switch_vars.overlay_controller.defaults.bgp_as ) ) %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {% endfor %}
 {# Build variables for fabric protocols #}
@@ -88,7 +101,7 @@
 {%                     for l3leaf_node_group in some_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
 {%                         for node in some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%                             if node == some_switch %}
-{%                                 set peer.id = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
+{%                                 set peer.id = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[ node ].id %}
 {%                                 if some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                                     set peer.bgp_as = some_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as %}
 {%                                 else %}
@@ -302,6 +315,8 @@ router_bgp:
 {% include 'fabric/bgp_overlay/overlay-controller-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
+  address_family_rtc:
+{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 
 {# OSPF Configurartion #}
 ### Routing - OSPF ###

@@ -17,6 +17,9 @@
       password: "{{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password }}"
       maximum_routes: 12000
       send_community: true
+{%             if leaf.mlag_ibgp_origin_incomplete == true %}
+      route_map_in: RM-MLAG-PEER-IN
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {# Overlay network peering #}

@@ -101,7 +101,7 @@
 {%                         set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
 {%                     endif %}
 {%                     if configure_mlag_ibgp_peering %}
-  Vlan{{ mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1) }}:
+  Vlan{{ tenants[tenant].vrfs[vrf].mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
     tenant: {{ tenant }}
     type: underlay_peering
     shutdown: false

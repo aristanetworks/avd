@@ -276,7 +276,7 @@ underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
 underlay_ospf_max_lsa: < lsa | Default -> 12000 >
 underlay_ospf_bfd_enable: < true | false | Default -> false >
 
-# Underlay OSFP | Required when < underlay_routing_protocol > == ISIS
+# Underlay ISIS | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
 isis_site_id: < isis site ID | Default -> "0001" >
 
@@ -579,7 +579,7 @@ l3leaf:
       mlag: < true | false -> default true >
 
       # Enable / Disable MLAG dual primary detectiom
-      mlag_dual_primary_detection: < true | false -> default true >
+      mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
@@ -744,10 +744,14 @@ l2leaf:
       mlag: < true | false -> default true >
 
       # Enable / Disable MLAG dual primary detectiom
-      mlag_dual_primary_detection: < true | false -> default true >
+      mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
+      # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
+      mlag_ibgp_origin_incomplete: < true | false -> default true >
 
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
       spanning_tree_mode: < mstp >
@@ -938,6 +942,10 @@ tenants:
         # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
         # Setting enable_mlag_ibgp_peering_vrfs: false under vrf will change this default and/or override the tenant-wide setting
         enable_mlag_ibgp_peering_vrfs: < true | false >
+
+        # Manually define the VLAN used on the MLAG pair for the iBGP session. | Optional
+        # By default this parameter is calculated using the following formula: <base_vlan> + <vrf_vni>
+        mlag_ibgp_peering_vlan: <1-4096>
 
         # Enable VTEP Network diagnostics | Optional.
         # This will create a loopback with virtual source-nat enable to perform diagnostics from the switch.
@@ -1214,37 +1222,21 @@ tenants:
 **Variables and Options:**
 
 ```yaml
-# Dictionary of port_profiles to be applied to elements defined in the servers variables.
+# Optional profiles to apply on Server facing interfaces
+# Each profile can support all or some of the following keys according your own needs.
+# Keys are the same used under Server Adapters.
+# Keys defined under Server Adapters take precedence.
 port_profiles:
-
-  # Port-profile name
   < port_profile_1 >:
-
-    # Interface mode | required
+    speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
-
-    # Native VLAN for a trunk port | optional
     native_vlan: <native vlan number>
-
-    # Interface vlans | required
     vlans: < vlans as string >
-
-    # Spanning Tree
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < true | false >
-
-    # Flow control | Optional
     flowcontrol:
       received: < received | send | on >
-
-    # QOS Profile | Optional
     qos_profile: < qos_profile_name >
-
-  < port_profile_2 >:
-    mode: < access | dot1q-tunnel | trunk >
-    vlans: < vlans as string >
-
-    # Storm control settings applied on port toward server | Optional
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -1258,6 +1250,9 @@ port_profiles:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+    port_channel:
+      description: < port_channel_description >
+      mode: < active | passive | on >
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
@@ -1288,8 +1283,45 @@ servers:
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
+        # Interface mode | required
+        mode: < access | dot1q-tunnel | trunk >
+
+        # Native VLAN for a trunk port | optional
+        native_vlan: <native vlan number>
+
+        # Interface vlans | required
+        vlans: < vlans as string >
+
+        # Spanning Tree
+        spanning_tree_portfast: < edge | network >
+        spanning_tree_bpdufilter: < true | false >
+
+        # Flow control | Optional
+        flowcontrol:
+          received: < received | send | on >
+
         # QOS Profile | Optional
         qos_profile: < qos_profile_name >
+
+      < port_profile_2 >:
+        mode: < access | dot1q-tunnel | trunk >
+        vlans: < vlans as string >
+
+        # Storm control settings applied on port toward server | Optional
+        storm_control:
+          all:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          broadcast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          multicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          unknown_unicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+
 
       # Example of port-channel adpater
       - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
@@ -1299,9 +1331,6 @@ servers:
 
         # Port- Channel
         port_channel:
-
-          # State, create or remove port-channel.
-          state: < present | absent >
 
           # Port-Channel Description.
           description: < port_channel_description >
@@ -1322,7 +1351,6 @@ servers:
         switches: [ < device_1 >, < device_2 >  ]
         profile: < port_profile_name >
         port_channel:
-          state: < present | absent >
           description: < port_channel_description >
           mode: < active | passive | on >
           short_esi: < 0000:0000:0000 >
@@ -1372,7 +1400,6 @@ servers:
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: DB_Clusters
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 
@@ -1387,7 +1414,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 ```
@@ -1425,7 +1451,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
 ```
@@ -1448,7 +1473,6 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC4A ]
         profile: VM_Servers
         port_channel:
-          state: present
           description: PortChanne1
           mode: active
           short_esi: 0303:0202:0101
@@ -1760,6 +1784,8 @@ overlay_controller_p2p_network_summary: < IPv4_network/Mask >
 # Assign range larger then:
 # [ total overlay_controllers ]
 overlay_controller_loopback_network_summary: < IPv4_network/Mask >
+# Enable BFD for p2p BGP sessions - useful if the overlay_controller is a VM | Optional
+overlay_controller_p2p_bfd: < true | false | default -> false >
 # additional lines for overlay-controller BGP config
 overlay_controller_bgp_defaults:
   - no bgp default ipv4-unicast
@@ -1822,18 +1848,26 @@ all:
 
 ### Additional Variables For Flexible EVPN Overlay peerings
 
-Assigned to any device group:
+Assigned to any EVPN client device group:
 
 ```yaml
-evpn_overlay_controller_groups: [ < inventory_group > ]  # One or more groups containing EVPN RR/RS.
+# One or more groups containing EVPN RR/RS.
+evpn_overlay_controller_groups: [ < inventory_group > ]
+```
+
+Assigned to fabric group:
+```yaml
+# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Requires use of evpn_overlay_controller_groups and eBGP as overlay protocol.
+evpn_overlay_bgp_rtc: < true | false , default -> false >
 ```
 
 ## Custom EOS Structured Configuration
 
 Custom EOS Structured Configuration keys can be set on any level using the name
-of the corrosponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
+of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
 The content of Custom Structured Configuration variables will be combined with the structured config generated by the eos_l3ls_evpn role.
-Lists are replaced. Dictionaries are updated. Combine is done recursively, so it is possible to update a sub-key of a variable set by
+Lists are replaced. Dictionaries are updated. The combine is done recursively, so it is possible to update a sub-key of a variable set by
 `eos_l3ls_evpn` role already.
 
  Example:

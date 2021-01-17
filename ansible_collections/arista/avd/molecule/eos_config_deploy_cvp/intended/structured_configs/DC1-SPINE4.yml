@@ -132,6 +132,7 @@ management_interfaces:
     ip_address: 192.168.200.104/24
     gateway: 192.168.200.5
 tcam_profile: null
+platform: null
 mac_address_table: null
 static_routes:
 - vrf: MGMT
@@ -232,6 +233,7 @@ router_bgp:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
 router_ospf: null
 router_isis: null
 queue_monitor_streaming: null
