@@ -380,6 +380,9 @@ l2leaf_inband_management_vlan: < vlan_id >
 
 # QOS Profile assigned on all infrastructure links | Optional
 p2p_uplinks_qos_profile: < qos_profile_name >
+
+# Enable PTP on all infrastructure links | Optional
+p2p_uplinks_ptp_enable: < boolean | default -> false >
 ```
 
 **Example:**
@@ -1237,6 +1240,8 @@ port_profiles:
     flowcontrol:
       received: < received | send | on >
     qos_profile: < qos_profile_name >
+    ptp:
+      enable: < true | false >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -1302,6 +1307,10 @@ servers:
 
         # QOS Profile | Optional
         qos_profile: < qos_profile_name >
+
+        # PTP Enable | Optional
+        ptp:
+          enable: < true | false >
 
       < port_profile_2 >:
         mode: < access | dot1q-tunnel | trunk >
