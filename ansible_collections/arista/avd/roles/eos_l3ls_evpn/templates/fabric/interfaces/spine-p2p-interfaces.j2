@@ -31,6 +31,10 @@
 {%                 if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%                 endif %}
+{%                 if p2p_uplinks_ptp_enable is arista.avd.defined %}
+    ptp:
+        enable: {{ p2p_uplinks_ptp_enable }}
+{%                 endif %}
     type: routed
     shutdown: false
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
@@ -77,6 +81,10 @@
     mtu: {{ p2p_uplinks_mtu }}
 {%              if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
+{%              endif %}
+{%              if p2p_uplinks_ptp_enable is arista.avd.defined %}
+    ptp:
+        enable: {{ p2p_uplinks_ptp_enable }}
 {%              endif %}
     type: routed
     shutdown: false
