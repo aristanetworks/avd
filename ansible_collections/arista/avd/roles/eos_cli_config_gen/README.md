@@ -724,6 +724,19 @@ port_channel_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    ptp:
+      enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
@@ -801,6 +814,16 @@ ethernet_interfaces:
     isis_network_point_to_point: < boolean >
     ptp:
       enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
     logging:
       event:
         link_status: < true | false >
@@ -836,6 +859,17 @@ ethernet_interfaces:
     vmtracer: < true | false >
     ptp:
       enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
     storm_control:
       all:
