@@ -136,6 +136,37 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].vmtracer is defined and port_channel_interfaces[port_channel_interface].vmtracer == true %}
    vmtracer vmware-esx
 {%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].ptp is defined %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.enable is defined and port_channel_interfaces[port_channel_interface].ptp.enable == true %}
+   ptp enable
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.announce is defined and port_channel_interfaces[port_channel_interface].ptp.announce is not none %}
+{%                 if port_channel_interfaces[port_channel_interface].ptp.announce.interval is defined and port_channel_interfaces[port_channel_interface].ptp.interval is not none %}
+   ptp announce interval {{ port_channel_interfaces[port_channel_interface].ptp.announce.interval }}
+{%                 endif %}
+{%                 if port_channel_interfaces[port_channel_interface].ptp.announce.timeout is defined and port_channel_interfaces[port_channel_interface].ptp.timeout is not none %}
+   ptp announce timeout {{ port_channel_interfaces[port_channel_interface].ptp.announce.timeout }}
+{%                 endif %}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.delay_req is defined and port_channel_interfaces[port_channel_interface].ptp.delay_req is not none %}
+   ptp delay-req interval {{ port_channel_interfaces[port_channel_interface].ptp.delay_req }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.delay_mechanism is defined and port_channel_interfaces[port_channel_interface].ptp.delay_mechanism is not none %}
+   ptp delay-mechanism {{ port_channel_interfaces[port_channel_interface].ptp.delay_mechanism }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.sync_message.interval is defined and port_channel_interfaces[port_channel_interface].ptp.sync_message.interval is not none %}
+   ptp sync-message interval {{ port_channel_interfaces[port_channel_interface].ptp.sync_message.interval }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.role is defined and port_channel_interfaces[port_channel_interface].ptp.role is not none %}
+   ptp role {{ port_channel_interfaces[port_channel_interface].ptp.role }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.vlan is defined and port_channel_interfaces[port_channel_interface].ptp.vlan is not none %}
+   ptp vlan {{ port_channel_interfaces[port_channel_interface].ptp.vlan }}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ptp.transport is defined and port_channel_interfaces[port_channel_interface].ptp.transport is not none %}
+   ptp transport {{ port_channel_interfaces[port_channel_interface].ptp.transport }}
+{%             endif %}
+{%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].service_profile is defined and port_channel_interfaces[port_channel_interface].service_profile is not none %}
    service-profile {{ port_channel_interfaces[port_channel_interface].service_profile }}
 {%         endif %}
