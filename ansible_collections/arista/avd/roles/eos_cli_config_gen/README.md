@@ -734,7 +734,6 @@ port_channel_interfaces:
       sync_message:
         interval: < integer >
       role: < master | dynamic >
-      role: < master | dynamic >
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
   < Port-Channel_interface_4 >:
@@ -866,7 +865,6 @@ ethernet_interfaces:
       delay_mechanism: < e2e | p2p >
       sync_message:
         interval: < integer >
-      role: < master | dynamic >
       role: < master | dynamic >
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
