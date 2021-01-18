@@ -31,9 +31,9 @@
 {%                 if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%                 endif %}
-{%                 if p2p_uplinks_ptp_enable is arista.avd.defined %}
+{%                 if p2p_uplinks_ptp is arista.avd.defined %}
     ptp:
-        enable: {{ p2p_uplinks_ptp_enable }}
+      enable: {{ p2p_uplinks_ptp }}
 {%                 endif %}
     type: routed
     shutdown: false
@@ -82,9 +82,9 @@
 {%              if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%              endif %}
-{%              if p2p_uplinks_ptp_enable is arista.avd.defined %}
+{%              if p2p_uplinks_ptp is arista.avd.defined %}
     ptp:
-        enable: {{ p2p_uplinks_ptp_enable }}
+      enable: {{ p2p_uplinks_ptp }}
 {%              endif %}
     type: routed
     shutdown: false
