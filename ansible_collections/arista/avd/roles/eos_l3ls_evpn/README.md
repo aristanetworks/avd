@@ -382,7 +382,8 @@ l2leaf_inband_management_vlan: < vlan_id >
 p2p_uplinks_qos_profile: < qos_profile_name >
 
 # Enable PTP on all infrastructure links | Optional
-p2p_uplinks_ptp: < boolean | default -> false >
+p2p_uplinks_ptp: 
+  enable: < boolean | default -> false >
 ```
 
 **Example:**
