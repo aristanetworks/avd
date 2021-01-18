@@ -18,6 +18,7 @@
 {%                 set adapter_port_channel = adapter.port_channel | arista.avd.default( adapter_profile.port_channel ) %}
 {%                 set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default( adapter_profile.flowcontrol ) %}
 {%                 set adapter_qos_profile = adapter.qos_profile | arista.avd.default( adapter_profile.qos_profile ) %}
+{%                 set adapter_ptp = adapter.ptp | arista.avd.default( adapter_profile.ptp ) %}
 {%                 set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   {{ adapter.switch_ports[loop.index0]}}:
     peer: {{ server }}
@@ -66,6 +67,12 @@
 {%                 endif %}
 {%                 if adapter_qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_qos_profile }}
+{%                 endif %}
+{%                 if adapter_ptp is arista.avd.defined %}
+    ptp:
+{%                     if adapter_ptp.enable is arista.avd.defined %}
+      enable: {{ adapter_ptp.enable }}
+{%                     endif %}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
