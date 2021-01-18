@@ -425,11 +425,11 @@ Redundancy:
 snmp_server:
   contact: < contact_name >
   location: < location >
-  ipv4_acls: 
+  ipv4_acls:
     - name: < ipv4-access-list >
       vrf: < vrf >
     - name: < ipv4-access-list >
-  ipv6_acls: 
+  ipv6_acls:
     - name: < ipv6-access-list >
       vrf: < vrf >
     - name: < ipv6-access-list >
