@@ -410,8 +410,13 @@ router bgp {{ router_bgp.as }}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].timers is defined and router_bgp.vrfs[vrf].neighbors[neighbor].timers is not none %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%                      endif %}
-{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined and router_bgp.vrfs[vrf].neighbors[neighbor].send_community == 'None' %}
+      neighbor {{ neighbor }} send-community
+{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined %}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes is arista.avd.defined %}
+      neighbor {{ neighbor }} maximum-routes {{ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes }}
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is defined %}
       neighbor {{ neighbor }} default-originate{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always == true %} always{% endif %}

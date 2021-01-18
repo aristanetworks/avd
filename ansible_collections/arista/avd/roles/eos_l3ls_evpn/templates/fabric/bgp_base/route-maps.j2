@@ -63,13 +63,17 @@
 {%                     for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
 {%                         if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
 {%                             if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
-{%                                 if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv4_next_hop is arista.avd.defined %}
+{%                                 if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv4_next_hop is arista.avd.defined or tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv6_next_hop is arista.avd.defined %}
   RM-{{ bgp_peer }}-SET-NEXT-HOP-OUT:
     sequence_numbers:
       10:
         type: permit
         set:
+{%                                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv4_next_hop is arista.avd.defined %}
           - "ip next-hop {{ tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv4_next_hop }}"
+{%                                     elif tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv6_next_hop is arista.avd.defined %}
+          - "ipv6 next-hop {{ tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].set_ipv6_next_hop }}"
+{%                                     endif %}
 {%                                 endif %}
 {%                             endif %}
 {%                         endif %}
