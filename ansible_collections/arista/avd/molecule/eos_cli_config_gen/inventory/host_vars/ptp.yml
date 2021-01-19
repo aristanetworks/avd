@@ -7,6 +7,7 @@ ptp:
   priority1: 1
   priority2: 2
   ttl: 200
+  domain: 1
   message_type:
     general:
       dscp: 4

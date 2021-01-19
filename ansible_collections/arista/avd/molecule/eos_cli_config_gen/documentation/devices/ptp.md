@@ -137,6 +137,7 @@ No NTP servers defined
 | Priority1 | 1 |
 | Priority2 | 2 |
 | TTL | 200 |
+| Domain | 1 |
 | Msg General | DSCP 4 |
 | Msg Event | DSCP 8 |
 
@@ -149,6 +150,7 @@ ptp source ip 1.1.1.1
 ptp priority1 1
 ptp priority2 2
 ptp ttl 200
+ptp domain 1
 ptp message-type general dscp 4 default
 ptp message-type event dscp 8 default
 ```
