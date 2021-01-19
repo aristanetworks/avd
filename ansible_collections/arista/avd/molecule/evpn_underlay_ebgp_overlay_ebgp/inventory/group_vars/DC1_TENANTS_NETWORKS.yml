@@ -96,6 +96,32 @@ tenants:
             ip_address_virtual: 10.1.41.1/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
+        static_routes:
+          - destination_address_prefix: 10.3.4.0/24
+            gateway: 1.2.3.4
+            nodes: [DC1-BL1A, DC1-BL1B]
+        bgp_peers:
+          123.1.1.10:
+            remote_as: 1234
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            address_family:
+              - ipv4
+            nodes: [DC1-BL1A, DC1-BL1B]
+            set_ipv4_next_hop: 123.1.1.1
+            local_as: 123
+          fd5a:fe45:8831:06c5::a:
+            remote_as: 12345
+            send_community:
+            address_family:
+              - ipv6
+            nodes: [DC1-BL1A, DC1-BL1B]
+            set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
         svis:
           150:
             name: Tenant_A_WAN_Zone_1

@@ -30,6 +30,9 @@
 {%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
 {%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
 {%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
+{%                             if not configure_mlag_ibgp_peering %}
+      neighbors:
+{%                             endif %}
 {%                             set neighbor = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
 {%                             if neighbor.address_family is not arista.avd.defined %}
 {%                                 do neighbor.update({'address_family': ['ipv4']}) %}
