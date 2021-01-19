@@ -1780,6 +1780,7 @@ ptp:
   priority1: < priority1 >
   priority2: < priority2 >
   ttl: < ttl >
+  domain: < integer >
   message_type:
     general:
       dscp: < dscp-value >
