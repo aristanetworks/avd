@@ -1025,10 +1025,37 @@ tenants:
 
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if no nodes are specified, all l3leafs that carry the VRF also get the static routes.
+        # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be 
+        # overridden non-selectively with the redistribute_static knob for the VRF.
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
             nodes: [ < node_1 >, < node_2 >]
+        
+        # Non-selectively enabling or disabling redistribute static inside the VRF | Optional.
+        redistribute_static: < true | false >
+
+        # Dictionary of BGP peer definitions | Optional.
+        # This will configure BGP neighbors inside the tenant VRF for peering with external devices.
+        bgp_peers:
+          < IPv4_address or IPv6_address >:
+            remote_as: < remote ASN >
+            description: < description >
+            send_community: < standard | extended | large | empty >
+            next_hop_self: < true | false >
+            maximum_routes: < 0-4294967294 >
+            default_originate:
+              always: < true | false >
+            update_source: < interface >
+            ebgp_multihop: < 1-255 >
+            address_family:
+              - < ipv4 | ipv6 >
+            # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
+            nodes: [ < node_1 >, < node_2> ]
+            # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+            set_ipv4_next_hop: < IPv4_address >
+            set_ipv6_next_hop: < IPv6_address >
+            local_as: < local BGP ASN >
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >

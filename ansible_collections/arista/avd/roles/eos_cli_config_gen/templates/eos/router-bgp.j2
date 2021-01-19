@@ -428,6 +428,9 @@ router bgp {{ router_bgp.as }}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_out is arista.avd.defined %}
       neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_out }} out
 {%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in is arista.avd.defined %}
+      neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in }} in
+{%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].address_family is arista.avd.defined %}
 {%                          for family in router_bgp.vrfs[vrf].neighbors[neighbor].address_family %}
       address-family {{ family }}
