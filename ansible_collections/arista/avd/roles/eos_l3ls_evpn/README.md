@@ -1024,8 +1024,8 @@ tenants:
             ip_address_virtual: < IPv4_address/Mask >
 
         # Dictionary of static routes | Optional.
-        # This will create static routes inside the tenant VRF, if no nodes are specified, all l3leafs that carry the VRF also get the static routes.
-        # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be 
+        # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
+        # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be
         # overridden non-selectively with the redistribute_static knob for the VRF.
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
