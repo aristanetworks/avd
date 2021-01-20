@@ -1,7 +1,4 @@
-<!-- All PR should follow this template to allow a clean and transparent review -->
-<!-- Bot will manage tag, ownership and code review, you should not update these fields-->
 ## Change Summary
-<!--- Provide a general summary of your changes in the Title above -->
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
@@ -17,7 +14,11 @@
 <!-- If PR is linked to one or more issues, please list issues below -->
 <!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
 
+Fixes issue #<ISSUE ID>
+
 ## Component(s) name
+
+`arista.avd.<role-name>`
 
 ## Proposed changes
 <!--- Describe your changes in detail -->
