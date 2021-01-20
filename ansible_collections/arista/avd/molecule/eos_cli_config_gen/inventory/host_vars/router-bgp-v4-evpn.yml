@@ -111,8 +111,22 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+        10.2.3.4:
+          remote_as: 1234
+          local_as: 123
+          description: Tenant A BGP Peer
+          ebgp_multihop: 3
+          send_community: 
+          maximum_routes: 0
+          default_originate:
+            always: true
+            route_map: RM-10.2.3.4-SET-NEXT-HOP-OUT
+          route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
+          address_family:
+            - ipv4
       redistribute_routes:
         - connected
+        - static
     TENANT_A_PROJECT02:
       router_id: 192.168.255.3
       timers: 5 15
