@@ -202,9 +202,18 @@ No logging settings defined
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
-| ------- | -------- | ---------- | -------- | -------- |
-| DC1_OPS | DC1 |  Enabled  | - | - |
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| DC1_OPS | DC1 |  Enabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+| IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | onur | default |
+| IPv6 | SNMP-MGMT | MGMT |
+| IPv6 | onur_v6 | default |
+
 
 ### SNMP Local Interfaces
 
@@ -255,8 +264,10 @@ No logging settings defined
 !
 snmp-server contact DC1_OPS
 snmp-server location DC1
+snmp-server ipv4 access-list SNMP-MGMT vrf MGMT 
 snmp-server ipv4 access-list onur
-snmp-server ipv6 access-list onurv6
+snmp-server ipv6 access-list SNMP-MGMT vrf MGMT 
+snmp-server ipv6 access-list onur_v6
 snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
