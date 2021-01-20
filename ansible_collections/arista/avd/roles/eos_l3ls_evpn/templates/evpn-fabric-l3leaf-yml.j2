@@ -174,6 +174,24 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
+{# Checking for BGP peers inside tenant VRFs #}
+{% set leaf.has_tenant_bgp_peers = false %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs if vrf in leaf.vrfs %}
+{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined %}
+{%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
+{%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
+{%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
+{%                             set leaf.has_tenant_bgp_peers = true %}
+{%                             break %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
 {# Setting evpn_rd_admin_subfield #}
 {% set leaf.evpn_rd_admin_subfield = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
 {% if evpn_rd_type is defined and evpn_rd_type is not none %}

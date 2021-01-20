@@ -24,15 +24,16 @@
       neighbors:
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+{%                 elif configure_mlag_ibgp_peering == false and leaf.has_tenant_bgp_peers == true %}
+      neighbors:
 {%                 endif %}
+{%             elif leaf.mlag == false and leaf.has_tenant_bgp_peers == true %}
+      neighbors:
 {%             endif %}
-{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined %}
+{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined and leaf.has_tenant_bgp_peers == true %}
 {%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
 {%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
 {%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
-{%                             if configure_mlag_ibgp_peering is not arista.avd.defined or configure_mlag_ibgp_peering == false %}
-      neighbors:
-{%                             endif %}
 {%                             set neighbor = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
 {%                             if neighbor.address_family is not arista.avd.defined %}
 {%                                 do neighbor.update({'address_family': ['ipv4']}) %}
