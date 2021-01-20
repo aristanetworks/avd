@@ -387,7 +387,7 @@ Router ISIS not defined
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected  static |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected  static |
 
 ### Router BGP Device Configuration
@@ -465,7 +465,18 @@ router bgp 65101
       network 10.0.0.0/8
       network 100.64.0.0/10
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.2.3.4 remote-as 1234
+      neighbor 10.2.3.4 local-as 123 no-prepend replace-as
+      neighbor 10.2.3.4 description Tenant A BGP Peer
+      neighbor 10.2.3.4 ebgp-multihop 3
+      neighbor 10.2.3.4 send-community
+      neighbor 10.2.3.4 maximum-routes 0
+      neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
+      neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
+      address-family ipv4
+         neighbor 10.2.3.4 activate
       redistribute connected
+      redistribute static
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12
@@ -481,7 +492,7 @@ router bgp 65101
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description ABCDEFGfg
       neighbor 10.255.251.2 timers 1 3
-      neighbor 10.255.251.2 send-community 
+      neighbor 10.255.251.2 send-community
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.3 description ABCDEFGfgLCLCLCLC
       neighbor 10.255.251.3 next-hop-self

@@ -362,6 +362,12 @@ IPv6 prefix-lists not defined
 
 ### Route-maps Summary
 
+#### RM-10.2.3.4-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set ip next-hop 10.2.3.4 |
+
 #### RM-CONN-BL-BGP
 
 | Sequence | Type | Match and/or Set |
@@ -397,6 +403,9 @@ IPv6 prefix-lists not defined
 ### Route-maps Device Configuration
 
 ```eos
+!
+route-map RM-10.2.3.4-SET-NEXT-HOP-OUT permit 10
+   set ip next-hop 10.2.3.4
 !
 route-map RM-CONN-BL-BGP deny 10
    match ip address prefix-list PL-MLAG

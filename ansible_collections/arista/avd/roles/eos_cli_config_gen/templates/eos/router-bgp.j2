@@ -414,6 +414,8 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} send-community
 {%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined %}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
+{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
+      neighbor {{ neighbor }} send-community
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes is arista.avd.defined %}
       neighbor {{ neighbor }} maximum-routes {{ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes }}
