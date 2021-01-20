@@ -8,8 +8,14 @@ snmp_server:
     Loopback0:
     Loopback12:
       vrf: Tenant_A_APP_Zone
-  ipv4_access_list: onur
-  ipv6_access_list: onurv6
+  ipv4_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur
+  ipv6_acls:
+    - name: SNMP-MGMT
+      vrf: MGMT
+    - name: onur_v6
   views:
     - name: VW-WRITE
       MIB_family_name: iso
