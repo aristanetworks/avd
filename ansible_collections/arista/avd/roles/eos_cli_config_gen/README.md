@@ -675,6 +675,8 @@ ethernet_interfaces:
     speed: < interface_speed >
     mtu: < mtu >
     type: < routed | switched >
+        logging_event:
+    link_status: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
@@ -715,6 +717,8 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed >
     mtu: < mtu >
+    logging_event:
+      link_status: < true | false >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
