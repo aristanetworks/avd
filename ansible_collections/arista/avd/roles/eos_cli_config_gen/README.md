@@ -614,6 +614,8 @@ port_channel_interfaces:
   < Port-Channel_interface_1 >:
     description: < description >
     shutdown: < true | false >
+    logging_event:
+      link_status: < true | false >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     mlag: < mlag_id >
@@ -642,6 +644,8 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
+    logging_event:
+      link_status: < true | false >
     type: < switched | routed >
     ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
