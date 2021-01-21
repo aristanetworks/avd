@@ -470,6 +470,8 @@ platform:
     lag:
       hardware_only: < true | false >
       mode: < mode | default -> 1024x16 >
+    multicast_replication:
+      default: < fabric-egress | ingress >
 ```
 
 ### Tacacs+ Servers
