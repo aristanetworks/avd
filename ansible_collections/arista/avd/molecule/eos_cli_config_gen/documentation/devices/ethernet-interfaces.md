@@ -246,6 +246,7 @@ No VLANs defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   logging event link-status
    no switchport
    ip address 172.31.255.1/31
 !
@@ -259,6 +260,7 @@ interface Ethernet2
 !
 interface Ethernet6
    description SRV-POD02_Eth1
+   no logging event link-status
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
 ```

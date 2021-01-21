@@ -7,6 +7,8 @@ ethernet_interfaces:
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
     mtu: 1500
+    logging_event:
+      link_status: true
     type: routed
     ip_address: 172.31.255.1/31
 
@@ -15,6 +17,8 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: SRV-POD02_Eth1
+    logging_event:
+      link_status: false
     mode: trunk
     vlans: 110-111,210-211
     profile: ALL
