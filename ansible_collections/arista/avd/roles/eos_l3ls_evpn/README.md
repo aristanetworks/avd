@@ -1954,7 +1954,7 @@ custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_pre
 ```
 
 Example using multiple prefixes:
-`
+
 ```yaml
 custom_structured_configuration_prefix: [ my_dci_ , my_special_ ]
 
