@@ -1956,7 +1956,7 @@ custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_pre
 Example using multiple prefixes:
 
 ```yaml
-custom_structured_configuration_prefix: [ my_dci_ , my_special_ ]
+custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
 
 my_dci_ethernet_interfaces:
   Ethernet4000:
@@ -1969,7 +1969,7 @@ my_dci_ethernet_interfaces:
     peer_interface: Ethernet123
     peer_type: my_precious
 
-my_special:
+my_special_dci_ethernet_interfaces:
   Ethernet4000:
     ip_address: 10.3.2.1/21
 ```
