@@ -3,7 +3,11 @@ Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
 {%     if hostvars[node].type == "spine" %}
 {%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
 {%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type is arista.avd.defined %}
 {{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%                  else %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},L2,L2,L2
+{%                  endif %}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -12,7 +16,11 @@ Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
 {%     if hostvars[node].type == "l3leaf" %}
 {%         if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
 {%             for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type is arista.avd.defined %}
 {{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%                  else %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},L2,L2,L2
+{%                  endif %}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
@@ -22,7 +30,11 @@ Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
 {%         if hostvars[node].type == "l2leaf" %}
 {%             if hostvars[node].ethernet_interfaces is defined and hostvars[node].ethernet_interfaces is not none %}
 {%                 for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%                  if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type is arista.avd.defined %}
 {{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_type }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer }},{{ hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface }}
+{%                  else %}
+{{ hostvars[node].type }},{{ node }},{{ ethernet_interface }},L2,L2,L2
+{%                  endif %}
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
