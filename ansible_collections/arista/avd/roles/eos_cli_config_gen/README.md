@@ -481,6 +481,7 @@ tacacs_servers:
   hosts:
     - host: < host1_ip_address >
       vrf: < vrf_name >
+      timeout: < timeout_in_seconds >
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
