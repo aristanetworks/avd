@@ -516,7 +516,10 @@ spanning_tree:
       name: < name >
       revision: < 0-65535 >
       instances:
-        "< instance_id >": "< vlan_id >, < vlan_id >-< vlan_id >"
+        "< instance_id >":
+          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
+        "< instance_id >":
+          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
   mst_instances:
     "< instance_id >":
       priority: < priority >
