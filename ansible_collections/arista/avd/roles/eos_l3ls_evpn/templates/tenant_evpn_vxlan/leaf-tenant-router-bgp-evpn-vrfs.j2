@@ -39,10 +39,10 @@
 {%                                 do neighbor_params.update({'address_family': ['ipv4']}) %}
 {%                             endif %}
 {%                             if neighbor_params.set_ipv4_next_hop is arista.avd.defined or neighbor_params.set_ipv6_next_hop is arista.avd.defined %}
-{%                                 do neighbor_params.update({ 'route_map_out':'RM-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT'}) %}
+{%                                 do neighbor_params.update({ 'route_map_out':'RM-' ~ vrf ~ '-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                 if neighbor_params.default_originate is arista.avd.defined %}
 {%                                     if neighbor_params.default_originate.route_map is not arista.avd.defined %}
-{%                                         do neighbor_params.default_originate.update({ 'route_map':'RM-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                         do neighbor_params.default_originate.update({ 'route_map_out':'RM-' ~ vrf ~ '-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
 {%                                     endif %}
 {%                                 endif %}
 {%                                 if neighbor_params.set_ipv4_next_hop is arista.avd.defined %}
