@@ -132,6 +132,37 @@ PTP is not defined.
 
 ## Management SSH
 
+
+### IPv4 ACL
+
+| IPv4 ACL | VRF |
+| -------- | --- |
+| ACL-SSH | - |
+| ACL-SSH-VRF | mgt |
+
+### IPv6 ACL
+
+| IPv6 ACL | VRF |
+| -------- | --- |
+| ACL-SSH6 | - |
+| ACL-SSH-VRF6 | mgt |
+
+ 
+### SSH timeout and management
+
+| Idle Timeout | SSH Management |
+| ------------ | -------------- |
+| 15 |  Enabled  |
+
+### VRFs
+
+| VRF | Status |
+| --- | ------ |
+| mgt |  Enabled  |
+
+
+### Management SSH Configuration
+
 ```eos
 !
 management ssh
