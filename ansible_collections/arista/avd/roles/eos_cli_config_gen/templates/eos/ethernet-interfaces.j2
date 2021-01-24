@@ -18,11 +18,13 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu != 1500 %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].logging_event is defined and ethernet_interfaces[ethernet_interface].logging_event is not none %}
-{%                 if ethernet_interfaces[ethernet_interface].logging_event.link_status is defined and ethernet_interfaces[ethernet_interface].logging_event.link_status == true %}
+{%             if ethernet_interfaces[ethernet_interface].logging is defined and ethernet_interfaces[ethernet_interface].logging is not none %}
+{%                 if ethernet_interfaces[ethernet_interface].logging.event is defined and ethernet_interfaces[ethernet_interface].logging.event is not none %}
+{%                     if ethernet_interfaces[ethernet_interface].logging.event.link_status is defined and ethernet_interfaces[ethernet_interface].logging.event.link_status == true %}
    logging event link-status
-{%                 else %}
+{%                     else %}
    no logging event link-status
+{%                     endif %}
 {%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == "routed" %}

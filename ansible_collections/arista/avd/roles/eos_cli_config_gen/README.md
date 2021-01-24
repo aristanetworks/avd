@@ -617,8 +617,9 @@ port_channel_interfaces:
   < Port-Channel_interface_1 >:
     description: < description >
     shutdown: < true | false >
-    logging_event:
-      link_status: < true | false >
+    logging:
+      event:
+        link_status: < true | false >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
     mlag: < mlag_id >
@@ -647,8 +648,9 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
-    logging_event:
-      link_status: < true | false >
+    logging:
+      event:
+        link_status: < true | false >
     type: < switched | routed >
     ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
@@ -682,8 +684,9 @@ ethernet_interfaces:
     speed: < interface_speed >
     mtu: < mtu >
     type: < routed | switched >
-        logging_event:
-    link_status: < true | false >
+    logging:
+      event:
+        link_status: < true | false >
     vrf: < vrf_name >
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
@@ -724,8 +727,9 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed >
     mtu: < mtu >
-    logging_event:
-      link_status: < true | false >
+    logging:
+      event:
+        link_status: < true | false >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >

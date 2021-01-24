@@ -12,11 +12,13 @@ interface {{ port_channel_interface }}
 {%         if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %}
    mtu {{ port_channel_interfaces[port_channel_interface].mtu }}
 {%         endif %}
-{%         if port_channel_interfaces[port_channel_interface].logging_event is defined and port_channel_interfaces[port_channel_interface].logging_event is not none %}
-{%             if port_channel_interfaces[port_channel_interface].logging_event.link_status is defined and port_channel_interfaces[port_channel_interface].logging_event.link_status == true %}
+{%         if port_channel_interfaces[port_channel_interface].logging is defined and port_channel_interfaces[port_channel_interface].logging is not none %}
+{%             if port_channel_interfaces[port_channel_interface].logging.event is defined and port_channel_interfaces[port_channel_interface].logging.event is not none %}
+{%                 if port_channel_interfaces[port_channel_interface].logging.event.link_status is defined and port_channel_interfaces[port_channel_interface].logging.event.link_status == true %}
    logging event link-status
-{%             else %}
+{%                 else %}
    no logging event link-status
+{%                 endif %}
 {%             endif %}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %}
