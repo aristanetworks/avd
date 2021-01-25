@@ -73,7 +73,7 @@
 
 ## Table of Contents
 
-- [{{ fabric_name | arista.avd.default("Fabric") }}](#{{ fabric_name | arista.avd.default("Fabric") | replace('_',"") | lower }} )
+- [{{ fabric_name | arista.avd.default("Fabric") }}](#{{ fabric_name | arista.avd.default("Fabric") | replace('_',"") | lower }})
   - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Topology](#fabric-topology)
   - [Fabric IP Allocation](#fabric-ip-allocation)
@@ -113,8 +113,8 @@
 | ----------- | ------------------- | ------------------ | ------------------ |
 {% for underlay_p2p_network_summary in underlay_p2p_network_summaries | avd.arista.natural_sort %}
 {% set size = underlay_p2p_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( underlay_p2p_network_summary ) %}
-| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network(underlay_p2p_network_summary) | length %}
+| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### Point-To-Point Links Node Allocation
@@ -133,8 +133,8 @@
 | ------------------------ | ------------------- | ------------------ | ------------------ |
 {% for overlay_loopback_network_summary in overlay_loopback_network_summaries | avd.arista.natural_sort %}
 {% set size = overlay_loopback_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( overlay_loopback_network_summary ) %}
-| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(overlay_loopback_network_summary) | length %}
+| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### Loopback0 Interfaces Node Allocation
@@ -165,8 +165,8 @@
 | --------------------- | ------------------- | ------------------ | ------------------ |
 {% for vtep_loopback_network_summary in vtep_loopback_network_summaries | avd.arista.natural_sort %}
 {% set size = vtep_loopback_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( vtep_loopback_network_summary ) %}
-| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(vtep_loopback_network_summary) | length %}
+| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### VTEP Loopback Node allocation
