@@ -112,8 +112,8 @@
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
 {% for underlay_p2p_network_summary in underlay_p2p_network_summaries | avd.arista.natural_sort %}
-{% set size = underlay_p2p_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network(underlay_p2p_network_summary) | length %}
+{%     set size = underlay_p2p_network_summary | ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network(underlay_p2p_network_summary) | length %}
 | {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -122,9 +122,9 @@
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
 {% for topology_link in topology_links %}
-    {% if topology_link.node_ip_address is arista.avd.defined and topology_link.peer_ip_address is arista.avd.defined %}
+{%     if topology_link.node_ip_address is arista.avd.defined and topology_link.peer_ip_address is arista.avd.defined %}
 | {{ topology_link.node }} | {{topology_link.node_interface }} | {{ topology_link.node_ip_address }} | {{ topology_link.peer }} | {{ topology_link.peer_interface }} | {{ topology_link.peer_ip_address }} |
-    {% endif %}
+{%     endif %}
 {% endfor %}
 
 ### Overlay Loopback Interfaces (BGP EVPN Peering)
@@ -132,8 +132,8 @@
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
 {% for overlay_loopback_network_summary in overlay_loopback_network_summaries | avd.arista.natural_sort %}
-{% set size = overlay_loopback_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(overlay_loopback_network_summary) | length %}
+{%     set size = overlay_loopback_network_summary | ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(overlay_loopback_network_summary) | length %}
 | {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
@@ -155,7 +155,7 @@
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'super-spine', 'overlay-controller'] %}
 | {{ node }} | {{ hostvars[node].router_isis.net }} |
-{% endif %}
+{%     endif %}
 {% endfor %}
 
 {% endif %}
@@ -164,8 +164,8 @@
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 {% for vtep_loopback_network_summary in vtep_loopback_network_summaries | avd.arista.natural_sort %}
-{% set size = vtep_loopback_network_summary | ipaddr('size') %}
-{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(vtep_loopback_network_summary) | length %}
+{%     set size = vtep_loopback_network_summary | ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(vtep_loopback_network_summary) | length %}
 | {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
