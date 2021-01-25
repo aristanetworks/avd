@@ -1,9 +1,3 @@
-{% set fabric_doc = namespace() %}
-{% set fabric_doc.leaf_total = 0 %}
-{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
-{%     set fabric_doc.leaf_total = fabric_doc.leaf_total + l3leaf.node_groups[l3leaf_node_group].nodes | length %}
-{% endfor %}
-
 {% set fabric_switches = [] %}
 {% set topology_links = [] %}
 {% set underlay_p2p_network_summaries = [] %}
@@ -15,6 +9,8 @@
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {# Populate network summaries #}
 {%         do underlay_p2p_network_summaries.append(underlay_p2p_network_summary) %}
+{%         do overlay_loopback_network_summaries.append(overlay_loopback_network_summary) %}
+{%         do vtep_loopback_network_summaries.append(vtep_loopback_network_summary) %}
 {# Populate fabric_switch #}
 {%         set fabric_switch = namespace() %}
 {%         set fabric_switch.type = hostvars[node].type %}
@@ -71,7 +67,8 @@
 {%     endif %}
 {% endfor %}
 {% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | arista.avd.natural_sort %}
-
+{% set overlay_loopback_network_summaries = overlay_loopback_network_summaries | unique | arista.avd.natural_sort %}
+{% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | arista.avd.natural_sort %}
 # {{ fabric_name | arista.avd.default("Fabric") }}
 
 ## Table of Contents
@@ -114,7 +111,11 @@
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-| {{ underlay_p2p_network_summary }} | {{ underlay_p2p_network_summary | ipaddr('size') }} | {{ spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links }} | {{ (( spine.nodes | length * fabric_doc.leaf_total * 2 * max_l3leaf_to_spine_links ) / underlay_p2p_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+{% for underlay_p2p_network_summary in underlay_p2p_network_summaries | avd.arista.natural_sort %}
+{% set size = underlay_p2p_network_summary | ipaddr('size') %}
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( underlay_p2p_network_summary ) %}
+| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% endfor %}
 
 ### Point-To-Point Links Node Allocation
 
@@ -130,20 +131,19 @@
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
-| {{ overlay_loopback_network_summary  }} | {{ overlay_loopback_network_summary | ipaddr('size') }} | {{ spine.nodes | length + fabric_doc.leaf_total }} | {{ (( spine.nodes | length + fabric_doc.leaf_total ) / overlay_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+{% for overlay_loopback_network_summary in overlay_loopback_network_summaries | avd.arista.natural_sort %}
+{% set size = overlay_loopback_network_summary | ipaddr('size') %}
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( overlay_loopback_network_summary ) %}
+| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% endfor %}
 
 ### Loopback0 Interfaces Node Allocation
 
 | Node | Loopback0 |
 | ---- | --------- |
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%     if hostvars[node].type == "spine" %}
-| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
-{%     endif %}
-{% endfor %}
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%    if hostvars[node].type == "l3leaf" %}
-| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback0.ip_address }} |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.loopback0_ip_address is arista.avd.defined %}
+| {{ fabric_switch.node }} | {{ fabric_switch.loopback0_ip_address }} |
 {%     endif %}
 {% endfor %}
 
@@ -163,14 +163,18 @@
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| {{ vtep_loopback_network_summary  }} | {{ vtep_loopback_network_summary | ipaddr('size') }} | {{ fabric_doc.leaf_total }} | {{ ( fabric_doc.leaf_total / overlay_loopback_network_summary|ipaddr('size') * 100 ) | round(2,'ceil') }} % |
+{% for vtep_loopback_network_summary in vtep_loopback_network_summaries | avd.arista.natural_sort %}
+{% set size = vtep_loopback_network_summary | ipaddr('size') %}
+{% set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network( vtep_loopback_network_summary ) %}
+| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ ( used / size * 100 ) | round(2,'ceil') }} % |
+{% endfor %}
 
 ### VTEP Loopback Node allocation
 
 | Node | Loopback1 |
 | ---- | --------- |
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%    if hostvars[node].type == "l3leaf" %}
-| {{ node }} | {{ hostvars[node].loopback_interfaces.Loopback1.ip_address }} |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.loopback1_ip_address is arista.avd.defined %}
+| {{ fabric_switch.node }} | {{ fabric_switch.loopback1_ip_address }} |
 {%     endif %}
 {% endfor %}
