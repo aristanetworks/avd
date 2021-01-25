@@ -24,7 +24,7 @@ jobs:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
   pr_reviewvers:
     name: "Assign PR reviewver"
-    # https://github.com/marketplace/actions/auto-request-review
+    # https://github.com/shufo/auto-assign-reviewer-by-files
     runs-on: ubuntu-latest
     steps:
       - name: Request review based on files changes and/or groups the author belongs to
