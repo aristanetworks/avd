@@ -1,6 +1,6 @@
 type, Node,Node Interface,Leaf IP Address,Peer Node,Peer Interface,Peer IP Address
 {% set interfaces_done = [] %}
-{% for node in groups['all'] | arista.avd.natural_sort %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {%         for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
 {%             if hostvars[node].ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}

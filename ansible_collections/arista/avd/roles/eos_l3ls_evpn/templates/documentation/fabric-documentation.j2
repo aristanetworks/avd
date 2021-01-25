@@ -5,17 +5,23 @@
 {% set vtep_loopback_network_summaries = [] %}
 {% set assigned_ip_addresses = [] %}
 {% set interfaces_done = [] %}
-{% for node in groups['all'] | arista.avd.natural_sort %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {# Populate network summaries #}
-{%         do underlay_p2p_network_summaries.append(underlay_p2p_network_summary) %}
-{%         do overlay_loopback_network_summaries.append(overlay_loopback_network_summary) %}
-{%         do vtep_loopback_network_summaries.append(vtep_loopback_network_summary) %}
+{%         do underlay_p2p_network_summaries.append(hostvars[node].underlay_p2p_network_summary | arista.avd.default()) %}
+{%         do underlay_p2p_network_summaries.append(hostvars[node].super_spine_underlay_p2p_network_summary | arista.avd.default()) %}
+{%         do underlay_p2p_network_summaries.append(hostvars[node].overlay_controller_p2p_network_summary | arista.avd.default()) %}
+{%         do overlay_loopback_network_summaries.append(hostvars[node].overlay_loopback_network_summary | arista.avd.default()) %}
+{%         do overlay_loopback_network_summaries.append(hostvars[node].super_spine_loopback_network_summary | arista.avd.default()) %}
+{%         do overlay_loopback_network_summaries.append(hostvars[node].overlay_controller_loopback_network_summary | arista.avd.default()) %}
+{%         do vtep_loopback_network_summaries.append(hostvars[node].vtep_loopback_network_summary | arista.avd.default()) %}
 {# Populate fabric_switch #}
 {%         set fabric_switch = namespace() %}
+{%         set fabric_switch.pod = hostvars[node].pod_name | arista.avd.default(hostvars[node].dc_name, "-") %}
 {%         set fabric_switch.type = hostvars[node].type %}
 {%         set fabric_switch.node = node %}
 {%         set fabric_switch.mgmt_ip = hostvars[node].switch_mgmt_ip | arista.avd.default('-') %}
+{%         do assigned_ip_addresses.append(hostvars[node].switch_mgmt_ip) if hostvars[node].switch_mgmt_ip is arista.avd.defined %}
 {%         set fabric_switch.platform = hostvars[node].switch_platform | arista.avd.default('-') %}
 {%         set fabric_switch.provisioned = 'Not Available' if hostvars[node].is_deployed is arista.avd.defined(false) else 'Provisioned' %}
 {%         if hostvars[node].loopback_interfaces is arista.avd.defined and hostvars[node].loopback_interfaces.Loopback0 is arista.avd.defined %}
@@ -30,9 +36,10 @@
 {%                 do assigned_ip_addresses.append(fabric_switch.loopback1_ip_address) %}
 {%             endif %}
 {%         endif %}
+{%         if hostvars[node].router_isis is arista.avd.defined and hostvars[node].router_isis.net is arista.avd.defined %}
+{%             set fabric_switch.router_isis_net = hostvars[node].router_isis.net %}
+{%         endif %}
 {%         do fabric_switches.append(fabric_switch) %}
-{# #}
-{%         do assigned_ip_addresses.append(hostvars[node].switch_mgmt_ip) if hostvars[node].switch_mgmt_ip is arista.avd.defined %}
 {# Populate topology_links #}
 {%         for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
 {%             if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
@@ -66,14 +73,14 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | arista.avd.natural_sort %}
-{% set overlay_loopback_network_summaries = overlay_loopback_network_summaries | unique | arista.avd.natural_sort %}
-{% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | arista.avd.natural_sort %}
-# {{ fabric_name | arista.avd.default("Fabric") }}
+{% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | reject("none") %}
+{% set overlay_loopback_network_summaries = overlay_loopback_network_summaries | unique | reject("none") %}
+{% set vtep_loopback_network_summaries = vtep_loopback_network_summaries | unique | reject("none") %}
+# {{ fabric_name }}
 
 ## Table of Contents
 
-- [{{ fabric_name | arista.avd.default("Fabric") }}](#{{ fabric_name | arista.avd.default("Fabric") | replace('_',"") | lower }})
+- [{{ fabric_name }}](#{{ fabric_name | replace('_',"") | lower }})
   - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Topology](#fabric-topology)
   - [Fabric IP Allocation](#fabric-ip-allocation)
@@ -89,10 +96,10 @@
 
 ## Fabric Switches and Management IP
 
-| Type | Node | Management IP | Platform | Provisioned in Cloudvision |
-| ---- | ---- | ------------- | -------- | -------------------------- |
+| POD | Type | Node | Management IP | Platform | Provisioned in Cloudvision |
+| --- | ---- | ---- | ------------- | -------- | -------------------------- |
 {% for fabric_switch in fabric_switches %}
-| {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} |
 {% endfor %}
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
@@ -111,10 +118,10 @@
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-{% for underlay_p2p_network_summary in underlay_p2p_network_summaries | avd.arista.natural_sort %}
+{% for underlay_p2p_network_summary in underlay_p2p_network_summaries | arista.avd.natural_sort %}
 {%     set size = underlay_p2p_network_summary | ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_network(underlay_p2p_network_summary) | length %}
-| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
+{%     set used = assigned_ip_addresses | ipaddr(underlay_p2p_network_summary) | length %}
+| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### Point-To-Point Links Node Allocation
@@ -131,30 +138,30 @@
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
-{% for overlay_loopback_network_summary in overlay_loopback_network_summaries | avd.arista.natural_sort %}
+{% for overlay_loopback_network_summary in overlay_loopback_network_summaries | arista.avd.natural_sort %}
 {%     set size = overlay_loopback_network_summary | ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(overlay_loopback_network_summary) | length %}
-| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
+{%     set used = assigned_ip_addresses | ipaddr(overlay_loopback_network_summary) | length %}
+| {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### Loopback0 Interfaces Node Allocation
 
-| Node | Loopback0 |
-| ---- | --------- |
+| POD | Node | Loopback0 |
+| --- | ---- | --------- |
 {% for fabric_switch in fabric_switches %}
 {%     if fabric_switch.loopback0_ip_address is arista.avd.defined %}
-| {{ fabric_switch.node }} | {{ fabric_switch.loopback0_ip_address }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback0_ip_address }} |
 {%     endif %}
 {% endfor %}
 
 {% if underlay_routing_protocol|lower == "isis" %}
 ### ISIS CLNS interfaces
 
-| Node | CLNS Address |
-| ---- | ------------ |
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'super-spine', 'overlay-controller'] %}
-| {{ node }} | {{ hostvars[node].router_isis.net }} |
+| POD | Node | CLNS Address |
+| --- | ---- | ------------ |
+{% for fabric_switch in fabric_switches %}
+{%     if fabric_switch.router_isis_net is arista.avd.defined %}
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.router_isis_net }} |
 {%     endif %}
 {% endfor %}
 
@@ -163,18 +170,18 @@
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-{% for vtep_loopback_network_summary in vtep_loopback_network_summaries | avd.arista.natural_sort %}
+{% for vtep_loopback_network_summary in vtep_loopback_network_summaries | arista.avd.natural_sort %}
 {%     set size = vtep_loopback_network_summary | ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.reduce_on_networkassigned_ip_addresses(vtep_loopback_network_summary) | length %}
-| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ assigned_ip_addresses(used / size * 100) | round(2,'ceil') }} % |
+{%     set used = assigned_ip_addresses | ipaddr(vtep_loopback_network_summary) | length %}
+| {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ### VTEP Loopback Node allocation
 
-| Node | Loopback1 |
-| ---- | --------- |
+| POD | Node | Loopback1 |
+| --- | ---- | --------- |
 {% for fabric_switch in fabric_switches %}
 {%     if fabric_switch.loopback1_ip_address is arista.avd.defined %}
-| {{ fabric_switch.node }} | {{ fabric_switch.loopback1_ip_address }} |
+| {{ fabric_switch.pod }} | {{ fabric_switch.node }} | {{ fabric_switch.loopback1_ip_address }} |
 {%     endif %}
 {% endfor %}
