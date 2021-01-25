@@ -262,9 +262,15 @@ mac_address_table:
 **Variables and Options:**
 
 ```yaml
-
-# Fabric Name, required to match group_var file name | Required.
+# Fabric Name used in documentation | Optional
+# Should be common between all devices in the fabric
 fabric_name: < Fabric_Name >
+# DC Name used in documentation | Optional
+# Should be common between super-spines, spines, leafs, overlay-controllers within a DC
+dc_name: < DC_Name >
+# POD Name used in documentation | Optional
+# Should be common between spines, leafs within a POD (One l3ls topology)
+pod_name: < POD_Name >
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
