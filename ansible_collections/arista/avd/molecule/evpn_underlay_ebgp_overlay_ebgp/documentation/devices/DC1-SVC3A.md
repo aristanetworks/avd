@@ -1212,17 +1212,27 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.31.255.24 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.26 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.28 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.30 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Default |
+| 172.31.255.24 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
+| 172.31.255.26 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
+| 172.31.255.28 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
+| 172.31.255.30 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_APP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_DB_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_WAN_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_WEB_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_B_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_B_WAN_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_WAN_Zone |
+
 
 ### Router BGP EVPN Address Family
 
