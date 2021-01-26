@@ -1199,15 +1199,15 @@ Router ISIS not defined
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Default |
-| 172.31.255.32 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.34 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.36 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.38 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.31.255.32 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.34 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.36 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.38 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 | 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_APP_Zone |
 | 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_DB_Zone |
 | 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone |

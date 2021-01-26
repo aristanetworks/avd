@@ -659,16 +659,17 @@ Router ISIS not defined
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.48 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.50 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.52 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 172.31.255.54 | Inherited from peer group IPv4-UNDERLAY-PEERS | Default |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | Default |
+| 172.31.255.48 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.50 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.52 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.54 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 | 123.1.1.10 | 1234 | Tenant_A_WAN_Zone |
 | fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone |
 
 
 ### Router BGP EVPN Address Family

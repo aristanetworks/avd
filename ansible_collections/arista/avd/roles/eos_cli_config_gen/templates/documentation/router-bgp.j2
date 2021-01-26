@@ -71,10 +71,10 @@
 | -------- | --------- | --- |
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%         if router_bgp.neighbors[neighbor].remote_as is defined and router_bgp.neighbors[neighbor].remote_as is not none %}
-| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | Default |
+| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | default |
 {%         else %}
 {%             if router_bgp.neighbors[neighbor].peer_group is defined and router_bgp.neighbors[neighbor].peer_group is not none %}
-| {{ neighbor }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | Default |
+| {{ neighbor }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | default |
 {%             endif %}
 {%         endif %}
 {%     endfor %}
