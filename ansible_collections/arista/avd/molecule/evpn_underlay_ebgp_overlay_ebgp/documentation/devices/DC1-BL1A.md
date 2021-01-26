@@ -770,6 +770,9 @@ router bgp 65104
       neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
       address-family ipv6
          neighbor fd5a:fe45:8831:06c5::a activate
+      neighbor fd5a:fe45:8831:06c5::b remote-as 12345
+      address-family ipv6
+         neighbor fd5a:fe45:8831:06c5::b activate
       redistribute connected
       redistribute static
    !

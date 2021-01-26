@@ -356,6 +356,10 @@ router_bgp:
           address_family:
           - ipv6
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::b:
+          remote_as: 12345
+          address_family:
+          - ipv6
       redistribute_routes:
       - connected
       - static
