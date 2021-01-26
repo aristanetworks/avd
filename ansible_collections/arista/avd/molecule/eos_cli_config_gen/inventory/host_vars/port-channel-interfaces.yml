@@ -5,7 +5,8 @@ port_channel_interfaces:
     description: DC1_L2LEAF1_Po1
     logging:
       event:
-        link_status: false
+        link:
+          status: false
     vlans: 110,201
     mode: trunk
     mlag: 5
