@@ -42,7 +42,7 @@
 {%         do fabric_switches.append(fabric_switch) %}
 {# Populate topology_links #}
 {%         for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
-{%             if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
+{%             if hostvars[node].ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default('undefined') in ['mlag_peer', 'spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {%                 do interfaces_done.append(node ~ "," ~ ethernet_interface) %}
 {%                 set peer = hostvars[node].ethernet_interfaces[ethernet_interface].peer %}
 {%                 set peer_interface = hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface %}
