@@ -271,7 +271,7 @@ mac_address_table:
 fabric_name: < Fabric_Name >
 # DC Name, required to match Ansible Group name convering all devices in the DC | Required for 5-stage CLOS (Super-spines)
 dc_name: < DC_Name >
-# POD Name, only used in Fabric Documentation | Optional, fallback to dc_name
+# POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
 # Recommended be common between Spines, Leafs within a POD (One l3ls topology)
 pod_name: < POD_Name >
 

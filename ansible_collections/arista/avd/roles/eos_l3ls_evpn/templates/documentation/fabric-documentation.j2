@@ -17,7 +17,7 @@
 {%         do vtep_loopback_network_summaries.append(hostvars[node].vtep_loopback_network_summary | arista.avd.default()) %}
 {# Populate fabric_switch #}
 {%         set fabric_switch = namespace() %}
-{%         set fabric_switch.pod = hostvars[node].pod_name | arista.avd.default(hostvars[node].dc_name, "-") %}
+{%         set fabric_switch.pod = hostvars[node].pod_name | arista.avd.default(hostvars[node].dc_name, fabric_name) %}
 {%         set fabric_switch.type = hostvars[node].type %}
 {%         set fabric_switch.node = node %}
 {%         set fabric_switch.mgmt_ip = hostvars[node].switch_mgmt_ip | arista.avd.default('-') %}
