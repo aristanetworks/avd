@@ -96,4 +96,3 @@
     mode: 0755
   delegate_to: localhost
   run_once: True
-  
