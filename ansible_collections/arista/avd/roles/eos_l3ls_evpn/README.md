@@ -372,6 +372,10 @@ bfd_multihop:
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
 
+# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Requires use eBGP as overlay protocol.
+evpn_overlay_bgp_rtc: < true | false , default -> false >
+
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
 # SVI IP address will be assigned as follows:
@@ -516,9 +520,6 @@ spine:
   # Spine BGP AS | Required.
   bgp_as: < bgp_as >
 
-  # Accepted L3 leaf bgp as range | Required.
-  leaf_as_range: < bgp_as_start-bgp_as_end >
-
   # Specify dictionary of Spine nodes | Required.
   nodes:
     < inventory_hostname >:
@@ -526,8 +527,14 @@ spine:
       # Unique identifier | Required.
       id: < integer >
 
-      # Route Reflector when < overlay_routing_protocol > == IBGP
-      bgp_route_reflector: < boolean >
+      # Enable this device as EVPN Overlay Client | Optional, default is false
+      evpn_overlay_client_role: < true | false >
+
+      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
+      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+
+      # Enable this device as EVPN Overlay Server | Optional, default is true
+      evpn_overlay_server_role: < true | false >
 
       # Node management IP address | Required.
       mgmt_ip: < IPv4_address/Mask >
@@ -545,7 +552,6 @@ spine:
 spine:
   platform: vEOS-LAB
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1
@@ -611,6 +617,15 @@ l3leaf:
 
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
+
+      # Enable this device as EVPN Overlay Client | Optional, default is true
+      evpn_overlay_client_role: < true | false >
+
+      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional, default to content of spines variable
+      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+
+      # Enable this device as EVPN Overlay Server | Optional, default is false
+      evpn_overlay_server_role: < true | false >
 
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
@@ -1717,14 +1732,21 @@ max_spine_to_super_spine_links: 1  # number of parallel links between spines and
 Assigned to the DC group:
 
 ```yaml
-dc_name: DC1  # data center fabric name
-              # this variable is required to identify devices in the same DC in case of multi-DC setup
-
 max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
 
 super_spine:
   platform: vEOS-LAB  # super-spine platform
   bgp_as: <super-spine BGP AS>
+
+# Enable this device as EVPN Overlay Client | Optional, default is false
+  evpn_overlay_client_role: < true | false >
+
+  # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
+  evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+
+  # Enable this device as EVPN Overlay Server | Optional, default is false
+  evpn_overlay_server_role: < true | false >
+
   nodes:
     SU-01:  # super-spine name
       id: 1
@@ -1755,8 +1777,6 @@ type: super-spine  # identifies every host in the group as super-spine
 Assigned to Every POD Group:
 
 ```yaml
-pod_number: 1  # leaf-spine POD number, starts with 1
-
 spine:
   # list of spine interfaces used as uplinks to super-spines
   # taking `max_spine_to_super_spine_links` into account
@@ -1829,6 +1849,16 @@ overlay_controller:
       id: <number> # Starting from 1
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+
+      # Enable this device as EVPN Overlay Client | Optional, default is false
+      evpn_overlay_client_role: < true | false >
+
+      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
+      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+
+      # Enable this device as EVPN Overlay Server | Optional, default is true
+      evpn_overlay_server_role: < true | false >
+
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
 overlay_controller_p2p_network_summary: < IPv4_network/Mask >
@@ -1851,68 +1881,6 @@ Assigned to Overlay Controller Group:
 
 ```yaml
 type: overlay-controller # identifies every host in the group as overlay-controller
-```
-
-
-## Role Enhancements for Flexible EVPN Overlay peering design
-
-This enhancement will allow a more flexible EVPN Overlay peering design.
-Overlay peerings can be configured to any of the following options as well as combinations thereof:
-* l3leaf <-> spine
-* l3leaf <-> super-spine
-* l3leaf <-> overlay-controller
-* spine <-> spine (in other PODs)
-* spine <-> super-spine
-* spine <-> overlay-controller
-* super-spine <-> super-spine (in other DCs)
-* super-spine <-> overlay-controller
-* overlay-controller <-> overlay-controller (in other DCs)
-The overlay peerings will be derived from the variable `evpn_overlay_controller_groups` on the "client".
-Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between
-all the l3leafs in this group and all devices in the group `DC1_SUPER_SPINES`. The devices in group `DC1_SUPER_SPINES` will detect that others are
-pointing at them, and configure the peering as well.
-
-Currently all spines, super-spines and overlay-controllers will have the EVPN adress-family and EVPN BGP peer-group configured even if they have no
-EVPN overlay peerings.
-
-To be backward compatible the templates will use the old behavior of configuring EVPN Overlay between all spines and l3leafs if `evpn_overlay_controller_groups`
-is not defined on the l3leafs group.
-
-### Inventory Structure
-
-There are no specific requirements for this feature, so this is just an example for reference.
-
-```yaml
-all:
-  children:
-    < DC-group-name >:
-      children:
-        < Overlay Controllers group name >:
-          <-- omitted -->
-        < Super Spines group name >:
-          <-- omitted -->
-        < DC POD 1 group name >:
-          children:
-            < spines group >:
-              <-- omitted -->
-            < leaf group >:
-              <-- omitted -->
-```
-
-### Additional Variables For Flexible EVPN Overlay peerings
-
-Assigned to any EVPN client device group:
-
-```yaml
-# One or more groups containing EVPN RR/RS.
-evpn_overlay_controller_groups: [ < inventory_group > ]
-```
-
-Assigned to fabric group:
-```yaml
-# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
-# Requires use of evpn_overlay_controller_groups and eBGP as overlay protocol.
-evpn_overlay_bgp_rtc: < true | false , default -> false >
 ```
 
 ## Custom EOS Structured Configuration
