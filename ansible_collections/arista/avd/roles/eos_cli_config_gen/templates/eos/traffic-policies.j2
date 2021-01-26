@@ -2,7 +2,7 @@
 !
 traffic-policies
 {# Global options #}
-{%     if options.counter_per_interface is arista.avd.defined(true) %}
+{%     if traffic_policies.options.counter_per_interface is arista.avd.defined(true) %}
    counter interface per-interface ingress
 {%     endif %}
 {# FIELD SET #}
