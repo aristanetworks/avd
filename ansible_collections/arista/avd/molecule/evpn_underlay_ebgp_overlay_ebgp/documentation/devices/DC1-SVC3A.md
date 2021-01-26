@@ -1233,7 +1233,6 @@ Router ISIS not defined
 | 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_OP_Zone |
 | 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_WAN_Zone |
 
-
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
