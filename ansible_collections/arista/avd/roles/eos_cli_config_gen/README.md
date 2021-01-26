@@ -1697,18 +1697,18 @@ management_ssh:
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
   cipher:
-    - cipher1
-    - cipher2
+    - < cipher1 >
+    - < cipher2 >
   key-exchange:
-    - method1
-    - method2
+    - < method1 >
+    - < method2 >
   mac:
-    - mac_algorithm1
-    - mac_algorithm2
+    - < mac_algorithm1 >
+    - < mac_algorithm2 >
   hostkey:
     server:
-      - algorithm1
-      - algorithm2
+      - < algorithm1 >
+      - < algorithm2 >
   enable: < true | false >
   vrfs:
     < vrf_name_1 >:

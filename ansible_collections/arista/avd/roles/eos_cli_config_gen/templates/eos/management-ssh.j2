@@ -16,18 +16,18 @@ management ssh
    idle-timeout {{ management_ssh.idle_timeout }}
 {%     endif %}
 {%     if management_ssh.cipher is arista.avd.defined %}
-   cipher {{ management_ssh.cipher|join(" ") }}
+   cipher {{ management_ssh.cipher | join(" ") }}
 {%     endif %}
 {%     if management_ssh.key_exchange is arista.avd.defined %}
-   key-exchange {{ management_ssh.key_exchange|join(" ") }}
+   key-exchange {{ management_ssh.key_exchange | join(" ") }}
 {%     endif %}
 {%     if management_ssh.mac is arista.avd.defined %}
-   mac {{ management_ssh.mac|join(" ") }}
+   mac {{ management_ssh.mac | join(" ") }}
 {%     endif %}
 {%     if management_ssh.hostkey is arista.avd.defined %}
-{%     if management_ssh.hostkey.server is arista.avd.defined %}
-   hostkey server {{ management_ssh.hostkey.server|join(" ") }}
-{%     endif %}
+{%         if management_ssh.hostkey.server is arista.avd.defined %}
+   hostkey server {{ management_ssh.hostkey.server | join(" ") }}
+{%         endif %}
 {%     endif %}
 {%     if management_ssh.enable is defined and management_ssh.enable == false %}
    shutdown
