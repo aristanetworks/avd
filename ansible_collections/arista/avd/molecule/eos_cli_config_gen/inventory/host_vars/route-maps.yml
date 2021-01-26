@@ -38,3 +38,9 @@ route_maps:
         type: permit
         set:
           - "origin incomplete"
+  RM-10.2.3.4-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 10.2.3.4

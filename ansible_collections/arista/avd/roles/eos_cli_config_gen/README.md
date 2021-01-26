@@ -1487,13 +1487,22 @@ router_bgp:
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
+          local_as: < asn >
           description: < description >
+          ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < string | leave empty for all communities >
+          maximum_routes: < integer >
           default_originate:
             always: < true | false >
             route_map: < route_map_name >
+          update_source: < interface >
+          route_map_out: < route-map name >
+          route_map_in: < route-map name >
+          address_family:
+            - < address_family_1 >
+            - < address_family_2 >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >

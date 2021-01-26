@@ -26,6 +26,9 @@ static_routes:
     tag: 667
     name: RT-TO-FAKE-DMZ
 
+  - destination_address_prefix: 10.3.4.0/24
+    gateway: 1.2.3.4
+    vrf: APP
 
 ipv6_static_routes:
   - vrf: default
