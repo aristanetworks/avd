@@ -1031,8 +1031,8 @@ mac_security:
     < profile >:
       cipher: < valid-cipher-string >
       connection_keys:
-        < connection_key >:
-          encrypted_key: < encrypted_key >
+        "< connection_key >":
+          encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
 ```
 
