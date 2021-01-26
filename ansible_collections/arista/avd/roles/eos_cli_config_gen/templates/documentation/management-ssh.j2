@@ -29,8 +29,14 @@
 | Idle Timeout | SSH Management |
 | ------------ | -------------- |
 | {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {% if ssh.enable %} Enabled {% else %} Disabled {% endif %} |
-{%  if management_ssh.vrfs is arista.avd.defined %}
 
+### Ciphers and algorithms
+
+| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+|---------|----------------------|----------------|---------------------------|
+| {{ management_ssh.cipher | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.key_exchange | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.mac | arista.avd.default(['default']) | join(", ") }} | {{ management_ssh.hostkey.server | arista.avd.default(['default']) | join(", ") }} |
+
+{%  if management_ssh.vrfs is arista.avd.defined %}
 ### VRFs
 
 | VRF | Status |
