@@ -21,6 +21,7 @@ jobs:
       matrix:
         avd_scenario:
           - 'eos_config_deploy_cvp'
+          - 'eos_config_deploy_cvp_list'
     steps:
       - name: 'set environment variables'
         run: |
