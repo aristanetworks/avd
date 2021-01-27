@@ -1928,25 +1928,53 @@ Lists are replaced. Dictionaries are updated. The combine is done recursively, s
 ```yaml
 custom_structured_configuration_name_server:
   nodes:
-    - 1.2.3.4
+    - 10.2.3.4
 custom_structured_configuration_ethernet_interfaces:
   Ethernet4000:
     description: My test
-    ip_address: 1.2.3.4/12
+    ip_address: 10.1.2.3/12
+    shutdown: false
+    type: routed
     mtu: 1500
     peer: MY-own-peer
     peer_interface: Ethernet123
     peer_type: my_precious
 ```
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ "1.2.3.4" ]`
+In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ "10.2.3.4" ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
-Default value is `custom_structured_configuration_`.
+Default value is `custom_structured_configuration_`. Remember to include any delimiter like the last `_` in this case.
+It is possible to specify a list of prefixes, which will all be merged one by one. The order of merge will start from beginning of the list, which means that keys defined in the later prefixes will be able to override keys defined in previous ones.
 
 ```yaml
 custom_structured_configuration_prefix: < variable_prefix, default -> "custom_structured_configuration_" >
+#or
+custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
 ```
+
+Example using multiple prefixes:
+
+```yaml
+custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
+
+my_dci_ethernet_interfaces:
+  Ethernet4000:
+    description: My test
+    ip_address: 10.1.2.3/12
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
+
+my_special_dci_ethernet_interfaces:
+  Ethernet4000:
+    ip_address: 10.3.2.1/21
+```
+
+In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_scructured_configuration_prefix`
 
 ## License
 
