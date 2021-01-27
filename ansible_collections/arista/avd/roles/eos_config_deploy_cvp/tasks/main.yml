@@ -1,15 +1,17 @@
 ---
 # Common action for all states.
-- name: generate intented variables
+
+# Load tasks when device_filter is string
+- name: Generate CVP information using device_filter as string.
   tags: [always]
-  arista.avd.inventory_to_container:
-    inventory: '{{ inventory_file }}'
-    container_root: '{{ container_root }}'
-    configlet_dir: '{{ root_dir }}/intended/configs'
-    configlet_prefix: '{{ configlets_prefix }}'
-    destination: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}_configlets.yml'
-    device_filter: ['{{ device_filter }}']
-  register: CVP_VARS
+  include_tasks: "./device_filter_string.yml"
+  when: "device_filter is string"
+
+# Load tasks when device_filter is list
+- name: Generate CVP information using device_filter as list.
+  tags: [always]
+  include_tasks: "./device_filter_list.yml"
+  when: "device_filter is not string"
 
 - name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
   tags: [generate, build, provision]
