@@ -136,6 +136,15 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.47/31
+  Ethernet4000:
+    description: My test
+    ip_address: 10.3.2.1/21
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

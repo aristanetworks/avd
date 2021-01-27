@@ -385,6 +385,7 @@ No Interface Defaults defined
 | Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.51/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.53/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.55/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4000 |  My test  |  routed  | - |  10.1.2.3/12  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -413,6 +414,12 @@ interface Ethernet4
    no shutdown
    no switchport
    ip address 172.31.255.55/31
+!
+interface Ethernet4000
+   description My test
+   no shutdown
+   no switchport
+   ip address 10.1.2.3/12
 ```
 
 ## Port-Channel Interfaces

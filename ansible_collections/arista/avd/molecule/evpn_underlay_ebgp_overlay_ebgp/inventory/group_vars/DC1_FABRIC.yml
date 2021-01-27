@@ -189,3 +189,5 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
+
+custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
