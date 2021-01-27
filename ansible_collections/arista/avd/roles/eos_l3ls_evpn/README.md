@@ -262,9 +262,18 @@ mac_address_table:
 **Variables and Options:**
 
 ```yaml
-
-# Fabric Name, required to match group_var file name | Required.
+# The topology hierarchy is
+# Fabric
+# - DC
+#   - POD
+#
+# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
 fabric_name: < Fabric_Name >
+# DC Name, required to match Ansible Group name convering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+dc_name: < DC_Name >
+# POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
+# Recommended be common between Spines, Leafs within a POD (One l3ls topology)
+pod_name: < POD_Name >
 
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
