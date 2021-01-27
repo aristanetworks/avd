@@ -363,13 +363,18 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 |
+| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
+| 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
 
 ### Router BGP EVPN Address Family
 
