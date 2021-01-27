@@ -145,6 +145,12 @@ PTP is not defined.
 | ------------ | -------------- |
 | 15 |  Enabled  |
 
+### Ciphers and algorithms
+
+| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+|---------|----------------------|----------------|---------------------------|
+| default | default | default | default |
+
 ### VRFs
 
 | VRF | Status |

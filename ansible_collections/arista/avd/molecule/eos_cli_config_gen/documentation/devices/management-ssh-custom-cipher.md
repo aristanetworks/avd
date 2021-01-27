@@ -1,4 +1,4 @@
-# base
+# management-ssh-custom-cipher
 
 # Table of Contents
 
@@ -139,13 +139,6 @@ PTP is not defined.
 | ACL-SSH | - |
 | ACL-SSH-VRF | mgt |
 
-### IPv6 ACL
-
-| IPv6 ACL | VRF |
-| -------- | --- |
-| ACL-SSH6 | - |
-| ACL-SSH-VRF6 | mgt |
-
  ### SSH timeout and management
 
 | Idle Timeout | SSH Management |
@@ -156,7 +149,7 @@ PTP is not defined.
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
 |---------|----------------------|----------------|---------------------------|
-| default | default | default | default |
+| aes256-cbc, aes256-ctr, aes256-gcm@openssh.com | ecdh-sha2-nistp521 | hmac-sha2-512, hmac-sha2-512-etm@openssh.com | ecdsa-nistp256, ecdsa-nistp521 |
 
 ### VRFs
 
@@ -171,9 +164,11 @@ PTP is not defined.
 management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
-   ipv6 access-group ACL-SSH6 in
-   ipv6 access-group ACL-SSH-VRF6 vrf mgt in
    idle-timeout 15
+   cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
+   key-exchange ecdh-sha2-nistp521
+   mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
+   hostkey server ecdsa-nistp256 ecdsa-nistp521
    vrf mgt
       no shutdown
 ```
@@ -184,30 +179,7 @@ Management API gnmi is not defined
 
 ## Management API HTTP
 
-### Management API HTTP Summary
-
-| HTTP | HTTPS |
-| ---------- | ---------- |
-|  true  |  true  |
-
-### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| mgt |  ACL-API  |  -  |
-
-### Management API HTTP Configuration
-
-```eos
-!
-management api http-commands
-   protocol http
-   no shutdown
-   !
-   vrf mgt
-      no shutdown
-      ip access-group ACL-API
-```
+Management API HTTP not defined
 
 # Authentication
 
@@ -249,18 +221,7 @@ AAA accounting not defined
 
 # Management Security
 
-## Management Security
-
-   Management Security password encryption is common.
-
-
-## Management Security Configuration
-
-```eos
-!
-management security
-   password encryption-key common
-```
+Management security not defined
 
 # Aliases
 
