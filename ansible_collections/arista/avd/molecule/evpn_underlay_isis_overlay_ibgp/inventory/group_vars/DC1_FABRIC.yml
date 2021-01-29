@@ -49,17 +49,17 @@ spine:
     DC1-SPINE1:
       id: 1
       mgmt_ip: 192.168.200.101/24
-      bgp_route_reflector: true
     DC1-SPINE2:
       id: 2
       mgmt_ip: 192.168.200.102/24
+      evpn_role: none
     DC1-SPINE3:
       id: 3
       mgmt_ip: 192.168.200.103/24
+      evpn_role: none
     DC1-SPINE4:
       id: 4
       mgmt_ip: 192.168.200.104/24
-      bgp_route_reflector: true
 
 # Leaf switch groups
 # A maximum of two nodes can form a leaf group

@@ -8,8 +8,6 @@ switch_router_id: 192.168.255.5
 switch_evpn_role: client
 switch_evpn_route_servers:
 - DC1-SPINE1
-- DC1-SPINE2
-- DC1-SPINE3
 - DC1-SPINE4
 switch_evpn_route_clients: []
 leaf_filter_tenants:
@@ -207,12 +205,6 @@ router_bgp:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-    192.168.255.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE2
-    192.168.255.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SPINE3
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4

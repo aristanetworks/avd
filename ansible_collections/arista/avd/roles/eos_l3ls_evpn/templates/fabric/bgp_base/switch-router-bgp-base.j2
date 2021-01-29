@@ -10,3 +10,6 @@
 {% elif bgp_maximum_paths is arista.avd.defined %}
     - maximum-paths {{ bgp_maximum_paths }}
 {% endif %}
+{% if switch.overlay_routing_protocol == "ibgp" and switch.evpn_role == "server" %}
+  bgp_cluster_id: {{ switch.router_id }}
+{% endif %}

@@ -756,8 +756,6 @@ router isis EVPN_UNDERLAY
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 | 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
@@ -784,10 +782,6 @@ router bgp 65000
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 description DC1-SPINE1
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 description DC1-SPINE2
-   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.3 description DC1-SPINE3
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 description DC1-SPINE4
    !

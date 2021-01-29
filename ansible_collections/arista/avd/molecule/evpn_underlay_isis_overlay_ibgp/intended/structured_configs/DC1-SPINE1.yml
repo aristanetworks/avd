@@ -183,6 +183,7 @@ router_bgp:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  bgp_cluster_id: 192.168.255.1
   peer_groups:
     EVPN-OVERLAY-PEERS:
       type: evpn

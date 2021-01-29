@@ -594,6 +594,10 @@ router isis EVPN_UNDERLAY
 | ------ | --------- |
 | 65000|  192.168.255.1 |
 
+| BGP AS | Cluster ID |
+| ------ | --------- |
+| 65000|  192.168.255.1 |
+
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
@@ -638,6 +642,7 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.1
+   bgp cluster-id 192.168.255.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
