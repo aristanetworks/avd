@@ -325,7 +325,7 @@ mlag_ips:
 
 # BGP multi-path | Optional
 bgp_maximum_paths: < number_of_max_paths | default -> 4 >
-bgp_ecmp: < number_of_ecmp_paths | default is platform maximum >
+bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
