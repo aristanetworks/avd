@@ -988,10 +988,9 @@ Router ISIS not defined
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
-| Ebgp multihop | 3 |
+| Ebgp multihop | 15 |
 | Send community | true |
 | Maximum routes | 0 (no limit) |
 
@@ -1023,10 +1022,10 @@ Router ISIS not defined
 | 172.31.255.10 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
 | 172.31.255.12 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
 | 172.31.255.14 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.1 | 65001 | default |
+| 192.168.255.2 | 65001 | default |
+| 192.168.255.3 | 65001 | default |
+| 192.168.255.4 | 65001 | default |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_APP_Zone |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_DB_Zone |
 | 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone |
@@ -1072,10 +1071,9 @@ router bgp 65102
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
+   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
@@ -1097,9 +1095,17 @@ router bgp 65102
    neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.1 remote-as 65001
+   neighbor 192.168.255.1 description DC1-SPINE1
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 remote-as 65001
+   neighbor 192.168.255.2 description DC1-SPINE2
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.3 remote-as 65001
+   neighbor 192.168.255.3 description DC1-SPINE3
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 remote-as 65001
+   neighbor 192.168.255.4 description DC1-SPINE4
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1152,8 +1158,6 @@ router bgp 65102
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
-      no neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

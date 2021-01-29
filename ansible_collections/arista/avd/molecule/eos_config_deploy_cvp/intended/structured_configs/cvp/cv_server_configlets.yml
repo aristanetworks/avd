@@ -65,44 +65,46 @@ CVP_CONFIGLETS:
     \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n   router-id\
     \ 192.168.255.10\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
     \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
-    \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
-    \ MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
-    \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
-    \ in\n   neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
-    \ 172.31.255.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.42 peer\
-    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.44 peer group IPv4-UNDERLAY-PEERS\n\
+    \ EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n\
+    \   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS\
+    \ password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n\
+    \   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor IPv4-UNDERLAY-PEERS remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor\
+    \ MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password\
+    \ 7 vnEaG8gMeQf3d3cN6PktXQ==\n   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n\
+    \   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \   neighbor 172.31.255.40 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.42\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.44 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.46 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.10:14\n  \
-    \    route-target both 14:14\n      redistribute learned\n      vlan 150\n   !\n\
-    \   vlan-aware-bundle Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n      route-target\
-    \ both 21:21\n      redistribute learned\n      vlan 250\n   !\n   vlan-aware-bundle\
-    \ Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n      route-target both 31:31\n\
-    \      redistribute learned\n      vlan 350\n   !\n   address-family evpn\n  \
-    \    neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_WAN_Zone\n\
-    \      rd 192.168.255.10:14\n      route-target import evpn 14:14\n      route-target\
-    \ export evpn 14:14\n      router-id 192.168.255.10\n      neighbor 10.255.251.11\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n      route-target import evpn\
-    \ 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.10\n\
-    \      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n    \
-    \  route-target import evpn 31:31\n      route-target export evpn 31:31\n    \
-    \  router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_WAN_Zone\n      rd 192.168.255.10:14\n      route-target both 14:14\n\
+    \      redistribute learned\n      vlan 150\n   !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n\
+    \      rd 192.168.255.10:21\n      route-target both 21:21\n      redistribute\
+    \ learned\n      vlan 250\n   !\n   vlan-aware-bundle Tenant_C_WAN_Zone\n    \
+    \  rd 192.168.255.10:31\n      route-target both 31:31\n      redistribute learned\n\
+    \      vlan 350\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
+    \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
+    \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ activate\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.10:14\n     \
+    \ route-target import evpn 14:14\n      route-target export evpn 14:14\n     \
+    \ router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.10:21\n\
+    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
+    \      router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.10:31\n\
+    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
+    \      router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   no shutdown\n\
     \   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-BL1B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
@@ -171,44 +173,46 @@ CVP_CONFIGLETS:
     \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65104\n   router-id\
     \ 192.168.255.11\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
     \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
-    \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
-    \ MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
-    \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
-    \ in\n   neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
-    \ 172.31.255.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.50 peer\
-    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS\n\
+    \ EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n\
+    \   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS\
+    \ password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n\
+    \   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor IPv4-UNDERLAY-PEERS remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65104\n   neighbor\
+    \ MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password\
+    \ 7 vnEaG8gMeQf3d3cN6PktXQ==\n   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n\
+    \   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \   neighbor 172.31.255.48 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.50\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.54 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.11:14\n  \
-    \    route-target both 14:14\n      redistribute learned\n      vlan 150\n   !\n\
-    \   vlan-aware-bundle Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n      route-target\
-    \ both 21:21\n      redistribute learned\n      vlan 250\n   !\n   vlan-aware-bundle\
-    \ Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n      route-target both 31:31\n\
-    \      redistribute learned\n      vlan 350\n   !\n   address-family evpn\n  \
-    \    neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_WAN_Zone\n\
-    \      rd 192.168.255.11:14\n      route-target import evpn 14:14\n      route-target\
-    \ export evpn 14:14\n      router-id 192.168.255.11\n      neighbor 10.255.251.10\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n      route-target import evpn\
-    \ 21:21\n      route-target export evpn 21:21\n      router-id 192.168.255.11\n\
-    \      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n    \
-    \  route-target import evpn 31:31\n      route-target export evpn 31:31\n    \
-    \  router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_WAN_Zone\n      rd 192.168.255.11:14\n      route-target both 14:14\n\
+    \      redistribute learned\n      vlan 150\n   !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n\
+    \      rd 192.168.255.11:21\n      route-target both 21:21\n      redistribute\
+    \ learned\n      vlan 250\n   !\n   vlan-aware-bundle Tenant_C_WAN_Zone\n    \
+    \  rd 192.168.255.11:31\n      route-target both 31:31\n      redistribute learned\n\
+    \      vlan 350\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
+    \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
+    \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ activate\n   !\n   vrf Tenant_A_WAN_Zone\n      rd 192.168.255.11:14\n     \
+    \ route-target import evpn 14:14\n      route-target export evpn 14:14\n     \
+    \ router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n   !\n   vrf Tenant_B_WAN_Zone\n      rd 192.168.255.11:21\n\
+    \      route-target import evpn 21:21\n      route-target export evpn 21:21\n\
+    \      router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \      redistribute connected\n   !\n   vrf Tenant_C_WAN_Zone\n      rd 192.168.255.11:31\n\
+    \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
+    \      router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   no shutdown\n\
     \   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
@@ -362,32 +366,37 @@ CVP_CONFIGLETS:
     \ PL-LOOPBACKS-EVPN-OVERLAY\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200\
     \ multiplier 3\n!\nrouter bgp 65101\n   router-id 192.168.255.5\n   no bgp default\
     \ ipv4-unicast\n   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor\
-    \ EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n\
-    \   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS\
-    \ bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS\
-    \ password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n\
-    \   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ peer group\n   neighbor IPv4-UNDERLAY-PEERS remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
-    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.0\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS\n\
-    \   neighbor 172.31.255.4 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.6\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.3\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n\
-    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
-    \ Tenant_A_APP_Zone\n      rd 192.168.255.5:12\n      route-target both 12:12\n\
-    \      redistribute learned\n      vlan 130-131\n   !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n\
-    \      rd 192.168.255.5:11\n      route-target both 11:11\n      redistribute\
-    \ learned\n      vlan 120-121\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      no neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.5:12\n      route-target\
-    \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.5\n\
-    \      redistribute connected\n   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.5:11\n\
-    \      route-target import evpn 11:11\n      route-target export evpn 11:11\n\
-    \      router-id 192.168.255.5\n      redistribute connected\n!\nmanagement api\
-    \ http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \ EVPN-OVERLAY-PEERS peer group\n   neighbor EVPN-OVERLAY-PEERS update-source\
+    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
+    \ ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
+    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
+    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
+    \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ maximum-routes 12000\n   neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.4\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.6 peer group IPv4-UNDERLAY-PEERS\n\
+    \   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1\
+    \ remote-as 65001\n   neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor\
+    \ 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as\
+    \ 65001\n   neighbor 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.3 remote-as 65001\n \
+    \  neighbor 192.168.255.3 description DC1-SPINE3\n   neighbor 192.168.255.4 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4 remote-as 65001\n   neighbor\
+    \ 192.168.255.4 description DC1-SPINE4\n   redistribute connected route-map RM-CONN-2-BGP\n\
+    \   !\n   vlan-aware-bundle Tenant_A_APP_Zone\n      rd 192.168.255.5:12\n   \
+    \   route-target both 12:12\n      redistribute learned\n      vlan 130-131\n\
+    \   !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.5:11\n   \
+    \   route-target both 11:11\n      redistribute learned\n      vlan 120-121\n\
+    \   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n  \
+    \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n   !\n   vrf Tenant_A_APP_Zone\n\
+    \      rd 192.168.255.5:12\n      route-target import evpn 12:12\n      route-target\
+    \ export evpn 12:12\n      router-id 192.168.255.5\n      redistribute connected\n\
+    \   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.5:11\n      route-target\
+    \ import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.5\n\
+    \      redistribute connected\n!\nmanagement api http-commands\n   no shutdown\n\
+    \   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -501,46 +510,48 @@ CVP_CONFIGLETS:
     \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id\
     \ 192.168.255.6\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
     \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
-    \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
-    \ MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
-    \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
-    \ in\n   neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
-    \ 172.31.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.10 peer\
-    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS\n\
+    \ EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n\
+    \   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS\
+    \ password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n\
+    \   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor IPv4-UNDERLAY-PEERS remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor\
+    \ MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password\
+    \ 7 vnEaG8gMeQf3d3cN6PktXQ==\n   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n\
+    \   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \   neighbor 172.31.255.8 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.10\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.14 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_APP_Zone\n      rd 192.168.255.6:12\n   \
-    \   route-target both 12:12\n      redistribute learned\n      vlan 130-131\n\
-    \   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n    \
-    \  route-target both 13:13\n      redistribute learned\n      vlan 140-141\n \
-    \  !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.168.255.6:10\n     \
-    \ route-target both 10:10\n      redistribute learned\n      vlan 110-111\n  \
-    \ !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.6:11\n     \
-    \ route-target both 11:11\n      redistribute learned\n      vlan 120-121\n  \
-    \ !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n      route-target\
-    \ both 20:20\n      redistribute learned\n      vlan 210-211\n   !\n   vlan-aware-bundle\
-    \ Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n      route-target both 30:30\n\
-    \      redistribute learned\n      vlan 310-311\n   !\n   address-family evpn\n\
-    \      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
-    \      rd 192.168.255.6:12\n      route-target import evpn 12:12\n      route-target\
-    \ export evpn 12:12\n      router-id 192.168.255.6\n      neighbor 10.255.251.3\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n      route-target import evpn\
-    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.6\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_APP_Zone\n      rd 192.168.255.6:12\n      route-target both 12:12\n\
+    \      redistribute learned\n      vlan 130-131\n   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n\
+    \      rd 192.168.255.6:13\n      route-target both 13:13\n      redistribute\
+    \ learned\n      vlan 140-141\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n \
+    \     rd 192.168.255.6:10\n      route-target both 10:10\n      redistribute learned\n\
+    \      vlan 110-111\n   !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.6:11\n\
+    \      route-target both 11:11\n      redistribute learned\n      vlan 120-121\n\
+    \   !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.6:20\n    \
+    \  route-target both 20:20\n      redistribute learned\n      vlan 210-211\n \
+    \  !\n   vlan-aware-bundle Tenant_C_OP_Zone\n      rd 192.168.255.6:30\n     \
+    \ route-target both 30:30\n      redistribute learned\n      vlan 310-311\n  \
+    \ !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n\
+    \   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n     \
+    \ neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.6:12\n      route-target\
+    \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.6\n\
+    \      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.6:13\n      route-target\
+    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.6\n\
     \      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
     \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.6:10\n      route-target\
     \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.6\n\
@@ -669,46 +680,48 @@ CVP_CONFIGLETS:
     \   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp 65102\n   router-id\
     \ 192.168.255.7\n   no bgp default ipv4-unicast\n   distance bgp 20 200 200\n\
     \   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer group\n   neighbor\
-    \ EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS update-source\
-    \ Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
-    \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
-    \ MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==\n\
-    \   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN\
-    \ in\n   neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n   neighbor\
-    \ 172.31.255.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.18 peer\
-    \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS\n\
+    \ EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n\
+    \   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS\
+    \ password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor EVPN-OVERLAY-PEERS send-community\n\
+    \   neighbor EVPN-OVERLAY-PEERS maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor IPv4-UNDERLAY-PEERS remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
+    \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ peer group\n   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65102\n   neighbor\
+    \ MLAG-IPv4-UNDERLAY-PEER next-hop-self\n   neighbor MLAG-IPv4-UNDERLAY-PEER password\
+    \ 7 vnEaG8gMeQf3d3cN6PktXQ==\n   neighbor MLAG-IPv4-UNDERLAY-PEER send-community\n\
+    \   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ route-map RM-MLAG-PEER-IN in\n   neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
+    \   neighbor 172.31.255.16 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.18\
+    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.22 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_APP_Zone\n      rd 192.168.255.7:12\n   \
-    \   route-target both 12:12\n      redistribute learned\n      vlan 130-131\n\
-    \   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n    \
-    \  route-target both 13:13\n      redistribute learned\n      vlan 140-141\n \
-    \  !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.168.255.7:10\n     \
-    \ route-target both 10:10\n      redistribute learned\n      vlan 110-111\n  \
-    \ !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.7:11\n     \
-    \ route-target both 11:11\n      redistribute learned\n      vlan 120-121\n  \
-    \ !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n      route-target\
-    \ both 20:20\n      redistribute learned\n      vlan 210-211\n   !\n   vlan-aware-bundle\
-    \ Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n      route-target both 30:30\n\
-    \      redistribute learned\n      vlan 310-311\n   !\n   address-family evpn\n\
-    \      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   address-family\
-    \ ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
-    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
-    \      rd 192.168.255.7:12\n      route-target import evpn 12:12\n      route-target\
-    \ export evpn 12:12\n      router-id 192.168.255.7\n      neighbor 10.255.251.2\
-    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
-    \ Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n      route-target import evpn\
-    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.7\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_APP_Zone\n      rd 192.168.255.7:12\n      route-target both 12:12\n\
+    \      redistribute learned\n      vlan 130-131\n   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n\
+    \      rd 192.168.255.7:13\n      route-target both 13:13\n      redistribute\
+    \ learned\n      vlan 140-141\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n \
+    \     rd 192.168.255.7:10\n      route-target both 10:10\n      redistribute learned\n\
+    \      vlan 110-111\n   !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.7:11\n\
+    \      route-target both 11:11\n      redistribute learned\n      vlan 120-121\n\
+    \   !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.7:20\n    \
+    \  route-target both 20:20\n      redistribute learned\n      vlan 210-211\n \
+    \  !\n   vlan-aware-bundle Tenant_C_OP_Zone\n      rd 192.168.255.7:30\n     \
+    \ route-target both 30:30\n      redistribute learned\n      vlan 310-311\n  \
+    \ !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   !\n\
+    \   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n     \
+    \ neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
+    \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.7:12\n      route-target\
+    \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.7\n\
+    \      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
+    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.7:13\n      route-target\
+    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.7\n\
     \      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
     \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.7:10\n      route-target\
     \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.7\n\
@@ -758,7 +771,7 @@ CVP_CONFIGLETS:
     \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
     \ group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS\
     \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
+    \ ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
@@ -772,20 +785,23 @@ CVP_CONFIGLETS:
     \ 65103\n   neighbor 172.31.255.41 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
     \ 172.31.255.41 remote-as 65104\n   neighbor 172.31.255.49 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.49 remote-as 65104\n   neighbor 192.168.255.5 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
-    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
-    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
-    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.5\
+    \ description DC1-LEAF1A\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.6 description\
+    \ DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description DC1-LEAF2B\n\
+    \   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8\
+    \ remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n   neighbor\
+    \ 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as\
+    \ 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor 192.168.255.10\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
-    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
-    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
-    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
-    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
-    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
-    !\nend"
+    \   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n   neighbor\
+    \ 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map RM-CONN-2-BGP\n\
+    \   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n  \
+    \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-SPINE2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -820,7 +836,7 @@ CVP_CONFIGLETS:
     \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
     \ group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS\
     \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
+    \ ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
@@ -834,20 +850,23 @@ CVP_CONFIGLETS:
     \ 65103\n   neighbor 172.31.255.43 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
     \ 172.31.255.43 remote-as 65104\n   neighbor 172.31.255.51 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.51 remote-as 65104\n   neighbor 192.168.255.5 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
-    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
-    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
-    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.5\
+    \ description DC1-LEAF1A\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.6 description\
+    \ DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description DC1-LEAF2B\n\
+    \   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8\
+    \ remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n   neighbor\
+    \ 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as\
+    \ 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor 192.168.255.10\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
-    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
-    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
-    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
-    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
-    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
-    !\nend"
+    \   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n   neighbor\
+    \ 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map RM-CONN-2-BGP\n\
+    \   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n  \
+    \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-SPINE3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -882,7 +901,7 @@ CVP_CONFIGLETS:
     \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
     \ group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS\
     \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
+    \ ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
@@ -896,20 +915,23 @@ CVP_CONFIGLETS:
     \ 65103\n   neighbor 172.31.255.45 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
     \ 172.31.255.45 remote-as 65104\n   neighbor 172.31.255.53 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.53 remote-as 65104\n   neighbor 192.168.255.5 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
-    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
-    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
-    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.5\
+    \ description DC1-LEAF1A\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.6 description\
+    \ DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description DC1-LEAF2B\n\
+    \   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8\
+    \ remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n   neighbor\
+    \ 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as\
+    \ 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor 192.168.255.10\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
-    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
-    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
-    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
-    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
-    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
-    !\nend"
+    \   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n   neighbor\
+    \ 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map RM-CONN-2-BGP\n\
+    \   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n  \
+    \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-SPINE4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -944,7 +966,7 @@ CVP_CONFIGLETS:
     \ bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS peer\
     \ group\n   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged\n   neighbor EVPN-OVERLAY-PEERS\
     \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
+    \ ebgp-multihop 15\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
     \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
     \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
@@ -958,20 +980,23 @@ CVP_CONFIGLETS:
     \ 65103\n   neighbor 172.31.255.47 peer group IPv4-UNDERLAY-PEERS\n   neighbor\
     \ 172.31.255.47 remote-as 65104\n   neighbor 172.31.255.55 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.55 remote-as 65104\n   neighbor 192.168.255.5 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.6\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n \
-    \  neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.7\
-    \ remote-as 65102\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n \
-    \  neighbor 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.9 peer group\
-    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as 65103\n   neighbor 192.168.255.10\
+    \ EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n   neighbor 192.168.255.5\
+    \ description DC1-LEAF1A\n   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.6 remote-as 65102\n   neighbor 192.168.255.6 description\
+    \ DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description DC1-LEAF2B\n\
+    \   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.8\
+    \ remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n   neighbor\
+    \ 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9 remote-as\
+    \ 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor 192.168.255.10\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as 65104\n\
-    \   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11\
-    \ remote-as 65104\n   redistribute connected route-map RM-CONN-2-BGP\n   !\n \
-    \  address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n      no neighbor\
-    \ IPv4-UNDERLAY-PEERS activate\n   !\n   address-family ipv4\n      no neighbor\
-    \ EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\n\
-    management api http-commands\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n\
-    !\nend"
+    \   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n   neighbor\
+    \ 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map RM-CONN-2-BGP\n\
+    \   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n  \
+    \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
+    \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
   AVD_DC1-SVC3A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -1107,11 +1132,11 @@ CVP_CONFIGLETS:
     \ incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier\
     \ 3\n!\nrouter bgp 65103\n   router-id 192.168.255.8\n   no bgp default ipv4-unicast\n\
     \   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS\
-    \ peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor\
+    \ EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n  \
+    \ neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor\
+    \ EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes\
+    \ 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
     \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
     \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
@@ -1123,35 +1148,39 @@ CVP_CONFIGLETS:
     \ 172.31.255.24 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.26 peer\
     \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.28 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.30 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_APP_Zone\n      rd 192.168.255.8:12\n   \
-    \   route-target both 12:12\n      redistribute learned\n      vlan 130-131\n\
-    \   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n    \
-    \  route-target both 13:13\n      redistribute learned\n      vlan 140-141\n \
-    \  !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.168.255.8:10\n     \
-    \ route-target both 10:10\n      redistribute learned\n      vlan 110-111\n  \
-    \ !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n     \
-    \ route-target both 14:14\n      redistribute learned\n      vlan 150\n   !\n\
-    \   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n      route-target\
-    \ both 11:11\n      redistribute learned\n      vlan 120-121\n   !\n   vlan-aware-bundle\
-    \ Tenant_B_OP_Zone\n      rd 192.168.255.8:20\n      route-target both 20:20\n\
-    \      redistribute learned\n      vlan 210-211\n   !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n\
-    \      rd 192.168.255.8:21\n      route-target both 21:21\n      redistribute\
-    \ learned\n      vlan 250\n   !\n   vlan-aware-bundle Tenant_C_OP_Zone\n     \
-    \ rd 192.168.255.8:30\n      route-target both 30:30\n      redistribute learned\n\
-    \      vlan 310-311\n   !\n   vlan-aware-bundle Tenant_C_WAN_Zone\n      rd 192.168.255.8:31\n\
-    \      route-target both 31:31\n      redistribute learned\n      vlan 350\n \
-    \  !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   \
-    \   no neighbor IPv4-UNDERLAY-PEERS activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.8:12\n      route-target\
-    \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.8\n\
-    \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n      route-target\
-    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.8\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_APP_Zone\n      rd 192.168.255.8:12\n      route-target both 12:12\n\
+    \      redistribute learned\n      vlan 130-131\n   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n\
+    \      rd 192.168.255.8:13\n      route-target both 13:13\n      redistribute\
+    \ learned\n      vlan 140-141\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n \
+    \     rd 192.168.255.8:10\n      route-target both 10:10\n      redistribute learned\n\
+    \      vlan 110-111\n   !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.8:14\n\
+    \      route-target both 14:14\n      redistribute learned\n      vlan 150\n \
+    \  !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.8:11\n    \
+    \  route-target both 11:11\n      redistribute learned\n      vlan 120-121\n \
+    \  !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.8:20\n     \
+    \ route-target both 20:20\n      redistribute learned\n      vlan 210-211\n  \
+    \ !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n      rd 192.168.255.8:21\n     \
+    \ route-target both 21:21\n      redistribute learned\n      vlan 250\n   !\n\
+    \   vlan-aware-bundle Tenant_C_OP_Zone\n      rd 192.168.255.8:30\n      route-target\
+    \ both 30:30\n      redistribute learned\n      vlan 310-311\n   !\n   vlan-aware-bundle\
+    \ Tenant_C_WAN_Zone\n      rd 192.168.255.8:31\n      route-target both 31:31\n\
+    \      redistribute learned\n      vlan 350\n   !\n   address-family evpn\n  \
+    \    neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n    \
+    \  no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
+    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
+    \      rd 192.168.255.8:12\n      route-target import evpn 12:12\n      route-target\
+    \ export evpn 12:12\n      router-id 192.168.255.8\n      neighbor 10.255.251.7\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
+    \ Tenant_A_DB_Zone\n      rd 192.168.255.8:13\n      route-target import evpn\
+    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.8\n\
     \      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
     \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.8:10\n      route-target\
     \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.8\n\
@@ -1307,11 +1336,11 @@ CVP_CONFIGLETS:
     \ incomplete\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier\
     \ 3\n!\nrouter bgp 65103\n   router-id 192.168.255.9\n   no bgp default ipv4-unicast\n\
     \   distance bgp 20 200 200\n   maximum-paths 4 ecmp 4\n   neighbor EVPN-OVERLAY-PEERS\
-    \ peer group\n   neighbor EVPN-OVERLAY-PEERS remote-as 65001\n   neighbor EVPN-OVERLAY-PEERS\
-    \ update-source Loopback0\n   neighbor EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS\
-    \ ebgp-multihop 3\n   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n\
-    \   neighbor EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS\
-    \ maximum-routes 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
+    \ peer group\n   neighbor EVPN-OVERLAY-PEERS update-source Loopback0\n   neighbor\
+    \ EVPN-OVERLAY-PEERS bfd\n   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 15\n  \
+    \ neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==\n   neighbor\
+    \ EVPN-OVERLAY-PEERS send-community\n   neighbor EVPN-OVERLAY-PEERS maximum-routes\
+    \ 0\n   neighbor IPv4-UNDERLAY-PEERS peer group\n   neighbor IPv4-UNDERLAY-PEERS\
     \ remote-as 65001\n   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==\n\
     \   neighbor IPv4-UNDERLAY-PEERS send-community\n   neighbor IPv4-UNDERLAY-PEERS\
     \ maximum-routes 12000\n   neighbor MLAG-IPv4-UNDERLAY-PEER peer group\n   neighbor\
@@ -1323,35 +1352,39 @@ CVP_CONFIGLETS:
     \ 172.31.255.32 peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.34 peer\
     \ group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.36 peer group IPv4-UNDERLAY-PEERS\n\
     \   neighbor 172.31.255.38 peer group IPv4-UNDERLAY-PEERS\n   neighbor 192.168.255.1\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.4\
-    \ peer group EVPN-OVERLAY-PEERS\n   redistribute connected route-map RM-CONN-2-BGP\n\
-    \   !\n   vlan-aware-bundle Tenant_A_APP_Zone\n      rd 192.168.255.9:12\n   \
-    \   route-target both 12:12\n      redistribute learned\n      vlan 130-131\n\
-    \   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n    \
-    \  route-target both 13:13\n      redistribute learned\n      vlan 140-141\n \
-    \  !\n   vlan-aware-bundle Tenant_A_OP_Zone\n      rd 192.168.255.9:10\n     \
-    \ route-target both 10:10\n      redistribute learned\n      vlan 110-111\n  \
-    \ !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n     \
-    \ route-target both 14:14\n      redistribute learned\n      vlan 150\n   !\n\
-    \   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n      route-target\
-    \ both 11:11\n      redistribute learned\n      vlan 120-121\n   !\n   vlan-aware-bundle\
-    \ Tenant_B_OP_Zone\n      rd 192.168.255.9:20\n      route-target both 20:20\n\
-    \      redistribute learned\n      vlan 210-211\n   !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n\
-    \      rd 192.168.255.9:21\n      route-target both 21:21\n      redistribute\
-    \ learned\n      vlan 250\n   !\n   vlan-aware-bundle Tenant_C_OP_Zone\n     \
-    \ rd 192.168.255.9:30\n      route-target both 30:30\n      redistribute learned\n\
-    \      vlan 310-311\n   !\n   vlan-aware-bundle Tenant_C_WAN_Zone\n      rd 192.168.255.9:31\n\
-    \      route-target both 31:31\n      redistribute learned\n      vlan 350\n \
-    \  !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS activate\n   \
-    \   no neighbor IPv4-UNDERLAY-PEERS activate\n      no neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
-    \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER\
-    \ activate\n   !\n   vrf Tenant_A_APP_Zone\n      rd 192.168.255.9:12\n      route-target\
-    \ import evpn 12:12\n      route-target export evpn 12:12\n      router-id 192.168.255.9\n\
-    \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
-    \ connected\n   !\n   vrf Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n      route-target\
-    \ import evpn 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.9\n\
+    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.1 remote-as 65001\n \
+    \  neighbor 192.168.255.1 description DC1-SPINE1\n   neighbor 192.168.255.2 peer\
+    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.2 remote-as 65001\n   neighbor\
+    \ 192.168.255.2 description DC1-SPINE2\n   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS\n\
+    \   neighbor 192.168.255.3 remote-as 65001\n   neighbor 192.168.255.3 description\
+    \ DC1-SPINE3\n   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS\n   neighbor\
+    \ 192.168.255.4 remote-as 65001\n   neighbor 192.168.255.4 description DC1-SPINE4\n\
+    \   redistribute connected route-map RM-CONN-2-BGP\n   !\n   vlan-aware-bundle\
+    \ Tenant_A_APP_Zone\n      rd 192.168.255.9:12\n      route-target both 12:12\n\
+    \      redistribute learned\n      vlan 130-131\n   !\n   vlan-aware-bundle Tenant_A_DB_Zone\n\
+    \      rd 192.168.255.9:13\n      route-target both 13:13\n      redistribute\
+    \ learned\n      vlan 140-141\n   !\n   vlan-aware-bundle Tenant_A_OP_Zone\n \
+    \     rd 192.168.255.9:10\n      route-target both 10:10\n      redistribute learned\n\
+    \      vlan 110-111\n   !\n   vlan-aware-bundle Tenant_A_WAN_Zone\n      rd 192.168.255.9:14\n\
+    \      route-target both 14:14\n      redistribute learned\n      vlan 150\n \
+    \  !\n   vlan-aware-bundle Tenant_A_WEB_Zone\n      rd 192.168.255.9:11\n    \
+    \  route-target both 11:11\n      redistribute learned\n      vlan 120-121\n \
+    \  !\n   vlan-aware-bundle Tenant_B_OP_Zone\n      rd 192.168.255.9:20\n     \
+    \ route-target both 20:20\n      redistribute learned\n      vlan 210-211\n  \
+    \ !\n   vlan-aware-bundle Tenant_B_WAN_Zone\n      rd 192.168.255.9:21\n     \
+    \ route-target both 21:21\n      redistribute learned\n      vlan 250\n   !\n\
+    \   vlan-aware-bundle Tenant_C_OP_Zone\n      rd 192.168.255.9:30\n      route-target\
+    \ both 30:30\n      redistribute learned\n      vlan 310-311\n   !\n   vlan-aware-bundle\
+    \ Tenant_C_WAN_Zone\n      rd 192.168.255.9:31\n      route-target both 31:31\n\
+    \      redistribute learned\n      vlan 350\n   !\n   address-family evpn\n  \
+    \    neighbor EVPN-OVERLAY-PEERS activate\n   !\n   address-family ipv4\n    \
+    \  no neighbor EVPN-OVERLAY-PEERS activate\n      neighbor IPv4-UNDERLAY-PEERS\
+    \ activate\n      neighbor MLAG-IPv4-UNDERLAY-PEER activate\n   !\n   vrf Tenant_A_APP_Zone\n\
+    \      rd 192.168.255.9:12\n      route-target import evpn 12:12\n      route-target\
+    \ export evpn 12:12\n      router-id 192.168.255.9\n      neighbor 10.255.251.6\
+    \ peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute connected\n   !\n   vrf\
+    \ Tenant_A_DB_Zone\n      rd 192.168.255.9:13\n      route-target import evpn\
+    \ 13:13\n      route-target export evpn 13:13\n      router-id 192.168.255.9\n\
     \      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n      redistribute\
     \ connected\n   !\n   vrf Tenant_A_OP_Zone\n      rd 192.168.255.9:10\n      route-target\
     \ import evpn 10:10\n      route-target export evpn 10:10\n      router-id 192.168.255.9\n\
