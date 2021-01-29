@@ -323,12 +323,9 @@ mlag_ips:
   leaf_peer_l3: < IPv4_network/Mask >
   mlag_peer: < IPv4_network/Mask >
 
-# BGP multi-path
-# If not defined these values will be equal by default to the number of spines in the fabric
-# If defined the values defined will both be applied to leaf and spine switches
-# Note: these values are only relevant for an eBGP scenario
-bgp_maximum_paths: <number_of_max_paths>
-bgp_ecmp: <number_of_ecmp_paths>
+# BGP multi-path | Optional
+bgp_maximum_paths: < number_of_max_paths | default -> 4 >
+bgp_ecmp: < number_of_ecmp_paths | default is platform maximum >
 
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
@@ -528,6 +525,7 @@ spine:
       id: < integer >
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is server
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
       evpn_role: < client | server | none | default -> server  >
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
@@ -616,6 +614,7 @@ l3leaf:
       bgp_as: < bgp_as >
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is client
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
       evpn_role: < client | server | none | default -> client  >
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
@@ -1737,6 +1736,7 @@ super_spine:
       id: 1
       mgmt_ip: 192.168.0.1/24
       # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
       evpn_role: < client | server | none | default -> none  >
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
@@ -1840,6 +1840,7 @@ overlay_controller:
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
       evpn_role: < client | server | none | default -> none  >
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional

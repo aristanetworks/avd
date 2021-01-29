@@ -36,6 +36,8 @@ underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: false
 
+bgp_maximum_paths: 4
+
 spine_bgp_defaults:
   - update wait-for-convergence
   - update wait-install
