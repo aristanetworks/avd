@@ -2,7 +2,7 @@
 {%     set switch.evpn_route_clients = {} %}
 {# #}
 {# Look for switches pointing to us as evpn_route_server #}
-{%     for some_switch in groups[fabric_name] %}
+{%     for some_switch in groups[fabric_name] if some_switch not in switch.evpn_route_servers | arista.avd.natural_sort %}
 {%         set some_switch_vars = hostvars[some_switch] %}
 {%         if some_switch_vars.type is arista.avd.defined('l3leaf') %}
 {%             for l3leaf_node_group in some_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
