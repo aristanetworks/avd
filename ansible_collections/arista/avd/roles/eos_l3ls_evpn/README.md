@@ -527,11 +527,11 @@ spine:
       # Unique identifier | Required.
       id: < integer >
 
-      # EVPN Overlay Role | Optional, default is server
-      evpn_overlay_role: < client | server | none | default -> server  >
+      # EVPN Role for Overlay BGP Peerings | Optional, default is server
+      evpn_role: < client | server | none | default -> server  >
 
-      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
-      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
       # Node management IP address | Required.
       mgmt_ip: < IPv4_address/Mask >
@@ -615,11 +615,11 @@ l3leaf:
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
-      # EVPN Overlay Role | Optional, default is client
-      evpn_overlay_role: < client | server | none | default -> client  >
+      # EVPN Role for Overlay BGP Peerings | Optional, default is client
+      evpn_role: < client | server | none | default -> client  >
 
-      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional, default to content of spines variable
-      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
@@ -1736,10 +1736,10 @@ super_spine:
     SU-01:  # super-spine name
       id: 1
       mgmt_ip: 192.168.0.1/24
-      # EVPN Overlay Role | Optional, default is none
-      evpn_overlay_role: < client | server | none | default -> none  >
-      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
-      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      evpn_role: < client | server | none | default -> none  >
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
     <-- etc. -->
 
 # IP address range for loopbacks for all super-spines in the DC,
@@ -1839,11 +1839,11 @@ overlay_controller:
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
 
-      # EVPN Overlay Role | Optional, default is none
-      evpn_overlay_role: < client | server | none | default -> none  >
+      # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      evpn_role: < client | server | none | default -> none  >
 
-      # Peer with these EVPN Overlay Route Servers / Route Reflector | Optional
-      evpn_overlay_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
