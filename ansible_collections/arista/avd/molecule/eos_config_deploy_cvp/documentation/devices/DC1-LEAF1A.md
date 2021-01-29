@@ -681,16 +681,16 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.4 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.6 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.4 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.6 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 

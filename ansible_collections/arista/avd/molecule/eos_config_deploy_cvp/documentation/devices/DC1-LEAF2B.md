@@ -1004,17 +1004,23 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.31.255.16 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.18 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.20 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.22 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.31.255.16 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.18 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.20 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.22 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_APP_Zone |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_DB_Zone |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_WEB_Zone |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_B_OP_Zone |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_OP_Zone |
 
 ### Router BGP EVPN Address Family
 
