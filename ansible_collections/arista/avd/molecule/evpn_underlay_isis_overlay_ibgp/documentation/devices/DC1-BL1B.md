@@ -738,10 +738,10 @@ router isis EVPN_UNDERLAY
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 

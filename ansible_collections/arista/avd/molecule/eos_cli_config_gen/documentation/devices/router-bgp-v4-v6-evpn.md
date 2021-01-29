@@ -377,20 +377,20 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 1.1.1.1 | 1 |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 1.1.1.1 | 1 | default |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default |
 
 ### Router BGP EVPN Address Family
 

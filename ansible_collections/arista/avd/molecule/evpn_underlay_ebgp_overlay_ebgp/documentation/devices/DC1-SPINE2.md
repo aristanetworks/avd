@@ -565,7 +565,6 @@ Router ISIS not defined
 | 192.168.255.10 | 65104 | default |
 | 192.168.255.11 | 65104 | default |
 
-
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs

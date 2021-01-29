@@ -63,7 +63,17 @@
 {%         endif %}
 {%     endfor %}
 {% endif %}
-{% if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
+{% set temp = namespace() %}
+{% set temp.bgp_vrf_neighbors = false %}
+{% if router_bgp.vrfs is arista.avd.defined %}
+{%     for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
+{%         if router_bgp.vrfs[vrf].neighbors is arista.avd.defined %}
+{%             set temp.bgp_vrf_neighbors = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{% if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors == true %}
 
 ### BGP Neighbors
 
@@ -92,7 +102,6 @@
 {%         endif %}
 {%     endfor %}
 {% endif %}
-
 {% if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}
 
 ### BGP Route Aggregation

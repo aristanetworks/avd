@@ -678,7 +678,6 @@ Router ISIS not defined
 | fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone |
 | fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone |
 
-
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
