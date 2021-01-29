@@ -63,7 +63,17 @@
 {%         endif %}
 {%     endfor %}
 {% endif %}
-{% if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
+{% set temp = namespace() %}
+{% set temp.bgp_vrf_neighbors = false %}
+{% if router_bgp.vrfs is arista.avd.defined %}
+{%     for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
+{%         if router_bgp.vrfs[vrf].neighbors is arista.avd.defined %}
+{%             set temp.bgp_vrf_neighbors = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{% if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors == true %}
 
 ### BGP Neighbors
 
@@ -82,13 +92,6 @@
 {% if router_bgp.vrfs is arista.avd.defined %}
 {%     for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
 {%         if router_bgp.vrfs[vrf].neighbors is arista.avd.defined %}
-{%             if router_bgp.neighbors is not arista.avd.defined %}
-
-### BGP Neighbors
-
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-{%             endif %}
 {%             for neighbor in router_bgp.vrfs[vrf].neighbors %}
 {%                 if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
 | {{ neighbor }} | {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }} | {{ vrf }} |
