@@ -410,6 +410,9 @@ router bgp {{ router_bgp.as }}
 {%                 elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
       neighbor {{ neighbor }} send-community
 {%                 endif %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes is arista.avd.defined %}
+      neighbor {{ neighbor }} maximum-routes {{ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes }}
+{%                 endif %}
 {%                 if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is arista.avd.defined %}
 {%                     set neighbor_default_originate_cli = "neighbor " ~ neighbor ~ " default-originate" %}
 {%                     if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is arista.avd.defined %}
