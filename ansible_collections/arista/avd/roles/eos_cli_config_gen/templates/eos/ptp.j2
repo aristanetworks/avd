@@ -18,15 +18,18 @@ ptp priority2 {{ ptp.priority2 }}
 {%     if ptp.ttl is defined and ptp.ttl is not none %}
 ptp ttl {{ ptp.ttl }}
 {%     endif %}
+{%     if ptp.domain is defined and ptp.domain is not none %}
+ptp domain {{ ptp.domain }}
+{%     endif %}
 {%     if ptp.message_type is defined and ptp.message_type is not none %}
 {%         if ptp.message_type.general is defined and ptp.message_type.general is not none %}
 {%             if ptp.message_type.general.dscp is defined and ptp.message_type.general.dscp is not none %}
-ptp message-type general dscp {{ ptp.message_type.general.dscp }}
+ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
 {%             endif %}
 {%         endif %}
 {%         if ptp.message_type.event is defined and ptp.message_type.event is not none %}
 {%             if ptp.message_type.event.dscp is defined and ptp.message_type.event.dscp is not none %}
-ptp message-type event dscp {{ ptp.message_type.event.dscp }}
+ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
 {%             endif %}
 {%         endif %}
 {%     endif %}
