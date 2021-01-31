@@ -1,0 +1,10 @@
+{% for l3_edge_bgp_neighbor in switch.l3_edge_bgp_neighbors | arista.avd.natural_sort %}
+{%     set bgp_neighbor = switch.l3_edge_bgp_neighbors[l3_edge_bgp_neighbor] %}
+    {{ l3_edge_bgp_neighbor }}:
+      remote_as: {{ bgp_neighbor.remote_as }}
+      description: {{ bgp_neighbor.description }}
+      peer_group: {{ bgp_neighbor.peer_group }}
+{%     if bgp_neighbor.bfd is arista.avd.defined(true) %}
+      bfd: true
+{%     endif %}
+{% endfor %}
