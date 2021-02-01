@@ -405,6 +405,8 @@ ethernet_interfaces:
 {% include 'edge_ports/leaf-server-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
+{# L3 Edge Point-to-Point Interfaces #}
+{% include 'fabric/interfaces/switch-l3-edge-p2p-interfaces.j2' %}
 
 
 {# loopback interfaces #}
@@ -498,6 +500,7 @@ router_bgp:
 {% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
 {% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
+{% include 'fabric/ebgp_underlay/switch-l3-edge-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
