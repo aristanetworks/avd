@@ -7,7 +7,7 @@
 {%     if bgp_neighbor.bfd is arista.avd.defined(true) %}
       bfd: true
 {%     endif %}
-{%     if bgp_neighbor.local_as is arista.avd.defined(true) %}
+{%     if bgp_neighbor.local_as is arista.avd.defined %}
       local_as: {{ bgp_neighbor.local_as }}
 {%     endif %}
 {% endfor %}
