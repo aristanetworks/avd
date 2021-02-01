@@ -1,0 +1,6 @@
+router_general:
+  vrfs:
+    BLUE-C2:
+      leak:
+        source_vrf: BLUE-C1
+        policy: RM-BLUE-LEAKING
