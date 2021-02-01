@@ -34,6 +34,7 @@ router-bgp-v4-v6-evpn
 router-bgp-vrf-lite
 router-isis
 router-ospf
+router-general
 router-static
 sflow
 snmp_v3

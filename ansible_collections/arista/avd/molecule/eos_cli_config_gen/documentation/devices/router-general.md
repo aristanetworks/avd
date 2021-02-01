@@ -1,4 +1,4 @@
-# ptp
+# router-general
 
 # Table of Contents
 
@@ -129,32 +129,7 @@ No NTP servers defined
 
 ## PTP
 
-### PTP Summary
-
-| PTP setting | Value |
-| ----------- | ----- |
-| Clock-identity | 123.123.123.123 |
-| Source IP | 1.1.1.1 |
-| Priority1 | 1 |
-| Priority2 | 2 |
-| TTL | 200 |
-| Domain | 1 |
-| Msg General | DSCP 4 |
-| Msg Event | DSCP 8 |
-
-### PTP Device Configuration
-
-```eos
-!
-ptp clock-identity 123.123.123.123
-ptp source ip 1.1.1.1
-ptp priority1 1
-ptp priority2 2
-ptp ttl 200
-ptp domain 1
-ptp message-type general dscp 4 default
-ptp message-type event dscp 8 default
-```
+PTP is not defined.
 
 ## Management SSH
 
@@ -274,84 +249,11 @@ No Interface Defaults defined
 
 ## Ethernet Interfaces
 
-### Ethernet Interfaces Summary
-
-#### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
-| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
-
-*Inherited from Port-Channel Interface
-
-#### IPv4
-
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet6 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
-
-### Ethernet Interfaces Device Configuration
-
-```eos
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
-   switchport
-   switchport trunk allowed vlan 2,14
-   switchport mode trunk
-   ptp enable
-   ptp delay-mechanism e2e
-   ptp sync-message interval 1
-   ptp role dynamic
-   ptp vlan 2
-   ptp transport layer2
-!
-interface Ethernet5
-   description DC1-AGG01_Ethernet1
-   channel-group 5 mode active
-!
-interface Ethernet6
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
-   no switchport
-   ip address 172.31.255.15/31
-   ptp enable
-   ptp announce interval 3
-   ptp announce timeout 9
-   ptp delay-req interval -7
-   ptp delay-mechanism e2e
-   ptp sync-message interval 1
-   ptp role dynamic
-   ptp transport ipv4
-```
+No ethernet interface defined
 
 ## Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
-
-#### L2
-
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
-
-### Port-Channel Interfaces Device Configuration
-
-```eos
-!
-interface Port-Channel5
-   description DC1_L2LEAF1_Po1
-   switchport
-   switchport trunk allowed vlan 110,201
-   switchport mode trunk
-   mlag 5
-   ptp enable
-   ptp delay-mechanism e2e
-   ptp sync-message interval 1
-   ptp role dynamic
-   ptp vlan 2
-   ptp transport layer2
-```
+No port-channels defined
 
 ## Loopback Interfaces
 
@@ -405,7 +307,21 @@ Global ARP timeout not defined.
 
 ## Router General
 
-Router general not defined
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
+
+### Router General configuration
+
+```eos
+!
+router general
+   vrf BLUE-C2
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+   !
+```
 
 ## Router OSPF
 
