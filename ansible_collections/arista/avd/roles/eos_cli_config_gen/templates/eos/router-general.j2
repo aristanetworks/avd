@@ -1,0 +1,16 @@
+{# eos - router general #}
+{% if router_general is arista.avd.defined %}
+!
+router general
+{%      if router_general.vrfs is arista.avd.defined %}
+{%          for vrf in router_general.vrfs %}
+   vrf {{ vrf }}
+{%              if router_general.vrfs[vrf].leak is arista.avd.defined %}
+{%                  if router_general.vrfs[vrf].leak.source_vrf is arista.avd.defined and router_general.vrfs[vrf].leak.policy is arista.avd.defined %}
+      leak routes source-vrf {{ router_general.vrfs[vrf].leak.source_vrf }} subscribe-policy {{ router_general.vrfs[vrf].leak.policy }}
+{%                  endif %}
+{%              endif %}
+   !
+{%          endfor %}
+{%      endif %}
+{% endif %}
