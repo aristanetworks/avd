@@ -77,6 +77,7 @@
     - [Peer Filters](#peer-filters)
     - [Router BGP Configuration](#router-bgp-configuration)
     - [Router Multicast](#router-multicast)
+    - [Router General configuration](#router-general-configuration)
     - [Router OSPF Configuration](#router-ospf-configuration)
     - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Router ISIS Configuration](#router-isis-configuration)
@@ -1583,6 +1584,17 @@ router_bgp:
 router_multicast:
   ipv4:
     routing: < true | false >
+```
+
+### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak:
+        source_vrf: < source-vrf >
+        policy: < route-map policy >
 ```
 
 ### Router OSPF Configuration
