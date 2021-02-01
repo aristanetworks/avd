@@ -319,12 +319,11 @@ interface Ethernet50
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel8.101 | SUB TEST | l3dot1q | - | 10.255.1.0/31 | C1 | 1500 | - | - | - |
 
-
 #### OSPF
 
 | Interface | Channel Group | Area | Cost | Mode |
 | --------- | ------------- | ---- | ---- |----- |
-| Port-Channel8.101 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Port-Channel8.101 | - | 0.0.0.0 | - |  point-to-point  |
 
 ### Port-Channel Interfaces Device Configuration
 

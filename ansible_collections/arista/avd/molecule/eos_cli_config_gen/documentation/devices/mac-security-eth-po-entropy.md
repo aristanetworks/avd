@@ -294,7 +294,6 @@ interface Ethernet3
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | L2-PORT | switched | trunk | 1-5 | - | - | - | - | - | - |
 
-
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
