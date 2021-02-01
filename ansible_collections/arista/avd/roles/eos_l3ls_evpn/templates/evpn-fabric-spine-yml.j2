@@ -29,6 +29,8 @@
 {% include 'logic/switch-evpn-route-servers.j2' %}
 {# Set switch.evpn_route_clients using external logic template #}
 {% include 'logic/switch-evpn-route-clients.j2' %}
+{# Set switch.l3_edge_* variables using external logic template #}
+{% include 'logic/switch-l3-edge.j2' %}
 
 ### Spine Info ###
 switch_platform: {{ switch.platform }}

@@ -26,7 +26,7 @@
 {%             set subnet = p2p_link.subnet | arista.avd.default(
                             p2p_profile.subnet) %}
 {%             set ip_list = p2p_link.ip | arista.avd.default(
-                        p2p_profile.ip) %}
+                             p2p_profile.ip) %}
 {%             set interfaces = p2p_link.interfaces | arista.avd.default(
                                 p2p_profile.interfaces) %}
 {%             set p2p_interface_data = namespace() %}
@@ -49,8 +49,8 @@
 {%             elif ip_pool is arista.avd.defined %}
 {%                 set link_id = p2p_link.id | arista.avd.default(
                                  p2p_profile.id) %}
-{%                 set p2p_interface.ip_address = subnet | ipaddr("network") | ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
-{%                 set peer_ip = subnet | ipaddr("network") | ipmath((link_id - 1) * 2 + peer_index) ~ "/31" %}
+{%                 set p2p_interface.ip_address = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
+{%                 set peer_ip = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + peer_index) ~ "/31" %}
 {%             endif %}
 {%             set p2p_interface.mtu = p2p_link.mtu | arista.avd.default(
                                        p2p_profile.mtu,
@@ -59,11 +59,11 @@
                                                p2p_profile.qos_profile) %}
 {%             set p2p_interface.type = "routed" %}
 {%             set p2p_interface.shutdown = "false" %}
-{%             set p2p_interface.description: "P2P_LINK_TO_" ~ p2p_interface.peer ~ "_" ~ p2p_interface.peer_interface %}
+{%             set p2p_interface.description = "P2P_LINK_TO_" ~ p2p_interface.peer ~ "_" ~ p2p_interface.peer_interface %}
 {%             do switch.l3_edge_p2p_interfaces.update({ node_interface: p2p_interface }) %}
 {%             if p2p_link.include_in_underlay_protocol is arista.avd.defined(true) %}
 {# Include in underlay routing. Build routing data #}
-{%                 if switch.underlay_routing_protocol in ["ebgp","ibgp" %}
+{%                 if switch.underlay_routing_protocol in ["ebgp","ibgp"] %}
 {%                     set as = p2p_link.as | arista.avd.default(
                                 p2p_profile.as) %}
 {%                     set p2p_bgp_neighbor = namespace() %}

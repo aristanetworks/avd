@@ -248,6 +248,8 @@
 {%         endif %}
 {%     endif %}
 {% endif %}
+{# Set switch.l3_edge_* variables using external logic template #}
+{% include 'logic/switch-l3-edge.j2' %}
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
