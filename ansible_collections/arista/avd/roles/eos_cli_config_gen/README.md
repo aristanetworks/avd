@@ -94,6 +94,7 @@
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
+      - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
@@ -1447,6 +1448,17 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
+```
+
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak:
+        source_vrf: < source-vrf >
+        policy: < route-map policy >
 ```
 
 #### Router BGP Configuration
