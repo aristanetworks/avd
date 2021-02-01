@@ -17,7 +17,6 @@
 {# Found this device in l3edge. Build interface data #}
 {%             set node_index = nodes.index(inventory_hostname) %}
 {%             set peer_index = 1 - node_index %}
-{%             set node_interface = interfaces[node_index] %}
 {%             set ip_pool_name = p2p_link.ip_pool | arista.avd.default(
                                   p2p_profile.ip_pool) %}
 {%             if ip_pool_name is arista.avd.defined and l3_edge.p2p_links_ip_pools is arista.avd.defined %}
@@ -29,7 +28,8 @@
                              p2p_profile.ip) %}
 {%             set interfaces = p2p_link.interfaces | arista.avd.default(
                                 p2p_profile.interfaces) %}
-{%             set p2p_interface_data = namespace() %}
+{%             set node_interface = interfaces[node_index] %}
+{%             set p2p_interface = namespace() %}
 {%             set p2p_interface.peer = nodes[peer_index] %}
 {%             set p2p_interface.peer_interface = interfaces[peer_index] %}
 {%             if p2p_interface.peer in groups[fabric_name] %}
@@ -41,16 +41,16 @@
                                          p2p_profile.speed) %}
 {%             if ip_list is arista.avd.defined %}
 {%                 set p2p_interface.ip_address = ip_list[node_index] %}
-{%                 set peer_ip = ip_list[peer_index] %}
+{%                 set p2p_interface.peer_ip = ip_list[peer_index] | ipaddr("address") %}
 {%             elif subnet is arista.avd.defined %}
 {%                 set mask = subnet | ipaddr("prefix") %}
 {%                 set p2p_interface.ip_address = subnet | ipaddr("network") | ipmath(node_index) ~ "/" ~ mask %}
-{%                 set peer_ip = subnet | ipaddr("network") | ipmath(peer_index) ~ "/" ~ mask %}
+{%                 set p2p_interface.peer_ip = subnet | ipaddr("network") | ipmath(peer_index) %}
 {%             elif ip_pool is arista.avd.defined %}
 {%                 set link_id = p2p_link.id | arista.avd.default(
                                  p2p_profile.id) %}
 {%                 set p2p_interface.ip_address = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
-{%                 set peer_ip = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + peer_index) ~ "/31" %}
+{%                 set p2p_interface.peer_ip = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + peer_index) %}
 {%             endif %}
 {%             set p2p_interface.mtu = p2p_link.mtu | arista.avd.default(
                                        p2p_profile.mtu,
@@ -72,10 +72,10 @@
 {%                     set p2p_bgp_neighbor.peer_group = "IPv4-UNDERLAY-PEERS" %}
 {%                     set p2p_bgp_neighbor.bfd = p2p_link.bfd | arista.avd.default(
                                                   p2p_profile.bfd) %}
-{%                     if as[node_index] != switch.bgp_as %}
+{%                     if switch.bgp_as is arista.avd.defined and as[node_index] != switch.bgp_as %}
 {%                         set p2p_bgp_neighbor.local_as = as[node_index] %}
 {%                     endif %}
-{%                     do switch.l3_edge_bgp_neighbors.update({ peer_ip: p2p_bgp_neighbor }) %}
+{%                     do switch.l3_edge_bgp_neighbors.update({ p2p_interface.peer_ip: p2p_bgp_neighbor }) %}
 {%                 elif switch.underlay_routing_protocol == "ospf" %}
 {%                     do switch.l3_edge_ospf_interfaces.append(node_interfaces) %}
 {%                 elif switch.underlay_routing_protocol == "isis" %}
