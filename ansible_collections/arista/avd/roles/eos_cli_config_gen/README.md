@@ -1773,6 +1773,15 @@ router_ospf:
       max_lsa: < integer >
       default_information_originate:
         always: true
+      summary:
+        - prefix: < summary_prefix_01 >
+          tag: < string >
+        - prefix: < summary_prefix_02 >
+          attribute_map: < string >
+        - prefix: < summary_prefix_03 >
+          not_advertise: < true >
+        - prefix: < summary_prefix_04 >
+        - prefix: < summary_prefix_05 >
       redistribute:
         static:
           route_map: < route_map_name >
