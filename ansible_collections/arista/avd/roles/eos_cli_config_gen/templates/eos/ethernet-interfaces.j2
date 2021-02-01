@@ -30,9 +30,13 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu != 1500 %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].type is arista.avd.defined("routed") %}
+{%             if ethernet_interfaces[ethernet_interface].type is arista.avd.defined and ethernet_interfaces[ethernet_interface].type in ["routed"] %}
    no switchport
-{%             elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined("switched") %}
+{%             elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined and ethernet_interfaces[ethernet_interface].type in ['switched'] %}
+   switchport
+{%             elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined and ethernet_interfaces[ethernet_interface].type in ['l3dot1q', 'l2dot1q'] %}
+{#                Just to skip as we don't want to write a CLI in this scenario #}
+{%             else %}
    switchport
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].flowcontrol is arista.avd.defined %}
