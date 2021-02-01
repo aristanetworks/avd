@@ -85,13 +85,13 @@ router ospf {{ process_id }}
 {%         for summary in router_ospf.process_ids[process_id].summary %}
 {%             if summary.prefix is arista.avd.defined %}
 {%                 if summary.tag is arista.avd.defined %}
-   summary {{ summary.prefix }} tag {{ summary.tag }}
+   summary-address {{ summary.prefix }} tag {{ summary.tag }}
 {%                 elif summary.attribute_map is arista.avd.defined %}
-   summary {{ summary.prefix }} attribute-map {{ summary.attribute_map }}
+   summary-address {{ summary.prefix }} attribute-map {{ summary.attribute_map }}
 {%                 elif summary.not_advertise is arista.avd.defined(true) %}
-   summary {{ summary.prefix }} not-advertise
+   summary-address {{ summary.prefix }} not-advertise
 {%                 else %}
-   summary {{ summary.prefix }}
+   summary-address {{ summary.prefix }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
