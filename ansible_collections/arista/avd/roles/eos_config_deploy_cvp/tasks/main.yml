@@ -4,13 +4,13 @@
 # Load tasks when device_filter is string
 - name: Generate CVP information using device_filter as string.
   tags: [always]
-  include_tasks: "./device_filter_string.yml"
+  include_tasks: "./main-filter-string.yml"
   when: "device_filter is string"
 
 # Load tasks when device_filter is list
 - name: Generate CVP information using device_filter as list.
   tags: [always]
-  include_tasks: "./device_filter_list.yml"
+  include_tasks: "./main-filter-list.yml"
   when: "device_filter is not string"
 
 - name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
