@@ -8,7 +8,7 @@
 {% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%     if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
 {%         set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type in ["switched", "l2dot1q"]  %}
+{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ["routed", "l3dot1q"] %}
 {%             set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
 {%             set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
 {%             set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
@@ -26,7 +26,7 @@
 {%             endif %}
 | {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%         endif %}
-{%     elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type in ["switched", "l2dot1q"]  %}
+{%     elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type not in ["routed", "l3dot1q"]  %}
 {%         set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
 {%         set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
 {%         set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}

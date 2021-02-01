@@ -98,37 +98,29 @@
 {%        endfor %}
 {%    endif %}
 {# OSPF #}
-{%     set po_interface_ospf = namespace() %}
-{%     set po_interface_ospf.configured = false %}
-{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
-{%              set po_interface_ospf.configured = true %}
-{%          endif %}
-{%     endfor %}
 {%     set port_channel_interface_ospf = namespace() %}
 {%     set port_channel_interface_ospf.configured = false %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     if port_channel_interfaces is arista.avd.defined %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%              if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
+{%              if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
 {%                  set port_channel_interface_ospf.configured = true %}
 {%              endif %}
 {%         endfor %}
-
 {%     endif %}
-{%     if po_interface_ospf.configured == true or port_channel_interface_ospf.configured == true %}
+{%     if port_channel_interface_ospf.configured is arista.avd.defined(true) %}
 #### OSPF
 
 | Interface | Channel Group | Area | Cost | Mode |
 | --------- | ------------- | ---- | ---- |----- |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%             if port_channel_interfaces[port_channel_interface].channel_group.id is defined and port_channel_interfaces[port_channel_interface].channel_group.id is not none %}
+{%             if port_channel_interfaces[port_channel_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + port_channel_interfaces[port_channel_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].ospf_area is defined and port_channel_interfaces[port_channel_interface].ospf_area is not none %}
-| {{ port_channel_interface }} | {% if port_channel_interfaces[port_channel_interface].channel_group.id is defined and port_channel_interfaces[port_channel_interface].channel_group.id is not none %} {{ port_channel_interfaces[port_channel_interface].channel_group.id }} {% else %} - {% endif %} | *{{ port_channel_interfaces[port_channel_interface].ospf_area }} | {% if port_channel_interfaces[port_channel_interface].ospf_cost is defined and port_channel_interfaces[port_channel_interface].ospf_cost is not none %} *{{ port_channel_interfaces[port_channel_interface].ospf_cost }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is defined and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is not none and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point == true %} *point-to-point {% else %} *broadcast {% endif %} |
+{%                 if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].channel_group.id | arista.avd.default('-') }} | *{{ port_channel_interfaces[port_channel_interface].ospf_area }} | *{{ port_channel_interfaces[port_channel_interface].ospf_cost | arista.avd.default('*-') }} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is arista.avd.defined(true) %} *point-to-point {% else %} *broadcast {% endif %} |
 {%                 endif %}
 {%             else %}
-{%                 if port_channel_interfaces[port_channel_interface].ospf_area is defined and port_channel_interfaces[port_channel_interface].ospf_area is not none %}
-| {{ port_channel_interface }} | - | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {% if port_channel_interfaces[port_channel_interface].ospf_cost is defined and port_channel_interfaces[port_channel_interface].ospf_cost is not none %} {{ port_channel_interfaces[port_channel_interface].ospf_cost }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is defined and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is not none and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point == true %} point-to-point {% else %} broadcast {% endif %} |
+{%                 if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+| {{ port_channel_interface }} | - | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {{ port_channel_interfaces[port_channel_interface].ospf_cost | arista.avd.default('-') }} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is arista.avd.defined(true) %} point-to-point {% else %} broadcast {% endif %} |
 {%                endif %}
 {%             endif %}
 {%          endfor %}

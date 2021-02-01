@@ -845,7 +845,7 @@ ethernet_interfaces:
   <Ethernet_interface_10>:
     description: < description >
     type: < routed >
-  <Ethernet_interface_10:101>:
+  <Ethernet_interface_10.101>:
     description: < description >
     type: < l3dot1q >
     encapsulation:
