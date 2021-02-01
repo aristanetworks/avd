@@ -5,8 +5,8 @@
 {% set switch.l3_edge_isis_interfaces = [] %}
 {% if l3_edge is arista.avd.defined %}
 {%     for p2p_link in l3_edge.p2p_links | arista.avd.natural_sort %}
-{%         if p2p_link.profile is arista.avd.defined and l3_edge.p2p_profiles is arista.avd.defined %}
-{%             set p2p_profile = l3_edge.p2p_profiles[profile_name] | arista.avd.default({}) %}
+{%         if p2p_link.profile is arista.avd.defined and l3_edge.p2p_links_profiles is arista.avd.defined %}
+{%             set p2p_profile = l3_edge.p2p_links_profiles[p2p_link.profile] | arista.avd.default({}) %}
 {%         else %}
 {%             set p2p_profile = {} %}
 {%         endif %}
