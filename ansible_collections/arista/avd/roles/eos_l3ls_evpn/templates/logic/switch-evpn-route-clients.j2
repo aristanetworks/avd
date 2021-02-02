@@ -1,0 +1,75 @@
+{% if switch.evpn_role == "server" %}
+{%     set switch.evpn_route_clients = {} %}
+{# #}
+{# Look for switches pointing to us as evpn_route_server #}
+{%     for fabric_switch in groups[fabric_name] if fabric_switch not in switch.evpn_route_servers | arista.avd.natural_sort %}
+{%         set fabric_switch_vars = hostvars[fabric_switch] %}
+{%         if fabric_switch_vars.type is arista.avd.defined('l3leaf') %}
+{%             for l3leaf_node_group in fabric_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                 for node in fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+{%                     if node == fabric_switch %}
+{%                         set fabric_switch_evpn_role = fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].evpn_role | arista.avd.default(
+                                                       fabric_switch_vars.l3leaf.defaults.evpn_role,
+                                                       'client') %}
+{%                         set fabric_switch_spines = fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].spines | arista.avd.default(
+                                                    fabric_switch_vars.l3leaf.defaults.spines) %}
+{%                         set fabric_switch_evpn_route_servers = fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
+                                                                fabric_switch_vars.l3leaf.defaults.evpn_route_servers,
+                                                                fabric_switch_spines,
+                                                                []) %}
+{%                         if inventory_hostname in fabric_switch_evpn_route_servers and fabric_switch_evpn_role in ['client', 'server'] %}
+{# Found a matching l3leaf. Gathering information for this client #}
+{%                             set client = namespace() %}
+{%                             set client.id = fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
+{%                             set client.bgp_as = fabric_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as | arista.avd.default(
+                                                   fabric_switch_vars.l3leaf.defaults.bgp_as) %}
+{%                             set client.ip_address = fabric_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(client.id + fabric_switch_vars.spine.nodes | length) %}
+{%                             do switch.evpn_route_clients.update({ fabric_switch: client }) %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endfor %}
+{%         elif fabric_switch_vars.type is arista.avd.defined('spine') %}
+{%             set fabric_switch_evpn_role = fabric_switch_vars.spine.nodes[fabric_switch].evpn_role | arista.avd.default(
+                                           'server') %}
+{%             set fabric_switch_evpn_route_servers = fabric_switch_vars.spine.nodes[fabric_switch].evpn_route_servers | arista.avd.default(
+                                                    []) %}
+{%             if inventory_hostname in fabric_switch_evpn_route_servers and fabric_switch_evpn_role in ['client', 'server'] %}
+{# Found a matching spine. Gathering information for this client #}
+{%                 set client = namespace() %}
+{%                 set client.evpn_role = fabric_switch_evpn_role %}
+{%                 set client.id = fabric_switch_vars.spine.nodes[fabric_switch].id %}
+{%                 set client.bgp_as = fabric_switch_vars.spine.bgp_as | arista.avd.default %}
+{%                 set client.ip_address = fabric_switch_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(client.id) %}
+{%                 do switch.evpn_route_clients.update({ fabric_switch: client }) %}
+{%             endif %}
+{%         elif fabric_switch_vars.type is arista.avd.defined('super-spine') %}
+{%             set fabric_switch_evpn_role = fabric_switch_vars.super_spine.nodes[fabric_switch].evpn_role | arista.avd.default %}
+{%             set fabric_switch_evpn_route_servers = fabric_switch_vars.super_spine.nodes[fabric_switch].evpn_route_servers | arista.avd.default(
+                                                    []) %}
+{%             if inventory_hostname in fabric_switch_evpn_route_servers and fabric_switch_evpn_role in ['client', 'server'] %}
+{# Found a matching super-spine. Gathering information for this client #}
+{%                 set client = namespace() %}
+{%                 set client.evpn_role = fabric_switch_evpn_role %}
+{%                 set client.id = fabric_switch_vars.super_spine.nodes[fabric_switch].id %}
+{%                 set client.bgp_as = fabric_switch_vars.super_spine.bgp_as | arista.avd.default %}
+{%                 set client.ip_address = fabric_switch_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(client.id) %}
+{%                 do switch.evpn_route_clients.update({ fabric_switch: client }) %}
+{%             endif %}
+{%         elif fabric_switch_vars.type is arista.avd.defined('overlay-controller') %}
+{%             set fabric_switch_evpn_role = fabric_switch_vars.overlay_controller.nodes[fabric_switch].evpn_role | arista.avd.default %}
+{%             set fabric_switch_evpn_route_servers = fabric_switch_vars.overlay_controller.nodes[fabric_switch].evpn_route_servers | arista.avd.default(
+                                                    []) %}
+{%             if inventory_hostname in fabric_switch_evpn_route_servers and fabric_switch_evpn_role in ['client', 'server'] %}
+{# Found a matching overlay-controller. Gathering information for this client #}
+{%                 set client = namespace() %}
+{%                 set client.evpn_role = fabric_switch_evpn_role %}
+{%                 set client.id = fabric_switch_vars.overlay_controller.nodes[fabric_switch].id %}
+{%                 set client.bgp_as = fabric_switch_vars.overlay_controller.nodes[fabric_switch].bgp_as | arista.avd.default(
+                                       overlay_controller.defaults.bgp_as) %}
+{%                 set client.ip_address = fabric_switch_vars.overlay_controller_loopback_network_summary  | ipaddr('network') | ipmath(client.id) %}
+{%                 do switch.evpn_route_clients.update({ fabric_switch: client }) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
