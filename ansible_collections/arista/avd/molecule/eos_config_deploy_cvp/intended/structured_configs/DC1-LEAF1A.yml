@@ -288,7 +288,7 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 15
+      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
