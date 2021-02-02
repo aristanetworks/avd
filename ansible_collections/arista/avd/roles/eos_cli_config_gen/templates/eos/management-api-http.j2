@@ -4,6 +4,9 @@
 management api http-commands
 {%     if management_api_http.enable_https is arista.avd.defined(true) %}
    protocol https
+{%         if management_api_http.https_ssl_profile is arista.avd.defined %}
+   protocol https ssl profile {{ management_api_http.https_ssl_profile }}
+{%         endif %}
 {%     elif management_api_http.enable_https is arista.avd.defined(false) %}
    no protocol https
 {%     endif %}
