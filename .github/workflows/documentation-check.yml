@@ -24,7 +24,7 @@ jobs:
       - name: 'test connectivity to mkdoc server'
         run: |
           sleep 30
-          docker run --network container:webdoc_avd appropriate/curl -s -I --retry 10 --retry-connrefused http://localhost:8000/
+          docker run --network container:webdoc_avd titom73/curl -s -I --retry 10 --retry-connrefused http://localhost:8000/
           docker ps
 
       - name: check links for 404
