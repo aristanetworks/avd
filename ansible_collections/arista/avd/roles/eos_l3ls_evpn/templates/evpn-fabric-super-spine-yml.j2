@@ -5,33 +5,7 @@
 
 {# Set Super Spine Variables #}
 {% set switch = namespace() %}
-{% set switch.platform = super_spine.platform %}
-{% set switch.mgmt_ip = super_spine.nodes[inventory_hostname].mgmt_ip %}
-{% set switch.spanning_tree_mode = "none" %}
-{% set switch.id = super_spine.nodes[inventory_hostname].id %}
-{# Set switch.underlay_routing_protocol using external logic template #}
-{% include 'logic/switch-underlay-routing-protocol.j2' %}
-{# Set switch.overlay_routing_protocol using external logic template #}
-{% include 'logic/switch-overlay-routing-protocol.j2' %}
-{% if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
-{%     set switch.bgp_as = bgp_as %}
-{% else %}
-{%     set switch.bgp_as = super_spine.bgp_as | arista.avd.default() %}
-{% endif %}
-{% set switch.router_id = super_spine_loopback_network_summary | ipaddr('network') | ipmath(switch.id) %}
-{% set switch.bgp_defaults = super_spine_bgp_defaults | arista.avd.default([]) %}
-{# Logic for EVPN Role for Overlay BGP Peerings #}
-{# For super-spine the default value is none #}
-{% set switch.evpn_role = super_spine.nodes[inventory_hostname].evpn_role | arista.avd.default(
-                          'none') %}
-{% set switch.raw_evpn_route_servers = super_spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
-                                       []) %}
-{# Set switch.evpn_route_servers using external logic template #}
-{% include 'logic/switch-evpn-route-servers.j2' %}
-{# Set switch.evpn_route_clients using external logic template #}
-{% include 'logic/switch-evpn-route-clients.j2' %}
-{# Set switch.l3_edge_* variables using external logic template #}
-{% include 'logic/switch-l3-edge.j2' %}
+{% include 'logic/designs/l3ls-evpn/l3ls-evpn-super-spine.j2' %}
 
 ### Super Spine Info ###
 switch_platform: {{ switch.platform }}
