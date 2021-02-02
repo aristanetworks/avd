@@ -29,9 +29,6 @@
   - [Role Enchancements for dedicated Overlay Controllers](#role-enchancements-for-dedicated-overlay-controllers)
     - [Inventory Structure](#inventory-structure-1)
     - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
-  - [Role Enhancements for Flexible EVPN Overlay peering design](#role-enhancements-for-flexible-evpn-overlay-peering-design)
-    - [Inventory Structure](#inventory-structure-2)
-    - [Additional Variables For Flexible EVPN Overlay peerings](#additional-variables-for-flexible-evpn-overlay-peerings)
   - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
   - [License](#license)
 
