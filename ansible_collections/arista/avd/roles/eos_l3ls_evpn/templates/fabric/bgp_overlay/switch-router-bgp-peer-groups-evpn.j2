@@ -4,7 +4,7 @@
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 15
+      ebgp_multihop: "{{ evpn_ebgp_multihop }}"
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: true
       maximum_routes: 0

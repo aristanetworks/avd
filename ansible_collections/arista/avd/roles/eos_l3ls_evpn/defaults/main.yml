@@ -30,6 +30,8 @@ p2p_uplinks_mtu: 9000
 underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
 
+evpn_ebgp_multihop: 3
+
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0

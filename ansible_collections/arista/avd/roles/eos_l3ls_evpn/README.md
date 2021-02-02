@@ -324,6 +324,11 @@ mlag_ips:
 bgp_maximum_paths: < number_of_max_paths | default -> 4 >
 bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 
+# EVPN ebgp-multihop | Optional
+# Default of 3, the recommended value for a 3 stage spine and leaf topology.
+# Set to 15 to allow for very large and complex topologies.
+evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
+
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
 # EVPN_OVERLAY_PEERS | Required
