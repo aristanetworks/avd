@@ -1838,14 +1838,15 @@ Assigned to the DC group:
 overlay_controller:
   platform: <platform>   # overlay-controller platform
   defaults: #Default variables, can be overridden when defined under each node
-    remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
-    uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
-    bgp_as: <BGP AS>
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+
+      remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
+      uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
+      bgp_as: <BGP AS>
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is none
       # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
