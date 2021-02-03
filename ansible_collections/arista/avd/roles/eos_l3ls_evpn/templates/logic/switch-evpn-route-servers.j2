@@ -25,7 +25,7 @@
 {%             endfor %}
 {%         elif route_server_vars.type is arista.avd.defined('spine') %}
 {%             set route_server_evpn_role = route_server_vars.spine.nodes[route_server].evpn_role | arista.avd.default(
-                                           'server') %}
+                                            'server') %}
 {%             if route_server_evpn_role == 'server' %}
 {# Found a matching spine. Gathering information for this server #}
 {%                 set server = namespace() %}
@@ -47,14 +47,15 @@
 {%                 do switch.evpn_route_servers.update({ route_server: server }) %}
 {%             endif %}
 {%         elif route_server_vars.type is arista.avd.defined('overlay-controller') %}
-{%             set route_server_evpn_role = route_server_vars.overlay_controller.nodes[route_server].evpn_role | arista.avd.default %}
+{%             set route_server_evpn_role = route_server_vars.overlay_controller.nodes[route_server].evpn_role | arista.avd.default(
+                                            route_server_vars.overlay_controller.defaults.evpn_role) %}
 {%             if route_server_evpn_role == 'server' %}
 {# Found a matching overlay-controller. Gathering information for this server #}
 {%                 set server = namespace() %}
 {%                 set server.evpn_role = route_server_evpn_role %}
 {%                 set server.id = route_server_vars.overlay_controller.nodes[route_server].id %}
 {%                 set server.bgp_as = route_server_vars.overlay_controller.nodes[route_server].bgp_as | arista.avd.default(
-                                       overlay_controller.defaults.bgp_as) %}
+                                       route_server_vars.overlay_controller.defaults.bgp_as) %}
 {%                 set server.ip_address = route_server_vars.overlay_controller_loopback_network_summary  | ipaddr('network') | ipmath(server.id) %}
 {%                 do switch.evpn_route_servers.update({ route_server: server }) %}
 {%             endif %}

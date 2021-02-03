@@ -326,7 +326,7 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 
 # EVPN ebgp-multihop | Optional
 # Default of 3, the recommended value for a 3 stage spine and leaf topology.
-# Set to 15 to allow for very large and complex topologies.
+# Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
 # BGP peer groups encrypted password
@@ -374,6 +374,12 @@ bfd_multihop:
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
+
+# Configure route-map on eBGP sessions towards route-servers, where the peer's ASN is filtered away.
+# This is very useful in very large scale networks, where convergence will be quicker by not having
+# to return all updates received from Route-server-1 to Router-server-2 just for Route-server-2 to
+# throw them away because of ASN path loop detection.
+evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet

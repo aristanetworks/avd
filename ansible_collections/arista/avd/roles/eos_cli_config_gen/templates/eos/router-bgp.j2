@@ -99,6 +99,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].timers is defined and router_bgp.neighbors[neighbor].timers is not none %}
    neighbor {{ neighbor }} timers {{ router_bgp.neighbors[neighbor].timers }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].route_map_in is arista.avd.defined %}
+   neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_in }} in
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
+   neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}

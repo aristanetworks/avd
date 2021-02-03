@@ -1327,6 +1327,8 @@ router_bgp:
       bfd: < true | false >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      route_map_in: < inbound route-map >
+      route_map_out: < outbound route-map >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
