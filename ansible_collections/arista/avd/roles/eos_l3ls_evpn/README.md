@@ -375,10 +375,9 @@ bfd_multihop:
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
 
-# Configure route-map on eBGP sessions towards route-servers, where the peer's ASN is filtered away.
-# This is very useful in very large scale networks, where convergence will be quicker by not having
-# to return all updates received from Route-server-1 to Router-server-2 just for Route-server-2 to
-# throw them away because of ASN path loop detection.
+# Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+# This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received 
+# from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
 evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
@@ -1837,7 +1836,11 @@ Assigned to the DC group:
 ```yaml
 overlay_controller:
   platform: <platform>   # overlay-controller platform
-  defaults: #Default variables, can be overridden when defined under each node
+
+  # All variables defined under `nodes` dictionary can be defined under the defaults key will be inherited by all overlay-controllers.
+  # The variables defined under a specific node will take precedence over defaults.
+  defaults:
+
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
