@@ -3,6 +3,7 @@ __metaclass__ = type
 
 import re
 
+
 class FilterModule(object):
 
     def generate_esi(self, esi_short, esi_prefix='0000:0000:'):
