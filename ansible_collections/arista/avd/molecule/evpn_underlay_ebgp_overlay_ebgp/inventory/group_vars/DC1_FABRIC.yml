@@ -190,4 +190,4 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 
-custom_structured_configuration_prefix: [ my_dci_ , my_special_dci_ ]
+custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_' ]
