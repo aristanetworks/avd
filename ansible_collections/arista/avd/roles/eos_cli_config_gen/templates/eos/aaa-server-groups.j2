@@ -1,11 +1,10 @@
 {# eos - AAA Group Servers#}
-{% if aaa_server_groups is defined and aaa_server_groups is not none %}
+{% if aaa_server_groups is arista.avd.defined %}
 !
-{%     for aaa_server_group in aaa_server_groups %}
+{%    for aaa_server_group in aaa_server_groups %}
 aaa group server {{ aaa_server_group['type'] }} {{ aaa_server_group['name'] }}
-{%          for server in aaa_server_group.servers %}
-   server {{ server['server'] }}{% if server['vrf'] is defined and server['vrf'] is not none %} vrf {{ server['vrf'] }}{% endif %}
-
-{%          endfor %}
-{%      endfor %}
+{%       for server in aaa_server_group.servers %}
+   server {{ server['server'] }}{% if server['vrf'] is arista.avd.defined %} vrf {{ server['vrf'] }}{% endif %}
+{%       endfor %}
+{%    endfor %}
 {% endif %}

@@ -1,13 +1,13 @@
-{# banners #}
-{% if banners is defined and banners is not none %}
-{%     if banners.login is defined and banners.login is not none %}
+{# eos - banners #}
+{% if banners is arista.avd.defined %}
+{%     if banners.login is arista.avd.defined %}
 !
 banner login
 {{ banners.login }}
-{%   endif %}
-{%     if banners.motd is defined and banners.motd is not none %}
+{%     endif %}
+{%     if banners.motd is arista.avd.defined %}
 !
 banner motd
 {{ banners.motd }}
-{%    endif %}
+{%     endif %}
 {% endif %}

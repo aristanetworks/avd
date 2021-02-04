@@ -1,4 +1,5 @@
-{% if daemon_terminattr is defined and daemon_terminattr is not none %}
+{# eos - TerminAttr #}
+{% if daemon_terminattr is arista.avd.defined %}
 !
 {# Create list of non CVaaS server #}
 {% set cvp_on_prem = namespace() %}

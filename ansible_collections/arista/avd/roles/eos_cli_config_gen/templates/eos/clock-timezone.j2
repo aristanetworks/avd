@@ -1,4 +1,5 @@
-{% if clock is defined and clock is not none %}
+{# eos - Clock timezone#}
+{% if clock is arista.avd.defined %}
 !
 clock timezone {{ clock.timezone }}
 {% endif %}

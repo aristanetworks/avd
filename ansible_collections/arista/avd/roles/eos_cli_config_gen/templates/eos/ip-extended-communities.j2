@@ -1,5 +1,5 @@
 {# eos - ip-extended-community #}
-{% if ip_extcommunity_lists is defined and ip_extcommunity_lists is not none %}
+{% if ip_extcommunity_lists is arista.avd.defined %}
 {%     for ip_extcommunity in ip_extcommunity_lists | arista.avd.natural_sort %}
 !
 {%         for sequence in ip_extcommunity_lists[ip_extcommunity] | arista.avd.natural_sort %}

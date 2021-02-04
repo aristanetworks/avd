@@ -1,4 +1,5 @@
-{% if event_handlers is defined and event_handlers is not none %}
+{# eos - Event handlers #}
+{% if event_handlers is arista.avd.defined %}
 {%     for handler in event_handlers %}
 !
 event-handler {{ handler }}
@@ -14,7 +15,7 @@ event-handler {{ handler }}
 {%         if event_handlers[handler].delay is defined %}
    delay {{ event_handlers[handler].delay }}
 {%         endif %}
-{%         if event_handlers[handler].asynchronous is defined and event_handlers[handler].asynchronous == true %}
+{%         if event_handlers[handler].asynchronous is arista.avd.defined(true) %}
    asynchronous
 {%         endif %}
 {%    endfor %}
