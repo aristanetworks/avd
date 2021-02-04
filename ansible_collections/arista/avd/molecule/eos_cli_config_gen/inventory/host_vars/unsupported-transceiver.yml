@@ -1,0 +1,4 @@
+### Unsupported transceiver
+service_unsupported_transceiver:
+  license_name: abcd
+  license_key: efgh

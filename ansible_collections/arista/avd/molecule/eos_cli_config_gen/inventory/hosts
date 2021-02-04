@@ -43,6 +43,7 @@ spanning-tree-rapid-pvst
 terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
+unsupported-transceiver
 vlan-interfaces
 vlans
 vrfs
