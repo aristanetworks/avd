@@ -340,6 +340,7 @@ interface Ethernet6
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
+   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5

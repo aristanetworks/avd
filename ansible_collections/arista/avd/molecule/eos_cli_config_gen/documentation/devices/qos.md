@@ -312,6 +312,7 @@ interface Ethernet6
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3

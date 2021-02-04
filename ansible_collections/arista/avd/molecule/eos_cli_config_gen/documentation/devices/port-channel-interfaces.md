@@ -331,6 +331,7 @@ interface Ethernet50
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -338,6 +339,7 @@ interface Port-Channel3
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
+   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5
@@ -362,6 +364,7 @@ interface Port-Channel8.101
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
+   switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    !
