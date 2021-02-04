@@ -261,20 +261,6 @@ No Interface Defaults defined
 
 *Inherited from Port-Channel Interface
 
-#### IPv4
-
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-
- *Inherited from Port-Channel Interface
- 
-#### OSPF
-
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-
- *Inherited from Port-Channel Interface
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
