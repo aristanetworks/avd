@@ -64,7 +64,7 @@
 {%              endif %}
 {%         endfor %}
 {%     endif %}
-{%     if ethernet_interface_ipv4.configured == true or port_channel_interface_ipv4.configured == true %}
+{%     if ethernet_interface_ipv4.configured == true %}
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -144,7 +144,7 @@
 {%              endif %}
 {%         endfor %}
 {%     endif %}
-{%     if ethernet_interface_ospf.configured == true or port_channel_interface_ospf.configured == true %}
+{%     if ethernet_interface_ospf.configured == true %}
 #### OSPF
 
 | Interface | Channel Group | Area | Cost | Mode |
