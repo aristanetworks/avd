@@ -4,7 +4,7 @@
 ## {{ tenant }} ##
 {%         if tenants[tenant].vrfs is defined %}
 {%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
-{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi|int in leaf.svis %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi | int in leaf.svis %}
 {%                      set svi_int = svi | int %}
 {%                     if tenants[tenant].vrfs[vrf].svis[svi].vni_override is defined %}
 {%                         set vni = tenants[tenant].vrfs[vrf].svis[svi].vni_override %}
@@ -23,7 +23,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
-{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan|int in leaf.vlans %}
+{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if leaf.vlans is not none and l2vlan | int in leaf.vlans %}
 {%                 set l2vlan_int = l2vlan | int %}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
 {%                     set vni = tenants[tenant].l2vlans[l2vlan].vni_override %}
