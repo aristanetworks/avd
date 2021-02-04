@@ -1,5 +1,5 @@
 {# eos - virtual source-nat - introduced in 4.21 #}
-{% if virtual_source_nat_vrfs is defined and virtual_source_nat_vrfs is not none %}
+{% if virtual_source_nat_vrfs is arista.avd.defined %}
 !
 {%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
 ip address virtual source-nat vrf {{ vrf }} address {{ virtual_source_nat_vrfs[vrf].ip_address }}
