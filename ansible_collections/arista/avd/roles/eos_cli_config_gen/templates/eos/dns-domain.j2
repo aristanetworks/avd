@@ -1,4 +1,4 @@
 {# eos - dns domain #}
-{% if dns_domain is defined and dns_domain is not none %}
+{% if dns_domain is arista.avd.defined %}
 dns domain {{ dns_domain }}
 {% endif %}

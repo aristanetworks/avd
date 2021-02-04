@@ -1,5 +1,5 @@
-{% if hardware_counters is defined and hardware_counters is not none %}
-{%     if hardware_counters.features is defined and hardware_counters.features is not none %}
+{% if hardware_counters is arista.avd.defined %}
+{%     if hardware_counters.features is arista.avd.defined %}
 !
 {%         for feature in hardware_counters.features %}
 {%             for feature, direction in feature.items() %}

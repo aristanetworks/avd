@@ -1,5 +1,5 @@
 {# eos - Errdisable #}
-{% if errdisable is defined and errdisable is not none %}
+{% if errdisable is arista.avd.defined %}
 {%     if errdisable.recovery is defined %}
 {%         if errdisable.detect.causes is defined %}
 {%             for cause in errdisable.detect.causes | arista.avd.natural_sort %}
@@ -59,7 +59,7 @@ errdisable recovery cause {{ cause }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
-{%         if errdisable.recovery.interval is defined and errdisable.recovery.interval is not none  %}
+{%         if errdisable.recovery.interval is arista.avd.defined %}
 errdisable recovery interval {{ errdisable.recovery.interval }}
 {%         endif %}
 {%     endif %}

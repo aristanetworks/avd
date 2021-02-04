@@ -1,7 +1,7 @@
 {# eos - ARP settings #}
-{% if arp is defined and arp is not none %}
-{%     if arp.aging is defined and arp.aging is not none %}
-{%         if arp.aging.timeout_default is defined and arp.aging.timeout_default is not none %}
+{% if arp is arista.avd.defined %}
+{%     if arp.aging is arista.avd.defined %}
+{%         if arp.aging.timeout_default is arista.avd.defined %}
 !
 arp aging timeout default {{ arp.aging.timeout_default }}
 {%         endif %}

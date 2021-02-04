@@ -1,5 +1,5 @@
 {# eos - IP Routing #}
-{% if ip_routing is defined and ip_routing is not none %}
+{% if ip_routing is arista.avd.defined %}
 {%     if ip_routing == true %}
 !
 ip routing
@@ -8,7 +8,7 @@ ip routing
 no ip routing
 {%     endif %}
 {% endif %}
-{% if vrfs is defined and vrfs is not none %}
+{% if vrfs is arista.avd.defined %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%             if vrfs[vrf].ip_routing == true and vrf is ne 'default' %}
 ip routing vrf {{ vrf }}
@@ -17,8 +17,6 @@ no ip routing vrf {{ vrf }}
 {%             endif %}
 {%     endfor %}
 {% endif %}
-{% if ip_icmp_redirect is defined and ip_icmp_redirect is not none %}
-{%        if ip_icmp_redirect is defined and ip_icmp_redirect == false %}
+{% if ip_icmp_redirect is arista.avd.defined(false) %}
 no ip icmp redirect
-{%        endif %}
 {% endif %}

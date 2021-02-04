@@ -1,6 +1,6 @@
 {# eos - ip dhcp relay #}
-{% if ip_dhcp_relay is defined and ip_dhcp_relay is not none %}
-{%    if ip_dhcp_relay.information_option is defined and ip_dhcp_relay.information_option == true %}
+{% if ip_dhcp_relay is arista.avd.defined %}
+{%    if ip_dhcp_relay.information_option is arista.avd.defined(true) %}
 !
 ip dhcp relay information option
 {%    endif %}
