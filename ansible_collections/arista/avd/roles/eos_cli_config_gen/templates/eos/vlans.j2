@@ -4,10 +4,10 @@
 !
 vlan {{ vlan }}
    name {{ vlans[vlan].name }}
-{%         if vlans[vlan].state is defined and vlans[vlan].state == "suspend" %}
+{%         if vlans[vlan].state is arista.avd.defined("suspend") %}
    state {{ vlans[vlan].state }}
 {%         endif %}
-{%         if vlans[vlan].trunk_groups is defined %}
+{%         if vlans[vlan].trunk_groups is arista.avd.defined %}
 {%             for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
    trunk group {{ trunk_group }}
 {%             endfor %}
