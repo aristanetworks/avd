@@ -1,3 +1,94 @@
+# Refactor assignments:
+- [ ] aaa-accounting.j2 (CB)
+- [ ] aaa-authentication.j2 (CB)
+- [ ] aaa-authorization.j2 (XR)
+- [ ] aaa-root.j2 (XR)
+- [ ] aaa-server-groups.j2 (XR)
+- [ ] access-lists.j2 (XR)
+- [ ] aliases.j2 (XR)
+- [ ] arp.j2 (XR)
+- [ ] banners.j2 (XR)
+- [ ] clock-timezone.j2 (XR)
+- [ ] community-lists.j2 (XR)
+- [ ] custom-templates.j2 (XR)
+- [ ] daemon-terminattr.j2 (XR)
+- [ ] dns-domain.j2 (XR)
+- [ ] domain-list.j2 (XR)
+- [ ] domain-lookup.j2 (XR)
+- [ ] enable-password.j2 (XR)
+- [ ] errdisable.j2 (XR)
+- [ ] ethernet-interfaces.j2
+- [ ] event-handler.j2
+- [ ] event-monitor.j2
+- [ ] hardware-counters.j2
+- [ ] hardware.j2
+- [ ] interface-defaults.j2
+- [ ] ip-dhcp-relay.j2
+- [ ] ip-extended-communities.j2
+- [ ] ip-igmp-snooping.j2
+- [ ] ip-routing.j2
+- [ ] ip-tacacs-source-interfaces.j2
+- [ ] ipv6-access-lists.j2
+- [ ] ipv6-prefix-lists.j2
+- [ ] ipv6-routing.j2
+- [ ] ipv6-standard-access-lists.j2
+- [ ] ipv6-static-routes.j2
+- [ ] lldp.j2
+- [ ] load-interval.j2
+- [ ] local-users.j2
+- [ ] logging.j2
+- [ ] loopback-interfaces.j2
+- [ ] mac-address-table.j2
+- [ ] mac-security.j2
+- [ ] management-api-gnmi.j2
+- [ ] management-api-http.j2
+- [ ] management-console.j2
+- [ ] management-interfaces.j2
+- [ ] management-security.j2
+- [ ] management-ssh.j2
+- [ ] mlag-configuration.j2
+- [ ] name-servers.j2
+- [ ] ntp-servers.j2
+- [ ] peer-filters.j2
+- [ ] platform.j2
+- [ ] port-channel-interfaces.j2
+- [ ] prefix-lists.j2
+- [ ] ptp.j2
+- [ ] qos-profiles.j2
+- [ ] qos.j2
+- [ ] queue-monitor-length.j2
+- [ ] queue-monitor-streaming.j2
+- [ ] radius-servers.j2
+- [ ] redundancy.j2
+- [ ] route-maps.j2
+- [ ] router-bfd.j2
+- [ ] router-bgp.j2 (CB)
+- [ ] router-isis.j2
+- [ ] router-l2-vpn.j2
+- [ ] router-multicast.j2
+- [ ] router-ospf.j2
+- [ ] router-pim-sparse-mode.j2
+- [ ] service-routing-protocols-model.j2
+- [ ] sflow.j2
+- [ ] snmp-settings.j2
+- [ ] spanning-tree.j2 (OG)
+- [ ] standard-access-lists.j2 (OG)
+- [ ] static-routes.j2 (OG)
+- [ ] tacacs-servers.j2 (OG)
+- [ ] tcam-profile.j2 (OG)
+- [ ] terminal-settings.j2 (OG)
+- [ ] unsupported-transeiver.j2 (OG)
+- [ ] virtual-router-mac-address.j2 (OG)
+- [ ] virtual-source-nat.j2 (OG)
+- [ ] vlan-interfaces.j2 (TG)
+- [ ] vlan-internal-order.j2 (OG)
+- [ ] vlans.j2 (OG)
+- [ ] vmtracer-sessions.j2 (TG)
+- [ ] vrf-instances.j2 (TG)
+- [ ] vxlan-interface.j2 (TG)
+
+
+
 # Ansible Collection For Arista Validated Designs - arista.avd
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
