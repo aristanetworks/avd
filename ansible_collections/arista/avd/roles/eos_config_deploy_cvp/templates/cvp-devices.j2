@@ -1,7 +1,14 @@
+{% set local_var = namespace() %}
+{% set local_var.device_filter = [] %}
+{% if device_filter is string %}
+{%    do local_var.device_filter.append(device_filter) %}
+{% else %}
+{%    set local_var.device_filter = device_filter %}
+{% endif %}
 ---
 CVP_DEVICES:
 {% for device in groups[container_root] %}
-{% if device | arista.avd.is_in_filter([device_filter]) %}
+{% if device | arista.avd.is_in_filter(local_var.device_filter) %}
 {%     if (hostvars[device]['is_deployed'] is defined and hostvars[device]['is_deployed'] == true) or (hostvars[device]['is_deployed'] is not defined ) %}
   {{device}}:
     name: {{device}}
