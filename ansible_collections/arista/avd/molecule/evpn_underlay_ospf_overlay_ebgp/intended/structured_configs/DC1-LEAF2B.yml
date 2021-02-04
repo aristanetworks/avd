@@ -237,9 +237,9 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     ip_address: 10.255.251.3/31
+    mtu: 1500
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
-    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     ip_address: 10.255.252.3/31

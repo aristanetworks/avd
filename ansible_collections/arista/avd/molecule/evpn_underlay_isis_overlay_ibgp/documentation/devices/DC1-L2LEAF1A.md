@@ -354,7 +354,7 @@ interface Ethernet2
 
 | Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
 | --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel1 | DC1-LEAF2A_Po7 | 1500 | switched | trunk |  | - | - | - | 1 | - | - | - | - |
+| Port-Channel1 | DC1-LEAF2A_Po7 | 1500 | switched | trunk |  | - | - | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -364,7 +364,6 @@ interface Port-Channel1
    description DC1-LEAF2A_Po7
    switchport trunk allowed vlan 
    switchport mode trunk
-   mlag 1
 ```
 
 ## Loopback Interfaces
