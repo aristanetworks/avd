@@ -381,7 +381,7 @@ evpn_overlay_bgp_rtc: < true | false , default -> false >
 evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
-# Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
+# Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on 89/ARP. This allows all l3leafs to reuse the same subnet
 # SVI IP address will be assigned as follows:
 # virtual-router: <subnet> + 1
 # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
