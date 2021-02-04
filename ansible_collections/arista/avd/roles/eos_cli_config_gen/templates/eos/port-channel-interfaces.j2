@@ -23,7 +23,8 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].type is arista.avd.defined("routed") %}
    no switchport
-{%         elif port_channel_interfaces[port_channel_interface].type is arista.avd.defined("switched") %}
+{%         elif port_channel_interfaces[port_channel_interface].type is arista.avd.defined("switched")
+               or port_channel_interfaces[port_channel_interface].type is not defined %}
    switchport
 {%         endif %}
 {%         if port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("access") %}
