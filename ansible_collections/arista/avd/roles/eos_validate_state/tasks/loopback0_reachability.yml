@@ -1,7 +1,7 @@
 ---
 
 - name: Gather ip reachability state between devices (loopback0 <-> loopback0)
-  eos_command:
+  arista.eos.eos_command:
     commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} repeat 1"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:

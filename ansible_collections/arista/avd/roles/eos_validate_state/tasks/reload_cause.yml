@@ -3,7 +3,7 @@
 # Reload Cause - Optional
 
 - name: gather reload cause information
-  eos_command:
+  arista.eos.eos_command:
     commands: "show reload cause"
   register: reload_cause
   tags:

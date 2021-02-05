@@ -3,7 +3,7 @@
 # MLAG State Tests
 
 - name: Gather mlag status
-  eos_command:
+  arista.eos.eos_command:
     commands: "show mlag detail | json"
   register: mlag_state
   tags:

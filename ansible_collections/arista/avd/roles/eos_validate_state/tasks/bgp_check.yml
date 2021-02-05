@@ -3,7 +3,7 @@
 # BGP Validation tests
 
 - name: Gathter ip route summary and ArBGP state
-  eos_command:
+  arista.eos.eos_command:
     commands: "show ip route summary"
   register: ip_route_summary
   tags:
@@ -23,7 +23,7 @@
     - bgp_check
 
 - name: Gather bgp summary (ip and evpn)
-  eos_command:
+  arista.eos.eos_command:
     commands:
       - command: "show ip bgp summary | json"
       - command: "show bgp evpn summary | json"

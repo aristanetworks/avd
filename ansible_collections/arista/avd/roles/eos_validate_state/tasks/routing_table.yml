@@ -1,7 +1,7 @@
 ---
 
 - name: run show ip route lo1
-  eos_command:
+  arista.eos.eos_command:
     commands: "show ip route {{ loopback1_address }}"
   loop: "{{ loopback1_reachability.loopback1_range }}"
   loop_control:
@@ -30,7 +30,7 @@
     - routing_table_check
 
 - name: run show ip route lo0
-  eos_command:
+  arista.eos.eos_command:
     commands: "show ip route {{ loopback0_address }}"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:

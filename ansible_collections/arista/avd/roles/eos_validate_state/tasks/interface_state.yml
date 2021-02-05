@@ -3,7 +3,7 @@
 # Interface State Tests
 
 - name: Gather interfaces state
-  eos_command:
+  arista.eos.eos_command:
     commands: "show interfaces description | json"
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: interfaces_state

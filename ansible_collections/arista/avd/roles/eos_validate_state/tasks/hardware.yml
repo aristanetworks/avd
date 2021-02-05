@@ -3,7 +3,7 @@
 # Hardware Validation Tests
 
 - name: Gather power supplies status
-  eos_command:
+  arista.eos.eos_command:
     commands: "show system environment power | json"
   register: system_environment_power
   tags:
@@ -24,7 +24,7 @@
     - hardware
 
 - name: Gather system environment fan status
-  eos_command:
+  arista.eos.eos_command:
     commands: "show system environment cooling | json"
   register: system_environment_cooling
   tags:
@@ -59,7 +59,7 @@
     - hardware
 
 - name: Gather system environment temperature
-  eos_command:
+  arista.eos.eos_command:
     commands: "show system environment temperature | json"
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: environment_temperature
@@ -78,7 +78,7 @@
     - hardware
 
 - name: Gather transceivers inventory
-  eos_command:
+  arista.eos.eos_command:
     commands: "show inventory | json"
   register: inventory
   tags:

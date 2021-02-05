@@ -1,7 +1,7 @@
 ---
 
 - name: replace configuration with intended configuration
-  eos_config:
+  arista.eos.eos_config:
     src: '{{ root_dir }}/intended/configs/{{ inventory_hostname }}.cfg'
     replace: config
     save_when: modified

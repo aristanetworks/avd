@@ -24,7 +24,7 @@ To translate the data, provide the list of `{{ ??_TENANTS_NETWORKS }}.yml` files
 - hosts: DC1_FABRIC
   tasks:
     - name: upgrade data model
-      include_role:
+      ansible.builtin.include_role:
         name: arista.avd.upgrade_tools
       vars:
         subset: 'v1.0_to_v1.1'

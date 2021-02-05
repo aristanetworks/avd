@@ -10,7 +10,7 @@
 
   # convert DC1_TENANTS_NETWORKS.yml from 1.0 to 1.1 version
   - name: load vars
-    include_vars:
+    ansible.builtin.include_vars:
       file: '{{ inventory_dir }}/group_vars/{{ item }}'
       name: tenants_and_networks
     run_once: true
