@@ -47,7 +47,7 @@ all:
       hosts:
         dhcp_server01:
 ```
-
+!!! tip - make sure that dhcp_server01 host inherits group_vars with cvp_instance_ip variable. One of they way is to place group TOOLS under fabric/dc ansible group.
 #### Module variables
 
 #### Variables dedicated to DHCP device
