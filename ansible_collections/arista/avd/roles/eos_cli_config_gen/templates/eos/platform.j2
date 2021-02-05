@@ -15,5 +15,10 @@ platform sand lag hardware-only
 platform sand lag mode {{ platform.sand.lag.mode }}
 {%             endif %}
 {%         endif %}
+{%         if platform.sand.multicast_replication is defined and platform.sand.multicast_replication is not none %}
+{%             if platform.sand.multicast_replication.default is defined and platform.sand.multicast_replication.default is not none %}
+platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
+{%             endif %}
+{%         endif %}
 {%     endif %}
 {% endif %}

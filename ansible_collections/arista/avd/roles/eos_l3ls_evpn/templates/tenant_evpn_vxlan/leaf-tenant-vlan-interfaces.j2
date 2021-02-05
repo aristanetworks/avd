@@ -5,7 +5,7 @@
 {%             if loop.first %}
 ## {{ tenant }} ##
 {%             endif %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi in leaf.svis %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi | int in leaf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 set per_svi = namespace() %}

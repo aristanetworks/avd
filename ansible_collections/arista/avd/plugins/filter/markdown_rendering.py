@@ -1,10 +1,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from jinja2 import TemplateError
-from ansible.errors import AnsibleFilterError
-import re
-
 
 class FilterModule(object):
     # STATIC EMOJI CODE
