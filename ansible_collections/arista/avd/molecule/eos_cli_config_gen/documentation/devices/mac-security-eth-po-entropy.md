@@ -277,7 +277,6 @@ No Interface Defaults defined
 interface Ethernet1
    mac security profile A1
    switchport
-   switchport mode routed
    ip address 1.1.1.1/24
 !
 interface Ethernet3
