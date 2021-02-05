@@ -31,6 +31,9 @@ overlay_controller:
     DC1-RS1:
       id: 1
       mgmt_ip: 192.168.10.1/16
+      bgp_as: 65101
+      evpn_role: server
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-LEAF1A ]
 # Test connectivity to all layers
       remote_switches_interfaces: [ ethernet10, ethernet10, ethernet10 ]
       remote_switches: [ DC1_SUPER_SPINE1, DC1_POD1_SPINE1, DC1_POD1_LEAF1A ]
@@ -38,7 +41,9 @@ overlay_controller:
     DC1-RS2:
       id: 2
       mgmt_ip: 192.168.10.2/16
-      remote_switches_interfaces: [ ethernet10, ethernet10, ethernet10 ]
+      bgp_as: 65102
+      evpn_role: server
+      remote_switches_interfaces: [ ethernet11, ethernet11, ethernet11 ]
       remote_switches: [ DC1_SUPER_SPINE2, DC1_POD2_SPINE1, DC1_POD2_LEAF1A ]
       uplink_to_remote_switches: [ ethernet1, ethernet2, ethernet3 ]
 

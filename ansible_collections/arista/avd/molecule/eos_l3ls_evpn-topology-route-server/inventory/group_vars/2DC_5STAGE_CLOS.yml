@@ -13,3 +13,8 @@ bgp_peer_groups:
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 mgmt_gateway: 192.168.0.1
+
+p2p_uplinks_qos_profile: QOS-PROFILE
+
+p2p_uplinks_ptp:
+  enable: true
