@@ -7,17 +7,23 @@ all:
             DC1_SUPER_SPINES:
               hosts:
                 DC1-SUPER-SPINE1:
+                  type: super-spine
                 DC1-SUPER-SPINE2:
+                  type: super-spine
             DC1_ROUTE_SERVERS:
               hosts:
                 DC1-RS1:
+                  type: overlay-controller
                 DC1-RS2:
+                  type: overlay-controller
             DC1_POD1:
               children:
                 DC1_POD1_SPINES:
                   hosts:
                     DC1-POD1-SPINE1:
+                      type: spine
                     DC1-POD1-SPINE2:
+                      type: spine
                 DC1_POD1_LEAFS:
                   hosts:
                     DC1-POD1-LEAF1A:
@@ -32,11 +38,14 @@ all:
                       type: l2leaf
                     DC1-POD1-L2LEAF2B:
                       type: l2leaf
-
+            DC1_POD2:
+              children:
                 DC1_POD2_SPINES:
                   hosts:
                     DC1-POD2-SPINE1:
+                      type: spine
                     DC1-POD2-SPINE2:
+                      type: spine
                 DC1_POD1_LEAFS:
                   hosts:
                     DC1-POD2-LEAF1A:
@@ -47,17 +56,23 @@ all:
             DC2_SUPER_SPINES:
               hosts:
                 DC2-SUPER-SPINE1:
+                  type: super-spine
                 DC2-SUPER-SPINE2:
+                  type: super-spine
             DC2_ROUTE_SERVERS:
               hosts:
                 DC2-RS1:
+                  type: overlay-controller
                 DC2-RS2:
+                  type: overlay-controller
             DC2_POD1:
               children:
                 DC2_POD1_SPINES:
                   hosts:
                     DC2-POD1-SPINE1:
+                      type: spine
                     DC2-POD1-SPINE2:
+                      type: spine
                 DC2_POD1_LEAFS:
                   hosts:
                     DC2-POD1-LEAF1A:

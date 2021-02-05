@@ -12,7 +12,6 @@ mlag_ips:
   leaf_peer_l3: 172.20.210.0/24
 
 l2leaf_inband_management_subnet: 172.21.210.0/24
-l2leaf_inband_management_vlan: 4085
 
 super_spine_underlay_p2p_network_summary: 172.16.21.0/24
 
