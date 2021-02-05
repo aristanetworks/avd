@@ -8,9 +8,14 @@
   run_once: true
 
 - name: 'include DHCP variables to build dhcpd.conf file'
-  ansible.builtin.include_vars: '{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml'
+  ansible.builtin.include_vars:
+    file: '{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml'
+  delegate_to: localhost
   run_once: true
 
 - name: start creation/update process.
   tags: [provision]
-  ansible.builtin.include_tasks: "./{{ ztp_mode }}.yml"
+  # not migrated as hit PR71824 -- needs ansible 2.11
+  include_tasks: "{{ ztp_mode }}.yml"
+  # delegate_to: localhost
+  when: 'ztp_mode is defined'
