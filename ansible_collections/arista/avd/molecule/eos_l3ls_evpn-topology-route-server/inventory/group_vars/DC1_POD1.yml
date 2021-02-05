@@ -1,0 +1,17 @@
+---
+pod_name: DC1_POD1
+
+underlay_p2p_network_summary: 172.17.110.0/24
+
+overlay_loopback_network_summary: 172.16.110.0/24
+
+vtep_loopback_network_summary: 172.18.110.0/24
+
+mlag_ips:
+  mlag_peer: 172.19.110.0/24
+  leaf_peer_l3: 172.20.110.0/24
+
+l2leaf_inband_management_subnet: 172.21.110.0/24
+l2leaf_inband_management_vlan: 4085
+
+
