@@ -16,21 +16,4 @@ jobs:
       - uses: actions/checkout@master
       - name: 'start docker-compose stack'
         run: |
-          cp development/docker-compose.yml .
-          sed -i 's/ansible-avd\///g' docker-compose.yml
-          docker-compose -f docker-compose.yml up -d webdoc_avd
-          docker-compose -f docker-compose.yml ps
-
-      - name: 'test connectivity to mkdoc server'
-        run: |
-          sleep 30
-          docker run --network container:webdoc_avd appropriate/curl -s -I --retry 10 --retry-connrefused http://localhost:8000/
-          docker ps
-
-      - name: check links for 404
-        run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
-
-      - name: 'stop docker-compose stack'
-        run: |
-          docker-compose -f docker-compose.yml down
+          make ci-check-links-avd
