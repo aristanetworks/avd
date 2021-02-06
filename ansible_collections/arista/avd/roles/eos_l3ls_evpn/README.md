@@ -326,7 +326,7 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 
 # EVPN ebgp-multihop | Optional
 # Default of 3, the recommended value for a 3 stage spine and leaf topology.
-# Set to 15 to allow for very large and complex topologies.
+# Set to a higher value to allow for very large and complex topologies.
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
 # BGP peer groups encrypted password
@@ -374,6 +374,11 @@ bfd_multihop:
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
+
+# Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+# This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
+# from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
+evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
@@ -1831,15 +1836,20 @@ Assigned to the DC group:
 ```yaml
 overlay_controller:
   platform: <platform>   # overlay-controller platform
-  defaults: #Default variables, can be overridden when defined under each node
-    remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
-    uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
-    bgp_as: <BGP AS>
+
+  # All variables defined under `nodes` dictionary can be defined under the defaults key will be inherited by all overlay-controllers.
+  # The variables defined under a specific node will take precedence over defaults.
+  defaults:
+
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+
+      remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
+      uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
+      bgp_as: <BGP AS>
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is none
       # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.

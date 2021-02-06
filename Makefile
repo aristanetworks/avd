@@ -7,6 +7,7 @@ ANSIBLE_TEST_MODE ?= docker
 WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 COMPOSE_FILE ?= development/docker-compose.yml
 MUFFET_TIMEOUT ?= 60
+SED_OPT ?= -i '.original'
 
 .PHONY: help
 help: ## Display help message
@@ -133,7 +134,7 @@ ci-check-links-avd: ## CI workflow to test HTTP link
 	@echo "Starting docker stack for testing"
 	@echo "--------------------------"
 	cp development/docker-compose.yml . \
-	&& sed -i '.original' 's/ansible-avd\///g' docker-compose.yml \
+	&& sed $(SED_OPT) -e 's/ansible-avd\///g' docker-compose.yml \
 	&& docker-compose -f docker-compose.yml up -d webdoc_avd \
 	&& docker-compose -f docker-compose.yml ps
 	@echo ""

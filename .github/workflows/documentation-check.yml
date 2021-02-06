@@ -16,4 +16,4 @@ jobs:
       - uses: actions/checkout@master
       - name: 'start docker-compose stack'
         run: |
-          make ci-check-links-avd
+          make ci-check-links-avd SED_OPT=''
