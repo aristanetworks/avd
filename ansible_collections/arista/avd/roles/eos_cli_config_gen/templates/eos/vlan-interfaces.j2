@@ -57,7 +57,7 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ vlan_interfaces[vlan_interface].ipv6_address_link_local }} link-local
-{%         endif %}
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled
 {%     endif %}
@@ -125,7 +125,7 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].ipv6_virtual_router_address is arista.avd.defined %}
    ipv6 virtual-router address {{ vlan_interfaces[vlan_interface].ipv6_virtual_router_address }}
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].isis_enable is defined %}
+{%     if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
    isis enable {{ vlan_interfaces[vlan_interface].isis_enable }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined(true) %}
@@ -144,7 +144,7 @@ interface {{ vlan_interface }}
 {%         if vlan_interfaces[vlan_interface].vrrp.advertisement_interval is arista.avd.defined %}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} advertisement interval {{ vlan_interfaces[vlan_interface].vrrp.advertisement_interval }}
 {%         endif %}
-{%        if vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is arista.avd.defined %}
+{%         if vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum is arista.avd.defined %}
    vrrp {{ vlan_interfaces[vlan_interface].vrrp.virtual_router }} preempt delay minimum {{ vlan_interfaces[vlan_interface].vrrp.preempt_delay_minimum }}
 {%         endif %}
 {%         if vlan_interfaces[vlan_interface].vrrp.ipv4 is arista.avd.defined %}
