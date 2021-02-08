@@ -2,7 +2,9 @@
 {% if router_bgp is arista.avd.defined %}
 !
 router bgp {{ router_bgp.as }}
+{%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
+{%     endif %}
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
 {%     endif %}
