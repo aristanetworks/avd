@@ -1685,8 +1685,8 @@ management_security:
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
-      certificate: 
-        file: < certificate filename > 
+      certificate:
+        file: < certificate filename >
         key: < key filename >
     - name: <ssl_profile_2>
       tls_versions: < list of allowed tls versions as string >
