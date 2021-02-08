@@ -1,10 +1,10 @@
 ---
 ztp:
   default:
-{% if cvp_instance_ip is defined and cvp_instance_ip is not none %}
-    registration: http://{{ cvp_instance_ip }}/ztp/bootstrap
-{% elif cvp_instance_ips is defined and cvp_instance_ips is not none %}
-    registration: http://{{ cvp_instance_ips[0] }}/ztp/bootstrap
+{% if hostvars[groups[fabric_group][0]].cvp_instance_ip is arista.avd.defined %}
+    registration: http://{{ hostvars[groups[fabric_group][0]].cvp_instance_ip }}/ztp/bootstrap
+{% elif hostvars[groups[fabric_group][0]].cvp_instance_ips is arista.avd.defined %}
+    registration: http://{{ hostvars[groups[fabric_group][0]].cvp_instance_ips[0] }}/ztp/bootstrap
 {% endif %}
 {% if mgmt_gateway is defined and mgmt_gateway is not none %}
     gateway: {{ mgmt_gateway }}
