@@ -24,16 +24,16 @@ spine:
     # Spine also working as EVPN RS
     DC1-POD1-SPINE1:
       id: 1
-      mgmt_ip: 192.168.110.1/16
+      mgmt_ip: 192.168.1.5/24
       evpn_role: server
       super_spine_interfaces: [ Ethernet1, Ethernet1 ]
       evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
     DC1-POD1-SPINE2:
       id: 2
       evpn_role: none
-      mgmt_ip: 192.168.110.2/16
+      mgmt_ip: 192.168.1.6/24
       super_spine_interfaces: [ Ethernet2, Ethernet2 ]
-  
+
 # In DC1 we define all variables on specific node / node_group
 l3leaf:
   #defaults:
@@ -53,7 +53,7 @@ l3leaf:
       nodes:
         DC1-POD1-LEAF1A:
           id: 1
-          mgmt_ip: 192.168.111.1/16
+          mgmt_ip: 192.168.1.7/24
           spine_interfaces: [ Ethernet3, Ethernet3 ]
     # Regular MLAG pair
     RACK2_MLAG:
@@ -62,15 +62,15 @@ l3leaf:
       uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
       bgp_as: 65112
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
-      mlag_interfaces: [ Ethernet3, Ethernet4 ]
+      mlag_interfaces: [ Ethernet5, Ethernet6 ]
       nodes:
         DC1-POD1-LEAF2A:
           id: 2
-          mgmt_ip: 192.168.111.2/16
+          mgmt_ip: 192.168.1.8/16
           spine_interfaces: [ Ethernet4, Ethernet4 ]
         DC1-POD1-LEAF2B:
           id: 3
-          mgmt_ip: 192.168.111.3/16
+          mgmt_ip: 192.168.1.9/16
           spine_interfaces: [ Ethernet5, Ethernet5 ]
 
 # In DC2 we define all variables on specific node / node_group
@@ -79,13 +79,13 @@ l2leaf:
   node_groups:
     RACK2_SINGLE:
       platform: vEOS-LAB
-      parent_l3leafs: [ DC1-POD1-LEAF2A, DC1-POD1-LEAF2B ]
-      uplink_interfaces: [ Ethernet1, Ethernet2 ]
+      parent_l3leafs: [ DC1-POD1-LEAF1A ]
+      uplink_interfaces: [ Ethernet3 ]
       nodes:
         DC1-POD1-L2LEAF1A:
           id: 1
-          mgmt_ip: 192.168.112.1/16
-          l3leaf_interfaces: [ Ethernet5, Ethernet5 ]
+          mgmt_ip: 192.168.1.10/24
+          l3leaf_interfaces: [ Ethernet1 ]
     RACK2_MLAG:
       platform: vEOS-LAB
       parent_l3leafs: [ DC1-POD1-LEAF2A, DC1-POD1-LEAF2B ]
@@ -94,9 +94,9 @@ l2leaf:
       nodes:
         DC1-POD1-L2LEAF2A:
           id: 2
-          mgmt_ip: 192.168.112.2/16
-          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+          mgmt_ip: 192.168.1.11/24
+          l3leaf_interfaces: [ Ethernet3, Ethernet3 ]
         DC1-POD1-L2LEAF2B:
           id: 3
-          mgmt_ip: 192.168.112.3/16
-          l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
+          mgmt_ip: 192.168.1.12/24
+          l3leaf_interfaces: [ Ethernet4, Ethernet4 ]

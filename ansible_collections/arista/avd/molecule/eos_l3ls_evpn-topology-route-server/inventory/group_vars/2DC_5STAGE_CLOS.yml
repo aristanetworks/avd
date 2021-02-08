@@ -12,7 +12,7 @@ bgp_peer_groups:
   MLAG_IPv4_UNDERLAY_PEER:
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
-mgmt_gateway: 192.168.0.1
+mgmt_gateway: 192.168.1.254
 
 p2p_uplinks_qos_profile: QOS-PROFILE
 

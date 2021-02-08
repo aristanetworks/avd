@@ -32,7 +32,7 @@ spine:
       mgmt_ip: 192.168.120.2/16
       evpn_route_servers: [ DC1-SUPER-SPINE2 ]
       super_spine_interfaces: [ Ethernet4, Ethernet4 ]
-  
+
 # In DC1 we define all variables on specific node / node_group
 l3leaf:
   #defaults:
