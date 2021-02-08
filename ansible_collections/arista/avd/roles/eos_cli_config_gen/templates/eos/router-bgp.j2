@@ -1,7 +1,9 @@
 {# eos - router bgp #}
 {% if router_bgp is arista.avd.defined %}
 !
+{%     if router_bgp.as is arista.avd.defined %}
 router bgp {{ router_bgp.as }}
+{%     endif %}
 {%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
 {%     endif %}
