@@ -394,7 +394,8 @@ router bgp {{ router_bgp.as }}
 {%         for neighbor in router_bgp.vrfs[vrf].neighbors | natural_sort %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
-{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is arista.avd.defined %}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is arista.avd.defined %}
       neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].local_as is arista.avd.defined and router_bgp.vrfs[vrf].neighbors[neighbor].local_as is number %}
