@@ -1,5 +1,5 @@
 ---
-fabric_name: 2DC_5STAGE_CLOS
+fabric_name: TWODC_5STAGE_CLOS
 
 evpn_ebgp_multihop: 5
 evpn_overlay_bgp_rtc: true
@@ -13,8 +13,17 @@ bgp_peer_groups:
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 mgmt_gateway: 192.168.1.254
+mgmt_destination_networks:
+  - 0.0.0.0/0
 
 p2p_uplinks_qos_profile: QOS-PROFILE
 
 p2p_uplinks_ptp:
   enable: true
+
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/

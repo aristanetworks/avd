@@ -41,6 +41,9 @@ l3leaf:
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
     evpn_role: server
     evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 4096
+    mlag: false
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:
@@ -57,6 +60,9 @@ l2leaf:
     platform: vEOS-LAB
     parent_l3leafs: [ DC2-POD1-LEAF1A ]
     uplink_interfaces: [ Ethernet1 ]
+    spanning_tree_mode: rstp
+    spanning_tree_priority: 8192
+    mlag: false
   node_groups:
     RACK2_SINGLE:
       nodes:

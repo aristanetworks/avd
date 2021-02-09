@@ -1,6 +1,8 @@
+---
+
 all:
   children:
-    2DC_5STAGE_CLOS:
+    TWODC_5STAGE_CLOS:
       children:
         DC1:
           children:

@@ -63,6 +63,9 @@ l3leaf:
       bgp_as: 65112
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
+      mlag_dual_primary_detection: true
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 4096
       nodes:
         DC1-POD1-LEAF2A:
           id: 2
@@ -81,6 +84,8 @@ l2leaf:
       platform: vEOS-LAB
       parent_l3leafs: [ DC1-POD1-LEAF1A ]
       uplink_interfaces: [ Ethernet3 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
       nodes:
         DC1-POD1-L2LEAF1A:
           id: 1
@@ -91,6 +96,8 @@ l2leaf:
       parent_l3leafs: [ DC1-POD1-LEAF2A, DC1-POD1-LEAF2B ]
       uplink_interfaces: [ Ethernet1, Ethernet2 ]
       mlag_interfaces: [ Ethernet3, Ethernet4 ]
+      spanning_tree_mode: mstp
+      spanning_tree_priority: 8192
       nodes:
         DC1-POD1-L2LEAF2A:
           id: 2

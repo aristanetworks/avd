@@ -1,0 +1,22 @@
+---
+port_profiles:
+
+  TENANT_A:
+    mode: access
+    vlans: "110"
+    qos_profile: "foo"
+
+servers:
+
+  server-1:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ POD01-LEAF1A, POD01-LEAF01B ]
+        profile: TENANT_A
+        qos_profile: "bar"
+        port_channel:
+          state: present
+          description: PortChannel
+          mode: active
