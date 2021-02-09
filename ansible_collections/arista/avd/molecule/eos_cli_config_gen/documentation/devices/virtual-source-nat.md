@@ -1,4 +1,4 @@
-# vlans
+# virtual-source-nat
 
 # Table of Contents
 
@@ -238,36 +238,7 @@ Spanning-tree not defined
 
 # VLANs
 
-## VLANs Summary
-
-| VLAN ID | Name | Trunk Groups |
-| ------- | ---- | ------------ |
-| 110 | PR01-DMZ | none  |
-| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
-| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP  |
-| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP  |
-
-## VLANs Device Configuration
-
-```eos
-!
-vlan 110
-   name PR01-DMZ
-!
-vlan 3010
-   name MLAG_iBGP_TENANT_A_PROJECT01
-   trunk group LEAF_PEER_L3
-!
-vlan 3011
-   name MLAG_iBGP_TENANT_A_PROJECT02
-   state active
-   trunk group MY_TRUNK_GROUP
-!
-vlan 3012
-   name MLAG_iBGP_TENANT_A_PROJECT03
-   state suspend
-   trunk group MY_TRUNK_GROUP
-```
+No VLANs defined
 
 # Interfaces
 
@@ -419,7 +390,20 @@ No VRF instances defined
 
 # Virtual Source NAT
 
-Virtual source NAT not defined
+## Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+| TEST_01 | 1.1.1.1 |
+| TEST_02 | 1.1.1.2 |
+
+## Virtual Source NAT Configuration
+
+```eos
+!
+ip address virtual source-nat vrf TEST_01 address 1.1.1.1
+ip address virtual source-nat vrf TEST_02 address 1.1.1.2
+```
 
 # Platform
 
