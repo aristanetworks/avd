@@ -389,7 +389,7 @@ router bgp {{ router_bgp.as }}
       network {{ network }}
 {%             endif %}
 {%         endfor %}
-{%         for neighbor in router_bgp.vrfs[vrf].neighbors | natural_sort %}
+{%         for neighbor in router_bgp.vrfs[vrf].neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
 {%             endif %}
