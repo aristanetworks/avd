@@ -3,6 +3,9 @@ services:
   ansible:
     image: avdteam/base:3.6
     container_name: ansible_avd
+    environment:
+      - AVD_GIT_USER=${GIT_USER}
+      - AVD_GIT_EMAIL=${GIT_EMAIL}
     volumes:
       - ./../../:/projects
       - /var/run/docker.sock:/var/run/docker.sock

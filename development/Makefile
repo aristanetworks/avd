@@ -6,6 +6,7 @@ VSCODE_DOCKER_TAG ?= latest
 VSCODE_CONTAINER = $(VSCODE_CONTAINER_NAME):$(VSCODE_DOCKER_TAG)
 VSCODE_PORT ?= 8080
 COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
+COMPOSE_ENV_FILE ?= ansible-avd/development/docker-stack.env
 PIP_REQ ?=
 ANSIBLE_VERSION ?=
 HOME_DIR = $(shell pwd)
@@ -37,6 +38,8 @@ run: ## Run ansible-avd container
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
 		-e AVD_ANSIBLE=$(ANSIBLE_VERSION) \
+		-e AVD_GIT_USER="$(shell git config --get user.name)" \
+		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $(HOME)/.gitconfig:/home/avd/.gitconfig \
 		-v $(HOME_DIR)/:/projects \
@@ -45,8 +48,8 @@ run: ## Run ansible-avd container
 .PHONY: vscode
 vscode: ## Run a VSCODE container
 	docker run --rm -it -d \
-		-e AVD_GIT_USER="$(git config --get user.name)" \
-		-e AVD_GIT_EMAIL="$(git config --get user.email)" \
+		-e AVD_GIT_USER="$(shell git config --get user.name)" \
+		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
 		-v ${PWD}/:/home/avd/arista-ansible \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-p $(VSCODE_PORT):8080 \
@@ -68,6 +71,8 @@ build: ## [DEPRECATED] visit https://github.com/arista-netdevops-community/docke
 
 .PHONY: dev-start
 dev-start: ## Start docker compose stack to develop with AVD and CVP collection
+	set -a && \
+	source $(COMPOSE_ENV_FILE) && \
 	docker-compose -f $(COMPOSE_FILE) pull && \
 	docker-compose -f $(COMPOSE_FILE) up -d
 	@echo "---------------"
