@@ -415,9 +415,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%             endif %}
-{%             if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined or router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined("none") %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
 {%                 set neighbor_send_community_cli = "neighbor " ~ neighbor ~ " send-community" %}
-{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined and router_bgp.vrfs[vrf].neighbors[neighbor].send_community != "None"  %}
 {%                     set neighbor_send_community_cli = neighbor_send_community_cli ~ " " ~ router_bgp.vrfs[vrf].neighbors[neighbor].send_community %}
 {%                 endif %}
       {{ neighbor_send_community_cli }}
