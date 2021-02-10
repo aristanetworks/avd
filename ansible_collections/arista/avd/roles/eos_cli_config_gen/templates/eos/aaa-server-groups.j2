@@ -2,9 +2,14 @@
 {% if aaa_server_groups is arista.avd.defined %}
 !
 {%    for aaa_server_group in aaa_server_groups %}
-aaa group server {{ aaa_server_group['type'] }} {{ aaa_server_group['name'] }}
-{%       for server in aaa_server_group.servers %}
-   server {{ server['server'] }}{% if server['vrf'] is arista.avd.defined %} vrf {{ server['vrf'] }}{% endif %}
-{%       endfor %}
+{%       if aaa_server_group.type is arista.avd.defined and aaa_server_group.name is arista.avd.defined %}
+aaa group server {{ aaa_server_group.type }} {{ aaa_server_group.name }}
+{%          if aaa_server_group.servers is arista.avd.defined%}
+{%             for server in aaa_server_group.servers %}
+   server {{ server.server }}{% if server.vrf is arista.avd.defined %} vrf {{ server.vrf }}{% endif %}
+
+{%             endfor %}
+{%          endif %}
+{%       endif %}
 {%    endfor %}
 {% endif %}

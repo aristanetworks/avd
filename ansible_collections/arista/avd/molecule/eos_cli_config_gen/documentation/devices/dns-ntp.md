@@ -148,6 +148,7 @@ ip name-server vrf mgt 10.10.129.10
 ### DNS Domain Lookup Device Configuration
 
 ```eos
+!
 ip domain lookup vrf mgt source-interface Management0
 ```
 

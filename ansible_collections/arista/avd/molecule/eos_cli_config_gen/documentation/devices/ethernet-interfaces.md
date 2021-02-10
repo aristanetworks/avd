@@ -271,6 +271,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.1/31
 !

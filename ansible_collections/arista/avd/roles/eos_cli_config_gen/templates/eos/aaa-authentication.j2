@@ -1,24 +1,24 @@
 {# eos - aaa authentication #}
-{% if aaa_authentication is defined and aaa_authentication is not none %}
+{% if aaa_authentication is arista.avd.defined %}
 !
-{%     if aaa_authentication.login.default is defined and aaa_authentication.login.default is not none %}
+{%     if aaa_authentication.login.default is arista.avd.defined %}
 aaa authentication login default {{ aaa_authentication.login.default }}
 {%     endif %}
-{%     if aaa_authentication.login.serial_console is defined and aaa_authentication.login.serial_console is not none %}
+{%     if aaa_authentication.login.serial_console is arista.avd.defined %}
 aaa authentication login serial-console {{ aaa_authentication.login.serial_console }}
 {%     endif %}
-{%     if aaa_authentication.dot1x.default is defined and aaa_authentication.dot1x.default is not none %}
+{%     if aaa_authentication.dot1x.default is arista.avd.defined %}
 aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
 {%     endif %}
-{%     if aaa_authentication.policies is defined and aaa_authentication.policies is not none %}
-{%         if aaa_authentication.policies.on_failure_log is defined and aaa_authentication.policies.on_failure_log == true %}
+{%     if aaa_authentication.policies is arista.avd.defined %}
+{%         if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
 aaa authentication policy on-failure log
 {%         endif %}
-{%         if aaa_authentication.policies.on_success_log is defined and aaa_authentication.policies.on_success_log == true %}
+{%         if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
 aaa authentication policy on-success log
 {%         endif %}
-{%         if aaa_authentication.policies.local is defined %}
-{%             if aaa_authentication.policies.local.allow_nopassword is defined and aaa_authentication.policies.local.allow_nopassword == true %}
+{%         if aaa_authentication.policies.local is arista.avd.defined %}
+{%             if aaa_authentication.policies.local.allow_nopassword is arista.avd.defined(true) %}
 aaa authentication policy local allow-nopassword-remote-login
 {%             endif %}
 {%         endif %}

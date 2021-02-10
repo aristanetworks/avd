@@ -3,7 +3,7 @@
 {%     for ip_extcommunity in ip_extcommunity_lists | arista.avd.natural_sort %}
 !
 {%         for sequence in ip_extcommunity_lists[ip_extcommunity] | arista.avd.natural_sort %}
-{%             if sequence.type is defined and sequence.extcommunities is defined %}
+{%             if sequence.type is arista.avd.defined and sequence.extcommunities is arista.avd.defined %}
 ip extcommunity-list {{ ip_extcommunity }} {{ sequence.type }} {{ sequence.extcommunities }}
 {%             endif %}
 {%         endfor %}
