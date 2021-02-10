@@ -1,5 +1,7 @@
 # Ansible Role: eos_cli_config_gen
 
+**Table of Contents:**
+
 - [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
