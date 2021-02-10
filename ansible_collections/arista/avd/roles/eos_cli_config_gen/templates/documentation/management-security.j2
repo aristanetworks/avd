@@ -2,15 +2,13 @@
 ## Management Security
 
 {%     if management_security.entropy_source is arista.avd.defined %}
- Management Security entropy source is {{ management_security.entropy_source }}
-{%     endif %}
+Management Security entropy source is {{ management_security.entropy_source }}
 
-{%     if management_security.password is arista.avd.defined %}
-{%       if management_security.password.encryption_key_common is defined and management_security.password.encryption_key_common == true %}
-   Management Security password encryption is common.
-{%       endif %}
 {%     endif %}
+{%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
+Management Security password encryption is common.
 
+{%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
 | ------------ | --------------------- | -------------------- | ------------ |

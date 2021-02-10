@@ -4,21 +4,21 @@
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-| {% if management_api_http.enable_http is arista.avd.defined %} {{ management_api_http.enable_http | lower }} {% else %} default {% endif %} | {% if management_api_http.enable_https is arista.avd.defined %} {{ management_api_http.enable_https | lower }} {% else %} default {% endif %} |
-{%     if management_api_http.enable_vrfs is arista.avd.defined %}
+| {{ management_api_http.enable_http | lower | default('default') }} | {{ management_api_http.enable_https | lower | default('default') }} |
 
+{%     if management_api_http.enable_https is arista.avd.defined(true) and management_api_http.https_ssl_profile is arista.avd.defined %}
+Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profile }}
+
+{%     endif %}
+{%     if management_api_http.enable_vrfs is arista.avd.defined %}
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 {%         for vrf in management_api_http.enable_vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {% if management_api_http.enable_vrfs[vrf].access_group is arista.avd.defined %} {{ management_api_http.enable_vrfs[vrf].access_group }} {% else %} - {% endif %} | {% if management_api_http.enable_vrfs[vrf].ipv6_access_group is arista.avd.defined %} {{ management_api_http.enable_vrfs[vrf].ipv6_access_group }} {% else %} - {% endif %} |
+| {{ vrf }} | {{ management_api_http.enable_vrfs[vrf].access_group | default('-') }} | {{ management_api_http.enable_vrfs[vrf].ipv6_access_group | default('-') }} |
 {%         endfor %}
 {%     endif %}
-
-{%  if management_api_http.enable_https is arista.avd.defined and management_api_http.enable_https == true and management_api_http.https_ssl_profile is arista.avd.defined %}
-Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profile }}
-{%  endif %}
 
 ### Management API HTTP Configuration
 

@@ -144,20 +144,23 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  false  |  true  |
+| false | true |
+
+Management HTTPS is using the SSL profile SSL_PROFILE
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default |  ACL-API  |  -  |
-| MGMT |  ACL-API  |  -  |
+| default | ACL-API | - |
+| MGMT | ACL-API | - |
 
 ### Management API HTTP Configuration
 
 ```eos
 !
 management api http-commands
+   protocol https ssl profile SSL_PROFILE
    no shutdown
    !
    vrf default

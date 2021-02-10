@@ -28,6 +28,15 @@ mac_security:
 ### Mgmt sec
 management_security:
   entropy_source: hardware
+  password:
+    encryption_key_common: true
+  ssl_profiles:
+    - name: SSL_PROFILE
+      tls_versions: 1.1 1.2
+      certificate: 
+        file: SSL_CERT
+        key: SSL_KEY
+
 
 
 ### L2 portchannel

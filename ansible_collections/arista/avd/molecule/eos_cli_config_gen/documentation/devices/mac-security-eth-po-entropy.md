@@ -184,8 +184,13 @@ AAA accounting not defined
 
 ## Management Security
 
+Management Security entropy source is hardware
 
- Management Security entropy source is hardware
+Management Security password encryption is common.
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
+| ------------ | --------------------- | -------------------- | ------------ |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY |
 
 ## Management Security Configuration
 
@@ -193,6 +198,10 @@ AAA accounting not defined
 !
 management security
    entropy source hardware
+   password encryption-key common
+   ssl profile SSL_PROFILE
+      tls versions 1.1 1.2
+      certificate SSL_CERT key SSL_KEY
 ```
 
 # Aliases
