@@ -2,15 +2,26 @@
 
 # Table of Contents
 
+- [management-api-http](#management-api-http)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
   - [DNS Domain](#dns-domain)
+  - [Domain-list](#domain-list)
   - [Name Servers](#name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
+  - [PTP](#ptp)
   - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
+  - [Management API GNMI](#management-api-gnmi)
+  - [Management API HTTP](#management-api-http-1)
+    - [Management API HTTP Summary](#management-api-http-summary)
+    - [Management API VRF Access](#management-api-vrf-access)
+    - [Management API HTTP Configuration](#management-api-http-configuration)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -35,6 +46,7 @@
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
   - [Interface Defaults](#interface-defaults)
@@ -46,13 +58,18 @@
 - [Routing](#routing)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [ARP](#arp)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
+    - [Router BFD Multihop Summary](#router-bfd-multihop-summary)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
   - [Router Multicast](#router-multicast)
@@ -66,6 +83,9 @@
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
+    - [Standard Access-lists Summary](#standard-access-lists-summary)
+      - [ACL-API](#acl-api)
+    - [Standard Access-lists Device Configuration](#standard-access-lists-device-configuration)
   - [Extended Access-lists](#extended-access-lists)
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
@@ -75,9 +95,10 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
-- [MAC security](#mac-security)
+- [MACsec](#macsec)
 - [QOS](#qos)
 - [QOS Profiles](#qos-profiles)
+- [Custom Templates](#custom-templates)
 
 # Management
 
@@ -145,14 +166,16 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  false  |  true  |
+| false | true |
+
+Management HTTPS is using the SSL profile SSL_PROFILE
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| default |  ACL-API  |  -  |
-| MGMT |  ACL-API  |  -  |
+| default | ACL-API | - |
+| MGMT | ACL-API | - |
 
 ### Management API HTTP Configuration
 
@@ -161,6 +184,7 @@ Management API gnmi is not defined
 management api http-commands
    protocol https
    no protocol http
+   protocol https ssl profile SSL_PROFILE
    no shutdown
    !
    vrf default
