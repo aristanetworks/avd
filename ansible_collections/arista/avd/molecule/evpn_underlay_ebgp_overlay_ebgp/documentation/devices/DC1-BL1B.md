@@ -385,6 +385,7 @@ No Interface Defaults defined
 | Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.51/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.53/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.55/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4000 |  My test  |  routed  | - |  10.1.2.3/12  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -413,6 +414,12 @@ interface Ethernet4
    no shutdown
    no switchport
    ip address 172.31.255.55/31
+!
+interface Ethernet4000
+   description My test
+   no shutdown
+   no switchport
+   ip address 10.1.2.3/12
 ```
 
 ## Port-Channel Interfaces
@@ -592,12 +599,14 @@ ip routing vrf Tenant_C_WAN_Zone
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| Tenant_A_WAN_Zone  | 10.3.4.0/24 |  1.2.3.4  |  -  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 ```
 
 ## IPv6 Static Routes
@@ -637,7 +646,6 @@ Router ISIS not defined
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -655,16 +663,19 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 172.31.255.48 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.50 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.52 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.54 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 172.31.255.48 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.50 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.52 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.54 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | 65001 | default |
+| 192.168.255.2 | 65001 | default |
+| 192.168.255.3 | 65001 | default |
+| 192.168.255.4 | 65001 | default |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone |
 
 ### Router BGP EVPN Address Family
 
@@ -682,7 +693,7 @@ Router ISIS not defined
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected  static |
 | Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
 
@@ -696,7 +707,6 @@ router bgp 65104
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
@@ -713,9 +723,17 @@ router bgp 65104
    neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.54 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.1 remote-as 65001
+   neighbor 192.168.255.1 description DC1-SPINE1
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.2 remote-as 65001
+   neighbor 192.168.255.2 description DC1-SPINE2
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.3 remote-as 65001
+   neighbor 192.168.255.3 description DC1-SPINE3
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 remote-as 65001
+   neighbor 192.168.255.4 description DC1-SPINE4
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
@@ -738,7 +756,6 @@ router bgp 65104
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
-      no neighbor IPv4-UNDERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -749,7 +766,27 @@ router bgp 65104
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.11
+      neighbor 123.1.1.10 remote-as 1234
+      neighbor 123.1.1.10 local-as 123 no-prepend replace-as
+      neighbor 123.1.1.10 description External IPv4 BGP peer
+      neighbor 123.1.1.10 ebgp-multihop 3
+      neighbor 123.1.1.10 send-community standard extended
+      neighbor 123.1.1.10 maximum-routes 0
+      neighbor 123.1.1.10 default-originate
+      neighbor 123.1.1.10 update-source Loopback123
+      neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
+      address-family ipv4
+         neighbor 123.1.1.10 activate
+      neighbor fd5a:fe45:8831:06c5::a remote-as 12345
+      neighbor fd5a:fe45:8831:06c5::a send-community
+      neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
+      address-family ipv6
+         neighbor fd5a:fe45:8831:06c5::a activate
+      neighbor fd5a:fe45:8831:06c5::b remote-as 12345
+      address-family ipv6
+         neighbor fd5a:fe45:8831:06c5::b activate
       redistribute connected
+      redistribute static
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.11:21
@@ -849,12 +886,30 @@ IPv6 prefix-lists not defined
 | -------- | ---- | ---------------- |
 | 10 | permit | match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY |
 
+#### RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set ip next-hop 123.1.1.1 |
+
+#### RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| 10 | permit | set ipv6 next-hop fd5a:fe45:8831:06c5::1 |
+
 ### Route-maps Device Configuration
 
 ```eos
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT permit 10
+   set ip next-hop 123.1.1.1
+!
+route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
+   set ipv6 next-hop fd5a:fe45:8831:06c5::1
 ```
 
 ## IP Extended Communities

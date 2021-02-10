@@ -6,6 +6,10 @@
 {# set leaf variables #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
+{# Set switch.underlay_routing_protocol using external logic template #}
+{% include 'logic/switch-underlay-routing-protocol.j2' %}
+{# Set switch.overlay_routing_protocol using external logic template #}
+{% include 'logic/switch-overlay-routing-protocol.j2' %}
 {% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
 {%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         if node == inventory_hostname %}
@@ -54,13 +58,15 @@
 {%             else %}
 {%                 set switch.platform = l3leaf.defaults.platform %}
 {%             endif %}
-{%             if bgp_as is defined and bgp_as is not none and overlay_routing_protocol|lower == 'ibgp' %}
-{%                  set leaf.bgp_as = bgp_as %}
+{%             if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
+{%                  set switch.bgp_as = bgp_as %}
 {%             elif l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
-{%                 set leaf.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
+{%                 set switch.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
 {%             elif l3leaf.defaults.bgp_as is defined %}
-{%                 set leaf.bgp_as = l3leaf.defaults.bgp_as %}
+{%                 set switch.bgp_as = l3leaf.defaults.bgp_as %}
 {%             endif %}
+{%             set switch.router_id = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{%             set switch.bgp_defaults = leaf_bgp_defaults | arista.avd.default([]) %}
 {%             if l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address is defined %}
 {%                 set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address %}
 {%             else %}
@@ -120,9 +126,23 @@
 {%             else %}
 {%                 set leaf.evpn_services_l2_only = l3leaf.defaults.evpn_services_l2_only | default(false) %}
 {%             endif %}
+{#             Logic for EVPN Role for Overlay BGP Peerings #}
+{#             For l3leaf the default value is client #}
+{%             set switch.evpn_role = l3leaf.node_groups[l3leaf_node_group].evpn_role | arista.avd.default(
+                                      l3leaf.defaults.evpn_role,
+                                      'client') %}
+{#             For l3leaf the default value for EVPN Route Servers is content of the spines variable set above. For safety we fall back to [] #}
+{%             set switch.raw_evpn_route_servers = l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
+                                      l3leaf.defaults.evpn_route_servers,
+                                      leaf.spines,
+                                      []) %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
+{# Set switch.evpn_route_servers using external logic template #}
+{% include 'logic/switch-evpn-route-servers.j2' %}
+{# Set switch.evpn_route_clients using external logic template #}
+{% include 'logic/switch-evpn-route-clients.j2' %}
 {# set leaf allowed vrfs, svis and vlans #}
 {% set leaf.vrfs = []  %}
 {% set leaf.svis = []  %}
@@ -154,6 +174,44 @@
 {%     endif %}
 {% endfor %}
 {% set leaf.vrfs = leaf.vrfs | unique  %}
+{# Setting tenant static routes #}
+{% set leaf.static_routes = [] %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs if vrf in leaf.vrfs %}
+{%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%                 for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                     if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
+{%                         set entry = static_route %}
+{%                         do entry.update( {'vrf':vrf} )%}
+{%                         if entry.nodes is arista.avd.defined %}
+{%                             do entry.pop( 'nodes' ) %}
+{%                         endif %}
+{%                         do leaf.static_routes.append( entry )%}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# Checking for BGP peers inside tenant VRFs #}
+{% set leaf.has_tenant_bgp_peers = false %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs if vrf in leaf.vrfs %}
+{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined %}
+{%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
+{%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
+{%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
+{%                             set leaf.has_tenant_bgp_peers = true %}
+{%                             break %}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
 {# Setting evpn_rd_admin_subfield #}
 {% set leaf.evpn_rd_admin_subfield = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
 {% if evpn_rd_type is defined and evpn_rd_type is not none %}
@@ -167,7 +225,7 @@
 {%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
 {%             endif %}
 {%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
-{%             set leaf.evpn_rd_admin_subfield = leaf.bgp_as %}
+{%             set leaf.evpn_rd_admin_subfield = switch.bgp_as %}
 {%         elif evpn_rd_type.admin_subfield == "spine_asn" %}
 {%             set leaf.evpn_rd_admin_subfield = spine.bgp_as %}
 {%         elif evpn_rd_type.admin_subfield | ipaddr %}
@@ -182,7 +240,7 @@
 {% if evpn_rt_type is defined and evpn_rt_type is not none %}
 {%     if evpn_rt_type.admin_subfield is defined and evpn_rt_type.admin_subfield is not none %}
 {%         if evpn_rt_type.admin_subfield == "leaf_asn" %}
-{%             set leaf.evpn_rt_admin_subfield = leaf.bgp_as %}
+{%             set leaf.evpn_rt_admin_subfield = switch.bgp_as %}
 {%         elif evpn_rt_type.admin_subfield == "spine_asn" %}
 {%             set leaf.evpn_rt_admin_subfield = spine.bgp_as %}
 {%         elif evpn_rt_type.admin_subfield is number and evpn_rt_type.admin_subfield >= 0 and evpn_rt_type.admin_subfield <= 4294967295 %}
@@ -190,84 +248,18 @@
 {%         endif %}
 {%     endif %}
 {% endif %}
-{# Build variables for fabric protocols #}
-{# Logic for underlay routing protocol configured on device #}
-{% if underlay_routing_protocol is defined %}
-{%     if underlay_routing_protocol|lower == 'ebgp' %}
-{%         set switch.underlay_routing_protocol = 'ebgp' %}
-{%     elif underlay_routing_protocol|lower == 'bgp' %}
-{%         set switch.underlay_routing_protocol = 'ebgp' %}
-{%     elif underlay_routing_protocol|lower == 'ibgp' %}
-{%         set switch.underlay_routing_protocol = 'ibgp'%}
-{%     elif underlay_routing_protocol|lower == 'isis' %}
-{%         set switch.underlay_routing_protocol = 'isis' %}
-{%     elif underlay_routing_protocol|lower == 'ospf' %}
-{%         set switch.underlay_routing_protocol = 'ospf' %}
-{%     else %}
-{%         set switch.underlay_routing_protocol = 'ebgp' %}
-{%     endif %}
-{% else %}
-{%     set switch.underlay_routing_protocol = 'ebgp' %}
-{% endif %}
-{# Logic for overlay protocol definition #}
-{% if overlay_routing_protocol is defined %}
-{%     if overlay_routing_protocol|lower == 'ebgp' %}
-{%         set switch.overlay_routing_protocol = 'ebgp' %}
-{%     elif overlay_routing_protocol|lower == 'bgp' %}
-{%         set switch.overlay_routing_protocol = 'ebgp' %}
-{%     elif overlay_routing_protocol|lower == 'ibgp' %}
-{%         set switch.overlay_routing_protocol = 'ibgp'%}
-{%     else %}
-{%         set switch.overlay_routing_protocol = 'ebgp' %}
-{%     endif %}
-{% else %}
-{%     set switch.overlay_routing_protocol = 'ebgp' %}
-{% endif %}
-{# Logic for route_reflector role #}
-{% set switch.is_route_reflector = false %}
-{% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
-{%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-{%         if l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector is defined and l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_route_reflector == true %}
-{%             set switch.is_route_reflector = true %}
-{%         endif%}
-{%     endfor %}
-{% endfor %}
-{# Gather overlay peering information #}
-{% set switch.evpn_overlay_peers = [] %}
-{# #}
-{# Look for evpn_overlay_controllers / servers where we are client #}
-{% if evpn_overlay_controller_groups is defined and evpn_overlay_controller_groups is not none %}
-{%     for evpn_overlay_controller_group in evpn_overlay_controller_groups %}
-{%         for evpn_overlay_controller in groups[evpn_overlay_controller_group] %}
-{# Found a match. Gathering information for this peer #}
-{%             set evpn_overlay_controller_vars = hostvars[evpn_overlay_controller] %}
-{%             set peer = namespace() %}
-{%             set peer.description = evpn_overlay_controller %}
-{%             if evpn_overlay_controller_vars.type == 'spine' %}
-{%                 set peer.bgp_as = evpn_overlay_controller_vars.spine.bgp_as %}
-{%                 set peer.ip = evpn_overlay_controller_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.spine.nodes[evpn_overlay_controller].id) %}
-{%             elif evpn_overlay_controller_vars.type == 'super-spine' %}
-{%                 set peer.bgp_as = evpn_overlay_controller_vars.super_spine.bgp_as %}
-{%                 set peer.ip = evpn_overlay_controller_vars.super_spine_loopback_network_summary  | ipaddr('network') | ipmath(evpn_overlay_controller_vars.super_spine.nodes[evpn_overlay_controller].id) %}
-{%             elif evpn_overlay_controller_vars.type == 'overlay-controller' %}
-{%                 if evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as is defined %}
-{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].bgp_as %}
-{%                 else %}
-{%                     set peer.bgp_as = evpn_overlay_controller_vars.overlay_controller.defaults.bgp_as %}
-{%                 endif %}
-{%                 set peer.ip = evpn_overlay_controller_vars.overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(evpn_overlay_controller_vars.overlay_controller.nodes[evpn_overlay_controller].id) %}
-{%             endif %}
-{%             do switch.evpn_overlay_peers.append(peer) %}
-{%         endfor %}
-{%     endfor %}
-{% endif %}
+
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
-leaf_bgp_as: {{ leaf.bgp_as }}
+switch_bgp_as: {{ switch.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 leaf_evpn_services_l2_only: {{ leaf.evpn_services_l2_only }}
+switch_router_id: {{ switch.router_id }}
+switch_evpn_role: {{ switch.evpn_role }}
+switch_evpn_route_servers: {{ switch.evpn_route_servers | arista.avd.natural_sort }}
+switch_evpn_route_clients: {{ switch.evpn_route_clients | arista.avd.natural_sort }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
@@ -465,7 +457,7 @@ mac_address_table:
 ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
 {% endif %}
 
-{# Tenant - Virtual Source NAT - to allow VTEPs daignostics from switch #}
+{# Tenant - Virtual Source NAT - to allow VTEPs diagnostics from switch #}
 virtual_source_nat_vrfs:
 {% include 'tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
 
@@ -490,21 +482,24 @@ prefix_lists:
 ### route-maps ###
 route_maps:
 {% include 'fabric/bgp_base/route-maps.j2' %}
+{% include 'fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
 
 {# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'fabric/bgp_base/leaf-router-bgp-base.j2' %}
+{% include 'fabric/bgp_base/switch-router-bgp-base.j2' %}
   peer_groups:
 {% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
+{% include 'fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
   neighbors:
 {% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
+{% include 'fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
 {% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
   redistribute_routes:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'fabric/bgp_overlay/leaf-router-bgp-address-family-evpn.j2' %}
+{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
 {% include 'fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
   address_family_rtc:

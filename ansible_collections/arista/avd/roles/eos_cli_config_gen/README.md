@@ -733,6 +733,18 @@ port_channel_interfaces:
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
+    ptp:
+      enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
@@ -810,6 +822,16 @@ ethernet_interfaces:
     isis_network_point_to_point: < boolean >
     ptp:
       enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
     logging:
       event:
         link_status: < true | false >
@@ -845,6 +867,16 @@ ethernet_interfaces:
     vmtracer: < true | false >
     ptp:
       enable: < true | false >
+      announce:
+        interval: < integer >
+        timeout: < integer >
+      delay_req: < integer >
+      delay_mechanism: < e2e | p2p >
+      sync_message:
+        interval: < integer >
+      role: < master | dynamic >
+      vlan: < all | list of vlans as string >
+      transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
     storm_control:
       all:
@@ -1034,8 +1066,8 @@ mac_security:
     < profile >:
       cipher: < valid-cipher-string >
       connection_keys:
-        < connection_key >:
-          encrypted_key: < encrypted_key >
+        "< connection_key >":
+          encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
 ```
 
@@ -1327,6 +1359,8 @@ router_bgp:
       bfd: < true | false >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
+      route_map_in: < inbound route-map >
+      route_map_out: < outbound route-map >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
@@ -1487,13 +1521,22 @@ router_bgp:
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
+          local_as: < asn >
           description: < description >
+          ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < string | leave empty for all communities >
+          maximum_routes: < integer >
           default_originate:
             always: < true | false >
             route_map: < route_map_name >
+          update_source: < interface >
+          route_map_out: < route-map name >
+          route_map_in: < route-map name >
+          address_family:
+            - < address_family_1 >
+            - < address_family_2 >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
@@ -1705,6 +1748,19 @@ management_ssh:
     - name: < standard_acl_name_2 >:
       vrf: < vrf name >
   idle_timeout: < 0-86400 in minutes >
+  cipher:
+    - < cipher1 >
+    - < cipher2 >
+  key-exchange:
+    - < method1 >
+    - < method2 >
+  mac:
+    - < mac_algorithm1 >
+    - < mac_algorithm2 >
+  hostkey:
+    server:
+      - < algorithm1 >
+      - < algorithm2 >
   enable: < true | false >
   vrfs:
     < vrf_name_1 >:
@@ -1766,6 +1822,7 @@ ptp:
   priority1: < priority1 >
   priority2: < priority2 >
   ttl: < ttl >
+  domain: < integer >
   message_type:
     general:
       dscp: < dscp-value >

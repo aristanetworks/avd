@@ -99,6 +99,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].timers is defined and router_bgp.neighbors[neighbor].timers is not none %}
    neighbor {{ neighbor }} timers {{ router_bgp.neighbors[neighbor].timers }}
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].route_map_in is arista.avd.defined %}
+   neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_in }} in
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
+   neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.aggregate_addresses is defined and router_bgp.aggregate_addresses is not none %}
@@ -395,8 +401,14 @@ router bgp {{ router_bgp.as }}
 {%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is defined and router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is not none %}
       neighbor {{ neighbor }} peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }}
 {%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].local_as is arista.avd.defined and router_bgp.vrfs[vrf].neighbors[neighbor].local_as is number %}
+      neighbor {{ neighbor }} local-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].local_as }} no-prepend replace-as
+{%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].description is defined and router_bgp.vrfs[vrf].neighbors[neighbor].description is not none %}
       neighbor {{ neighbor }} description {{ router_bgp.vrfs[vrf].neighbors[neighbor].description }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop is arista.avd.defined %}
+      neighbor {{ neighbor }} ebgp-multihop {{ router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop if router_bgp.vrfs[vrf].neighbors[neighbor].ebgp_multihop is number else none }}
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self is defined and router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self == true %}
       neighbor {{ neighbor }} next-hop-self
@@ -404,12 +416,34 @@ router bgp {{ router_bgp.as }}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].timers is defined and router_bgp.vrfs[vrf].neighbors[neighbor].timers is not none %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%                      endif %}
-{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined and router_bgp.vrfs[vrf].neighbors[neighbor].send_community == 'None' %}
+      neighbor {{ neighbor }} send-community
+{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is arista.avd.defined %}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
+{%                      elif router_bgp.vrfs[vrf].neighbors[neighbor].send_community is defined %}
+      neighbor {{ neighbor }} send-community
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes is arista.avd.defined %}
+      neighbor {{ neighbor }} maximum-routes {{ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes }}
 {%                      endif %}
 {%                      if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is defined %}
       neighbor {{ neighbor }} default-originate{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map is not none %} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.route_map }}{% endif %}{%if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always is defined and router_bgp.vrfs[vrf].neighbors[neighbor].default_originate.always == true %} always{% endif %}
 
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].update_source is arista.avd.defined %}
+      neighbor {{ neighbor }} update-source {{ router_bgp.vrfs[vrf].neighbors[neighbor].update_source }}
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_out is arista.avd.defined %}
+      neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_out }} out
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in is arista.avd.defined %}
+      neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in }} in
+{%                      endif %}
+{%                      if router_bgp.vrfs[vrf].neighbors[neighbor].address_family is arista.avd.defined %}
+{%                          for family in router_bgp.vrfs[vrf].neighbors[neighbor].address_family %}
+      address-family {{ family }}
+         neighbor {{ neighbor }} activate
+{%                          endfor %}
 {%                      endif %}
 {%                 endfor %}
 {%             endif %}

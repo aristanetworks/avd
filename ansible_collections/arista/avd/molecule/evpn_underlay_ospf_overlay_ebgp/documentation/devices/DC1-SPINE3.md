@@ -604,15 +604,15 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 192.168.255.5 | 65101 |
-| 192.168.255.6 | 65102 |
-| 192.168.255.7 | 65102 |
-| 192.168.255.8 | 65103 |
-| 192.168.255.9 | 65103 |
-| 192.168.255.10 | 65104 |
-| 192.168.255.11 | 65104 |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.168.255.5 | 65101 | default |
+| 192.168.255.6 | 65102 | default |
+| 192.168.255.7 | 65102 | default |
+| 192.168.255.8 | 65103 | default |
+| 192.168.255.9 | 65103 | default |
+| 192.168.255.10 | 65104 | default |
+| 192.168.255.11 | 65104 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -639,18 +639,25 @@ router bgp 65001
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
+   neighbor 192.168.255.5 description DC1-LEAF1A
    neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.6 remote-as 65102
+   neighbor 192.168.255.6 description DC1-LEAF2A
    neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.7 remote-as 65102
+   neighbor 192.168.255.7 description DC1-LEAF2B
    neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.8 remote-as 65103
+   neighbor 192.168.255.8 description DC1-SVC3A
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65103
+   neighbor 192.168.255.9 description DC1-SVC3B
    neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.10 remote-as 65104
+   neighbor 192.168.255.10 description DC1-BL1A
    neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.11 remote-as 65104
+   neighbor 192.168.255.11 description DC1-BL1B
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

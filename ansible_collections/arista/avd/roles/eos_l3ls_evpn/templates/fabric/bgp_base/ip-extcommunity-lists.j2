@@ -1,6 +1,6 @@
-{# Leaf and Spine route-maps for the underlay#}
+{# Leaf route-maps for the underlay#}
 {% if type == "l3leaf" %}
-{%     if switch.overlay_routing_protocol == "ibgp" %}
+{%     if switch.overlay_routing_protocol == "ibgp" and switch.evpn_role in ["client", "server"] %}
   ECL-EVPN-SOO:
     - type: permit
 {%         if leaf.mlag == true and leaf.mlag_role == "primary" %}

@@ -602,6 +602,7 @@ router isis EVPN_UNDERLAY
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
+| maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
 
@@ -619,15 +620,15 @@ router isis EVPN_UNDERLAY
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 192.168.255.5 | 65000 |
-| 192.168.255.6 | 65000 |
-| 192.168.255.7 | 65000 |
-| 192.168.255.8 | 65000 |
-| 192.168.255.9 | 65000 |
-| 192.168.255.10 | 65000 |
-| 192.168.255.11 | 65000 |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.168.255.5 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.6 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.7 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.8 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.9 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.10 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.11 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -644,6 +645,7 @@ router bgp 65000
    bgp cluster-id 192.168.255.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
+   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65000
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -653,19 +655,19 @@ router bgp 65000
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.5 remote-as 65000
+   neighbor 192.168.255.5 description DC1-LEAF1A
    neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.6 remote-as 65000
+   neighbor 192.168.255.6 description DC1-LEAF2A
    neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.7 remote-as 65000
+   neighbor 192.168.255.7 description DC1-LEAF2B
    neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.8 remote-as 65000
+   neighbor 192.168.255.8 description DC1-SVC3A
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.9 remote-as 65000
+   neighbor 192.168.255.9 description DC1-SVC3B
    neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.10 remote-as 65000
+   neighbor 192.168.255.10 description DC1-BL1A
    neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.11 remote-as 65000
+   neighbor 192.168.255.11 description DC1-BL1B
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
