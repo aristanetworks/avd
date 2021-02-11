@@ -631,7 +631,7 @@ Router ISIS not defined
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65104|  192.168.255.11 |
+| 65105|  192.168.255.11 |
 
 | BGP Tuning |
 | ---------- |
@@ -701,7 +701,7 @@ Router ISIS not defined
 
 ```eos
 !
-router bgp 65104
+router bgp 65105
    router-id 192.168.255.11
    no bgp default ipv4-unicast
    distance bgp 20 200 200

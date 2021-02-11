@@ -192,7 +192,7 @@ router_bgp:
       remote_as: 65104
     172.31.255.53:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
+      remote_as: 65105
     172.31.255.5:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65101
@@ -215,7 +215,7 @@ router_bgp:
     192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1B
-      remote_as: 65104
+      remote_as: 65105
     192.168.255.5:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
