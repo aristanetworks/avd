@@ -81,7 +81,7 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.enabled is arista.avd.defined(true) %}
 {%         if vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance is arista.avd.defined %}
-   multicast ipv4 source route export {{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance | arista.avd.default('') }}
+   multicast ipv4 source route export {{ vlan_interfaces[vlan_interface].multicast.ipv4.source_route_export.administrative_distance }}
 {%          else %}
    multicast ipv4 source route export
 {%          endif %}
@@ -159,7 +159,7 @@ interface {{ vlan_interface }}
 {%         endif %}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance is arista.avd.defined %}
-   ip attached-host route export {{ vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance | arista.avd.default("") }}
+   ip attached-host route export {{ vlan_interfaces[vlan_interface].ip_attached_host_route_export.distance }}
 {%     elif vlan_interfaces[vlan_interface].ip_attached_host_route_export is arista.avd.defined %}
    ip attached-host route export
 {%     endif %}
