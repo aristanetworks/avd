@@ -618,6 +618,7 @@ l3leaf:
       igmp_snooping_enabled: < true | false >
 
       # L3 Leaf BGP AS. | Required.
+      # Inheritence: node > node_group > defaults
       bgp_as: < bgp_as >
 
       # EVPN Role for Overlay BGP Peerings | Optional, default is client
@@ -654,6 +655,10 @@ l3leaf:
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
           spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+
+          # L3 Leaf BGP AS. | Required.
+          # Inheritence: node > node_group > defaults
+          bgp_as: < bgp_as >
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:

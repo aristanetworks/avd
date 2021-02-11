@@ -60,6 +60,8 @@
 {%             endif %}
 {%             if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
 {%                  set switch.bgp_as = bgp_as %}
+{%             elif l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as is defined %}
+{%                 set switch.bgp_as = l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as %}
 {%             elif l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
 {%                 set switch.bgp_as = l3leaf.node_groups[l3leaf_node_group].bgp_as %}
 {%             elif l3leaf.defaults.bgp_as is defined %}
