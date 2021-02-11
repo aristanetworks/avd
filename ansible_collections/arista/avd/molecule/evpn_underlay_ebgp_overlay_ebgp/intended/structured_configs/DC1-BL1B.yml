@@ -1,6 +1,6 @@
 l3leaf_node_group: DC1_BL1
 switch_platform: 7280R
-switch_bgp_as: 65104
+switch_bgp_as: 65105
 leaf_id: 7
 switch_mgmt_ip: 192.168.200.111/24
 leaf_evpn_services_l2_only: false
@@ -260,7 +260,7 @@ route_maps:
         set:
         - ipv6 next-hop fd5a:fe45:8831:06c5::1
 router_bgp:
-  as: 65104
+  as: 65105
   router_id: 192.168.255.11
   bgp_defaults:
   - no bgp default ipv4-unicast
