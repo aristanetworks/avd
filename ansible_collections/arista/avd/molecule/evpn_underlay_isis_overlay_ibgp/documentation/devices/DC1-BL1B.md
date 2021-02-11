@@ -696,6 +696,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0007.00
    is-type level-2
@@ -705,7 +706,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 
