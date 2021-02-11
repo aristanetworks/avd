@@ -1,5 +1,6 @@
 {# eos - router isis #}
 {% if router_isis.instance is arista.avd.defined %}
+!
 router isis {{ router_isis.instance }}
 {%     if router_isis.net is arista.avd.defined %}
    net {{ router_isis.net }}
@@ -30,5 +31,4 @@ router isis {{ router_isis.instance }}
 {%         endif %}
       no shutdown
 {%     endif %}
-!
 {% endif %}
