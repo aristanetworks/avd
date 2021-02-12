@@ -162,8 +162,6 @@ management_interfaces:
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
-    gateway: <IPv4 address of gateway>
-    ipv6_gateway: <IPv6 address of gateway>
 ```
 
 #### Domain-List
