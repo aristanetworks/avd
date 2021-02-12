@@ -1828,7 +1828,9 @@ all:
 
 Defaults:
 ```yaml
-max_overlay_controller_to_switch_links: 1
+# The maximum number of uplinks for each overlay_controller. 
+#This is used to calculate P2P Link IP addresses, and should not be changed after deployment.
+max_overlay_controller_to_switch_links: 2
 ```
 
 Assigned to the DC group:
