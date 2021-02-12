@@ -12,6 +12,7 @@
       - [Domain-List](#domain-list)
       - [Name Servers](#name-servers)
       - [DNS Domain](#dns-domain)
+      - [Domain Lookup](#domain-lookup)
       - [NTP Servers](#ntp-servers)
       - [Clock Timezone](#clock-timezone)
       - [HTTP Management API](#http-management-api)
@@ -32,6 +33,7 @@
       - [Local Users](#local-users)
       - [Enable Password](#enable-password)
     - [Aliases](#aliases)
+    - [Terminal Settings](#terminal-settings)
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
       - [Logging](#logging)
@@ -40,9 +42,11 @@
       - [VM Tracer Sessions](#vm-tracer-sessions)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
+      - [Load Interval](#load-interval)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Platform](#platform)
+      - [Speed-Group Settings](#speed-group-settings)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
       - [Redundancy](#redundancy)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -67,8 +71,10 @@
       - [Route Maps](#route-maps)
       - [Peer Filters](#peer-filters)
     - [Routing](#routing)
-    - [Service Routing Protocols Model](#service-routing-protocols-model)
+      - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Router Virtual MAC Address](#router-virtual-mac-address)
+      - [MAC Address-table](#mac-address-table)
+      - [VRF Instances](#vrf-instances)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
       - [ARP](#arp)
@@ -89,7 +95,8 @@
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
-    - [VRF Instances](#vrf-instances)
+      - [Queue Monitor Length](#queue-monitor-length)
+      - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [Bfd Multihop Interval](#bfd-multihop-interval)
     - [Virtual Source NAT](#virtual-source-nat)
     - [Router L2 VPN](#router-l2-vpn)
@@ -182,6 +189,15 @@ name_server:
 
 ```yaml
 dns_domain: < domain_name >
+```
+
+#### Domain Lookup
+
+```yaml
+ip_domain_lookup:
+  source_interfaces:
+    < source_interface_1 >:
+      vrf: < vrf_name >
 ```
 
 #### NTP Servers
@@ -425,6 +441,14 @@ aliases: |
 < list of alias commands in EOS CLI syntax >
 ```
 
+### Terminal Settings
+
+```yaml
+terminal:
+  length: < 0-32767 >
+  width: < 0-32767 >
+```
+
 ### Monitoring
 
 #### Daemon TerminAttr
@@ -601,6 +625,14 @@ event_monitor:
   enabled: < true | false >
 ```
 
+#### Load Interval
+
+```yaml
+load_interval:
+  default: < seconds >
+
+```
+
 ### Hardware
 
 #### Hardware Counters
@@ -622,6 +654,18 @@ hardware_counters:
   features:
     - <feature_1>: < direction | in | out >
     - <feature_1>: < direction | in | out >
+```
+
+#### Speed-Group Settings
+
+```yaml
+hardware:
+  speed_groups:
+    1:
+      serdes: <10g | 25g>
+    2:
+      serdes: <10g | 25g>
+    ...
 ```
 
 #### Hardware TCAM Profiles
@@ -1156,7 +1200,7 @@ peer_filters:
 
 ### Routing
 
-### Service Routing Protocols Model
+#### Service Routing Protocols Model
 
 ```yaml
 service_routing_protocols_model: < multi-agent | ribd >
@@ -1166,6 +1210,27 @@ service_routing_protocols_model: < multi-agent | ribd >
 
 ```yaml
 ip_virtual_router_mac_address: < mac_address (hh:hh:hh:hh:hh:hh) >
+```
+
+#### MAC Address-table
+
+```yaml
+mac_address_table:
+  aging_time: < aging_time_in_seconds >
+```
+
+#### VRF Instances
+
+```yaml
+vrfs:
+  < vrf_name >:
+    description: < description>
+    ip_routing: < true | false >
+    ipv6_routing: < true | false >
+  < vrf_name >:
+    description: < description>
+    ip_routing: < true | false >
+    ipv6_routing: < true | false >
 ```
 
 #### IP Routing
@@ -1676,18 +1741,20 @@ qos_profiles:
         priority: < string >
 ```
 
-### VRF Instances
+#### Queue Monitor Length
 
 ```yaml
-vrfs:
-  < vrf_name >:
-    description: < description>
-    ip_routing: < true | false >
-    ipv6_routing: < true | false >
-  < vrf_name >:
-    description: < description>
-    ip_routing: < true | false >
-    ipv6_routing: < true | false >
+queue_monitor_length:
+  log: < seconds >
+  notifying: < true | false >
+```
+
+#### Queue Monitor Streaming
+
+```yaml
+queue_monitor_streaming:
+  enable: < true | false >
+  vrf: < vrf_name >
 ```
 
 ### Bfd Multihop Interval
