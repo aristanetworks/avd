@@ -15,7 +15,7 @@
 {%         endif %}
     type: routed
     shutdown: false
-    ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * overlay_controller.nodes | length * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}/31
+    ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}/31
 {%         if underlay_routing_protocol|lower == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
