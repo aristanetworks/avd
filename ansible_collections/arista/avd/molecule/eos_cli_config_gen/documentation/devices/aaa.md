@@ -252,6 +252,7 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
+!
 aaa authorization exec default group CUST local
 aaa authorization serial-console
 !

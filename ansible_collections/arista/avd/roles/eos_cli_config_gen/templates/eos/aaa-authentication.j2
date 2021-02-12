@@ -10,17 +10,13 @@ aaa authentication login serial-console {{ aaa_authentication.login.serial_conso
 {%     if aaa_authentication.dot1x.default is arista.avd.defined %}
 aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
 {%     endif %}
-{%     if aaa_authentication.policies is arista.avd.defined %}
-{%         if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
+{%     if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}
 aaa authentication policy on-failure log
-{%         endif %}
-{%         if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
+{%     endif %}
+{%     if aaa_authentication.policies.on_success_log is arista.avd.defined(true) %}
 aaa authentication policy on-success log
-{%         endif %}
-{%         if aaa_authentication.policies.local is arista.avd.defined %}
-{%             if aaa_authentication.policies.local.allow_nopassword is arista.avd.defined(true) %}
+{%     endif %}
+{%     if aaa_authentication.policies.local is arista.avd.defined %}
 aaa authentication policy local allow-nopassword-remote-login
-{%             endif %}
-{%         endif %}
 {%     endif %}
 {% endif %}

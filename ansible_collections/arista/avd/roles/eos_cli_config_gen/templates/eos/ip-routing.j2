@@ -10,11 +10,11 @@ no ip routing
 {% endif %}
 {% if vrfs is arista.avd.defined %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
-{%             if vrfs[vrf].ip_routing is arista.avd.defined(true) and vrf is ne 'default' %}
+{%         if vrfs[vrf].ip_routing is arista.avd.defined(true) and vrf is ne 'default' %}
 ip routing vrf {{ vrf }}
-{%             elif vrfs[vrf].ip_routing is arista.avd.defined(false) and vrf is ne 'default' %}
+{%         elif vrfs[vrf].ip_routing is arista.avd.defined(false) and vrf is ne 'default' %}
 no ip routing vrf {{ vrf }}
-{%             endif %}
+{%         endif %}
 {%     endfor %}
 {% endif %}
 {% if ip_icmp_redirect is arista.avd.defined(false) %}

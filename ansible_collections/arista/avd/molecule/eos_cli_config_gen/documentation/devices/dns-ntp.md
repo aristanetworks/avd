@@ -113,6 +113,7 @@ interface Management1
 ### DNS Domain Device Configuration
 
 ```eos
+!
 dns domain test.local
 !
 ```

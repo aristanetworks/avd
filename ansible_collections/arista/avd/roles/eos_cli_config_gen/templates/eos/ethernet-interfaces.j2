@@ -147,11 +147,11 @@ interface {{ ethernet_interface }}
    ip ospf authentication-key 7 {{ ethernet_interfaces[ethernet_interface].ospf_authentication_key }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].ospf_message_digest_keys is arista.avd.defined %}
-{%               for ospf_message_digest_key in ethernet_interfaces[ethernet_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
-{%                   if ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm is arista.avd.defined and ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].key is arista.avd.defined %}
+{%                 for ospf_message_digest_key in ethernet_interfaces[ethernet_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
+{%                     if ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm is arista.avd.defined and ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].key is arista.avd.defined %}
    ip ospf message-digest-key {{ ospf_message_digest_key }} {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm }} 7 {{ ethernet_interfaces[ethernet_interface].ospf_message_digest_keys[ospf_message_digest_key].key }}
-{%                   endif %}
-{%               endfor %}
+{%                     endif %}
+{%                 endfor %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
    isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
@@ -171,50 +171,46 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].vmtracer is arista.avd.defined(true) %}
    vmtracer vmware-esx
 {%             endif %}
-{%             if ethernet_interfaces[ethernet_interface].ptp is arista.avd.defined %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.enable is arista.avd.defined(true) %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.enable is arista.avd.defined(true) %}
    ptp enable
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.announce is arista.avd.defined %}
-{%                     if ethernet_interfaces[ethernet_interface].ptp.announce.interval is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.announce.interval is arista.avd.defined %}
    ptp announce interval {{ ethernet_interfaces[ethernet_interface].ptp.announce.interval }}
-{%                     endif %}
-{%                     if ethernet_interfaces[ethernet_interface].ptp.announce.timeout is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.announce.timeout is arista.avd.defined %}
    ptp announce timeout {{ ethernet_interfaces[ethernet_interface].ptp.announce.timeout }}
-{%                     endif %}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.delay_req is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.delay_req is arista.avd.defined %}
    ptp delay-req interval {{ ethernet_interfaces[ethernet_interface].ptp.delay_req }}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.delay_mechanism is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.delay_mechanism is arista.avd.defined %}
    ptp delay-mechanism {{ ethernet_interfaces[ethernet_interface].ptp.delay_mechanism }}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.sync_message.interval is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.sync_message.interval is arista.avd.defined %}
    ptp sync-message interval {{ ethernet_interfaces[ethernet_interface].ptp.sync_message.interval }}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.role is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.role is arista.avd.defined %}
    ptp role {{ ethernet_interfaces[ethernet_interface].ptp.role }}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.vlan is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.vlan is arista.avd.defined %}
    ptp vlan {{ ethernet_interfaces[ethernet_interface].ptp.vlan }}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ptp.transport is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].ptp.transport is arista.avd.defined %}
    ptp transport {{ ethernet_interfaces[ethernet_interface].ptp.transport }}
-{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].service_profile is arista.avd.defined %}
    service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control is arista.avd.defined %}
-{%                   for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
-{%                      if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
+{%                 for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
+{%                     if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
 {%                         if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined("pps") %}
    storm-control {{ section | replace("_", "-") }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
 {%                         else %}
    storm-control {{ section | replace("_", "-") }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
 {%                         endif %}
-{%                      endif%}
-{%                   endfor %}
+{%                     endif%}
+{%                 endfor %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}

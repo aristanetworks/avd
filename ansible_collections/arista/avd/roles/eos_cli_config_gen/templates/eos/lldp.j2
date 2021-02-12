@@ -1,19 +1,19 @@
 {# eos - lldp #}
 {% if lldp is arista.avd.defined %}
-{%   if lldp.run is arista.avd.defined(false) %}
-no lldp run
-{%   endif %}
-{%   if lldp.timer is arista.avd.defined %}
-lldp timer {{ lldp.timer }}
-{%   endif %}
-{%   if lldp.holdtime is arista.avd.defined %}
-lldp hold-time {{ lldp.holdtime }}
-{%   endif %}
-{%   if lldp.management_address is arista.avd.defined %}
-lldp management-address {{ lldp.management_address }}
-{%   endif %}
-{%   if lldp.vrf is arista.avd.defined %}
-lldp management-address vrf {{ lldp.vrf }}
-{%   endif %}
 !
+{%     if lldp.run is arista.avd.defined(false) %}
+no lldp run
+{%     endif %}
+{%     if lldp.timer is arista.avd.defined %}
+lldp timer {{ lldp.timer }}
+{%     endif %}
+{%     if lldp.holdtime is arista.avd.defined %}
+lldp hold-time {{ lldp.holdtime }}
+{%     endif %}
+{%     if lldp.management_address is arista.avd.defined %}
+lldp management-address {{ lldp.management_address }}
+{%     endif %}
+{%     if lldp.vrf is arista.avd.defined %}
+lldp management-address vrf {{ lldp.vrf }}
+{%     endif %}
 {% endif %}

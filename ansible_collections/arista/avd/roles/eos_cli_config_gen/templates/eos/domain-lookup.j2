@@ -1,7 +1,7 @@
 {# eos - domain lookup #}
 {% if ip_domain_lookup is arista.avd.defined %}
 !
-{%    for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort %}
+{%     for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort %}
 ip domain lookup{% if ip_domain_lookup.source_interfaces[source].vrf is arista.avd.defined %} vrf {{ ip_domain_lookup.source_interfaces[source].vrf }}{% endif %} source-interface {{ source }}
-{%    endfor %}
+{%     endfor %}
 {% endif %}

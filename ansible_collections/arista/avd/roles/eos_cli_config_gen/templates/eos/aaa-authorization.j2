@@ -1,5 +1,6 @@
 {# eos - aaa authorization #}
-{% if aaa_authorization is arista.avd.defined  %}
+{% if aaa_authorization is arista.avd.defined %}
+!
 {%     if aaa_authorization.exec.default is arista.avd.defined %}
 aaa authorization exec default {{ aaa_authorization.exec.default }}
 {%     endif %}

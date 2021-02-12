@@ -2,11 +2,11 @@
 {% if ip_tacacs_source_interfaces is arista.avd.defined %}
 {%     for ip_tacacs_source_interface in ip_tacacs_source_interfaces %}
 !
-{%          set ip_tacacs_cli = "ip tacacs " %}
-{%          if ip_tacacs_source_interface.vrf is arista.avd.defined%}
-{%              set ip_tacacs_cli = ip_tacacs_cli ~ ip_tacacs_source_interface.vrf %}
-{%          endif %}
-{%          set ip_tacacs_cli = ip_tacacs_cli ~ "source-interface " ~ ip_tacacs_source_interface.name %}
+{%         set ip_tacacs_cli = "ip tacacs " %}
+{%         if ip_tacacs_source_interface.vrf is arista.avd.defined%}
+{%             set ip_tacacs_cli = ip_tacacs_cli ~ ip_tacacs_source_interface.vrf %}
+{%         endif %}
+{%         set ip_tacacs_cli = ip_tacacs_cli ~ "source-interface " ~ ip_tacacs_source_interface.name %}
 {{ ip_tacacs_cli }}
-{%      endfor %}
+{%     endfor %}
 {% endif %}
