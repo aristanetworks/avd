@@ -2,6 +2,8 @@
 {% if virtual_source_nat_vrfs is arista.avd.defined %}
 !
 {%     for vrf in virtual_source_nat_vrfs | arista.avd.natural_sort %}
+{%         if virtual_source_nat_vrfs[vrf].ip_address is arista.avd.defined %}
 ip address virtual source-nat vrf {{ vrf }} address {{ virtual_source_nat_vrfs[vrf].ip_address }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

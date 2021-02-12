@@ -2,7 +2,9 @@
 {% for vlan in vlans | arista.avd.natural_sort %}
 !
 vlan {{ vlan }}
+{%     if vlans[vlan].name is arista.avd.defined %}
    name {{ vlans[vlan].name }}
+{%     endif %}
 {%     if vlans[vlan].state is arista.avd.defined %}
    state {{ vlans[vlan].state }}
 {%     endif %}
