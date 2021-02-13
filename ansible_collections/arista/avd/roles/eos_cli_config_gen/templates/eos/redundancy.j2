@@ -1,7 +1,7 @@
-{% if redundancy is defined and redundancy is not none %}
+{% if redundancy is arista.avd.defined %}
 !
 redundancy
-{%     if redundancy.protocol is defined %}
+{%     if redundancy.protocol is arista.avd.defined %}
    protocol {{ redundancy.protocol }}
 {%     endif %}
 {% endif %}
