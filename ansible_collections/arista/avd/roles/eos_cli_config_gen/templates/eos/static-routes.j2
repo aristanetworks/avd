@@ -1,5 +1,5 @@
 {# static routes#}
-{% if static_routes is defined and static_routes is not none %}
+{% if static_routes is arista.avd.defined %}
 !
 {%     for static_route in static_routes %}
 ip route
@@ -11,5 +11,5 @@ ip route
 {%- if static_route['name'] is defined and static_route['name'] is not none %} name {{ static_route['name'] }}{% endif %}
 {%- if static_route['metric'] is defined and static_route['metric'] is not none %} metric {{ static_route['metric'] }}{% endif %}
 
-{%          endfor %}
+{%     endfor %}
 {% endif %}

@@ -1,50 +1,50 @@
 {# spanning-tree #}
 {% if spanning_tree is defined %}
 !
-{%     if spanning_tree.edge_port.bpduguard_default is defined and spanning_tree.edge_port.bpduguard_default == true %}
+{%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
 spanning-tree edge-port bpduguard default
 {%     endif %}
 spanning-tree mode {{ spanning_tree.mode }}
-{%     if spanning_tree.no_spanning_tree_vlan is defined %}
+{%     if spanning_tree.no_spanning_tree_vlan is arista.avd.defined %}
 no spanning-tree vlan-id {{ spanning_tree.no_spanning_tree_vlan }}
 {%     endif %}
 {%     if spanning_tree.mode == "mstp" %}
-{%         if spanning_tree.mst_instances is defined and spanning_tree.mst_instances is not none  %}
+{%         if spanning_tree.mst_instances is arista.avd.defined %}
 {%             for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
-{%                 if spanning_tree.mst_instances[mst_instance].priority is defined and spanning_tree.mst_instances[mst_instance].priority is not none %}
+{%                 if spanning_tree.mst_instances[mst_instance].priority is arista.avd.defined %}
 spanning-tree mst {{ mst_instance }} priority {{ spanning_tree.mst_instances[mst_instance].priority }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     elif spanning_tree.mode == "rapid-pvst" %}
-{%         if spanning_tree.rapid_pvst_instances is defined and spanning_tree.rapid_pvst_instances is not none  %}
+{%         if spanning_tree.rapid_pvst_instances is arista.avd.defined %}
 {%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
-{%                 if spanning_tree.rapid_pvst_instances[vlan_id].priority is defined and spanning_tree.rapid_pvst_instances[vlan_id].priority is not none %}
+{%                 if spanning_tree.rapid_pvst_instances[vlan_id].priority is arista.avd.defined %}
 spanning-tree vlan-id {{ vlan_id }} priority {{ spanning_tree.rapid_pvst_instances[vlan_id].priority }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     else %}
-{%         if spanning_tree.rstp_priority is defined and spanning_tree.rstp_priority is not none  %}
+{%         if spanning_tree.rstp_priority is arista.avd.defined %}
 spanning-tree priority {{ spanning_tree.rstp_priority }}
 {%         endif %}
 {%     endif %}
-{%     if spanning_tree.mst is defined and spanning_tree.mst is not none %}
-{%         if spanning_tree.mst.pvst_border is defined and spanning_tree.mst.pvst_border == true %}
+{%     if spanning_tree.mst is arista.avd.defined %}
+{%         if spanning_tree.mst.pvst_border is arista.avd.defined(true) %}
 spanning-tree mst pvst border
 {%         endif %}
-{%         if spanning_tree.mst.configuration is defined and spanning_tree.configuration is not none %}
+{%         if spanning_tree.mst.configuration is arista.avd.defined %}
 !
 spanning-tree mst configuration
-{%             if spanning_tree.mst.configuration.name is defined and spanning_tree.configuration.name is not none %}
+{%             if spanning_tree.mst.configuration.name is arista.avd.defined %}
    name {{ spanning_tree.mst.configuration.name }}
 {%             endif %}
-{%             if spanning_tree.mst.configuration.revision is defined and spanning_tree.configuration.revision is not none %}
+{%             if spanning_tree.mst.configuration.revision is arista.avd.defined %}
    revision {{ spanning_tree.mst.configuration.revision }}
 {%             endif %}
-{%             if spanning_tree.mst.configuration.instances is defined and spanning_tree.configuration.instances is not none %}
+{%             if spanning_tree.mst.configuration.instances is arista.avd.defined %}
 {%                 for instance in spanning_tree.mst.configuration.instances | arista.avd.natural_sort %}
-{%                     if spanning_tree.mst.configuration.instances[instance].vlans is defined and spanning_tree.mst.configuration.instances[instance].vlans is not none %}
+{%                     if spanning_tree.mst.configuration.instances[instance].vlans is arista.avd.defined %}
    instance {{ instance }} vlan {{ spanning_tree.mst.configuration.instances[instance].vlans }}
 {%                     endif %}
 {%                 endfor %}
