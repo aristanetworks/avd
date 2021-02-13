@@ -1,18 +1,28 @@
 {# Management SSH #}
-{% if management_ssh is defined and management_ssh is not none %}
+{% if management_ssh is arista.avd.defined %}
 !
 management ssh
-{%     if management_ssh.access_groups is defined and management_ssh.access_groups is not none %}
+{%     if management_ssh.access_groups is arista.avd.defined %}
 {%         for access_group in management_ssh.access_groups %}
-   ip access-group {{ access_group.name }}{% if access_group.vrf is defined and access_group.vrf is not none %} vrf {{ access_group.vrf }}{% endif %} in
+{%             set acl_cli = "ip access-group " ~ access_group.name %}
+{%             if access_group.vrf is arista.avd.defined %}
+{%                 set acl_cli = acl_cli ~ " vrf " ~ access_group.vrf  %}
+{%             endif %}
+{%             set acl_cli = acl_cli ~ " in" %}
+   {{ acl_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if management_ssh.ipv6_access_groups is defined and management_ssh.ipv6_access_groups is not none %}
+{%     if management_ssh.ipv6_access_groups is arista.avd.defined %}
 {%         for ipv6_access_group in management_ssh.ipv6_access_groups %}
-   ipv6 access-group {{ ipv6_access_group.name }}{% if ipv6_access_group.vrf is defined and ipv6_access_group.vrf is not none %} vrf {{ ipv6_access_group.vrf }}{% endif %} in
+{%             set ipv6_acl_cli = "ipv6 access-group " ~ ipv6_access_group.name %}
+{%             if ipv6_access_group.vrf is arista.avd.defined %}
+{%                 set ipv6_acl_cli = ipv6_acl_cli ~ " vrf " ~ ipv6_access_group.vrf  %}
+{%             endif %}
+{%             set ipv6_acl_cli = ipv6_acl_cli ~ " in" %}
+   {{ ipv6_acl_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if management_ssh.idle_timeout is defined and management_ssh.idle_timeout is not none %}
+{%     if management_ssh.idle_timeout is arista.avd.defined %}
    idle-timeout {{ management_ssh.idle_timeout }}
 {%     endif %}
 {%     if management_ssh.cipher is arista.avd.defined %}
@@ -29,14 +39,14 @@ management ssh
    hostkey server {{ management_ssh.hostkey.server | join(" ") }}
 {%         endif %}
 {%     endif %}
-{%     if management_ssh.enable is defined and management_ssh.enable == false %}
+{%     if management_ssh.enable is arista.avd.defined(false) %}
    shutdown
    !
 {%     endif %}
-{%     if management_ssh.vrfs is defined and management_ssh.vrfs is not none %}
+{%     if management_ssh.vrfs is arista.avd.defined %}
 {%         for vrf in management_ssh.vrfs %}
    vrf {{ vrf }}
-{%             if management_ssh.vrfs[vrf].enable is defined and management_ssh.vrfs[vrf].enable == true %}
+{%             if management_ssh.vrfs[vrf].enable is arista.avd.defined(true) %}
       no shutdown
 {%             else %}
       shutdown

@@ -1,4 +1,5 @@
-{% if service_unsupported_transceiver is defined %}
+{# eos - transceiver settings #}
+{% if service_unsupported_transceiver is arista.avd.defined %}
 !
 service unsupported-transceiver {{ service_unsupported_transceiver.license_name }} {{ service_unsupported_transceiver.license_key }}
 {% endif %}

@@ -1,21 +1,21 @@
 {# eos - qos #}
 {% if qos is defined %}
 !
-{%     if qos.rewrite_dscp is defined and qos.rewrite_dscp == true %}
+{%     if qos.rewrite_dscp is arista.avd.defined(true) %}
 qos rewrite dscp
 {%     endif %}
-{%     if qos.map is defined and qos is not none %}
-{%         if qos.map.cos is defined and qos.map.cos is not none %}
+{%     if qos.map is arista.avd.defined %}
+{%         if qos.map.cos is arista.avd.defined %}
 {%             for cos_map in qos.map.cos | arista.avd.natural_sort %}
 qos map cos {{ cos_map }}
 {%             endfor %}
 {%         endif %}
-{%         if qos.map.dscp is defined and qos.map.dscp is not none %}
+{%         if qos.map.dscp is arista.avd.defined %}
 {%             for dscp_map in qos.map.dscp | arista.avd.natural_sort %}
 qos map dscp {{ dscp_map }}
 {%             endfor %}
 {%         endif %}
-{%         if qos.map.traffic_class is defined and qos.map.traffic_class is not none %}
+{%         if qos.map.traffic_class is arista.avd.defined %}
 {%             for tc_map in qos.map.traffic_class | arista.avd.natural_sort %}
 qos map traffic-class {{ tc_map }}
 {%             endfor %}

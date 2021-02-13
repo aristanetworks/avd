@@ -1,5 +1,5 @@
 {# eos - standard access-lists #}
-{% if standard_access_lists is defined and standard_access_lists is not none %}
+{% if standard_access_lists is arista.avd.defined  %}
 {%     for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
 !
 ip access-list standard {{ standard_access_list }}

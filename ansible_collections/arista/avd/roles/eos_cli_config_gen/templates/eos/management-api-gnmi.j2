@@ -1,20 +1,21 @@
-{% if management_api_gnmi is defined and management_api_gnmi is not none %}
+{# Management GNMI #}
+{% if management_api_gnmi is arista.avd.defined %}
 !
 management api gnmi
-{%     if management_api_gnmi.enable_vrfs is defined -%}
+{%     if management_api_gnmi.enable_vrfs is arista.avd.defined %}
 {%         for vrf in management_api_gnmi.enable_vrfs | arista.avd.natural_sort if vrf is ne 'default' %}
-  transport grpc {{vrf}}
-  {%           if management_api_gnmi.enable_vrfs[vrf].access_group is defined and management_api_gnmi.enable_vrfs[vrf].access_group is not none %}
-    ip access-group {{ management_api_gnmi.enable_vrfs[vrf].access_group }}
-  {%           endif %}
-    vrf {{ vrf }}
-  !
+   transport grpc {{ vrf }}
+{%             if management_api_gnmi.enable_vrfs[vrf].access_group is arista.avd.defined %}
+      ip access-group {{ management_api_gnmi.enable_vrfs[vrf].access_group }}
+{%             endif %}
+      vrf {{ vrf }}
+   !
 {%         endfor %}
 {%     else %}
-  transport grpc default
-  !
+   transport grpc default
+   !
 {%     endif %}
-{%     if management_api_gnmi.octa is defined %}
-  provider eos-native
+{%     if management_api_gnmi.octa is arista.avd.defined %}
+   provider eos-native
 {%     endif %}
 {% endif %}
