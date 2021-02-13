@@ -25,6 +25,7 @@ port-channel-interfaces
 prefix-lists
 ptp
 qos
+redundancy
 route-maps
 router-bgp-base
 router-bgp-evpn
