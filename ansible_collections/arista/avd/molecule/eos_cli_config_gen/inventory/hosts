@@ -27,6 +27,7 @@ ptp
 qos
 redundancy
 route-maps
+router-bfd
 router-bgp-base
 router-bgp-evpn
 router-bgp-rtc
