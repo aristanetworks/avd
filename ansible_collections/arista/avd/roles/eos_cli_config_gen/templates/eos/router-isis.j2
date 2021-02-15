@@ -1,26 +1,34 @@
 {# eos - router isis #}
-{% if router_isis is defined and router_isis is not none %}
+{% if router_isis.instance is arista.avd.defined %}
+!
 router isis {{ router_isis.instance }}
+{%     if router_isis.net is arista.avd.defined %}
    net {{ router_isis.net }}
+{%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
    is-type {{ router_isis.is_type }}
+{%     endif %}
+{%     if router_isis.router_id is arista.avd.defined %}
    router-id ipv4 {{ router_isis.router_id }}
+{%     endif %}
    log-adjacency-changes
    !
-{%     if router_isis.address_family is defined and router_isis.address_family is iterable %}
-{%          for address_family in router_isis.address_family %}
+{%     if router_isis.address_family is arista.avd.defined %}
+{%         for address_family in router_isis.address_family %}
    address-family {{ address_family }}
-{%             for af_default in router_isis.isis_af_defaults %}
-      {{af_default}}
-{%             endfor %}
-{%          endfor %}
+{%             if router_isis.isis_af_defaults is arista.avd.defined %}
+{%                 for af_default in router_isis.isis_af_defaults %}
+      {{ af_default }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
    !
-{%     if router_isis.segment_routing_mpls is defined %}
+{%     if router_isis.segment_routing_mpls is arista.avd.defined %}
    segment-routing mpls
-{%         if router_isis.segment_routing_mpls.router_id is defined %}
+{%         if router_isis.segment_routing_mpls.router_id is arista.avd.defined %}
       router-id {{ router_isis.segment_routing_mpls.router_id }}
 {%         endif %}
       no shutdown
 {%     endif %}
-!
 {% endif %}

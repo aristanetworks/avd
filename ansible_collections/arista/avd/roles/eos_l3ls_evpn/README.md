@@ -1654,7 +1654,7 @@ note: Recommended default values for Jericho based platform, and all other platf
 - vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
-- Supported features are documented here: [vEOS-LAB Datasheet](https://www.arista.com/assets/data/pdf/Datasheets/vEOS_Datasheet.pdf)
+- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
 
 However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
 
