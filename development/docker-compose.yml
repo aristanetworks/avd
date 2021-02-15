@@ -20,7 +20,7 @@ services:
     ports:
       - 8001:8000
     entrypoint: ""
-    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
+    command: ["sh", "-c", "pip install -r ansible-cvp/ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
 
   webdoc_avd:
     image: titom73/mkdocs:latest
