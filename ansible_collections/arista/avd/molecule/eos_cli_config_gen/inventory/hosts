@@ -36,6 +36,7 @@ router-bgp-v4-v6-evpn
 router-bgp-vrf-lite
 router-isis
 router-l2-vpn
+router-multicast
 router-ospf
 router-static
 sflow
