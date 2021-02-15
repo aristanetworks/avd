@@ -1,54 +1,53 @@
 {# eos - router ospf #}
-{% if router_ospf is defined and router_ospf is not none %}
-{%     for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
+{% for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
 !
-{%         if router_ospf.process_ids[process_id].vrf is defined %}
+{%     if router_ospf.process_ids[process_id].vrf is arista.avd.defined %}
 router ospf {{ process_id }} vrf {{ router_ospf.process_ids[process_id].vrf }}
-{%         else %}
+{%     else %}
 router ospf {{ process_id }}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].log_adjacency_changes_detail is defined and router_ospf.process_ids[process_id].log_adjacency_changes_detail == true %}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].log_adjacency_changes_detail is arista.avd.defined(true) %}
    log-adjacency-changes detail
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].router_id is defined %}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].router_id is arista.avd.defined %}
    router-id {{ router_ospf.process_ids[process_id].router_id }}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].passive_interface_default is defined and router_ospf.process_ids[process_id].passive_interface_default == true %}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].passive_interface_default is arista.avd.defined(true) %}
    passive-interface default
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].no_passive_interfaces is defined %}
-{%             for interface in router_ospf.process_ids[process_id].no_passive_interfaces %}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].no_passive_interfaces is arista.avd.defined %}
+{%         for interface in router_ospf.process_ids[process_id].no_passive_interfaces %}
    no passive-interface {{ interface }}
-{%             endfor %}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].network_prefixes is defined %}
-{%             for network_prefix in router_ospf.process_ids[process_id].network_prefixes | arista.avd.natural_sort %}
+{%         endfor %}
+{%     endif %}
+{%     for network_prefix in router_ospf.process_ids[process_id].network_prefixes | arista.avd.natural_sort %}
    network {{ network_prefix }} area {{ router_ospf.process_ids[process_id].network_prefixes[network_prefix].area }}
-{%             endfor %}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].bfd_enable is defined and router_ospf.process_ids[process_id].bfd_enable %}
-   bfd default
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].max_lsa is defined %}
-   max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].default_information_originate is defined %}
-   default-information originate {% if router_ospf.process_ids[process_id].default_information_originate.always is defined and router_ospf.process_ids[process_id].default_information_originate.always == true %} always{% endif %}
-
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].redistribute.static is defined %}
-{%           if router_ospf.process_ids[process_id].redistribute.static.route_map is defined %}
-   redistribute static route-map {{ router_ospf.process_ids[process_id].redistribute.static.route_map }}
-{%           else %}
-   redistribute static
-{%           endif %}
-{%         endif %}
-{%         if router_ospf.process_ids[process_id].redistribute.connected is defined %}
-{%           if router_ospf.process_ids[process_id].redistribute.connected.route_map is defined %}
-   redistribute connected route-map {{ router_ospf.process_ids[process_id].redistribute.connected.route_map }}
-{%           else %}
-   redistribute connected
-{%           endif %}
-{%         endif %}
 {%     endfor %}
-{% endif %}
+{%     if router_ospf.process_ids[process_id].bfd_enable is arista.avd.defined and router_ospf.process_ids[process_id].bfd_enable %}
+   bfd default
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].max_lsa is arista.avd.defined %}
+   max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].default_information_originate is defined %}
+{%         set default_information_originate_cli = "default-information originate"%}
+{%         if router_ospf.process_ids[process_id].default_information_originate.always is arista.avd.defined(true) %}
+{%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
+{%         endif %}
+   {{ default_information_originate_cli }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].redistribute.static is defined %}
+{%         set redistribute_static_cli = "redistribute static" %}
+{%         if router_ospf.process_ids[process_id].redistribute.static.route_map is arista.avd.defined %}
+{%             set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  router_ospf.process_ids[process_id].redistribute.static.route_map %}
+{%         endif %}
+   {{ redistribute_static_cli}}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].redistribute.connected is defined %}
+{%         set redistribute_connected_cli = "redistribute connected" %}
+{%         if router_ospf.process_ids[process_id].redistribute.connected.route_map is arista.avd.defined %}
+{%             set redistribute_connected_cli = redistribute_connected_cli ~ " route-map " ~ router_ospf.process_ids[process_id].redistribute.connected.route_map %}
+{%         endif %}
+   {{ redistribute_connected_cli }}
+{%     endif %}
+{% endfor %}
