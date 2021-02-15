@@ -1,4 +1,4 @@
-# vlan-interfaces
+# vlan-internal-order
 
 # Table of Contents
 
@@ -230,11 +230,16 @@ Spanning-tree not defined
 
 ## Internal VLAN Allocation Policy Summary
 
-**Default Allocation Policy**
-
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
+| ascending | 10 | 40 |
+
+## Internal VLAN Allocation Policy Configuration
+
+```eos
+!
+vlan internal order ascending range 10 40
+```
 
 # VLANs
 
@@ -260,190 +265,7 @@ No loopback interfaces defined
 
 ## VLAN Interfaces
 
-### VLAN Interfaces Summary
-
-| Interface | Description | VRF |  MTU | Shutdown |
-| --------- | ----------- | --- | ---- | -------- |
-| Vlan24 |  SVI Description  |  default  |  -  |  false  |
-| Vlan41 |  SVI Description  |  default  |  -  |  false  |
-| Vlan42 |  SVI Description  |  default  |  -  |  false  |
-| Vlan75 |  SVI Description  |  default  |  -  |  false  |
-| Vlan83 |  SVI Description  |  default  |  -  |  false  |
-| Vlan84 |  SVI Description  |  default  |  -  |  -  |
-| Vlan85 |  SVI Description  |  default  |  -  |  -  |
-| Vlan86 |  SVI Description  |  default  |  -  |  -  |
-| Vlan87 |  SVI Description  |  default  |  -  |  true  |
-| Vlan88 |  SVI Description  |  default  |  -  |  true  |
-| Vlan89 |  SVI Description  |  default  |  -  |  false  |
-| Vlan90 |  SVI Description  |  default  |  -  |  -  |
-| Vlan501 |  SVI Description  |  default  |  -  |  false  |
-| Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
-| Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
-| Vlan2001 |  SVI Description  |  Tenant_B  |  -  |  -  |
-| Vlan2002 |  SVI Description  |  Tenant_B  |  -  |  -  |
-| Vlan4094 |  SVI Description  |  default  |  9214  |  -  |
-
-#### IPv4
-
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
-| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
-| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
-| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
-| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan84 |  default  |  -  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
-| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
-| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
-| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
-| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
-| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
-| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
-
-#### IPv6
-
-| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
-| Vlan24 |  default  |  1b11:3a00:22b0:6::15/64  |  1b11:3a00:22b0:6::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan75 |  default  |  1b11:3a00:22b0:1000::15/64  |  1b11:3a00:22b0:1000::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan89 |  default  |  1b11:3a00:22b0:5200::15/64  |  1b11:3a00:22b0:5200::3  |  -  |  -  |  true  |  -  |  -  |
-| Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
-
-
-
-### VLAN Interfaces Device Configuration
-
-```eos
-!
-interface Vlan24
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.24.1/24
-   ipv6 address 1b11:3a00:22b0:6::15/64
-   ipv6 nd managed-config-flag
-   ipv6 nd prefix 1b11:3a00:22b0:6::/64 infinite infinite no-autoconfig
-   ipv6 virtual-router address 1b11:3a00:22b0:6::1
-!
-interface Vlan41
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.41.1/24
-   ip helper-address 10.10.64.150 source-interface Loopback0
-   ip helper-address 10.10.96.150 source-interface Loopback0
-   ip helper-address 10.10.96.151 source-interface Loopback0
-!
-interface Vlan42
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.42.1/24
-!
-interface Vlan75
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.75.1/24
-   ipv6 address 1b11:3a00:22b0:1000::15/64
-   ipv6 nd managed-config-flag
-   ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
-   ipv6 virtual-router address 1b11:3a00:22b0:1000::1
-!
-interface Vlan83
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.83.1/24
-!
-interface Vlan84
-   description SVI Description
-   ip address virtual 10.10.84.1/24
-!
-interface Vlan85
-   description SVI Description
-   ip address 10.10.84.1/24
-!
-interface Vlan86
-   description SVI Description
-   ip address 10.10.83.1/24
-   ip attached-host route export 10
-!
-interface Vlan87
-   description SVI Description
-   shutdown
-   ip address 10.10.87.1/24
-   ip access-group ACL_IN in
-   ip access-group ACL_OUT out
-!
-interface Vlan88
-   description SVI Description
-   shutdown
-   ip address virtual 10.10.87.1/23
-!
-interface Vlan89
-   description SVI Description
-   no shutdown
-   ip address virtual 10.10.144.3/20
-   ipv6 address 1b11:3a00:22b0:5200::15/64
-   ipv6 nd managed-config-flag
-   ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
-   multicast ipv4 source route export
-   pim ipv4 sparse-mode
-   pim ipv4 local-interface Loopback0
-   ipv6 virtual-router address 1b11:3a00:22b0:5200::3
-!
-interface Vlan90
-   description SVI Description
-   ip address 10.10.83.1/24
-   ip attached-host route export
-!
-interface Vlan501
-   description SVI Description
-   no shutdown
-   ip address 10.50.26.29/27
-   ipv6 address 1b11:3a00:22b0:0088::207/127
-   ipv6 nd ra disabled
-!
-interface Vlan1001
-   description SVI Description
-   no shutdown
-   vrf Tenant_A
-   ip address virtual 10.1.1.1/24
-   ipv6 address a1::1/64
-   ipv6 nd managed-config-flag
-   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
-!
-interface Vlan1002
-   description SVI Description
-   no shutdown
-   vrf Tenant_A
-   ip address virtual 10.1.2.1/24
-   ipv6 address a2::1/64
-   ipv6 nd ra disabled
-   ipv6 nd managed-config-flag
-   ipv6 nd prefix a2::/64 infinite infinite no-autoconfig
-!
-interface Vlan2001
-   description SVI Description
-   vrf Tenant_B
-   ip address virtual 10.2.1.1/24
-!
-interface Vlan2002
-   description SVI Description
-   vrf Tenant_B
-   ip address virtual 10.2.2.1/24
-!
-interface Vlan4094
-   description SVI Description
-   mtu 9214
-   ip address 169.254.252.0/31
-   ipv6 address fe80::a/64 link-local
-   pim ipv4 sparse-mode
-```
+No VLAN interfaces defined
 
 ## VXLAN Interface
 
