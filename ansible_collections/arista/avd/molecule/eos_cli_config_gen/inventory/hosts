@@ -39,6 +39,7 @@ router-multicast
 router-ospf
 router-pim-sparse-mode
 router-static
+service-routing-protocols-model
 sflow
 snmp_v3
 spanning-tree
