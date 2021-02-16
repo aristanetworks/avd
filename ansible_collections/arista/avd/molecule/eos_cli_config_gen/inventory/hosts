@@ -38,6 +38,7 @@ router-isis
 router-l2-vpn
 router-multicast
 router-ospf
+router-pim-sparse-mode
 router-static
 sflow
 snmp_v3
