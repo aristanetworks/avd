@@ -18,7 +18,6 @@ management-gnmi
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
-mcast-pim
 none_configuration
 platform
 port-channel-interfaces
