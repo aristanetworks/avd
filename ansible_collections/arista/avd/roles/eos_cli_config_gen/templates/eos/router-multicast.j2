@@ -4,8 +4,8 @@
 router multicast
 {%     if router_multicast.ipv4 is arista.avd.defined %}
    ipv4
-{%          if router_multicast.ipv4.routing is arista.avd.defined(true) %}
+{%         if router_multicast.ipv4.routing is arista.avd.defined(true) %}
       routing
-{%          endif %}
+{%         endif %}
 {%     endif %}
 {% endif %}
