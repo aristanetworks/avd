@@ -632,7 +632,7 @@ l3leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
@@ -654,7 +654,7 @@ l3leaf:
 
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
-          spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+          spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
           # L3 Leaf BGP AS. | Required.
           # Inheritence: node > node_group > defaults
@@ -672,13 +672,13 @@ l3leaf:
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
+          spine_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
 
         # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_3 >, < ethernet_interface_3 > ]
+          spine_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
 ```
 
 **Example:**
@@ -799,7 +799,7 @@ l2leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
@@ -848,7 +848,7 @@ l2leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
@@ -1253,7 +1253,7 @@ tenants:
         tags: [ vmotion ]
       161:
         name: Tenant_A_NFS
-        tags: [ nfs]
+        tags: [ nfs ]
 
   Tenant_B:
     mac_vrf_vni_base: 20000
@@ -1397,9 +1397,9 @@ servers:
 
 
       # Example of port-channel adpater
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
 
         # Port- Channel
@@ -1419,9 +1419,9 @@ servers:
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
         profile: < port_profile_name >
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
         port_channel:
           description: < port_channel_description >
@@ -1518,7 +1518,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
@@ -1540,7 +1539,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
@@ -1630,6 +1628,7 @@ platform_settings:
       non_mlag: < seconds >
   - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
     tcam_profile: < tcam_profile >
+    lag_hardware_only: < true | false >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -1648,6 +1647,7 @@ note: Recommended default values for Jericho based platform, and all other platf
 #       non_mlag: 330
 #   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
 #     tcam_profile: vxlan-routing
+#     lag_hardware_only: true
 #     reload_delay:
 #       mlag: 780
 #       non_mlag: 1020
@@ -1659,7 +1659,7 @@ note: Recommended default values for Jericho based platform, and all other platf
 - vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
-- Supported features are documented here: [vEOS-LAB Datasheet](https://www.arista.com/assets/data/pdf/Datasheets/vEOS_Datasheet.pdf)
+- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
 
 However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
 
@@ -1783,14 +1783,14 @@ spine:
   # taking `max_spine_to_super_spine_links` into account
   # for example: spine1, spine2, spine3, ...
   # or spine1, spine1, spine2, spine2, etc.
-  uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+  uplinks_to_super_spine_interfaces: [ Ethernet10, Ethernet11, Ethernet12, Ethernet13 ]
   nodes:
     <spine-hostname>:
       # super-spine interfaces to spines
       # taking `max_spine_to_super_spine_links` into account
       # for example: super-spine1, super-spine2, super-spine3, ...
       # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
-      super_spine_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+      super_spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     <-- etc. -->
 
 # Point to Point Network Summary range, assigned as /31 for each
@@ -1861,7 +1861,7 @@ overlay_controller:
       evpn_role: < client | server | none | default -> none  >
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname > ]
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
@@ -1912,7 +1912,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet123
     peer_type: my_precious
 ```
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ "10.2.3.4" ]`
+In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
