@@ -1,4 +1,4 @@
-{# eos - router ospf #}
+{# eos - Router OSPF #}
 {% if router_ospf is defined and router_ospf is not none %}
 {%     for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
 !
