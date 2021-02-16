@@ -7,7 +7,7 @@ theme:
   name: material
   features:
     - navigation.instant
-    - toc.integrate
+    # - toc.integrate
   highlightjs: true
   hljs_languages:
         - yaml
@@ -40,8 +40,8 @@ markdown_extensions:
       guess_lang: true
   - toc:
       separator: "-"
-      permalink: "#"
-      # permalink: true
+      # permalink: "#"
+      permalink: true
       baselevel: 3
 
 copyright: Copyright &copy; 2019 - 2020 Arista Networks

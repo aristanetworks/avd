@@ -1,101 +1,110 @@
 # Ansible Role: eos_cli_config_gen
 
+**Table of Contents:**
+
 - [Ansible Role: eos_cli_config_gen](#ansible-role-eos_cli_config_gen)
   - [Overview](#overview)
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
   - [Input Variables](#input-variables)
-    - [Management](#management)
-      - [Management Interfaces](#management-interfaces)
-      - [Domain-List](#domain-list)
-      - [Name Servers](#name-servers)
-      - [DNS Domain](#dns-domain)
-      - [NTP Servers](#ntp-servers)
-      - [Clock Timezone](#clock-timezone)
-      - [HTTP Management API](#http-management-api)
-      - [GNMI Management API](#gnmi-management-api)
-      - [Management Console](#management-console)
-      - [Management Security](#management-security)
-      - [Management SSH](#management-ssh)
-    - [Banners](#banners)
+    - [ACLs](#acls)
+      - [IP Extended Access-Lists](#ip-extended-access-lists)
+      - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
+      - [IP Standard Access-Lists](#ip-standard-access-lists)
+      - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
+    - [Aliases](#aliases)
     - [Authentication](#authentication)
-      - [AAA Server Groups](#aaa-server-groups)
-      - [Radius Servers](#radius-servers)
-      - [Tacacs+ Servers](#tacacs-servers)
-      - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [AAA Authentication](#aaa-authentication)
       - [AAA Authorization](#aaa-authorization)
       - [AAA Accounting](#aaa-accounting)
       - [AAA Root](#aaa-root)
-      - [Local Users](#local-users)
+      - [AAA Server Groups](#aaa-server-groups)
       - [Enable Password](#enable-password)
-    - [Aliases](#aliases)
-    - [Monitoring](#monitoring)
-      - [Daemon TerminAttr](#daemon-terminattr)
-      - [Logging](#logging)
-      - [SNMP Settings](#snmp-settings)
-      - [Sflow](#sflow)
-      - [VM Tracer Sessions](#vm-tracer-sessions)
-      - [Event Handler](#event-handler)
-      - [Event Monitor](#event-monitor)
-    - [Hardware](#hardware)
-      - [Hardware Counters](#hardware-counters)
-      - [Platform](#platform)
-      - [Hardware TCAM Profiles](#hardware-tcam-profiles)
-      - [Redundancy](#redundancy)
-    - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
-    - [Spanning Tree](#spanning-tree)
-    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-    - [VLANs](#vlans)
-    - [LLDP](#lldp)
-    - [Interfaces](#interfaces)
-      - [Interface Defaults](#interface-defaults)
-      - [Ethernet Interfaces](#ethernet-interfaces)
-        - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
-        - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
-      - [Port-Channel Interfaces](#port-channel-interfaces)
-      - [Loopback Interfaces](#loopback-interfaces)
-      - [VLAN Interfaces](#vlan-interfaces)
-      - [VxLAN Interface](#vxlan-interface)
+      - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
+      - [Local Users](#local-users)
+      - [Radius Servers](#radius-servers)
+      - [Tacacs+ Servers](#tacacs-servers)
+    - [Banners](#banners)
+    - [Bfd Multihop Interval](#bfd-multihop-interval)
+    - [Custom Templates](#custom-templates)
+    - [Errdisable](#errdisable)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
       - [Community Lists](#community-lists)
       - [IP Extended Community Lists](#ip-extended-community-lists)
-      - [Route Maps](#route-maps)
       - [Peer Filters](#peer-filters)
-    - [Routing](#routing)
-    - [Service Routing Protocols Model](#service-routing-protocols-model)
-      - [Router Virtual MAC Address](#router-virtual-mac-address)
-      - [IP Routing](#ip-routing)
-      - [IPv6 Routing](#ipv6-routing)
-      - [ARP](#arp)
-      - [Static Routes](#static-routes)
-      - [IPv6 Static Routes](#ipv6-static-routes)
-      - [Router BGP Configuration](#router-bgp-configuration)
-      - [Router OSPF Configuration](#router-ospf-configuration)
-      - [Router ISIS Configuration](#router-isis-configuration)
+      - [Route Maps](#route-maps)
+    - [Hardware](#hardware)
+      - [Hardware Counters](#hardware-counters)
+      - [Hardware TCAM Profiles](#hardware-tcam-profiles)
+      - [Platform](#platform)
+      - [Redundancy](#redundancy)
+      - [Speed-Group Settings](#speed-group-settings)
+    - [Interfaces](#interfaces)
+      - [Ethernet Interfaces](#ethernet-interfaces)
+        - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
+        - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
+      - [Interface Defaults](#interface-defaults)
+      - [Loopback Interfaces](#loopback-interfaces)
+      - [Port-Channel Interfaces](#port-channel-interfaces)
+      - [VLAN Interfaces](#vlan-interfaces)
+      - [VxLAN Interface](#vxlan-interface)
+    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [IP DHCP Relay](#ip-dhcp-relay)
+    - [LLDP](#lldp)
+    - [MACsec](#macsec)
+    - [Management](#management)
+      - [Clock Timezone](#clock-timezone)
+      - [DNS Domain](#dns-domain)
+      - [Domain Name Servers](#domain-name-servers)
+      - [Domain Lookup](#domain-lookup)
+      - [Domain-List](#domain-list)
+      - [Management Interfaces](#management-interfaces)
+      - [Management HTTP](#management-http)
+      - [Management GNMI](#management-gnmi)
+      - [Management Console](#management-console)
+      - [Management Security](#management-security)
+      - [Management SSH](#management-ssh)
+      - [NTP Servers](#ntp-servers)
+    - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
+      - [IP IGMP Snooping](#ip-igmp-snooping)
       - [Router Multicast](#router-multicast)
       - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
-    - [IP IGMP Snooping](#ip-igmp-snooping)
-    - [ACLs](#acls)
-      - [IP Extended Access-Lists](#ip-extended-access-lists)
-      - [IP Standard Access-Lists](#ip-standard-access-lists)
-      - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
-      - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
+    - [Monitoring](#monitoring)
+      - [Daemon TerminAttr](#daemon-terminattr)
+      - [Event Handler](#event-handler)
+      - [Event Monitor](#event-monitor)
+      - [Load Interval](#load-interval)
+      - [Logging](#logging)
+      - [Sflow](#sflow)
+      - [SNMP Settings](#snmp-settings)
+      - [VM Tracer Sessions](#vm-tracer-sessions)
+    - [PTP](#ptp)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
-    - [VRF Instances](#vrf-instances)
-    - [Bfd Multihop Interval](#bfd-multihop-interval)
-    - [Virtual Source NAT](#virtual-source-nat)
+      - [Queue Monitor Length](#queue-monitor-length)
+      - [Queue Monitor Streaming](#queue-monitor-streaming)
+    - [Routing](#routing)
+      - [ARP](#arp)
+      - [MAC Address-table](#mac-address-table)
+      - [Router Virtual MAC Address](#router-virtual-mac-address)
+      - [IP Routing](#ip-routing)
+      - [IPv6 Routing](#ipv6-routing)
+      - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router OSPF Configuration](#router-ospf-configuration)
+      - [Router ISIS Configuration](#router-isis-configuration)
+      - [Service Routing Protocols Model](#service-routing-protocols-model)
+      - [Static Routes](#static-routes)
+      - [IPv6 Static Routes](#ipv6-static-routes)
+      - [VRF Instances](#vrf-instances)
     - [Router L2 VPN](#router-l2-vpn)
-    - [IP DHCP Relay](#ip-dhcp-relay)
-    - [Errdisable](#errdisable)
-    - [MACsec](#macsec)
-    - [PTP](#ptp)
-    - [Custom Templates](#custom-templates)
+    - [Spanning Tree](#spanning-tree)
+    - [Terminal Settings](#terminal-settings)
+    - [Virtual Source NAT](#virtual-source-nat)
+    - [VLANs](#vlans)
   - [License](#license)
 
 ## Overview
@@ -140,201 +149,80 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 - Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
 
-### Management
+### ACLs
 
-#### Management Interfaces
+#### IP Extended Access-Lists
 
 ```yaml
-management_interfaces:
-  < Management_interface_1 >:
-    description: < description >
-    shutdown: < true | false >
-    vrf: < vrf_name >
-    ip_address: < IPv4_address/Mask >
-    ipv6_enable: < true | false >
-    ipv6_address: < IPv6_address/Mask >
-    gateway: <IPv4 address of gateway>
-    ipv6_gateway: <IPv6 address of gateway>
+access_lists:
+  < access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
 ```
 
-#### Domain-List
+#### IPv6 Standard Access-Lists
 
 ```yaml
-domain_list:
-  - < domain_name_1 >
-  - < domain_name_2 >
+ipv6_standard_access_lists:
+  < ipv6_access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
 ```
 
-#### Name Servers
+#### IP Standard Access-Lists
 
 ```yaml
-name_server:
-  source:
-    vrf: < vrf_name >
-  nodes:
-    - < name_server_1 >
-    - < name_server_2 >
+standard_access_lists:
+  < access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
 ```
 
-#### DNS Domain
+#### IPv6 Extended Access-Lists
 
 ```yaml
-dns_domain: < domain_name >
+ipv6_access_lists:
+  < ipv6_access_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_access_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
 ```
 
-#### NTP Servers
+### Aliases
 
 ```yaml
-ntp_server:
-  local_interface:
-    vrf: < vrf_name >
-    interface: < source_interface >
-  nodes:
-    - < ntp_server_1 >
-    - < ntp_server_2 >
-```
-
-#### Clock Timezone
-
-```yaml
-clock:
-  timezone: < timezone >
-```
-
-#### HTTP Management API
-
-```yaml
-management_api_http:
-  enable_http: < true | false >
-  enable_https: < true | false >
-  enable_vrfs:
-    < vrf_name_1 >:
-      access_group: < Standard IPv4 ACL name >
-      ipv6_access_group: < Standard IPv6 ACL name >
-    < vrf_name_2 >:
-```
-
-#### GNMI Management API
-
-```yaml
-management_api_gnmi:
-  enable_vrfs:
-    < vrf_name_1 >:
-      access_group: < Standard IPv4 ACL name >
-    < vrf_name_2 >:
-      access_group: < Standard IPv4 ACL name >
-  octa:
-```
-
-#### Management Console
-
-```yaml
-management_console:
-  idle_timeout: < 0-86400 in minutes >
-```
-
-#### Management Security
-
-```yaml
-management_security:
-  password:
-    encryption_key_common : < true | false >
-  entropy_source: < entropy_source >
-```
-
-#### Management SSH
-
-```yaml
-management_ssh:
-  access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
-      vrf: < vrf name >
-  ipv6_access_groups:
-    - name: < standard_acl_name_1 >:
-    - name: < standard_acl_name_2 >:
-      vrf: < vrf name >
-  idle_timeout: < 0-86400 in minutes >
-  cipher:
-    - < cipher1 >
-    - < cipher2 >
-  key-exchange:
-    - < method1 >
-    - < method2 >
-  mac:
-    - < mac_algorithm1 >
-    - < mac_algorithm2 >
-  hostkey:
-    server:
-      - < algorithm1 >
-      - < algorithm2 >
-  enable: < true | false >
-  vrfs:
-    < vrf_name_1 >:
-      enable: < true | false >
-    < vrf_name_2 >:
-      enable: < true | false >
-```
-
-### Banners
-
-```yaml
-banners:
-  login: |
-    < text ending with EOF >
-  motd: |
-    < text ending with EOF >
+aliases: |
+< list of alias commands in EOS CLI syntax >
 ```
 
 ### Authentication
-
-#### AAA Server Groups
-
-```yaml
-aaa_server_groups:
-  - name: < server_group_name >
-    type: < tacacs+ | radius | ldap >
-    servers:
-      - server: < server1_ip_address >
-        vrf: < vrf_name >
-      - server: < server1_ip_address >
-        vrf: < vrf_name >
-  - name: < server_group_name >
-    type: < tacacs+ | radius | ladp >
-    servers:
-      - server: < host1_ip_address >
-```
-
-#### Radius Servers
-
-```yaml
-radius_servers:
-  - host: < host IP address or name >
-    vrf: < vrf_name >
-    key: < encypted_key >
-```
-
-#### Tacacs+ Servers
-
-```yaml
-tacacs_servers:
-  hosts:
-    - host: < host1_ip_address >
-      vrf: < vrf_name >
-      key: < encypted_key >
-    - host: < host2_ip_address >
-      key: < encypted_key >
-  policy_unknown_mandatory_attribute_ignore: < true | false >
-```
-
-#### IP TACACS+ Source Interfaces
-
-```yaml
-ip_tacacs_source_interfaces:
-    - name: <interface_name_1 >
-      vrf: < vrf_name_1 >
-    - name: <interface_name_2 >
-```
 
 #### AAA Authentication
 
@@ -391,6 +279,39 @@ aaa_root:
   secret:
     sha512_password: "< sha_512_password >"
 ```
+#### AAA Server Groups
+
+```yaml
+aaa_server_groups:
+  - name: < server_group_name >
+    type: < tacacs+ | radius | ldap >
+    servers:
+      - server: < server1_ip_address >
+        vrf: < vrf_name >
+      - server: < server1_ip_address >
+        vrf: < vrf_name >
+  - name: < server_group_name >
+    type: < tacacs+ | radius | ladp >
+    servers:
+      - server: < host1_ip_address >
+```
+
+#### Enable Password
+
+```yaml
+enable_password:
+  hash_algorithm: < md5 | sha512 >
+  key: "< hashed_password >"
+```
+
+#### IP TACACS+ Source Interfaces
+
+```yaml
+ip_tacacs_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
+```
 
 #### Local Users
 
@@ -408,212 +329,193 @@ local_users:
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
 ```
 
-#### Enable Password
+#### Radius Servers
 
 ```yaml
-enable_password:
-  hash_algorithm: < md5 | sha512 >
-  key: "< hashed_password >"
+radius_servers:
+  - host: < host IP address or name >
+    vrf: < vrf_name >
+    key: < encypted_key >
 ```
 
-### Aliases
+#### Tacacs+ Servers
 
 ```yaml
-aliases: |
-< list of alias commands in EOS CLI syntax >
-```
-
-### Monitoring
-
-#### Daemon TerminAttr
-
-```yaml
-daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-      - < IPv4_address >
-      - < IPv4_address >
-      - < IPv4_address >
-    port: < port_id >
-  ingestauth_key: < ingest_key >
-  ingestvrf: < vrf_name >
-  smashexcludes: "< list as string >"
-  ingestexclude: "< list as string >"
-  disable_aaa: < false | true >
-```
-
-You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
-
-#### Logging
-
-```yaml
-logging:
-  console: < severity_level >
-  monitor: < severity_level >
-  buffered:
-    size: < messages_nb (minimum of 10) >
-    level: < severity_level >
-  trap: < severity_level >
-  format:
-    timestamp: < high-resolution | traditional >
-    hostname: < fqdn | ipv4 >
-    sequence_numbers: < true | false >
-  source_interface: < source_interface_name >
-  vrfs:
-    < vrf_name >:
-      source_interface: < source_interface_name >
-      hosts:
-        - < syslog_server_1>
-        - < syslog_server_2>
-```
-
-#### SNMP Settings
-
-```yaml
-snmp_server:
-  contact: < contact_name >
-  location: < location >
-  ipv4_acls:
-    - name: < ipv4-access-list >
-      vrf: < vrf >
-    - name: < ipv4-access-list >
-  ipv6_acls:
-    - name: < ipv6-access-list >
-      vrf: < vrf >
-    - name: < ipv6-access-list >
-  local_interfaces:
-    < interface_name_1 >:
-      vrf: < vrf_name >
-    < interface_name_2 >:
-    < interface_name_3 >:
-      vrf: < vrf_name >
-  views:
-    - name: < view_name >
-      MIB_family_name: < MIB_family_name >
-      included: < true | false >
-    - name: < view_name >
-      MIB_family_name: < MIB_family_name >
-      included: < true | false >
-  groups:
-    - name: < group_name >
-      version: < v1 | v2c | v3 >
-      authentication: < auth | noauth | priv >
-      read: < read_view >
-      write: < write_view >
-      notify: < notify_view >
-    - name: < group_name >
-      version: < v1 | v2c | v3 >
-      authentication: < auth | noauth | priv >
-      read: < read_view >
-  users:
-    - name: < username >
-      group: < group_name >
-      version: < v1 | v2c | v3 >
-      auth: < hash_algorithm >
-      auth_passphrase: < encrypted_auth_passphrase >
-      priv: < encryption_algorithm >
-      priv_passphrase: < encrypted_priv_passphrase >
-    - name: < username >
-      group: < group_name >
-      version: < v1 | v2c | v3 >
+tacacs_servers:
   hosts:
-    - host: < host IP address or name >
+    - host: < host1_ip_address >
       vrf: < vrf_name >
-      users:
-        - username: < username >
-          authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
-    - host: < host IP address or name >
-      vrf: < vrf_name >
-      users:
-        - username: < username >
-          authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
-  traps:
-    enable: < true | false >
-  vrfs:
-    - name: < vrf_name >
-      enable: < true | false >
-    - name: < vrf_name >
-      enable: < true | false >
+      key: < encypted_key >
+    - host: < host2_ip_address >
+      key: < encypted_key >
+  policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
-#### Sflow
+### Banners
 
 ```yaml
-sflow:
-  sample: < sample_rate >
-  dangerous: < true | false >
-  vrfs:
-    <vrf_name_1>:
-      destinations:
-        < sflow_destination_ip_1>:
-        < sflow_destination_ip_2>:
-          port: < port_number >
-      source_interface: < source_interface >
-    <vrf_name_2>:
-      destinations:
-        < sflow_destination_ip_1>:
-      source_interface: < source_interface >
-  destinations:
-    < sflow_destination_ip_1 >:
-    < sflow_destination_ip_2 >:
-  source_interface: < source_interface >
-  run: < true | false >
+banners:
+  login: |
+    < text ending with EOF >
+  motd: |
+    < text ending with EOF >
 ```
 
-#### VM Tracer Sessions
+### Bfd Multihop Interval
 
 ```yaml
-vmtracer_sessions:
-  < vmtracer_session_name_1 >:
-    url: < url >
-    username: < username >
-    password: "< encrypted_password >"
-    autovlan_disable: < true | false >
-    source_interface: < interface_name >
-  < vmtracer_session_name_2 >:
-    url: < url >
-    username: < username >
-    password: "< encrypted_password >"
+bfd_multihop:
+  interval: < rate in milliseconds >
+  min_rx: < rate in milliseconds >
+  multiplier: < 3-50 >
 ```
 
-#### Event Handler
+### Custom Templates
 
 ```yaml
-### Event Handler ###
-event_handlers:
-  evpn-blacklist-recovery:
-    action_type: < Type of action. [bash, increment, log]>
-    action: < Command to execute >
-    delay: < Event-handler delay in seconds >
-    trigger: < Configure event trigger condition. Only supports on-logging >
-    regex: < Regular expression to use for searching log messages. Required for on-logging trigger >
-    asynchronous: < Set the action to be non-blocking. if unset, default is False >
+custom_templates:
+  - < template 1 relative path below playbook directory >
+  - < template 2 relative path below playbook directory >
 ```
 
-#### Event Monitor
+### Errdisable
 
 ```yaml
-event_monitor:
-  enabled: < true | false >
+errdisable:
+  detect:
+    causes:
+      - acl
+      - arp-inspection
+      - dot1x
+      - link-change
+      - tapagg
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+  recovery:
+    causes:
+      - arp-inspection
+      - bpduguard
+      - dot1x
+      - hitless-reload-down
+      - lacp-rate-limit
+      - link-flap
+      - no-internal-vlan
+      - portchannelguard
+      - portsec
+      - speed-misconfigured
+      - tapagg
+      - uplink-failure-detection
+      - xcvr-misconfigured
+      - xcvr-overheat
+      - xcvr-power-unsupported
+      - xcvr-unsupported
+    interval: < seconds | default = 300 >
+```
+
+### Filters
+
+#### Prefix Lists
+
+```yaml
+prefix_lists:
+  < prefix_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < prefix_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+#### IPv6 Prefix Lists
+
+```yaml
+ipv6_prefix_lists:
+  < ipv6_prefix_list_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+      < sequence_id_2 >:
+        action: "< action as string >"
+  < ipv6_prefix_list_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+#### Community Lists
+
+```yaml
+community_lists:
+  < community_list_name_1 >:
+    action: "< action as string >"
+  < community_list_name_2 >:
+    action: "< action as string >"
+```
+
+#### IP Extended Community Lists
+
+```yaml
+ip_extcommunity_lists:
+  < community_list_name_1 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
+  < community_list_name_2 >:
+    - type: < permit | deny >
+      extcommunities: "< communities as string >"
+```
+
+#### Peer Filters
+
+```yaml
+peer_filters:
+  < peer_filter_name_1:
+    sequence_numbers:
+      < sequence_id_1 >:
+        match: "< match as string >"
+      < sequence_id_2 >:
+        match: "< match as string >"
+  < peer_filter_name_2:
+    sequence_numbers:
+      < sequence_id_1 >:
+        match: "< match as string >"
+```
+
+#### Route Maps
+
+```yaml
+route_maps:
+  < route_map_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        type: < permit | deny >
+        description: < description >
+        match:
+          - "< match rule 1 as string >"
+          - "< match rule 2 as string >"
+        set:
+          - "< set as string >"
+      < sequence_id_2 >:
+        type: < permit | deny >
+        match:
+          - "< match as string >"
+  < route_map_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        type: < permit | deny >
+        description: < description >
+        set:
+          - "< set rule 1 as string >"
+          - "< set rule 2 as string >"
 ```
 
 ### Hardware
 
 #### Hardware Counters
-
-#### Platform
-
-```yaml
-platform:
-  trident:
-    forwarding_table_partition: < partition >
-  sand:
-    lag:
-      hardware_only: < true | false >
-      mode: < mode | default -> 1024x16 >
-```
 
 ```yaml
 hardware_counters:
@@ -629,6 +531,18 @@ tcam_profile:
   - < tcam_profile >
 ```
 
+#### Platform
+
+```yaml
+platform:
+  trident:
+    forwarding_table_partition: < partition >
+  sand:
+    lag:
+      hardware_only: < true | false >
+      mode: < mode | default -> 1024x16 >
+```
+
 #### Redundancy
 
 ```yaml
@@ -636,100 +550,19 @@ Redundancy:
   protocol: < redundancy_protocol >
 ```
 
-### Multi-Chassis LAG - MLAG
+#### Speed-Group Settings
 
 ```yaml
-mlag_configuration:
-  domain_id: < domain_id_name >
-  local_interface: < interface_name >
-  peer_address: < IPv4_address >
-  peer_address_heartbeat:
-    peer_ip: < IPv4_address >
-    vrf: < vrf_name >
-  dual_primary_detection_delay: < seconds >
-  peer_link: < Port-Channel_id >
-  reload_delay_mlag: < seconds >
-  reload_delay_non_mlag: < seconds >
-```
-
-### Spanning Tree
-
-```yaml
-spanning_tree:
-  edge_port:
-    bpduguard_default: < true | false >
-  mode: < mstp | rstp | rapid-pvst | none >
-  rstp_priority: < priority >
-  mst:
-    pvst_border: < true | false >
-    configuration:
-      name: < name >
-      revision: < 0-65535 >
-      instances:
-        "< instance_id >":
-          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
-        "< instance_id >":
-          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
-  mst_instances:
-    "< instance_id >":
-      priority: < priority >
-    "< instance_id >":
-      priority: < priority >
-  no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
-  rapid_pvst_instances:
-    "< vlan_id >":
-      priority: < priority >
-    "< vlan_id >, < vlan_id >-< vlan_id >":
-      priority: < priority >
-```
-
-### Internal VLAN Allocation Policy
-
-```yaml
-vlan_internal_allocation_policy:
-  allocation: < ascending | descending >
-  range:
-    beginning: < vlan_id >
-    ending: < vlan_id >
-```
-
-### VLANs
-
-```yaml
-vlans:
-  < vlan_id >:
-    name: < vlan_name >
-    state: < active | suspend >
-    trunk_groups:
-      - < trunk_group_name_1 >
-      - < trunk_group_name_2 >
-  < vlan_id >:
-    name: < vlan_name >
-```
-
-### LLDP
-
-```yaml
-lldp:
-  timer: < transmission_time >
-  holdtime: < hold_time_period >
-  management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
-  vrf: < vrf_name >
-  run: < true | false >
+hardware:
+  speed_groups:
+    1:
+      serdes: <10g | 25g>
+    2:
+      serdes: <10g | 25g>
+    ...
 ```
 
 ### Interfaces
-
-#### Interface Defaults
-
-```yaml
-interface_defaults:
-  ethernet:
-    shutdown: < true | false >
-  mtu: < mtu >
-  switchport:
-    type: < routed | switched >
-```
 
 #### Ethernet Interfaces
 
@@ -859,6 +692,41 @@ ethernet_interfaces:
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
 ```
 
+#### Interface Defaults
+
+```yaml
+interface_defaults:
+  ethernet:
+    shutdown: < true | false >
+  mtu: < mtu >
+  switchport:
+    type: < routed | switched >
+```
+
+#### Loopback Interfaces
+
+```yaml
+loopback_interfaces:
+  < Loopback_interface_1 >:
+    description: < description >
+    shutdown: < true | false >
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+    ip_address_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
+    ipv6_enable: < true | false >
+    ipv6_address: < IPv6_address/Mask >
+    ospf_area: < ospf_area >
+  < Loopback_interface_2 >:
+    description: < description >
+    ip_address: < IPv4_address/Mask >
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
+```
+
 #### Port-Channel Interfaces
 
 ```yaml
@@ -929,30 +797,6 @@ port_channel_interfaces:
       ipv4:
         sparse_mode: < true | false >
     service_profile: < qos_profile >
-```
-
-#### Loopback Interfaces
-
-```yaml
-loopback_interfaces:
-  < Loopback_interface_1 >:
-    description: < description >
-    shutdown: < true | false >
-    vrf: < vrf_name >
-    ip_address: < IPv4_address/Mask >
-    ip_address_secondaries:
-      - < IPv4_address/Mask >
-      - < IPv4_address/Mask >
-    ipv6_enable: < true | false >
-    ipv6_address: < IPv6_address/Mask >
-    ospf_area: < ospf_area >
-  < Loopback_interface_2 >:
-    description: < description >
-    ip_address: < IPv4_address/Mask >
-    isis_enable: < ISIS Instance >
-    isis_passive: < boolean >
-    isis_metric: < integer >
-    isis_network_point_to_point: < boolean >
 ```
 
 #### VLAN Interfaces
@@ -1052,112 +896,532 @@ vxlan_tunnel_interface:
           vni: < vni_id_4 >
 ```
 
-### Filters
-
-#### Prefix Lists
+### Internal VLAN Allocation Policy
 
 ```yaml
-prefix_lists:
-  < prefix_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < prefix_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
+vlan_internal_allocation_policy:
+  allocation: < ascending | descending >
+  range:
+    beginning: < vlan_id >
+    ending: < vlan_id >
 ```
 
-#### IPv6 Prefix Lists
+### IP DHCP Relay
 
 ```yaml
-ipv6_prefix_lists:
-  < ipv6_prefix_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < ipv6_prefix_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
+ip_dhcp_relay:
+  information_option: < true | false >
+
 ```
 
-#### Community Lists
+### LLDP
 
 ```yaml
-community_lists:
-  < community_list_name_1 >:
-    action: "< action as string >"
-  < community_list_name_2 >:
-    action: "< action as string >"
+lldp:
+  timer: < transmission_time >
+  holdtime: < hold_time_period >
+  management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
+  vrf: < vrf_name >
+  run: < true | false >
 ```
 
-#### IP Extended Community Lists
+### MACsec
 
 ```yaml
-ip_extcommunity_lists:
-  < community_list_name_1 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
-  < community_list_name_2 >:
-    - type: < permit | deny >
-      extcommunities: "< communities as string >"
+mac_security:
+  license:
+    license_name: < license-name >
+    license_key: < license-number >
+  fips_restrictions: < true | false >
+  profiles:
+    < profile >:
+      cipher: < valid-cipher-string >
+      connection_keys:
+        "< connection_key >":
+          encrypted_key: "< encrypted_key >"
+          fallback: < true | false -> default >
 ```
 
-#### Route Maps
+### Management
+
+#### Clock Timezone
 
 ```yaml
-route_maps:
-  < route_map_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        type: < permit | deny >
-        description: < description >
-        match:
-          - "< match rule 1 as string >"
-          - "< match rule 2 as string >"
-        set:
-          - "< set as string >"
-      < sequence_id_2 >:
-        type: < permit | deny >
-        match:
-          - "< match as string >"
-  < route_map_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        type: < permit | deny >
-        description: < description >
-        set:
-          - "< set rule 1 as string >"
-          - "< set rule 2 as string >"
+clock:
+  timezone: < timezone >
 ```
 
-#### Peer Filters
+#### DNS Domain
 
 ```yaml
-peer_filters:
-  < peer_filter_name_1:
-    sequence_numbers:
-      < sequence_id_1 >:
-        match: "< match as string >"
-      < sequence_id_2 >:
-        match: "< match as string >"
-  < peer_filter_name_2:
-    sequence_numbers:
-      < sequence_id_1 >:
-        match: "< match as string >"
+dns_domain: < domain_name >
+```
+
+#### Domain Name Servers
+
+```yaml
+name_server:
+  source:
+    vrf: < vrf_name >
+  nodes:
+    - < name_server_1 >
+    - < name_server_2 >
+```
+
+#### Domain Lookup
+
+```yaml
+ip_domain_lookup:
+  source_interfaces:
+    < source_interface_1 >:
+      vrf: < vrf_name >
+```
+
+#### Domain-List
+
+```yaml
+domain_list:
+  - < domain_name_1 >
+  - < domain_name_2 >
+```
+
+#### Management Interfaces
+
+```yaml
+management_interfaces:
+  < Management_interface_1 >:
+    description: < description >
+    shutdown: < true | false >
+    vrf: < vrf_name >
+    ip_address: < IPv4_address/Mask >
+    ipv6_enable: < true | false >
+    ipv6_address: < IPv6_address/Mask >
+```
+
+#### Management HTTP
+
+```yaml
+management_api_http:
+  enable_http: < true | false >
+  enable_https: < true | false >
+  enable_vrfs:
+    < vrf_name_1 >:
+      access_group: < Standard IPv4 ACL name >
+      ipv6_access_group: < Standard IPv6 ACL name >
+    < vrf_name_2 >:
+```
+
+#### Management GNMI
+
+```yaml
+management_api_gnmi:
+  enable_vrfs:
+    < vrf_name_1 >:
+      access_group: < Standard IPv4 ACL name >
+    < vrf_name_2 >:
+      access_group: < Standard IPv4 ACL name >
+  octa:
+```
+
+#### Management Console
+
+```yaml
+management_console:
+  idle_timeout: < 0-86400 in minutes >
+```
+
+#### Management Security
+
+```yaml
+management_security:
+  password:
+    encryption_key_common : < true | false >
+  entropy_source: < entropy_source >
+```
+
+#### Management SSH
+
+```yaml
+management_ssh:
+  access_groups:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
+      vrf: < vrf name >
+  ipv6_access_groups:
+    - name: < standard_acl_name_1 >:
+    - name: < standard_acl_name_2 >:
+      vrf: < vrf name >
+  idle_timeout: < 0-86400 in minutes >
+  cipher:
+    - < cipher1 >
+    - < cipher2 >
+  key-exchange:
+    - < method1 >
+    - < method2 >
+  mac:
+    - < mac_algorithm1 >
+    - < mac_algorithm2 >
+  hostkey:
+    server:
+      - < algorithm1 >
+      - < algorithm2 >
+  enable: < true | false >
+  vrfs:
+    < vrf_name_1 >:
+      enable: < true | false >
+    < vrf_name_2 >:
+      enable: < true | false >
+```
+
+#### NTP Servers
+
+```yaml
+ntp_server:
+  local_interface:
+    vrf: < vrf_name >
+    interface: < source_interface >
+  nodes:
+    - < ntp_server_1 >
+    - < ntp_server_2 >
+```
+
+### Multi-Chassis LAG - MLAG
+
+```yaml
+mlag_configuration:
+  domain_id: < domain_id_name >
+  local_interface: < interface_name >
+  peer_address: < IPv4_address >
+  peer_address_heartbeat:
+    peer_ip: < IPv4_address >
+    vrf: < vrf_name >
+  dual_primary_detection_delay: < seconds >
+  peer_link: < Port-Channel_id >
+  reload_delay_mlag: < seconds >
+  reload_delay_non_mlag: < seconds >
+```
+
+### Multicast
+
+#### IP IGMP Snooping
+
+```yaml
+ip_igmp_snooping:
+  globally_enabled: < true | false (default is true) >
+  vlans:
+    < vlan_id >:
+      enabled: < true | false >
+```
+
+`globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
+
+#### Router Multicast
+
+```yaml
+router_multicast:
+  ipv4:
+    routing: < true | false >
+```
+
+#### Routing PIM Sparse Mode
+
+```yaml
+router_pim_sparse_mode:
+  ipv4:
+    rp_addresses:
+      < rp_address_1 >:
+        groups:
+          < group_prefix_1/mask > :
+          < group_prefix_2/mask > :
+      < rp_address_2 >:
+    anycast_rps:
+      < anycast_rp_address_1 > :
+        other_anycast_rp_addresses:
+          < ip_address_other_anycast_rp_1 >:
+            register_count: < register_count_nb >
+```
+
+### Monitoring
+
+#### Daemon TerminAttr
+
+```yaml
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+      - < IPv4_address >
+      - < IPv4_address >
+      - < IPv4_address >
+    port: < port_id >
+  ingestauth_key: < ingest_key >
+  ingestvrf: < vrf_name >
+  smashexcludes: "< list as string >"
+  ingestexclude: "< list as string >"
+  disable_aaa: < false | true >
+```
+
+You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
+#### Event Handler
+
+```yaml
+### Event Handler ###
+event_handlers:
+  evpn-blacklist-recovery:
+    action_type: < Type of action. [bash, increment, log]>
+    action: < Command to execute >
+    delay: < Event-handler delay in seconds >
+    trigger: < Configure event trigger condition. Only supports on-logging >
+    regex: < Regular expression to use for searching log messages. Required for on-logging trigger >
+    asynchronous: < Set the action to be non-blocking. if unset, default is False >
+```
+
+#### Event Monitor
+
+```yaml
+event_monitor:
+  enabled: < true | false >
+```
+
+#### Load Interval
+
+```yaml
+load_interval:
+  default: < seconds >
+
+```
+
+#### Logging
+
+```yaml
+logging:
+  console: < severity_level >
+  monitor: < severity_level >
+  buffered:
+    size: < messages_nb (minimum of 10) >
+    level: < severity_level >
+  trap: < severity_level >
+  format:
+    timestamp: < high-resolution | traditional >
+    hostname: < fqdn | ipv4 >
+    sequence_numbers: < true | false >
+  source_interface: < source_interface_name >
+  vrfs:
+    < vrf_name >:
+      source_interface: < source_interface_name >
+      hosts:
+        - < syslog_server_1>
+        - < syslog_server_2>
+```
+
+#### Sflow
+
+```yaml
+sflow:
+  sample: < sample_rate >
+  dangerous: < true | false >
+  vrfs:
+    <vrf_name_1>:
+      destinations:
+        < sflow_destination_ip_1>:
+        < sflow_destination_ip_2>:
+          port: < port_number >
+      source_interface: < source_interface >
+    <vrf_name_2>:
+      destinations:
+        < sflow_destination_ip_1>:
+      source_interface: < source_interface >
+  destinations:
+    < sflow_destination_ip_1 >:
+    < sflow_destination_ip_2 >:
+  source_interface: < source_interface >
+  run: < true | false >
+```
+
+#### SNMP Settings
+
+```yaml
+snmp_server:
+  contact: < contact_name >
+  location: < location >
+  ipv4_acls:
+    - name: < ipv4-access-list >
+      vrf: < vrf >
+    - name: < ipv4-access-list >
+  ipv6_acls:
+    - name: < ipv6-access-list >
+      vrf: < vrf >
+    - name: < ipv6-access-list >
+  local_interfaces:
+    < interface_name_1 >:
+      vrf: < vrf_name >
+    < interface_name_2 >:
+    < interface_name_3 >:
+      vrf: < vrf_name >
+  views:
+    - name: < view_name >
+      MIB_family_name: < MIB_family_name >
+      included: < true | false >
+    - name: < view_name >
+      MIB_family_name: < MIB_family_name >
+      included: < true | false >
+  groups:
+    - name: < group_name >
+      version: < v1 | v2c | v3 >
+      authentication: < auth | noauth | priv >
+      read: < read_view >
+      write: < write_view >
+      notify: < notify_view >
+    - name: < group_name >
+      version: < v1 | v2c | v3 >
+      authentication: < auth | noauth | priv >
+      read: < read_view >
+  users:
+    - name: < username >
+      group: < group_name >
+      version: < v1 | v2c | v3 >
+      auth: < hash_algorithm >
+      auth_passphrase: < encrypted_auth_passphrase >
+      priv: < encryption_algorithm >
+      priv_passphrase: < encrypted_priv_passphrase >
+    - name: < username >
+      group: < group_name >
+      version: < v1 | v2c | v3 >
+  hosts:
+    - host: < host IP address or name >
+      vrf: < vrf_name >
+      users:
+        - username: < username >
+          authentication_level: < auth | noauth | priv >
+          version: < 1 | 2c | 3 >
+    - host: < host IP address or name >
+      vrf: < vrf_name >
+      users:
+        - username: < username >
+          authentication_level: < auth | noauth | priv >
+          version: < 1 | 2c | 3 >
+  traps:
+    enable: < true | false >
+  vrfs:
+    - name: < vrf_name >
+      enable: < true | false >
+    - name: < vrf_name >
+      enable: < true | false >
+```
+
+#### VM Tracer Sessions
+
+```yaml
+vmtracer_sessions:
+  < vmtracer_session_name_1 >:
+    url: < url >
+    username: < username >
+    password: "< encrypted_password >"
+    autovlan_disable: < true | false >
+    source_interface: < interface_name >
+  < vmtracer_session_name_2 >:
+    url: < url >
+    username: < username >
+    password: "< encrypted_password >"
+```
+
+### PTP
+
+```yaml
+ptp:
+  clock_identity: < clock-id >
+  source:
+    ip: < source-ip>
+  priority1: < priority1 >
+  priority2: < priority2 >
+  ttl: < ttl >
+  domain: < integer >
+  message_type:
+    general:
+      dscp: < dscp-value >
+    event:
+      dscp: < dscp-Value >
+```
+
+### Quality of Services
+
+#### QOS
+
+```yaml
+qos:
+  map:
+    cos:
+      - "< cos_mapping_to_tc >"
+      - "< cos_mapping_to_tc >"
+    dscp:
+      - "< dscp_mapping_to_tc >"
+      - "< dscp_mapping_to_tc >"
+    traffic_class:
+      - "< tc_mapping_to_cos >"
+      - "< tc_mapping_to_dscp >"
+      - "< tc_mapping_to_tx_queue >"
+  rewrite_dscp: < true | false >
+```
+
+#### QOS Profiles
+
+```yaml
+qos_profiles:
+  < profile-1 >:
+    trust: < dscp | cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+  < profile-2 >:
+    trust: < dscp | cos >
+    cos: < cos-value >
+    dscp: < dscp-value >
+    tx-queues:
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+      < tx-queue-id >:
+        bandwidth_percent: < value >
+        priority: < string >
+```
+
+#### Queue Monitor Length
+
+```yaml
+queue_monitor_length:
+  log: < seconds >
+  notifying: < true | false >
+```
+
+#### Queue Monitor Streaming
+
+```yaml
+queue_monitor_streaming:
+  enable: < true | false >
+  vrf: < vrf_name >
 ```
 
 ### Routing
 
-### Service Routing Protocols Model
+#### ARP
 
 ```yaml
-service_routing_protocols_model: < multi-agent | ribd >
+arp:
+  aging:
+    timeout_default: < timeout-in-seconds >
+```
+
+#### MAC Address-table
+
+```yaml
+mac_address_table:
+  aging_time: < aging_time_in_seconds >
 ```
 
 #### Router Virtual MAC Address
@@ -1176,46 +1440,6 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
-```
-
-#### ARP
-
-```yaml
-arp:
-  aging:
-    timeout_default: < timeout-in-seconds >
-```
-
-#### Static Routes
-
-```yaml
-static_routes:
-  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
-    destination_address_prefix: < IPv4_network/Mask >
-    interface: < interface >
-    gateway: < IPv4_address >
-    distance: < 1-255 >
-    tag: < 0-4294967295 >
-    name: < description >
-    metric: < 0-4294967295 >
-  - destination_address_prefix: < IPv4_network/Mask >
-    gateway: < IPv4_address >
-```
-
-#### IPv6 Static Routes
-
-```yaml
-ipv6_static_routes:
-  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
-    destination_address_prefix: < IPv6_network/Mask >
-    interface: < interface >
-    gateway: < IPv6_address >
-    distance: < 1-255 >
-    tag: < 0-4294967295 >
-    name: < description >
-    metric: < 0-4294967295 >
-  - destination_address_prefix: < IPv6_network/Mask >
-    gateway: < IPv6_address >
 ```
 
 #### Router BGP Configuration
@@ -1520,161 +1744,45 @@ router_isis:
       - maximum-paths < Integer 1-64 >
 ```
 
-### Multicast
-
-#### Router Multicast
+#### Service Routing Protocols Model
 
 ```yaml
-router_multicast:
-  ipv4:
-    routing: < true | false >
+service_routing_protocols_model: < multi-agent | ribd >
 ```
 
-#### Routing PIM Sparse Mode
+#### Static Routes
 
 ```yaml
-router_pim_sparse_mode:
-  ipv4:
-    rp_addresses:
-      < rp_address_1 >:
-        groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
-      < rp_address_2 >:
-    anycast_rps:
-      < anycast_rp_address_1 > :
-        other_anycast_rp_addresses:
-          < ip_address_other_anycast_rp_1 >:
-            register_count: < register_count_nb >
+static_routes:
+  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
+    destination_address_prefix: < IPv4_network/Mask >
+    interface: < interface >
+    gateway: < IPv4_address >
+    distance: < 1-255 >
+    tag: < 0-4294967295 >
+    name: < description >
+    metric: < 0-4294967295 >
+  - destination_address_prefix: < IPv4_network/Mask >
+    gateway: < IPv4_address >
 ```
 
-### IP IGMP Snooping
+#### IPv6 Static Routes
 
 ```yaml
-ip_igmp_snooping:
-  globally_enabled: < true | false (default is true) >
-  vlans:
-    < vlan_id >:
-      enabled: < true | false >
+ipv6_static_routes:
+  - vrf: < vrf_name, if vrf_name = default the route will be placed in the GRT >
+    destination_address_prefix: < IPv6_network/Mask >
+    interface: < interface >
+    gateway: < IPv6_address >
+    distance: < 1-255 >
+    tag: < 0-4294967295 >
+    name: < description >
+    metric: < 0-4294967295 >
+  - destination_address_prefix: < IPv6_network/Mask >
+    gateway: < IPv6_address >
 ```
 
-`globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
-
-### ACLs
-
-#### IP Extended Access-Lists
-
-```yaml
-access_lists:
-  < access_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < access_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-```
-
-#### IP Standard Access-Lists
-
-```yaml
-standard_access_lists:
-  < access_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < access_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-```
-
-#### IPv6 Extended Access-Lists
-
-```yaml
-ipv6_access_lists:
-  < ipv6_access_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < ipv6_access_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-```
-
-#### IPv6 Standard Access-Lists
-
-```yaml
-ipv6_standard_access_lists:
-  < ipv6_access_list_name_1 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-      < sequence_id_2 >:
-        action: "< action as string >"
-  < ipv6_access_list_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action as string >"
-```
-
-### Quality of Services
-
-#### QOS
-
-```yaml
-qos:
-  map:
-    cos:
-      - "< cos_mapping_to_tc >"
-      - "< cos_mapping_to_tc >"
-    dscp:
-      - "< dscp_mapping_to_tc >"
-      - "< dscp_mapping_to_tc >"
-    traffic_class:
-      - "< tc_mapping_to_cos >"
-      - "< tc_mapping_to_dscp >"
-      - "< tc_mapping_to_tx_queue >"
-  rewrite_dscp: < true | false >
-```
-
-#### QOS Profiles
-
-```yaml
-qos_profiles:
-  < profile-1 >:
-    trust: < dscp | cos >
-    cos: < cos-value >
-    dscp: < dscp-value >
-    tx-queues:
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-  < profile-2 >:
-    trust: < dscp | cos >
-    cos: < cos-value >
-    dscp: < dscp-value >
-    tx-queues:
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-```
-
-### VRF Instances
+#### VRF Instances
 
 ```yaml
 vrfs:
@@ -1688,13 +1796,54 @@ vrfs:
     ipv6_routing: < true | false >
 ```
 
-### Bfd Multihop Interval
+### Router L2 VPN
 
 ```yaml
-bfd_multihop:
-  interval: < rate in milliseconds >
-  min_rx: < rate in milliseconds >
-  multiplier: < 3-50 >
+router_l2_vpn:
+  nd_rs_flooding_disabled: < true | false >
+  virtual_router_nd_ra_flooding_disabled: < true | false >
+  arp_selective_install: < true | false >
+  arp_proxy:
+    prefix_list: < prefix_list_name >
+```
+
+### Spanning Tree
+
+```yaml
+spanning_tree:
+  edge_port:
+    bpduguard_default: < true | false >
+  mode: < mstp | rstp | rapid-pvst | none >
+  rstp_priority: < priority >
+  mst:
+    pvst_border: < true | false >
+    configuration:
+      name: < name >
+      revision: < 0-65535 >
+      instances:
+        "< instance_id >":
+          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
+        "< instance_id >":
+          vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
+  mst_instances:
+    "< instance_id >":
+      priority: < priority >
+    "< instance_id >":
+      priority: < priority >
+  no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
+  rapid_pvst_instances:
+    "< vlan_id >":
+      priority: < priority >
+    "< vlan_id >, < vlan_id >-< vlan_id >":
+      priority: < priority >
+```
+
+### Terminal Settings
+
+```yaml
+terminal:
+  length: < 0-32767 >
+  width: < 0-32767 >
 ```
 
 ### Virtual Source NAT
@@ -1707,101 +1856,18 @@ virtual_source_nat_vrfs:
     ip_address: < IPv4_address >
 ```
 
-### Router L2 VPN
+### VLANs
 
 ```yaml
-router_l2_vpn:
-  nd_rs_flooding_disabled: < true | false >
-  virtual_router_nd_ra_flooding_disabled: < true | false >
-  arp_selective_install: < true | false >
-  arp_proxy:
-    prefix_list: < prefix_list_name >
-```
-
-### IP DHCP Relay
-
-```yaml
-ip_dhcp_relay:
-  information_option: < true | false >
-
-```
-
-### Errdisable
-
-```yaml
-errdisable:
-  detect:
-    causes:
-      - acl
-      - arp-inspection
-      - dot1x
-      - link-change
-      - tapagg
-      - xcvr-misconfigured
-      - xcvr-overheat
-      - xcvr-power-unsupported
-  recovery:
-    causes:
-      - arp-inspection
-      - bpduguard
-      - dot1x
-      - hitless-reload-down
-      - lacp-rate-limit
-      - link-flap
-      - no-internal-vlan
-      - portchannelguard
-      - portsec
-      - speed-misconfigured
-      - tapagg
-      - uplink-failure-detection
-      - xcvr-misconfigured
-      - xcvr-overheat
-      - xcvr-power-unsupported
-      - xcvr-unsupported
-    interval: < seconds | default = 300 >
-```
-
-### MACsec
-
-```yaml
-mac_security:
-  license:
-    license_name: < license-name >
-    license_key: < license-number >
-  fips_restrictions: < true | false >
-  profiles:
-    < profile >:
-      cipher: < valid-cipher-string >
-      connection_keys:
-        "< connection_key >":
-          encrypted_key: "< encrypted_key >"
-          fallback: < true | false -> default >
-```
-
-### PTP
-
-```yaml
-ptp:
-  clock_identity: < clock-id >
-  source:
-    ip: < source-ip>
-  priority1: < priority1 >
-  priority2: < priority2 >
-  ttl: < ttl >
-  domain: < integer >
-  message_type:
-    general:
-      dscp: < dscp-value >
-    event:
-      dscp: < dscp-Value >
-```
-
-### Custom Templates
-
-```yaml
-custom_templates:
-  - < template 1 relative path below playbook directory >
-  - < template 2 relative path below playbook directory >
+vlans:
+  < vlan_id >:
+    name: < vlan_name >
+    state: < active | suspend >
+    trunk_groups:
+      - < trunk_group_name_1 >
+      - < trunk_group_name_2 >
+  < vlan_id >:
+    name: < vlan_name >
 ```
 
 ## License
