@@ -369,7 +369,7 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.16/32
       rp address 10.238.1.161 239.12.12.20/32
       rp address 10.238.1.161 239.12.12.21/32
-      anycast-rp 10.38.1.161 10.50.64.16 register-count 15 
+      anycast-rp 10.38.1.161 10.50.64.16 register-count 15
 ```
 
 # Filters
