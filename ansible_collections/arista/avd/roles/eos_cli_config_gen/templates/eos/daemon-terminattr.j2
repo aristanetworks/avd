@@ -23,7 +23,22 @@ daemon TerminAttr
 {%                 set cvp_config.cli = cvp_config.cli ~ "," %}
 {%             endif %}
 {%         endfor %}
-{%         set cvp_config.cli = cvp_config.cli ~ " -cvcompression=gzip -ingestauth=key," ~ daemon_terminattr.ingestauth_key ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvcompression=gzip" %}
+{%         if daemon_terminattr.ingestauth_key is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestauth=key," ~ daemon_terminattr.ingestauth_key %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestauth=key," %}
+{%         endif %}
+{%         if daemon_terminattr.smashexcludes is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" %}
+{%         endif %}
+{%         if daemon_terminattr.ingestexclude is arista.avd.defined %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" %}
+{%         endif %}
 {%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
 {%             if daemon_terminattr.ingestvrf != 'default' %}
 {%                 set cvp_config.cli = cvp_config.cli ~ " -ingestvrf=" ~ daemon_terminattr.ingestvrf %}
@@ -42,7 +57,17 @@ daemon TerminAttr
 {%                 set cvp_config.cli = cvp_config.cli ~ "," %}
 {%             endif %}
 {%         endfor %}
-{%         set cvp_config.cli = cvp_config.cli ~ " -cvcompression=gzip -taillogs -cvauth=token-secure,/tmp/cv-onboarding-token -smashexcludes=" ~ daemon_terminattr.smashexcludes ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
+{%         set cvp_config.cli = cvp_config.cli ~ " -cvcompression=gzip -taillogs -cvauth=token-secure,/tmp/cv-onboarding-token" %}
+{%         if daemon_terminattr.smashexcludes is arista.avd.defined() %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" %}
+{%         endif %}
+{%         if daemon_terminattr.ingestexclude is arista.avd.defined() %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
+{%         else %}
+{%             set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" %}
+{%         endif %}
 {%         if daemon_terminattr.ingestvrf is arista.avd.defined() %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvvrf=" ~ daemon_terminattr.ingestvrf %}
 {%         endif %}

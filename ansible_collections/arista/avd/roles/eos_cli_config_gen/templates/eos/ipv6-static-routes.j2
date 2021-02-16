@@ -14,7 +14,7 @@
 {%         if ipv6_static_route.interface is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.interface | capitalize %}
 {%         endif %}
-{%         if ipv6_static_route.gateway is arista.avd.defined and (ipv6_static_route.interface is not arista.avd.defined or ipv6_static_route.interface | capitalize != 'Null0')%}{#Checking if Gateway is defined and Interface is not defined or Interface is null0. In this case, no gateway is needed.#}
+{%         if ipv6_static_route.gateway is arista.avd.defined and (ipv6_static_route.interface is not arista.avd.defined or ipv6_static_route.interface | capitalize != 'Null0')%}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.gateway %}
 {%         endif %}
 {%         if ipv6_static_route.distance is arista.avd.defined %}

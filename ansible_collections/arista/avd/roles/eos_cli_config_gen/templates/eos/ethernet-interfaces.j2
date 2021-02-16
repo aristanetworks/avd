@@ -38,15 +38,15 @@ interface {{ ethernet_interface }}
    switchport access vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined('trunk') %}
-{%                if ethernet_interfaces[ethernet_interface].vlans is arista.avd.defined %}
+{%                 if ethernet_interfaces[ethernet_interface].vlans is arista.avd.defined %}
    switchport trunk allowed vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
-{%                endif %}
-{%                if ethernet_interfaces[ethernet_interface].native_vlan is arista.avd.defined %}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
-{%                endif %}
-{%                if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined %}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
-{%                endif %}
+{%                 endif %}
 {%             endif %}
 {%             if ethernet_interfaces[ethernet_interface].trunk_groups is arista.avd.defined %}
 {%                 for  trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
