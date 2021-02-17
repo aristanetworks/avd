@@ -271,9 +271,11 @@ No loopback interfaces defined
 | Vlan83 |  SVI Description  |  default  |  -  |  false  |
 | Vlan84 |  SVI Description  |  default  |  -  |  -  |
 | Vlan85 |  SVI Description  |  default  |  -  |  -  |
+| Vlan86 |  SVI Description  |  default  |  -  |  -  |
 | Vlan87 |  SVI Description  |  default  |  -  |  true  |
 | Vlan88 |  SVI Description  |  default  |  -  |  true  |
 | Vlan89 |  SVI Description  |  default  |  -  |  false  |
+| Vlan90 |  SVI Description  |  default  |  -  |  -  |
 | Vlan501 |  SVI Description  |  default  |  -  |  false  |
 | Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
 | Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
@@ -292,9 +294,11 @@ No loopback interfaces defined
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
 | Vlan84 |  default  |  -  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |
 | Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
 | Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
+| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
@@ -332,9 +336,9 @@ interface Vlan41
    description SVI Description
    no shutdown
    ip address virtual 10.10.41.1/24
-   ip helper-address 10.10.64.150  source-interface Loopback0
-   ip helper-address 10.10.96.150  source-interface Loopback0
-   ip helper-address 10.10.96.151  source-interface Loopback0
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
 !
 interface Vlan42
    description SVI Description
@@ -363,6 +367,11 @@ interface Vlan85
    description SVI Description
    ip address 10.10.84.1/24
 !
+interface Vlan86
+   description SVI Description
+   ip address 10.10.83.1/24
+   ip attached-host route export 10
+!
 interface Vlan87
    description SVI Description
    shutdown
@@ -386,6 +395,11 @@ interface Vlan89
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
+!
+interface Vlan90
+   description SVI Description
+   ip address 10.10.83.1/24
+   ip attached-host route export
 !
 interface Vlan501
    description SVI Description
