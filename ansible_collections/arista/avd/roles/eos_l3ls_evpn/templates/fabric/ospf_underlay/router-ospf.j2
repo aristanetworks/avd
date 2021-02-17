@@ -26,6 +26,9 @@
 {%                 endfor %}
 {%             endfor %}
 {%         endfor %}
+{%         for l3_edge_ospf_interface in switch.l3_edge_ospf_interfaces | arista.avd.natural_sort %}
+        - {{ l3_edge_ospf_interface }}
+{%         endfor %}
 {%     endif %}
 {%     if type == "l3leaf" %}
       router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
@@ -36,6 +39,9 @@
 {%         if leaf.mlag == true %}
         - Vlan4093
 {%         endif %}
+{%         for l3_edge_ospf_interface in switch.l3_edge_ospf_interfaces | arista.avd.natural_sort %}
+        - {{ l3_edge_ospf_interface }}
+{%         endfor %}
 {%     endif %}
 {%     if underlay_ospf_bfd_enable is defined and underlay_ospf_bfd_enable %}
       bfd_enable: true

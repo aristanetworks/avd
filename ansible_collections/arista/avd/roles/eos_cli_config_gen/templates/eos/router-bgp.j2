@@ -81,6 +81,9 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.neighbors[neighbor].shutdown is defined and router_bgp.neighbors[neighbor].shutdown == true %}
    neighbor {{ neighbor }} shutdown
 {%             endif %}
+{%             if router_bgp.neighbors[neighbor].local_as is arista.avd.defined %}
+   neighbor {{ neighbor }} local-as {{ router_bgp.neighbors[neighbor].local_as }} no-prepend replace-as
+{%             endif %}
 {%             if router_bgp.neighbors[neighbor].description is defined and router_bgp.neighbors[neighbor].description is not none %}
    neighbor {{ neighbor }} description {{ router_bgp.neighbors[neighbor].description }}
 {%             endif %}
