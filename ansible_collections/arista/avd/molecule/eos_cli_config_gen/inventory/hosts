@@ -49,5 +49,7 @@ terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
 vlan-interfaces
+virtual-source-nat
+vlan-internal-order
 vlans
 vrfs
