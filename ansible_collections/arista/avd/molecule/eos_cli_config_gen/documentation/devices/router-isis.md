@@ -388,6 +388,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   mtu 1500
    no autostate
    ip address 10.255.252.0/31
 ```

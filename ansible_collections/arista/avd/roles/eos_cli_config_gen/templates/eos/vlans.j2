@@ -1,16 +1,14 @@
 {# eos - VLANs #}
-{% if vlans is defined and vlans is not none %}
-{%     for vlan in vlans | arista.avd.natural_sort %}
+{% for vlan in vlans | arista.avd.natural_sort %}
 !
 vlan {{ vlan }}
+{%     if vlans[vlan].name is arista.avd.defined %}
    name {{ vlans[vlan].name }}
-{%         if vlans[vlan].state is defined and vlans[vlan].state == "suspend" %}
+{%     endif %}
+{%     if vlans[vlan].state is arista.avd.defined %}
    state {{ vlans[vlan].state }}
-{%         endif %}
-{%         if vlans[vlan].trunk_groups is defined %}
-{%             for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
+{%     endif %}
+{%     for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
    trunk group {{ trunk_group }}
-{%             endfor %}
-{%         endif %}
 {%     endfor %}
-{% endif %}
+{% endfor %}

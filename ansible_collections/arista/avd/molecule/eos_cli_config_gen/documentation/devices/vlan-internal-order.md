@@ -1,4 +1,4 @@
-# router-ospf
+# vlan-internal-order
 
 # Table of Contents
 
@@ -230,11 +230,16 @@ Spanning-tree not defined
 
 ## Internal VLAN Allocation Policy Summary
 
-**Default Allocation Policy**
-
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
+| ascending | 10 | 40 |
+
+## Internal VLAN Allocation Policy Configuration
+
+```eos
+!
+vlan internal order ascending range 10 40
+```
 
 # VLANs
 
@@ -306,42 +311,7 @@ Global ARP timeout not defined.
 
 ## Router OSPF
 
-### Router OSPF Summary
-
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
-| 100 | 192.168.255.3 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Vlan4093 <br>|   enabled   | 12000 |   enabled   |  disabled |
-| 200 | 192.168.254.1 |  disabled   |  - |   disabled   | 5 |   Always    |   enabled |
-
-### Router OSPF Router Redistribution
-
-| Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
-| ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
-| 100 |  enabled | - |  enabled | - || 200 |  enabled | rm-ospf-connected |  enabled | rm-ospf-static |
-### Router OSPF Device Configuration
-
-```eos
-!
-router ospf 100
-   router-id 192.168.255.3
-   passive-interface default
-   no passive-interface Ethernet1
-   no passive-interface Ethernet2
-   no passive-interface Vlan4093
-   bfd default
-   max-lsa 12000
-   default-information originate
-   redistribute static
-   redistribute connected
-!
-router ospf 200 vrf ospf_zone
-   log-adjacency-changes detail
-   router-id 192.168.254.1
-   max-lsa 5
-   default-information originate always
-   redistribute static route-map rm-ospf-static
-   redistribute connected route-map rm-ospf-connected
-```
+Router OSPF not defined
 
 ## Router ISIS
 
