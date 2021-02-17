@@ -23,13 +23,14 @@
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
     - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
-  - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
+  - [Role Enhancements for Super Spine Support](#role-enhancements-for-super-spine-support)
     - [Inventory Structure](#inventory-structure)
     - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
-  - [Role Enchancements for dedicated Overlay Controllers](#role-enchancements-for-dedicated-overlay-controllers)
+  - [Role Enhancements for dedicated Overlay Controllers](#role-enhancements-for-dedicated-overlay-controllers)
     - [Inventory Structure](#inventory-structure-1)
     - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
   - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
+  - [DCI / L3 Edge](#dci--l3-edge)
   - [License](#license)
 
 ## Overview
@@ -171,7 +172,7 @@ mac_address_table:
   aging_time: < time_in_seconds >
 ```
 
-> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise CloudVision cluster or either use DNS name for your CloudVision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
 
 **Example:**
 
@@ -266,7 +267,7 @@ mac_address_table:
 #
 # Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
 fabric_name: < Fabric_Name >
-# DC Name, required to match Ansible Group name convering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+# DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
 dc_name: < DC_Name >
 # POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
 # Recommended be common between Spines, Leafs within a POD (One l3ls topology)
@@ -631,7 +632,7 @@ l3leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
@@ -775,7 +776,7 @@ l2leaf:
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
       # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
@@ -794,7 +795,7 @@ l2leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
@@ -1556,7 +1557,7 @@ servers:
 
 Role [`eos_config_deploy_cvp`](../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
 
-This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on Cloudvision as current role does not upload additional containers.
+This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on CloudVision as current role does not upload additional containers.
 
 To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../eos_config_deploy_cvp/README.md#add-additional-configlets)
 
@@ -1687,11 +1688,11 @@ bfd_multihop:
   multiplier: 3
 ```
 
-## Role Enchancements for Super Spine Support
+## Role Enhancements for Super Spine Support
 
-The enchancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
+The enhancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
-The logic to deploy every leaf-spine POD fabric remains unchanged. The enchancement only adds logic required to provision spine-to-super-spine fabric.
+The logic to deploy every leaf-spine POD fabric remains unchanged. The enhancement only adds logic required to provision spine-to-super-spine fabric.
 Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 Current AVD release supports single plane deployment only.
 
@@ -1800,7 +1801,7 @@ Following variables must be now defined on DC and not POD level:
 - `p2p_uplinks_mtu`
 - `bgp_peer_groups`
 
-## Role Enchancements for dedicated Overlay Controllers
+## Role Enhancements for dedicated Overlay Controllers
 
 This enhancement will allow support for dedicated Overlay Controllers connected to fabric nodes.
 Overlay Controllers can be connected to any other device type.
