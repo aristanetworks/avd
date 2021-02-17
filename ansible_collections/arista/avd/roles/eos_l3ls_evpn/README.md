@@ -14,6 +14,7 @@
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
+    - [DCI / L3 Edge](#dci--l3-edge)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
@@ -22,7 +23,6 @@
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
-    - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [Role Enhancements for Super Spine Support](#role-enhancements-for-super-spine-support)
     - [Inventory Structure](#inventory-structure)
     - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
@@ -30,7 +30,7 @@
     - [Inventory Structure](#inventory-structure-1)
     - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
   - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
-  - [DCI / L3 Edge](#dci--l3-edge)
+  - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
 ## Overview
@@ -873,6 +873,63 @@ l2leaf:
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
 ```
 
+### DCI / L3 Edge
+
+The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+Make sure to configure the variables in a group_var file covering all devices mentioned in the data model.
+
+```yaml
+l3_edge:
+  p2p_links_ip_pools:
+    < p2p_pool_name_1 >: < IPv4_address/Mask >
+  p2p_profiles:
+    < p2p_profile_name >:
+      < any variable supported under p2p_links can be inherited from a profile >
+  p2p_links:
+      # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
+    - id: < integer - starting from 1 >
+
+      # Speed | Optional
+      speed: < speed | auto speed | forced speed >
+
+      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip_pool: < p2p_pool_name >
+
+      # Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      subnet: < IPv4_address/Mask >
+
+      # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
+
+      # Nodes where this link should be configured | Required
+      nodes: [ < node_a >, < node_b > ]
+
+      # Interfaces where this link should be configured | Required
+      interfaces: [ < node_a_interface >, < node_b_interface > ]
+
+      # AS Numbers for BGP | Required with bgp peering
+      as: [ < node_a_as >, < node_b_as > ]
+
+      # Add this interface to underlay routing protocol | Optional
+      include_in_underlay_protocol: < true | false | default -> false >
+
+      # MTU for this P2P link | Optional
+      mtu: < number | default -> same as p2p_uplinks_mtu >
+
+      # Enable BFD (only considered for BGP) | Optional
+      bfd: < true | false | default -> false >
+
+      # QOS Service Profile | Optional
+      qos_profile: < qos_profile_name >
+
+      # Profile defined under p2p_profiles | Optional
+      profile: < p2p_profile_name >
+```
+
 ### Network Services Variables - VRFs/VLANs
 
 - The network services variables provide an abstracted model to create L2 and L3 network services across the fabric.
@@ -1649,45 +1706,6 @@ note: Recommended default values for Jericho based platform, and all other platf
 #       non_mlag: 1020
 ```
 
-### vEOS-LAB Know Caveats and Recommendations
-
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
-- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
-- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
-- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
-- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
-
-However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
-
-**Variables adjustments required for vEOS-LAB:**
-
-```yaml
-# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
-spine_bgp_defaults:
-#  - update wait-for-convergence
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-leaf_bgp_defaults:
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
-p2p_uplinks_mtu: 1500
-
-# Adjust default bfd values, to avoid high CPU.
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
-```
-
 ## Role Enhancements for Super Spine Support
 
 The enhancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
@@ -1946,61 +1964,43 @@ my_special_dci_ethernet_interfaces:
 
 In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_scructured_configuration_prefix`
 
-## DCI / L3 Edge
+## vEOS-LAB Know Caveats and Recommendations
 
-The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
+- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
+- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
+- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
+- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
 
-The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
-For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
 
-Make sure to configure the variables in a group_var file covering all devices mentioned in the data model.
+**Variables adjustments required for vEOS-LAB:**
 
 ```yaml
-l3_edge:
-  p2p_links_ip_pools:
-    < p2p_pool_name_1 >: < IPv4_address/Mask >
-  p2p_profiles:
-    < p2p_profile_name >:
-      < any variable supported under p2p_links can be inherited from a profile >
-  p2p_links:
-      # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
-    - id: < integer - starting from 1 >
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
 
-      # Speed | Optional
-      speed: < speed | auto speed | forced speed >
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
 
-      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
-      ip_pool: < p2p_pool_name >
+# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+p2p_uplinks_mtu: 1500
 
-      # Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
-      subnet: < IPv4_address/Mask >
-
-      # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
-      ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
-
-      # Nodes where this link should be configured | Required
-      nodes: [ < node_a >, < node_b > ]
-
-      # Interfaces where this link should be configured | Required
-      interfaces: [ < node_a_interface >, < node_b_interface > ]
-
-      # AS Numbers for BGP | Required with bgp peering
-      as: [ < node_a_as >, < node_b_as > ]
-
-      # Add this interface to underlay routing protocol | Optional
-      include_in_underlay_protocol: < true | false | default -> false >
-
-      # MTU for this P2P link | Optional
-      mtu: < number | default -> same as p2p_uplinks_mtu >
-
-      # Enable BFD (only considered for BGP) | Optional
-      bfd: < true | false | default -> false >
-
-      # QOS Service Profile | Optional
-      qos_profile: < qos_profile_name >
-
-      # Profile defined under p2p_profiles | Optional
-      profile: < p2p_profile_name >
+# Adjust default bfd values, to avoid high CPU.
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
 ```
 
 ## License
