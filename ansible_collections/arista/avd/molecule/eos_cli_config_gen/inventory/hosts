@@ -9,6 +9,7 @@ enable-password
 errdisable
 ethernet-interfaces
 event-handlers
+hardware-counter
 igmp-snooping
 logging-minimal
 logging

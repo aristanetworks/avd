@@ -3,16 +3,14 @@
 !
 ipv6 unicast-routing
 {% endif %}
-{% if vrfs is arista.avd.defined %}
-{%     for vrf in vrfs | arista.avd.natural_sort %}
-{%         if vrfs[vrf].ipv6_routing is arista.avd.defined(true) %}
-{%             if loop.first %}
+{% for vrf in vrfs | arista.avd.natural_sort %}
+{%     if vrfs[vrf].ipv6_routing is arista.avd.defined(true) %}
+{%         if loop.first %}
 !	
-{%             endif %}
-ipv6 unicast-routing vrf {{ vrf }}
 {%         endif %}
-{%     endfor %}
-{% endif %}
+ipv6 unicast-routing vrf {{ vrf }}
+{%     endif %}
+{% endfor %}
 {% if ipv6_icmp_redirect is arista.avd.defined(false) %}
 no ipv6 icmp redirect
 {% endif %}

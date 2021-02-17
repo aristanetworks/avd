@@ -1,4 +1,4 @@
-# mac-security-eth-po-entropy
+# hardware-counter
 
 # Table of Contents
 
@@ -182,18 +182,7 @@ AAA accounting not defined
 
 # Management Security
 
-## Management Security
-
-
- Management Security entropy source is hardware
-
-## Management Security Configuration
-
-```eos
-!
-management security
-   entropy source hardware
-```
+Management security not defined
 
 # Aliases
 
@@ -219,7 +208,22 @@ No sFlow defined
 
 ## Hardware Counters
 
-No hardware counters defined
+### Hardware Counters Summary
+
+#### Hardware Counter Features
+
+| Feature | Flow Direction |
+| ------- | -------------- |
+| ip | in |
+| gre | out |
+
+### Hardware Counters Configuration
+
+```eos
+!
+hardware counter feature ip in
+hardware counter feature gre out
+```
 
 ## VM Tracer Sessions
 
@@ -259,57 +263,11 @@ No Interface Defaults defined
 
 ## Ethernet Interfaces
 
-### Ethernet Interfaces Summary
-
-#### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 |
-
-*Inherited from Port-Channel Interface
-
-#### IPv4
-
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  -  |  routed  | - |  1.1.1.1/24  |  default  |  -  |  -  |  -  |  -  |
-
-### Ethernet Interfaces Device Configuration
-
-```eos
-!
-interface Ethernet1
-   mac security profile A1
-   no switchport
-   ip address 1.1.1.1/24
-!
-interface Ethernet3
-   description DC1-AGG01_Ethernet1
-   mac security profile A1
-   channel-group 3 mode active
-```
+No ethernet interface defined
 
 ## Port-Channel Interfaces
 
-### Port-Channel Interfaces Summary
-
-#### L2
-
-| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | L2-PORT | switched | trunk | 1-5 | - | - | - | - | - | - |
-
-### Port-Channel Interfaces Device Configuration
-
-```eos
-!
-interface Port-Channel3
-   description L2-PORT
-   switchport
-   switchport trunk allowed vlan 1-5
-   switchport mode trunk
-```
+No port-channels defined
 
 ## Loopback Interfaces
 
@@ -467,60 +425,7 @@ Errdisable is not defined.
 
 # MACsec
 
-### MACsec Summary
-
-License is installed.
-
-FIPS restrictions enabled.
-
-### MACsec Profiles Summary
-
-**Profile A1:**
-
-Settings:
-
-| Cipher | Rekey-Period | SCI |
-| ------ | ------------ | --- |
-| aes128-gcm | 30 | True |
-
-Keys:
-
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234a | 025756085F535976 | - |
-| 1234c | 10195F4C5144405A | True |
-
-**Profile A2:**
-
-Settings:
-
-| Cipher | Rekey-Period | SCI |
-| ------ | ------------ | --- |
-| - | - | - |
-
-Keys:
-
-| Key ID | Encrypted (Type 7) Key | Fallback |
-| ------ | ---------------------- | -------- |
-| 1234b | 12485744465E5A53 | - |
-
-### MACsec Device Configuration
-
-```eos
-!
-mac security
-   license license1 123456
-   fips restrictions
-   !
-   profile A1
-      cipher aes128-gcm
-      key 1234a 7 025756085F535976
-      key 1234c 7 10195F4C5144405A fallback
-      mka session rekey-period 30
-      sci
-   profile A2
-      key 1234b 7 12485744465E5A53
-```
+MACsec not defined
 
 # QOS
 

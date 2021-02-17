@@ -1,12 +1,10 @@
 {# eos - IPv6 standard access-lists #}
-{% if ipv6_standard_access_lists is arista.avd.defined %}
-{%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
+{% for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
 !
 ipv6 access-list standard {{ ipv6_standard_access_list }}
-{%         for sequence in ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers | arista.avd.natural_sort %}
-{%             if ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action is arista.avd.defined %}
+{%     for sequence in ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers | arista.avd.natural_sort %}
+{%         if ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action is arista.avd.defined %}
    {{ sequence }} {{ ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action }}
-{%             endif%}}
-{%         endfor %}
+{%         endif%}}
 {%     endfor %}
-{% endif %}
+{% endfor %}

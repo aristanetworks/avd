@@ -51,7 +51,7 @@ ethernet_interfaces:
       mode: active
 # Routed Interfaces
   Ethernet1:
-    mode: routed
+    type: routed
     ip_address: 1.1.1.1/24
     mac_security:
       profile: A1
