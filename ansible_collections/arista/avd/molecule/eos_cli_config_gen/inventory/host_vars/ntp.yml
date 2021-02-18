@@ -1,0 +1,8 @@
+### NTP tests
+ntp_server:
+  local_interface:
+    vrf: test
+    interface: lo1
+  nodes:
+    - 10.1.1.1
+    - 10.1.1.2

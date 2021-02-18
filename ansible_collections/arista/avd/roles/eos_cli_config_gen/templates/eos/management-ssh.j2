@@ -34,23 +34,20 @@ management ssh
 {%     if management_ssh.mac is arista.avd.defined %}
    mac {{ management_ssh.mac | join(" ") }}
 {%     endif %}
-{%     if management_ssh.hostkey is arista.avd.defined %}
-{%         if management_ssh.hostkey.server is arista.avd.defined %}
+{%     if management_ssh.hostkey.server is arista.avd.defined %}
    hostkey server {{ management_ssh.hostkey.server | join(" ") }}
-{%         endif %}
 {%     endif %}
 {%     if management_ssh.enable is arista.avd.defined(false) %}
    shutdown
-   !
+{%     elif management_ssh.enable is arista.avd.defined(true) %}
+   no shutdown
 {%     endif %}
-{%     if management_ssh.vrfs is arista.avd.defined %}
-{%         for vrf in management_ssh.vrfs %}
+{%     for vrf in management_ssh.vrfs | arista.avd.natural_sort %}
    vrf {{ vrf }}
-{%             if management_ssh.vrfs[vrf].enable is arista.avd.defined(true) %}
+{%         if management_ssh.vrfs[vrf].enable is arista.avd.defined(true) %}
       no shutdown
-{%             else %}
+{%         elif management_ssh.vrfs[vrf].enable is arista.avd.defined(false) %}
       shutdown
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+{%         endif %}
+{%     endfor %}
 {% endif %}

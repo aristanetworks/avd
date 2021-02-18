@@ -151,10 +151,8 @@ management api gnmi
    transport grpc MGMT
       ip access-group ACL-GNMI
       vrf MGMT
-   !
    transport grpc MONITORING
       vrf MONITORING
-   !
 ```
 
 ## Management API HTTP

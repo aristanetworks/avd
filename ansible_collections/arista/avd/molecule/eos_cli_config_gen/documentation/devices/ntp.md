@@ -1,4 +1,4 @@
-# dns-ntp
+# ntp
 
 # Table of Contents
 
@@ -108,14 +108,7 @@ interface Management1
 
 ## DNS Domain
 
-### DNS domain: test.local
-
-### DNS Domain Device Configuration
-
-```eos
-dns domain test.local
-!
-```
+DNS domain not defined
 
 ## Domain-list
 
@@ -123,56 +116,32 @@ Domain-list not defined
 
 ## Name Servers
 
-### Name Servers Summary
-
-| Name Server | Source VRF |
-| ----------- | ---------- |
-| 10.10.128.10 | mgt |
-| 10.10.129.10 | mgt |
-
-### Name Servers Device Configuration
-
-```eos
-ip name-server vrf mgt 10.10.128.10
-}
-ip name-server vrf mgt 10.10.129.10
-}
-```
+No name servers defined
 
 ## Domain Lookup
 
-### DNS Domain Lookup Summary
-
-| Source interface | vrf |
-| ---------------- | --- |
-| Management0 | mgt  |
-
-### DNS Domain Lookup Device Configuration
-
-```eos
-ip domain lookup vrf mgt source-interface Management0
-```
+DNS domain lookup not defined
 
 ## NTP
 
 ### NTP Summary
 
-- Local Interface: Management0
+- Local Interface: lo1
 
-- VRF: mgt
+- VRF: test
 
 | Node | Primary |
 | ---- | ------- |
-| 10.10.111.1 | true |
-| 10.10.111.2 | - |
+| 10.1.1.1 | true |
+| 10.1.1.2 | - |
 
 ### NTP Device Configuration
 
 ```eos
 !
-ntp local-interface vrf mgt Management0
-ntp server vrf mgt 10.10.111.1 prefer
-ntp server vrf mgt 10.10.111.2
+ntp local-interface vrf test lo1
+ntp server vrf test 10.1.1.1 prefer
+ntp server vrf test 10.1.1.2
 ```
 
 ## PTP

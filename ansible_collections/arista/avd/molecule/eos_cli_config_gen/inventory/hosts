@@ -20,6 +20,7 @@ management-ssh-custom-cipher
 mac-security-eth-po-entropy
 mcast-pim
 none_configuration
+ntp
 platform
 port-channel-interfaces
 prefix-lists
