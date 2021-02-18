@@ -33,6 +33,8 @@ run: ## Run ansible-avd container
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
 		-e AVD_ANSIBLE=$(ANSIBLE_VERSION) \
+		-e AVD_UID=$(UID) \
+		-e AVD_GID=$(GID) \
 		-e AVD_GIT_USER="$(shell git config --get user.name)" \
 		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
