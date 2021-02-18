@@ -1,4 +1,4 @@
-# snmp_v3
+# hw-tcam
 
 # Table of Contents
 
@@ -200,90 +200,7 @@ No logging settings defined
 
 ## SNMP
 
-### SNMP Configuration Summary
-
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| DC1_OPS | DC1 |  Enabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-| IPv4 | SNMP-MGMT | MGMT |
-| IPv4 | onur | default |
-| IPv6 | SNMP-MGMT | MGMT |
-| IPv6 | onur_v6 | default |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-| Management1 | MGMT |
-| Loopback0 | default |
-| Loopback12 | Tenant_A_APP_Zone |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-| default |  Disabled  |
-| mgt |  Enabled  |
-
-### SNMP Hosts Configuration
-
-| Host | VRF | Username | Authentication level | SNMP Version |
-| ---- |---- | -------- | -------------------- | ------------ |
-| 10.6.75.99 | mgt | USER-READ | auth | 3 |
-| 10.6.75.99 | mgt | USER-WRITE | auth | 3 |
-| 10.6.75.121 | mgt | USER-READ | auth | 3 |
-
-### SNMP Views Configuration
-
-| View | MIB Family Name | Status |
-| ---- | --------------- | ------ |
-| VW-WRITE | iso |  Included | VW-READ | iso |  Included 
-### SNMP Groups Configuration
-
-| Group | SNMP Version | Authentication | Read | Write | Notify |
-| ----- | ------------ | -------------- | ---- | ----- | ------ |
-| GRP-READ-ONLY | v3 | priv | v3read | - | - |
-| GRP-READ-WRITE | v3 | auth | v3read | v3write | - |
-
-### SNMP Users Configuration
-
-| User | Group | Version | Authentication | Privacy |
-| ---- | ----- | ------- | -------------- | ------- |
-| USER-READ | GRP-READ-ONLY | v3 | sha | aes |
-| USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
-
-
-### SNMP Device Configuration
-
-```eos
-!
-snmp-server contact DC1_OPS
-snmp-server location DC1
-snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
-snmp-server ipv4 access-list onur
-snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
-snmp-server ipv6 access-list onur_v6
-snmp-server vrf MGMT local-interface Management1
-snmp-server local-interface Loopback0
-snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
-snmp-server view VW-WRITE iso included
-snmp-server view VW-READ iso included
-snmp-server group GRP-READ-ONLY v3 priv read v3read
-snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
-snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
-snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
-snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-READ
-snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-WRITE
-snmp-server host 10.6.75.121 vrf mgt version 3 auth USER-READ
-snmp-server enable traps
-no snmp-server vrf default
-snmp-server vrf mgt
-```
+No SNMP settings defined
 
 ## SFlow
 

@@ -1,21 +1,21 @@
 {# eos - AAA Group Servers#}
 {% if tacacs_servers is arista.avd.defined %}
 !
-{%    if tacacs_servers.hosts is arista.avd.defined %}
-{%       for host in tacacs_servers.hosts | arista.avd.natural_sort %}
-{%          set host_cli = "tacacs-server host " ~ host['host'] %}
-{%              if host['vrf'] is arista.avd.defined %}
-{%                  if host['vrf'] is ne 'default' %}
-{%                      set host_cli = host_cli ~ " vrf " ~ host['vrf'] %}
-{%                  endif %}
-{%              endif %}
-{%              if host['key'] is arista.avd.defined %}
-{%                  set host_cli = host_cli ~ " key 7 " ~ host['key'] %}
-{%              endif %}
+{%     for host in tacacs_servers.hosts | arista.avd.natural_sort %}
+{%         if host.host is arista.avd.defined %}
+{%             set host_cli = "tacacs-server host " ~ host.host %}
+{%         endif %}
+{%         if host.vrf is arista.avd.defined %}
+{%             if host.vrf != 'default' %}
+{%                 set host_cli = host_cli ~ " vrf " ~ host.vrf %}
+{%             endif %}
+{%         endif %}
+{%         if host.key is arista.avd.defined %}
+{%             set host_cli = host_cli ~ " key 7 " ~ host.key %}
+{%         endif %}
 {{ host_cli }}
-{%       endfor %}
-{%    endif %}
-{%    if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined(true) %}
+{%     endfor %}
+{%     if tacacs_servers.policy_unknown_mandatory_attribute_ignore is arista.avd.defined(true) %}
 tacacs-server policy unknown-mandatory-attribute ignore
-{%    endif %}
+{%     endif %}
 {% endif %}

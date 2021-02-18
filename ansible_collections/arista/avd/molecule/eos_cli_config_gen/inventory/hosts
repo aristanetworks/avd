@@ -41,9 +41,11 @@ snmp_v3
 spanning-tree
 spanning-tree-rstp
 spanning-tree-rapid-pvst
+tcam-profile
 terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
+unsupported-transceiver
 vlan-interfaces
 vlans
 vrfs
