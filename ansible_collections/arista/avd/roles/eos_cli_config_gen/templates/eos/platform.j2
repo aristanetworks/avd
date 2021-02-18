@@ -7,7 +7,7 @@ platform trident forwarding-table partition {{ platform.trident.forwarding_table
 {%     if platform.sand.lag.hardware_only is arista.avd.defined(true) %}
 platform sand lag hardware-only
 {%     endif %}
-{%     if platform.sand.lag.mode is arista.avd.defined and platform.sand.lag.mode is ne "1024x16" %}
+{%     if platform.sand.lag.mode is arista.avd.defined %}
 platform sand lag mode {{ platform.sand.lag.mode }}
 {%     endif %}
 {% endif %}
