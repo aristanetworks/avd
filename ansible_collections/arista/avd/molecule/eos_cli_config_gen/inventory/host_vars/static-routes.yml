@@ -32,6 +32,5 @@ static_routes:
     vrf: APP
 
   - destination_address_prefix: 10.3.5.0/24
-    gateway: 1.2.3.4
     vrf: APP
     interface: Null0
