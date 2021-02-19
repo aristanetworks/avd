@@ -3,7 +3,7 @@
 !
 {%     for speed_group in hardware.speed_groups %}
 {%         if speed_group.serdes is arista.avd.defined %}
-hardware speed-group{{ speed_group }} serdes {{ speed_group.serdes }}
+hardware speed-group {{ speed_group }} serdes {{ speed_group.serdes }}
 {%         endif %}
 {%     endfor %}
 {% endif %}

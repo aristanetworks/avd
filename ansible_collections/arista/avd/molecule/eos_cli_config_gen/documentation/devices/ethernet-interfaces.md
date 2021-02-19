@@ -264,6 +264,13 @@ No Interface Defaults defined
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.128.1/31  |  default  |  1500  |  -  |  -  |  -  |
+
+#### IPv6
+
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  2002:ABDC::1/64  |  default  |  1500  |  -  | -  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -283,6 +290,17 @@ interface Ethernet2
    storm-control all level 10
    storm-control broadcast level pps 500
    storm-control unknown-unicast level 1
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   mtu 1500
+   no switchport
+   ip address 172.31.128.1/31
+   ipv6 enable
+   ipv6 address 2002:ABDC::1/64
+   ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
+   ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
+   ipv6 nd prefix 2345:ABCD:3FE0::3/96 no-autoconfig
 !
 interface Ethernet6
    description SRV-POD02_Eth1

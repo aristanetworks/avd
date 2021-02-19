@@ -39,3 +39,24 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+    ipv6_nd_prefixes:
+      2345:ABCD:3FE0::1/96:
+        valid_lifetime: infinite
+        preferred_lifetime: 50
+        no_autoconfig_flag: true
+      2345:ABCD:3FE0::2/96:
+        valid_lifetime: 50
+        preferred_lifetime: infinite
+        no_autoconfig_flag: false
+      2345:ABCD:3FE0::3/96:
+        no_autoconfig_flag: true

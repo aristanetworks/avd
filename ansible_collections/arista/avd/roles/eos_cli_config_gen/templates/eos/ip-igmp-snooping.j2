@@ -5,7 +5,7 @@ no ip igmp snooping
 {% elif ip_igmp_snooping.vlans is arista.avd.defined %}
 !
 {%     for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
-{%         if vlan.enabled is arista.avd.defined(false) %}
+{%         if ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(false) %}
 no ip igmp snooping vlan {{ vlan }}
 {%         endif %}
 {%     endfor %}

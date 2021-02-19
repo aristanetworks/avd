@@ -104,11 +104,13 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes is arista.avd.defined %}
 {%             for prefix in ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes %}
 {%                 set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix %}
-{%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined(true) %}
-{%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime %}
-{%                 endif %}
-{%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is arista.avd.defined(true) %}
-{%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime %}
+{%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined() and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is arista.avd.defined() %}
+{%                     if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined() %}
+{%                         set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime %}
+{%                     endif %}
+{%                     if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is arista.avd.defined() %}
+{%                         set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime %}
+{%                     endif %}
 {%                 endif %}
 {%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is arista.avd.defined(true) %}
 {%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
