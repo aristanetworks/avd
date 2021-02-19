@@ -134,9 +134,7 @@ Domain-list not defined
 
 ```eos
 ip name-server vrf mgt 10.10.128.10
-}
 ip name-server vrf mgt 10.10.129.10
-}
 ```
 
 ## Domain Lookup
