@@ -30,7 +30,7 @@ logging source-interface {{ logging.source_interface }}
 {%     for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%         if logging.vrfs[vrf].source_interface is arista.avd.defined and vrf != 'default' %}
 logging vrf {{ vrf }} source-interface {{ logging.vrfs[vrf].source_interface }}
-{%         elif logging.vrfs[vrf].source_interface is arista.avd.defined("default") %}
+{%         elif logging.vrfs[vrf].source_interface is arista.avd.defined('default') %}
 logging source-interface {{ logging.vrfs[vrf].source_interface }}
 {%         endif %}
 {%         if logging.vrfs[vrf].hosts is arista.avd.defined and vrf != 'default' %}

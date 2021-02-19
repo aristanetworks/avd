@@ -104,10 +104,8 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes is arista.avd.defined %}
 {%             for prefix in ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes %}
 {%                 set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ prefix %}
-{%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined() and ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is arista.avd.defined() %}
-{%                     if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined() %}
-{%                         set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime %}
-{%                     endif %}
+{%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime is arista.avd.defined() %}
+{%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].valid_lifetime %}
 {%                     if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is arista.avd.defined() %}
 {%                         set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].preferred_lifetime %}
 {%                     endif %}
@@ -139,9 +137,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].ospf_cost is arista.avd.defined %}
    ip ospf cost {{ ethernet_interfaces[ethernet_interface].ospf_cost }}
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].ospf_authentication is arista.avd.defined("simple") %}
+{%         if ethernet_interfaces[ethernet_interface].ospf_authentication is arista.avd.defined('simple') %}
    ip ospf authentication
-{%         elif ethernet_interfaces[ethernet_interface].ospf_authentication is arista.avd.defined("message-digest") %}
+{%         elif ethernet_interfaces[ethernet_interface].ospf_authentication is arista.avd.defined('message-digest') %}
    ip ospf authentication message-digest
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].ospf_authentication_key is arista.avd.defined %}
@@ -202,7 +200,7 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
-{%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined("pps") %}
+{%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined('pps') %}
    storm-control {{ section | replace("_", "-") }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
 {%                 else %}
    storm-control {{ section | replace("_", "-") }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}

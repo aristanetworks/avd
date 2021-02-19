@@ -14,10 +14,10 @@ interface defaults
    mtu {{ interface_defaults.mtu }}
 {%     endif %}
 {% endif %}
-{% if interface_defaults.switchport.type is arista.avd.defined("routed") %}
+{% if interface_defaults.switchport.type is arista.avd.defined('routed') %}
 !
 switchport default mode routed
-{% elif interface_defaults.switchport.type is arista.avd.defined("switched") %}
+{% elif interface_defaults.switchport.type is arista.avd.defined('switched') %}
 !
 switchport default mode access
 {% endif %}
