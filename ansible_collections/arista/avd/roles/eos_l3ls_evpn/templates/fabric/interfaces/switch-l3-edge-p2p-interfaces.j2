@@ -7,7 +7,7 @@
     description: {{ p2p_interface.description }}
     type: {{ p2p_interface.type }}
     shutdown: {{ p2p_interface.shutdown }}
-    mtu: {{ p2p_uplinks_mtu }}
+    mtu: {{ p2p_interface.mtu }}
 {%     if p2p_interface.ip_address is arista.avd.defined %}
     ip_address: {{ p2p_interface.ip_address }}
 {%     endif %}
