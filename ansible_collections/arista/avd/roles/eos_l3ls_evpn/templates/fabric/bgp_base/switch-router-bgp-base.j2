@@ -17,6 +17,8 @@
   bgp_listen_ranges:
     "fe80::/10":
       peer_group: "EVPN-OVERLAY-PEERS"
+      peer_filter: "PF_LEAFS"
     {{ overlay_loopback_network_summary }}:
       peer_group: "IPv4-UNDERLAY-PEERS"
+      peer_filter: "PF_LEAFS"
 {% endif %}

@@ -184,6 +184,7 @@ route_maps:
 {# peer-filter #}
 ### peer-filters ###
 peer_filters:
+{% include 'fabric/bgp_base/spine-peer-filters.j2' %}
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
