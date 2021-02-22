@@ -1,4 +1,4 @@
-# loopbacks-interfaces
+# ip-extended-communities
 
 # Table of Contents
 
@@ -256,64 +256,7 @@ No port-channels defined
 
 ## Loopback Interfaces
 
-### Loopback Interfaces Summary
-
-#### IPv4
-
-| Interface | Description | VRF | IP Address |
-| --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
-| Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
-
-#### IPv6
-
-| Interface | Description | VRF | IPv6 Address |
-| --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
-| Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
-| Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
-
-#### ISIS
-
-| Interface | ISIS instance | ISIS metric | Interface mode |
-| -------- | -------- | -------- | -------- |
-| Loopback99 | ISIS_TEST |  100 |  point-to-point |
-
-### Loopback Interfaces Device Configuration
-
-```eos
-!
-interface Loopback0
-   description EVPN_Overlay_Peering
-   ip address 192.168.255.3/32
-!
-interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
-   ip address 192.168.254.3/32
-!
-interface Loopback99
-   description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
-   no shutdown
-   vrf TENANT_A_PROJECT02
-   ip proxy-arp
-   ip address 10.1.255.3/32
-   ip address 10.0.0.254/32 secondary
-   ip address 192.168.1.1/32 secondary
-   ipv6 enable
-   ipv6 address 2002::CAFE/64
-   isis enable ISIS_TEST
-   isis passive
-   isis metric 100
-   isis network point-to-point
-!
-interface Loopback100
-   description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
-   vrf TENANT_A_PROJECT02
-   ip address 10.1.255.3/32
-```
+No loopback interfaces defined
 
 ## VLAN Interfaces
 
@@ -421,7 +364,23 @@ No route-maps defined
 
 ## IP Extended Communities
 
-No extended community defined
+### IP Extended Communities Summary
+
+| Sequence | Type | Match and/or Set |
+| -------- | ---- | ---------------- |
+| TEST1 | deny | 65002:65002 |
+| TEST1 | permit | 65000:65000 |
+| TEST2 | deny | 65001:65001 |
+
+### IP Extended Communities configuration
+
+```eos
+!
+ip extcommunity-list TEST1 deny 65002:65002
+ip extcommunity-list TEST1 permit 65000:65000
+!
+ip extcommunity-list TEST2 deny 65001:65001
+```
 
 # ACL
 

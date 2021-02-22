@@ -231,6 +231,7 @@ Policy local allow-nopassword-remote-login has been enabled.
 !
 aaa authentication login default group TACACS local
 aaa authentication login serial-console local
+aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
@@ -255,6 +256,7 @@ Authorization for serial console is enabled.
 !
 aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization commands all default group aaaAuth
 !
 ```
 

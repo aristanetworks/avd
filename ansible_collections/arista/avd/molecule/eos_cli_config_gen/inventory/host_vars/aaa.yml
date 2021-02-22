@@ -21,6 +21,8 @@ aaa_authentication:
   login:
     default: group TACACS local
     serial_console: local
+  dot1x:
+    default: DOT1X default group
   policies:
     on_failure_log: true
     on_success_log: true
@@ -33,6 +35,8 @@ aaa_authorization:
     default: group CUST local
   config_commands: true
   serial_console: true
+  commands:
+    all_default: group aaaAuth
 
 ## AAA Accounting
 aaa_accounting:
@@ -49,6 +53,11 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+
+### AAA Root ###
+aaa_root:
+  secret:
+    sha512_password: dsakjlhfqwereDSAFWE346543dfgsG
 
 ### Local Users ###
 local_users:

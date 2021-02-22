@@ -1,5 +1,5 @@
 ---
-### Port-Channel Interfaces ###
+### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -39,6 +39,7 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+
   Ethernet3:
     peer: DC1-SPINE2
     peer_interface: Ethernet2
@@ -59,4 +60,78 @@ ethernet_interfaces:
         preferred_lifetime: infinite
         no_autoconfig_flag: false
       2345:ABCD:3FE0::3/96:
+        valid_lifetime: 100000
         no_autoconfig_flag: true
+
+  Ethernet4:
+    description: Molecule IPv6
+    shutdown: true
+    mtu: 9100
+    ipv6_enable: true
+    ipv6_address: 2020::2020/64
+    ipv6_address_link_local: FE80:FEA::AB65/64
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_access_group_in: IPv6_ACL_IN
+    ipv6_access_group_out: IPv6_ACL_OUT
+
+  Ethernet5:
+    description: Molecule Routing
+    shutdown: false
+    mtu: 9100
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 100
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_authentication_key: "asfddja23452"
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha512
+        key: "asfddja23452"
+    pim:
+      ipv4:
+        sparse_mode: true
+    isis_enable: ISIS_TEST
+    isis_passive: false
+    isis_metric: 99
+    isis_network_point_to_point: true
+
+  Ethernet7:
+    description: Molecule L2
+    shutdown: false
+    type: switched
+    mtu: 7000
+    ptp:
+      enable: true
+      announce:
+        interval: 10
+        timeout: 30
+      delay_req: 20
+      delay_mechanism: p2p
+      sync_message:
+        interval: 5
+      role: master
+      vlan: all
+      transport: layer2
+    service_profile: QoS
+    qos:
+      trust: cos
+      cos: 5
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    spanning_tree_portfast: edge
+    vmtracer: true
+    storm_control:
+      all:
+        level: 75
+        unit: percent
+      broadcast:
+        level: 10
+        unit: pps
+      multicast:
+        level: 50
+        unit: 
+      unknown_unicast:
+        level: 10
+        unit: percent
