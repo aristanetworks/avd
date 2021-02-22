@@ -1478,7 +1478,7 @@ servers:
         profile: < port_profile_name >
         port_channel:
           description: < port_channel_description >
-          mode: < active | passive | on >
+          mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
 
