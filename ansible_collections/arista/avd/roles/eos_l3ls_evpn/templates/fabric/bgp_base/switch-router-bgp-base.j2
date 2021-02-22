@@ -13,3 +13,10 @@
 {% if switch.overlay_routing_protocol == "ibgp" and switch.evpn_role == "server" %}
   bgp_cluster_id: {{ switch.router_id }}
 {% endif %}
+{% if underlay_rfc5549 is arista.avd.defined(true) and switch.evpn_role == "server" %}
+  bgp_listen_ranges:
+    "fe80::/10":
+      peer_group: "EVPN-OVERLAY-PEERS"
+    {{ overlay_loopback_network_summary }}:
+      peer_group: "IPv4-UNDERLAY-PEERS"
+{% endif %}

@@ -6,6 +6,11 @@ router bgp {{ router_bgp.as }}
 {% if router_bgp.bgp_cluster_id is defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
 {% endif %}
+{% if router_bgp.bgp_listen_ranges is defined %}
+{%     for bgp_listen_range in router_bgp.bgp_listen_ranges %}
+   bgp listen range {{ bgp_listen_range }} peer-group {{ router_bgp.bgp_listen_ranges[bgp_listen_range].peer_group }}
+{%     endfor %}
+{% endif %}
 {%     for bgp_default in router_bgp.bgp_defaults %}
    {{ bgp_default }}
 {%     endfor %}
