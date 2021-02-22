@@ -249,6 +249,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].activate == true %}
       neighbor {{ peer_group }} activate
+{%             if underlay_rfc5549 is arista.avd.defined(true) %}
+      neighbor {{ peer_group }} next-hop address-family ipv6 originate
+{%             endif %}
 {%             elif router_bgp.address_family_ipv4.peer_groups[peer_group].activate == false %}
       no neighbor {{ peer_group }} activate
 {%             endif %}
