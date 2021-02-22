@@ -6,11 +6,6 @@ router bgp {{ router_bgp.as }}
 {% if router_bgp.bgp_cluster_id is defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
 {% endif %}
-{% if router_bgp.bgp_listen_ranges is defined %}
-{%     for bgp_listen_range in router_bgp.bgp_listen_ranges %}
-   bgp listen range {{ bgp_listen_range }} peer-group {{ router_bgp.bgp_listen_ranges[bgp_listen_range].peer_group }}
-{%     endfor %}
-{% endif %}
 {%     for bgp_default in router_bgp.bgp_defaults %}
    {{ bgp_default }}
 {%     endfor %}
@@ -74,7 +69,7 @@ router bgp {{ router_bgp.as }}
 {%     endif %}
 {%     if router_bgp.rfc5549_neighbors.rfc5549_links is arista.avd.defined %}
 {%         for rfc5549_link in router_bgp.rfc5549_neighbors.rfc5549_links| arista.avd.natural_sort %}
-   neighbor interface {{ rfc5549_link }} peer group {{ router_bgp.rfc5549_neighbors.peer_group }} remote-as {{ router_bgp.rfc5549_neighbors.remote_as }}
+   neighbor interface {{ rfc5549_link }} peer-group {{ router_bgp.rfc5549_neighbors.peer_group }} remote-as {{ router_bgp.rfc5549_neighbors.remote_as }}
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
