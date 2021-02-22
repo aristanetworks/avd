@@ -1,18 +1,35 @@
+# Force BASH as default Makefile shell
+# Required to use soruce
+SHELL := /bin/bash
+# AVD Shell container information
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG = 3.6-v1.0
+DOCKER_TAG ?= 3.6-v2.0
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
+# Vscode container information
 VSCODE_CONTAINER_NAME ?= avdteam/vscode
 VSCODE_DOCKER_TAG ?= latest
 VSCODE_CONTAINER = $(VSCODE_CONTAINER_NAME):$(VSCODE_DOCKER_TAG)
+# VScode listen port exposed on host.
+# To change it: make vscode VSCODE_PORT=<port to use>
 VSCODE_PORT ?= 8080
+# Path to compose stack -- should not be changed
 COMPOSE_FILE ?= ansible-avd/development/docker-compose.yml
 COMPOSE_ENV_FILE ?= ansible-avd/development/docker-stack.env
+# Option to pass custom requirements and custom ansible version to provision in container
 PIP_REQ ?=
-ANSIBLE_VERSION ?= 2.9
+ANSIBLE_VERSION ?=
+# Current position
 HOME_DIR = $(shell pwd)
-UID = $(shell id -u)
-GID = $(shell id -g)
+# User ID to allow easy file share between container and host
+UID ?= $(shell id -u)
+# GID is unset by default as most of users are on Macos with a GID already used in container (20)
+# If need to be set: make run GID=< GID of your user >
+GID ?=
+# User configured on container side
 DOCKER_USER ?= avd
+# Git Information to use with container to configure remote user
+GIT_USERNAME ?= $(shell git config --get user.name)
+GIT_EMAIL ?= $(shell git config --get user.email)
 MUFFET_TIMEOUT ?= 60
 
 .PHONY: help
@@ -33,8 +50,10 @@ run: ## Run ansible-avd container
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
 		-e AVD_ANSIBLE=$(ANSIBLE_VERSION) \
-		-e AVD_GIT_USER="$(shell git config --get user.name)" \
-		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
+		-e AVD_UID=$(UID) \
+		-e AVD_GID=$(GID) \
+		-e AVD_GIT_USER="$(GIT_USERNAME)" \
+		-e AVD_GIT_EMAIL="$(GIT_EMAIL)" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $(HOME_DIR)/:/projects \
 		-v /etc/hosts:/etc/hosts $(CONTAINER)
@@ -42,8 +61,8 @@ run: ## Run ansible-avd container
 .PHONY: vscode
 vscode: ## Run a VSCODE container
 	docker run --rm -it -d \
-		-e AVD_GIT_USER="$(shell git config --get user.name)" \
-		-e AVD_GIT_EMAIL="$(shell git config --get user.email)" \
+		-e AVD_GIT_USER="$(GIT_USERNAME)" \
+		-e AVD_GIT_EMAIL="$(GIT_EMAIL)" \
 		-v ${PWD}/:/home/avd/arista-ansible \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-p $(VSCODE_PORT):8080 \
@@ -109,4 +128,4 @@ check-cvp-404: ## Check local 404 links for AVD documentation
 .PHONY: refresh
 refresh: ## Refresh Makefile with new version from AVD
 	cp ansible-avd/development/Makefile Makefile
-	@echo "Makefile update from AVD repository"
+	@echo "Makefile updated from AVD repository"
