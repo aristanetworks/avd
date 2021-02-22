@@ -44,6 +44,9 @@ switch_evpn_route_clients: {{ switch.evpn_route_clients | arista.avd.natural_sor
 {# routing protocol model multi-agent needed for EVPN address family #}
 service_routing_protocols_model: multi-agent
 ip_routing: true
+{% if underlay_rfc5549 %}
+ipv6_unicast_routing: true
+{% endif %}
 
 {# Hardware Counter #}
 ### Hardware Counters
