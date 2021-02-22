@@ -35,7 +35,7 @@ l3_edge:
     pool-leaf: 11.1.0.0/24
     pool-spine: 11.1.1.0/24
     pool-super-spine: 11.1.2.0/24
-  p2p_profiles:
+  p2p_links_profiles:
     generic-profile:
       mtu: 1500
       bfd: true
