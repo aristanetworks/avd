@@ -496,6 +496,8 @@ router_bgp:
   peer_groups:
 {% include 'fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
 {% include 'fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
+  rfc5549_neighbors:
+{% include 'fabric/bgp_base/leaf-router-bgp-rfc5549-neighbors.j2' %}
   neighbors:
 {% include 'fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}

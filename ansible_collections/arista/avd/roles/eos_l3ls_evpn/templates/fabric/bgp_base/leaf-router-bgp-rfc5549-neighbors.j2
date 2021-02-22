@@ -1,0 +1,6 @@
+{# Leaf underlay router bgp neighbors configuration #}
+{%     if switch.underlay_routing_protocol == "ebgp"  and underlay_rfc5549 is arista.avd.defined(true) %}
+      rfc5549_links: {{ leaf.uplink_to_spine_interfaces }}
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: {{ spine.bgp_as }}
+{%     endif %}

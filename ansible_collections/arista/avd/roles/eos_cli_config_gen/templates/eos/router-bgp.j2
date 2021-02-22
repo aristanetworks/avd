@@ -72,6 +72,11 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%       endfor %}
 {%     endif %}
+{%     if router_bgp.rfc5549_neighbors.rfc5549_links is arista.avd.defined %}
+{%         for rfc5549_link in router_bgp.rfc5549_neighbors.rfc5549_links| arista.avd.natural_sort %}
+   neighbor interface {{ rfc5549_link }} peer group {{ router_bgp.rfc5549_neighbors.peer_group }} remote-as {{ router_bgp.rfc5549_neighbors.remote_as }}
+{%         endfor %}
+{%     endif %}
 {%     if router_bgp.neighbors is defined and router_bgp.neighbors is not none %}
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.neighbors[neighbor].peer_group is defined and router_bgp.neighbors[neighbor].peer_group is not none %}
