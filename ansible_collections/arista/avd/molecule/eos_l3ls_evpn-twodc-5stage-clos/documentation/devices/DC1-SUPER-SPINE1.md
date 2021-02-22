@@ -316,7 +316,7 @@ No Interface Defaults defined
 | Ethernet3 |  P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1  |  routed  | - |  172.16.12.0/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4 |  P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1  |  routed  | - |  172.16.12.2/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet5 |  P2P_LINK_TO_DC1-RS1_Ethernet1  |  routed  | - |  172.17.10.0/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4  |  routed  | - |  11.1.2.0/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4  |  routed  | - |  11.1.2.0/31  |  default  |  1499  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -364,6 +364,7 @@ interface Ethernet5
 interface Ethernet6
    description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4
    no shutdown
+   mtu 1499
    no switchport
    ip address 11.1.2.0/31
 ```
