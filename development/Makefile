@@ -24,7 +24,7 @@ HOME_DIR = $(shell pwd)
 UID ?= $(shell id -u)
 # GID is unset by default as most of users are on Macos with a GID already used in container (20)
 # If need to be set: make run GID=< GID of your user >
-GID ?=
+GID ?= $(shell id -g)
 # User configured on container side
 DOCKER_USER ?= avd
 # Git Information to use with container to configure remote user
