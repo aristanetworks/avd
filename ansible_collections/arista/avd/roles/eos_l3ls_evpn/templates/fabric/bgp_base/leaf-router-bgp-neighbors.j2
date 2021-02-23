@@ -2,7 +2,7 @@
 {% if type == "l3leaf" %}
 {# EBGP #}
 {## Underlay network peering #}
-{%     if switch.underlay_routing_protocol == "ebgp" %}
+{%     if switch.underlay_routing_protocol == "ebgp"  and underlay_rfc5549 is not arista.avd.defined(true) %}
 {%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
     {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((leaf.id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
       peer_group: IPv4-UNDERLAY-PEERS
