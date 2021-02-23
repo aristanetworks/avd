@@ -2,7 +2,7 @@
 {%     if switch.underlay_routing_protocol == "ebgp"  and underlay_rfc5549 is arista.avd.defined(true) %}
 {%     if leaf.mlag == true %}
       rfc5549_links: {{ leaf.uplink_to_spine_interfaces + ["Vlan4093"] }}
-{% else %}}
+{%     else %}
       rfc5549_links: {{ leaf.uplink_to_spine_interfaces }}
 {%     endif %}
       peer_group: IPv4-UNDERLAY-PEERS
