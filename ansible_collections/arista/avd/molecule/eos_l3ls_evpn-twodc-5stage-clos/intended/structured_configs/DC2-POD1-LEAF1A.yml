@@ -136,7 +136,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
     type: routed
     shutdown: false
-    mtu: 1500
+    mtu: 1499
     ip_address: 11.1.0.39/31
 loopback_interfaces:
   Loopback0:

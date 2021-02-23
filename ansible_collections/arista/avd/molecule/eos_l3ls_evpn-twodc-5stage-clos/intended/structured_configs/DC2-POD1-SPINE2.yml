@@ -81,7 +81,7 @@ ethernet_interfaces:
     description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
     type: routed
     shutdown: false
-    mtu: 1500
+    mtu: 1498
     ip_address: 200.200.200.201/24
 loopback_interfaces:
   Loopback0:
