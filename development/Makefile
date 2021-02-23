@@ -21,10 +21,13 @@ ANSIBLE_VERSION ?=
 # Current position
 HOME_DIR = $(shell pwd)
 # User ID to allow easy file share between container and host
-UID ?= $(shell id -u)
+# As most of the team use MacOS, it is not required
+# To set this value with your current user: UID=$(shell id -u)
+UID ?=
 # GID is unset by default as most of users are on Macos with a GID already used in container (20)
-# If need to be set: make run GID=< GID of your user >
-GID ?= $(shell id -g)
+# As most of the team use MacOS, it is not required
+# To set this value with your current user: UID=$(shell id -g)
+GID ?=
 # User configured on container side
 DOCKER_USER ?= avd
 # Git Information to use with container to configure remote user
