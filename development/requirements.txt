@@ -1,4 +1,4 @@
-ansible>=2.9.6,<2.11
+# ansible>=2.9.6,<2.11
 netaddr==0.7.19
 Jinja2==2.11.3
 treelib==1.5.5

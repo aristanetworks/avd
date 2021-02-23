@@ -1,3 +1,4 @@
+ansible>=2.9.6,<2.11
 ansible-lint==4.2.0
 pycodestyle
 flake8
