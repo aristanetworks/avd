@@ -1,4 +1,5 @@
-### Routing - PIM Sparse Mode ###
+#### Router pim sparse mode ####
+
 router_pim_sparse_mode:
   ipv4:
     rp_addresses:

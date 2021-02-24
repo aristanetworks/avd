@@ -388,6 +388,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   mtu 1500
    no autostate
    ip address 10.255.252.0/31
 ```
@@ -462,6 +463,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
@@ -471,7 +473,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 2
    !
-!
 ```
 
 

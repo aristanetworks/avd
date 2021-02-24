@@ -1,4 +1,4 @@
-# mcast-pim
+# vlan-internal-order
 
 # Table of Contents
 
@@ -230,11 +230,16 @@ Spanning-tree not defined
 
 ## Internal VLAN Allocation Policy Summary
 
-**Default Allocation Policy**
-
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 4094 |
+| ascending | 10 | 40 |
+
+## Internal VLAN Allocation Policy Configuration
+
+```eos
+!
+vlan internal order ascending range 10 40
+```
 
 # VLANs
 
@@ -338,39 +343,7 @@ Routing multicast not defined
 
 ## Router PIM Sparse Mode
 
-### IP Sparse Mode Information
-
-### IP Rendez-vous Information
-
-| Rendez-vous Point Address | Group Address |
-| ------------------------- | ------------- |
-| 10.238.1.161 | 239.12.12.12/32 |
-| 10.238.1.161 | 239.12.12.13/32 |
-| 10.238.1.161 | 239.12.12.14/32 |
-| 10.238.1.161 | 239.12.12.16/32 |
-| 10.238.1.161 | 239.12.12.20/32 |
-| 10.238.1.161 | 239.12.12.21/32 |
-
-### IP Anycast Information
-
-| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
-| ------------------ | ------------------------------- | -------------- |
-| 10.38.1.161 | 10.50.64.16 |  15 | |
-
-### Router Multicast Device Configuration
-
-```eos
-!
-router pim sparse-mode
-   ipv4
-      rp address 10.238.1.161 239.12.12.12/32
-      rp address 10.238.1.161 239.12.12.13/32
-      rp address 10.238.1.161 239.12.12.14/32
-      rp address 10.238.1.161 239.12.12.16/32
-      rp address 10.238.1.161 239.12.12.20/32
-      rp address 10.238.1.161 239.12.12.21/32
-      anycast-rp 10.38.1.161 10.50.64.16 register-count 15 
-```
+Router PIM sparse mode not defined
 
 # Filters
 
