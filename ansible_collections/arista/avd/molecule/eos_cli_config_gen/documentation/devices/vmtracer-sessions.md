@@ -1,4 +1,4 @@
-# management-api-http
+# vmtracer-sessions
 
 # Table of Contents
 
@@ -140,34 +140,7 @@ Management API gnmi is not defined
 
 ## Management API HTTP
 
-### Management API HTTP Summary
-
-| HTTP | HTTPS |
-| ---------- | ---------- |
-|  false  |  true  |
-
-### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| default |  ACL-API  |  -  |
-| MGMT |  ACL-API  |  -  |
-
-### Management API HTTP Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no protocol http
-   no shutdown
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
-```
+Management API HTTP not defined
 
 # Authentication
 
@@ -239,7 +212,29 @@ No hardware counters defined
 
 ## VM Tracer Sessions
 
-No VM tracer sessions defined
+### VM Tracer Summary
+
+| Session | URL | Username | Autovlan | Source Interface |
+| ------- | --- | -------- | -------- | ---------------- |
+| session_1 |  https://192.168.0.10 | user1 | disabled |  Management1 |
+| session_2 |  https://192.168.0.10 | user1 | enabled |  - |
+
+### VM Tracer Device Configuration
+
+```eos
+!
+vmtracer session session_1
+   url https://192.168.0.10
+   username user1
+   password 7 encrypted_password
+   autovlan disable
+   source-interface Management1
+!
+vmtracer session session_2
+   url https://192.168.0.10
+   username user1
+   password 7 encrypted_password
+```
 
 ## Event Handler
 
@@ -397,23 +392,7 @@ No extended community defined
 
 ## Standard Access-lists
 
-### Standard Access-lists Summary
-
-#### ACL-API
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.0.0.0/8 |
-| 20 | permit 100.0.0.0/8 |
-
-### Standard Access-lists Device Configuration
-
-```eos
-!
-ip access-list standard ACL-API
-   10 permit 10.0.0.0/8
-   20 permit 100.0.0.0/8
-```
+Standard access-lists not defined
 
 ## Extended Access-lists
 

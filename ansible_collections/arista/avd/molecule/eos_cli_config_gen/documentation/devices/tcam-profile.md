@@ -1,4 +1,4 @@
-# vrfs
+# tcam-profile
 
 # Table of Contents
 
@@ -278,16 +278,10 @@ IP virtual router MAC address not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|| MGMT | false |
-| TENANT_A_PROJECT01 | true |
-| TENANT_A_PROJECT02 | true |
-
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
-no ip routing vrf MGMT
-ip routing vrf TENANT_A_PROJECT01
-ip routing vrf TENANT_A_PROJECT02
 ```
 
 ## IPv6 Routing
@@ -296,10 +290,7 @@ ip routing vrf TENANT_A_PROJECT02
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-| TENANT_A_PROJECT01 | false |
-| TENANT_A_PROJECT02 | false |
-
+| default | false |
 
 ## Static Routes
 
@@ -395,24 +386,7 @@ IPv6 extended access-lists not defined
 
 # VRF Instances
 
-## VRF Instances Summary
-
-| VRF Name | IP Routing |
-| -------- | ---------- |
-| MGMT | disabled |
-| TENANT_A_PROJECT01 | enabled |
-| TENANT_A_PROJECT02 | enabled |
-
-## VRF Instances Device Configuration
-
-```eos
-!
-vrf instance MGMT
-!
-vrf instance TENANT_A_PROJECT01
-!
-vrf instance TENANT_A_PROJECT02
-```
+No VRF instances defined
 
 # Virtual Source NAT
 

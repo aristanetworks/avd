@@ -31,6 +31,7 @@ management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
 none_configuration
+ntp
 platform
 port-channel-interfaces
 prefix-lists
@@ -56,12 +57,16 @@ snmp_v3
 spanning-tree
 spanning-tree-rstp
 spanning-tree-rapid-pvst
+tcam-profile
 static-routes
 terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
+unsupported-transceiver
 vlan-interfaces
 virtual-source-nat
 vlan-internal-order
 vlans
-vrfs
+vmtracer-sessions
+vxlan-interface
+vrf-instances

@@ -1,4 +1,4 @@
-# management-api-http
+# vxlan-interface
 
 # Table of Contents
 
@@ -140,34 +140,7 @@ Management API gnmi is not defined
 
 ## Management API HTTP
 
-### Management API HTTP Summary
-
-| HTTP | HTTPS |
-| ---------- | ---------- |
-|  false  |  true  |
-
-### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| default |  ACL-API  |  -  |
-| MGMT |  ACL-API  |  -  |
-
-### Management API HTTP Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no protocol http
-   no shutdown
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
-```
+Management API HTTP not defined
 
 # Authentication
 
@@ -291,7 +264,39 @@ No VLAN interfaces defined
 
 ## VXLAN Interface
 
-No VXLAN interfaces defined
+### VXLAN Interface Summary
+
+#### Source Interface: Loopback1
+
+#### UDP port: 4789
+
+#### VLAN to VNI Mappings
+
+| VLAN | VNI |
+| ---- | --- |
+| 110 | 10110 |
+| 111 | 10111 |
+
+#### VRF to VNI Mappings
+
+| VLAN | VNI |
+| ---- | --- |
+| Tenant_A_OP_Zone | 10 |
+| Tenant_A_WEB_Zone | 11 |
+
+### VXLAN Interface Device Configuration
+
+```eos
+!
+interface Vxlan1
+   vxlan source-interface Loopback1
+   vxlan virtual-router encapsulation mac-address mlag-system-id
+   vxlan udp-port 4789
+   vxlan vlan 110 vni 10110
+   vxlan vlan 111 vni 10111
+   vxlan vrf Tenant_A_OP_Zone vni 10
+   vxlan vrf Tenant_A_WEB_Zone vni 11
+```
 
 # Routing
 
@@ -397,23 +402,7 @@ No extended community defined
 
 ## Standard Access-lists
 
-### Standard Access-lists Summary
-
-#### ACL-API
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.0.0.0/8 |
-| 20 | permit 100.0.0.0/8 |
-
-### Standard Access-lists Device Configuration
-
-```eos
-!
-ip access-list standard ACL-API
-   10 permit 10.0.0.0/8
-   20 permit 100.0.0.0/8
-```
+Standard access-lists not defined
 
 ## Extended Access-lists
 
