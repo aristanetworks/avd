@@ -53,4 +53,6 @@ vlan-interfaces
 virtual-source-nat
 vlan-internal-order
 vlans
-vrfs
+vmtracer-sessions
+vxlan-interface
+vrf-instances
