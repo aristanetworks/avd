@@ -1,13 +1,11 @@
 {# eos - management security #}
-{% if management_security is defined and management_security is not none %}
+{% if management_security is arista.avd.defined %}
 !
 management security
-{%     if management_security.password is defined and management_security.password is not none %}
-{%       if management_security.password.encryption_key_common is defined and management_security.password.encryption_key_common == true %}
+{%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
    password encryption-key common
-{%       endif %}
 {%     endif %}
-{%     if management_security.entropy_source is defined and management_security.entropy_source is not none %}
+{%     if management_security.entropy_source is arista.avd.defined %}
    entropy source {{ management_security.entropy_source }}
 {%     endif %}
 {% endif %}

@@ -1,5 +1,6 @@
-{% if tcam_profile is defined and tcam_profile is not none %}
+{# eos - tcam profile #}
+{% if tcam_profile is arista.avd.defined %}
 !
 hardware tcam
-   system profile {{ tcam_profile[0] }}
+   system profile {{ tcam_profile | first }}
 {% endif %}
