@@ -812,7 +812,7 @@ vlan_interfaces:
     ip_address_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
-    ip_router_virtual_address: < IPv4_address >
+    ip_virtual_router: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:
