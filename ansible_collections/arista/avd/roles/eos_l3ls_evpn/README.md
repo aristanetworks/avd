@@ -14,6 +14,7 @@
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
+    - [DCI / L3 Edge](#dci--l3-edge)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
@@ -22,14 +23,14 @@
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
-    - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
-  - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
+  - [Role Enhancements for Super Spine Support](#role-enhancements-for-super-spine-support)
     - [Inventory Structure](#inventory-structure)
     - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
-  - [Role Enchancements for dedicated Overlay Controllers](#role-enchancements-for-dedicated-overlay-controllers)
+  - [Role Enhancements for dedicated Overlay Controllers](#role-enhancements-for-dedicated-overlay-controllers)
     - [Inventory Structure](#inventory-structure-1)
     - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
   - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
+  - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
 ## Overview
@@ -171,7 +172,7 @@ mac_address_table:
   aging_time: < time_in_seconds >
 ```
 
-> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise CloudVision cluster or either use DNS name for your CloudVision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
 
 **Example:**
 
@@ -266,7 +267,7 @@ mac_address_table:
 #
 # Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
 fabric_name: < Fabric_Name >
-# DC Name, required to match Ansible Group name convering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+# DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
 dc_name: < DC_Name >
 # POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
 # Recommended be common between Spines, Leafs within a POD (One l3ls topology)
@@ -631,7 +632,7 @@ l3leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
@@ -653,7 +654,7 @@ l3leaf:
 
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
-          spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+          spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:
@@ -667,13 +668,13 @@ l3leaf:
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
+          spine_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
 
         # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_3 >, < ethernet_interface_3 > ]
+          spine_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
 ```
 
 **Example:**
@@ -775,7 +776,7 @@ l2leaf:
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
       # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
@@ -794,7 +795,7 @@ l2leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
@@ -843,7 +844,7 @@ l2leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
@@ -870,6 +871,63 @@ l2leaf:
           id: 11
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+```
+
+### DCI / L3 Edge
+
+The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+Make sure to configure the variables in a group_var file covering all devices mentioned in the data model.
+
+```yaml
+l3_edge:
+  p2p_links_ip_pools:
+    < p2p_pool_name_1 >: < IPv4_address/Mask >
+  p2p_links_profiles:
+    < p2p_profile_name >:
+      < any variable supported under p2p_links can be inherited from a profile >
+  p2p_links:
+      # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
+    - id: < integer - starting from 1 >
+
+      # Speed | Optional
+      speed: < speed | auto speed | forced speed >
+
+      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip_pool: < p2p_pool_name >
+
+      # Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      subnet: < IPv4_address/Mask >
+
+      # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
+
+      # Nodes where this link should be configured | Required
+      nodes: [ < node_a >, < node_b > ]
+
+      # Interfaces where this link should be configured | Required
+      interfaces: [ < node_a_interface >, < node_b_interface > ]
+
+      # AS Numbers for BGP | Required with bgp peering
+      as: [ < node_a_as >, < node_b_as > ]
+
+      # Add this interface to underlay routing protocol | Optional
+      include_in_underlay_protocol: < true | false | default -> false >
+
+      # MTU for this P2P link | Optional
+      mtu: < number | default -> same as p2p_uplinks_mtu >
+
+      # Enable BFD (only considered for BGP) | Optional
+      bfd: < true | false | default -> false >
+
+      # QOS Service Profile | Optional
+      qos_profile: < qos_profile_name >
+
+      # Profile defined under p2p_profiles | Optional
+      profile: < p2p_profile_name >
 ```
 
 ### Network Services Variables - VRFs/VLANs
@@ -1248,7 +1306,7 @@ tenants:
         tags: [ vmotion ]
       161:
         name: Tenant_A_NFS
-        tags: [ nfs]
+        tags: [ nfs ]
 
   Tenant_B:
     mac_vrf_vni_base: 20000
@@ -1392,9 +1450,9 @@ servers:
 
 
       # Example of port-channel adpater
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
 
         # Port- Channel
@@ -1414,13 +1472,13 @@ servers:
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
         profile: < port_profile_name >
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
         port_channel:
           description: < port_channel_description >
-          mode: < active | passive | on >
+          mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
 
@@ -1513,7 +1571,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
@@ -1535,7 +1592,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
@@ -1556,7 +1612,7 @@ servers:
 
 Role [`eos_config_deploy_cvp`](../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
 
-This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on Cloudvision as current role does not upload additional containers.
+This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on CloudVision as current role does not upload additional containers.
 
 To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../eos_config_deploy_cvp/README.md#add-additional-configlets)
 
@@ -1625,6 +1681,7 @@ platform_settings:
       non_mlag: < seconds >
   - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
     tcam_profile: < tcam_profile >
+    lag_hardware_only: < true | false >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -1643,55 +1700,17 @@ note: Recommended default values for Jericho based platform, and all other platf
 #       non_mlag: 330
 #   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
 #     tcam_profile: vxlan-routing
+#     lag_hardware_only: true
 #     reload_delay:
 #       mlag: 780
 #       non_mlag: 1020
 ```
 
-### vEOS-LAB Know Caveats and Recommendations
+## Role Enhancements for Super Spine Support
 
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
-- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
-- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
-- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
-- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
-
-However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
-
-**Variables adjustments required for vEOS-LAB:**
-
-```yaml
-# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
-spine_bgp_defaults:
-#  - update wait-for-convergence
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-leaf_bgp_defaults:
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
-p2p_uplinks_mtu: 1500
-
-# Adjust default bfd values, to avoid high CPU.
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
-```
-
-## Role Enchancements for Super Spine Support
-
-The enchancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
+The enhancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
-The logic to deploy every leaf-spine POD fabric remains unchanged. The enchancement only adds logic required to provision spine-to-super-spine fabric.
+The logic to deploy every leaf-spine POD fabric remains unchanged. The enhancement only adds logic required to provision spine-to-super-spine fabric.
 Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 Current AVD release supports single plane deployment only.
 
@@ -1778,14 +1797,14 @@ spine:
   # taking `max_spine_to_super_spine_links` into account
   # for example: spine1, spine2, spine3, ...
   # or spine1, spine1, spine2, spine2, etc.
-  uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+  uplinks_to_super_spine_interfaces: [ Ethernet10, Ethernet11, Ethernet12, Ethernet13 ]
   nodes:
     <spine-hostname>:
       # super-spine interfaces to spines
       # taking `max_spine_to_super_spine_links` into account
       # for example: super-spine1, super-spine2, super-spine3, ...
       # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
-      super_spine_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+      super_spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     <-- etc. -->
 
 # Point to Point Network Summary range, assigned as /31 for each
@@ -1800,7 +1819,7 @@ Following variables must be now defined on DC and not POD level:
 - `p2p_uplinks_mtu`
 - `bgp_peer_groups`
 
-## Role Enchancements for dedicated Overlay Controllers
+## Role Enhancements for dedicated Overlay Controllers
 
 This enhancement will allow support for dedicated Overlay Controllers connected to fabric nodes.
 Overlay Controllers can be connected to any other device type.
@@ -1828,7 +1847,9 @@ all:
 
 Defaults:
 ```yaml
-max_overlay_controller_to_switch_links: 1
+# The maximum number of uplinks for each overlay_controller.
+#This is used to calculate P2P Link IP addresses, and should not be changed after deployment.
+max_overlay_controller_to_switch_links: 2
 ```
 
 Assigned to the DC group:
@@ -1856,7 +1877,7 @@ overlay_controller:
       evpn_role: < client | server | none | default -> none  >
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname > ]
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
@@ -1907,7 +1928,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet123
     peer_type: my_precious
 ```
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ "10.2.3.4" ]`
+In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -1942,6 +1963,45 @@ my_special_dci_ethernet_interfaces:
 ```
 
 In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_scructured_configuration_prefix`
+
+## vEOS-LAB Know Caveats and Recommendations
+
+- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
+- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
+- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
+- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
+- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
+
+However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
+
+**Variables adjustments required for vEOS-LAB:**
+
+```yaml
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values, to avoid high CPU.
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+```
 
 ## License
 

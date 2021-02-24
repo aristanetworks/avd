@@ -19,6 +19,7 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
+          - 'eos_l3ls_evpn-twodc-5stage-clos'
           # - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
@@ -35,4 +36,4 @@ jobs:
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: development/requirements.txt
           check_git: true
-          check_git_enforced: false
+          check_git_enforced: true

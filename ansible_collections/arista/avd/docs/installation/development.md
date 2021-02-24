@@ -40,7 +40,7 @@ Since docker image is now automatically published on [__docker-hub__](https://hu
 
 ```shell
 # Start development stack
-$ make dev-start
+$ make start
 docker-compose -f ansible-avd/development/docker-compose.yml up -d
 Recreating development_ansible_1    ... done
 Recreating development_webdoc_cvp_1 ... done

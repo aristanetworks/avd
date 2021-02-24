@@ -1479,6 +1479,7 @@ router_bgp:
     < IPv4_address_1 >:
       peer_group: < peer_group_name >
       remote_as: < bgp_as >
+      local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
       update_source: < interface >
