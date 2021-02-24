@@ -2,6 +2,7 @@
 ; ls -l | gawk -F ' ' '{print $9}'| gawk -F '.' '{print $1}'
 aaa
 acl
+aliases
 arp
 base
 dns-ntp
@@ -9,11 +10,21 @@ enable-password
 errdisable
 ethernet-interfaces
 event-handlers
+event-monitor
+hardware-counter
+hardware
 igmp-snooping
-ipv6-static-routes
+ip-dhcp-relay
+ip-extended-communities
+ip-routing
+ip-tacacs-source-interface
+ipv6-access-lists
+lldp
+load-interval
 logging-minimal
 logging
 loopbacks-interfaces
+mac-address-table
 management-api-http
 management-gnmi
 management-ssh

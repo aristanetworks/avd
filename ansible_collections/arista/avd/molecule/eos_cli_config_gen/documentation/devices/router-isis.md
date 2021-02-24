@@ -278,6 +278,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    description P2P_LINK_TO_EAPI-SPINE1_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
@@ -286,6 +287,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_EAPI-SPINE2_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
