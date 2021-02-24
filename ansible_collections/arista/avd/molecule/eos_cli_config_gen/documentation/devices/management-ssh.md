@@ -165,6 +165,7 @@ management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
    idle-timeout 15
+   no shutdown
    vrf mgt
       no shutdown
 ```

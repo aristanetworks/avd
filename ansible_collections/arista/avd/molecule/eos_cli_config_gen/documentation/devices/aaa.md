@@ -175,12 +175,14 @@ Enable password not defined
 | --- | ---------------|
 |  mgt | 10.10.10.157 |
 |  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
 
 ### TACACS Servers Device Configuration
 
 ```eos
 !
 tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+tacacs-server host 10.10.10.158 key 7 071B245F5A
 tacacs-server host 10.10.10.249 key 7 071B245F5A
 ```
 
@@ -190,7 +192,22 @@ IP TACACS source interfaces not defined
 
 ## RADIUS Servers
 
-RADIUS servers not defined
+### RADIUS Servers
+
+| VRF | RADIUS Servers |
+| --- | ---------------|
+|  mgt | 10.10.10.157 |
+|  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
+
+### RADIUS Servers Device Configuration
+
+```eos
+!
+radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+radius-server host 10.10.10.249 key 7 071B245F5A
+radius-server host 10.10.10.158 vrf default key 7 071B245F5A
+```
 
 ## AAA Server Groups
 

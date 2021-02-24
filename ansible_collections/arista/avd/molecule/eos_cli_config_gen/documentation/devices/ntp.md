@@ -1,4 +1,4 @@
-# management-api-http
+# ntp
 
 # Table of Contents
 
@@ -124,7 +124,25 @@ DNS domain lookup not defined
 
 ## NTP
 
-No NTP servers defined
+### NTP Summary
+
+- Local Interface: lo1
+
+- VRF: test
+
+| Node | Primary |
+| ---- | ------- |
+| 10.1.1.1 | true |
+| 10.1.1.2 | - |
+
+### NTP Device Configuration
+
+```eos
+!
+ntp local-interface vrf test lo1
+ntp server vrf test 10.1.1.1 prefer
+ntp server vrf test 10.1.1.2
+```
 
 ## PTP
 
@@ -140,34 +158,7 @@ Management API gnmi is not defined
 
 ## Management API HTTP
 
-### Management API HTTP Summary
-
-| HTTP | HTTPS |
-| ---------- | ---------- |
-|  false  |  true  |
-
-### Management API VRF Access
-
-| VRF Name | IPv4 ACL | IPv6 ACL |
-| -------- | -------- | -------- |
-| default |  ACL-API  |  -  |
-| MGMT |  ACL-API  |  -  |
-
-### Management API HTTP Configuration
-
-```eos
-!
-management api http-commands
-   protocol https
-   no protocol http
-   no shutdown
-   vrf default
-      no shutdown
-      ip access-group ACL-API
-   vrf MGMT
-      no shutdown
-      ip access-group ACL-API
-```
+Management API HTTP not defined
 
 # Authentication
 
@@ -397,23 +388,7 @@ No extended community defined
 
 ## Standard Access-lists
 
-### Standard Access-lists Summary
-
-#### ACL-API
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 10.0.0.0/8 |
-| 20 | permit 100.0.0.0/8 |
-
-### Standard Access-lists Device Configuration
-
-```eos
-!
-ip access-list standard ACL-API
-   10 permit 10.0.0.0/8
-   20 permit 100.0.0.0/8
-```
+Standard access-lists not defined
 
 ## Extended Access-lists
 
