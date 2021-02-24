@@ -5,7 +5,7 @@ interface Vxlan1
 {%     if vxlan_tunnel_interface.Vxlan1.source_interface is arista.avd.defined %}
    vxlan source-interface {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
 {%     endif %}
-{%     if vxlan_tunnel_interface.Vxlan1.virtual_router is defined %}
+{%     if vxlan_tunnel_interface.Vxlan1.virtual_router is arista.avd.defined %}
    vxlan virtual-router encapsulation mac-address {{ vxlan_tunnel_interface.Vxlan1.virtual_router.encapsulation_mac_address }}
 {%     endif %}
 {%     if vxlan_tunnel_interface.Vxlan1.vxlan_udp_port is arista.avd.defined %}
