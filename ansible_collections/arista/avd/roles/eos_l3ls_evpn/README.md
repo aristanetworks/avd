@@ -926,6 +926,12 @@ l3_edge:
       # QOS Service Profile | Optional
       qos_profile: < qos_profile_name >
 
+      # MACSec Profile | Optional
+      macsec_profile: < macsec_profile_name >
+
+      # PTP enable | Optional
+      ptp_enable: < true | false | default -> false >
+
       # Profile defined under p2p_profiles | Optional
       profile: < p2p_profile_name >
 ```
