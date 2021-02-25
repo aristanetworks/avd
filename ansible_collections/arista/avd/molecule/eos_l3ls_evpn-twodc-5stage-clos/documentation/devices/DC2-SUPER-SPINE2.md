@@ -158,6 +158,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -322,6 +323,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.16.21.64/31
    ptp enable
@@ -330,6 +332,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.16.21.66/31
    ptp enable
@@ -338,6 +341,7 @@ interface Ethernet2
 interface Ethernet4
    description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet6
    no shutdown
+   mtu 1500
    no switchport
    ip address 11.1.2.3/31
 ```

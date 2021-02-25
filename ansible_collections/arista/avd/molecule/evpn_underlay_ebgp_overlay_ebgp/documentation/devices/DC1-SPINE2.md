@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -369,42 +370,49 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.2/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.10/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.18/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.26/31
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.34/31
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.42/31
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.50/31
 ```

@@ -307,7 +307,7 @@ no ip icmp redirect
 ```eos
 !
 ipv6 unicast-routing
-!	
+!
 ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1
 no ipv6 icmp redirect
