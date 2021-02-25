@@ -19,6 +19,7 @@ ip-extended-communities
 ip-routing
 ip-tacacs-source-interface
 ipv6-access-lists
+ipv6-static-routes
 lldp
 load-interval
 logging-minimal

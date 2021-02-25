@@ -205,6 +205,7 @@ management api http-commands
    protocol https
    protocol http
    no shutdown
+   !
    vrf mgt
       no shutdown
       ip access-group ACL-API
