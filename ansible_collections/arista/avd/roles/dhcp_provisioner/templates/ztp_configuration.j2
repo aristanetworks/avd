@@ -45,9 +45,20 @@ ztp:
         lease_time: 300
 {% endif %}
   clients:
+{# Read L3LEAF devices #}
+    # SUPER SPINE
+{% for node_group in hostvars[groups[fabric_group][0]].super_spine.node_groups | arista.avd.natural_sort %}
+{%     for node in hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes | arista.avd.natural_sort %}
+{%         if hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is not none %}
+    - name: {{ node }}
+      mac: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address }}
+      ip4: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
 {# Read SPINE devices #}
     # SPINE
-{% for node in hostvars[groups[fabric_group][0]].spine.nodes %}
+{% for node in hostvars[groups[fabric_group][0]].spine.nodes | arista.avd.natural_sort %}
 {%      if hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address }}
@@ -56,8 +67,8 @@ ztp:
 {% endfor %}
 {# Read L3LEAF devices #}
     # L3LEAF
-{% for node_group in hostvars[groups[fabric_group][0]].l3leaf.node_groups %}
-{%     for node in hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes %}
+{% for node_group in hostvars[groups[fabric_group][0]].l3leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes | arista.avd.natural_sort %}
 {%         if hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address }}
@@ -67,8 +78,8 @@ ztp:
 {% endfor %}
 {# Read L2LEAF devices #}
     # L2LEAF
-{% for node_group in hostvars[groups[fabric_group][0]].l2leaf.node_groups %}
-{%     for node in hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes %}
+{% for node_group in hostvars[groups[fabric_group][0]].l2leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes | arista.avd.natural_sort %}
 {%         if hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address }}
