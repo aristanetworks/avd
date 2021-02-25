@@ -18,11 +18,11 @@
     service_profile: {{ p2p_interface.qos_profile }}
 {%     endif %}
 {%     if p2p_interface.macsec_profile is arista.avd.defined %}
-    mac_security: 
+    mac_security:
         profile: {{ p2p_interface.macsec_profile }}
 {%     endif %}
 {%     if p2p_interface.ptp_enable is arista.avd.defined(true) %}
-    ptp: 
+    ptp:
         enable: true
 {%     endif %}
 {%     if switch.underlay_routing_protocol == "ospf" %}

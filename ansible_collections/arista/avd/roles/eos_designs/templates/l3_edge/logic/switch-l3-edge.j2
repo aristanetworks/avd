@@ -60,7 +60,7 @@
 {%             set p2p_interface.macsec_profile = p2p_link.macsec_profile | arista.avd.default(
                                                   p2p_profile.macsec_profile) %}
 {%             set p2p_interface.ptp_enable = p2p_link.ptp_enable | arista.avd.default(
-                                               p2p_profile.ptp_enable) %}
+                                              p2p_profile.ptp_enable) %}
 {%             set p2p_interface.type = "routed" %}
 {%             set p2p_interface.shutdown = "false" %}
 {%             set p2p_interface.description = "P2P_LINK_TO_" ~ p2p_interface.peer ~ "_" ~ p2p_interface.peer_interface %}
