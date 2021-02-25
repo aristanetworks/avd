@@ -39,6 +39,7 @@ l3_edge:
     generic-profile:
       mtu: 1499
       bfd: false
+      ptp_enable: true
   p2p_links:
     - nodes: [ DC1-SUPER-SPINE1, DC2-SUPER-SPINE1 ]
       id: 1
@@ -47,6 +48,7 @@ l3_edge:
       ip_pool: pool-super-spine
       profile: generic-profile
       include_in_underlay_protocol: true
+      macsec_profile: MACSEC_PROFILE
     - nodes: [ DC1-SUPER-SPINE2, DC2-SUPER-SPINE2 ]
       id: 2
       interfaces: [ Ethernet6, Ethernet4 ]
