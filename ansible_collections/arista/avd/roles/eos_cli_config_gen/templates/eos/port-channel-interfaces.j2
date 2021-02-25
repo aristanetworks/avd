@@ -102,9 +102,18 @@ interface {{ port_channel_interface }}
    ipv6 nd managed-config-flag
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes is arista.avd.defined %}
-{%         for prefix in port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes %}
-   ipv6 nd prefix {{ prefix }} {% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].valid_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime is not none %}{{ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].preferred_lifetime }} {% endif %}{% if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag == true %}no-autoconfig{% endif %}
-
+{%         for ipv6_nd_prefix in port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes %}
+{%             set ipv6_nd_prefix_cli = "ipv6 nd prefix " ~ ipv6_nd_prefix %}
+{%             if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[ipv6_nd_prefix].valid_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[ipv6_nd_prefix].valid_lifetime %}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[ipv6_nd_prefix].preferred_lifetime is arista.avd.defined %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " " ~ port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[ipv6_nd_prefix].preferred_lifetime  %}
+{%             endif %}
+{%             if port_channel_interfaces[port_channel_interface].ipv6_nd_prefixes[ipv6_nd_prefix].no_autoconfig_flag is arista.avd.defined(true) %}
+{%                 set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
+{%             endif %}
+   {{ ipv6_nd_prefix_cli }}
 {%         endfor %}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].access_group_in is arista.avd.defined %}
