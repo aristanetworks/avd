@@ -358,9 +358,11 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet6
    no shutdown
+   mac security profile MACSEC_PROFILE
    mtu 1499
    no switchport
    ip address 11.1.2.1/31
+   ptp enable
 !
 interface Ethernet5
    description P2P_LINK_TO_DC2-RS2_Ethernet1

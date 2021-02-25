@@ -437,6 +437,7 @@ interface Ethernet7
    mtu 1499
    no switchport
    ip address 11.1.0.38/31
+   ptp enable
 ```
 
 ## Port-Channel Interfaces
