@@ -440,7 +440,6 @@ interface Port-Channel1
    description DC1-SVC3A_Po7
    no shutdown
    switchport
-   switchport trunk allowed vlan 
    switchport mode trunk
    mlag 1
 !

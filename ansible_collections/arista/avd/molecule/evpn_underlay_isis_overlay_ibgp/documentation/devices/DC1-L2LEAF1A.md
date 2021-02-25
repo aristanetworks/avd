@@ -393,7 +393,6 @@ interface Port-Channel1
    description DC1-LEAF2A_Po7
    no shutdown
    switchport
-   switchport trunk allowed vlan 
    switchport mode trunk
 ```
 
