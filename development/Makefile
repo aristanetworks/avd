@@ -31,6 +31,8 @@ DOCKER_USER ?= avd
 GIT_USERNAME ?= $(shell git config --get user.name)
 GIT_EMAIL ?= $(shell git config --get user.email)
 MUFFET_TIMEOUT ?= 60
+# Container name to
+WEBDOC_ID ?= avd
 
 .PHONY: help
 help: ## Display help message
@@ -103,8 +105,17 @@ shell: ## Run a shell attached to ansible container
 ansible-upgrade: ## Run a shell attached to ansible container
 	docker-compose -f $(COMPOSE_FILE) exec -u $(DOCKER_USER) ansible pip install --user --upgrade ansible==$(ANSIBLE_VERSION)
 
+.PHONY: restart
+restart: stop start  ## Stop and Start docker-compose stack
+
 .PHONY: reload
-reload: stop start  ## Stop and Start docker-compose stack
+reload:  ## Reload HTTP container available in docker-compose stack
+	docker-compose -f $(COMPOSE_FILE) restart webdoc_$(WEBDOC_ID)
+
+.PHONY: reload-all
+reload-all:  ## Reload HTTP container available in docker-compose stack
+	docker-compose -f $(COMPOSE_FILE) restart webdoc_avd
+	docker-compose -f $(COMPOSE_FILE) restart webdoc_cvp
 
 ###############################################################################
 # 			Documentation target											  #
