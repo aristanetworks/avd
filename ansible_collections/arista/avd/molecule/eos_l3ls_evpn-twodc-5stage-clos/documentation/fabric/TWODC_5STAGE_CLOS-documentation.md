@@ -43,6 +43,14 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
 
+### Fabric Switches with inband Management IP
+| POD | Type | Node | Management IP | Inband Interface |
+| --- | ---- | ---- | ------------- | ---------------- |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 172.21.110.4/24 | Vlan4085 |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 172.21.110.5/24 | Vlan4085 |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 172.21.110.6/24 | Vlan4085 |
+| DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 172.21.210.4/24 | Vlan4092 |
+
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
