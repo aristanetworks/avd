@@ -58,6 +58,7 @@ run: ## Run ansible-avd container
 		-e AVD_GIT_EMAIL="$(GIT_EMAIL)" \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v $(HOME_DIR)/:/projects \
+		-v $(HOME)/.ssh:/home/avd/.ssh/ \
 		-v /etc/hosts:/etc/hosts $(CONTAINER)
 
 .PHONY: vscode
@@ -67,6 +68,7 @@ vscode: ## Run a VSCODE container
 		-e AVD_GIT_EMAIL="$(GIT_EMAIL)" \
 		-v ${PWD}/:/home/avd/arista-ansible \
 		-v /var/run/docker.sock:/var/run/docker.sock \
+		-v $(HOME)/.ssh:/home/avd/.ssh/ \
 		-p $(VSCODE_PORT):8080 \
 		$(VSCODE_CONTAINER)
 	@echo "---------------"
