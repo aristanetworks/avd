@@ -307,6 +307,13 @@ Global ARP timeout not defined.
 
 ## Router General
 
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
+| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+
 ### Router General configuration
 
 ```eos
