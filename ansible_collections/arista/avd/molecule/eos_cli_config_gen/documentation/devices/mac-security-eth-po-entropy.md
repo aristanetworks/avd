@@ -265,10 +265,15 @@ No Interface Defaults defined
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  - | routed | - | - | - | - |
 | Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  -  |  routed  | - |  1.1.1.1/24  |  default  |  -  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -276,7 +281,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    mac security profile A1
-   switchport
+   no switchport
    ip address 1.1.1.1/24
 !
 interface Ethernet3

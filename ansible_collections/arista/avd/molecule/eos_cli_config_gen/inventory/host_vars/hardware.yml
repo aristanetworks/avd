@@ -1,0 +1,8 @@
+### Hardware ###
+hardware:
+  speed_groups:
+    1:
+      serdes: 10g
+    2:
+      serdes: 25g
+      

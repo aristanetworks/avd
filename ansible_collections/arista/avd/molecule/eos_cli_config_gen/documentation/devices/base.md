@@ -174,6 +174,7 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    ipv6 access-group ACL-SSH-VRF6 vrf mgt in
    idle-timeout 15
+   no shutdown
    vrf mgt
       no shutdown
 ```
@@ -201,6 +202,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    protocol http
    no shutdown
    !

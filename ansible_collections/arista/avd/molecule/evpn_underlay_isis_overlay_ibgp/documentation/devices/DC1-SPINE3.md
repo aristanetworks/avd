@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -381,6 +382,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.4/31
    isis enable EVPN_UNDERLAY
@@ -390,6 +392,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.12/31
    isis enable EVPN_UNDERLAY
@@ -399,6 +402,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.20/31
    isis enable EVPN_UNDERLAY
@@ -408,6 +412,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.28/31
    isis enable EVPN_UNDERLAY
@@ -417,6 +422,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.36/31
    isis enable EVPN_UNDERLAY
@@ -426,6 +432,7 @@ interface Ethernet5
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.44/31
    isis enable EVPN_UNDERLAY
@@ -435,6 +442,7 @@ interface Ethernet6
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.52/31
    isis enable EVPN_UNDERLAY
@@ -573,6 +581,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0000.0003.00
    is-type level-2
@@ -582,7 +591,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 
