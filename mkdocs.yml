@@ -7,7 +7,7 @@ theme:
   name: material
   features:
     - navigation.instant
-    - toc.integrate
+    # - toc.integrate
   highlightjs: true
   hljs_languages:
         - yaml
@@ -40,8 +40,8 @@ markdown_extensions:
       guess_lang: true
   - toc:
       separator: "-"
-      permalink: "#"
-      # permalink: true
+      # permalink: "#"
+      permalink: true
       baselevel: 3
 
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
@@ -51,6 +51,7 @@ use_directory_urls: true
 nav:
   - Home: README.md
   - Release Notes:
+    - 2.0.x: docs/release-notes/2.0.x.md
     - 1.1.x: docs/release-notes/1.1.x.md
     - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
@@ -73,6 +74,7 @@ nav:
     - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
     - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
     - eos_validate_state: roles/eos_validate_state/README.md
+    - eos_snapshot: roles/eos_snapshot/README.md
     - dhcp_provisioner: roles/dhcp_provisioner/README.md
     - build_output_folders: roles/build_output_folders/README.md
     - upgrade_tools: roles/upgrade_tools/README.md

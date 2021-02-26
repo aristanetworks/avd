@@ -34,6 +34,16 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
+  Port-Channel51:
+    description: ipv6_prefix
+    vlans: 1-500
+    mode: trunk
+    ipv6_nd_prefixes:
+      a1::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+
   Port-Channel100:
     type: routed
     logging:

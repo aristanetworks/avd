@@ -170,6 +170,7 @@ management ssh
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com
    hostkey server ecdsa-nistp256 ecdsa-nistp521
+   no shutdown
    vrf mgt
       no shutdown
 ```

@@ -14,6 +14,7 @@
       - [Spine Variables](#spine-variables)
       - [L3 Leaf Variables](#l3-leaf-variables)
       - [L2 Leafs Variables](#l2-leafs-variables)
+    - [DCI / L3 Edge](#dci--l3-edge)
     - [Network Services Variables - VRFs/VLANs](#network-services-variables---vrfsvlans)
     - [Server Edge Port Connectivity](#server-edge-port-connectivity)
       - [Single attached server scenario](#single-attached-server-scenario)
@@ -22,17 +23,14 @@
     - [Variable to attach additional configlets](#variable-to-attach-additional-configlets)
     - [Event Handlers](#event-handlers)
     - [Platform Specific settings](#platform-specific-settings)
-    - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
-  - [Role Enchancements for Super Spine Support](#role-enchancements-for-super-spine-support)
+  - [Role Enhancements for Super Spine Support](#role-enhancements-for-super-spine-support)
     - [Inventory Structure](#inventory-structure)
     - [Additional Variables Required For Super Spine Deployment](#additional-variables-required-for-super-spine-deployment)
-  - [Role Enchancements for dedicated Overlay Controllers](#role-enchancements-for-dedicated-overlay-controllers)
+  - [Role Enhancements for dedicated Overlay Controllers](#role-enhancements-for-dedicated-overlay-controllers)
     - [Inventory Structure](#inventory-structure-1)
     - [Additional Variables Required For Overlay Controllers Deployment](#additional-variables-required-for-overlay-controllers-deployment)
-  - [Role Enhancements for Flexible EVPN Overlay peering design](#role-enhancements-for-flexible-evpn-overlay-peering-design)
-    - [Inventory Structure](#inventory-structure-2)
-    - [Additional Variables For Flexible EVPN Overlay peerings](#additional-variables-for-flexible-evpn-overlay-peerings)
   - [Custom EOS Structured Configuration](#custom-eos-structured-configuration)
+  - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
 ## Overview
@@ -174,7 +172,7 @@ mac_address_table:
   aging_time: < time_in_seconds >
 ```
 
-> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+> In `cvp_instance_ips` you can either provide a list of IPs to target on-premise CloudVision cluster or either use DNS name for your CloudVision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
 
 **Example:**
 
@@ -269,7 +267,7 @@ mac_address_table:
 #
 # Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
 fabric_name: < Fabric_Name >
-# DC Name, required to match Ansible Group name convering all devices in the DC | Required for 5-stage CLOS (Super-spines)
+# DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
 dc_name: < DC_Name >
 # POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
 # Recommended be common between Spines, Leafs within a POD (One l3ls topology)
@@ -323,12 +321,14 @@ mlag_ips:
   leaf_peer_l3: < IPv4_network/Mask >
   mlag_peer: < IPv4_network/Mask >
 
-# BGP multi-path
-# If not defined these values will be equal by default to the number of spines in the fabric
-# If defined the values defined will both be applied to leaf and spine switches
-# Note: these values are only relevant for an eBGP scenario
-bgp_maximum_paths: <number_of_max_paths>
-bgp_ecmp: <number_of_ecmp_paths>
+# BGP multi-path | Optional
+bgp_maximum_paths: < number_of_max_paths | default -> 4 >
+bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
+
+# EVPN ebgp-multihop | Optional
+# Default of 3, the recommended value for a 3 stage spine and leaf topology.
+# Set to a higher value to allow for very large and complex topologies.
+evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
@@ -371,6 +371,15 @@ bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
+
+# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
+# Requires use eBGP as overlay protocol.
+evpn_overlay_bgp_rtc: < true | false , default -> false >
+
+# Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
+# This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
+# from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
+evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
@@ -516,9 +525,6 @@ spine:
   # Spine BGP AS | Required.
   bgp_as: < bgp_as >
 
-  # Accepted L3 leaf bgp as range | Required.
-  leaf_as_range: < bgp_as_start-bgp_as_end >
-
   # Specify dictionary of Spine nodes | Required.
   nodes:
     < inventory_hostname >:
@@ -526,8 +532,12 @@ spine:
       # Unique identifier | Required.
       id: < integer >
 
-      # Route Reflector when < overlay_routing_protocol > == IBGP
-      bgp_route_reflector: < boolean >
+      # EVPN Role for Overlay BGP Peerings | Optional, default is server
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
+      evpn_role: < client | server | none | default -> server  >
+
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
       # Node management IP address | Required.
       mgmt_ip: < IPv4_address/Mask >
@@ -545,7 +555,6 @@ spine:
 spine:
   platform: vEOS-LAB
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1
@@ -612,11 +621,18 @@ l3leaf:
       # L3 Leaf BGP AS. | Required.
       bgp_as: < bgp_as >
 
+      # EVPN Role for Overlay BGP Peerings | Optional, default is client
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
+      evpn_role: < client | server | none | default -> client  >
+
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
+
       # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
@@ -638,7 +654,7 @@ l3leaf:
 
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
-          spine_interfaces: [  < ethernet_interface_1 >, < ethernet_interface_1 > ]
+          spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:
@@ -652,13 +668,13 @@ l3leaf:
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_2 >, < ethernet_interface_2 > ]
+          spine_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
 
         # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [  < ethernet_interface_3 >, < ethernet_interface_3 > ]
+          spine_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
 ```
 
 **Example:**
@@ -760,7 +776,7 @@ l2leaf:
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
       # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
@@ -779,7 +795,7 @@ l2leaf:
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]]
+        tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
@@ -828,7 +844,7 @@ l2leaf:
 l2leaf:
   defaults:
     platform: vEOS-LAB
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
+    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
@@ -855,6 +871,63 @@ l2leaf:
           id: 11
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+```
+
+### DCI / L3 Edge
+
+The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
+
+The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
+For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
+
+Make sure to configure the variables in a group_var file covering all devices mentioned in the data model.
+
+```yaml
+l3_edge:
+  p2p_links_ip_pools:
+    < p2p_pool_name_1 >: < IPv4_address/Mask >
+  p2p_links_profiles:
+    < p2p_profile_name >:
+      < any variable supported under p2p_links can be inherited from a profile >
+  p2p_links:
+      # Unique id per subnet_summary. Used to calculate ip addresses | Required with ip_pool
+    - id: < integer - starting from 1 >
+
+      # Speed | Optional
+      speed: < speed | auto speed | forced speed >
+
+      # IP Pool defined under p2p_links_ip_pools. A /31 will be taken from the pool per P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip_pool: < p2p_pool_name >
+
+      # Subnet used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      subnet: < IPv4_address/Mask >
+
+      # Specific IP addresses used on this P2P link | Optional (Requires ip_pool or subnet or ip)
+      ip: [ < node_a IPv4_address/Mask >, < node_b IPv4_address/Mask > ]
+
+      # Nodes where this link should be configured | Required
+      nodes: [ < node_a >, < node_b > ]
+
+      # Interfaces where this link should be configured | Required
+      interfaces: [ < node_a_interface >, < node_b_interface > ]
+
+      # AS Numbers for BGP | Required with bgp peering
+      as: [ < node_a_as >, < node_b_as > ]
+
+      # Add this interface to underlay routing protocol | Optional
+      include_in_underlay_protocol: < true | false | default -> false >
+
+      # MTU for this P2P link | Optional
+      mtu: < number | default -> same as p2p_uplinks_mtu >
+
+      # Enable BFD (only considered for BGP) | Optional
+      bfd: < true | false | default -> false >
+
+      # QOS Service Profile | Optional
+      qos_profile: < qos_profile_name >
+
+      # Profile defined under p2p_profiles | Optional
+      profile: < p2p_profile_name >
 ```
 
 ### Network Services Variables - VRFs/VLANs
@@ -1233,7 +1306,7 @@ tenants:
         tags: [ vmotion ]
       161:
         name: Tenant_A_NFS
-        tags: [ nfs]
+        tags: [ nfs ]
 
   Tenant_B:
     mac_vrf_vni_base: 20000
@@ -1377,9 +1450,9 @@ servers:
 
 
       # Example of port-channel adpater
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
 
         # Port- Channel
@@ -1399,13 +1472,13 @@ servers:
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
         profile: < port_profile_name >
-      - server_ports: [ < interface_name_1 > , < interface_name_2 >  ]
+      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
-        switches: [ < device_1 >, < device_2 >  ]
+        switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
         port_channel:
           description: < port_channel_description >
-          mode: < active | passive | on >
+          mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
 
@@ -1498,7 +1571,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
@@ -1520,7 +1592,6 @@ servers:
   server01:
     rack: RackB
     adapters:
-
       - server_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
@@ -1541,7 +1612,7 @@ servers:
 
 Role [`eos_config_deploy_cvp`](../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
 
-This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on Cloudvision as current role does not upload additional containers.
+This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on CloudVision as current role does not upload additional containers.
 
 To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../eos_config_deploy_cvp/README.md#add-additional-configlets)
 
@@ -1610,6 +1681,7 @@ platform_settings:
       non_mlag: < seconds >
   - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
     tcam_profile: < tcam_profile >
+    lag_hardware_only: < true | false >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -1628,55 +1700,17 @@ note: Recommended default values for Jericho based platform, and all other platf
 #       non_mlag: 330
 #   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
 #     tcam_profile: vxlan-routing
+#     lag_hardware_only: true
 #     reload_delay:
 #       mlag: 780
 #       non_mlag: 1020
 ```
 
-### vEOS-LAB Know Caveats and Recommendations
+## Role Enhancements for Super Spine Support
 
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
-- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
-- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
-- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
-- Supported features are documented here: [vEOS-LAB Datasheet](https://www.arista.com/assets/data/pdf/Datasheets/vEOS_Datasheet.pdf)
-
-However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
-
-**Variables adjustments required for vEOS-LAB:**
-
-```yaml
-# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
-spine_bgp_defaults:
-#  - update wait-for-convergence
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-leaf_bgp_defaults:
-#  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
-p2p_uplinks_mtu: 1500
-
-# Adjust default bfd values, to avoid high CPU.
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
-```
-
-## Role Enchancements for Super Spine Support
-
-The enchancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
+The enhancement listed below are required to support bigger deployments with super-spines (5 stage CLOS).
 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
-The logic to deploy every leaf-spine POD fabric remains unchanged. The enchancement only adds logic required to provision spine-to-super-spine fabric.
+The logic to deploy every leaf-spine POD fabric remains unchanged. The enhancement only adds logic required to provision spine-to-super-spine fabric.
 Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 Current AVD release supports single plane deployment only.
 
@@ -1717,18 +1751,21 @@ max_spine_to_super_spine_links: 1  # number of parallel links between spines and
 Assigned to the DC group:
 
 ```yaml
-dc_name: DC1  # data center fabric name
-              # this variable is required to identify devices in the same DC in case of multi-DC setup
-
 max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
 
 super_spine:
   platform: vEOS-LAB  # super-spine platform
   bgp_as: <super-spine BGP AS>
+
   nodes:
     SU-01:  # super-spine name
       id: 1
       mgmt_ip: 192.168.0.1/24
+      # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
+      evpn_role: < client | server | none | default -> none  >
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
     <-- etc. -->
 
 # IP address range for loopbacks for all super-spines in the DC,
@@ -1755,21 +1792,19 @@ type: super-spine  # identifies every host in the group as super-spine
 Assigned to Every POD Group:
 
 ```yaml
-pod_number: 1  # leaf-spine POD number, starts with 1
-
 spine:
   # list of spine interfaces used as uplinks to super-spines
   # taking `max_spine_to_super_spine_links` into account
   # for example: spine1, spine2, spine3, ...
   # or spine1, spine1, spine2, spine2, etc.
-  uplinks_to_super_spine_interfaces: ['Ethernet10', 'Ethernet11', 'Ethernet12', 'Ethernet13']
+  uplinks_to_super_spine_interfaces: [ Ethernet10, Ethernet11, Ethernet12, Ethernet13 ]
   nodes:
     <spine-hostname>:
       # super-spine interfaces to spines
       # taking `max_spine_to_super_spine_links` into account
       # for example: super-spine1, super-spine2, super-spine3, ...
       # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
-      super_spine_interfaces: ['Ethernet1', 'Ethernet1', 'Ethernet1', 'Ethernet1']
+      super_spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     <-- etc. -->
 
 # Point to Point Network Summary range, assigned as /31 for each
@@ -1784,7 +1819,7 @@ Following variables must be now defined on DC and not POD level:
 - `p2p_uplinks_mtu`
 - `bgp_peer_groups`
 
-## Role Enchancements for dedicated Overlay Controllers
+## Role Enhancements for dedicated Overlay Controllers
 
 This enhancement will allow support for dedicated Overlay Controllers connected to fabric nodes.
 Overlay Controllers can be connected to any other device type.
@@ -1812,7 +1847,9 @@ all:
 
 Defaults:
 ```yaml
-max_overlay_controller_to_switch_links: 1
+# The maximum number of uplinks for each overlay_controller.
+#This is used to calculate P2P Link IP addresses, and should not be changed after deployment.
+max_overlay_controller_to_switch_links: 2
 ```
 
 Assigned to the DC group:
@@ -1820,15 +1857,28 @@ Assigned to the DC group:
 ```yaml
 overlay_controller:
   platform: <platform>   # overlay-controller platform
-  defaults: #Default variables, can be overridden when defined under each node
-    remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
-    uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
-    bgp_as: <BGP AS>
+
+  # All variables defined under `nodes` dictionary can be defined under the defaults key will be inherited by all overlay-controllers.
+  # The variables defined under a specific node will take precedence over defaults.
+  defaults:
+
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
+
+      remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
+      uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
+      bgp_as: <BGP AS>
+
+      # EVPN Role for Overlay BGP Peerings | Optional, default is none
+      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
+      evpn_role: < client | server | none | default -> none  >
+
+      # Peer with these EVPN Route Servers / Route Reflectors | Optional
+      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname > ]
+
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
 overlay_controller_p2p_network_summary: < IPv4_network/Mask >
@@ -1851,68 +1901,6 @@ Assigned to Overlay Controller Group:
 
 ```yaml
 type: overlay-controller # identifies every host in the group as overlay-controller
-```
-
-
-## Role Enhancements for Flexible EVPN Overlay peering design
-
-This enhancement will allow a more flexible EVPN Overlay peering design.
-Overlay peerings can be configured to any of the following options as well as combinations thereof:
-* l3leaf <-> spine
-* l3leaf <-> super-spine
-* l3leaf <-> overlay-controller
-* spine <-> spine (in other PODs)
-* spine <-> super-spine
-* spine <-> overlay-controller
-* super-spine <-> super-spine (in other DCs)
-* super-spine <-> overlay-controller
-* overlay-controller <-> overlay-controller (in other DCs)
-The overlay peerings will be derived from the variable `evpn_overlay_controller_groups` on the "client".
-Ex. setting `evpn_overlay_controller_groups : [ DC1_SUPER_SPINES ]` in the `DC1-POD1-L3LEAFS.yml` group_var file will setup evpn peerings between
-all the l3leafs in this group and all devices in the group `DC1_SUPER_SPINES`. The devices in group `DC1_SUPER_SPINES` will detect that others are
-pointing at them, and configure the peering as well.
-
-Currently all spines, super-spines and overlay-controllers will have the EVPN adress-family and EVPN BGP peer-group configured even if they have no
-EVPN overlay peerings.
-
-To be backward compatible the templates will use the old behavior of configuring EVPN Overlay between all spines and l3leafs if `evpn_overlay_controller_groups`
-is not defined on the l3leafs group.
-
-### Inventory Structure
-
-There are no specific requirements for this feature, so this is just an example for reference.
-
-```yaml
-all:
-  children:
-    < DC-group-name >:
-      children:
-        < Overlay Controllers group name >:
-          <-- omitted -->
-        < Super Spines group name >:
-          <-- omitted -->
-        < DC POD 1 group name >:
-          children:
-            < spines group >:
-              <-- omitted -->
-            < leaf group >:
-              <-- omitted -->
-```
-
-### Additional Variables For Flexible EVPN Overlay peerings
-
-Assigned to any EVPN client device group:
-
-```yaml
-# One or more groups containing EVPN RR/RS.
-evpn_overlay_controller_groups: [ < inventory_group > ]
-```
-
-Assigned to fabric group:
-```yaml
-# Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
-# Requires use of evpn_overlay_controller_groups and eBGP as overlay protocol.
-evpn_overlay_bgp_rtc: < true | false , default -> false >
 ```
 
 ## Custom EOS Structured Configuration
@@ -1940,7 +1928,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet123
     peer_type: my_precious
 ```
-In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ "10.2.3.4" ]`
+In this example the contents of the `name_server.nodes` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
 and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
@@ -1975,6 +1963,45 @@ my_special_dci_ethernet_interfaces:
 ```
 
 In this example  `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_scructured_configuration_prefix`
+
+## vEOS-LAB Know Caveats and Recommendations
+
+- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
+- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
+- Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
+- vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
+- Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
+
+However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
+
+**Variables adjustments required for vEOS-LAB:**
+
+```yaml
+# Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
+spine_bgp_defaults:
+#  - update wait-for-convergence
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+leaf_bgp_defaults:
+#  - update wait-install
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+
+# Update p2p mtu 9000 -> 1500, MTU 9000 not supported in vEOS-LAB.
+p2p_uplinks_mtu: 1500
+
+# Adjust default bfd values, to avoid high CPU.
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+```
 
 ## License
 

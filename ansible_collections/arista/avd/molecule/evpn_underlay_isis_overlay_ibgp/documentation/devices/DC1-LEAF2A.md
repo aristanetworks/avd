@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -424,6 +425,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.9/31
    isis enable EVPN_UNDERLAY
@@ -433,6 +435,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.11/31
    isis enable EVPN_UNDERLAY
@@ -442,6 +445,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.13/31
    isis enable EVPN_UNDERLAY
@@ -451,6 +455,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.15/31
    isis enable EVPN_UNDERLAY
@@ -501,7 +506,6 @@ interface Port-Channel7
    description DC1_L2LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 
    switchport mode trunk
    mlag 7
 ```
@@ -581,6 +585,7 @@ interface Loopback1
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    no shutdown
+   mtu 1500
    ip address 10.255.251.2/31
    isis enable EVPN_UNDERLAY
    isis metric 50
@@ -589,6 +594,7 @@ interface Vlan4093
 interface Vlan4094
    description MLAG_PEER
    no shutdown
+   mtu 1500
    no autostate
    ip address 10.255.252.2/31
 ```
@@ -711,6 +717,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0002.00
    is-type level-2
@@ -720,7 +727,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 
@@ -736,6 +742,7 @@ router isis EVPN_UNDERLAY
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
+| maximum-paths 4 ecmp 4 |
 
 ### Router BGP Peer Groups
 
@@ -747,7 +754,6 @@ router isis EVPN_UNDERLAY
 | Remote_as | 65000 |
 | Source | Loopback0 |
 | Bfd | true |
-| Ebgp multihop | 3 |
 | Send community | true |
 | Maximum routes | 0 (no limit) |
 
@@ -772,16 +778,18 @@ router bgp 65000
    router-id 192.168.255.6
    no bgp default ipv4-unicast
    distance bgp 20 200 200
+   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS remote-as 65000
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.1 description DC1-SPINE1
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in

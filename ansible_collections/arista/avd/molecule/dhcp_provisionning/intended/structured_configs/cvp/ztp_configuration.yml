@@ -19,6 +19,7 @@ ztp:
         end: 172.17.255.210
         lease_time: 300
   clients:
+    # SUPER SPINE
     # SPINE
     - name: DC1-SPINE1
       mac: 0c:1d:c0:1d:62:01
@@ -33,6 +34,9 @@ ztp:
       mac: 0c:1d:c0:1d:62:04
       ip4: 192.168.200.104
     # L3LEAF
+    - name: DC1-BL1A
+      mac: 0c:1d:c0:1d:62:16
+      ip4: 192.168.200.110
     - name: DC1-LEAF1A
       mac: 0c:1d:c0:1d:62:11
       ip4: 192.168.200.105
@@ -48,9 +52,6 @@ ztp:
     - name: DC1-SVC3B
       mac: 0c:1d:c0:1d:62:15
       ip4: 192.168.200.109
-    - name: DC1-BL1A
-      mac: 0c:1d:c0:1d:62:16
-      ip4: 192.168.200.110
     # L2LEAF
     - name: DC1-L2LEAF1A
       mac: 0c:1d:c0:1d:62:21

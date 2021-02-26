@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -380,6 +381,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.4/31
    ip ospf network point-to-point
@@ -388,6 +390,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.12/31
    ip ospf network point-to-point
@@ -396,6 +399,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.20/31
    ip ospf network point-to-point
@@ -404,6 +408,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.28/31
    ip ospf network point-to-point
@@ -412,6 +417,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.36/31
    ip ospf network point-to-point
@@ -420,6 +426,7 @@ interface Ethernet5
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.44/31
    ip ospf network point-to-point
@@ -428,6 +435,7 @@ interface Ethernet6
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.52/31
    ip ospf network point-to-point
@@ -639,18 +647,25 @@ router bgp 65001
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
+   neighbor 192.168.255.5 description DC1-LEAF1A
    neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.6 remote-as 65102
+   neighbor 192.168.255.6 description DC1-LEAF2A
    neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.7 remote-as 65102
+   neighbor 192.168.255.7 description DC1-LEAF2B
    neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.8 remote-as 65103
+   neighbor 192.168.255.8 description DC1-SVC3A
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65103
+   neighbor 192.168.255.9 description DC1-SVC3B
    neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.10 remote-as 65104
+   neighbor 192.168.255.10 description DC1-BL1A
    neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.11 remote-as 65104
+   neighbor 192.168.255.11 description DC1-BL1B
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate

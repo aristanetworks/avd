@@ -7,6 +7,7 @@ ANSIBLE_TEST_MODE ?= docker
 WEBDOC_BUILD = ansible_collections/arista/avd/docs/_build
 COMPOSE_FILE ?= development/docker-compose.yml
 MUFFET_TIMEOUT ?= 60
+SED_OPT ?= -i '.original'
 
 .PHONY: help
 help: ## Display help message
@@ -126,3 +127,29 @@ install-docker: ## Install docker
 	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 	sudo apt update
 	sudo apt install -q -y docker-ce
+
+.PHONY: ci-check-links-avd
+ci-check-links-avd: ## CI workflow to test HTTP link
+	@echo "--------------------------"
+	@echo "Starting docker stack for testing"
+	@echo "--------------------------"
+	cp development/docker-compose.yml . \
+	&& sed $(SED_OPT) -e 's/ansible-avd\///g' docker-compose.yml \
+	&& docker-compose -f docker-compose.yml up -d webdoc_avd \
+	&& docker-compose -f docker-compose.yml ps
+	@echo ""
+	@echo "--------------------------"
+	@echo "Checking if web server is started"
+	@echo "--------------------------"
+	until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
+	@echo ""
+	@echo "--------------------------"
+	@echo "Check HTTP link"
+	@echo "--------------------------"
+	docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
+	@echo ""
+	@echo "--------------------------"
+	@echo "Shutting down docker stack"
+	@echo "--------------------------"
+	docker-compose -f docker-compose.yml down \
+	&& rm -f docker-compose.*

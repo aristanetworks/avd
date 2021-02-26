@@ -149,14 +149,11 @@ Management SSH not defined
 ```eos
 !
 management api gnmi
-  transport grpc MGMT
+   transport grpc MGMT
       ip access-group ACL-GNMI
       vrf MGMT
-  !
-  transport grpc MONITORING
+   transport grpc MONITORING
       vrf MONITORING
-  !
-  provider eos-native
 ```
 
 ## Management API HTTP

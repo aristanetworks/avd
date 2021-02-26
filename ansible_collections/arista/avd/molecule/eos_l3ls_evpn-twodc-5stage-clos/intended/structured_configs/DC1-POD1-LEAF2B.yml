@@ -1,0 +1,471 @@
+l3leaf_node_group: RACK2_MLAG
+switch_platform: vEOS-LAB
+switch_bgp_as: 65112
+leaf_id: 3
+switch_mgmt_ip: 192.168.1.9/16
+leaf_evpn_services_l2_only: false
+switch_router_id: 172.16.110.5
+switch_evpn_role: client
+switch_evpn_route_servers:
+- DC1-POD1-LEAF1A
+- DC1-POD1-SPINE1
+- DC1-RS1
+switch_evpn_route_clients: []
+leaf_filter_tenants:
+- all
+leaf_filter_tags:
+- all
+leaf_allowed_vrfs:
+- Common_VRF
+leaf_allowed_svis:
+- 110
+- 111
+- 112
+leaf_allowed_vlans:
+- 110
+- 111
+- 112
+leaf_mlag: true
+leaf_mlag_group: RACK2_MLAG
+leaf_mlag_role: secondary
+leaf_mlag_peer: DC1-POD1-LEAF2A
+leaf_mlag_ip: 3
+leaf_mlag_peer_ip: 2
+leaf_mlag_peer_id: 2
+service_routing_protocols_model: multi-agent
+ip_routing: true
+hardware_counters: null
+daemon_terminattr: null
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+event_monitor: null
+event_handlers: null
+load_interval: null
+queue_monitor_length: null
+name_server: null
+ntp_server: null
+redundancy: null
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+  no_spanning_tree_vlan: 4093-4094
+aaa_authorization: null
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+clock: null
+vlans:
+  4093:
+    tenant: system
+    name: LEAF_PEER_L3
+    trunk_groups:
+    - LEAF_PEER_L3
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+    - MLAG
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
+vrfs:
+  MGMT:
+    ip_routing: false
+  Common_VRF:
+    tenant: Tenant_A
+    ip_routing: true
+bfd_multihop:
+  interval: 300
+  min_rx: 300
+  multiplier: 3
+port_channel_interfaces:
+  Port-Channel3:
+    description: RACK2_MLAG_Po1
+    type: switched
+    shutdown: false
+    vlans: 110-112,4085
+    mode: trunk
+    service_profile: QOS-PROFILE
+    mlag: 3
+  Port-Channel5:
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Po5
+    type: switched
+    shutdown: false
+    vlans: 2-4094
+    mode: trunk
+    service_profile: QOS-PROFILE
+    trunk_groups:
+    - LEAF_PEER_L3
+    - MLAG
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet5
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.9/31
+  Ethernet2:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet5
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.11/31
+  Ethernet5:
+    peer: DC1-POD1-LEAF2A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet6:
+    peer: DC1-POD1-LEAF2A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet3:
+    peer: DC1-POD1-L2LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-POD1-L2LEAF2A_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    peer: DC1-POD1-L2LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-POD1-L2LEAF2B_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet7:
+    peer: DC2-POD1-LEAF1A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
+    type: routed
+    shutdown: false
+    mtu: 1499
+    ip_address: 11.1.0.38/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.110.5/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.110.4/32
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.1.9/16
+    gateway: 192.168.1.254
+vlan_interfaces:
+  Vlan4093:
+    description: MLAG_PEER_L3_PEERING
+    shutdown: false
+    ip_address: 172.20.110.3/31
+    mtu: 1500
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 172.19.110.3/31
+    no_autostate: true
+    mtu: 1500
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.3/24
+    ip_virtual_router_address: 172.21.110.1
+    ip_attached_host_route_export:
+      distance: 19
+  Vlan110:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_1
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.1.10.1/24
+  Vlan111:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_2
+    shutdown: true
+    vrf: Common_VRF
+    ip_address_virtual: 10.1.11.1/24
+  Vlan112:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_3
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.1.12.1/24
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-POD1-LEAF2B_VTEP
+    source_interface: Loopback1
+    virtual_router:
+      encapsulation_mac_address: mlag-system-id
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+      vrfs:
+        Common_VRF:
+          vni: 1025
+tcam_profile: null
+platform: null
+mac_address_table: null
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+virtual_source_nat_vrfs: null
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.110.0/24 eq 32
+      20:
+        action: permit 172.18.110.0/24 eq 32
+  PL-L2LEAF-INBAND-MGMT:
+    sequence_numbers:
+      10:
+        action: permit 172.21.110.0/24
+mlag_configuration:
+  domain_id: RACK2_MLAG
+  local_interface: Vlan4094
+  peer_address: 172.19.110.2
+  peer_address_heartbeat:
+    peer_ip: 192.168.1.8
+    vrf: MGMT
+  dual_primary_detection_delay: 5
+  peer_link: Port-Channel5
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      20:
+        type: permit
+        match:
+        - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - origin incomplete
+        description: Make routes learned over MLAG Peer-link less preferred on spines
+          to ensure optimal routing
+  RM-EVPN-FILTER-AS65101:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65101
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65110:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65110
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65111:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65111
+      20:
+        type: permit
+router_bgp:
+  as: 65112
+  router_id: 172.16.110.5
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: 65110
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: true
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: 65112
+      next_hop_self: true
+      password: vnEaG8gMeQf3d3cN6PktXQ==
+      maximum_routes: 12000
+      send_community: true
+      route_map_in: RM-MLAG-PEER-IN
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '5'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: true
+      maximum_routes: 0
+  neighbors:
+    172.17.110.8:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.17.110.10:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.20.110.2:
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+    172.16.110.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-LEAF1A
+      remote_as: 65111
+      route_map_out: RM-EVPN-FILTER-AS65111
+    172.16.110.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-SPINE1
+      remote_as: 65110
+      route_map_out: RM-EVPN-FILTER-AS65110
+    172.16.10.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-RS1
+      remote_as: 65101
+      route_map_out: RM-EVPN-FILTER-AS65101
+    11.1.0.39:
+      remote_as: 65211
+      description: DC2-POD1-LEAF1A
+      peer_group: IPv4-UNDERLAY-PEERS
+      bfd: true
+      local_as: 65120
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+    attached-host: null
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: false
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      MLAG-IPv4-UNDERLAY-PEER:
+        activate: true
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  vlan_aware_bundles: null
+  vlans:
+    110:
+      tenant: Tenant_A
+      rd: 172.16.110.5:10110
+      route_targets:
+        both:
+        - 10110:10110
+      redistribute_routes:
+      - learned
+    111:
+      tenant: Tenant_A
+      rd: 172.16.110.5:50111
+      route_targets:
+        both:
+        - 50111:50111
+      redistribute_routes:
+      - learned
+    112:
+      tenant: Tenant_A
+      rd: 172.16.110.5:50112
+      route_targets:
+        both:
+        - 50112:50112
+      redistribute_routes:
+      - learned
+  vrfs:
+    Common_VRF:
+      router_id: 172.16.110.5
+      rd: 172.16.110.5:1025
+      route_targets:
+        import:
+          evpn:
+          - 1025:1025
+        export:
+          evpn:
+          - 1025:1025
+      redistribute_routes:
+      - connected
+ip_extcommunity_lists: null
+router_ospf: null
+router_isis: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null

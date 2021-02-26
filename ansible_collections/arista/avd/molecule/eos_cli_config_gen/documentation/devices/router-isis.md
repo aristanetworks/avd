@@ -279,6 +279,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    description P2P_LINK_TO_EAPI-SPINE1_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
@@ -287,6 +288,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_EAPI-SPINE2_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
@@ -389,6 +391,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   mtu 1500
    no autostate
    ip address 10.255.252.0/31
 ```
@@ -467,6 +470,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
@@ -476,7 +480,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 2
    !
-!
 ```
 
 

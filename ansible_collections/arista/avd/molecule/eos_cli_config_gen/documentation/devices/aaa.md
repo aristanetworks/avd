@@ -176,12 +176,14 @@ Enable password not defined
 | --- | ---------------|
 |  mgt | 10.10.10.157 |
 |  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
 
 ### TACACS Servers Device Configuration
 
 ```eos
 !
 tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+tacacs-server host 10.10.10.158 key 7 071B245F5A
 tacacs-server host 10.10.10.249 key 7 071B245F5A
 ```
 
@@ -191,7 +193,22 @@ IP TACACS source interfaces not defined
 
 ## RADIUS Servers
 
-RADIUS servers not defined
+### RADIUS Servers
+
+| VRF | RADIUS Servers |
+| --- | ---------------|
+|  mgt | 10.10.10.157 |
+|  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
+
+### RADIUS Servers Device Configuration
+
+```eos
+!
+radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+radius-server host 10.10.10.249 key 7 071B245F5A
+radius-server host 10.10.10.158 vrf default key 7 071B245F5A
+```
 
 ## AAA Server Groups
 
@@ -232,6 +249,7 @@ Policy local allow-nopassword-remote-login has been enabled.
 !
 aaa authentication login default group TACACS local
 aaa authentication login serial-console local
+aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
@@ -253,8 +271,10 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
+!
 aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization commands all default group aaaAuth
 !
 ```
 

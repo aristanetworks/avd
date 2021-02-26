@@ -440,6 +440,7 @@ IP DHCP relay not defined
 | xcvr-unsupported | True | 300 |
 
 ```eos
+!
 errdisable detect cause arp-inspection
 errdisable detect cause dot1x
 errdisable detect cause link-change

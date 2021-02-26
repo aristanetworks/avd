@@ -19,7 +19,7 @@ internal_vlan_order:
 
 max_l3leaf_to_spine_links: 1
 max_spine_to_super_spine_links: 1
-max_overlay_controller_to_switch_links: 1
+max_overlay_controller_to_switch_links: 2
 
 terminattr_ingestgrpcurl_port: 9910
 terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
@@ -30,11 +30,16 @@ p2p_uplinks_mtu: 9000
 underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
 
+evpn_ebgp_multihop: 3
+
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: false
+
+bgp_maximum_paths: 4
+bgp_ecmp: 4
 
 spine_bgp_defaults:
   - update wait-for-convergence

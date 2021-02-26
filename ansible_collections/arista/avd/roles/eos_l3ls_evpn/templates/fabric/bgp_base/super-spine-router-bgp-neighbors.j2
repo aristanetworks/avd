@@ -17,12 +17,3 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{# Overlay network peering based on evpn_overlay_controller variable #}
-{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_overlay_peers | length > 0 %}
-{%     for evpn_overlay_peer in switch.evpn_overlay_peers %}
-    {{ evpn_overlay_peer.ip }}:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: {{ evpn_overlay_peer.description }}
-      remote_as: {{ evpn_overlay_peer.bgp_as }}
-{%     endfor %}
-{% endif %}
