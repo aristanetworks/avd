@@ -96,6 +96,7 @@
       - [IPv6 Routing](#ipv6-routing)
       - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router General configuration](#router-general-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -1723,6 +1724,19 @@ router_bgp:
           route_map: < route_map_name >
         < route_type >:
           route_map: < route_map_name >
+```
+
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leaks:
+        - source_vrf: < source-vrf >
+          policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          policy: < route-map policy >
 ```
 
 #### Router OSPF Configuration
