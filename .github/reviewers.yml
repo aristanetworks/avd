@@ -3,7 +3,7 @@ ansible_collections/arista/avd/roles/build_output_folders/**/*:
   - carlbuchmann
   - titom73
   - aphillipps
-ansible_collections/arista/avd/roles/eos_l3ls_evpn/**/*:
+ansible_collections/arista/avd/roles/eos_designs/**/*:
   - carlbuchmann
   - ankudinov
   - ClausHolbechArista
