@@ -4,7 +4,7 @@
 ### {{ inventory_hostname }} ###
 {# Set Overlay Controller Variables #}
 {% set switch = namespace() %}
-{% include 'logic/designs/l3ls-evpn/l3ls-evpn-overlay-controller.j2' %}
+{% include 'designs/l3ls-evpn/l3ls-evpn-overlay-controller.j2' %}
 
 ### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
