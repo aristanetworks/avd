@@ -8,9 +8,9 @@ This section provides a list of AVD scenario executed during Continuous Integrat
   - [How to use scenario](#how-to-use-scenario)
     - [Which file to update](#which-file-to-update)
       - [If you are updating `eos_cli_config_gen`](#if-you-are-updating-eos_cli_config_gen)
-      - [If you are updating `eos_l3ls_evpn`](#if-you-are-updating-eos_l3ls_evpn)
+      - [If you are updating `eos_designs`](#if-you-are-updating-eos_designs)
         - [Update related to underlay or overlay protocol](#update-related-to-underlay-or-overlay-protocol)
-        - [General l3ls_evpn update](#general-l3ls_evpn-update)
+        - [General eos_designs update](#general-eos_designs-update)
 
 ## Ansible molecule
 
@@ -20,8 +20,8 @@ Molecule provides support for testing with multiple instances, operating systems
 
 Current molecule implementation provides following scenario:
 
-- `eos_l3ls_evpn` with standard eBGP as underlay and overlay: [evpn_underlay_ebgp_overlay_ebgp](./evpn_underlay_ebgp_overlay_ebgp/molecule.yml)
-- `eos_l3ls_evpn` with standard OSPF as underlay and eBGP overlay: [evpn_underlay_ospf_overlay_ebgp](./evpn_underlay_ospf_overlay_ebgp/molecule.yml)
+- `eos_designs` with standard eBGP as underlay and overlay: [evpn_underlay_ebgp_overlay_ebgp](./evpn_underlay_ebgp_overlay_ebgp/molecule.yml)
+- `eos_designs` with standard OSPF as underlay and eBGP overlay: [evpn_underlay_ospf_overlay_ebgp](./evpn_underlay_ospf_overlay_ebgp/molecule.yml)
 - `eos_cli_config_gen` scenario to run unit test
 
 ## How to use scenario
@@ -74,7 +74,7 @@ $ git commit -m 'Upload artefact for issue #...' molecule/eos_cli_config_gen
 
 > If you have `pre-commit` enabled, use `--no-verify` trigger to avoid any content change in your commit
 
-#### If you are updating `eos_l3ls_evpn`
+#### If you are updating `eos_designs`
 
 ##### Update related to underlay or overlay protocol
 
@@ -88,7 +88,7 @@ $ cd ansible_collections/arista/avd/
 $ molecule test --scenario-name eos_cli_config_gen
 ```
 
-##### General l3ls_evpn update
+##### General eos_designs update
 
 If your update is not related to underlay or overlay protocol, edit scenario `evpn_underlay_ebgp_overlay_ebgp` and edit group_vars accordingly. Then run molecule to validate it is working as expected
 
@@ -127,7 +127,7 @@ $ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overl
 #.github/workflows/molecule-l3ls-evpn.yml
 jobs:
   molecule:
-    name: Run CI test for eos_l3ls_evpn
+    name: Run CI test for eos_designs
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true

@@ -53,7 +53,7 @@ $ mkdir inventory
 
 ## Describe fabric
 
-Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md)
+Please refer to [`eos_designs` documentation](../roles/eos_designs/README.md)
 
 ## Example Playbooks
 
@@ -68,7 +68,7 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:
@@ -90,7 +90,7 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:

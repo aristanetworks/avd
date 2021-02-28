@@ -2,15 +2,15 @@ name: Ansible Molecule L3LS EVPN
 on:
   pull_request:
     paths:
-      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
-      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
+      - 'ansible_collections/arista/avd/roles/eos_designs/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_designs/templates/**'
       - 'ansible_collections/arista/avd/molecules/**'
       - 'ansible_collections/arista/avd/plugins/**'
       - 'development/requirements**'
       - '.github/workflows/molecule-l3ls-evpn.yml'
 jobs:
   molecule:
-    name: Run CI test for eos_l3ls_evpn
+    name: Run CI test for eos_designs
     runs-on: ubuntu-18.04
     strategy:
       fail-fast: true
@@ -19,7 +19,7 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
-          - 'eos_l3ls_evpn-twodc-5stage-clos'
+          - 'eos_designs-twodc-5stage-clos'
           # - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'

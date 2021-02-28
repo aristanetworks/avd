@@ -18,7 +18,7 @@
 
 This repository provides roles for Ansible's collection __arista.avd__ with the following content:
 
-- [__arista.avd.eos_l3ls_evpn__](roles/eos_l3ls_evpn/README.md) - Opinionated Data model for deployment of L3 Leaf and Spine Fabric with VXLAN data-plane with an EVPN Control plane.
+- [__arista.avd.eos_designs__](roles/eos_designs/README.md) - Opinionated Data model to assist with the deployment of Arista Validated Designs.
 - [__arista.avd.eos_cli_config_gen__](roles/eos_cli_config_gen/README.md) - Generate Arista EOS cli syntax and device documentation.
 - [__arista.avd.eos_config_deploy_cvp__](roles/eos_config_deploy_cvp/README.md) - Deploys intended configuration via CloudVision.
 - [__arista.avd.eos_config_deploy_eapi__](roles/eos_config_deploy_eapi/README.md) - Deploys intended configuration via eAPI.
@@ -107,7 +107,7 @@ ansible-galaxy collection install arista.avd
   tasks:
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
@@ -143,7 +143,7 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:

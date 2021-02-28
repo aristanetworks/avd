@@ -106,7 +106,7 @@ ansible-galaxy collection install arista.avd
   tasks:
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
@@ -142,7 +142,7 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:
