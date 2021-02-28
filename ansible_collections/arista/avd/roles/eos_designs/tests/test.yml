@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - eos_l3ls_evpn
+    - eos_designs
