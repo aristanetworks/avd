@@ -46,7 +46,7 @@ spine:
     DC1-SPINE2:
       id: 2
       mgmt_ip: 192.168.200.102/24
-      mac_address: '0c:1d:c0:1d:62:02'
+      mac_address: '50:08:00:06:00:00'
     DC1-SPINE3:
       id: 3
       mgmt_ip: 192.168.200.103/24
