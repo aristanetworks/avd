@@ -1,4 +1,4 @@
-# management-ssh
+# router-general
 
 # Table of Contents
 
@@ -133,43 +133,7 @@ PTP is not defined.
 
 ## Management SSH
 
-### IPv4 ACL
-
-| IPv4 ACL | VRF |
-| -------- | --- |
-| ACL-SSH | - |
-| ACL-SSH-VRF | mgt |
-
- ### SSH timeout and management
-
-| Idle Timeout | SSH Management |
-| ------------ | -------------- |
-| 15 |  Enabled  |
-
-### Ciphers and algorithms
-
-| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
-|---------|----------------------|----------------|---------------------------|
-| default | default | default | default |
-
-### VRFs
-
-| VRF | Status |
-| --- | ------ |
-| mgt |  Enabled  |
-
-### Management SSH Configuration
-
-```eos
-!
-management ssh
-   ip access-group ACL-SSH in
-   ip access-group ACL-SSH-VRF vrf mgt in
-   idle-timeout 15
-   no shutdown
-   vrf mgt
-      no shutdown
-```
+Management SSH not defined
 
 ## Management API GNMI
 
@@ -343,7 +307,23 @@ Global ARP timeout not defined.
 
 ## Router General
 
-Router general not defined
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+| BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
+| BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+
+### Router General configuration
+
+```eos
+!
+router general
+   vrf BLUE-C2
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
+   !
+```
 
 ## Router OSPF
 
