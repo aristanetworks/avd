@@ -41,7 +41,7 @@ sanity-info: ## Show information about ansible-test
 sanity-lint: ## Run ansible-test sanity for code sanity
 	cd ansible_collections/arista/avd/ ; \
 	mkdir tests ; \
-	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import --skip-test yamllint
+	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import
 
 .PHONY: sanity-import
 sanity-import: ## Run ansible-test sanity for code import
