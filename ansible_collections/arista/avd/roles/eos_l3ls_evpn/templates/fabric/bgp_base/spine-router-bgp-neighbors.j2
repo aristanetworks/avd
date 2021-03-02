@@ -12,11 +12,9 @@
 {%                 if leaf_spine == inventory_hostname %}
     {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}:
       peer_group: IPv4-UNDERLAY-PEERS
-{%                     if l3leaf.node_groups[l3leaf_node_group].bgp_as is defined %}
-      remote_as: {{ l3leaf.node_groups[l3leaf_node_group].bgp_as }}
-{%                     else %}
-      remote_as: {{ l3leaf.defaults.bgp_as }}
-{%                     endif %}
+      remote_as: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as | arista.avd.default(
+                    l3leaf.node_groups[l3leaf_node_group].bgp_as,
+                    l3leaf.defaults.bgp_as) }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
