@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - 'releases/**'
+      - 'devel'
 jobs:
   avd_eos_molecule:
     name: Run CI test for AVD EOS Configuration roles
@@ -37,7 +38,9 @@ jobs:
   build_collection:
     name: Create Ansible Galaxy collection package
     runs-on: ubuntu-18.04
-    container: avdteam/base:3.6-v2.0
+    container:
+      image: avdteam/base:3.6-v2.0
+      options: --user avd
     needs: avd_eos_molecule
     steps:
 
