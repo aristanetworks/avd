@@ -3,7 +3,6 @@ on:
   pull_request:
     branches:
       - 'releases/**'
-      - 'devel'
 jobs:
   avd_eos_molecule:
     name: Run CI test for AVD EOS Configuration roles
