@@ -37,7 +37,7 @@ jobs:
   build_collection:
     name: Create Ansible Galaxy collection package
     runs-on: ubuntu-18.04
-    container: avdteam/base:3.6-v1.0
+    container: avdteam/base:3.6-v2.0
     needs: avd_eos_molecule
     steps:
 
