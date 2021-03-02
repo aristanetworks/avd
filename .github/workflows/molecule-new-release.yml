@@ -3,6 +3,7 @@ on:
   pull_request:
     branches:
       - 'releases/**'
+      - 'devel'
 jobs:
   avd_eos_molecule:
     name: Run CI test for AVD EOS Configuration roles
@@ -34,24 +35,26 @@ jobs:
           check_git: true
           check_git_enforced: true
 
-  build_collection:
-    name: Create Ansible Galaxy collection package
-    runs-on: ubuntu-18.04
-    container: avdteam/base:3.6-v2.0
-    needs: avd_eos_molecule
-    steps:
+  # build_collection:
+  #   name: Create Ansible Galaxy collection package
+  #   runs-on: ubuntu-18.04
+  #   container:
+  #     image: avdteam/base:3.6-v2.0
+  #     options: --user avd
+  #   needs: avd_eos_molecule
+  #   steps:
 
-    - name: 'set environment variables'
-      run: |
-        echo "PY_COLORS=1" >> $GITHUB_ENV
-        echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+  #   - name: 'set environment variables'
+  #     run: |
+  #       echo "PY_COLORS=1" >> $GITHUB_ENV
+  #       echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
 
-    - uses: actions/checkout@v1
+  #   - uses: actions/checkout@v1
 
-    - name: Create package
-      run: |
-        make collection-build
+  #   - name: Create package
+  #     run: |
+  #       make collection-build
 
-    - uses: actions/upload-artifact@v2
-      with:
-        path: arista-avd.*.tar.gz
+  #   - uses: actions/upload-artifact@v2
+  #     with:
+  #       path: arista-avd.*.tar.gz
