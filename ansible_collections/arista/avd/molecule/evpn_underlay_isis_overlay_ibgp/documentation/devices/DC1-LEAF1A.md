@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -382,6 +383,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
@@ -391,6 +393,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet1
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
@@ -400,6 +403,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet1
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.5/31
    isis enable EVPN_UNDERLAY
@@ -409,6 +413,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet1
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.7/31
    isis enable EVPN_UNDERLAY
@@ -584,6 +589,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
@@ -593,7 +599,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 

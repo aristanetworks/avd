@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -535,24 +536,28 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet5
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.33/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.35/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet5
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.37/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet5
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.39/31
 !
@@ -607,6 +612,7 @@ interface Ethernet13
    no shutdown
    switchport
    switchport access vlan 210
+   switchport mode access
    spanning-tree portfast network
    storm-control all level pps 20
    storm-control broadcast level 200
@@ -621,13 +627,14 @@ interface Ethernet14
 interface Ethernet15
    description server08_no_profile_port_channel_Eth2
    no shutdown
-   channel-group 15 mode active
+   channel-group 15 mode on
 !
 interface Ethernet16
    description server09_override_profile_no_port_channel_Eth2
    no shutdown
    switchport
    switchport access vlan 210
+   switchport mode access
    spanning-tree portfast network
    storm-control all level pps 20
    storm-control broadcast level 200
@@ -813,6 +820,7 @@ interface Loopback100
 interface Vlan2
    description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_C_OP_Zone
    ip address 10.255.251.7/31
 !
@@ -827,14 +835,14 @@ interface Vlan111
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24
-   ip helper-address 1.1.1.1 vrf MGMT  source-interface lo100
+   ip helper-address 1.1.1.1 vrf MGMT source-interface lo100
 !
 interface Vlan120
    description Tenant_A_WEB_Zone_1
    no shutdown
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.20.1/24
-   ip helper-address 1.1.1.1 vrf TEST  source-interface lo100
+   ip helper-address 1.1.1.1 vrf TEST source-interface lo100
 !
 interface Vlan121
    description Tenant_A_WEBZone_2
@@ -912,59 +920,69 @@ interface Vlan350
 interface Vlan3009
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_A_OP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3010
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_A_WEB_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3011
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_A_APP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3012
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_A_DB_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3013
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_A_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3019
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_B_OP_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3020
    description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_B_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan3030
    description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
    no shutdown
+   mtu 1500
    vrf Tenant_C_WAN_Zone
    ip address 10.255.251.7/31
 !
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    no shutdown
+   mtu 1500
    ip address 10.255.251.7/31
 !
 interface Vlan4094
    description MLAG_PEER
    no shutdown
+   mtu 1500
    no autostate
    ip address 10.255.252.7/31
 ```

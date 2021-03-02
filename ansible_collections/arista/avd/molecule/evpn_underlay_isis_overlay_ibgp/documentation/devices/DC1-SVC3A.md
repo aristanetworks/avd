@@ -127,8 +127,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +186,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -425,6 +426,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.25/31
    isis enable EVPN_UNDERLAY
@@ -434,6 +436,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.27/31
    isis enable EVPN_UNDERLAY
@@ -443,6 +446,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.29/31
    isis enable EVPN_UNDERLAY
@@ -452,6 +456,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.31/31
    isis enable EVPN_UNDERLAY
@@ -507,7 +512,6 @@ interface Port-Channel7
    description DC1_L2LEAF2_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 
    switchport mode trunk
    mlag 7
 ```
@@ -587,6 +591,7 @@ interface Loopback1
 interface Vlan4093
    description MLAG_PEER_L3_PEERING
    no shutdown
+   mtu 1500
    ip address 10.255.251.6/31
    isis enable EVPN_UNDERLAY
    isis metric 50
@@ -595,6 +600,7 @@ interface Vlan4093
 interface Vlan4094
    description MLAG_PEER
    no shutdown
+   mtu 1500
    no autostate
    ip address 10.255.252.6/31
 ```
@@ -717,6 +723,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0004.00
    is-type level-2
@@ -726,7 +733,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 

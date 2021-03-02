@@ -113,6 +113,7 @@ interface Management1
 ### DNS Domain Device Configuration
 
 ```eos
+!
 dns domain test.local
 !
 ```
@@ -148,6 +149,7 @@ ip name-server vrf mgt 10.10.129.10
 ### DNS Domain Lookup Device Configuration
 
 ```eos
+!
 ip domain lookup vrf mgt source-interface Management0
 ```
 

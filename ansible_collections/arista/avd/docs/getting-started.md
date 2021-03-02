@@ -10,7 +10,7 @@ $ sh -c "$(curl -fsSL https://get.avd.sh)"
 $ cd arista-ansible
 
 # Spin up container for easy access
-$ make dev-start
+$ make start
 ```
 
 > Note: Docker & docker-compose must be installed on your laptop

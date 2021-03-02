@@ -886,7 +886,7 @@ Make sure to configure the variables in a group_var file covering all devices me
 l3_edge:
   p2p_links_ip_pools:
     < p2p_pool_name_1 >: < IPv4_address/Mask >
-  p2p_profiles:
+  p2p_links_profiles:
     < p2p_profile_name >:
       < any variable supported under p2p_links can be inherited from a profile >
   p2p_links:
@@ -1478,7 +1478,7 @@ servers:
         profile: < port_profile_name >
         port_channel:
           description: < port_channel_description >
-          mode: < active | passive | on >
+          mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
 

@@ -312,6 +312,7 @@ interface Ethernet5
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   mtu 1500
    no switchport
    ip address 172.31.255.15/31
    ptp enable

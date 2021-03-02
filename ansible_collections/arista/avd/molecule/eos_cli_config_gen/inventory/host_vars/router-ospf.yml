@@ -10,3 +10,21 @@ router_ospf:
         - Vlan4093
       bfd_enable: true
       max_lsa: 12000
+      default_information_originate:
+      redistribute:
+        static:
+        connected:
+    200:
+      vrf: ospf_zone
+      passive_interface_default: false
+      router_id: 192.168.254.1
+      log_adjacency_changes_detail: true
+      bfd_enable: false
+      max_lsa: 5
+      default_information_originate:
+        always: true
+      redistribute:
+        static:
+          route_map: rm-ospf-static
+        connected:
+          route_map: rm-ospf-connected

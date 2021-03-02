@@ -158,6 +158,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -314,7 +315,7 @@ No Interface Defaults defined
 | Ethernet1 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2  |  routed  | - |  172.16.21.3/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet2 |  P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2  |  routed  | - |  172.16.21.67/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet3 |  P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2  |  routed  | - |  172.17.210.2/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4  |  routed  | - |  200.200.200.201/24  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet5 |  P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4  |  routed  | - |  200.200.200.201/24  |  default  |  1498  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -323,6 +324,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.16.21.3/31
    ptp enable
@@ -331,6 +333,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.16.21.67/31
    ptp enable
@@ -339,6 +342,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.17.210.2/31
    ptp enable
@@ -347,6 +351,7 @@ interface Ethernet3
 interface Ethernet5
    description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
    no shutdown
+   mtu 1498
    no switchport
    ip address 200.200.200.201/24
 ```

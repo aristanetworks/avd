@@ -1,7 +1,7 @@
 version: "3"
 services:
   ansible:
-    image: avdteam/base:3.6
+    image: avdteam/base:3.6-v2.0
     container_name: ansible_avd
     environment:
       - AVD_GIT_USER=${GIT_USER}
@@ -20,7 +20,7 @@ services:
     ports:
       - 8001:8000
     entrypoint: ""
-    command: ["sh", "-c", "pip install -r ansible-cvp/ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
+    command: ["sh", "-c", "pip install -r ansible-cvp/ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
 
   webdoc_avd:
     image: titom73/mkdocs:latest
@@ -30,4 +30,4 @@ services:
     ports:
       - 8000:8000
     entrypoint: ""
-    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]
+    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]

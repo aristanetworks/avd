@@ -158,6 +158,8 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
+   no protocol http
    no shutdown
    !
    vrf default

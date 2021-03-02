@@ -534,7 +534,7 @@ ethernet_interfaces:
         unit: percent
     channel_group:
       id: 15
-      mode: active
+      mode: 'on'
   Ethernet16:
     peer: server09_override_profile_no_port_channel
     peer_interface: Eth2
