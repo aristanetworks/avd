@@ -7,6 +7,11 @@ port_profiles:
     mode: access
     vlans: "110"
 
+  TENANT_A_MTU:
+    mode: access
+    vlans: "110"
+    mtu: 1600
+
   TENANT_B:
     mode: trunk
     vlans: "210-211"
@@ -62,6 +67,28 @@ servers:
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+  server01_MTU_PROFILE_MLAG:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth4, Eth5 ]
+        switch_ports: [ Ethernet11, Ethernet11 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_MTU
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+  server01_MTU_ADAPTOR_MLAG:
+    rack: RackB
+    adapters:
+      - server_ports: [ Eth6, Eth7 ]
+        switch_ports: [ Ethernet12, Ethernet12 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        mtu: 1601
         port_channel:
           description: PortChanne1
           mode: active
