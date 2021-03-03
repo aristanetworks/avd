@@ -737,6 +737,7 @@ port_channel_interfaces:
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
       - < trunk_group_name_1 >
