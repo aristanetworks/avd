@@ -1355,6 +1355,7 @@ port_profiles:
   < port_profile_1 >:
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     native_vlan: <native vlan number>
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
@@ -1380,6 +1381,11 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < active | passive | on >
+
+  < port_profile_2 >:
+    mode: < access | dot1q-tunnel | trunk >
+    vlans: < vlans as string >
+
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
@@ -1413,6 +1419,9 @@ servers:
         # Interface mode | required
         mode: < access | dot1q-tunnel | trunk >
 
+       # Interface MTU | optional
+        mtu: < mtu >
+
         # Native VLAN for a trunk port | optional
         native_vlan: <native vlan number>
 
@@ -1433,10 +1442,6 @@ servers:
         # PTP Enable | Optional
         ptp:
           enable: < true | false >
-
-      < port_profile_2 >:
-        mode: < access | dot1q-tunnel | trunk >
-        vlans: < vlans as string >
 
         # Storm control settings applied on port toward server | Optional
         storm_control:

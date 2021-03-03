@@ -19,6 +19,7 @@
 {%                 set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default( adapter_profile.flowcontrol ) %}
 {%                 set adapter_qos_profile = adapter.qos_profile | arista.avd.default( adapter_profile.qos_profile ) %}
 {%                 set adapter_ptp = adapter.ptp | arista.avd.default( adapter_profile.ptp ) %}
+{%                 set adapter_mtu = adapter.mtu | arista.avd.default( adapter_profile.mtu ) %}
 {%                 set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   {{ adapter.switch_ports[loop.index0]}}:
     peer: {{ server }}
@@ -27,6 +28,9 @@
     description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
 {%                 if adapter_speed is arista.avd.defined %}
     speed: {{ adapter_speed }}
+{%                 endif %}
+{%                 if adapter_mtu is arista.avd.defined %}
+    mtu: {{ adapter_mtu }}
 {%                 endif %}
     type: switched
     shutdown: false
