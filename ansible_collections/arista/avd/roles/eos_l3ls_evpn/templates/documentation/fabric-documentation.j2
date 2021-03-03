@@ -23,7 +23,7 @@
 {%         set fabric_switch.mgmt_ip = hostvars[node].switch_mgmt_ip | arista.avd.default('-') %}
 {%         do assigned_ip_addresses.append(hostvars[node].switch_mgmt_ip) if hostvars[node].switch_mgmt_ip is arista.avd.defined %}
 {%         for interface in hostvars[node].management_interfaces | arista.avd.natural_sort %}
-{%             if 'Management' not in interface %}
+{%             if hostvars[node].management_interfaces[interface].ip_address is arista.avd.defined and hostvars[node].management_interfaces[interface].ip_address != fabric_switch.mgmt_ip %}
 {%                 set fabric_switch.inband_mgmt_ip = hostvars[node].management_interfaces[interface].ip_address %}
 {%                 set fabric_switch.inband_mgmt_interface = interface %}
 {%             endif %}
