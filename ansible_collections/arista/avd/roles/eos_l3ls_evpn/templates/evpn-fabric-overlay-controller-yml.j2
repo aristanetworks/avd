@@ -37,7 +37,7 @@
 {%             if remote_switch_vars.type == 'l3leaf' %}
 {%                 for l3leaf_node_group in remote_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
 {%                     if remote_switch in remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-{%                         do switch.remote_switches_asn.append( remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as | arista.avd.default(remote_switch_vars.l3leaf.defaults.bgp_as)) %}
+{%                         do switch.remote_switches_asn.append( remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[remote_switch].bgp_as | arista.avd.default( remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as , remote_switch_vars.l3leaf.defaults.bgp_as) ) %}
 {%                         break %}
 {%                     endif %}
 {%                 endfor %}

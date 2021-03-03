@@ -564,14 +564,14 @@ Router ISIS not defined
 | 172.31.255.27 | 65103 | default |
 | 172.31.255.35 | 65103 | default |
 | 172.31.255.43 | 65104 | default |
-| 172.31.255.51 | 65104 | default |
+| 172.31.255.51 | 65105 | default |
 | 192.168.255.5 | 65101 | default |
 | 192.168.255.6 | 65102 | default |
 | 192.168.255.7 | 65102 | default |
 | 192.168.255.8 | 65103 | default |
 | 192.168.255.9 | 65103 | default |
 | 192.168.255.10 | 65104 | default |
-| 192.168.255.11 | 65104 | default |
+| 192.168.255.11 | 65105 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -613,7 +613,7 @@ router bgp 65001
    neighbor 172.31.255.43 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.43 remote-as 65104
    neighbor 172.31.255.51 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.51 remote-as 65104
+   neighbor 172.31.255.51 remote-as 65105
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
    neighbor 192.168.255.5 description DC1-LEAF1A
@@ -633,7 +633,7 @@ router bgp 65001
    neighbor 192.168.255.10 remote-as 65104
    neighbor 192.168.255.10 description DC1-BL1A
    neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.11 remote-as 65104
+   neighbor 192.168.255.11 remote-as 65105
    neighbor 192.168.255.11 description DC1-BL1B
    redistribute connected route-map RM-CONN-2-BGP
    !
