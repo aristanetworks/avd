@@ -293,6 +293,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
+  rfc5549_neighbors: null
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
