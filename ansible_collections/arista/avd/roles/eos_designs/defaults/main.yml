@@ -2,6 +2,10 @@
 # Root directory where to build output structure
 root_dir: '{{inventory_dir}}'
 
+# Design variables
+design:
+  type: "l3ls-evpn"
+
 mgmt_vrf_routing: false
 
 mgmt_interface: Management1
