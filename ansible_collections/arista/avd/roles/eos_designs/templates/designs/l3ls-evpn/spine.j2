@@ -5,7 +5,18 @@
 
 {# Set Spine Variables #}
 {% set switch = namespace() %}
+{# Set switch.underlay_routing_protocol using external logic template #}
+{% include 'logic/switch-underlay-routing-protocol.j2' %}
+{# Set switch.overlay_routing_protocol using external logic template #}
+{% include 'logic/switch-overlay-routing-protocol.j2' %}
+{# Set spine node variables #}
 {% include 'designs/l3ls-evpn/logic/spine.j2' %}
+{# Set switch.evpn_route_servers #}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-servers-logic.j2' %}
+{# Set switch.evpn_route_clients #}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-clients-logic.j2' %}
+{# Set switch.l3_edge_* variables using external logic template #}
+{% include 'l3_edge/logic/switch-l3-edge.j2' %}
 
 ### Spine Info ###
 switch_platform: {{ switch.platform }}
