@@ -2,7 +2,7 @@
 
 - name: Generate device configuration in structured format (yaml).
   template:
-    src: "evpn-fabric-{{ type }}-yml.j2"
+    src: "structured-configuration.j2"
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
   delegate_to: localhost
   check_mode: no
@@ -22,16 +22,16 @@
   delegate_to: localhost
   tags: [build, provision]
 
-- name: Generate EVPN fabric documentation in Markdown Format.
+- name: Generate fabric documentation in Markdown Format.
   template:
-    src: documentation/fabric-documentation.j2
+    src: fabric-documentation.j2
     dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
   delegate_to: localhost
   run_once: true
   check_mode: no
   tags: [build, provision]
 
-- name: Generate Fabric Point-To-Point Links summary in csv format.
+- name: Generate fabric point-to-point links summary in csv format.
   template:
     src: documentation/fabric-p2p-links.j2
     dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-p2p-links.csv'
@@ -40,7 +40,7 @@
   check_mode: no
   tags: [build, provision]
 
-- name: Generate Fabric Topology in csv format.
+- name: Generate fabric topology in csv format.
   template:
     src: documentation/fabric-topology.j2
     dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-topology.csv'
