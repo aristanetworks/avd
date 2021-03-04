@@ -1,13 +1,12 @@
-{# Spine Switch Configuration #}
+{# Overlay Controller Configuration #}
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-
-{# Set Spine Variables #}
+{# Set Overlay Controller Variables #}
 {% set switch = namespace() %}
-{% include 'designs/l3ls-evpn/l3ls-evpn-spine.j2' %}
+{% include 'designs/l3ls-evpn/logic/overlay-controller.j2' %}
 
-### Spine Info ###
+### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_bgp_as: {{ switch.bgp_as }}
@@ -26,7 +25,7 @@ hardware_counters:
 {% include 'base/hardware-counters.j2' %}
 
 {# Daemon TerminAttr #}
-### Daemon TerminAttr ###
+### Daemon TerminAttr
 daemon_terminattr:
 {% include 'base/daemon-terminattr.j2' %}
 
@@ -53,6 +52,11 @@ load_interval:
 ### Queue Monitor Lenght ###
 queue_monitor_length:
 {% include 'base/queue-monitor-length.j2' %}
+
+{# logging #}
+### Logging ###
+logging:
+{% include 'base/logging.j2' %}
 
 {# name servers #}
 ### Name Servers ###
@@ -106,19 +110,14 @@ bfd_multihop:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{# Point-to-Point Interfaces to l3leaf #}
-{% include 'fabric/interfaces/spine-p2p-interfaces.j2' %}
-{# Point-to-Point Interfaces to overlay-controller #}
-{% include 'fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
-{# L3 Edge Point-to-Point Interfaces #}
-{% include 'fabric/interfaces/switch-l3-edge-p2p-interfaces.j2' %}
+{% include 'designs/l3ls-evpn/fabric/interfaces/overlay-controller-p2p-interfaces.j2' %}
 
-
-{# Loopback Interfaces #}
+{# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{% include 'fabric/interfaces/spine-overlay-loopback.j2' %}
-
+{# overlay peering interface #}
+{% include 'designs/l3ls-evpn/fabric/interfaces/overlay-controller-loopback.j2'%}
+{# intentional blank line #}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -148,51 +147,45 @@ static_routes:
 {# prefix_lists #}
 ### prefix-lists ###
 prefix_lists:
-{% include 'fabric/bgp_base/spine-prefix-lists.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_base/overlay-controller-prefix-lists.j2' %}
 
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'fabric/bgp_base/route-maps.j2' %}
-{% include 'fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
-
-{# peer-filter #}
-### peer-filters ###
-peer_filters:
+{% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###
 router_bgp:
 {# underlay and overlay #}
-{% include 'fabric/bgp_base/switch-router-bgp-base.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-base.j2' %}
   peer_groups:
-{% include 'fabric/bgp_base/spine-router-bgp-peer-groups.j2' %}
-{% include 'fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_base/overlay-controller-router-bgp-peer-groups.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
   neighbors:
-{% include 'fabric/bgp_base/spine-router-bgp-neighbors.j2' %}
-{% include 'fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
-{% include 'fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
-{% include 'fabric/ebgp_underlay/switch-l3-edge-router-bgp-neighbors.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_base/overlay-controller-router-bgp-neighbors.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
   redistribute_routes:
-{% include 'fabric/ebgp_underlay/spine-router-bgp-redistribute-routes.j2' %}
+{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/overlay-controller-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
-{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-evpn.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-evpn.j2' %}
   address_family_ipv4:
-{% include 'fabric/ebgp_underlay/spine-router-bgp-address-family-ipv4.j2' %}
+{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/overlay-controller-router-bgp-address-family-ipv4.j2' %}
   address_family_rtc:
-{% include 'fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 
-{# OSPF Configuration #}
+{# OSPF Configurartion #}
 ### Routing - OSPF ###
 router_ospf:
 {# underlay #}
-{% include 'fabric/ospf_underlay/router-ospf.j2' %}
+{% include 'designs/l3ls-evpn/fabric/ospf_underlay/router-ospf.j2' %}
 
-{# ISIS Configuration #}
+{# OSPF Configurartion #}
 ### Routing - ISIS ###
 router_isis:
 {# underlay #}
-{% include 'fabric/isis_underlay/router-isis.j2' %}
+{% include 'designs/l3ls-evpn/fabric/isis_underlay/router-isis.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###

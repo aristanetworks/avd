@@ -20,8 +20,8 @@
 {% set switch.raw_evpn_route_servers = super_spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
                                        []) %}
 {# Set switch.evpn_route_servers using external logic template #}
-{% include 'logic/switch-evpn-route-servers.j2' %}
+{% include 'designs/l3ls-evpn/logic/switch-evpn-route-servers.j2' %}
 {# Set switch.evpn_route_clients using external logic template #}
-{% include 'logic/switch-evpn-route-clients.j2' %}
+{% include 'designs/l3ls-evpn/logic/switch-evpn-route-clients.j2' %}
 {# Set switch.l3_edge_* variables using external logic template #}
-{% include 'logic/switch-l3-edge.j2' %}
+{% include 'l3_edge/logic/switch-l3-edge.j2' %}
