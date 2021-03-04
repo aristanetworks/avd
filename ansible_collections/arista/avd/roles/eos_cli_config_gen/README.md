@@ -82,6 +82,7 @@
       - [SNMP Settings](#snmp-settings)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
+    - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
@@ -1341,6 +1342,12 @@ ptp:
       dscp: < dscp-value >
     event:
       dscp: < dscp-Value >
+```
+
+### Prompt
+
+```yaml
+prompt: <string >
 ```
 
 ### Quality of Services

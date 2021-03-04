@@ -36,6 +36,7 @@ ntp
 platform
 port-channel-interfaces
 prefix-lists
+prompt
 ptp
 qos
 redundancy
