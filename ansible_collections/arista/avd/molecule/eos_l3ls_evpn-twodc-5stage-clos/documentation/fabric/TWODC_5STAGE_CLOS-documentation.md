@@ -15,7 +15,7 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in Cloudvision |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 192.168.1.10/24 | vEOS-LAB | Provisioned |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 192.168.1.11/24 | vEOS-LAB | Provisioned |
@@ -41,7 +41,7 @@
 | DC2 | super-spine | DC2-SUPER-SPINE1 | 192.168.1.16/24 | vEOS-LAB | Provisioned |
 | DC2 | super-spine | DC2-SUPER-SPINE2 | 192.168.1.17/24 | vEOS-LAB | Provisioned |
 
-> Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
+> Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
 ## Fabric Topology
 
