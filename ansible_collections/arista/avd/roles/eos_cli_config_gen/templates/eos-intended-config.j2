@@ -178,6 +178,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+{# cli prompt #}
+{% include 'eos/prompt.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}
 !
