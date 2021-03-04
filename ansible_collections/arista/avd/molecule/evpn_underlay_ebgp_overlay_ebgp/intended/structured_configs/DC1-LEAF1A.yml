@@ -311,6 +311,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
+  rfc5549_neighbors: null
   neighbors:
     172.31.255.0:
       peer_group: IPv4-UNDERLAY-PEERS

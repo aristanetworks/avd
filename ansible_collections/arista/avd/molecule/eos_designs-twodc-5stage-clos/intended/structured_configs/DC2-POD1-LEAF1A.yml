@@ -262,6 +262,7 @@ router_bgp:
       send_community: true
       maximum_routes: 0
       next_hop_unchanged: true
+  rfc5549_neighbors: null
   neighbors:
     172.17.210.0:
       peer_group: IPv4-UNDERLAY-PEERS

@@ -249,6 +249,22 @@ port_channel_interfaces:
     mode: trunk
     vlans: 210-211
     mlag: 10
+  Port-Channel12:
+    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mode: null
+    mtu: 1601
+    vlans: null
+    mlag: 12
+  Port-Channel11:
+    description: server01_MTU_PROFILE_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 1600
+    vlans: 110
+    mlag: 11
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -329,6 +345,33 @@ ethernet_interfaces:
       id: 10
       mode: active
     profile: TENANT_B
+  Ethernet12:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth7
+    peer_type: server
+    description: server01_MTU_ADAPTOR_MLAG_Eth7
+    mtu: 1601
+    type: switched
+    shutdown: false
+    mode: null
+    vlans: null
+    channel_group:
+      id: 12
+      mode: active
+  Ethernet11:
+    peer: server01_MTU_PROFILE_MLAG
+    peer_interface: Eth5
+    peer_type: server
+    description: server01_MTU_PROFILE_MLAG_Eth5
+    mtu: 1600
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 11
+      mode: active
+    profile: TENANT_A_MTU
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -647,6 +690,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
+  rfc5549_neighbors: null
   neighbors:
     172.31.255.16:
       peer_group: IPv4-UNDERLAY-PEERS
