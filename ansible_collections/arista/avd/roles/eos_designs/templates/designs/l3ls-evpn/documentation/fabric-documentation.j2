@@ -96,13 +96,13 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in Cloudvision |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
 {% for fabric_switch in fabric_switches %}
 | {{ fabric_switch.pod }} | {{ fabric_switch.type }} | {{ fabric_switch.node }} | {{fabric_switch.mgmt_ip }} | {{ fabric_switch.platform }} | {{ fabric_switch.provisioned }} |
 {% endfor %}
 
-> Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
+> Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
 ## Fabric Topology
 

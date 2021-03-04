@@ -4,7 +4,7 @@
 {# Include logic for L2LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
-{% include 'designs/l3ls-evpn/l3ls-evpn-l2leaf.j2' %}
+{% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 
 ### {{ inventory_hostname }} ###
 
@@ -87,7 +87,7 @@ redundancy:
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
 {# disable mlag vlan spanning tree #}
-{% include 'fabric/mlag/leaf-mlag-spanning-tree.j2' %}
+{% include 'mlag/switch-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -111,13 +111,13 @@ clock:
 ### VLANs ###
 vlans:
 {# mlag VLANs #}
-{% include 'fabric/mlag/leaf-mlag-vlans.j2' %}
+{% include 'mlag/switch-mlag-vlans.j2' %}
 
 {# L2leaf Inband Management VLAN #}
-{% include 'l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan.j2' %}
+{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan.j2' %}
 
 {# Tenants L2 VLANs #}
-{% include 'tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
+{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
 {# VRFs #}
 ### VRFs ###
@@ -129,9 +129,9 @@ vrfs:
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
+{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
-{% include 'fabric/mlag/leaf-mlag-peer-link.j2' %}
+{% include 'mlag/switch-mlag-peer-link.j2' %}
 {# Server - Port Channel Interfaces #}
 {% include 'edge_ports/leaf-server-port-channels.j2' %}
 
@@ -139,9 +139,9 @@ port_channel_interfaces:
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# uplink interfaces #}
-{% include 'l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
+{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
-{% include 'fabric/mlag/leaf-mlag-interfaces.j2' %}
+{% include 'mlag/switch-mlag-interfaces.j2' %}
 {# Server - Interfaces Configuration #}
 {% include 'edge_ports/leaf-server-interfaces.j2' %}
 
@@ -150,13 +150,13 @@ ethernet_interfaces:
 management_interfaces:
 {% include 'base/mgmt-interface.j2' %}
 {# L2leaf Inband Management VLAN interfaces #}
-{% include 'l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan-interfaces.j2' %}
+{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan-interfaces.j2' %}
 
 {# vlan interfaces #}
 ### VLAN Interfaces ###
 vlan_interfaces:
 {# mlag vlan interfaces #}
-{% include 'fabric/mlag/leaf-mlag-vlan-interfaces.j2' %}
+{% include 'mlag/switch-mlag-vlan-interfaces.j2' %}
 
 {# TCAM Profiles #}
 ### TCAM Profiles ###
@@ -175,7 +175,7 @@ mac_address_table:
 
 {# Tenant ip-igmp-snooping #}
 ip_igmp_snooping:
-{% include 'tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
+{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
 
 {# static_routes #}
 ### static routes ###
@@ -183,7 +183,7 @@ static_routes:
 {% include 'routing/static-routes.j2' %}
 
 {# MLAG Configuration #}
-{% include 'fabric/mlag/leaf-mlag-configuration.j2' %}
+{% include 'mlag/switch-mlag-configuration.j2' %}
 
 {# queue monitor streaming #}
 ### Queue Monitor Streaming ###
