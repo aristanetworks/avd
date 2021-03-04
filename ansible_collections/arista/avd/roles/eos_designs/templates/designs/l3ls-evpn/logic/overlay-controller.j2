@@ -1,10 +1,6 @@
 {% set switch.platform = overlay_controller.platform %}
 {% set switch.mgmt_ip = overlay_controller.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
-{# Set switch.underlay_routing_protocol using external logic template #}
-{% include 'logic/switch-underlay-routing-protocol.j2' %}
-{# Set switch.overlay_routing_protocol using external logic template #}
-{% include 'logic/switch-overlay-routing-protocol.j2' %}
 {% for node in overlay_controller.nodes | arista.avd.natural_sort %}
 {%     if node == inventory_hostname %}
 {%         set switch.id = overlay_controller.nodes[node].id %}
@@ -63,7 +59,3 @@
                                                []) %}
 {%     endif %}
 {% endfor %}
-{# Set switch.evpn_route_servers using external logic template #}
-{% include 'designs/l3ls-evpn/logic/switch-evpn-route-servers.j2' %}
-{# Set switch.evpn_route_clients using external logic template #}
-{% include 'designs/l3ls-evpn/logic/switch-evpn-route-clients.j2' %}

@@ -4,7 +4,16 @@
 ### {{ inventory_hostname }} ###
 {# Set Overlay Controller Variables #}
 {% set switch = namespace() %}
+{# Set switch.underlay_routing_protocol using external logic template #}
+{% include 'logic/switch-underlay-routing-protocol.j2' %}
+{# Set switch.overlay_routing_protocol using external logic template #}
+{% include 'logic/switch-overlay-routing-protocol.j2' %}
+{# Set l3 #}
 {% include 'designs/l3ls-evpn/logic/overlay-controller.j2' %}
+{# Set switch.evpn_route_servers #}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-servers-logic.j2' %}
+{# Set switch.evpn_route_clients #}
+{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-clients-logic.j2' %}
 
 ### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
