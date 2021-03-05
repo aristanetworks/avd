@@ -1,6 +1,7 @@
 {# leaf switch configuration  #}
 ## Ansible Generated ##
 
+### {{ inventory_hostname }} ###
 {# Include logic for L2LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
@@ -8,8 +9,6 @@
 {% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 {# Set tenant network evpn vxlan services vars #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l2leaf-logic.j2' %}
-
-### {{ inventory_hostname }} ###
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}

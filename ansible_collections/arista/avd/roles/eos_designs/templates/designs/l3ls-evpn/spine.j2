@@ -2,8 +2,7 @@
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-
-{# Set Spine Variables #}
+{# Include logic for SPINE in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {# Set switch.underlay_routing_protocol using external logic template #}
 {% include 'logic/switch-underlay-routing-protocol.j2' %}

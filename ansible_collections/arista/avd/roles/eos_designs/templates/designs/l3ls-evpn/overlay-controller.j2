@@ -2,13 +2,13 @@
 ## Ansible Generated ##
 
 ### {{ inventory_hostname }} ###
-{# Set Overlay Controller Variables #}
+{# Include logic for OVERLAY CONTROLLER in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {# Set switch.underlay_routing_protocol using external logic template #}
 {% include 'logic/switch-underlay-routing-protocol.j2' %}
 {# Set switch.overlay_routing_protocol using external logic template #}
 {% include 'logic/switch-overlay-routing-protocol.j2' %}
-{# Set l3 #}
+{# Set overlay controller node variables #}
 {% include 'designs/l3ls-evpn/logic/overlay-controller.j2' %}
 {# Set switch.evpn_route_servers #}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-servers-logic.j2' %}
