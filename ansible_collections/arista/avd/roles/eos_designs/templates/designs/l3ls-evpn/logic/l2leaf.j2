@@ -5,67 +5,34 @@
 {%             set leaf.group = l2leaf_node_group %}
 {%             set leaf.id = l2leaf.node_groups[l2leaf_node_group].nodes[node].id %}
 {%             set switch.mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
-{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode is defined %}
-{%                 set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode %}
-{%             else %}
-{%                 set switch.spanning_tree_mode = l2leaf.defaults.spanning_tree_mode %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled is defined %}
-{%                 set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled %}
-{%             elif l2leaf.defaults.igmp_snooping_enabled is defined %}
-{%                 set leaf.igmp_snooping_enabled = l2leaf.defaults.igmp_snooping_enabled %}
-{%             else %}
-{%                 set leaf.igmp_snooping_enabled = default_igmp_snooping_enabled %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority is defined %}
-{%                 set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority %}
-{%             else %}
-{%                 set switch.spanning_tree_priority = l2leaf.defaults.spanning_tree_priority %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].platform is defined %}
-{%                 set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform %}
-{%             else %}
-{%                 set switch.platform = l2leaf.defaults.platform %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].filter.tenants is defined %}
-{%                 set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants %}
-{%             elif l2leaf.defaults.filter.tenants is defined %}
-{%                 set leaf.filter_tenants = l2leaf.defaults.filter.tenants %}
-{%             else %}
-{%                 set leaf.filter_tenants = [ 'all' ] %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].filter.tags is defined %}
-{%                 set leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags %}
-{%             elif l2leaf.defaults.filter.tags is defined %}
-{%                 set leaf.filter_tags = l2leaf.defaults.filter.tags %}
-{%             else %}
-{%                 set leaf.filter_tags = [ 'all' ] %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].parent_l3leafs is defined %}
-{%                 set leaf.parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs %}
-{%             else %}
-{%                 set leaf.parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
-{%             endif %}
-{%             if l2leaf.node_groups[l2leaf_node_group].mlag is defined %}
-{%                 set switch.mlag = l2leaf.node_groups[l2leaf_node_group].mlag %}
-{%             else %}
-{%                 set switch.mlag = l2leaf.defaults.mlag | default(true) %}
-{%             endif %}
+{%             set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode | arista.avd.default(
+                                               l2leaf.defaults.spanning_tree_mode ) %}
+{%             set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled | arista.avd.default(
+                                                l2leaf.defaults.igmp_snooping_enabled,
+                                                default_igmp_snooping_enabled ) %}
+{%             set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority | arista.avd.default(
+                                                   l2leaf.defaults.spanning_tree_priority ) %}
+{%             set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
+                                     l2leaf.defaults.platform ) %}
+{%             set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(
+                                         l2leaf.defaults.filter.tenants,
+                                         [ 'all' ] ) %}
+{%             set leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags | arista.avd.default(
+                                      l2leaf.defaults.filter.tags,
+                                      [ 'all' ] ) %}
+{%             set leaf.parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs | arista.avd.default(
+                                         l2leaf.defaults.parent_l3leafs ) %}
+{%             set switch.mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
+                                 l2leaf.defaults.mlag,
+                                 true ) %}
 {%             if loop.length == 2 and switch.mlag == true %}
 {%                 set leaf.mlag = true %}
 {%                 set leaf.mlag_group = l2leaf_node_group %}
-{%                 if l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection is defined %}
-{%                     set leaf.mlag_dual_primary_detection = l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection %}
-{%                 elif l2leaf.defaults.mlag_dual_primary_detection is defined %}
-{%                     set leaf.mlag_dual_primary_detection = l2leaf.defaults.mlag_dual_primary_detection %}
-{%                 else %}
-{%                     set leaf.mlag_dual_primary_detection = false %}
-{%                 endif %}
-{%                 if l2leaf.node_groups[l2leaf_node_group].mlag_interfaces is defined %}
-{%                     set leaf.mlag_interfaces = l2leaf.node_groups[l2leaf_node_group].mlag_interfaces %}
-{%                 else %}
-{%                     set leaf.mlag_interfaces = l2leaf.defaults.mlag_interfaces %}
-{%                 endif %}
+{%                 set leaf.mlag_dual_primary_detection = l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
+                                                          l2leaf.defaults.mlag_dual_primary_detection,
+                                                          false ) %}
+{%                 set leaf.mlag_interfaces = l2leaf.node_groups[l2leaf_node_group].mlag_interfaces | arista.avd.default(
+                                              l2leaf.defaults.mlag_interfaces ) %}
 {%                 if loop.index == 1 %}
 {%                     set leaf.mlag_role = "primary" %}
 {%                     set leaf.mlag_peer = loop.nextitem %}
