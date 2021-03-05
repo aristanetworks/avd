@@ -27,7 +27,7 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 - [__arista.avd.eos_snapshot__](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
 - [__arista.avd.dhcp_provisioner__](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and Cloudvision registration.
 
-![Arista AVD Overview](media/example-playbook-evpn-deploy-cvp.gif)
+![Arista AVD Overview](media/example-playbook-deploy-cvp.gif)
 
 ## Custom Plugins
 
@@ -100,7 +100,7 @@ ansible-galaxy collection install arista.avd
 
 **An example playbook to deploy VXLAN/EVPN Fabric via CloudVision:**
 
-![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-deploy-cvp.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -114,6 +114,10 @@ ansible-galaxy collection install arista.avd
 
 - hosts: CVP
   tasks:
+    - name: Upload custom CVP configlets
+      import_role:
+         name: arista.avd.cvp_configlet_upload
+
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
@@ -134,7 +138,7 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
 **An example playbook to deploy VXLAN/EVPN Fabric via eAPI:**
 
-![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-evpn-deploy-eapi.gif)
+![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
