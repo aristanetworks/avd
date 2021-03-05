@@ -43,6 +43,7 @@
   register: l2inb_loopback0_reachability_state
   tags:
     - loopback0_reachability
+    - optional
 
 - name: Validate ip reachability from L2 Inband to loopback0 in fabric
   assert:
@@ -58,3 +59,4 @@
   register: l2inb_loopback0_reachability_results
   tags:
     - loopback0_reachability
+    - optional
