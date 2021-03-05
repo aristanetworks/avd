@@ -32,7 +32,7 @@
 
 - name: Gather Fabric MTU (loopback0 <-> loopback0)
   eos_command:
-    commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} size 9214 df-bit repeat 1"
+    commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} size {{p2p_uplinks_mtu}} df-bit repeat 1"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
@@ -45,7 +45,7 @@
   tags:
     - loopback0_reachability
 
-- name: Validate MTU is 9214 bytes between devices (loopback0 <-> loopback0)
+- name: Validate MTU is {{p2p_uplinks_mtu}} bytes between devices (loopback0 <-> loopback0)
   assert:
     that:
       - fabric_mtu_test.stdout[0] | regex_search("1 received")
