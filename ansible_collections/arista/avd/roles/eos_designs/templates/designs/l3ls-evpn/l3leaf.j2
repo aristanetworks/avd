@@ -1,14 +1,15 @@
 {# leaf switch configuration  #}
 ## Ansible Generated ##
 
-{# Include logic for L2LEAF in L3LS EVPN Fabric #}
+### {{ inventory_hostname }} ###
+{# Include logic for L3LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
 {# Set switch.underlay_routing_protocol #}
 {% include 'logic/switch-underlay-routing-protocol.j2' %}
 {# Set switch.overlay_routing_protocol #}
 {% include 'logic/switch-overlay-routing-protocol.j2' %}
-{# Set l3leaf node vars #}
+{# Set l3leaf node variables #}
 {% include 'designs/l3ls-evpn/logic/l3leaf.j2' %}
 {# Set switch.evpn_route_servers #}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-servers-logic.j2' %}
@@ -20,8 +21,6 @@
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-rd-rt-admin-subfield-logic.j2' %}
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
-
-### {{ inventory_hostname }} ###
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
