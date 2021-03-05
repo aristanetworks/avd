@@ -78,6 +78,16 @@ leaf_mlag_peer_id: 4
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware:
+  speed_groups:
+    1:
+      serdes: 10G
+    2:
+      serdes: 25G
+    3:
+      serdes: 25G
+    4:
+      serdes: 10G
 daemon_terminattr:
   ingestgrpcurl:
     ips:
