@@ -91,6 +91,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
+    speed: null
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -103,6 +104,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
+    speed: null
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
