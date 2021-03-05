@@ -465,7 +465,7 @@ bgp_peer_groups:
 
 ### Fabric Topology Variables
 
-The fabric topology variables define the connectivity between the spines, L3 leafs, and L2 leafs.
+The fabric topology variables define the connectivity between the super-spine, spines, L3 leafs, L2 leafs and overlay controllers.
 The variables should be applied to all devices in the fabric.
 
 ![Figure 2: Topology - naming convention](media/topology.gif)
