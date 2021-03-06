@@ -1,10 +1,10 @@
 l3leaf_node_group: RACK2_MLAG
 switch_platform: vEOS-LAB
 switch_bgp_as: 65112
-leaf_id: 2
-switch_mgmt_ip: 192.168.1.8/16
+leaf_id: 3
+switch_mgmt_ip: 192.168.1.9/16
 leaf_evpn_services_l2_only: false
-switch_router_id: 172.16.110.4
+switch_router_id: 172.16.110.5
 switch_evpn_role: client
 switch_evpn_route_servers:
 - DC1-POD1-LEAF1A
@@ -27,11 +27,11 @@ leaf_allowed_vlans:
 - 112
 leaf_mlag: true
 leaf_mlag_group: RACK2_MLAG
-leaf_mlag_role: primary
-leaf_mlag_peer: DC1-POD1-LEAF2B
-leaf_mlag_ip: 2
-leaf_mlag_peer_ip: 3
-leaf_mlag_peer_id: 3
+leaf_mlag_role: secondary
+leaf_mlag_peer: DC1-POD1-LEAF2A
+leaf_mlag_ip: 3
+leaf_mlag_peer_ip: 2
+leaf_mlag_peer_id: 2
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
@@ -104,7 +104,7 @@ port_channel_interfaces:
     service_profile: QOS-PROFILE
     mlag: 3
   Port-Channel5:
-    description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -116,45 +116,43 @@ port_channel_interfaces:
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-SPINE1
-    peer_interface: Ethernet4
+    peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
-    speed: null
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.5/31
+    ip_address: 172.17.110.9/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
-    peer_interface: Ethernet4
+    peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
-    speed: null
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.7/31
+    ip_address: 172.17.110.11/31
   Ethernet5:
-    peer: DC1-POD1-LEAF2B
+    peer: DC1-POD1-LEAF2A
     peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5
     type: switched
     shutdown: false
     channel_group:
       id: 5
       mode: active
   Ethernet6:
-    peer: DC1-POD1-LEAF2B
+    peer: DC1-POD1-LEAF2A
     peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6
+    description: MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6
     type: switched
     shutdown: false
     channel_group:
@@ -162,9 +160,9 @@ ethernet_interfaces:
       mode: active
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
-    peer_interface: Ethernet1
+    peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-POD1-L2LEAF2A_Ethernet1
+    description: DC1-POD1-L2LEAF2A_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -172,9 +170,9 @@ ethernet_interfaces:
       mode: active
   Ethernet4:
     peer: DC1-POD1-L2LEAF2B
-    peer_interface: Ethernet1
+    peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-POD1-L2LEAF2B_Ethernet1
+    description: DC1-POD1-L2LEAF2B_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -182,18 +180,18 @@ ethernet_interfaces:
       mode: active
   Ethernet7:
     peer: DC2-POD1-LEAF1A
-    peer_interface: Ethernet6
+    peer_interface: Ethernet7
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
+    description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
     type: routed
     shutdown: false
-    mtu: 1500
-    ip_address: 100.100.100.101/24
+    mtu: 1499
+    ip_address: 11.1.0.38/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 172.16.110.4/32
+    ip_address: 172.16.110.5/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
@@ -203,25 +201,25 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: MGMT
-    ip_address: 192.168.1.8/16
+    ip_address: 192.168.1.9/16
     gateway: 192.168.1.254
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 172.20.110.2/31
+    ip_address: 172.20.110.3/31
     mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.19.110.2/31
+    ip_address: 172.19.110.3/31
     no_autostate: true
     mtu: 1500
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: 1500
-    ip_address: 172.21.110.2/24
+    ip_address: 172.21.110.3/24
     ip_virtual_router_address: 172.21.110.1
     ip_attached_host_route_export:
       distance: 19
@@ -251,7 +249,7 @@ vlan_interfaces:
     ip_address_virtual: 10.1.12.1/24
 vxlan_tunnel_interface:
   Vxlan1:
-    description: DC1-POD1-LEAF2A_VTEP
+    description: DC1-POD1-LEAF2B_VTEP
     source_interface: Loopback1
     virtual_router:
       encapsulation_mac_address: mlag-system-id
@@ -293,9 +291,9 @@ prefix_lists:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.19.110.3
+  peer_address: 172.19.110.2
   peer_address_heartbeat:
-    peer_ip: 192.168.1.9
+    peer_ip: 192.168.1.8
     vrf: MGMT
   dual_primary_detection_delay: 5
   peer_link: Port-Channel5
@@ -346,7 +344,7 @@ route_maps:
         type: permit
 router_bgp:
   as: 65112
-  router_id: 172.16.110.4
+  router_id: 172.16.110.5
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -377,11 +375,11 @@ router_bgp:
       send_community: true
       maximum_routes: 0
   neighbors:
-    172.17.110.4:
+    172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
-    172.17.110.6:
+    172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
-    172.20.110.3:
+    172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
@@ -398,10 +396,12 @@ router_bgp:
       description: DC1-RS1
       remote_as: 65101
       route_map_out: RM-EVPN-FILTER-AS65101
-    100.100.100.201:
+    11.1.0.39:
       remote_as: 65211
       description: DC2-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
+      bfd: true
+      local_as: 65120
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -426,7 +426,7 @@ router_bgp:
   vlans:
     110:
       tenant: Tenant_A
-      rd: 172.16.110.4:10110
+      rd: 172.16.110.5:10110
       route_targets:
         both:
         - 10110:10110
@@ -434,7 +434,7 @@ router_bgp:
       - learned
     111:
       tenant: Tenant_A
-      rd: 172.16.110.4:50111
+      rd: 172.16.110.5:50111
       route_targets:
         both:
         - 50111:50111
@@ -442,7 +442,7 @@ router_bgp:
       - learned
     112:
       tenant: Tenant_A
-      rd: 172.16.110.4:50112
+      rd: 172.16.110.5:50112
       route_targets:
         both:
         - 50112:50112
@@ -450,8 +450,8 @@ router_bgp:
       - learned
   vrfs:
     Common_VRF:
-      router_id: 172.16.110.4
-      rd: 172.16.110.4:1025
+      router_id: 172.16.110.5
+      rd: 172.16.110.5:1025
       route_targets:
         import:
           evpn:

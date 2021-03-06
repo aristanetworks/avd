@@ -283,7 +283,6 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
-    speed: null
     mtu: 1500
     type: routed
     shutdown: false
@@ -293,7 +292,6 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
-    speed: null
     mtu: 1500
     type: routed
     shutdown: false
@@ -303,7 +301,6 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
-    speed: null
     mtu: 1500
     type: routed
     shutdown: false
@@ -313,7 +310,6 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
-    speed: null
     mtu: 1500
     type: routed
     shutdown: false
