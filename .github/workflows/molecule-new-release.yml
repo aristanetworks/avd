@@ -14,7 +14,7 @@ jobs:
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
-          - 'eos_l3ls_evpn-twodc-5stage-clos'
+          - 'eos_designs-twodc-5stage-clos'
           - 'eos_cli_config_gen'
     steps:
       - name: 'set environment variables'
