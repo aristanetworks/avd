@@ -4,16 +4,21 @@
 
 - [Arista AVD Plugins](#arista-avd-plugins)
   - [Plugin Filters](#plugin-filters)
-    - [**list_compress filter**](#listcompress-filter)
-    - [**natural_sort filter**](#naturalsort-filter)
+    - [list_compress filter](#list_compress-filter)
+    - [natural_sort filter](#natural_sort-filter)
+    - [default filter*](#default-filter)
+  - [Plugin Tests](#plugin-tests)
+    - [defined test](#defined-test)
+  - [Modules](#modules)
+    - [Inventory to CloudVision Containers*](#inventory-to-cloudvision-containers)
 
 ## Plugin Filters
 
-Arista AVD provides built-in filters to help extend jinja2 templates
+Arista AVD provides built-in filters to help extend jinja2 templates with functionality and improve code readability.
 
-### **list_compress filter**
+### list_compress filter
 
-The `list_compress` filter provides the capabilities to compress a list of integers and return as a string for example:
+The `arista.avd.list_compress` filter provides the capabilities to compress a list of integers and return as a string for example:
 
 ```yaml
   - [1,2,3,4,5] -> "1-5"
@@ -26,11 +31,11 @@ To use this filter:
 {{ list_to_compress | arista.avd.list_compress }}
 ```
 
-### **natural_sort filter**
+### natural_sort filter
 
-The `natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
+The `arista.avd.natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
 
-The filter will return an empty list if the value parsed to `natural_sort` is `none` or `undefined`.
+The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `none` or `undefined`.
 
 To use this filter:
 
@@ -40,9 +45,9 @@ To use this filter:
 {% endfor %}
 ```
 
-### **default filter**
+### default filter*
 
-The `default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
+The `arista.avd.default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
 Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
 As a last resort the filter will return None.
 
@@ -56,7 +61,7 @@ To use this filter:
 
 Arista AVD provides built-in test plugins to help verify data efficiently in jinja2 templates
 
-### **defined test**
+### defined test
 
 The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
 `arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
@@ -88,9 +93,9 @@ Feature is {{ "not " if extremely_long_variable_name is defined and extremely_lo
 ```
 ## Modules
 
-### **Inventory to CloudVision Containers**
+### Inventory to CloudVision Containers*
 
-The `inventory_to_container` module provides following capabilities:
+The `arista.avd.inventory_to_container` module provides following capabilities:
 - Transform inventory groups into CloudVision containers topology.
 - Create list of configlets definition.
 
@@ -104,7 +109,7 @@ To use this module:
 
 ```yaml
 tasks:
-  - name: generate intented variables
+  - name: generate intended variables
     tags: [always]
     inventory_to_container:
       inventory: '{{ inventory_file }}'
