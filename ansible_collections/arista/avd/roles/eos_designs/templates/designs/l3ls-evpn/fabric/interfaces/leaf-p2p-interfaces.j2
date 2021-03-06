@@ -5,7 +5,7 @@
     peer_interface: {{ leaf.spine_interfaces[loop.index0 ] }}
     peer_type: spine
     description: P2P_LINK_TO_{{ leaf.spines[loop.index0] | upper }}_{{ leaf.spine_interfaces[loop.index0 ] }}
-{%     if leaf.p2p_link_interface_speed is defined %}
+{%     if leaf.p2p_link_interface_speed is arista.avd.defined %}
     speed: {{ leaf.p2p_link_interface_speed }}
 {%     endif %}
     mtu: {{ p2p_uplinks_mtu }}
