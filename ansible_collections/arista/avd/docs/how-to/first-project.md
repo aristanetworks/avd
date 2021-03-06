@@ -4,7 +4,7 @@
 
 This page explains how-to build your first Ansible project leveraging ansible-avd collection. In this tutorial, we will configure an EVPN fabric using Arista eAPI method.
 
-![Figure 1: Example Playbook CloudVision Deployment](../../media/evpn-deploy-eapi.gif)
+![Example Playbook EAPI Deployment](../../media/example-playbook-deploy-eapi.gif)
 
 In this post, we will go through all configuration steps to generate [EVPN/VXLAN configuration](https://www.arista.com/custom_data/downloads/?f=/support/download/DesignGuides/EVPN_Deployment_Guide.pdf) for EOS devices.
 
@@ -164,7 +164,7 @@ ntp_servers:
 
 Fabric topology is configured under `inventories/eapi-example/group_vars/AVD_FABRIC.yml` which is file that covers `AVD_FABRIC` group we defined in [inventory](#inventory-file). This file contains all the base information to create initial configuration:
 
-You can also refer to [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_l3ls_evpn/README.md#fabric-topology-variables) to get a description of every single option available.
+You can also refer to [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md#fabric-topology-variables) to get a description of every single option available.
 
 - Subnet to use for underlay, loopback and vtep:
 
@@ -243,7 +243,7 @@ l3leaf:
 [... output truncated ...]
 ```
 
-Complete documentation of all available variables is available in [__Arista Validated Design documentation__](../../roles/eos_l3ls_evpn/README.md). You can also look at [variables part of the demo repo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
+Complete documentation of all available variables is available in [__Arista Validated Design documentation__](../../roles/eos_designs/README.md). You can also look at [variables part of the demo repo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo/blob/master/inventory/group_vars/DC1_FABRIC.yml).
 
 #### Configure device type
 
@@ -281,7 +281,7 @@ tenants:
         tags: [DC1]
 ```
 
-Tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this vlan. To configure device `TAGS` and `TENANTS` options, go to [__Arista Validated Design__ documentation](../../roles/eos_l3ls_evpn/README.md#fabric-topology-variables)
+Tag option allows to configure VLAN only on a subset of the fabric: all devices with this tag will be configured with this vlan. To configure device `TAGS` and `TENANTS` options, go to [__Arista Validated Design__ documentation](../../roles/eos_designs/README.md#fabric-topology-variables)
 
 In this configuration, VLAN will be created with a tag of `201` and its attached VNI will be configured with `20201`
 
@@ -478,14 +478,14 @@ tasks:
 
 ### Transform EVPN datamodel to device data model
 
-AVD provides role [__`eos_l3ls_evpn`__](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_l3ls_evpn/README.md) role to generate intend YAML device configuration:
+AVD provides role [__`eos_designs`__](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md) role to generate intend YAML device configuration:
 
 ```yaml
   tasks:
     - name: generate intend variables
       tags: [build]
       import_role:
-        name: arista.avd.eos_l3ls_evpn
+        name: arista.avd.eos_designs
 ```
 
 ### Generate device configuration and documentation
@@ -532,7 +532,7 @@ The overall playbook is given for inforamtion below and you can update it to cre
     - name: generate intented variables
       tags: [build]
       import_role:
-        name: arista.avd.eos_l3ls_evpn
+        name: arista.avd.eos_designs
     - name: generate device intended config and documentation
       tags: [build]
       import_role:

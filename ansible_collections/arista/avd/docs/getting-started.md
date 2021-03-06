@@ -53,13 +53,13 @@ $ mkdir inventory
 
 ## Describe fabric
 
-Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md)
+Please refer to [`eos_designs` documentation](../roles/eos_designs/README.md)
 
 ## Example Playbooks
 
 ### An example playbook to deploy VXLAN/EVPN Fabric via CloudVision
 
-![Figure 1: Example Playbook CloudVision Deployment](media/../../media/evpn-deploy-cvp.gif)
+![Figure 1: Example Playbook CloudVision Deployment](media/../../media/example-playbook-deploy-cvp.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -68,7 +68,7 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:
@@ -81,7 +81,7 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
 
 ### An example playbook to deploy VXLAN/EVPN Fabric via eAPI
 
-![Figure 2: Example Playbook eAPI Deployment](media/../../media/evpn-deploy-eapi.gif)
+![Figure 2: Example Playbook eAPI Deployment](media/../../media/example-playbook-deploy-eapi.gif)
 
 ```yml
 - hosts: DC1_FABRIC
@@ -90,7 +90,7 @@ Please refer to [`eos_l3ls_evpn` documentation](../roles/eos_l3ls_evpn/README.md
 
     - name: generate intended variables
       import_role:
-         name: arista.avd.eos_l3ls_evpn
+         name: arista.avd.eos_designs
 
     - name: generate device intended config and documentation
       import_role:
