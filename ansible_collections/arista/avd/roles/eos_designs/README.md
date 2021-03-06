@@ -35,7 +35,24 @@
 
 ## Overview
 
-**eos_designs**, is a role that provides an abstracted data model to deploy a L3 Leaf and Spine fabric leveraging VXLAN data-plane with an EVPN control-plane.
+**eos_designs**, is a role that provides an abstracted data model to deploy the following design:
+
+**L3LS EVPN:**
+
+| Underlay | Overlay | Topology |
+| -------- | ------- | ---------- |
+| eBGP | eBGP | [ 3 stage, 5 stage ] + L2 Leafs |
+| ISIS | eBGP | [ 3 stage ] + L2 Leafs |
+| ISIS | iBGP | [ 3 stage ] + L2 Leafs |
+| OSPF | eBGP | [ 3 stage ] + L2 Leafs |
+| OSPF | iBGP | [ 3 stage ] + L2 Leafs |
+
+Across all designs the following functionality is provided:
+
+  - Flexible placement of EVPN RS or RR, including dedicated overlay controller
+  - EVPN service definition: Layer 2 and Layer 3
+  - L3 Edge port definition
+  - Server edge ports definition
 
 The **eos_designs** role:
 
