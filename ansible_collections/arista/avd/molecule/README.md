@@ -124,7 +124,7 @@ $ molecule test --scenario-name evpn_underlay_<underlay-protocol>_overlay_<overl
 4. Edit CI file to include your scenario
 
 ```yaml
-#.github/workflows/molecule-l3ls-evpn.yml
+#.github/workflows/molecule-eos-designs.yml
 jobs:
   molecule:
     name: Run CI test for eos_designs
