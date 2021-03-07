@@ -9,12 +9,16 @@
 {% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 {# Set tenant network evpn vxlan services vars #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l2leaf-logic.j2' %}
+{# Set l2leaf inband management vars #}
+{% include 'designs/l3ls-evpn/logic/l2leaf-inband-management.j2' %}
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
+leaf_inband_management_ip: {{ leaf.inband_management_ip }}
+leaf_inband_management_interface: {{ leaf.inband_management_interface }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}

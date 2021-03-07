@@ -1,0 +1,7 @@
+{# L2leaf Inband Management #}
+{% if l2leaf_inband_management_subnet is arista.avd.defined %}
+{%     set leaf.inband_management_interface = 'Vlan' ~ l2leaf_inband_management_vlan | arista.avd.default('4092') %}
+{%     set tmp_ip = l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + leaf.id) %}
+{%     set tmp_mask = l2leaf_inband_management_subnet | ipaddr('prefix') %}
+{%     set leaf.inband_management_ip = tmp_ip ~ '/' ~ tmp_mask %}
+{% endif %}
