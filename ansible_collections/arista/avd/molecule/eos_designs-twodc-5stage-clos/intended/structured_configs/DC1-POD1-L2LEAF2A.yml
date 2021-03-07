@@ -2,6 +2,8 @@ l2leaf_node_group: RACK2_MLAG
 switch_platform: vEOS-LAB
 leaf_id: 2
 switch_mgmt_ip: 192.168.1.11/24
+leaf_inband_management_ip: 172.21.110.5/24
+leaf_inband_management_interface: Vlan4085
 leaf_filter_tenants:
 - all
 leaf_filter_tags:

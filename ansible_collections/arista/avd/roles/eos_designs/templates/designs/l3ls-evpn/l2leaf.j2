@@ -17,8 +17,8 @@ l2leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
-leaf_inband_management_ip: {{ leaf.inband_management_ip }}
-leaf_inband_management_interface: {{ leaf.inband_management_interface }}
+leaf_inband_management_ip: {{ leaf.inband_management_ip | arista.avd.default(none) }}
+leaf_inband_management_interface: {{ leaf.inband_management_interface | arista.avd.default(none) }}
 leaf_filter_tenants: {{ leaf.filter_tenants }}
 leaf_filter_tags: {{ leaf.filter_tags }}
 leaf_allowed_vrfs: {{ leaf.vrfs }}
