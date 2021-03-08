@@ -240,11 +240,11 @@ platform_settings:
 
 ## Variable to attach additional configlets
 
-Role [`eos_config_deploy_cvp`](../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
+Role [`eos_config_deploy_cvp`](../../../eos_config_deploy_cvp/README.md#add-additional-configlets) provides an option to attach additional configlets to both devices or containers.
 
 This function allows users to quickly deployed a new feature with no JINJA2 implementation. These configlets **must** be managed on CloudVision as current role does not upload additional containers.
 
-To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../eos_config_deploy_cvp/README.md#add-additional-configlets)
+To attach configlets to containers or devices, please refer to [**`eos_config_deploy_cvp` documentation**](../../../eos_config_deploy_cvp/README.md#add-additional-configlets)
 
 Below is an example provided as-is:
 
