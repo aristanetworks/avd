@@ -68,7 +68,16 @@ nav:
     - AWX & Tower Integration: docs/how-to/tower-integration.md
     - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
-    - eos_designs: roles/eos_designs/README.md
+    - eos_designs:
+      - Overview: roles/eos_designs/README.md
+      - l3ls-evpn:
+        - Overview: roles/eos_designs/doc/l3ls-evpn.md
+        - Global settings: roles/eos_designs/doc/l3ls-evpn/common.md
+        - Leaf & Spine topology: roles/eos_designs/doc/l3ls-evpn/leaf-spine-topology.md
+        - Super Spine topology: roles/eos_designs/doc/l3ls-evpn/super-spine-topology.md
+        - Services: roles/eos_designs/doc/l3ls-evpn/services.md
+        - Servers: roles/eos_designs/doc/l3ls-evpn/servers.md
+        - DCI & edge: roles/eos_designs/doc/l3ls-evpn/dci-edge.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
     - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
     - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
