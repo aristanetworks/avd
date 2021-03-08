@@ -1,0 +1,5 @@
+### interface default partial knobs
+
+interface_defaults:
+  ethernet:
+    shutdown: true
