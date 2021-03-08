@@ -388,7 +388,7 @@ No Interface Defaults defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet4000 |  My test  |  routed  | - |  10.3.2.1/21  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4000 |  My test  |  routed  | - |  10.1.2.3/12  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -427,7 +427,7 @@ interface Ethernet4000
    no shutdown
    mtu 1500
    no switchport
-   ip address 10.3.2.1/21
+   ip address 10.1.2.3/12
 ```
 
 ## Port-Channel Interfaces
@@ -634,7 +634,23 @@ Global ARP timeout not defined.
 
 ## Router General
 
-Router general not defined
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+| Tenant_B_OP_Zone | Tenant_A_OP_Zone | RM-CONN-2-BGP |
+| Tenant_B_OP_Zone | Tenant_C_OP_Zone | RM-CONN-2-BGP |
+
+### Router General configuration
+
+```eos
+!
+router general
+   vrf Tenant_B_OP_Zone
+      leak routes source-vrf Tenant_A_OP_Zone subscribe-policy RM-CONN-2-BGP
+      leak routes source-vrf Tenant_C_OP_Zone subscribe-policy RM-CONN-2-BGP
+   !
+```
 
 ## Router OSPF
 

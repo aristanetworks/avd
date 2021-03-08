@@ -216,3 +216,7 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+prefix:
+- my_dci_
+- my_special_dci_
+- custom_structured_configuration_
