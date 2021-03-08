@@ -359,6 +359,7 @@ interface Ethernet4
    mtu 1498
    no switchport
    ip address 200.200.200.101/24
+   ptp enable
 ```
 
 ## Port-Channel Interfaces
