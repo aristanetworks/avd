@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -246,6 +247,22 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+### Switchport Defaults Summary
+
+- Default Switchport Mode: routed
+
+### Switchport Default Configuration
+
+```eos
+!
+interface defaults
+   ethernet
+      shutdown
+   mtu 9000
+```
 
 ## Interface Defaults
 
