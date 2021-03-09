@@ -198,6 +198,7 @@ Management API gnmi is not defined
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
 
+
 ### Management API HTTP Configuration
 
 ```eos
