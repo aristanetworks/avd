@@ -190,13 +190,14 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  true  |  true  |
+| true | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| mgt |  ACL-API  |  -  |
+| mgt | ACL-API | - |
+
 
 ### Management API HTTP Configuration
 
@@ -254,7 +255,7 @@ AAA accounting not defined
 
 ## Management Security
 
-   Management Security password encryption is common.
+Management Security password encryption is common.
 
 
 ## Management Security Configuration

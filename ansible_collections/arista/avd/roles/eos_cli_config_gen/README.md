@@ -1011,6 +1011,7 @@ management_interfaces:
 management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
+  https_ssl_profile: < SSL Profile Name >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1041,9 +1042,17 @@ management_console:
 
 ```yaml
 management_security:
+  entropy_source: < entropy_source >
   password:
     encryption_key_common : < true | false >
-  entropy_source: < entropy_source >
+  ssl_profiles:
+    - name: <ssl_profile_1>
+      tls_versions: < list of allowed tls versions as string >
+      certificate:
+        file: < certificate filename >
+        key: < key filename >
+    - name: <ssl_profile_2>
+      tls_versions: < list of allowed tls versions as string >
 ```
 
 #### Management SSH
