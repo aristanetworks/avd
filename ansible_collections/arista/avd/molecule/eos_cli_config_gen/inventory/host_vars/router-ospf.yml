@@ -50,3 +50,39 @@ router_ospf:
           on_startup: 222
           summary_lsa:
             override_metric: 456
+
+ethernet_interfaces:
+  Ethernet1:
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.1
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+loopback_interfaces:
+  Loopback2:
+    ospf_area: 0.0.0.2
+port_channel_interfaces:
+  Port-Channel12:
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.12
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+vlan_interfaces:
+  Vlan24:
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.24
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"

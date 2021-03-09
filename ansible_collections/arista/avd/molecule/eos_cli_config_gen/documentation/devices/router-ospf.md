@@ -63,6 +63,119 @@ interface Management1
 
 # Interfaces
 
+## Ethernet Interfaces
+
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+#### OSPF
+| Interface | Channel Group | Area | Cost | Mode |
+| --------- | ------------- | ---- | ---- |----- |
+| Ethernet1 | - | 0.0.0.1 |  99  |  point-to-point  |
+ *Inherited from Port-Channel Interface 
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   no switchport
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.1
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+## Port-Channel Interfaces
+
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel12
+   no switchport
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.12
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+## Loopback Interfaces
+
+### Loopback Interfaces Summary
+
+#### IPv4
+
+| Interface | Description | VRF | IP Address |
+| --------- | ----------- | --- | ---------- |
+| Loopback2 | - | default | - |
+
+#### IPv6
+
+| Interface | Description | VRF | IPv6 Address |
+| --------- | ----------- | --- | ------------ |
+| Loopback2 | - | default | - |
+
+
+### Loopback Interfaces Device Configuration
+
+```eos
+!
+interface Loopback2
+   ip ospf area 0.0.0.2
+```
+
+## VLAN Interfaces
+
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan24 |  -  |  default  |  -  |  -  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan24 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+
+
+#### OSPF
+| Interface | Area | Cost | Mode |
+| --------- |----- | ---- |----- |
+| Vlan24 | 0.0.0.24 |  99  |  point-to-point  |
+
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan24
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.24
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
+
+## VXLAN Interface
+
+No VXLAN interfaces defined
+
 # Routing
 
 ## IP Routing
@@ -111,6 +224,15 @@ interface Management1
 | 300 | enabled | disabled | disabled | disabled | disabled |
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
+
+### OSPF Interfaces
+
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Ethernet1 | 0.0.0.1 | 99 | True |
+| Port-Channel12 | 0.0.0.12 | 99 | True |
+| Vlan24 | 0.0.0.24 | 99 | True |
+| Loopback2 | 0.0.0.2 | - | - |
 
 ### Router OSPF Device Configuration
 

@@ -123,34 +123,26 @@
 {%     set port_channel_interface_ospf = namespace(configured=false) %}
 {%     set vlan_interface_ospf = namespace(configured=false) %}
 {%     set loopback_interface_ospf = namespace(configured=false) %}
-{%     if vlan_interfaces is defined and vlan_interfaces is not none %}
-{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%             if vlan_interfaces[vlan_interface].ospf_area is defined %}
-{%                 set vlan_interface_ospf.configured = true %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if ethernet_interfaces is defined and ethernet_interfaces is not none %}
-{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].ospf_area is defined %}
-{%                 set ethernet_interface_ospf.configured = true %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%             if port_channel_interfaces[port_channel_interface].ospf_area is defined %}
-{%                 set port_channel_interface_ospf.configured = true %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if loopback_interfaces is defined and loopback_interfaces is not none %}
-{%         for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%             if loopback_interfaces[loopback_interface].ospf_area is defined %}
-{%                 set loopback_interface_ospf.configured = true %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%          if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
+{%              set vlan_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%          if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
+{%              set ethernet_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+{%              set port_channel_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%          if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
+{%              set loopback_interface_ospf.configured = true %}
+{%          endif %}
+{%     endfor %}
 {%     if vlan_interface_ospf.configured or ethernet_interface_ospf.configured or port_channel_interface_ospf.configured or loopback_interface_ospf.configured %}
 
 ### OSPF Interfaces
@@ -159,29 +151,29 @@
 | -------- | -------- | -------- | -------- |
 {%         if ethernet_interface_ospf.configured %}
 {%             for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%                 if ethernet_interfaces[ethernet_interface].ospf_area is defined and ethernet_interfaces[ethernet_interface].ospf_area is not none %}
-| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].ospf_area }} | {% if ethernet_interfaces[ethernet_interface].ospf_cost is defined and ethernet_interfaces[ethernet_interface].ospf_cost is not none %} {{ ethernet_interfaces[ethernet_interface].ospf_cost }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is not none %} {{ ethernet_interfaces[ethernet_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%                 if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
+| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].ospf_area }} | {{ ethernet_interfaces[ethernet_interface].ospf_cost | arista.avd.default('-') }} | {{ ethernet_interfaces[ethernet_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if port_channel_interface_ospf.configured %}
 {%             for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%                 if port_channel_interfaces[port_channel_interface].ospf_area is defined and port_channel_interfaces[port_channel_interface].ospf_area is not none %}
-| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {% if port_channel_interfaces[port_channel_interface].ospf_cost is defined and port_channel_interfaces[port_channel_interface].ospf_cost is not none %} {{ port_channel_interfaces[port_channel_interface].ospf_cost }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is defined and port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is not none %} {{ port_channel_interfaces[port_channel_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%                 if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {{ port_channel_interfaces[port_channel_interface].ospf_cost | arista.avd.default('-') }} | {{ port_channel_interfaces[port_channel_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface_ospf.configured %}
 {%             for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%                 if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none %} {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%                 if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {{ vlan_interfaces[vlan_interface].ospf_cost | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if loopback_interface_ospf.configured %}
 {%             for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%                 if loopback_interfaces[loopback_interface].ospf_area is defined and loopback_interfaces[loopback_interface].ospf_area is not none %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].ospf_area }} | {% if loopback_interfaces[loopback_interface].ospf_cost is defined and loopback_interfaces[loopback_interface].ospf_cost is not none %} {{ loopback_interfaces[loopback_interface].ospf_cost }} {% else %} - {% endif %} | {% if loopback_interfaces[loopback_interface].ospf_network_point_to_point is defined and loopback_interfaces[loopback_interface].ospf_network_point_to_point is not none %} {{ loopback_interfaces[loopback_interface].ospf_network_point_to_point }} {% else %} - {% endif %} |
+{%                 if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].ospf_area }} | {{ loopback_interfaces[loopback_interface].ospf_cost | arista.avd.default('-') }} | {{ loopback_interfaces[loopback_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
