@@ -46,6 +46,7 @@
         - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
+      - [Switchport Default](#switchport-default)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -700,8 +701,13 @@ interface_defaults:
   ethernet:
     shutdown: < true | false >
   mtu: < mtu >
-  switchport:
-    type: < routed | switched >
+```
+
+#### Switchport Default
+
+```yaml
+switchport_default:
+  mode: < routed | access >
 ```
 
 #### Loopback Interfaces
