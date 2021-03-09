@@ -26,4 +26,11 @@ management api http-commands
 {%             endif %}
 {%-         endfor %}
 {%-     endif %}
+{%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
+   protocol_https_certificate
+   {{ management_api_http.protocol_https_certificate.certificate }}
+   EOF
+   {{ management_api_http.protocol_https_certificate.private_key }}
+   EOF
+{%     endif %}
 {% endif %}
