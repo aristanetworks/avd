@@ -32,20 +32,20 @@
 
 - name: Gather Fabric MTU (loopback0 <-> loopback0)
   eos_command:
-    commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} size {{p2p_uplinks_mtu}} df-bit repeat 1"
+    commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} size {{ p2p_uplinks_mtu }} df-bit repeat 1"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
-    (loopback_interfaces.Loopback0.ip_address is defined and loopback_interfaces.Loopback0.ip_address is not none) and
+    (loopback0_reachability.loopback0_range is arista.avd.defined) and
+    (loopback_interfaces.Loopback0.ip_address is arista.avd.defined) and
     (type is defined and type != "l2leaf")
   register: fabric_mtu_state
   tags:
     - loopback0_reachability
 
-- name: Validate MTU is {{p2p_uplinks_mtu}} bytes between devices (loopback0 <-> loopback0)
+- name: Validate MTU is {{ p2p_uplinks_mtu }} bytes between devices (loopback0 <-> loopback0)
   assert:
     that:
       - fabric_mtu_test.stdout[0] | regex_search("1 received")
