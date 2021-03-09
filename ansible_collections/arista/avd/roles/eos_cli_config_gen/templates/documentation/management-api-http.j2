@@ -4,7 +4,7 @@
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-| {{ management_api_http.enable_http | lower | default('default') }} | {{ management_api_http.enable_https | lower | default('default') }} |
+| {{ management_api_http.enable_http | default('default') | lower }} | {{ management_api_http.enable_https | default('default') | lower }} |
 
 {%     if management_api_http.enable_https is arista.avd.defined(true) and management_api_http.https_ssl_profile is arista.avd.defined %}
 Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profile }}
