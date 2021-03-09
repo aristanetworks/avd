@@ -20,6 +20,10 @@ Management HTTPS is using the SSL profile {{ management_api_http.https_ssl_profi
 {%         endfor %}
 {%     endif %}
 
+{%     if management_api_http.protocol_https_certificate.certificate is arista.avd.defined and management_api_http.protocol_https_certificate.private_key is arista.avd.defined %}
+HTTPS certificate and private key are configured.
+{%     endif %}
+
 ### Management API HTTP Configuration
 
 ```eos
