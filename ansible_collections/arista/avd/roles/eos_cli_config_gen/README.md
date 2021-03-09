@@ -1769,6 +1769,17 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+      auto_cost_reference_bandwidth: < bandwidth in mbps >
+      maximum_paths: < Integer 1-32 >
+      max_metric:
+        router_lsa:
+          external_lsa:
+            override_metric: < Integer 1-16777215 >
+          include_stub: < true | false >
+          on_startup: < "wait-for-bgp" | Integer 5-86400 >
+          summary_lsa:
+            override_metric: < Integer 1-16777215 >
+      mpls_ldp_sync_default: < true | false >
 ```
 
 #### Router ISIS Configuration
