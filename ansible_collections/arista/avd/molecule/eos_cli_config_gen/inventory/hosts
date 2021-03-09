@@ -14,8 +14,7 @@ event-monitor
 hardware-counter
 hardware
 igmp-snooping
-interface-defaults-1
-interface-defaults-2
+interface-defaults
 ip-dhcp-relay
 ip-extended-communities
 ip-routing
@@ -61,6 +60,7 @@ snmp_v3
 spanning-tree
 spanning-tree-rstp
 spanning-tree-rapid-pvst
+switchport-mode
 tcam-profile
 static-routes
 terminattr-cloud

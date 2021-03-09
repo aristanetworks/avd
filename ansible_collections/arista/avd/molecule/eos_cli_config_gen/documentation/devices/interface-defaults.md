@@ -1,4 +1,4 @@
-# interface-defaults-1
+# interface-defaults
 
 # Table of Contents
 
@@ -255,8 +255,6 @@ No VLANs defined
 
 - Default Routed Interface MTU: 9000
 
-- Default Switchport Mode: routed
-
 ### Interface Defaults Configuration
 
 ```eos
@@ -265,8 +263,6 @@ interface defaults
    ethernet
       shutdown
    mtu 9000
-!
-switchport default mode routed
 ```
 
 ## Ethernet Interfaces

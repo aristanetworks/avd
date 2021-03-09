@@ -1,4 +1,4 @@
-# interface-defaults-2
+# switchport-mode
 
 # Table of Contents
 
@@ -249,12 +249,7 @@ No VLANs defined
 
 ## Interface Defaults
 
-### Interface Defaults Summary
-
-### Interface Defaults Configuration
-
-```eos
-```
+No Interface Defaults defined
 
 ## Ethernet Interfaces
 
