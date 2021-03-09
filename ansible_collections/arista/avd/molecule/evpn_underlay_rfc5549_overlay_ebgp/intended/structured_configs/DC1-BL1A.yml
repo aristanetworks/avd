@@ -147,7 +147,7 @@ ethernet_interfaces:
     ipv6_enable: true
   Ethernet4000:
     description: My test
-    ip_address: 10.3.2.1/21
+    ip_address: 10.1.2.3/12
     shutdown: false
     type: routed
     mtu: 1500
@@ -420,3 +420,15 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+prefix:
+- my_dci_
+- my_special_dci_
+- custom_structured_configuration_
+router_general:
+  vrfs:
+    Tenant_B_OP_Zone:
+      leaks:
+      - source_vrf: Tenant_A_OP_Zone
+        policy: RM-CONN-2-BGP
+      - source_vrf: Tenant_C_OP_Zone
+        policy: RM-CONN-2-BGP

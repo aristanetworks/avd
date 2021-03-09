@@ -115,7 +115,6 @@ l3leaf:
           mgmt_ip: 192.168.200.109/24
           spine_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
     DC1_BL1:
-      mlag: false
       filter:
         tenants: [ all ]
         tags: [ wan ]
@@ -194,4 +193,4 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 
-custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_' ]
+custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'custom_structured_configuration_' ]

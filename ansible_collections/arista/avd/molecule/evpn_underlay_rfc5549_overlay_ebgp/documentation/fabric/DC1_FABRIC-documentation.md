@@ -15,7 +15,7 @@
 
 ## Fabric Switches and Management IP
 
-| POD | Type | Node | Management IP | Platform | Provisioned in Cloudvision |
+| POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
 | DC1_FABRIC | l3leaf | DC1-BL1A | 192.168.200.110/24 | 7280R | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
@@ -32,7 +32,7 @@
 | DC1_FABRIC | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7280R | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7280R | Provisioned |
 
-> Provision status is based on Ansible inventory declaration and do not represent real status from Cloudvision.
+> Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
 ## Fabric Topology
 
