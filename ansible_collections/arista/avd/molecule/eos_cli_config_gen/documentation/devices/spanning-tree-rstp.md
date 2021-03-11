@@ -58,6 +58,8 @@ interface Management1
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **rstp**
 
 ### Global Spanning-Tree Settings

@@ -171,6 +171,8 @@ daemon TerminAttr
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **none**
 
 ### Global Spanning-Tree Settings

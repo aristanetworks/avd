@@ -121,6 +121,8 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ## Spanning Tree Summary
 
+STP Root Super: **True**
+
 STP mode: **mstp**
 
 ### MSTP Instance and Priority
@@ -136,6 +138,7 @@ STP mode: **mstp**
 
 ```eos
 !
+spanning-tree root super
 spanning-tree mode mstp
 spanning-tree mst 0 priority 8192
 ```

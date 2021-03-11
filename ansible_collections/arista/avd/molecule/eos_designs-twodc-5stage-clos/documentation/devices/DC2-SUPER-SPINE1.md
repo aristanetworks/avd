@@ -113,6 +113,8 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **none**
 
 ### Global Spanning-Tree Settings

@@ -120,6 +120,8 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ## Spanning Tree Summary
 
+STP Root Super: **True**
+
 STP mode: **none**
 
 ### Global Spanning-Tree Settings
@@ -129,6 +131,7 @@ STP mode: **none**
 
 ```eos
 !
+spanning-tree root super
 spanning-tree mode none
 ```
 

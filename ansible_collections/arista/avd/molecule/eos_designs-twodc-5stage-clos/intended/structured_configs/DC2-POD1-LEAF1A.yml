@@ -45,6 +45,7 @@ name_server: null
 ntp_server: null
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: rstp
   rstp_priority: 4096
 aaa_authorization: null
