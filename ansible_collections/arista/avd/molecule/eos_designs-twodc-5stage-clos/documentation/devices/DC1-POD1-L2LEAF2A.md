@@ -91,14 +91,14 @@
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
 | Management1 | oob_management | oob | MGMT | 192.168.1.11/24 | 192.168.1.254 |
-| Vlan4085 | L2LEAF_INBAND_MGMT | oob | default | 172.21.110.5/24 | 172.21.110.1 |
+| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | 172.21.110.5/24 | 172.21.110.1 |
 
 #### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | -  | - |
-| Vlan4085 | L2LEAF_INBAND_MGMT | oob | default | -  | - |
+| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | -  | - |
 
 ### Management Interfaces Device Configuration
 
