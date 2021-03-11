@@ -232,6 +232,8 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **rapid-pvst**
 
 ### Rapid-PVST Instance and Priority

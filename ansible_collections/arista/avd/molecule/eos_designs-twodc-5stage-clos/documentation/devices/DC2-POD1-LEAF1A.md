@@ -267,6 +267,8 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
+STP Root Super: **True**
+
 STP mode: **rstp**
 
 ### Global Spanning-Tree Settings
@@ -277,6 +279,7 @@ Global RSTP priority: 4096
 
 ```eos
 !
+spanning-tree root super
 spanning-tree mode rstp
 spanning-tree priority 4096
 ```

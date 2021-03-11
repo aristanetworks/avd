@@ -267,6 +267,8 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
+STP Root Super: **True**
+
 STP mode: **none**
 
 ### Global Spanning-Tree Settings
@@ -276,6 +278,7 @@ STP mode: **none**
 
 ```eos
 !
+spanning-tree root super
 spanning-tree mode none
 ```
 
