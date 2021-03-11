@@ -640,6 +640,9 @@ l3leaf:
       # Spanning tree priority.
       spanning_tree_priority: < spanning-tree priority -> default 32768 >
 
+      # Spanning tree priority.
+      spanning_tree_root_super: < true | false -> default false >
+
       # Virtual router mac address for anycast gateway | Required.
       virtual_router_mac_address: < mac address >
 
