@@ -88,17 +88,17 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 192.168.1.23/24 | 192.168.1.254 |
-| Vlan4092 | L2LEAF_INBAND_MGMT | default | 172.21.210.4/24 | 172.21.210.1 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 192.168.1.23/24 | 192.168.1.254 |
+| Vlan4092 | L2LEAF_INBAND_MGMT | oob | default | 172.21.210.4/24 | 172.21.210.1 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
-| Vlan4092 | L2LEAF_INBAND_MGMT | default | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
+| Vlan4092 | L2LEAF_INBAND_MGMT | oob | default | -  | - |
 
 ### Management Interfaces Device Configuration
 
