@@ -29,6 +29,7 @@ loopbacks-interfaces
 mac-address-table
 management-api-http
 management-gnmi
+management-interfaces
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy

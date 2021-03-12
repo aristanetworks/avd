@@ -1003,6 +1003,7 @@ management_interfaces:
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    type: < oob | inband | default -> oob >
 ```
 
 #### Management HTTP
