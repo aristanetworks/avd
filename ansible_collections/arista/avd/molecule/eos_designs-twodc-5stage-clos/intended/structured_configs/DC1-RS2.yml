@@ -86,6 +86,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.4/24
     gateway: 192.168.1.254
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
