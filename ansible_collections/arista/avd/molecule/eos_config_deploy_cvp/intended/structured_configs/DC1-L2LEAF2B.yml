@@ -228,6 +228,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.114/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
