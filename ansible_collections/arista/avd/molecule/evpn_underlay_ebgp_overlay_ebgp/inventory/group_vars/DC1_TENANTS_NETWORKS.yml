@@ -133,6 +133,23 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.1.40.1/24
+        additional_route_targets:
+          - type: import
+            address_family: vpn-ipv4
+            route_target: 65000:123
+            nodes: [ DC1-BL1A, DC1-BL1B ]
+          - type: export
+            address_family: vpn-ipv4
+            route_target: 65000:123
+            nodes: [ DC1-BL1A, DC1-BL1B ]
+          - type: import
+            address_family: evpn
+            route_target: 65000:456
+            # nodes not set - so all devices shold get this additional route target
+          - type: export
+            address_family: evpn
+            route_target: 65000:789
+            # nodes not set - so all devices shold get this additional route target
     l2vlans:
       # L2 vlan as string
       '160':
