@@ -187,6 +187,11 @@ redundancy:
 # Use to change the EOS default of 300
 mac_address_table:
   aging_time: < time_in_seconds >
+
+# Set Hardware Speed Groups per Platform
+platform_speed_groups:
+  < platform >:
+    < speed >: [ < speed_group >, < speed_group > ]
 ```
 
 > In `cvp_instance_ips` you can either provide a list of IPs to target on-premise CloudVision cluster or either use DNS name for your CloudVision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
@@ -258,6 +263,12 @@ redundancy:
 # MAC address-table aging time
 mac_address_table:
   aging_time: 1500
+
+# Set Hardware Speed Groups per Platform
+platform_speed_groups:
+  7280R2:
+    25G: [ 1, 2, 12 ]
+    10G: [ 3, 4, 5, 6, 7, 8, 9, 10, 11 ]
 ```
 
 ### Fabric Underlay and Overlay Topology Variables
@@ -629,6 +640,9 @@ l3leaf:
       # Spanning tree priority.
       spanning_tree_priority: < spanning-tree priority -> default 32768 >
 
+      # Spanning tree priority.
+      spanning_tree_root_super: < true | false -> default false >
+
       # Virtual router mac address for anycast gateway | Required.
       virtual_router_mac_address: < mac address >
 
@@ -947,6 +961,12 @@ l3_edge:
 
       # QOS Service Profile | Optional
       qos_profile: < qos_profile_name >
+
+      # MACSec Profile. Specifies MACSEC profile to be used | Optional
+      macsec_profile: < macsec_profile_name >
+
+      # PTP enable | Optional
+      ptp_enable: < true | false | default -> false >
 
       # Profile defined under p2p_profiles | Optional
       profile: < p2p_profile_name >

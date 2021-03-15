@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -212,10 +213,12 @@ TerminAttr daemon not defined
 
 | VRF | Source Interface |
 | --- | ---------------- |
+| default | Loopback0 |
 | mgt | Management0 |
 
 | VRF | Hosts |
 | --- | ---------------- |
+| default | 20.20.20.7 |
 | mgt | 10.10.10.7 |
 
 ### Logging Servers and Features Device Configuration
@@ -225,6 +228,8 @@ TerminAttr daemon not defined
 logging console debugging
 logging buffered 1000000 informational
 logging trap informational
+logging source-interface Loopback0
+logging host 20.20.20.7
 logging vrf mgt source-interface Management0
 logging vrf mgt host 10.10.10.7
 ```
@@ -272,6 +277,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -147,13 +148,14 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  default  |  true  |
+| default | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| MGMT |  -  |  -  |
+| MGMT | - | - |
+
 
 ### Management API HTTP Configuration
 
@@ -266,6 +268,8 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **none**
 
 ### Global Spanning-Tree Settings
@@ -298,6 +302,10 @@ vlan internal order ascending range 1006 1199
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 
@@ -360,6 +368,7 @@ interface Ethernet4
    mtu 1498
    no switchport
    ip address 200.200.200.101/24
+   ptp enable
 ```
 
 ## Port-Channel Interfaces

@@ -57,6 +57,11 @@ leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 hardware_counters:
 {% include 'base/hardware-counters.j2' %}
 
+{# Hardware #}
+### Hardware
+hardware:
+{% include 'base/platform-speed-groups.j2' %}
+
 {# Daemon TerminAttr #}
 ### Daemon TerminAttr
 daemon_terminattr:

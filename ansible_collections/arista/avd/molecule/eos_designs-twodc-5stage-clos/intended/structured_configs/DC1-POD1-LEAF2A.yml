@@ -35,6 +35,7 @@ leaf_mlag_peer_id: 3
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
@@ -49,6 +50,7 @@ name_server: null
 ntp_server: null
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':

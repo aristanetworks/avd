@@ -2,6 +2,8 @@ l2leaf_node_group: DC1_L2LEAF1
 switch_platform: vEOS-LAB
 leaf_id: 8
 switch_mgmt_ip: 192.168.200.112/24
+switch_inband_management_ip: null
+switch_inband_management_interface: null
 leaf_filter_tenants:
 - Tenant_A
 leaf_filter_tags:
@@ -32,6 +34,7 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -65,6 +68,7 @@ ntp_server:
   - 192.168.200.5
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':

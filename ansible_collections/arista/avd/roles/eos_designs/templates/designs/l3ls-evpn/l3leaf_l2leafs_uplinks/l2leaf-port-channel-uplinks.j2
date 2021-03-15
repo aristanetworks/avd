@@ -20,7 +20,7 @@
 {%                 set parent_l3leafs = l2leaf.defaults.parent_l3leafs %}
 {%             endif %}
 {%             set uplink_vlans = leaf.vlans %}
-{%             if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+{%             if l2leaf_inband_management_subnet is arista.avd.defined %}
 {%                 do uplink_vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
 {%             endif %}
   Port-Channel{{ channel_group_id }}:

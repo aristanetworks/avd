@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -232,6 +233,8 @@ MLAG not defined
 
 ## Spanning Tree Summary
 
+STP Root Super: **False**
+
 STP mode: **rapid-pvst**
 
 ### Rapid-PVST Instance and Priority
@@ -270,6 +273,10 @@ spanning-tree vlan-id 100-500 priority 16384
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

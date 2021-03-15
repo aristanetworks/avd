@@ -2,6 +2,8 @@ l2leaf_node_group: RACK2_MLAG
 switch_platform: vEOS-LAB
 leaf_id: 3
 switch_mgmt_ip: 192.168.1.12/24
+switch_inband_management_ip: 172.21.110.6/24
+switch_inband_management_interface: Vlan4085
 leaf_filter_tenants:
 - all
 leaf_filter_tags:
@@ -26,6 +28,7 @@ leaf_mlag_peer_id: 2
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
@@ -40,6 +43,7 @@ name_server: null
 ntp_server: null
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':

@@ -12,6 +12,7 @@ switch_evpn_route_clients:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
@@ -116,6 +117,10 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1499
     ip_address: 11.1.2.1/31
+    mac_security:
+      profile: MACSEC_PROFILE
+    ptp:
+      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

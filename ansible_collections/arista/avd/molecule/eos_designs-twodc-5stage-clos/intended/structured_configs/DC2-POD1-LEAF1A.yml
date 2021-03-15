@@ -30,6 +30,7 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
@@ -44,6 +45,7 @@ name_server: null
 ntp_server: null
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: rstp
   rstp_priority: 4096
 aaa_authorization: null
@@ -138,6 +140,8 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1499
     ip_address: 11.1.0.39/31
+    ptp:
+      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
