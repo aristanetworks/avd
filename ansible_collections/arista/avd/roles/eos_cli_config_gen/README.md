@@ -645,6 +645,10 @@ ethernet_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -762,6 +766,10 @@ port_channel_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
@@ -893,6 +901,10 @@ vlan_interfaces:
       ipv6: < virtual_ip_address >
     ip_attached_host_route_export:
       distance: < distance >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
