@@ -74,11 +74,6 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
-#### OSPF
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-| Ethernet1 | - | 0.0.0.1 |  99  |  point-to-point  |
- *Inherited from Port-Channel Interface 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -152,12 +147,6 @@ interface Loopback2
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan24 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
-
-
-#### OSPF
-| Interface | Area | Cost | Mode |
-| --------- |----- | ---- |----- |
-| Vlan24 | 0.0.0.24 |  99  |  point-to-point  |
 
 
 ### VLAN Interfaces Device Configuration

@@ -286,14 +286,6 @@ vlan 4094
 | Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet2  |  routed  | - |  172.31.255.13/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet2  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  false  |  -  |  -  |
 
-#### OSPF
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-| Ethernet1 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet2 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet3 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet4 | - | 0.0.0.0 |  -  |  point-to-point  |
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -435,12 +427,6 @@ interface Loopback1
 | Vlan4094 |  default  |  10.255.252.2/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-#### OSPF
-| Interface | Area | Cost | Mode |
-| --------- |----- | ---- |----- |
-| Vlan4093 | 0.0.0.0 |  -  |  point-to-point  |
-
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -543,22 +529,22 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
-| 101 | 192.168.255.6 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Vlan4093 <br>|   enabled   | 12000 |  disabled  |  disabled |
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
+| 101 | 192.168.255.6 | enabled |  Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet1 | 0.0.0.0 |  -  |  True  |
-| Ethernet2 | 0.0.0.0 |  -  |  True  |
-| Ethernet3 | 0.0.0.0 |  -  |  True  |
-| Ethernet4 | 0.0.0.0 |  -  |  True  |
-| Vlan4093 | 0.0.0.0 |  -  |  True  |
-| Loopback0 | 0.0.0.0 |  -  |  -  |
-| Loopback1 | 0.0.0.0 |  -  |  -  |
+| Ethernet1 | 0.0.0.0 | - | True |
+| Ethernet2 | 0.0.0.0 | - | True |
+| Ethernet3 | 0.0.0.0 | - | True |
+| Ethernet4 | 0.0.0.0 | - | True |
+| Vlan4093 | 0.0.0.0 | - | True |
+| Loopback0 | 0.0.0.0 | - | - |
+| Loopback1 | 0.0.0.0 | - | - |
 
 ### Router OSPF Device Configuration
 

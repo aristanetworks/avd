@@ -222,17 +222,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet1  |  routed  | - |  172.31.255.40/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet1  |  routed  | - |  172.31.255.48/31  |  default  |  1500  |  false  |  -  |  -  |
 
-#### OSPF
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-| Ethernet1 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet2 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet3 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet4 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet5 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet6 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet7 | - | 0.0.0.0 |  -  |  point-to-point  |
-
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -374,23 +363,23 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
-| 101 | 192.168.255.1 |  enabled   |   Ethernet6 <br> Ethernet7 <br> Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br>|   enabled   | 12000 |  disabled  |  disabled |
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
+| 101 | 192.168.255.1 | enabled |  Ethernet6 <br> Ethernet7 <br> Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet1 | 0.0.0.0 |  -  |  True  |
-| Ethernet2 | 0.0.0.0 |  -  |  True  |
-| Ethernet3 | 0.0.0.0 |  -  |  True  |
-| Ethernet4 | 0.0.0.0 |  -  |  True  |
-| Ethernet5 | 0.0.0.0 |  -  |  True  |
-| Ethernet6 | 0.0.0.0 |  -  |  True  |
-| Ethernet7 | 0.0.0.0 |  -  |  True  |
-| Loopback0 | 0.0.0.0 |  -  |  -  |
+| Ethernet1 | 0.0.0.0 | - | True |
+| Ethernet2 | 0.0.0.0 | - | True |
+| Ethernet3 | 0.0.0.0 | - | True |
+| Ethernet4 | 0.0.0.0 | - | True |
+| Ethernet5 | 0.0.0.0 | - | True |
+| Ethernet6 | 0.0.0.0 | - | True |
+| Ethernet7 | 0.0.0.0 | - | True |
+| Loopback0 | 0.0.0.0 | - | - |
 
 ### Router OSPF Device Configuration
 

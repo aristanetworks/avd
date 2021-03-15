@@ -92,11 +92,6 @@ interface Management1
 | Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  2002:ABDC::1/64  |  default  |  1500  |  -  | -  |  -  |  -  |  -  |
 | Ethernet4 |  Molecule IPv6  |  switchport  | - |  2020::2020/64  |  default  |  9100  |  true  | true  |  true  |  IPv6_ACL_IN  |  IPv6_ACL_OUT  |
 
-#### OSPF
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-| Ethernet5 | - | 100 |  99  |  point-to-point  |
-
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |

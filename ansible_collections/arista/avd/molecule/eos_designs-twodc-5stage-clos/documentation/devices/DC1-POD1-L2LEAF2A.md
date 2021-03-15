@@ -307,7 +307,6 @@ interface Port-Channel3
 | Vlan4094 |  default  |  172.19.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
