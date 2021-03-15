@@ -365,9 +365,15 @@ router_bgp:
         import:
           evpn:
           - '14:14'
+          - 65000:456
+          vpn-ipv4:
+          - 65000:123
         export:
           evpn:
           - '14:14'
+          - 65000:789
+          vpn-ipv4:
+          - 65000:123
       neighbors:
         123.1.1.10:
           remote_as: 1234

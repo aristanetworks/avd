@@ -781,7 +781,11 @@ router bgp 65105
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.11:14
       route-target import evpn 14:14
+      route-target import evpn 65000:456
+      route-target import vpn-ipv4 65000:123
       route-target export evpn 14:14
+      route-target export evpn 65000:789
+      route-target export vpn-ipv4 65000:123
       router-id 192.168.255.11
       neighbor 123.1.1.10 remote-as 1234
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as

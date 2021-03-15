@@ -1137,9 +1137,11 @@ router_bgp:
         import:
           evpn:
           - '14:14'
+          - 65000:456
         export:
           evpn:
           - '14:14'
+          - 65000:789
       neighbors:
         10.255.251.6:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
