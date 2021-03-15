@@ -3,16 +3,27 @@
 ## {{ tenant }} ##
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if leaf.vrfs is not none and vrf in leaf.vrfs %}
+{%             set leaf_evpn_rt = (leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni) ~ ':' ~ tenants[tenant].vrfs[vrf].vrf_vni %}
+{%             set route_targets = namespace(import={'evpn' : [leaf_evpn_rt]},export={'evpn' : [leaf_evpn_rt]}) %}
+{%             for additional_route_target in tenants[tenant].vrfs[vrf].additional_route_targets | arista.avd.natural_sort %}
+{%                 if inventory_hostname in additional_route_target.nodes | arista.avd.default([inventory_hostname]) %}
+{%                     if additional_route_target.address_family is arista.avd.defined and additional_route_target.route_target is arista.avd.defined and additional_route_target.type is arista.avd.defined %}
+{%                         if additional_route_target.type in ['import', 'export'] %}
+{%                             if additional_route_target.address_family in route_targets[additional_route_target.type] %}
+{%                                 do route_targets[additional_route_target.type][additional_route_target.address_family].append(additional_route_target.route_target) %}
+{%                             else %}
+{%                                 do route_targets[additional_route_target.type].update({additional_route_target.address_family : [additional_route_target.route_target]}) %}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
     {{ vrf }}:
       router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
       rd: "{{ leaf.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
-        import:
-          evpn:
-            - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
-        export:
-          evpn:
-            - "{{ leaf.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+        import: {{ route_targets.import | to_json }}
+        export: {{ route_targets.export | to_json }}
 {%             if leaf.mlag == true %}
 {%                 set configure_mlag_ibgp_peering = true %}
 {%                 if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
