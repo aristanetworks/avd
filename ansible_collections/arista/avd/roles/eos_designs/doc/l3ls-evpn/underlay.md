@@ -88,7 +88,8 @@ evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 # BGP peer groups encrypted password
 # IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
 # EVPN_OVERLAY_PEERS | Required
-# Leverage an Arista EOS switch to generate the encrypted password
+# Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
+# Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
     password: "< encrypted password >"
