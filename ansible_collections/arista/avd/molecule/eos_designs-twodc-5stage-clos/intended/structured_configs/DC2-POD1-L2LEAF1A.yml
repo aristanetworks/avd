@@ -2,6 +2,8 @@ l2leaf_node_group: RACK1_SINGLE
 switch_platform: vEOS-LAB
 leaf_id: 1
 switch_mgmt_ip: 192.168.1.23/24
+switch_inband_management_ip: 172.21.210.4/24
+switch_inband_management_interface: Vlan4092
 leaf_filter_tenants:
 - all
 leaf_filter_tags:
@@ -88,12 +90,14 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.23/24
     gateway: 192.168.1.254
+    type: oob
   Vlan4092:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: 1500
     ip_address: 172.21.210.4/24
     gateway: 172.21.210.1
+    type: inband
 vlan_interfaces: null
 tcam_profile: null
 platform: null

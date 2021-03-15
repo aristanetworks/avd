@@ -5,8 +5,6 @@
 - name: Gather ntp status
   eos_command:
     commands: "show ntp status"
-  when: |
-    (ntp_server.nodes is defined and ntp_server.nodes is not none)
   register: ntp_status
   tags:
     - ntp

@@ -46,6 +46,7 @@
         - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
+      - [Switchport Default](#switchport-default)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -700,8 +701,13 @@ interface_defaults:
   ethernet:
     shutdown: < true | false >
   mtu: < mtu >
-  switchport:
-    type: < routed | switched >
+```
+
+#### Switchport Default
+
+```yaml
+switchport_default:
+  mode: < routed | access >
 ```
 
 #### Loopback Interfaces
@@ -997,6 +1003,7 @@ management_interfaces:
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    type: < oob | inband | default -> oob >
 ```
 
 #### Management HTTP
@@ -1005,6 +1012,7 @@ management_interfaces:
 management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
+  https_ssl_profile: < SSL Profile Name >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1035,9 +1043,17 @@ management_console:
 
 ```yaml
 management_security:
+  entropy_source: < entropy_source >
   password:
     encryption_key_common : < true | false >
-  entropy_source: < entropy_source >
+  ssl_profiles:
+    - name: <ssl_profile_1>
+      tls_versions: < list of allowed tls versions as string >
+      certificate:
+        file: < certificate filename >
+        key: < key filename >
+    - name: <ssl_profile_2>
+      tls_versions: < list of allowed tls versions as string >
 ```
 
 #### Management SSH

@@ -3,7 +3,7 @@
 {%     if switch.underlay_routing_protocol == 'ebgp' %}
     connected:
       route_map: RM-CONN-2-BGP
-{%         if l2leaf_inband_management_subnet is defined and l2leaf_inband_management_subnet is not none %}
+{%         if l2leaf_inband_management_subnet is arista.avd.defined %}
     attached-host:
 {%         endif %}
 {%     endif %}
