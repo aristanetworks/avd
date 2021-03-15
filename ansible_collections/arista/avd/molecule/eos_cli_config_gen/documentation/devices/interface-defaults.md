@@ -98,6 +98,7 @@
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
 | Management1 | oob_management | oob | MGMT | -  | - |
 
+
 ### Management Interfaces Device Configuration
 
 ```eos

@@ -96,6 +96,7 @@
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
       - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router General configuration](#router-general-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -743,6 +744,7 @@ port_channel_interfaces:
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
       - < trunk_group_name_1 >
@@ -1729,6 +1731,19 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leaks:
+        - source_vrf: < source-vrf >
+          policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          policy: < route-map policy >
+```
+
 #### Router OSPF Configuration
 
 ```yaml
@@ -1835,6 +1850,7 @@ router_l2_vpn:
 
 ```yaml
 spanning_tree:
+  root_super: < true | false >
   edge_port:
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >

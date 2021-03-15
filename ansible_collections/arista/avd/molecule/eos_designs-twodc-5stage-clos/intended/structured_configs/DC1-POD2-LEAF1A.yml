@@ -43,6 +43,7 @@ name_server: null
 ntp_server: null
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: none
 aaa_authorization: null
 local_users:
@@ -242,6 +243,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
+  rfc5549_neighbors: null
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS

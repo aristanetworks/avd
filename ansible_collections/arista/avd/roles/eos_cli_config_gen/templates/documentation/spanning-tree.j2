@@ -2,6 +2,8 @@
 {% if spanning_tree is arista.avd.defined %}
 ## Spanning Tree Summary
 
+STP Root Super: **{{ spanning_tree.root_super | arista.avd.default(false) }}**
+
 STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 

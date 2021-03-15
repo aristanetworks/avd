@@ -50,6 +50,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
@@ -317,6 +318,7 @@ no ip icmp redirect
 ```eos
 !
 ipv6 unicast-routing
+ip routing ipv6 interfaces
 !
 ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1
@@ -334,6 +336,10 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
+
+## Router General
+
+Router general not defined
 
 ## Router OSPF
 

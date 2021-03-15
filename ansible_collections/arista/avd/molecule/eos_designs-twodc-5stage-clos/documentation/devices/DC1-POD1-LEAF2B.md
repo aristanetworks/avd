@@ -50,6 +50,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
@@ -288,6 +289,8 @@ mlag configuration
 
 ## Spanning Tree Summary
 
+STP Root Super: **True**
+
 STP mode: **mstp**
 
 ### MSTP Instance and Priority
@@ -304,6 +307,7 @@ Spanning Tree disabled for VLANs: **4093-4094**
 
 ```eos
 !
+spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4093-4094
 spanning-tree mst 0 priority 4096
@@ -687,6 +691,10 @@ IPv6 static routes not defined
 ## ARP
 
 Global ARP timeout not defined.
+
+## Router General
+
+Router general not defined
 
 ## Router OSPF
 

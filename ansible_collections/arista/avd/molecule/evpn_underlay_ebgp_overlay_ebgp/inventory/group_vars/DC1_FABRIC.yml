@@ -68,6 +68,7 @@ l3leaf:
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
     spanning_tree_mode: mstp
+    spanning_tree_root_super: true
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
@@ -116,7 +117,6 @@ l3leaf:
       filter:
         tenants: [ all ]
         tags: [ wan ]
-      mlag: false
       nodes:
         DC1-BL1A:
           id: 6
@@ -139,6 +139,7 @@ l2leaf:
     mlag: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
+    spanning_tree_root_super: true
     spanning_tree_priority: 16384
   node_groups:
     DC1_L2LEAF1:

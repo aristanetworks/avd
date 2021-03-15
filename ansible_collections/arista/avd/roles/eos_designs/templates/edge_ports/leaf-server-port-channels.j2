@@ -18,12 +18,16 @@
 {%                     set adapter_storm_control = adapter.storm_control | arista.avd.default( adapter_profile.storm_control ) %}
 {%                     set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default( adapter_profile.flowcontrol ) %}
 {%                     set adapter_qos_profile = adapter.qos_profile | arista.avd.default( adapter_profile.qos_profile ) %}
+{%                     set adapter_mtu = adapter.mtu | arista.avd.default( adapter_profile.mtu ) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ server }}_{{ adapter_port_channel.description }}
     type: switched
     shutdown: false
     mode: {{ adapter_mode }}
+{%                     if adapter_mtu is arista.avd.defined %}
+    mtu: {{ adapter_mtu }}
+{%                     endif %}
     vlans: {{ adapter_vlans }}
 {%                     if adapter_native_vlan is arista.avd.defined %}
     native_vlan: {{ adapter_native_vlan }}

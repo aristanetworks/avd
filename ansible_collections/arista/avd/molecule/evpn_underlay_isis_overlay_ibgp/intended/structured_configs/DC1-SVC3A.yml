@@ -69,6 +69,7 @@ ntp_server:
   - 192.168.200.5
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':
@@ -306,6 +307,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
+  rfc5549_neighbors: null
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

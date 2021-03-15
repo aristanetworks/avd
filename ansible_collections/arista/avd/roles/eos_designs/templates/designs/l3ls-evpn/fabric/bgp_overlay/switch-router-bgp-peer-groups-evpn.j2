@@ -11,6 +11,10 @@
 {%     if switch.evpn_role == "server" %}
       next_hop_unchanged: true
 {%     endif %}
+{%     if switch.evpn_role == "server" and underlay_rfc5549 is arista.avd.defined(true)%}
+      bgp_listen_range_prefix: {{ overlay_loopback_network_summary }}
+      peer_filter: LEAF-AS-RANGE
+{%     endif %}
 {# IBGP #}
 {% elif switch.overlay_routing_protocol == "ibgp" and switch.evpn_role in ["client", "server"] %}
     EVPN-OVERLAY-PEERS:
