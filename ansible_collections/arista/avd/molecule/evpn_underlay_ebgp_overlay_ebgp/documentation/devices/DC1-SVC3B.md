@@ -216,8 +216,8 @@ mlag configuration
    local-interface Vlan4094
    peer-address 10.255.252.6
    peer-link Port-Channel5
-   reload-delay mlag 780
-   reload-delay non-mlag 1020
+   reload-delay mlag 300
+   reload-delay non-mlag 330
 ```
 
 # Spanning Tree
@@ -482,6 +482,7 @@ interface Ethernet8
 interface Ethernet11
    description server04_inherit_all_from_profile_Eth2
    no shutdown
+   l2 mtu 8000
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -508,6 +509,7 @@ interface Ethernet12
 interface Ethernet13
    description server06_override_profile_Eth2
    no shutdown
+   l2 mtu 8000
    switchport
    switchport access vlan 210
    switchport mode access
@@ -530,6 +532,7 @@ interface Ethernet15
 interface Ethernet16
    description server09_override_profile_no_port_channel_Eth2
    no shutdown
+   l2 mtu 8000
    switchport
    switchport access vlan 210
    switchport mode access

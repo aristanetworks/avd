@@ -10,6 +10,7 @@
 {%                 endif %}
 {%                 set adapter_speed = adapter.speed | arista.avd.default( adapter_profile.speed ) %}
 {%                 set adapter_mode = adapter.mode | arista.avd.default( adapter_profile.mode ) %}
+{%                 set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default( adapter_profile.l2_mtu ) %}
 {%                 set adapter_vlans = adapter.vlans | arista.avd.default( adapter_profile.vlans ) %}
 {%                 set adapter_native_vlan = adapter.native_vlan | arista.avd.default( adapter_profile.native_vlan ) %}
 {%                 set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default( adapter_profile.spanning_tree_portfast ) %}
@@ -27,6 +28,9 @@
     description: {{ server }}_{{ adapter.server_ports[loop.index0] }}
 {%                 if adapter_speed is arista.avd.defined %}
     speed: {{ adapter_speed }}
+{%                 endif %}
+{%                 if adapter_l2_mtu is arista.avd.defined %}
+    l2_mtu: {{ adapter_l2_mtu }}
 {%                 endif %}
     type: switched
     shutdown: false

@@ -315,6 +315,7 @@ interface Ethernet4
 interface Ethernet6
    description server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
+   l2 mtu 8000
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
