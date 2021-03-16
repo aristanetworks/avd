@@ -74,7 +74,7 @@
 {%                     set p2p_bgp_neighbor = namespace() %}
 {%                     set p2p_bgp_neighbor.remote_as = as[peer_index] %}
 {%                     set p2p_bgp_neighbor.description = p2p_interface.peer %}
-{%                     set p2p_bgp_neighbor.peer_group = "IPv4-UNDERLAY-PEERS" %}
+{%                     set p2p_bgp_neighbor.peer_group = bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") %}
 {%                     set p2p_bgp_neighbor.bfd = p2p_link.bfd | arista.avd.default(
                                                   p2p_profile.bfd) %}
 {%                     if switch.bgp_as is arista.avd.defined and as[node_index] != switch.bgp_as %}

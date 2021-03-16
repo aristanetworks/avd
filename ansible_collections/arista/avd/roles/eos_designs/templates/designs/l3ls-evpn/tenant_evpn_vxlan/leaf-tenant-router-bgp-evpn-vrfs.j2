@@ -23,7 +23,7 @@
 {%                 if configure_mlag_ibgp_peering %}
       neighbors:
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
 {%                 elif configure_mlag_ibgp_peering == false and leaf.has_tenant_bgp_peers == true %}
       neighbors:
 {%                 endif %}

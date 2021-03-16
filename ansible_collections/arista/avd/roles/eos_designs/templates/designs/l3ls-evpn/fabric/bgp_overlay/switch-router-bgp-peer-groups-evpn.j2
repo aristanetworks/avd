@@ -1,6 +1,6 @@
 {# EBGP #}
 {% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_role in ["client", "server"] %}
-    EVPN-OVERLAY-PEERS:
+    {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
       type: evpn
       update_source: Loopback0
       bfd: true
@@ -13,7 +13,7 @@
 {%     endif %}
 {# IBGP #}
 {% elif switch.overlay_routing_protocol == "ibgp" and switch.evpn_role in ["client", "server"] %}
-    EVPN-OVERLAY-PEERS:
+    {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
       type: evpn
       update_source: Loopback0
       remote_as: {{ switch.bgp_as }}

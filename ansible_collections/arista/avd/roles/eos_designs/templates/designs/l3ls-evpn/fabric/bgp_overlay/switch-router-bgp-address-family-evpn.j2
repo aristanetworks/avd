@@ -1,7 +1,7 @@
 {# address-family evpn activation #}
 {% if switch.evpn_role in ["client", "server"] %}
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
         activate: true
 {%     if switch.overlay_routing_protocol == "ibgp" and type == "l3leaf" %}
         route_map_in: RM-EVPN-SOO-IN
