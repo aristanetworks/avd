@@ -14,6 +14,7 @@ port_profiles:
   < port_profile_1 >:
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
+    l2_mtu: < l2_mtu - if defined this profile should be used only for 7050 platform!>
     native_vlan: <native vlan number>
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >

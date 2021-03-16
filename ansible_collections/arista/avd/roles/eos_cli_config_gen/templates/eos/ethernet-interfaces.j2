@@ -25,7 +25,7 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].l2_mtu is arista.avd.defined and switch_platform is arista.avd.defined and '7050' in switch_platform %}
+{%         if ethernet_interfaces[ethernet_interface].l2_mtu is arista.avd.defined %}
    l2 mtu {{ ethernet_interfaces[ethernet_interface].l2_mtu }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
