@@ -117,12 +117,6 @@ clock:
 vrfs:
 {% include 'base/mgmt-vrf.j2' %}
 
-
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
-
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
@@ -137,7 +131,6 @@ ethernet_interfaces:
 ### Loopback Interfaces ###
 loopback_interfaces:
 {% include 'designs/l3ls-evpn/fabric/interfaces/super-spine-overlay-loopback.j2' %}
-
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -174,6 +167,11 @@ prefix_lists:
 route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
+
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###

@@ -107,16 +107,10 @@ local_users:
 clock:
 {% include 'base/clock-timezone.j2' %}
 
-
 {# VRFs #}
 ### VRFs ###
 vrfs:
 {% include 'base/mgmt-vrf.j2' %}
-
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -128,12 +122,10 @@ ethernet_interfaces:
 {# L3 Edge Point-to-Point Interfaces #}
 {% include 'l3_edge/switch-l3-edge-p2p-interfaces.j2' %}
 
-
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
 {% include 'designs/l3ls-evpn/fabric/interfaces/spine-overlay-loopback.j2' %}
-
 
 {# Management Interfaces #}
 ### Management Interfaces ###
@@ -170,6 +162,11 @@ prefix_lists:
 route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
+
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
 
 {# peer-filter #}
 ### peer-filters ###

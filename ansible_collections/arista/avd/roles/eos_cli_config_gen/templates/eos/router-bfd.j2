@@ -1,8 +1,8 @@
 {# eos - Router bfd #}
-{% if bfd_multihop is arista.avd.defined %}
+{% if router_bfd is arista.avd.defined %}
 !
 router bfd
-{%     if bfd_multihop.interval is arista.avd.defined and bfd_multihop.min_rx is arista.avd.defined and bfd_multihop.multiplier is arista.avd.defined  %}
-   multihop interval {{ bfd_multihop.interval }} min-rx {{ bfd_multihop.min_rx }} multiplier {{ bfd_multihop.multiplier }}
+{%     if router_bfd.multihop.interval is arista.avd.defined and router_bfd.multihop.min_rx is arista.avd.defined and router_bfd.multihop.multiplier is arista.avd.defined  %}
+   multihop interval {{ router_bfd.multihop.interval }} min-rx {{ router_bfd.multihop.min_rx }} multiplier {{ router_bfd.multihop.multiplier }}
 {%     endif %}
 {% endif %}

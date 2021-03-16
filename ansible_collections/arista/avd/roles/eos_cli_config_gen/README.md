@@ -25,7 +25,7 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
-    - [Bfd Multihop Interval](#bfd-multihop-interval)
+    - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -363,13 +363,14 @@ banners:
     < text ending with EOF >
 ```
 
-### Bfd Multihop Interval
+### Router BFD
 
 ```yaml
-bfd_multihop:
-  interval: < rate in milliseconds >
-  min_rx: < rate in milliseconds >
-  multiplier: < 3-50 >
+router_bfd:
+  multihop:
+    interval: < rate in milliseconds >
+    min_rx: < rate in milliseconds >
+    multiplier: < 3-50 >
 ```
 
 ### Custom Templates
