@@ -64,10 +64,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 ethernet_interfaces:
   Ethernet6:
     peer: DC1-BL1A
@@ -177,6 +173,11 @@ static_routes:
   gateway: 192.168.200.5
 prefix_lists: null
 route_maps: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 peer_filters: null
 router_bgp:
   as: 65000

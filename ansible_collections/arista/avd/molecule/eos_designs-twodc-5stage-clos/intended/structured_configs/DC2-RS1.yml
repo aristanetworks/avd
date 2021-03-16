@@ -39,10 +39,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-SUPER-SPINE1
@@ -100,6 +96,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65201
   router_id: 172.16.20.1

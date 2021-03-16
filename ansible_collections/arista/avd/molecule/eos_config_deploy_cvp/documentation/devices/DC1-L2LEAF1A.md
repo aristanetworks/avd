@@ -529,9 +529,6 @@ Router BGP not defined
 ### Router BFD Multihop Device Configuration
 
 ```eos
-!
-router bfd
-   multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
 # Multicast

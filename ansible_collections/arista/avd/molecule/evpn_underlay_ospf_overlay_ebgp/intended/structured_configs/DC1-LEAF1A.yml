@@ -77,10 +77,6 @@ vlans: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -169,6 +165,11 @@ static_routes:
   gateway: 192.168.200.5
 prefix_lists: null
 route_maps: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65101
   router_id: 192.168.255.5

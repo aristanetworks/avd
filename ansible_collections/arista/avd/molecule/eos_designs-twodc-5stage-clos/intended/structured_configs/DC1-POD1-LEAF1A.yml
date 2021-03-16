@@ -53,10 +53,6 @@ vlans:
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel3:
     description: RACK2_SINGLE_Po1
@@ -211,6 +207,11 @@ route_maps:
         - as 65211
       20:
         type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65111
   router_id: 172.16.110.3
