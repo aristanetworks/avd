@@ -17,3 +17,14 @@ router_bgp:
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
       advertise_only: true
+  address_family_ipv4:
+    networks:
+      10.0.0.0/8:
+      172.16.0.0/12:
+      192.168.0.0/16:
+        route_map: RM-FOO-MATCH
+  address_family_ipv6:
+    networks:
+      2001:db8:100::/40:
+      2001:db8:200::/40:
+        route_map: RM-BAR-MATCH

@@ -366,6 +366,15 @@ router bgp 65101
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   !
+   address-family ipv4
+      network 10.0.0.0/8
+      network 172.16.0.0/12
+      network 192.168.0.0/16 route-map RM-FOO-MATCH
+   !
+   address-family ipv6
+      network 2001:db8:100::/40
+      network 2001:db8:200::/40 route-map RM-BAR-MATCH
 ```
 
 ## Router BFD
