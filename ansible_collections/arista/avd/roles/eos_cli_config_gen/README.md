@@ -1472,11 +1472,11 @@ ipv6_unicast_routing: < true | false >
 router_general:
   vrfs:
     < destination-vrf >:
-      leaks:
+      leak_routes:
         - source_vrf: < source-vrf >
-          policy: < route-map policy >
+          polisubscribe_policycy: < route-map policy >
         - source_vrf: < source-vrf >
-          policy: < route-map policy >
+          subscribe_policy: < route-map policy >
 ```
 
 #### Router BGP Configuration

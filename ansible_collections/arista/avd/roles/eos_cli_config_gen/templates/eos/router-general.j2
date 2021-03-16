@@ -4,9 +4,9 @@
 router general
 {%      for vrf in router_general.vrfs | arista.avd.natural_sort %}
    vrf {{ vrf }}
-{%          for leak in router_general.vrfs[vrf].leaks | arista.avd.natural_sort %}
+{%          for leak in router_general.vrfs[vrf].leak_routes | arista.avd.natural_sort %}
 {%              if leak.source_vrf is arista.avd.defined and leak.policy is arista.avd.defined %}
-      leak routes source-vrf {{ leak.source_vrf }} subscribe-policy {{ leak.policy }}
+      leak routes source-vrf {{ leak.source_vrf }} subscribe-policy {{ leak.subscribe_policy }}
 {%              endif %}
 {%          endfor %}
    !
