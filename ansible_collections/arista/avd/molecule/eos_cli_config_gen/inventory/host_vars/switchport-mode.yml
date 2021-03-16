@@ -1,0 +1,4 @@
+### interface default partial knobs
+
+switchport_default:
+    mode: access

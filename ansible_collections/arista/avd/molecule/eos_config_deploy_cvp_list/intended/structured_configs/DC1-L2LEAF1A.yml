@@ -2,6 +2,8 @@ l2leaf_node_group: DC1_L2LEAF1
 switch_platform: vEOS-LAB
 leaf_id: 8
 switch_mgmt_ip: 192.168.200.112/24
+switch_inband_management_ip: null
+switch_inband_management_interface: null
 leaf_filter_tenants:
 - Tenant_A
 leaf_filter_tags:
@@ -136,6 +138,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.112/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces: null
 tcam_profile: null
 platform: null

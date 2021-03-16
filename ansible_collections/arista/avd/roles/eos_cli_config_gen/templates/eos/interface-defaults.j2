@@ -1,5 +1,5 @@
 {# eos - interface defaults #}
-{% if ( interface_defaults.mtu is arista.avd.defined ) or ( interface_defaults.switchport is arista.avd.defined ) %}
+{% if interface_defaults is arista.avd.defined %}
 !
 interface defaults
 {%     if interface_defaults.ethernet is arista.avd.defined %}
@@ -13,11 +13,4 @@ interface defaults
 {%     if interface_defaults.mtu is arista.avd.defined %}
    mtu {{ interface_defaults.mtu }}
 {%     endif %}
-{% endif %}
-{% if interface_defaults.switchport.type is arista.avd.defined('routed') %}
-!
-switchport default mode routed
-{% elif interface_defaults.switchport.type is arista.avd.defined('switched') %}
-!
-switchport default mode access
 {% endif %}

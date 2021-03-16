@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -88,17 +89,17 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 192.168.1.10/24 | 192.168.1.254 |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | 172.21.110.4/24 | 172.21.110.1 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 192.168.1.10/24 | 192.168.1.254 |
+| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | 172.21.110.4/24 | 172.21.110.1 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
-| Vlan4085 | L2LEAF_INBAND_MGMT | default | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
+| Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -154,13 +155,14 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  default  |  true  |
+| default | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| MGMT |  -  |  -  |
+| MGMT | - | - |
+
 
 ### Management API HTTP Configuration
 
@@ -324,6 +326,10 @@ vlan 4085
 ```
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

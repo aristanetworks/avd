@@ -37,6 +37,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -88,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -191,13 +192,14 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  true  |  true  |
+| true | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| mgt |  ACL-API  |  -  |
+| mgt | ACL-API | - |
+
 
 ### Management API HTTP Configuration
 
@@ -255,7 +257,7 @@ AAA accounting not defined
 
 ## Management Security
 
-   Management Security password encryption is common.
+Management Security password encryption is common.
 
 
 ## Management Security Configuration
@@ -327,6 +329,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

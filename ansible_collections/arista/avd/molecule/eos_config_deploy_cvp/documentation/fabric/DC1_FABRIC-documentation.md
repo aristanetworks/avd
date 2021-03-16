@@ -34,6 +34,10 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
+### Fabric Switches with inband Management IP
+| POD | Type | Node | Management IP | Inband Interface |
+| --- | ---- | ---- | ------------- | ---------------- |
+
 ## Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |

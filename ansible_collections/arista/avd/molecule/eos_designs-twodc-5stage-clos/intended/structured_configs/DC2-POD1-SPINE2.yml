@@ -84,6 +84,8 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1498
     ip_address: 200.200.200.201/24
+    ptp:
+      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -96,6 +98,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.21/24
     gateway: 192.168.1.254
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null

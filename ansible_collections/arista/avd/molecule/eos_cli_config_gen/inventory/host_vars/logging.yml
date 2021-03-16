@@ -11,3 +11,7 @@ logging:
       source_interface: Management0
       hosts:
         - 10.10.10.7
+    default:
+      source_interface: Loopback0
+      hosts:
+        - 20.20.20.7

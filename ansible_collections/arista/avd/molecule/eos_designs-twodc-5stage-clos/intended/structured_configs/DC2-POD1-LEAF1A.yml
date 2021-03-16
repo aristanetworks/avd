@@ -139,6 +139,8 @@ ethernet_interfaces:
     shutdown: false
     mtu: 1499
     ip_address: 11.1.0.39/31
+    ptp:
+      enable: true
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -155,6 +157,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.22/24
     gateway: 192.168.1.254
+    type: oob
 vlan_interfaces:
   Vlan4092:
     description: L2LEAF_INBAND_MGMT
