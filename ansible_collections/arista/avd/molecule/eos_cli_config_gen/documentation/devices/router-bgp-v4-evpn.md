@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,6 +187,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -246,6 +252,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 
@@ -368,13 +378,18 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 |
+| 10.2.3.4 | 1234 | TENANT_A_PROJECT01 |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
+| 10.255.251.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
+| 10.255.251.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
 
 ### Router BGP EVPN Address Family
 
@@ -392,7 +407,7 @@ Router ISIS not defined
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected  static |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | connected  static |
 
 ### Router BGP Device Configuration
@@ -469,8 +484,19 @@ router bgp 65101
       router-id 192.168.255.3
       network 10.0.0.0/8
       network 100.64.0.0/10
+      neighbor 10.2.3.4 remote-as 1234
+      neighbor 10.2.3.4 local-as 123 no-prepend replace-as
+      neighbor 10.2.3.4 description Tenant A BGP Peer
+      neighbor 10.2.3.4 ebgp-multihop 3
+      neighbor 10.2.3.4 send-community
+      neighbor 10.2.3.4 maximum-routes 0
+      neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
+      neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
+      address-family ipv4
+         neighbor 10.2.3.4 activate
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
+      redistribute static
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12
@@ -486,7 +512,7 @@ router bgp 65101
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description ABCDEFGfg
       neighbor 10.255.251.2 timers 1 3
-      neighbor 10.255.251.2 send-community 
+      neighbor 10.255.251.2 send-community
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.3 description ABCDEFGfgLCLCLCLC
       neighbor 10.255.251.3 next-hop-self

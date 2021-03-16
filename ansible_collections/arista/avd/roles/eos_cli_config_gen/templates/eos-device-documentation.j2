@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -163,6 +165,10 @@
 
 {% include 'documentation/management-security.j2' %}
 
+# Prompt
+
+{% include 'documentation/prompt.j2' %}
+
 # Aliases
 
 {% include 'documentation/aliases.j2' %}
@@ -218,6 +224,10 @@
 {% include 'documentation/vlans.j2' %}
 
 # Interfaces
+
+## Switchport Default
+
+{% include 'documentation/switchport-default.j2' %}
 
 ## Interface Defaults
 

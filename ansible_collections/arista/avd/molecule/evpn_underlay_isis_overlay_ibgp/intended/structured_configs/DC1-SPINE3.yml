@@ -1,8 +1,14 @@
 switch_platform: vEOS-LAB
 switch_mgmt_ip: 192.168.200.103/24
+switch_bgp_as: 65000
+switch_router_id: 192.168.255.3
+switch_evpn_role: none
+switch_evpn_route_servers: []
+switch_evpn_route_clients: []
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -154,6 +160,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.103/24
     gateway: 192.168.200.5
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -170,48 +177,16 @@ router_bgp:
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
-  bgp_cluster_id: 192.168.255.3
-  peer_groups:
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      remote_as: 65000
-      update_source: Loopback0
-      route_reflector_client: true
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
-      maximum_routes: 0
-  neighbors:
-    192.168.255.10:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.11:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.5:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.6:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.7:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.8:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
-    192.168.255.9:
-      peer_group: EVPN-OVERLAY-PEERS
-      remote_as: 65000
+  - maximum-paths 4 ecmp 4
+  peer_groups: null
+  neighbors: null
   redistribute_routes: null
-  address_family_evpn:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
+  address_family_evpn: null
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY

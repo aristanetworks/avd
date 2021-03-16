@@ -1,9 +1,24 @@
 {% if snmp_server is defined and snmp_server is not none %}
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
-| ------- | -------- | ---------- | -------- | -------- |
-| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% endif %} | {{ snmp_server.access_list_v4 | default('-') }} | {{ snmp_server.access_list_v6 | default('-') }} |
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% else %} Disabled {% endif %} |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+{%     if snmp_server.ipv4_acls is defined and snmp_server.ipv4_acls is not none %}
+{%         for acl in snmp_server.ipv4_acls %}
+| IPv4 | {{ acl.name | default('-') }} | {{ acl.vrf | default('default') }} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.ipv6_acls is defined and snmp_server.ipv6_acls is not none %}
+{%         for acl in snmp_server.ipv6_acls %}
+| IPv6 | {{ acl.name | default('-') }} | {{ acl.vrf | default('default') }} |
+{%         endfor %}
+{%     endif %}
+
 
 ### SNMP Local Interfaces
 

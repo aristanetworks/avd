@@ -63,7 +63,7 @@ spine:
 l3leaf:
   defaults:
     platform: 7280R
-    bgp_as: 65100
+    bgp_as: 65101
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
@@ -75,7 +75,6 @@ l3leaf:
       tags: [ opzone, web, app, db, vmotion, nfs ]
   node_groups:
     DC1_LEAF1:
-      bgp_as: 65101
       filter:
         tenants: [ all ]
         tags: [ web, app ]
@@ -113,7 +112,7 @@ l3leaf:
           mgmt_ip: 192.168.200.109/24
           spine_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
     DC1_BL1:
-      bgp_as: 65104
+      mlag: false
       filter:
         tenants: [ all ]
         tags: [ wan ]
@@ -121,11 +120,13 @@ l3leaf:
       nodes:
         DC1-BL1A:
           id: 6
+          bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
         DC1-BL1B:
           id: 7
+          bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
@@ -189,3 +190,11 @@ bfd_multihop:
   interval: 1200
   min_rx: 1200
   multiplier: 3
+
+custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_' ]
+
+# Set Hardware Speed Groups per platform
+platform_speed_groups:
+  7280R:             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
+    25G: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
+    10G: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2

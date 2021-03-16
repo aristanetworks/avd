@@ -1,22 +1,34 @@
 {# eos - mlag configuration #}
-{% if mlag_configuration is defined and mlag_configuration is not none %}
+{% if mlag_configuration is arista.avd.defined %}
 !
 mlag configuration
+{%     if mlag_configuration.domain_id is arista.avd.defined %}
    domain-id {{ mlag_configuration.domain_id }}
+{%     endif %}
+{%     if mlag_configuration.local_interface is arista.avd.defined %}
    local-interface {{ mlag_configuration.local_interface }}
+{%     endif %}
+{%     if mlag_configuration.peer_address is arista.avd.defined %}
    peer-address {{ mlag_configuration.peer_address }}
-{%   if mlag_configuration.peer_address_heartbeat.peer_ip is defined and mlag_configuration.peer_address_heartbeat.peer_ip is not none %}
-{%      if mlag_configuration.peer_address_heartbeat.vrf is defined and mlag_configuration.peer_address_heartbeat.vrf is not none and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %}
+{%     endif %}
+{%     if mlag_configuration.peer_address_heartbeat.peer_ip is arista.avd.defined %}
+{%         if mlag_configuration.peer_address_heartbeat.vrf is arista.avd.defined and mlag_configuration.peer_address_heartbeat.vrf is ne 'default' %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }} vrf {{ mlag_configuration.peer_address_heartbeat.vrf }}
 {# using the default VRF #}
-{%      else %}
+{%         else %}
    peer-address heartbeat {{ mlag_configuration.peer_address_heartbeat.peer_ip }}
-{%      endif %}
-{%   endif %}
+{%         endif %}
+{%     endif %}
+{%     if mlag_configuration.peer_link is arista.avd.defined %}
    peer-link {{ mlag_configuration.peer_link }}
-{%   if mlag_configuration.dual_primary_detection_delay is defined and mlag_configuration.dual_primary_detection_delay is not none %}
+{%     endif %}
+{%     if mlag_configuration.dual_primary_detection_delay is arista.avd.defined %}
    dual-primary detection delay {{ mlag_configuration.dual_primary_detection_delay }} action errdisable all-interfaces
-{%   endif %}
+{%     endif %}
+{%     if mlag_configuration.reload_delay_mlag is arista.avd.defined %}
    reload-delay mlag {{ mlag_configuration.reload_delay_mlag }}
+{%     endif %}
+{%     if mlag_configuration.reload_delay_non_mlag is arista.avd.defined %}
    reload-delay non-mlag {{ mlag_configuration.reload_delay_non_mlag }}
+{%     endif %}
 {% endif %}

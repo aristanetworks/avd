@@ -24,7 +24,7 @@ eos_config_dir_name: 'configs'
 # Main documentation folder
 documentation_dir_name: 'documentation'
 # Fabric documentation
-fabric_dir_name: 'DC1_FABRIC'
+fabric_dir_name: 'fabric'
 # Device documentation
 devices_dir_name: 'devices'
 # EOS state validation directory name
@@ -39,7 +39,7 @@ Role will create following structure:
 ```shell
 ├── config_backup
 ├── documentation
-│   ├── DC1_FABRIC
+│   ├── fabric
 │   └── devices
 ├── intended
 │   ├── configs

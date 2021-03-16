@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -36,7 +37,8 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
-  - [Interface Defaults](#internet-defaults)
+  - [Switchport Default](#switchport-default)
+  - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -48,6 +50,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
@@ -85,15 +88,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 192.168.200.103/24 | 192.168.200.5 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 192.168.200.103/24 | 192.168.200.5 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -126,8 +129,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -172,19 +175,21 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  default  |  true  |
+| default | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| MGMT |  -  |  -  |
+| MGMT | - | - |
+
 
 ### Management API HTTP Configuration
 
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -245,6 +250,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -334,6 +343,10 @@ No VLANs defined
 
 # Interfaces
 
+## Switchport Default
+
+No switchport default defined
+
 ## Interface Defaults
 
 No Interface Defaults defined
@@ -380,6 +393,7 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.4/31
    isis enable EVPN_UNDERLAY
@@ -389,6 +403,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.12/31
    isis enable EVPN_UNDERLAY
@@ -398,6 +413,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.20/31
    isis enable EVPN_UNDERLAY
@@ -407,6 +423,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.28/31
    isis enable EVPN_UNDERLAY
@@ -416,6 +433,7 @@ interface Ethernet4
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.36/31
    isis enable EVPN_UNDERLAY
@@ -425,6 +443,7 @@ interface Ethernet5
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.44/31
    isis enable EVPN_UNDERLAY
@@ -434,6 +453,7 @@ interface Ethernet6
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet3
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.52/31
    isis enable EVPN_UNDERLAY
@@ -541,6 +561,10 @@ IPv6 static routes not defined
 
 Global ARP timeout not defined.
 
+## Router OSPF
+
+Router OSPF not defined
+
 ## Router ISIS
 
 ### Router ISIS Summary
@@ -568,6 +592,7 @@ Global ARP timeout not defined.
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0000.0003.00
    is-type level-2
@@ -577,7 +602,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 4
    !
-!
 ```
 
 
@@ -589,40 +613,11 @@ router isis EVPN_UNDERLAY
 | ------ | --------- |
 | 65000|  192.168.255.3 |
 
-| BGP AS | Cluster ID |
-| ------ | --------- |
-| 65000|  192.168.255.3 |
-
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
-
-### Router BGP Peer Groups
-
-#### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Remote_as | 65000 |
-| Route Reflector Client | Yes |
-| Source | Loopback0 |
-| Bfd | true |
-| Send community | true |
-| Maximum routes | 0 (no limit) |
-
-### BGP Neighbors
-
-| Neighbor | Remote AS |
-| -------- | ---------
-| 192.168.255.5 | 65000 |
-| 192.168.255.6 | 65000 |
-| 192.168.255.7 | 65000 |
-| 192.168.255.8 | 65000 |
-| 192.168.255.9 | 65000 |
-| 192.168.255.10 | 65000 |
-| 192.168.255.11 | 65000 |
+| maximum-paths 4 ecmp 4 |
 
 ### Router BGP EVPN Address Family
 
@@ -636,34 +631,9 @@ router isis EVPN_UNDERLAY
 !
 router bgp 65000
    router-id 192.168.255.3
-   bgp cluster-id 192.168.255.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65000
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS route-reflector-client
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.5 remote-as 65000
-   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.6 remote-as 65000
-   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.7 remote-as 65000
-   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.8 remote-as 65000
-   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.9 remote-as 65000
-   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.10 remote-as 65000
-   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.11 remote-as 65000
-   !
-   address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
+   maximum-paths 4 ecmp 4
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

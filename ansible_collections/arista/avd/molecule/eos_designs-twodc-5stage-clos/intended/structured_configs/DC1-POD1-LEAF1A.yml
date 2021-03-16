@@ -1,0 +1,307 @@
+l3leaf_node_group: RACK1_SINGLE
+switch_platform: vEOS-LAB
+switch_bgp_as: 65111
+leaf_id: 1
+switch_mgmt_ip: 192.168.1.7/24
+leaf_evpn_services_l2_only: false
+switch_router_id: 172.16.110.3
+switch_evpn_role: server
+switch_evpn_route_servers:
+- DC2-POD1-LEAF1A
+- DC2-POD1-SPINE1
+- DC2-RS1
+- DC2-SUPER-SPINE1
+switch_evpn_route_clients:
+- DC1-POD1-LEAF2A
+- DC1-POD1-LEAF2B
+leaf_filter_tenants: []
+leaf_filter_tags: []
+leaf_allowed_vrfs: []
+leaf_allowed_svis: []
+leaf_allowed_vlans: []
+leaf_mlag: false
+service_routing_protocols_model: multi-agent
+ip_routing: true
+hardware_counters: null
+hardware: null
+daemon_terminattr: null
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+event_monitor: null
+event_handlers: null
+load_interval: null
+queue_monitor_length: null
+name_server: null
+ntp_server: null
+redundancy: null
+spanning_tree:
+  mode: none
+aaa_authorization: null
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
+clock: null
+vlans:
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+vrfs:
+  MGMT:
+    ip_routing: false
+bfd_multihop:
+  interval: 300
+  min_rx: 300
+  multiplier: 3
+port_channel_interfaces:
+  Port-Channel3:
+    description: RACK2_SINGLE_Po1
+    type: switched
+    shutdown: false
+    vlans: 4085
+    mode: trunk
+    service_profile: QOS-PROFILE
+    mlag: 3
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet3
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.1/31
+  Ethernet2:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet3
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.3/31
+  Ethernet3:
+    peer: DC1-POD1-L2LEAF1A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-POD1-L2LEAF1A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 3
+      mode: active
+  Ethernet4:
+    peer: DC1-RS1
+    peer_interface: Ethernet3
+    peer_type: overlay_controller
+    description: P2P_LINK_TO_DC1-RS1_Ethernet3
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.10.4/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.110.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.110.3/32
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.1.7/24
+    gateway: 192.168.1.254
+    type: oob
+vlan_interfaces:
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.2/24
+    ip_virtual_router_address: 172.21.110.1
+    ip_attached_host_route_export:
+      distance: 19
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-POD1-LEAF1A_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans: null
+      vrfs: null
+tcam_profile: null
+platform: null
+mac_address_table: null
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+virtual_source_nat_vrfs: null
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.110.0/24 eq 32
+      20:
+        action: permit 172.18.110.0/24 eq 32
+  PL-L2LEAF-INBAND-MGMT:
+    sequence_numbers:
+      10:
+        action: permit 172.21.110.0/24
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+      20:
+        type: permit
+        match:
+        - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+  RM-EVPN-FILTER-AS65200:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65200
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65201:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65201
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65210:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65210
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65211:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65211
+      20:
+        type: permit
+router_bgp:
+  as: 65111
+  router_id: 172.16.110.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: 65110
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: true
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '5'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: true
+      maximum_routes: 0
+      next_hop_unchanged: true
+  neighbors:
+    172.17.110.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.17.110.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+    172.16.210.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF1A
+      remote_as: 65211
+      route_map_out: RM-EVPN-FILTER-AS65211
+    172.16.210.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-SPINE1
+      remote_as: 65210
+      route_map_out: RM-EVPN-FILTER-AS65210
+    172.16.20.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-RS1
+      remote_as: 65201
+      route_map_out: RM-EVPN-FILTER-AS65201
+    172.16.200.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-SUPER-SPINE1
+      remote_as: 65200
+      route_map_out: RM-EVPN-FILTER-AS65200
+    172.16.110.4:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-LEAF2A
+      remote_as: 65112
+    172.16.110.5:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD1-LEAF2B
+      remote_as: 65112
+    172.17.10.5:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-RS1
+      remote_as: 65101
+      bfd: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+    attached-host: null
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: false
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+        default_route_target:
+          only: true
+  vlan_aware_bundles: null
+  vlans: null
+  vrfs: null
+ip_extcommunity_lists: null
+router_ospf: null
+router_isis: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null

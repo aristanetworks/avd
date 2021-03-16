@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -133,6 +135,40 @@ PTP is not defined.
 
 ## Management SSH
 
+### IPv4 ACL
+
+| IPv4 ACL | VRF |
+| -------- | --- |
+| ACL-SSH | - |
+| ACL-SSH-VRF | mgt |
+
+### IPv6 ACL
+
+| IPv6 ACL | VRF |
+| -------- | --- |
+| ACL-SSH6 | - |
+| ACL-SSH-VRF6 | mgt |
+
+ ### SSH timeout and management
+
+| Idle Timeout | SSH Management |
+| ------------ | -------------- |
+| 15 |  Enabled  |
+
+### Ciphers and algorithms
+
+| Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
+|---------|----------------------|----------------|---------------------------|
+| default | default | default | default |
+
+### VRFs
+
+| VRF | Status |
+| --- | ------ |
+| mgt |  Enabled  |
+
+### Management SSH Configuration
+
 ```eos
 !
 management ssh
@@ -141,6 +177,7 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    ipv6 access-group ACL-SSH-VRF6 vrf mgt in
    idle-timeout 15
+   no shutdown
    vrf mgt
       no shutdown
 ```
@@ -155,19 +192,21 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  true  |  true  |
+| true | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| mgt |  ACL-API  |  -  |
+| mgt | ACL-API | - |
+
 
 ### Management API HTTP Configuration
 
 ```eos
 !
 management api http-commands
+   protocol https
    protocol http
    no shutdown
    !
@@ -218,7 +257,7 @@ AAA accounting not defined
 
 ## Management Security
 
-   Management Security password encryption is common.
+Management Security password encryption is common.
 
 
 ## Management Security Configuration
@@ -228,6 +267,10 @@ AAA accounting not defined
 management security
    password encryption-key common
 ```
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -290,6 +333,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

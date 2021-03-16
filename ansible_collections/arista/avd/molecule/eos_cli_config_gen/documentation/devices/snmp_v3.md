@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,6 +187,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -203,9 +209,18 @@ No logging settings defined
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps | IPv4 ACL | IPv6 ACL |
-| ------- | -------- | ---------- | -------- | -------- |
-| DC1_OPS | DC1 |  Enabled  | - | - |
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| DC1_OPS | DC1 |  Enabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+| IPv4 | SNMP-MGMT | MGMT |
+| IPv4 | onur | default |
+| IPv6 | SNMP-MGMT | MGMT |
+| IPv6 | onur_v6 | default |
+
 
 ### SNMP Local Interfaces
 
@@ -256,20 +271,22 @@ No logging settings defined
 !
 snmp-server contact DC1_OPS
 snmp-server location DC1
+snmp-server ipv4 access-list SNMP-MGMT vrf MGMT
 snmp-server ipv4 access-list onur
-snmp-server ipv6 access-list onurv6
+snmp-server ipv6 access-list SNMP-MGMT vrf MGMT
+snmp-server ipv6 access-list onur_v6
 snmp-server vrf MGMT local-interface Management1
 snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
 snmp-server view VW-READ iso included
-snmp-server group GRP-READ-ONLY v3  priv read v3read 
-snmp-server group GRP-READ-WRITE v3  auth read v3read write v3write
-snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad 
-snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad 
-snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-READ 
-snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-WRITE 
-snmp-server host 10.6.75.121 vrf mgt version 3 auth USER-READ 
+snmp-server group GRP-READ-ONLY v3 priv read v3read
+snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
+snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
+snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
+snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-READ
+snmp-server host 10.6.75.99 vrf mgt version 3 auth USER-WRITE
+snmp-server host 10.6.75.121 vrf mgt version 3 auth USER-READ
 snmp-server enable traps
 no snmp-server vrf default
 snmp-server vrf mgt
@@ -318,6 +335,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

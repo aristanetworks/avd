@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,6 +187,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -246,6 +252,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 
@@ -382,20 +392,20 @@ Router ISIS not defined
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 1.1.1.1 | 1 |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 1.1.1.1 | 1 | default |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default |
 
 ### Router BGP EVPN Address Family
 
@@ -508,7 +518,7 @@ router bgp 65100
    address-family ipv4 multicast
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
-      redistribute attached-host 
+      redistribute attached-host
    !
    address-family ipv6
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in

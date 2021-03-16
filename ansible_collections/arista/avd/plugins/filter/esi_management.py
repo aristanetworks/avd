@@ -1,8 +1,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from jinja2 import TemplateError
-from ansible.errors import AnsibleFilterError
 import re
 
 
@@ -21,7 +19,7 @@ class FilterModule(object):
         Parameters
         ----------
         esi : str
-            Short ESI value as per AVD definition in eos_l3ls_evpn
+            Short ESI value as per AVD definition in eos_designs
 
         Returns
         -------

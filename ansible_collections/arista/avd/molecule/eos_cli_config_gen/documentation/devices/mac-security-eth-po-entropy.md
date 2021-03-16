@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,8 +187,13 @@ AAA accounting not defined
 
 ## Management Security
 
+Management Security entropy source is hardware
 
- Management Security entropy source is hardware
+Management Security password encryption is common.
+
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
+| ------------ | --------------------- | -------------------- | ------------ |
+| SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY |
 
 ## Management Security Configuration
 
@@ -194,7 +201,15 @@ AAA accounting not defined
 !
 management security
    entropy source hardware
+   password encryption-key common
+   ssl profile SSL_PROFILE
+      tls versions 1.1 1.2
+      certificate SSL_CERT key SSL_KEY
 ```
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -258,6 +273,10 @@ No VLANs defined
 
 # Interfaces
 
+## Switchport Default
+
+No switchport default defined
+
 ## Interface Defaults
 
 No Interface Defaults defined
@@ -270,10 +289,15 @@ No Interface Defaults defined
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 |  - | routed | - | - | - | - |
 | Ethernet3 | DC1-AGG01_Ethernet1 | *trunk | *1-5 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 |  -  |  routed  | - |  1.1.1.1/24  |  default  |  -  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -281,7 +305,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    mac security profile A1
-   switchport
+   no switchport
    ip address 1.1.1.1/24
 !
 interface Ethernet3

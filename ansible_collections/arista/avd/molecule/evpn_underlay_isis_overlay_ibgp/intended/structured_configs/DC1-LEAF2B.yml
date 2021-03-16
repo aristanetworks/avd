@@ -1,9 +1,15 @@
 l3leaf_node_group: DC1_LEAF2
 switch_platform: vEOS-LAB
-leaf_bgp_as: 65000
+switch_bgp_as: 65000
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
 leaf_evpn_services_l2_only: false
+switch_router_id: 192.168.255.7
+switch_evpn_role: client
+switch_evpn_route_servers:
+- DC1-SPINE1
+- DC1-SPINE4
+switch_evpn_route_clients: []
 leaf_filter_tenants:
 - Tenant_A
 - Tenant_B
@@ -28,6 +34,7 @@ leaf_mlag_peer_id: 2
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -211,6 +218,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.107/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -253,10 +261,6 @@ mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094
   peer_address: 10.255.252.2
-  peer_address_heartbeat:
-    peer_ip: 192.168.200.106
-    vrf: MGMT
-  dual_primary_detection_delay: 5
   peer_link: Port-Channel5
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
@@ -281,21 +285,23 @@ router_bgp:
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
   peer_groups:
     EVPN-OVERLAY-PEERS:
       type: evpn
-      remote_as: 65000
       update_source: Loopback0
+      remote_as: 65000
       bfd: true
-      ebgp_multihop: 3
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: true
       maximum_routes: 0
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE1
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE4
   redistribute_routes: null
   address_family_evpn:
     peer_groups:
@@ -307,6 +313,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
   vlan_aware_bundles: null
   vlans: null
   vrfs: null

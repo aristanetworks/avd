@@ -4,7 +4,7 @@
 
 In this post, we will see how to create a local environment to leverage AVD Collection to build EVPN/VXLAN configuration for a set of devices and how to deploy configuration using EOS eAPI through a NAT gateway.
 
-When we use a lab solution like [EVE-NG](https://www.eve-ng.net/) or [GNS3](https://www.gns3.com/), it might be complex to configure same vlans for your runner and your EOS devices. A NAT gateway can be used to expose eAPI port to your ansible runner consuming a single IP address.
+When we use a lab solution like [EVE-NG](https://www.eve-ng.net/) or GNS3, it might be complex to configure same vlans for your runner and your EOS devices. A NAT gateway can be used to expose eAPI port to your ansible runner consuming a single IP address.
 
 Below is a standard lab we use for development. And of course our laptop are not directly connected to EOS management plane.
 

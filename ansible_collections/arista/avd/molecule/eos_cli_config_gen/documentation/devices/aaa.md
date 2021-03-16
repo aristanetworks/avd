@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -176,12 +178,14 @@ Enable password not defined
 | --- | ---------------|
 |  mgt | 10.10.10.157 |
 |  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
 
 ### TACACS Servers Device Configuration
 
 ```eos
 !
 tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+tacacs-server host 10.10.10.158 key 7 071B245F5A
 tacacs-server host 10.10.10.249 key 7 071B245F5A
 ```
 
@@ -191,7 +195,22 @@ IP TACACS source interfaces not defined
 
 ## RADIUS Servers
 
-RADIUS servers not defined
+### RADIUS Servers
+
+| VRF | RADIUS Servers |
+| --- | ---------------|
+|  mgt | 10.10.10.157 |
+|  default | 10.10.10.249 |
+|  default | 10.10.10.158 |
+
+### RADIUS Servers Device Configuration
+
+```eos
+!
+radius-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+radius-server host 10.10.10.249 key 7 071B245F5A
+radius-server host 10.10.10.158 vrf default key 7 071B245F5A
+```
 
 ## AAA Server Groups
 
@@ -232,6 +251,7 @@ Policy local allow-nopassword-remote-login has been enabled.
 !
 aaa authentication login default group TACACS local
 aaa authentication login serial-console local
+aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
@@ -253,8 +273,10 @@ Authorization for serial console is enabled.
 ### AAA Authorization Device Configuration
 
 ```eos
+!
 aaa authorization exec default group CUST local
 aaa authorization serial-console
+aaa authorization commands all default group aaaAuth
 !
 ```
 
@@ -280,6 +302,10 @@ aaa accounting commands 0 default start-stop logging
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -342,6 +368,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 

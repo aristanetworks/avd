@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -138,6 +140,7 @@ No NTP servers defined
 | Priority1 | 1 |
 | Priority2 | 2 |
 | TTL | 200 |
+| Domain | 1 |
 | Msg General | DSCP 4 |
 | Msg Event | DSCP 8 |
 
@@ -150,8 +153,9 @@ ptp source ip 1.1.1.1
 ptp priority1 1
 ptp priority2 2
 ptp ttl 200
-ptp message-type general dscp 4
-ptp message-type event dscp 8
+ptp domain 1
+ptp message-type general dscp 4 default
+ptp message-type event dscp 8 default
 ```
 
 ## Management SSH
@@ -207,6 +211,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -270,6 +278,10 @@ No VLANs defined
 
 # Interfaces
 
+## Switchport Default
+
+No switchport default defined
+
 ## Interface Defaults
 
 No Interface Defaults defined
@@ -282,6 +294,8 @@ No Interface Defaults defined
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5 | trunk | 2,14 | - | - | - |
+| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -289,7 +303,7 @@ No Interface Defaults defined
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet6 |  P2P_LINK_TO_DC1-SPINE1_Ethernet6  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  -  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -297,14 +311,62 @@ No Interface Defaults defined
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   switchport
+   switchport trunk allowed vlan 2,14
+   switchport mode trunk
+   ptp enable
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp vlan 2
+   ptp transport layer2
+!
+interface Ethernet5
+   description DC1-AGG01_Ethernet1
+   channel-group 5 mode active
+!
+interface Ethernet6
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   mtu 1500
    no switchport
    ip address 172.31.255.15/31
    ptp enable
+   ptp announce interval 3
+   ptp announce timeout 9
+   ptp delay-req interval -7
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp transport ipv4
 ```
 
 ## Port-Channel Interfaces
 
-No port-channels defined
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel5
+   description DC1_L2LEAF1_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 5
+   ptp enable
+   ptp delay-mechanism e2e
+   ptp sync-message interval 1
+   ptp role dynamic
+   ptp vlan 2
+   ptp transport layer2
+```
 
 ## Loopback Interfaces
 

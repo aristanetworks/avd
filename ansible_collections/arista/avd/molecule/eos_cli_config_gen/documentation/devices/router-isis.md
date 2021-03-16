@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.254.11/24 | 10.73.254.253 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.254.11/24 | 10.73.254.253 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,6 +187,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -247,6 +253,10 @@ No VLANs defined
 
 # Interfaces
 
+## Switchport Default
+
+No switchport default defined
+
 ## Interface Defaults
 
 No Interface Defaults defined
@@ -283,6 +293,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    description P2P_LINK_TO_EAPI-SPINE1_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.1/31
    isis enable EVPN_UNDERLAY
@@ -291,6 +302,7 @@ interface Ethernet1
 !
 interface Ethernet2
    description P2P_LINK_TO_EAPI-SPINE2_Ethernet1
+   mtu 1500
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
@@ -393,6 +405,7 @@ interface Vlan4093
 !
 interface Vlan4094
    description MLAG_PEER
+   mtu 1500
    no autostate
    ip address 10.255.252.0/31
 ```
@@ -467,6 +480,7 @@ Router OSPF not defined
 ### Router ISIS Device Configuration
 
 ```eos
+!
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0001.00
    is-type level-2
@@ -476,7 +490,6 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 2
    !
-!
 ```
 
 

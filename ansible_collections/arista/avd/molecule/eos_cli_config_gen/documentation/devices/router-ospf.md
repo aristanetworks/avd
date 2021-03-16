@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -37,6 +38,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
+  - [Switchport Default](#switchport-default)
   - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
@@ -87,15 +89,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -185,6 +187,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -246,6 +252,10 @@ Spanning-tree not defined
 No VLANs defined
 
 # Interfaces
+
+## Switchport Default
+
+No switchport default defined
 
 ## Interface Defaults
 
@@ -315,12 +325,14 @@ Global ARP timeout not defined.
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
-| 100 | 192.168.255.3 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Vlan4093 <br>|   enabled   | 12000 |  disabled  |  disabled |
+| 100 | 192.168.255.3 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Vlan4093 <br>|   enabled   | 12000 |   enabled   |  disabled |
+| 200 | 192.168.254.1 |  disabled   |  - |   disabled   | 5 |   Always    |   enabled |
 
 ### Router OSPF Router Redistribution
 
-No redsitribution configured
-
+| Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
+| ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
+| 100 |  enabled | - |  enabled | - || 200 |  enabled | rm-ospf-connected |  enabled | rm-ospf-static |
 ### Router OSPF Device Configuration
 
 ```eos
@@ -333,6 +345,17 @@ router ospf 100
    no passive-interface Vlan4093
    bfd default
    max-lsa 12000
+   default-information originate
+   redistribute static
+   redistribute connected
+!
+router ospf 200 vrf ospf_zone
+   log-adjacency-changes detail
+   router-id 192.168.254.1
+   max-lsa 5
+   default-information originate always
+   redistribute static route-map rm-ospf-static
+   redistribute connected route-map rm-ospf-connected
 ```
 
 ## Router ISIS

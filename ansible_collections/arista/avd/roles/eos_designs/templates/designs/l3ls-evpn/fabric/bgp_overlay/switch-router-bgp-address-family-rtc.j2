@@ -1,0 +1,11 @@
+{% if evpn_overlay_bgp_rtc is arista.avd.defined( true ) %}
+{%     if switch.evpn_role in ["client", "server"] %}
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+{%         if switch.evpn_role == "server" %}
+        default_route_target:
+          only: true
+{%         endif %}
+{%     endif %}
+{% endif %}
