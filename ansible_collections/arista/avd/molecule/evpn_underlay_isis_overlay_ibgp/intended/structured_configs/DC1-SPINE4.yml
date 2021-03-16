@@ -188,7 +188,7 @@ router_bgp:
   - maximum-paths 4 ecmp 4
   bgp_cluster_id: 192.168.255.4
   peer_groups:
-    EVPN-OVERLAY-PEERS:
+    OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       remote_as: 65000
@@ -199,34 +199,34 @@ router_bgp:
       route_reflector_client: true
   neighbors:
     192.168.255.10:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-BL1A
     192.168.255.11:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-BL1B
     192.168.255.5:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-LEAF1A
     192.168.255.6:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-LEAF2A
     192.168.255.7:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-LEAF2B
     192.168.255.8:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SVC3A
     192.168.255.9:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SVC3B
   redistribute_routes: null
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: true
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: false
   address_family_rtc: null
 router_ospf: null

@@ -174,7 +174,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY-PEERS:
       type: ipv4
       peer_filter: LEAF-AS-RANGE
       password: AQQvKeimxJu+uGQ/yYvv9w==
@@ -191,25 +191,25 @@ router_bgp:
       next_hop_unchanged: true
   neighbors:
     172.31.255.43:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65104
     172.31.255.51:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65105
     172.31.255.3:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65101
     172.31.255.11:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65102
     172.31.255.19:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65102
     172.31.255.27:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65103
     172.31.255.35:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65103
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
@@ -248,7 +248,7 @@ router_bgp:
         activate: true
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false

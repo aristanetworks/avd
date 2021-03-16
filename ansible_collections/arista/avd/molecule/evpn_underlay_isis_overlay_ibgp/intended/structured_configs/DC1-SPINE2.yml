@@ -185,7 +185,7 @@ router_bgp:
   address_family_evpn: null
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: false
   address_family_rtc: null
 router_ospf: null

@@ -1224,16 +1224,7 @@ Router ISIS not defined
 | Send community | true |
 | Maximum routes | 0 (no limit) |
 
-#### IPv4-UNDERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | ipv4 |
-| Remote_as | 65001 |
-| Send community | true |
-| Maximum routes | 12000 |
-
-#### MLAG-IPv4-UNDERLAY-PEER
+#### MLAG-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -1243,28 +1234,37 @@ Router ISIS not defined
 | Send community | true |
 | Maximum routes | 12000 |
 
+#### UNDERLAY-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote_as | 65001 |
+| Send community | true |
+| Maximum routes | 12000 |
+
 ### BGP Neighbors
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
-| 172.31.255.24 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.26 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.28 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.30 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | default |
+| 172.31.255.24 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.26 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.28 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.30 | Inherited from peer group UNDERLAY-PEERS | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
 | 192.168.255.4 | 65001 | default |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_APP_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_DB_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_OP_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_WAN_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_A_WEB_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_B_OP_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_B_WAN_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_OP_Zone |
-| 10.255.251.7 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Tenant_C_WAN_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone |
 
 ### Router BGP EVPN Address Family
 
@@ -1316,23 +1316,23 @@ router bgp 65103
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65103
-   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
-   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
-   neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
-   neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.31.255.24 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.26 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.28 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.31.255.30 peer group IPv4-UNDERLAY-PEERS
+   neighbor MLAG-PEERS peer group
+   neighbor MLAG-PEERS remote-as 65103
+   neighbor MLAG-PEERS next-hop-self
+   neighbor MLAG-PEERS password 7 vnEaG8gMeQf3d3cN6PktXQ==
+   neighbor MLAG-PEERS send-community
+   neighbor MLAG-PEERS maximum-routes 12000
+   neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
+   neighbor UNDERLAY-PEERS peer group
+   neighbor UNDERLAY-PEERS remote-as 65001
+   neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY-PEERS send-community
+   neighbor UNDERLAY-PEERS maximum-routes 12000
+   neighbor 10.255.251.7 peer group MLAG-PEERS
+   neighbor 172.31.255.24 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.26 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.28 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.30 peer group UNDERLAY-PEERS
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
@@ -1418,15 +1418,15 @@ router bgp 65103
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS activate
-      neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor MLAG-PEERS activate
+      neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_A_APP_Zone
       rd 192.168.255.8:12
       route-target import evpn 12:12
       route-target export evpn 12:12
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_A_DB_Zone
@@ -1434,7 +1434,7 @@ router bgp 65103
       route-target import evpn 13:13
       route-target export evpn 13:13
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
@@ -1442,7 +1442,7 @@ router bgp 65103
       route-target import evpn 10:10
       route-target export evpn 10:10
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_A_WAN_Zone
@@ -1450,7 +1450,7 @@ router bgp 65103
       route-target import evpn 14:14
       route-target export evpn 14:14
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
@@ -1458,7 +1458,7 @@ router bgp 65103
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_B_OP_Zone
@@ -1466,7 +1466,7 @@ router bgp 65103
       route-target import evpn 20:20
       route-target export evpn 20:20
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
@@ -1474,7 +1474,7 @@ router bgp 65103
       route-target import evpn 21:21
       route-target export evpn 21:21
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_C_OP_Zone
@@ -1482,7 +1482,7 @@ router bgp 65103
       route-target import evpn 30:30
       route-target export evpn 30:30
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
@@ -1490,7 +1490,7 @@ router bgp 65103
       route-target import evpn 31:31
       route-target export evpn 31:31
       router-id 192.168.255.8
-      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
 ```
 

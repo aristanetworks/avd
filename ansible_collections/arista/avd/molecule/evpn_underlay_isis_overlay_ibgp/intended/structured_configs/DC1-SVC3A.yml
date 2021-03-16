@@ -299,7 +299,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    EVPN-OVERLAY-PEERS:
+    OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       remote_as: 65000
@@ -309,21 +309,21 @@ router_bgp:
       maximum_routes: 0
   neighbors:
     192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SPINE1
     192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SPINE4
   redistribute_routes: null
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: true
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: false
   address_family_rtc: null
   vlan_aware_bundles: null
