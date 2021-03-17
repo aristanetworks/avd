@@ -108,6 +108,11 @@
   tags:
     - loopback0_reachability
 
+- name: Validate fabric MTU
+  include_tasks: "fabric_mtu.yml"
+  tags:
+    - fabric_mtu
+
 - name: Remove generated vars for testing
   file:
     path: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
