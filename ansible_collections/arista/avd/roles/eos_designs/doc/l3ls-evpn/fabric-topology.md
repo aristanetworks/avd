@@ -3,9 +3,8 @@
 The fabric topology variables define the connectivity between the super-spine, spines, L3 leafs, L2 leafs and overlay controllers.
 The variables should be applied to all devices in the fabric.
 
-<!-- ![Topology - naming convention](../../../../media/topology.gif) -->
 <div style="text-align:center">
-  <img src="../../../../media/topology.gif" />
+  <img src="../../../../../media/topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:

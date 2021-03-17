@@ -15,7 +15,7 @@ The following topologies are supported:
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
 
 <div style="text-align:center">
-  <img src="../../media/topology.gif" />
+  <img src="../../../../media/topology.gif" />
 </div>
 
 Across all designs the following functionality is provided:
