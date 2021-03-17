@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -148,14 +149,11 @@ Management SSH not defined
 ```eos
 !
 management api gnmi
-  transport grpc MGMT
+   transport grpc MGMT
       ip access-group ACL-GNMI
       vrf MGMT
-  !
-  transport grpc MONITORING
+   transport grpc MONITORING
       vrf MONITORING
-  !
-  provider eos-native
 ```
 
 ## Management API HTTP
@@ -203,6 +201,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 

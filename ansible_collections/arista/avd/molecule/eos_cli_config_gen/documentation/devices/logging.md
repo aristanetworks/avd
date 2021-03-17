@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -184,6 +185,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -206,10 +211,12 @@ TerminAttr daemon not defined
 
 | VRF | Source Interface |
 | --- | ---------------- |
+| default | Loopback0 |
 | mgt | Management0 |
 
 | VRF | Hosts |
 | --- | ---------------- |
+| default | 20.20.20.7 |
 | mgt | 10.10.10.7 |
 
 ### Logging Servers and Features Device Configuration
@@ -219,6 +226,8 @@ TerminAttr daemon not defined
 logging console debugging
 logging buffered 1000000 informational
 logging trap informational
+logging source-interface Loopback0
+logging host 20.20.20.7
 logging vrf mgt source-interface Management0
 logging vrf mgt host 10.10.10.7
 ```

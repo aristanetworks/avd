@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -184,6 +185,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -293,6 +298,7 @@ interface Ethernet50
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
 
@@ -329,6 +335,13 @@ interface Port-Channel50
        route-target import 03:03:02:02:01:01
    !
    lacp system-id 0303.0202.0101
+!
+interface Port-Channel51
+   description ipv6_prefix
+   switchport
+   switchport trunk allowed vlan 1-500
+   switchport mode trunk
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
 !
 interface Port-Channel100
    logging event link-status

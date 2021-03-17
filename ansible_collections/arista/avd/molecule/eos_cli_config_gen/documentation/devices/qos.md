@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -184,6 +185,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -272,6 +277,7 @@ No Interface Defaults defined
 !
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   mtu 1500
    no switchport
    qos trust dscp
    qos dscp 48

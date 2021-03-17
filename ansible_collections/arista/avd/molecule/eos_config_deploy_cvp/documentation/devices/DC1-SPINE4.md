@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -127,8 +128,8 @@ Domain-list not defined
 ### Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 192.168.200.5
 ip name-server vrf MGMT 8.8.8.8
+ip name-server vrf MGMT 192.168.200.5
 ```
 
 ## Domain Lookup
@@ -186,6 +187,7 @@ Management API gnmi is not defined
 ```eos
 !
 management api http-commands
+   protocol https
    no shutdown
    !
    vrf MGMT
@@ -246,6 +248,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 
@@ -369,42 +375,49 @@ No Interface Defaults defined
 interface Ethernet1
    description P2P_LINK_TO_DC1-LEAF1A_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.6/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-LEAF2A_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.14/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-LEAF2B_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.22/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SVC3A_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.30/31
 !
 interface Ethernet5
    description P2P_LINK_TO_DC1-SVC3B_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.38/31
 !
 interface Ethernet6
    description P2P_LINK_TO_DC1-BL1A_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.46/31
 !
 interface Ethernet7
    description P2P_LINK_TO_DC1-BL1B_Ethernet4
    no shutdown
+   mtu 1500
    no switchport
    ip address 172.31.255.54/31
 ```

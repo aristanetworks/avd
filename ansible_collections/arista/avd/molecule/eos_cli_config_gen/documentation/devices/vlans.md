@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -184,6 +185,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -230,16 +235,11 @@ Spanning-tree not defined
 
 ## Internal VLAN Allocation Policy Summary
 
+**Default Allocation Policy**
+
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
-| ascending | 1006 | 1199 |
-
-## Internal VLAN Allocation Policy Configuration
-
-```eos
-!
-vlan internal order ascending range 1006 1199
-```
+| ascending | 1006 | 4094 |
 
 # VLANs
 
@@ -249,6 +249,8 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 110 | PR01-DMZ | none  |
 | 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
+| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP  |
+| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP  |
 
 ## VLANs Device Configuration
 
@@ -260,6 +262,16 @@ vlan 110
 vlan 3010
    name MLAG_iBGP_TENANT_A_PROJECT01
    trunk group LEAF_PEER_L3
+!
+vlan 3011
+   name MLAG_iBGP_TENANT_A_PROJECT02
+   state active
+   trunk group MY_TRUNK_GROUP
+!
+vlan 3012
+   name MLAG_iBGP_TENANT_A_PROJECT03
+   state suspend
+   trunk group MY_TRUNK_GROUP
 ```
 
 # Interfaces

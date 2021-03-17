@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -113,6 +114,7 @@ interface Management1
 ### DNS Domain Device Configuration
 
 ```eos
+!
 dns domain test.local
 !
 ```
@@ -148,6 +150,7 @@ ip name-server vrf mgt 10.10.129.10
 ### DNS Domain Lookup Device Configuration
 
 ```eos
+!
 ip domain lookup vrf mgt source-interface Management0
 ```
 
@@ -230,6 +233,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 

@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -184,6 +185,10 @@ AAA accounting not defined
 
 Management security not defined
 
+# Prompt
+
+Prompt not defined
+
 # Aliases
 
 Aliases not defined
@@ -264,6 +269,7 @@ No port-channels defined
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
+| Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
 
 #### IPv6
@@ -272,8 +278,14 @@ No port-channels defined
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
 
+#### ISIS
+
+| Interface | ISIS instance | ISIS metric | Interface mode |
+| -------- | -------- | -------- | -------- |
+| Loopback99 | ISIS_TEST |  100 |  point-to-point |
 
 ### Loopback Interfaces Device Configuration
 
@@ -286,6 +298,21 @@ interface Loopback0
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    ip address 192.168.254.3/32
+!
+interface Loopback99
+   description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf TENANT_A_PROJECT02
+   ip proxy-arp
+   ip address 10.1.255.3/32
+   ip address 10.0.0.254/32 secondary
+   ip address 192.168.1.1/32 secondary
+   ipv6 enable
+   ipv6 address 2002::CAFE/64
+   isis enable ISIS_TEST
+   isis passive
+   isis metric 100
+   isis network point-to-point
 !
 interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS

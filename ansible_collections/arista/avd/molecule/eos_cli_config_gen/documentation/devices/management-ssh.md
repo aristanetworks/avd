@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -165,6 +166,7 @@ management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
    idle-timeout 15
+   no shutdown
    vrf mgt
       no shutdown
 ```
@@ -218,6 +220,10 @@ AAA accounting not defined
 # Management Security
 
 Management security not defined
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 

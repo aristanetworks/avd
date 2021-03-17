@@ -46,6 +46,7 @@
         - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
+      - [Switchport Default](#switchport-default)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -82,6 +83,7 @@
       - [SNMP Settings](#snmp-settings)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
+    - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
@@ -699,8 +701,13 @@ interface_defaults:
   ethernet:
     shutdown: < true | false >
   mtu: < mtu >
-  switchport:
-    type: < routed | switched >
+```
+
+#### Switchport Default
+
+```yaml
+switchport_default:
+  mode: < routed | access >
 ```
 
 #### Loopback Interfaces
@@ -812,7 +819,7 @@ vlan_interfaces:
     ip_address_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
-    ip_router_virtual_address: < IPv4_address >
+    ip_virtual_router_address: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:
@@ -1004,6 +1011,7 @@ management_interfaces:
 management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
+  https_ssl_profile: < SSL Profile Name >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1034,9 +1042,17 @@ management_console:
 
 ```yaml
 management_security:
+  entropy_source: < entropy_source >
   password:
     encryption_key_common : < true | false >
-  entropy_source: < entropy_source >
+  ssl_profiles:
+    - name: <ssl_profile_1>
+      tls_versions: < list of allowed tls versions as string >
+      certificate:
+        file: < certificate filename >
+        key: < key filename >
+    - name: <ssl_profile_2>
+      tls_versions: < list of allowed tls versions as string >
 ```
 
 #### Management SSH
@@ -1341,6 +1357,12 @@ ptp:
       dscp: < dscp-value >
     event:
       dscp: < dscp-Value >
+```
+
+### Prompt
+
+```yaml
+prompt: <string >
 ```
 
 ### Quality of Services

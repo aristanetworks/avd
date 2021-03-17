@@ -22,6 +22,7 @@
   - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 - [Management Security](#management-security)
+- [Prompt](#prompt)
 - [Aliases](#aliases)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
@@ -174,6 +175,7 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    ipv6 access-group ACL-SSH-VRF6 vrf mgt in
    idle-timeout 15
+   no shutdown
    vrf mgt
       no shutdown
 ```
@@ -188,19 +190,21 @@ Management API gnmi is not defined
 
 | HTTP | HTTPS |
 | ---------- | ---------- |
-|  true  |  true  |
+| true | true |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
-| mgt |  ACL-API  |  -  |
+| mgt | ACL-API | - |
+
 
 ### Management API HTTP Configuration
 
 ```eos
 !
 management api http-commands
+   protocol https
    protocol http
    no shutdown
    !
@@ -251,7 +255,7 @@ AAA accounting not defined
 
 ## Management Security
 
-   Management Security password encryption is common.
+Management Security password encryption is common.
 
 
 ## Management Security Configuration
@@ -261,6 +265,10 @@ AAA accounting not defined
 management security
    password encryption-key common
 ```
+
+# Prompt
+
+Prompt not defined
 
 # Aliases
 

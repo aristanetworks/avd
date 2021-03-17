@@ -1,0 +1,50 @@
+---
+
+- name: Generate device configuration in structured format (yaml).
+  template:
+    src: "structured-configuration.j2"
+    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+  tags: [build, provision]
+
+- name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
+  template:
+    src: base/custom_structured_configuration.j2
+    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  changed_when: False
+  tags: [build, provision]
+
+- name: Include device structured configuration, that was previously generated.
+  include_vars: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  tags: [build, provision]
+
+- name: Generate fabric documentation in Markdown Format.
+  template:
+    src: fabric-documentation.j2
+    dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Generate fabric point-to-point links summary in csv format.
+  template:
+    src: documentation/fabric-p2p-links.j2
+    dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-p2p-links.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+
+- name: Generate fabric topology in csv format.
+  template:
+    src: documentation/fabric-topology.j2
+    dest: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-topology.csv'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
