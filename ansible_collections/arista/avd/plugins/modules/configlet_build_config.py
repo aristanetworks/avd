@@ -19,6 +19,10 @@
 #
 
 from __future__ import (absolute_import, division, print_function)
+from ansible.module_utils.basic import AnsibleModule
+import traceback
+import os
+import glob
 __metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
@@ -64,10 +68,7 @@ EXAMPLES = r'''
     configlet_extension: '{{configlet_extension}}'
 '''
 
-import glob
-import os
-import traceback
-from ansible.module_utils.basic import AnsibleModule
+
 YAML_IMP_ERR = None
 try:
     import yaml
