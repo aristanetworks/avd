@@ -50,11 +50,18 @@ pod_name: < POD_Name >
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 
+<<<<<<< HEAD:ansible_collections/arista/avd/roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
 **Limitations:**
 
 - Current AVD release supports single plane deployment only.
 - Only eBGP underlay is supported for super-spine deployment.
 - Spines in every POD must have unique AS per POD.
+=======
+Limitations:
+  - Current AVD release supports single plane deployment only.
+  - Only eBGP underlay is supported for super-spine deployment.
+  - Spines in every POD must have unique AS per POD.
+>>>>>>> update eos design documentaion layout:ansible_collections/arista/avd/roles/eos_designs/doc/l3ls-evpn/leaf-spine-topology.md
 
 
 ## Type Variable
