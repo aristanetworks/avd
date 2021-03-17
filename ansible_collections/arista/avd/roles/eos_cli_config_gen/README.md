@@ -1474,7 +1474,7 @@ router_general:
     < destination-vrf >:
       leak_routes:
         - source_vrf: < source-vrf >
-          polisubscribe_policycy: < route-map policy >
+          subscribe_policy: < route-map policy >
         - source_vrf: < source-vrf >
           subscribe_policy: < route-map policy >
 ```
