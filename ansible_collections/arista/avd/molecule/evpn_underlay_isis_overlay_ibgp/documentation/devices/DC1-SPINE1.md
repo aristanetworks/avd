@@ -639,7 +639,7 @@ router isis EVPN_UNDERLAY
 | Route Reflector Client | Yes |
 | Source | Loopback0 |
 | Bfd | true |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors

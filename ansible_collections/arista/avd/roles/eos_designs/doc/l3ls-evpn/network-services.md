@@ -191,7 +191,7 @@ tenants:
           < IPv4_address or IPv6_address >:
             remote_as: < remote ASN >
             description: < description >
-            send_community: < standard | extended | large | empty >
+            send_community: < standard | extended | large | all >
             next_hop_self: < true | false >
             maximum_routes: < 0-4294967294 >
             default_originate:

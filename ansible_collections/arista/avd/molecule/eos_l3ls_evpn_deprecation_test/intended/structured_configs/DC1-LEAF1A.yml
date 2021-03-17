@@ -305,14 +305,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.0:

@@ -354,8 +354,15 @@ Router ISIS not defined
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
+
+#### EXTENDED-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | extended |
 
 #### IPv4-UNDERLAY-PEERS
 
@@ -363,8 +370,15 @@ Router ISIS not defined
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote_as | 65001 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
+
+#### LARGE-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | large |
 
 #### MLAG-IPv4-UNDERLAY-PEER
 
@@ -373,8 +387,28 @@ Router ISIS not defined
 | Address Family | ipv4 |
 | Remote_as | 65101 |
 | Next-hop self | True |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
+
+#### MULTIPLE-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | standard large |
+
+#### NO-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+
+#### STARDARD-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | standard |
 
 ### BGP Neighbors
 
@@ -429,11 +463,15 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EXTENDED-COMMUNITY peer group
+   neighbor EXTENDED-COMMUNITY send-community extended
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor LARGE-COMMUNITY peer group
+   neighbor LARGE-COMMUNITY send-community large
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -442,6 +480,11 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
+   neighbor MULTIPLE-COMMUNITY peer group
+   neighbor MULTIPLE-COMMUNITY send-community standard large
+   neighbor NO-COMMUNITY peer group
+   neighbor STARDARD-COMMUNITY peer group
+   neighbor STARDARD-COMMUNITY send-community standard
    neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
@@ -512,12 +555,12 @@ router bgp 65101
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description ABCDEFGfg
       neighbor 10.255.251.2 timers 1 3
-      neighbor 10.255.251.2 send-community
+      neighbor 10.255.251.2 send-community extended
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.3 description ABCDEFGfgLCLCLCLC
       neighbor 10.255.251.3 next-hop-self
       neighbor 10.255.251.3 timers 1 3
-      neighbor 10.255.251.3 send-community link-bandwidth aggregate 2
+      neighbor 10.255.251.3 send-community large
       neighbor 10.255.251.3 default-originate always
       redistribute connected
       redistribute static route-map RM-CONN-2-BGP

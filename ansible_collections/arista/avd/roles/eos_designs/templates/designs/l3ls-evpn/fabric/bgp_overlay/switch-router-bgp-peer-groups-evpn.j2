@@ -6,7 +6,7 @@
       bfd: true
       ebgp_multihop: "{{ evpn_ebgp_multihop }}"
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
-      send_community: true
+      send_community: all
       maximum_routes: 0
 {%     if switch.evpn_role == "server" %}
       next_hop_unchanged: true
@@ -19,7 +19,7 @@
       remote_as: {{ switch.bgp_as }}
       bfd: true
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
-      send_community: true
+      send_community: all
       maximum_routes: 0
 {%     if switch.evpn_role == "server" %}
       route_reflector_client: true

@@ -756,7 +756,7 @@ router isis EVPN_UNDERLAY
 | Remote_as | 65000 |
 | Source | Loopback0 |
 | Bfd | true |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
