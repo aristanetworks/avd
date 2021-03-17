@@ -99,10 +99,6 @@ vlans:
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF2_Po1
@@ -290,6 +286,11 @@ route_maps:
         type: permit
         set:
         - extcommunity soo 192.168.254.8:1 additive
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65000
   router_id: 192.168.255.8

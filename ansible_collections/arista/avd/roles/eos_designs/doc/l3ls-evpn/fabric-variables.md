@@ -1,4 +1,4 @@
-# Fabric Underlay and Overlay Topology Variables
+# Fabric Variables
 
 - The fabric underlay and overlay topology variables, define the elements related to build the L3 Leaf and Spine fabric.
 - The following underlay routing protocols are supported:
@@ -9,25 +9,12 @@
   - EBGP (default)
   - IBGP (only with OSPF or ISIS in underlay)
 - Only summary network addresses need to be defined. IP addresses are then assigned to each node, based on its unique device id.
-  - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown format.
+  - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 - The variables should be applied to all devices in the fabric.
 
 **Variables and Options:**
 
 ```yaml
-# The topology hierarchy is
-# Fabric
-# - DC
-#   - POD
-#
-# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
-fabric_name: < Fabric_Name >
-# DC Name, required to match Ansible Group name covering all devices in the DC | Required for 5-stage CLOS (Super-spines)
-dc_name: < DC_Name >
-# POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name
-# Recommended be common between Spines, Leafs within a POD (One l3ls topology)
-pod_name: < POD_Name >
-
 # Underlay routing protocol | Required.
 underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
 overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
@@ -50,6 +37,7 @@ p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 
 # IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
 # Assigned as /31 for each uplink interfaces
+# Needs to be unique per pod
 # Assign network summary larger then:
 # [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
 underlay_p2p_network_summary: < IPv4_network/Mask >

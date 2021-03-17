@@ -72,12 +72,12 @@ nav:
       - Overview: roles/eos_designs/README.md
       - l3ls-evpn:
         - Overview: roles/eos_designs/doc/l3ls-evpn.md
-        - Global settings: roles/eos_designs/doc/l3ls-evpn/common.md
-        - Leaf & Spine topology: roles/eos_designs/doc/l3ls-evpn/leaf-spine-topology.md
-        - Super Spine topology: roles/eos_designs/doc/l3ls-evpn/super-spine-topology.md
-        - Services: roles/eos_designs/doc/l3ls-evpn/services.md
+        - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
+        - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
+        - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
+        - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
         - Servers: roles/eos_designs/doc/l3ls-evpn/servers.md
-        - DCI & edge: roles/eos_designs/doc/l3ls-evpn/dci-edge.md
+        - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
     - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
     - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md

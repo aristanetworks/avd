@@ -25,7 +25,7 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
-    - [Bfd Multihop Interval](#bfd-multihop-interval)
+    - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -95,6 +95,7 @@
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
+      - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
@@ -363,13 +364,14 @@ banners:
     < text ending with EOF >
 ```
 
-### Bfd Multihop Interval
+### Router BFD
 
 ```yaml
-bfd_multihop:
-  interval: < rate in milliseconds >
-  min_rx: < rate in milliseconds >
-  multiplier: < 3-50 >
+router_bfd:
+  multihop:
+    interval: < rate in milliseconds >
+    min_rx: < rate in milliseconds >
+    multiplier: < 3-50 >
 ```
 
 ### Custom Templates
@@ -1467,6 +1469,19 @@ ip_routing: < true | false >
 ipv6_unicast_routing: < true | false >
 ```
 
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak_routes:
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+```
+
 #### Router BGP Configuration
 
 ```yaml
@@ -1730,6 +1745,7 @@ router_bgp:
         < route_type >:
           route_map: < route_map_name >
 ```
+
 
 #### Router OSPF Configuration
 
