@@ -50,12 +50,14 @@ router-bgp-rtc
 router-bgp-v4-evpn
 router-bgp-v4-v6-evpn
 router-bgp-vrf-lite
+router-general
 router-isis
 router-l2-vpn
 router-multicast
 router-ospf
 router-pim-sparse-mode
 service-routing-protocols-model
+router-general
 sflow
 snmp_v3
 spanning-tree

@@ -158,6 +158,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-bgp.j2' %}
 {# router multicast configuration #}
 {% include 'eos/router-multicast.j2' %}
+{# router general configuration #}
+{% include 'eos/router-general.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
 {# router pim sparse mode configuration #}

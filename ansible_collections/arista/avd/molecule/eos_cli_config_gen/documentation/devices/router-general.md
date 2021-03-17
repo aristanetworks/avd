@@ -1,4 +1,4 @@
-# sflow
+# router-general
 
 # Table of Contents
 
@@ -211,42 +211,7 @@ No SNMP settings defined
 
 ## SFlow
 
-### SFlow Summary
-
-| VRF | SFlow Source Interface | SFlow Destination | Port |
-| --- | ---------------------- | ----------------- | ---- |
-| AAA | - | 10.6.75.62 | 123 |
-| AAA | - | 10.6.75.63 | 333 |
-| AAA | Ethernet2 | - | - |
-| MGMT | - | 10.6.75.59 | 6343  |
-| MGMT | - | 10.6.75.62 | 123 |
-| MGMT | - | 10.6.75.63 | 333 |
-| MGMT | Ethernet3 | - | - |
-| default | - | 10.6.75.62 | 123  |
-| default | - | 10.6.75.61 | 6343  |
-| default | Management0 | - | - |
-
-sFlow Sample Rate: 1000
-
-sFlow is enabled.
-
-### SFlow Device Configuration
-
-```eos
-!
-sflow sample dangerous 1000
-sflow vrf AAA destination 10.6.75.62 123
-sflow vrf AAA destination 10.6.75.63 333
-sflow vrf AAA source-interface Ethernet2
-sflow vrf MGMT destination 10.6.75.59
-sflow vrf MGMT destination 10.6.75.62 123
-sflow vrf MGMT destination 10.6.75.63 333
-sflow vrf MGMT source-interface Ethernet3
-sflow destination 10.6.75.61
-sflow destination 10.6.75.62 123
-sflow source-interface Management0
-sflow run
-```
+No sFlow defined
 
 ## Hardware Counters
 
@@ -352,7 +317,14 @@ Global ARP timeout not defined.
 
 ## Router General
 
-Router general not defined
+### Router General configuration
+
+```eos
+!
+router general
+   vrf BLUE-C2
+   !
+```
 
 ## Router OSPF
 
