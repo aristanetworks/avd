@@ -42,6 +42,10 @@ underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: false
 
+# Underlay ISIS Defaults
+isis_area_id: "49.0001"
+isis_site_id: "0001"
+
 bgp_maximum_paths: 4
 bgp_ecmp: 4
 
