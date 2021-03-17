@@ -31,7 +31,5 @@
   add_toc:
     md_file: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
     skip_lines: 3
-    #toc_levels: 2
-    #toc_marker: '<!-- toc -->'
   delegate_to: localhost
   tags: [build, provision]
