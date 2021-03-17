@@ -14,26 +14,27 @@
 
 **eos_designs**, is a role that provides an abstracted data model to deploy the following design:
 
-- [**l3ls-evpn** design](doc/l3ls-evpn.md): configure a L3 leaf & spine EVPN topology.
+- [**l3ls-evpn** design](doc/l3ls-evpn.md): Configure various Layer 3 Leaf & Spine topologies leveraging a VXLAN data-plane with an EVPN control-plane.
 
 The **eos_designs** role:
 
-- Enables network engineers to deploy Arista L3 Leaf & Spine fabric underlay and overlay network services effectively and with consistency.
+- Enables network engineers to deploy Arista Leaf & Spine fabrics with underlay and overlay network services effectively and with consistency.
 - Designed to be extended easily, leveraging a __*"stackable template architecture"*__.
 - Designed to be used with the **eos_cli_config_gen** role to generate a complete switch configuration and applied using a config replace strategy with either
   - **eos_config_deploy_eapi** role.
   - **eos_config_deploy_cvp** role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
+- Facilitates the evaluation of the configuration post deployment with [eos_validate_state](../eos_validate_state/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs
 
 Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
 
-<!-- ![Figure 1: Ansible Role eos_designs](media/role_eos_designs.gif) -->
+<!-- ![Figure 1: Ansible Role eos_designs](../../media/role_eos_designs.gif) -->
 
 <div style="text-align:center">
-  <img src="media/role_eos_designs.gif" />
+  <img src="../../media/role_eos_designs.gif" />
 </div>
 
 **Inputs:**
