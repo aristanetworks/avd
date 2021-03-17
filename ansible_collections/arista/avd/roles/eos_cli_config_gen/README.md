@@ -234,7 +234,7 @@ aaa_authentication:
     default: < group group_name | local | none > < group group_name | local | none >
     serial_console: < group group_name | local | none > < group group_name | local | none >
   enable:
-    default: < group group_name >
+    default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
     default: < group group_name >
   policies:
