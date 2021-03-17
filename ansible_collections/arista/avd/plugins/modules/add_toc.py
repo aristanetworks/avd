@@ -19,9 +19,7 @@
 #
 
 from __future__ import (absolute_import, division, print_function)
-import md_toc
-import traceback
-from ansible.module_utils.basic import AnsibleModule
+__metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
                     'status': ['preview'],
@@ -30,7 +28,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 DOCUMENTATION = r'''
 ---
 module: add_toc
-version_added: "1.0"
+version_added: "2.0.0"
 author: Ansible Arista Team (@aristanetworks)
 short_description: Add Table Of Contents to existing MarkDown file
 description:
@@ -55,7 +53,7 @@ options:
     description: TOC will be inserted or updated between two of these markers in the MD file
     required: false
     default: '<!-- toc -->'
-    type: int
+    type: str
 '''
 
 EXAMPLES = r'''
@@ -66,6 +64,13 @@ EXAMPLES = r'''
     #toc_levels: 2
     #toc_marker: '<!-- toc -->'
 '''
+
+from ansible.module_utils.basic import AnsibleModule
+try:
+    import md_toc
+    HAS_MD_TOC = True
+except ImportError:
+    HAS_MD_TOC = False
 
 
 def main():
@@ -80,6 +85,10 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=False)
     result = dict(changed=False)
+
+    # Test if md_toc is installed
+    if HAS_MD_TOC is False:
+        module.fail_json(msg='Error md_toc is not installed. Please install using pip')
 
     # If set, parse MD file and store generated TOC
     if (module.params['md_file'] is not None):
