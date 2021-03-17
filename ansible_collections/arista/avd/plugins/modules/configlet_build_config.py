@@ -59,15 +59,14 @@ options:
 '''
 
 EXAMPLES = r'''
-# tasks file for cvp_configlet_upload
+# tasks file for configlet_build_config
 - name: generate intented variables
   tags: [build, provision]
   configlet_build_config:
-    configlet_dir: '{{ configlet_dir }}'
-    configlet_prefix: '{{ configlets_prefix }}'
-    configlet_extension: '{{configlet_extension}}'
+    configlet_dir: '/path/to/configlets/folder/'
+    configlet_prefix: 'AVD_'
+    configlet_extension: 'cfg'
 '''
-
 
 YAML_IMP_ERR = None
 try:
