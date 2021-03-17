@@ -101,10 +101,6 @@ vlans:
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF2_Po1
@@ -271,6 +267,11 @@ mlag_configuration:
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
 route_maps: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65103
   router_id: 192.168.255.9

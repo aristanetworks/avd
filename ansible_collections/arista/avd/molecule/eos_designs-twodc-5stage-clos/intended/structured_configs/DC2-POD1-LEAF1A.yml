@@ -73,10 +73,6 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel3:
     description: RACK1_SINGLE_Po1
@@ -241,6 +237,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65211
   router_id: 172.16.210.3
