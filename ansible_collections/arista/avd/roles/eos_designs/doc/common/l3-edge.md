@@ -1,4 +1,4 @@
-# DCI / L3 Edge
+# DCI & L3 Edge
 
 The `l3_edge` data model can be used to configure extra L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric. Fabric switches can be types `l3leaf`, `spine` or `super-spine`.
 

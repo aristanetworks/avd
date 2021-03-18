@@ -1,4 +1,4 @@
-# Global settings
+# Common Settings
 
 ## Common Device Configuration Variables
 
@@ -326,5 +326,3 @@ cv_configlets:
     DC1-L2LEAF2B:
       - GLOBAL-ALIASES
 ```
-
-

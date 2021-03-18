@@ -6,11 +6,11 @@
   - [Plugin Filters](#plugin-filters)
     - [list_compress filter](#list_compress-filter)
     - [natural_sort filter](#natural_sort-filter)
-    - [default filter*](#default-filter)
+    - [default filter](#default-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
   - [Modules](#modules)
-    - [Inventory to CloudVision Containers*](#inventory-to-cloudvision-containers)
+    - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
 
 ## Plugin Filters
 
@@ -45,7 +45,7 @@ To use this filter:
 {% endfor %}
 ```
 
-### default filter*
+### default filter
 
 The `arista.avd.default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
 Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
@@ -93,7 +93,7 @@ Feature is {{ "not " if extremely_long_variable_name is defined and extremely_lo
 ```
 ## Modules
 
-### Inventory to CloudVision Containers*
+### Inventory to CloudVision Containers
 
 The `arista.avd.inventory_to_container` module provides following capabilities:
 - Transform inventory groups into CloudVision containers topology.

@@ -56,7 +56,6 @@ pod_name: < POD_Name >
 - Only eBGP underlay is supported for super-spine deployment.
 - Spines in every POD must have unique AS per POD.
 
-
 ## Type Variable
 
 - The `type:` variable needs to be defined for each device in the fabric.

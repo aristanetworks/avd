@@ -53,7 +53,6 @@ svi_profiles:
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
-
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
 tenants:
@@ -270,7 +269,6 @@ tenants:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-
 ```
 
 **Example:**
