@@ -32,6 +32,7 @@
   - [Hardware Counters](#hardware-counters)
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
+- [Hardware TCAM Profile](#hardware-tcam-profile)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -302,6 +303,19 @@ No VM tracer sessions defined
 ## Event Handler
 
 No event handler defined
+
+# Hardware TCAM Profile
+
+
+TCAM profile __`vxlan-routing`__ is active
+
+## Hardware TCAM configuration
+
+```eos
+!
+hardware tcam
+   system profile vxlan-routing
+```
 
 # MLAG
 

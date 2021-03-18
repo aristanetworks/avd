@@ -576,7 +576,7 @@ vxlan_tunnel_interface:
         Tenant_C_OP_Zone:
           vni: 30
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
