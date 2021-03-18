@@ -145,14 +145,7 @@ servers:
           mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
-
-`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/README.md) and provides following result:
-
-- _EVPN ESI_: 000:000:0303:0202:0101
-- _LACP ID_: 0303.0202.0101
-- _Route Target_: 03:03:02:02:01:01
-
-**Example:**
+## Examples
 
 ```yaml
 port_profiles:
@@ -246,6 +239,14 @@ servers:
 
 ## EVPN A/A ESI dual-attached server scenario
 
+To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
+`short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
+Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/README.md) and provides following result:
+
+- _EVPN ESI_: 000:000:0303:0202:0101
+- _LACP ID_: 0303.0202.0101
+- _Route Target_: 03:03:02:02:01:01
+
 Active/Active multihoming connections:
 
 - From `E0` to `DC1-SVC3A` interface `Eth10`
@@ -265,9 +266,3 @@ servers:
           mode: active
           short_esi: 0303:0202:0101
 ```
-
-`short_esi` is an abreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID. Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/filter/esi_management.py) and provides following result:
-
-- _EVPN ESI_: 000:000:0303:0202:0101
-- _LACP ID_: 0303.0202.0101
-- _Route Target_: 03:03:02:02:01:01

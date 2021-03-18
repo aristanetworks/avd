@@ -8,7 +8,7 @@
   - [About](#about)
   - [Validated Designs](#validated-designs)
   - [Roles Overview](#roles-overview)
-  - [Custom Plugins](#custom-plugins)
+  - [Custom Plugins & Modules](#custom-plugins--modules)
   - [Installation](#installation)
     - [Requirements](#requirements)
     - [Installation from ansible-galaxy](#installation-from-ansible-galaxy)
@@ -23,7 +23,7 @@ This collection includes a set of ansible roles and modules to help kick-start y
 
 ## Validated Designs
 
-The arista.avd collection provides abstracted data models and framework to build, document, deploy and validate the following designs.
+The arista.avd collection provides abstracted data models and framework to build, document, deploy and validate the following designs:
 
 **L3LS EVPN:**
 
@@ -35,7 +35,9 @@ The arista.avd collection provides abstracted data models and framework to build
 | OSPF | eBGP | [ 3 stage ] + L2 Leafs |
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
 
-<center><img src="media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
+<div style="text-align:center">
+  <img src="media/topology.gif" />
+</div>
 
 ## Roles Overview
 
@@ -52,7 +54,7 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 
 ![Arista AVD Overview](media/example-playbook-deploy-cvp.gif)
 
-## Custom Plugins
+## Custom Plugins & Modules
 
 This repository provides custom plugins for Ansible's collection __arista.avd__ :
 
