@@ -1501,7 +1501,7 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-      send_community: < true | false >
+      send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
@@ -1691,7 +1691,7 @@ router_bgp:
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           default_originate:
             always: < true | false >
@@ -1707,7 +1707,7 @@ router_bgp:
           description: < description >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >

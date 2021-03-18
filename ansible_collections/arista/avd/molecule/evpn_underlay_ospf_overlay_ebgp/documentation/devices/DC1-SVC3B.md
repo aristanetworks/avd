@@ -761,7 +761,7 @@ Router ISIS not defined
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors

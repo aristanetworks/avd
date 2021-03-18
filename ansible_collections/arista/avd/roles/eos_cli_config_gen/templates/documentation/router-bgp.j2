@@ -54,8 +54,8 @@
 {%         if router_bgp.peer_groups[peer_group].ebgp_multihop is defined and router_bgp.peer_groups[peer_group].ebgp_multihop is not none %}
 | Ebgp multihop | {{ router_bgp.peer_groups[peer_group].ebgp_multihop }} |
 {%         endif %}
-{%         if router_bgp.peer_groups[peer_group].send_community is defined and router_bgp.peer_groups[peer_group].send_community == true %}
-| Send community | true |
+{%         if router_bgp.peer_groups[peer_group].send_community is arista.avd.defined %}
+| Send community | {{ router_bgp.peer_groups[peer_group].send_community }} |
 {%         endif %}
 {%         if router_bgp.peer_groups[peer_group].maximum_routes is defined and router_bgp.peer_groups[peer_group].maximum_routes is not none %}
 | Maximum routes |{% if router_bgp.peer_groups[peer_group].maximum_routes == 0 %} 0 (no limit) |{% else %} {{ router_bgp.peer_groups[peer_group].maximum_routes }} |{% endif %}

@@ -633,14 +633,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65102
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
       route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -648,7 +648,7 @@ router_bgp:
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.16:

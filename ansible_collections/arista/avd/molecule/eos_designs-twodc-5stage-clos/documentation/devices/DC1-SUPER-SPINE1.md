@@ -517,7 +517,7 @@ Router ISIS not defined
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors

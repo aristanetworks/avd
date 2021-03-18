@@ -726,7 +726,7 @@ Router ISIS not defined
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 5 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
 
 #### IPv4-UNDERLAY-PEERS
@@ -735,7 +735,7 @@ Router ISIS not defined
 | -------- | ----- |
 | Address Family | ipv4 |
 | Remote_as | 65110 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
 
 #### MLAG-IPv4-UNDERLAY-PEER
@@ -745,7 +745,7 @@ Router ISIS not defined
 | Address Family | ipv4 |
 | Remote_as | 65112 |
 | Next-hop self | True |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
