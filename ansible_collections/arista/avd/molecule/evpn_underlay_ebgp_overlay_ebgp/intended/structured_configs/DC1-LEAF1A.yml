@@ -265,7 +265,7 @@ vxlan_tunnel_interface:
         Tenant_A_WEB_Zone:
           vni: 11
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
