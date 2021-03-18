@@ -8,8 +8,6 @@ hardware tcam
 {{ tcam_profile.profiles[profile] }}
    !
 {%         endfor %}
-{%     else %}
-   !
 {%     endif %}
 {%     if tcam_profile.system is arista.avd.defined %}
    system profile {{ tcam_profile.system }}
