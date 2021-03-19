@@ -26,3 +26,10 @@
     dest: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
   delegate_to: localhost
   tags: [build, provision]
+
+- name: Generate TOC for device documentation
+  add_toc:
+    md_file: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+    skip_lines: 3
+  delegate_to: localhost
+  tags: [build, provision]

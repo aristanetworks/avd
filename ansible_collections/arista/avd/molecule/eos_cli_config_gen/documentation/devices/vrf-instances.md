@@ -1,16 +1,19 @@
 # vrf-instances
 
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
+  - [Domain-list](#domain-list)
   - [Name Servers](#name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
+  - [PTP](#ptp)
   - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
+  - [Management API GNMI](#management-api-gnmi)
+  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -36,6 +39,7 @@
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
   - [Switchport Default](#switchport-default)
@@ -51,6 +55,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [ARP](#arp)
   - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
@@ -73,15 +78,19 @@
   - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [VRF Instances](#vrf-instances)
+  - [VRF Instances Summary](#vrf-instances-summary)
+  - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Virtual Source NAT](#virtual-source-nat)
 - [Platform](#platform)
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
-- [MAC security](#mac-security)
+- [MACsec](#macsec)
 - [QOS](#qos)
 - [QOS Profiles](#qos-profiles)
+- [Custom Templates](#custom-templates)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces

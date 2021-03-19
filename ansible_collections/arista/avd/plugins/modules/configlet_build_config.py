@@ -19,10 +19,6 @@
 #
 
 from __future__ import (absolute_import, division, print_function)
-from ansible.module_utils.basic import AnsibleModule
-import traceback
-import os
-import glob
 __metaclass__ = type
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
@@ -32,7 +28,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 DOCUMENTATION = r'''
 ---
 module: configlet_build_config
-version_added: "2.9"
+version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Build arista.cvp.configlet configuration.
 description:
@@ -68,6 +64,10 @@ EXAMPLES = r'''
     configlet_extension: 'cfg'
 '''
 
+from ansible.module_utils.basic import AnsibleModule
+import traceback
+import os
+import glob
 YAML_IMP_ERR = None
 try:
     import yaml

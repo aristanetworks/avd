@@ -1,16 +1,19 @@
 # tcam-profile
 
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [DNS Domain](#dns-domain)
+  - [Domain-list](#domain-list)
   - [Name Servers](#name-servers)
   - [Domain Lookup](#domain-lookup)
   - [NTP](#ntp)
+  - [PTP](#ptp)
   - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
+  - [Management API GNMI](#management-api-gnmi)
+  - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
@@ -33,9 +36,12 @@
   - [VM Tracer Sessions](#vm-tracer-sessions)
   - [Event Handler](#event-handler)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
+  - [Custom TCAM profiles](#custom-tcam-profiles)
+  - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [VLANs](#vlans)
 - [Interfaces](#interfaces)
   - [Switchport Default](#switchport-default)
@@ -51,6 +57,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
+  - [ARP](#arp)
   - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
@@ -78,10 +85,12 @@
 - [Router L2 VPN](#router-l2-vpn)
 - [IP DHCP Relay](#ip-dhcp-relay)
 - [Errdisable](#errdisable)
-- [MAC security](#mac-security)
+- [MACsec](#macsec)
 - [QOS](#qos)
 - [QOS Profiles](#qos-profiles)
+- [Custom Templates](#custom-templates)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
