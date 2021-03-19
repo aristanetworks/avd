@@ -1,4 +1,7 @@
 {% if router_general is arista.avd.defined %}
+
+## Router General
+
 {%      set has = namespace() %}
 {%      set has.found = false %}
 {%      if router_general.vrfs is arista.avd.defined %}
@@ -27,6 +30,4 @@
 ```eos
 {% include 'eos/router-general.j2' %}
 ```
-{% else %}
-Router general not defined
 {% endif %}

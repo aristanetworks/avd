@@ -1,97 +1,36 @@
 # DC2-POD1-SPINE2
-
 # Table of Contents
 <!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Domain-list](#domain-list)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [PTP](#ptp)
-  - [Management SSH](#management-ssh)
-  - [Management API GNMI](#management-api-gnmi)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
-  - [Enable Password](#enable-password)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Prompt](#prompt)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SNMP](#snmp)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [Hardware TCAM Profile](#hardware-tcam-profile)
-- [MLAG](#mlag)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
-- [VLANs](#vlans)
 - [Interfaces](#interfaces)
-  - [Switchport Default](#switchport-default)
-  - [Interface Defaults](#interface-defaults)
   - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [IPv6 Static Routes](#ipv6-static-routes)
-  - [ARP](#arp)
-  - [Router General](#router-general)
-  - [Router OSPF](#router-ospf)
-  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community-lists](#community-lists)
-  - [Peer Filters](#peer-filters)
   - [Prefix-lists](#prefix-lists)
-  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
-- [Errdisable](#errdisable)
-- [MACsec](#macsec)
-- [QOS](#qos)
-- [QOS Profiles](#qos-profiles)
-- [Custom Templates](#custom-templates)
 
 <!-- toc -->
 # Management
@@ -122,38 +61,6 @@ interface Management1
    vrf MGMT
    ip address 192.168.1.21/24
 ```
-
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-list
-
-Domain-list not defined
-
-## Name Servers
-
-No name servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## PTP
-
-PTP is not defined.
-
-## Management SSH
-
-Management SSH not defined
-
-## Management API GNMI
-
-Management API gnmi is not defined
 
 ## Management API HTTP
 
@@ -199,87 +106,7 @@ management api http-commands
 username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 ```
 
-## Enable Password
-
-Enable password not defined
-
-## TACACS Servers
-
-TACACS servers not defined
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not defined
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management security not defined
-
-# Prompt
-
-Prompt not defined
-
-# Aliases
-
-Aliases not defined
-
 # Monitoring
-
-## TerminAttr Daemon
-
-TerminAttr daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SNMP
-
-No SNMP settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No hardware counters defined
-
-## VM Tracer Sessions
-
-No VM tracer sessions defined
-
-## Event Handler
-
-No event handler defined
-
-# Hardware TCAM Profile
-
-Hardware TCAM profile is not defined
-
-# MLAG
-
-MLAG not defined
 
 # Spanning Tree
 
@@ -312,19 +139,7 @@ spanning-tree mode none
 vlan internal order ascending range 1006 1199
 ```
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
-
-## Switchport Default
-
-No switchport default defined
-
-## Interface Defaults
-
-No Interface Defaults defined
 
 ## Ethernet Interfaces
 
@@ -386,10 +201,6 @@ interface Ethernet5
    ptp enable
 ```
 
-## Port-Channel Interfaces
-
-No port-channels defined
-
 ## Loopback Interfaces
 
 ### Loopback Interfaces Summary
@@ -417,19 +228,7 @@ interface Loopback0
    ip address 172.16.210.2/32
 ```
 
-## VLAN Interfaces
-
-No VLAN interfaces defined
-
-## VXLAN Interface
-
-No VXLAN interfaces defined
-
 # Routing
-
-## Virtual Router MAC Address
-
-IP virtual router MAC address not defined
 
 ## IP Routing
 
@@ -446,7 +245,6 @@ IP virtual router MAC address not defined
 ip routing
 no ip routing vrf MGMT
 ```
-
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -470,26 +268,6 @@ no ip routing vrf MGMT
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ```
-
-## IPv6 Static Routes
-
-IPv6 static routes not defined
-
-## ARP
-
-Global ARP timeout not defined.
-
-## Router General
-
-Router general not defined
-
-## Router OSPF
-
-Router OSPF not defined
-
-## Router ISIS
-
-Router ISIS not defined
 
 ## Router BGP
 
@@ -575,27 +353,7 @@ router bgp 65210
 
 # Multicast
 
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
-
 # Filters
-
-## Community-lists
-
-Community-lists not defined
-
-## Peer Filters
-
-No peer filters defined
 
 ## Prefix-lists
 
@@ -615,10 +373,6 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 172.16.210.0/24 le 32
 ```
 
-## IPv6 Prefix-lists
-
-IPv6 prefix-lists not defined
-
 ## Route-maps
 
 ### Route-maps Summary
@@ -637,27 +391,7 @@ route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
-## IP Extended Communities
-
-No extended community defined
-
 # ACL
-
-## Standard Access-lists
-
-Standard access-lists not defined
-
-## Extended Access-lists
-
-Extended access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 standard access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 extended access-lists not defined
 
 # VRF Instances
 
@@ -673,39 +407,3 @@ IPv6 extended access-lists not defined
 !
 vrf instance MGMT
 ```
-
-# Virtual Source NAT
-
-Virtual source NAT not defined
-
-# Platform
-
-No platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP relay not defined
-
-# Errdisable
-
-Errdisable is not defined.
-
-# MACsec
-
-MACsec not defined
-
-# QOS
-
-QOS is not defined.
-
-# QOS Profiles
-
-QOS Profiles are not defined
-
-# Custom Templates
-
-No custom templates defined

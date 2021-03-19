@@ -1,4 +1,7 @@
 {% if vlan_interfaces is defined and vlan_interfaces is not none %}
+
+## VLAN Interfaces
+
 ### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
@@ -82,6 +85,4 @@
 ```eos
 {% include 'eos/vlan-interfaces.j2' %}
 ```
-{% else %}
-No VLAN interfaces defined
 {% endif %}

@@ -1,5 +1,8 @@
 {% if management_security is arista.avd.defined %}
-## Management Security
+
+# Management Security
+
+## Management Security Summary
 
 {%     if management_security.entropy_source is arista.avd.defined %}
 Management Security entropy source is {{ management_security.entropy_source }}
@@ -22,6 +25,4 @@ Management Security password encryption is common.
 ```eos
 {% include 'eos/management-security.j2' %}
 ```
-{% else %}
-Management security not defined
 {% endif %}

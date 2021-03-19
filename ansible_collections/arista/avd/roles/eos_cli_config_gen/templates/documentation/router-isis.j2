@@ -1,4 +1,7 @@
 {% if router_isis is defined and router_isis is not none %}
+
+## Router ISIS
+
 ### Router ISIS Summary
 
 | Settings | Value |
@@ -64,7 +67,4 @@
 ```eos
 {% include 'eos/router-isis.j2' %}
 ```
-
-{% else %}
-Router ISIS not defined
 {% endif %}

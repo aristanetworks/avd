@@ -1,4 +1,7 @@
 {% if ip_igmp_snooping is defined and ip_igmp_snooping is not none %}
+
+## IP IGMP Snooping
+
 ### IP IGMP Snooping Summary
 
 {%     if ip_igmp_snooping.globally_enabled is defined and ip_igmp_snooping.globally_enabled == false %}
@@ -25,7 +28,4 @@ IGMP snooping is globally enabled.
 ```eos
 {% include 'eos/ip-igmp-snooping.j2' %}
 ```
-
-{% else %}
-No IP IGMP configuration
 {% endif %}

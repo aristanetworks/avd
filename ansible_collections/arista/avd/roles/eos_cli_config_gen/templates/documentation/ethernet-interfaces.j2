@@ -1,4 +1,7 @@
 {% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+
+## Ethernet Interfaces
+
 ### Ethernet Interfaces Summary
 
 #### L2
@@ -199,6 +202,4 @@
 ```eos
 {% include 'eos/ethernet-interfaces.j2' %}
 ```
-{% else %}
-No ethernet interface defined
 {% endif %}
