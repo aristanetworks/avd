@@ -1,4 +1,7 @@
 {% if static_routes is defined and static_routes is not none %}
+
+## Static Routes
+
 ### Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/static-routes.j2' %}
 ```
-{% else %}
-Static routes not defined
 {% endif %}

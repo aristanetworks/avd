@@ -1,4 +1,7 @@
 {% if access_lists is defined and access_lists is not none %}
+
+## Extended Access-lists
+
 ### Extended Access-lists Summary
 
 {%     for access_list in access_lists | arista.avd.natural_sort %}
@@ -16,6 +19,4 @@
 ```eos
 {% include 'eos/access-lists.j2' %}
 ```
-{% else %}
-Extended access-lists not defined
 {% endif %}

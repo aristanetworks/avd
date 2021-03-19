@@ -1,5 +1,8 @@
 {% if aaa_server_groups is defined and aaa_server_groups is not none %}
-### AAA Server Groups
+
+## AAA Server Groups
+
+### AAA Server Groups Summary
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
@@ -14,6 +17,4 @@
 ```eos
 {% include 'eos/aaa-server-groups.j2' %}
 ```
-{% else %}
-AAA server groups not defined
 {% endif %}

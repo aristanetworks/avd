@@ -25,7 +25,7 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
-    - [Bfd Multihop Interval](#bfd-multihop-interval)
+    - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -46,6 +46,7 @@
         - [Routed Ethernet Interfaces](#routed-ethernet-interfaces)
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
+      - [Switchport Default](#switchport-default)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -82,6 +83,7 @@
       - [SNMP Settings](#snmp-settings)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
+    - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
@@ -93,6 +95,7 @@
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
+      - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
@@ -361,13 +364,14 @@ banners:
     < text ending with EOF >
 ```
 
-### Bfd Multihop Interval
+### Router BFD
 
 ```yaml
-bfd_multihop:
-  interval: < rate in milliseconds >
-  min_rx: < rate in milliseconds >
-  multiplier: < 3-50 >
+router_bfd:
+  multihop:
+    interval: < rate in milliseconds >
+    min_rx: < rate in milliseconds >
+    multiplier: < 3-50 >
 ```
 
 ### Custom Templates
@@ -528,7 +532,9 @@ hardware_counters:
 
 ```yaml
 tcam_profile:
-  - < tcam_profile >
+  system: < tcam profile name to activate >
+  profiles:
+    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
 ```
 
 #### Platform
@@ -699,8 +705,13 @@ interface_defaults:
   ethernet:
     shutdown: < true | false >
   mtu: < mtu >
-  switchport:
-    type: < routed | switched >
+```
+
+#### Switchport Default
+
+```yaml
+switchport_default:
+  mode: < routed | access >
 ```
 
 #### Loopback Interfaces
@@ -996,6 +1007,7 @@ management_interfaces:
     ip_address: < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    type: < oob | inband | default -> oob >
 ```
 
 #### Management HTTP
@@ -1004,6 +1016,7 @@ management_interfaces:
 management_api_http:
   enable_http: < true | false >
   enable_https: < true | false >
+  https_ssl_profile: < SSL Profile Name >
   enable_vrfs:
     < vrf_name_1 >:
       access_group: < Standard IPv4 ACL name >
@@ -1034,9 +1047,17 @@ management_console:
 
 ```yaml
 management_security:
+  entropy_source: < entropy_source >
   password:
     encryption_key_common : < true | false >
-  entropy_source: < entropy_source >
+  ssl_profiles:
+    - name: <ssl_profile_1>
+      tls_versions: < list of allowed tls versions as string >
+      certificate:
+        file: < certificate filename >
+        key: < key filename >
+    - name: <ssl_profile_2>
+      tls_versions: < list of allowed tls versions as string >
 ```
 
 #### Management SSH
@@ -1343,6 +1364,12 @@ ptp:
       dscp: < dscp-Value >
 ```
 
+### Prompt
+
+```yaml
+prompt: <string >
+```
+
 ### Quality of Services
 
 #### QOS
@@ -1442,6 +1469,19 @@ ip_routing: < true | false >
 ipv6_unicast_routing: < true | false >
 ```
 
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak_routes:
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+```
+
 #### Router BGP Configuration
 
 ```yaml
@@ -1463,7 +1503,7 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-      send_community: < true | false >
+      send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
@@ -1653,7 +1693,7 @@ router_bgp:
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           default_originate:
             always: < true | false >
@@ -1669,7 +1709,7 @@ router_bgp:
           description: < description >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -1706,6 +1746,7 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+
 #### Router OSPF Configuration
 
 ```yaml
@@ -1738,11 +1779,15 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
+  log_adjacency_changes: < true | false >
   no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
   address_family: < List of Address Families >
   isis_af_defaults:
-      - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-64 >
+  segment_routing_mpls:
+    enabled: < true | false >
+    router_id: < router_id >
 ```
 
 #### Service Routing Protocols Model

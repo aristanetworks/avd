@@ -1,4 +1,7 @@
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
+
+## Loopback Interfaces
+
 ### Loopback Interfaces Summary
 
 #### IPv4
@@ -53,7 +56,4 @@
 ```eos
 {% include 'eos/loopback-interfaces.j2' %}
 ```
-{% else %}
-No loopback interfaces defined
 {% endif %}
-

@@ -1,4 +1,7 @@
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+
+## Port-Channel Interfaces
+
 ### Port-Channel Interfaces Summary
 
 #### L2
@@ -103,6 +106,4 @@
 ```eos
 {% include 'eos/port-channel-interfaces.j2' %}
 ```
-{% else %}
-No port-channels defined
 {% endif %}

@@ -14,6 +14,7 @@ event-monitor
 hardware-counter
 hardware
 igmp-snooping
+interface-defaults
 ip-dhcp-relay
 ip-extended-communities
 ip-routing
@@ -28,6 +29,7 @@ loopbacks-interfaces
 mac-address-table
 management-api-http
 management-gnmi
+management-interfaces
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
@@ -36,6 +38,7 @@ ntp
 platform
 port-channel-interfaces
 prefix-lists
+prompt
 ptp
 qos
 redundancy
@@ -47,17 +50,20 @@ router-bgp-rtc
 router-bgp-v4-evpn
 router-bgp-v4-v6-evpn
 router-bgp-vrf-lite
+router-general
 router-isis
 router-l2-vpn
 router-multicast
 router-ospf
 router-pim-sparse-mode
 service-routing-protocols-model
+router-general
 sflow
 snmp_v3
 spanning-tree
 spanning-tree-rstp
 spanning-tree-rapid-pvst
+switchport-mode
 tcam-profile
 static-routes
 terminattr-cloud

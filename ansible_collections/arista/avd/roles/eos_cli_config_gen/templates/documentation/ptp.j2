@@ -1,4 +1,7 @@
 {% if ptp is defined and ptp is not none %}
+
+## PTP
+
 ### PTP Summary
 
 | PTP setting | Value |
@@ -41,7 +44,4 @@
 ```eos
 {% include 'eos/ptp.j2' %}
 ```
-{% else %}
-PTP is not defined.
 {% endif %}
-

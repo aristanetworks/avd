@@ -18,9 +18,9 @@
   - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/*
   - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*
 
-"role: eos_l3ls_evpn":
-  - ansible_collections/arista/avd/roles/eos_l3ls_evpn/*
-  - ansible_collections/arista/avd/roles/eos_l3ls_evpn/**/*
+"role: eos_designs":
+  - ansible_collections/arista/avd/roles/eos_designs/*
+  - ansible_collections/arista/avd/roles/eos_designs/**/*
 
 "role: eos_validate_state":
   - ansible_collections/arista/avd/roles/eos_validate_state/*

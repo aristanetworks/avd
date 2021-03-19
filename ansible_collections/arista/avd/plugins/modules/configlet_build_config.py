@@ -28,7 +28,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 DOCUMENTATION = r'''
 ---
 module: configlet_build_config
-version_added: "2.9"
+version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Build arista.cvp.configlet configuration.
 description:
@@ -55,19 +55,19 @@ options:
 '''
 
 EXAMPLES = r'''
-# tasks file for cvp_configlet_upload
+# tasks file for configlet_build_config
 - name: generate intented variables
   tags: [build, provision]
   configlet_build_config:
-    configlet_dir: '{{ configlet_dir }}'
-    configlet_prefix: '{{ configlets_prefix }}'
-    configlet_extension: '{{configlet_extension}}'
+    configlet_dir: '/path/to/configlets/folder/'
+    configlet_prefix: 'AVD_'
+    configlet_extension: 'cfg'
 '''
 
-import glob
-import os
-import traceback
 from ansible.module_utils.basic import AnsibleModule
+import traceback
+import os
+import glob
 YAML_IMP_ERR = None
 try:
     import yaml

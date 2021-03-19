@@ -1,0 +1,8 @@
+{# switchport default #}
+{% if switchport_default.mode is arista.avd.defined('routed') %}
+!
+switchport default mode routed
+{% elif switchport_default.mode is arista.avd.defined('access') %}
+!
+switchport default mode access
+{% endif %}

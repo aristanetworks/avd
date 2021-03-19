@@ -325,7 +325,7 @@ Use tag `build` to only generate
 # Deploy EVPN/VXLAN Fabric
 $ ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags build
 
-TASK [eos_l3ls_evpn : Include device structured configuration, that was previously generated.]
+TASK [eos_designs : Include device structured configuration, that was previously generated.]
 ok: [DC1-SPINE1 -> localhost]
 ok: [DC1-SPINE2 -> localhost]
 ok: [DC1-LEAF1A -> localhost]
@@ -333,13 +333,13 @@ ok: [DC1-LEAF1B -> localhost]
 ok: [DC1-LEAF2A -> localhost]
 ok: [DC1-LEAF2B -> localhost]
 
-TASK [eos_l3ls_evpn : Generate EVPN fabric documentation in Markdown Format.]
+TASK [eos_designs : Generate EVPN fabric documentation in Markdown Format.]
 changed: [DC1-SPINE1 -> localhost]
 
-TASK [eos_l3ls_evpn : Generate Leaf and Spine Point-To-Point Links summary in csv format.]
+TASK [eos_designs : Generate Leaf and Spine Point-To-Point Links summary in csv format.]
 changed: [DC1-SPINE1 -> localhost]
 
-TASK [eos_l3ls_evpn : Generate Fabric Topology in csv format.]
+TASK [eos_designs : Generate Fabric Topology in csv format.]
 changed: [DC1-SPINE1 -> localhost]
 
 TASK [eos_cli_config_gen : include device intended structure configuration variables]
