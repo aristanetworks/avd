@@ -61,6 +61,7 @@
   - [Static Routes](#static-routes)
   - [IPv6 Static Routes](#ipv6-static-routes)
   - [ARP](#arp)
+  - [Router General](#router-general)
   - [Router OSPF](#router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
