@@ -13,6 +13,9 @@ router_isis:
   isis_af_defaults:
     - maximum-paths 2
   log_adjacency_changes: true
+  segment_routing_mpls:
+    enabled: true
+    router_id: 192.168.255.3
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
