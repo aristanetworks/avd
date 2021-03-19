@@ -65,6 +65,7 @@ EXAMPLES = r'''
     #toc_marker: '<!-- toc -->'
 '''
 
+import hashlib
 from ansible.module_utils.basic import AnsibleModule
 try:
     import md_toc
@@ -97,11 +98,17 @@ def main():
         toc_levels = module.params['toc_levels'] or 2
         toc_marker = module.params['toc_marker'] or '<!-- toc -->'
 
+        hash_origin = hashlib.sha224(open(md_file, 'rb').read()).hexdigest()
+
         toc = md_toc.build_toc(
             filename=md_file, keep_header_levels=toc_levels, skip_lines=skip_lines)
         md_toc.write_string_on_file_between_markers(
             filename=md_file, string=toc, marker=toc_marker)
-        result['changed'] = True
+
+        hash_final = hashlib.sha224(open(md_file, 'rb').read()).hexdigest()
+
+        if hash_final != hash_origin:
+            result['changed'] = False
 
     module.exit_json(**result)
 
