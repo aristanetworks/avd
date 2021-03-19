@@ -1,4 +1,7 @@
 {% if management_interfaces is defined and management_interfaces is not none %}
+
+## Management Interfaces
+
 ### Management Interfaces Summary
 
 #### IPv4
@@ -26,6 +29,4 @@
 ```eos
 {% include 'eos/management-interfaces.j2' %}
 ```
-{% else %}
-Management interfaces not defined
 {% endif %}

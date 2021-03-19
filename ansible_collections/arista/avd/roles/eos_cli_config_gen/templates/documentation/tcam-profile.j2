@@ -1,5 +1,7 @@
 {% if tcam_profile is arista.avd.defined %}
 
+# Hardware TCAM Profile
+
 TCAM profile __`{{ tcam_profile.system | arista.avd.default('default')}}`__ is active
 {%     if tcam_profile.profiles is arista.avd.defined %}
 
@@ -17,6 +19,4 @@ Following TCAM profiles are configured on device:
 ```eos
 {% include 'eos/tcam-profile.j2' %}
 ```
-{% else %}
-Hardware TCAM profile is not defined
 {% endif %}

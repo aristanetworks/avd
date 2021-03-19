@@ -1,5 +1,8 @@
 {# Management API HTTP #}
 {% if management_api_http is arista.avd.defined %}
+
+## Management API HTTP
+
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
@@ -29,6 +32,4 @@ HTTPS certificate and private key are configured.
 ```eos
 {% include 'eos/management-api-http.j2' %}
 ```
-{% else %}
-Management API HTTP not defined
 {% endif %}

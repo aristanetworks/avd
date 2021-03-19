@@ -1,4 +1,7 @@
 {% if prefix_lists is defined and prefix_lists is not none %}
+
+## Prefix-lists
+
 ### Prefix-lists Summary
 
 {%     for prefix_list in prefix_lists | arista.avd.natural_sort %}
@@ -16,6 +19,4 @@
 ```eos
 {% include 'eos/prefix-lists.j2' %}
 ```
-{% else %}
-Prefix-lists not defined
 {% endif %}

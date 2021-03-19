@@ -1,5 +1,8 @@
 {% if router_l2_vpn is arista.avd.defined %}
-### Router L2 VPN
+
+# Router L2 VPN
+
+## Router L2 VPN Summary
 {%     if router_l2_vpn.nd_rs_flooding_disabled is arista.avd.defined(true) %}
 
    Neighbor discovery router solicitation VTEP flooding is disabled.
@@ -17,11 +20,9 @@
    VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}.
 {%     endif %}
 
-### Router L2 VPN Device Configuration
+## Router L2 VPN Device Configuration
 
 ```eos
 {% include 'eos/router-l2-vpn.j2' %}
 ```
-{% else %}
-Router L2 VPN not defined
 {% endif %}
