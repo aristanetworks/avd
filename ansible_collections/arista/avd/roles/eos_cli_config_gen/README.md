@@ -1779,11 +1779,15 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
+  log_adjacency_changes: < true | false >
   no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
   address_family: < List of Address Families >
   isis_af_defaults:
-      - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-64 >
+  segment_routing_mpls:
+    enabled: < true | false >
+    router_id: < router_id >
 ```
 
 #### Service Routing Protocols Model

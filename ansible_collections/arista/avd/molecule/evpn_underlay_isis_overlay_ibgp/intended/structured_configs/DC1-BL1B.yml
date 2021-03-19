@@ -301,6 +301,7 @@ ip_extcommunity_lists:
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
   net: 49.0001.0001.0001.0007.00
   router_id: 192.168.255.11
   no_passive_interfaces:

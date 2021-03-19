@@ -478,6 +478,9 @@ Router OSPF not defined
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Log Adjacency Changes | True |
+| SR MPLS Enabled | True |
+| SR MPLS Router-ID | 192.168.255.3 |
 
 ### ISIS Interfaces Summary
 
@@ -502,6 +505,9 @@ router isis EVPN_UNDERLAY
    address-family ipv4 unicast
       maximum-paths 2
    !
+   segment-routing mpls
+      router-id 192.168.255.3
+      no shutdown
 ```
 
 
