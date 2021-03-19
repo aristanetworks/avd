@@ -597,6 +597,7 @@ Router OSPF not defined
 | Net-ID | 49.0001.0001.0000.0003.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Log Adjacency Changes | True |
 
 ### ISIS Interfaces Summary
 
