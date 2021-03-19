@@ -29,6 +29,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
+  changed_when: false
   tags: [build, provision]
 
 - name: Generate TOC for fabric documentation

@@ -25,6 +25,7 @@
     src: eos-device-documentation.j2
     dest: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
   delegate_to: localhost
+  changed_when: false
   tags: [build, provision]
 
 - name: Generate TOC for device documentation
