@@ -192,12 +192,12 @@ interface Vlan24
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 100 | 192.168.255.3 | enabled |  Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | 100 | 10 | True |
+| 100 | 192.168.255.3 | enabled | Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | 100 | 10 | True |
 | 101 | 1.0.1.1 | enabled | Ethernet2.101 <br> | disabled | default | disabled | enabled | - | - | - |
-| 200 | 192.168.254.1 | disabled | - | disabled | 5 | Always | enabled | - | - | - |
-| 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
-| 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
-| 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
+| 200 | 192.168.254.1 | disabled |- | disabled | 5 | Always | enabled | - | - | - |
+| 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -231,7 +231,6 @@ interface Vlan24
 | Port-Channel12 | 0.0.0.12 | 99 | True |
 | Vlan24 | 0.0.0.24 | 99 | True |
 | Loopback2 | 0.0.0.2 | - | - |
-No redsitribution configured
 
 ### Router OSPF Device Configuration
 
@@ -257,10 +256,10 @@ router ospf 101 vrf CUSTOMER01
    router-id 1.0.1.1
    passive-interface default
    no passive-interface Ethernet2.101
-   summary 10.0.0.0/8
-   summary 20.0.0.0/8 tag 10
-   summary 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
-   summary 40.0.0.0/8 not-advertise
+   summary-address 10.0.0.0/8
+   summary-address 20.0.0.0/8 tag 10
+   summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
+   summary-address 40.0.0.0/8 not-advertise
 !
 router ospf 200 vrf ospf_zone
    log-adjacency-changes detail
@@ -278,7 +277,6 @@ router ospf 400
 !
 router ospf 500
    max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
-
 ```
 
 ## Router BFD

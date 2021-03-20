@@ -390,6 +390,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
 | 101 | 192.168.255.5 | enabled |  Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
+### Router OSPF route summary
+
+
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
