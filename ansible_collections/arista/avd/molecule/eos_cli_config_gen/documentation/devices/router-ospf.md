@@ -192,11 +192,12 @@ interface Vlan24
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 100 | 192.168.255.3 | enabled |  Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | 100 | 10 | True |
-| 200 | 192.168.254.1 | disabled | - | disabled | 5 | Always | enabled | - | - | - |
-| 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
-| 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
-| 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
+| 100 | 192.168.255.3 | enabled | Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | 100 | 10 | True |
+| 101 | 1.0.1.1 | enabled | Ethernet2.101 <br> | disabled | default | disabled | enabled | - | - | - |
+| 200 | 192.168.254.1 | disabled |- | disabled | 5 | Always | enabled | - | - | - |
+| 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -240,6 +241,16 @@ router ospf 100
    auto-cost reference-bandwidth 100
    maximum-paths 10
    mpls ldp sync default
+!
+router ospf 101 vrf CUSTOMER01
+   log-adjacency-changes detail
+   router-id 1.0.1.1
+   passive-interface default
+   no passive-interface Ethernet2.101
+   summary-address 10.0.0.0/8
+   summary-address 20.0.0.0/8 tag 10
+   summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
+   summary-address 40.0.0.0/8 not-advertise
 !
 router ospf 200 vrf ospf_zone
    log-adjacency-changes detail

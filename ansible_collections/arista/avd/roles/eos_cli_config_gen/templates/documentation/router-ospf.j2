@@ -6,7 +6,7 @@
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-{%     for process in router_ospf.process_ids %}
+{%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%         set router_id = router_ospf.process_ids[process].router_id | arista.avd.default ('-') %}
 {%         if router_ospf.process_ids[process].passive_interface_default is arista.avd.defined(true) %}
 {%             set passive_interface_default = 'enabled' %}
@@ -45,8 +45,9 @@
 {%         set auto_cost_reference_bandwidth = router_ospf.process_ids[process].auto_cost_reference_bandwidth | arista.avd.default('-') %}
 {%         set maximum_paths = router_ospf.process_ids[process].maximum_paths | arista.avd.default('-') %}
 {%         set mpls_ldp_sync_default = router_ospf.process_ids[process].mpls_ldp_sync_default | arista.avd.default('-') %}
-| {{ process }} | {{ router_id }} | {{ passive_interface_default }} | {{ no_passive_interfaces.list }} | {{ bgp_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} |
+| {{ process }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bgp_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} |
 {%     endfor %}
+{# Router Redistribution #}
 {%     set has = namespace() %}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
@@ -60,7 +61,7 @@
 
 | Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
 | ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
-{%         for process in router_ospf.process_ids %}
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             if router_ospf.process_ids[process].redistribute is arista.avd.defined %}
 {%                 if router_ospf.process_ids[process].redistribute.connected is defined %}
 {%                     set connected = 'enabled' %}
@@ -78,6 +79,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# Max-Metric #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
 {%         if router_ospf.process_ids[process].max_metric is arista.avd.defined %}
@@ -90,7 +92,7 @@
 
 | Process ID | Router-LSA | External-LSA (metric) | Include Stub | On Startup Delay | Summary-LSA (metric) |
 | ---------- | ---------- | --------------------- | ------------ | ---------------- | -------------------- |
-{%         for process in router_ospf.process_ids %}
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             if router_ospf.process_ids[process].max_metric.router_lsa is defined %}
 {%                 if router_ospf.process_ids[process].max_metric.router_lsa.external_lsa is defined %}
 {%                     set external_lsa = 'enabled' %}
@@ -115,6 +117,31 @@
 {%                     set summary_lsa = 'disabled' %}
 {%                 endif %}
 | {{ process }} | enabled | {{ external_lsa }} | {{ include_stub }} | {{ on_startup }} | {{ summary_lsa }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# Route Summary #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids %}
+{%         if router_ospf.process_ids[process].summary is arista.avd.defined %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### Router OSPF route summary
+
+| Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
+|------------|--------|-----|---------------------|----------------|
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             if router_ospf.process_ids[process].summary_address is arista.avd.defined %}
+{%                 for summary in router_ospf.process_ids[process].summary_address %}
+{%                     set summary_prefix = summary.prefix| arista.avd.default('-') %}
+{%                     set summary_tag = summary.tag | arista.avd.default('-') %}
+{%                     set summary_attribute_map = summary.attribute_map | arista.avd.default('-') %}
+{%                     set summary_not_advertise = summary.not_advertise | arista.avd.default('-') %}
+| {{ process }} | {{ summary_prefix }} | {{ summary_tag }} | {{ summary_attribute_map }} | {{ summary_not_advertise }} |
+{%                 endfor %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -152,28 +179,40 @@
 {%         if ethernet_interface_ospf.configured %}
 {%             for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%                 if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
-| {{ ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].ospf_area }} | {{ ethernet_interfaces[ethernet_interface].ospf_cost | arista.avd.default('-') }} | {{ ethernet_interfaces[ethernet_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
+{%                     set ospf_area = ethernet_interfaces[ethernet_interface].ospf_area %}
+{%                     set ospf_cost = ethernet_interfaces[ethernet_interface].ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = ethernet_interfaces[ethernet_interface].ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ ethernet_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if port_channel_interface_ospf.configured %}
 {%             for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 {%                 if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
-| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].ospf_area }} | {{ port_channel_interfaces[port_channel_interface].ospf_cost | arista.avd.default('-') }} | {{ port_channel_interfaces[port_channel_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
+{%                     set ospf_area = port_channel_interfaces[port_channel_interface].ospf_area %}
+{%                     set ospf_cost = port_channel_interfaces[port_channel_interface].ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = port_channel_interfaces[port_channel_interface].ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ port_channel_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if vlan_interface_ospf.configured %}
 {%             for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 {%                 if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {{ vlan_interfaces[vlan_interface].ospf_cost | arista.avd.default('-') }} | {{ vlan_interfaces[vlan_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
+{%                     set ospf_area = vlan_interfaces[vlan_interface].ospf_area %}
+{%                     set ospf_cost = vlan_interfaces[vlan_interface].ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = vlan_interfaces[vlan_interface].ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ vlan_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%         if loopback_interface_ospf.configured %}
 {%             for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
 {%                 if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].ospf_area }} | {{ loopback_interfaces[loopback_interface].ospf_cost | arista.avd.default('-') }} | {{ loopback_interfaces[loopback_interface].ospf_network_point_to_point | arista.avd.default('-') }} |
+{%                     set ospf_area = loopback_interfaces[loopback_interface].ospf_area %}
+{%                     set ospf_cost = loopback_interfaces[loopback_interface].ospf_cost | arista.avd.default('-') %}
+{%                     set ospf_network_point_to_point = loopback_interfaces[loopback_interface].ospf_network_point_to_point | arista.avd.default('-') %}
+| {{ loopback_interface }} | {{ ospf_area }} | {{ ospf_cost }} | {{ ospf_network_point_to_point }} |
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
