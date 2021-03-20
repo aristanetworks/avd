@@ -2,7 +2,7 @@
 
 - name: Gather ip reachability state between devices (loopback0 <-> loopback0)
   eos_command:
-    commands: "ping {{ loopback0_address | ipaddr('address')}} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address')}} repeat 1"
+    commands: "ping {{ loopback0_address | ipaddr('address') }} source {{ loopback_interfaces.Loopback0.ip_address | ipaddr('address') }} repeat 1"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address
@@ -29,3 +29,29 @@
   register: loopback0_reachability_results
   tags:
     - loopback0_reachability
+
+- include_tasks: ping_inband.yml
+  loop: "{{ management_interfaces | default({}, true) | dict2items }}"
+  loop_control:
+    loop_var: management_interface
+  when: |
+    (management_interfaces is arista.avd.defined )
+  tags:
+    - loopback0_reachability
+    - optional
+
+- name: Validate ip reachability from Inband Management to loopback0 in fabric
+  assert:
+    that:
+      - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search("1 received")
+    fail_msg: "100% packet loss"
+    quiet: true
+  loop: "{{ inb_mgmt_loopback0_reachability_state.results }}"
+  loop_control:
+    loop_var: inb_mgmt_loopback0_reachability_test
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: ( inb_mgmt_loopback0_reachability_test.skipped is not defined )
+  register: inb_mgmt_loopback0_reachability_results
+  tags:
+    - loopback0_reachability
+    - optional

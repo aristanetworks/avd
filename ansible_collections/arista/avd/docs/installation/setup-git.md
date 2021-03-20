@@ -30,10 +30,13 @@ $ pwd
 
 - Configure your project to use AVD repository as source of collections:
 
-```shell
+```ini
 # Update your ansible.cfg in your playbook project
-$ vim ansible.cfg
+# $ vim ansible.cfg
+[default]
+...
 collections_paths = /path/to/ansible/avd/collection_repository
+...
 ```
 
 ## Build & install collection from git

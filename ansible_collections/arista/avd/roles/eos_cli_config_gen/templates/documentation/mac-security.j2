@@ -1,5 +1,8 @@
 {% if mac_security is defined and mac_security is not none %}
-### MACsec Summary
+
+# MACsec
+
+## MACsec Summary
 
 {%     if mac_security.license is defined and mac_security.license is not none %}
 License is installed.
@@ -40,11 +43,9 @@ Keys:
 {%         endfor %}
 {%     endif %}
 
-### MACsec Device Configuration
+## MACsec Device Configuration
 
 ```eos
 {% include 'eos/mac-security.j2' %}
 ```
-{% else %}
-MACsec not defined
 {% endif %}

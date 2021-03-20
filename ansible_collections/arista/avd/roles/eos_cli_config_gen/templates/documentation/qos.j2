@@ -1,5 +1,8 @@
 {% if qos is defined %}
-### QOS Summary
+
+# QOS
+
+## QOS Summary
 
 {%     if qos.rewrite_dscp is defined and qos.rewrite_dscp == true %}
 QOS rewrite DSCP: **enabled**
@@ -38,11 +41,9 @@ QOS rewrite DSCP: **disabled**
 {%         endif %}
 {%     endif %}
 
-### QOS Device Configuration
+## QOS Device Configuration
 
 ```eos
 {% include 'eos/qos.j2' %}
 ```
-{% else %}
-QOS is not defined.
 {% endif %}

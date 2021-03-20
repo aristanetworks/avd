@@ -1,15 +1,16 @@
 {# eos - aaa authorization #}
-{% if aaa_authorization is defined and aaa_authorization is not none %}
-{%     if aaa_authorization.exec.default is defined and aaa_authorization.exec.default is not none %}
+{% if aaa_authorization is arista.avd.defined %}
+!
+{%     if aaa_authorization.exec.default is arista.avd.defined %}
 aaa authorization exec default {{ aaa_authorization.exec.default }}
 {%     endif %}
-{%     if aaa_authorization.serial_console is defined and aaa_authorization.serial_console == true %}
+{%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
 aaa authorization serial-console
 {%     endif %}
-{%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == false %}
+{%     if aaa_authorization.config_commands is arista.avd.defined(false) %}
 no aaa authorization config-commands
 {%     endif %}
-{%     if aaa_authorization.commands.all_default is defined and aaa_authorization.commands.all_default is not none %}
+{%     if aaa_authorization.commands.all_default is arista.avd.defined %}
 aaa authorization commands all default {{ aaa_authorization.commands.all_default }}
 {%     endif %}
 {% endif %}

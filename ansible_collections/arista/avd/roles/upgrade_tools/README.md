@@ -1,7 +1,7 @@
 # AVD Upgrade Tools
 
-This role can be used to upgrade AVD data model structures to facilate the upgrade path for **major** or **minor** releases of ansible avd.
-The role focuses on updating data structure for abstrated data model roles only, i.e. eos_l3ls_evpn.
+This role can be used to upgrade AVD data model structures to facilitate the upgrade path for **major** or **minor** releases of ansible avd.
+The role focuses on updating data structure for abstracted data model roles only, i.e. eos_designs (eos_l3ls_evpn).
 
 ## AVD 1.0.x to 1.1.x
 

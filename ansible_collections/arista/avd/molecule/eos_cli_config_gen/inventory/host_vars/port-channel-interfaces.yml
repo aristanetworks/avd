@@ -6,6 +6,16 @@ port_channel_interfaces:
     vlans: 110,201
     mode: trunk
     mlag: 5
+    storm_control:
+      broadcast:
+        level: 1
+        unit: percent
+      multicast:
+        level: 1
+        unit: percent
+      unknown_unicast:
+        level: 1
+        unit: percent
 
 
   Port-Channel3:
@@ -23,6 +33,16 @@ port_channel_interfaces:
     esi: 0000:0000:0303:0202:0101
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
+
+  Port-Channel51:
+    description: ipv6_prefix
+    vlans: 1-500
+    mode: trunk
+    ipv6_nd_prefixes:
+      a1::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
 
   Port-Channel100:
     type: routed

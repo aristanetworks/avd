@@ -1,4 +1,7 @@
 {% if ptp is defined and ptp is not none %}
+
+## PTP
+
 ### PTP Summary
 
 | PTP setting | Value |
@@ -20,6 +23,9 @@
 {%     if ptp.ttl is defined and ptp.ttl is not none %}
 | TTL | {{ ptp.ttl }} |
 {%     endif %}
+{%     if ptp.domain is defined and ptp.domain is not none %}
+| Domain | {{ ptp.domain }} |
+{%     endif %}
 {%     if ptp.message_type is defined and ptp.message_type is not none %}
 {%         if ptp.message_type.general is defined and ptp.message_type.general is not none %}
 {%             if ptp.message_type.general.dscp is defined and ptp.message_type.general.dscp is not none %}
@@ -38,7 +44,4 @@
 ```eos
 {% include 'eos/ptp.j2' %}
 ```
-{% else %}
-PTP is not defined.
 {% endif %}
-

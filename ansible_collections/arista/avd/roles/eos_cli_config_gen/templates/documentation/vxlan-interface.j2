@@ -1,4 +1,7 @@
 {% if vxlan_tunnel_interface is defined %}
+
+## VXLAN Interface
+
 ### VXLAN Interface Summary
 
 #### Source Interface: {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
@@ -32,6 +35,4 @@
 ```eos
 {% include 'eos/vxlan-interface.j2' %}
 ```
-{% else %}
-No VXLAN interfaces defined
 {% endif %}

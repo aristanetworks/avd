@@ -1,14 +1,23 @@
-{% if management_security is defined and management_security is not none %}
-## Management Security
+{% if management_security is arista.avd.defined %}
 
-{%     if management_security.password is defined and management_security.password is not none %}
-{%       if management_security.password.encryption_key_common is defined and management_security.password.encryption_key_common == true %}
-   Management Security password encryption is common.
-{%       endif %}
+# Management Security
+
+## Management Security Summary
+
+{%     if management_security.entropy_source is arista.avd.defined %}
+Management Security entropy source is {{ management_security.entropy_source }}
+
 {%     endif %}
+{%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
+Management Security password encryption is common.
 
-{%     if management_security.entropy_source is defined and management_security.entropy_source is not none %}
- Management Security entropy source is {{ management_security.entropy_source }}
+{%     endif %}
+{%     if management_security.ssl_profiles is arista.avd.defined %}
+| SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
+| ------------ | --------------------- | -------------------- | ------------ |
+{%       for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+| {{ ssl_profile.name }} | {{ssl_profile.tls_versions | arista.avd.default('-')}} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} |
+{%       endfor %}
 {%     endif %}
 
 ## Management Security Configuration
@@ -16,6 +25,4 @@
 ```eos
 {% include 'eos/management-security.j2' %}
 ```
-{% else %}
-Management security not defined
 {% endif %}

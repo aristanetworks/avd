@@ -1,5 +1,7 @@
 {% if ipv6_static_routes is defined and ipv6_static_routes is not none %}
 
+## IPv6 Static Routes
+
 ### IPv6 Static Routes Summary
 
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
@@ -13,6 +15,4 @@
 ```eos
 {% include 'eos/ipv6-static-routes.j2' %}
 ```
-{% else %}
-IPv6 static routes not defined
 {% endif %}
