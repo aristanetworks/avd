@@ -1,4 +1,7 @@
 {% if aaa_authorization is defined and aaa_authorization is not none %}
+
+## AAA Authorization
+
 ### AAA Authorization Summary
 
 | Type | User Stores |
@@ -23,6 +26,4 @@ Authorization for serial console is enabled.
 {% include 'eos/aaa-authorization.j2' %}
 !
 ```
-{% else %}
-AAA authorization not defined
 {% endif %}

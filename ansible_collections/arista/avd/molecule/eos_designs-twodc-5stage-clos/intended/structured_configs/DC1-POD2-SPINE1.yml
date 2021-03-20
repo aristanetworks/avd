@@ -35,10 +35,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 ethernet_interfaces:
   Ethernet3:
     peer: DC1-POD2-LEAF1A
@@ -127,6 +123,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 peer_filters: null
 router_bgp:
   as: 65120
@@ -143,14 +144,14 @@ router_bgp:
       peer_filter: LEAF-AS-RANGE
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:

@@ -25,7 +25,7 @@
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
-    - [Bfd Multihop Interval](#bfd-multihop-interval)
+    - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -95,6 +95,7 @@
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
+      - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
@@ -233,6 +234,8 @@ aaa_authentication:
   login:
     default: < group group_name | local | none > < group group_name | local | none >
     serial_console: < group group_name | local | none > < group group_name | local | none >
+  enable:
+    default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
     default: < group group_name >
   policies:
@@ -363,13 +366,14 @@ banners:
     < text ending with EOF >
 ```
 
-### Bfd Multihop Interval
+### Router BFD
 
 ```yaml
-bfd_multihop:
-  interval: < rate in milliseconds >
-  min_rx: < rate in milliseconds >
-  multiplier: < 3-50 >
+router_bfd:
+  multihop:
+    interval: < rate in milliseconds >
+    min_rx: < rate in milliseconds >
+    multiplier: < 3-50 >
 ```
 
 ### Custom Templates
@@ -530,7 +534,9 @@ hardware_counters:
 
 ```yaml
 tcam_profile:
-  - < tcam_profile >
+  system: < tcam profile name to activate >
+  profiles:
+    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
 ```
 
 #### Platform
@@ -648,6 +654,7 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
+    l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
@@ -804,6 +811,15 @@ port_channel_interfaces:
       ipv4:
         sparse_mode: < true | false >
     service_profile: < qos_profile >
+    ospf_network_point_to_point: < true | false >
+    ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_keys:
+      < id >:
+        hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
 ```
 
 #### VLAN Interfaces
@@ -1465,6 +1481,19 @@ ip_routing: < true | false >
 ipv6_unicast_routing: < true | false >
 ```
 
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak_routes:
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+```
+
 #### Router BGP Configuration
 
 ```yaml
@@ -1486,7 +1515,7 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-      send_community: < true | false >
+      send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
@@ -1632,6 +1661,9 @@ router_bgp:
     redistribute_routes:
       < route_type >:
   address_family_ipv6:
+    networks:
+      < prefix_ipv6 >:
+        route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
@@ -1676,7 +1708,7 @@ router_bgp:
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           default_originate:
             always: < true | false >
@@ -1692,7 +1724,7 @@ router_bgp:
           description: < description >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < string | leave empty for all communities >
+          send_community: < standard | extended | large | all >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -1729,6 +1761,7 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+
 #### Router OSPF Configuration
 
 ```yaml
@@ -1751,6 +1784,17 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+      auto_cost_reference_bandwidth: < bandwidth in mbps >
+      maximum_paths: < Integer 1-32 >
+      max_metric:
+        router_lsa:
+          external_lsa:
+            override_metric: < Integer 1-16777215 >
+          include_stub: < true | false >
+          on_startup: < "wait-for-bgp" | Integer 5-86400 >
+          summary_lsa:
+            override_metric: < Integer 1-16777215 >
+      mpls_ldp_sync_default: < true | false >
 ```
 
 #### Router ISIS Configuration
@@ -1761,11 +1805,15 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
+  log_adjacency_changes: < true | false >
   no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
   address_family: < List of Address Families >
   isis_af_defaults:
-      - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-64 >
+  segment_routing_mpls:
+    enabled: < true | false >
+    router_id: < router_id >
 ```
 
 #### Service Routing Protocols Model

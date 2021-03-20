@@ -10,10 +10,12 @@
 {%                 endif %}
 {%                 set adapter_speed = adapter.speed | arista.avd.default( adapter_profile.speed ) %}
 {%                 set adapter_mode = adapter.mode | arista.avd.default( adapter_profile.mode ) %}
+{%                 set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default( adapter_profile.l2_mtu ) %}
 {%                 set adapter_vlans = adapter.vlans | arista.avd.default( adapter_profile.vlans ) %}
 {%                 set adapter_native_vlan = adapter.native_vlan | arista.avd.default( adapter_profile.native_vlan ) %}
 {%                 set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default( adapter_profile.spanning_tree_portfast ) %}
 {%                 set adapter_spanning_tree_bpdufilter = adapter.spanning_tree_bpdufilter | arista.avd.default( adapter_profile.spanning_tree_bpdufilter ) %}
+{%                 set adapter_spanning_tree_bpduguard = adapter.spanning_tree_bpduguard | arista.avd.default( adapter_profile.spanning_tree_bpduguard ) %}
 {%                 set adapter_storm_control = adapter.storm_control | arista.avd.default( adapter_profile.storm_control ) %}
 {%                 set adapter_port_channel = adapter.port_channel | arista.avd.default( adapter_profile.port_channel ) %}
 {%                 set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default( adapter_profile.flowcontrol ) %}
@@ -28,6 +30,9 @@
 {%                 if adapter_speed is arista.avd.defined %}
     speed: {{ adapter_speed }}
 {%                 endif %}
+{%                 if adapter_l2_mtu is arista.avd.defined %}
+    l2_mtu: {{ adapter_l2_mtu }}
+{%                 endif %}
     type: switched
     shutdown: false
     mode: {{ adapter_mode }}
@@ -40,6 +45,9 @@
 {%                 endif %}
 {%                 if adapter_spanning_tree_bpdufilter is arista.avd.defined %}
     spanning_tree_bpdufilter: {{ adapter_spanning_tree_bpdufilter }}
+{%                 endif %}
+{%                 if adapter_spanning_tree_bpduguard is arista.avd.defined %}
+    spanning_tree_bpduguard: {{ adapter_spanning_tree_bpduguard }}
 {%                 endif %}
 {%                 if adapter_storm_control is arista.avd.defined %}
     storm_control:

@@ -53,7 +53,6 @@ svi_profiles:
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
-
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
 tenants:
@@ -191,7 +190,7 @@ tenants:
           < IPv4_address or IPv6_address >:
             remote_as: < remote ASN >
             description: < description >
-            send_community: < standard | extended | large | empty >
+            send_community: < standard | extended | large | all >
             next_hop_self: < true | false >
             maximum_routes: < 0-4294967294 >
             default_originate:
@@ -278,7 +277,6 @@ tenants:
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
-
 ```
 
 **Example:**

@@ -35,10 +35,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-SPINE1
@@ -139,6 +135,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65100
   router_id: 172.16.100.2
@@ -153,7 +154,7 @@ router_bgp:
       type: ipv4
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
   neighbors:
     172.16.11.65:
       peer_group: IPv4-UNDERLAY-PEERS

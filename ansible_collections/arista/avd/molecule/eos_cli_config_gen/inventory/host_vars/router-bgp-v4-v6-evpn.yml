@@ -12,12 +12,12 @@ router_bgp:
       remote_as: 65000
       password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     IPV6-UNDERLAY:
       remote_as: 65000
       password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY:
       remote_as: 65000
       next_hop_unchanged: true
@@ -25,20 +25,20 @@ router_bgp:
       bfd: true
       ebgp_multihop: 5
       password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
     IPV4-UNDERLAY-MLAG:
       remote_as: 65100
       next_hop_self: true
       password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     IPV6-UNDERLAY-MLAG:
       remote_as: 65100
       next_hop_self: true
       password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
   neighbors:
     10.50.2.1:
       peer_group: IPV4-UNDERLAY

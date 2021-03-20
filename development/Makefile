@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 # AVD Shell container information
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG ?= 3.6-v2.0
+DOCKER_TAG ?= 3.6
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 # Vscode container information
 VSCODE_CONTAINER_NAME ?= avdteam/vscode
@@ -49,6 +49,7 @@ update: ## Get latest version of AVD runner and MKDOCs server
 
 .PHONY: run
 run: ## Run ansible-avd container
+	docker pull $(CONTAINER) && \
 	docker run --rm -it \
 		-e AVD_REQUIREMENTS=$(PIP_REQ) \
 		-e AVD_ANSIBLE=$(ANSIBLE_VERSION) \

@@ -110,16 +110,10 @@ local_users:
 clock:
 {% include 'base/clock-timezone.j2' %}
 
-
 {# VRFs #}
 ### VRFs ###
 vrfs:
 {% include 'base/mgmt-vrf.j2' %}
-
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -168,6 +162,11 @@ prefix_lists:
 route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
+
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###

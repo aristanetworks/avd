@@ -153,10 +153,6 @@ vrfs:
 {# Tenant VRFS #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
 
 {# Port-Channel Interfaces #}
 ### Port-Channel Interfaces ###
@@ -263,6 +259,11 @@ prefix_lists:
 route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
+
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
 
 {# BGP Configuration #}
 ### Routing - BGP ###

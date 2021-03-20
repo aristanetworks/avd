@@ -39,10 +39,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SUPER-SPINE2
@@ -142,6 +138,11 @@ route_maps:
         - as 65211
       20:
         type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65102
   router_id: 172.16.10.2
@@ -162,7 +163,7 @@ router_bgp:
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:

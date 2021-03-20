@@ -4,16 +4,16 @@
 {%     set ns.platform_defined = false %}
 {%     if switch.platform in platform_setting.platforms %}
 {%         set ns.platform_defined = true %}
-{%         if platform_setting.tcam_profile is defined %}
-  - {{ platform_setting.tcam_profile }}
+{%         if platform_setting.tcam_profile is arista.avd.defined %}
+  system: {{ platform_setting.tcam_profile }}
 {%         endif %}
 {%         break %}
 {%     endif %}
 {% endfor %}
 {% for platform_setting in platform_settings if ns.platform_defined == false %}
 {%     if 'default' in platform_setting.platforms %}
-{%         if platform_setting.tcam_profile is defined %}
-  - {{ platform_setting.tcam_profile }}
+{%         if platform_setting.tcam_profile is arista.avd.defined %}
+  system: {{ platform_setting.tcam_profile }}
 {%         endif %}
 {%         break %}
 {%     endif %}

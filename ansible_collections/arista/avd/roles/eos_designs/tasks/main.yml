@@ -29,6 +29,16 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
+  changed_when: false
+  tags: [build, provision]
+
+- name: Generate TOC for fabric documentation
+  add_toc:
+    md_file: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
+    skip_lines: 3
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
   tags: [build, provision]
 
 - name: Generate fabric point-to-point links summary in csv format.
