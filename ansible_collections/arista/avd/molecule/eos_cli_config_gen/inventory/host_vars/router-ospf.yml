@@ -25,7 +25,7 @@ router_ospf:
       bfd_enable: false
       no_passive_interfaces:
         - Ethernet2.101
-      summary:
+      summary_address:
         - prefix: 10.0.0.0/8
         - prefix: 20.0.0.0/8
           tag: 10

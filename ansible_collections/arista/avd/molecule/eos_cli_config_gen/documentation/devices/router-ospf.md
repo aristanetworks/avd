@@ -214,15 +214,6 @@ interface Vlan24
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
-### Router OSPF route summary
-
-| Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
-|------------|--------|-----|---------------------|----------------|
-| 101 | 10.0.0.0/8 | - | - | - |
-| 101 | 20.0.0.0/8 | 10 | - | - |
-| 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
-| 101 | 40.0.0.0/8 | - | - | True |
-
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |

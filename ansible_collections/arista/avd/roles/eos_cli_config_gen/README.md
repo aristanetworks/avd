@@ -1773,7 +1773,7 @@ router_ospf:
       max_lsa: < integer >
       default_information_originate:
         always: true
-      summary:
+      summary_address:
         - prefix: < summary_prefix_01 >
           tag: < string >
         - prefix: < summary_prefix_02 >

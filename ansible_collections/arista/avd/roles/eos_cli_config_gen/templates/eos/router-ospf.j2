@@ -81,8 +81,8 @@ router ospf {{ process_id }}
 {%     if router_ospf.process_ids[process_id].mpls_ldp_sync_default is arista.avd.defined(true) %}
    mpls ldp sync default
 {%     endif %}
-{%     if router_ospf.process_ids[process_id].summary is arista.avd.defined %}
-{%         for summary in router_ospf.process_ids[process_id].summary %}
+{%     if router_ospf.process_ids[process_id].summary_address is arista.avd.defined %}
+{%         for summary in router_ospf.process_ids[process_id].summary_address %}
 {%             if summary.prefix is arista.avd.defined %}
 {%                 if summary.tag is arista.avd.defined %}
    summary-address {{ summary.prefix }} tag {{ summary.tag }}

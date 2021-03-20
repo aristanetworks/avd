@@ -134,8 +134,8 @@
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
 |------------|--------|-----|---------------------|----------------|
 {%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
-{%             if router_ospf.process_ids[process].summary is arista.avd.defined %}
-{%                 for summary in router_ospf.process_ids[process].summary %}
+{%             if router_ospf.process_ids[process].summary_address is arista.avd.defined %}
+{%                 for summary in router_ospf.process_ids[process].summary_address %}
 {%                     set summary_prefix = summary.prefix| arista.avd.default('-') %}
 {%                     set summary_tag = summary.tag | arista.avd.default('-') %}
 {%                     set summary_attribute_map = summary.attribute_map | arista.avd.default('-') %}
