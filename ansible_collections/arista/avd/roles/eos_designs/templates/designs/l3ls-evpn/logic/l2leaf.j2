@@ -7,8 +7,6 @@
 {%             set switch.mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
 {%             set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode | arista.avd.default(
                                                l2leaf.defaults.spanning_tree_mode ) %}
-{%             set switch.spanning_tree_root_super = l2leaf.node_groups[l2leaf_node_group].spanning_tree_root_super | arista.avd.default(
-                                               false ) %}
 {%             set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled | arista.avd.default(
                                                 l2leaf.defaults.igmp_snooping_enabled,
                                                 default_igmp_snooping_enabled ) %}

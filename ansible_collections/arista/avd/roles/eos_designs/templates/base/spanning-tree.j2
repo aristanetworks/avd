@@ -1,5 +1,5 @@
 {# spanning-tree #}
-{% if switch.spanning_tree_root_super is arista.avd.defined %}
+{% if switch.spanning_tree_root_super is arista.avd.defined(true) %}
   root_super: true
 {% endif %}
 {% if switch.spanning_tree_mode is arista.avd.defined %}

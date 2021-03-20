@@ -39,7 +39,7 @@
 {%             set switch.spanning_tree_priority = l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority | arista.avd.default(
                                                    l3leaf.defaults.spanning_tree_priority ) %}
 {%             set switch.spanning_tree_root_super = l3leaf.node_groups[l3leaf_node_group].spanning_tree_root_super | arista.avd.default(
-                                               false ) %}
+                                               l3leaf.defaults.spanning_tree_root_super ) %}
 {%             set switch.mlag = l3leaf.node_groups[l3leaf_node_group].mlag | arista.avd.default(
                                  l3leaf.defaults.mlag,
                                  true ) %}
