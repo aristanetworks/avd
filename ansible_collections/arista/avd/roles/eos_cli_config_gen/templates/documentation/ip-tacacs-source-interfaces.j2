@@ -1,4 +1,7 @@
 {% if ip_tacacs_source_interfaces is defined and ip_tacacs_source_interfaces is not none %}
+
+## IP TACACS Source Interfaces
+
 ### IP TACACS Source Interfaces
 
 | VRF | Source Interface Name |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/ip-tacacs-source-interfaces.j2' %}
 ```
-{% else %}
-IP TACACS source interfaces not defined
 {% endif %}

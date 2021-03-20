@@ -14,10 +14,12 @@ port_profiles:
   < port_profile_1 >:
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
+    l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     native_vlan: <native vlan number>
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < true | false >
+    spanning_tree_bpduguard: < true | false >
     flowcontrol:
       received: < received | send | on >
     qos_profile: < qos_profile_name >
@@ -81,6 +83,7 @@ servers:
         # Spanning Tree
         spanning_tree_portfast: < edge | network >
         spanning_tree_bpdufilter: < true | false >
+        spanning_tree_bpduguard: < true | false >
 
         # Flow control | Optional
         flowcontrol:

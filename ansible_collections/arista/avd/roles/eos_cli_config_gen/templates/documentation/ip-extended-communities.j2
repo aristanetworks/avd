@@ -1,4 +1,7 @@
 {% if ip_extcommunity_lists is defined and ip_extcommunity_lists is not none %}
+
+## IP Extended Communities
+
 ### IP Extended Communities Summary
 
 | Sequence | Type | Match and/or Set |
@@ -16,6 +19,4 @@
 ```eos
 {% include 'eos/ip-extended-communities.j2' %}
 ```
-{% else %}
-No extended community defined
 {% endif %}

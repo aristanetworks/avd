@@ -1,4 +1,7 @@
 {% if interface_defaults is arista.avd.defined %}
+
+## Interface Defaults
+
 ### Interface Defaults Summary
 {%     if interface_defaults.ethernet.shutdown is arista.avd.defined %}
 
@@ -14,6 +17,4 @@
 ```eos
 {% include 'eos/interface-defaults.j2' %}
 ```
-{% else %}
-No Interface Defaults defined
 {% endif %}

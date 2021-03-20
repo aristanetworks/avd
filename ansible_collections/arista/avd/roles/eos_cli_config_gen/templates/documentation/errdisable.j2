@@ -1,5 +1,8 @@
 {# eos - Errdisable #}
 {% if errdisable is defined and errdisable is not none %}
+
+# Errdisable
+
 {%     if errdisable.recovery is defined %}
 {%         if errdisable.detect.causes is defined %}
 |  Detect Cause | Enabled |
@@ -71,6 +74,4 @@
 ```eos
 {% include 'eos/errdisable.j2' %}
 ```
-{% else %}
-Errdisable is not defined.
 {% endif %}

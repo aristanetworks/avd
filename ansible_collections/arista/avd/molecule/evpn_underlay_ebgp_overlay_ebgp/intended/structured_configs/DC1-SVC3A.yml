@@ -1,5 +1,5 @@
 l3leaf_node_group: DC1_SVC3
-switch_platform: 7280R
+switch_platform: 7050SX3
 switch_bgp_as: 65103
 leaf_id: 4
 switch_mgmt_ip: 192.168.200.108/24
@@ -78,16 +78,7 @@ leaf_mlag_peer_id: 5
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
-hardware:
-  speed_groups:
-    1:
-      serdes: 10G
-    2:
-      serdes: 25G
-    3:
-      serdes: 25G
-    4:
-      serdes: 10G
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -303,9 +294,11 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: trunk
+    l2_mtu: 8000
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -328,6 +321,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -437,12 +431,14 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: server04_inherit_all_from_profile_Eth1
+    l2_mtu: 8000
     type: switched
     shutdown: false
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -468,6 +464,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -486,12 +483,14 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: server06_override_profile_Eth1
+    l2_mtu: 8000
     type: switched
     shutdown: false
     mode: access
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20
@@ -511,12 +510,14 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: server07_inherit_all_from_profile_port_channel_Eth1
+    l2_mtu: 8000
     type: switched
     shutdown: false
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -545,6 +546,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -566,12 +568,14 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: server09_override_profile_no_port_channel_Eth1
+    l2_mtu: 8000
     type: switched
     shutdown: false
     mode: access
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20
@@ -886,12 +890,8 @@ vxlan_tunnel_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
-tcam_profile:
-- vxlan-routing
-platform:
-  sand:
-    lag:
-      hardware_only: true
+tcam_profile: null
+platform: null
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs:
@@ -918,8 +918,8 @@ mlag_configuration:
   local_interface: Vlan4094
   peer_address: 10.255.252.7
   peer_link: Port-Channel5
-  reload_delay_mlag: 780
-  reload_delay_non_mlag: 1020
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -953,14 +953,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
-    MLAG-PEERS:
+      send_community: all
+    MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65103
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
       route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -968,7 +968,7 @@ router_bgp:
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.24:

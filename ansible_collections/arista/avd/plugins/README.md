@@ -169,3 +169,29 @@ CVP_CONTAINERS:
   DC1_SPINES:
     parent_container: DC1_FABRIC
 ```
+### Add Table Of Contents to existing MarkDown file
+
+The `arista.avd.add_toc` module provides following capabilities:
+  - Wrapper of md_toc python library
+  - Produce Table of Contents and add to MD file between markers
+
+The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
+The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
+
+**Example:**
+
+To use this module:
+
+```yaml
+tasks:
+- name: Generate TOC for fabric documentation
+  add_toc:
+    md_file: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
+    skip_lines: 3 #Default is 0
+    #toc_levels: 2
+    #toc_marker: '<!-- toc -->'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
+```

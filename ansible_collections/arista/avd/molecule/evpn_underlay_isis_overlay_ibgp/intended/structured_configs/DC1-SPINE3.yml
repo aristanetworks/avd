@@ -191,6 +191,7 @@ router_bgp:
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
   net: 49.0001.0001.0000.0003.00
   router_id: 192.168.255.3
   no_passive_interfaces:

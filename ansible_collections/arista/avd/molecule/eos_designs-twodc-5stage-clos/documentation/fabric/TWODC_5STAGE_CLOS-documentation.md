@@ -1,19 +1,21 @@
 # TWODC_5STAGE_CLOS
 
-## Table of Contents
+# Table of Contents
+<!-- toc -->
 
-- [TWODC_5STAGE_CLOS](#twodc5stageclos)
-  - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
-  - [Fabric Topology](#fabric-topology)
-  - [Fabric IP Allocation](#fabric-ip-allocation)
-    - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
-    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-    - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
-    - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-    - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
-    - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
+  - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
+- [Fabric Topology](#fabric-topology)
+- [Fabric IP Allocation](#fabric-ip-allocation)
+  - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
+  - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+  - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
+  - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
+  - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
-## Fabric Switches and Management IP
+<!-- toc -->
+# Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
@@ -43,7 +45,7 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-### Fabric Switches with inband Management IP
+## Fabric Switches with inband Management IP
 | POD | Type | Node | Management IP | Inband Interface |
 | --- | ---- | ---- | ------------- | ---------------- |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 172.21.110.4/24 | Vlan4085 |
@@ -51,7 +53,7 @@
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 172.21.110.6/24 | Vlan4085 |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 172.21.210.4/24 | Vlan4092 |
 
-## Fabric Topology
+# Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -104,9 +106,9 @@
 | overlay-controller | DC2-RS2 | Ethernet1 | super-spine | DC2-SUPER-SPINE1 | Ethernet5 |
 | overlay-controller | DC2-RS2 | Ethernet2 | super-spine | DC2-SUPER-SPINE1 | Ethernet7 |
 
-## Fabric IP Allocation
+# Fabric IP Allocation
 
-### Fabric Point-To-Point Links
+## Fabric Point-To-Point Links
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
@@ -119,7 +121,7 @@
 | 172.17.120.0/24 | 256 | 4 | 1.57 % |
 | 172.17.210.0/24 | 256 | 4 | 1.57 % |
 
-### Point-To-Point Links Node Allocation
+## Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
@@ -162,7 +164,7 @@
 | DC2-RS2 | Ethernet1 | 172.17.20.9/31 | DC2-SUPER-SPINE1 | Ethernet5 | 172.17.20.8/31 |
 | DC2-RS2 | Ethernet2 | 172.17.20.11/31 | DC2-SUPER-SPINE1 | Ethernet7 | 172.17.20.10/31 |
 
-### Overlay Loopback Interfaces (BGP EVPN Peering)
+## Overlay Loopback Interfaces (BGP EVPN Peering)
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
@@ -174,7 +176,7 @@
 | 172.16.200.0/24 | 256 | 2 | 0.79 % |
 | 172.16.210.0/24 | 256 | 3 | 1.18 % |
 
-### Loopback0 Interfaces Node Allocation
+## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -198,7 +200,7 @@
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
 
-### VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
@@ -206,7 +208,7 @@
 | 172.18.120.0/24 | 256 | 1 | 0.4 % |
 | 172.18.210.0/24 | 256 | 1 | 0.4 % |
 
-### VTEP Loopback Node allocation
+## VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |

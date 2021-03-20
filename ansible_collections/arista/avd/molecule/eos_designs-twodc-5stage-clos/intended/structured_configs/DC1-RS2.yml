@@ -163,7 +163,7 @@ router_bgp:
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:

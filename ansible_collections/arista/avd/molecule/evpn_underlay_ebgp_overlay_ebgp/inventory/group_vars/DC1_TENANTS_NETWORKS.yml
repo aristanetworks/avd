@@ -117,7 +117,7 @@ tenants:
             local_as: 123
           fd5a:fe45:8831:06c5::a:
             remote_as: 12345
-            send_community:
+            send_community: all
             address_family:
               - ipv6
             nodes: [DC1-BL1A, DC1-BL1B]

@@ -164,6 +164,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -256,7 +257,7 @@ vxlan_tunnel_interface:
         Tenant_A_WEB_Zone:
           vni: 11
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
@@ -305,14 +306,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.0:
