@@ -654,6 +654,7 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
+    l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >

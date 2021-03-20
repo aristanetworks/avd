@@ -11,8 +11,6 @@
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
-- [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -50,9 +48,6 @@
 - [Virtual Source NAT](#virtual-source-nat)
   - [Virtual Source NAT Summary](#virtual-source-nat-summary)
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
-- [Platform](#platform)
-  - [Platform Summary](#platform-summary)
-  - [Platform Configuration](#platform-configuration)
 
 <!-- toc -->
 # Management
@@ -185,18 +180,6 @@ daemon TerminAttr
    no shutdown
 ```
 
-# Hardware TCAM Profile
-
-TCAM profile __`vxlan-routing`__ is active
-
-## Hardware TCAM configuration
-
-```eos
-!
-hardware tcam
-   system profile vxlan-routing
-```
-
 # MLAG
 
 ## MLAG Summary
@@ -216,8 +199,8 @@ mlag configuration
    local-interface Vlan4094
    peer-address 10.255.252.7
    peer-link Port-Channel5
-   reload-delay mlag 780
-   reload-delay non-mlag 1020
+   reload-delay mlag 300
+   reload-delay non-mlag 330
 ```
 
 # Spanning Tree
@@ -488,6 +471,7 @@ interface Ethernet10
 interface Ethernet11
    description server04_inherit_all_from_profile_Eth1
    no shutdown
+   l2 mtu 8000
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -514,6 +498,7 @@ interface Ethernet12
 interface Ethernet13
    description server06_override_profile_Eth1
    no shutdown
+   l2 mtu 8000
    switchport
    switchport access vlan 210
    switchport mode access
@@ -536,6 +521,7 @@ interface Ethernet15
 interface Ethernet16
    description server09_override_profile_no_port_channel_Eth1
    no shutdown
+   l2 mtu 8000
    switchport
    switchport access vlan 210
    switchport mode access
@@ -1500,15 +1486,4 @@ vrf instance Tenant_C_WAN_Zone
 ```eos
 !
 ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.8
-```
-
-# Platform
-
-## Platform Summary
-
-## Platform Configuration
-
-```eos
-!
-platform sand lag hardware-only
 ```

@@ -17,6 +17,7 @@ port_profiles:
     spanning_tree_bpdufilter: true
     spanning_tree_bpduguard: false
     spanning_tree_portfast: edge
+    l2_mtu: 8000
     storm_control:
       all:
         level: 10
@@ -37,6 +38,7 @@ port_profiles:
     spanning_tree_bpdufilter: true
     spanning_tree_bpduguard: false
     spanning_tree_portfast: edge
+    l2_mtu: 8000
     storm_control:
       all:
         level: 10

@@ -1,5 +1,5 @@
 l3leaf_node_group: DC1_LEAF1
-switch_platform: 7280R
+switch_platform: 7050SX3
 switch_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
@@ -34,16 +34,7 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
-hardware:
-  speed_groups:
-    1:
-      serdes: 10G
-    2:
-      serdes: 25G
-    3:
-      serdes: 25G
-    4:
-      serdes: 10G
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -167,6 +158,7 @@ ethernet_interfaces:
     peer_interface: Eth1
     peer_type: server
     description: server02_SINGLE_NODE_TRUNK_Eth1
+    l2_mtu: 8000
     type: switched
     shutdown: false
     mode: trunk
@@ -264,12 +256,8 @@ vxlan_tunnel_interface:
           vni: 12
         Tenant_A_WEB_Zone:
           vni: 11
-tcam_profile:
-  system: vxlan-routing
-platform:
-  sand:
-    lag:
-      hardware_only: true
+tcam_profile: null
+platform: null
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs: null
