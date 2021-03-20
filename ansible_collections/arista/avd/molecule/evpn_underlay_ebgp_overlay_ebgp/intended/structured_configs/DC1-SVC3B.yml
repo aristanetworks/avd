@@ -934,7 +934,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
-    MLAG-IPv4-UNDERLAY-PEER:
+    MLAG-PEERS:
       type: ipv4
       remote_as: 65103
       next_hop_self: true

@@ -1080,7 +1080,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote_as | 65103 |
+| Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -1089,8 +1090,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65103 |
-| Next-hop self | True |
+| Remote_as | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
