@@ -9,6 +9,10 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [Loopback Interfaces](#loopback-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -161,10 +165,6 @@ interface Vlan24
    ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
 ```
 
-## VXLAN Interface
-
-No VXLAN interfaces defined
-
 # Routing
 
 ## IP Routing
@@ -197,7 +197,6 @@ No VXLAN interfaces defined
 | 300 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
 | 400 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
 | 500 | - | disabled | - | disabled | default | disabled | disabled | - | - | - |
-
 
 ### Router OSPF Router Redistribution
 
