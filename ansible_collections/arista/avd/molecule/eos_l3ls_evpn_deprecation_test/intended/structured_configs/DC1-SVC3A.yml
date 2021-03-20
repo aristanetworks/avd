@@ -297,6 +297,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -319,6 +320,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -434,6 +436,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -459,6 +462,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -483,6 +487,7 @@ ethernet_interfaces:
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20
@@ -508,6 +513,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -536,6 +542,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -563,6 +570,7 @@ ethernet_interfaces:
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20

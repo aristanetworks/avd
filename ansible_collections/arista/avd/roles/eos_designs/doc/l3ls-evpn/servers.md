@@ -19,6 +19,7 @@ port_profiles:
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
     spanning_tree_bpdufilter: < true | false >
+    spanning_tree_bpduguard: < true | false >
     flowcontrol:
       received: < received | send | on >
     qos_profile: < qos_profile_name >
@@ -82,6 +83,7 @@ servers:
         # Spanning Tree
         spanning_tree_portfast: < edge | network >
         spanning_tree_bpdufilter: < true | false >
+        spanning_tree_bpduguard: < true | false >
 
         # Flow control | Optional
         flowcontrol:

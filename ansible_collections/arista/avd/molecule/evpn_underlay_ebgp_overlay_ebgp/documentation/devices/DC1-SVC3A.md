@@ -503,6 +503,7 @@ interface Ethernet13
    switchport access vlan 210
    switchport mode access
    spanning-tree portfast network
+   spanning-tree bpduguard enable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
@@ -526,6 +527,7 @@ interface Ethernet16
    switchport access vlan 210
    switchport mode access
    spanning-tree portfast network
+   spanning-tree bpduguard enable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
