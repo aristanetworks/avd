@@ -143,7 +143,6 @@ l2leaf:
     mlag: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
-    spanning_tree_root_super: true
     spanning_tree_priority: 16384
   node_groups:
     DC1_L2LEAF1:

@@ -195,9 +195,9 @@ hardware tcam
 
 ## Spanning Tree Summary
 
-STP Root Super: **True**
-
 STP mode: **mstp**
+
+STP Root Super: **True**
 
 ### MSTP Instance and Priority
 

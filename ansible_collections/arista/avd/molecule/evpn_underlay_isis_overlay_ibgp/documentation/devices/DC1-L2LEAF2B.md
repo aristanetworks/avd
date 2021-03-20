@@ -199,8 +199,6 @@ mlag configuration
 
 ## Spanning Tree Summary
 
-STP Root Super: **True**
-
 STP mode: **mstp**
 
 ### MSTP Instance and Priority
@@ -217,7 +215,6 @@ Spanning Tree disabled for VLANs: **4094**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4094
 spanning-tree mst 0 priority 16384

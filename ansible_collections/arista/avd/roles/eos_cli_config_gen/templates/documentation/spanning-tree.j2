@@ -5,11 +5,11 @@
 
 ## Spanning Tree Summary
 
+STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
 {% if spanning_tree.root_super is arista.avd.defined %}
+
 STP Root Super: **{{ spanning_tree.root_super }}**
 {% endif %}
-
-STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 
 ### MSTP Instance and Priority
