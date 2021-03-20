@@ -1,13 +1,13 @@
 {# leaf - address family ipv4 activation #}
 {% if type == "l3leaf" %}
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
         activate: false
 {%     if switch.underlay_routing_protocol == 'ebgp'  %}
-      IPv4-UNDERLAY-PEERS:
+      {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
         activate: true
 {%            if leaf.mlag == true %}
-      MLAG-IPv4-UNDERLAY-PEER:
+      {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}:
         activate: true
 {%            endif %}
 {%     endif %}

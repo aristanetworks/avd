@@ -2,9 +2,9 @@
 {% if type == "overlay-controller" %}
     peer_groups:
 {%     if switch.underlay_routing_protocol == "ebgp" %}
-      IPv4-UNDERLAY-PEERS:
+      {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
         activate: true
 {%     endif %}
-      EVPN-OVERLAY-PEERS:
+      {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
         activate: false
 {% endif %}

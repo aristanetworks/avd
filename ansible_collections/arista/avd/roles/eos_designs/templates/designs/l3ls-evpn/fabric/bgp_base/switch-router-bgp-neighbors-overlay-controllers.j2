@@ -5,7 +5,7 @@
 {%         for overlay_controller_remote_switch in overlay_controller_remote_switches %}
 {%             if overlay_controller_remote_switch == inventory_hostname %}
     {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ overlay_controller_node }}
       remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default( overlay_controller.defaults.bgp_as ) }}
 {%                 if overlay_controller_p2p_bfd is arista.avd.defined(true) %}

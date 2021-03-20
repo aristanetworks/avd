@@ -27,10 +27,12 @@ vxlan_vlan_aware_bundles: true
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
+    name: UNDERLAY-PEERS
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   EVPN_OVERLAY_PEERS:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
+      name: MLAG-PEERS
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches

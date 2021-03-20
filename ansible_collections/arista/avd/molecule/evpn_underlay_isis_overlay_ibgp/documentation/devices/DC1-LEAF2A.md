@@ -610,7 +610,7 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+#### OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -625,8 +625,8 @@ router isis EVPN_UNDERLAY
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -643,25 +643,25 @@ router bgp 65000
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65000
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor OVERLAY-PEERS peer group
+   neighbor OVERLAY-PEERS remote-as 65000
+   neighbor OVERLAY-PEERS update-source Loopback0
+   neighbor OVERLAY-PEERS bfd
+   neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor OVERLAY-PEERS send-community
+   neighbor OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group OVERLAY-PEERS
    neighbor 192.168.255.1 description DC1-SPINE1
-   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 peer group OVERLAY-PEERS
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
-      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
-      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
-      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
+      neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
+      neighbor OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
+      no neighbor OVERLAY-PEERS activate
 ```
 
 ## Router BFD

@@ -443,7 +443,7 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+#### OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -459,13 +459,13 @@ router isis EVPN_UNDERLAY
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 192.168.255.5 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.6 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.7 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.8 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.9 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.10 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.11 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.8 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.9 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.10 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.11 | Inherited from peer group OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -483,34 +483,34 @@ router bgp 65000
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65000
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS route-reflector-client
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
+   neighbor OVERLAY-PEERS peer group
+   neighbor OVERLAY-PEERS remote-as 65000
+   neighbor OVERLAY-PEERS update-source Loopback0
+   neighbor OVERLAY-PEERS route-reflector-client
+   neighbor OVERLAY-PEERS bfd
+   neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor OVERLAY-PEERS send-community
+   neighbor OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.5 peer group OVERLAY-PEERS
    neighbor 192.168.255.5 description DC1-LEAF1A
-   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.6 peer group OVERLAY-PEERS
    neighbor 192.168.255.6 description DC1-LEAF2A
-   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.7 peer group OVERLAY-PEERS
    neighbor 192.168.255.7 description DC1-LEAF2B
-   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.8 peer group OVERLAY-PEERS
    neighbor 192.168.255.8 description DC1-SVC3A
-   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.9 peer group OVERLAY-PEERS
    neighbor 192.168.255.9 description DC1-SVC3B
-   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.10 peer group OVERLAY-PEERS
    neighbor 192.168.255.10 description DC1-BL1A
-   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.11 peer group OVERLAY-PEERS
    neighbor 192.168.255.11 description DC1-BL1B
    !
    address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
+      no neighbor OVERLAY-PEERS activate
 ```
 
 ## Router BFD
