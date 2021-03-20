@@ -7,6 +7,9 @@ aaa authentication login default {{ aaa_authentication.login.default }}
 {%     if aaa_authentication.login.serial_console is arista.avd.defined %}
 aaa authentication login serial-console {{ aaa_authentication.login.serial_console }}
 {%     endif %}
+{%     if aaa_authentication.enable.default is arista.avd.defined %}
+aaa authentication enable default {{ aaa_authentication.enable.default }}
+{%     endif %}
 {%     if aaa_authentication.dot1x.default is arista.avd.defined %}
 aaa authentication dot1x default {{ aaa_authentication.dot1x.default }}
 {%     endif %}
