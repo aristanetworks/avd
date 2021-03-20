@@ -85,9 +85,9 @@
     - [PTP](#ptp)
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
-      - [Class-maps](#class-maps)
-      - [QOS Policy-map](#qos-policy-map)
       - [QOS](#qos)
+      - [QOS Class-maps](#class-maps)
+      - [QOS Policy-map](#qos-policy-map)
       - [QOS Profiles](#qos-profiles)
       - [Queue Monitor Length](#queue-monitor-length)
       - [Queue Monitor Streaming](#queue-monitor-streaming)
@@ -1386,7 +1386,25 @@ prompt: <string >
 
 ### Quality of Services
 
-#### Class-maps
+#### QOS
+
+```yaml
+qos:
+  map:
+    cos:
+      - "< cos_mapping_to_tc >"
+      - "< cos_mapping_to_tc >"
+    dscp:
+      - "< dscp_mapping_to_tc >"
+      - "< dscp_mapping_to_tc >"
+    traffic_class:
+      - "< tc_mapping_to_cos >"
+      - "< tc_mapping_to_dscp >"
+      - "< tc_mapping_to_tx_queue >"
+  rewrite_dscp: < true | false >
+```
+
+#### QOS Class-maps
 
 ```yaml
 class_maps:
@@ -1410,24 +1428,6 @@ policy_maps:
             dscp: < dscp-code >
             traffic_class: < traffic-class ID >
             drop_precedence: < drop-precedence value >
-```
-
-#### QOS
-
-```yaml
-qos:
-  map:
-    cos:
-      - "< cos_mapping_to_tc >"
-      - "< cos_mapping_to_tc >"
-    dscp:
-      - "< dscp_mapping_to_tc >"
-      - "< dscp_mapping_to_tc >"
-    traffic_class:
-      - "< tc_mapping_to_cos >"
-      - "< tc_mapping_to_dscp >"
-      - "< tc_mapping_to_tx_queue >"
-  rewrite_dscp: < true | false >
 ```
 
 #### QOS Profiles
