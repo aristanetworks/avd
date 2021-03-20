@@ -1661,6 +1661,9 @@ router_bgp:
     redistribute_routes:
       < route_type >:
   address_family_ipv6:
+    networks:
+      < prefix_ipv6 >:
+        route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
