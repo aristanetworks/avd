@@ -862,12 +862,8 @@ vxlan_tunnel_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
-tcam_profile:
-  system: vxlan-routing
-platform:
-  sand:
-    lag:
-      hardware_only: true
+tcam_profile: null
+platform: null
 mac_address_table: null
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 virtual_source_nat_vrfs:
