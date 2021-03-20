@@ -19,6 +19,7 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -116,3 +117,5 @@ platform trident forwarding-table partition 2
 platform sand lag hardware-only
 platform sand lag mode 512x32
 ```
+
+# Quality Of Service

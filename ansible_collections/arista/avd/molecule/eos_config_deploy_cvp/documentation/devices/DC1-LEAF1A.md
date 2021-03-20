@@ -41,6 +41,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -733,3 +734,5 @@ vrf instance Tenant_A_APP_Zone
 !
 vrf instance Tenant_A_WEB_Zone
 ```
+
+# Quality Of Service

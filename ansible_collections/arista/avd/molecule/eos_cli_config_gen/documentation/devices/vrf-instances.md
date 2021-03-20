@@ -19,6 +19,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -131,3 +132,5 @@ vrf instance TENANT_A_PROJECT01
 !
 vrf instance TENANT_A_PROJECT02
 ```
+
+# Quality Of Service

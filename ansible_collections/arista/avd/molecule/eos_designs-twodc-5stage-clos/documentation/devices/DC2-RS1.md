@@ -31,6 +31,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -431,3 +432,5 @@ route-map RM-CONN-2-BGP permit 10
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

@@ -17,6 +17,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -118,3 +119,5 @@ hardware counter feature gre out
 # Filters
 
 # ACL
+
+# Quality Of Service

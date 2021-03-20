@@ -24,6 +24,7 @@
 - [MACsec](#macsec)
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -241,3 +242,5 @@ mac security
    profile A2
       key 1234b 7 12485744465E5A53
 ```
+
+# Quality Of Service

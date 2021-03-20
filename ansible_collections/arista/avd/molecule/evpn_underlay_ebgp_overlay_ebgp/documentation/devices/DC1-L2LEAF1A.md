@@ -35,6 +35,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -393,3 +394,5 @@ no ip igmp snooping vlan 120
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

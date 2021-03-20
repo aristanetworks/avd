@@ -19,6 +19,7 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
   - [IP DHCP Relay](#ip-dhcp-relay-1)
   - [IP DHCP Relay Configuration](#ip-dhcp-relay-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -114,3 +115,5 @@ IP DHCP Relay Option 82 is enabled.
 !
 ip dhcp relay information option
 ```
+
+# Quality Of Service

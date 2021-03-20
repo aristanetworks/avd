@@ -86,6 +86,8 @@
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
+      - [QOS Class-maps](#class-maps)
+      - [QOS Policy-map](#qos-policy-map)
       - [QOS Profiles](#qos-profiles)
       - [Queue Monitor Length](#queue-monitor-length)
       - [Queue Monitor Streaming](#queue-monitor-streaming)
@@ -1400,6 +1402,32 @@ qos:
       - "< tc_mapping_to_dscp >"
       - "< tc_mapping_to_tx_queue >"
   rewrite_dscp: < true | false >
+```
+
+#### QOS Class-maps
+
+```yaml
+class_maps:
+  qos:
+    < class-map name >:
+      vlan: < VLAN value(s) or range(s) of VLAN values >
+      cos: < CoS value(s) or range(s) of CoS values >
+      ip:
+        access_group: < Standard access-list name >
+```
+
+#### QOS Policy-map
+
+```yaml
+policy_maps:
+  qos:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            dscp: < dscp-code >
+            traffic_class: < traffic-class ID >
+            drop_precedence: < drop-precedence value >
 ```
 
 #### QOS Profiles

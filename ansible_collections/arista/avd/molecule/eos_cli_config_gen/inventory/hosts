@@ -5,6 +5,7 @@ acl
 aliases
 arp
 base
+class_maps
 dns-ntp
 enable-password
 errdisable
@@ -36,6 +37,7 @@ mac-security-eth-po-entropy
 none_configuration
 ntp
 platform
+policy_maps
 port-channel-interfaces
 prefix-lists
 prompt
