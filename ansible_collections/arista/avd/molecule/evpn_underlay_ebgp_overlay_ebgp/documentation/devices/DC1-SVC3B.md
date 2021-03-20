@@ -1285,7 +1285,9 @@ router bgp 65103
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.9:14
       route-target import evpn 14:14
+      route-target import evpn 65000:456
       route-target export evpn 14:14
+      route-target export evpn 65000:789
       router-id 192.168.255.9
       neighbor 10.255.251.6 peer group MLAG-PEERS
       redistribute connected

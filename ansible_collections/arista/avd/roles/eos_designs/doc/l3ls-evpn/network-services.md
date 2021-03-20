@@ -206,6 +206,14 @@ tenants:
             set_ipv6_next_hop: < IPv6_address >
             local_as: < local BGP ASN >
 
+        # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
+        additional_route_targets:
+          - type: < import | export >
+            address_family: < address_family >
+            route_target: "< route_target >"
+            # Nodes is optional. Default is all nodes where the VRF is defined.
+            nodes: [ < node_1 >, < node_2> ]
+
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
         svis:
