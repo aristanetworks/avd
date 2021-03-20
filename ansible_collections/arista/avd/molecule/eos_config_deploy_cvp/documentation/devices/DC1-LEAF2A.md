@@ -559,7 +559,6 @@ interface Loopback100
 | Vlan4094 |  default  |  10.255.252.2/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos

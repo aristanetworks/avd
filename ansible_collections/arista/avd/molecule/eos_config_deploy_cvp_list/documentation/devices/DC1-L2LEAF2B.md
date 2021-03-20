@@ -400,7 +400,6 @@ interface Port-Channel3
 | Vlan4094 |  default  |  10.255.252.17/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos

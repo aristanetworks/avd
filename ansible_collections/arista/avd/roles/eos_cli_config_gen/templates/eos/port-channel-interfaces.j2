@@ -128,6 +128,28 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].ipv6_access_group_out is arista.avd.defined %}
    ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_out }} out
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is arista.avd.defined(true) %}
+   ip ospf network point-to-point
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+   ip ospf area {{ port_channel_interfaces[port_channel_interface].ospf_area }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_cost is arista.avd.defined %}
+   ip ospf cost {{ port_channel_interfaces[port_channel_interface].ospf_cost }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_authentication is arista.avd.defined('simple') %}
+   ip ospf authentication
+{%     elif port_channel_interfaces[port_channel_interface].ospf_authentication is arista.avd.defined('message-digest') %}
+   ip ospf authentication message-digest
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_authentication_key is arista.avd.defined %}
+   ip ospf authentication-key 7 {{ port_channel_interfaces[port_channel_interface].ospf_authentication_key }}
+{%     endif %}
+{%     for ospf_message_digest_key in port_channel_interfaces[port_channel_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm is arista.avd.defined and port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].key is arista.avd.defined %}
+   ip ospf message-digest-key {{ ospf_message_digest_key }} {{ port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm }} 7 {{ port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].key }}
+{%         endif %}
+{%     endfor %}
 {%     if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}

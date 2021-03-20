@@ -123,7 +123,6 @@ interface Management1
 | Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos

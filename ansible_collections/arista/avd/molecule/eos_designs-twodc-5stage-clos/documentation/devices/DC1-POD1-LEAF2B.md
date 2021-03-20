@@ -392,7 +392,6 @@ interface Loopback1
 | Vlan4094 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos

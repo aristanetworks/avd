@@ -808,6 +808,15 @@ port_channel_interfaces:
       ipv4:
         sparse_mode: < true | false >
     service_profile: < qos_profile >
+    ospf_network_point_to_point: < true | false >
+    ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_keys:
+      < id >:
+        hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
 ```
 
 #### VLAN Interfaces
@@ -1769,6 +1778,17 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+      auto_cost_reference_bandwidth: < bandwidth in mbps >
+      maximum_paths: < Integer 1-32 >
+      max_metric:
+        router_lsa:
+          external_lsa:
+            override_metric: < Integer 1-16777215 >
+          include_stub: < true | false >
+          on_startup: < "wait-for-bgp" | Integer 5-86400 >
+          summary_lsa:
+            override_metric: < Integer 1-16777215 >
+      mpls_ldp_sync_default: < true | false >
 ```
 
 #### Router ISIS Configuration
