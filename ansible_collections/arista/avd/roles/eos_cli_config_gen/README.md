@@ -1920,6 +1920,7 @@ router_l2_vpn:
 
 ```yaml
 spanning_tree:
+  root_super: < true | false >
   edge_port:
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
