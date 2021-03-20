@@ -86,6 +86,7 @@
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [Class-maps](#class-maps)
+      - [QOS Policy-map](#qos-policy-map)
       - [QOS](#qos)
       - [QOS Profiles](#qos-profiles)
       - [Queue Monitor Length](#queue-monitor-length)
@@ -1395,6 +1396,20 @@ class_maps:
       cos: < CoS value(s) or range(s) of CoS values >
       ip:
         access_group: < Standard access-list name >
+```
+
+#### QOS Policy-map
+
+```yaml
+policy_maps:
+  qos:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            dscp: < dscp-code >
+            traffic_class: < traffic-class ID >
+            drop_precedence: < drop-precedence value >
 ```
 
 #### QOS
