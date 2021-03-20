@@ -39,6 +39,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -647,3 +648,5 @@ route-map RM-EVPN-FILTER-AS65211 permit 20
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

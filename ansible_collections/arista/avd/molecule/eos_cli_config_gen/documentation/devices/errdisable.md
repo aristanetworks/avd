@@ -17,6 +17,7 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Errdisable](#errdisable)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -156,3 +157,5 @@ errdisable recovery cause xcvr-power-unsupported
 errdisable recovery cause xcvr-unsupported
 errdisable recovery interval 300
 ```
+
+# Quality Of Service

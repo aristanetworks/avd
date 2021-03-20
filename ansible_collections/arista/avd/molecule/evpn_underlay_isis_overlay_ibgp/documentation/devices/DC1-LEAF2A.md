@@ -46,6 +46,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -756,3 +757,5 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.6:1
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

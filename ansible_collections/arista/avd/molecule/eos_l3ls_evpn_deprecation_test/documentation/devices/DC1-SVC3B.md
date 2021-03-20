@@ -53,6 +53,7 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -1499,3 +1500,5 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.9
 !
 platform sand lag hardware-only
 ```
+
+# Quality Of Service

@@ -46,6 +46,7 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -797,3 +798,5 @@ vrf instance Tenant_C_WAN_Zone
 !
 platform sand lag hardware-only
 ```
+
+# Quality Of Service

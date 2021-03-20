@@ -18,12 +18,9 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [QOS](#qos)
-  - [QOS Summary](#qos-summary)
-  - [QOS Device Configuration](#qos-device-configuration)
-- [QOS Profiles](#qos-profiles)
-  - [QOS Profiles Summary](#qos-profiles-summary)
-  - [QOS Profile Device Configuration](#qos-profile-device-configuration)
+- [Quality Of Service](#quality-of-service)
+  - [QOS](#qos)
+  - [QOS Profiles](#qos-profiles)
 
 <!-- toc -->
 # Management
@@ -184,13 +181,15 @@ interface Port-Channel3
 
 # ACL
 
-# QOS
+# Quality Of Service
 
-## QOS Summary
+## QOS
+
+### QOS Summary
 
 QOS rewrite DSCP: **enabled**
 
-### QOS Mappings
+#### QOS Mappings
 
 
 | COS to Traffic Class mappings |
@@ -212,7 +211,7 @@ QOS rewrite DSCP: **enabled**
 | 2 4 5 to cos 7 |
 | 6 to tx-queue 2 |
 
-## QOS Device Configuration
+### QOS Device Configuration
 
 ```eos
 !
@@ -227,9 +226,9 @@ qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
 ```
 
-# QOS Profiles
+## QOS Profiles
 
-## QOS Profiles Summary
+### QOS Profiles Summary
 
 
 QOS Profile: **experiment**
@@ -264,7 +263,7 @@ QOS Profile: **test**
 | 2 | 10 | priority strict |
 | 6 | 20 | - |
 
-## QOS Profile Device Configuration
+### QOS Profile Device Configuration
 
 ```eos
 !

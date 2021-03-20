@@ -39,6 +39,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -693,3 +694,5 @@ vrf instance Common_VRF
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service
