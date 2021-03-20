@@ -210,7 +210,7 @@ tenants:
         additional_route_targets:
           - type: < import | export >
             address_family: < address_family >
-            route_target: < route_target >
+            route_target: "< route_target >"
             # Nodes is optional. Default is all nodes where the VRF is defined.
             nodes: [ < node_1 >, < node_2> ]
 
