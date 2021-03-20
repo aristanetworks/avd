@@ -1,0 +1,19 @@
+{# QOS policy-map #}
+{% for policy_map in policy_maps.qos | arista.avd.natural_sort %}
+!
+policy-map type quality-of-service {{ policy_map }}
+{%     if policy_maps.qos[policy_map].classes is arista.avd.defined %}
+{%         for class in policy_maps.qos[policy_map].classes %}
+   class {{ class }}
+{%             if policy_maps.qos[policy_map].classes[class].set is arista.avd.defined %}
+{%                 for set in policy_maps.qos[policy_map].classes[class].set %}
+{%                     set cli_set = set | replace('_','-') | lower %}
+{%                     if cli_set in ['dscp', 'traffic-class', 'drop-precedence']  %}
+      set {{ cli_set }} {{ policy_maps.qos[policy_map].classes[class].set[set] }}
+{%                     endif %}
+{%                 endfor %}
+   !
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

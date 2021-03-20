@@ -144,10 +144,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
-{# class-map #}
-{% include 'eos/class-maps.j2' %}
-{# policy-map #}
-{% include 'eos/policy-maps.j2' %}
+{# QOS class-map #}
+{% include 'eos/class-maps-qos.j2' %}
+{# QOS policy-map #}
+{% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}
 {% include 'eos/arp.j2' %}
 {# Community-lists #}

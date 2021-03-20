@@ -161,17 +161,15 @@
 {% include 'documentation/errdisable.j2' %}
 {# MACsec #}
 {% include 'documentation/mac-security.j2' %}
-{# QOS #}
+
+# Quality Of Service
+{## QOS #}
 {% include 'documentation/qos.j2' %}
-{# QOS Profiles #}
+{## QOS Class Maps #}
+{% include 'documentation/class-maps-qos.j2' %}
+{## QOS Policy Maps #}
+{% include 'documentation/policy-maps-qos.j2' %}
+{## QOS Profiles #}
 {% include 'documentation/qos-profiles.j2' %}
 {# Custom Templates #}
 {% include 'documentation/custom-templates.j2' %}
-
-# Class Maps
-
-{% include 'documentation/class-maps.j2' %}
-
-# Policy Maps
-
-{% include 'documentation/policy-maps.j2' %}
