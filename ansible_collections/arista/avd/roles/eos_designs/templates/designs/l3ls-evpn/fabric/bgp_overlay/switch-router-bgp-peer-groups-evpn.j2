@@ -1,0 +1,27 @@
+{# EBGP #}
+{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_role in ["client", "server"] %}
+    {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: "{{ evpn_ebgp_multihop }}"
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: all
+      maximum_routes: 0
+{%     if switch.evpn_role == "server" %}
+      next_hop_unchanged: true
+{%     endif %}
+{# IBGP #}
+{% elif switch.overlay_routing_protocol == "ibgp" and switch.evpn_role in ["client", "server"] %}
+    {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+      type: evpn
+      update_source: Loopback0
+      remote_as: {{ switch.bgp_as }}
+      bfd: true
+      password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+      send_community: all
+      maximum_routes: 0
+{%     if switch.evpn_role == "server" %}
+      route_reflector_client: true
+{%     endif %}
+{% endif %}

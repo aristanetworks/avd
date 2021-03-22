@@ -1,9 +1,0 @@
-{# Management interface #}
-{% if mgmt_interface is defined %}
-  {{ mgmt_interface }}:
-    description: oob_management
-    shutdown: false
-    vrf: {{ mgmt_interface_vrf }}
-    ip_address: {{ switch.mgmt_ip }}
-    gateway: {{ mgmt_gateway }}
-{% endif%}

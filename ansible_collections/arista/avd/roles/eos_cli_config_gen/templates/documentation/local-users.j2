@@ -1,5 +1,8 @@
 {# eos - local users #}
 {% if local_users is defined and local_users is not none %}
+
+## Local Users
+
 ### Local Users Summary
 
 | User | Privilege | Role |
@@ -13,6 +16,4 @@
 ```eos
 {% include 'eos/local-users.j2' %}
 ```
-{% else %}
-No users defined
 {% endif %}

@@ -1,6 +1,5 @@
-{% if mac_address_table is defined and mac_address_table is not none %}
-{%     if mac_address_table.aging_time is defined and mac_address_table.aging_time is not none %}
+{# eos- Mac address table #}
+{% if mac_address_table.aging_time is arista.avd.defined %}
 !
 mac address-table aging-time {{ mac_address_table.aging_time }}
-{%     endif %}
 {% endif %}

@@ -17,6 +17,16 @@ In both scenario, this document will leverage git approach to create a local env
 
 As described in [requirement page](../../docs/installation/requirements.md), your runner should run Python 3.6.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
 
+Besides that, local runner will read your gitconfig file to let you manipulate files in container as if you were on your host. So if you have not yet configured git on your host, it is required to at least create a [basic git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) configuration file:
+
+```shell
+# Create your username exposed in git commit
+$ git config --global user.name "John Doe"
+
+# Create email exposed in your commit
+$ git config --global user.email johndoe@example.com
+```
+
 ## Create local folder structure
 
 To build local folder structure you manually run all the following commands to git clone [ansible-avd](https://github.com/aristanetworks/ansible-avd), [ansible-cvp collection](https://github.com/aristanetworks/ansible-cvp) and a [repository with demo content](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo)
@@ -30,7 +40,7 @@ $ cd git_projects
 
 $ git clone https://github.com/aristanetworks/ansible-avd.git
 $ git clone https://github.com/aristanetworks/ansible-cvp.git
-$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git4
+$ git clone https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo.git
 
 # Copy Makefile at the root position
 $ cp ansible-avd/development/Makefile ./
@@ -44,11 +54,26 @@ Or you can use a one-liner script available in ansible-avd repository to create 
 - Clone AVD and CVP collections
 - Deploy Makefile
 
+Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+
+__To use AVD only__
+
+This one-liner will install AVD and CVP collection using latest version released on github. These branches might have some difference with the devel branch.
+
 ```shell
 $ sh -c "$(curl -fsSL https://get.avd.sh)"
 ```
 
-Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+__To develop with AVD__
+
+This one-liner will install AVD using `devel` branch.
+
+```shell
+$ sh -c "$(curl -fsSL https://get.avd.sh/dev/)"
+```
+
+!!! warning
+    As devel branch is always moving on, datamodel might change and demo content could be broken. It should be used for development only.
 
 ## Use docker as AVD shell
 
@@ -68,19 +93,52 @@ $ make <your command>
 
 #### Commands for docker-compose
 
-- `dev-start`: Start docker compose stack to develop with AVD and CVP collection (alias: `start`)
-    - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose AVD documentation with live reload for development purposes.
-    - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose CVP documentation with live reload for development purposes.
-    - Deploy an [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
-- `dev-stop`: Stop docker compose stack and remove containers (alias: `stop`)
-- `dev-run`: Run a shell attached to ansible container (alias: `shell`)
-- `dev-reload`: Stop and Start docker-compose stack
+- `start`: Start docker compose stack to develop with AVD and CVP collection (alias: `start`)
+  - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose AVD documentation with live reload for development purposes.
+  - Deploy an [mkdoc](https://hub.docker.com/repository/docker/titom73/mkdocs) instance to expose CVP documentation with live reload for development purposes.
+  - Deploy an [AVD runner](https://hub.docker.com/repository/docker/avdteam/base) with a pseudo terminal connected to shell for ansible execution
+- `stop`: Stop docker compose stack and remove containers (alias: `stop`)
+- `shell`: Run a shell attached to ansible container (alias: `shell`)
+- `reload`: Stop and Start docker-compose stack
+- `ansible-upgrade`: To upgrade ansible in your runner in conjunction with `ANSIBLE_VERSION`
+
+```shell
+$ make ansible-upgrade ANSIBLE_VERSION=2.9.8
+docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible pip install --user --upgrade ansible==2.9.8
+Collecting ansible==2.9.8
+  Downloading ansible-2.9.8.tar.gz (14.2 MB)
+     |████████████████████████████████| 14.2 MB 475 kB/s
+...
+$ make shell
+docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible zsh
+
+Agent pid 109
+➜  /projects ansible --version
+ansible 2.9.8
+```
 
 ### Commands for docker only
 
 - `run`: Run a [docker container](https://hub.docker.com/repository/docker/avdteam/base) with local folder mounted under `/projects`. This command supports some option to test development version like:
-    - `ANSIBLE_VERSION`: Specific version of ansible to install during container startup.
-    - `PIP_REQ`: Specific pip requirements file to install during container startup.
+  - `ANSIBLE_VERSION`: Specific version of ansible to install during container startup.
+  - `PIP_REQ`: Specific pip requirements file to install during container startup.
+- `vscode`: start a VScode container available in your browser to edit your local files.
+
+```shell
+$ make run ANSIBLE_VERSION=2.9
+docker run --rm -it \
+                -e AVD_REQUIREMENTS= \
+                -e AVD_ANSIBLE=2.9 \
+                -e AVD_GIT_USER="xxxxx" \
+                -e AVD_GIT_EMAIL="xxxxx" \
+                -v /var/run/docker.sock:/var/run/docker.sock \
+                -v /Users/tgrimonet/Projects/arista-ansible/:/projects \
+                -v /etc/hosts:/etc/hosts avdteam/base:3.6-v1.0
+Install ansible with version 2.9
+Collecting ansible==2.9
+  Downloading ansible-2.9.0.tar.gz (14.1 MB)
+...
+```
 
 #### Command for image management
 
@@ -92,7 +150,7 @@ $ make <your command>
 We are going to start a [new container](https://hub.docker.com/repository/docker/avdteam/base) running ansible with all the python requirements and mount local folder under `/projects`. if image is missing, docker will pull out image for you automatically.
 
 ```shell
-$ docker run --rm -it -v $(PWD)/:/projects avdteam/base:3.6
+$ docker run --rm -it -v ${pwd}/:/projects avdteam/base:3.6
 Unable to find image 'avdteam/base:3.6' locally
 3.6: Pulling from avdteam/base
 bf5952930446: Already exists

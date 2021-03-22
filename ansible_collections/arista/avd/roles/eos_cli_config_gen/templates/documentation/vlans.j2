@@ -1,5 +1,8 @@
 {# VLANs Summary #}
 {% if vlans is defined and vlans is not none %}
+
+# VLANs
+
 ## VLANs Summary
 
 | VLAN ID | Name | Trunk Groups |
@@ -14,6 +17,4 @@
 ```eos
 {% include 'eos/vlans.j2' %}
 ```
-{% else %}
-No VLANs defined
 {% endif %}

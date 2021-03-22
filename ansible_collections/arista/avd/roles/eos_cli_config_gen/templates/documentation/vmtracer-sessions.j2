@@ -1,4 +1,7 @@
 {% if vmtracer_sessions is defined and vmtracer_sessions is not none %}
+
+## VM Tracer Sessions
+
 ### VM Tracer Summary
 
 | Session | URL | Username | Autovlan | Source Interface |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/vmtracer-sessions.j2' %}
 ```
-{% else %}
-No VM tracer sessions defined
 {% endif %}

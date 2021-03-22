@@ -1,4 +1,7 @@
 {% if radius_servers is defined and radius_servers is not none %}
+
+## RADIUS Servers
+
 ### RADIUS Servers
 
 | VRF | RADIUS Servers |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/radius-servers.j2' %}
 ```
-{% else %}
-RADIUS servers not defined
 {% endif %}

@@ -1,8 +1,21 @@
 switch_platform: vEOS-LAB
 switch_mgmt_ip: 192.168.200.102/24
+switch_bgp_as: 65001
+switch_router_id: 192.168.255.2
+switch_evpn_role: server
+switch_evpn_route_servers: []
+switch_evpn_route_clients:
+- DC1-BL1A
+- DC1-BL1B
+- DC1-LEAF1A
+- DC1-LEAF2A
+- DC1-LEAF2B
+- DC1-SVC3A
+- DC1-SVC3B
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -51,10 +64,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 ethernet_interfaces:
   Ethernet6:
     peer: DC1-BL1A
@@ -146,6 +155,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.102/24
     gateway: 192.168.200.5
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -159,6 +169,11 @@ prefix_lists:
       10:
         action: permit 192.168.255.0/24 le 32
 route_maps: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 peer_filters: null
 router_bgp:
   as: 65001
@@ -170,35 +185,41 @@ router_bgp:
   peer_groups:
     EVPN-OVERLAY-PEERS:
       type: evpn
-      peer_filter: LEAF-AS-RANGE
-      next_hop_unchanged: true
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 3
+      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+      next_hop_unchanged: true
   neighbors:
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL1A
       remote_as: 65104
     192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL1B
       remote_as: 65104
     192.168.255.5:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF1A
       remote_as: 65101
     192.168.255.6:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF2A
       remote_as: 65102
     192.168.255.7:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF2B
       remote_as: 65102
     192.168.255.8:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SVC3A
       remote_as: 65103
     192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SVC3B
       remote_as: 65103
   redistribute_routes: null
   address_family_evpn:
@@ -209,6 +230,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
+  address_family_rtc: null
 router_ospf:
   process_ids:
     101:

@@ -1,9 +1,6 @@
-{% if arp is defined and arp is not none %}
-{%     if arp.aging is defined and arp.aging is not none %}
-{%         if arp.aging.timeout_default is defined and arp.aging.timeout_default is not none %}
+{% if arp.aging.timeout_default is arista.avd.defined %}
+
+## ARP
+
 Global ARP timeout: {{ arp.aging.timeout_default }}
-{%         endif %}
-{%     endif %}
-{% else %}
-Global ARP timeout not defined.
 {% endif %}

@@ -20,7 +20,7 @@ converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. 
 	molecule converge --scenario-name $(MOLECULE)
 
 .PHONY: refresh-facts
-refresh-facts: ## Run all molecule scenario
+refresh-facts: ## Run all molecule scenarios
 	@for MOLECULE_SCENARIO in * ; do \
         if [ -d "$$MOLECULE_SCENARIO" ]; then\
         echo "Run scenrario for "$$MOLECULE_SCENARIO && \
@@ -42,3 +42,14 @@ test-git-status: ## Run post molecule script to check git status
 
 .PHONY: sync-facts
 sync-facts: refresh-facts commit-facts ## Refresh and commit CI artifacts
+
+.PHONY: cleanup
+destroy: ## destroy all molecule scenarios
+	@for MOLECULE_SCENARIO in * ; do \
+        if [ -d "$$MOLECULE_SCENARIO" ]; then\
+        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+		cd .. ; \
+		molecule cleanup --scenario-name $$MOLECULE_SCENARIO ; \
+		cd ./molecule ; \
+        fi \
+    done

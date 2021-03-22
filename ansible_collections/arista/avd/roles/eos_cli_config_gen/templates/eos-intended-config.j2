@@ -2,6 +2,8 @@
 !RANCID-CONTENT-TYPE: arista
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
+{# cli prompt #}
+{% include 'eos/prompt.j2' %}
 {# aliases #}
 {% include 'eos/aliases.j2' %}
 {# hardware counters #}
@@ -10,6 +12,8 @@
 {% include 'eos/daemon-terminattr.j2' %}
 {# ip dhcp relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
+{# switchport default #}
+{% include 'eos/switchport-default.j2'%}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
 {# ip igmp snooping #}
@@ -70,7 +74,7 @@ hostname {{ inventory_hostname }}
 {# platform #}
 {% include 'eos/platform.j2' %}
 {# unsupported transceiver #}
-{% include 'eos/unsupported-transeiver.j2' %}
+{% include 'eos/unsupported-transceiver.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
 {# aaa authentication #}
@@ -140,6 +144,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/static-routes.j2' %}
 {# IPv6 Static Route #}
 {% include 'eos/ipv6-static-routes.j2' %}
+{# QOS class-map #}
+{% include 'eos/class-maps-qos.j2' %}
+{# QOS policy-map #}
+{% include 'eos/policy-maps-qos.j2' %}
 {# ARP #}
 {% include 'eos/arp.j2' %}
 {# Community-lists #}
@@ -154,6 +162,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-bgp.j2' %}
 {# router multicast configuration #}
 {% include 'eos/router-multicast.j2' %}
+{# router general configuration #}
+{% include 'eos/router-general.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
 {# router pim sparse mode configuration #}

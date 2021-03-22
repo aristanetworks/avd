@@ -1,9 +1,17 @@
 l3leaf_node_group: DC1_BL1
 switch_platform: 7280R
-leaf_bgp_as: 65104
+switch_bgp_as: 65104
 leaf_id: 6
 switch_mgmt_ip: 192.168.200.110/24
 leaf_evpn_services_l2_only: false
+switch_router_id: 192.168.255.10
+switch_evpn_role: client
+switch_evpn_route_servers:
+- DC1-SPINE1
+- DC1-SPINE2
+- DC1-SPINE3
+- DC1-SPINE4
+switch_evpn_route_clients: []
 leaf_filter_tenants:
 - all
 leaf_filter_tags:
@@ -24,6 +32,16 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware:
+  speed_groups:
+    1:
+      serdes: 10G
+    2:
+      serdes: 25G
+    3:
+      serdes: 25G
+    4:
+      serdes: 10G
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -57,6 +75,7 @@ ntp_server:
   - 192.168.200.5
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':
@@ -94,10 +113,6 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -136,6 +151,15 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.47/31
+  Ethernet4000:
+    description: My test
+    ip_address: 10.3.2.1/21
+    shutdown: false
+    type: routed
+    mtu: 1500
+    peer: MY-own-peer
+    peer_interface: Ethernet123
+    peer_type: my_precious
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -152,6 +176,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.110/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan150:
     tenant: Tenant_A
@@ -198,7 +223,7 @@ vxlan_tunnel_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
@@ -213,6 +238,9 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- destination_address_prefix: 10.3.4.0/24
+  gateway: 1.2.3.4
+  vrf: Tenant_A_WAN_Zone
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -227,6 +255,23 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ip next-hop 123.1.1.1
+  RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - ipv6 next-hop fd5a:fe45:8831:06c5::1
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65104
   router_id: 192.168.255.10
@@ -235,38 +280,45 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY-PEERS:
       type: ipv4
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
-      remote_as: 65001
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: 3
+      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.40:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.42:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.44:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.46:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE1
+      remote_as: 65001
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE2
+      remote_as: 65001
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE3
+      remote_as: 65001
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SPINE4
+      remote_as: 65001
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -274,14 +326,13 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-      IPv4-UNDERLAY-PEERS:
-        activate: false
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY-PEERS:
         activate: true
+  address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.10:14
@@ -316,11 +367,43 @@ router_bgp:
         import:
           evpn:
           - '14:14'
+          - 65000:456
+          vpn-ipv4:
+          - 65000:123
         export:
           evpn:
           - '14:14'
+          - 65000:789
+          vpn-ipv4:
+          - 65000:123
+      neighbors:
+        123.1.1.10:
+          remote_as: 1234
+          description: External IPv4 BGP peer
+          send_community: standard extended
+          maximum_routes: 0
+          default_originate:
+            always: false
+            route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+          update_source: Loopback123
+          ebgp_multihop: 3
+          address_family:
+          - ipv4
+          local_as: 123
+          route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::a:
+          remote_as: 12345
+          send_community: all
+          address_family:
+          - ipv6
+          route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+        fd5a:fe45:8831:06c5::b:
+          remote_as: 12345
+          address_family:
+          - ipv6
       redistribute_routes:
       - connected
+      - static
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:21
@@ -331,6 +414,7 @@ router_bgp:
         export:
           evpn:
           - '21:21'
+      neighbors: null
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -343,6 +427,7 @@ router_bgp:
         export:
           evpn:
           - '31:31'
+      neighbors: null
       redistribute_routes:
       - connected
 ip_extcommunity_lists: null

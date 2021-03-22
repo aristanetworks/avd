@@ -1,384 +1,175 @@
 # {{ inventory_hostname }}
-
 # Table of Contents
-
-- [Management](#management)
-  - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
-- [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [Enable Password](#enable-password)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Aliases](#aliases)
-- [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SNMP](#snmp)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
-- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
-- [Interfaces](#interfaces)
-  - [Interface Defaults](#internet-defaults)
-  - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [Loopback Interfaces](#loopback-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
-- [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
-  - [IP Routing](#ip-routing)
-  - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [IPv6 Static Routes](#ipv6-static-routes)
-  - [Router OSPF](#router-ospf)
-  - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
-- [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
-- [Filters](#filters)
-  - [Community-lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix-lists](#prefix-lists)
-  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
-  - [Route-maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
-- [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
-- [Errdisable](#errdisable)
-- [Traffic Policies](#traffic-policies-1)
-- [MAC security](#mac-security)
-- [QOS](#qos)
-- [QOS Profiles](#qos-profiles)
-
+<!-- toc -->
+<!-- toc -->
 # Management
-
-## Management Interfaces
-
+{## Management Interface #}
 {% include 'documentation/management-interfaces.j2' %}
-
-## DNS Domain
-
+{## DNS Domain #}
 {% include 'documentation/dns-domain.j2' %}
-
-## Domain-list
-
+{## Domain-list #}
 {% include 'documentation/domain-list.j2' %}
-
-## Name Servers
-
+{## Name Servers #}
 {% include 'documentation/name-servers.j2' %}
-
-## Domain Lookup
-
+{## Domain Lookup #}
 {% include 'documentation/domain-lookup.j2' %}
-
-## NTP
-
+{## NTP #}
 {% include 'documentation/ntp-servers.j2' %}
-
-## PTP
-
+{## PTP #}
 {% include 'documentation/ptp.j2' %}
-
-## Management SSH
-
+{## Management SSH #}
 {% include 'documentation/management-ssh.j2' %}
-
-## Management API GNMI
-
+{## Management API GNMI #}
 {% include 'documentation/management-api-gnmi.j2' %}
-
-## Management API HTTP
-
+{## Management API HTTP #}
 {% include 'documentation/management-api-http.j2' %}
 
 # Authentication
-
-## Local Users
-
+{## Local Users #}
 {% include 'documentation/local-users.j2' %}
-
-## Enable Password
-
+{## Enable Password #}
 {% include 'documentation/enable-password.j2' %}
-
-## TACACS Servers
-
+{## TACACS Servers #}
 {% include 'documentation/tacacs-servers.j2' %}
-
-## IP TACACS Source Interfaces
-
+{## IP TACACS Source Interfaces #}
 {% include 'documentation/ip-tacacs-source-interfaces.j2' %}
-
-## RADIUS Servers
-
+{## RADIUS Servers #}
 {% include 'documentation/radius-servers.j2' %}
-
-## AAA Server Groups
-
+{## AAA Server Groups #}
 {% include 'documentation/aaa-server-groups.j2' %}
-
-## AAA Authentication
-
+{## AAA Authentication #}
 {% include 'documentation/aaa-authentication.j2' %}
-
-## AAA Authorization
-
+{## AAA Authorization #}
 {% include 'documentation/aaa-authorization.j2' %}
-
-## AAA Accounting
-
+{## AAA Accounting #}
 {% include 'documentation/aaa-accounting.j2' %}
-
-# Management Security
-
+{# Management Security #}
 {% include 'documentation/management-security.j2' %}
-
-# Aliases
-
+{# Prompt #}
+{% include 'documentation/prompt.j2' %}
+{# Aliases #}
 {% include 'documentation/aliases.j2' %}
 
 # Monitoring
-
-## TerminAttr Daemon
-
+{## TerminAttr Daemon #}
 {% include 'documentation/daemon-terminattr.j2' %}
-
-## Logging
-
+{## Logging #}
 {% include 'documentation/logging.j2' %}
-
-## SNMP
-
+{## SNMP #}
 {% include 'documentation/snmp-settings.j2' %}
-
-## SFlow
-
+{## SFlow #}
 {% include 'documentation/sflow.j2' %}
-
-## Hardware Counters
-
+{## Hardware Counters #}
 {% include 'documentation/hardware-counters.j2' %}
-
-## VM Tracer Sessions
-
+{## VM Tracer Sessions #}
 {% include 'documentation/vmtracer-sessions.j2' %}
-
-## Event Handler
-
+{## Event Handler #}
 {% include 'documentation/event-handler.j2' %}
-
-# MLAG
-
+{# Hardware TCAM Profile #}
+{% include 'documentation/tcam-profile.j2' %}
+{# MLAG #}
 {% include 'documentation/mlag-configuration.j2' %}
-
-# Spanning Tree
-
+{# Spanning Tree #}
 {% include 'documentation/spanning-tree.j2' %}
-
-# Internal VLAN Allocation Policy
-
+{# Internal VLAN Allocation Policy #}
 {% include 'documentation/vlan-internal-order.j2' %}
-
-# VLANs
-
+{# VLANs #}
 {% include 'documentation/vlans.j2' %}
 
 # Interfaces
-
-## Interface Defaults
-
+{## Switchport Default #}
+{% include 'documentation/switchport-default.j2' %}
+{## Interface Defaults #}
 {% include 'documentation/interface-defaults.j2' %}
-
-## Ethernet Interfaces
-
+{## Ethernet Interfaces #}
 {% include 'documentation/ethernet-interfaces.j2' %}
-
-## Port-Channel Interfaces
-
+{## Port-Channel Interfaces #}
 {% include 'documentation/port-channel-interfaces.j2' %}
-
-## Loopback Interfaces
-
+{## Loopback Interfaces #}
 {% include 'documentation/loopback-interfaces.j2' %}
-
-## VLAN Interfaces
-
+{## VLAN Interfaces #}
 {% include 'documentation/vlan-interfaces.j2' %}
-
-## VXLAN Interface
-
+{## VXLAN Interface #}
 {% include 'documentation/vxlan-interface.j2' %}
 
 # Routing
-
-## Virtual Router MAC Address
-
+{## Virtual Router MAC Address #}
 {% include 'documentation/virtual-router-mac-address.j2' %}
-
-## IP Routing
-
+{## IP Routing #}
 {% include 'documentation/ip-routing.j2' %}
-
-## IPv6 Routing
-
+{## IPv6 Routing #}
 {% include 'documentation/ipv6-routing.j2' %}
-
-## Static Routes
-
+{## Static Routes #}
 {% include 'documentation/static-routes.j2' %}
-
-## IPv6 Static Routes
-
+{## IPv6 Static Routes #}
 {% include 'documentation/ipv6-static-routes.j2' %}
-
-## ARP
-
+{## ARP #}
 {% include 'documentation/arp.j2' %}
-
-## Router OSPF
-
+{## Router General #}
+{% include 'documentation/router-general.j2' %}
+{## Router OSPF #}
 {% include 'documentation/router-ospf.j2' %}
-
-## Router ISIS
-
+{## Router ISIS #}
 {% include 'documentation/router-isis.j2' %}
-
-## Router BGP
-
+{## Router BGP #}
 {% include 'documentation/router-bgp.j2' %}
-
-## Router BFD
-
+{## Router BFD #}
 {% include 'documentation/router-bfd.j2' %}
 
 # Multicast
-
-## IP IGMP Snooping
-
+{## IP IGMP Snooping #}
 {% include 'documentation/ip-igmp-snooping.j2' %}
-
-## Router Multicast
-
+{## Router Multicast #}
 {% include 'documentation/router-multicast.j2' %}
-
-## Router PIM Sparse Mode
-
+{## Router PIM Sparse Mode #}
 {% include 'documentation/router-pim-sparse-mode.j2' %}
 
 # Filters
-
-## Community-lists
-
+{## Community-lists #}
 {% include 'documentation/community-lists.j2' %}
-
-## Peer Filters
-
+{## Peer Filters #}
 {% include 'documentation/peer-filters.j2' %}
-
-## Prefix-lists
-
+{## Prefix-lists #}
 {% include 'documentation/prefix-lists.j2' %}
-
-## IPv6 Prefix-lists
-
+{## IPv6 Prefix-lists #}
 {% include 'documentation/ipv6-prefix-lists.j2' %}
-
-## Route-maps
-
+{## Route-maps #}
 {% include 'documentation/route-maps.j2' %}
-
-## IP Extended Communities
-
+{## IP Extended Communities #}
 {% include 'documentation/ip-extended-communities.j2' %}
 
 # ACL
-
-## Standard Access-lists
-
+{## Standard Access-lists #}
 {% include 'documentation/standard-access-lists.j2' %}
-
-## Extended Access-lists
-
+{## Extended Access-lists #}
 {% include 'documentation/access-lists.j2' %}
-
-## IPv6 Standard Access-lists
-
+{## IPv6 Standard Access-lists #}
 {% include 'documentation/ipv6-standard-access-lists.j2' %}
-
-## IPv6 Extended Access-lists
-
+{## IPv6 Extended Access-lists #}
 {% include 'documentation/ipv6-access-lists.j2' %}
-
-# VRF Instances
-
+{# VRF Instances #}
 {% include 'documentation/vrf-instances.j2' %}
-
-# Virtual Source NAT
-
+{# Virtual Source NAT #}
 {% include 'documentation/virtual-source-nat.j2' %}
-
-# Platform
-
+{# Platform #}
 {% include 'documentation/platform.j2' %}
-
-# Router L2 VPN
-
+{# Router L2 VPN #}
 {% include 'documentation/router-l2-vpn.j2' %}
-
-# IP DHCP Relay
-
+{# IP DHCP Relay #}
 {% include 'documentation/ip-dhcp-relay.j2' %}
-
-# Errdisable
-
+{# Errdisable #}
 {% include 'documentation/errdisable.j2' %}
-
-# Traffic Policies
-
-{% include 'documentation/traffic-policies.j2' %}
-
-# MACsec
-
+{# MACsec #}
 {% include 'documentation/mac-security.j2' %}
 
-# QOS
-
+# Quality Of Service
+{## QOS #}
 {% include 'documentation/qos.j2' %}
-
-# QOS Profiles
-
+{## QOS Class Maps #}
+{% include 'documentation/class-maps-qos.j2' %}
+{## QOS Policy Maps #}
+{% include 'documentation/policy-maps-qos.j2' %}
+{## QOS Profiles #}
 {% include 'documentation/qos-profiles.j2' %}
-
-# Custom Templates
-
+{# Custom Templates #}
 {% include 'documentation/custom-templates.j2' %}

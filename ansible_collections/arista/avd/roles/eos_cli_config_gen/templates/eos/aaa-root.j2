@@ -1,6 +1,7 @@
-{% if aaa_root is defined and aaa_root is not none %}
+{# eos - aaa root #}
+{% if aaa_root is arista.avd.defined %}
 !
-{%     if aaa_root.secret is defined %}
+{%     if aaa_root.secret.sha512_password is arista.avd.defined %}
 aaa root secret sha512 {{ aaa_root.secret.sha512_password }}
 {%     endif %}
 {% else %}
