@@ -115,7 +115,7 @@ $ source bin/activate
 $ pip3 install psutil
 
 # Install project requirements
-$ curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/development/requirements.txt -o requirements.txt
+$ curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/ansible_collections/arista/avd/requirements.txt -o requirements.txt
 $ pip3 install -r requirements.txt
 ```
 
