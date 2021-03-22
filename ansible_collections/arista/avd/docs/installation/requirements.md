@@ -20,32 +20,41 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Additional Python Libraries required
 
-- [Jinja2](https://pypi.org/project/Jinja2/)  `2.10.3`
-- [netaddr](https://pypi.org/project/netaddr/) `0.7.19`
-- [requests](https://pypi.org/project/requests/) `2.22.0`
-- [treelib](https://pypi.org/project/treelib/) `1.5.5`
-- [cvprac](https://github.com/aristanetworks/cvprac) `1.0.4`
+- netaddr `0.7.19`
+- Jinja2 `2.11.3`
+- treelib `1.5.5`
+- cvprac >= `1.0.4`
+- paramiko `2.7.1`
+- jsonschema `3.2.0`
+- requests `2.25.1`
+- PyYAML `5.4.1`
+- md-toc `7.1.0`
 
 ### Python requirements installation
 
 In a shell, run following command:
 
 ```shell
-$ pip3 install -r development/requirements.txt
+$ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
 
-[`requirements.txt`](https://github.com/aristanetworks/ansible-avd/blob/devel/development/requirements.txt) has the following content:
+[`requirements.txt`](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/requirements.txt) has the following content:
 
 ```text
-ansible==2.9.6
 netaddr==0.7.19
-Jinja2==2.10.3
-requests==2.22.0
+Jinja2==2.11.3
 treelib==1.5.5
-cvprac==1.0.4
+cvprac>=1.0.4
+paramiko==2.7.1
+jsonschema==3.2.0
+requests==2.25.1
+PyYAML==5.4.1
+md-toc==7.1.0
+
 ```
 
-> Depending of your operating system settings, `pip3` might be replaced by `pip`.
+!!! warning
+    Depending of your operating system settings, `pip3` might be replaced by `pip`.
 
 ## Ansible runner requirements
 
