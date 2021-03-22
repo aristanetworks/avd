@@ -1,5 +1,8 @@
 {# IP PIM Sparse Mode Summary #}
 {% if router_pim_sparse_mode is defined and router_pim_sparse_mode is not none %}
+
+## Router PIM Sparse Mode
+
 ### IP Sparse Mode Information
 {%   if router_pim_sparse_mode.ipv4 is defined and router_pim_sparse_mode.ipv4 is not none %}
 {%          if router_pim_sparse_mode.ipv4.rp_addresses is defined and router_pim_sparse_mode.ipv4.rp_addresses is not none %}
@@ -35,6 +38,4 @@
 {% include 'eos/router-pim-sparse-mode.j2' %}
 ```
 {%   endif %}
-{% else %}
-Router PIM sparse mode not defined
 {% endif %}

@@ -1,4 +1,7 @@
 {% if vrfs is defined and vrfs is not none %}
+
+# VRF Instances
+
 ## VRF Instances Summary
 
 | VRF Name | IP Routing |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/vrf-instances.j2' %}
 ```
-{% else %}
-No VRF instances defined
 {% endif %}

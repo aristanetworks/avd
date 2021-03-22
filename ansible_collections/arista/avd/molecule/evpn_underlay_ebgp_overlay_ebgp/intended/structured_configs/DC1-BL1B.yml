@@ -32,6 +32,16 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware:
+  speed_groups:
+    1:
+      serdes: 10G
+    2:
+      serdes: 25G
+    3:
+      serdes: 25G
+    4:
+      serdes: 10G
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -65,6 +75,7 @@ ntp_server:
   - 192.168.200.5
 redundancy: null
 spanning_tree:
+  root_super: true
   mode: mstp
   mst_instances:
     '0':
@@ -102,10 +113,6 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -169,6 +176,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.111/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan150:
     tenant: Tenant_A
@@ -215,7 +223,7 @@ vxlan_tunnel_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
@@ -259,6 +267,11 @@ route_maps:
         type: permit
         set:
         - ipv6 next-hop fd5a:fe45:8831:06c5::1
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65105
   router_id: 192.168.255.11
@@ -267,29 +280,29 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY-PEERS:
       type: ipv4
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
   neighbors:
     172.31.255.48:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.50:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.52:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     172.31.255.54:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -317,7 +330,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY-PEERS:
         activate: true
   address_family_rtc: null
   vlan_aware_bundles:
@@ -354,9 +367,15 @@ router_bgp:
         import:
           evpn:
           - '14:14'
+          - 65000:456
+          vpn-ipv4:
+          - 65000:123
         export:
           evpn:
           - '14:14'
+          - 65000:789
+          vpn-ipv4:
+          - 65000:123
       neighbors:
         123.1.1.10:
           remote_as: 1234
@@ -374,7 +393,7 @@ router_bgp:
           route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
-          send_community: None
+          send_community: all
           address_family:
           - ipv6
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT

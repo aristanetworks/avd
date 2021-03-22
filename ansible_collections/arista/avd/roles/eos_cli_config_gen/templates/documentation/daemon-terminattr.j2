@@ -1,4 +1,7 @@
 {% if daemon_terminattr is defined and daemon_terminattr is not none %}
+
+## TerminAttr Daemon
+
 ### TerminAttr Daemon Summary
 
 | CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
@@ -10,6 +13,4 @@
 ```eos
 {% include 'eos/daemon-terminattr.j2' %}
 ```
-{% else %}
-TerminAttr daemon not defined
 {% endif %}

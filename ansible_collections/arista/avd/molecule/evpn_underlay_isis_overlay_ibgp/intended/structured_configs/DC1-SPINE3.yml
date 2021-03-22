@@ -8,6 +8,7 @@ switch_evpn_route_clients: []
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -56,10 +57,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 ethernet_interfaces:
   Ethernet6:
     peer: DC1-BL1A
@@ -159,6 +156,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.103/24
     gateway: 192.168.200.5
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -168,6 +166,11 @@ static_routes:
   gateway: 192.168.200.5
 prefix_lists: null
 route_maps: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 peer_filters: null
 router_bgp:
   as: 65000
@@ -182,12 +185,13 @@ router_bgp:
   address_family_evpn: null
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: false
   address_family_rtc: null
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
   net: 49.0001.0001.0000.0003.00
   router_id: 192.168.255.3
   no_passive_interfaces:

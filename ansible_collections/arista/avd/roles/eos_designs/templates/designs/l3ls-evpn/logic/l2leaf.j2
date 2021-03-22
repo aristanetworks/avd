@@ -1,0 +1,56 @@
+{# set leaf variables #}
+{% for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
+{%     for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
+{%         if node == inventory_hostname %}
+{%             set leaf.group = l2leaf_node_group %}
+{%             set leaf.id = l2leaf.node_groups[l2leaf_node_group].nodes[node].id %}
+{%             set switch.mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip %}
+{%             set switch.spanning_tree_mode = l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode | arista.avd.default(
+                                               l2leaf.defaults.spanning_tree_mode ) %}
+{%             set leaf.igmp_snooping_enabled = l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled | arista.avd.default(
+                                                l2leaf.defaults.igmp_snooping_enabled,
+                                                default_igmp_snooping_enabled ) %}
+{%             set switch.spanning_tree_priority = l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority | arista.avd.default(
+                                                   l2leaf.defaults.spanning_tree_priority ) %}
+{%             set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
+                                     l2leaf.defaults.platform ) %}
+{%             set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(
+                                         l2leaf.defaults.filter.tenants,
+                                         [ 'all' ] ) %}
+{%             set leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags | arista.avd.default(
+                                      l2leaf.defaults.filter.tags,
+                                      [ 'all' ] ) %}
+{%             set leaf.parent_l3leafs = l2leaf.node_groups[l2leaf_node_group].parent_l3leafs | arista.avd.default(
+                                         l2leaf.defaults.parent_l3leafs ) %}
+{%             set switch.mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
+                                 l2leaf.defaults.mlag,
+                                 true ) %}
+{%             if loop.length == 2 and switch.mlag == true %}
+{%                 set leaf.mlag = true %}
+{%                 set leaf.mlag_group = l2leaf_node_group %}
+{%                 set leaf.mlag_dual_primary_detection = l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
+                                                          l2leaf.defaults.mlag_dual_primary_detection,
+                                                          false ) %}
+{%                 set leaf.mlag_interfaces = l2leaf.node_groups[l2leaf_node_group].mlag_interfaces | arista.avd.default(
+                                              l2leaf.defaults.mlag_interfaces ) %}
+{%                 if loop.index == 1 %}
+{%                     set leaf.mlag_role = "primary" %}
+{%                     set leaf.mlag_peer = loop.nextitem %}
+{%                     set leaf.mlag_ip = (( l2leaf.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) %}
+{%                     set leaf.mlag_peer_ip = ((( l2leaf.node_groups[l2leaf_node_group].nodes[node].id -1 ) * 2 ) +1 ) %}
+{%                     set leaf.mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') %}
+{%                 elif loop.index == 2 %}
+{%                     set leaf.mlag_role = "secondary" %}
+{%                     set leaf.mlag_peer = loop.previtem %}
+{%                     set leaf.mlag_ip = ((( l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 ) +1 ) %}
+{%                     set leaf.mlag_peer_ip = (( l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1 ) * 2 )  %}
+{%                     set leaf.mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id  %}
+{%                     set leaf.mlag_peer_mgmt_ip = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') %}
+{%                 endif %}
+{%             else %}
+{%                 set leaf.mlag = false %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endfor %}
