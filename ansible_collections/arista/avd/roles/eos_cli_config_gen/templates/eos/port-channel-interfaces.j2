@@ -194,7 +194,7 @@ interface {{ port_channel_interface }}
 {%         endif %}
 {%     endfor %}
 {%     if port_channel_interfaces[port_channel_interface].bfd.interval is arista.avd.defined and
-          port_channel_interfaces[port_channel_interface].bfd.min_rx is arista.avd.defined and 
+          port_channel_interfaces[port_channel_interface].bfd.min_rx is arista.avd.defined and
           port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
 {%     endif %}

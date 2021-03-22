@@ -167,7 +167,7 @@ interface {{ vlan_interface }}
    ip attached-host route export
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].bfd.interval is arista.avd.defined and
-          vlan_interfaces[vlan_interface].bfd.min_rx is arista.avd.defined and 
+          vlan_interfaces[vlan_interface].bfd.min_rx is arista.avd.defined and
           vlan_interfaces[vlan_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ vlan_interfaces[vlan_interface].bfd.interval }} min-rx {{ vlan_interfaces[vlan_interface].bfd.min_rx }} multiplier {{ vlan_interfaces[vlan_interface].bfd.multiplier }}
 {%     endif %}
