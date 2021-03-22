@@ -17,8 +17,6 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -109,15 +107,5 @@ prompt %H__%D{%H:%M:%S}%v%P
 # Filters
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

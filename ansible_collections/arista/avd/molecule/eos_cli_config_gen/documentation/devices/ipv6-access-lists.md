@@ -17,8 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -122,15 +120,5 @@ ipv6 access-list TEST1
    5 deny ip fe80::/64
    10 permit ip fe90::/64
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

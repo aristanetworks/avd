@@ -17,8 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -156,15 +154,5 @@ ip access-list standard ACL-SSH-VRF
    30 permit 172.16.0.0/12
    40 permit 192.168.0.0/16
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

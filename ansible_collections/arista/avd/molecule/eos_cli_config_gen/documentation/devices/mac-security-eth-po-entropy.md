@@ -21,9 +21,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
 - [MACsec](#macsec)
-- [MACsec](#macsec-1)
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
 - [Quality Of Service](#quality-of-service)
@@ -187,16 +185,6 @@ interface Port-Channel3
 # Filters
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # MACsec
 

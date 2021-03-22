@@ -19,8 +19,6 @@
 - [IP DHCP Relay](#ip-dhcp-relay)
   - [IP DHCP Relay](#ip-dhcp-relay-1)
   - [IP DHCP Relay Configuration](#ip-dhcp-relay-configuration)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -117,15 +115,5 @@ IP DHCP Relay Option 82 is enabled.
 !
 ip dhcp relay information option
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

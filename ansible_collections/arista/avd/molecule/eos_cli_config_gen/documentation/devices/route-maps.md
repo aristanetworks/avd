@@ -17,8 +17,6 @@
 - [Filters](#filters)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -174,15 +172,5 @@ route-map RM-STATIC-2-BGP permit 10
 ```
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

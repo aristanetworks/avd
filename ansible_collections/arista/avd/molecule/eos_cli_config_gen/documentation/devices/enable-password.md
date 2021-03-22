@@ -17,8 +17,6 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -113,15 +111,5 @@ enable password sha512 $6$nXycSRhVPaxRINPL$tM1MNjjRCbFD5di4XWsj8CPkm8Pdwmf9fVqRV
 # Filters
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

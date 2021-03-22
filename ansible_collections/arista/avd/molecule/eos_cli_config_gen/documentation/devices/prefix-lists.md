@@ -18,8 +18,6 @@
   - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -141,15 +139,5 @@ ipv6 prefix-list PL-IPV6-LOOPBACKS
 ```
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

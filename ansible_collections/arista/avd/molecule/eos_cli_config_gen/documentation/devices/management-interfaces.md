@@ -16,8 +16,6 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -107,15 +105,5 @@ interface Vlan123
 # Filters
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

@@ -21,8 +21,6 @@
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -145,15 +143,5 @@ no ip igmp snooping
 # Filters
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

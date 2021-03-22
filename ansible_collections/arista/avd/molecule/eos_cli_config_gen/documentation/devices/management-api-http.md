@@ -18,8 +18,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -160,15 +158,5 @@ ip access-list standard ACL-API
    10 permit 10.0.0.0/8
    20 permit 100.0.0.0/8
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

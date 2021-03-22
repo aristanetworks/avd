@@ -17,8 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Errdisable](#errdisable)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -159,15 +157,5 @@ errdisable recovery cause xcvr-power-unsupported
 errdisable recovery cause xcvr-unsupported
 errdisable recovery interval 300
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

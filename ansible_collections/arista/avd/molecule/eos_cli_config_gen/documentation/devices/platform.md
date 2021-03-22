@@ -19,8 +19,6 @@
 - [Platform](#platform)
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -119,15 +117,5 @@ platform trident forwarding-table partition 2
 platform sand lag hardware-only
 platform sand lag mode 512x32
 ```
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service

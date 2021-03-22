@@ -17,8 +17,6 @@
 - [Filters](#filters)
   - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-- [Traffic Policies](#traffic-policies)
-- [MACsec](#macsec)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -122,15 +120,5 @@ ip extcommunity-list TEST2 deny 65001:65001
 ```
 
 # ACL
-<<<<<<< HEAD
-
-# Traffic Policies
-
-Traffic Policies not defined
-
-# MACsec
-
-=======
->>>>>>> devel
 
 # Quality Of Service
