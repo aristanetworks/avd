@@ -82,7 +82,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 - netaddr `0.7.19`
 - Jinja2 `2.11.3`
 - treelib `1.5.5`
-- cvprac >= `1.0.4`
+- cvprac `1.0.5`
 - paramiko `2.7.1`
 - jsonschema `3.2.0`
 - requests `2.25.1`
