@@ -68,6 +68,17 @@ port_channel_interfaces:
       dot1q:
         vlan: 102
 
+  Port-Channel8:
+    description: to Dev02 Port-channel 8
+    type: routed
+  Port-Channel8.101:
+    description: to Dev02 Port-Channel8.101 - VRF-C1
+    type: l3dot1q
+    ip_address: 10.1.2.3/31
+    encapsulation:
+      dot1q:
+        vlan: 101
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -108,3 +119,11 @@ ethernet_interfaces:
       id: 5
       mode: "active"
     profile: ALL
+
+  Ethernet8:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    description: MLAG_PEER_DC1-LEAF1B_Ethernet8
+    channel_group:
+      id: 8
+      mode: active
