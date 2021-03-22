@@ -35,6 +35,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -784,6 +785,8 @@ router bgp 65104
       neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
 ```
+
+# BFD
 
 ## Router BFD
 

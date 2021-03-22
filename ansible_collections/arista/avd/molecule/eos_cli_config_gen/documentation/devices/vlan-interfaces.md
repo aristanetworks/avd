@@ -13,7 +13,8 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -172,6 +173,7 @@ interface Vlan84
 interface Vlan85
    description SVI Description
    ip address 10.10.84.1/24
+   bfd interval 500 min-rx 500 multiplier 5
 !
 interface Vlan86
    description SVI Description
@@ -272,15 +274,13 @@ interface Vlan4094
 | --- | --------------- |
 | default | false |
 
-## Router BFD
+# BFD
 
-### Router BFD Multihop Summary
+## BFD Interfaces
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Vlan85 | 500 | 500 | 5 |
 
 # Multicast
 

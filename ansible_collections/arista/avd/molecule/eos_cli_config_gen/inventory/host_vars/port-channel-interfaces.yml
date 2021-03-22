@@ -67,7 +67,10 @@ port_channel_interfaces:
     encapsulation:
       dot1q:
         vlan: 102
-
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:

@@ -705,6 +705,10 @@ ethernet_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
 ```
 
 #### Interface Defaults
