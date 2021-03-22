@@ -28,6 +28,16 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
+{# Append all VRFs for tenants set in "always_include_vrfs_in_tenants" is set #}
+{% if leaf.always_include_vrfs_in_tenants is arista.avd.defined %}
+{%     for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%         if tenant in leaf.always_include_vrfs_in_tenants or "all" in leaf.always_include_vrfs_in_tenants %}
+{%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%                 do leaf.vrfs.append( vrf ) %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
 {% set leaf.vrfs = leaf.vrfs | unique  %}
 {# Setting tenant static routes #}
 {% set leaf.static_routes = [] %}

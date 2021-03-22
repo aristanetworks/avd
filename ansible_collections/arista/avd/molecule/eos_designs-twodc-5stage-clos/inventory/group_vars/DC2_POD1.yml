@@ -33,7 +33,7 @@ spine:
       mgmt_ip: 192.168.1.21/24
       super_spine_interfaces: [ Ethernet2, Ethernet2 ]
 
-# In DC2 we define all variables on specific node / node_group
+# In DC2 we define all variables via defaults
 l3leaf:
   defaults:
     bgp_as: 65555
@@ -46,6 +46,9 @@ l3leaf:
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:1c:73:00:dc:01
     mlag: false
+    filter:
+      always_include_vrfs_in_tenants: [ 'all' ] #Testing that we configure all VRFs even with no VLANs.
+      tags: []
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:

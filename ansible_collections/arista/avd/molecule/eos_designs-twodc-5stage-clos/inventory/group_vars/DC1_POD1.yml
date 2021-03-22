@@ -53,6 +53,7 @@ l3leaf:
       filter:
         tenants: []
         tags: []
+        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
       nodes:
         DC1-POD1-LEAF1A:
           id: 1
