@@ -33,6 +33,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -658,6 +659,8 @@ router bgp 65101
       router-id 192.168.255.5
       redistribute connected
 ```
+
+# BFD
 
 ## Router BFD
 

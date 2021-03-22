@@ -24,7 +24,10 @@ vlan_interfaces:
   Vlan85:
     description: SVI Description
     ip_address: 10.10.84.1/24
-
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
   Vlan86:
     description: SVI Description
     ip_address: 10.10.83.1/24
