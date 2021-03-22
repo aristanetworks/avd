@@ -416,6 +416,7 @@ interface Vlan350
 | VLAN | VNI |
 | ---- | --- |
 | Tenant_A_WAN_Zone | 14 |
+| Tenant_B_OP_Zone | 20 |
 | Tenant_B_WAN_Zone | 21 |
 | Tenant_C_WAN_Zone | 31 |
 
@@ -430,6 +431,7 @@ interface Vxlan1
    vxlan vlan 250 vni 20250
    vxlan vlan 350 vni 30350
    vxlan vrf Tenant_A_WAN_Zone vni 14
+   vxlan vrf Tenant_B_OP_Zone vni 20
    vxlan vrf Tenant_B_WAN_Zone vni 21
    vxlan vrf Tenant_C_WAN_Zone vni 31
 ```
@@ -457,6 +459,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 | --- | --------------- |
 | default | true|| MGMT | false |
 | Tenant_A_WAN_Zone | true |
+| Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
 | Tenant_C_WAN_Zone | true |
 
@@ -467,6 +470,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 ip routing
 no ip routing vrf MGMT
 ip routing vrf Tenant_A_WAN_Zone
+ip routing vrf Tenant_B_OP_Zone
 ip routing vrf Tenant_B_WAN_Zone
 ip routing vrf Tenant_C_WAN_Zone
 ```
@@ -478,6 +482,7 @@ ip routing vrf Tenant_C_WAN_Zone
 | --- | --------------- |
 | default | false || MGMT | false |
 | Tenant_A_WAN_Zone | false |
+| Tenant_B_OP_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
 
@@ -568,6 +573,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A_WAN_Zone | 192.168.255.11:14 | connected  static |
+| Tenant_B_OP_Zone | 192.168.255.11:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
 
@@ -665,6 +671,13 @@ router bgp 65105
          neighbor fd5a:fe45:8831:06c5::b activate
       redistribute connected
       redistribute static
+   !
+   vrf Tenant_B_OP_Zone
+      rd 192.168.255.11:20
+      route-target import evpn 20:20
+      route-target export evpn 20:20
+      router-id 192.168.255.11
+      redistribute connected
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.11:21
@@ -779,6 +792,7 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 | -------- | ---------- |
 | MGMT | disabled |
 | Tenant_A_WAN_Zone | enabled |
+| Tenant_B_OP_Zone | enabled |
 | Tenant_B_WAN_Zone | enabled |
 | Tenant_C_WAN_Zone | enabled |
 
@@ -789,6 +803,8 @@ route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT permit 10
 vrf instance MGMT
 !
 vrf instance Tenant_A_WAN_Zone
+!
+vrf instance Tenant_B_OP_Zone
 !
 vrf instance Tenant_B_WAN_Zone
 !
