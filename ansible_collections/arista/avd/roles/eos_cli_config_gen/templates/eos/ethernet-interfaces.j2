@@ -212,5 +212,10 @@ interface {{ ethernet_interface }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
+{%         if ethernet_interfaces[ethernet_interface].bfd.interval is arista.avd.defined and
+              ethernet_interfaces[ethernet_interface].bfd.min_rx is arista.avd.defined and
+              ethernet_interfaces[ethernet_interface].bfd.multiplier is arista.avd.defined %}
+   bfd interval {{ ethernet_interfaces[ethernet_interface].bfd.interval }} min-rx {{ ethernet_interfaces[ethernet_interface].bfd.min_rx }} multiplier {{ ethernet_interfaces[ethernet_interface].bfd.multiplier }}
+{%         endif %}
 {%     endif %}
 {% endfor %}

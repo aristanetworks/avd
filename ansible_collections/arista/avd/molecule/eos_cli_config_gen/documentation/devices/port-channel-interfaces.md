@@ -14,7 +14,8 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -130,6 +131,7 @@ interface Ethernet50
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -161,6 +163,11 @@ interface Port-Channel8.101
    description to Dev02 Port-Channel8.101 - VRF-C1
    encapsulation dot1q vlan 101
    ip address 10.1.2.3/31
+!
+interface Port-Channel9
+   no switchport
+   ip address 10.9.2.3/31
+   bfd interval 500 min-rx 500 multiplier 5
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
@@ -221,15 +228,13 @@ interface Port-Channel100.102
 | --- | --------------- |
 | default | false |
 
-## Router BFD
+# BFD
 
-### Router BFD Multihop Summary
+## BFD Interfaces
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Port-Channel9 | 500 | 500 | 5 |
 
 # Multicast
 

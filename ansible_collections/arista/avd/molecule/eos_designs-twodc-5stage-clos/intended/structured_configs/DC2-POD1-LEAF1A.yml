@@ -14,18 +14,11 @@ switch_evpn_route_clients:
 - DC1-RS2
 leaf_filter_tenants:
 - all
-leaf_filter_tags:
-- all
+leaf_filter_tags: []
 leaf_allowed_vrfs:
 - Common_VRF
-leaf_allowed_svis:
-- 110
-- 111
-- 112
-leaf_allowed_vlans:
-- 110
-- 111
-- 112
+leaf_allowed_svis: []
+leaf_allowed_vlans: []
 leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
@@ -58,15 +51,6 @@ vlans:
   4092:
     tenant: system
     name: L2LEAF_INBAND_MGMT
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
 vrfs:
   MGMT:
     ip_routing: false
@@ -78,7 +62,7 @@ port_channel_interfaces:
     description: RACK1_SINGLE_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,4092
+    vlans: 4092
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 3
@@ -163,43 +147,13 @@ vlan_interfaces:
     ip_virtual_router_address: 172.21.210.1
     ip_attached_host_route_export:
       distance: 19
-  Vlan110:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_1
-    shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.10.1/24
-  Vlan111:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_2
-    shutdown: true
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.11.1/24
-  Vlan112:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_3
-    shutdown: false
-    vrf: Common_VRF
-    ip_address_virtual: 10.1.12.1/24
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
     source_interface: Loopback1
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
+      vlans: null
       vrfs:
         Common_VRF:
           vni: 1025
@@ -318,31 +272,7 @@ router_bgp:
         default_route_target:
           only: true
   vlan_aware_bundles: null
-  vlans:
-    110:
-      tenant: Tenant_A
-      rd: 172.16.210.3:10110
-      route_targets:
-        both:
-        - 10110:10110
-      redistribute_routes:
-      - learned
-    111:
-      tenant: Tenant_A
-      rd: 172.16.210.3:50111
-      route_targets:
-        both:
-        - 50111:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 172.16.210.3:50112
-      route_targets:
-        both:
-        - 50112:50112
-      redistribute_routes:
-      - learned
+  vlans: null
   vrfs:
     Common_VRF:
       router_id: 172.16.210.3

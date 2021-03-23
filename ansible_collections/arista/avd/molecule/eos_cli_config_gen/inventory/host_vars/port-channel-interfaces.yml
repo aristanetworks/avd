@@ -67,6 +67,7 @@ port_channel_interfaces:
     encapsulation:
       dot1q:
         vlan: 102
+        bfd:
 
   Port-Channel8:
     description: to Dev02 Port-channel 8
@@ -78,6 +79,14 @@ port_channel_interfaces:
     encapsulation:
       dot1q:
         vlan: 101
+
+  Port-Channel9:
+    type: routed
+    ip_address: 10.9.2.3/31
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
 
 # Children interfaces
 ethernet_interfaces:

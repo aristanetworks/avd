@@ -13,7 +13,8 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -110,6 +111,7 @@ interface Ethernet1
    mtu 1500
    no switchport
    ip address 172.31.255.1/31
+   bfd interval 500 min-rx 500 multiplier 5
 !
 interface Ethernet2
    description SRV-POD02_Eth1
@@ -226,15 +228,13 @@ interface Ethernet8.101
 | --- | --------------- |
 | default | false |
 
-## Router BFD
+# BFD
 
-### Router BFD Multihop Summary
+## BFD Interfaces
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Ethernet1 | 500 | 500 | 5 |
 
 # Multicast
 
