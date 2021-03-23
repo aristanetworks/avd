@@ -767,6 +767,7 @@ port_channel_interfaces:
       dot1q:
         vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
       - < trunk_group_name_1 >

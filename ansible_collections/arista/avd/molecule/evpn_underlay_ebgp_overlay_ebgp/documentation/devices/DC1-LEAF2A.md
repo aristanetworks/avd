@@ -387,6 +387,8 @@ vlan 4094
 | Ethernet6 | MLAG_PEER_DC1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
 | Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
+| Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
+| Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
 
 *Inherited from Port-Channel Interface
 
@@ -450,6 +452,16 @@ interface Ethernet10
    description server01_MLAG_Eth2
    no shutdown
    channel-group 10 mode active
+!
+interface Ethernet11
+   description server01_MTU_PROFILE_MLAG_Eth4
+   no shutdown
+   channel-group 11 mode active
+!
+interface Ethernet12
+   description server01_MTU_ADAPTOR_MLAG_Eth6
+   no shutdown
+   channel-group 12 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -463,6 +475,8 @@ interface Ethernet10
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | - |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
+| Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
+| Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -492,6 +506,21 @@ interface Port-Channel10
    switchport trunk allowed vlan 210-211
    switchport mode trunk
    mlag 10
+!
+interface Port-Channel11
+   description server01_MTU_PROFILE_MLAG_PortChanne1
+   no shutdown
+   mtu 1600
+   switchport
+   switchport access vlan 110
+   mlag 11
+!
+interface Port-Channel12
+   description server01_MTU_ADAPTOR_MLAG_PortChanne1
+   no shutdown
+   mtu 1601
+   switchport
+   mlag 12
 ```
 
 ## Loopback Interfaces
