@@ -239,7 +239,9 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-111,120-121,130-131,160-161
     mode: trunk
-    mlag: 7
+    esi: 0000:0000:0808:0707:0606
+    rt: 08:08:07:07:06:06
+    lacp_id: 0808.0707.0606
   Port-Channel5:
     description: MLAG_PEER_DC1-LEAF2A_Po5
     type: switched
