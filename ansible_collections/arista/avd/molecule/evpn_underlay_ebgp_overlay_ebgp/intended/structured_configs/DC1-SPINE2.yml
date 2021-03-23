@@ -73,7 +73,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.42/31
+    ip_address: 172.31.255.82/31
   Ethernet7:
     peer: DC1-BL1B
     peer_interface: Ethernet2
@@ -82,7 +82,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.50/31
+    ip_address: 172.31.255.98/31
   Ethernet1:
     peer: DC1-LEAF1A
     peer_interface: Ethernet2
@@ -100,7 +100,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.10/31
+    ip_address: 172.31.255.18/31
   Ethernet3:
     peer: DC1-LEAF2B
     peer_interface: Ethernet2
@@ -109,7 +109,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.18/31
+    ip_address: 172.31.255.34/31
   Ethernet4:
     peer: DC1-SVC3A
     peer_interface: Ethernet2
@@ -118,7 +118,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.26/31
+    ip_address: 172.31.255.50/31
   Ethernet5:
     peer: DC1-SVC3B
     peer_interface: Ethernet2
@@ -127,7 +127,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.34/31
+    ip_address: 172.31.255.66/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -190,52 +190,52 @@ router_bgp:
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:
-    172.31.255.43:
+    172.31.255.83:
       peer_group: UNDERLAY-PEERS
       remote_as: 65104
-    172.31.255.51:
+    172.31.255.99:
       peer_group: UNDERLAY-PEERS
       remote_as: 65105
     172.31.255.3:
       peer_group: UNDERLAY-PEERS
       remote_as: 65101
-    172.31.255.11:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65102
     172.31.255.19:
       peer_group: UNDERLAY-PEERS
       remote_as: 65102
-    172.31.255.27:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65103
     172.31.255.35:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65102
+    172.31.255.51:
+      peer_group: UNDERLAY-PEERS
       remote_as: 65103
-    192.168.255.10:
+    172.31.255.67:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65103
+    192.168.255.14:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
       remote_as: 65104
-    192.168.255.11:
+    192.168.255.15:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1B
       remote_as: 65105
-    192.168.255.5:
+    192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
       remote_as: 65101
-    192.168.255.6:
+    192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2A
       remote_as: 65102
-    192.168.255.7:
+    192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2B
       remote_as: 65102
-    192.168.255.8:
+    192.168.255.12:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3A
       remote_as: 65103
-    192.168.255.9:
+    192.168.255.13:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3B
       remote_as: 65103
