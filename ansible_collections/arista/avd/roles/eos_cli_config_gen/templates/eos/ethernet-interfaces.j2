@@ -30,6 +30,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
+{%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan is arista.avd.defined() %}
+   encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan }}
 {%         else %}
    switchport
 {%         endif %}

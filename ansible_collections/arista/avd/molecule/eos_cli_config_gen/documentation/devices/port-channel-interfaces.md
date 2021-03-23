@@ -81,6 +81,11 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+ *Inherited from Port-Channel Interface 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -96,6 +101,10 @@ interface Ethernet4
 interface Ethernet5
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
+!
+interface Ethernet8
+   description MLAG_PEER_DC1-LEAF1B_Ethernet8
+   channel-group 8 mode active
 !
 interface Ethernet50
    description SRV-POD03_Eth1
@@ -116,6 +125,13 @@ interface Ethernet50
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -138,6 +154,20 @@ interface Port-Channel5
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
+!
+interface Port-Channel8
+   description to Dev02 Port-channel 8
+   no switchport
+!
+interface Port-Channel8.101
+   description to Dev02 Port-Channel8.101 - VRF-C1
+   encapsulation dot1q vlan 101
+   ip address 10.1.2.3/31
+!
+interface Port-Channel9
+   no switchport
+   ip address 10.9.2.3/31
+   bfd interval 500 min-rx 500 multiplier 5
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
@@ -175,7 +205,6 @@ interface Port-Channel100.102
    switchport
    vrf C2
    ip address 10.1.2.3/31
-   bfd interval 500 min-rx 500 multiplier 5
 ```
 
 # Routing
@@ -205,7 +234,7 @@ interface Port-Channel100.102
 
 | Interface | Interval | Minimum RX | Multiplier |
 | --------- | -------- | ---------- | ---------- |
-| Port-Channel100.102 | 500 | 500 | 5 |
+| Port-Channel9 | 500 | 500 | 5 |
 
 # Multicast
 

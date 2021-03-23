@@ -86,7 +86,7 @@
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
-      - [QOS Class-maps](#class-maps)
+      - [QOS Class-maps](#qos-class-maps)
       - [QOS Policy-map](#qos-policy-map)
       - [QOS Profiles](#qos-profiles)
       - [Queue Monitor Length](#queue-monitor-length)
@@ -586,8 +586,11 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
-    type: < routed | switched >
+    type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    encapsulation:
+      dot1q:
+        vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -759,6 +762,10 @@ port_channel_interfaces:
     description: < description >
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
+    type: < routed | switched | l3dot1q >
+    encapsulation:
+      dot1q:
+        vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
     mlag: < mlag_id >
     trunk_groups:
@@ -784,6 +791,7 @@ port_channel_interfaces:
   < Port-Channel_interface_3 >:
     description: < description >
     vlans: "< list of vlans as string >"
+    type: < routed | switched | l3dot1q >
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
@@ -804,7 +812,7 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
-    type: < switched | routed >
+    type: < routed | switched | l3dot1q >
     ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
