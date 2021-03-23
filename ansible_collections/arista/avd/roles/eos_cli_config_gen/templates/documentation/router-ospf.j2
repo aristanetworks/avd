@@ -123,7 +123,7 @@
 {# Route Summary #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
-{%         if router_ospf.process_ids[process].summary is arista.avd.defined %}
+{%         if router_ospf.process_ids[process].summary_addresses is arista.avd.defined %}
 {%             set has.found = true %}
 {%         endif %}
 {%     endfor %}
@@ -134,12 +134,12 @@
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
 |------------|--------|-----|---------------------|----------------|
 {%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
-{%             if router_ospf.process_ids[process].summary_address is arista.avd.defined %}
-{%                 for summary in router_ospf.process_ids[process].summary_address %}
-{%                     set summary_prefix = summary.prefix| arista.avd.default('-') %}
-{%                     set summary_tag = summary.tag | arista.avd.default('-') %}
-{%                     set summary_attribute_map = summary.attribute_map | arista.avd.default('-') %}
-{%                     set summary_not_advertise = summary.not_advertise | arista.avd.default('-') %}
+{%             if router_ospf.process_ids[process].summary_addresses is arista.avd.defined %}
+{%                 for summary_address in router_ospf.process_ids[process].summary_addresses %}
+{%                     set summary_prefix = summary_address.prefix| arista.avd.default('-') %}
+{%                     set summary_tag = summary_address.tag | arista.avd.default('-') %}
+{%                     set summary_attribute_map = summary_address.attribute_map | arista.avd.default('-') %}
+{%                     set summary_not_advertise = summary_address.not_advertise | arista.avd.default('-') %}
 | {{ process }} | {{ summary_prefix }} | {{ summary_tag }} | {{ summary_attribute_map }} | {{ summary_not_advertise }} |
 {%                 endfor %}
 {%             endif %}
