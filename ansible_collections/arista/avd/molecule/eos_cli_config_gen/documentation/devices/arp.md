@@ -13,7 +13,6 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [ARP](#arp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -88,16 +87,6 @@ interface Management1
 ## ARP
 
 Global ARP timeout: 300
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
 
 # Multicast
 

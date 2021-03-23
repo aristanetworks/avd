@@ -214,6 +214,10 @@ l3leaf:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
         tags: [ < tag_1 >, < tag_2 > | default -> all ]
 
+        # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
+        # Useful for "border" leaf.
+        always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
+
       # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
       # This allows support for centralized routing.
       evpn_services_l2_only: < false | true >

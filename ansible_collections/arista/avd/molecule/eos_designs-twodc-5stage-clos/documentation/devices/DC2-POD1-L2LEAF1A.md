@@ -24,7 +24,6 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
@@ -272,16 +271,6 @@ no ip routing vrf MGMT
 ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ip route 0.0.0.0/0 172.21.210.1
 ```
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
 
 # Multicast
 

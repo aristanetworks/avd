@@ -9,6 +9,8 @@
 {%             set leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants| arista.avd.default(
                                          l3leaf.defaults.filter.tenants,
                                          [ 'all' ]  ) %}
+{%             set leaf.always_include_vrfs_in_tenants = l3leaf.node_groups[l3leaf_node_group].filter.always_include_vrfs_in_tenants | arista.avd.default(
+                                                         l3leaf.defaults.filter.always_include_vrfs_in_tenants) %}
 {%             set leaf.igmp_snooping_enabled = l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled | arista.avd.default(
                                                 l3leaf.defaults.igmp_snooping_enabled,
                                                 default_igmp_snooping_enabled ) %}

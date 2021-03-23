@@ -29,6 +29,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -156,23 +157,11 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 112 | Tenant_A_OP_Zone_3 | none  |
 | 4092 | L2LEAF_INBAND_MGMT | none  |
 
 ## VLANs Device Configuration
 
 ```eos
-!
-vlan 110
-   name Tenant_A_OP_Zone_1
-!
-vlan 111
-   name Tenant_A_OP_Zone_2
-!
-vlan 112
-   name Tenant_A_OP_Zone_3
 !
 vlan 4092
    name L2LEAF_INBAND_MGMT
@@ -188,7 +177,7 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC2-POD1-L2LEAF1A_Ethernet1 | *trunk | *110-112,4092 | *- | *- | 3 |
+| Ethernet3 | DC2-POD1-L2LEAF1A_Ethernet1 | *trunk | *4092 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -252,7 +241,7 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK1_SINGLE_Po1 | switched | trunk | 110-112,4092 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK1_SINGLE_Po1 | switched | trunk | 4092 | - | - | - | - | 3 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -262,7 +251,7 @@ interface Port-Channel3
    description RACK1_SINGLE_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,4092
+   switchport trunk allowed vlan 4092
    switchport mode trunk
    mlag 3
    service-profile QOS-PROFILE
@@ -308,42 +297,18 @@ interface Loopback1
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  Tenant_A_OP_Zone_1  |  Common_VRF  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
-| Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
 | Vlan4092 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
-| Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
-| Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4092 |  default  |  172.21.210.2/24  |  -  |  172.21.210.1  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
-!
-interface Vlan110
-   description Tenant_A_OP_Zone_1
-   no shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.10.1/24
-!
-interface Vlan111
-   description Tenant_A_OP_Zone_2
-   shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.11.1/24
-!
-interface Vlan112
-   description Tenant_A_OP_Zone_3
-   no shutdown
-   vrf Common_VRF
-   ip address virtual 10.1.12.1/24
 !
 interface Vlan4092
    description L2LEAF_INBAND_MGMT
@@ -366,9 +331,7 @@ interface Vlan4092
 
 | VLAN | VNI |
 | ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 112 | 50112 |
+| N/A | N/A |
 
 #### VRF to VNI Mappings
 
@@ -383,9 +346,6 @@ interface Vlan4092
 interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
-   vxlan vlan 110 vni 10110
-   vxlan vlan 111 vni 50111
-   vxlan vlan 112 vni 50112
    vxlan vrf Common_VRF vni 1025
 ```
 
@@ -502,14 +462,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 #### Router BGP EVPN MAC-VRFs
 
-##### VLAN Based
-
-| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
-| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.210.3:10110 |  10110:10110 |  -  | -  | learned |
-| 111 | 172.16.210.3:50111 |  50111:50111 |  -  | -  | learned |
-| 112 | 172.16.210.3:50112 |  50112:50112 |  -  | -  | learned |
-
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
@@ -564,21 +516,6 @@ router bgp 65211
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
-   vlan 110
-      rd 172.16.210.3:10110
-      route-target both 10110:10110
-      redistribute learned
-   !
-   vlan 111
-      rd 172.16.210.3:50111
-      route-target both 50111:50111
-      redistribute learned
-   !
-   vlan 112
-      rd 172.16.210.3:50112
-      route-target both 50112:50112
-      redistribute learned
-   !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
    !
@@ -598,6 +535,8 @@ router bgp 65211
       redistribute connected
 ```
 
+# BFD
+
 ## Router BFD
 
 ### Router BFD Multihop Summary
@@ -606,7 +545,13 @@ router bgp 65211
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-*No device configuration required - default values
+### Router BFD Multihop Device Configuration
+
+```eos
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+```
 
 # Multicast
 
