@@ -30,7 +30,7 @@ jobs:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: development/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt
           check_git: true
           check_git_enforced: true
 
