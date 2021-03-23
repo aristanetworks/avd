@@ -33,10 +33,10 @@
         type: permit
         set:
 {%     if leaf.mlag == true and leaf.mlag_role == "primary" %}
-          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1 additive"
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}:1 additive"
 {%     elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
-          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + spine.nodes | length) }}:1 additive"
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + switch.max_spines) }}:1 additive"
 {%     else %}
-          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}:1 additive"
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}:1 additive"
 {%     endif %}
 {% endif %}

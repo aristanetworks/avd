@@ -17,7 +17,8 @@
 {%                             set server.id = route_server_vars.l3leaf.node_groups[l3leaf_node_group].nodes[node].id %}
 {%                             set server.bgp_as = route_server_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as | arista.avd.default(
                                                    route_server_vars.l3leaf.defaults.bgp_as) %}
-{%                             set server.ip_address = route_server_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(server.id + route_server_vars.spine.nodes | length) %}
+{%                             set server.ip_address = route_server_vars.overlay_loopback_network_summary | ipaddr('network') | ipmath(server.id + route_server_vars.max_spines | arista.avd.default(
+                                                                                                                                                   route_server_vars.spine.nodes | length )) %}
 {%                             do switch.evpn_route_servers.update({ route_server: server }) %}
 {%                         endif %}
 {%                     endif %}

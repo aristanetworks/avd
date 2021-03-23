@@ -94,6 +94,8 @@ type: overlay-controller
 ```yaml
 # Defined in FABRIC.yml
 
+max_spines: < integer >= number of spine nodes | default spine.nodes | length >  # maximum number of spines, changing this parameter affects address allocation.
+
 spine:
 
   # Arista platform family | Required.
@@ -127,6 +129,8 @@ spine:
 
 ```yaml
 # Defined in FABRIC.yml
+
+max_spines: 4
 
 spine:
   platform: vEOS-LAB
@@ -474,7 +478,7 @@ max_spine_to_super_spine_links: 1  # number of parallel links between spines and
 Assigned to the DC group:
 
 ```yaml
-max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
+max_super_spines: < integer >= number of super_spine nodes >  # maximum number of super-spines, changing this parameter affects address allocation.
 
 super_spine:
   platform: vEOS-LAB  # super-spine platform

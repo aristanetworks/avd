@@ -19,7 +19,7 @@
 {%                 endif %}
 {%             endfor %}
     {{ vrf }}:
-      router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+      router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}
       rd: "{{ leaf.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
