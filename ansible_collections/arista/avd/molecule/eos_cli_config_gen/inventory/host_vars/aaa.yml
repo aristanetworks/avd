@@ -35,6 +35,8 @@ aaa_authentication:
   login:
     default: group TACACS local
     serial_console: local
+  enable:
+    default: group TACACS local
   dot1x:
     default: DOT1X default group
   policies:

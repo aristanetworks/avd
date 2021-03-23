@@ -1,4 +1,7 @@
 {% if vlan_interfaces is defined and vlan_interfaces is not none %}
+
+## VLAN Interfaces
+
 ### VLAN Interfaces Summary
 
 | Interface | Description | VRF |  MTU | Shutdown |
@@ -36,26 +39,6 @@
 {%         endfor %}
 {%     endif %}
 
-{# OSPF #}
-{%     set vlan_interface_ospf = namespace() %}
-{%     set vlan_interface_ospf.configured = false %}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%          if vlan_interfaces[vlan_interface].ospf_area is defined %}
-{%              set vlan_interface_ospf.configured = true %}
-{%          endif %}
-{%     endfor %}
-{%     if vlan_interface_ospf.configured == true %}
-
-#### OSPF
-| Interface | Area | Cost | Mode |
-| --------- |----- | ---- |----- |
-{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%             if vlan_interfaces[vlan_interface].ospf_area is defined and vlan_interfaces[vlan_interface].ospf_area is not none %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].ospf_area }} | {% if vlan_interfaces[vlan_interface].ospf_cost is defined and vlan_interfaces[vlan_interface].ospf_cost is not none %} {{ vlan_interfaces[vlan_interface].ospf_cost }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].ospf_network_point_to_point is defined and vlan_interfaces[vlan_interface].ospf_network_point_to_point is not none and vlan_interfaces[vlan_interface].ospf_network_point_to_point == true %} point-to-point {% else %} broadcast {% endif %} |
-{%             endif %}
-{%          endfor %}
-{%     endif %}
-
 {# ISIS #}
 {%     set vlan_interface_isis = namespace() %}
 {%     set vlan_interface_isis.configured = false %}
@@ -82,6 +65,4 @@
 ```eos
 {% include 'eos/vlan-interfaces.j2' %}
 ```
-{% else %}
-No VLAN interfaces defined
 {% endif %}

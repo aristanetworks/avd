@@ -14,7 +14,7 @@ All these elements are part of a dedicated demo repository available at [arista-
 If you want to see how to build your inventory and all related variables, it is recommended to read following documentation:
 
 - [How to start](https://www.avd.sh/en/latest/docs/how-to/first-project/)
-- [L3LS EVPN Abstraction role](https://www.avd.sh/en/latest/roles/eos_l3ls_evpn/)
+- [L3LS EVPN Abstraction role](https://www.avd.sh/en/latest/roles/eos_designs/)
 
 ## Requirements
 
@@ -115,7 +115,7 @@ $ source bin/activate
 $ pip3 install psutil
 
 # Install project requirements
-$ curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/development/requirements.txt -o requirements.txt
+$ curl -fsSL https://raw.githubusercontent.com/aristanetworks/ansible-avd/devel/ansible_collections/arista/avd/requirements.txt -o requirements.txt
 $ pip3 install -r requirements.txt
 ```
 

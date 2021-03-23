@@ -25,6 +25,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].l2_mtu is arista.avd.defined %}
+   l2 mtu {{ ethernet_interfaces[ethernet_interface].l2_mtu }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
 {%         else %}
@@ -207,5 +210,10 @@ interface {{ ethernet_interface }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
+{%         if ethernet_interfaces[ethernet_interface].bfd.interval is arista.avd.defined and
+              ethernet_interfaces[ethernet_interface].bfd.min_rx is arista.avd.defined and
+              ethernet_interfaces[ethernet_interface].bfd.multiplier is arista.avd.defined %}
+   bfd interval {{ ethernet_interfaces[ethernet_interface].bfd.interval }} min-rx {{ ethernet_interfaces[ethernet_interface].bfd.min_rx }} multiplier {{ ethernet_interfaces[ethernet_interface].bfd.multiplier }}
+{%         endif %}
 {%     endif %}
 {% endfor %}

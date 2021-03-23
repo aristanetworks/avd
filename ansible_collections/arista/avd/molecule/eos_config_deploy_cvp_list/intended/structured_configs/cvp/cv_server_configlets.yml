@@ -108,7 +108,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
     \      router-id 192.168.255.10\n      neighbor 10.255.251.11 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-BL1B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -218,7 +218,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
     \      router-id 192.168.255.11\n      neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -240,9 +240,8 @@ CVP_CONFIGLETS:
     \ DC1-LEAF2B_Ethernet7\n   no shutdown\n   channel-group 1 mode active\n!\ninterface\
     \ Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n  \
     \ ip address 192.168.200.112/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip\
-    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n   multihop interval\
-    \ 1200 min-rx 1200 multiplier 3\n!\nmanagement api http-commands\n   protocol\
-    \ https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n  \
+    \ protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -280,9 +279,8 @@ CVP_CONFIGLETS:
     !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
     \   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-link Port-Channel3\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
-    \ 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200\
-    \ multiplier 3\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n\
-    \   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \ 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -320,9 +318,8 @@ CVP_CONFIGLETS:
     !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
     \   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-link Port-Channel3\n\
     \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
-    \ 0.0.0.0/0 192.168.200.5\n!\nrouter bfd\n   multihop interval 1200 min-rx 1200\
-    \ multiplier 3\n!\nmanagement api http-commands\n   protocol https\n   no shutdown\n\
-    \   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \ 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n\
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -401,7 +398,7 @@ CVP_CONFIGLETS:
     \   !\n   vrf Tenant_A_WEB_Zone\n      rd 192.168.255.5:11\n      route-target\
     \ import evpn 11:11\n      route-target export evpn 11:11\n      router-id 192.168.255.5\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -574,7 +571,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.6\n      neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -747,7 +744,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 30:30\n      route-target export evpn 30:30\n\
     \      router-id 192.168.255.7\n      neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-SPINE1: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -814,7 +811,7 @@ CVP_CONFIGLETS:
     \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
     \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
     \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
-    end"
+    end\n"
   AVD_DC1-SPINE2: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -881,7 +878,7 @@ CVP_CONFIGLETS:
     \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
     \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
     \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
-    end"
+    end\n"
   AVD_DC1-SPINE3: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -948,7 +945,7 @@ CVP_CONFIGLETS:
     \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
     \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
     \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
-    end"
+    end\n"
   AVD_DC1-SPINE4: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -1015,7 +1012,7 @@ CVP_CONFIGLETS:
     \ !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS activate\n \
     \     neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
     \   protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\n\
-    end"
+    end\n"
   AVD_DC1-SVC3A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -1225,7 +1222,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
     \      router-id 192.168.255.8\n      neighbor 10.255.251.7 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-SVC3B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -1431,7 +1428,7 @@ CVP_CONFIGLETS:
     \      route-target import evpn 31:31\n      route-target export evpn 31:31\n\
     \      router-id 192.168.255.9\n      neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER\n\
     \      redistribute connected\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend"
+    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
 CVP_TOPOLOGY:
   DC1_BL1:
     devices:
