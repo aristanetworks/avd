@@ -81,17 +81,17 @@ router ospf {{ process_id }}
 {%     if router_ospf.process_ids[process_id].mpls_ldp_sync_default is arista.avd.defined(true) %}
    mpls ldp sync default
 {%     endif %}
-{%     if router_ospf.process_ids[process_id].summary_address is arista.avd.defined %}
-{%         for summary in router_ospf.process_ids[process_id].summary_address %}
-{%             if summary.prefix is arista.avd.defined %}
-{%                 if summary.tag is arista.avd.defined %}
-   summary-address {{ summary.prefix }} tag {{ summary.tag }}
-{%                 elif summary.attribute_map is arista.avd.defined %}
-   summary-address {{ summary.prefix }} attribute-map {{ summary.attribute_map }}
-{%                 elif summary.not_advertise is arista.avd.defined(true) %}
-   summary-address {{ summary.prefix }} not-advertise
+{%     if router_ospf.process_ids[process_id].summary_addresses is arista.avd.defined %}
+{%         for summary_address in router_ospf.process_ids[process_id].summary_addresses %}
+{%             if summary_address.prefix is arista.avd.defined %}
+{%                 if summary_address.tag is arista.avd.defined %}
+   summary-address {{ summary_address.prefix }} tag {{ summary_address.tag }}
+{%                 elif summary_address.attribute_map is arista.avd.defined %}
+   summary-address {{ summary_address.prefix }} attribute-map {{ summary_address.attribute_map }}
+{%                 elif summary_address.not_advertise is arista.avd.defined(true) %}
+   summary-address {{ summary_address.prefix }} not-advertise
 {%                 else %}
-   summary-address {{ summary.prefix }}
+   summary-address {{ summary_address.prefix }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
