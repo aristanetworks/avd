@@ -25,6 +25,9 @@
                                                    l3leaf.defaults.p2p_link_interface_speed ) %}
 {%             set switch.platform = l3leaf.node_groups[l3leaf_node_group].platform | arista.avd.default(
                                      l3leaf.defaults.platform ) %}
+{%             set switch.rack = l3leaf.node_groups[l3leaf_node_group].nodes[node].rack | arista.avd.default(
+                                       l3leaf.node_groups[l3leaf_node_group].rack,
+                                       l3leaf.defaults.rack ) %}
 {%             if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
 {%                 set switch.bgp_as = bgp_as %}
 {%             else %}

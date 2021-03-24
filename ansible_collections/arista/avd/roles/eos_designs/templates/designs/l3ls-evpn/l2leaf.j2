@@ -15,6 +15,7 @@
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_inband_management_ip: {{ switch.inband_management_ip | arista.avd.default(none) }}
@@ -92,6 +93,10 @@ ntp_server:
 ### Redundancy ###
 redundancy:
 {% include 'base/redundancy.j2' %}
+
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
 
 {# spanning-tree #}
 ### Spanning-tree ###

@@ -17,6 +17,7 @@
 
 ### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_bgp_as: {{ switch.bgp_as }}
 switch_router_id: {{ switch.router_id }}
@@ -86,6 +87,10 @@ ntp_server:
 ### Redundancy ###
 redundancy:
 {% include 'base/redundancy.j2' %}
+
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
 
 {# spanning-tree #}
 ### Spanning-tree ###
