@@ -1,8 +1,11 @@
 ---
 
-# L3LS Fabric Values - update these values with caution, some changes could be disruptive.
+# L3LS Fabric Values
 
 fabric_name: DC1_FABRIC
+
+# Set Maximum spines to allow growth to 8 spines
+max_spines: 8
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]

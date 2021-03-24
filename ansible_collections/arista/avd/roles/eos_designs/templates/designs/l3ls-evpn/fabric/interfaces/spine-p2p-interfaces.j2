@@ -39,7 +39,7 @@
 {%     endif %}
     type: routed
     shutdown: false
-    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
+    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}/31
 {%                 if underlay_routing_protocol|lower == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}

@@ -4,7 +4,7 @@ switch_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
 leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.5
+switch_router_id: 192.168.255.9
 switch_evpn_role: client
 switch_evpn_route_servers:
 - DC1-SPINE1
@@ -185,11 +185,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.5/32
+    ip_address: 192.168.255.9/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.5/32
+    ip_address: 192.168.254.9/32
 management_interfaces:
   Management1:
     description: oob_management
@@ -293,7 +293,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: 65101
-  router_id: 192.168.255.5
+  router_id: 192.168.255.9
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -354,7 +354,7 @@ router_bgp:
   address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
-      rd: 192.168.255.5:12
+      rd: 192.168.255.9:12
       route_targets:
         both:
         - '12:12'
@@ -362,7 +362,7 @@ router_bgp:
       - learned
       vlan: 130-131
     Tenant_A_WEB_Zone:
-      rd: 192.168.255.5:11
+      rd: 192.168.255.9:11
       route_targets:
         both:
         - '11:11'
@@ -372,8 +372,8 @@ router_bgp:
   vlans: null
   vrfs:
     Tenant_A_APP_Zone:
-      router_id: 192.168.255.5
-      rd: 192.168.255.5:12
+      router_id: 192.168.255.9
+      rd: 192.168.255.9:12
       route_targets:
         import:
           evpn:
@@ -384,8 +384,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
-      router_id: 192.168.255.5
-      rd: 192.168.255.5:11
+      router_id: 192.168.255.9
+      rd: 192.168.255.9:11
       route_targets:
         import:
           evpn:

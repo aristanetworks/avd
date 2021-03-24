@@ -7,7 +7,7 @@
 ## {{ tenant }} ##
 {%                 endif %}
   {{ vrf }}:
-    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

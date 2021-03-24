@@ -274,10 +274,10 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet7  |  routed  | - |  172.31.255.49/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.51/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.53/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.55/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet7  |  routed  | - |  172.31.255.97/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.99/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.101/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.103/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4000 |  My test  |  routed  | - |  10.1.2.3/12  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
@@ -289,28 +289,28 @@ interface Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.49/31
+   ip address 172.31.255.97/31
 !
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet7
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.51/31
+   ip address 172.31.255.99/31
 !
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet7
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.53/31
+   ip address 172.31.255.101/31
 !
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet7
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.31.255.55/31
+   ip address 172.31.255.103/31
 !
 interface Ethernet4000
    description My test
@@ -328,8 +328,8 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.11/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.11/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.15/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.15/32 |
 
 #### IPv6
 
@@ -346,12 +346,12 @@ interface Ethernet4000
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.11/32
+   ip address 192.168.255.15/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.11/32
+   ip address 192.168.254.15/32
 ```
 
 ## VLAN Interfaces
@@ -511,7 +511,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65105|  192.168.255.11 |
+| 65105|  192.168.255.15 |
 
 | BGP Tuning |
 | ---------- |
@@ -545,10 +545,10 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.48 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.50 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.52 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.54 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.96 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.98 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.100 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.102 | Inherited from peer group UNDERLAY-PEERS | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -565,25 +565,25 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 |  14:14  |  |  | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 |  21:21  |  |  | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 |  31:31  |  |  | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 |  14:14  |  |  | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 |  21:21  |  |  | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.15:31 |  31:31  |  |  | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected  static |
-| Tenant_B_OP_Zone | 192.168.255.11:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 | connected  static |
+| Tenant_B_OP_Zone | 192.168.255.15:20 | connected |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.15:31 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65105
-   router-id 192.168.255.11
+   router-id 192.168.255.15
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -599,10 +599,10 @@ router bgp 65105
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 172.31.255.48 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.50 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.52 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.54 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.96 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.98 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.100 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.102 peer group UNDERLAY-PEERS
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
@@ -618,19 +618,19 @@ router bgp 65105
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
-      rd 192.168.255.11:14
+      rd 192.168.255.15:14
       route-target both 14:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
-      rd 192.168.255.11:21
+      rd 192.168.255.15:21
       route-target both 21:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.11:31
+      rd 192.168.255.15:31
       route-target both 31:31
       redistribute learned
       vlan 350
@@ -643,14 +643,14 @@ router bgp 65105
       neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_A_WAN_Zone
-      rd 192.168.255.11:14
+      rd 192.168.255.15:14
       route-target import evpn 14:14
       route-target import evpn 65000:456
       route-target import vpn-ipv4 65000:123
       route-target export evpn 14:14
       route-target export evpn 65000:789
       route-target export vpn-ipv4 65000:123
-      router-id 192.168.255.11
+      router-id 192.168.255.15
       neighbor 123.1.1.10 remote-as 1234
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
@@ -674,24 +674,24 @@ router bgp 65105
       redistribute static
    !
    vrf Tenant_B_OP_Zone
-      rd 192.168.255.11:20
+      rd 192.168.255.15:20
       route-target import evpn 20:20
       route-target export evpn 20:20
-      router-id 192.168.255.11
+      router-id 192.168.255.15
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
-      rd 192.168.255.11:21
+      rd 192.168.255.15:21
       route-target import evpn 21:21
       route-target export evpn 21:21
-      router-id 192.168.255.11
+      router-id 192.168.255.15
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
-      rd 192.168.255.11:31
+      rd 192.168.255.15:31
       route-target import evpn 31:31
       route-target export evpn 31:31
-      router-id 192.168.255.11
+      router-id 192.168.255.15
       redistribute connected
 ```
 

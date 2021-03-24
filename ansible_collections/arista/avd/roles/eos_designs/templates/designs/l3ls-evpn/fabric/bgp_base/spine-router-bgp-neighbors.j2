@@ -10,7 +10,7 @@
 {%         if switch.underlay_routing_protocol == "ebgp" %}
 {%             for leaf_spine in leaf_spines %}
 {%                 if leaf_spine == inventory_hostname %}
-    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * spine.nodes | length * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}:
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       remote_as: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as | arista.avd.default(
                     l3leaf.node_groups[l3leaf_node_group].bgp_as,

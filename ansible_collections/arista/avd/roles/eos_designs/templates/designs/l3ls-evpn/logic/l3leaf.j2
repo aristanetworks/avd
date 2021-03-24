@@ -17,6 +17,8 @@
 {%             set leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags | arista.avd.default(
                                       l3leaf.defaults.filter.tags,
                                       [ 'all' ] ) %}
+{%             set switch.max_spines = max_spines | arista.avd.default(
+                                       spine.nodes | length ) %}
 {%             set leaf.spines = l3leaf.node_groups[l3leaf_node_group].spines | arista.avd.default(
                                  l3leaf.defaults.spines ) %}
 {%             set leaf.uplink_to_spine_interfaces = l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces | arista.avd.default(
@@ -32,7 +34,7 @@
                                        l3leaf.node_groups[l3leaf_node_group].bgp_as,
                                        l3leaf.defaults.bgp_as ) %}
 {%             endif %}
-{%             set switch.router_id = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{%             set switch.router_id = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) %}
 {%             set switch.bgp_defaults = leaf_bgp_defaults | arista.avd.default([]) %}
 {%             set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address | arista.avd.default(
                                                      l3leaf.defaults.virtual_router_mac_address ) %}
