@@ -68,6 +68,7 @@ For complete list of authentication options available with Cloudvision Ansible c
 - __`configlet_directory`__: Folder where local configlets are stored. Default: `configlets`.
 - __`file_extension`__: File extension to look for configlet in their local folder. Default: `conf`.
 - __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: _Not set_ and it is required.
+- __`execute_tasks`__:  `true` / `false`. Support automatically excuting pending tasks. Default: `false`.
 
 _Example_:
 
@@ -80,6 +81,7 @@ tasks:
       configlet_directory: 'configlets/'
       file_extension: 'txt'
       configlets_cvp_prefix: 'DC1-AVD'
+      execute_tasks: false
 ```
 
 This module also supports tags to run a subset of ansible tasks:
