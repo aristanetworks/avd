@@ -1,5 +1,6 @@
 l2leaf_node_group: RACK2_MLAG
 switch_platform: vEOS-LAB
+switch_rack: null
 leaf_id: 3
 switch_mgmt_ip: 192.168.1.12/24
 switch_inband_management_ip: 172.21.110.6/24
@@ -42,6 +43,8 @@ queue_monitor_length: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B
 spanning_tree:
   mode: mstp
   mst_instances:

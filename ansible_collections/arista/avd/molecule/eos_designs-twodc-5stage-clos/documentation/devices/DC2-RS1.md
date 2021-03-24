@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -109,6 +110,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 ```
 
 # Monitoring
+
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC2 DC2-RS1 |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC2 DC2-RS1
+```
 
 # Spanning Tree
 

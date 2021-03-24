@@ -1,4 +1,5 @@
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_mgmt_ip: 192.168.1.13/24
 switch_bgp_as: 65120
 switch_router_id: 172.16.120.1
@@ -23,6 +24,8 @@ queue_monitor_length: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-SPINE1
 spanning_tree:
   mode: none
 aaa_authorization: null
