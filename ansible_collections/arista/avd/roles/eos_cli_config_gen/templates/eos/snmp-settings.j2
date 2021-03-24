@@ -7,6 +7,26 @@ snmp-server contact {{ snmp_server.contact }}
 {%     if snmp_server.location is arista.avd.defined %}
 snmp-server location {{ snmp_server.location }}
 {%     endif %}
+{%     if snmp_server.communities is arista.avd.defined %}
+{%         for community in snmp_server.communities | arista.avd.natural_sort %}
+{%             set communities_cli = "snmp-server community " ~ community.name %}
+{%             if community.view is arista.avd.defined %}
+{%                 set communities_cli = communities_cli ~ " view " ~ community.view %}
+{%             endif %}
+{%             if community.access is arista.avd.defined %}
+{%                 set communities_cli = communities_cli ~ " " ~ community.access %}
+{%             else %}
+{%                 set communities_cli = communities_cli ~ " ro" %}
+{%             endif %}
+{%             if community.access_list_ipv6 is arista.avd.defined %}
+{%                 set communities_cli = communities_cli ~ " ipv6 " ~ community.access_list_ipv6.name %}
+{%             endif %}
+{%             if community.access_list_ipv4 is arista.avd.defined %}
+{%                 set communities_cli = communities_cli ~ " " ~ community.access_list_ipv4.name %}
+{%             endif %}
+{{ communities_cli }}
+{%         endfor %}
+{%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv4_acls %}
 {%             set acl_cli = "snmp-server ipv4 access-list " ~ acl.name %}

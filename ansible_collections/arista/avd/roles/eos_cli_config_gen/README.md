@@ -1304,6 +1304,21 @@ sflow:
 snmp_server:
   contact: < contact_name >
   location: < location >
+  communities:
+    - name: < community_name_1 >
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
+    - name: < community_name_2 >
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
   ipv4_acls:
     - name: < ipv4-access-list >
       vrf: < vrf >
