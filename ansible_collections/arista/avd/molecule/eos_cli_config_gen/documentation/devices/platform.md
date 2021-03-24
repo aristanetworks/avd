@@ -105,6 +105,7 @@ interface Management1
 platform trident forwarding-table partition 2
 platform sand lag hardware-only
 platform sand lag mode 512x32
+platform sand multicast replication default ingress
 ```
 
 # Quality Of Service
