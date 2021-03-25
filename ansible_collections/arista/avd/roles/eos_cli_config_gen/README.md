@@ -1597,19 +1597,6 @@ router_general:
           subscribe_policy: < route-map policy >
 ```
 
-#### Router General configuration
-
-```yaml
-router_general:
-  vrfs:
-    < destination-vrf >:
-      leak_routes:
-        - source_vrf: < source-vrf >
-          subscribe_policy: < route-map policy >
-        - source_vrf: < source-vrf >
-          subscribe_policy: < route-map policy >
-```
-
 #### Router BGP Configuration
 
 ```yaml

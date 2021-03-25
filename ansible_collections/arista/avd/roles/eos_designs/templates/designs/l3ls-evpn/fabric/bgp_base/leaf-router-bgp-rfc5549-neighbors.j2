@@ -2,14 +2,14 @@
 {% if switch.underlay_routing_protocol == "ebgp"  and underlay_rfc5549 is arista.avd.defined(true) %}
 {%     for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
       {{ uplink_to_spine_interface }}:
-        peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+        peer_group: IPv4-UNDERLAY-PEERS
         remote_as: {{ spine.bgp_as }}
         description: {{ leaf.spines[loop.index0] }}_{{ leaf.spine_interfaces[loop.index0] }}
 {%     endfor %}
 {%     if leaf.mlag == true %}
       Vlan4093:
-        peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
-        remote_as: {{ switch.bgp_as }}
+        peer_group: IPv4-UNDERLAY-PEERS
+        remote_as: {{ spine.bgp_as }}
         description: {{ leaf.mlag_peer }}
 {%     endif %}
 {% endif %}

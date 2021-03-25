@@ -1,5 +1,4 @@
 switch_platform: vEOS-LAB
-switch_rack: null
 switch_mgmt_ip: 192.168.200.104/24
 switch_bgp_as: 65001
 switch_router_id: 192.168.255.4
@@ -51,7 +50,6 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
-snmp_server: null
 spanning_tree:
   mode: none
 aaa_authorization: null
@@ -182,7 +180,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY_PEERS:
+    IPv4-UNDERLAY-PEERS:
       type: ipv4
       peer_filter: LEAF-AS-RANGE
       bgp_listen_range_prefix: fe80::/10
@@ -210,7 +208,7 @@ router_bgp:
         activate: true
   address_family_ipv4:
     peer_groups:
-      UNDERLAY_PEERS:
+      IPv4-UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false

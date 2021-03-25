@@ -13,16 +13,13 @@
 | ------ | --------- |
 | {{ router_bgp.as }}|  {{ router_bgp.bgp_cluster_id }} |
 {%     endif %}
-{%     if router_bgp.bgp_defaults is arista.avd.defined or router_bgp.bgp is arista.avd.defined %}
+{%     if router_bgp.bgp_defaults is arista.avd.defined %}
 
 | BGP Tuning |
 | ---------- |
-{%         for bgp_default in router_bgp.bgp_defaults | arista.avd.default([]) %}
+{%         for bgp_default in router_bgp.bgp_defaults %}
 | {{ bgp_default }} |
 {%         endfor %}
-{%         if router_bgp.bgp.bestpath.d_path is arista.avd.defined(true) %}
-| bgp bestpath d-path |
-{%         endif %}
 {%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
 
@@ -37,10 +34,7 @@
 | Address Family | {{ router_bgp.peer_groups[peer_group].type }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].remote_as is arista.avd.defined %}
-| Remote AS | {{ router_bgp.peer_groups[peer_group].remote_as }} |
-{%             endif %}
-{%             if router_bgp.peer_groups[peer_group].local_as is arista.avd.defined %}
-| Local AS | {{ router_bgp.peer_groups[peer_group].local_as }} |
+| Remote_as | {{ router_bgp.peer_groups[peer_group].remote_as }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].route_reflector_client is arista.avd.defined %}
 | Route Reflector Client | Yes |

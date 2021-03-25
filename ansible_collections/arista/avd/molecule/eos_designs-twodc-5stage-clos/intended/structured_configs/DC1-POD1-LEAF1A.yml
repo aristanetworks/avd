@@ -244,8 +244,10 @@ router_bgp:
   neighbors:
     172.17.110.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE1_Ethernet3
     172.17.110.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE2_Ethernet3
     172.16.210.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF1A
