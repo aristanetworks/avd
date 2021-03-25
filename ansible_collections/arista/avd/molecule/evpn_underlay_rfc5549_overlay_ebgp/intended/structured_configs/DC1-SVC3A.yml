@@ -78,6 +78,7 @@ leaf_mlag_peer_id: 5
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
 hardware_counters: null
 hardware: null
 daemon_terminattr:
