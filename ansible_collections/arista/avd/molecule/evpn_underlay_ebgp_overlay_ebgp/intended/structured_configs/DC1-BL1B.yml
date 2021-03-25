@@ -155,6 +155,25 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.103/31
+  Ethernet7:
+    peer: DC1-BL1A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet7
+    type: routed
+    shutdown: false
+    mtu: 1500
+    vrf: Tenant_B_OP_Zone
+    ip_address: 100.100.100.201/24
+  Ethernet8:
+    peer: DC1-BL1A
+    peer_interface: Ethernet8
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet8
+    type: routed
+    shutdown: false
+    mtu: 1500
+    ip_address: 100.100.101.201/24
   Ethernet4000:
     description: My test
     ip_address: 10.1.2.3/12

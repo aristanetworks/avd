@@ -278,6 +278,8 @@ vlan 350
 | Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet6  |  routed  | - |  172.31.255.83/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet6  |  routed  | - |  172.31.255.85/31  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet6  |  routed  | - |  172.31.255.87/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet7  |  routed  | - |  100.100.100.101/24  |  Tenant_B_OP_Zone  |  1500  |  false  |  -  |  -  |
+| Ethernet8 |  P2P_LINK_TO_DC1-BL1B_Ethernet8  |  routed  | - |  100.100.101.101/24  |  default  |  1500  |  false  |  -  |  -  |
 | Ethernet4000 |  My test  |  routed  | - |  10.3.2.1/21  |  default  |  1500  |  false  |  -  |  -  |
 
 ### Ethernet Interfaces Device Configuration
@@ -311,6 +313,21 @@ interface Ethernet4
    mtu 1500
    no switchport
    ip address 172.31.255.87/31
+!
+interface Ethernet7
+   description P2P_LINK_TO_DC1-BL1B_Ethernet7
+   no shutdown
+   mtu 1500
+   no switchport
+   vrf Tenant_B_OP_Zone
+   ip address 100.100.100.101/24
+!
+interface Ethernet8
+   description P2P_LINK_TO_DC1-BL1B_Ethernet8
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 100.100.101.101/24
 !
 interface Ethernet4000
    description My test
