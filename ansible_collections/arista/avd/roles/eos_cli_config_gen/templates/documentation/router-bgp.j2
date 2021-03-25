@@ -137,7 +137,7 @@
 {%                 set summary_only = "False" %}
 {%             endif %}
 {%             set attribute_map = router_bgp.aggregate_addresses[aggregate_address].attribute_map | arista.avd.default("-") %}
-{%             set match_all = router_bgp.aggregate_addresses[aggregate_address].match_map | arista.avd.default("-") %}
+{%             set match_map = router_bgp.aggregate_addresses[aggregate_address].match_map | arista.avd.default("-") %}
 {%             if router_bgp.aggregate_addresses[aggregate_address].advertise_only is arista.avd.defined(true) %}
 {%                 set advertise_only = "True" %}
 {%             else %}
