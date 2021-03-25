@@ -172,17 +172,17 @@ interface Management1
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 24 | 10.50.64.15:10024 |  1:10024 |  -  | -  | learned |
-| 41 | 10.50.64.15:10041 |  1:10041 |  -  | -  | learned |
-| 42 | 10.50.64.15:10042 |  1:10042 |  -  | -  | learned |
-| 65 | 10.50.64.15:10065 |  1:10065 |  -  | -  | learned |
+| 24 | 10.50.64.15:10024 | 1:10024 | - | - | learned |
+| 41 | 10.50.64.15:10041 | 1:10041 | - | - | learned |
+| 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
+| 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A | 10.50.64.15:30001 | connected |
-| Tenant_B | 10.50.64.15:30002 ||
+| Tenant_B | 10.50.64.15:30002 | - |
 
 ### Router BGP Device Configuration
 

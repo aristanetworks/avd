@@ -158,9 +158,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet5  |  routed  | - |  172.17.10.9/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4  |  routed  | - |  172.17.10.11/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet3  |  routed  | - |  172.17.10.13/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet5 | routed | - | 172.17.10.9/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet4 | routed | - | 172.17.10.11/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet3 | routed | - | 172.17.10.13/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

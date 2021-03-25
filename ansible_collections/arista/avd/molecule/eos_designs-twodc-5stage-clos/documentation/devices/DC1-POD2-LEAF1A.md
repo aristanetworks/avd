@@ -193,9 +193,9 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3  |  routed  | - |  172.17.120.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3  |  routed  | - |  172.17.120.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-RS2_Ethernet3  |  routed  | - |  172.17.10.12/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | routed | - | 172.17.120.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | routed | - | 172.17.120.3/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | routed | - | 172.17.10.12/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -462,9 +462,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.120.3:10110 |  10110:10110 |  -  | -  | learned |
-| 111 | 172.16.120.3:50111 |  50111:50111 |  -  | -  | learned |
-| 112 | 172.16.120.3:50112 |  50112:50112 |  -  | -  | learned |
+| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -508,7 +508,9 @@ router bgp 65121
    neighbor 172.17.10.13 description DC1-RS2
    neighbor 172.17.10.13 bfd
    neighbor 172.17.120.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.120.0 description DC1-POD2-SPINE1_Ethernet3
    neighbor 172.17.120.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.120.2 description DC1-POD2-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

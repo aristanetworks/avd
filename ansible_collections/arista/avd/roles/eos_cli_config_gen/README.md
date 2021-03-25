@@ -1532,6 +1532,7 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
+ip_routing_ipv6_interfaces: < true | false >
 ```
 
 #### Router General configuration
@@ -1599,6 +1600,11 @@ router_bgp:
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
+  neighbor_interfaces:
+    < interface >:
+      peer_group: < peer_group_name >
+      remote_as: < bgp_as >
+      description: "< description as string >"
   aggregate_addresses:
     < aggregate_address_1/mask >:
       advertise_only: < true | false >

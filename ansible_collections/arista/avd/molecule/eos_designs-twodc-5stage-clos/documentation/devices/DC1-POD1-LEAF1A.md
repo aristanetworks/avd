@@ -183,9 +183,9 @@ vlan 4085
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3  |  routed  | - |  172.17.110.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3  |  routed  | - |  172.17.110.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-RS1_Ethernet3  |  routed  | - |  172.17.10.4/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | routed | - | 172.17.110.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | routed | - | 172.17.110.3/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | routed | - | 172.17.10.4/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -496,7 +496,9 @@ router bgp 65111
    neighbor 172.17.10.5 description DC1-RS1
    neighbor 172.17.10.5 bfd
    neighbor 172.17.110.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.0 description DC1-POD1-SPINE1_Ethernet3
    neighbor 172.17.110.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.2 description DC1-POD1-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

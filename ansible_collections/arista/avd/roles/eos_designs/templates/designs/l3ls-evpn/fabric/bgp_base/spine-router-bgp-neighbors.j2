@@ -7,7 +7,7 @@
 {%     endif %}
 {%     for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {# Underlay network peering #}
-{%         if switch.underlay_routing_protocol == "ebgp" %}
+{%         if switch.underlay_routing_protocol == "ebgp" and underlay_rfc5549 is not arista.avd.defined(true) %}
 {%             for leaf_spine in leaf_spines %}
 {%                 if leaf_spine == inventory_hostname %}
     {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}:
@@ -15,6 +15,7 @@
       remote_as: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as | arista.avd.default(
                     l3leaf.node_groups[l3leaf_node_group].bgp_as,
                     l3leaf.defaults.bgp_as) }}
+      description: {{ node }}_{{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0] }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}

@@ -158,10 +158,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1  |  routed  | - |  172.16.21.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1  |  routed  | - |  172.16.21.65/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1  |  routed  | - |  172.17.210.0/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5  |  routed  | - |  11.1.1.19/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | routed | - | 172.16.21.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | routed | - | 172.16.21.65/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | routed | - | 172.17.210.0/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | routed | - | 11.1.1.19/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -371,6 +371,7 @@ router bgp 65210
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
+   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet3
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

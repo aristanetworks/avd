@@ -158,11 +158,11 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2  |  routed  | - |  172.16.11.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2  |  routed  | - |  172.16.11.67/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2  |  routed  | - |  172.17.110.2/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet2  |  routed  | - |  172.17.110.6/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2  |  routed  | - |  172.17.110.10/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet2 | routed | - | 172.16.11.3/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet2 | routed | - | 172.16.11.67/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.110.2/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet2 | routed | - | 172.17.110.6/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2 | routed | - | 172.17.110.10/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -345,10 +345,13 @@ router bgp 65110
    neighbor 172.16.11.66 remote-as 65100
    neighbor 172.17.110.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.3 remote-as 65111
+   neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet3
    neighbor 172.17.110.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.7 remote-as 65112
+   neighbor 172.17.110.7 description DC1-POD1-LEAF2A_Ethernet4
    neighbor 172.17.110.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.11 remote-as 65112
+   neighbor 172.17.110.11 description DC1-POD1-LEAF2B_Ethernet5
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4

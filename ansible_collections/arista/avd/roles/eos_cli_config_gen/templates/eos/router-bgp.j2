@@ -69,6 +69,16 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group }} route-map {{ router_bgp.peer_groups[peer_group].route_map_out }} out
 {%         endif %}
 {%     endfor %}
+{%     for neighbor_interface in router_bgp.neighbor_interfaces | arista.avd.natural_sort %}
+{%         set neighbor_interface_cli = "neighbor interface " ~ neighbor_interface %}
+{%         if router_bgp.neighbor_interfaces[neighbor_interface].peer_group is arista.avd.defined %}
+{%             set neighbor_interface_cli = neighbor_interface_cli ~ " peer-group " ~ router_bgp.neighbor_interfaces[neighbor_interface].peer_group %}
+{%         endif %}
+{%         if router_bgp.neighbor_interfaces[neighbor_interface].remote_as is arista.avd.defined %}
+{%             set neighbor_interface_cli = neighbor_interface_cli ~ " remote-as " ~ router_bgp.neighbor_interfaces[neighbor_interface].remote_as %}
+{%         endif %}
+   {{ neighbor_interface_cli }}
+{%     endfor %}
 {%     for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%         if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
    neighbor {{ neighbor }} peer group {{ router_bgp.neighbors[neighbor].peer_group }}
@@ -253,6 +263,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out is arista.avd.defined %}
       neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out }} out
+{%             endif %}
+{%             if underlay_rfc5549 is arista.avd.defined(true) %}
+      neighbor {{ peer_group }} next-hop address-family ipv6 originate
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].activate is arista.avd.defined(true) %}
       neighbor {{ peer_group }} activate

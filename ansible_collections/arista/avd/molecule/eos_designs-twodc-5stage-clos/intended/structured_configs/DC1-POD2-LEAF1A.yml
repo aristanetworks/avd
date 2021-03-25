@@ -243,11 +243,14 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE1_Ethernet3
     172.17.120.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE2_Ethernet3
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE1
