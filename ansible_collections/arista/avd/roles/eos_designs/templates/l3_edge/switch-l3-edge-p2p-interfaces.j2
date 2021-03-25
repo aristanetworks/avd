@@ -8,6 +8,9 @@
     type: {{ p2p_interface.type }}
     shutdown: {{ p2p_interface.shutdown }}
     mtu: {{ p2p_interface.mtu }}
+{%     if p2p_interface.vrf is arista.avd.defined %}
+    vrf: {{ p2p_interface.vrf }}
+{%     endif %}
 {%     if p2p_interface.ip_address is arista.avd.defined %}
     ip_address: {{ p2p_interface.ip_address }}
 {%     endif %}

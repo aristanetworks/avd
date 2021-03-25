@@ -42,6 +42,9 @@ l3_edge:
       # Add this interface to underlay routing protocol | Optional
       include_in_underlay_protocol: < true | false | default -> false >
 
+      # VRF where interface belongs to | Optional
+      vrf: <vrf_name >
+
       # MTU for this P2P link | Optional
       mtu: < number | default -> same as p2p_uplinks_mtu >
 
