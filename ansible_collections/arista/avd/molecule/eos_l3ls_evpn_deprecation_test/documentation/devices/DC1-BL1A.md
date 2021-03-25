@@ -557,15 +557,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.10:14 |  14:14  |  |  | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.10:21 |  21:21  |  |  | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.10:31 |  31:31  |  |  | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.10:14 | 14:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.10:21 | 21:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.10:31 | 31:31 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected  static |
+| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected<br>static |
 | Tenant_B_WAN_Zone | 192.168.255.10:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.255.10:31 | connected |
 
@@ -591,9 +591,13 @@ router bgp 65104
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.40 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.40 description DC1-SPINE1_Ethernet6
    neighbor 172.31.255.42 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.42 description DC1-SPINE2_Ethernet6
    neighbor 172.31.255.44 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.44 description DC1-SPINE3_Ethernet6
    neighbor 172.31.255.46 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.46 description DC1-SPINE4_Ethernet6
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

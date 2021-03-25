@@ -158,6 +158,7 @@ router_bgp:
     172.17.120.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65121
+      description: DC1-POD2-LEAF1A_Ethernet3
     172.16.12.0:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100

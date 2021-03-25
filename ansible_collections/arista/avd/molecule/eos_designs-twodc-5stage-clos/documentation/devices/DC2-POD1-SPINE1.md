@@ -371,6 +371,7 @@ router bgp 65210
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
+   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet3
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

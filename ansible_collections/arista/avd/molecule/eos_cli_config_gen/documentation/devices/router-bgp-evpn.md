@@ -131,9 +131,9 @@ interface Management1
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
 #### Router BGP EVPN VRFs
 

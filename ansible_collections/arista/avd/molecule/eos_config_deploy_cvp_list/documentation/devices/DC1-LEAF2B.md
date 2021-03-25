@@ -906,12 +906,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.7:12 |  12:12  |  |  | learned | 130-131 |
-| Tenant_A_DB_Zone | 192.168.255.7:13 |  13:13  |  |  | learned | 140-141 |
-| Tenant_A_OP_Zone | 192.168.255.7:10 |  10:10  |  |  | learned | 110-111 |
-| Tenant_A_WEB_Zone | 192.168.255.7:11 |  11:11  |  |  | learned | 120-121 |
-| Tenant_B_OP_Zone | 192.168.255.7:20 |  20:20  |  |  | learned | 210-211 |
-| Tenant_C_OP_Zone | 192.168.255.7:30 |  30:30  |  |  | learned | 310-311 |
+| Tenant_A_APP_Zone | 192.168.255.7:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_DB_Zone | 192.168.255.7:13 | 13:13 | - | - | learned | 140-141 |
+| Tenant_A_OP_Zone | 192.168.255.7:10 | 10:10 | - | - | learned | 110-111 |
+| Tenant_A_WEB_Zone | 192.168.255.7:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_B_OP_Zone | 192.168.255.7:20 | 20:20 | - | - | learned | 210-211 |
+| Tenant_C_OP_Zone | 192.168.255.7:30 | 30:30 | - | - | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
@@ -953,10 +953,15 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 10.255.251.2 description DC1-LEAF2A
    neighbor 172.31.255.16 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.16 description DC1-SPINE1_Ethernet3
    neighbor 172.31.255.18 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.18 description DC1-SPINE2_Ethernet3
    neighbor 172.31.255.20 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.20 description DC1-SPINE3_Ethernet3
    neighbor 172.31.255.22 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.22 description DC1-SPINE4_Ethernet3
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

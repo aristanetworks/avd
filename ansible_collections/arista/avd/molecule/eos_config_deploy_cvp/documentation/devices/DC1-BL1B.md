@@ -676,9 +676,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 |  14:14  |  |  | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 |  21:21  |  |  | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 |  31:31  |  |  | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.11:14 | 14:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.11:21 | 21:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.11:31 | 31:31 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
@@ -717,10 +717,15 @@ router bgp 65104
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 10.255.251.10 description DC1-BL1A
    neighbor 172.31.255.48 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.48 description DC1-SPINE1_Ethernet7
    neighbor 172.31.255.50 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.50 description DC1-SPINE2_Ethernet7
    neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.52 description DC1-SPINE3_Ethernet7
    neighbor 172.31.255.54 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.54 description DC1-SPINE4_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

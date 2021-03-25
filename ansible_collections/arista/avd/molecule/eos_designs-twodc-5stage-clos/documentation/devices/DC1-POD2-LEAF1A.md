@@ -462,9 +462,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.120.3:10110 |  10110:10110 |  -  | -  | learned |
-| 111 | 172.16.120.3:50111 |  50111:50111 |  -  | -  | learned |
-| 112 | 172.16.120.3:50112 |  50112:50112 |  -  | -  | learned |
+| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -508,7 +508,9 @@ router bgp 65121
    neighbor 172.17.10.13 description DC1-RS2
    neighbor 172.17.10.13 bfd
    neighbor 172.17.120.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.120.0 description DC1-POD2-SPINE1_Ethernet3
    neighbor 172.17.120.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.120.2 description DC1-POD2-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

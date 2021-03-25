@@ -1,19 +1,21 @@
 # DC1_FABRIC
 
-## Table of Contents
+# Table of Contents
+<!-- toc -->
 
-- [DC1_FABRIC](#dc1fabric)
-  - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
-  - [Fabric Topology](#fabric-topology)
-  - [Fabric IP Allocation](#fabric-ip-allocation)
-    - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
-    - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-    - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
-    - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-    - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
-    - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
+- [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
+  - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
+- [Fabric Topology](#fabric-topology)
+- [Fabric IP Allocation](#fabric-ip-allocation)
+  - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
+  - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
+  - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
+  - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
+  - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
+  - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
-## Fabric Switches and Management IP
+<!-- toc -->
+# Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
@@ -34,7 +36,11 @@
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
-## Fabric Topology
+## Fabric Switches with inband Management IP
+| POD | Type | Node | Management IP | Inband Interface |
+| --- | ---- | ---- | ------------- | ---------------- |
+
+# Fabric Topology
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
@@ -79,25 +85,25 @@
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
 
-## Fabric IP Allocation
+# Fabric IP Allocation
 
-### Fabric Point-To-Point Links
+## Fabric Point-To-Point Links
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
 
-### Point-To-Point Links Node Allocation
+## Point-To-Point Links Node Allocation
 
 | Node | Node Interface | Node IP Address | Peer Node | Peer Interface | Peer IP Address |
 | ---- | -------------- | --------------- | --------- | -------------- | --------------- |
 
-### Overlay Loopback Interfaces (BGP EVPN Peering)
+## Overlay Loopback Interfaces (BGP EVPN Peering)
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
 | 192.168.255.0/24 | 256 | 11 | 4.3 % |
 
-### Loopback0 Interfaces Node Allocation
+## Loopback0 Interfaces Node Allocation
 
 | POD | Node | Loopback0 |
 | --- | ---- | --------- |
@@ -113,13 +119,13 @@
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.9/32 |
 
-### VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 | 192.168.254.0/24 | 256 | 7 | 2.74 % |
 
-### VTEP Loopback Node allocation
+## VTEP Loopback Node allocation
 
 | POD | Node | Loopback1 |
 | --- | ---- | --------- |

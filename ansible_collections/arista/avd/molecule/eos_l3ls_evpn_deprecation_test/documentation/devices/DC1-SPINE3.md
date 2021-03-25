@@ -430,18 +430,25 @@ router bgp 65001
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.5 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.5 remote-as 65101
+   neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet1
    neighbor 172.31.255.13 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.13 remote-as 65102
+   neighbor 172.31.255.13 description DC1-LEAF2A_Ethernet2
    neighbor 172.31.255.21 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.21 remote-as 65102
+   neighbor 172.31.255.21 description DC1-LEAF2B_Ethernet3
    neighbor 172.31.255.29 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.29 remote-as 65103
+   neighbor 172.31.255.29 description DC1-SVC3A_Ethernet4
    neighbor 172.31.255.37 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.37 remote-as 65103
+   neighbor 172.31.255.37 description DC1-SVC3B_Ethernet5
    neighbor 172.31.255.45 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.45 remote-as 65104
+   neighbor 172.31.255.45 description DC1-BL1A_Ethernet6
    neighbor 172.31.255.53 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.53 remote-as 65105
+   neighbor 172.31.255.53 description DC1-BL1B_Ethernet7
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
    neighbor 192.168.255.5 description DC1-LEAF1A
