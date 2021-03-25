@@ -2,6 +2,8 @@
 {% if ipv6_unicast_routing is arista.avd.defined(true) %}
 !
 ipv6 unicast-routing
+{% endif %}
+{% if ip_routing_ipv6_interfaces is arista.avd.defined(true) %}
 ip routing ipv6 interfaces
 {% endif %}
 {% for vrf in vrfs | arista.avd.natural_sort %}

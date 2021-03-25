@@ -1532,6 +1532,7 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
+ip_routing_ipv6_interfaces: < true | false >
 ```
 
 #### Router General configuration
