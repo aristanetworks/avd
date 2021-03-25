@@ -213,6 +213,18 @@ vlan internal order ascending range 1006 1199
 
 *Inherited from Port-Channel Interface
 
+#### IPv6
+
+| Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos

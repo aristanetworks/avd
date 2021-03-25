@@ -215,25 +215,25 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet2  |  routed  | - |  172.31.255.2/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet2  |  routed  | - |  172.31.255.10/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet2  |  routed  | - |  172.31.255.18/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet2  |  routed  | - |  172.31.255.26/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet2  |  routed  | - |  172.31.255.34/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet2  |  routed  | - |  172.31.255.42/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet2  |  routed  | - |  172.31.255.50/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.10/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet2 | routed | - | 172.31.255.26/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.255.42/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | routed | - | 172.31.255.50/31 | default | 1500 | false | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet5 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet6 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet7 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
