@@ -91,7 +91,7 @@ platform_speed_groups:
 # Set SNMP settings | Optional
 snmp_settings:
   contact: < contact_info >
-  location: < boolean | default -> false >
+  location: < boolean | default -> false > # Formatted as: {{ fabric_name }} {{ dc_name }} {{ pod_name }} {{ switch_rack }} {{ inventory_hostname }}
 ```
 
 > In `cvp_instance_ips` you can either provide a list of IPs to target on-premise CloudVision cluster or either use DNS name for your CloudVision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
