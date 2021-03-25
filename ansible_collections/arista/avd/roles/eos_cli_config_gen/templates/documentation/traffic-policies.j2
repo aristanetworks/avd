@@ -1,6 +1,8 @@
 {% if traffic_policies is arista.avd.defined %}
-### Traffic Policies information
+
+## Traffic Policies information
 {%     if traffic_policies.field_sets is arista.avd.defined %}
+
 **IPv4 Field sets**
 
 {%         if traffic_policies.field_sets.ipv4 is arista.avd.defined %}
@@ -41,8 +43,9 @@ No Field-set configured on device.
 {%     endif %}
 {%     if traffic_policies.policies is arista.avd.defined %}
 
-#### Traffic Policies
+### Traffic Policies
 {%         for policy in traffic_policies.policies | arista.avd.natural_sort %}
+
 **{{ policy }}:**
 
 {%             if traffic_policies.policies[policy].matchs is arista.avd.defined %}
@@ -142,6 +145,4 @@ No Match condition configured.
 ```eos
 {% include 'eos/traffic-policies.j2' %}
 ```
-{% else %}
-Traffic Policies not defined
 {% endif %}
