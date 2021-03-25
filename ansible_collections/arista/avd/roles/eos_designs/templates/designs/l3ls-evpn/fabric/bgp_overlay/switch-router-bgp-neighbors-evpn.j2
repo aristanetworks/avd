@@ -10,12 +10,14 @@
       route_map_out: RM-EVPN-FILTER-AS{{ switch.evpn_route_servers[evpn_route_server].bgp_as }}
 {%         endif %}
 {%     endfor %}
-{%     for evpn_route_client in switch.evpn_route_clients | arista.avd.natural_sort %}
+{%     if underlay_rfc5549 is not arista.avd.defined(true) %}
+{%         for evpn_route_client in switch.evpn_route_clients | arista.avd.natural_sort %}
     {{ switch.evpn_route_clients[evpn_route_client].ip_address }}:
       peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
       description: {{ evpn_route_client }}
       remote_as: {{ switch.evpn_route_clients[evpn_route_client].bgp_as }}
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 {# IBGP #}
 {% elif switch.overlay_routing_protocol == "ibgp" and switch.evpn_role in ["client", "server"] %}
 {# Overlay network peering #}
