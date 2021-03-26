@@ -8,8 +8,8 @@
 {%     endfor %}
 {%     if leaf.mlag == true %}
       Vlan4093:
-        peer_group: IPv4-UNDERLAY-PEERS
-        remote_as: {{ spine.bgp_as }}
+        peer_group: MLAG-IPv4-UNDERLAY-PEER
+        remote_as: {{ switch.bgp_as }}
         description: {{ leaf.mlag_peer }}
 {%     endif %}
 {% endif %}
