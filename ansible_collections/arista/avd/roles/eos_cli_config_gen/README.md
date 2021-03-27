@@ -355,6 +355,7 @@ tacacs_servers:
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
+      timeout: < timeout in seconds >
   policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
@@ -551,6 +552,8 @@ platform:
     lag:
       hardware_only: < true | false >
       mode: < mode | default -> 1024x16 >
+    multicast_replication:
+      default: ingress
 ```
 
 #### Redundancy

@@ -6,6 +6,7 @@ tacacs_servers:
       key: 071B245F5A
     - host: 10.10.10.249
       key: 071B245F5A
+      timeout: 23
     - host: 10.10.10.158
       vrf: default
       key: 071B245F5A
