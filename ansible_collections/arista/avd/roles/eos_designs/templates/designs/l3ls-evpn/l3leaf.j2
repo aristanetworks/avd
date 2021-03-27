@@ -25,6 +25,7 @@
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 switch_bgp_as: {{ switch.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -106,6 +107,10 @@ ntp_server:
 ### Redundancy ###
 redundancy:
 {% include 'base/redundancy.j2' %}
+
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
 
 {# spanning-tree #}
 ### Spanning-tree ###

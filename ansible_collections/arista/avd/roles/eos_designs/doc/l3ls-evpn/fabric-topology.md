@@ -104,6 +104,9 @@ spine:
   # Arista platform family | Required.
   platform: < Arista Platform Family >
 
+  # Rack that the switch is located in (only used in snmp_settings location) | Optional
+  rack: < rack_name >
+
   # Spine BGP AS | Required.
   bgp_as: < bgp_as >
 
@@ -169,6 +172,9 @@ l3leaf:
 
       # Arista platform family. | Required
       platform: < Arista Platform Family >
+
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
 
       # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
       spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
@@ -353,6 +359,9 @@ l2leaf:
 
       # Arista platform family. | Required
       platform: < Arista Platform Family >
+
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
 
       # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
       parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
@@ -576,6 +585,8 @@ overlay_controller:
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
 
