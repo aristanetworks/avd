@@ -124,22 +124,16 @@ tenants:
               always: false
             update_source: Loopback123
             ebgp_multihop: 3
-            address_family:
-              - ipv4
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv4_next_hop: 123.1.1.1
             local_as: 123
           fd5a:fe45:8831:06c5::a:
             remote_as: 12345
             send_community: all
-            address_family:
-              - ipv6
             nodes: [DC1-BL1A, DC1-BL1B]
             set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
           fd5a:fe45:8831:06c5::b:
             remote_as: 12345
-            address_family:
-              - ipv6
             nodes: [DC1-BL1A, DC1-BL1B]
         svis:
           150:
