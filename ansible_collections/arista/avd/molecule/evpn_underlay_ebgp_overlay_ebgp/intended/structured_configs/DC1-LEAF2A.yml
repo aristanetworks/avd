@@ -844,6 +844,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:13
@@ -859,6 +860,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:10
@@ -874,6 +876,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:11
@@ -889,6 +892,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:20
@@ -904,6 +908,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:30
@@ -919,6 +924,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null
