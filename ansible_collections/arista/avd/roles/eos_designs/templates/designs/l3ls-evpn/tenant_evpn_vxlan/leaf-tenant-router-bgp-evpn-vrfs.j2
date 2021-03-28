@@ -49,15 +49,11 @@
 {%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
 {%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
 {%                             set neighbor_params = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
-{%                             if neighbor_params.address_family is arista.avd.defined %}
-{%                                 if "ipv4" in neighbor_params.address_family %}
-{%                                     do bgp_vrf.address_family_ipv4_neighbors.append( bgp_peer ) %}
-{%                                 endif %}
-{%                                 if "ipv6" in neighbor_params.address_family %}
-{%                                     do bgp_vrf.address_family_ipv6_neighbors.append( bgp_peer ) %}
-{%                                 endif %}
-{%                             else %}{# default address family ipv4 #}
+{%                             if bgp_peer | ipv4 %}
 {%                                 do bgp_vrf.address_family_ipv4_neighbors.append( bgp_peer ) %}
+{%                             endif %}
+{%                             if bgp_peer | ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append( bgp_peer ) %}
 {%                             endif %}
 {%                             if neighbor_params.set_ipv4_next_hop is arista.avd.defined or neighbor_params.set_ipv6_next_hop is arista.avd.defined %}
 {%                                 do neighbor_params.update({ 'route_map_out':'RM-' ~ vrf ~ '-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
