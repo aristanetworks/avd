@@ -1,4 +1,5 @@
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_mgmt_ip: 192.168.200.102/24
 switch_bgp_as: 65001
 switch_router_id: 192.168.255.2
@@ -48,6 +49,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: none
 aaa_authorization: null
