@@ -1128,7 +1128,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet2 | IPv4-UNDERLAY-PEERS | 65001 |
 | Ethernet3 | IPv4-UNDERLAY-PEERS | 65001 |
 | Ethernet4 | IPv4-UNDERLAY-PEERS | 65001 |
-| Vlan4093 | IPv4-UNDERLAY-PEERS | 65001 |
+| Vlan4093 | MLAG-IPv4-UNDERLAY-PEER | 65103 |
 
 ### Router BGP EVPN Address Family
 
@@ -1196,7 +1196,7 @@ router bgp 65103
    neighbor interface Ethernet2 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor interface Ethernet3 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor interface Ethernet4 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor interface Vlan4093 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
+   neighbor interface Vlan4093 peer-group MLAG-IPv4-UNDERLAY-PEER remote-as 65103
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
