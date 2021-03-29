@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_SVC3
 switch_platform: 7280R
+switch_rack: null
 switch_bgp_as: 65103
 leaf_id: 4
 switch_mgmt_ip: 192.168.200.108/24
@@ -113,6 +114,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -989,8 +991,8 @@ router_bgp:
       remote_as: 65001
       description: DC1-SPINE4_Ethernet4
     Vlan4093:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65001
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      remote_as: 65103
       description: DC1-SVC3B
   neighbors:
     192.168.255.1:
