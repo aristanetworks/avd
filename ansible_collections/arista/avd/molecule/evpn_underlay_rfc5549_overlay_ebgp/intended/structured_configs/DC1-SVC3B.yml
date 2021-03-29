@@ -931,13 +931,13 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY_PEERS:
       type: ipv4
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
-    MLAG-IPv4-UNDERLAY-PEER:
+    MLAG_PEER:
       type: ipv4
       remote_as: 65103
       next_hop_self: true
@@ -955,23 +955,23 @@ router_bgp:
       maximum_routes: 0
   neighbor_interfaces:
     Ethernet1:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE1_Ethernet5
     Ethernet2:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE2_Ethernet5
     Ethernet3:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE3_Ethernet5
     Ethernet4:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE4_Ethernet5
     Vlan4093:
-      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      peer_group: MLAG_PEER
       remote_as: 65103
       description: DC1-SVC3A
   neighbors:
@@ -1002,9 +1002,9 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY_PEERS:
         activate: true
-      MLAG-IPv4-UNDERLAY-PEER:
+      MLAG_PEER:
         activate: true
   address_family_rtc: null
   vlan_aware_bundles:
@@ -1112,7 +1112,7 @@ router_bgp:
           - '12:12'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -1127,7 +1127,7 @@ router_bgp:
           - '13:13'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -1142,7 +1142,7 @@ router_bgp:
           - '10:10'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_A_WAN_Zone:
@@ -1157,7 +1157,7 @@ router_bgp:
           - '14:14'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -1172,7 +1172,7 @@ router_bgp:
           - '11:11'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -1187,7 +1187,7 @@ router_bgp:
           - '20:20'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -1202,7 +1202,7 @@ router_bgp:
           - '21:21'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -1217,7 +1217,7 @@ router_bgp:
           - '30:30'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -1232,7 +1232,7 @@ router_bgp:
           - '31:31'
       neighbors:
         10.255.251.6:
-          peer_group: MLAG-IPv4-UNDERLAY-PEER
+          peer_group: MLAG_PEER
       redistribute_routes:
       - connected
 ip_extcommunity_lists: null

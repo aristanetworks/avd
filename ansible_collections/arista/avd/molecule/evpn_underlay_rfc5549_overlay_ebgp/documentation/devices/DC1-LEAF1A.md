@@ -554,7 +554,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv4-UNDERLAY-PEERS
+#### UNDERLAY_PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -576,10 +576,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor Interface | Peer Group | Remote AS |
 | ------------------ | ---------- | --------- |
-| Ethernet1 | IPv4-UNDERLAY-PEERS | 65001 |
-| Ethernet2 | IPv4-UNDERLAY-PEERS | 65001 |
-| Ethernet3 | IPv4-UNDERLAY-PEERS | 65001 |
-| Ethernet4 | IPv4-UNDERLAY-PEERS | 65001 |
+| Ethernet1 | UNDERLAY_PEERS | 65001 |
+| Ethernet2 | UNDERLAY_PEERS | 65001 |
+| Ethernet3 | UNDERLAY_PEERS | 65001 |
+| Ethernet4 | UNDERLAY_PEERS | 65001 |
 
 ### Router BGP EVPN Address Family
 
@@ -615,15 +615,15 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
-   neighbor interface Ethernet1 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor interface Ethernet2 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor interface Ethernet3 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
-   neighbor interface Ethernet4 peer-group IPv4-UNDERLAY-PEERS remote-as 65001
+   neighbor UNDERLAY_PEERS peer group
+   neighbor UNDERLAY_PEERS remote-as 65001
+   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY_PEERS send-community
+   neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65001
+   neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65001
+   neighbor interface Ethernet3 peer-group UNDERLAY_PEERS remote-as 65001
+   neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65001
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
@@ -656,8 +656,8 @@ router bgp 65101
    address-family ipv4
       neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS next-hop address-family ipv6 originate
-      neighbor IPv4-UNDERLAY-PEERS activate
+      neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
+      neighbor UNDERLAY_PEERS activate
    !
    vrf Tenant_A_APP_Zone
       rd 192.168.255.5:12
