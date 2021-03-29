@@ -20,6 +20,10 @@ cvp_instance_ips:
 cvp_ingestauth_key: telarista
 terminattr_disable_aaa: false
 
+snmp_settings:
+  contact: example@example.com
+  location: true
+
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5
 

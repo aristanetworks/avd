@@ -216,13 +216,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet2  |  routed  | - |  172.31.255.2/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet2  |  routed  | - |  172.31.255.10/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet2  |  routed  | - |  172.31.255.18/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet2  |  routed  | - |  172.31.255.26/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet2  |  routed  | - |  172.31.255.34/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet2  |  routed  | - |  172.31.255.42/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet2  |  routed  | - |  172.31.255.50/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.10/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet2 | routed | - | 172.31.255.26/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.255.42/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | routed | - | 172.31.255.50/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -430,18 +430,25 @@ router bgp 65001
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.3 remote-as 65101
+   neighbor 172.31.255.3 description DC1-LEAF1A_Ethernet1
    neighbor 172.31.255.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.11 remote-as 65102
+   neighbor 172.31.255.11 description DC1-LEAF2A_Ethernet2
    neighbor 172.31.255.19 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.19 remote-as 65102
+   neighbor 172.31.255.19 description DC1-LEAF2B_Ethernet3
    neighbor 172.31.255.27 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.27 remote-as 65103
+   neighbor 172.31.255.27 description DC1-SVC3A_Ethernet4
    neighbor 172.31.255.35 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.35 remote-as 65103
+   neighbor 172.31.255.35 description DC1-SVC3B_Ethernet5
    neighbor 172.31.255.43 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.43 remote-as 65104
+   neighbor 172.31.255.43 description DC1-BL1A_Ethernet6
    neighbor 172.31.255.51 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.51 remote-as 65105
+   neighbor 172.31.255.51 description DC1-BL1B_Ethernet7
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
    neighbor 192.168.255.5 description DC1-LEAF1A

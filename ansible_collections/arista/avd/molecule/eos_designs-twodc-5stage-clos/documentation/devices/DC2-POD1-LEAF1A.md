@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -118,6 +119,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -185,10 +221,10 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3  |  routed  | - |  172.17.210.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3  |  routed  | - |  172.17.210.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7  |  routed  | - |  100.100.100.201/24  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7  |  routed  | - |  11.1.0.39/31  |  default  |  1499  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | routed | - | 172.17.210.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | routed | - | 172.17.210.3/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet7 | routed | - | 100.100.100.201/24 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | routed | - | 11.1.0.39/31 | default | 1499 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -512,7 +548,9 @@ router bgp 65211
    neighbor 172.16.110.3 remote-as 65111
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3
    neighbor 172.17.210.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.2 description DC2-POD1-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

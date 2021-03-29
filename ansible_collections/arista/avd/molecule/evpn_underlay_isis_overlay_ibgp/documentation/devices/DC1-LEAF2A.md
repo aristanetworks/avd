@@ -285,19 +285,19 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet2  |  routed  | - |  172.31.255.9/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.255.11/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet2  |  routed  | - |  172.31.255.13/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet2  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 172.31.255.9/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.255.11/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 172.31.255.13/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 172.31.255.15/31 | default | 1500 | false | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 

@@ -110,7 +110,7 @@ management security
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  -  |  routed  | - |  1.1.1.1/24  |  default  |  -  |  -  |  -  |  -  |
+| Ethernet1 | - | routed | - | 1.1.1.1/24 | default | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -119,6 +120,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 ```
 
 # Monitoring
+
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2A |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2A
+```
 
 # MLAG
 

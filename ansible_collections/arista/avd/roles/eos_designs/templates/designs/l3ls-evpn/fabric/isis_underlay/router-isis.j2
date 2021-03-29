@@ -31,7 +31,7 @@
 {%         endfor %}
 {%     elif type == "l3leaf" %}
   net: {{ isis_area_id }}.{{ isis_site_id }}.0001.{{ '%04d' | format(leaf.id) }}.00
-  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}
   no_passive_interfaces:
 {%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
     - {{ uplink_to_spine_interface }}
@@ -47,5 +47,5 @@
   is_type: level-2
   address_family: ['ipv4 unicast']
   isis_af_defaults:
-    - maximum-paths {{ spine.nodes | length * max_l3leaf_to_spine_links }}
+    - maximum-paths {{ switch.max_spines * max_l3leaf_to_spine_links }}
 {% endif %}

@@ -193,24 +193,31 @@ router_bgp:
     172.31.255.47:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65104
+      description: DC1-BL1A_Ethernet6
     172.31.255.55:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65105
+      description: DC1-BL1B_Ethernet7
     172.31.255.7:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65101
+      description: DC1-LEAF1A_Ethernet1
     172.31.255.15:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65102
+      description: DC1-LEAF2A_Ethernet2
     172.31.255.23:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65102
+      description: DC1-LEAF2B_Ethernet3
     172.31.255.31:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65103
+      description: DC1-SVC3A_Ethernet4
     172.31.255.39:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65103
+      description: DC1-SVC3B_Ethernet5
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A

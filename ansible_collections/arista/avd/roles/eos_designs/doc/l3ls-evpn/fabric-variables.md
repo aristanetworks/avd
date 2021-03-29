@@ -19,6 +19,10 @@
 underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
 overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
 
+# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumberred.
+# Requires "underlay_routing_protocol: EBGP"
+underlay_rfc5549: < true | false | Default -> false >
+
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >

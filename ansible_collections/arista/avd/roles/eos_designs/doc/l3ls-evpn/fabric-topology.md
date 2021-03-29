@@ -94,10 +94,18 @@ type: overlay-controller
 ```yaml
 # Defined in FABRIC.yml
 
+# Maximum number of spines, changing this parameter affects address allocation.
+# Set this number to potential growth of spine nodes, so fabric IPs don't get recalculated
+# when additional spines are added in the future
+max_spines: < integer >= number of spine nodes | default spine.nodes | length >
+
 spine:
 
   # Arista platform family | Required.
   platform: < Arista Platform Family >
+
+  # Rack that the switch is located in (only used in snmp_settings location) | Optional
+  rack: < rack_name >
 
   # Spine BGP AS | Required.
   bgp_as: < bgp_as >
@@ -127,6 +135,8 @@ spine:
 
 ```yaml
 # Defined in FABRIC.yml
+
+max_spines: 4
 
 spine:
   platform: vEOS-LAB
@@ -162,6 +172,9 @@ l3leaf:
 
       # Arista platform family. | Required
       platform: < Arista Platform Family >
+
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
 
       # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
       spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
@@ -347,6 +360,9 @@ l2leaf:
       # Arista platform family. | Required
       platform: < Arista Platform Family >
 
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
+
       # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
       parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
 
@@ -474,8 +490,11 @@ max_spine_to_super_spine_links: 1  # number of parallel links between spines and
 Assigned to the DC group:
 
 ```yaml
-max_super_spines: 4  # maximum number of super-spines, changing this parameter affects address allocation
 
+# maximum number of super-spines, changing this parameter affects address allocation.
+# Set this number to potential growth of super spine nodes, so fabric IPs don't get recalculated
+# when additional super spines are added in the future
+max_super_spines: < integer >= number of super_spine nodes >
 super_spine:
   platform: vEOS-LAB  # super-spine platform
   bgp_as: <super-spine BGP AS>
@@ -566,6 +585,8 @@ overlay_controller:
   nodes:
     <inventory_hostname>:
       id: <number> # Starting from 1
+      # Rack that the switch is located in (only used in snmp_settings location) | Optional
+      rack: < rack_name >
       mgmt_ip: < IPv4_address/Mask >
       remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
 

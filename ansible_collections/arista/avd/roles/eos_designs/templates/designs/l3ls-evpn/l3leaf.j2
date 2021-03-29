@@ -25,6 +25,7 @@
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 switch_bgp_as: {{ switch.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -48,9 +49,9 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
-{# routing protocol model multi-agent needed for EVPN address family #}
-service_routing_protocols_model: multi-agent
-ip_routing: true
+{# routing protocol model multi-agent needed for EVPN address family, IPv4 and IPv6 routing #}
+### IPv4, IPv6 and arBGP config
+{% include 'base/routing.j2' %}
 
 {# Hardware Counter #}
 ### Hardware Counters
@@ -106,6 +107,10 @@ ntp_server:
 ### Redundancy ###
 redundancy:
 {% include 'base/redundancy.j2' %}
+
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
 
 {# spanning-tree #}
 ### Spanning-tree ###
@@ -273,6 +278,8 @@ router_bgp:
   peer_groups:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
+  neighbor_interfaces:
+{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-rfc5549-neighbors.j2' %}
   neighbors:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}

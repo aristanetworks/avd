@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -110,6 +111,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC2 DC2-RS2 |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC2 DC2-RS2
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -158,8 +194,8 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5  |  routed  | - |  172.17.20.9/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7  |  routed  | - |  172.17.20.11/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet5 | routed | - | 172.17.20.9/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet7 | routed | - | 172.17.20.11/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 

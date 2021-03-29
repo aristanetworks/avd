@@ -1,10 +1,11 @@
 l3leaf_node_group: DC1_BL1
 switch_platform: 7280R
+switch_rack: null
 switch_bgp_as: 65105
 leaf_id: 7
 switch_mgmt_ip: 192.168.200.111/24
 leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.11
+switch_router_id: 192.168.255.15
 switch_evpn_role: client
 switch_evpn_route_servers:
 - DC1-SPINE1
@@ -75,6 +76,9 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC DC1-BL1B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -127,7 +131,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.49/31
+    ip_address: 172.31.255.97/31
   Ethernet2:
     peer: DC1-SPINE2
     peer_interface: Ethernet7
@@ -136,7 +140,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.51/31
+    ip_address: 172.31.255.99/31
   Ethernet3:
     peer: DC1-SPINE3
     peer_interface: Ethernet7
@@ -145,7 +149,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.53/31
+    ip_address: 172.31.255.101/31
   Ethernet4:
     peer: DC1-SPINE4
     peer_interface: Ethernet7
@@ -154,7 +158,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.55/31
+    ip_address: 172.31.255.103/31
   Ethernet4000:
     description: My test
     ip_address: 10.1.2.3/12
@@ -168,11 +172,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.11/32
+    ip_address: 192.168.255.15/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.11/32
+    ip_address: 192.168.254.15/32
 management_interfaces:
   Management1:
     description: oob_management
@@ -280,7 +284,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: 65105
-  router_id: 192.168.255.11
+  router_id: 192.168.255.15
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -300,15 +304,20 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
-    172.31.255.48:
+    172.31.255.96:
       peer_group: UNDERLAY-PEERS
-    172.31.255.50:
+      description: DC1-SPINE1_Ethernet7
+    172.31.255.98:
       peer_group: UNDERLAY-PEERS
-    172.31.255.52:
+      description: DC1-SPINE2_Ethernet7
+    172.31.255.100:
       peer_group: UNDERLAY-PEERS
-    172.31.255.54:
+      description: DC1-SPINE3_Ethernet7
+    172.31.255.102:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet7
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -341,7 +350,7 @@ router_bgp:
   address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
-      rd: 192.168.255.11:14
+      rd: 192.168.255.15:14
       route_targets:
         both:
         - '14:14'
@@ -349,7 +358,7 @@ router_bgp:
       - learned
       vlan: 150
     Tenant_B_WAN_Zone:
-      rd: 192.168.255.11:21
+      rd: 192.168.255.15:21
       route_targets:
         both:
         - '21:21'
@@ -357,7 +366,7 @@ router_bgp:
       - learned
       vlan: 250
     Tenant_C_WAN_Zone:
-      rd: 192.168.255.11:31
+      rd: 192.168.255.15:31
       route_targets:
         both:
         - '31:31'
@@ -367,8 +376,8 @@ router_bgp:
   vlans: null
   vrfs:
     Tenant_A_WAN_Zone:
-      router_id: 192.168.255.11
-      rd: 192.168.255.11:14
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:14
       route_targets:
         import:
           evpn:
@@ -411,8 +420,8 @@ router_bgp:
       - connected
       - static
     Tenant_B_OP_Zone:
-      router_id: 192.168.255.11
-      rd: 192.168.255.11:20
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:20
       route_targets:
         import:
           evpn:
@@ -424,8 +433,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
-      router_id: 192.168.255.11
-      rd: 192.168.255.11:21
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:21
       route_targets:
         import:
           evpn:
@@ -437,8 +446,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
-      router_id: 192.168.255.11
-      rd: 192.168.255.11:31
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:31
       route_targets:
         import:
           evpn:

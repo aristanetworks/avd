@@ -84,23 +84,23 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.128.1/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet8.101 |  to WAN-ISP-01 Ethernet2.101 - VRF-C1  |  l3dot1q  | - |  172.31.128.1/31  |  default  |  -  |  -  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.128.1/31 | default | 1500 | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  2002:ABDC::1/64  |  default  |  1500  |  -  | -  |  -  |  -  |  -  |
-| Ethernet4 |  Molecule IPv6  |  switchport  | - |  2020::2020/64  |  default  |  9100  |  true  | true  |  true  |  IPv6_ACL_IN  |  IPv6_ACL_OUT  |
-| Ethernet8.101 |  to WAN-ISP-01 Ethernet2.101 - VRF-C1  |  l3dot1q  | - |  2002:ABDC::1/64  |  default  |  -  |  -  | -  |  -  |  -  |  -  |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | *- | - | - |
+| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | true | true | true | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | *- | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet5 | - | ISIS_TEST |  99 |  point-to-point |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 

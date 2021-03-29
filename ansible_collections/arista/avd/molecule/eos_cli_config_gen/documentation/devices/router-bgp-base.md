@@ -104,9 +104,9 @@ interface Management1
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False  | - | - | True |
-| 1.12.1.0/24 | True | True  | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False  | - | - | False |
+| 1.1.1.0/24 | False | False | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | False |
 
 ### Router BGP EVPN Address Family
 
