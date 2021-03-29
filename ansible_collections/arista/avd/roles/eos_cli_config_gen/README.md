@@ -1995,7 +1995,7 @@ traffic_policies:
       < L4 PORT FIELD SET NAME >: "< vlan range >"
   policies:
     < TRAFFIC POLICY NAME >:
-      matchs:
+      matches:
         < TRAFFIC POLICY ITEM >:
           type: < ipv4 | ipv6 >
           source:

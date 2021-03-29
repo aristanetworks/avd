@@ -14,7 +14,7 @@ traffic_policies:
         - 224.0.0.0/8
   policies:
     BLUE-C1-POLICY:
-      matchs:
+      matches:
         BLUE-C1-POLICY-01:
           type: ipv4
           source:
@@ -95,7 +95,7 @@ traffic_policies:
         ipv4:
           drop: true
           log: true
-      matchs:
+      matches:
         BLUE-C2-POLICY-01:
           type: ipv4
           source:
