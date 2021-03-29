@@ -21,6 +21,7 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'eos_l3ls_evpn_deprecation_test'
+          - 'evpn_underlay_rfc5549_overlay_ebgp'
           # - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
