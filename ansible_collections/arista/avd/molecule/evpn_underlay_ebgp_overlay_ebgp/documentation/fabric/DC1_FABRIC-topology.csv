@@ -88,6 +88,8 @@ l3leaf,DC1-SVC3A,Ethernet13,server,server06_override_profile,Eth1
 l3leaf,DC1-SVC3A,Ethernet14,server,server07_inherit_all_from_profile_port_channel,Eth1
 l3leaf,DC1-SVC3A,Ethernet15,server,server08_no_profile_port_channel,Eth1
 l3leaf,DC1-SVC3A,Ethernet16,server,server09_override_profile_no_port_channel,Eth1
+l3leaf,DC1-SVC3A,Ethernet17,server,server10_no_profile_port_channel_lacp_fallback,Eth1
+l3leaf,DC1-SVC3A,Ethernet18,server,server10_inherit_profile_port_channel_lacp_fallback,Eth1
 l3leaf,DC1-SVC3B,Ethernet1,spine,DC1-SPINE1,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet2,spine,DC1-SPINE2,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet3,spine,DC1-SPINE3,Ethernet5
@@ -102,3 +104,5 @@ l3leaf,DC1-SVC3B,Ethernet13,server,server06_override_profile,Eth2
 l3leaf,DC1-SVC3B,Ethernet14,server,server07_inherit_all_from_profile_port_channel,Eth2
 l3leaf,DC1-SVC3B,Ethernet15,server,server08_no_profile_port_channel,Eth2
 l3leaf,DC1-SVC3B,Ethernet16,server,server09_override_profile_no_port_channel,Eth2
+l3leaf,DC1-SVC3B,Ethernet17,server,server10_no_profile_port_channel_lacp_fallback,Eth2
+l3leaf,DC1-SVC3B,Ethernet18,server,server10_inherit_profile_port_channel_lacp_fallback,Eth2

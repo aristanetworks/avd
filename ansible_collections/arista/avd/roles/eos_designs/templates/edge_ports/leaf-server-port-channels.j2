@@ -6,22 +6,24 @@
 {%         else %}
 {%             set adapter_profile = dict() %}
 {%         endif %}
-{%         set adapter_port_channel = adapter.port_channel | arista.avd.default( adapter_profile.port_channel ) %}
+{%         set adapter_port_channel = adapter.port_channel | arista.avd.default(adapter_profile.port_channel) %}
 {%         if adapter_port_channel is arista.avd.defined and adapter_port_channel.mode is arista.avd.defined %}
 {%             for switch in adapter.switches | arista.avd.natural_sort %}
 {%                 if switch == inventory_hostname %}
-{%                     set adapter_mode = adapter.mode | arista.avd.default( adapter_profile.mode ) %}
-{%                     set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default( adapter_profile.l2_mtu ) %}
-{%                     set adapter_vlans = adapter.vlans | arista.avd.default( adapter_profile.vlans ) %}
-{%                     set adapter_native_vlan = adapter.native_vlan | arista.avd.default( adapter_profile.native_vlan ) %}
-{%                     set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default( adapter_profile.spanning_tree_portfast ) %}
-{%                     set adapter_spanning_tree_bpdufilter = adapter.spanning_tree_bpdufilter | arista.avd.default( adapter_profile.spanning_tree_bpdufilter ) %}
-{%                     set adapter_spanning_tree_bpduguard = adapter.spanning_tree_bpduguard | arista.avd.default( adapter_profile.spanning_tree_bpduguard ) %}
-{%                     set adapter_storm_control = adapter.storm_control | arista.avd.default( adapter_profile.storm_control ) %}
-{%                     set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default( adapter_profile.flowcontrol ) %}
-{%                     set adapter_qos_profile = adapter.qos_profile | arista.avd.default( adapter_profile.qos_profile ) %}
-{%                     set adapter_mtu = adapter.mtu | arista.avd.default( adapter_profile.mtu ) %}
+{%                     set adapter_mode = adapter.mode | arista.avd.default(adapter_profile.mode) %}
+{%                     set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default(adapter_profile.l2_mtu) %}
+{%                     set adapter_vlans = adapter.vlans | arista.avd.default(adapter_profile.vlans) %}
+{%                     set adapter_native_vlan = adapter.native_vlan | arista.avd.default(adapter_profile.native_vlan) %}
+{%                     set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default(adapter_profile.spanning_tree_portfast) %}
+{%                     set adapter_spanning_tree_bpdufilter = adapter.spanning_tree_bpdufilter | arista.avd.default(adapter_profile.spanning_tree_bpdufilter) %}
+{%                     set adapter_spanning_tree_bpduguard = adapter.spanning_tree_bpduguard | arista.avd.default(adapter_profile.spanning_tree_bpduguard) %}
+{%                     set adapter_storm_control = adapter.storm_control | arista.avd.default(adapter_profile.storm_control) %}
+{%                     set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default(adapter_profile.flowcontrol) %}
+{%                     set adapter_qos_profile = adapter.qos_profile | arista.avd.default(adapter_profile.qos_profile) %}
+{%                     set adapter_mtu = adapter.mtu | arista.avd.default(adapter_profile.mtu) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
+{%                     set lacp_fallback_mode = adapter_port_channel.lacp_fallback.mode | arista.avd.default(adapter_profile.lacp_fallback.mode) %}
+{%                     set lacp_fallback_timeout = adapter_port_channel.lacp_fallback.timeout | arista.avd.default(adapter_profile.lacp_fallback.timeout) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ server }}_{{ adapter_port_channel.description }}
     type: switched
@@ -68,6 +70,10 @@
 {%                         else %}
     mlag: {{ channel_group_id }}
 {%                         endif %}
+{%                     endif %}
+{%                     if lacp_fallback_mode is arista.avd.defined %}
+    lacp_fallback_mode: {{ lacp_fallback_mode }}
+    lacp_fallback_timeout: {{ lacp_fallback_timeout | arista.avd.default('90') }}
 {%                     endif %}
 {%                     if adapter_qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_qos_profile }}

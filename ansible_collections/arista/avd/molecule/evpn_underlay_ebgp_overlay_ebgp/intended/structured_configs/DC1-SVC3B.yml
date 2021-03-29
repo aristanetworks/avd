@@ -334,6 +334,57 @@ port_channel_interfaces:
         level: 2
         unit: percent
     mlag: 15
+  Port-Channel18:
+    description: server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+    type: switched
+    shutdown: false
+    mode: trunk
+    l2_mtu: 8000
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    mlag: 18
+    lacp_fallback_mode: static
+    lacp_fallback_timeout: 10
+  Port-Channel17:
+    description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    mlag: 17
+    lacp_fallback_mode: static
+    lacp_fallback_timeout: 90
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -575,6 +626,64 @@ ethernet_interfaces:
         level: 2
         unit: percent
     profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  Ethernet18:
+    peer: server10_inherit_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    description: server10_inherit_profile_port_channel_lacp_fallback_Eth2
+    l2_mtu: 8000
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    channel_group:
+      id: 18
+      mode: active
+    profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+  Ethernet17:
+    peer: server10_no_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    description: server10_no_profile_port_channel_lacp_fallback_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    channel_group:
+      id: 17
+      mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
