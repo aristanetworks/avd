@@ -27,20 +27,20 @@
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
 {%     for community in snmp_server.communities | arista.avd.natural_sort %}
-{%         set communities_table = "| " ~ community.name %}
-{%         if community.access is arista.avd.defined %}
-{%             set communities_table = communities_table ~ " | " ~ community.access %}
+{%         set communities_table = "| " ~ community %}
+{%         if snmp_server.communities[community].access is arista.avd.defined %}
+{%             set communities_table = communities_table ~ " | " ~ snmp_server.communities[community].access %}
 {%         else %}
 {%             set communities_table = communities_table ~ " | ro" %}
 {%         endif %}
-{%         if community.access_list_ipv4 is arista.avd.defined %}
-{%             set communities_table = communities_table ~ " | " ~ community.access_list_ipv4.name %}
+{%         if snmp_server.communities[community].access_list_ipv4 is arista.avd.defined %}
+{%             set communities_table = communities_table ~ " | " ~ snmp_server.communities[community].access_list_ipv4.name %}
 {%         endif %}
-{%         if community.access_list_ipv6 is arista.avd.defined %}
-{%             set communities_table = communities_table ~ " | " ~ community.access_list_ipv6.name %}
+{%         if snmp_server.communities[community].access_list_ipv6 is arista.avd.defined %}
+{%             set communities_table = communities_table ~ " | " ~ snmp_server.communities[community].access_list_ipv6.name %}
 {%         endif %}
-{%         if community.view is arista.avd.defined %}
-{%             set communities_table = communities_table ~ " | " ~ community.view %}
+{%         if snmp_server.communities[community].view is arista.avd.defined %}
+{%             set communities_table = communities_table ~ " | " ~ snmp_server.communities[community].view %}
 {%         endif %}
 {%         set communities_table = communities_table ~ " |"%}
 {{ communities_table }}
