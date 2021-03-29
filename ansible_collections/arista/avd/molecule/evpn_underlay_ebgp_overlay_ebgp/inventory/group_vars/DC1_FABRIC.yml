@@ -88,14 +88,17 @@ l3leaf:
       nodes:
         DC1-LEAF1A:
           id: 1
+          rack: "rackA"
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     DC1_LEAF2:
       bgp_as: 65102
+      rack: "rackD"
       nodes:
         DC1-LEAF2A:
           id: 2
+          rack: "rackC"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
@@ -148,6 +151,7 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
+    rack: "rackE"
   node_groups:
     DC1_L2LEAF1:
       mlag: false

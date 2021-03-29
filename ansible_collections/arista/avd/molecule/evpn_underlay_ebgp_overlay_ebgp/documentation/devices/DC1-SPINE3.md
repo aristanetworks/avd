@@ -11,6 +11,7 @@
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -168,6 +169,42 @@ daemon TerminAttr
    no shutdown
 ```
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| example@example.com | DC1_FABRIC DC1-SPINE3 |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server contact example@example.com
+snmp-server location DC1_FABRIC DC1-SPINE3
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -216,13 +253,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet3  |  routed  | - |  172.31.255.4/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet3  |  routed  | - |  172.31.255.20/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet3  |  routed  | - |  172.31.255.36/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet3  |  routed  | - |  172.31.255.52/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet3  |  routed  | - |  172.31.255.68/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet3  |  routed  | - |  172.31.255.84/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet3  |  routed  | - |  172.31.255.100/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | 172.31.255.4/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | 172.31.255.20/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | 172.31.255.36/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | routed | - | 172.31.255.52/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | routed | - | 172.31.255.68/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | routed | - | 172.31.255.84/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | routed | - | 172.31.255.100/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -430,18 +467,25 @@ router bgp 65001
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.5 peer group UNDERLAY-PEERS
    neighbor 172.31.255.5 remote-as 65101
+   neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet1
    neighbor 172.31.255.21 peer group UNDERLAY-PEERS
    neighbor 172.31.255.21 remote-as 65102
+   neighbor 172.31.255.21 description DC1-LEAF2A_Ethernet2
    neighbor 172.31.255.37 peer group UNDERLAY-PEERS
    neighbor 172.31.255.37 remote-as 65102
+   neighbor 172.31.255.37 description DC1-LEAF2B_Ethernet3
    neighbor 172.31.255.53 peer group UNDERLAY-PEERS
    neighbor 172.31.255.53 remote-as 65103
+   neighbor 172.31.255.53 description DC1-SVC3A_Ethernet4
    neighbor 172.31.255.69 peer group UNDERLAY-PEERS
    neighbor 172.31.255.69 remote-as 65103
+   neighbor 172.31.255.69 description DC1-SVC3B_Ethernet5
    neighbor 172.31.255.85 peer group UNDERLAY-PEERS
    neighbor 172.31.255.85 remote-as 65104
+   neighbor 172.31.255.85 description DC1-BL1A_Ethernet6
    neighbor 172.31.255.101 peer group UNDERLAY-PEERS
    neighbor 172.31.255.101 remote-as 65105
+   neighbor 172.31.255.101 description DC1-BL1B_Ethernet7
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A

@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_SVC3
 switch_platform: 7050SX3
+switch_rack: null
 switch_bgp_as: 65103
 leaf_id: 5
 switch_mgmt_ip: 192.168.200.109/24
@@ -111,6 +112,9 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC DC1-SVC3B
 spanning_tree:
   root_super: true
   mode: mstp
@@ -951,17 +955,23 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.64:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet5
     172.31.255.66:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet5
     172.31.255.68:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet5
     172.31.255.70:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet5
     10.255.251.6:
       peer_group: MLAG-PEERS
+      description: DC1-SVC3A
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1

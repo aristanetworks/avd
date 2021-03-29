@@ -13,6 +13,7 @@ The following topologies are supported:
 | ISIS | iBGP | [ 3 stage ] + L2 Leafs |
 | OSPF | eBGP | [ 3 stage ] + L2 Leafs |
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
+| RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
 
 <div style="text-align:center">
   <img src="../../../../media/topology.gif" />

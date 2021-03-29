@@ -11,6 +11,7 @@
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [SNMP](#snmp)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
@@ -180,6 +181,42 @@ daemon TerminAttr
    no shutdown
 ```
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| example@example.com | DC1_FABRIC DC1-BL1B |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server contact example@example.com
+snmp-server location DC1_FABRIC DC1-BL1B
+```
+
 # Hardware TCAM Profile
 
 TCAM profile __`vxlan-routing`__ is active
@@ -274,13 +311,13 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet7  |  routed  | - |  172.31.255.97/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet7  |  routed  | - |  172.31.255.99/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet7  |  routed  | - |  172.31.255.101/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet7  |  routed  | - |  172.31.255.103/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1A_Ethernet7  |  routed  | - |  100.100.100.201/24  |  Tenant_B_OP_Zone  |  1500  |  false  |  -  |  -  |
-| Ethernet8 |  P2P_LINK_TO_DC1-BL1A_Ethernet8  |  routed  | - |  100.100.101.201/24  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4000 |  My test  |  routed  | - |  10.1.2.3/12  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1A_Ethernet7 | routed | - | 100.100.100.201/24 | Tenant_B_OP_Zone | 1500 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-BL1A_Ethernet8 | routed | - | 100.100.101.201/24 | default | 1500 | false | - | - |
+| Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -582,15 +619,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.15:14 |  14:14  |  |  | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.15:21 |  21:21  |  |  | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.15:31 |  31:31  |  |  | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 | 14:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 | 21:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.15:31 | 31:31 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.15:14 | connected  static |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 | connected<br>static |
 | Tenant_B_OP_Zone | 192.168.255.15:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.255.15:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.255.15:31 | connected |
@@ -617,9 +654,13 @@ router bgp 65105
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.96 description DC1-SPINE1_Ethernet7
    neighbor 172.31.255.98 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.98 description DC1-SPINE2_Ethernet7
    neighbor 172.31.255.100 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.100 description DC1-SPINE3_Ethernet7
    neighbor 172.31.255.102 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.102 description DC1-SPINE4_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

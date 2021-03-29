@@ -10,4 +10,7 @@ platform sand lag hardware-only
 {%     if platform.sand.lag.mode is arista.avd.defined %}
 platform sand lag mode {{ platform.sand.lag.mode }}
 {%     endif %}
+{%     if platform.sand.multicast_replication.default is arista.avd.defined %}
+platform sand multicast replication default {{ platform.sand.multicast_replication.default }}
+{%     endif %}
 {% endif %}

@@ -15,6 +15,7 @@
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_inband_management_ip: {{ switch.inband_management_ip | arista.avd.default(none) }}
@@ -34,9 +35,9 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
-{# routing protocol model multi-agent needed for EVPN address family #}
-service_routing_protocols_model: multi-agent
-ip_routing: true
+{# routing protocol model multi-agent needed for EVPN address family, IPv4 and IPv6 routing #}
+### IPv4, IPv6 and arBGP config
+{% include 'base/routing.j2' %}
 
 {# Hardware Counters #}
 ### Hardware Counter
@@ -92,6 +93,10 @@ ntp_server:
 ### Redundancy ###
 redundancy:
 {% include 'base/redundancy.j2' %}
+
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
 
 {# spanning-tree #}
 ### Spanning-tree ###

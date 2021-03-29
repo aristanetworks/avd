@@ -355,6 +355,7 @@ tacacs_servers:
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
+      timeout: < timeout in seconds >
   policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
@@ -551,6 +552,8 @@ platform:
     lag:
       hardware_only: < true | false >
       mode: < mode | default -> 1024x16 >
+    multicast_replication:
+      default: ingress
 ```
 
 #### Redundancy
@@ -1532,6 +1535,7 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
+ip_routing_ipv6_interfaces: < true | false >
 ```
 
 #### Router General configuration
@@ -1599,6 +1603,11 @@ router_bgp:
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
+  neighbor_interfaces:
+    < interface >:
+      peer_group: < peer_group_name >
+      remote_as: < bgp_as >
+      description: "< description as string >"
   aggregate_addresses:
     < aggregate_address_1/mask >:
       advertise_only: < true | false >

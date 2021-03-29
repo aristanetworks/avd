@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF2
 switch_platform: 7280R
+switch_rack: rackC
 switch_bgp_as: 65102
 leaf_id: 2
 switch_mgmt_ip: 192.168.200.106/24
@@ -110,6 +111,9 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC rackC DC1-LEAF2A
 spanning_tree:
   root_super: true
   mode: mstp
@@ -703,17 +707,23 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.16:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet2
     172.31.255.18:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet2
     172.31.255.20:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet2
     172.31.255.22:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet2
     10.255.251.3:
       peer_group: MLAG-PEERS
+      description: DC1-LEAF2B
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1

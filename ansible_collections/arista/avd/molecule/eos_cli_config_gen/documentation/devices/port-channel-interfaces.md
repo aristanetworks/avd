@@ -85,7 +85,8 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
- *Inherited from Port-Channel Interface 
+*Inherited from Port-Channel Interface
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos

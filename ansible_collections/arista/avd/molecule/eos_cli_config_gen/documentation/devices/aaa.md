@@ -90,7 +90,7 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv
 !
 tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
 tacacs-server host 10.10.10.158 key 7 071B245F5A
-tacacs-server host 10.10.10.249 key 7 071B245F5A
+tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```
 
 ## RADIUS Servers
