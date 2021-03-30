@@ -1,4 +1,4 @@
-switch_platform: vEOS-LAB
+switch_platform: 7050SX3
 switch_rack: null
 switch_mgmt_ip: 192.168.200.103/24
 switch_bgp_as: 65001
@@ -74,6 +74,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -83,6 +84,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1B_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -92,6 +94,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -101,6 +104,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -110,6 +114,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -119,6 +124,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3A_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -128,6 +134,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-SVC3B_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
