@@ -86,6 +86,13 @@
       enable: {{ adapter_ptp.enable }}
 {%                     endif %}
 {%                 endif %}
+{%                 if adapter_port_channel.lacp_fallback is arista.avd.defined %}
+{%                     if loop.first %}
+    lacp_port_priority: 8192
+{%                     else %}
+    lacp_port_priority: 32768
+{%                     endif %}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

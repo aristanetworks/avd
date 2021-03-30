@@ -676,6 +676,7 @@ ethernet_interfaces:
       id: 18
       mode: active
     profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    lacp_port_priority: 8192
   Ethernet17:
     peer: server10_no_profile_port_channel_lacp_fallback
     peer_interface: Eth1
@@ -704,6 +705,7 @@ ethernet_interfaces:
     channel_group:
       id: 17
       mode: active
+    lacp_port_priority: 8192
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

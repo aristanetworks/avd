@@ -581,11 +581,13 @@ interface Ethernet17
    description server10_no_profile_port_channel_lacp_fallback_Eth1
    no shutdown
    channel-group 17 mode active
+   lacp port-priority 8192
 !
 interface Ethernet18
    description server10_inherit_profile_port_channel_lacp_fallback_Eth1
    no shutdown
    channel-group 18 mode active
+   lacp port-priority 8192
 ```
 
 ## Port-Channel Interfaces
