@@ -19,7 +19,7 @@ class FilterModule(object):
         Parameters
         ----------
         esi : str
-            Short ESI value as per AVD definition in eos_l3ls_evpn
+            Short ESI value as per AVD definition in eos_designs
 
         Returns
         -------

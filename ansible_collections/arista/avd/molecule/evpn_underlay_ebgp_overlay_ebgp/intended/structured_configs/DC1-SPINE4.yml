@@ -1,4 +1,5 @@
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_mgmt_ip: 192.168.200.104/24
 switch_bgp_as: 65001
 switch_router_id: 192.168.255.4
@@ -15,6 +16,7 @@ switch_evpn_route_clients:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -47,6 +49,9 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC DC1-SPINE4
 spanning_tree:
   mode: none
 aaa_authorization: null
@@ -63,10 +68,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 ethernet_interfaces:
   Ethernet6:
     peer: DC1-BL1A
@@ -76,7 +77,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.46/31
+    ip_address: 172.31.255.86/31
   Ethernet7:
     peer: DC1-BL1B
     peer_interface: Ethernet4
@@ -85,7 +86,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.54/31
+    ip_address: 172.31.255.102/31
   Ethernet1:
     peer: DC1-LEAF1A
     peer_interface: Ethernet4
@@ -103,7 +104,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.14/31
+    ip_address: 172.31.255.22/31
   Ethernet3:
     peer: DC1-LEAF2B
     peer_interface: Ethernet4
@@ -112,7 +113,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.22/31
+    ip_address: 172.31.255.38/31
   Ethernet4:
     peer: DC1-SVC3A
     peer_interface: Ethernet4
@@ -121,7 +122,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.30/31
+    ip_address: 172.31.255.54/31
   Ethernet5:
     peer: DC1-SVC3B
     peer_interface: Ethernet4
@@ -130,7 +131,7 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 172.31.255.38/31
+    ip_address: 172.31.255.70/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -143,6 +144,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.104/24
     gateway: 192.168.200.5
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -162,6 +164,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 peer_filters: null
 router_bgp:
   as: 65001
@@ -171,68 +178,75 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY-PEERS:
       type: ipv4
       peer_filter: LEAF-AS-RANGE
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:
-    172.31.255.47:
-      peer_group: IPv4-UNDERLAY-PEERS
+    172.31.255.87:
+      peer_group: UNDERLAY-PEERS
       remote_as: 65104
-    172.31.255.55:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
+      description: DC1-BL1A_Ethernet6
+    172.31.255.103:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65105
+      description: DC1-BL1B_Ethernet7
     172.31.255.7:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65101
-    172.31.255.15:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65102
+      description: DC1-LEAF1A_Ethernet1
     172.31.255.23:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
       remote_as: 65102
-    172.31.255.31:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65103
+      description: DC1-LEAF2A_Ethernet2
     172.31.255.39:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65102
+      description: DC1-LEAF2B_Ethernet3
+    172.31.255.55:
+      peer_group: UNDERLAY-PEERS
       remote_as: 65103
-    192.168.255.10:
+      description: DC1-SVC3A_Ethernet4
+    172.31.255.71:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65103
+      description: DC1-SVC3B_Ethernet5
+    192.168.255.14:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
       remote_as: 65104
-    192.168.255.11:
+    192.168.255.15:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1B
-      remote_as: 65104
-    192.168.255.5:
+      remote_as: 65105
+    192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
       remote_as: 65101
-    192.168.255.6:
+    192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2A
       remote_as: 65102
-    192.168.255.7:
+    192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2B
       remote_as: 65102
-    192.168.255.8:
+    192.168.255.12:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3A
       remote_as: 65103
-    192.168.255.9:
+    192.168.255.13:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3B
       remote_as: 65103
@@ -245,7 +259,7 @@ router_bgp:
         activate: true
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false

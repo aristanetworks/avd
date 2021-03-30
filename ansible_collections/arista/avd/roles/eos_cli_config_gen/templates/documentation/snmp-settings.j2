@@ -1,4 +1,7 @@
 {% if snmp_server is defined and snmp_server is not none %}
+
+## SNMP
+
 ### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps |
@@ -89,6 +92,4 @@
 ```eos
 {% include 'eos/snmp-settings.j2' %}
 ```
-{% else %}
-No SNMP settings defined
 {% endif %}

@@ -1,4 +1,7 @@
 {% if ntp_server is defined and ntp_server is not none %}
+
+## NTP
+
 ### NTP Summary
 {%   if ntp_server.local_interface.interface is defined and ntp_server.local_interface.interface is not none %}
 
@@ -24,6 +27,4 @@
 ```eos
 {% include 'eos/ntp-servers.j2' %}
 ```
-{% else %}
-No NTP servers defined
 {% endif %}

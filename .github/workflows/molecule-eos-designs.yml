@@ -1,0 +1,41 @@
+name: Ansible Molecule L3LS EVPN
+on:
+  pull_request:
+    paths:
+      - 'ansible_collections/arista/avd/roles/eos_designs/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_designs/templates/**'
+      - 'ansible_collections/arista/avd/molecules/**'
+      - 'ansible_collections/arista/avd/plugins/**'
+      - 'development/requirements**'
+      - '.github/workflows/molecule-eos-designs.yml'
+jobs:
+  molecule:
+    name: Run CI test for eos_designs
+    runs-on: ubuntu-18.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario:
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ibgp'
+          - 'eos_designs-twodc-5stage-clos'
+          - 'eos_l3ls_evpn_deprecation_test'
+          # - 'upgrade_v1.0_to_v1.1'
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v1
+
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'converge'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible==2.9.6"
+          check_git: true
+          check_git_enforced: true

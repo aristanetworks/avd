@@ -41,7 +41,7 @@ sanity-info: ## Show information about ansible-test
 sanity-lint: ## Run ansible-test sanity for code sanity
 	cd ansible_collections/arista/avd/ ; \
 	mkdir tests ; \
-	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import
+	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import --skip-test yamllint
 
 .PHONY: sanity-import
 sanity-import: ## Run ansible-test sanity for code import
@@ -117,8 +117,8 @@ github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:
 .PHONY: install-requirements
 install-requirements: ## Install python requirements for generic purpose
 	pip3 install --upgrade wheel
-	pip3 install -r development/requirements.txt
-	pip3 install -r development/requirements-dev.txt
+	pip3 install -r ansible_collections/arista/avd/requirements.txt
+	pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
 
 .PHONY: install-docker
 install-docker: ## Install docker

@@ -18,11 +18,21 @@ vlan_interfaces:
 
   Vlan84:
     description: SVI Description
-    ip_address_virtual: 10.10.84.1/24
+    ip_address: 10.10.84.1/24
+    ip_virtual_router_address: 10.10.84.254
 
   Vlan85:
     description: SVI Description
     ip_address: 10.10.84.1/24
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
+  Vlan86:
+    description: SVI Description
+    ip_address: 10.10.83.1/24
+    ip_attached_host_route_export:
+      distance: 10
 
   Vlan87:
     description: SVI Description
@@ -36,6 +46,12 @@ vlan_interfaces:
     description: SVI Description
     shutdown: true
     ip_address_virtual: 10.10.87.1/23
+
+  Vlan90:
+    description: SVI Description
+    ip_address: 10.10.83.1/24
+    ip_attached_host_route_export:
+      test: 10
 
 # MCAST Configuration
 

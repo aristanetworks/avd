@@ -1,0 +1,36 @@
+{# Setting evpn_rd_admin_subfield #}
+{% set leaf.evpn_rd_admin_subfield = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) %}
+{% if evpn_rd_type is defined and evpn_rd_type is not none %}
+{%     if evpn_rd_type.admin_subfield is defined and evpn_rd_type.admin_subfield is not none %}
+{%         if evpn_rd_type.admin_subfield == "vtep_loopback" %}
+{%             if leaf.mlag == true and leaf.mlag_role == "primary" %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) %}
+{%             elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + switch.max_spines) %}
+{%             else %}
+{%                 set leaf.evpn_rd_admin_subfield = vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) %}
+{%             endif %}
+{%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
+{%             set leaf.evpn_rd_admin_subfield = switch.bgp_as %}
+{%         elif evpn_rd_type.admin_subfield == "spine_asn" %}
+{%             set leaf.evpn_rd_admin_subfield = spine.bgp_as %}
+{%         elif evpn_rd_type.admin_subfield | ipaddr %}
+{%             set leaf.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
+{%         elif evpn_rd_type.admin_subfield is number and evpn_rd_type.admin_subfield >= 0 and evpn_rd_type.admin_subfield <= 4294967295 %}
+{%             set leaf.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
+{%         endif %}
+{%     endif %}
+{% endif %}
+{# Setting evpn_rt_admin_subfield #}
+{% set leaf.evpn_rt_admin_subfield = false %}
+{% if evpn_rt_type is defined and evpn_rt_type is not none %}
+{%     if evpn_rt_type.admin_subfield is defined and evpn_rt_type.admin_subfield is not none %}
+{%         if evpn_rt_type.admin_subfield == "leaf_asn" %}
+{%             set leaf.evpn_rt_admin_subfield = switch.bgp_as %}
+{%         elif evpn_rt_type.admin_subfield == "spine_asn" %}
+{%             set leaf.evpn_rt_admin_subfield = spine.bgp_as %}
+{%         elif evpn_rt_type.admin_subfield is number and evpn_rt_type.admin_subfield >= 0 and evpn_rt_type.admin_subfield <= 4294967295 %}
+{%             set leaf.evpn_rt_admin_subfield = evpn_rt_type.admin_subfield %}
+{%         endif %}
+{%     endif %}
+{% endif %}

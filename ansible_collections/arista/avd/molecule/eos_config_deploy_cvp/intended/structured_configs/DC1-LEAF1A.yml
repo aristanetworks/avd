@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF1
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
@@ -34,6 +35,7 @@ leaf_mlag: false
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware_counters: null
+hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -66,6 +68,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -104,10 +107,6 @@ vrfs:
   Tenant_A_WEB_Zone:
     tenant: Tenant_A
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -182,6 +181,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.105/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan130:
     tenant: Tenant_A
@@ -270,6 +270,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65101
   router_id: 192.168.255.5
@@ -283,24 +288,29 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet1
     172.31.255.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet1
     172.31.255.4:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet1
     172.31.255.6:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1

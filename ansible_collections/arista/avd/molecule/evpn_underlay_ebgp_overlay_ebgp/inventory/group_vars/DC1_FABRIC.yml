@@ -1,8 +1,11 @@
 ---
 
-# L3LS Fabric Values - update these values with caution, some changes could be disruptive.
+# L3LS Fabric Values
 
 fabric_name: DC1_FABRIC
+
+# Set Maximum spines to allow growth to 8 spines
+max_spines: 8
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]
@@ -27,10 +30,12 @@ vxlan_vlan_aware_bundles: true
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
+    name: UNDERLAY-PEERS
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   EVPN_OVERLAY_PEERS:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
+      name: MLAG-PEERS
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches
@@ -63,11 +68,12 @@ spine:
 l3leaf:
   defaults:
     platform: 7280R
-    bgp_as: 65100
+    bgp_as: 65101
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
     spanning_tree_mode: mstp
+    spanning_tree_root_super: true
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
     filter:
@@ -75,21 +81,24 @@ l3leaf:
       tags: [ opzone, web, app, db, vmotion, nfs ]
   node_groups:
     DC1_LEAF1:
-      bgp_as: 65101
+      platform: 7050SX3
       filter:
         tenants: [ all ]
         tags: [ web, app ]
       nodes:
         DC1-LEAF1A:
           id: 1
+          rack: "rackA"
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     DC1_LEAF2:
       bgp_as: 65102
+      rack: "rackD"
       nodes:
         DC1-LEAF2A:
           id: 2
+          rack: "rackC"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
@@ -98,6 +107,7 @@ l3leaf:
           mgmt_ip: 192.168.200.107/24
           spine_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
     DC1_SVC3:
+      platform: 7050SX3
       bgp_as: 65103
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
@@ -113,19 +123,21 @@ l3leaf:
           mgmt_ip: 192.168.200.109/24
           spine_interfaces: [ Ethernet5, Ethernet5, Ethernet5, Ethernet5 ]
     DC1_BL1:
-      bgp_as: 65104
+      mlag: false
       filter:
         tenants: [ all ]
         tags: [ wan ]
-      mlag: false
+        always_include_vrfs_in_tenants: [ 'Tenant_B' ]
       nodes:
         DC1-BL1A:
           id: 6
+          bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
         DC1-BL1B:
           id: 7
+          bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
@@ -139,6 +151,7 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
+    rack: "rackE"
   node_groups:
     DC1_L2LEAF1:
       mlag: false
@@ -191,3 +204,9 @@ bfd_multihop:
   multiplier: 3
 
 custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_' ]
+
+# Set Hardware Speed Groups per platform
+platform_speed_groups:
+  7280R:             # Only setting speed-groups on 7280R platform, so only L3leaf should get this setting.
+    25G: [ 3, 2 ]    # Unsorted order, but we should sort output correctly.
+    10G: [ 1, 2, 4 ] # Duplicate speed-group 2. Since we sort on key first the result will be 25G for group 2

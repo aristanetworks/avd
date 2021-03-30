@@ -1,5 +1,5 @@
 ---
-### Port-Channel Interfaces ###
+### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -9,6 +9,10 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
 
   Ethernet6:
     logging:
@@ -39,3 +43,124 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+    ipv6_nd_prefixes:
+      2345:ABCD:3FE0::1/96:
+        valid_lifetime: infinite
+        preferred_lifetime: 50
+        no_autoconfig_flag: true
+      2345:ABCD:3FE0::2/96:
+        valid_lifetime: 50
+        preferred_lifetime: infinite
+        no_autoconfig_flag: false
+      2345:ABCD:3FE0::3/96:
+        valid_lifetime: 100000
+        no_autoconfig_flag: true
+
+  Ethernet4:
+    description: Molecule IPv6
+    shutdown: true
+    mtu: 9100
+    ipv6_enable: true
+    ipv6_address: 2020::2020/64
+    ipv6_address_link_local: FE80:FEA::AB65/64
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_access_group_in: IPv6_ACL_IN
+    ipv6_access_group_out: IPv6_ACL_OUT
+
+  Ethernet5:
+    description: Molecule Routing
+    shutdown: false
+    mtu: 9100
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 100
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_authentication_key: "asfddja23452"
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha512
+        key: "asfddja23452"
+    pim:
+      ipv4:
+        sparse_mode: true
+    isis_enable: ISIS_TEST
+    isis_passive: false
+    isis_metric: 99
+    isis_network_point_to_point: true
+
+  Ethernet6:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    profile: ALL
+
+  Ethernet7:
+    description: Molecule L2
+    shutdown: false
+    type: switched
+    mtu: 7000
+    ptp:
+      enable: true
+      announce:
+        interval: 10
+        timeout: 30
+      delay_req: 20
+      delay_mechanism: p2p
+      sync_message:
+        interval: 5
+      role: master
+      vlan: all
+      transport: layer2
+    service_profile: QoS
+    qos:
+      trust: cos
+      cos: 5
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    spanning_tree_portfast: edge
+    vmtracer: true
+    storm_control:
+      all:
+        level: 75
+        unit: percent
+      broadcast:
+        level: 10
+        unit: pps
+      multicast:
+        level: 50
+        unit:
+      unknown_unicast:
+        level: 10
+        unit: percent
+
+  Ethernet8:
+    description: to WAN-ISP1-01 Ethernet2
+    type: routed
+  Ethernet8.101:
+    description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
+    type: l3dot1q
+    encapsulation:
+      dot1q:
+        vlan: 101
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64

@@ -21,20 +21,20 @@ converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. 
 
 .PHONY: refresh-facts
 refresh-facts: ## Run all molecule scenarios
-	@for MOLECULE_SCENARIO in * ; do \
-        if [ -d "$$MOLECULE_SCENARIO" ]; then\
-        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
-		cd .. ; \
-		molecule converge --scenario-name $$MOLECULE_SCENARIO ; \
-		cd ./molecule ; \
-        fi \
-    done
+	@while read -r MOLECULE_SCENARIO; do \
+		if [ -d "$$MOLECULE_SCENARIO" ]; then\
+			echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+			cd .. ; \
+			molecule converge --scenario-name $$MOLECULE_SCENARIO ; \
+			cd ./molecule ; \
+		fi \
+	done <MOLECULE_SCENARIOS.txt
 
 .PHONY: commit-facts
 commit-facts: ## Commit updated facts for CI
 	git status --short
 	git add .
-	git commit --no-verify -m 'Update CI artifacts' ./
+	git commit --no-verify -m 'ci(molecule): Update CI artifacts' ./
 
 .PHONY: test-git-status
 test-git-status: ## Run post molecule script to check git status

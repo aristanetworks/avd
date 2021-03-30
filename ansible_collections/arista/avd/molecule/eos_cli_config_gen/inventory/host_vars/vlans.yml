@@ -1,9 +1,3 @@
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
-
 ### VLANs ###
 vlans:
   110:
@@ -14,3 +8,13 @@ vlans:
     name: MLAG_iBGP_TENANT_A_PROJECT01
     trunk_groups:
       - LEAF_PEER_L3
+  3011:
+    name: MLAG_iBGP_TENANT_A_PROJECT02
+    state: active
+    trunk_groups:
+      - MY_TRUNK_GROUP
+  3012:
+    name: MLAG_iBGP_TENANT_A_PROJECT03
+    state: suspend
+    trunk_groups:
+      - MY_TRUNK_GROUP

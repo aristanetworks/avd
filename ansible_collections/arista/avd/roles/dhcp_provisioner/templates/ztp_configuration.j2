@@ -51,7 +51,7 @@ ztp:
 {%     for node in hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes | arista.avd.natural_sort %}
 {%         if hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
-      mac: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address }}
+      mac: '{{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address }}'
       ip4: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
@@ -61,7 +61,7 @@ ztp:
 {% for node in hostvars[groups[fabric_group][0]].spine.nodes | arista.avd.natural_sort %}
 {%      if hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is not none %}
     - name: {{ node }}
-      mac: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address }}
+      mac: '{{ hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address }}'
       ip4: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mgmt_ip | ipaddr('address') }}
 {%      endif %}
 {% endfor %}
@@ -71,7 +71,7 @@ ztp:
 {%     for node in hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes | arista.avd.natural_sort %}
 {%         if hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
-      mac: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address }}
+      mac: '{{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address }}'
       ip4: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
@@ -82,7 +82,7 @@ ztp:
 {%     for node in hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes | arista.avd.natural_sort %}
 {%         if hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
-      mac: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address }}
+      mac: '{{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address }}'
       ip4: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
 {%         endif %}
 {%     endfor %}

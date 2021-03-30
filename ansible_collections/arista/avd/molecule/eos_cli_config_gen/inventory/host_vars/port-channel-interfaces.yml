@@ -34,6 +34,16 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
+  Port-Channel51:
+    description: ipv6_prefix
+    vlans: 1-500
+    mode: trunk
+    ipv6_nd_prefixes:
+      a1::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+
   Port-Channel100:
     type: routed
     logging:
@@ -57,6 +67,26 @@ port_channel_interfaces:
     encapsulation:
       dot1q:
         vlan: 102
+        bfd:
+
+  Port-Channel8:
+    description: to Dev02 Port-channel 8
+    type: routed
+  Port-Channel8.101:
+    description: to Dev02 Port-Channel8.101 - VRF-C1
+    type: l3dot1q
+    ip_address: 10.1.2.3/31
+    encapsulation:
+      dot1q:
+        vlan: 101
+
+  Port-Channel9:
+    type: routed
+    ip_address: 10.9.2.3/31
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
 
 # Children interfaces
 ethernet_interfaces:
@@ -98,3 +128,11 @@ ethernet_interfaces:
       id: 5
       mode: "active"
     profile: ALL
+
+  Ethernet8:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    description: MLAG_PEER_DC1-LEAF1B_Ethernet8
+    channel_group:
+      id: 8
+      mode: active

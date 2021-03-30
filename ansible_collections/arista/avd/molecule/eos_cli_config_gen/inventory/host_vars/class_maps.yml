@@ -1,0 +1,10 @@
+---
+class_maps:
+  qos:
+    CM_REPLICATION_LD:
+      ip:
+        access_group: ACL_REPLICATION_LD
+    CM_REPLICATION_LD2:
+      vlan: "200"
+    CM_REPLICATION_LD3:
+      cos: 3

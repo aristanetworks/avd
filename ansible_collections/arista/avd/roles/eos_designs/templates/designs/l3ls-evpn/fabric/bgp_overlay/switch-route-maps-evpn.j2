@@ -1,0 +1,42 @@
+{# EBGP #}
+{% if switch.overlay_routing_protocol == "ebgp" and switch.evpn_role in ["client", "server"] %}
+{# Overlay network peering #}
+{%     if evpn_prevent_readvertise_to_server is arista.avd.defined(true) %}
+{%         set remote_as_list = [] %}
+{%         for evpn_route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
+{%           do remote_as_list.append(switch.evpn_route_servers[evpn_route_server].bgp_as) %}
+{%         endfor %}
+{%         for remote_as in remote_as_list | unique | arista.avd.natural_sort %}
+  RM-EVPN-FILTER-AS{{ remote_as }}:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - "as {{ remote_as }}"
+      20:
+        type: permit
+{%         endfor %}
+{%     endif %}
+{# Leaf route-maps for the overlay#}
+{% elif switch.overlay_routing_protocol == "ibgp" and type == "l3leaf" and switch.evpn_role in ["client", "server"] %}
+  RM-EVPN-SOO-IN:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - "extcommunity ECL-EVPN-SOO"
+      20:
+        type: permit
+  RM-EVPN-SOO-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+{%     if leaf.mlag == true and leaf.mlag_role == "primary" %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}:1 additive"
+{%     elif leaf.mlag == true and leaf.mlag_role == "secondary" %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.mlag_peer_id + switch.max_spines) }}:1 additive"
+{%     else %}
+          - "extcommunity soo {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}:1 additive"
+{%     endif %}
+{% endif %}

@@ -1,27 +1,16 @@
 {# eos - interface defaults #}
-{% if interface_defaults is defined and interface_defaults is not none %}
-{%     if ( interface_defaults.mtu is defined and interface_defaults.mtu is not none ) or ( interface_defaults.switchport is defined and interface_defaults.switchport is not none ) %}
+{% if interface_defaults is arista.avd.defined %}
 !
 interface defaults
-{%         if interface_defaults.ethernet is defined and interface_defaults.ethernet is not none %}
+{%     if interface_defaults.ethernet is arista.avd.defined %}
    ethernet
-{%             if interface_defaults.ethernet.shutdown is defined and interface_defaults.ethernet.shutdown == true %}
+{%         if interface_defaults.ethernet.shutdown is arista.avd.defined(true) %}
       shutdown
-{%             elif interface_defaults.ethernet.shutdown is defined and interface_defaults.ethernet.shutdown == false %}
+{%         elif interface_defaults.ethernet.shutdown is arista.avd.defined(false) %}
       no shutdown
-{%             endif %}
-{%         endif %}
-{%         if interface_defaults.mtu is defined and interface_defaults.mtu is not none %}
-   mtu {{ interface_defaults.mtu }}
 {%         endif %}
 {%     endif %}
-{%     if interface_defaults.switchport is defined and interface_defaults.switchport is not none %}
-{%         if interface_defaults.switchport.type is defined and interface_defaults.switchport.type == "routed" %}
-!
-switchport default mode routed
-{%         elif interface_defaults.switchport.type is defined and interface_defaults.switchport.type == "switched" %}
-!
-switchport default mode access
-{%         endif %}
+{%     if interface_defaults.mtu is arista.avd.defined %}
+   mtu {{ interface_defaults.mtu }}
 {%     endif %}
 {% endif %}

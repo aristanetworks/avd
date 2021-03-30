@@ -1,4 +1,7 @@
 {% if aaa_accounting is defined and aaa_accounting is not none %}
+
+## AAA Accounting
+
 ### AAA Accounting Summary
 
 | Type | Sub-type | Record | Accounting Stores | Logging |
@@ -21,6 +24,4 @@
 ```eos
 {% include 'eos/aaa-accounting.j2' %}
 ```
-{% else %}
-AAA accounting not defined
 {% endif %}

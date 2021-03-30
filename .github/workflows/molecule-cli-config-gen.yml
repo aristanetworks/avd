@@ -4,8 +4,8 @@ on:
     paths:
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/tasks/**'
       - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/templates/**'
-      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/tasks/**'
-      - 'ansible_collections/arista/avd/roles/eos_l3ls_evpn/templates/**'
+      - 'ansible_collections/arista/avd/roles/eos_designs/tasks/**'
+      - 'ansible_collections/arista/avd/roles/eos_designs/templates/**'
       - 'ansible_collections/arista/avd/plugins/**'
       - 'ansible_collections/arista/avd/molecule/**'
       - 'development/requirements**'
@@ -28,11 +28,12 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.0
+        uses: arista-netdevops-community/action-molecule-avd@v1.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'converge'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: development/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible==2.9.6"
           check_git: true
           check_git_enforced: true
