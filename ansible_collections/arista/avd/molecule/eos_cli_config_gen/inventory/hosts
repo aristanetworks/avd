@@ -71,6 +71,7 @@ static-routes
 terminattr-cloud
 terminattr-prem
 terminattr-prem-disableaaa
+traffic-policies
 unsupported-transceiver
 vlan-interfaces
 virtual-source-nat
