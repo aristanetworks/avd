@@ -182,7 +182,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY_PEERS:
       type: ipv4
       peer_filter: LEAF-AS-RANGE
       bgp_listen_range_prefix: fe80::/10
@@ -210,7 +210,7 @@ router_bgp:
         activate: true
   address_family_ipv4:
     peer_groups:
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY_PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false

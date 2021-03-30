@@ -383,7 +383,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
-#### IPv4-UNDERLAY-PEERS
+#### UNDERLAY_PEERS
 
 | Settings | Value |
 | -------- | ----- |
@@ -408,7 +408,7 @@ router bgp 65001
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    bgp listen range 192.168.255.0/24 peer-group EVPN-OVERLAY-PEERS peer-filter LEAF-AS-RANGE
-   bgp listen range fe80::/10 peer-group IPv4-UNDERLAY-PEERS peer-filter LEAF-AS-RANGE
+   bgp listen range fe80::/10 peer-group UNDERLAY_PEERS peer-filter LEAF-AS-RANGE
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -417,10 +417,10 @@ router bgp 65001
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor UNDERLAY_PEERS peer group
+   neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor UNDERLAY_PEERS send-community
+   neighbor UNDERLAY_PEERS maximum-routes 12000
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -429,8 +429,8 @@ router bgp 65001
    address-family ipv4
       neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv4-UNDERLAY-PEERS next-hop address-family ipv6 originate
-      neighbor IPv4-UNDERLAY-PEERS activate
+      neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
+      neighbor UNDERLAY_PEERS activate
 ```
 
 # BFD
