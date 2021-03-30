@@ -163,6 +163,12 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.87/31
+  Ethernet7:
+    type: routed
+    vrf: Tenant_A_WAN_Zone
+    ip_address: 10.10.10.10/24
+    mtu: 9000
+    description: test
   Ethernet4000:
     description: My test
     ip_address: 10.3.2.1/21
