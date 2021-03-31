@@ -500,11 +500,9 @@ router bgp {{ router_bgp.as }}
       !
       address-family {{ address_family }}
 {%             for neighbor in router_bgp.vrfs[vrf].address_families[address_family].neighbors | arista.avd.natural_sort %}
-{%                 set neighbor_cli = "neighbor " ~ neighbor %}
 {%                 if router_bgp.vrfs[vrf].address_families[address_family].neighbors[neighbor].activate is arista.avd.defined(true) %}
-{%                     set neighbor_cli = neighbor_cli ~ " activate" %}
+         neighbor {{ neighbor }} activate
 {%                 endif %}
-         {{ neighbor_cli }}
 {%             endfor %}
 {%             for network in router_bgp.vrfs[vrf].address_families[address_family].networks | arista.avd.natural_sort %}
 {%                 set network_cli = "network " ~ network %}
