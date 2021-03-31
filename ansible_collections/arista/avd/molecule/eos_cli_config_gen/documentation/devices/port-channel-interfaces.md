@@ -122,6 +122,7 @@ interface Ethernet50
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
@@ -170,15 +171,26 @@ interface Port-Channel9
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
 !
+interface Port-Channel10
+   description SRV01_bond0
+   switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0404:0404:0303
+      route-target import 04:04:03:03:02:02
+   !
+!
 interface Port-Channel50
    description SRV-POD03_PortChanne1
    switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    !
-    evpn ethernet-segment
-       identifier 0000:0000:0303:0202:0101
-       route-target import 03:03:02:02:01:01
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
    !
    lacp system-id 0303.0202.0101
 !
