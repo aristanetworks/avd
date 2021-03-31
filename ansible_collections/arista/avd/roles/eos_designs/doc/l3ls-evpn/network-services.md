@@ -172,10 +172,10 @@ tenants:
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
 
-        # Dictionary of L3 interfaces | Optional.
-        # This will create IP routed interface inside VRF. Length of nodes and ip_addresses must match.
+        # List of L3 interfaces | Optional.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
         l3_interfaces:
-          <interface_name>:
+          - interfaces: [ <interface_name1>, <interface_name2> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 > ]
             description: < description >
