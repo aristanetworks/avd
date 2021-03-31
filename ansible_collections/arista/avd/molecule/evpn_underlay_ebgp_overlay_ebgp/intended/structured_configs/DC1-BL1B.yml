@@ -168,6 +168,7 @@ ethernet_interfaces:
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.10.20.20/24
     mtu: 9000
+    shutdown: false
     description: test
   Ethernet4000:
     description: My test

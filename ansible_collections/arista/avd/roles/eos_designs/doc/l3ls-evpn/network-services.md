@@ -179,6 +179,7 @@ tenants:
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 > ]
             description: < description >
+            enabled: < true | false >
             mtu: <mtu >
 
         # Dictionary of static routes | Optional.

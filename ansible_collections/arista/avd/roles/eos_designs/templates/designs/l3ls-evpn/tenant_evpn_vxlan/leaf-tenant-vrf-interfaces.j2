@@ -7,6 +7,9 @@
 {%         if interface.mtu is arista.avd.defined %}
     mtu: {{ interface.mtu }}
 {%         endif %}
+{%         if interface.enabled is arista.avd.defined(true) %}
+    shutdown: false
+{%         endif %}
 {%         if interface.description is arista.avd.defined %}
     description: {{ interface.description }}
 {%         endif %}
