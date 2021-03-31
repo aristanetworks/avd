@@ -63,7 +63,7 @@
 {% set leaf.l3_interfaces = [] %}
 {% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
 {%     if tenants[tenant].vrfs is arista.avd.defined %}
-{%         for vrf in tenants[tenant].vrfs if vrf in leaf.vrfs %}
+{%         for vrf in tenants[tenant].vrfs %}
 {%             if tenants[tenant].vrfs[vrf].l3_interfaces is arista.avd.defined %}
 {%                 for entry in tenants[tenant].vrfs[vrf].l3_interfaces %}
 {%                     if entry.nodes is arista.avd.defined and entry.ip_addresses is arista.avd.defined and entry.interfaces is arista.avd.defined and inventory_hostname in entry.nodes %}
@@ -72,6 +72,7 @@
 {%                         do entry.update( {'l3_interface':entry.interfaces[node_index]} ) %}
 {%                         do entry.update( {'ip_address':entry.ip_addresses[node_index]} ) %}
 {%                         do leaf.l3_interfaces.append( entry ) %}
+{%                         do leaf.vrfs.append( vrf ) %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

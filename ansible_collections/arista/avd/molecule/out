@@ -1,0 +1,74 @@
+cd .. && \
+	molecule converge --scenario-name evpn_underlay_ebgp_overlay_ebgp
+[34mINFO    [0m evpn_underlay_ebgp_overlay_ebgp scenario test matrix: syntax, create, converge, verify
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/group_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mgroup_vars[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/host_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhost_vars[0m
+[34mINFO    [0m [2;36mRunning [0m[2;32mevpn_underlay_ebgp_overlay_ebgp[0m[2;36m > [0m[2;32msyntax[0m
+[1;35m[WARNING]: running playbook inside collection arista.avd[0m
+[1;35m[WARNING]: Unable to parse /Users/mp/Programming/Ansible/ansible-[0m
+[1;35mavd/ansible_collections/arista/avd/inventory/hosts as an inventory source[0m
+
+playbook: /Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/converge.yml
+
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/group_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mgroup_vars[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/host_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhost_vars[0m
+[34mINFO    [0m [2;36mRunning [0m[2;32mevpn_underlay_ebgp_overlay_ebgp[0m[2;36m > [0m[2;32mcreate[0m
+[31mWARNING [0m Skipping, instances already created.
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhosts[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/group_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mgroup_vars[0m
+[34mINFO    [0m Inventory [35m/Users/mp/Programming/Ansible/ansible-avd/ansible_collections/arista/avd/molecule/evpn_underlay_ebgp_overlay_ebgp/inventory/host_vars/[0m linked to [35m/Users/mp/.cache/molecule/avd/evpn_underlay_ebgp_overlay_ebgp/inventory/[0m[95mhost_vars[0m
+[34mINFO    [0m [2;36mRunning [0m[2;32mevpn_underlay_ebgp_overlay_ebgp[0m[2;36m > [0m[2;32mconverge[0m
+[1;35m[WARNING]: running playbook inside collection arista.avd[0m
+[1;35m[WARNING]: Unable to parse /Users/mp/Programming/Ansible/ansible-[0m
+[1;35mavd/ansible_collections/arista/avd/inventory/hosts as an inventory source[0m
+
+PLAY [Converge] *************************************************************************************************
+
+TASK [eos_designs : Generate device configuration in structured format (yaml).] *********************************
+[31mfatal: [DC1-LEAF1A -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-LEAF2A -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-LEAF2B -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-SVC3A -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-SVC3B -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-BL1A -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[31mfatal: [DC1-BL1B -> localhost]: FAILED! => {"changed": false, "msg": "TemplateSyntaxError: expected token 'end of statement block', got '['"}[0m
+[32mok: [DC1-L2LEAF1A -> localhost][0m
+[32mok: [DC1-L2LEAF2A -> localhost][0m
+[32mok: [DC1-L2LEAF2B -> localhost][0m
+[32mok: [DC1-SPINE3 -> localhost][0m
+[32mok: [DC1-SPINE1 -> localhost][0m
+[32mok: [DC1-SPINE2 -> localhost][0m
+[32mok: [DC1-SPINE4 -> localhost][0m
+
+TASK [eos_designs : Merge generated device configuration with custom_structured_configuration_ variables (yaml)] ***
+[32mok: [DC1-SPINE1 -> localhost][0m
+[32mok: [DC1-SPINE3 -> localhost][0m
+[32mok: [DC1-SPINE2 -> localhost][0m
+[32mok: [DC1-SPINE4 -> localhost][0m
+[32mok: [DC1-L2LEAF1A -> localhost][0m
+[32mok: [DC1-L2LEAF2A -> localhost][0m
+[32mok: [DC1-L2LEAF2B -> localhost][0m
+
+TASK [eos_designs : Include device structured configuration, that was previously generated.] ********************
+[32mok: [DC1-SPINE1 -> localhost][0m
+[32mok: [DC1-L2LEAF1A -> localhost][0m
+[32mok: [DC1-SPINE2 -> localhost][0m
+[32mok: [DC1-SPINE3 -> localhost][0m
+[32mok: [DC1-L2LEAF2A -> localhost][0m
+[32mok: [DC1-SPINE4 -> localhost][0m
+[32mok: [DC1-L2LEAF2B -> localhost][0m
+
+TASK [eos_designs : Store checksum of existing fabric documentation] ********************************************
+[32mok: [DC1-SPINE1 -> localhost][0m
+
+TASK [eos_designs : Generate fabric documentation in Markdown Format.] ******************************************
+[32mok: [DC1-SPINE1 -> localhost][0m
+
+TASK [eos_designs : Generate TOC for fabric documentation] ******************************************************
+[33mchanged: [DC1-SPINE1 -> localhost][0m
+
+TASK [eos_designs : Generate fabric point-to-point links summary in csv format.] ********************************
+
+Aborted!

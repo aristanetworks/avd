@@ -22,6 +22,8 @@ leaf_allowed_vrfs:
 - Tenant_B_WAN_Zone
 - Tenant_C_WAN_Zone
 - Tenant_B_OP_Zone
+- Tenant_A_WAN_Zone
+- Tenant_L3_VRF_Zone
 leaf_allowed_svis:
 - 150
 - 250
@@ -112,6 +114,9 @@ vrfs:
   Tenant_A_WAN_Zone:
     tenant: Tenant_A
     ip_routing: true
+  Tenant_L3_VRF_Zone:
+    tenant: Tenant_A
+    ip_routing: true
   Tenant_B_OP_Zone:
     tenant: Tenant_B
     ip_routing: true
@@ -166,6 +171,13 @@ ethernet_interfaces:
   Ethernet7:
     type: routed
     vrf: Tenant_A_WAN_Zone
+    ip_address: 10.10.20.20/24
+    mtu: 9000
+    shutdown: false
+    description: test
+  Ethernet8:
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
     ip_address: 10.10.20.20/24
     mtu: 9000
     shutdown: false
@@ -237,6 +249,8 @@ vxlan_tunnel_interface:
       vrfs:
         Tenant_A_WAN_Zone:
           vni: 14
+        Tenant_L3_VRF_Zone:
+          vni: 15
         Tenant_B_OP_Zone:
           vni: 20
         Tenant_B_WAN_Zone:
@@ -430,6 +444,19 @@ router_bgp:
       redistribute_routes:
       - connected
       - static
+    Tenant_L3_VRF_Zone:
+      router_id: 192.168.255.15
+      rd: 192.168.255.15:15
+      route_targets:
+        import:
+          evpn:
+          - '15:15'
+        export:
+          evpn:
+          - '15:15'
+      neighbors: null
+      redistribute_routes:
+      - connected
     Tenant_B_OP_Zone:
       router_id: 192.168.255.15
       rd: 192.168.255.15:20
