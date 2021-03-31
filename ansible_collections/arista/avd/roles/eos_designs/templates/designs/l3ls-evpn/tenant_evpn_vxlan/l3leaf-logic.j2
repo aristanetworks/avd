@@ -69,8 +69,8 @@
 {%                     if entry.nodes is arista.avd.defined and entry.ip_addresses is arista.avd.defined and entry.interfaces is arista.avd.defined and inventory_hostname in entry.nodes %}
 {%                         set node_index = entry.nodes.index(inventory_hostname) %}
 {%                         do entry.update( {'vrf':vrf} )%}
-{%                         do entry.update( {'l3_interface':entry.interfaces[node_index]} )%}
-{%                         do entry.update( {'ip_address':entry.ip_addresses[node_index]})%}
+{%                         do entry.update( {'l3_interface':entry.interfaces[node_index]} ) %}
+{%                         do entry.update( {'ip_address':entry.ip_addresses[node_index]} ) %}
 {%                         do leaf.l3_interfaces.append( entry ) %}
 {%                     endif %}
 {%                 endfor %}
