@@ -68,11 +68,12 @@ interface Management1
 | IPv6 | onur_v6 | default |
 
 ### SNMP Communities
+
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-| SNMP-COMMUNITY-1 | ro | onur |
+| SNMP-COMMUNITY-1 | ro | onur | - | - |
 | SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
-| SNMP-COMMUNITY-3 | ro |
+| SNMP-COMMUNITY-3 | ro | - | - | - |
 
 
 ### SNMP Local Interfaces
