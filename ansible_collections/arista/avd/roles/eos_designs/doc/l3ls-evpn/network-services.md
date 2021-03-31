@@ -174,11 +174,10 @@ tenants:
 
         # List of L3 interfaces | Optional.
         # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
-        # Node names inside "nodes" must be unique (same node cannot appear twice)
         l3_interfaces:
-          - interfaces: [ <interface_name1>, <interface_name2> ]
-            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
-            nodes: [ < node_1 >, < node_2 > ]
+          - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
             enabled: < true | false >
             mtu: <mtu >

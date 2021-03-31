@@ -182,6 +182,13 @@ ethernet_interfaces:
     mtu: 9000
     shutdown: false
     description: test
+  Ethernet9:
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.20.20/24
+    mtu: 9000
+    shutdown: false
+    description: test
   Ethernet4000:
     description: My test
     ip_address: 10.3.2.1/21

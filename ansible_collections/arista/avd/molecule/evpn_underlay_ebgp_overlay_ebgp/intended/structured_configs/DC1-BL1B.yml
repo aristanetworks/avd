@@ -178,7 +178,14 @@ ethernet_interfaces:
   Ethernet8:
     type: routed
     vrf: Tenant_L3_VRF_Zone
-    ip_address: 10.10.20.20/24
+    ip_address: 10.10.30.10/24
+    mtu: 9000
+    shutdown: false
+    description: test
+  Ethernet9:
+    type: routed
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.40.20/24
     mtu: 9000
     shutdown: false
     description: test

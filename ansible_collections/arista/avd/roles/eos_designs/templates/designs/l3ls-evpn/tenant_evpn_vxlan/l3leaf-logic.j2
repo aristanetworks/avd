@@ -67,11 +67,16 @@
 {%             if tenants[tenant].vrfs[vrf].l3_interfaces is arista.avd.defined %}
 {%                 for entry in tenants[tenant].vrfs[vrf].l3_interfaces %}
 {%                     if entry.nodes is arista.avd.defined and entry.ip_addresses is arista.avd.defined and entry.interfaces is arista.avd.defined and inventory_hostname in entry.nodes %}
-{%                         set node_index = entry.nodes.index(inventory_hostname) %}
-{%                         do entry.update( {'vrf':vrf} )%}
-{%                         do entry.update( {'l3_interface':entry.interfaces[node_index]} ) %}
-{%                         do entry.update( {'ip_address':entry.ip_addresses[node_index]} ) %}
-{%                         do leaf.l3_interfaces.append( entry ) %}
+{%                         for node in entry.nodes %}
+{%                             if node == inventory_hostname %}
+{%                                 set entry_node = dict() %}
+{%                                 do entry_node.update( {'vrf':vrf} )%}
+{%                                 do entry_node.update( {'l3_interface':entry.interfaces[loop.index - 1]} ) %}
+{%                                 do entry_node.update( {'ip_address':entry.ip_addresses[loop.index - 1]} ) %}
+{%                                 do entry_node.update( entry ) %}
+{%                                 do leaf.l3_interfaces.append( entry_node ) %}
+{%                             endif %}
+{%                         endfor %}
 {%                         do leaf.vrfs.append( vrf ) %}
 {%                     endif %}
 {%                 endfor %}
