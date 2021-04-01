@@ -184,7 +184,8 @@ ethernet_interfaces:
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 {# L3 Edge Point-to-Point Interfaces #}
 {% include 'l3_edge/switch-l3-edge-p2p-interfaces.j2' %}
-
+{# L3 VRF Interfaces #}
+{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-interfaces.j2' %}
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###

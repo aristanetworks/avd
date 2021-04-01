@@ -96,6 +96,19 @@ tenants:
             ip_address_virtual: 10.1.41.1/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
+        l3_interfaces:
+          - interfaces: [Ethernet7]
+            ip_addresses: [10.10.10.10/24]
+            nodes: [DC1-BL1A]
+            mtu: 9000
+            enabled: True
+            description: "test"
+          - interfaces: [Ethernet7]
+            ip_addresses: [10.10.20.20/24]
+            nodes: [DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "test"
         static_routes:
           - destination_address_prefix: 10.3.4.0/24
             gateway: 1.2.3.4
@@ -150,6 +163,15 @@ tenants:
             address_family: evpn
             route_target: '65000:789'
             # nodes not set - so all devices shold get this additional route target
+      Tenant_L3_VRF_Zone:
+        vrf_vni: 15
+        l3_interfaces:
+          - interfaces: [ Ethernet8, Ethernet9, Ethernet8, Ethernet9 ]
+            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24,]
+            nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "test"
     l2vlans:
       # L2 vlan as string
       '160':
