@@ -170,6 +170,7 @@ ethernet_interfaces:
     ip_address: 172.31.255.87/31
   Ethernet7:
     type: routed
+    peer_type: l3_interface
     vrf: Tenant_A_WAN_Zone
     ip_address: 10.10.10.10/24
     mtu: 9000
@@ -177,6 +178,7 @@ ethernet_interfaces:
     description: test
   Ethernet8:
     type: routed
+    peer_type: l3_interface
     vrf: Tenant_L3_VRF_Zone
     ip_address: 10.10.10.10/24
     mtu: 9000
@@ -184,6 +186,7 @@ ethernet_interfaces:
     description: test
   Ethernet9:
     type: routed
+    peer_type: l3_interface
     vrf: Tenant_L3_VRF_Zone
     ip_address: 10.10.20.20/24
     mtu: 9000

@@ -71,8 +71,8 @@
 {%                             if node == inventory_hostname %}
 {%                                 set entry_node = dict() %}
 {%                                 do entry_node.update( {'vrf':vrf} )%}
-{%                                 do entry_node.update( {'l3_interface':entry.interfaces[loop.index - 1]} ) %}
-{%                                 do entry_node.update( {'ip_address':entry.ip_addresses[loop.index - 1]} ) %}
+{%                                 do entry_node.update( {'l3_interface':entry.interfaces[loop.index0]} ) %}
+{%                                 do entry_node.update( {'ip_address':entry.ip_addresses[loop.index0]} ) %}
 {%                                 do entry_node.update( entry ) %}
 {%                                 do leaf.l3_interfaces.append( entry_node ) %}
 {%                             endif %}
