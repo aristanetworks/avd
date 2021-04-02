@@ -1805,14 +1805,7 @@ router_bgp:
           route_map: < route_map_name >
         < route_type >:
           route_map: < route_map_name >
-      address_families:
-        < address_family >:
-          neighbors:
-            < neighbor_ip_address >:
-              activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
+
       aggregate_addresses:
         < aggregate_address_1/mask >:
           advertise_only: < true | false >
@@ -1823,6 +1816,14 @@ router_bgp:
           attribute_map: < route_map_name >
           match_map: < route_map_name >
           advertise_only: < true | false >
+      address_families:
+        < address_family >:
+          neighbors:
+            < neighbor_ip_address >:
+              activate: < true | false >
+        networks:
+          < prefix_address >:
+            route_map: < route_map_name >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
