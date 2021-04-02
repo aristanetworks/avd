@@ -413,6 +413,13 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.vrfs[vrf].timers is arista.avd.defined %}
       timers bgp {{ router_bgp.vrfs[vrf].timers }}
 {%         endif %}
+{%         for network in router_bgp.vrfs[vrf].networks | arista.avd.natural_sort %}
+{%             if router_bgp.vrfs[vrf].networks[network].route_map is arista.avd.defined %}
+      network {{ network }} route-map {{ router_bgp.vrfs[vrf].networks[network].route_map }}
+{%             else %}
+      network {{ network }}
+{%             endif %}
+{%         endfor %}
 {%         for neighbor in router_bgp.vrfs[vrf].neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
       neighbor {{ neighbor }} remote-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }}
