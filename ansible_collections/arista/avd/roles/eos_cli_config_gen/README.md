@@ -309,9 +309,11 @@ enable_password:
 
 ```yaml
 ip_tacacs_source_interfaces:
-    - name: <interface_name_1 >
-      vrf: < vrf_name_1 >
-    - name: <interface_name_2 >
+    - vrf: < vrf_name_1 >
+    name: <interface_name_1 >
+    - vrf: < vrf_name_2 >
+    name: <interface_name_2 >
+    - name: <interface_name_3 >
 ```
 
 #### Local Users
