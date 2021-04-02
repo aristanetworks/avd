@@ -95,7 +95,7 @@
 {%                 endif %}
 {%             endif %}
       address_families:
-{%             if bgp_vrf.address_family_ipv4_neighbors is arista.avd.defined and bgp_vrf.address_family_ipv4_neighbors | length %}
+{%             if bgp_vrf.address_family_ipv4_neighbors | length > 0 %}
         ipv4:
           neighbors:
 {%                 for ipv4_neighbor in bgp_vrf.address_family_ipv4_neighbors %}
@@ -103,7 +103,7 @@
               activate: true
 {%                 endfor %}
 {%             endif %}
-{%             if bgp_vrf.address_family_ipv6_neighbors is arista.avd.defined and bgp_vrf.address_family_ipv6_neighbors | length %}
+{%             if bgp_vrf.address_family_ipv6_neighbors | length > 0 %}
         ipv6:
           neighbors:
 {%                 for ipv6_neighbor in bgp_vrf.address_family_ipv6_neighbors %}
