@@ -113,6 +113,9 @@ router_bgp:
     TENANT_A_PROJECT01:
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
+      networks:
+        10.0.0.0/8:
+        100.64.0.0/10:
       route_targets:
         import:
           evpn:

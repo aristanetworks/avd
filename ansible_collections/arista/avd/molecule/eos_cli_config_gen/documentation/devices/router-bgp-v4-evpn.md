@@ -282,6 +282,8 @@ router bgp 65101
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3
+      network 10.0.0.0/8
+      network 100.64.0.0/10
       neighbor 10.2.3.4 remote-as 1234
       neighbor 10.2.3.4 local-as 123 no-prepend replace-as
       neighbor 10.2.3.4 description Tenant A BGP Peer
