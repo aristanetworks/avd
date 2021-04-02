@@ -372,6 +372,7 @@ router_bgp:
       neighbors:
         123.1.1.10:
           remote_as: 1234
+          password: AQQvKeimxJu+uGQ/yYvv9w==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
