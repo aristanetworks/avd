@@ -1794,9 +1794,6 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
-          address_family:
-            - < address_family_1 >
-            - < address_family_2 >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
@@ -1808,6 +1805,14 @@ router_bgp:
           route_map: < route_map_name >
         < route_type >:
           route_map: < route_map_name >
+      address_families:
+        < address_family >:
+          neighbors:
+            < neighbor_ip_address >:
+              activate: < true | false >
+        networks:
+          < prefix_address >:
+            route_map: < route_map_name >
       aggregate_addresses:
         < aggregate_address_1/mask >:
           advertise_only: < true | false >
