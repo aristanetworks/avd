@@ -638,6 +638,7 @@ router bgp 65105
       route-target export evpn 14:14
       router-id 192.168.255.11
       neighbor 123.1.1.10 remote-as 1234
+      neighbor 123.1.1.10 password 7 AQQvKeimxJu+uGQ/yYvv9w==
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
       neighbor 123.1.1.10 ebgp-multihop 3
