@@ -70,7 +70,6 @@
 {%                                 endif %}
 {%                             endif%}
 {%                             do neighbor_params.pop('nodes') %}
-{%                             do neighbor_params.pop('address_family') %}
         {{ bgp_peer }}:
           {{ neighbor_params }}
 {%                         endif %}
