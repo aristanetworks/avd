@@ -21,6 +21,9 @@ interface {{ ethernet_interface }}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined and ethernet_interfaces[ethernet_interface].channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
+{%         if ethernet_interfaces[ethernet_interface].lacp_port_priority is arista.avd.defined %}
+   lacp port-priority {{ ethernet_interfaces[ethernet_interface].lacp_port_priority }}
+{%         endif %}
 {%     else %}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}

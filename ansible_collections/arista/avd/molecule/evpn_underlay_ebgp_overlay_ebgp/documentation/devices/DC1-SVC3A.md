@@ -441,6 +441,8 @@ vlan 4094
 | Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 14 |
 | Ethernet15 | server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
 | Ethernet16 |  server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
+| Ethernet17 | server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
+| Ethernet18 | server10_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
 
 *Inherited from Port-Channel Interface
 
@@ -578,6 +580,18 @@ interface Ethernet16
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+!
+interface Ethernet17
+   description server10_no_profile_port_channel_lacp_fallback_Eth1
+   no shutdown
+   channel-group 17 mode active
+   lacp port-priority 8192
+!
+interface Ethernet18
+   description server10_inherit_profile_port_channel_lacp_fallback_Eth1
+   no shutdown
+   channel-group 18 mode active
+   lacp port-priority 8192
 ```
 
 ## Port-Channel Interfaces
@@ -593,6 +607,8 @@ interface Ethernet16
 | Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 10 | - |
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
+| Port-Channel18 | server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -644,6 +660,38 @@ interface Port-Channel15
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    mlag 15
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Port-Channel17
+   description server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 17
+   port-channel lacp fallback timeout 90
+   port-channel lacp fallback static
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Port-Channel18
+   description server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 18
+   port-channel lacp fallback timeout 10
+   port-channel lacp fallback static
    spanning-tree portfast
    spanning-tree bpdufilter enable
    storm-control all level 10
