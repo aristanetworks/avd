@@ -21,6 +21,10 @@
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-rd-rt-admin-subfield-logic.j2' %}
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
+{# Build dictionary for Infrastructure Elements interface configuration #}
+{% set infrastructure_elements_types = namespace() %}
+{% set infrastructure_elements_types = dict() %}
+{% include 'infrastructure_elements/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
@@ -166,8 +170,8 @@ port_channel_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
-{# Server - Port Channel Interfaces #}
-{% include 'edge_ports/leaf-server-port-channels.j2' %}
+{# Infrastructure Elements #}
+{% include 'infrastructure_elements/leaf-port-channel-interfaces.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -178,8 +182,8 @@ ethernet_interfaces:
 {% include 'mlag/switch-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
-{# Server - Interfaces Configuration #}
-{% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Infrastructure Elements #}
+{% include 'infrastructure_elements/leaf-ethernet-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 {# L3 Edge Point-to-Point Interfaces #}
