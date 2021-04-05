@@ -86,7 +86,7 @@ port_profiles:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
         # Local server port(s)
-        server_ports: [ < interface_name > ]
+        < infrastructure_elements_keys.key.type ~ "_ports" >: [ < interface_name > ]
 
         # List of port(s) connected to switches
         switch_ports: [ < switchport_interface > ]
@@ -233,6 +233,28 @@ servers:
         port_channel:
           description: PortChanne1
           mode: active
+
+firewalls:
+  FIREWALL01:
+    rack: RackB
+    adapters:
+      - firewall_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+
+routers:
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - router_ports: [ Eth0, Eth1 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A
 ```
 
 ## Single attached server scenario
