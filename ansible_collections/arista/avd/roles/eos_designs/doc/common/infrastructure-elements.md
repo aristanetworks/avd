@@ -1,9 +1,32 @@
-# Server Edge Port Connectivity
+# Infrastructure Elements Port Connectivity
 
-- The Server Edge Port Connectivity variables, define infrastructure elements that connect to the fabric on switched interface(s).
-- The infrastructure elements are not limited to servers, but any device that connect to a L2 switch port, i.e.: firewalls, load balancers and storage.
+- The infrastructure elements port connectivity variables, define infrastructure elements that connect to the fabric on leaf interface(s).
+- The infrastructure elements is leverage to define any device that connect to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers and storage arrays.
+- Infrastructure elements key/pair value are design to be extend for your onw needs, and leveraged to configure the infrastructure element itself.
 
-**Variables and Options:**
+
+## Variables and Options:
+
+### Infrastructure Elements Keys
+
+```yaml
+# Define infrastructure elements keys and type for documentation
+# This provides the ability to define various key of your choice to better organize your data.
+# The below key/pair values are default provided by the role.
+infrastructure_elements_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage
+```
+
+### Port Profiles
 
 ```yaml
 # Optional profiles to apply on Server facing interfaces
@@ -46,7 +69,7 @@ port_profiles:
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
-servers:
+<infrastructure_elements_keys.key>:
 
   # Server name, this will be used in the switchport description
   < server_1 >:
