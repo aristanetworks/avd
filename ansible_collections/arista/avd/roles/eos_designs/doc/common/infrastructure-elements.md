@@ -1,8 +1,8 @@
 # Infrastructure Elements Port Connectivity
 
 - The infrastructure elements port connectivity variables, define infrastructure elements that connect to the fabric on leaf interface(s).
-- The infrastructure elements is leverage to define any device that connect to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers and storage arrays.
-- Infrastructure elements key/pair value are design to be extend for your onw needs, and leveraged to configure the infrastructure element itself.
+- The infrastructure elements are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
+- Infrastructure elements key/pair value are designed to be extended for your own needs and leveraged to configure the infrastructure element itself.
 
 
 ## Variables and Options:
@@ -11,7 +11,7 @@
 
 ```yaml
 # Define infrastructure elements keys and type for documentation
-# This provides the ability to define various key of your choice to better organize your data.
+# This provides the ability to define various keys of your choice to better organize your data.
 # The below key/pair values are default provided by the role.
 infrastructure_elements_keys:
   servers:
@@ -30,7 +30,7 @@ infrastructure_elements_keys:
 
 ```yaml
 # Optional profiles to apply on Server facing interfaces
-# Each profile can support all or some of the following keys according your own needs.
+# Each profile can support all or some of the following keys according to your own needs.
 # Keys are the same used under Server Adapters.
 # Keys defined under Server Adapters take precedence.
 port_profiles:
@@ -68,7 +68,7 @@ port_profiles:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
-# Dictionary of servers, a device attaching to a L2 switched port(s)
+# Dictionary of servers, a device attaching to L2 switched port(s)
 <infrastructure_elements_keys.key>:
 
   # Server name, this will be used in the switchport description
