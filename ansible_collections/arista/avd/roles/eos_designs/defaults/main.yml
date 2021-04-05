@@ -106,5 +106,19 @@ platform_settings:
       mlag: 780
       non_mlag: 1020
 
+# Infrastructure Elements Keys
+
+infrastructure_elements_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: lb
+  storage_arrays:
+    type: storage
+
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
