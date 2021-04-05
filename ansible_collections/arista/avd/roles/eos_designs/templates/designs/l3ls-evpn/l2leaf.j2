@@ -12,8 +12,8 @@
 {# Set switch inband management vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf-inband-management.j2' %}
 {# Build dictionary for Infrastructure Elements interface configuration #}
-{% set infrastructure_elements_types = namespace() %}
-{% set infrastructure_elements_types = dict() %}
+{% set infrastructure_elements = namespace() %}
+{% set infrastructure_elements = dict() %}
 {% include 'infrastructure_elements/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###

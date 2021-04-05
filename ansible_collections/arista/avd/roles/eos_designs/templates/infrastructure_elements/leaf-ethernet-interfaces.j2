@@ -1,7 +1,7 @@
 {# Leaf infrastructure_element interfaces #}
-{% for infrastructure_elements_type in infrastructure_elements_types | arista.avd.natural_sort %}
-{%     for infrastructure_element in infrastructure_elements_types[infrastructure_elements_type] | arista.avd.natural_sort %}
-{%         for adapter in infrastructure_elements_types[infrastructure_elements_type][infrastructure_element].adapters | arista.avd.natural_sort %}
+{% for element_key in infrastructure_elements | arista.avd.natural_sort %}
+{%     for infrastructure_element in infrastructure_elements[element_key] | arista.avd.natural_sort %}
+{%         for adapter in infrastructure_elements[element_key][infrastructure_element].adapters | arista.avd.natural_sort %}
 {%             for switch in adapter.switches | arista.avd.natural_sort %}
 {%                 if switch == inventory_hostname %}
 {%                     if adapter.profile is arista.avd.defined %}
@@ -24,8 +24,8 @@
 {%                     set adapter_ptp = adapter.ptp | arista.avd.default( adapter_profile.ptp ) %}
 {%                     set adapter_mtu = adapter.mtu | arista.avd.default( adapter_profile.mtu ) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
-{%                     set device_ports = infrastructure_elements_keys[infrastructure_elements_type].type ~ "_ports" %}
-{%                     set peer_type = infrastructure_elements_keys[infrastructure_elements_type].type %}
+{%                     set device_ports = infrastructure_elements_keys[element_key].type ~ "_ports" %}
+{%                     set peer_type = infrastructure_elements_keys[element_key].type %}
   {{ adapter.switch_ports[loop.index0]}}:
     peer: {{ infrastructure_element }}
     peer_interface: {{ adapter[device_ports][loop.index0] }}

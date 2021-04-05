@@ -1,7 +1,7 @@
 {# Leaf server port-channels #}
-{% for infrastructure_elements_type in infrastructure_elements_types | arista.avd.natural_sort %}
-{%     for infrastructure_element in infrastructure_elements_types[infrastructure_elements_type] | arista.avd.natural_sort %}
-{%         for adapter in infrastructure_elements_types[infrastructure_elements_type][infrastructure_element].adapters | arista.avd.natural_sort %}
+{% for element_key in infrastructure_elements | arista.avd.natural_sort %}
+{%     for infrastructure_element in infrastructure_elements[element_key] | arista.avd.natural_sort %}
+{%         for adapter in infrastructure_elements[element_key][infrastructure_element].adapters | arista.avd.natural_sort %}
 {%             if adapter.profile is arista.avd.defined %}
 {%                 set adapter_profile = port_profiles[ adapter.profile ] %}
 {%             else %}

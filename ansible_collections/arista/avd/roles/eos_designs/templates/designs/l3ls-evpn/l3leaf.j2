@@ -22,8 +22,8 @@
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
 {# Build dictionary for Infrastructure Elements interface configuration #}
-{% set infrastructure_elements_types = namespace() %}
-{% set infrastructure_elements_types = dict() %}
+{% set infrastructure_elements = namespace() %}
+{% set infrastructure_elements = dict() %}
 {% include 'infrastructure_elements/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
