@@ -462,6 +462,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:21
@@ -477,6 +478,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:31
@@ -492,6 +494,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

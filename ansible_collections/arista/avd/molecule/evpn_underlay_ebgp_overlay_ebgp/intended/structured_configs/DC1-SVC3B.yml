@@ -1101,6 +1101,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:13
@@ -1116,6 +1117,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:10
@@ -1131,6 +1133,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:14
@@ -1146,6 +1149,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:11
@@ -1161,6 +1165,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:20
@@ -1176,6 +1181,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:21
@@ -1191,6 +1197,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:30
@@ -1206,6 +1213,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.9
       rd: 192.168.255.9:31
@@ -1221,6 +1229,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null
