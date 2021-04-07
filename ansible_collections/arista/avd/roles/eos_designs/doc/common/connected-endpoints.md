@@ -78,7 +78,8 @@ port_profiles:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
-# Dictionary of servers, a device attaching to L2 switched port(s)
+# Dictionary key of connected endpoint as defined in connected_endpoints_keys
+# This should be applied to group_vars or host_vars where endpoint are connecting.
 < connected_endpoints_keys.key >:
 
   # Server name, this will be used in the switchport description
