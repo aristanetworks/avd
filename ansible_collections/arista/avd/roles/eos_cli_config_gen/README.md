@@ -1781,6 +1781,8 @@ router_bgp:
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
+          peer_group: < peer_group_name >
+          password: "< encrypted_password >"
           local_as: < asn >
           description: < description >
           ebgp_multihop: < integer >
