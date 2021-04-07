@@ -214,6 +214,7 @@ tenants:
             # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
             nodes: [ < node_1 >, < node_2> ]
             # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+            # Next hop takes precedence over route_map_out.
             set_ipv4_next_hop: < IPv4_address >
             set_ipv6_next_hop: < IPv6_address >
             route_map_out: < route-map name >
