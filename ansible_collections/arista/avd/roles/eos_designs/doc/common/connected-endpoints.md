@@ -2,7 +2,7 @@
 
 - The connected endpoints variables, define endpoints that connect to the fabric on leaf interface(s).
 - The connected endpoints are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
-- Connected endpoints key/pair value are designed to be extended for your own needs and leveraged to configure the endpoint itself.
+- Connected endpoints key/value pairs are designed to be extended for your own needs and leveraged to configure the endpoint itself.
 
 
 ## Variables and Options:
@@ -39,10 +39,10 @@ connected_endpoints_keys:
 ### Port Profiles
 
 ```yaml
-# Optional profiles to apply on Server facing interfaces
+# Optional profiles to apply on endpoints facing interfaces
 # Each profile can support all or some of the following keys according to your own needs.
-# Keys are the same used under Server Adapters.
-# Keys defined under Server Adapters take precedence.
+# Keys are the same used under  endpoints adapters.
+# Keys defined under endpoints Adapters take precedence.
 port_profiles:
   < port_profile_1 >:
     speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -82,8 +82,8 @@ port_profiles:
 # This should be applied to group_vars or host_vars where endpoint are connecting.
 < connected_endpoints_keys.key >:
 
-  # Server name, this will be used in the switchport description
-  < server_1 >:
+  # Endpoint name, this will be used in the switchport description
+  < endpoint_1 >:
 
     # rack is used for documentation purposes only
     rack: < rack_id >
@@ -137,7 +137,7 @@ port_profiles:
         mode: < access | dot1q-tunnel | trunk >
         vlans: < vlans as string >
 
-        # Storm control settings applied on port toward server | Optional
+        # Storm control settings applied on port toward the endpoint | Optional
         storm_control:
           all:
             level: < Configure maximum storm-control level >
@@ -173,7 +173,7 @@ port_profiles:
             mode: < static > Currently only static mode is supported
             timeout: < timeout in seconds > | Optional - default is 90 seconds
 
-  < server_2 >:
+  < endpoint_2 >:
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -193,6 +193,17 @@ port_profiles:
 ## Examples
 
 ```yaml
+# Example
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+
+
 port_profiles:
 
   VM_Servers:
@@ -208,7 +219,7 @@ port_profiles:
     mode: trunk
     vlans: "140-141"
 
-
+# servers
 servers:
 
   server01:
@@ -244,7 +255,7 @@ servers:
         port_channel:
           description: PortChanne1
           mode: active
-
+# Firewall
 firewalls:
   FIREWALL01:
     rack: RackB
@@ -257,7 +268,7 @@ firewalls:
           description: PortChanne1
           mode: active
 
-
+# Routers
 routers:
   ROUTER01:
     rack: RackB
@@ -268,7 +279,7 @@ routers:
         profile: TENANT_A
 ```
 
-## Single attached server scenario
+## Single attached endpoint scenario
 
 Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
@@ -283,7 +294,7 @@ servers:
         profile: MGMT
 ```
 
-## MLAG dual-attached server scenario
+## MLAG dual-attached endpoint scenario
 
 MLAG dual-homed connection:
 
@@ -304,7 +315,7 @@ servers:
           mode: active
 ```
 
-## EVPN A/A ESI dual-attached server scenario
+## EVPN A/A ESI dual-attached endpoint scenario
 
 To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
 `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
