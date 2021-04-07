@@ -216,6 +216,8 @@ tenants:
             # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
             set_ipv4_next_hop: < IPv4_address >
             set_ipv6_next_hop: < IPv6_address >
+            route_map_out: < route-map name >
+            route_map_in: < route-map name >
             local_as: < local BGP ASN >
 
         # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
