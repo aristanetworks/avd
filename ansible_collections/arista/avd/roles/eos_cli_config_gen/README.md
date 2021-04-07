@@ -1807,7 +1807,6 @@ router_bgp:
           route_map: < route_map_name >
         < route_type >:
           route_map: < route_map_name >
-
       aggregate_addresses:
         < aggregate_address_1/mask >:
           advertise_only: < true | false >
