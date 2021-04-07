@@ -1,7 +1,7 @@
-{# Leaf infrastructure_element interfaces #}
-{% for element_key in infrastructure_elements | arista.avd.natural_sort %}
-{%     for infrastructure_element in infrastructure_elements[element_key] | arista.avd.natural_sort %}
-{%         for adapter in infrastructure_elements[element_key][infrastructure_element].adapters | arista.avd.natural_sort %}
+{# Leaf connected_endpoint interfaces #}
+{% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
 {%             for switch in adapter.switches | arista.avd.natural_sort %}
 {%                 if switch == inventory_hostname %}
 {%                     if adapter.profile is arista.avd.defined %}
@@ -24,13 +24,13 @@
 {%                     set adapter_ptp = adapter.ptp | arista.avd.default( adapter_profile.ptp ) %}
 {%                     set adapter_mtu = adapter.mtu | arista.avd.default( adapter_profile.mtu ) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
-{%                     set device_ports = infrastructure_elements_keys[element_key].type ~ "_ports" %}
-{%                     set peer_type = infrastructure_elements_keys[element_key].type %}
+{%                     set endpoint_ports = adapter.server_ports | arista.avd.default(adapter.endpoint_ports) %}
+{%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
   {{ adapter.switch_ports[loop.index0]}}:
-    peer: {{ infrastructure_element }}
-    peer_interface: {{ adapter[device_ports][loop.index0] }}
+    peer: {{ connected_endpoint }}
+    peer_interface: {{ endpoint_ports[loop.index0] }}
     peer_type: {{ peer_type }}
-    description: {{ infrastructure_element }}_{{ adapter[device_ports][loop.index0] }}
+    description: {{ connected_endpoint }}_{{ endpoint_ports[loop.index0] }}
 {%                     if adapter_speed is arista.avd.defined %}
     speed: {{ adapter_speed }}
 {%                     endif %}

@@ -108,7 +108,7 @@ platform_settings:
 
 # Infrastructure Elements Keys
 
-infrastructure_elements_keys:
+connected_endpoints_keys:
   servers:
     type: server
   firewalls:
@@ -116,7 +116,7 @@ infrastructure_elements_keys:
   routers:
     type: router
   load_balancers:
-    type: lb
+    type: load_balancer
   storage_arrays:
     type: storage
 

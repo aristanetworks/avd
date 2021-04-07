@@ -76,7 +76,7 @@ nav:
         - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
         - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
         - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
-        - Infrastructure Elements: roles/eos_designs/doc/common/infrastructure-elements.md
+        - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
         - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
     - cvp_configlet_upload: roles/cvp_configlet_upload/README.md

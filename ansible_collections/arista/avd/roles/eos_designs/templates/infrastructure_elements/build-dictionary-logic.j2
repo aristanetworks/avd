@@ -1,5 +1,0 @@
-{% for infrastructure_elements_key in infrastructure_elements_keys | natural_sort %}
-{%     if infrastructure_elements_key is arista.avd.defined %}
-{%         do infrastructure_elements.update({infrastructure_elements_key: hostvars[inventory_hostname][infrastructure_elements_key]})%}
-{%     endif %}
-{% endfor %}

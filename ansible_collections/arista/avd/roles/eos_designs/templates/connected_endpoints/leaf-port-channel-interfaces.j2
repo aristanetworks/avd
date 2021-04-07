@@ -1,7 +1,7 @@
 {# Leaf server port-channels #}
-{% for element_key in infrastructure_elements | arista.avd.natural_sort %}
-{%     for infrastructure_element in infrastructure_elements[element_key] | arista.avd.natural_sort %}
-{%         for adapter in infrastructure_elements[element_key][infrastructure_element].adapters | arista.avd.natural_sort %}
+{% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
 {%             if adapter.profile is arista.avd.defined %}
 {%                 set adapter_profile = port_profiles[ adapter.profile ] %}
 {%             else %}
@@ -26,7 +26,7 @@
 {%                         set lacp_fallback_mode = adapter_port_channel.lacp_fallback.mode | arista.avd.default(adapter_profile.lacp_fallback.mode) %}
 {%                         set lacp_fallback_timeout = adapter_port_channel.lacp_fallback.timeout | arista.avd.default(adapter_profile.lacp_fallback.timeout) %}
   Port-Channel{{ channel_group_id }}:
-    description: {{ infrastructure_element }}_{{ adapter_port_channel.description }}
+    description: {{ connected_endpoint }}_{{ adapter_port_channel.description }}
     type: switched
     shutdown: false
     mode: {{ adapter_mode }}

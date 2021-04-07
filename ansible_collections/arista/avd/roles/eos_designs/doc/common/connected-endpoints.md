@@ -1,19 +1,29 @@
-# Infrastructure Elements Port Connectivity
+# Connected Endpoints
 
-- The infrastructure elements port connectivity variables, define infrastructure elements that connect to the fabric on leaf interface(s).
-- The infrastructure elements are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
-- Infrastructure elements key/pair value are designed to be extended for your own needs and leveraged to configure the infrastructure element itself.
+- The connected endpoints variables, define endpoints that connect to the fabric on leaf interface(s).
+- The connected endpoints are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
+- Connected endpoints key/pair value are designed to be extended for your own needs and leveraged to configure the endpoint itself.
 
 
 ## Variables and Options:
 
-### Infrastructure Elements Keys
+### Connected Endpoints Keys
 
 ```yaml
-# Define infrastructure elements keys and type for documentation
-# This provides the ability to define various keys of your choice to better organize your data.
-# The below key/pair values are default provided by the role.
-infrastructure_elements_keys:
+# Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
+# This provides the ability to define various keys of your choice to better organize/group your data.
+# This should be defined in top level group_var for the fabric.
+connected_endpoints_keys:
+  < key_1 >:
+    type: < type used for documentation >
+  < key_2 >:
+    type: < type used for documentation >
+```
+
+```yaml
+# Example
+# The below key/pair values are the role defaults.
+connected_endpoints_keys:
   servers:
     type: server
   firewalls:
@@ -69,7 +79,7 @@ port_profiles:
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
 # Dictionary of servers, a device attaching to L2 switched port(s)
-<infrastructure_elements_keys.key>:
+< connected_endpoints_keys.key >:
 
   # Server name, this will be used in the switchport description
   < server_1 >:
@@ -85,8 +95,8 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local server port(s)
-        < infrastructure_elements_keys.key.type ~ "_ports" >: [ < interface_name > ]
+        # Local endpoint port(s)
+        < endpoint_ports > or < endpoint_ports >: [ < interface_name > ]
 
         # List of port(s) connected to switches
         switch_ports: [ < switchport_interface > ]
@@ -142,8 +152,8 @@ port_profiles:
             unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
 
-      # Example of port-channel adpater
-      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
+      # Example of port-channel adapter
+      - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
         switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
@@ -166,11 +176,11 @@ port_profiles:
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
-        server_ports: [ < interface_name > ]
+        endpoint_ports: [ < interface_name > ]
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
         profile: < port_profile_name >
-      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
+      - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
         switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
@@ -205,14 +215,14 @@ servers:
     adapters:
 
       # Single homed interface from E0 toward DC1-LEAF1A_Eth5
-      - server_ports: [ E0 ]
+      - endpoint_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
 
       # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
       #                            from E2 to DC1-LEAF2B_Eth10
-      - server_ports: [ E1, E2 ]
+      - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: DB_Clusters
@@ -226,7 +236,7 @@ servers:
 
       # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
       #                            from E1 to DC1-SVC3B_Eth10
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
@@ -238,7 +248,7 @@ firewalls:
   FIREWALL01:
     rack: RackB
     adapters:
-      - firewall_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet20, Ethernet20 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A_B
@@ -251,7 +261,7 @@ routers:
   ROUTER01:
     rack: RackB
     adapters:
-      - router_ports: [ Eth0, Eth1 ]
+      - endpoint_ports: [ Eth0, Eth1 ]
         switch_ports: [ Ethernet21, Ethernet21 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: TENANT_A
@@ -266,7 +276,7 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0 ]
+      - endpoint_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
@@ -284,7 +294,7 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
@@ -313,7 +323,7 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
         profile: VM_Servers
