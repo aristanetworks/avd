@@ -97,7 +97,7 @@ port_profiles:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
         # Local endpoint port(s)
-        < endpoint_ports > or < endpoint_ports >: [ < interface_name > ]
+        endpoint_ports: [ < interface_name > ]
 
         # List of port(s) connected to switches
         switch_ports: [ < switchport_interface > ]
