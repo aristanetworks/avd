@@ -114,7 +114,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/cvp/molecule/${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
@@ -147,14 +147,14 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/cvp/molecule/${{ matrix.avd_scenario }}
+          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
   ansible_test:
     name: Run ansible-test validation
     runs-on: ubuntu-16.04
-    needs: [pre_commit, molecule_eos_cli_config_gen ]
+    needs: [ molecule_eos_cli_config_gen ]
     if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     strategy:
       fail-fast: true
