@@ -170,6 +170,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-pim-sparse-mode.j2' %}
 {# router isis configuration #}
 {% include 'eos/router-isis.j2' %}
+{# MPLS #}
+{% include 'eos/mpls.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}

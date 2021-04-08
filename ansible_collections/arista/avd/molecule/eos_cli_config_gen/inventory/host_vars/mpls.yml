@@ -1,0 +1,15 @@
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    router_id: 192.168.1.1
+    shutdown: false
+
+ethernet_interfaces:
+  ethernet1:
+    type: routed
+    ip_address: 192.168.100.1/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true

@@ -1,4 +1,4 @@
-# router-bgp-base
+# router-bgp-vpn-ipv4
 # Table of Contents
 <!-- toc -->
 
@@ -100,13 +100,23 @@ interface Management1
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
 
-### BGP Route Aggregation
+### Router BGP Peer Groups
 
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
+#### MPLS-IBGP-PEERS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote_as | 65000 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
+
+### BGP Neighbors
+
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default |
+| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -125,19 +135,20 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 2 ecmp 2
-   bgp bestpath d-path
-   aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
-   aggregate-address 2.2.1.0/24
+   neighbor MPLS-IBGP-PEERS peer group
+   neighbor MPLS-IBGP-PEERS remote-as 65000
+   neighbor MPLS-IBGP-PEERS local-as 65000 no-prepend replace-as
+   neighbor MPLS-IBGP-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor MPLS-IBGP-PEERS send-community
+   neighbor MPLS-IBGP-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group MPLS-IBGP-PEERS
+   neighbor 192.168.255.2 peer group MPLS-IBGP-PEERS
    !
-   address-family ipv4
-      network 10.0.0.0/8
-      network 172.16.0.0/12
-      network 192.168.0.0/16 route-map RM-FOO-MATCH
-   !
-   address-family ipv6
-      network 2001:db8:100::/40
-      network 2001:db8:200::/40 route-map RM-BAR-MATCH
+   address-family vpn-ipv4
+      domain identifier 3900000
+      neighbor MPLS-IBGP-PEERS activate
+      neighbor 192.168.255.4 activate
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
 ```
 
 # Multicast

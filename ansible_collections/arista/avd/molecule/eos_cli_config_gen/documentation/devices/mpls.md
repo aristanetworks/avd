@@ -1,4 +1,4 @@
-# router-bgp-base
+# mpls
 # Table of Contents
 <!-- toc -->
 
@@ -9,10 +9,10 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BGP](#router-bgp)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -63,6 +63,34 @@ interface Management1
 
 # Interfaces
 
+## Ethernet Interfaces
+
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface ethernet1
+   no switchport
+   ip address 192.168.100.1/31
+   mpls ip
+   mpls ldp interface
+```
+
 # Routing
 
 ## IP Routing
@@ -83,62 +111,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
-## Router BGP
-
-### Router BGP Summary
-
-| BGP AS | Router ID |
-| ------ | --------- |
-| 65101|  192.168.255.3 |
-
-| BGP Tuning |
-| ---------- |
-| no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
-| graceful-restart restart-time 300 |
-| graceful-restart |
-| maximum-paths 2 ecmp 2 |
-
-### BGP Route Aggregation
-
-| Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
-| ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False | - | - | True |
-| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False | - | - | False |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
-
-### Router BGP Device Configuration
-
-```eos
-!
-router bgp 65101
-   router-id 192.168.255.3
-   no bgp default ipv4-unicast
-   distance bgp 20 200 200
-   graceful-restart restart-time 300
-   graceful-restart
-   maximum-paths 2 ecmp 2
-   bgp bestpath d-path
-   aggregate-address 1.1.1.0/24 advertise-only
-   aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
-   aggregate-address 2.2.1.0/24
-   !
-   address-family ipv4
-      network 10.0.0.0/8
-      network 172.16.0.0/12
-      network 192.168.0.0/16 route-map RM-FOO-MATCH
-   !
-   address-family ipv6
-      network 2001:db8:100::/40
-      network 2001:db8:200::/40 route-map RM-BAR-MATCH
-```
 
 # Multicast
 

@@ -34,6 +34,7 @@ management-interfaces
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
+mpls
 none_configuration
 ntp
 platform
@@ -51,6 +52,7 @@ router-bgp-evpn
 router-bgp-rtc
 router-bgp-v4-evpn
 router-bgp-v4-v6-evpn
+router-bgp-vpn-ipv4
 router-bgp-vrf-lite
 router-general
 router-isis

@@ -33,6 +33,7 @@
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
       - [Community Lists](#community-lists)
       - [IP Extended Community Lists](#ip-extended-community-lists)
+      - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
     - [Hardware](#hardware)
@@ -68,6 +69,7 @@
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [NTP Servers](#ntp-servers)
+    - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
       - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -479,6 +481,15 @@ ip_extcommunity_lists:
       extcommunities: "< communities as string >"
 ```
 
+#### IP Extended Community Lists RegExp
+
+```yaml
+ip_extcommunity_lists_regexp:
+  < community_list_name >:
+    - type: < permit | deny >
+      regexp: "< string >"
+```
+
 #### Peer Filters
 
 ```yaml
@@ -656,6 +667,10 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    mpls:
+      ip: < true | false >
+      ldp:
+        interface: < true | false >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -1149,6 +1164,17 @@ ntp_server:
     - < ntp_server_2 >
 ```
 
+### MPLS
+
+```yaml
+mpls:
+  ip: < true | false >
+  ldp:
+    interface_disabled_default: < true | false >
+    router_id: < string >
+    shutdown: < true | false >
+```
+
 ### Multi-Chassis LAG - MLAG
 
 ```yaml
@@ -1576,9 +1602,14 @@ router_bgp:
   bgp_defaults:
     - "< bgp command as string >"
     - "< bgp command as string >"
+  bgp:
+    bestpath:
+      d_path: < true | false >
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
+      remote_as: < bgp_as >
+      local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
       peer_filter: < peer_filter >
@@ -1691,6 +1722,7 @@ router_bgp:
         - < connected >
         - < learned >
   address_family_evpn:
+    domain_identifier: < string >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
@@ -1759,6 +1791,13 @@ router_bgp:
         route_map: < route_map_name >
       < route_type >:
         route_map: < route_map_name >
+  address_family_vpn_ipv4:
+    domain_identifier: < string >
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: < interface >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
