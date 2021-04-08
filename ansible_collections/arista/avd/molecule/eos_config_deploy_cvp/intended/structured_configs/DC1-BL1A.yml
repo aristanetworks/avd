@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_BL1
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65104
 leaf_id: 6
 switch_mgmt_ip: 192.168.200.110/24
@@ -71,6 +72,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -468,6 +470,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:21
@@ -483,6 +486,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:31
@@ -498,6 +502,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

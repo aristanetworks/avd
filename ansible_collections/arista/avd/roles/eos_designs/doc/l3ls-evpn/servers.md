@@ -41,6 +41,9 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < active | passive | on >
+      lacp_fallback:
+        mode: < static > | Currently only static mode is supported
+        timeout: < timeout in seconds > | Optional - default is 90 seconds
 
 # Dictionary of servers, a device attaching to a L2 switched port(s)
 servers:
@@ -130,6 +133,11 @@ servers:
 
           # Port-Channel Mode.
           mode: < active | passive | on >
+
+          # LACP Fallback configuration | Optional
+          lacp_fallback:
+            mode: < static > Currently only static mode is supported
+            timeout: < timeout in seconds > | Optional - default is 90 seconds
 
   < server_2 >:
     rack: RackC

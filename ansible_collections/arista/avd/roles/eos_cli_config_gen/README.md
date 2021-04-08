@@ -108,6 +108,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Spanning Tree](#spanning-tree)
     - [Terminal Settings](#terminal-settings)
+    - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [License](#license)
@@ -1307,6 +1308,21 @@ sflow:
 snmp_server:
   contact: < contact_name >
   location: < location >
+  communities:
+    < community_name_1 >:
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
+    < community_name_2 >:
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
   ipv4_acls:
     - name: < ipv4-access-list >
       vrf: < vrf >
@@ -1765,6 +1781,8 @@ router_bgp:
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
+          peer_group: < peer_group_name >
+          password: "< encrypted_password >"
           local_as: < asn >
           description: < description >
           ebgp_multihop: < integer >
@@ -1778,9 +1796,6 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
-          address_family:
-            - < address_family_1 >
-            - < address_family_2 >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
@@ -1802,6 +1817,14 @@ router_bgp:
           attribute_map: < route_map_name >
           match_map: < route_map_name >
           advertise_only: < true | false >
+      address_families:
+        < address_family >:
+          neighbors:
+            < neighbor_ip_address >:
+              activate: < true | false >
+        networks:
+          < prefix_address >:
+            route_map: < route_map_name >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
@@ -1841,7 +1864,7 @@ router_ospf:
       max_lsa: < integer >
       default_information_originate:
         always: true
-      summary_address:
+      summary_addresses:
         - prefix: < summary_prefix_01 >
           tag: < string >
         - prefix: < summary_prefix_02 >
@@ -1988,6 +2011,90 @@ spanning_tree:
 terminal:
   length: < 0-32767 >
   width: < 0-32767 >
+```
+
+
+### Traffic Policies
+
+```yaml
+traffic_policies:
+  options:
+    counter_per_interface: < true | false >
+  field_sets:
+    ipv4:
+      < PREFIX FIELD SET NAME >:
+        - < IPv4 prefix 01>
+        - < IPv4 prefix 02>
+        - < IPv4 prefix 03>
+    ipv6:
+      < PREFIX FIELD SET NAME >:
+        - < IPv6 prefix 01>
+        - < IPv6 prefix 02>
+        - < IPv6 prefix 03>
+    ports:
+      < L4 PORT FIELD SET NAME >: "< vlan range >"
+  policies:
+    < TRAFFIC POLICY NAME >:
+      matches:
+        < TRAFFIC POLICY ITEM >:
+          type: < ipv4 | ipv6 >
+          source:
+            prefixes:
+              - < prefix 01 >
+              - < prefix 02 >
+            prefix_lists:
+              - < Field Set List 01 >
+              - < Field Set List 02 >
+          ttl: "< ttl range>"
+          # The 'fragment' command is not supported when 'source port'
+          # or 'destination port' command is configured
+          fragment:
+            offset: "< fragment offset range >"
+          protocols:
+            tcp:
+              src_port: "< port range >"
+              dst_port: "< port range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+              flags:
+                - established
+                - initial
+            icmp:
+              icmp_type:
+                - < ICMP message type >
+                - < ICMP message type >
+            udp:
+              src_port: "< port range >"
+              dst_port: "< port range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+            ahp:
+            bgp:
+            icmp:
+            igmp:
+            ospf:
+            pim:
+            rsvp:
+            vrrp:
+            # The 'protocol neighbors' subcommand is not supported when any
+            # other match subcommands are configured
+            neighbors:
+          actions:
+            dscp: < dscp code value >
+            traffic_class: < traffic class id >
+            count: < counter name >
+            drop: < true | false (default false) >
+            # Only supported when action is set to drop
+            log: < true | false (default false) >
+          # Last resort policy
+          default_actions:
+            < ipv4 | ipv6 >:
+              dscp: < dscp code value >
+              traffic_class: < traffic class id >
+              count: < counter name >
+              drop: < true | false (default false) >
+              # Only supported when action is set to drop
+              log: < true | false (default false) >
 ```
 
 ### Virtual Source NAT

@@ -445,6 +445,7 @@ vlan 4094
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.33/31
@@ -452,6 +453,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.35/31
@@ -459,6 +461,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.37/31
@@ -466,6 +469,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.39/31
