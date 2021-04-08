@@ -1,8 +1,5 @@
 name: Test Installation
 on:
-  pull_request:
-    branches:
-      - 'releases/v**'
   schedule:
     - cron:  '0 6 * * *'
 jobs:
