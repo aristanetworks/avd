@@ -137,8 +137,15 @@ router_bgp:
             always: true
             route_map: RM-10.2.3.4-SET-NEXT-HOP-OUT
           route_map_out: RM-10.2.3.4-SET-NEXT-HOP-OUT
-          address_family:
-            - ipv4
+      address_families:
+        ipv4:
+          neighbors:
+            10.2.3.4:
+              activate: true
+          networks:
+            10.0.0.0/8:
+            100.64.0.0/10:
+              route_map: RM-10.2.3.4
       redistribute_routes:
         - connected
         - static

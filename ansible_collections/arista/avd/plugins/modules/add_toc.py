@@ -107,8 +107,9 @@ def main():
 
         hash_final = hashlib.sha224(open(md_file, 'rb').read()).hexdigest()
 
+        result['checksum'] = hash_final
         if hash_final != hash_origin:
-            result['changed'] = False
+            result['changed'] = True
 
     module.exit_json(**result)
 
