@@ -210,6 +210,9 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
+{%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
+      domain identifier {{ router_bgp.address_family_evpn.domain_identifier }}
+{%         endif %}
 {%         for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in is arista.avd.defined %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in }} in

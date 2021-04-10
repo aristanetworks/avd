@@ -10,9 +10,13 @@
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+- [MPLS](#mpls)
+  - [MPLS and LDP](#mpls-and-ldp)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -78,16 +82,42 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
+| Ethernet1 | - | routed | - | 192.168.100.1/31 | default | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
-interface ethernet1
+interface Ethernet1
    no switchport
    ip address 192.168.100.1/31
    mpls ip
+   mpls ldp interface
+```
+
+## Loopback Interfaces
+
+### Loopback Interfaces Summary
+
+#### IPv4
+
+| Interface | Description | VRF | IP Address |
+| --------- | ----------- | --- | ---------- |
+| Loopback0 | - | default | 192.168.1.1/32 |
+
+#### IPv6
+
+| Interface | Description | VRF | IPv6 Address |
+| --------- | ----------- | --- | ------------ |
+| Loopback0 | - | default | - |
+
+
+### Loopback Interfaces Device Configuration
+
+```eos
+!
+interface Loopback0
+   ip address 192.168.1.1/32
    mpls ldp interface
 ```
 
@@ -111,6 +141,40 @@ interface ethernet1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
+# MPLS
+
+## MPLS and LDP
+
+### MPLS and LDP Summary
+
+| Setting | Value |
+| -------- | ---- |
+| MPLS IP Enabled | True |
+| LDP Enabled | True |
+| LDP Router ID | 192.168.1.1 |
+| LDP Interface Disabled Default | True |
+| LDP Transport-Address Interface | Loopback0 |
+
+### MPLS and LDP Configuration
+
+```eos
+!
+mpls ip
+!
+mpls ldp
+   interface disabled default
+   router-id 192.168.1.1
+   no shutdown
+   transport-address interface Loopback0
+```
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled |
+| --------- | --------------- | ----------- |
+| Ethernet1 | True | True |
+| Loopback0 | - | True |
 
 # Multicast
 

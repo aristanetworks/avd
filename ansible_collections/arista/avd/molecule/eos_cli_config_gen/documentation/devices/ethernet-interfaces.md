@@ -15,6 +15,8 @@
   - [IPv6 Routing](#ipv6-routing)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [MPLS](#mpls)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -251,6 +253,15 @@ interface Ethernet10
 | Interface | Interval | Minimum RX | Multiplier |
 | --------- | -------- | ---------- | ---------- |
 | Ethernet1 | 500 | 500 | 5 |
+
+# MPLS
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled |
+| --------- | --------------- | ----------- |
+| Ethernet9 | True | True |
+| Ethernet10 | False | False |
 
 # Multicast
 

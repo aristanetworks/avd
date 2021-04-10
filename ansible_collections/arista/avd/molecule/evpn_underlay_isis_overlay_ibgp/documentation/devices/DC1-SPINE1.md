@@ -450,7 +450,7 @@ router isis EVPN_UNDERLAY
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Route Reflector Client | Yes |
 | Source | Loopback0 |
 | Bfd | true |

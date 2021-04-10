@@ -99,6 +99,7 @@ interface Management1
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
+| bgp bestpath d-path |
 
 ### BGP Route Aggregation
 

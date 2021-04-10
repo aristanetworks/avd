@@ -17,4 +17,7 @@ mpls ldp
 {%     elif mpls.ldp.shutdown is arista.avd.defined(false) %}
    no shutdown
 {%     endif %}
+{%     if mpls.ldp.transport_address_interface is arista.avd.defined %}
+   transport-address interface {{ mpls.ldp.transport_address_interface }}
+{%     endif %}
 {% endif %}

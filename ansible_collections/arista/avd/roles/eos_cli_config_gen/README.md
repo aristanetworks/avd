@@ -764,6 +764,9 @@ loopback_interfaces:
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ospf_area: < ospf_area >
+    mpls:
+      ldp:
+        interface: < true | false >
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1173,6 +1176,7 @@ mpls:
     interface_disabled_default: < true | false >
     router_id: < string >
     shutdown: < true | false >
+    transport_address_interface: < interface_name >
 ```
 
 ### Multi-Chassis LAG - MLAG

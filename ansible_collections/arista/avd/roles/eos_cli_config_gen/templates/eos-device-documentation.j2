@@ -115,6 +115,8 @@
 {% include 'documentation/router-bgp.j2' %}
 {# BFD #}
 {% include 'documentation/bfd.j2' %}
+{# MPLS #}
+{% include 'documentation/mpls.j2' %}
 
 # Multicast
 {## IP IGMP Snooping #}
@@ -135,8 +137,10 @@
 {% include 'documentation/ipv6-prefix-lists.j2' %}
 {## Route-maps #}
 {% include 'documentation/route-maps.j2' %}
-{## IP Extended Communities #}
-{% include 'documentation/ip-extended-communities.j2' %}
+{## IP Extended Community Lists #}
+{% include 'documentation/ip-extended-community-lists.j2' %}
+{## IP Extended Community Lists Regexp #}
+{% include 'documentation/ip-extended-community-lists-regexp.j2' %}
 
 # ACL
 {## Standard Access-lists #}

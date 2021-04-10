@@ -17,7 +17,8 @@ hardware
 igmp-snooping
 interface-defaults
 ip-dhcp-relay
-ip-extended-communities
+ip-extended-community-lists
+ip-extended-community-lists-regexp
 ip-routing
 ip-tacacs-source-interface
 ipv6-access-lists

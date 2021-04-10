@@ -13,6 +13,8 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+- [MPLS](#mpls)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -117,6 +119,7 @@ interface Loopback99
    isis passive
    isis metric 100
    isis network point-to-point
+   mpls ldp interface
 !
 interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
@@ -144,6 +147,14 @@ interface Loopback100
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
+# MPLS
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled |
+| --------- | --------------- | ----------- |
+| Loopback99 | - | True |
 
 # Multicast
 
