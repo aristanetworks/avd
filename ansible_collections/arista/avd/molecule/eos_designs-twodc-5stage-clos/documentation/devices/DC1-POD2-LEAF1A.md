@@ -476,7 +476,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65120 |
+| Remote AS | 65120 |
 | Send community | all |
 | Maximum routes | 12000 |
 

@@ -7,6 +7,9 @@ router_bgp:
     - graceful-restart restart-time 300
     - graceful-restart
     - maximum-paths 2 ecmp 2
+  bgp:
+    bestpath:
+      d_path: true
   aggregate_addresses:
     1.1.1.0/24:
       advertise_only: true

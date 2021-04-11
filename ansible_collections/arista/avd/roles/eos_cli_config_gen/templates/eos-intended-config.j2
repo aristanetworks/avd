@@ -132,8 +132,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/ipv6-routing.j2' %}
 {# qos #}
 {% include 'eos/qos.j2' %}
-{# IP Extended Communities #}
-{% include 'eos/ip-extended-communities.j2' %}
+{# IP Extended Community Lists #}
+{% include 'eos/ip-extended-community-lists.j2' %}
+{# IP Extended Community Lists Regexp #}
+{% include 'eos/ip-extended-community-lists-regexp.j2' %}
 {# Prefix-lists #}
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
@@ -170,6 +172,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/router-pim-sparse-mode.j2' %}
 {# router isis configuration #}
 {% include 'eos/router-isis.j2' %}
+{# MPLS #}
+{% include 'eos/mpls.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}

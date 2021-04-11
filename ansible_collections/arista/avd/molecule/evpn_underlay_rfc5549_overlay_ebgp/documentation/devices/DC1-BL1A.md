@@ -560,7 +560,7 @@ router general
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 

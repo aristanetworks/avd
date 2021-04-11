@@ -128,14 +128,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 
 #### SEDI
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65003 |
+| Remote AS | 65003 |
 | Source | Loopback101 |
 | Ebgp multihop | 10 |
 
@@ -144,7 +144,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 
 ### BGP Neighbors
 
