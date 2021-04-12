@@ -1,5 +1,23 @@
 ---
 
+- name: Run "build_structured_config"
+  yaml_template_to_var:
+    name: structured_config
+    yaml_templates:
+      - "structured-configuration.j2"
+      - "base/custom_structured_configuration_from_var.j2"
+  check_mode: no
+  changed_when: False
+  tags: [eos_designs_python, never]
+
+- name: Generated structured_config file (yaml) based on structured_config var
+  template:
+    src: base/generate_structured_config.j2
+    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
+  delegate_to: localhost
+  changed_when: False
+  tags: [eos_designs_python, never]
+
 - name: Generate device configuration in structured format (yaml).
   template:
     src: "structured-configuration.j2"
@@ -7,7 +25,7 @@
   delegate_to: localhost
   check_mode: no
   changed_when: False
-  tags: [build, provision]
+  tags: [eos_designs_jinja, build, provision]
 
 - name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
   template:
@@ -15,7 +33,7 @@
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
   delegate_to: localhost
   changed_when: False
-  tags: [build, provision]
+  tags: [eos_designs_jinja, build, provision]
 
 - name: Include device structured configuration, that was previously generated.
   include_vars: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
