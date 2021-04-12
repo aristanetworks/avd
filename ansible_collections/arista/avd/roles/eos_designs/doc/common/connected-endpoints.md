@@ -33,7 +33,7 @@ connected_endpoints_keys:
   load_balancers:
     type: load_balancer
   storage_arrays:
-    type: storage
+    type: storage_array
 ```
 
 ### Port Profiles
