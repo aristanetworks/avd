@@ -19,7 +19,5 @@
 {# By parsing the list of custom_structured_configurations to the combine filter,    #}
 {# it will apply them one at a time, so the first can be overridden by the next etc. #}
 {{
-    structured_config |
-    combine(tmp_custom_structured_configurations, recursive=true) |
-    to_nice_yaml(indent=2,sort_keys=False)
+    tmp_custom_structured_configurations | to_nice_yaml(indent=2,sort_keys=False)
 }}
