@@ -440,9 +440,10 @@ l2leaf:
           l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
 
     # node_group_3, will result in Active/Active connection to L3LEAFs.
+    # Can be applied on sigle L2LEAF or MLAG nodes.
     < node_group_3 >:
-      parent_l3leafs: [ DC1-SVC3A ]
-      mlag: false
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      short_esi: < short esi value >
       nodes:
 
         # First node.
@@ -450,7 +451,6 @@ l2leaf:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
           l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
-          short_esi: < short esi value >
 ```
 
 ???+ note "Short ESI description"
