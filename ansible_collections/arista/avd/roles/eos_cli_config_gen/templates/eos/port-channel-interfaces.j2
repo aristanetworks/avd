@@ -40,13 +40,11 @@ interface {{ port_channel_interface }}
    mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].esi is arista.avd.defined %}
-   !
-    evpn ethernet-segment
-       identifier {{ port_channel_interfaces[port_channel_interface].esi }}
+   evpn ethernet-segment
+      identifier {{ port_channel_interfaces[port_channel_interface].esi }}
 {%         if port_channel_interfaces[port_channel_interface].rt is arista.avd.defined %}
-       route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
+      route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
 {%         endif %}
-   !
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_id is arista.avd.defined %}
    lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
