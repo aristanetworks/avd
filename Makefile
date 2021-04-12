@@ -49,6 +49,12 @@ sanity-import: ## Run ansible-test sanity for code import
 	mkdir tests ; \
 	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import
 
+.PHONY: galaxy-importer
+galaxy-importer:  ## Run galaxy importer tests
+	rm -f *.tar.gz && \
+	ansible-galaxy collection build --force ansible_collections/arista/avd && \
+	python -m galaxy_importer.main *.tar.gz
+
 #########################################
 # Code Validation & CI Actions 			#
 #########################################
