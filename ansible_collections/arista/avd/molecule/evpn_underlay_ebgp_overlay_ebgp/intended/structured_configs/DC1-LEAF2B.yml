@@ -239,9 +239,20 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-111,120-121,130-131,160-161
     mode: trunk
+    mlag: 7
     esi: 0000:0000:0808:0707:0606
     rt: 08:08:07:07:06:06
     lacp_id: 0808.0707.0606
+  Port-Channel9:
+    description: DC1_L2LEAF3_Po1
+    type: switched
+    shutdown: false
+    vlans: 110-111,120-121,130-131,160-161
+    mode: trunk
+    mlag: 9
+    esi: 0000:0000:0606:0707:0808
+    rt: 06:06:07:07:08:08
+    lacp_id: 0606.0707.0808
   Port-Channel5:
     description: MLAG_PEER_DC1-LEAF2A_Po5
     type: switched
@@ -324,6 +335,26 @@ ethernet_interfaces:
     shutdown: false
     channel_group:
       id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF1B_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet9:
+    peer: DC1-L2LEAF3A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF3A_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 9
       mode: active
   Ethernet10:
     peer: server01_MLAG

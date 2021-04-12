@@ -386,6 +386,8 @@ vlan 4094
 | Ethernet5 | MLAG_PEER_DC1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
+| Ethernet8 | DC1-L2LEAF1B_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
+| Ethernet9 | DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 9 |
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
@@ -446,6 +448,16 @@ interface Ethernet7
    no shutdown
    channel-group 7 mode active
 !
+interface Ethernet8
+   description DC1-L2LEAF1B_Ethernet2
+   no shutdown
+   channel-group 7 mode active
+!
+interface Ethernet9
+   description DC1-L2LEAF3A_Ethernet2
+   no shutdown
+   channel-group 9 mode active
+!
 interface Ethernet10
    description server01_MLAG_Eth3
    no shutdown
@@ -461,7 +473,8 @@ interface Ethernet10
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:0808:0707:0606 |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 7 | 0000:0000:0808:0707:0606 |
+| Port-Channel9 | DC1_L2LEAF3_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 9 | 0000:0000:0606:0707:0808 |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -483,12 +496,23 @@ interface Port-Channel7
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
-   !
-    evpn ethernet-segment
-       identifier 0000:0000:0808:0707:0606
-       route-target import 08:08:07:07:06:06
-   !
+   mlag 7
+   evpn ethernet-segment
+      identifier 0000:0000:0808:0707:0606
+      route-target import 08:08:07:07:06:06
    lacp system-id 0808.0707.0606
+!
+interface Port-Channel9
+   description DC1_L2LEAF3_Po1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport mode trunk
+   mlag 9
+   evpn ethernet-segment
+      identifier 0000:0000:0606:0707:0808
+      route-target import 06:06:07:07:08:08
+   lacp system-id 0606.0707.0808
 !
 interface Port-Channel10
    description server01_MLAG_PortChanne1
