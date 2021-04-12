@@ -177,6 +177,33 @@ jobs:
           cd ansible_collections/arista/cvp/
           ansible-test sanity -v --requirements --docker --python 3.6
           rm -rf tests/output/
+
+  galaxy_importer:
+    name: Test galaxy-importer
+    runs-on: ubuntu-latest
+    container: avdteam/base:3.6-v2.0
+    needs: [ molecule_eos_cli_config_gen ]
+    if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    env:
+      PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
+      ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: install requirements
+        run: make install-requirements
+      - name: 'build ansible package'
+        run: make collection-build
+      - name: 'run ansible-importer checks'
+        run: python -m galaxy_importer.main *.tar.gz
+      - uses: actions/upload-artifact@v2
+        with:
+          name: importer-logs
+          path: ./importer_result.json
+
   # ----------------------------------- #
   # Rebuild docker image
   # ----------------------------------- #
@@ -200,7 +227,7 @@ jobs:
     name: Build collection package
     runs-on: ubuntu-latest
     container: avdteam/base:3.6-v2.0
-    needs: [ansible_test]
+    needs: [galaxy_importer, ansible_test]
     if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
