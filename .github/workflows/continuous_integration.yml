@@ -79,20 +79,16 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml down
   # ----------------------------------- #
-  # EOS Design MOLECULE
+  # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
-  molecule_eos_designs:
-    name: Validate eos_designs
+  molecule_eos_cli_config_gen:
+    name: Validate eos_cli_config_gen
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'evpn_underlay_ebgp_overlay_ebgp'
-          - 'evpn_underlay_ospf_overlay_ebgp'
-          - 'evpn_underlay_isis_overlay_ibgp'
-          - 'eos_designs-twodc-5stage-clos'
-          - 'eos_l3ls_evpn_deprecation_test'
+          - 'eos_cli_config_gen'
     needs: [ file-changes, pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -116,17 +112,21 @@ jobs:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
           path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
-  # EOS CLI CONFIG GEN MOLECULE
+  # EOS Design MOLECULE
   # ----------------------------------- #
-  molecule_eos_cli_config_gen:
-    name: Validate eos_cli_config_gen
+  molecule_eos_designs:
+    name: Validate eos_designs
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'eos_cli_config_gen'
-    needs: [ file-changes, pre_commit, molecule_eos_designs ]
+          - 'evpn_underlay_ebgp_overlay_ebgp'
+          - 'evpn_underlay_ospf_overlay_ebgp'
+          - 'evpn_underlay_isis_overlay_ibgp'
+          - 'eos_designs-twodc-5stage-clos'
+          - 'eos_l3ls_evpn_deprecation_test'
+    needs: [ molecule_eos_designs ]
     if: needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
     steps:
       - name: 'set environment variables'
