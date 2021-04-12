@@ -126,7 +126,7 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'eos_l3ls_evpn_deprecation_test'
-    needs: [ molecule_eos_designs ]
+    needs: [ molecule_eos_cli_config_gen ]
     if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
     steps:
       - name: 'set environment variables'
