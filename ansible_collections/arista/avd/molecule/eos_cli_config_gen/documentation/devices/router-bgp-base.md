@@ -99,6 +99,7 @@ interface Management1
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
+| bgp bestpath d-path |
 
 ### BGP Route Aggregation
 
@@ -125,6 +126,7 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 2 ecmp 2
+   bgp bestpath d-path
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24

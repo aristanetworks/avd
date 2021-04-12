@@ -253,6 +253,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    mlag: 20
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
@@ -347,6 +354,29 @@ ethernet_interfaces:
     channel_group:
       id: 7
       mode: active
+  Ethernet20:
+    peer: FIREWALL01
+    peer_interface: E0
+    peer_type: firewall
+    description: FIREWALL01_E0
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    channel_group:
+      id: 20
+      mode: active
+    profile: TENANT_A_B
+  Ethernet21:
+    peer: ROUTER01
+    peer_interface: Eth0
+    peer_type: router
+    description: ROUTER01_Eth0
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    profile: TENANT_A
   Ethernet10:
     peer: server01_MLAG
     peer_interface: Eth2

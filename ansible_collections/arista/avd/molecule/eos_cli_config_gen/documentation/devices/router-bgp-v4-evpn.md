@@ -107,7 +107,7 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -126,7 +126,7 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -137,12 +137,19 @@ interface Management1
 | Address Family | ipv4 |
 | Send community | large |
 
+#### LOCAL-AS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Local AS | 65000 |
+
 #### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65101 |
+| Remote AS | 65101 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -229,6 +236,8 @@ router bgp 65101
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
+   neighbor LOCAL-AS peer group
+   neighbor LOCAL-AS local-as 65000 no-prepend replace-as
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self

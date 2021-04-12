@@ -1,0 +1,21 @@
+{# Interfaces #}
+{% if mpls_configured.ethernet_interfaces or mpls_configured.loopback_interfaces %}
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled |
+| --------- | --------------- | ----------- |
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%         if ethernet_interfaces[ethernet_interface].mpls is arista.avd.defined %}
+{%             set row_mpls_ip = ethernet_interfaces[ethernet_interface].mpls.ip | arista.avd.default('-') %}
+{%             set row_ldp_interface = ethernet_interfaces[ethernet_interface].mpls.ldp.interface | arista.avd.default('-') %}
+| {{ ethernet_interface }} | {{ row_mpls_ip }} | {{ row_ldp_interface }} |
+{%         endif %}
+{%     endfor %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%         if loopback_interfaces[loopback_interface].mpls is arista.avd.defined %}
+{%             set row_ldp_interface = loopback_interfaces[loopback_interface].mpls.ldp.interface | arista.avd.default('-') %}
+| {{ loopback_interface }} | - | {{ row_ldp_interface }} |
+{%         endif %}
+{%     endfor %}
+{% endif %}

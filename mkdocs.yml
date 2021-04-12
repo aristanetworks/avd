@@ -66,25 +66,25 @@ nav:
       - AWX & Tower Integration: docs/how-to/tower-integration.md
       - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
-      - eos_designs:
-          - Overview: roles/eos_designs/README.md
-          - l3ls-evpn:
-              - Overview: roles/eos_designs/doc/l3ls-evpn.md
-              - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
-              - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
-              - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
-              - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
-              - Servers: roles/eos_designs/doc/l3ls-evpn/servers.md
-              - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
-      - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
-      - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
-      - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
-      - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
-      - eos_validate_state: roles/eos_validate_state/README.md
-      - eos_snapshot: roles/eos_snapshot/README.md
-      - dhcp_provisioner: roles/dhcp_provisioner/README.md
-      - build_output_folders: roles/build_output_folders/README.md
-      - upgrade_tools: roles/upgrade_tools/README.md
+    - eos_designs:
+      - Overview: roles/eos_designs/README.md
+      - l3ls-evpn:
+        - Overview: roles/eos_designs/doc/l3ls-evpn.md
+        - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
+        - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
+        - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
+        - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
+        - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
+        - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
+    - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
+    - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
+    - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
+    - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
+    - eos_validate_state: roles/eos_validate_state/README.md
+    - eos_snapshot: roles/eos_snapshot/README.md
+    - dhcp_provisioner: roles/dhcp_provisioner/README.md
+    - build_output_folders: roles/build_output_folders/README.md
+    - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md

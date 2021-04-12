@@ -426,6 +426,8 @@ vlan 4094
 | Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
+| Ethernet20 | FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
+| Ethernet21 |  ROUTER01_Eth0 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -503,6 +505,18 @@ interface Ethernet12
    description server01_MTU_ADAPTOR_MLAG_Eth6
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet20
+   description FIREWALL01_E0
+   no shutdown
+   channel-group 20 mode active
+!
+interface Ethernet21
+   description ROUTER01_Eth0
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
 ```
 
 ## Port-Channel Interfaces
@@ -518,6 +532,7 @@ interface Ethernet12
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
+| Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -562,6 +577,14 @@ interface Port-Channel12
    mtu 1601
    switchport
    mlag 12
+!
+interface Port-Channel20
+   description FIREWALL01_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   mlag 20
 ```
 
 ## Loopback Interfaces
@@ -966,7 +989,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65102 |
+| Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -976,7 +999,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
