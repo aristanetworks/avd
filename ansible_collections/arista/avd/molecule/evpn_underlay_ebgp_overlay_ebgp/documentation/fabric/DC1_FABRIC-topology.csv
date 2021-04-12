@@ -41,6 +41,8 @@ l3leaf,DC1-LEAF2A,Ethernet7,l2leaf,DC1-L2LEAF1A,Ethernet1
 l3leaf,DC1-LEAF2A,Ethernet10,server,server01_MLAG,Eth2
 l3leaf,DC1-LEAF2A,Ethernet11,server,server01_MTU_PROFILE_MLAG,Eth4
 l3leaf,DC1-LEAF2A,Ethernet12,server,server01_MTU_ADAPTOR_MLAG,Eth6
+l3leaf,DC1-LEAF2A,Ethernet20,firewall,FIREWALL01,E0
+l3leaf,DC1-LEAF2A,Ethernet21,router,ROUTER01,Eth0
 l3leaf,DC1-LEAF2B,Ethernet1,spine,DC1-SPINE1,Ethernet3
 l3leaf,DC1-LEAF2B,Ethernet2,spine,DC1-SPINE2,Ethernet3
 l3leaf,DC1-LEAF2B,Ethernet3,spine,DC1-SPINE3,Ethernet3
@@ -51,6 +53,8 @@ l3leaf,DC1-LEAF2B,Ethernet7,l2leaf,DC1-L2LEAF1A,Ethernet2
 l3leaf,DC1-LEAF2B,Ethernet10,server,server01_MLAG,Eth3
 l3leaf,DC1-LEAF2B,Ethernet11,server,server01_MTU_PROFILE_MLAG,Eth5
 l3leaf,DC1-LEAF2B,Ethernet12,server,server01_MTU_ADAPTOR_MLAG,Eth7
+l3leaf,DC1-LEAF2B,Ethernet20,firewall,FIREWALL01,E1
+l3leaf,DC1-LEAF2B,Ethernet21,router,ROUTER01,Eth1
 spine,DC1-SPINE1,Ethernet1,l3leaf,DC1-LEAF1A,Ethernet1
 spine,DC1-SPINE1,Ethernet2,l3leaf,DC1-LEAF2A,Ethernet1
 spine,DC1-SPINE1,Ethernet3,l3leaf,DC1-LEAF2B,Ethernet1

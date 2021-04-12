@@ -426,6 +426,8 @@ vlan 4094
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
+| Ethernet20 | FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
+| Ethernet21 |  ROUTER01_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -503,6 +505,18 @@ interface Ethernet12
    description server01_MTU_ADAPTOR_MLAG_Eth7
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet20
+   description FIREWALL01_E1
+   no shutdown
+   channel-group 20 mode active
+!
+interface Ethernet21
+   description ROUTER01_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
 ```
 
 ## Port-Channel Interfaces
@@ -518,6 +532,7 @@ interface Ethernet12
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
+| Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -562,6 +577,14 @@ interface Port-Channel12
    mtu 1601
    switchport
    mlag 12
+!
+interface Port-Channel20
+   description FIREWALL01_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   mlag 20
 ```
 
 ## Loopback Interfaces

@@ -5,12 +5,15 @@
 {# Include logic for L2LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
+{% set connected_endpoints = dict() %}
 {# Set l2leaf node vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 {# Set tenant network evpn vxlan services vars #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l2leaf-logic.j2' %}
 {# Set switch inband management vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf-inband-management.j2' %}
+{# Build dictionary for Infrastructure Elements interface configuration #}
+{% include 'connected_endpoints/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
@@ -148,8 +151,8 @@ port_channel_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
-{# Server - Port Channel Interfaces #}
-{% include 'edge_ports/leaf-server-port-channels.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-port-channel-interfaces.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -158,8 +161,8 @@ ethernet_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
 {% include 'mlag/switch-mlag-interfaces.j2' %}
-{# Server - Interfaces Configuration #}
-{% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-ethernet-interfaces.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###
