@@ -1,4 +1,4 @@
-### IP extended communities ###
+### IP extended community lists ###
 
 ip_extcommunity_lists:
   TEST1:

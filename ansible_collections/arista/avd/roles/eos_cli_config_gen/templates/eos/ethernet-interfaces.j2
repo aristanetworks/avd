@@ -21,6 +21,9 @@ interface {{ ethernet_interface }}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined and ethernet_interfaces[ethernet_interface].channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interfaces[ethernet_interface].channel_group.id }} mode {{ ethernet_interfaces[ethernet_interface].channel_group.mode }}
+{%         if ethernet_interfaces[ethernet_interface].lacp_port_priority is arista.avd.defined %}
+   lacp port-priority {{ ethernet_interfaces[ethernet_interface].lacp_port_priority }}
+{%         endif %}
 {%     else %}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
@@ -30,6 +33,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
+{%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan is arista.avd.defined() %}
+   encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan }}
 {%         else %}
    switchport
 {%         endif %}
@@ -214,6 +219,16 @@ interface {{ ethernet_interface }}
               ethernet_interfaces[ethernet_interface].bfd.min_rx is arista.avd.defined and
               ethernet_interfaces[ethernet_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ ethernet_interfaces[ethernet_interface].bfd.interval }} min-rx {{ ethernet_interfaces[ethernet_interface].bfd.min_rx }} multiplier {{ ethernet_interfaces[ethernet_interface].bfd.multiplier }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mpls.ip is arista.avd.defined(true) %}
+   mpls ip
+{%         elif ethernet_interfaces[ethernet_interface].mpls.ip is arista.avd.defined(false) %}
+   no mpls ip
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%         elif ethernet_interfaces[ethernet_interface].mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
 {%         endif %}
 {%     endif %}
 {% endfor %}

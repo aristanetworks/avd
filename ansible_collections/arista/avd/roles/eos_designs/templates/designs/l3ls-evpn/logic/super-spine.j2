@@ -2,6 +2,7 @@
 {% set switch.mgmt_ip = super_spine.nodes[inventory_hostname].mgmt_ip %}
 {% set switch.spanning_tree_mode = "none" %}
 {% set switch.id = super_spine.nodes[inventory_hostname].id %}
+{% set switch.rack = super_spine.nodes[inventory_hostname].rack | arista.avd.default() %}
 {% if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
 {%     set switch.bgp_as = bgp_as %}
 {% else %}

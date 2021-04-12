@@ -391,10 +391,10 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet2  |  routed  | - |  172.31.255.9/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.255.11/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet2  |  routed  | - |  172.31.255.13/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet2  |  routed  | - |  172.31.255.15/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 172.31.255.9/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.255.11/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 172.31.255.13/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 172.31.255.15/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -893,7 +893,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -902,7 +902,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65102 |
+| Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -935,14 +935,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.6:12 |  12:12  |  |  | learned | 130-131 |
-| Tenant_A_DB_Zone | 192.168.255.6:13 |  13:13  |  |  | learned | 140-141 |
-| Tenant_A_NFS | 192.168.255.6:10161 |  10161:10161  |  |  | learned | 161 |
-| Tenant_A_OP_Zone | 192.168.255.6:10 |  10:10  |  |  | learned | 110-111 |
-| Tenant_A_VMOTION | 192.168.255.6:10160 |  10160:10160  |  |  | learned | 160 |
-| Tenant_A_WEB_Zone | 192.168.255.6:11 |  11:11  |  |  | learned | 120-121 |
-| Tenant_B_OP_Zone | 192.168.255.6:20 |  20:20  |  |  | learned | 210-211 |
-| Tenant_C_OP_Zone | 192.168.255.6:30 |  30:30  |  |  | learned | 310-311 |
+| Tenant_A_APP_Zone | 192.168.255.6:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_DB_Zone | 192.168.255.6:13 | 13:13 | - | - | learned | 140-141 |
+| Tenant_A_NFS | 192.168.255.6:10161 | 10161:10161 | - | - | learned | 161 |
+| Tenant_A_OP_Zone | 192.168.255.6:10 | 10:10 | - | - | learned | 110-111 |
+| Tenant_A_VMOTION | 192.168.255.6:10160 | 10160:10160 | - | - | learned | 160 |
+| Tenant_A_WEB_Zone | 192.168.255.6:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_B_OP_Zone | 192.168.255.6:20 | 20:20 | - | - | learned | 210-211 |
+| Tenant_C_OP_Zone | 192.168.255.6:30 | 30:30 | - | - | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
@@ -984,10 +984,15 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 10.255.251.3 description DC1-LEAF2B
    neighbor 172.31.255.8 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.8 description DC1-SPINE1_Ethernet2
    neighbor 172.31.255.10 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.10 description DC1-SPINE2_Ethernet2
    neighbor 172.31.255.12 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.12 description DC1-SPINE3_Ethernet2
    neighbor 172.31.255.14 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.14 description DC1-SPINE4_Ethernet2
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

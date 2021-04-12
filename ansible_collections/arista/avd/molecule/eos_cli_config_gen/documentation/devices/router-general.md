@@ -92,6 +92,8 @@ interface Management1
 !
 router general
    vrf BLUE-C2
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
    !
 ```
 

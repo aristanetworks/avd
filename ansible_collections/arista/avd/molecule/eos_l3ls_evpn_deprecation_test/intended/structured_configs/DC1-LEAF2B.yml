@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF2
 switch_platform: 7280R
+switch_rack: null
 switch_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
@@ -101,6 +102,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -650,17 +652,23 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.16:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet3
     172.31.255.18:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet3
     172.31.255.20:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet3
     172.31.255.22:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet3
     10.255.251.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -777,6 +785,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:13
@@ -792,6 +801,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:10
@@ -807,6 +817,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:11
@@ -822,6 +833,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:20
@@ -837,6 +849,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:30
@@ -852,6 +865,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

@@ -172,6 +172,16 @@ tenants:
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
 
+        # List of L3 interfaces | Optional.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
+        l3_interfaces:
+          - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 >, < node_1 > ]
+            description: < description >
+            enabled: < true | false >
+            mtu: <mtu >
+
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
         # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be
@@ -186,10 +196,14 @@ tenants:
 
         # Dictionary of BGP peer definitions | Optional.
         # This will configure BGP neighbors inside the tenant VRF for peering with external devices.
+        # The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.
+        # Note, only ipv4 and ipv6 address families are currently supported in eos_designs.
+        # For other address families, use custom_structured configuration with eos_cli_config_gen.
         bgp_peers:
           < IPv4_address or IPv6_address >:
             remote_as: < remote ASN >
             description: < description >
+            password: < encrypted password >
             send_community: < standard | extended | large | all >
             next_hop_self: < true | false >
             maximum_routes: < 0-4294967294 >
@@ -197,13 +211,14 @@ tenants:
               always: < true | false >
             update_source: < interface >
             ebgp_multihop: < 1-255 >
-            address_family:
-              - < ipv4 | ipv6 >
             # Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
             nodes: [ < node_1 >, < node_2> ]
             # Next hop settings can be either ipv4 or ipv6 for one neighbor, this will be applied by a uniquely generated route-map per neighbor.
+            # Next hop takes precedence over route_map_out.
             set_ipv4_next_hop: < IPv4_address >
             set_ipv6_next_hop: < IPv6_address >
+            route_map_out: < route-map name >
+            route_map_in: < route-map name >
             local_as: < local BGP ASN >
 
         # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.

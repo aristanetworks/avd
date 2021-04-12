@@ -1,8 +1,11 @@
 ---
 
-# L3LS Fabric Values - update these values with caution, some changes could be disruptive.
+# L3LS Fabric Values
 
 fabric_name: DC1_FABRIC
+
+# Set Maximum spines to allow growth to 8 spines
+max_spines: 8
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger then total [ spines * total potential leafs * 2 ]
@@ -37,7 +40,7 @@ bgp_peer_groups:
 
 # Spine Switches
 spine:
-  platform: vEOS-LAB
+  platform: 7050SX3
   bgp_as: 65001
   leaf_as_range: 65101-65132
   nodes:
@@ -65,6 +68,7 @@ spine:
 l3leaf:
   defaults:
     platform: 7280R
+    p2p_link_interface_speed: forced 100gfull
     bgp_as: 65101
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
@@ -85,14 +89,17 @@ l3leaf:
       nodes:
         DC1-LEAF1A:
           id: 1
+          rack: "rackA"
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
     DC1_LEAF2:
       bgp_as: 65102
+      rack: "rackD"
       nodes:
         DC1-LEAF2A:
           id: 2
+          rack: "rackC"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           spine_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
@@ -145,6 +152,7 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
+    rack: "rackE"
   node_groups:
     DC1_L2LEAF1:
       parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]

@@ -104,6 +104,7 @@ venv.bak/
 .mypy_cache/
 
 .vscode/*
+**/.vscode/*
 
 # Installation path for CVP example
 examples/evpn-l3ls-cvp-deployment/collections

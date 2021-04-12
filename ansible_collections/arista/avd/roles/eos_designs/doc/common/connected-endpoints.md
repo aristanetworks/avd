@@ -1,15 +1,48 @@
-# Server Edge Port Connectivity
+# Connected Endpoints
 
-- The Server Edge Port Connectivity variables, define infrastructure elements that connect to the fabric on switched interface(s).
-- The infrastructure elements are not limited to servers, but any device that connect to a L2 switch port, i.e.: firewalls, load balancers and storage.
+- The connected endpoints variables, define endpoints that connect to the fabric on leaf interface(s).
+- The connected endpoints are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
+- Connected endpoints key/value pairs are designed to be extended for your own needs and leveraged to configure the endpoint itself.
 
-**Variables and Options:**
+
+## Variables and Options:
+
+### Connected Endpoints Keys
 
 ```yaml
-# Optional profiles to apply on Server facing interfaces
-# Each profile can support all or some of the following keys according your own needs.
-# Keys are the same used under Server Adapters.
-# Keys defined under Server Adapters take precedence.
+# Define connected endpoints keys, to define grouping of endpoints connecting to the fabric.
+# This provides the ability to define various keys of your choice to better organize/group your data.
+# This should be defined in top level group_var for the fabric.
+connected_endpoints_keys:
+  < key_1 >:
+    type: < type used for documentation >
+  < key_2 >:
+    type: < type used for documentation >
+```
+
+```yaml
+# Example
+# The below key/pair values are the role defaults.
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage_array
+```
+
+### Port Profiles
+
+```yaml
+# Optional profiles to apply on endpoints facing interfaces
+# Each profile can support all or some of the following keys according to your own needs.
+# Keys are the same used under  endpoints adapters.
+# Keys defined under endpoints Adapters take precedence.
 port_profiles:
   < port_profile_1 >:
     speed: < interface_speed | forced interface_speed | auto interface_speed >
@@ -41,12 +74,16 @@ port_profiles:
     port_channel:
       description: < port_channel_description >
       mode: < active | passive | on >
+      lacp_fallback:
+        mode: < static > | Currently only static mode is supported
+        timeout: < timeout in seconds > | Optional - default is 90 seconds
 
-# Dictionary of servers, a device attaching to a L2 switched port(s)
-servers:
+# Dictionary key of connected endpoint as defined in connected_endpoints_keys
+# This should be applied to group_vars or host_vars where endpoint are connecting.
+< connected_endpoints_keys.key >:
 
-  # Server name, this will be used in the switchport description
-  < server_1 >:
+  # Endpoint name, this will be used in the switchport description
+  < endpoint_1 >:
 
     # rack is used for documentation purposes only
     rack: < rack_id >
@@ -59,8 +96,8 @@ servers:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local server port(s)
-        server_ports: [ < interface_name > ]
+        # Local endpoint port(s)
+        endpoint_ports: [ < interface_name > ]
 
         # List of port(s) connected to switches
         switch_ports: [ < switchport_interface > ]
@@ -100,7 +137,7 @@ servers:
         mode: < access | dot1q-tunnel | trunk >
         vlans: < vlans as string >
 
-        # Storm control settings applied on port toward server | Optional
+        # Storm control settings applied on port toward the endpoint | Optional
         storm_control:
           all:
             level: < Configure maximum storm-control level >
@@ -116,8 +153,8 @@ servers:
             unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
 
-      # Example of port-channel adpater
-      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
+      # Example of port-channel adapter
+      - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
         switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
@@ -131,15 +168,20 @@ servers:
           # Port-Channel Mode.
           mode: < active | passive | on >
 
-  < server_2 >:
+          # LACP Fallback configuration | Optional
+          lacp_fallback:
+            mode: < static > Currently only static mode is supported
+            timeout: < timeout in seconds > | Optional - default is 90 seconds
+
+  < endpoint_2 >:
     rack: RackC
     adapters:
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
-        server_ports: [ < interface_name > ]
+        endpoint_ports: [ < interface_name > ]
         switch_ports: [ < switchport_interface > ]
         switches: [ < device > ]
         profile: < port_profile_name >
-      - server_ports: [ < interface_name_1 > , < interface_name_2 > ]
+      - endpoint_ports: [ < interface_name_1 > , < interface_name_2 > ]
         switch_ports: [ < switchport_interface_1 >, < switchport_interface_2 > ]
         switches: [ < device_1 >, < device_2 > ]
         profile: < port_profile_name >
@@ -151,6 +193,17 @@ servers:
 ## Examples
 
 ```yaml
+# Example
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+
+
 port_profiles:
 
   VM_Servers:
@@ -166,7 +219,7 @@ port_profiles:
     mode: trunk
     vlans: "140-141"
 
-
+# servers
 servers:
 
   server01:
@@ -174,14 +227,14 @@ servers:
     adapters:
 
       # Single homed interface from E0 toward DC1-LEAF1A_Eth5
-      - server_ports: [ E0 ]
+      - endpoint_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
 
       # MLAG dual-homed connection from E1 to DC1-LEAF2A_Eth10
       #                            from E2 to DC1-LEAF2B_Eth10
-      - server_ports: [ E1, E2 ]
+      - endpoint_ports: [ E1, E2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-LEAF2A, DC1-LEAF2B ]
         profile: DB_Clusters
@@ -195,16 +248,38 @@ servers:
 
       # MLAG dual-homed connection from E0 to DC1-SVC3A_Eth10
       #                            from E1 to DC1-SVC3B_Eth10
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
         port_channel:
           description: PortChanne1
           mode: active
+# Firewall
+firewalls:
+  FIREWALL01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ E0, E1 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A_B
+        port_channel:
+          description: PortChanne1
+          mode: active
+
+# Routers
+routers:
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth0, Eth1 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
+        profile: TENANT_A
 ```
 
-## Single attached server scenario
+## Single attached endpoint scenario
 
 Single attached interface from `E0` toward `DC1-LEAF1A` interface `Eth5`
 
@@ -213,13 +288,13 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0 ]
+      - endpoint_ports: [ E0 ]
         switch_ports: [ Ethernet5 ]
         switches: [ DC1-LEAF1A ]
         profile: MGMT
 ```
 
-## MLAG dual-attached server scenario
+## MLAG dual-attached endpoint scenario
 
 MLAG dual-homed connection:
 
@@ -231,7 +306,7 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: VM_Servers
@@ -240,7 +315,7 @@ servers:
           mode: active
 ```
 
-## EVPN A/A ESI dual-attached server scenario
+## EVPN A/A ESI dual-attached endpoint scenario
 
 To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
 `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
@@ -260,7 +335,7 @@ servers:
   server01:
     rack: RackB
     adapters:
-      - server_ports: [ E0, E1 ]
+      - endpoint_ports: [ E0, E1 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
         switches: [ DC1-SVC3A, DC1-SVC4A ]
         profile: VM_Servers

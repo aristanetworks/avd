@@ -15,6 +15,8 @@
   - [IPv6 Routing](#ipv6-routing)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [MPLS](#mpls)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -84,21 +86,25 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  172.31.128.1/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.128.1/31 | default | 1500 | - | - | - |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
+| Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
+| Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE2_Ethernet2  |  routed  | - |  2002:ABDC::1/64  |  default  |  1500  |  -  | -  |  -  |  -  |  -  |
-| Ethernet4 |  Molecule IPv6  |  switchport  | - |  2020::2020/64  |  default  |  9100  |  true  | true  |  true  |  IPv6_ACL_IN  |  IPv6_ACL_OUT  |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 2002:ABDC::1/64 | default | 1500 | - | - | *- | - | - |
+| Ethernet4 | Molecule IPv6 | switchport | - | 2020::2020/64 | default | 9100 | true | true | true | IPv6_ACL_IN | IPv6_ACL_OUT |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 2002:ABDC::1/64 | default | - | - | - | *- | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet5 | - | ISIS_TEST |  99 |  point-to-point |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -192,6 +198,31 @@ interface Ethernet7
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
+!
+interface Ethernet8
+   description to WAN-ISP1-01 Ethernet2
+   no switchport
+!
+interface Ethernet8.101
+   description to WAN-ISP-01 Ethernet2.101 - VRF-C1
+   encapsulation dot1q vlan 101
+   ip address 172.31.128.1/31
+   ipv6 enable
+   ipv6 address 2002:ABDC::1/64
+!
+interface Ethernet9
+   description interface_with_mpls_enabled
+   no switchport
+   ip address 172.31.128.9/31
+   mpls ip
+   mpls ldp interface
+!
+interface Ethernet10
+   description interface_with_mpls_disabled
+   no switchport
+   ip address 172.31.128.10/31
+   no mpls ip
+   no mpls ldp interface
 ```
 
 # Routing
@@ -222,6 +253,15 @@ interface Ethernet7
 | Interface | Interval | Minimum RX | Multiplier |
 | --------- | -------- | ---------- | ---------- |
 | Ethernet1 | 500 | 500 | 5 |
+
+# MPLS
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled |
+| --------- | --------------- | ----------- |
+| Ethernet9 | True | True |
+| Ethernet10 | False | False |
 
 # Multicast
 

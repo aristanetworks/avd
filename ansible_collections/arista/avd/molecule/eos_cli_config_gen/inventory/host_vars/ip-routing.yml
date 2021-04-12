@@ -2,6 +2,7 @@
 
 ip_routing: false
 ipv6_unicast_routing: true
+ip_routing_ipv6_interfaces: true
 vrfs:
   TEST1:
     ip_routing: true

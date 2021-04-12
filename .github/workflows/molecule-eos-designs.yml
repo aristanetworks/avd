@@ -21,6 +21,7 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'eos_l3ls_evpn_deprecation_test'
+          - 'evpn_underlay_rfc5549_overlay_ebgp'
           # - 'upgrade_v1.0_to_v1.1'
     steps:
       - name: 'set environment variables'
@@ -30,11 +31,12 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.0
+        uses: arista-netdevops-community/action-molecule-avd@v1.1
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'converge'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: development/requirements.txt
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible==2.9.6"
           check_git: true
           check_git_enforced: true

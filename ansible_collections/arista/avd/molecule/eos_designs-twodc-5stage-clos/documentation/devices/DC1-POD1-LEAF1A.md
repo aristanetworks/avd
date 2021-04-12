@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -118,6 +119,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF1A |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF1A
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -183,9 +219,9 @@ vlan 4085
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3  |  routed  | - |  172.17.110.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3  |  routed  | - |  172.17.110.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-RS1_Ethernet3  |  routed  | - |  172.17.10.4/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3 | routed | - | 172.17.110.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3 | routed | - | 172.17.110.3/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-RS1_Ethernet3 | routed | - | 172.17.10.4/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -421,7 +457,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65110 |
+| Remote AS | 65110 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -496,7 +532,9 @@ router bgp 65111
    neighbor 172.17.10.5 description DC1-RS1
    neighbor 172.17.10.5 bfd
    neighbor 172.17.110.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.0 description DC1-POD1-SPINE1_Ethernet3
    neighbor 172.17.110.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.2 description DC1-POD1-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

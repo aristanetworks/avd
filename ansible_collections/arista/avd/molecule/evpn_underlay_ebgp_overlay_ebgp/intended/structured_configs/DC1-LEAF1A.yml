@@ -1,10 +1,11 @@
 l3leaf_node_group: DC1_LEAF1
 switch_platform: 7050SX3
+switch_rack: rackA
 switch_bgp_as: 65101
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
 leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.5
+switch_router_id: 192.168.255.9
 switch_evpn_role: client
 switch_evpn_route_servers:
 - DC1-SPINE1
@@ -67,6 +68,9 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC rackA DC1-LEAF1A
 spanning_tree:
   root_super: true
   mode: mstp
@@ -113,6 +117,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -122,6 +127,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -131,6 +137,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -140,6 +147,7 @@ ethernet_interfaces:
     peer_interface: Ethernet1
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -185,11 +193,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.5/32
+    ip_address: 192.168.255.9/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.5/32
+    ip_address: 192.168.254.9/32
 management_interfaces:
   Management1:
     description: oob_management
@@ -293,7 +301,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: 65101
-  router_id: 192.168.255.5
+  router_id: 192.168.255.9
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -313,15 +321,20 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.0:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet1
     172.31.255.2:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet1
     172.31.255.4:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet1
     172.31.255.6:
       peer_group: UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -354,7 +367,7 @@ router_bgp:
   address_family_rtc: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
-      rd: 192.168.255.5:12
+      rd: 192.168.255.9:12
       route_targets:
         both:
         - '12:12'
@@ -362,7 +375,7 @@ router_bgp:
       - learned
       vlan: 130-131
     Tenant_A_WEB_Zone:
-      rd: 192.168.255.5:11
+      rd: 192.168.255.9:11
       route_targets:
         both:
         - '11:11'
@@ -372,8 +385,8 @@ router_bgp:
   vlans: null
   vrfs:
     Tenant_A_APP_Zone:
-      router_id: 192.168.255.5
-      rd: 192.168.255.5:12
+      router_id: 192.168.255.9
+      rd: 192.168.255.9:12
       route_targets:
         import:
           evpn:
@@ -383,9 +396,10 @@ router_bgp:
           - '12:12'
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
-      router_id: 192.168.255.5
-      rd: 192.168.255.5:11
+      router_id: 192.168.255.9
+      rd: 192.168.255.9:11
       route_targets:
         import:
           evpn:
@@ -395,6 +409,7 @@ router_bgp:
           - '11:11'
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

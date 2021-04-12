@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -120,6 +121,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 ```
 
 # Monitoring
+
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A
+```
 
 # MLAG
 
@@ -245,9 +281,9 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4  |  routed  | - |  172.17.110.5/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4  |  routed  | - |  172.17.110.7/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6  |  routed  | - |  100.100.100.101/24  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.5/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.7/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -564,7 +600,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65110 |
+| Remote AS | 65110 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -573,7 +609,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65112 |
+| Remote AS | 65112 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -598,9 +634,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.4:10110 |  10110:10110 |  -  | -  | learned |
-| 111 | 172.16.110.4:50111 |  50111:50111 |  -  | -  | learned |
-| 112 | 172.16.110.4:50112 |  50112:50112 |  -  | -  | learned |
+| 110 | 172.16.110.4:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.110.4:50112 | 50112:50112 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -654,8 +690,11 @@ router bgp 65112
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
    neighbor 172.17.110.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.4 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.6 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.3 description DC1-POD1-LEAF2B
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

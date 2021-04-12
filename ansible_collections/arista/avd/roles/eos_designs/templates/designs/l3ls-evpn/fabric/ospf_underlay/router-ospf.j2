@@ -31,7 +31,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if type == "l3leaf" %}
-      router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) }}
+      router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}
       no_passive_interfaces:
 {%         for uplink_to_spine_interface in leaf.uplink_to_spine_interfaces %}
         - {{ uplink_to_spine_interface }}

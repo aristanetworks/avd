@@ -1,4 +1,4 @@
-{% if ethernet_interfaces is defined and ethernet_interfaces is not none %}
+{% if ethernet_interfaces is arista.avd.defined %}
 
 ## Ethernet Interfaces
 
@@ -8,60 +8,64 @@
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-{% for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%     if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
-{%         set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type != "routed" %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%         if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
+{%             set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
+{%             if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q'] %}
+{%                 set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
+{%                 set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
+{%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
+{%                 set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ('-') %}
+{%                 set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id %}
+{%                 if port_channel_interfaces[port_channel_interface].trunk_groups is arista.avd.defined %}
+{%                     set l2 = namespace() %}
+{%                     set l2.trunk_groups = [] %}
+{%                     for trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
+{%                          do l2.trunk_groups.append(trunk_group) %}
+{%                     endfor %}
+{%                 else %}
+{%                     set l2 = namespace() %}
+{%                     set l2.trunk_groups = "-" %}
+{%                 endif %}
+| {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
+{%             endif %}
+{%         elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type not in ['routed', 'l3dot1q'] %}
 {%             set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
-{%             set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
-{%             set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
-{%             set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ('-') %}
-{%             set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id %}
-{%             if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
+{%             set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
+{%             set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}
+{%             set native_vlan = ethernet_interfaces[ethernet_interface].native_vlan | default ('-') %}
+{%             if ethernet_interfaces[ethernet_interface].trunk_groups is defined %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = [] %}
-{%                 for trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
-{%                      do l2.trunk_groups.append(trunk_group) %}
+{%                 for trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
+{%                     do l2.trunk_groups.append(trunk_group) %}
 {%                 endfor %}
 {%             else %}
 {%                 set l2 = namespace() %}
 {%                 set l2.trunk_groups = "-" %}
 {%             endif %}
-| {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
-{%         endif %}
-{%     elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type != "routed" %}
-{%         set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
-{%         set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
-{%         set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}
-{%         set native_vlan = ethernet_interfaces[ethernet_interface].native_vlan | default ('-') %}
-{%         if ethernet_interfaces[ethernet_interface].trunk_groups is defined %}
-{%             set l2 = namespace() %}
-{%             set l2.trunk_groups = [] %}
-{%             for trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
-{%                 do l2.trunk_groups.append(trunk_group) %}
-{%             endfor %}
-{%         else %}
-{%             set l2 = namespace() %}
-{%             set l2.trunk_groups = "-" %}
-{%         endif %}
 | {{ ethernet_interface }} |  {{ description }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | - |
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
 
 *Inherited from Port-Channel Interface
 {# IPv4 #}
 {%     set ethernet_interface_ipv4 = namespace() %}
 {%     set ethernet_interface_ipv4.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == 'routed' and ethernet_interfaces[ethernet_interface].ip_address is defined %}
+{%          if ethernet_interfaces[ethernet_interface].type is arista.avd.defined
+            and ethernet_interfaces[ethernet_interface].type in ['routed', 'l3dot1q']
+            and ethernet_interfaces[ethernet_interface].ip_address is arista.avd.defined %}
 {%              set ethernet_interface_ipv4.configured = true %}
 {%          endif %}
 {%     endfor %}
 {%     set port_channel_interface_ipv4 = namespace() %}
 {%     set port_channel_interface_ipv4.configured = false %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%     if port_channel_interfaces is arista.avd.defined %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%              if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%              if port_channel_interfaces[port_channel_interface].type is arista.avd.defined
+                and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q']
+                and port_channel_interfaces[port_channel_interface].ip_address is arista.avd.defined %}
 {%                  set port_channel_interface_ipv4.configured = true %}
 {%              endif %}
 {%         endfor %}
@@ -73,24 +77,45 @@
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
+{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
-| {{ ethernet_interface }} | {% if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %} {{ ethernet_interfaces[ethernet_interface].description }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type is not none %} *{{ port_channel_interfaces[port_channel_interface].type }} {% else %} *switchport {% endif %} | {% if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %} {{ ethernet_interfaces[ethernet_interface].channel_group.id }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %} *{{ port_channel_interfaces[port_channel_interface].ip_address }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %} *{{ port_channel_interfaces[port_channel_interface].vrf }} {% else %} *default {% endif %} | {% if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %} *{{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %} *{{ port_channel_interfaces[port_channel_interface].shutdown | lower }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].access_group_in is defined and port_channel_interfaces[port_channel_interface].access_group_in is not none %} *{{ port_channel_interfaces[port_channel_interface].access_group_in }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].access_group_out is defined and port_channel_interfaces[port_channel_interface].access_group_out is not none %} *{{ port_channel_interfaces[port_channel_interface].access_group_out }} {% else %} *- {% endif %} |
+{%                 if port_channel_interfaces[port_channel_interface].ip_address is arista.avd.defined %}
+{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%                     set type = port_channel_interfaces[port_channel_interface].type | arista.avd.default("*switchport") %}
+{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set ip_address = port_channel_interfaces[port_channel_interface].ip_address | arista.avd.default("-") %}
+{%                     set vrf = port_channel_interfaces[port_channel_interface].vrf | arista.avd.default("*default") %}
+{%                     set mtu = port_channel_interfaces[port_channel_interface].mtu | arista.avd.default("*-") %}
+{%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("*-") %}
+{%                     set acl_in = port_channel_interfaces[port_channel_interface].access_group_in | arista.avd.default("*-") %}
+{%                     set acl_out = port_channel_interfaces[port_channel_interface].access_group_out | arista.avd.default("*-") %}
+| {{ ethernet_interface }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ acl_in }} | *{{ acl_out }} |
+{%                     endif %}
+{%                 else %}
+{%                     if ethernet_interfaces[ethernet_interface].ip_address is arista.avd.defined %}
+{%                         set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%                         set type = ethernet_interfaces[ethernet_interface].type | arista.avd.default("switchport") %}
+{%                         set ip_address = ethernet_interfaces[ethernet_interface].ip_address | arista.avd.default("-") %}
+{%                         set vrf = ethernet_interfaces[ethernet_interface].vrf | arista.avd.default("default") %}
+{%                         set mtu = ethernet_interfaces[ethernet_interface].mtu | arista.avd.default("-") %}
+{%                         set shutdown = ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("-") %}
+{%                         set acl_in = ethernet_interfaces[ethernet_interface].access_group_in | arista.avd.default("-") %}
+{%                         set acl_out = ethernet_interfaces[ethernet_interface].access_group_out | arista.avd.default("-") %}
+| {{ ethernet_interface }} | {{ description }} | {{ type }} | - | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
+{%                     endif %}
 {%                 endif %}
-{%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %}
-| {{ ethernet_interface }} | {% if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %} {{ ethernet_interfaces[ethernet_interface].description }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type is not none %} {{ ethernet_interfaces[ethernet_interface].type }} {% else %} switchport {% endif %} | - | {% if ethernet_interfaces[ethernet_interface].ip_address is defined and ethernet_interfaces[ethernet_interface].ip_address is not none %} {{ ethernet_interfaces[ethernet_interface].ip_address }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %} {{ ethernet_interfaces[ethernet_interface].vrf }} {% else %} default {% endif %} | {% if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu is not none %} {{ ethernet_interfaces[ethernet_interface].mtu }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown is not none %} {{ ethernet_interfaces[ethernet_interface].shutdown | lower }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].access_group_in is defined and ethernet_interfaces[ethernet_interface].access_group_in is not none %} {{ ethernet_interfaces[ethernet_interface].access_group_in }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].access_group_out is defined and ethernet_interfaces[ethernet_interface].access_group_out is not none %} {{ ethernet_interfaces[ethernet_interface].access_group_out }} {% else %} - {% endif %} |
-{%                 endif %}
-{%             endif %}
-{%         endfor %}
+{%             endfor %}
+{%         endif %}
+{%     if port_channel_interface_ipv4.configured == true %}
+*Inherited from Port-Channel Interface
 {%     endif %}
-{% if port_channel_interface_ipv4.configured == true %} *Inherited from Port-Channel Interface {% endif %}
 {# IPv6 #}
 {%     set ethernet_interface_ipv6 = namespace() %}
 {%     set ethernet_interface_ipv6.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type == 'routed' and ethernet_interfaces[ethernet_interface].ipv6_address is defined %}
+{%          if ethernet_interfaces[ethernet_interface].type is defined
+            and ethernet_interfaces[ethernet_interface].type in ['routed', 'l3dot1q']
+            and ethernet_interfaces[ethernet_interface].ipv6_address is defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
 {%              set ethernet_interface_ipv6.configured = true %}
 {%          endif %}
 {%     endfor %}
@@ -98,7 +123,9 @@
 {%     set port_channel_interface_ipv6.configured = false %}
 {%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%              if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+{%              if port_channel_interfaces[port_channel_interface].type is defined
+                and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q']
+                and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
 {%                  set port_channel_interface_ipv6.configured = true %}
 {%              endif %}
 {%         endfor %}
@@ -110,14 +137,35 @@
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
+{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %}
-| {{ ethernet_interface }} | {% if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %} {{ ethernet_interfaces[ethernet_interface].description }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type is not none %} *{{ port_channel_interfaces[port_channel_interface].type }} {% else %} *switchport {% endif %} | {% if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %} {{ ethernet_interfaces[ethernet_interface].channel_group.id }} {% else %} - {% endif %} | {% if port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %} *{{ port_channel_interfaces[port_channel_interface].ipv6_address }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].vrf is defined and port_channel_interfaces[port_channel_interface].vrf is not none %} *{{ port_channel_interfaces[port_channel_interface].vrf }} {% else %} *default {% endif %} | {% if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu is not none %} *{{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].shutdown is defined and port_channel_interfaces[port_channel_interface].shutdown is not none %} *{{ port_channel_interfaces[port_channel_interface].shutdown | lower }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled is not none %} *{{ port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | lower }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag is not none %} *{{ port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | lower }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].ipv6_access_group_in is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_in is not none %} *{{ port_channel_interfaces[port_channel_interface].ipv6_access_group_in }} {% else %} *- {% endif %} | {% if port_channel_interfaces[port_channel_interface].ipv6_access_group_out is defined and port_channel_interfaces[port_channel_interface].ipv6_access_group_out is not none %} *{{ port_channel_interfaces[port_channel_interface].ipv6_access_group_out }} {% else %} *- {% endif %} |
+{%                 if port_channel_interfaces[port_channel_interface].ipv6_address is arista.avd.defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
+{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%                     set type = port_channel_interfaces[port_channel_interface].type | arista.avd.default("*switchport") %}
+{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set ipv6_address = port_channel_interfaces[port_channel_interface].ipv6_address | arista.avd.default("-") %}
+{%                     set vrf = port_channel_interfaces[port_channel_interface].vrf | arista.avd.default("*default") %}
+{%                     set mtu = port_channel_interfaces[port_channel_interface].mtu | arista.avd.default("*-") %}
+{%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("*-") %}
+{%                     set nd_ra_disabled = port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | arista.avd.default("*-") %}
+{%                     set managed_config_flag = port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
+{%                     set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in| arista.avd.default("*-") %}
+{%                     set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | arista.avd.default("*-") %}
+| {{ ethernet_interface }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].ipv6_address is defined and ethernet_interfaces[ethernet_interface].ipv6_address is not none %}
-| {{ ethernet_interface }} | {% if ethernet_interfaces[ethernet_interface].description is defined and ethernet_interfaces[ethernet_interface].description is not none %} {{ ethernet_interfaces[ethernet_interface].description }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].type is defined and ethernet_interfaces[ethernet_interface].type is not none %} {{ ethernet_interfaces[ethernet_interface].type }} {% else %} switchport {% endif %} | - | {% if ethernet_interfaces[ethernet_interface].ipv6_address is defined and ethernet_interfaces[ethernet_interface].ipv6_address is not none %} {{ ethernet_interfaces[ethernet_interface].ipv6_address }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].vrf is defined and ethernet_interfaces[ethernet_interface].vrf is not none %} {{ ethernet_interfaces[ethernet_interface].vrf }} {% else %} default {% endif %} | {% if ethernet_interfaces[ethernet_interface].mtu is defined and ethernet_interfaces[ethernet_interface].mtu is not none %} {{ ethernet_interfaces[ethernet_interface].mtu }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].shutdown is defined and ethernet_interfaces[ethernet_interface].shutdown is not none %} {{ ethernet_interfaces[ethernet_interface].shutdown | lower }} {% else %} - {% endif %} |{% if ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled is not none %} {{ ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled | lower }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag is defined and ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag is not none %} {{ ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag | lower }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].ipv6_access_group_in is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_in is not none %} {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_in }} {% else %} - {% endif %} | {% if ethernet_interfaces[ethernet_interface].ipv6_access_group_out is defined and ethernet_interfaces[ethernet_interface].ipv6_access_group_out is not none %} {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_out }} {% else %} - {% endif %} |
+{%                 if ethernet_interfaces[ethernet_interface].ipv6_address is arista.avd.defined or ethernet_interfaces[ethernet_interface].ipv6_enable is arista.avd.defined(true) %}
+{%                     set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%                     set type = ethernet_interfaces[ethernet_interface].type | arista.avd.default("switchport") %}
+{%                     set ipv6_address = ethernet_interfaces[ethernet_interface].ipv6_address | arista.avd.default("-") %}
+{%                     set vrf = ethernet_interfaces[ethernet_interface].vrf | arista.avd.default("default") %}
+{%                     set mtu = ethernet_interfaces[ethernet_interface].mtu | arista.avd.default("-") %}
+{%                     set shutdown = ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("-") %}
+{%                     set nd_ra_disabled = ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled | arista.avd.default("-") %}
+{%                     set managed_config_flag = ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
+{%                     set ipv6_acl_in = ethernet_interfaces[ethernet_interface].ipv6_access_group_in| arista.avd.default("-") %}
+{%                     set ipv6_acl_out = ethernet_interfaces[ethernet_interface].ipv6_access_group_out | arista.avd.default("-") %}
+| {{ ethernet_interface }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
@@ -127,7 +175,7 @@
 {%     set ethernet_interface_isis = namespace() %}
 {%     set ethernet_interface_isis.configured = false %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].isis_enable is defined %}
+{%          if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
 {%              set ethernet_interface_isis.configured = true %}
 {%          endif %}
 {%     endfor %}
@@ -135,7 +183,7 @@
 {%     set port_channel_interface_isis.configured = false %}
 {%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%              if port_channel_interfaces[port_channel_interface].isis_enable is defined %}
+{%              if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
 {%                  set port_channel_interface_isis.configured = true %}
 {%              endif %}
 {%         endfor %}
@@ -147,19 +195,41 @@
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%             if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %}
+{%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].isis_enable is defined and port_channel_interfaces[port_channel_interface].isis_enable is not none %}
-| {{ ethernet_interface }} | {% if ethernet_interfaces[ethernet_interface].channel_group.id is defined and ethernet_interfaces[ethernet_interface].channel_group.id is not none %} {{ ethernet_interfaces[ethernet_interface].channel_group.id }} {% else %} - {% endif %} | *{{ port_channel_interfaces[port_channel_interface].isis_enable }} | {% if port_channel_interfaces[port_channel_interface].isis_metric is defined and port_channel_interfaces[port_channel_interface].isis_metric is not none %} *{{ port_channel_interfaces[port_channel_interface].isis_metric }} {% else %} *- {% endif %}| {% if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is defined and port_channel_interfaces[port_channel_interface].isis_network_point_to_point is not none %} *point-to-point {% elif port_channel_interfaces[port_channel_interface].isis_passive is defined and port_channel_interfaces[port_channel_interface].isis_passive is not none %} *passive {% else %} *- {% endif %}|
+{%                 if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
+{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("*-") %}
+{%                     set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("*-") %}
+{%                     if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                         set mode = "*point-to-point" %}
+{%                     elif port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined(true) %}
+{%                         set mode = "*passive" %}
+{%                     else %}
+{%                         set mode = "*-" %}
+{%                     endif %}
+| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].isis_enable is defined and ethernet_interfaces[ethernet_interface].isis_enable is not none %}
-| {{ ethernet_interface }} | - | {{ ethernet_interfaces[ethernet_interface].isis_enable }} | {% if ethernet_interfaces[ethernet_interface].isis_metric is defined and ethernet_interfaces[ethernet_interface].isis_metric is not none %} {{ ethernet_interfaces[ethernet_interface].isis_metric }} {% else %} - {% endif %}| {% if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is defined and ethernet_interfaces[ethernet_interface].isis_network_point_to_point is not none %} point-to-point {% elif ethernet_interfaces[ethernet_interface].isis_passive is defined and ethernet_interfaces[ethernet_interface].isis_passive is not none %} passive {% else %} - {% endif %}|
+{%                 if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
+{%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
+{%                     set isis_instance = ethernet_interfaces[ethernet_interface].isis_enable | arista.avd.default("-") %}
+{%                     set isis_metric = ethernet_interfaces[ethernet_interface].isis_metric | arista.avd.default("-") %}
+{%                     if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                         set mode = "point-to-point" %}
+{%                     elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
+{%                         set mode = "passive" %}
+{%                     else %}
+{%                         set mode = "-" %}
+{%                     endif %}
+| {{ ethernet_interface }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} |
 {%                endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{% if port_channel_interface_isis.configured == true %} *Inherited from Port-Channel Interface {% endif %}
+{%     if port_channel_interface_isis.configured == true %}
+ *Inherited from Port-Channel Interface
+{%     endif %}
 
 ### Ethernet Interfaces Device Configuration
 

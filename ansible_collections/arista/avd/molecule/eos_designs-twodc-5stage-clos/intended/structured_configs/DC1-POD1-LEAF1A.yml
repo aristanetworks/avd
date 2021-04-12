@@ -1,5 +1,6 @@
 l3leaf_node_group: RACK1_SINGLE
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65111
 leaf_id: 1
 switch_mgmt_ip: 192.168.1.7/24
@@ -37,6 +38,8 @@ queue_monitor_length: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF1A
 spanning_tree:
   mode: none
 aaa_authorization: null
@@ -237,11 +240,14 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
+  neighbor_interfaces: null
   neighbors:
     172.17.110.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE1_Ethernet3
     172.17.110.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE2_Ethernet3
     172.16.210.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF1A

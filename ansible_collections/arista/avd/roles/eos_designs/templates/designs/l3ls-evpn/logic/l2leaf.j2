@@ -14,6 +14,9 @@
                                                    l2leaf.defaults.spanning_tree_priority ) %}
 {%             set switch.platform = l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
                                      l2leaf.defaults.platform ) %}
+{%             set switch.rack = l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(
+                                 l2leaf.node_groups[l2leaf_node_group].rack,
+                                 l2leaf.defaults.rack ) %}
 {%             set leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(
                                          l2leaf.defaults.filter.tenants,
                                          [ 'all' ] ) %}

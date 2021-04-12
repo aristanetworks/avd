@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF2
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
@@ -69,6 +70,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -277,6 +279,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
