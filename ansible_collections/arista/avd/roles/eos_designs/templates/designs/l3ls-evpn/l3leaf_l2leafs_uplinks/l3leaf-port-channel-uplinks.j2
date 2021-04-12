@@ -84,12 +84,12 @@
 {%                 if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%                 endif %}
-{%                 if mlag_enabled is arista.avd.defined(true) %}
+
     mlag: {{ l3_leaf.channel_group_id }}
-{%                 elif l2leaf.node_groups[l2leaf_node_group].nodes[node].short_esi is arista.avd.defined %}
-    esi: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].short_esi | arista.avd.generate_esi }}
-    rt: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].short_esi | arista.avd.generate_route_target }}
-    lacp_id: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].short_esi | arista.avd.generate_lacp_id }}
+{%                 if l2leaf.node_groups[l2leaf_node_group].short_esi is arista.avd.defined %}
+    esi: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_esi }}
+    rt: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_route_target }}
+    lacp_id: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_lacp_id }}
 {%                 endif %}
 {%             break %}
 {%             endfor %}
