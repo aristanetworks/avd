@@ -100,7 +100,7 @@ class ActionModule(ActionBase):
             result = self._templar.do_template(template_data, preserve_trailing_newlines=True, escape_backslashes=False)
             self._templar.available_variables = old_vars
 
-            return yaml.load(result)
+            return yaml.safe_load(result)
 
         except AnsibleAction:
             raise
