@@ -40,7 +40,7 @@ bgp_peer_groups:
 
 # Spine Switches
 spine:
-  platform: vEOS-LAB
+  platform: 7050SX3
   bgp_as: 65001
   leaf_as_range: 65101-65132
   nodes:
@@ -68,6 +68,7 @@ spine:
 l3leaf:
   defaults:
     platform: 7280R
+    p2p_link_interface_speed: forced 100gfull
     bgp_as: 65101
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]

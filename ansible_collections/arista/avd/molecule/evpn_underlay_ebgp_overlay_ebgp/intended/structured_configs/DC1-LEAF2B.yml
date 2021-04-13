@@ -253,6 +253,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    mlag: 20
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
@@ -282,6 +289,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -291,6 +299,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -300,6 +309,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -309,6 +319,7 @@ ethernet_interfaces:
     peer_interface: Ethernet3
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -343,6 +354,29 @@ ethernet_interfaces:
     channel_group:
       id: 7
       mode: active
+  Ethernet20:
+    peer: FIREWALL01
+    peer_interface: E1
+    peer_type: firewall
+    description: FIREWALL01_E1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    channel_group:
+      id: 20
+      mode: active
+    profile: TENANT_A_B
+  Ethernet21:
+    peer: ROUTER01
+    peer_interface: Eth1
+    peer_type: router
+    description: ROUTER01_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    profile: TENANT_A
   Ethernet10:
     peer: server01_MLAG
     peer_interface: Eth3
@@ -840,6 +874,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:13
@@ -855,6 +890,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:10
@@ -870,6 +906,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:11
@@ -885,6 +922,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:20
@@ -900,6 +938,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:30
@@ -915,6 +954,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

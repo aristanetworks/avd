@@ -7,9 +7,7 @@ repos:
       - id: trailing-whitespace
         exclude: ansible_collections/arista/avd/molecule
       - id: end-of-file-fixer
-        exclude_types:  [jinja, text]
-        exclude: ansible_collections/arista/avd/molecule
-      - id: check-yaml
+        exclude_types: [jinja, text]
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
         exclude: ansible_collections/arista/avd/molecule
@@ -29,22 +27,22 @@ repos:
   - repo: https://github.com/pycqa/pylint
     rev: 'pylint-2.6.0'
     hooks:
-    - id: pylint # Use pylintrc file in repository
-      name: Check for Linting error on Python files
-      description: This hook runs pylint.
-      types: [python]
-      args:
-        # Suppress duplicate code for modules header
-        - -d duplicate-code
+      - id: pylint # Use pylintrc file in repository
+        name: Check for Linting error on Python files
+        description: This hook runs pylint.
+        types: [python]
+        args:
+          # Suppress duplicate code for modules header
+          - -d duplicate-code
 
   - repo: https://github.com/adrienverge/yamllint.git
     rev: 'v1.23.0'
     hooks:
-    - id: yamllint
-      name: Check for Linting error on YAML files
-      description: This hook runs yamllint.
-      entry: yamllint
-      language: python
-      types: [file, yaml]
-      exclude: ansible_collections/arista/avd/molecule
-      args: [-c=.github/yamllintrc]
+      - id: yamllint
+        name: Check for Linting error on YAML files
+        description: This hook runs yamllint.
+        entry: yamllint
+        language: python
+        types: [file, yaml]
+        exclude: ansible_collections/arista/avd/molecule
+        args: [-c=.github/yamllintrc]

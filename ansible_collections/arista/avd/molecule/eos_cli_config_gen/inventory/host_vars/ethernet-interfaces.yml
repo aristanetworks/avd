@@ -164,3 +164,21 @@ ethernet_interfaces:
     ip_address: 172.31.128.1/31
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
+
+  Ethernet9:
+    description: interface_with_mpls_enabled
+    type: routed
+    ip_address: 172.31.128.9/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+
+  Ethernet10:
+    description: interface_with_mpls_disabled
+    type: routed
+    ip_address: 172.31.128.10/31
+    mpls:
+      ip: false
+      ldp:
+        interface: false

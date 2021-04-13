@@ -274,7 +274,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY_PEERS:
       type: ipv4
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
@@ -290,19 +290,19 @@ router_bgp:
       maximum_routes: 0
   neighbor_interfaces:
     Ethernet1:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE1_Ethernet6
     Ethernet2:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE2_Ethernet6
     Ethernet3:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE3_Ethernet6
     Ethernet4:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE4_Ethernet6
   neighbors:
@@ -333,7 +333,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY_PEERS:
         activate: true
   address_family_rtc: null
   vlan_aware_bundles:
@@ -384,23 +384,28 @@ router_bgp:
             route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
           update_source: Loopback123
           ebgp_multihop: 3
-          address_family:
-          - ipv4
           local_as: 123
           route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
           send_community: None
-          address_family:
-          - ipv6
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-          address_family:
-          - ipv6
       redistribute_routes:
       - connected
       - static
+      address_families:
+        ipv4:
+          neighbors:
+            123.1.1.10:
+              activate: true
+        ipv6:
+          neighbors:
+            fd5a:fe45:8831:06c5::a:
+              activate: true
+            fd5a:fe45:8831:06c5::b:
+              activate: true
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:21
@@ -414,6 +419,7 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:31
@@ -427,6 +433,7 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

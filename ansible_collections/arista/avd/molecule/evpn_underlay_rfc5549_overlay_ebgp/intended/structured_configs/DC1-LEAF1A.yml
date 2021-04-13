@@ -305,7 +305,7 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
+    UNDERLAY_PEERS:
       type: ipv4
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
@@ -321,19 +321,19 @@ router_bgp:
       maximum_routes: 0
   neighbor_interfaces:
     Ethernet1:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE1_Ethernet1
     Ethernet2:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE2_Ethernet1
     Ethernet3:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE3_Ethernet1
     Ethernet4:
-      peer_group: IPv4-UNDERLAY-PEERS
+      peer_group: UNDERLAY_PEERS
       remote_as: 65001
       description: DC1-SPINE4_Ethernet1
   neighbors:
@@ -364,7 +364,7 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: false
-      IPv4-UNDERLAY-PEERS:
+      UNDERLAY_PEERS:
         activate: true
   address_family_rtc: null
   vlan_aware_bundles:
@@ -398,6 +398,7 @@ router_bgp:
           - '12:12'
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.5
       rd: 192.168.255.5:11
@@ -410,6 +411,7 @@ router_bgp:
           - '11:11'
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

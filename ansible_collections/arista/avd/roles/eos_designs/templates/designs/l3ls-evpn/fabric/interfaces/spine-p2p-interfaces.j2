@@ -14,7 +14,7 @@
 {%         endif %}
 {%         if l3leaf.node_groups[l3leaf_node_group].p2p_link_interface_speed is defined %}
 {%             set p2p_link_interface_speed = l3leaf.node_groups[l3leaf_node_group].p2p_link_interface_speed %}
-{%         elif l3leaf.defaults.spine_interface_speed is defined %}
+{%         elif l3leaf.defaults.p2p_link_interface_speed is defined %}
 {%             set p2p_link_interface_speed = l3leaf.defaults.p2p_link_interface_speed %}
 {%         endif %}
 {%         for leaf_spine in leaf_spines %}

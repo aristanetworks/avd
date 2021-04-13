@@ -105,7 +105,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
@@ -117,7 +117,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -125,7 +125,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65100 |
+| Remote AS | 65100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -134,7 +134,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -142,7 +142,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65100 |
+| Remote AS | 65100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |

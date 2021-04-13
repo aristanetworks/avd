@@ -334,12 +334,64 @@ port_channel_interfaces:
         level: 2
         unit: percent
     mlag: 15
+  Port-Channel18:
+    description: server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+    type: switched
+    shutdown: false
+    mode: trunk
+    l2_mtu: 8000
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    mlag: 18
+    lacp_fallback_mode: static
+    lacp_fallback_timeout: 10
+  Port-Channel17:
+    description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    mlag: 17
+    lacp_fallback_mode: static
+    lacp_fallback_timeout: 90
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -349,6 +401,7 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -358,6 +411,7 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -367,6 +421,7 @@ ethernet_interfaces:
     peer_interface: Ethernet5
     peer_type: spine
     description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+    speed: forced 100gfull
     mtu: 1500
     type: routed
     shutdown: false
@@ -575,6 +630,66 @@ ethernet_interfaces:
         level: 2
         unit: percent
     profile: ALL_WITH_SECURITY_PORT_CHANNEL
+  Ethernet18:
+    peer: server10_inherit_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    description: server10_inherit_profile_port_channel_lacp_fallback_Eth2
+    l2_mtu: 8000
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    channel_group:
+      id: 18
+      mode: active
+    profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    lacp_port_priority: 32768
+  Ethernet17:
+    peer: server10_no_profile_port_channel_lacp_fallback
+    peer_interface: Eth2
+    peer_type: server
+    description: server10_no_profile_port_channel_lacp_fallback_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 1-4094
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
+    storm_control:
+      all:
+        level: 10
+        unit: percent
+      broadcast:
+        level: 100
+        unit: pps
+      multicast:
+        level: 1
+        unit: percent
+      unknown-unicast:
+        level: 2
+        unit: percent
+    channel_group:
+      id: 17
+      mode: active
+    lacp_port_priority: 32768
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -1112,6 +1227,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:13
@@ -1127,6 +1243,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:10
@@ -1142,6 +1259,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:14
@@ -1159,6 +1277,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:11
@@ -1174,6 +1293,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:20
@@ -1189,6 +1309,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:21
@@ -1204,6 +1325,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:30
@@ -1219,6 +1341,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.13
       rd: 192.168.255.13:31
@@ -1234,6 +1357,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

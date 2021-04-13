@@ -426,6 +426,8 @@ vlan 4094
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
+| Ethernet20 | FIREWALL01_E1 | *trunk | *110-111,210-211 | *- | *- | 20 |
+| Ethernet21 |  ROUTER01_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -445,6 +447,7 @@ vlan 4094
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.33/31
@@ -452,6 +455,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_LINK_TO_DC1-SPINE2_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.35/31
@@ -459,6 +463,7 @@ interface Ethernet2
 interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE3_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.37/31
@@ -466,6 +471,7 @@ interface Ethernet3
 interface Ethernet4
    description P2P_LINK_TO_DC1-SPINE4_Ethernet3
    no shutdown
+   speed forced 100gfull
    mtu 1500
    no switchport
    ip address 172.31.255.39/31
@@ -499,6 +505,18 @@ interface Ethernet12
    description server01_MTU_ADAPTOR_MLAG_Eth7
    no shutdown
    channel-group 12 mode active
+!
+interface Ethernet20
+   description FIREWALL01_E1
+   no shutdown
+   channel-group 20 mode active
+!
+interface Ethernet21
+   description ROUTER01_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
 ```
 
 ## Port-Channel Interfaces
@@ -514,6 +532,7 @@ interface Ethernet12
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
+| Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -558,6 +577,14 @@ interface Port-Channel12
    mtu 1601
    switchport
    mlag 12
+!
+interface Port-Channel20
+   description FIREWALL01_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   mlag 20
 ```
 
 ## Loopback Interfaces
@@ -962,7 +989,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65102 |
+| Remote AS | 65102 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -972,7 +999,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 

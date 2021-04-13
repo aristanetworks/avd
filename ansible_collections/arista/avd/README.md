@@ -93,7 +93,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-$ pip3 isntall ansible==2.9.6
+$ pip3 install ansible==2.9.6
 
 $ pip3 install -r requirements.txt
 ```
