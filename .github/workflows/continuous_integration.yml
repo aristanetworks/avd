@@ -11,6 +11,7 @@ jobs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
       plugins: ${{ steps.filter.outputs.plugins }}
+      requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
     steps:
       - uses: actions/checkout@v2
@@ -36,6 +37,7 @@ jobs:
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
+              - '.github/workflows/continuous_integration.yml'
             docs:
               - 'mkdocs.yml'
               - 'ansible_collections/arista/avd/docs/**'
@@ -58,7 +60,7 @@ jobs:
   # ----------------------------------- #
   offline_link_check:
     name: 'Validate mkdoc content'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     needs: [ file-changes ]
     if: needs.file-changes.outputs.docs == 'true' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -79,6 +81,33 @@ jobs:
         run: |
           docker-compose -f docker-compose.yml down
   # ----------------------------------- #
+  # Test Requirements
+  # ----------------------------------- #
+  python_requirements:
+    name: Test Python requirements installation
+    runs-on: ubuntu-20.04
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release')
+    strategy:
+      fail-fast: true
+      matrix:
+        python_version: [ 3.6, 3.7, 3.8, 3.9 ]
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+      - name: 'Install Python requirements'
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+
+  # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
   # ----------------------------------- #
   molecule_eos_cli_config_gen:
@@ -87,10 +116,9 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario:
-          - 'eos_cli_config_gen'
-    needs: [ file-changes, pre_commit ]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+        avd_scenario: ['eos_cli_config_gen']
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
         run: |
@@ -211,7 +239,7 @@ jobs:
     name: Webhook to Docker Hub to build image
     runs-on: ubuntu-18.04
     container: avdteam/base:3.6-v1.0
-    needs: [pre_commit]
+    needs: [python_requirements]
     if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases') || startsWith(github.ref, 'refs/heads/devel'))
     steps:
       - uses: actions/checkout@master
