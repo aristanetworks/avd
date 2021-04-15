@@ -11,7 +11,7 @@ from ansible.errors import AnsibleError, AnsibleFileNotFound, AnsibleAction, Ans
 from ansible.module_utils._text import to_bytes, to_text, to_native
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
-
+from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
@@ -47,7 +47,9 @@ class ActionModule(ActionBase):
             else:
                 template_vars = combine(task_vars, output, recursive=True)
 
-            template_output = self.template_light(task_vars, template, template_vars)
+            #template_output = self.template_light(task_vars, template, template_vars)
+            template_lookup_module = TemplateLookupModule(loader=self._loader, templar=self._templar)
+            template_output = template_lookup_module.run(template, task_vars, template_vars=template_vars)
 
             output = combine(output, template_output, recursive=True)
 
