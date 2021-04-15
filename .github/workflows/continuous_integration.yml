@@ -10,6 +10,7 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      validate_state: ${{ steps.filter.outputs.validate_state }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
@@ -31,6 +32,10 @@ jobs:
               - '.github/workflows/continuous_integration.yml'
               - 'ansible_collections/arista/cvp/molecule/*'
               - 'ansible_collections/arista/cvp/molecule/**/*'
+            validate_state:
+              - 'ansible_collections/arista/avd/roles/eos_validate_state/*'
+              - 'ansible_collections/arista/avd/roles/eos_validate_state/**/*'
+              - '.github/workflows/continuous_integration.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
@@ -51,7 +56,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: avdteam/base:3.6-v1.0
     needs: file-changes
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.validate_state == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - uses: actions/checkout@v2
       - uses: pre-commit/action@v2.0.2
