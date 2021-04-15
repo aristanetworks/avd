@@ -6,11 +6,11 @@
   - [Plugin Filters](#plugin-filters)
     - [list_compress filter](#list_compress-filter)
     - [natural_sort filter](#natural_sort-filter)
-    - [default filter*](#default-filter)
+    - [default filter](#default-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
   - [Modules](#modules)
-    - [Inventory to CloudVision Containers*](#inventory-to-cloudvision-containers)
+    - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
 
 ## Plugin Filters
 
@@ -45,7 +45,7 @@ To use this filter:
 {% endfor %}
 ```
 
-### default filter*
+### default filter
 
 The `arista.avd.default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
 Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
@@ -93,7 +93,7 @@ Feature is {{ "not " if extremely_long_variable_name is defined and extremely_lo
 ```
 ## Modules
 
-### Inventory to CloudVision Containers*
+### Inventory to CloudVision Containers
 
 The `arista.avd.inventory_to_container` module provides following capabilities:
 - Transform inventory groups into CloudVision containers topology.
@@ -168,4 +168,30 @@ CVP_CONTAINERS:
     parent_container: DC1_L3LEAFS
   DC1_SPINES:
     parent_container: DC1_FABRIC
+```
+### Add Table Of Contents to existing MarkDown file
+
+The `arista.avd.add_toc` module provides following capabilities:
+  - Wrapper of md_toc python library
+  - Produce Table of Contents and add to MD file between markers
+
+The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
+The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
+
+**Example:**
+
+To use this module:
+
+```yaml
+tasks:
+- name: Generate TOC for fabric documentation
+  add_toc:
+    md_file: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
+    skip_lines: 3 #Default is 0
+    #toc_levels: 2
+    #toc_marker: '<!-- toc -->'
+  delegate_to: localhost
+  run_once: true
+  check_mode: no
+  tags: [build, provision]
 ```

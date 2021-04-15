@@ -1,4 +1,7 @@
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+
+## Port-Channel Interfaces
+
 ### Port-Channel Interfaces Summary
 
 #### L2
@@ -6,7 +9,7 @@
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type != "routed" %}
+{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q'] %}
 {%             set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%             set type = port_channel_interfaces[port_channel_interface].type | default ("switched")%}
 {%             set mode = port_channel_interfaces[port_channel_interface].mode | default ("access")%}
@@ -34,7 +37,7 @@
 {%   set port_channel_interface_ipv4.configured = false %}
 {%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%       for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ip_address is defined %}
 {%               set port_channel_interface_ipv4.configured = true %}
 {%           endif %}
 {%        endfor %}
@@ -46,7 +49,7 @@
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 {%        for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" and port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
+{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
 {%                set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%                set type = "routed" %}
 {%                set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}
@@ -65,7 +68,7 @@
 {%   set port_channel_interface_ipv6.configured = false %}
 {%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
 {%       for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == 'routed' and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
 {%               set port_channel_interface_ipv6.configured = true %}
 {%           endif %}
 {%        endfor %}
@@ -77,7 +80,7 @@
 | Interface | Description | Type | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
 {%        for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" and port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %}
+{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %}
 {%                set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
 {%                set type = "routed" %}
 {%                set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}
@@ -103,6 +106,4 @@
 ```eos
 {% include 'eos/port-channel-interfaces.j2' %}
 ```
-{% else %}
-No port-channels defined
 {% endif %}

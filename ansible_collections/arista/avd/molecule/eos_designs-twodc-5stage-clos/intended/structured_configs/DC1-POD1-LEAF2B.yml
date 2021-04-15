@@ -1,5 +1,6 @@
 l3leaf_node_group: RACK2_MLAG
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65112
 leaf_id: 3
 switch_mgmt_ip: 192.168.1.9/16
@@ -49,6 +50,8 @@ queue_monitor_length: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -91,10 +94,6 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel3:
     description: RACK2_MLAG_Po1
@@ -206,6 +205,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.9/16
     gateway: 192.168.1.254
+    type: oob
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -345,6 +345,11 @@ route_maps:
         - as 65111
       20:
         type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65112
   router_id: 172.16.110.5
@@ -360,14 +365,14 @@ router_bgp:
       remote_as: 65110
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65112
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
       route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -375,15 +380,19 @@ router_bgp:
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE1_Ethernet5
     172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE2_Ethernet5
     172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-POD1-LEAF2A
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
@@ -464,6 +473,7 @@ router_bgp:
           - 1025:1025
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

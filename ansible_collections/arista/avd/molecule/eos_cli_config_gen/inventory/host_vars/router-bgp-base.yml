@@ -7,6 +7,9 @@ router_bgp:
     - graceful-restart restart-time 300
     - graceful-restart
     - maximum-paths 2 ecmp 2
+  bgp:
+    bestpath:
+      d_path: true
   aggregate_addresses:
     1.1.1.0/24:
       advertise_only: true
@@ -17,3 +20,14 @@ router_bgp:
       attribute_map: RM-ATTRIBUTE
       match_map: RM-MATCH
       advertise_only: true
+  address_family_ipv4:
+    networks:
+      10.0.0.0/8:
+      172.16.0.0/12:
+      192.168.0.0/16:
+        route_map: RM-FOO-MATCH
+  address_family_ipv6:
+    networks:
+      2001:db8:100::/40:
+      2001:db8:200::/40:
+        route_map: RM-BAR-MATCH

@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_BL1
 switch_platform: 7280R
+switch_rack: null
 switch_bgp_as: 65105
 leaf_id: 7
 switch_mgmt_ip: 192.168.200.111/24
@@ -65,6 +66,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -103,10 +105,6 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -170,6 +168,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.111/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan150:
     tenant: Tenant_A
@@ -216,7 +215,7 @@ vxlan_tunnel_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
@@ -260,6 +259,11 @@ route_maps:
         type: permit
         set:
         - ipv6 next-hop fd5a:fe45:8831:06c5::1
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65105
   router_id: 192.168.255.11
@@ -273,24 +277,29 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.48:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet7
     172.31.255.50:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet7
     172.31.255.52:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet7
     172.31.255.54:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet7
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -369,23 +378,28 @@ router_bgp:
             route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
           update_source: Loopback123
           ebgp_multihop: 3
-          address_family:
-          - ipv4
           local_as: 123
           route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
-          send_community: None
-          address_family:
-          - ipv6
+          send_community: all
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
-          address_family:
-          - ipv6
       redistribute_routes:
       - connected
       - static
+      address_families:
+        ipv4:
+          neighbors:
+            123.1.1.10:
+              activate: true
+        ipv6:
+          neighbors:
+            fd5a:fe45:8831:06c5::a:
+              activate: true
+            fd5a:fe45:8831:06c5::b:
+              activate: true
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:21
@@ -399,6 +413,7 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:31
@@ -412,6 +427,7 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

@@ -49,6 +49,12 @@ sanity-import: ## Run ansible-test sanity for code import
 	mkdir tests ; \
 	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import
 
+.PHONY: galaxy-importer
+galaxy-importer:  ## Run galaxy importer tests
+	rm -f *.tar.gz && \
+	ansible-galaxy collection build --force ansible_collections/arista/avd && \
+	python -m galaxy_importer.main *.tar.gz
+
 #########################################
 # Code Validation & CI Actions 			#
 #########################################
@@ -117,8 +123,8 @@ github-configure-ci-python3: ## Configure Python3 environment to run GA (Ubuntu:
 .PHONY: install-requirements
 install-requirements: ## Install python requirements for generic purpose
 	pip3 install --upgrade wheel
-	pip3 install -r development/requirements.txt
-	pip3 install -r development/requirements-dev.txt
+	pip3 install -r ansible_collections/arista/avd/requirements.txt
+	pip3 install -r ansible_collections/arista/avd/requirements-dev.txt
 
 .PHONY: install-docker
 install-docker: ## Install docker

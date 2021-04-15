@@ -28,6 +28,16 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
+{# Append all VRFs for tenants set in "always_include_vrfs_in_tenants" is set #}
+{% if leaf.always_include_vrfs_in_tenants is arista.avd.defined %}
+{%     for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%         if tenant in leaf.always_include_vrfs_in_tenants or "all" in leaf.always_include_vrfs_in_tenants %}
+{%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%                 do leaf.vrfs.append( vrf ) %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
 {% set leaf.vrfs = leaf.vrfs | unique  %}
 {# Setting tenant static routes #}
 {% set leaf.static_routes = [] %}
@@ -43,6 +53,31 @@
 {%                             do entry.pop( 'nodes' ) %}
 {%                         endif %}
 {%                         do leaf.static_routes.append( entry )%}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}
+{# Setting tenant VRF L3 interfaces #}
+{% set leaf.l3_interfaces = [] %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in leaf.filter_tenants or "all" in leaf.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs %}
+{%             if tenants[tenant].vrfs[vrf].l3_interfaces is arista.avd.defined %}
+{%                 for entry in tenants[tenant].vrfs[vrf].l3_interfaces %}
+{%                     if entry.nodes is arista.avd.defined and entry.ip_addresses is arista.avd.defined and entry.interfaces is arista.avd.defined and inventory_hostname in entry.nodes %}
+{%                         for node in entry.nodes %}
+{%                             if node == inventory_hostname %}
+{%                                 set entry_node = dict() %}
+{%                                 do entry_node.update( {'vrf':vrf} )%}
+{%                                 do entry_node.update( {'l3_interface':entry.interfaces[loop.index0]} ) %}
+{%                                 do entry_node.update( {'ip_address':entry.ip_addresses[loop.index0]} ) %}
+{%                                 do entry_node.update( entry ) %}
+{%                                 do leaf.l3_interfaces.append( entry_node ) %}
+{%                             endif %}
+{%                         endfor %}
+{%                         do leaf.vrfs.append( vrf ) %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

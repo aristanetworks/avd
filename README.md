@@ -39,6 +39,7 @@ The arista.avd collection provides abstracted data models and framework to build
 | ISIS | iBGP | [ 3 stage ] + L2 Leafs |
 | OSPF | eBGP | [ 3 stage ] + L2 Leafs |
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
+| RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
 
 <center><img src="media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
 
@@ -67,31 +68,36 @@ The documentation how to leverage ansible-avd collection is located here:
 
 **Additional Python Libraries required:**
 
-- Jinja2  `2.10.3`
 - netaddr `0.7.19`
-- requests `2.22.0`
+- Jinja2 `2.11.3`
 - treelib `1.5.5`
-- pytest `5.3.4`
-- pytest-html `2.0.1`
-- cvprac `1.0.4`
+- cvprac `1.0.5`
+- paramiko `2.7.1`
+- jsonschema `3.2.0`
+- requests `2.25.1`
+- PyYAML `5.4.1`
+- md-toc `7.1.0`
 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-pip3 install -r development/requirements.txt
+$ pip3 install ansible==2.9.6
+
+$ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
 
 requirements.txt content:
 
 ```text
-ansible==2.9.2
-Jinja2==2.10.3
 netaddr==0.7.19
-requests==2.22.0
+Jinja2==2.11.3
 treelib==1.5.5
-pytest==5.3.4
-pytest-html==2.0.1
-cvprac==1.0.4
+cvprac==1.0.5
+paramiko==2.7.1
+jsonschema==3.2.0
+requests==2.25.1
+PyYAML==5.4.1
+md-toc==7.1.0
 ```
 
 **Ansible Configuration INI file:**

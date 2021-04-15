@@ -16,5 +16,6 @@
 {%     elif type == 'l2leaf' %}
     ip_address: {{ switch.inband_management_ip }}
     gateway: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(1) }}
+    type: inband
 {%     endif %}
 {% endif %}

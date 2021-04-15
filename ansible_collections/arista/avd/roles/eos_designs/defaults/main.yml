@@ -42,6 +42,10 @@ underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: false
 
+# Underlay ISIS Defaults
+isis_area_id: "49.0001"
+isis_site_id: "0001"
+
 bgp_maximum_paths: 4
 bgp_ecmp: 4
 
@@ -101,6 +105,20 @@ platform_settings:
     reload_delay:
       mlag: 780
       non_mlag: 1020
+
+# Infrastructure Elements Keys
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage_array
 
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_

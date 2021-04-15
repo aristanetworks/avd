@@ -43,4 +43,9 @@ interface {{ loopback_interface }}
 {%     if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point
 {%     endif %}
+{%     if loopback_interfaces[loopback_interface].mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif loopback_interfaces[loopback_interface].mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
 {% endfor %}

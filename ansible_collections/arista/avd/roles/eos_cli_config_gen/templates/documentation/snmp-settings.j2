@@ -1,4 +1,7 @@
 {% if snmp_server is defined and snmp_server is not none %}
+
+## SNMP
+
 ### SNMP Configuration Summary
 
 | Contact | Location | SNMP Traps |
@@ -62,6 +65,20 @@
 | {{ view.name | default('default') }} | {{ view.MIB_family_name | default('-') }} | {% if view.included %} Included {% else %} Excluded {% endif %}
 {%      endfor %}
 {%  endif %}
+{%  if snmp_server.communities is arista.avd.defined %}
+
+### SNMP Communities
+
+| Community | Access | Access List IPv4 | Access List IPv6 | View |
+| --------- | ------ | ---------------- | ---------------- | ---- |
+{%      for community in snmp_server.communities | arista.avd.natural_sort %}
+{%          set access = snmp_server.communities[community].access | arista.avd.default("ro") %}
+{%          set access_list_ipv4 = snmp_server.communities[community].access_list_ipv4.name | arista.avd.default("-") %}
+{%          set access_list_ipv6 = snmp_server.communities[community].access_list_ipv6.name | arista.avd.default("-") %}
+{%          set view = snmp_server.communities[community].view | arista.avd.default("-") %}
+| {{ community }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
+{%     endfor %}
+{%  endif %}
 
 {%  if snmp_server.groups is defined and snmp_server.groups is not none %}
 ### SNMP Groups Configuration
@@ -89,6 +106,4 @@
 ```eos
 {% include 'eos/snmp-settings.j2' %}
 ```
-{% else %}
-No SNMP settings defined
 {% endif %}

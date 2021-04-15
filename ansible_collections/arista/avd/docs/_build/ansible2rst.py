@@ -95,7 +95,7 @@ def rst_ify(text):
         t = _URL.sub(r'`' + r"\1" + r" <" + r"\1" + r">`_", t)
         t = _CONST.sub(r'``' + r"\1" + r"``", t)
     except Exception as e:
-        raise AnsibleError("Could not process (%s) : %s" % (str(text), str(e)))
+        raise AnsibleError("Could not process (%s) : %s" % (str(text), str(e)))  # noqa # pylint: disable=raise-missing-from
 
     return t
 

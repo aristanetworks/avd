@@ -17,6 +17,7 @@
 
 ### Overlay Controller Info ###
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_bgp_as: {{ switch.bgp_as }}
 switch_router_id: {{ switch.router_id }}
@@ -24,9 +25,9 @@ switch_evpn_role: {{ switch.evpn_role }}
 switch_evpn_route_servers: {{ switch.evpn_route_servers | arista.avd.natural_sort }}
 switch_evpn_route_clients: {{ switch.evpn_route_clients | arista.avd.natural_sort }}
 
-{# routing protocol model multi-agent needed for EVPN address family #}
-service_routing_protocols_model: multi-agent
-ip_routing: true
+{# routing protocol model multi-agent needed for EVPN address family, IPv4 and IPv6 routing #}
+### IPv4, IPv6 and arBGP config
+{% include 'base/routing.j2' %}
 
 {# Hardware Counter #}
 ### Hardware Counters
@@ -87,6 +88,10 @@ ntp_server:
 redundancy:
 {% include 'base/redundancy.j2' %}
 
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
@@ -110,16 +115,10 @@ local_users:
 clock:
 {% include 'base/clock-timezone.j2' %}
 
-
 {# VRFs #}
 ### VRFs ###
 vrfs:
 {% include 'base/mgmt-vrf.j2' %}
-
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -168,6 +167,11 @@ prefix_lists:
 route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
+
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
 
 {# ##### BGP Configurartion ##### #}
 ### Routing - BGP ###

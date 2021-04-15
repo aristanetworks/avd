@@ -1,84 +1,24 @@
 # router-bgp-v4-evpn
-
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
-  - [Management GNMI](#management-api-gnmi)
-  - [Management API](#Management-api-http)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [Enable Password](#enable-password)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Prompt](#prompt)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SNMP](#snmp)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
-  - [Interface Defaults](#interface-defaults)
-  - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [Loopback Interfaces](#loopback-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [IPv6 Static Routes](#ipv6-static-routes)
-  - [Router OSPF](#router-ospf)
-  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community-lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix-lists](#prefix-lists)
-  - [IPv6 Prefix-lists](#ipv6-prefix-lists)
-  - [Route-maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
-- [Errdisable](#errdisable)
-- [MAC security](#mac-security)
-- [QOS](#qos)
-- [QOS Profiles](#qos-profiles)
+- [Quality Of Service](#quality-of-service)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -87,15 +27,15 @@
 
 #### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 #### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | -  | - |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -107,129 +47,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-list
-
-Domain-list not defined
-
-## Name Servers
-
-No name servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## PTP
-
-PTP is not defined.
-
-## Management SSH
-
-Management SSH not defined
-
-## Management API GNMI
-
-Management API gnmi is not defined
-
-## Management API HTTP
-
-Management API HTTP not defined
-
 # Authentication
 
-## Local Users
-
-No users defined
-
-## Enable Password
-
-Enable password not defined
-
-## TACACS Servers
-
-TACACS servers not defined
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not defined
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management security not defined
-
-# Prompt
-
-Prompt not defined
-
-# Aliases
-
-Aliases not defined
-
 # Monitoring
-
-## TerminAttr Daemon
-
-TerminAttr daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SNMP
-
-No SNMP settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No hardware counters defined
-
-## VM Tracer Sessions
-
-No VM tracer sessions defined
-
-## Event Handler
-
-No event handler defined
-
-# MLAG
-
-MLAG not defined
-
-# Spanning Tree
-
-Spanning-tree not defined
 
 # Internal VLAN Allocation Policy
 
@@ -241,41 +61,9 @@ Spanning-tree not defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
 
-## Interface Defaults
-
-No Interface Defaults defined
-
-## Ethernet Interfaces
-
-No ethernet interface defined
-
-## Port-Channel Interfaces
-
-No port-channels defined
-
-## Loopback Interfaces
-
-No loopback interfaces defined
-
-## VLAN Interfaces
-
-No VLAN interfaces defined
-
-## VXLAN Interface
-
-No VXLAN interfaces defined
-
 # Routing
-
-## Virtual Router MAC Address
-
-IP virtual router MAC address not defined
 
 ## IP Routing
 
@@ -288,7 +76,6 @@ IP virtual router MAC address not defined
 
 ```eos
 ```
-
 ## IPv6 Routing
 
 ### IPv6 Routing Summary
@@ -296,26 +83,6 @@ IP virtual router MAC address not defined
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
-## Static Routes
-
-Static routes not defined
-
-## IPv6 Static Routes
-
-IPv6 static routes not defined
-
-## ARP
-
-Global ARP timeout not defined.
-
-## Router OSPF
-
-Router OSPF not defined
-
-## Router ISIS
-
-Router ISIS not defined
 
 ## Router BGP
 
@@ -340,31 +107,72 @@ Router ISIS not defined
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 0 (no limit) |
+
+#### EXTENDED-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | extended |
 
 #### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
-| Send community | true |
+| Remote AS | 65001 |
+| Send community | all |
 | Maximum routes | 12000 |
+
+#### LARGE-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | large |
+
+#### LOCAL-AS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Local AS | 65000 |
 
 #### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65101 |
+| Remote AS | 65101 |
 | Next-hop self | True |
-| Send community | true |
+| Send community | all |
 | Maximum routes | 12000 |
+
+#### MULTIPLE-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | standard large |
+
+#### NO-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+
+#### STARDARD-COMMUNITY
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Send community | standard |
 
 ### BGP Neighbors
 
@@ -389,16 +197,16 @@ Router ISIS not defined
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected  static |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected  static |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static |
 
 ### Router BGP Device Configuration
 
@@ -419,11 +227,17 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EXTENDED-COMMUNITY peer group
+   neighbor EXTENDED-COMMUNITY send-community extended
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor LARGE-COMMUNITY peer group
+   neighbor LARGE-COMMUNITY send-community large
+   neighbor LOCAL-AS peer group
+   neighbor LOCAL-AS local-as 65000 no-prepend replace-as
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -432,6 +246,11 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
+   neighbor MULTIPLE-COMMUNITY peer group
+   neighbor MULTIPLE-COMMUNITY send-community standard large
+   neighbor NO-COMMUNITY peer group
+   neighbor STARDARD-COMMUNITY peer group
+   neighbor STARDARD-COMMUNITY send-community standard
    neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
@@ -482,11 +301,14 @@ router bgp 65101
       neighbor 10.2.3.4 maximum-routes 0
       neighbor 10.2.3.4 default-originate route-map RM-10.2.3.4-SET-NEXT-HOP-OUT always
       neighbor 10.2.3.4 route-map RM-10.2.3.4-SET-NEXT-HOP-OUT out
-      address-family ipv4
-         neighbor 10.2.3.4 activate
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       redistribute connected
       redistribute static
+      !
+      address-family ipv4
+         neighbor 10.2.3.4 activate
+         network 10.0.0.0/8
+         network 100.64.0.0/10 route-map RM-10.2.3.4
    !
    vrf TENANT_A_PROJECT02
       rd 192.168.255.3:12
@@ -502,121 +324,21 @@ router bgp 65101
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description ABCDEFGfg
       neighbor 10.255.251.2 timers 1 3
-      neighbor 10.255.251.2 send-community
+      neighbor 10.255.251.2 send-community extended
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.3 description ABCDEFGfgLCLCLCLC
       neighbor 10.255.251.3 next-hop-self
       neighbor 10.255.251.3 timers 1 3
-      neighbor 10.255.251.3 send-community link-bandwidth aggregate 2
+      neighbor 10.255.251.3 send-community large
       neighbor 10.255.251.3 default-originate always
       redistribute connected
       redistribute static route-map RM-CONN-2-BGP
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
-
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
 
 # Filters
 
-## Community-lists
-
-Community-lists not defined
-
-## Peer Filters
-
-No peer filters defined
-
-## Prefix-lists
-
-Prefix-lists not defined
-
-## IPv6 Prefix-lists
-
-IPv6 prefix-lists not defined
-
-## Route-maps
-
-No route-maps defined
-
-## IP Extended Communities
-
-No extended community defined
-
 # ACL
 
-## Standard Access-lists
-
-Standard access-lists not defined
-
-## Extended Access-lists
-
-Extended access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 standard access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 extended access-lists not defined
-
-# VRF Instances
-
-No VRF instances defined
-
-# Virtual Source NAT
-
-Virtual source NAT not defined
-
-# Platform
-
-No platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP relay not defined
-
-# Errdisable
-
-Errdisable is not defined.
-
-# MACsec
-
-MACsec not defined
-
-# QOS
-
-QOS is not defined.
-
-# QOS Profiles
-
-QOS Profiles are not defined
-
-# Custom Templates
-
-No custom templates defined
+# Quality Of Service

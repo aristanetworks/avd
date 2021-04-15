@@ -9,12 +9,16 @@
 {%             set leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants| arista.avd.default(
                                          l3leaf.defaults.filter.tenants,
                                          [ 'all' ]  ) %}
+{%             set leaf.always_include_vrfs_in_tenants = l3leaf.node_groups[l3leaf_node_group].filter.always_include_vrfs_in_tenants | arista.avd.default(
+                                                         l3leaf.defaults.filter.always_include_vrfs_in_tenants) %}
 {%             set leaf.igmp_snooping_enabled = l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled | arista.avd.default(
                                                 l3leaf.defaults.igmp_snooping_enabled,
                                                 default_igmp_snooping_enabled ) %}
 {%             set leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags | arista.avd.default(
                                       l3leaf.defaults.filter.tags,
                                       [ 'all' ] ) %}
+{%             set switch.max_spines = max_spines | arista.avd.default(
+                                       spine.nodes | length ) %}
 {%             set leaf.spines = l3leaf.node_groups[l3leaf_node_group].spines | arista.avd.default(
                                  l3leaf.defaults.spines ) %}
 {%             set leaf.uplink_to_spine_interfaces = l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces | arista.avd.default(
@@ -23,6 +27,9 @@
                                                    l3leaf.defaults.p2p_link_interface_speed ) %}
 {%             set switch.platform = l3leaf.node_groups[l3leaf_node_group].platform | arista.avd.default(
                                      l3leaf.defaults.platform ) %}
+{%             set switch.rack = l3leaf.node_groups[l3leaf_node_group].nodes[node].rack | arista.avd.default(
+                                       l3leaf.node_groups[l3leaf_node_group].rack,
+                                       l3leaf.defaults.rack ) %}
 {%             if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
 {%                 set switch.bgp_as = bgp_as %}
 {%             else %}
@@ -30,7 +37,7 @@
                                        l3leaf.node_groups[l3leaf_node_group].bgp_as,
                                        l3leaf.defaults.bgp_as ) %}
 {%             endif %}
-{%             set switch.router_id = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + spine.nodes | length) %}
+{%             set switch.router_id = overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) %}
 {%             set switch.bgp_defaults = leaf_bgp_defaults | arista.avd.default([]) %}
 {%             set leaf.virtual_router_mac_address = l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address | arista.avd.default(
                                                      l3leaf.defaults.virtual_router_mac_address ) %}
@@ -38,6 +45,8 @@
                                                l3leaf.defaults.spanning_tree_mode ) %}
 {%             set switch.spanning_tree_priority = l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority | arista.avd.default(
                                                    l3leaf.defaults.spanning_tree_priority ) %}
+{%             set switch.spanning_tree_root_super = l3leaf.node_groups[l3leaf_node_group].spanning_tree_root_super | arista.avd.default(
+                                               l3leaf.defaults.spanning_tree_root_super ) %}
 {%             set switch.mlag = l3leaf.node_groups[l3leaf_node_group].mlag | arista.avd.default(
                                  l3leaf.defaults.mlag,
                                  true ) %}

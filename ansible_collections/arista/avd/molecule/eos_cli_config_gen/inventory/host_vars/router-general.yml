@@ -1,0 +1,8 @@
+router_general:
+  vrfs:
+    BLUE-C2:
+      leak_routes:
+        - source_vrf: BLUE-C1
+          subscribe_policy: RM-BLUE-LEAKING
+        - source_vrf: BLUE-C3
+          subscribe_policy: RM-BLUE-LEAKING

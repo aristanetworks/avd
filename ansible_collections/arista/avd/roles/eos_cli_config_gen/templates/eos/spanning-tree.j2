@@ -4,6 +4,9 @@
 {%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
 spanning-tree edge-port bpduguard default
 {%     endif %}
+{%     if spanning_tree.root_super is arista.avd.defined(true) %}
+spanning-tree root super
+{%     endif %}
 {%     if spanning_tree.mode is arista.avd.defined() %}
 spanning-tree mode {{ spanning_tree.mode }}
 {%     endif %}

@@ -5,16 +5,20 @@
 {# Include logic for L2LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
+{% set connected_endpoints = dict() %}
 {# Set l2leaf node vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 {# Set tenant network evpn vxlan services vars #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l2leaf-logic.j2' %}
 {# Set switch inband management vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf-inband-management.j2' %}
+{# Build dictionary for Infrastructure Elements interface configuration #}
+{% include 'connected_endpoints/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
 switch_inband_management_ip: {{ switch.inband_management_ip | arista.avd.default(none) }}
@@ -34,9 +38,9 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
-{# routing protocol model multi-agent needed for EVPN address family #}
-service_routing_protocols_model: multi-agent
-ip_routing: true
+{# routing protocol model multi-agent needed for EVPN address family, IPv4 and IPv6 routing #}
+### IPv4, IPv6 and arBGP config
+{% include 'base/routing.j2' %}
 
 {# Hardware Counters #}
 ### Hardware Counter
@@ -93,6 +97,10 @@ ntp_server:
 redundancy:
 {% include 'base/redundancy.j2' %}
 
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
@@ -143,8 +151,8 @@ port_channel_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
-{# Server - Port Channel Interfaces #}
-{% include 'edge_ports/leaf-server-port-channels.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-port-channel-interfaces.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -153,8 +161,8 @@ ethernet_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l2leaf-ethernet-uplinks.j2' %}
 {# mlag interfaces #}
 {% include 'mlag/switch-mlag-interfaces.j2' %}
-{# Server - Interfaces Configuration #}
-{% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-ethernet-interfaces.j2' %}
 
 {# Management Interfaces #}
 ### Management Interfaces ###

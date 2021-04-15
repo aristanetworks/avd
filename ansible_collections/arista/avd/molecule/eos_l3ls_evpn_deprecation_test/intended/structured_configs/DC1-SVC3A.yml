@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_SVC3
 switch_platform: 7280R
+switch_rack: null
 switch_bgp_as: 65103
 leaf_id: 4
 switch_mgmt_ip: 192.168.200.108/24
@@ -111,6 +112,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -265,10 +267,6 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF2_Po1
@@ -301,6 +299,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -323,6 +322,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -438,6 +438,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -463,6 +464,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -487,6 +489,7 @@ ethernet_interfaces:
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20
@@ -512,6 +515,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -540,6 +544,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: false
     storm_control:
       all:
         level: 10
@@ -567,6 +572,7 @@ ethernet_interfaces:
     vlans: 210
     spanning_tree_portfast: network
     spanning_tree_bpdufilter: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 20
@@ -602,6 +608,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.108/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -881,7 +888,7 @@ vxlan_tunnel_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 tcam_profile:
-- vxlan-routing
+  system: vxlan-routing
 platform:
   sand:
     lag:
@@ -929,6 +936,11 @@ route_maps:
         - origin incomplete
         description: Make routes learned over MLAG Peer-link less preferred on spines
           to ensure optimal routing
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65103
   router_id: 192.168.255.8
@@ -942,14 +954,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65103
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
       route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -957,19 +969,25 @@ router_bgp:
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.24:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet4
     172.31.255.26:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet4
     172.31.255.28:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet4
     172.31.255.30:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet4
     10.255.251.7:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-SVC3B
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -1110,6 +1128,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:13
@@ -1125,6 +1144,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:10
@@ -1140,6 +1160,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WAN_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:14
@@ -1155,6 +1176,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:11
@@ -1170,6 +1192,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:20
@@ -1185,6 +1208,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:21
@@ -1200,6 +1224,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:30
@@ -1215,6 +1240,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.8
       rd: 192.168.255.8:31
@@ -1230,6 +1256,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

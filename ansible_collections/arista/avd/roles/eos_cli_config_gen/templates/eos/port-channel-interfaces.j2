@@ -18,6 +18,8 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].type is arista.avd.defined("routed") %}
    no switchport
+{%     elif port_channel_interfaces[port_channel_interface].type is arista.avd.defined('l3dot1q') and port_channel_interfaces[port_channel_interface].encapsulation.dot1q.vlan is arista.avd.defined() %}
+   encapsulation dot1q vlan {{ port_channel_interfaces[port_channel_interface].encapsulation.dot1q.vlan }}
 {%     else %}
    switchport
 {%     endif %}
@@ -41,10 +43,10 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].esi is arista.avd.defined %}
    !
-    evpn ethernet-segment
-       identifier {{ port_channel_interfaces[port_channel_interface].esi }}
+   evpn ethernet-segment
+      identifier {{ port_channel_interfaces[port_channel_interface].esi }}
 {%         if port_channel_interfaces[port_channel_interface].rt is arista.avd.defined %}
-       route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
+      route-target import {{ port_channel_interfaces[port_channel_interface].rt }}
 {%         endif %}
    !
 {%     endif %}
@@ -52,10 +54,10 @@ interface {{ port_channel_interface }}
    lacp system-id {{ port_channel_interfaces[port_channel_interface].lacp_id }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_fallback_timeout is arista.avd.defined %}
-   port-channel lacp fallback timeout {{ lacp_fallback_timeout }}
+   port-channel lacp fallback timeout {{ port_channel_interfaces[port_channel_interface].lacp_fallback_timeout }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].lacp_fallback_mode is arista.avd.defined %}
-   port-channel lacp fallback {{ lacp_fallback_mode }}
+   port-channel lacp fallback {{ port_channel_interfaces[port_channel_interface].lacp_fallback_mode }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].qos.trust is arista.avd.defined %}
    qos trust {{ port_channel_interfaces[port_channel_interface].qos.trust }}
@@ -128,6 +130,28 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].ipv6_access_group_out is arista.avd.defined %}
    ipv6 access-group {{ port_channel_interfaces[port_channel_interface].ipv6_access_group_out }} out
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_network_point_to_point is arista.avd.defined(true) %}
+   ip ospf network point-to-point
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+   ip ospf area {{ port_channel_interfaces[port_channel_interface].ospf_area }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_cost is arista.avd.defined %}
+   ip ospf cost {{ port_channel_interfaces[port_channel_interface].ospf_cost }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_authentication is arista.avd.defined('simple') %}
+   ip ospf authentication
+{%     elif port_channel_interfaces[port_channel_interface].ospf_authentication is arista.avd.defined('message-digest') %}
+   ip ospf authentication message-digest
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].ospf_authentication_key is arista.avd.defined %}
+   ip ospf authentication-key 7 {{ port_channel_interfaces[port_channel_interface].ospf_authentication_key }}
+{%     endif %}
+{%     for ospf_message_digest_key in port_channel_interfaces[port_channel_interface].ospf_message_digest_keys | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm is arista.avd.defined and port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].key is arista.avd.defined %}
+   ip ospf message-digest-key {{ ospf_message_digest_key }} {{ port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].hash_algorithm }} 7 {{ port_channel_interfaces[port_channel_interface].ospf_message_digest_keys[ospf_message_digest_key].key }}
+{%         endif %}
+{%     endfor %}
 {%     if port_channel_interfaces[port_channel_interface].pim.ipv4.sparse_mode is arista.avd.defined(true) %}
    pim ipv4 sparse-mode
 {%     endif %}
@@ -171,4 +195,9 @@ interface {{ port_channel_interface }}
    storm-control {{ section | replace("_", "-") }} level {{ port_channel_interfaces[port_channel_interface].storm_control[section].level }}
 {%         endif %}
 {%     endfor %}
+{%     if port_channel_interfaces[port_channel_interface].bfd.interval is arista.avd.defined and
+          port_channel_interfaces[port_channel_interface].bfd.min_rx is arista.avd.defined and
+          port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
+   bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
+{%     endif %}
 {% endfor %}

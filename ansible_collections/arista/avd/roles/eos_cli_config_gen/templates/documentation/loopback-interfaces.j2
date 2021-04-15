@@ -1,4 +1,7 @@
 {% if loopback_interfaces is defined and loopback_interfaces is not none %}
+
+## Loopback Interfaces
+
 ### Loopback Interfaces Summary
 
 #### IPv4
@@ -6,7 +9,7 @@
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description }} |
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} |
 {%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} default {% endif -%} |
 {%-        if loopback_interfaces[loopback_interface].ip_address is defined %}
  {{ loopback_interfaces[loopback_interface].ip_address }}
@@ -24,7 +27,7 @@
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description }} |
+| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].description | arista.avd.default('-') }} |
 {%-        if loopback_interfaces[loopback_interface].vrf is defined %} {{ loopback_interfaces[loopback_interface].vrf }} {% else %} default {% endif -%} |
 {%-        if loopback_interfaces[loopback_interface].ipv6_address is defined %} {{ loopback_interfaces[loopback_interface].ipv6_address }} {% else %} - {% endif -%} |
 {%     endfor %}
@@ -53,7 +56,4 @@
 ```eos
 {% include 'eos/loopback-interfaces.j2' %}
 ```
-{% else %}
-No loopback interfaces defined
 {% endif %}
-

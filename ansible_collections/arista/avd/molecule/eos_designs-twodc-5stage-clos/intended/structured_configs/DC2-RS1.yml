@@ -1,4 +1,5 @@
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_mgmt_ip: 192.168.1.18/24
 switch_bgp_as: 65201
 switch_router_id: 172.16.20.1
@@ -27,6 +28,8 @@ logging: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC2 DC2-RS1
 spanning_tree:
   mode: none
 aaa_authorization: null
@@ -39,10 +42,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-SUPER-SPINE1
@@ -76,6 +75,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.18/24
     gateway: 192.168.1.254
+    type: oob
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -99,6 +99,11 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65201
   router_id: 172.16.20.1
@@ -119,7 +124,7 @@ router_bgp:
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
   neighbors:

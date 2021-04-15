@@ -225,3 +225,14 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%         endfor %}
 {%    endif %}
 {% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].inb_mgmt_loopback0_reachability_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].inb_mgmt_loopback0_reachability_results.results %}
+{%             if result.skipped is not defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+{{ test_id.value }},{{ node }},Loopback0 Reachability,Inband Mgmt Reachability,Source: {{ node }} - {{ result.inb_mgmt_loopback0_reachability_test.invocation.module_args.commands[0].split(" ") | last }} Destination: {{ result.inb_mgmt_loopback0_reachability_test.loopback0_address }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+
+{%             endif %}
+{%         endfor %}
+{%    endif %}
+{% endfor %}

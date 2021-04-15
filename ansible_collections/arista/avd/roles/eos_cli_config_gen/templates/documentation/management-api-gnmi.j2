@@ -1,5 +1,8 @@
 {# Management API GNMI #}
 {% if management_api_gnmi is defined and management_api_gnmi is not none %}
+
+## Management API GNMI
+
 ### Management API GNMI Summary
 
 {% if management_api_gnmi.enable_vrfs is defined %}
@@ -17,6 +20,4 @@ GNMI is not configured on any VRF.
 ```eos
 {% include 'eos/management-api-gnmi.j2' %}
 ```
-{% else %}
-Management API gnmi is not defined
 {% endif %}

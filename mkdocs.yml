@@ -7,14 +7,12 @@ theme:
   name: material
   features:
     - navigation.instant
-    # - toc.integrate
   highlightjs: true
   hljs_languages:
-        - yaml
-        - python
-        - shell
+    - yaml
+    - python
+    - shell
 extra_css:
-  # - docs/stylesheets/extra.ivory.css
   - docs/stylesheets/extra.material.css
 
 markdown_extensions:
@@ -51,24 +49,33 @@ use_directory_urls: true
 nav:
   - Home: README.md
   - Release Notes:
-    - 2.0.x: docs/release-notes/2.0.x.md
-    - 1.1.x: docs/release-notes/1.1.x.md
-    - 1.0.x: docs/release-notes/1.0.x.md
+      - 2.0.x: docs/release-notes/2.0.x.md
+      - 1.1.x: docs/release-notes/1.1.x.md
+      - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
-    - Requirements: docs/installation/requirements.md
-    - Setup environment: docs/installation/setup-environement.md
-    - Ansible-galaxy installation: docs/installation/setup-galaxy.md
-    - Git installation: docs/installation/setup-git.md
-    - Development tips & tricks: docs/installation/development.md
+      - Requirements: docs/installation/requirements.md
+      - Setup environment: docs/installation/setup-environement.md
+      - Ansible-galaxy installation: docs/installation/setup-galaxy.md
+      - Git installation: docs/installation/setup-git.md
+      - Development tips & tricks: docs/installation/development.md
   - How-To:
-    - Build your first AVD project: docs/how-to/first-project.md
-    - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
-    - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
-    - AWX & Tower Integration: docs/how-to/tower-integration.md
-    - VScode Container: docs/how-to/vscode-container.md
+      - Build your first AVD project: docs/how-to/first-project.md
+      - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
+      - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
+      - AWX & Tower Integration: docs/how-to/tower-integration.md
+      - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
-    - eos_designs: roles/eos_designs/README.md
+    - eos_designs:
+      - Overview: roles/eos_designs/README.md
+      - l3ls-evpn:
+        - Overview: roles/eos_designs/doc/l3ls-evpn.md
+        - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
+        - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
+        - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
+        - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
+        - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
+        - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
     - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
     - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
     - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
@@ -79,16 +86,17 @@ nav:
     - build_output_folders: roles/build_output_folders/README.md
     - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
-    - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
-    - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
-    - Cloudvision Module documentation: https://cvp.avd.sh/
+      - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
+      - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
+      - AVD Plugins & Filters: plugins/README.md
+      - Cloudvision Module documentation: https://cvp.avd.sh/
   - External resources:
-    - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
-    - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
+      - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
+      - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - About:
-    - Contribution Guide: docs/contributing.md
-    - Ansible Galaxy page: https://galaxy.ansible.com/arista/cvp
-    - Arista AVD Modules: https://github.com/aristanetworks/ansible-avd
-    - Arista CVP Modules: https://github.com/aristanetworks/ansible-cvp
-    - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
-    - Arista Automation Examples: https://github.com/aristanetworks/netdevops-examples
+      - Contribution Guide: docs/contributing.md
+      - Ansible Galaxy page: https://galaxy.ansible.com/arista/cvp
+      - Arista AVD Modules: https://github.com/aristanetworks/ansible-avd
+      - Arista CVP Modules: https://github.com/aristanetworks/ansible-cvp
+      - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
+      - Arista Automation Examples: https://github.com/aristanetworks/netdevops-examples

@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF2
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65102
 leaf_id: 3
 switch_mgmt_ip: 192.168.200.107/24
@@ -99,6 +100,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -214,10 +216,6 @@ vrfs:
   Tenant_C_OP_Zone:
     tenant: Tenant_C
     ip_routing: true
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
@@ -343,6 +341,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.107/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -602,6 +601,11 @@ route_maps:
         - origin incomplete
         description: Make routes learned over MLAG Peer-link less preferred on spines
           to ensure optimal routing
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65102
   router_id: 192.168.255.7
@@ -615,14 +619,14 @@ router_bgp:
       remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
       remote_as: 65102
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
       route_map_in: RM-MLAG-PEER-IN
     EVPN-OVERLAY-PEERS:
       type: evpn
@@ -630,19 +634,25 @@ router_bgp:
       bfd: true
       ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.31.255.16:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE1_Ethernet3
     172.31.255.18:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE2_Ethernet3
     172.31.255.20:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE3_Ethernet3
     172.31.255.22:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-SPINE4_Ethernet3
     10.255.251.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: DC1-LEAF2A
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -741,6 +751,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:13
@@ -756,6 +767,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:10
@@ -771,6 +783,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:11
@@ -786,6 +799,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:20
@@ -801,6 +815,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.7
       rd: 192.168.255.7:30
@@ -816,6 +831,7 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

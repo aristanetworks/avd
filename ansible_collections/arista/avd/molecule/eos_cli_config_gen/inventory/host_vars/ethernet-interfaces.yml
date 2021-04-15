@@ -9,6 +9,10 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
 
   Ethernet6:
     logging:
@@ -97,6 +101,18 @@ ethernet_interfaces:
     isis_metric: 99
     isis_network_point_to_point: true
 
+  Ethernet6:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+    profile: ALL
+
   Ethernet7:
     description: Molecule L2
     shutdown: false
@@ -131,7 +147,38 @@ ethernet_interfaces:
         unit: pps
       multicast:
         level: 50
-        unit: 
+        unit:
       unknown_unicast:
         level: 10
         unit: percent
+
+  Ethernet8:
+    description: to WAN-ISP1-01 Ethernet2
+    type: routed
+  Ethernet8.101:
+    description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
+    type: l3dot1q
+    encapsulation:
+      dot1q:
+        vlan: 101
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+
+  Ethernet9:
+    description: interface_with_mpls_enabled
+    type: routed
+    ip_address: 172.31.128.9/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+
+  Ethernet10:
+    description: interface_with_mpls_disabled
+    type: routed
+    ip_address: 172.31.128.10/31
+    mpls:
+      ip: false
+      ldp:
+        interface: false

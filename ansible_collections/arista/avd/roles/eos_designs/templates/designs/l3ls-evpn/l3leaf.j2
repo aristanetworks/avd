@@ -5,6 +5,7 @@
 {# Include logic for L3LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
+{% set connected_endpoints = dict() %}
 {# Set switch.underlay_routing_protocol #}
 {% include 'logic/switch-underlay-routing-protocol.j2' %}
 {# Set switch.overlay_routing_protocol #}
@@ -21,10 +22,13 @@
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-rd-rt-admin-subfield-logic.j2' %}
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
+{# Build dictionary for Infrastructure Elements interface configuration #}
+{% include 'connected_endpoints/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
 switch_platform: {{ switch.platform }}
+switch_rack: {{ switch.rack }}
 switch_bgp_as: {{ switch.bgp_as }}
 leaf_id: {{ leaf.id }}
 switch_mgmt_ip: {{ switch.mgmt_ip }}
@@ -48,9 +52,9 @@ leaf_mlag_peer_ip: {{ leaf.mlag_peer_ip }}
 leaf_mlag_peer_id: {{ leaf.mlag_peer_id }}
 {% endif %}
 
-{# routing protocol model multi-agent needed for EVPN address family #}
-service_routing_protocols_model: multi-agent
-ip_routing: true
+{# routing protocol model multi-agent needed for EVPN address family, IPv4 and IPv6 routing #}
+### IPv4, IPv6 and arBGP config
+{% include 'base/routing.j2' %}
 
 {# Hardware Counter #}
 ### Hardware Counters
@@ -107,6 +111,10 @@ ntp_server:
 redundancy:
 {% include 'base/redundancy.j2' %}
 
+{# snmp settings #}
+snmp_server:
+{% include 'base/snmp-settings.j2' %}
+
 {# spanning-tree #}
 ### Spanning-tree ###
 spanning_tree:
@@ -153,10 +161,6 @@ vrfs:
 {# Tenant VRFS #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
-{# bfd multihop #}
-### bfd multihop ###
-bfd_multihop:
-{% include 'base/bfd-multihop.j2' %}
 
 {# Port-Channel Interfaces #}
 ### Port-Channel Interfaces ###
@@ -165,8 +169,8 @@ port_channel_interfaces:
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
-{# Server - Port Channel Interfaces #}
-{% include 'edge_ports/leaf-server-port-channels.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-port-channel-interfaces.j2' %}
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -177,13 +181,14 @@ ethernet_interfaces:
 {% include 'mlag/switch-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
-{# Server - Interfaces Configuration #}
-{% include 'edge_ports/leaf-server-interfaces.j2' %}
+{# Infrastructure Elements #}
+{% include 'connected_endpoints/leaf-ethernet-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 {# L3 Edge Point-to-Point Interfaces #}
 {% include 'l3_edge/switch-l3-edge-p2p-interfaces.j2' %}
-
+{# L3 VRF Interfaces #}
+{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-interfaces.j2' %}
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
@@ -264,6 +269,11 @@ route_maps:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
 
+{# router multihop #}
+### router bfd ###
+router_bfd:
+{% include 'base/router-bfd.j2' %}
+
 {# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
@@ -272,6 +282,8 @@ router_bgp:
   peer_groups:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
+  neighbor_interfaces:
+{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-rfc5549-neighbors.j2' %}
   neighbors:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}

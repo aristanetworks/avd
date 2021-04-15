@@ -1,5 +1,6 @@
 l3leaf_node_group: DC1_LEAF1
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65000
 leaf_id: 1
 switch_mgmt_ip: 192.168.200.105/24
@@ -55,6 +56,7 @@ ntp_server:
   nodes:
   - 192.168.200.5
 redundancy: null
+snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -75,10 +77,6 @@ vlans: null
 vrfs:
   MGMT:
     ip_routing: false
-bfd_multihop:
-  interval: 1200
-  min_rx: 1200
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -149,6 +147,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.200.105/24
     gateway: 192.168.200.5
+    type: oob
 vlan_interfaces: null
 vxlan_tunnel_interface:
   Vxlan1:
@@ -186,6 +185,11 @@ route_maps:
         type: permit
         set:
         - extcommunity soo 192.168.254.5:1 additive
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 router_bgp:
   as: 65000
   router_id: 192.168.255.5
@@ -194,31 +198,32 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    EVPN-OVERLAY-PEERS:
+    OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       remote_as: 65000
       bfd: true
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     192.168.255.1:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SPINE1
     192.168.255.4:
-      peer_group: EVPN-OVERLAY-PEERS
+      peer_group: OVERLAY-PEERS
       description: DC1-SPINE4
   redistribute_routes: null
   address_family_evpn:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: true
         route_map_in: RM-EVPN-SOO-IN
         route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
     peer_groups:
-      EVPN-OVERLAY-PEERS:
+      OVERLAY-PEERS:
         activate: false
   address_family_rtc: null
   vlan_aware_bundles: null
@@ -231,6 +236,7 @@ ip_extcommunity_lists:
 router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
   net: 49.0001.0001.0001.0001.00
   router_id: 192.168.255.5
   no_passive_interfaces:

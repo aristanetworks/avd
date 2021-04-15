@@ -1,5 +1,8 @@
 {% if platform is defined and platform is not none %}
-### Platform
+
+# Platform
+
+## Platform Summary
 {%     if platform.trident is defined and platform.trident is not none %}
 {%       if platform.trident.forwarding_table_partition is defined and platform.trident.forwarding_table_partition is not none %}
 
@@ -7,11 +10,9 @@
 {%       endif %}
 {%     endif %}
 
-### Platform Configuration
+## Platform Configuration
 
 ```eos
 {% include 'eos/platform.j2' %}
 ```
-{% else %}
-No platform parameters defined
 {% endif %}

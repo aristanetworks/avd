@@ -1,8 +1,15 @@
 {# spanning-tree #}
 {% if spanning_tree is arista.avd.defined %}
+
+# Spanning Tree
+
 ## Spanning Tree Summary
 
 STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
+{% if spanning_tree.root_super is arista.avd.defined %}
+
+STP Root Super: **{{ spanning_tree.root_super }}**
+{% endif %}
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 
 ### MSTP Instance and Priority
@@ -70,6 +77,4 @@ MST PSVT Border is enabled.
 ```eos
 {% include 'eos/spanning-tree.j2' %}
 ```
-{% else %}
-Spanning-tree not defined
 {% endif %}

@@ -41,6 +41,8 @@
 {%                 do switch.remote_switches_asn.append( remote_switch_vars.overlay_controller.nodes[some_switch].bgp_as | arista.avd.default(remote_switch_vars.overlay_controller.defaults.bgp_as)) %}
 {%             endif %}
 {%         endfor %}
+{%         set switch.rack = overlay_controller.nodes[node].rack | arista.avd.default(
+                                    overlay_controller.defaults.rack ) %}
 {%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
 {%             set switch.bgp_as = bgp_as %}
 {%         else %}

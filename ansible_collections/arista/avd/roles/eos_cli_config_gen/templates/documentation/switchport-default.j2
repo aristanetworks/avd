@@ -1,0 +1,14 @@
+{% if switchport_default.mode is arista.avd.defined %}
+
+## Switchport Default
+
+### Switchport Defaults Summary
+
+- Default Switchport Mode: {{ switchport_default.mode }}
+
+### Switchport Default Configuration
+
+```eos
+{% include 'eos/switchport-default.j2' %}
+```
+{% endif %}

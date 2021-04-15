@@ -1,4 +1,7 @@
 {% if sflow is defined and sflow is not none %}
+
+## SFlow
+
 ### SFlow Summary
 {%   if ( (sflow.vrfs is defined and sflow.vrfs is not none) or (sflow.destinations is defined and sflow.destinations is not none) or (sflow.source_interface is defined and sflow.source_interface is not none) ) %}
 
@@ -42,6 +45,4 @@ sFlow is disabled.
 ```eos
 {% include 'eos/sflow.j2' %}
 ```
-{% else %}
-No sFlow defined
 {% endif %}

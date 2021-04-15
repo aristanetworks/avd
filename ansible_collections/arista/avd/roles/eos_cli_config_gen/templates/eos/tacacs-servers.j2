@@ -10,6 +10,9 @@
 {%                 set host_cli = host_cli ~ " vrf " ~ host.vrf %}
 {%             endif %}
 {%         endif %}
+{%         if host.timeout is arista.avd.defined %}
+{%             set host_cli = host_cli ~ " timeout " ~ host.timeout %}
+{%         endif %}
 {%         if host.key is arista.avd.defined %}
 {%             set host_cli = host_cli ~ " key 7 " ~ host.key %}
 {%         endif %}

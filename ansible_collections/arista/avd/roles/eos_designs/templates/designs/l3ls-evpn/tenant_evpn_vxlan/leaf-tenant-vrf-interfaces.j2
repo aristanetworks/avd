@@ -1,0 +1,20 @@
+{% if leaf.l3_interfaces is defined %}
+{%     for interface in leaf.l3_interfaces %}
+  {{ interface.l3_interface }}:
+    type: routed
+    peer_type: l3_interface
+    vrf: {{ interface.vrf }}
+    ip_address: {{ interface.ip_address }}
+{%         if interface.mtu is arista.avd.defined %}
+    mtu: {{ interface.mtu }}
+{%         endif %}
+{%         if interface.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%         else %}
+    shutdown: false
+{%         endif %}
+{%         if interface.description is arista.avd.defined %}
+    description: {{ interface.description }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

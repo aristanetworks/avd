@@ -1,5 +1,6 @@
 l3leaf_node_group: RACK1_SINGLE
 switch_platform: vEOS-LAB
+switch_rack: null
 switch_bgp_as: 65121
 leaf_id: 1
 switch_mgmt_ip: 192.168.1.15/24
@@ -42,6 +43,8 @@ queue_monitor_length: null
 name_server: null
 ntp_server: null
 redundancy: null
+snmp_server:
+  location: TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A
 spanning_tree:
   mode: none
 aaa_authorization: null
@@ -70,10 +73,6 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-bfd_multihop:
-  interval: 300
-  min_rx: 300
-  multiplier: 3
 port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
@@ -126,6 +125,7 @@ management_interfaces:
     vrf: MGMT
     ip_address: 192.168.1.15/24
     gateway: 192.168.1.254
+    type: oob
 vlan_interfaces:
   Vlan4092:
     description: L2LEAF_INBAND_MGMT
@@ -217,6 +217,11 @@ route_maps:
         - as 65120
       20:
         type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: 65121
   router_id: 172.16.120.3
@@ -232,20 +237,23 @@ router_bgp:
       remote_as: 65120
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
-      send_community: true
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '5'
       password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: true
+      send_community: all
       maximum_routes: 0
+  neighbor_interfaces: null
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE1_Ethernet3
     172.17.120.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE2_Ethernet3
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE1
@@ -318,6 +326,7 @@ router_bgp:
           - 1025:1025
       redistribute_routes:
       - connected
+      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

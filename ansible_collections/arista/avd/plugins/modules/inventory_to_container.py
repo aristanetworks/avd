@@ -28,7 +28,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 DOCUMENTATION = r'''
 ---
 module: inventory_to_container
-version_added: "2.9"
+version_added: "1.0.0"
 author: Ansible Arista Team (@aristanetworks)
 short_description: Transform information from inventory to arista.cvp collection
 description:
@@ -64,6 +64,7 @@ options:
     required: false
     default: ['all']
     type: list
+    elements: str
 '''
 
 EXAMPLES = r'''
@@ -407,7 +408,7 @@ def main():
         configlet_dir=dict(type='str', required=False),
         configlet_prefix=dict(type='str', required=False),
         destination=dict(type='str', required=False),
-        device_filter=dict(type="list", default="all")
+        device_filter=dict(type="list", elements='str', default="all")
     )
 
     module = AnsibleModule(argument_spec=argument_spec,
@@ -432,7 +433,7 @@ def main():
             try:
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
-                print(exc)
+                module.debug(exc)
         result['CVP_TOPOLOGY'] = get_containers(inventory_content=inventory_content,
                                                 parent_container=parent_container,
                                                 module=module)

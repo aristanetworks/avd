@@ -21,8 +21,25 @@
   tags: [build, provision]
 
 - name: Generate device documentation
-  template:
-    src: eos-device-documentation.j2
-    dest: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
-  delegate_to: localhost
   tags: [build, provision]
+  delegate_to: localhost
+  block:
+    - name: Store checksum of existing device documentation
+      ansible.builtin.stat:
+        path: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+        checksum_algorithm: sha224
+        get_attributes: no
+        get_checksum: yes
+        get_mime: no
+      register: doc_stat_result
+    - name: Generate content of device documentation
+      template:
+        src: eos-device-documentation.j2
+        dest: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+      changed_when: false
+    - name: Generate TOC for device documentation
+      add_toc:
+        md_file: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+        skip_lines: 3
+      register: toc_result
+      changed_when: toc_result.checksum | default('1') != doc_stat_result.stat.checksum | default('0')
