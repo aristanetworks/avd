@@ -18,6 +18,8 @@ switch:
                super_spine.platform) }}
 {# switch.router_id #}
   router_id: {{ super_spine_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}
+{# switch.loopback_network_summary #}
+  loopback_network_summary: {{ super_spine_loopback_network_summary }}
 {# switch.bgp_as #}
 {%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
   bgp_as: {{ bgp_as }}

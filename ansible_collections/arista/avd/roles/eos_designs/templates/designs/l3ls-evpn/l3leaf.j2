@@ -155,24 +155,19 @@ vrfs:
 {# Tenant VRFS #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
+<<<<<<< HEAD
 
 {# Port-Channel Interfaces #}
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
-<<<<<<< HEAD
-<<<<<<< HEAD
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
 {# Infrastructure Elements #}
 {% include 'connected_endpoints/leaf-port-channel-interfaces.j2' %}
-=======
 {# Server - Port Channel Interfaces #}
 {% include 'edge_ports/leaf-server-port-channels.j2' %}
->>>>>>> refactor mlag
-=======
->>>>>>> refactor connected_endpoints
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -236,11 +231,6 @@ ip_igmp_snooping:
 ### static routes ###
 static_routes:
 {% include 'routing/static-routes.j2' %}
-
-{# prefix_lists #}
-### prefix-lists ###
-prefix_lists:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-prefix-lists.j2' %}
 
 {# route maps #}
 ### route-maps ###

@@ -145,11 +145,6 @@ mac_address_table:
 static_routes:
 {% include 'routing/static-routes.j2' %}
 
-{# prefix_lists #}
-### prefix-lists ###
-prefix_lists:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/overlay-controller-prefix-lists.j2' %}
-
 {# route maps #}
 ### route-maps ###
 route_maps:
