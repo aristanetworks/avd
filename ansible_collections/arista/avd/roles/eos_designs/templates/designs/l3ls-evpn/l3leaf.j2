@@ -5,7 +5,6 @@
 {# Include logic for L3LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
-{% set connected_endpoints = dict() %}
 {# Set switch.underlay_routing_protocol #}
 {% include 'logic/switch-underlay-routing-protocol.j2' %}
 {# Set switch.overlay_routing_protocol #}
@@ -163,6 +162,7 @@ port_channel_interfaces:
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
 <<<<<<< HEAD
+<<<<<<< HEAD
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
 {# Infrastructure Elements #}
@@ -171,6 +171,8 @@ port_channel_interfaces:
 {# Server - Port Channel Interfaces #}
 {% include 'edge_ports/leaf-server-port-channels.j2' %}
 >>>>>>> refactor mlag
+=======
+>>>>>>> refactor connected_endpoints
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
@@ -179,8 +181,6 @@ ethernet_interfaces:
 {% include 'designs/l3ls-evpn/fabric/interfaces/leaf-p2p-interfaces.j2'%}
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
-{# Infrastructure Elements #}
-{% include 'connected_endpoints/leaf-ethernet-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 {# L3 VRF Interfaces #}

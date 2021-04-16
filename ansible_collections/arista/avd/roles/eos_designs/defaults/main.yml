@@ -18,6 +18,8 @@ templates:
     - "new/mlag/main.j2"
     # L3 Edge feature
     - "new/l3_edge/main.j2"
+    # Connected Endpoints feature
+    - "new/connected_endpoints/main.j2"
     # Legacy eos_designs blob
     - "structured-configuration.j2"
     # Merge custom_structured_configuration last

@@ -5,15 +5,12 @@
 {# Include logic for L2LEAF in L3LS EVPN Fabric #}
 {% set switch = namespace() %}
 {% set leaf = namespace() %}
-{% set connected_endpoints = dict() %}
 {# Set l2leaf node vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf.j2' %}
 {# Set tenant network evpn vxlan services vars #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l2leaf-logic.j2' %}
 {# Set switch inband management vars #}
 {% include 'designs/l3ls-evpn/logic/l2leaf-inband-management.j2' %}
-{# Build dictionary for Infrastructure Elements interface configuration #}
-{% include 'connected_endpoints/build-dictionary-logic.j2' %}
 
 ### Leaf Info ###
 l2leaf_node_group: {{ leaf.group }}

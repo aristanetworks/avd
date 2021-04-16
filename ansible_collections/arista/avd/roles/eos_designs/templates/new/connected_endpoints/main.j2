@@ -1,0 +1,9 @@
+{% if connected_endpoints_keys is arista.avd.defined %}
+{%     set connected_endpoints = dict() %}
+{%     include 'new/connected_endpoints/logic.j2' %}
+
+{%     include 'new/connected_endpoints/ethernet-interfaces.j2' %}
+
+{%     include 'new/connected_endpoints/port-channel-interfaces.j2' %}
+
+{% endif %}
