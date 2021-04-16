@@ -9,9 +9,9 @@ design:
 templates:
   facts:
     # Set general "switch.*" variables
-    - "new/switch/main.j2"
+    - "new/facts/main.j2"
     # Set design specific "switch.*" variables
-    - "new/designs/{{ design.type }}/switch/{{ type }}.j2"
+    - "new/designs/{{ design.type }}/facts/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
     # Legacy eos_designs blob
