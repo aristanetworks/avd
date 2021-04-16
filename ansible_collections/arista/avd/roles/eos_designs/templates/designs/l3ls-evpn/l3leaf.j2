@@ -20,13 +20,10 @@
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-logic.j2' %}
 {# Set rd rt admin subfield logic #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-rd-rt-admin-subfield-logic.j2' %}
-<<<<<<< HEAD
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
 {# Build dictionary for Infrastructure Elements interface configuration #}
 {% include 'connected_endpoints/build-dictionary-logic.j2' %}
-=======
->>>>>>> Refactor l3_edge feature
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
@@ -122,8 +119,6 @@ snmp_server:
 ### Spanning-tree ###
 spanning_tree:
 {% include 'base/spanning-tree.j2' %}
-{# disable mlag vlan spanning tree #}
-{% include 'mlag/switch-mlag-spanning-tree.j2' %}
 
 {# unsupported transceiver #}
 {% include 'base/unsupported-transeiver.j2' %}
@@ -146,9 +141,6 @@ clock:
 {# VLANs #}
 ### VLANs ###
 vlans:
-{# mlag VLANs #}
-{% include 'mlag/switch-mlag-vlans.j2' %}
-
 {# L2leaf Inband Management VLAN #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan.j2' %}
 
@@ -170,18 +162,21 @@ vrfs:
 port_channel_interfaces:
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-port-channel-uplinks.j2' %}
+<<<<<<< HEAD
 {# mlag peer-link #}
 {% include 'mlag/switch-mlag-peer-link.j2' %}
 {# Infrastructure Elements #}
 {% include 'connected_endpoints/leaf-port-channel-interfaces.j2' %}
+=======
+{# Server - Port Channel Interfaces #}
+{% include 'edge_ports/leaf-server-port-channels.j2' %}
+>>>>>>> refactor mlag
 
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
 {# Point-to-Point Interfaces to Spine Switches #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/leaf-p2p-interfaces.j2'%}
-{# mlag interfaces #}
-{% include 'mlag/switch-mlag-interfaces.j2' %}
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# Infrastructure Elements #}
@@ -211,8 +206,6 @@ management_interfaces:
 {# vlan interfaces #}
 ### VLAN Interfaces ###
 vlan_interfaces:
-{# mlag vlan interfaces #}
-{% include 'mlag/switch-mlag-vlan-interfaces.j2' %}
 {# L2leaf Inband Management VLAN interfaces #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan-interfaces.j2' %}
 {# Tenant vlan interfaces #}
@@ -260,9 +253,6 @@ static_routes:
 ### prefix-lists ###
 prefix_lists:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-prefix-lists.j2' %}
-
-{# MLAG Configuration #}
-{% include 'mlag/switch-mlag-configuration.j2' %}
 
 {# route maps #}
 ### route-maps ###

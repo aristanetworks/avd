@@ -1,0 +1,15 @@
+{# Leaf mlag vlans #}
+vlans:
+{% if switch.mlag_ibgp is arista.avd.defined(true) %}
+  4093:
+    tenant: system
+    name: LEAF_PEER_L3
+    trunk_groups:
+      - LEAF_PEER_L3
+{% endif %}
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+      - MLAG
+{##}

@@ -14,6 +14,8 @@ templates:
     - "new/designs/{{ design.type }}/switch/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
+    # MLAG feature
+    - "new/mlag/main.j2"
     # L3 Edge feature
     - "new/l3_edge/main.j2"
     # Legacy eos_designs blob
