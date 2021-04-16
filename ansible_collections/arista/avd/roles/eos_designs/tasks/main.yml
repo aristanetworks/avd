@@ -1,11 +1,11 @@
 ---
 
-- name: Run "build_structured_config"
+- name: Set AVD facts
   yaml_template_to_var:
     yaml_templates: "{{ templates.facts }}"
   check_mode: no
   changed_when: False
-  tags: [eos_designs_python, never]
+  tags: [build, provision]
 
 - name: Generate (yaml) with all vars (only for debugging)
   template:
@@ -13,40 +13,23 @@
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}-logic-vars.yml'
   delegate_to: localhost
   changed_when: False
-  tags: [eos_designs_python, never]
+  tags: [debug, never]
 
-- name: Run "build_structured_config"
+- name: Generate device configuration in structured format (yaml).
   yaml_template_to_var:
     name: structured_config
     yaml_templates: "{{ templates.structured_config }}"
   check_mode: no
   changed_when: False
-  tags: [eos_designs_python, never]
+  tags: [build, provision]
 
-- name: Generated structured_config file (yaml) based on structured_config var
+- name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
   template:
     src: new/generate_structured_config.j2
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
   delegate_to: localhost
   changed_when: False
-  tags: [eos_designs_python, never]
-
-- name: Generate device configuration in structured format (yaml).
-  template:
-    src: "structured-configuration.j2"
-    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
-  delegate_to: localhost
-  check_mode: no
-  changed_when: False
-  tags: [eos_designs_jinja, build, provision]
-
-- name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
-  template:
-    src: base/custom_structured_configuration.j2
-    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
-  delegate_to: localhost
-  changed_when: False
-  tags: [eos_designs_jinja, build, provision]
+  tags: [build, provision]
 
 - name: Include device structured configuration, that was previously generated.
   include_vars: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'

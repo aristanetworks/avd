@@ -16,13 +16,10 @@ templates:
     # Render Strucured Configuration
     # L3 Edge feature
     - "new/l3_edge/main.j2"
-
     # Legacy eos_designs blob
     - "structured-configuration.j2"
-
     # Merge custom_structured_configuration last
     - "new/custom_structured_configuration_from_var.j2"
-
 
 mgmt_vrf_routing: false
 
