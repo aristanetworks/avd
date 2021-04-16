@@ -1,0 +1,72 @@
+{# l3leaf underlay router bgp configuration #}
+router_bgp:
+  as: {{ switch.bgp_as }}
+  router_id: {{ switch.router_id }}
+  bgp_defaults:
+{% for bgp_default in switch.bgp_defaults %}
+    - {{ bgp_default }}
+{% endfor %}
+{% if bgp_maximum_paths is arista.avd.defined and bgp_ecmp is arista.avd.defined %}
+    - maximum-paths {{ bgp_maximum_paths }} ecmp {{ bgp_ecmp }}
+{% elif bgp_maximum_paths is arista.avd.defined %}
+    - maximum-paths {{ bgp_maximum_paths }}
+{% endif %}
+
+{# EBGP #}
+{## Underlay network peerings #}
+{% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
+{% if switch.underlay_routing_protocol == "ebgp" %}
+  peer_groups:
+    {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+      type: ipv4
+      remote_as: {{ spine.bgp_as }}
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: all
+
+{%     if underlay_rfc5549 is arista.avd.defined(true) %}
+{%         for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
+{%             if ns.first_neighbor_interface == true %}
+  neighbor_interfaces:
+{%                 set ns.first_neighbor_interface = false %}
+{%             endif %}
+    {{ uplink_to_spine_interface }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      remote_as: {{ spine.bgp_as }}
+      description: {{ switch.spines[loop.index0] }}_{{ switch.spine_interfaces[loop.index0] }}
+{%         endfor %}
+
+{%     else %}
+{%         for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
+{%             if ns.first_neighbor == true %}
+  neighbors:
+{%                 set ns.first_neighbor = false %}
+{%             endif %}
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id - 1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      description: {{ switch.spines[loop.index0] }}_{{ switch.spine_interfaces[loop.index0] }}
+{%         endfor %}
+{%     endif %}
+{## Underlay network peering to Overlay Controllers #}
+{%     if overlay_controller is defined %}
+{%         for overlay_controller_node in overlay_controller.nodes | arista.avd.natural_sort %}
+{%             set overlay_controller_remote_switches = overlay_controller.nodes[overlay_controller_node].remote_switches | arista.avd.default( overlay_controller.defaults.remote_switches ) %}
+{%             for overlay_controller_remote_switch in overlay_controller_remote_switches %}
+{%                 if overlay_controller_remote_switch == inventory_hostname %}
+{%                     if ns.first_neighbor == true %}
+  neighbors:
+{%                         set ns.first_neighbor = false %}
+{%                     endif %}
+    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      description: {{ overlay_controller_node }}
+      remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default( overlay_controller.defaults.bgp_as ) }}
+{%                     if overlay_controller_p2p_bfd is arista.avd.defined(true) %}
+      bfd: true
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{% endif %}
+

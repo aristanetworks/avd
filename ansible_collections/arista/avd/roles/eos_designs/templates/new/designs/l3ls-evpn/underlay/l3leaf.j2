@@ -1,9 +1,13 @@
 {# Add one blank line after each included template #}
-{% include 'new/designs/l3ls-evpn/underlay/loopback-interfaces.j2' %}
+{% include 'new/designs/l3ls-evpn/underlay/interfaces/loopback-interfaces.j2' %}
 
-{% include 'new/designs/l3ls-evpn/underlay/l3leaf-ethernet-interfaces.j2' %}
+{% include 'new/designs/l3ls-evpn/underlay/interfaces/l3leaf-ethernet-interfaces.j2' %}
 
-{% include 'new/designs/l3ls-evpn/underlay/l3leaf-port-channel-interfaces.j2' %}
+{% include 'new/designs/l3ls-evpn/underlay/interfaces/l3leaf-port-channel-interfaces.j2' %}
 
 {% include 'new/designs/l3ls-evpn/underlay/prefix-lists.j2' %}
+
+{% include 'new/designs/l3ls-evpn/underlay/route-maps.j2' %}
+
+{% include 'new/designs/l3ls-evpn/underlay/bgp/l3leaf-router-bgp.j2' %}
 

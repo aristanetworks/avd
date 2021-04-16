@@ -235,7 +235,6 @@ static_routes:
 {# route maps #}
 ### route-maps ###
 route_maps:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/route-maps.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
 
 {# router multihop #}
@@ -246,17 +245,10 @@ router_bfd:
 {# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
-{# underlay and overlay #}
-{% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-base.j2' %}
   peer_groups:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-peer-groups.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
-  neighbor_interfaces:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-rfc5549-neighbors.j2' %}
   neighbors:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
-{% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
   redistribute_routes:
 {% include 'designs/l3ls-evpn/fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:
