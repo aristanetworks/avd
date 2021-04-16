@@ -2,13 +2,10 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-import os
 import yaml
 
-from ansible.module_utils.parsing.convert_bool import boolean
 from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleError, AnsibleFileNotFound, AnsibleAction, AnsibleActionFail
-from ansible.module_utils._text import to_bytes, to_text, to_native
+from ansible.errors import AnsibleAction, AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
 from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
