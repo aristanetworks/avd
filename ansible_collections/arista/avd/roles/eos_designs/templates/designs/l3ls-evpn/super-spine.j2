@@ -14,8 +14,6 @@
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-servers-logic.j2' %}
 {# Set switch.evpn_route_clients #}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-evpn-route-clients-logic.j2' %}
-{# Set switch.l3_edge_* variables using external logic template #}
-{% include 'l3_edge/logic/switch-l3-edge.j2' %}
 
 ### Super Spine Info ###
 switch_platform: {{ switch.platform }}
@@ -129,8 +127,6 @@ ethernet_interfaces:
 {% include 'designs/l3ls-evpn/fabric/interfaces/super-spine-p2p-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
-{# L3 Edge Point-to-Point Interfaces #}
-{% include 'l3_edge/switch-l3-edge-p2p-interfaces.j2' %}
 
 {# Loopback Interfaces #}
 ### Loopback Interfaces ###
@@ -190,7 +186,6 @@ router_bgp:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/super-spine-router-bgp-neighbors.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
-{% include 'l3_edge/switch-l3-edge-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'designs/l3ls-evpn/fabric/ebgp_underlay/super-spine-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:

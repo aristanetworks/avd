@@ -1,0 +1,6 @@
+switch:
+{% if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
+  bgp_as: {{ bgp_as }}
+{% else %}
+  bgp_as: {{ spine.bgp_as | arista.avd.default() }}
+{% endif %}

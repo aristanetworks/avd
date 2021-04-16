@@ -6,6 +6,24 @@ root_dir: '{{inventory_dir}}'
 design:
   type: "l3ls-evpn"
 
+templates:
+  facts:
+    # Set general "switch." variables
+    - "new/switch/main.j2"
+    # Set design specific "switch." variables
+    - "new/designs/{{ design.type }}/switch/{{ type }}.j2"
+  structured_config:
+    # Render Strucured Configuration
+    # L3 Edge feature
+    - "new/l3_edge/main.j2"
+
+    # Legacy eos_designs blob
+    - "structured-configuration.j2"
+
+    # Merge custom_structured_configuration last
+    - "new/custom_structured_configuration_from_var.j2"
+
+
 mgmt_vrf_routing: false
 
 mgmt_interface: Management1

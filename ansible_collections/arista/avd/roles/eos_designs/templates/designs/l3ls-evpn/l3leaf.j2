@@ -20,10 +20,13 @@
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-logic.j2' %}
 {# Set rd rt admin subfield logic #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/l3leaf-rd-rt-admin-subfield-logic.j2' %}
+<<<<<<< HEAD
 {# Set switch.l3_edge_* variables #}
 {% include 'l3_edge/logic/switch-l3-edge.j2' %}
 {# Build dictionary for Infrastructure Elements interface configuration #}
 {% include 'connected_endpoints/build-dictionary-logic.j2' %}
+=======
+>>>>>>> Refactor l3_edge feature
 
 ### Leaf Info ###
 l3leaf_node_group: {{ leaf.group }}
@@ -185,8 +188,6 @@ ethernet_interfaces:
 {% include 'connected_endpoints/leaf-ethernet-interfaces.j2' %}
 {# Point-to-Point Interfaces to overlay-controller #}
 {% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
-{# L3 Edge Point-to-Point Interfaces #}
-{% include 'l3_edge/switch-l3-edge-p2p-interfaces.j2' %}
 {# L3 VRF Interfaces #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-interfaces.j2' %}
 
@@ -288,7 +289,6 @@ router_bgp:
 {% include 'designs/l3ls-evpn/fabric/bgp_base/leaf-router-bgp-neighbors.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
 {% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
-{% include 'l3_edge/switch-l3-edge-router-bgp-neighbors.j2' %}
   redistribute_routes:
 {% include 'designs/l3ls-evpn/fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
   address_family_evpn:

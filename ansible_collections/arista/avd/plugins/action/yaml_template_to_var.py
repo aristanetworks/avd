@@ -18,6 +18,8 @@ class ActionModule(ActionBase):
         result = super(ActionModule, self).run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
 
+        output_var_name = ""
+
         if self._task.args:
             if "name" in self._task.args:
                 n = self._task.args.get("name")
@@ -48,7 +50,8 @@ class ActionModule(ActionBase):
 
             template_output = template_lookup_module.run([template], template_vars)
             template_output_data = yaml.safe_load(template_output[0])
-            output = combine(output, template_output_data, recursive=True)
+            if template_output_data:
+                output = combine(output, template_output_data, recursive=True)
 
         if output_var_name:
             result['ansible_facts'] = {output_var_name : output}

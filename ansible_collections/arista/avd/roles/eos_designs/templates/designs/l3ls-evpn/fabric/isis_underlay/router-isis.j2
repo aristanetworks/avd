@@ -26,9 +26,6 @@
 {%                 endfor %}
 {%             endfor %}
 {%         endfor %}
-{%         for l3_edge_isis_interface in switch.l3_edge_isis_interfaces | arista.avd.natural_sort %}
-    - {{ l3_edge_isis_interface }}
-{%         endfor %}
 {%     elif type == "l3leaf" %}
   net: {{ isis_area_id }}.{{ isis_site_id }}.0001.{{ '%04d' | format(leaf.id) }}.00
   router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(leaf.id + switch.max_spines) }}
@@ -40,9 +37,6 @@
     - Vlan4093
     - Loopback1
 {%         endif %}
-{%         for l3_edge_isis_interface in switch.l3_edge_isis_interfaces | arista.avd.natural_sort %}
-    - {{ l3_edge_isis_interface }}
-{%         endfor %}
 {%    endif %}
   is_type: level-2
   address_family: ['ipv4 unicast']

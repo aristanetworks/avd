@@ -1,0 +1,11 @@
+switch:
+{% for node in overlay_controller.nodes | arista.avd.natural_sort %}
+{%     if node == inventory_hostname %}
+{%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
+  bgp_as: {{ bgp_as }}
+{%         else %}
+  bgp_as: {{ overlay_controller.nodes[node].bgp_as | arista.avd.default(
+             overlay_controller.defaults.bgp_as) }}
+{%         endif %}
+{%     endif %}
+{% endfor %}
