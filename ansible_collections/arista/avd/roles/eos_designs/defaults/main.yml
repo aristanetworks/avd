@@ -8,9 +8,9 @@ design:
 
 templates:
   facts:
-    # Set general "switch." variables
+    # Set general "switch.*" variables
     - "new/switch/main.j2"
-    # Set design specific "switch." variables
+    # Set design specific "switch.*" variables
     - "new/designs/{{ design.type }}/switch/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
