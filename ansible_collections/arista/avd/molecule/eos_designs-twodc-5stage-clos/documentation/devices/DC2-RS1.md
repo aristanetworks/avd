@@ -426,21 +426,12 @@ router bfd
 | -------- | ------ |
 | 10 | permit 172.16.20.0/24 eq 32 |
 
-#### PL-P2P-UNDERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.17.20.0/24 le 31 |
-
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 172.16.20.0/24 eq 32
-!
-ip prefix-list PL-P2P-UNDERLAY
-   seq 10 permit 172.17.20.0/24 le 31
 ```
 
 ## Route-maps

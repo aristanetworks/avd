@@ -73,7 +73,6 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD2-SPINE1
@@ -187,18 +186,15 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.1.254
-prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 172.16.120.0/24 eq 32
-      20:
-        action: permit 172.18.120.0/24 eq 32
-  PL-L2LEAF-INBAND-MGMT:
-    sequence_numbers:
-      10:
-        action: permit 172.21.120.0/24
 route_maps:
+  RM-EVPN-FILTER-AS65120:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65120
+      20:
+        type: permit
   RM-CONN-2-BGP:
     sequence_numbers:
       10:
@@ -209,35 +205,13 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-  RM-EVPN-FILTER-AS65120:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65120
-      20:
-        type: permit
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
 router_bgp:
-  as: 65121
-  router_id: 172.16.120.3
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-  - maximum-paths 4 ecmp 4
   peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      remote_as: 65120
-      password: AQQvKeimxJu+uGQ/yYvv9w==
-      maximum_routes: 12000
-      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -246,14 +220,13 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
-  neighbor_interfaces: null
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: 65120
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
   neighbors:
-    172.17.120.0:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD2-SPINE1_Ethernet3
-    172.17.120.2:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD2-SPINE2_Ethernet3
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE1
@@ -264,6 +237,12 @@ router_bgp:
       description: DC1-POD2-SPINE2
       remote_as: 65120
       route_map_out: RM-EVPN-FILTER-AS65120
+    172.17.120.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE1_Ethernet3
+    172.17.120.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
       description: DC1-RS2
@@ -327,6 +306,14 @@ router_bgp:
       redistribute_routes:
       - connected
       address_families: null
+  as: 65121
+  router_id: 172.16.120.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null
@@ -335,3 +322,14 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.120.0/24 eq 32
+      20:
+        action: permit 172.18.120.0/24 eq 32
+  PL-L2LEAF-INBAND-MGMT:
+    sequence_numbers:
+      10:
+        action: permit 172.21.120.0/24

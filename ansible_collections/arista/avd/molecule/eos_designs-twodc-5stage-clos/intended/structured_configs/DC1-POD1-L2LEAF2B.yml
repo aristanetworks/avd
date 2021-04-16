@@ -59,11 +59,6 @@ local_users:
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 clock: null
 vlans:
-  4094:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
   4085:
     tenant: system
     name: L2LEAF_INBAND_MGMT
@@ -76,18 +71,54 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  4094:
+    tenant: system
+    name: MLAG_PEER
+    trunk_groups:
+    - MLAG
 vrfs:
   MGMT:
     ip_routing: false
-port_channel_interfaces:
-  Port-Channel1:
-    description: DC1-POD1-LEAF2B_Po3
-    type: switched
+management_interfaces:
+  Management1:
+    description: oob_management
     shutdown: false
-    vlans: 110-112,4085
-    mode: trunk
-    service_profile: QOS-PROFILE
-    mlag: 1
+    vrf: MGMT
+    ip_address: 192.168.1.12/24
+    gateway: 192.168.1.254
+    type: oob
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.6/24
+    gateway: 172.21.110.1
+    type: inband
+tcam_profile: null
+platform: null
+mac_address_table: null
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 172.21.110.1
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null
+vlan_interfaces:
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 172.19.110.3/31
+    no_autostate: true
+    mtu: 1500
+port_channel_interfaces:
   Port-Channel3:
     description: MLAG_PEER_DC1-POD1-L2LEAF2A_Po3
     type: switched
@@ -97,27 +128,15 @@ port_channel_interfaces:
     service_profile: QOS-PROFILE
     trunk_groups:
     - MLAG
+  Port-Channel1:
+    description: DC1-POD1-LEAF2B_Po3
+    type: switched
+    shutdown: false
+    vlans: 110-112,4085
+    mode: trunk
+    service_profile: QOS-PROFILE
+    mlag: 1
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-POD1-LEAF2A
-    peer_interface: Ethernet4
-    peer_type: l3leaf
-    description: DC1-POD1-LEAF2A_Ethernet4
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-POD1-LEAF2B
-    peer_interface: Ethernet4
-    peer_type: l3leaf
-    description: DC1-POD1-LEAF2B_Ethernet4
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
     peer_interface: Ethernet3
@@ -138,40 +157,26 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
-management_interfaces:
-  Management1:
-    description: oob_management
+  Ethernet1:
+    peer: DC1-POD1-LEAF2A
+    peer_interface: Ethernet4
+    peer_type: l3leaf
+    description: DC1-POD1-LEAF2A_Ethernet4
+    type: switched
     shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.12/24
-    gateway: 192.168.1.254
-    type: oob
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: DC1-POD1-LEAF2B
+    peer_interface: Ethernet4
+    peer_type: l3leaf
+    description: DC1-POD1-LEAF2B_Ethernet4
+    type: switched
     shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.6/24
-    gateway: 172.21.110.1
-    type: inband
-vlan_interfaces:
-  Vlan4094:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 172.19.110.3/31
-    no_autostate: true
-    mtu: 1500
-tcam_profile: null
-platform: null
-mac_address_table: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.254
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 172.21.110.1
+    channel_group:
+      id: 1
+      mode: active
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
@@ -179,8 +184,3 @@ mlag_configuration:
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null

@@ -107,7 +107,6 @@ vrfs:
   Tenant_C_WAN_Zone:
     tenant: Tenant_C
     ip_routing: true
-port_channel_interfaces: null
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -235,13 +234,6 @@ static_routes:
 - destination_address_prefix: 10.3.4.0/24
   gateway: 1.2.3.4
   vrf: Tenant_A_WAN_Zone
-prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -249,37 +241,13 @@ route_maps:
         type: permit
         match:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-  RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - ip next-hop 123.1.1.1
-  RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - ipv6 next-hop fd5a:fe45:8831:06c5::1
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 router_bgp:
-  as: 65105
-  router_id: 192.168.255.11
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
   peer_groups:
-    UNDERLAY_PEERS:
-      type: ipv4
-      remote_as: 65001
-      password: AQQvKeimxJu+uGQ/yYvv9w==
-      maximum_routes: 12000
-      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -288,23 +256,12 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
-  neighbor_interfaces:
-    Ethernet1:
-      peer_group: UNDERLAY_PEERS
+    UNDERLAY_PEERS:
+      type: ipv4
       remote_as: 65001
-      description: DC1-SPINE1_Ethernet7
-    Ethernet2:
-      peer_group: UNDERLAY_PEERS
-      remote_as: 65001
-      description: DC1-SPINE2_Ethernet7
-    Ethernet3:
-      peer_group: UNDERLAY_PEERS
-      remote_as: 65001
-      description: DC1-SPINE3_Ethernet7
-    Ethernet4:
-      peer_group: UNDERLAY_PEERS
-      remote_as: 65001
-      description: DC1-SPINE4_Ethernet7
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
@@ -434,6 +391,29 @@ router_bgp:
       redistribute_routes:
       - connected
       address_families: null
+  as: 65105
+  router_id: 192.168.255.11
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+  neighbor_interfaces:
+    Ethernet1:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65001
+      description: DC1-SPINE1_Ethernet7
+    Ethernet2:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65001
+      description: DC1-SPINE2_Ethernet7
+    Ethernet3:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65001
+      description: DC1-SPINE3_Ethernet7
+    Ethernet4:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65001
+      description: DC1-SPINE4_Ethernet7
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null
@@ -442,6 +422,13 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+      20:
+        action: permit 192.168.254.0/24 eq 32
 prefix:
 - my_dci_
 - my_special_dci_

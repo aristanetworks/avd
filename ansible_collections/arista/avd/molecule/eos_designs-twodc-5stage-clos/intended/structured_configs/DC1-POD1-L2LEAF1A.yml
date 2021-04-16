@@ -51,25 +51,6 @@ vlans:
 vrfs:
   MGMT:
     ip_routing: false
-port_channel_interfaces:
-  Port-Channel1:
-    description: DC1-POD1-LEAF1A_Po3
-    type: switched
-    shutdown: false
-    vlans: 4085
-    mode: trunk
-    service_profile: QOS-PROFILE
-ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-POD1-LEAF1A
-    peer_interface: Ethernet3
-    peer_type: l3leaf
-    description: DC1-POD1-LEAF1A_Ethernet3
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
 management_interfaces:
   Management1:
     description: oob_management
@@ -85,7 +66,6 @@ management_interfaces:
     ip_address: 172.21.110.4/24
     gateway: 172.21.110.1
     type: inband
-vlan_interfaces: null
 tcam_profile: null
 platform: null
 mac_address_table: null
@@ -103,3 +83,22 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-POD1-LEAF1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: DC1-POD1-LEAF1A_Ethernet3
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 1
+      mode: active
+port_channel_interfaces:
+  Port-Channel1:
+    description: DC1-POD1-LEAF1A_Po3
+    type: switched
+    shutdown: false
+    vlans: 4085
+    mode: trunk
+    service_profile: QOS-PROFILE

@@ -44,42 +44,6 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
-ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SUPER-SPINE1
-    peer_interface: Ethernet5
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    type: routed
-    shutdown: false
-    ip_address: 172.17.10.1/31
-  Ethernet2:
-    peer: DC1-POD1-SPINE1
-    peer_interface: Ethernet6
-    peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    type: routed
-    shutdown: false
-    ip_address: 172.17.10.3/31
-  Ethernet3:
-    peer: DC1-POD1-LEAF1A
-    peer_interface: Ethernet4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    type: routed
-    shutdown: false
-    ip_address: 172.17.10.5/31
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.10.1/32
 management_interfaces:
   Management1:
     description: oob_management
@@ -95,22 +59,7 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.1.254
-prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 172.16.10.0/24 eq 32
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: permit 172.17.10.0/24 le 31
 route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
   RM-EVPN-FILTER-AS65200:
     sequence_numbers:
       10:
@@ -143,6 +92,12 @@ route_maps:
         - as 65211
       20:
         type: permit
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -241,3 +196,44 @@ management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.10.1/32
+ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SUPER-SPINE1
+    peer_interface: Ethernet5
+    peer_type: super-spine
+    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet5
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.10.1/31
+  Ethernet2:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet6
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.10.3/31
+  Ethernet3:
+    peer: DC1-POD1-LEAF1A
+    peer_interface: Ethernet4
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet4
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.10.5/31
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.10.0/24 eq 32

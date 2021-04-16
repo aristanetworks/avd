@@ -68,6 +68,139 @@ clock: null
 vrfs:
   MGMT:
     ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.102/24
+    gateway: 192.168.200.5
+    type: oob
+tcam_profile: null
+platform: null
+mac_address_table: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+peer_filters: null
+router_bgp:
+  peer_groups:
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '3'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+      next_hop_unchanged: true
+    UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+  neighbors:
+    192.168.255.14:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL1A
+      remote_as: 65104
+    192.168.255.15:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL1B
+      remote_as: 65105
+    192.168.255.9:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF1A
+      remote_as: 65101
+    192.168.255.10:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF2A
+      remote_as: 65102
+    192.168.255.11:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-LEAF2B
+      remote_as: 65102
+    192.168.255.12:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SVC3A
+      remote_as: 65103
+    192.168.255.13:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-SVC3B
+      remote_as: 65103
+    172.31.255.83:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65104
+      description: DC1-BL1A_Ethernet6
+    172.31.255.99:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65105
+      description: DC1-BL1B_Ethernet7
+    172.31.255.3:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65101
+      description: DC1-LEAF1A_Ethernet1
+    172.31.255.19:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65102
+      description: DC1-LEAF2A_Ethernet2
+    172.31.255.35:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65102
+      description: DC1-LEAF2B_Ethernet3
+    172.31.255.51:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65103
+      description: DC1-SVC3A_Ethernet4
+    172.31.255.67:
+      peer_group: UNDERLAY-PEERS
+      remote_as: 65103
+      description: DC1-SVC3B_Ethernet5
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  address_family_rtc: null
+  as: 65001
+  router_id: 192.168.255.2
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+router_ospf: null
+router_isis: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.2/32
 ethernet_interfaces:
   Ethernet6:
     peer: DC1-BL1A
@@ -139,142 +272,8 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.66/31
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.2/32
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.102/24
-    gateway: 192.168.200.5
-    type: oob
-tcam_profile: null
-platform: null
-mac_address_table: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
-        action: permit 192.168.255.0/24 le 32
-route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 1200
-    min_rx: 1200
-    multiplier: 3
-peer_filters: null
-router_bgp:
-  as: 65001
-  router_id: 192.168.255.2
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
-  peer_groups:
-    UNDERLAY-PEERS:
-      type: ipv4
-      peer_filter: LEAF-AS-RANGE
-      password: AQQvKeimxJu+uGQ/yYvv9w==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      ebgp_multihop: '3'
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-      next_hop_unchanged: true
-  neighbors:
-    172.31.255.83:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65104
-      description: DC1-BL1A_Ethernet6
-    172.31.255.99:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65105
-      description: DC1-BL1B_Ethernet7
-    172.31.255.3:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65101
-      description: DC1-LEAF1A_Ethernet1
-    172.31.255.19:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65102
-      description: DC1-LEAF2A_Ethernet2
-    172.31.255.35:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65102
-      description: DC1-LEAF2B_Ethernet3
-    172.31.255.51:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65103
-      description: DC1-SVC3A_Ethernet4
-    172.31.255.67:
-      peer_group: UNDERLAY-PEERS
-      remote_as: 65103
-      description: DC1-SVC3B_Ethernet5
-    192.168.255.14:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-BL1A
-      remote_as: 65104
-    192.168.255.15:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-BL1B
-      remote_as: 65105
-    192.168.255.9:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-LEAF1A
-      remote_as: 65101
-    192.168.255.10:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-LEAF2A
-      remote_as: 65102
-    192.168.255.11:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-LEAF2B
-      remote_as: 65102
-    192.168.255.12:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SVC3A
-      remote_as: 65103
-    192.168.255.13:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-SVC3B
-      remote_as: 65103
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
-  address_family_ipv4:
-    peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
-  address_family_rtc: null
-router_ospf: null
-router_isis: null
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
+        action: permit 192.168.255.0/24 eq 32
