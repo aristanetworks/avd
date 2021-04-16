@@ -1,8 +1,22 @@
 switch:
 {% for node in overlay_controller.nodes | arista.avd.natural_sort %}
 {%     if node == inventory_hostname %}
+{# switch.id #}
+{%         set switch_id = overlay_controller.nodes[node].id %}
+  id : {{ switch_id }}
+{# switch.mgmt_ip #}
+  mgmt_ip: {{ overlay_controller.nodes[node].mgmt_ip }}
 {# switch.platform #}
-  platform: {{ overlay_controller.platform }}
+  platform: {{ overlay_controller.nodes[node].platform | arista.avd.default(
+               overlay_controller.defaults.platform,
+               overlay_controller.platform) }}
+{# switch.router_id #}
+  router_id: {{ overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}
+{# switch.rack #}
+  rack: {{ overlay_controller.nodes[node].rack | arista.avd.default(
+           overlay_controller.defaults.rack ) }}
+{# switch.bgp_defaults #}
+  bgp_defaults: {{ overlay_controller_bgp_defaults | arista.avd.default([]) }}
 {# switch.bgp_as #}
 {%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
   bgp_as: {{ bgp_as }}
@@ -10,6 +24,50 @@ switch:
   bgp_as: {{ overlay_controller.nodes[node].bgp_as | arista.avd.default(
              overlay_controller.defaults.bgp_as) }}
 {%         endif %}
+{# switch.uplink_to_remote_switches #}
+  uplink_to_remote_switches: {{ overlay_controller.nodes[node].uplink_to_remote_switches | arista.avd.default(
+                                overlay_controller.defaults.uplink_to_remote_switches) }}
+{# switch.remote_switches_interfaces #}
+  remote_switches_interfaces: {{ overlay_controller.nodes[node].remote_switches_interfaces | arista.avd.default() }}
+{# switch.remote_switches #}
+{%         set switch_remote_switches = overlay_controller.nodes[node].remote_switches | arista.avd.default(
+                                 overlay_controller.defaults.remote_switches) %}
+  remote_switches: {{ switch_remote_switches }}
+{# switch.remote_switches_asn #}
+  remote_switches_asn:
+{%         for remote_switch in switch_remote_switches %}
+{%             set remote_switch_vars = hostvars[ remote_switch ] %}
+{%             if remote_switch_vars.type == 'l3leaf' %}
+{%                 for l3leaf_node_group in remote_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
+{%                     if remote_switch in remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
+    - {{ remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[remote_switch].bgp_as | arista.avd.default(
+         remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as,
+         remote_switch_vars.l3leaf.defaults.bgp_as) }}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%             elif remote_switch_vars.type == 'spine' %}
+    - {{ remote_switch_vars.spine.nodes[node].bgp_as | arista.avd.default(
+         remote_switch_vars.spine.defaults.bgp_as,
+         remote_switch_vars.spine.bgp_as) }}
+{%             elif remote_switch_vars.type == 'super-spine' %}
+    - {{ remote_switch_vars.super_spine.nodes[node].bgp_as | arista.avd.default(
+         remote_switch_vars.super_spine.defaults.bgp_as,
+         remote_switch_vars.super_spine.bgp_as) }}
+{%             elif remote_switch_vars.type == 'overlay-controller' %}
+    - {{ remote_switch_vars.overlay_controller.nodes[some_switch].bgp_as | arista.avd.default(
+         remote_switch_vars.overlay_controller.defaults.bgp_as) }}
+{%             endif %}
+{%         endfor %}
+{# switch.evpn_role #}
+{# For overlay-controller the default value is none #}
+  evpn_role: {{ overlay_controller.nodes[inventory_hostname].evpn_role | arista.avd.default(
+                overlay_controller.defaults.evpn_role,
+                'none') }}
+{# switch.raw_evpn_route_servers #}
+  raw_evpn_route_servers: {{ overlay_controller.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+                             overlay_controller.defaults.evpn_route_servers,
+                             []) }}
+
 {%     endif %}
 {% endfor %}
-{##}

@@ -177,24 +177,14 @@ port_channel_interfaces:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{# Point-to-Point Interfaces to Spine Switches #}
-{% include 'designs/l3ls-evpn/fabric/interfaces/leaf-p2p-interfaces.j2'%}
 {# L2 Leaf uplinks #}
 {% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
-{# Point-to-Point Interfaces to overlay-controller #}
-{% include 'designs/l3ls-evpn/fabric/interfaces/switch-p2p-interfaces-overlay-controller.j2' %}
 {# L3 VRF Interfaces #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-interfaces.j2' %}
 
 {# loopback interfaces #}
 ### Loopback Interfaces ###
 loopback_interfaces:
-{# overlay peering interface #}
-{% include 'designs/l3ls-evpn/fabric/interfaces/leaf-overlay-loopback.j2'%}
-{# intentional blank line #}
-
-{# VTEP VXLAN Tunnel Source #}
-{% include 'designs/l3ls-evpn/fabric/interfaces/leaf-vtep-vxlan-tunnel-loopback.j2'%}
 {# Tenant VRF Loopback - to allow VTEPs daignostics from switch #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-loopbacks.j2' %}
 

@@ -3,9 +3,41 @@ switch:
 {% for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
 {%     for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
 {%         if node == inventory_hostname %}
+{# switch.group #}
+  group: {{ l2leaf_node_group }}
+{# switch.id #}
+{%             set switch_id = l2leaf.node_groups[l2leaf_node_group].nodes[node].id %}
+  id: {{ switch_id }}
+{# switch.mgmt_ip #}
+  mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].mgmt_ip }}
+{# switch.spanning_tree_mode #}
+  spanning_tree_mode: {{ l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode | arista.avd.default(
+                         l2leaf.defaults.spanning_tree_mode ) }}
+{# switch.igmp_snooping_enabled #}
+  igmp_snooping_enabled: {{ l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled | arista.avd.default(
+                            l2leaf.defaults.igmp_snooping_enabled,
+                            default_igmp_snooping_enabled ) }}
+{# switch.spanning_tree_priority #}
+  spanning_tree_priority: {{ l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority | arista.avd.default(
+                             l2leaf.defaults.spanning_tree_priority ) }}
 {# switch.platform #}
   platform: {{ l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
                l2leaf.defaults.platform ) }}
+{# switch.rack #}
+  rack: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(
+           l2leaf.node_groups[l2leaf_node_group].rack,
+           l2leaf.defaults.rack ) }}
+{# switch.filter_tenants #}
+  filter_tenants: {{ l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(
+                     l2leaf.defaults.filter.tenants,
+                     [ 'all' ] ) }}
+{# switch.filter_tags #}
+  filter_tags: {{ l2leaf.node_groups[l2leaf_node_group].filter.tags | arista.avd.default(
+                  l2leaf.defaults.filter.tags,
+                  [ 'all' ] ) }}
+{# switch.parent_l3leafs #}
+  parent_l3leafs: {{ l2leaf.node_groups[l2leaf_node_group].parent_l3leafs | arista.avd.default(
+                     l2leaf.defaults.parent_l3leafs ) }}
 {# switch.mlag* #}
 {%             set mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
                                  l2leaf.defaults.mlag,
@@ -21,16 +53,17 @@ switch:
 {%                 if loop.index == 1 %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
-  mlag_ip: {{ (l2leaf.node_groups[l2leaf_node_group].nodes[node].id - 1) * 2 }}
-  mlag_peer_ip: {{ ((l2leaf.node_groups[l2leaf_node_group].nodes[node].id - 1) * 2) + 1 }}
+  mlag_ip: {{ (switch_id - 1) * 2 }}
+  mlag_peer_ip: {{ ((switch_id - 1) * 2) + 1 }}
   mlag_peer_id: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].id }}
   mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') }}
 {%                 elif loop.index == 2 %}
   mlag_role: "secondary"
   mlag_peer: {{ loop.previtem }}
-  mlag_ip: {{ ((l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id - 1) * 2) + 1 }}
-  mlag_peer_ip: {{ (l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id -1) * 2 }}
-  mlag_peer_id: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id }}
+{%                     set mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id %}
+  mlag_ip: {{ ((mlag_peer_id - 1) * 2) + 1 }}
+  mlag_peer_ip: {{ (mlag_peer_id -1) * 2 }}
+  mlag_peer_id: {{ mlag_peer_id }}
   mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') }}
 {%                 endif %}
 {%             else %}
@@ -39,4 +72,3 @@ switch:
 {%         endif %}
 {%     endfor %}
 {% endfor %}
-{##}

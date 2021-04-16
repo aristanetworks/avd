@@ -1,10 +1,40 @@
 switch:
+{% for node in spine.nodes | arista.avd.natural_sort %}
+{%     if node == inventory_hostname %}
+{# switch.id #}
+{%         set switch_id = spine.nodes[node].id %}
+  id : {{ switch_id }}
+{# switch.mgmt_ip #}
+  mgmt_ip: {{ spine.nodes[node].mgmt_ip }}
+{# switch.spanning_tree_mode #}
+  spanning_tree_mode: "none"
+{# switch.rack #}
+  rack: {{ spine.nodes[node].rack | arista.avd.default() }}
+{# switch.bgp_defaults #}
+  bgp_defaults: {{ spine_bgp_defaults | arista.avd.default([]) }}
+{# switch.max_spines #}
+  max_spines: {{ max_spines | arista.avd.default(
+                 spine.nodes | length ) }}
 {# switch.platform #}
-  platform: {{ spine.platform }}
+  platform: {{ spine.nodes[node].platform | arista.avd.default(
+               spine.defaults.platform,
+               spine.platform) }}
+{# switch.router_id #}
+  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}
 {# switch.bgp_as #}
-{% if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
+{%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
   bgp_as: {{ bgp_as }}
-{% else %}
-  bgp_as: {{ spine.bgp_as | arista.avd.default() }}
-{% endif %}
-{##}
+{%         else %}
+  bgp_as: {{ spine.nodes[node].bgp_as | arista.avd.default(
+             spine.defaults.bgp_as,
+             spine.bgp_as) }}
+{%         endif %}
+{# switch.evpn_role #}
+{# For spine the default value is server #}
+  evpn_role: {{ spine.nodes[inventory_hostname].evpn_role | arista.avd.default(
+                'server') }}
+{# switch.raw_evpn_route_servers #}
+  raw_evpn_route_servers: {{ spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+                             []) }}
+{%     endif %}
+{% endfor %}

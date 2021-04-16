@@ -14,14 +14,16 @@ templates:
     - "new/designs/{{ design.type }}/switch/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
+    # Legacy eos_designs blob
+    - "structured-configuration.j2"
     # MLAG feature
     - "new/mlag/main.j2"
+    # Underlay feature
+    - "new/designs/{{ design.type }}/underlay/{{ type }}.j2"
     # L3 Edge feature
     - "new/l3_edge/main.j2"
     # Connected Endpoints feature
     - "new/connected_endpoints/main.j2"
-    # Legacy eos_designs blob
-    - "structured-configuration.j2"
     # Merge custom_structured_configuration last
     - "new/custom_structured_configuration_from_var.j2"
 

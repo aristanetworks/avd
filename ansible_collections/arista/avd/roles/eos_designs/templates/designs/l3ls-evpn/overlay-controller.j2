@@ -120,18 +120,6 @@ clock:
 vrfs:
 {% include 'base/mgmt-vrf.j2' %}
 
-{# Ethernet Interfaces #}
-### Ethernet Interfaces ###
-ethernet_interfaces:
-{% include 'designs/l3ls-evpn/fabric/interfaces/overlay-controller-p2p-interfaces.j2' %}
-
-{# loopback interfaces #}
-### Loopback Interfaces ###
-loopback_interfaces:
-{# overlay peering interface #}
-{% include 'designs/l3ls-evpn/fabric/interfaces/overlay-controller-loopback.j2'%}
-{# intentional blank line #}
-
 {# Management Interfaces #}
 ### Management Interfaces ###
 management_interfaces:
