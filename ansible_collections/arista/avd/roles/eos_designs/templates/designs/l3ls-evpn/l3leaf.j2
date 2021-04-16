@@ -177,8 +177,6 @@ port_channel_interfaces:
 {# Ethernet Interfaces #}
 ### Ethernet Interfaces ###
 ethernet_interfaces:
-{# L2 Leaf uplinks #}
-{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/l3leaf-ethernet-uplinks.j2' %}
 {# L3 VRF Interfaces #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrf-interfaces.j2' %}
 
