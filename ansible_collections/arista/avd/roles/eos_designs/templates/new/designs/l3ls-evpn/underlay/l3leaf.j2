@@ -5,9 +5,12 @@
 
 {% include 'new/designs/l3ls-evpn/underlay/interfaces/l3leaf-port-channel-interfaces.j2' %}
 
-{% include 'new/designs/l3ls-evpn/underlay/prefix-lists.j2' %}
+{# EBGP #}
+{% if switch.underlay_routing_protocol == "ebgp" %}
+{%     include 'new/designs/l3ls-evpn/underlay/ebgp/l3leaf-router-bgp.j2'%}
 
-{% include 'new/designs/l3ls-evpn/underlay/route-maps.j2' %}
+{%     include 'new/designs/l3ls-evpn/underlay/ebgp/prefix-lists.j2' %}
 
-{% include 'new/designs/l3ls-evpn/underlay/bgp/l3leaf-router-bgp.j2' %}
+{%     include 'new/designs/l3ls-evpn/underlay/ebgp/route-maps.j2' %}
 
+{% endif %}

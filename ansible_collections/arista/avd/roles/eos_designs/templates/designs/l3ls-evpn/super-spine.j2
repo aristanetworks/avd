@@ -145,36 +145,10 @@ mac_address_table:
 static_routes:
 {% include 'routing/static-routes.j2' %}
 
-{# route maps #}
-### route-maps ###
-route_maps:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
-
 {# router multihop #}
 ### router bfd ###
 router_bfd:
 {% include 'base/router-bfd.j2' %}
-
-{# ##### BGP Configurartion ##### #}
-### Routing - BGP ###
-router_bgp:
-{# underlay and overlay #}
-{% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-base.j2' %}
-  peer_groups:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/super-spine-router-bgp-peer-groups.j2' %}
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
-  neighbors:
-{% include 'designs/l3ls-evpn/fabric/bgp_base/super-spine-router-bgp-neighbors.j2' %}
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
-{% include 'designs/l3ls-evpn/fabric/bgp_base/switch-router-bgp-neighbors-overlay-controllers.j2' %}
-  redistribute_routes:
-{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/super-spine-router-bgp-redistribute-routes.j2' %}
-  address_family_evpn:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-evpn.j2' %}
-  address_family_ipv4:
-{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/super-spine-router-bgp-address-family-ipv4.j2' %}
-  address_family_rtc:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 
 {# OSPF Configuration #}
 ### Routing - OSPF ###

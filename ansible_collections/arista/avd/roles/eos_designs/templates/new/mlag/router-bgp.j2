@@ -12,6 +12,11 @@ router_bgp:
 {%     if switch.mlag_ibgp_origin_incomplete == true %}
       route_map_in: RM-MLAG-PEER-IN
 {%     endif %}
+  address_family_ipv4:
+    peer_groups:
+      {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}:
+        activate: true
+
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
   neighbor_interfaces:
     Vlan4093:

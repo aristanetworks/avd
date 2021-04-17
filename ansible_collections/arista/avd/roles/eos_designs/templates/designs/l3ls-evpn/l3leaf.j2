@@ -232,11 +232,6 @@ ip_igmp_snooping:
 static_routes:
 {% include 'routing/static-routes.j2' %}
 
-{# route maps #}
-### route-maps ###
-route_maps:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-route-maps-evpn.j2' %}
-
 {# router multihop #}
 ### router bfd ###
 router_bfd:
@@ -245,18 +240,6 @@ router_bfd:
 {# BGP Configuration #}
 ### Routing - BGP ###
 router_bgp:
-  peer_groups:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-peer-groups-evpn.j2' %}
-  neighbors:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-neighbors-evpn.j2' %}
-  redistribute_routes:
-{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/leaf-router-bgp-redistribute-routes.j2' %}
-  address_family_evpn:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-evpn.j2' %}
-  address_family_ipv4:
-{% include 'designs/l3ls-evpn/fabric/ebgp_underlay/leaf-router-bgp-address-family-ipv4.j2' %}
-  address_family_rtc:
-{% include 'designs/l3ls-evpn/fabric/bgp_overlay/switch-router-bgp-address-family-rtc.j2' %}
 {# Tenant router bgp evpn #}
   vlan_aware_bundles:
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
