@@ -53,21 +53,33 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.1.254
-route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
-peer_filters: null
+router_ospf: null
+router_isis: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null
 router_bgp:
+  as: 65120
+  router_id: 172.16.120.2
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
   peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -77,16 +89,16 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
-      maximum_routes: 12000
-      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
-    172.16.120.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD2-LEAF1A
-      remote_as: 65121
     172.17.120.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65121
@@ -97,45 +109,25 @@ router_bgp:
     172.16.12.66:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+    172.16.120.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD2-LEAF1A
+      remote_as: 65121
     200.200.200.201:
       remote_as: 65210
       description: DC2-POD1-SPINE2
       peer_group: IPv4-UNDERLAY-PEERS
       local_as: 65112
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-  address_family_ipv4:
-    peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
         default_route_target:
           only: true
-  as: 65120
-  router_id: 172.16.120.2
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-  - maximum-paths 4 ecmp 4
-router_ospf: null
-router_isis: null
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -194,3 +186,10 @@ prefix_lists:
     sequence_numbers:
       10:
         action: permit 172.16.120.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY

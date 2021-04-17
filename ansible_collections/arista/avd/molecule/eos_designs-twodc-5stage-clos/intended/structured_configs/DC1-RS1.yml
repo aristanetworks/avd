@@ -59,50 +59,18 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.1.254
-route_maps:
-  RM-EVPN-FILTER-AS65200:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65200
-      20:
-        type: permit
-  RM-EVPN-FILTER-AS65201:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65201
-      20:
-        type: permit
-  RM-EVPN-FILTER-AS65210:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65210
-      20:
-        type: permit
-  RM-EVPN-FILTER-AS65211:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65211
-      20:
-        type: permit
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
     min_rx: 300
     multiplier: 3
+router_ospf: null
+router_isis: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null
 router_bgp:
   as: 65101
   router_id: 172.16.10.1
@@ -117,6 +85,7 @@ router_bgp:
       type: ipv4
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
+      send_community: all
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -126,6 +95,15 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
     172.17.10.0:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -146,22 +124,18 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF1A
       remote_as: 65211
-      route_map_out: RM-EVPN-FILTER-AS65211
     172.16.210.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-SPINE1
       remote_as: 65210
-      route_map_out: RM-EVPN-FILTER-AS65210
     172.16.20.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-RS1
       remote_as: 65201
-      route_map_out: RM-EVPN-FILTER-AS65201
     172.16.200.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-SUPER-SPINE1
       remote_as: 65200
-      route_map_out: RM-EVPN-FILTER-AS65200
     172.16.110.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2A
@@ -170,32 +144,16 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2B
       remote_as: 65112
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-  address_family_ipv4:
-    peer_groups:
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
         default_route_target:
           only: true
-router_ospf: null
-router_isis: null
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -237,3 +195,42 @@ prefix_lists:
     sequence_numbers:
       10:
         action: permit 172.16.10.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-EVPN-FILTER-AS65200:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65200
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65201:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65201
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65210:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65210
+      20:
+        type: permit
+  RM-EVPN-FILTER-AS65211:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65211
+      20:
+        type: permit

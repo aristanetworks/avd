@@ -220,55 +220,12 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
-route_maps:
-  RM-EVPN-SOO-IN:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - extcommunity ECL-EVPN-SOO
-      20:
-        type: permit
-  RM-EVPN-SOO-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - extcommunity soo 192.168.254.10:1 additive
 router_bfd:
   multihop:
     interval: 1200
     min_rx: 1200
     multiplier: 3
 router_bgp:
-  peer_groups:
-    OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      remote_as: 65000
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-  neighbors:
-    192.168.255.1:
-      peer_group: OVERLAY-PEERS
-      description: DC1-SPINE1
-    192.168.255.4:
-      peer_group: OVERLAY-PEERS
-      description: DC1-SPINE4
-  redistribute_routes: null
-  address_family_evpn:
-    peer_groups:
-      OVERLAY-PEERS:
-        activate: true
-        route_map_in: RM-EVPN-SOO-IN
-        route_map_out: RM-EVPN-SOO-OUT
-  address_family_ipv4:
-    peer_groups:
-      OVERLAY-PEERS:
-        activate: false
-  address_family_rtc: null
   vlan_aware_bundles: null
   vlans: null
   vrfs: null
@@ -278,6 +235,32 @@ router_bgp:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
+  peer_groups:
+    OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      remote_as: 65000
+      bfd: true
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      OVERLAY-PEERS:
+        activate: false
+  address_family_evpn:
+    peer_groups:
+      OVERLAY-PEERS:
+        activate: true
+        route_map_in: RM-EVPN-SOO-IN
+        route_map_out: RM-EVPN-SOO-OUT
+  neighbors:
+    192.168.255.1:
+      peer_group: OVERLAY-PEERS
+      description: DC1-SPINE1
+    192.168.255.4:
+      peer_group: OVERLAY-PEERS
+      description: DC1-SPINE4
 ip_extcommunity_lists:
   ECL-EVPN-SOO:
   - type: permit
@@ -322,3 +305,18 @@ mlag_configuration:
   peer_link: Port-Channel5
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
+route_maps:
+  RM-EVPN-SOO-IN:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - extcommunity ECL-EVPN-SOO
+      20:
+        type: permit
+  RM-EVPN-SOO-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - extcommunity soo 192.168.254.10:1 additive

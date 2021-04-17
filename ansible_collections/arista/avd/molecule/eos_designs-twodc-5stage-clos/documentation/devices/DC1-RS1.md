@@ -330,6 +330,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
@@ -373,11 +374,11 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1
-   neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
    neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.4 remote-as 65112
    neighbor 172.16.110.4 description DC1-POD1-LEAF2A
@@ -387,15 +388,12 @@ router bgp 65101
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1
-   neighbor 172.16.200.1 route-map RM-EVPN-FILTER-AS65200 out
    neighbor 172.16.210.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.1 remote-as 65210
    neighbor 172.16.210.1 description DC2-POD1-SPINE1
-   neighbor 172.16.210.1 route-map RM-EVPN-FILTER-AS65210 out
    neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.3 remote-as 65211
    neighbor 172.16.210.3 description DC2-POD1-LEAF1A
-   neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.0 remote-as 65100
    neighbor 172.17.10.0 description DC1-SUPER-SPINE1
