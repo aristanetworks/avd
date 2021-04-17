@@ -174,7 +174,7 @@ interface Port-Channel3
 
 ## QOS
 
-### QOS Summary
+## QOS Summary
 
 QOS rewrite DSCP: **enabled**
 
@@ -200,7 +200,7 @@ QOS rewrite DSCP: **enabled**
 | 2 4 5 to cos 7 |
 | 6 to tx-queue 2 |
 
-### QOS Device Configuration
+## QOS Device Configuration
 
 ```eos
 !
@@ -252,7 +252,7 @@ QOS Profile: **test**
 | 2 | 10 | priority strict |
 | 6 | 20 | - |
 
-### QOS Profile Device Configuration
+## QOS Profile Device Configuration
 
 ```eos
 !

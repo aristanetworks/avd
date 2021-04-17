@@ -544,9 +544,7 @@ router bgp 65121
    neighbor 172.17.10.13 description DC1-RS2
    neighbor 172.17.10.13 bfd
    neighbor 172.17.120.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.120.0 description DC1-POD2-SPINE1_Ethernet3
    neighbor 172.17.120.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.120.2 description DC1-POD2-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

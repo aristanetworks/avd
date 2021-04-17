@@ -386,13 +386,10 @@ router_bgp:
   neighbors:
     172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-SPINE1_Ethernet5
     172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-SPINE2_Ethernet5
     172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: DC1-POD1-LEAF2A
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
