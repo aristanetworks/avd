@@ -5,6 +5,10 @@
 
 {% include 'new/designs/l3ls-evpn/underlay/interfaces/l3leaf-port-channel-interfaces.j2' %}
 
+{% include 'new/designs/l3ls-evpn/underlay/l3leaf-vlans.j2' %}
+
+{% include 'new/designs/l3ls-evpn/underlay/interfaces/l3leaf-vlan-interfaces.j2' %}
+
 {# EBGP #}
 {% if switch.underlay_routing_protocol == "ebgp" %}
 {%     include 'new/designs/l3ls-evpn/underlay/ebgp/l3leaf-router-bgp.j2'%}

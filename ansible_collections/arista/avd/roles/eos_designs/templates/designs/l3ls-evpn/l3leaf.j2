@@ -140,9 +140,6 @@ clock:
 {# VLANs #}
 ### VLANs ###
 vlans:
-{# L2leaf Inband Management VLAN #}
-{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan.j2' %}
-
 {# Tenants L2 VLANs #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
 
@@ -189,8 +186,6 @@ management_interfaces:
 {# vlan interfaces #}
 ### VLAN Interfaces ###
 vlan_interfaces:
-{# L2leaf Inband Management VLAN interfaces #}
-{% include 'designs/l3ls-evpn/l3leaf_l2leafs_uplinks/leaf-l2leaf-inband-management-vlan-interfaces.j2' %}
 {# Tenant vlan interfaces #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
 

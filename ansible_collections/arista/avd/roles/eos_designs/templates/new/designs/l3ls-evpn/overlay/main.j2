@@ -1,9 +1,9 @@
 {# Add one blank line after each included template #}
 {% if switch.evpn_role is arista.avd.defined and switch.evpn_role in ["client", "server"] %}
 {%     set overlay_data = namespace() %}
-{%     include 'new/designs/l3ls-evpn/overlay/logic-evpn-route-clients.j2' %}
-
 {%     include 'new/designs/l3ls-evpn/overlay/logic-evpn-route-servers.j2' %}
+
+{%     include 'new/designs/l3ls-evpn/overlay/logic-evpn-route-clients.j2' %}
 
 {%     if switch.overlay_routing_protocol == "ebgp" %}
 {%         include 'new/designs/l3ls-evpn/overlay/ebgp/router-bgp.j2' %}

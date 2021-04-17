@@ -59,9 +59,6 @@ local_users:
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 clock: null
 vlans:
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -76,6 +73,9 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
 vrfs:
   MGMT:
     ip_routing: false
