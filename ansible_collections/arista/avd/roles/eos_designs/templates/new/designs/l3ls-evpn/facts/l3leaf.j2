@@ -108,9 +108,7 @@ switch:
                                   true) }}
 {%             if loop.length == 2 and mlag == true %}
   mlag: true
-{%                 if switch.underlay_routing_protocol == "ebgp" %}
-  mlag_ibgp: true
-{%                 endif %}
+  mlag_l3: true
   mlag_group: {{ l3leaf_node_group }}
   mlag_dual_primary_detection: {{ l3leaf.node_groups[l3leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
                                   l3leaf.defaults.mlag_dual_primary_detection,

@@ -1,6 +1,6 @@
 {# Leaf mlag disable spanning tree #}
 spanning_tree:
-{% if switch.mlag_ibgp is arista.avd.defined(true) %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
   no_spanning_tree_vlan: 4093-4094
 {% else %}
   no_spanning_tree_vlan: 4094

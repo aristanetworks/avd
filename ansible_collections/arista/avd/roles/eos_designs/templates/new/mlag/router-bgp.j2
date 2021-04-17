@@ -1,5 +1,5 @@
 {# MLAG iBGP peering #}
-{% if switch.mlag_ibgp is arista.avd.defined(true) %}
+{% if switch.mlag_l3 is arista.avd.defined(true) and switch.underlay_routing_protocol == "ebgp" %}
 router_bgp:
   peer_groups:
     {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}:

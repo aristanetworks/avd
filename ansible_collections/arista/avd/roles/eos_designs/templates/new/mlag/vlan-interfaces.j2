@@ -1,6 +1,6 @@
 {# leaf mlag vlan interfaces #}
 vlan_interfaces:
-{% if switch.mlag_ibgp is arista.avd.defined(true) %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false

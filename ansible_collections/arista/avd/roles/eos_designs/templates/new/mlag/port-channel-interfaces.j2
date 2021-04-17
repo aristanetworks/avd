@@ -10,7 +10,7 @@ port_channel_interfaces:
     service_profile: {{ p2p_uplinks_qos_profile }}
 {% endif %}
     trunk_groups:
-{% if switch.mlag_ibgp is arista.avd.defined(true) %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
       - LEAF_PEER_L3
 {% endif %}
       - MLAG

@@ -1,5 +1,7 @@
 {# Origin Incomplete for MLAG iBGP learned routes #}
-{% if switch.mlag_ibgp is arista.avd.defined(true) and switch.mlag_ibgp_origin_incomplete is arista.avd.defined(true) %}
+{% if switch.mlag_l3 is arista.avd.defined(true) and 
+      switch.mlag_ibgp_origin_incomplete is arista.avd.defined(true) and
+      switch.underlay_routing_protocol == "ebgp" %}
 route_maps:
   RM-MLAG-PEER-IN:
     sequence_numbers:
