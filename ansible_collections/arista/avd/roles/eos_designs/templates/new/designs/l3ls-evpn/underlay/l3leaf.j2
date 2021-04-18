@@ -17,4 +17,10 @@
 
 {%     include 'new/designs/l3ls-evpn/underlay/ebgp/route-maps.j2' %}
 
+{% elif switch.underlay_routing_protocol == "isis" %}
+{%     include 'new/designs/l3ls-evpn/underlay/isis/l3leaf-router-isis.j2'%}
+
+{% elif switch.underlay_routing_protocol == "ospf" %}
+{%     include 'new/designs/l3ls-evpn/underlay/ospf/l3leaf-router-ospf.j2'%}
+
 {% endif %}

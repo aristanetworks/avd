@@ -14,14 +14,12 @@ templates:
     - "new/designs/{{ design.type }}/facts/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
-    # Legacy eos_designs blob
-    - "structured-configuration.j2"
     # Base features
     - "new/base/main.j2"
     # MLAG feature
     - "new/mlag/main.j2"
     # Underlay feature
-    - "new/designs/{{ design.type }}/underlay/{{ type }}.j2"
+    - "new/designs/{{ design.type }}/underlay/main.j2"
     # Overlay feature
     - "new/designs/{{ design.type }}/overlay/main.j2"
     # L3 Edge feature
