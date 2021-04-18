@@ -1,39 +1,9 @@
-l2leaf_node_group: DC1_L2LEAF1
-switch_platform: vEOS-LAB
-switch_rack: null
-leaf_id: 8
-switch_mgmt_ip: 192.168.200.112/24
-switch_inband_management_ip: null
-switch_inband_management_interface: null
-leaf_filter_tenants:
-- Tenant_A
-leaf_filter_tags:
-- opzone
-- web
-- app
-leaf_allowed_vrfs:
-- Tenant_A_APP_Zone
-- Tenant_A_OP_Zone
-- Tenant_A_WEB_Zone
-leaf_allowed_svis:
-- 130
-- 131
-- 110
-- 111
-- 120
-- 121
-leaf_allowed_vlans:
-- 130
-- 131
-- 110
-- 111
-- 120
-- 121
-leaf_mlag: false
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware_counters: null
-hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -49,10 +19,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
 name_server:
   source:
     vrf: MGMT
@@ -65,14 +31,11 @@ ntp_server:
     interface: Management1
   nodes:
   - 192.168.200.5
-redundancy: null
-snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
     '0':
       priority: 16384
-aaa_authorization: null
 local_users:
   admin:
     privilege: 15
@@ -82,7 +45,6 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-clock: null
 vrfs:
   MGMT:
     ip_routing: false
@@ -94,18 +56,10 @@ management_interfaces:
     ip_address: 192.168.200.112/24
     gateway: 192.168.200.5
     type: oob
-tcam_profile: null
-platform: null
-mac_address_table: null
-queue_monitor_streaming: null
 management_api_http:
-  enable_https: true
   enable_vrfs:
     MGMT: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  enable_https: true
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF2A

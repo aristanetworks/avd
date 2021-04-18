@@ -1,35 +1,16 @@
-l2leaf_node_group: RACK2_SINGLE
-switch_platform: vEOS-LAB
-switch_rack: null
-leaf_id: 1
-switch_mgmt_ip: 192.168.1.10/24
-switch_inband_management_ip: 172.21.110.4/24
-switch_inband_management_interface: Vlan4085
-leaf_filter_tenants:
-- all
-leaf_filter_tags:
-- all
-leaf_allowed_vrfs: []
-leaf_allowed_svis: []
-leaf_allowed_vlans: []
-leaf_mlag: false
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
+- destination_address_prefix: 0.0.0.0/0
+  gateway: 172.21.110.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware_counters: null
-hardware: null
-daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
-name_server: null
-ntp_server: null
-redundancy: null
 snmp_server:
   location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A
 spanning_tree:
@@ -37,13 +18,11 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 8192
-aaa_authorization: null
 local_users:
   admin:
     privilege: 15
     role: network-admin
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-clock: null
 vrfs:
   MGMT:
     ip_routing: false
@@ -62,20 +41,10 @@ management_interfaces:
     ip_address: 172.21.110.4/24
     gateway: 172.21.110.1
     type: inband
-tcam_profile: null
-platform: null
-mac_address_table: null
-queue_monitor_streaming: null
 management_api_http:
-  enable_https: true
   enable_vrfs:
     MGMT: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.254
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 172.21.110.1
+  enable_https: true
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-LEAF1A

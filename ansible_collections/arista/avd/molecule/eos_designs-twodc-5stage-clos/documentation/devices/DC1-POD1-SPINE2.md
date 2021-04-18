@@ -23,8 +23,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
@@ -392,24 +390,6 @@ router bgp 65110
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-### Router BFD Multihop Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # Multicast

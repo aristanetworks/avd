@@ -26,8 +26,6 @@
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -454,24 +452,6 @@ router bgp 65000
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 1200 | 1200 | 3 |
-
-### Router BFD Multihop Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 1200 min-rx 1200 multiplier 3
 ```
 
 # Multicast

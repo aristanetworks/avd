@@ -36,96 +36,9 @@ leaf_mlag_peer: DC1-BL1B
 leaf_mlag_ip: 10
 leaf_mlag_peer_ip: 11
 leaf_mlag_peer_id: 7
-service_routing_protocols_model: multi-agent
-ip_routing: true
-hardware_counters: null
-hardware: null
-daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  disable_aaa: false
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
-redundancy: null
-snmp_server: null
-spanning_tree:
-  mode: mstp
-  mst_instances:
-    '0':
-      priority: 4096
-  no_spanning_tree_vlan: 4093-4094
-aaa_authorization: null
-local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-clock: null
-vrfs:
-  MGMT:
-    ip_routing: false
-  Tenant_A_WAN_Zone:
-    tenant: Tenant_A
-    ip_routing: true
-  Tenant_B_WAN_Zone:
-    tenant: Tenant_B
-    ip_routing: true
-  Tenant_C_WAN_Zone:
-    tenant: Tenant_C
-    ip_routing: true
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.110/24
-    gateway: 192.168.200.5
-    type: oob
-tcam_profile: null
-platform: null
-mac_address_table: null
-router_bfd:
-  multihop:
-    interval: 1200
-    min_rx: 1200
-    multiplier: 3
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
 router_bgp:
   as: 65104
   router_id: 192.168.255.10
@@ -281,6 +194,74 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+    - 192.168.200.11
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+  - 192.168.200.5
+spanning_tree:
+  mode: mstp
+  mst_instances:
+    '0':
+      priority: 4096
+  no_spanning_tree_vlan: 4093-4094
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+vrfs:
+  MGMT:
+    ip_routing: false
+  Tenant_A_WAN_Zone:
+    tenant: Tenant_A
+    ip_routing: true
+  Tenant_B_WAN_Zone:
+    tenant: Tenant_B
+    ip_routing: true
+  Tenant_C_WAN_Zone:
+    tenant: Tenant_C
+    ip_routing: true
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.110/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: null
+  enable_https: true
 vlans:
   4093:
     tenant: system
@@ -481,6 +462,11 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
   vlans: null
