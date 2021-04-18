@@ -1,8 +1,9 @@
-{% if queue_monitor_streaming is defined %}
-{%    if queue_monitor_streaming.enable is defined and queue_monitor_streaming.enable == true %}
+{% if queue_monitor_streaming.enable is arista.avd.defined(true) or queue_monitor_streaming.vrf is arista.avd.defined %}
+queue_monitor_streaming:
+{%     if queue_monitor_streaming.enable is arista.avd.defined(true) %}
   enable: {{ queue_monitor_streaming.enable }}
-{%    endif %}
-{%    if queue_monitor_streaming.vrf is defined %}
+{%     endif %}
+{%     if queue_monitor_streaming.vrf is arista.avd.defined %}
   vrf: {{ queue_monitor_streaming.vrf }}
-{%    endif %}
+{%     endif %}
 {% endif %}

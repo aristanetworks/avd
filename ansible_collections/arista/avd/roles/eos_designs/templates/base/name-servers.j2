@@ -1,5 +1,6 @@
 {# name servers #}
 {% if name_servers is defined and name_servers is not none %}
+name_server:
   source:
     vrf: {{ mgmt_interface_vrf }}
   nodes:

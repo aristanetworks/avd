@@ -1,9 +1,0 @@
-{# Overlay Controller prefix-lists #}
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: "permit {{ overlay_controller_loopback_network_summary }} eq 32"
-  PL-P2P-UNDERLAY:
-    sequence_numbers:
-      10:
-        action: "permit {{ overlay_controller_p2p_network_summary }} le 31"

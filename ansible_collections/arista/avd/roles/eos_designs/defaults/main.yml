@@ -9,27 +9,27 @@ design:
 templates:
   facts:
     # Set general "switch.*" variables
-    - "new/facts/main.j2"
+    - "facts/main.j2"
     # Set design specific "switch.*" variables
-    - "new/designs/{{ design.type }}/facts/{{ type }}.j2"
+    - "designs/{{ design.type }}/facts/{{ type }}.j2"
   structured_config:
     # Render Strucured Configuration
     # Base features
-    - "new/base/main.j2"
+    - "base/main.j2"
     # MLAG feature
-    - "new/mlag/main.j2"
+    - "mlag/main.j2"
     # Underlay feature
-    - "new/designs/{{ design.type }}/underlay/main.j2"
+    - "designs/{{ design.type }}/underlay/main.j2"
     # Overlay feature
-    - "new/designs/{{ design.type }}/overlay/main.j2"
+    - "designs/{{ design.type }}/overlay/main.j2"
     # L3 Edge feature
-    - "new/l3_edge/main.j2"
+    - "l3_edge/main.j2"
     # Tenants feature
-    - "new/designs/{{ design.type }}/tenants/main.j2"
+    - "designs/{{ design.type }}/tenants/main.j2"
     # Connected Endpoints feature
-    - "new/connected_endpoints/main.j2"
+    - "connected_endpoints/main.j2"
     # Merge custom_structured_configuration last
-    - "new/custom_structured_configuration_from_var.j2"
+    - "custom-structured-configuration-from-var.j2"
 
 mgmt_vrf_routing: false
 

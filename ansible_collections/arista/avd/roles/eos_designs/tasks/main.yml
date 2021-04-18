@@ -7,10 +7,10 @@
   changed_when: False
   tags: [build, provision]
 
-- name: Generate (yaml) with all vars (only for debugging)
+- name: Generate (yaml) with vars (only for debugging)
   template:
-    src: new/debug/generate_debug_vars.j2
-    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}-logic-vars.yml'
+    src: debug/generate-debug-vars.j2
+    dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}-debug-vars.yml'
   delegate_to: localhost
   changed_when: False
   tags: [debug, never]
@@ -25,7 +25,7 @@
 
 - name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
   template:
-    src: new/generate_structured_config.j2
+    src: generate-structured-config.j2
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'
   delegate_to: localhost
   changed_when: False

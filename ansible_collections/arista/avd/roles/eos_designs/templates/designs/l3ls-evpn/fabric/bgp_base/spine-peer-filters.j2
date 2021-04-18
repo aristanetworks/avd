@@ -1,7 +1,0 @@
-{# Spine prefix-lists #}
-{% if switch.overlay_routing_protocol == "ebgp" and underlay_rfc5549 is arista.avd.defined(true) %}
-  LEAF-AS-RANGE:
-    sequence_numbers:
-      10:
-        match: "as-range {{ spine.leaf_as_range }} result accept"
-{% endif %}
