@@ -1,0 +1,38 @@
+{# Leaf Tenant l3 interfaces #}
+{% set ns = namespace (first = true) %}
+{% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
+{%     if tenants[tenant].vrfs is arista.avd.defined %}
+{%         for vrf in tenants[tenant].vrfs %}
+{%             if tenants[tenant].vrfs[vrf].l3_interfaces is arista.avd.defined %}
+{%                 for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces %}
+{%                     if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
+{%                         for node in l3_interface.nodes %}
+{%                             if node == inventory_hostname %}
+{%                                 if ns.first == true %}
+ethernet_interfaces:
+{%                                     set ns.first = false %}
+{%                                 endif %}
+  {{ l3_interface.interfaces[loop.index0] }}:
+    type: routed
+    peer_type: l3_interface
+    vrf: {{ vrf }}
+    ip_address: {{ l3_interface.ip_addresses[loop.index0] }}
+{%                                 if l3_interface.mtu is arista.avd.defined %}
+    mtu: {{ l3_interface.mtu }}
+{%                                 endif %}
+{%                                 if l3_interface.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                                 else %}
+    shutdown: false
+{%                                 endif %}
+{%                                 if l3_interface.description is arista.avd.defined %}
+    description: {{ l3_interface.description }}
+{%                                 endif %}
+{%                             endif %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

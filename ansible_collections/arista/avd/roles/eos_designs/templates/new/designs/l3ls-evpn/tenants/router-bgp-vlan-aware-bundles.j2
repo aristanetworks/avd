@@ -1,0 +1,47 @@
+{# Leaf tenant router bgp evpn configuration - MAC-VRF VLAN Aware bundles #}
+{% set ns = namespace(first = true) %}
+{% if vxlan_vlan_aware_bundles is arista.avd.defined(true) %}
+{%     for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
+{%         if tenants[tenant].vrfs is defined %}
+{%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
+{%                 set vlan_range = [] %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi|int in switch.svis %}
+{%                     do vlan_range.append( svi| int ) %}
+{%                 endfor %}
+{%                 if vlan_range | length > 0 %}
+{%                     if ns.first == true %}
+  vlan_aware_bundles:
+{%                         set ns.first = false %}
+{%                     endif %}
+    {{ vrf }}:
+      rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      route_targets:
+        both:
+          - "{{ tenants_data.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      redistribute_routes:
+        - learned
+      vlan: {{ vlan_range | arista.avd.list_compress }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if tenants[tenant].l2vlans is defined %}
+{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan|int in switch.vlans %}
+{%                 set l2vlan_int = l2vlan | int %}
+{%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
+{%                     set vni = tenants[tenant].l2vlans[l2vlan].vni_override %}
+{%                 else %}
+{%                     set vni = tenants[tenant].mac_vrf_vni_base + l2vlan_int %}
+{%                 endif %}
+    {{ tenants[tenant].l2vlans[l2vlan].name }}:
+      tenant: {{ tenant }}
+      rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ vni }}"
+      route_targets:
+        both:
+          - "{{ tenants_data.evpn_rt_admin_subfield or vni }}:{{ vni }}"
+      redistribute_routes:
+        - learned
+      vlan: {{ l2vlan_int }}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+{% endif %}

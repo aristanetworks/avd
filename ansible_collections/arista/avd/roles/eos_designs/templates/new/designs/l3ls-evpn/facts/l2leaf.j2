@@ -36,6 +36,8 @@ switch:
            l2leaf.node_groups[l2leaf_node_group].rack,
            l2leaf.defaults.rack ) }}
 
+{# switch.configure_tenants #}
+  configure_tenants: true
 
 {# switch.filter_tenants #}
 {%             set switch_filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(

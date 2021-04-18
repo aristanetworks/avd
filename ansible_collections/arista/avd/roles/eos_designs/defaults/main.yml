@@ -26,6 +26,8 @@ templates:
     - "new/designs/{{ design.type }}/overlay/main.j2"
     # L3 Edge feature
     - "new/l3_edge/main.j2"
+    # Tenants feature
+    - "new/designs/{{ design.type }}/tenants/main.j2"
     # Connected Endpoints feature
     - "new/connected_endpoints/main.j2"
     # Merge custom_structured_configuration last

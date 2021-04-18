@@ -137,12 +137,6 @@ local_users:
 clock:
 {% include 'base/clock-timezone.j2' %}
 
-{# VLANs #}
-### VLANs ###
-vlans:
-{# Tenants L2 VLANs #}
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vlans.j2' %}
-
 {# VRFs #}
 ### VRFs ###
 vrfs:
@@ -152,7 +146,6 @@ vrfs:
 {# Tenant VRFS #}
 {% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vrfs.j2' %}
 
-<<<<<<< HEAD
 
 {# Port-Channel Interfaces #}
 ### Port-Channel Interfaces ###
@@ -183,17 +176,6 @@ loopback_interfaces:
 management_interfaces:
 {% include 'base/mgmt-interface.j2' %}
 
-{# vlan interfaces #}
-### VLAN Interfaces ###
-vlan_interfaces:
-{# Tenant vlan interfaces #}
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-vlan-interfaces.j2' %}
-
-{# vxlan interface #}
-### VxLAN interface ###
-vxlan_tunnel_interface:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-vxlan-vtep-interface.j2' %}
-
 {# TCAM Profiles #}
 ### TCAM Profiles ###
 tcam_profile:
@@ -209,39 +191,10 @@ platform:
 mac_address_table:
 {% include 'base/mac-address-table.j2' %}
 
-{% if leaf.evpn_services_l2_only == false %}
-{# virtual router mac address #}
-ip_virtual_router_mac_address: {{ leaf.virtual_router_mac_address | lower }}
-{% endif %}
-
-{# Tenant - Virtual Source NAT - to allow VTEPs diagnostics from switch #}
-virtual_source_nat_vrfs:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-virtual-source-nat-vrfs.j2' %}
-
-{# Tenant ip-igmp-snooping #}
-ip_igmp_snooping:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-igmp-snooping.j2' %}
-
-{# static_routes #}
-### static routes ###
-static_routes:
-{% include 'routing/static-routes.j2' %}
-
 {# router multihop #}
 ### router bfd ###
 router_bfd:
 {% include 'base/router-bfd.j2' %}
-
-{# BGP Configuration #}
-### Routing - BGP ###
-router_bgp:
-{# Tenant router bgp evpn #}
-  vlan_aware_bundles:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlan-aware-bundles.j2' %}
-  vlans:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vlans.j2' %}
-  vrfs:
-{% include 'designs/l3ls-evpn/tenant_evpn_vxlan/leaf-tenant-router-bgp-evpn-vrfs.j2' %}
 
 {# Extended Community Lists Configuration #}
 ### Extended Community Lists ###

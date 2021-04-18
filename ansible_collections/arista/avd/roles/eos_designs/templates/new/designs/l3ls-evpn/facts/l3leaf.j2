@@ -20,6 +20,9 @@ switch:
 {# switch.spine_interfaces #}
   spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces }}
 
+{# switch.configure_tenants #}
+  configure_tenants: true
+
 {# switch.filter_tenants #}
 {%             set switch_filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants| arista.avd.default(
                                            l3leaf.defaults.filter.tenants,
@@ -173,6 +176,12 @@ switch:
 {%                             endif %}
 {%                         endfor %}
 {%                     endfor %}
+{# Append VRFs if there is a BGP neighbor defined for this switch #}
+{%                     for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
+{%                         if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
+{%                             do leaf.vrfs.append( vrf ) %}
+{%                         endif %}
+{%                     endfor %}
 {%                 endfor %}
 {%                 for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%                     for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
@@ -193,6 +202,7 @@ switch:
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
+
   vrfs: {{ leaf.vrfs | unique }}
   svis: {{ leaf.svis | unique }}
   vlans: {{ leaf.vlans | unique }}
