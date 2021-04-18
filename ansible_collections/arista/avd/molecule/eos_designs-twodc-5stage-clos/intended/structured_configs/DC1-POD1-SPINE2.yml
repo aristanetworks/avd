@@ -48,10 +48,6 @@ management_interfaces:
 tcam_profile: null
 platform: null
 mac_address_table: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.254
 router_bfd:
   multihop:
     interval: 300
@@ -105,6 +101,10 @@ router_bgp:
     172.16.11.66:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

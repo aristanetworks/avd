@@ -68,7 +68,6 @@ local_users:
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 clock: null
-vlans: null
 vrfs:
   MGMT:
     ip_routing: false
@@ -83,18 +82,15 @@ management_interfaces:
 tcam_profile: null
 platform: null
 mac_address_table: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
 queue_monitor_streaming: null
 management_api_http:
   enable_https: true
   enable_vrfs:
     MGMT: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF2A
@@ -123,3 +119,6 @@ port_channel_interfaces:
     shutdown: false
     vlans: null
     mode: trunk
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: null

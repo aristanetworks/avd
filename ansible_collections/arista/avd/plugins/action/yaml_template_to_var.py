@@ -51,7 +51,7 @@ class ActionModule(ActionBase):
             template_output = template_lookup_module.run([template], template_vars)
             template_output_data = yaml.safe_load(template_output[0])
             if template_output_data:
-                output = combine(output, template_output_data, recursive=True)
+                output = combine(output, template_output_data, recursive=True, list_merge='append')
 
         if output_var_name:
             result['ansible_facts'] = {output_var_name : output}

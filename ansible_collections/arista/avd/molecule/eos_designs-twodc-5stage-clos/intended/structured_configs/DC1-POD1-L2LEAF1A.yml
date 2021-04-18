@@ -44,10 +44,6 @@ local_users:
     role: network-admin
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
 clock: null
-vlans:
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
 vrfs:
   MGMT:
     ip_routing: false
@@ -69,20 +65,17 @@ management_interfaces:
 tcam_profile: null
 platform: null
 mac_address_table: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans: null
+queue_monitor_streaming: null
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+    MGMT: null
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.1.254
 - destination_address_prefix: 0.0.0.0/0
   gateway: 172.21.110.1
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-LEAF1A
@@ -102,3 +95,10 @@ port_channel_interfaces:
     vlans: 4085
     mode: trunk
     service_profile: QOS-PROFILE
+vlans:
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans: null
