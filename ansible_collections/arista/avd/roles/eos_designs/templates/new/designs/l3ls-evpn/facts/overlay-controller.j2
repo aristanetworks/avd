@@ -6,6 +6,8 @@ switch:
   id : {{ switch_id }}
 {# switch.mgmt_ip #}
   mgmt_ip: {{ overlay_controller.nodes[node].mgmt_ip }}
+{# switch.spanning_tree_mode #}
+  spanning_tree_mode: "none"
 {# switch.platform #}
   platform: {{ overlay_controller.nodes[node].platform | arista.avd.default(
                overlay_controller.defaults.platform,

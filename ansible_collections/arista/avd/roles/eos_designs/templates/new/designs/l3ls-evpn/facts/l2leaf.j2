@@ -56,6 +56,11 @@ switch:
                                            l2leaf.defaults.parent_l3leafs) %}
   parent_l3leafs: {{ switch_parent_l3leafs }}
 
+{# switch.inband_management_ip and switch.inband_management_interface #}
+{%             if l2leaf_inband_management_subnet is arista.avd.defined %}
+  inband_management_ip: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + switch_id) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+  inband_management_interface: Vlan{{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}
+{%             endif %}
 {# switch.mlag* #}
 {%             set mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
                                  l2leaf.defaults.mlag,

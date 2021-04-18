@@ -5,6 +5,8 @@
 
 {%     include 'new/designs/l3ls-evpn/overlay/logic-evpn-route-clients.j2' %}
 
+{%     include 'new/designs/l3ls-evpn/overlay/router-bfd.j2' %}
+
 {%     if switch.overlay_routing_protocol == "ebgp" %}
 {%         include 'new/designs/l3ls-evpn/overlay/ebgp/router-bgp.j2' %}
 

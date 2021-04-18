@@ -1,0 +1,11 @@
+{% if management_eapi is defined %}
+management_api_http:
+  enable_vrfs:
+    {{ mgmt_interface_vrf }}:
+{%     if management_eapi.enable_http is defined %}
+  enable_http: {{ management_eapi.enable_http }}
+{%     endif %}
+{%     if management_eapi.enable_https is defined %}
+  enable_https: {{ management_eapi.enable_https }}
+{%     endif %}
+{% endif %}

@@ -1,0 +1,18 @@
+
+{% set ns = namespace(first = true) %}
+{% for local_user in local_users | arista.avd.natural_sort %}
+{%     if ns.first == true %}
+local_users:
+{%         set ns.first = false %}
+{%     endif %}
+  {{ local_user }}:
+    privilege: {{ local_users[local_user].privilege }}
+{%     if local_users[local_user].role is defined %}
+    role: {{ local_users[local_user].role }}
+{%      endif %}
+{%    if local_users[local_user].sha512_password is defined %}
+    sha512_password: {{ local_users[local_user].sha512_password }}
+{%     elif local_users[local_user].no_password is defined and local_users[local_user].no_password == True %}
+    no_password: {{local_users[local_user].no_password}}
+{%      endif %}
+{% endfor %}
