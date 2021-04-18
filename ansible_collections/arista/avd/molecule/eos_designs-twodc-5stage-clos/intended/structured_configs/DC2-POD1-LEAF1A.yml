@@ -1,29 +1,3 @@
-l3leaf_node_group: RACK1_SINGLE
-switch_platform: vEOS-LAB
-switch_rack: null
-switch_bgp_as: 65211
-leaf_id: 1
-switch_mgmt_ip: 192.168.1.22/24
-leaf_evpn_services_l2_only: false
-switch_router_id: 172.16.210.3
-switch_evpn_role: server
-switch_evpn_route_servers:
-- DC1-POD1-LEAF1A
-- DC1-POD1-SPINE1
-- DC1-RS1
-switch_evpn_route_clients:
-- DC1-RS2
-leaf_filter_tenants:
-- all
-leaf_filter_tags: []
-leaf_allowed_vrfs:
-- Common_VRF
-leaf_allowed_svis: []
-leaf_allowed_vlans: []
-leaf_mlag: false
-ip_extcommunity_lists: null
-router_ospf: null
-router_isis: null
 router_bgp:
   as: 65211
   router_id: 172.16.210.3

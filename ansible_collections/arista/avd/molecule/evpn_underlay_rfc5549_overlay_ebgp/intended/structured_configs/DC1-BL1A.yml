@@ -1,38 +1,3 @@
-l3leaf_node_group: DC1_BL1
-switch_platform: 7280R
-switch_rack: null
-switch_bgp_as: 65104
-leaf_id: 6
-switch_mgmt_ip: 192.168.200.110/24
-leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.10
-switch_evpn_role: client
-switch_evpn_route_servers:
-- DC1-SPINE1
-- DC1-SPINE2
-- DC1-SPINE3
-- DC1-SPINE4
-switch_evpn_route_clients: []
-leaf_filter_tenants:
-- all
-leaf_filter_tags:
-- wan
-leaf_allowed_vrfs:
-- Tenant_A_WAN_Zone
-- Tenant_B_WAN_Zone
-- Tenant_C_WAN_Zone
-leaf_allowed_svis:
-- 150
-- 250
-- 350
-leaf_allowed_vlans:
-- 150
-- 250
-- 350
-leaf_mlag: false
-ip_extcommunity_lists: null
-router_ospf: null
-router_isis: null
 router_bgp:
   as: 65104
   router_id: 192.168.255.10

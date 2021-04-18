@@ -1,17 +1,3 @@
-switch_platform: vEOS-LAB
-switch_rack: null
-switch_mgmt_ip: 192.168.1.18/24
-switch_bgp_as: 65201
-switch_router_id: 172.16.20.1
-switch_evpn_role: server
-switch_evpn_route_servers:
-- DC1-POD1-LEAF1A
-- DC1-POD1-SPINE1
-- DC1-RS1
-switch_evpn_route_clients:
-- DC1-RS2
-router_ospf: null
-router_isis: null
 router_bgp:
   as: 65201
   router_id: 172.16.20.1

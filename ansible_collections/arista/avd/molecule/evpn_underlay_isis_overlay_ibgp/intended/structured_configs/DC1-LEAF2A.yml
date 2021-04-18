@@ -1,59 +1,3 @@
-l3leaf_node_group: DC1_LEAF2
-switch_platform: vEOS-LAB
-switch_rack: null
-switch_bgp_as: 65000
-leaf_id: 2
-switch_mgmt_ip: 192.168.200.106/24
-leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.6
-switch_evpn_role: client
-switch_evpn_route_servers:
-- DC1-SPINE1
-- DC1-SPINE4
-switch_evpn_route_clients: []
-leaf_filter_tenants:
-- Tenant_A
-- Tenant_B
-- Tenant_C
-leaf_filter_tags:
-- opzone
-- web
-- app
-- db
-- vmotion
-- nfs
-leaf_allowed_vrfs: []
-leaf_allowed_svis: []
-leaf_allowed_vlans: []
-leaf_mlag: true
-leaf_mlag_group: DC1_LEAF2
-leaf_mlag_role: primary
-leaf_mlag_peer: DC1-LEAF2B
-leaf_mlag_ip: 2
-leaf_mlag_peer_ip: 3
-leaf_mlag_peer_id: 3
-ip_extcommunity_lists:
-  ECL-EVPN-SOO:
-  - type: permit
-    extcommunities: soo 192.168.254.6:1
-router_ospf: null
-router_isis:
-  instance: EVPN_UNDERLAY
-  log_adjacency_changes: true
-  net: 49.0001.0001.0001.0002.00
-  router_id: 192.168.255.6
-  no_passive_interfaces:
-  - Ethernet1
-  - Ethernet2
-  - Ethernet3
-  - Ethernet4
-  - Vlan4093
-  - Loopback1
-  is_type: level-2
-  address_family:
-  - ipv4 unicast
-  isis_af_defaults:
-  - maximum-paths 4
 router_bgp:
   as: 65000
   router_id: 192.168.255.6
@@ -292,6 +236,23 @@ loopback_interfaces:
     ip_address: 192.168.254.6/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
+router_isis:
+  instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
+  net: 49.0001.0001.0001.0002.00
+  router_id: 192.168.255.6
+  no_passive_interfaces:
+  - Ethernet1
+  - Ethernet2
+  - Ethernet3
+  - Ethernet4
+  - Vlan4093
+  - Loopback1
+  is_type: level-2
+  address_family:
+  - ipv4 unicast
+  isis_af_defaults:
+  - maximum-paths 4
 router_bfd:
   multihop:
     interval: 1200
@@ -312,6 +273,10 @@ route_maps:
         type: permit
         set:
         - extcommunity soo 192.168.254.6:1 additive
+ip_extcommunity_lists:
+  ECL-EVPN-SOO:
+  - type: permit
+    extcommunities: soo 192.168.254.6:1
 ip_igmp_snooping:
   globally_enabled: true
   vlans: null
