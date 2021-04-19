@@ -118,7 +118,7 @@ jobs:
       matrix:
         avd_scenario: ['eos_cli_config_gen']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.eos_design == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
         run: |
