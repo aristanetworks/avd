@@ -15,7 +15,7 @@
   changed_when: False
   tags: [debug, never]
 
-- name: Generate device configuration in structured format (yaml).
+- name: Generate device configuration in structured format
   yaml_template_to_var:
     root_key: structured_config
     yaml_templates: "{{ templates.structured_config }}"
