@@ -17,7 +17,7 @@
 
 - name: Generate device configuration in structured format (yaml).
   yaml_template_to_var:
-    name: structured_config
+    root_key: structured_config
     yaml_templates: "{{ templates.structured_config }}"
   check_mode: no
   changed_when: False

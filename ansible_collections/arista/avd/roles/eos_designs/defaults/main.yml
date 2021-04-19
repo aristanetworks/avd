@@ -11,7 +11,7 @@ templates:
     # Set general "switch.*" variables
     - "facts/main.j2"
     # Set design specific "switch.*" variables
-    - "designs/{{ design.type }}/facts/{{ type }}.j2"
+    - "designs/{{ design.type }}/facts/main.j2"
   structured_config:
     # Render Strucured Configuration
     # Base features

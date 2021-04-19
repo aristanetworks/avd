@@ -103,10 +103,10 @@ $ make <your command>
 - `ansible-upgrade`: To upgrade ansible in your runner in conjunction with `ANSIBLE_VERSION`
 
 ```shell
-$ make ansible-upgrade ANSIBLE_VERSION=2.9.8
-docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible pip install --user --upgrade ansible==2.9.8
-Collecting ansible==2.9.8
-  Downloading ansible-2.9.8.tar.gz (14.2 MB)
+$ make ansible-upgrade ANSIBLE_VERSION=2.10.7
+docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible pip install --user --upgrade ansible==2.10.7
+Collecting ansible==2.10.7
+  Downloading ansible-2.10.7.tar.gz (14.2 MB)
      |████████████████████████████████| 14.2 MB 475 kB/s
 ...
 $ make shell
@@ -114,7 +114,7 @@ docker-compose -f ansible-avd/development/docker-compose.yml exec -u avd ansible
 
 Agent pid 109
 ➜  /projects ansible --version
-ansible 2.9.8
+ansible 2.10.7
 ```
 
 ### Commands for docker only
@@ -125,18 +125,18 @@ ansible 2.9.8
 - `vscode`: start a VScode container available in your browser to edit your local files.
 
 ```shell
-$ make run ANSIBLE_VERSION=2.9
+$ make run ANSIBLE_VERSION=2.10
 docker run --rm -it \
                 -e AVD_REQUIREMENTS= \
-                -e AVD_ANSIBLE=2.9 \
+                -e AVD_ANSIBLE=2.10 \
                 -e AVD_GIT_USER="xxxxx" \
                 -e AVD_GIT_EMAIL="xxxxx" \
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -v /Users/tgrimonet/Projects/arista-ansible/:/projects \
                 -v /etc/hosts:/etc/hosts avdteam/base:3.6-v1.0
-Install ansible with version 2.9
-Collecting ansible==2.9
-  Downloading ansible-2.9.0.tar.gz (14.1 MB)
+Install ansible with version 2.10
+Collecting ansible==2.10
+  Downloading ansible-2.10.0.tar.gz (14.1 MB)
 ...
 ```
 
@@ -210,7 +210,7 @@ You can validate everything is setup correctly:
 Python 3.6.12
 
 ➜  /projects ansible --version
-ansible 2.9.6
+ansible 2.10.7
   config file = None
   configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
   ansible python module location = /root/.local/lib/python3.6/site-packages/ansible

@@ -132,7 +132,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.9.6"
+          ansible: "ansible==2.10.7"
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
@@ -169,7 +169,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.9.6"
+          ansible: "ansible==2.10.7"
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
