@@ -27,10 +27,10 @@
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
 {%                     set endpoint_ports = adapter.server_ports | arista.avd.default(adapter.endpoint_ports) %}
 {%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
-{%                         if ns.first_interface ==  true %}
+{%                     if ns.first_interface ==  true %}
 ethernet_interfaces:
-{%                             set ns.first_interface = false %}
-{%                         endif %}
+{%                         set ns.first_interface = false %}
+{%                     endif %}
   {{ adapter.switch_ports[loop.index0]}}:
     peer: {{ connected_endpoint }}
     peer_interface: {{ endpoint_ports[loop.index0] }}
