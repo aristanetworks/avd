@@ -36,7 +36,7 @@ options:
     description: List of Jinja templates to be run.
     required: true
     type: list
-    elements: str
+    elements: objects
 '''
 
 EXAMPLES = r'''
