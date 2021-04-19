@@ -32,7 +32,7 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-    attached-host: null
+    attached-host: {}
   neighbors:
     172.17.110.0:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -116,7 +116,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 loopback_interfaces:
   Loopback0:
@@ -255,13 +255,10 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
     source_interface: Loopback1
     vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans: null
-      vrfs: null
+    vxlan_vni_mappings: {}
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01

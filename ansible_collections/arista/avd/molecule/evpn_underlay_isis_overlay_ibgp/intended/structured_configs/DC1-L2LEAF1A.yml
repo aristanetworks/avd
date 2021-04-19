@@ -58,7 +58,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 ethernet_interfaces:
   Ethernet1:
@@ -86,8 +86,6 @@ port_channel_interfaces:
     description: DC1-LEAF2A_Po7
     type: switched
     shutdown: false
-    vlans: null
     mode: trunk
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null

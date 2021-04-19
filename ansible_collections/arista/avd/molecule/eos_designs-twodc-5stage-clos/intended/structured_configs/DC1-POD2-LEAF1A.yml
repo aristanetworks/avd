@@ -31,7 +31,7 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-    attached-host: null
+    attached-host: {}
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -75,7 +75,6 @@ router_bgp:
           - 1025:1025
       redistribute_routes:
       - connected
-      address_families: null
   vlans:
     110:
       tenant: Tenant_A
@@ -137,7 +136,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 loopback_interfaces:
   Loopback0:
@@ -266,7 +265,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP

@@ -75,7 +75,6 @@ router_bgp:
           - '12:12'
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.5
       rd: 192.168.255.5:11
@@ -88,7 +87,6 @@ router_bgp:
           - '11:11'
       redistribute_routes:
       - connected
-      address_families: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.5:12
@@ -172,7 +170,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 loopback_interfaces:
   Loopback0:

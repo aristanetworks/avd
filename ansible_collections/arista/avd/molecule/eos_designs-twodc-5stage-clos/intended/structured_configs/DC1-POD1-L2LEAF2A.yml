@@ -44,7 +44,7 @@ management_interfaces:
     type: inband
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 vlans:
   4094:
@@ -139,4 +139,3 @@ mlag_configuration:
   reload_delay_non_mlag: 330
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null

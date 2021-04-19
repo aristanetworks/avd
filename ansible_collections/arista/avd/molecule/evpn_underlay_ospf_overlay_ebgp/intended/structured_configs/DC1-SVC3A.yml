@@ -100,7 +100,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 vlans:
   4093:
@@ -141,7 +141,6 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: null
     mode: trunk
     mlag: 7
 ethernet_interfaces:
@@ -267,7 +266,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-SVC3A_VTEP
@@ -275,7 +273,5 @@ vxlan_tunnel_interface:
     virtual_router:
       encapsulation_mac_address: mlag-system-id
     vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans: null
-      vrfs: null
+    vxlan_vni_mappings: {}
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

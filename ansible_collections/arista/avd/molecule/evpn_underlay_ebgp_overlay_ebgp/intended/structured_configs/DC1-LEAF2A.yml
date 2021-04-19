@@ -91,7 +91,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_A_DB_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:13
@@ -107,7 +106,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_A_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:10
@@ -123,7 +121,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:11
@@ -139,7 +136,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_B_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:20
@@ -155,7 +151,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_C_OP_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:30
@@ -171,7 +166,6 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
-      address_families: null
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
       rd: 192.168.255.10:12
@@ -338,7 +332,7 @@ platform:
       hardware_only: true
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 vlans:
   4093:
@@ -626,9 +620,7 @@ port_channel_interfaces:
     description: server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
-    mode: null
     mtu: 1601
-    vlans: null
     mlag: 12
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
@@ -753,8 +745,6 @@ ethernet_interfaces:
     mtu: 1601
     type: switched
     shutdown: false
-    mode: null
-    vlans: null
     channel_group:
       id: 12
       mode: active

@@ -118,7 +118,6 @@ router_bgp:
           - '21:21'
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:31
@@ -131,7 +130,6 @@ router_bgp:
           - '31:31'
       redistribute_routes:
       - connected
-      address_families: null
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.11:14
@@ -235,7 +233,7 @@ platform:
       hardware_only: true
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 loopback_interfaces:
   Loopback0:
@@ -325,7 +323,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
 vlans:
   150:
     tenant: Tenant_A

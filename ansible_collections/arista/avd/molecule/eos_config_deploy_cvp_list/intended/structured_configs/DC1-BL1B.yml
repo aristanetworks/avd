@@ -91,7 +91,6 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:21
@@ -107,7 +106,6 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.11
       rd: 192.168.255.11:31
@@ -123,7 +121,6 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
       redistribute_routes:
       - connected
-      address_families: null
   vlan_aware_bundles:
     Tenant_A_WAN_Zone:
       rd: 192.168.255.11:14
@@ -219,7 +216,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 vlans:
   4093:
@@ -428,7 +425,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP

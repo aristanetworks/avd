@@ -126,7 +126,7 @@ management_interfaces:
     type: oob
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 loopback_interfaces:
   Loopback0:

@@ -43,7 +43,7 @@ management_interfaces:
     type: inband
 management_api_http:
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
   enable_https: true
 ethernet_interfaces:
   Ethernet1:
@@ -79,4 +79,3 @@ vlans:
     name: Tenant_A_OP_Zone_3
 ip_igmp_snooping:
   globally_enabled: true
-  vlans: null
