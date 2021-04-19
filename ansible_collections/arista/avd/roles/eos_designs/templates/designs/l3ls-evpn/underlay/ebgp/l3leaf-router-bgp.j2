@@ -19,7 +19,6 @@ router_bgp:
     attached-host:
 {% endif %}
 
-
 {% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
 {% if underlay_rfc5549 is arista.avd.defined(true) %}
 {# RFC5549 EBGP peerings #}

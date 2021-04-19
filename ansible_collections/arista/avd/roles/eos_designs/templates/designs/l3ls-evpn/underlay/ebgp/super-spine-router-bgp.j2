@@ -14,7 +14,7 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-      
+
 {% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
 {% if underlay_rfc5549 is arista.avd.defined(true) %}
 {# future place to add RFC5549 EBGP peerings #}
