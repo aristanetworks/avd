@@ -34,7 +34,11 @@ class ActionModule(ActionBase):
                 root_key = n
 
             if "templates" in self._task.args:
-                template_list = list(self._task.args.get("templates"))
+                t = self._task.args.get("templates")
+                if isinstance(t, list):
+                    template_list = t
+                else:
+                    raise AnsibleActionFail("The argument 'templates' is not a list")
             else:
                 raise AnsibleActionFail("The argument 'templates' must be set")
         else:
@@ -46,7 +50,15 @@ class ActionModule(ActionBase):
 
         template_vars = task_vars
 
-        for template in template_list:
+        for template_item in template_list:
+            template = template_item.get('template')
+            if not template:
+                raise AnsibleActionFail("Invalid template data")
+
+            template_options = template_item.get('options', {})
+            list_merge = template_options.get('list_merge', 'append')
+            strip_empty_keys = template_options.get('strip_empty_keys', True)
+
             if root_key:
                 template_vars[root_key] = output
             else:
@@ -54,9 +66,10 @@ class ActionModule(ActionBase):
 
             template_output = template_lookup_module.run([template], template_vars)
             template_output_data = yaml.safe_load(template_output[0])
-            template_output_data = strip_null_from_output(template_output_data)
+            if strip_empty_keys:
+                template_output_data = strip_null_from_output(template_output_data)
             if template_output_data:
-                output = combine(output, template_output_data, recursive=True, list_merge='append')
+                output = combine(output, template_output_data, recursive=True, list_merge=list_merge)
 
         if root_key:
             result['ansible_facts'] = {root_key: output}

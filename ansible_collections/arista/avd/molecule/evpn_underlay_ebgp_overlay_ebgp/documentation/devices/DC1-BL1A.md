@@ -5,7 +5,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Name Servers](#name-servers)
-  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -94,26 +93,6 @@ interface Management1
 ```eos
 ip name-server vrf MGMT 8.8.8.8
 ip name-server vrf MGMT 192.168.200.5
-```
-
-## NTP
-
-### NTP Summary
-
-- Local Interface: Management1
-
-- VRF: MGMT
-
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
-
-### NTP Device Configuration
-
-```eos
-!
-ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management API HTTP

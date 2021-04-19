@@ -5,7 +5,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Name Servers](#name-servers)
-  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -94,26 +93,6 @@ interface Management1
 ```eos
 ip name-server vrf MGMT 8.8.8.8
 ip name-server vrf MGMT 192.168.200.5
-```
-
-## NTP
-
-### NTP Summary
-
-- Local Interface: Management1
-
-- VRF: MGMT
-
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
-
-### NTP Device Configuration
-
-```eos
-!
-ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management API HTTP
@@ -318,7 +297,7 @@ vlan 350
 | Ethernet7 | test | routed | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | false | - | - |
 | Ethernet8 | test | routed | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
-| Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
+| Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -381,7 +360,7 @@ interface Ethernet9
    ip address 10.10.40.20/24
 !
 interface Ethernet4000
-   description My test
+   description My second test
    no shutdown
    mtu 1500
    no switchport

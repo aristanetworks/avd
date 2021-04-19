@@ -9,27 +9,30 @@ design:
 templates:
   facts:
     # Set general "switch.*" variables
-    - "facts/main.j2"
+    - template: "facts/main.j2"
     # Set design specific "switch.*" variables
-    - "designs/{{ design.type }}/facts/main.j2"
+    - template: "designs/{{ design.type }}/facts/main.j2"
   structured_config:
     # Render Strucured Configuration
     # Base features
-    - "base/main.j2"
+    - template: "base/main.j2"
     # MLAG feature
-    - "mlag/main.j2"
+    - template: "mlag/main.j2"
     # Underlay feature
-    - "designs/{{ design.type }}/underlay/main.j2"
+    - template: "designs/{{ design.type }}/underlay/main.j2"
     # Overlay feature
-    - "designs/{{ design.type }}/overlay/main.j2"
+    - template: "designs/{{ design.type }}/overlay/main.j2"
     # L3 Edge feature
-    - "l3_edge/main.j2"
+    - template: "l3_edge/main.j2"
     # Tenants feature
-    - "designs/{{ design.type }}/tenants/main.j2"
+    - template: "designs/{{ design.type }}/tenants/main.j2"
     # Connected Endpoints feature
-    - "connected_endpoints/main.j2"
+    - template: "connected_endpoints/main.j2"
     # Merge custom_structured_configuration last
-    - "custom-structured-configuration-from-var.j2"
+    - template: "custom-structured-configuration-from-var.j2"
+      options:
+        list_merge: "{{ custom_structured_configuration_list_merge }}"
+        strip_empty_keys: false
 
 mgmt_vrf_routing: false
 
@@ -147,3 +150,4 @@ connected_endpoints_keys:
 
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
+custom_structured_configuration_list_merge: 'replace'
