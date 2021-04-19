@@ -466,7 +466,6 @@ router_bgp:
           - 1025:1025
       redistribute_routes:
       - connected
-      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

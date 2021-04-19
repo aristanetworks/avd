@@ -1,7 +1,5 @@
 ## Change Summary
 
-<!-- Enter short PR description -->
-
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
 - [ ] Bug fix (non-breaking change which fixes an issue)
@@ -13,8 +11,10 @@
 - [ ] Other (please describe):
 
 ## Related Issue(s)
+<!-- If PR is linked to one or more issues, please list issues below -->
+<!--- HINT: Include "Fixes #nnn" if you are fixing an existing issue -->
 
-Fixes #<ISSUE ID>
+Fixes issue #<ISSUE ID>
 
 ## Component(s) name
 
@@ -22,7 +22,6 @@ Fixes #<ISSUE ID>
 
 ## Proposed changes
 <!--- Describe your changes in detail -->
-<!--- Describe data model implemented for new features -->
 
 ## How to test
 <!--- Please describe in detail how you tested your changes. -->

@@ -372,7 +372,6 @@ router_bgp:
       neighbors:
         123.1.1.10:
           remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
           description: External IPv4 BGP peer
           send_community: standard extended
           maximum_routes: 0
@@ -381,44 +380,23 @@ router_bgp:
             route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
           update_source: Loopback123
           ebgp_multihop: 3
-          route_map_in: RM-123-1-1-10-IN
+          address_family:
+          - ipv4
+          local_as: 123
           route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-          local_as: 123
-        123.1.1.11:
-          remote_as: 1234
-          password: AQQvKeimxJu+uGQ/yYvv9w==
-          description: External IPv4 BGP peer
-          send_community: standard extended
-          maximum_routes: 0
-          default_originate:
-            always: false
-          update_source: Loopback123
-          ebgp_multihop: 3
-          route_map_in: RM-123-1-1-11-IN
-          route_map_out: RM-123-1-1-11-OUT
-          local_as: 123
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
           send_community: all
+          address_family:
+          - ipv6
           route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
         fd5a:fe45:8831:06c5::b:
           remote_as: 12345
+          address_family:
+          - ipv6
       redistribute_routes:
       - connected
       - static
-      address_families:
-        ipv4:
-          neighbors:
-            123.1.1.10:
-              activate: true
-            123.1.1.11:
-              activate: true
-        ipv6:
-          neighbors:
-            fd5a:fe45:8831:06c5::a:
-              activate: true
-            fd5a:fe45:8831:06c5::b:
-              activate: true
     Tenant_B_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:21
@@ -432,7 +410,6 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_C_WAN_Zone:
       router_id: 192.168.255.10
       rd: 192.168.255.10:31
@@ -446,7 +423,6 @@ router_bgp:
       neighbors: null
       redistribute_routes:
       - connected
-      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

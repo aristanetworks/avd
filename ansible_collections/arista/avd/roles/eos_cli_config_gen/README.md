@@ -1688,8 +1688,6 @@ router_bgp:
       neighbors:
         < neighbor_ip_address >:
           remote_as: < asn >
-          peer_group: < peer_group_name >
-          password: "< encrypted_password >"
           local_as: < asn >
           description: < description >
           ebgp_multihop: < integer >
@@ -1703,6 +1701,9 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
+          address_family:
+            - < address_family_1 >
+            - < address_family_2 >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
@@ -1724,14 +1725,6 @@ router_bgp:
           attribute_map: < route_map_name >
           match_map: < route_map_name >
           advertise_only: < true | false >
-      address_families:
-        < address_family >:
-          neighbors:
-            < neighbor_ip_address >:
-              activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
@@ -1771,15 +1764,6 @@ router_ospf:
       max_lsa: < integer >
       default_information_originate:
         always: true
-      summary_addresses:
-        - prefix: < summary_prefix_01 >
-          tag: < string >
-        - prefix: < summary_prefix_02 >
-          attribute_map: < string >
-        - prefix: < summary_prefix_03 >
-          not_advertise: < true >
-        - prefix: < summary_prefix_04 >
-        - prefix: < summary_prefix_05 >
       redistribute:
         static:
           route_map: < route_map_name >

@@ -1,1 +1,11 @@
-../ansible_collections/arista/avd/requirements-dev.txt
+ansible-lint==4.2.0
+pycodestyle
+flake8
+pylint==2.4.4
+twine
+pre-commit==2.9.2
+pre-commit-hooks==3.3.0
+identify==1.4.20
+docker
+molecule==3.2.0
+molecule-docker==0.2.4
