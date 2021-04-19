@@ -6,8 +6,8 @@ on:
       - 'releases/**'
     paths:
       - '.github/workflows/docker_build.yml'
-      - 'ansible_collections/arista/avd/requirements.txt'
-      - 'ansible_collections/arista/avd/requirements-dev.txt'
+      - 'development/requirements.txt'
+      - 'development/requirements-dev.txt'
 jobs:
   'rebuild-docker-avd':
     name: Instruct Docker Hub to build image

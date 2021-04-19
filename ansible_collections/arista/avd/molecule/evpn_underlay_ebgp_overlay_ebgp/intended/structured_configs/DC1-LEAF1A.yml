@@ -393,7 +393,6 @@ router_bgp:
           - '12:12'
       redistribute_routes:
       - connected
-      address_families: null
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.5
       rd: 192.168.255.5:11
@@ -406,7 +405,6 @@ router_bgp:
           - '11:11'
       redistribute_routes:
       - connected
-      address_families: null
 ip_extcommunity_lists: null
 router_ospf: null
 router_isis: null

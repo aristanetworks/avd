@@ -268,6 +268,6 @@ $ virtualenv -p python3 .venv
 $ source .venv/bin/activate
 
 # Install Python requirements
-$ pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
+$ pip3 install -r ansible-avd/development/requirements.txt
 ...
 ```
