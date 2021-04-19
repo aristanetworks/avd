@@ -33,10 +33,30 @@ options:
     required: false
     type: str
   templates:
-    description: List of Jinja templates to be run.
+    description: List of dicts for Jinja templates to be run.
     required: true
     type: list
-    elements: objects
+    elements: dict
+    suboptions:
+      template:
+        description: Template file
+        required: true
+        type: str
+      options:
+        description: Template options
+        required: false
+        type: dict
+        suboptions:
+          list_merge:
+            description: Merge strategy for lists for Ansible Combine filter
+            required: false
+            default: 'append'
+            type: str
+          strip_empty_keys:
+            description: "Filter out keys from the generated output if value is null/none/undefined"
+            required: false
+            default: true
+            type: bool
 '''
 
 EXAMPLES = r'''
@@ -44,7 +64,18 @@ EXAMPLES = r'''
 - name: Generate device configuration in structured format
   yaml_template_to_fact:
     root_key: structured_config
-    yaml_templates: "{{ templates.structured_config }}"
+    templates:
+      - template: "base/main.j2"
+      - template: "mlag/main.j2"
+      - template: "designs/{{ design.type }}/underlay/main.j2"
+      - template: "designs/{{ design.type }}/overlay/main.j2"
+      - template: "l3_edge/main.j2"
+      - template: "designs/{{ design.type }}/tenants/main.j2"
+      - template: "connected_endpoints/main.j2"
+      - template: "custom-structured-configuration-from-var.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
   check_mode: no
   changed_when: False
 '''
