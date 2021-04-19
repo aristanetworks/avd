@@ -1,13 +1,13 @@
 ---
 
 - name: Set AVD facts
-  yaml_template_to_var:
-    yaml_templates: "{{ templates.facts }}"
+  yaml_template_to_fact:
+    templates: "{{ templates.facts }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
 
-- name: Generate (yaml) with vars (only for debugging)
+- name: Generate YAML file with hostvars (only for debugging)
   template:
     src: debug/generate-debug-vars.j2
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}-debug-vars.yml'
@@ -16,14 +16,14 @@
   tags: [debug, never]
 
 - name: Generate device configuration in structured format
-  yaml_template_to_var:
+  yaml_template_to_fact:
     root_key: structured_config
-    yaml_templates: "{{ templates.structured_config }}"
+    templates: "{{ templates.structured_config }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
 
-- name: Merge generated device configuration with custom_structured_configuration_ variables (yaml)
+- name: Write device structured configuration to YAML file
   template:
     src: generate-structured-config.j2
     dest: '{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml'

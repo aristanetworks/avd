@@ -9,7 +9,7 @@ IGMP snooping is globally disabled
 {%     else %}
 IGMP snooping is globally enabled.
 
-{%         if ip_igmp_snooping.vlans is defined and ip_igmp_snooping.vlans is not none %}
+{%         if ip_igmp_snooping.vlans is arista.avd.defined %}
 
 | VLAN | IGMP Snooping |
 | --- | --------------- |

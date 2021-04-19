@@ -16,7 +16,7 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
 {% if l2leaf_inband_management_subnet is arista.avd.defined %}
-    attached-host:
+    attached-host: {}
 {% endif %}
 
 {% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
