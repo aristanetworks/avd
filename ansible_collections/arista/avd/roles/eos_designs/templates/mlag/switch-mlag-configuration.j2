@@ -4,7 +4,7 @@
 ### MLAG Configuration ###
 mlag_configuration:
   domain_id: {{ leaf.mlag_group }}
-  local_interface: Vlan4094
+  local_interface: Vlan{{ leaf.mlag_peer_vlan }}
   peer_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(leaf.mlag_peer_ip) }}
 {%     if leaf.mlag_dual_primary_detection == true %}
   peer_address_heartbeat:

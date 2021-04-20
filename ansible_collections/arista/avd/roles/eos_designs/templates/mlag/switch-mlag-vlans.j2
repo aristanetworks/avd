@@ -2,13 +2,13 @@
 {% if leaf.mlag == true %}
 ## mlag vlans ##
 {%     if type == 'l3leaf' %}
-  4093:
+  {{ leaf.mlag_peer_l3_vlan }}:
     tenant: system
     name: LEAF_PEER_L3
     trunk_groups:
       - LEAF_PEER_L3
 {%     endif %}
-  4094:
+  {{ leaf.mlag_peer_vlan }}:
     tenant: system
     name: MLAG_PEER
     trunk_groups:

@@ -1,8 +1,8 @@
 {# Leaf mlag disable spanning tree #}
 {% if leaf.mlag == true %}
 {%     if type == 'l3leaf' %}
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: {{ leaf.mlag_peer_l3_vlan }},{{ leaf.mlag_peer_vlan }}
 {%     else %}
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: {{ leaf.mlag_peer_vlan }}
 {%     endif %}
 {% endif %}
