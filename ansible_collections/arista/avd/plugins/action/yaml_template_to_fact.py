@@ -2,12 +2,12 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 import yaml
-
 from ansible.plugins.action import ActionBase
 from ansible.errors import AnsibleAction, AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
 from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
+from ansible_collections.arista.avd.plugins.module_utils.strippers import strip_null_from_output
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
                     'status': ['preview'],
@@ -76,36 +76,3 @@ class ActionModule(ActionBase):
         else:
             result['ansible_facts'] = output
         return result
-
-
-def strip_null_from_output(data):
-    strip_values_tuple = (None,)
-    if isinstance(data, dict):
-        return strip_empties_from_dict(data, strip_values_tuple)
-    elif isinstance(data, list):
-        return strip_empties_from_list(data, strip_values_tuple)
-    return data
-
-
-def strip_empties_from_list(data, strip_values_tuple=(None, str(), list(), dict(),)):
-    new_data = []
-    for v in data:
-        if isinstance(v, dict):
-            v = strip_empties_from_dict(v, strip_values_tuple)
-        elif isinstance(v, list):
-            v = strip_empties_from_list(v, strip_values_tuple)
-        if v not in strip_values_tuple:
-            new_data.append(v)
-    return new_data
-
-
-def strip_empties_from_dict(data, strip_values_tuple=(None, str(), list(), dict(),)):
-    new_data = {}
-    for k, v in data.items():
-        if isinstance(v, dict):
-            v = strip_empties_from_dict(v, strip_values_tuple)
-        elif isinstance(v, list):
-            v = strip_empties_from_list(v, strip_values_tuple)
-        if v not in strip_values_tuple:
-            new_data[k] = v
-    return new_data
