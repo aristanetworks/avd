@@ -73,6 +73,8 @@ l3leaf:
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_peer_l3_vlan: 4090
+    mlag_peer_vlan: 4092
     spanning_tree_mode: mstp
     spanning_tree_root_super: true
     spanning_tree_priority: 4096
@@ -150,6 +152,7 @@ l2leaf:
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_vlan: 4091
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     rack: "rackE"
