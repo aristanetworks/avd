@@ -1,7 +1,7 @@
 {# leaf mlag vlan interfaces #}
 vlan_interfaces:
 {% if switch.mlag_l3 is arista.avd.defined(true) %}
-  Vlan4093:
+  Vlan{{ switch.mlag_peer_l3_vlan }}:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
@@ -20,7 +20,7 @@ vlan_interfaces:
     isis_network_point_to_point: true
 {%     endif %}
 {% endif %}
-  Vlan4094:
+  Vlan{{ switch.mlag_peer_vlan }}:
     description: MLAG_PEER
     shutdown: false
     ip_address: {{ mlag_ips.mlag_peer | ipaddr('network') | ipmath(switch.mlag_ip) }}/31

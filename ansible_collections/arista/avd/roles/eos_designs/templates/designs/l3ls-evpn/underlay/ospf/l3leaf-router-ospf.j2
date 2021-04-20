@@ -8,7 +8,7 @@ router_ospf:
         - {{ uplink_to_spine_interface }}
 {% endfor %}
 {% if switch.mlag is arista.avd.defined(true) %}
-        - Vlan4093
+        - Vlan{{ switch.mlag_peer_l3_vlan }}
 {% endif %}
 {% if underlay_ospf_bfd_enable is defined and underlay_ospf_bfd_enable %}
       bfd_enable: true

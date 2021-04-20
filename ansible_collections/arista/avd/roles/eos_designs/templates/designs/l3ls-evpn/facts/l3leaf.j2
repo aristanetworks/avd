@@ -118,6 +118,12 @@ switch:
                                   false ) }}
   mlag_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].mlag_interfaces | arista.avd.default(
                                               l3leaf.defaults.mlag_interfaces ) }}
+  mlag_peer_l3_vlan: {{ l3leaf.node_groups[l3leaf_node_group].mlag_peer_l3_vlan | arista.avd.default(
+                        l3leaf.defaults.mlag_peer_l3_vlan,
+                        4093) }}
+  mlag_peer_vlan: {{ l3leaf.node_groups[l3leaf_node_group].mlag_peer_vlan | arista.avd.default(
+                     l3leaf.defaults.mlag_peer_vlan,
+                     4094) }}
 {%                 if loop.index == 1 %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
