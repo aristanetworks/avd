@@ -346,7 +346,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: 4090,4092
 local_users:
   admin:
     privilege: 15
@@ -399,12 +399,12 @@ management_api_http:
     MGMT: {}
   enable_https: true
 vlans:
-  4093:
+  4090:
     tenant: system
     name: LEAF_PEER_L3
     trunk_groups:
     - LEAF_PEER_L3
-  4094:
+  4092:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
@@ -506,12 +506,12 @@ vlans:
     trunk_groups:
     - LEAF_PEER_L3
 vlan_interfaces:
-  Vlan4093:
+  Vlan4090:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
     ip_address: 10.255.251.6/31
     mtu: 1500
-  Vlan4094:
+  Vlan4092:
     description: MLAG_PEER
     shutdown: false
     ip_address: 10.255.252.6/31
@@ -1163,7 +1163,7 @@ ethernet_interfaces:
     lacp_port_priority: 8192
 mlag_configuration:
   domain_id: DC1_SVC3
-  local_interface: Vlan4094
+  local_interface: Vlan4092
   peer_address: 10.255.252.7
   peer_link: Port-Channel5
   reload_delay_mlag: 300

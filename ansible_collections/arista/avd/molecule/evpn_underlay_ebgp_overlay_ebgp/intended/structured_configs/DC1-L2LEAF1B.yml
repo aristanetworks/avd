@@ -39,7 +39,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 16384
-  no_spanning_tree_vlan: 4094
+  no_spanning_tree_vlan: 4091
 local_users:
   admin:
     privilege: 15
@@ -65,7 +65,7 @@ management_api_http:
     MGMT: {}
   enable_https: true
 vlans:
-  4094:
+  4091:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
@@ -95,7 +95,7 @@ vlans:
     tenant: Tenant_A
     name: Tenant_A_NFS
 vlan_interfaces:
-  Vlan4094:
+  Vlan4091:
     description: MLAG_PEER
     shutdown: false
     ip_address: 10.255.252.15/31
@@ -160,7 +160,7 @@ ethernet_interfaces:
       mode: active
 mlag_configuration:
   domain_id: DC1_L2LEAF1
-  local_interface: Vlan4094
+  local_interface: Vlan4091
   peer_address: 10.255.252.14
   peer_link: Port-Channel3
   reload_delay_mlag: 300

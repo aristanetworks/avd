@@ -214,7 +214,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF1A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF1 | Vlan4094 | 10.255.252.15 | Port-Channel3 |
+| DC1_L2LEAF1 | Vlan4091 | 10.255.252.15 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -224,7 +224,7 @@ Dual primary detection is disabled.
 !
 mlag configuration
    domain-id DC1_L2LEAF1
-   local-interface Vlan4094
+   local-interface Vlan4091
    peer-address 10.255.252.15
    peer-link Port-Channel3
    reload-delay mlag 300
@@ -245,14 +245,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4094**
+Spanning Tree disabled for VLANs: **4091**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4094
+no spanning-tree vlan-id 4091
 spanning-tree mst 0 priority 16384
 ```
 
@@ -285,7 +285,7 @@ vlan internal order ascending range 1006 1199
 | 131 | Tenant_A_APP_Zone_2 | none  |
 | 160 | Tenant_A_VMOTION | none  |
 | 161 | Tenant_A_NFS | none  |
-| 4094 | MLAG_PEER | MLAG  |
+| 4091 | MLAG_PEER | MLAG  |
 
 ## VLANs Device Configuration
 
@@ -315,7 +315,7 @@ vlan 160
 vlan 161
    name Tenant_A_NFS
 !
-vlan 4094
+vlan 4091
    name MLAG_PEER
    trunk group MLAG
 ```
@@ -400,20 +400,20 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4091 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  10.255.252.14/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.252.14/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan4094
+interface Vlan4091
    description MLAG_PEER
    no shutdown
    mtu 1500
