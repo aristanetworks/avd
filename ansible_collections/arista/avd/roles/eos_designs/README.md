@@ -24,12 +24,12 @@ The **eos_designs** role:
   - **eos_config_deploy_eapi** role.
   - **eos_config_deploy_cvp** role.
 - Designed to generate the intended configuration offline, without relying on switch current state information.
-- Facilitates the evaluation of the configuration post deployment with [eos_validate_state](../eos_validate_state/README.md) role.
+- Facilitates the evaluation of the configuration post-deployment with [eos_validate_state](../eos_validate_state/README.md) role.
 - Facilitates the evaluation of the configuration prior to deployment with tools like [Batfish](https://www.batfish.org/)
 
 ## Role Inputs and Outputs
 
-Figure 1 below provides a visualization of the roles inputs, and outputs and tasks in order executed by the role.
+Figure 1 below provides a visualization of the roles inputs, outputs and tasks in order executed by the role.
 
 <!-- ![Figure 1: Ansible Role eos_designs](../../media/role_eos_designs.gif) -->
 
@@ -44,21 +44,24 @@ Figure 1 below provides a visualization of the roles inputs, and outputs and tas
 
 **Outputs:**
 
-- A structured EOS configuration file in yaml format. This provides the following benefits:
-  - First, this allows us to naturally detect duplicate entries from inputs, as yaml dictionaries don't process duplicate keys.
-  - Leverage the structured data to create eos cli configuration.
-  - Leverage the structured data to create end user documentation.
-  - Leverage the structured data for pre and post fabric tests.
+- A structured EOS configuration file in YAML format. This provides the following benefits:
+  - First, this allows us to naturally detect duplicate entries from inputs, as YAML dictionaries don't process duplicate keys.
+  - Leverage the structured data to create eos CLI configuration.
+  - Leverage the structured data to create end-user documentation.
+  - Leverage the structured data for pre and post fabric validation.
 - Fabric Documentation in Markdown format.
-- Leaf and Spine Topology summary in csv format.
+- Leaf and Spine Topology summary in CSV format.
 
 **Tasks:**
 
-1. Generate device configuration in a structured format (yaml).
-2. Include device structured configuration that was previously generated.
-3. Generate VXLAN/EVPN fabric documentation in Markdown format.
-4. Generate Leaf and Spine point-to-point links summary in CSV format.
-5. Generate Leaf and Spine physical topology summary in CSV format.
+1. Set AVD facts (YAML).
+2. Generate YAML file with host variables (Optional for debuging/development with tag -> debug).
+3. Generate device configuration in structured format (YAML).
+4. Write device structured configuration to YAML file.
+5. Include device structured configuration that was previously generated.
+6. Generate fabric documentation in Markdown format.
+7. Generate fabric point-to-point links summary in CSV format.
+8. Generate fabric physical topology summary in CSV format.
 
 ## Requirements
 
@@ -66,25 +69,25 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## Role Variables
 
-The role variables are documented inline within yaml formatted output with: "< >"
-Some variables are required while others are optional.
+The role variables are documented inline within YAML formatted output with: "< >"
+Some variables are required, while others are optional.
 Default values, are stored in the role defaults [main.yml](./defaults/main.yml) file.
 
-Role variable are grouped by configuration elements and are typically stored in different group_vars files.
+Role variables are grouped by configuration elements and are typically stored in different group_vars files.
 
 ## vEOS-LAB Know Caveats and Recommendations
 
-- vEOS-LAB is a great tool to learn and test ansible-avd automation framework. In fact, this is the primary tool leveraged by Arista Ansible Team, for development and testing efforts.
-- vEOS-lab enables you to create and run replicas of physical networks within a risk free virtual environment.
+- vEOS-LAB is a great tool to learn and test ansible-avd automation framework.This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
+- vEOS-lab enables you to create and run replicas of physical networks within a risk-free virtual environment.
 - Virtual networks created with vEOS-lab can be used for network modeling, planning for new services, or validating new features and functionality for the installed network.
 - vEOS-lab is not a network simulator but the exact EOS implementation that runs on the hardware platforms.
 - Supported features are documented here: [Arista EOS overview](https://www.arista.com/en/products/eos)
 
-However, because vEOS-LAB implements a virtual data plane there are known caveats and adjustments that are required to default arista.avd settings:
+However, because vEOS-LAB implements a virtual data plane, there are known caveats and adjustments required to default arista.avd settings:
 
 **Variables adjustments required for vEOS-LAB:**
 
-```yaml
+```YAML
 # Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
 spine_bgp_defaults:
 #  - update wait-for-convergence
