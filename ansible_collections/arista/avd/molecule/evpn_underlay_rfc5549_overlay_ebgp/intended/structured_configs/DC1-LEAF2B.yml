@@ -829,7 +829,3 @@ virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.7
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_

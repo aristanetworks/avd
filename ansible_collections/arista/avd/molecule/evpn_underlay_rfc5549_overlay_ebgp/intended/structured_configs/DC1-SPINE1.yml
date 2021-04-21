@@ -189,7 +189,3 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_

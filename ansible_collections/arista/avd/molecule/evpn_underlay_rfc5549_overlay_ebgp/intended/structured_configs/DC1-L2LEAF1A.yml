@@ -120,7 +120,3 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_

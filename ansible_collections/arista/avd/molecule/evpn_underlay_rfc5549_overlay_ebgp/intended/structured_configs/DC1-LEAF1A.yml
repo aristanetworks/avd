@@ -365,7 +365,3 @@ vlan_interfaces:
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_

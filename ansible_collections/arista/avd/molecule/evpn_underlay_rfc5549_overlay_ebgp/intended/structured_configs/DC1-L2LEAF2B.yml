@@ -200,7 +200,3 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_
