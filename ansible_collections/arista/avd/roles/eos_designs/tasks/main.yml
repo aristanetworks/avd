@@ -2,7 +2,7 @@
 
 - name: Set AVD facts
   yaml_template_to_fact:
-    templates: "{{ templates.facts }}"
+    templates: "{{ templates[design.type].facts }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
@@ -18,7 +18,7 @@
 - name: Generate device configuration in structured format
   yaml_template_to_fact:
     root_key: structured_config
-    templates: "{{ templates.structured_config }}"
+    templates: "{{ templates[design.type].structured_config }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
