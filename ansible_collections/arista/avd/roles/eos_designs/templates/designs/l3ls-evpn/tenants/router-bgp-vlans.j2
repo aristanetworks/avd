@@ -23,7 +23,6 @@
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
-  vlans:
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan|int in switch.vlans %}
 {%                 set l2vlan_int = l2vlan | int %}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
