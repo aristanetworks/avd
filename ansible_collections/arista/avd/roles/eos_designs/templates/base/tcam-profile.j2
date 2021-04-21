@@ -5,6 +5,7 @@
 {%     if switch.platform in platform_setting.platforms %}
 {%         set ns.platform_defined = true %}
 {%         if platform_setting.tcam_profile is arista.avd.defined %}
+tcam_profile:
   system: {{ platform_setting.tcam_profile }}
 {%         endif %}
 {%         break %}
@@ -13,6 +14,7 @@
 {% for platform_setting in platform_settings if ns.platform_defined == false %}
 {%     if 'default' in platform_setting.platforms %}
 {%         if platform_setting.tcam_profile is arista.avd.defined %}
+tcam_profile:
   system: {{ platform_setting.tcam_profile }}
 {%         endif %}
 {%         break %}

@@ -1,79 +1,152 @@
-l3leaf_node_group: RACK1_SINGLE
-switch_platform: vEOS-LAB
-switch_rack: null
-switch_bgp_as: 65121
-leaf_id: 1
-switch_mgmt_ip: 192.168.1.15/24
-leaf_evpn_services_l2_only: false
-switch_router_id: 172.16.120.3
-switch_evpn_role: client
-switch_evpn_route_servers:
-- DC1-POD2-SPINE1
-- DC1-POD2-SPINE2
-switch_evpn_route_clients: []
-leaf_filter_tenants:
-- all
-leaf_filter_tags:
-- all
-leaf_allowed_vrfs:
-- Common_VRF
-leaf_allowed_svis:
-- 110
-- 111
-- 112
-leaf_allowed_vlans:
-- 110
-- 111
-- 112
-leaf_mlag: false
+router_bgp:
+  as: 65121
+  router_id: 172.16.120.3
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - graceful-restart restart-time 300
+  - graceful-restart
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    IPv4-UNDERLAY-PEERS:
+      type: ipv4
+      remote_as: 65120
+      password: AQQvKeimxJu+uGQ/yYvv9w==
+      maximum_routes: 12000
+      send_community: all
+    EVPN-OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      bfd: true
+      ebgp_multihop: '5'
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      IPv4-UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+    attached-host: {}
+  neighbors:
+    172.17.120.0:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE1_Ethernet3
+    172.17.120.2:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD2-SPINE2_Ethernet3
+    172.17.10.13:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-RS2
+      remote_as: 65102
+      bfd: true
+    172.16.120.1:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD2-SPINE1
+      remote_as: 65120
+      route_map_out: RM-EVPN-FILTER-AS65120
+    172.16.120.2:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-POD2-SPINE2
+      remote_as: 65120
+      route_map_out: RM-EVPN-FILTER-AS65120
+  address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  address_family_rtc:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
+  vrfs:
+    Common_VRF:
+      router_id: 172.16.120.3
+      rd: 172.16.120.3:1025
+      route_targets:
+        import:
+          evpn:
+          - 1025:1025
+        export:
+          evpn:
+          - 1025:1025
+      redistribute_routes:
+      - connected
+  vlans:
+    110:
+      tenant: Tenant_A
+      rd: 172.16.120.3:10110
+      route_targets:
+        both:
+        - 10110:10110
+      redistribute_routes:
+      - learned
+    111:
+      tenant: Tenant_A
+      rd: 172.16.120.3:50111
+      route_targets:
+        both:
+        - 50111:50111
+      redistribute_routes:
+      - learned
+    112:
+      tenant: Tenant_A
+      rd: 172.16.120.3:50112
+      route_targets:
+        both:
+        - 50112:50112
+      redistribute_routes:
+      - learned
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.1.254
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware_counters: null
-hardware: null
-daemon_terminattr: null
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
-name_server: null
-ntp_server: null
-redundancy: null
 snmp_server:
   location: TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A
 spanning_tree:
   mode: none
-aaa_authorization: null
 local_users:
   admin:
     privilege: 15
     role: network-admin
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-clock: null
-vlans:
-  4092:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
 vrfs:
   MGMT:
     ip_routing: false
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-port_channel_interfaces: null
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.1.15/24
+    gateway: 192.168.1.254
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.120.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.120.3/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD2-SPINE1
@@ -109,23 +182,19 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.10.12/31
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.120.3/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 172.18.120.3/32
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.15/24
-    gateway: 192.168.1.254
-    type: oob
+vlans:
+  4092:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  112:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_3
 vlan_interfaces:
   Vlan4092:
     description: L2LEAF_INBAND_MGMT
@@ -159,34 +228,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.1.12.1/24
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-      vrfs:
-        Common_VRF:
-          vni: 1025
-tcam_profile: null
-platform: null
-mac_address_table: null
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-virtual_source_nat_vrfs: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.254
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -222,116 +263,22 @@ router_bfd:
     interval: 300
     min_rx: 300
     multiplier: 3
-router_bgp:
-  as: 65121
-  router_id: 172.16.120.3
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-  - maximum-paths 4 ecmp 4
-  peer_groups:
-    IPv4-UNDERLAY-PEERS:
-      type: ipv4
-      remote_as: 65120
-      password: AQQvKeimxJu+uGQ/yYvv9w==
-      maximum_routes: 12000
-      send_community: all
-    EVPN-OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      bfd: true
-      ebgp_multihop: '5'
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-  neighbor_interfaces: null
-  neighbors:
-    172.17.120.0:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD2-SPINE1_Ethernet3
-    172.17.120.2:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD2-SPINE2_Ethernet3
-    172.16.120.1:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD2-SPINE1
-      remote_as: 65120
-      route_map_out: RM-EVPN-FILTER-AS65120
-    172.16.120.2:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD2-SPINE2
-      remote_as: 65120
-      route_map_out: RM-EVPN-FILTER-AS65120
-    172.17.10.13:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-RS2
-      remote_as: 65102
-      bfd: true
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
-    attached-host: null
-  address_family_evpn:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
-  address_family_ipv4:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: false
-      IPv4-UNDERLAY-PEERS:
-        activate: true
-  address_family_rtc:
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
-  vlan_aware_bundles: null
-  vlans:
-    110:
-      tenant: Tenant_A
-      rd: 172.16.120.3:10110
-      route_targets:
-        both:
-        - 10110:10110
-      redistribute_routes:
-      - learned
-    111:
-      tenant: Tenant_A
-      rd: 172.16.120.3:50111
-      route_targets:
-        both:
-        - 50111:50111
-      redistribute_routes:
-      - learned
-    112:
-      tenant: Tenant_A
-      rd: 172.16.120.3:50112
-      route_targets:
-        both:
-        - 50112:50112
-      redistribute_routes:
-      - learned
-  vrfs:
-    Common_VRF:
-      router_id: 172.16.120.3
-      rd: 172.16.120.3:1025
-      route_targets:
-        import:
-          evpn:
-          - 1025:1025
-        export:
-          evpn:
-          - 1025:1025
-      redistribute_routes:
-      - connected
-      address_families: null
-ip_extcommunity_lists: null
-router_ospf: null
-router_isis: null
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+      vrfs:
+        Common_VRF:
+          vni: 1025
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01

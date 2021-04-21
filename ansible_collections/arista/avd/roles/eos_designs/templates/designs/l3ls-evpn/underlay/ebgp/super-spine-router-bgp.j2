@@ -1,0 +1,61 @@
+{# EBGP #}
+{# Underlay network peering #}
+router_bgp:
+  peer_groups:
+    {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+      type: ipv4
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+        activate: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+
+{% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+{# future place to add RFC5549 EBGP peerings #}
+
+{% else %}
+{# Regular EBGP peerings #}
+{# Super Spine to Spine router BGP underlay peering #}
+  neighbors:
+{%     for host in groups[dc_name] | arista.avd.natural_sort %}
+{%         if hostvars[host]['type'] == 'spine' %}
+{%             for offset in range(max_spine_to_super_spine_links) %}
+{%                 set spine_id = hostvars[host]['spine']['nodes'][host]['id'] %}
+{%                 set ip_pool = hostvars[host]['super_spine_underlay_p2p_network_summary'] %}
+{#             max number of hosts in subnet will be divided by max super-spine number to avoid address changes when provisioning new spines #}
+{%                 set ip_pool_max_hosts_in_subnet = ip_pool | ipaddr('size') %}
+    {{
+      ip_pool | ipaddr('network') | ipmath(
+            (ip_pool_max_hosts_in_subnet / max_super_spines)|int * (switch.id - 1) + ((spine_id - 1) * max_spine_to_super_spine_links + offset) * 2 + 1
+        )
+    }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      remote_as: {{ hostvars[host]['spine']['bgp_as'] }}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+{## Underlay network peering to Overlay Controllers #}
+{%     if overlay_controller is defined %}
+{%         for overlay_controller_node in overlay_controller.nodes | arista.avd.natural_sort %}
+{%             set overlay_controller_remote_switches = overlay_controller.nodes[overlay_controller_node].remote_switches | arista.avd.default( overlay_controller.defaults.remote_switches ) %}
+{%             for overlay_controller_remote_switch in overlay_controller_remote_switches %}
+{%                 if overlay_controller_remote_switch == inventory_hostname %}
+    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      description: {{ overlay_controller_node }}
+      remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default( overlay_controller.defaults.bgp_as ) }}
+{%                     if overlay_controller_p2p_bfd is arista.avd.defined(true) %}
+      bfd: true
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

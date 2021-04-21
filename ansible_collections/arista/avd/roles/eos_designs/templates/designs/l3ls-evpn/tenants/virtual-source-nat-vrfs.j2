@@ -1,0 +1,12 @@
+{# Tenant virtual source NAT vrfs #}
+virtual_source_nat_vrfs:
+{% for tenant in tenants | arista.avd.natural_sort if ( tenant in switch.filter_tenants or "all" in switch.filter_tenants ) and switch.evpn_services_l2_only == false %}
+{%     if tenants[tenant].vrfs is defined %}
+{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
+{%             if tenants[tenant].vrfs[vrf].vtep_diagnostic is defined %}
+  {{ vrf }}:
+    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ipaddr('network') | ipmath(switch.id + switch.max_spines) }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

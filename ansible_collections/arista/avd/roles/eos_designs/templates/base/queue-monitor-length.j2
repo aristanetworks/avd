@@ -1,4 +1,5 @@
 {% if queue_monitor_length is defined %}
+queue_monitor_length:
   enabled: true
 {%    if queue_monitor_length.notifying is defined %}
   notifying: {{ queue_monitor_length.notifying}}

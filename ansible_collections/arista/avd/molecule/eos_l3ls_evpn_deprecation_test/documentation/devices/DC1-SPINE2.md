@@ -510,14 +510,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 192.168.255.0/24 le 32 |
+| 10 | permit 192.168.255.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 le 32
+   seq 10 permit 192.168.255.0/24 eq 32
 ```
 
 ## Route-maps

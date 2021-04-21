@@ -1,0 +1,16 @@
+router_ospf:
+  process_ids:
+    {{ underlay_ospf_process_id }}:
+      passive_interface_default: true
+      router_id: {{ switch.router_id }}
+      no_passive_interfaces:
+{% for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
+        - {{ uplink_to_spine_interface }}
+{% endfor %}
+{% if switch.mlag is arista.avd.defined(true) %}
+        - Vlan4093
+{% endif %}
+{% if underlay_ospf_bfd_enable is defined and underlay_ospf_bfd_enable %}
+      bfd_enable: true
+{% endif %}
+      max_lsa: {{ underlay_ospf_max_lsa }}

@@ -20,6 +20,7 @@
 {%              endif %}
 {%          endfor %}
 {%     endif %}
+daemon_terminattr:
   ingestgrpcurl:
     ips:
 {% if cvp_on_prem.ips|length > 0 %}

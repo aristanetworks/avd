@@ -1,4 +1,5 @@
 {% if event_handlers is defined and event_handlers is iterable %}
+event_handlers:
 {%     for handler in event_handlers %}
   {{ handler }}:
 {%         if event_handlers[handler].action is defined and event_handlers[handler].action_type is defined %}

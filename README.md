@@ -64,7 +64,7 @@ The documentation how to leverage ansible-avd collection is located here:
 
 **Supported Ansible Versions:**
 
-- ansible 2.9.2 or later
+- ansible 2.10.7 or later
 
 **Additional Python Libraries required:**
 
@@ -81,7 +81,7 @@ The documentation how to leverage ansible-avd collection is located here:
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-$ pip3 install ansible==2.9.6
+$ pip3 install ansible==2.10.7
 
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
