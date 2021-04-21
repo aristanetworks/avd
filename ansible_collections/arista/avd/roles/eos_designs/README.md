@@ -54,9 +54,9 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 
 **Tasks:**
 
-1. Set AVD facts (YAML).
+1. Set AVD facts.
 2. Generate YAML file with host variables (Optional for debuging/development with tag -> debug).
-3. Generate device configuration in structured format (YAML).
+3. Set device configuration facts.
 4. Write device structured configuration to YAML file.
 5. Include device structured configuration that was previously generated.
 6. Generate fabric documentation in Markdown format.
