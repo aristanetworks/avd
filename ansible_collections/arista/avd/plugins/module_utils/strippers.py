@@ -24,7 +24,7 @@ __metaclass__ = type
 
 def strip_null_from_output(data):
     """
-    strip_null_from_output Generic funcion to strip null entries regardless type of variable.
+    strip_null_from_output Generic function to strip null entries regardless type of variable.
 
     Parameters
     ----------
