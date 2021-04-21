@@ -6,14 +6,6 @@ router_bgp:
   - distance bgp 20 200 200
   - maximum-paths 4 ecmp 4
   peer_groups:
-    MLAG-PEERS:
-      type: ipv4
-      remote_as: 65102
-      next_hop_self: true
-      password: vnEaG8gMeQf3d3cN6PktXQ==
-      maximum_routes: 12000
-      send_community: all
-      route_map_in: RM-MLAG-PEER-IN
     UNDERLAY-PEERS:
       type: ipv4
       remote_as: 65001
@@ -30,16 +22,14 @@ router_bgp:
       maximum_routes: 0
   address_family_ipv4:
     peer_groups:
-      MLAG-PEERS:
-        activate: true
       UNDERLAY-PEERS:
         activate: true
       EVPN-OVERLAY-PEERS:
         activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
-    10.255.251.2:
-      peer_group: MLAG-PEERS
-      description: DC1-LEAF2A
     172.31.255.32:
       peer_group: UNDERLAY-PEERS
       description: DC1-SPINE1_Ethernet3
@@ -68,9 +58,6 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
       remote_as: 65001
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -86,9 +73,6 @@ router_bgp:
         export:
           evpn:
           - '12:12'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -101,9 +85,6 @@ router_bgp:
         export:
           evpn:
           - '13:13'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -116,9 +97,6 @@ router_bgp:
         export:
           evpn:
           - '10:10'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -131,9 +109,6 @@ router_bgp:
         export:
           evpn:
           - '11:11'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -146,9 +121,6 @@ router_bgp:
         export:
           evpn:
           - '20:20'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -161,9 +133,6 @@ router_bgp:
         export:
           evpn:
           - '30:30'
-      neighbors:
-        10.255.251.2:
-          peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -285,7 +254,6 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
 local_users:
   admin:
     privilege: 15
@@ -334,323 +302,21 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
-  4094:
-    tenant: system
-    name: MLAG_PEER
-    trunk_groups:
-    - MLAG
-  130:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_1
-  131:
-    tenant: Tenant_A
-    name: Tenant_A_APP_Zone_2
-  3011:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_APP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  140:
-    tenant: Tenant_A
-    name: Tenant_A_DB_BZone_1
-  141:
-    tenant: Tenant_A
-    name: Tenant_A_DB_Zone_2
-  3012:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_DB_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  3009:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  120:
-    tenant: Tenant_A
-    name: Tenant_A_WEB_Zone_1
-  121:
-    tenant: Tenant_A
-    name: Tenant_A_WEBZone_2
-  3010:
-    tenant: Tenant_A
-    name: MLAG_iBGP_Tenant_A_WEB_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  160:
-    tenant: Tenant_A
-    name: Tenant_A_VMOTION
-  161:
-    tenant: Tenant_A
-    name: Tenant_A_NFS
-  210:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_1
-  211:
-    tenant: Tenant_B
-    name: Tenant_B_OP_Zone_2
-  3019:
-    tenant: Tenant_B
-    name: MLAG_iBGP_Tenant_B_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-  310:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_1
-  311:
-    tenant: Tenant_C
-    name: Tenant_C_OP_Zone_2
-  2:
-    tenant: Tenant_C
-    name: MLAG_iBGP_Tenant_C_OP_Zone
-    trunk_groups:
-    - LEAF_PEER_L3
-vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan4094:
-    description: MLAG_PEER
+    ip_address: 192.168.255.11/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 10.255.252.3/31
-    no_autostate: true
-    mtu: 1500
-  Vlan130:
-    tenant: Tenant_A
-    tags:
-    - app
-    - erp1
-    description: Tenant_A_APP_Zone_1
-    shutdown: false
-    vrf: Tenant_A_APP_Zone
-    ip_address_virtual: 10.1.30.1/24
-  Vlan131:
-    tenant: Tenant_A
-    tags:
-    - app
-    description: Tenant_A_APP_Zone_2
-    shutdown: false
-    vrf: Tenant_A_APP_Zone
-    ip_address_virtual: 10.1.31.1/24
-  Vlan3011:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
-    vrf: Tenant_A_APP_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan140:
-    tenant: Tenant_A
-    tags:
-    - db
-    - erp1
-    description: Tenant_A_DB_BZone_1
-    shutdown: false
-    vrf: Tenant_A_DB_Zone
-    ip_address_virtual: 10.1.40.1/24
-  Vlan141:
-    tenant: Tenant_A
-    tags:
-    - db
-    description: Tenant_A_DB_Zone_2
-    shutdown: false
-    vrf: Tenant_A_DB_Zone
-    ip_address_virtual: 10.1.41.1/24
-  Vlan3012:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
-    vrf: Tenant_A_DB_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan110:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_1
+    ip_address: 192.168.254.11/32
+  Loopback100:
+    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: Tenant_A_OP_Zone
-    ip_address_virtual: 10.1.10.1/24
-  Vlan111:
-    tenant: Tenant_A
-    tags:
-    - opzone
-    description: Tenant_A_OP_Zone_2
-    shutdown: false
-    vrf: Tenant_A_OP_Zone
-    ip_address_virtual: 10.1.11.1/24
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        vrf: MGMT
-  Vlan3009:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
-    vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan120:
-    tenant: Tenant_A
-    tags:
-    - web
-    - erp1
-    description: Tenant_A_WEB_Zone_1
-    shutdown: false
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.20.1/24
-    ip_helpers:
-      1.1.1.1:
-        source_interface: lo100
-        vrf: TEST
-  Vlan121:
-    tenant: Tenant_A
-    tags:
-    - web
-    description: Tenant_A_WEBZone_2
-    shutdown: true
-    vrf: Tenant_A_WEB_Zone
-    ip_address_virtual: 10.1.10.254/24
-    mtu: 1560
-  Vlan3010:
-    tenant: Tenant_A
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
-    vrf: Tenant_A_WEB_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan210:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_1
-    shutdown: false
-    vrf: Tenant_B_OP_Zone
-    ip_address_virtual: 10.2.10.1/24
-  Vlan211:
-    tenant: Tenant_B
-    tags:
-    - opzone
-    description: Tenant_B_OP_Zone_2
-    shutdown: false
-    vrf: Tenant_B_OP_Zone
-    ip_address_virtual: 10.2.11.1/24
-  Vlan3019:
-    tenant: Tenant_B
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
-    vrf: Tenant_B_OP_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-  Vlan310:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_1
-    shutdown: false
-    vrf: Tenant_C_OP_Zone
-    ip_address_virtual: 10.3.10.1/24
-  Vlan311:
-    tenant: Tenant_C
-    tags:
-    - opzone
-    description: Tenant_C_OP_Zone_2
-    shutdown: false
-    vrf: Tenant_C_OP_Zone
-    ip_address_virtual: 10.3.11.1/24
-  Vlan2:
-    tenant: Tenant_C
-    type: underlay_peering
-    shutdown: false
-    description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
-    vrf: Tenant_C_OP_Zone
-    ip_address: 10.255.251.3/31
-    mtu: 1500
-port_channel_interfaces:
-  Port-Channel5:
-    description: MLAG_PEER_DC1-LEAF2A_Po5
-    type: switched
-    shutdown: false
-    vlans: 2-4094
-    mode: trunk
-    trunk_groups:
-    - LEAF_PEER_L3
-    - MLAG
-  Port-Channel7:
-    description: DC1_L2LEAF1_Po1
-    type: switched
-    shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
-    mode: trunk
-    mlag: 7
-  Port-Channel20:
-    description: FIREWALL01_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 110-111,210-211
-    mlag: 20
-  Port-Channel10:
-    description: server01_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mode: trunk
-    vlans: 210-211
-    mlag: 10
-  Port-Channel12:
-    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mtu: 1601
-    mlag: 12
-  Port-Channel11:
-    description: server01_MTU_PROFILE_MLAG_PortChanne1
-    type: switched
-    shutdown: false
-    mode: access
-    mtu: 1600
-    vlans: 110
-    mlag: 11
+    ip_address: 10.255.1.11/32
 ethernet_interfaces:
-  Ethernet5:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-LEAF2A_Ethernet5
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet6:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-LEAF2A_Ethernet6
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
   Ethernet1:
     peer: DC1-SPINE1
     peer_interface: Ethernet3
@@ -700,6 +366,26 @@ ethernet_interfaces:
     shutdown: false
     channel_group:
       id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF1B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF1B_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet9:
+    peer: DC1-L2LEAF3A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF3A_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 9
       mode: active
   Ethernet20:
     peer: FIREWALL01
@@ -762,42 +448,53 @@ ethernet_interfaces:
       id: 11
       mode: active
     profile: TENANT_A_MTU
-mlag_configuration:
-  domain_id: DC1_LEAF2
-  local_interface: Vlan4094
-  peer_address: 10.255.252.2
-  peer_link: Port-Channel5
-  reload_delay_mlag: 780
-  reload_delay_non_mlag: 1020
-route_maps:
-  RM-MLAG-PEER-IN:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - origin incomplete
-        description: Make routes learned over MLAG Peer-link less preferred on spines
-          to ensure optimal routing
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
+port_channel_interfaces:
+  Port-Channel7:
+    description: DC1_L2LEAF1_Po1
+    type: switched
     shutdown: false
-    ip_address: 192.168.255.11/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
+    vlans: 110-111,120-121,130-131,160-161
+    mode: trunk
+    esi: 0000:0000:0808:0707:0606
+    rt: 08:08:07:07:06:06
+    lacp_id: 0808.0707.0606
+  Port-Channel9:
+    description: DC1_L2LEAF3_Po1
+    type: switched
     shutdown: false
-    ip_address: 192.168.254.10/32
-  Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    vlans: 110-111,120-121,130-131,160-161
+    mode: trunk
+    esi: 0000:0000:0606:0707:0808
+    rt: 06:06:07:07:08:08
+    lacp_id: 0606.0707.0808
+  Port-Channel20:
+    description: FIREWALL01_PortChanne1
+    type: switched
     shutdown: false
-    vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.1.11/32
+    mode: trunk
+    vlans: 110-111,210-211
+    mlag: 20
+  Port-Channel10:
+    description: server01_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 210-211
+    mlag: 10
+  Port-Channel12:
+    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mtu: 1601
+    mlag: 12
+  Port-Channel11:
+    description: server01_MTU_PROFILE_MLAG_PortChanne1
+    type: switched
+    shutdown: false
+    mode: access
+    mtu: 1600
+    vlans: 110
+    mlag: 11
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -805,6 +502,13 @@ prefix_lists:
         action: permit 192.168.255.0/24 eq 32
       20:
         action: permit 192.168.254.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 1200
@@ -815,12 +519,53 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+vlans:
+  130:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_1
+  131:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_2
+  140:
+    tenant: Tenant_A
+    name: Tenant_A_DB_BZone_1
+  141:
+    tenant: Tenant_A
+    name: Tenant_A_DB_Zone_2
+  110:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_1
+  111:
+    tenant: Tenant_A
+    name: Tenant_A_OP_Zone_2
+  120:
+    tenant: Tenant_A
+    name: Tenant_A_WEB_Zone_1
+  121:
+    tenant: Tenant_A
+    name: Tenant_A_WEBZone_2
+  160:
+    tenant: Tenant_A
+    name: Tenant_A_VMOTION
+  161:
+    tenant: Tenant_A
+    name: Tenant_A_NFS
+  210:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_1
+  211:
+    tenant: Tenant_B
+    name: Tenant_B_OP_Zone_2
+  310:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_1
+  311:
+    tenant: Tenant_C
+    name: Tenant_C_OP_Zone_2
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
     source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
@@ -865,6 +610,115 @@ vxlan_tunnel_interface:
           vni: 20
         Tenant_C_OP_Zone:
           vni: 30
+vlan_interfaces:
+  Vlan130:
+    tenant: Tenant_A
+    tags:
+    - app
+    - erp1
+    description: Tenant_A_APP_Zone_1
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.30.1/24
+  Vlan131:
+    tenant: Tenant_A
+    tags:
+    - app
+    description: Tenant_A_APP_Zone_2
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address_virtual: 10.1.31.1/24
+  Vlan140:
+    tenant: Tenant_A
+    tags:
+    - db
+    - erp1
+    description: Tenant_A_DB_BZone_1
+    shutdown: false
+    vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.40.1/24
+  Vlan141:
+    tenant: Tenant_A
+    tags:
+    - db
+    description: Tenant_A_DB_Zone_2
+    shutdown: false
+    vrf: Tenant_A_DB_Zone
+    ip_address_virtual: 10.1.41.1/24
+  Vlan110:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.10.1/24
+  Vlan111:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: Tenant_A_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address_virtual: 10.1.11.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        vrf: MGMT
+  Vlan120:
+    tenant: Tenant_A
+    tags:
+    - web
+    - erp1
+    description: Tenant_A_WEB_Zone_1
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.20.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+        vrf: TEST
+  Vlan121:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_A_WEBZone_2
+    shutdown: true
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.10.254/24
+    mtu: 1560
+  Vlan210:
+    tenant: Tenant_B
+    tags:
+    - opzone
+    description: Tenant_B_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.10.1/24
+  Vlan211:
+    tenant: Tenant_B
+    tags:
+    - opzone
+    description: Tenant_B_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_B_OP_Zone
+    ip_address_virtual: 10.2.11.1/24
+  Vlan310:
+    tenant: Tenant_C
+    tags:
+    - opzone
+    description: Tenant_C_OP_Zone_1
+    shutdown: false
+    vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.10.1/24
+  Vlan311:
+    tenant: Tenant_C
+    tags:
+    - opzone
+    description: Tenant_C_OP_Zone_2
+    shutdown: false
+    vrf: Tenant_C_OP_Zone
+    ip_address_virtual: 10.3.11.1/24
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.11

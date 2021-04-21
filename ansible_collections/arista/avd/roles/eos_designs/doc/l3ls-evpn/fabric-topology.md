@@ -423,7 +423,7 @@ l2leaf:
           l3leaf_interfaces: [ < ethernet_interface_6 >, < ethernet_interface_6 > ]
 
     # node_group_2, will result in MLAG pair.
-    < node_group_1 >:
+    < node_group_2 >:
       parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
       nodes:
 
@@ -438,7 +438,39 @@ l2leaf:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
           l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
+
+    # node_group_3, will result in Active/Active connection to L3LEAFs.
+    # Can be applied on sigle L2LEAF or MLAG nodes.
+    < node_group_3 >:
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      short_esi: < short esi value >
+      nodes:
+
+        # First node.
+        < l2_leaf_inventory_hostname_2 >:
+          id: < integer >
+          mgmt_ip: < IPv4_address/Mask >
+          l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
 ```
+
+???+ note "Short ESI description"
+    To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
+    `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
+    Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/README.md) and provides following result:
+
+    - _EVPN ESI_: 0000:0000:0808:0707:0606
+    - _LACP ID_: 0808.0707.0606
+    - _Route Target_: 08:08:07:07:06:06
+
+    ```yaml
+    # Short ESI setting:
+    short_esi: 0808:0707:0606
+
+    # Short ESI transformation result:
+    esi: 0000:0000:0808:0707:0606
+    rt: 08:08:07:07:06:06
+    lacp_id: 0808.0707.0606
+    ```
 
 **Example:**
 
@@ -475,6 +507,14 @@ l2leaf:
           id: 11
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+    DC1_L2LEAF6:
+      parent_l3leafs: [ DC1-LEAF6A, DC1-LEAF6B ]
+      short_esi: 0808:0707:0606
+      nodes:
+        DC1-L2LEAF6A:
+          id: 12
+          mgmt_ip: 192.168.200.116/24
+          l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
 ```
 
 ## Super Spine Variables
