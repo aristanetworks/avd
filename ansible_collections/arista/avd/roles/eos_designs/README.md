@@ -87,7 +87,7 @@ However, because vEOS-LAB implements a virtual data plane, there are known cavea
 
 **Variables adjustments required for vEOS-LAB:**
 
-```YAML
+```yaml
 # Disable update wait-for-convergence and update wait-for-install, which is not supported in vEOS-LAB.
 spine_bgp_defaults:
 #  - update wait-for-convergence
