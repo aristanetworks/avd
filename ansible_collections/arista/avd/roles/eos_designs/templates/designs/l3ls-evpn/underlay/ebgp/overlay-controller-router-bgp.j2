@@ -23,7 +23,6 @@ router_bgp:
 {# Overlay Controller router bgp neighbors configuration #}
   neighbors:
 {%     for uplink_to_remote_switches in switch.uplink_to_remote_switches %}
-{%         endif %}
     {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ switch.remote_switches[loop.index0] }}
