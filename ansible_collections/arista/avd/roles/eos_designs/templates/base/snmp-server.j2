@@ -1,8 +1,6 @@
 {# snmp settings #}
-{% set ns = namespace(first = true) %}
-{% if snmp_settings is arista.avd.defined %}
-{%     set ns.first = false %}
 snmp_server:
+{% if snmp_settings is arista.avd.defined %}
 {%     if snmp_settings.contact is arista.avd.defined %}
     contact: {{ snmp_settings.contact }}
 {%     endif %}
@@ -18,10 +16,6 @@ snmp_server:
 {%             set snmp_location = snmp_location ~ " " ~ switch.rack %}
 {%         endif %}
 {%         set snmp_location = snmp_location ~ " " ~ inventory_hostname %}
-{%         if ns.first == true %}
-snmp_server:
-{%             set ns.first = false %}
-{%         endif %}
     location: {{ snmp_location }}
 {%     endif %}
 {% endif %}

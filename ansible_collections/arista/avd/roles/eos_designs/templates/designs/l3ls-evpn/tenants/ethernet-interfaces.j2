@@ -1,5 +1,5 @@
 {# Leaf Tenant l3 interfaces #}
-{% set ns = namespace (first = true) %}
+ethernet_interfaces:
 {% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
 {%     if tenants[tenant].vrfs is arista.avd.defined %}
 {%         for vrf in tenants[tenant].vrfs %}
@@ -8,10 +8,6 @@
 {%                     if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
 {%                         for node in l3_interface.nodes %}
 {%                             if node == inventory_hostname %}
-{%                                 if ns.first == true %}
-ethernet_interfaces:
-{%                                     set ns.first = false %}
-{%                                 endif %}
   {{ l3_interface.interfaces[loop.index0] }}:
     type: routed
     peer_type: l3_interface

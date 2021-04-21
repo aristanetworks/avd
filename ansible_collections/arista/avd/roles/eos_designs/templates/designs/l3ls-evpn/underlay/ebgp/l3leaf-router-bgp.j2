@@ -19,14 +19,10 @@ router_bgp:
     attached-host: {}
 {% endif %}
 
-{% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
+  neighbor_interfaces:
 {% if underlay_rfc5549 is arista.avd.defined(true) %}
 {# RFC5549 EBGP peerings #}
 {%     for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
-{%         if ns.first_neighbor_interface == true %}
-  neighbor_interfaces:
-{%             set ns.first_neighbor_interface = false %}
-{%         endif %}
     {{ uplink_to_spine_interface }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       remote_as: {{ spine.bgp_as }}
@@ -35,11 +31,8 @@ router_bgp:
 
 {% else %}
 {# Regular EBGP peerings #}
-{%     for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
-{%         if ns.first_neighbor == true %}
   neighbors:
-{%             set ns.first_neighbor = false %}
-{%         endif %}
+{%     for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
     {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id - 1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ switch.spines[loop.index0] }}_{{ switch.spine_interfaces[loop.index0] }}
@@ -51,10 +44,6 @@ router_bgp:
 {%             set overlay_controller_remote_switches = overlay_controller.nodes[overlay_controller_node].remote_switches | arista.avd.default( overlay_controller.defaults.remote_switches ) %}
 {%             for overlay_controller_remote_switch in overlay_controller_remote_switches %}
 {%                 if overlay_controller_remote_switch == inventory_hostname %}
-{%                     if ns.first_neighbor == true %}
-  neighbors:
-{%                         set ns.first_neighbor = false %}
-{%                     endif %}
     {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ overlay_controller_node }}

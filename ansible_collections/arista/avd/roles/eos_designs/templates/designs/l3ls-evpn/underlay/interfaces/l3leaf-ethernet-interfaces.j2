@@ -1,11 +1,7 @@
 {# Leaf P2P interfaces #}
-{% set ns = namespace(first_interface = true) %}
+ethernet_interfaces:
 {% for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
 {%     if switch.spines[loop.index0] is arista.avd.defined %}
-{%         if ns.first_interface == true %}
-ethernet_interfaces:
-{%             set ns.first_interface = false %}
-{%         endif %}
   {{ uplink_to_spine_interface }}:
     peer: {{ switch.spines[loop.index0] }}
     peer_interface: {{ switch.spine_interfaces[loop.index0 ] }}
@@ -64,10 +60,6 @@ ethernet_interfaces:
 {%                     set p2p_link_interface_speed = overlay_controller.defaults.p2p_link_interface_speed %}
 {%                 endif %}
 {%                 set switch_interfaces = overlay_controller.nodes[overlay_controller_node].remote_switches_interfaces %}
-{%                 if ns.first_interface == true %}
-ethernet_interfaces:
-{%                     set ns.first_interface = false %}
-{%                 endif %}
   {{ switch_interfaces[loop.index0] }}:
     peer: {{ overlay_controller_node }}
     peer_interface: {{ uplink_to_remote_switches[loop.index0] }}
@@ -123,10 +115,6 @@ ethernet_interfaces:
 {%             endif %}
 {%                 for parent_l3leaf in parent_l3leafs %}
 {%                     if inventory_hostname == parent_l3leaf  %}
-{%                         if ns.first_interface == true %}
-ethernet_interfaces:
-{%                             set ns.first_interface = false %}
-{%                         endif %}
   {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[loop.index0] }}:
     peer: {{ node }}
     peer_interface: {{ l2leaf_uplink_interfaces[loop.index0] }}

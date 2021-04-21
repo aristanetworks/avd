@@ -1,14 +1,10 @@
-{% set ns = namespace (first = true) %}
+static_routes:
 {% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
 {%     if tenants[tenant].vrfs is arista.avd.defined %}
 {%         for vrf in tenants[tenant].vrfs if vrf in switch.vrfs %}
 {%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
 {%                 for static_route in tenants[tenant].vrfs[vrf].static_routes %}
 {%                     if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
-{%                         if ns.first == true %}
-static_routes:
-{%                             set ns.first = false %}
-{%                         endif %}
   - destination_address_prefix: {{ static_route.destination_address_prefix }}
     vrf: {{ vrf }}
     gateway: {{ static_route.gateway }}

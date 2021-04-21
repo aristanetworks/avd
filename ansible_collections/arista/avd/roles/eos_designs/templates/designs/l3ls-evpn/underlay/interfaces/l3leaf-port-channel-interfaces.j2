@@ -1,7 +1,7 @@
 {# L3Leaf Port-Channel uplinks to L2 Leaf #}
 {# Set variables #}
 {% if l2leaf.node_groups is defined %}
-{%     set ns = namespace(first_interface = true) %}
+port_channel_interfaces:
 {%     set l3_leaf = namespace() %}
 {%     set l2_leaf = namespace() %}
 {%     for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
@@ -68,10 +68,6 @@
 {%             endfor %}
 {# Create port-channels for each nodes #}
 {%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
-{%                 if ns.first_interface == true %}
-port_channel_interfaces:
-{%                     set ns.first_interface = false %}
-{%                 endif %}
   Port-Channel{{ l3_leaf.channel_group_id }}:
     description: {{ l2leaf_node_group }}_{{ 'Po' + l2leaf_uplink_interfaces[loop.index0] | regex_findall("\d") | join }}
     type: switched

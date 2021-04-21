@@ -1,12 +1,8 @@
 {# Leaf tenant vrfs #}
-{% set ns = namespace (first = true) %}
+vrfs:
 {% for tenant in tenants | arista.avd.natural_sort if ( tenant in switch.filter_tenants or "all" in switch.filter_tenants ) and switch.evpn_services_l2_only == false %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if vrf in switch.vrfs %}
-{%             if ns.first == true %}
-vrfs:
-{%                 set ns.first = false %}
-{%             endif %}
   {{ vrf }}:
     tenant: {{ tenant }}
     ip_routing: true

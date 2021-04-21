@@ -1,6 +1,6 @@
 {# Leaf tenant router bgp evpn VRFs #}
 {% set bgp_vrf = namespace() %}
-{% set ns = namespace(first_vrf = true, first_vrf_neighbor = true) %}
+  vrfs:
 {% for tenant in tenants | arista.avd.natural_sort if ( tenant in switch.filter_tenants or "all" in switch.filter_tenants ) and switch.evpn_services_l2_only == false %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
@@ -21,16 +21,13 @@
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
-{%             if ns.first_vrf == true %}
-  vrfs:
-{%                 set ns.first_vrf = false %}
-{%             endif %}
     {{ vrf }}:
       router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(switch.id + switch.max_spines) }}
       rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
+      neighbors:
 {%             if switch.mlag is arista.avd.defined(true) %}
 {%                 set configure_mlag_ibgp_peering = true %}
 {%                 if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
@@ -39,8 +36,6 @@
 {%                     set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
 {%                 endif %}
 {%                 if configure_mlag_ibgp_peering %}
-{%                     set ns.first_neighbor = false %}
-      neighbors:
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_peer_ip) }}:
           peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
 {%                 endif %}
@@ -71,10 +66,6 @@
 {%                                 endif %}
 {%                             endif%}
 {%                             do neighbor_params.pop('nodes') %}
-{%                             if ns.first_vrf_neighbor == true %}
-      neighbors:
-{%                                 set ns.first_vrf_neighbor = false %}
-{%                             endif %}
         {{ bgp_peer }}:
           {{ neighbor_params }}
 {%                         endif %}

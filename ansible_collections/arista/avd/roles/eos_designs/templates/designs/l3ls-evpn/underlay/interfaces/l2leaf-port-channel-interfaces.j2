@@ -1,5 +1,5 @@
 {# L2 Leaf port-channel uplinks #}
-{% set ns = namespace(first_interface = true) %}
+port_channel_interfaces:
 {% set l3leaf = namespace() %}
 {% for l2leaf_node_group in l2leaf.node_groups | arista.avd.natural_sort %}
 {%     for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
@@ -18,10 +18,6 @@
 {%             set uplink_vlans = switch.vlans %}
 {%             if l2leaf_inband_management_subnet is arista.avd.defined %}
 {%                 do uplink_vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
-{%             endif %}
-{%             if ns.first_interface == true %}
-port_channel_interfaces:
-{%                 set ns.first_interface = false %}
 {%             endif %}
   Port-Channel{{ channel_group_id }}:
     description: {{ switch.parent_l3leafs[loop.index0]}}_{{ 'Po' + l3leaf.channel_group_id }}

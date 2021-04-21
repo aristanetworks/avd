@@ -1,5 +1,5 @@
 {# Leaf tenant vlan interfaces #}
-{% set ns = namespace (first = true) %}
+vlan_interfaces:
 {% for tenant in tenants | arista.avd.natural_sort if ( tenant in switch.filter_tenants or "all" in switch.filter_tenants ) and switch.evpn_services_l2_only == false %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
@@ -15,10 +15,6 @@
 {%                             set profile.values = svi_profiles[tenants[tenant].vrfs[vrf].svis[svi].profile] %}
 {%                         endif %}
 {%                     endif %}
-{%                 endif %}
-{%                 if ns.first == true %}
-vlan_interfaces:
-{%                     set ns.first = false %}
 {%                 endif %}
 {# Tenant VLAN interfaces #}
   Vlan{{ svi }}:
@@ -103,10 +99,6 @@ vlan_interfaces:
 {%                         set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
 {%                     endif %}
 {%                     if configure_mlag_ibgp_peering %}
-{%                 if ns.first == true %}
-vlan_interfaces:
-{%                     set ns.first = false %}
-{%                 endif %}
   Vlan{{ tenants[tenant].vrfs[vrf].mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
     tenant: {{ tenant }}
     type: underlay_peering

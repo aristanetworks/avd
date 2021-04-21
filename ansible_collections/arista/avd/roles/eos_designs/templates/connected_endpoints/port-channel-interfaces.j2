@@ -1,5 +1,5 @@
 {# Leaf server port-channels #}
-{% set ns = namespace(first_interface = true) %}
+port_channel_interfaces:
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
@@ -26,10 +26,6 @@
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
 {%                         set lacp_fallback_mode = adapter_port_channel.lacp_fallback.mode | arista.avd.default(adapter_profile.lacp_fallback.mode) %}
 {%                         set lacp_fallback_timeout = adapter_port_channel.lacp_fallback.timeout | arista.avd.default(adapter_profile.lacp_fallback.timeout) %}
-{%                         if ns.first_interface ==  true %}
-port_channel_interfaces:
-{%                             set ns.first_interface = false %}
-{%                         endif %}
   Port-Channel{{ channel_group_id }}:
     description: {{ connected_endpoint }}_{{ adapter_port_channel.description }}
     type: switched

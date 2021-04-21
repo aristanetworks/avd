@@ -1,5 +1,5 @@
 {# Point-to-Point Interfaces to Leaf Switches #}
-{% set ns = namespace(first_interface = true) %}
+ethernet_interfaces:
 {% for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
 {%     if l3leaf.node_groups[l3leaf_node_group].spines is defined %}
 {%         set leaf_spines = l3leaf.node_groups[l3leaf_node_group].spines %}
@@ -20,10 +20,6 @@
 {%         endif %}
 {%         for leaf_spine in leaf_spines %}
 {%             if leaf_spine == inventory_hostname %}
-{%                 if ns.first_interface == true %}
-ethernet_interfaces:
-{%                     set ns.first_interface = false %}
-{%                 endif %}
   {{ spine_interfaces[loop.index0] }}:
     peer: {{ node }}
     peer_interface: {{ uplink_to_spine_interfaces[loop.index0] }}
@@ -74,10 +70,6 @@ ethernet_interfaces:
 {%     set offset = loop.index0 % max_spine_to_super_spine_links %}
 {%     set s_spine_name_list = super_spine.nodes | list %}
 {%     set s_spine_port_name = spine.nodes[inventory_hostname]['super_spine_interfaces'][(switch.id - 1) * max_spine_to_super_spine_links + offset] %}
-{%     if ns.first_interface == true %}
-ethernet_interfaces:
-{%         set ns.first_interface = false %}
-{%     endif %}
   {{ spine_uplink }}:
     peer: {{ s_spine_name_list[s_spine_id-1] }}
     peer_interface: {{ s_spine_port_name }}
@@ -126,10 +118,6 @@ ethernet_interfaces:
 {%                     set p2p_link_interface_speed = overlay_controller.defaults.p2p_link_interface_speed %}
 {%                 endif %}
 {%                 set switch_interfaces = overlay_controller.nodes[overlay_controller_node].remote_switches_interfaces %}
-{%                 if ns.first_interface == true %}
-ethernet_interfaces:
-{%                     set ns.first_interface = false %}
-{%                 endif %}
   {{ switch_interfaces[loop.index0] }}:
     peer: {{ overlay_controller_node }}
     peer_interface: {{ uplink_to_remote_switches[loop.index0] }}

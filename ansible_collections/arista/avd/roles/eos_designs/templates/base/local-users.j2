@@ -1,10 +1,5 @@
-
-{% set ns = namespace(first = true) %}
-{% for local_user in local_users | arista.avd.natural_sort %}
-{%     if ns.first == true %}
 local_users:
-{%         set ns.first = false %}
-{%     endif %}
+{% for local_user in local_users | arista.avd.natural_sort %}
   {{ local_user }}:
     privilege: {{ local_users[local_user].privilege }}
 {%     if local_users[local_user].role is defined %}

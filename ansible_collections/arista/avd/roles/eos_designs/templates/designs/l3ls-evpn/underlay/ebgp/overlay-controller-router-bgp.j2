@@ -15,17 +15,14 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
 
-{% set ns = namespace(first_neighbor = true, first_neighbor_interface = true) %}
 {% if underlay_rfc5549 is arista.avd.defined(true) %}
 {# future place to add RFC5549 EBGP peerings #}
 
 {% else %}
 {# Regular EBGP peerings #}
 {# Overlay Controller router bgp neighbors configuration #}
-{%     for uplink_to_remote_switches in switch.uplink_to_remote_switches %}
-{%         if ns.first_neighbor == true %}
   neighbors:
-{%             set ns.first_neighbor = false %}
+{%     for uplink_to_remote_switches in switch.uplink_to_remote_switches %}
 {%         endif %}
     {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}

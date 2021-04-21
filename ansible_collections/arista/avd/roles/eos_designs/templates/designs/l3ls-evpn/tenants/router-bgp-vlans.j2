@@ -1,5 +1,5 @@
 {# Leaf tenant router bgp evpn configuration- MAC-VRF VLAN-Based #}
-{% set ns = namespace(first = true) %}
+  vlans:
 {% if vxlan_vlan_aware_bundles == false %}
 {%     for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
 {%         if tenants[tenant].vrfs is defined %}
@@ -10,10 +10,6 @@
 {%                         set vni = tenants[tenant].vrfs[vrf].svis[svi].vni_override %}
 {%                     else %}
 {%                         set vni = tenants[tenant].mac_vrf_vni_base + svi_int %}
-{%                     endif %}
-{%                     if ns.first == true %}
-  vlans:
-{%                         set ns.first = false %}
 {%                     endif %}
     {{ svi }}:
       tenant: {{ tenant }}
@@ -27,6 +23,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
+  vlans:
 {%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan|int in switch.vlans %}
 {%                 set l2vlan_int = l2vlan | int %}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
@@ -34,10 +31,6 @@
 {%                 else %}
 {%                     set vni = tenants[tenant].mac_vrf_vni_base + l2vlan_int %}
 {%                 endif %}
-{%                     if ns.first == true %}
-  vlans:
-{%                         set ns.first = false %}
-{%                     endif %}
     {{ l2vlan }}:
       tenant: {{ tenant }}
       rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ vni }}"

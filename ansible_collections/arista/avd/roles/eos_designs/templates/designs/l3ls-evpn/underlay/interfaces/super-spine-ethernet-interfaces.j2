@@ -1,5 +1,5 @@
 {# Point-to-Point Interfaces to Spine Switches #}
-{% set ns = namespace(first_interface = true) %}
+ethernet_interfaces:
 {% for host in groups[dc_name] | arista.avd.natural_sort %}
 {%     if hostvars[host]['type'] == 'spine' %}
 {%         for offset in range(max_spine_to_super_spine_links) %}
@@ -13,10 +13,6 @@
 {%             set ip_pool = hostvars[host]['super_spine_underlay_p2p_network_summary'] %}
 {#             max number of hosts in subnet will be divided by max super-spine number to avoid address changes when provisioning new spines #}
 {%             set ip_pool_max_hosts_in_subnet = ip_pool | ipaddr('size') %}
-{%             if ns.first_interface == true %}
-ethernet_interfaces:
-{%                 set ns.first_interface = false %}
-{%             endif %}
   {{ super_spine_interface }}:
     peer: {{ host }}
     peer_interface: {{ spine_uplink }}
@@ -76,10 +72,6 @@ ethernet_interfaces:
 {%                     set p2p_link_interface_speed = overlay_controller.defaults.p2p_link_interface_speed %}
 {%                 endif %}
 {%                 set switch_interfaces = overlay_controller.nodes[overlay_controller_node].remote_switches_interfaces %}
-{%                 if ns.first_interface == true %}
-ethernet_interfaces:
-{%                     set ns.first_interface = false %}
-{%                 endif %}
   {{ switch_interfaces[loop.index0] }}:
     peer: {{ overlay_controller_node }}
     peer_interface: {{ uplink_to_remote_switches[loop.index0] }}
