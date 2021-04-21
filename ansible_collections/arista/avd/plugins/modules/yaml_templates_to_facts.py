@@ -21,7 +21,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 
 DOCUMENTATION = r'''
 ---
-module: yaml_template_to_fact
+module: yaml_templates_to_facts
 version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Set facts from YAML via Jinja2 templates
@@ -62,7 +62,7 @@ options:
 EXAMPLES = r'''
 # tasks file for configlet_build_config
 - name: Generate device configuration in structured format
-  yaml_template_to_fact:
+  yaml_templates_to_facts:
     root_key: structured_config
     templates:
       - template: "base/main.j2"

@@ -22,9 +22,9 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
-def strip_null_from_output(data):
+def strip_null_from_data(data):
     """
-    strip_null_from_output Generic function to strip null entries regardless type of variable.
+    strip_null_from_data Generic function to strip null entries regardless type of variable.
 
     Parameters
     ----------

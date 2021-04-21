@@ -7,7 +7,7 @@ from ansible.errors import AnsibleAction, AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
 from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
-from ansible_collections.arista.avd.plugins.module_utils.strippers import strip_null_from_output
+from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 
 ANSIBLE_METADATA = {'metadata_version': '1.0.0',
                     'status': ['preview'],
@@ -67,7 +67,7 @@ class ActionModule(ActionBase):
             template_output = template_lookup_module.run([template], template_vars)
             template_output_data = yaml.safe_load(template_output[0])
             if strip_empty_keys:
-                template_output_data = strip_null_from_output(template_output_data)
+                template_output_data = strip_null_from_data(template_output_data)
             if template_output_data:
                 output = combine(output, template_output_data, recursive=True, list_merge=list_merge)
 
