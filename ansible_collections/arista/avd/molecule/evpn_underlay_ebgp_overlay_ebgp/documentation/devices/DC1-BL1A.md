@@ -87,10 +87,12 @@ interface Management1
 | ----------- | ---------- |
 | 192.168.200.5 | MGMT |
 | 8.8.8.8 | MGMT |
+| 1.1.1.1 | MGMT |
 
 ### Name Servers Device Configuration
 
 ```eos
+ip name-server vrf MGMT 1.1.1.1
 ip name-server vrf MGMT 8.8.8.8
 ip name-server vrf MGMT 192.168.200.5
 ```

@@ -242,6 +242,7 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
+  - 1.1.1.1
 ntp_server: null
 snmp_server:
   contact: example@example.com

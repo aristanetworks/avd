@@ -219,7 +219,7 @@ The module arguments are:
       - template: < template file >
         options:
           # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
-          list_merge: < replace (default) | keep | append | prepend | append_rp | prepend_rp >
+          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
           # Filter out keys from the generated output if value is null/none/undefined
           strip_empty_keys: < true (default) | false >
 ```
