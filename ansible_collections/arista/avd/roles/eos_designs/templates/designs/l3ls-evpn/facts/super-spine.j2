@@ -32,8 +32,8 @@ switch:
 {# For super-spine the default value is none #}
   evpn_role: {{ super_spine.nodes[inventory_hostname].evpn_role | arista.avd.default(
                 'none') }}
-{# switch.raw_evpn_route_servers #}
-  raw_evpn_route_servers: {{ super_spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+{# switch.evpn_route_servers #}
+  evpn_route_servers: {{ super_spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
                              []) }}
 {%     endif %}
 {% endfor %}

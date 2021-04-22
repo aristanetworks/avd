@@ -68,8 +68,8 @@ switch:
   evpn_role: {{ overlay_controller.nodes[inventory_hostname].evpn_role | arista.avd.default(
                 overlay_controller.defaults.evpn_role,
                 'none') }}
-{# switch.raw_evpn_route_servers #}
-  raw_evpn_route_servers: {{ overlay_controller.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+{# switch.evpn_route_servers #}
+  evpn_route_servers: {{ overlay_controller.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
                              overlay_controller.defaults.evpn_route_servers,
                              []) }}
 

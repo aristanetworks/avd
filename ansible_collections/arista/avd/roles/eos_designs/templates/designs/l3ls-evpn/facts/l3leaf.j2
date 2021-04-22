@@ -165,9 +165,9 @@ switch:
                 l3leaf.defaults.evpn_role,
                 'client' ) }}
 
-{# switch.raw_evpn_route_servers #}
+{# switch.evpn_route_servers #}
 {# For l3leaf the default value for EVPN Route Servers is content of the spines variable set above. For safety we fall back to [] #}
-  raw_evpn_route_servers: {{ l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
+  evpn_route_servers: {{ l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
                                       l3leaf.defaults.evpn_route_servers,
                                       switch_spines,
                                       [] ) }}

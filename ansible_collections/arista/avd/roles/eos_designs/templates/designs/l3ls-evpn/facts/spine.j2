@@ -35,8 +35,8 @@ switch:
 {# For spine the default value is server #}
   evpn_role: {{ spine.nodes[inventory_hostname].evpn_role | arista.avd.default(
                 'server') }}
-{# switch.raw_evpn_route_servers #}
-  raw_evpn_route_servers: {{ spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+{# switch.evpn_route_servers #}
+  evpn_route_servers: {{ spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
                              []) }}
 {%     endif %}
 {% endfor %}

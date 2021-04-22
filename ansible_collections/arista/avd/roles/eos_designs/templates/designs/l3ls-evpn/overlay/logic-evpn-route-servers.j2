@@ -1,7 +1,7 @@
 {% set overlay_data.evpn_route_servers = {} %}
 {# #}
 {# Expand data for evpn_route_servers #}
-{% for route_server in switch.raw_evpn_route_servers | arista.avd.natural_sort %}
+{% for route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
 {%     set route_server_vars = hostvars[route_server] %}
 {%     if route_server_vars.type is arista.avd.defined('l3leaf') %}
 {%         for l3leaf_node_group in route_server_vars.l3leaf.node_groups | arista.avd.natural_sort %}
