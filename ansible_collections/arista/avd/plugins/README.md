@@ -132,7 +132,7 @@ switch:
 {%     endif %}
 {% endfor %}
 ```
-Without the `selectattr` and `arista.avd.containing` test:
+With the `selectattr` and `arista.avd.containing` test:
 ```jinja
 switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
