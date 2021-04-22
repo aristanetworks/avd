@@ -45,11 +45,11 @@ ethernet_interfaces:
 {%     else %}
     ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((l3leaf.node_groups[l3leaf_node_group].nodes[node].id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links) + loop.index0 * 2) }}/31
 {%     endif %}
-{%                 if underlay_routing_protocol | lower == "ospf" %}
+{%                 if switch.underlay_routing_protocol == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%                 endif %}
-{%                 if underlay_routing_protocol | lower == "isis" %}
+{%                 if switch.underlay_routing_protocol == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
@@ -133,11 +133,11 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links) + loop.index0 * 2) }}/31
-{%                 if underlay_routing_protocol | lower == "ospf" %}
+{%                 if switch.underlay_routing_protocol == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%                 endif %}
-{%                 if underlay_routing_protocol | lower == "isis" %}
+{%                 if switch.underlay_routing_protocol == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
