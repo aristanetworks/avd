@@ -61,7 +61,7 @@ port_channel_interfaces:
     description: DC2-POD1-LEAF1A_Po3
     type: switched
     shutdown: false
-    vlans: 110-112,4092
+    vlans: 110-112,2500,2600,4092
     mode: trunk
     service_profile: QOS-PROFILE
 vlans:
@@ -77,5 +77,11 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  2500:
+    tenant: Tenant_A
+    name: web-l2-vlan
+  2600:
+    tenant: Tenant_A
+    name: web-l2-vlan-2
 ip_igmp_snooping:
   globally_enabled: true
