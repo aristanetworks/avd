@@ -431,6 +431,33 @@ interface Port-Channel3
    switchport trunk group MLAG
 ```
 
+## VLAN Interfaces
+
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4091 |  MLAG_PEER  |  default  |  1500  |  false  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4091 |  default  |  10.255.252.17/31  |  -  |  -  |  -  |  -  |  -  |
+
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4091
+   description MLAG_PEER
+   no shutdown
+   mtu 1500
+   no autostate
+   ip address 10.255.252.17/31
+```
+
 # Routing
 
 ## IP Routing

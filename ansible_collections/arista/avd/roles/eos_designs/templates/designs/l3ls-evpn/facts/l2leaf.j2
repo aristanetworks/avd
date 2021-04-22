@@ -78,6 +78,9 @@ switch:
                                   false ) }}
   mlag_interfaces: {{ l2leaf.node_groups[l2leaf_node_group].mlag_interfaces | arista.avd.default(
                       l2leaf.defaults.mlag_interfaces ) }}
+  mlag_peer_vlan: {{ l2leaf.node_groups[l2leaf_node_group].mlag_peer_vlan | arista.avd.default(
+                     l2leaf.defaults.mlag_peer_vlan,
+                     4094) }}
 {%                 if loop.index == 1 %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}

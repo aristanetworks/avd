@@ -19,6 +19,7 @@ vlan_interfaces:
     isis_metric: 50
     isis_network_point_to_point: true
 {%     endif %}
+{% endif %}
   Vlan{{ switch.mlag_peer_vlan }}:
     description: MLAG_PEER
     shutdown: false
