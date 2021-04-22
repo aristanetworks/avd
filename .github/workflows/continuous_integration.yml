@@ -37,6 +37,7 @@ jobs:
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
+              - 'ansible_collections/arista/avd/meta/runtime.yml'
               - '.github/workflows/continuous_integration.yml'
             docs:
               - 'mkdocs.yml'
@@ -51,7 +52,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: avdteam/base:3.6-v1.0
     needs: file-changes
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - uses: actions/checkout@v2
       - uses: pre-commit/action@v2.0.2

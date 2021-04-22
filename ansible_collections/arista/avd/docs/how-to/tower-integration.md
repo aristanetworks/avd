@@ -27,16 +27,15 @@ To play with this repository, you need:
 
 Ansible CVP collection comes with a needs of [additional libraries](https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx/blob/master/requirements.txt) not part of a standard Python setup:
 
-```shell
-ansible==2.10.7
-netaddr==0.7.19
-Jinja2==2.10.3
-requests==2.22.0
-treelib==1.5.5
-cvprac==1.0.4
-paramiko==2.7.1
-jsonschema==3.2.0
-```
+- netaddr
+- Jinja2
+- treelib
+- cvprac
+- paramiko
+- jsonschema
+- requests
+- PyYAML
+- md_toc
 
 ### Create virtual-environment
 
