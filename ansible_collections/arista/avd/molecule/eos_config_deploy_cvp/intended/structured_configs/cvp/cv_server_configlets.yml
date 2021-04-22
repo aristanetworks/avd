@@ -7,7 +7,7 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-BL1A\nip name-server vrf MGMT 8.8.8.8\n\
     ip name-server vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\n\
     ntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
+    \ vlan-id 4093,4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
     \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
     \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
@@ -120,7 +120,7 @@ CVP_CONFIGLETS:
     \ protocols model multi-agent\n!\nhostname DC1-BL1B\nip name-server vrf MGMT 8.8.8.8\n\
     ip name-server vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\n\
     ntp server vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
+    \ vlan-id 4093,4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
     \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
     \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
@@ -280,13 +280,12 @@ CVP_CONFIGLETS:
     \   no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description\
     \ MLAG_PEER_DC1-L2LEAF2B_Ethernet4\n   no shutdown\n   channel-group 3 mode active\n\
     !\ninterface Management1\n   description oob_management\n   no shutdown\n   vrf\
-    \ MGMT\n   ip address 192.168.200.113/24\n!\ninterface Vlan4094\n   description\
-    \ MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.16/31\n\
-    !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
-    \   local-interface Vlan4094\n   peer-address 10.255.252.17\n   peer-link Port-Channel3\n\
-    \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
-    \ 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \ MGMT\n   ip address 192.168.200.113/24\n!\nip routing\nno ip routing vrf MGMT\n\
+    !\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface Vlan4094\n\
+    \   peer-address 10.255.252.17\n   peer-link Port-Channel3\n   reload-delay mlag\
+    \ 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    !\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf\
+    \ MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2B: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -319,13 +318,12 @@ CVP_CONFIGLETS:
     \   no shutdown\n   channel-group 3 mode active\n!\ninterface Ethernet4\n   description\
     \ MLAG_PEER_DC1-L2LEAF2A_Ethernet4\n   no shutdown\n   channel-group 3 mode active\n\
     !\ninterface Management1\n   description oob_management\n   no shutdown\n   vrf\
-    \ MGMT\n   ip address 192.168.200.114/24\n!\ninterface Vlan4094\n   description\
-    \ MLAG_PEER\n   no shutdown\n   mtu 1500\n   no autostate\n   ip address 10.255.252.17/31\n\
-    !\nip routing\nno ip routing vrf MGMT\n!\nmlag configuration\n   domain-id DC1_L2LEAF2\n\
-    \   local-interface Vlan4094\n   peer-address 10.255.252.16\n   peer-link Port-Channel3\n\
-    \   reload-delay mlag 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT\
-    \ 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n   protocol https\n\
-    \   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    \ MGMT\n   ip address 192.168.200.114/24\n!\nip routing\nno ip routing vrf MGMT\n\
+    !\nmlag configuration\n   domain-id DC1_L2LEAF2\n   local-interface Vlan4094\n\
+    \   peer-address 10.255.252.16\n   peer-link Port-Channel3\n   reload-delay mlag\
+    \ 300\n   reload-delay non-mlag 330\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    !\nmanagement api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf\
+    \ MGMT\n      no shutdown\n!\nend\n"
   AVD_DC1-LEAF1A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -415,7 +413,7 @@ CVP_CONFIGLETS:
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-LEAF2A\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
+    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093,4094\nspanning-tree\
     \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
@@ -591,7 +589,7 @@ CVP_CONFIGLETS:
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-LEAF2B\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
+    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093,4094\nspanning-tree\
     \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
@@ -787,7 +785,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.1/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.101/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.1\n   no bgp default ipv4-unicast\n   distance\
@@ -859,7 +857,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.2/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.102/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.2\n   no bgp default ipv4-unicast\n   distance\
@@ -931,7 +929,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.3/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.103/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.3\n   no bgp default ipv4-unicast\n   distance\
@@ -1003,7 +1001,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.4/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.104/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.4\n   no bgp default ipv4-unicast\n   distance\
@@ -1055,7 +1053,7 @@ CVP_CONFIGLETS:
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SVC3A\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
+    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093,4094\nspanning-tree\
     \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
@@ -1269,7 +1267,7 @@ CVP_CONFIGLETS:
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SVC3B\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
     \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
+    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093,4094\nspanning-tree\
     \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\

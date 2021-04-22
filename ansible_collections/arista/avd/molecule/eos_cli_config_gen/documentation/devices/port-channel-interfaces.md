@@ -176,22 +176,18 @@ interface Port-Channel10
    switchport
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
-   !
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
-   !
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
    switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
-   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
-   !
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel51

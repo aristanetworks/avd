@@ -277,7 +277,7 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK1_SINGLE_Po1 | switched | trunk | 4092 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK1_SINGLE_Po1 | switched | trunk | 4092 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -289,7 +289,6 @@ interface Port-Channel3
    switchport
    switchport trunk allowed vlan 4092
    switchport mode trunk
-   mlag 3
    service-profile QOS-PROFILE
 ```
 

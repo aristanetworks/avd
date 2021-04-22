@@ -18,17 +18,17 @@ If you want to see how to build your inventory and all related variables, it is 
 
 ## Requirements
 
-To play with this repsoitory, you need:
+To play with this repository, you need:
 
 - An AWX setup running on either Docker Compose or Kubernetes. All the commands for Python configuration will be done on docker-compose, but you can adapt for kubernetes.
 - Understanding of how to configure AVD in a pure Ansible CLI way.
 
 ## Install Python requirements
 
-Ansible CVP collection comes with a needs of [additional libraries](hhttps://github.com/arista-netdevops-community/avd-with-ansible-tower-awx/blob/master/requirements.txt) not part of a standard Python setup:
+Ansible CVP collection comes with a needs of [additional libraries](https://github.com/arista-netdevops-community/avd-with-ansible-tower-awx/blob/master/requirements.txt) not part of a standard Python setup:
 
 ```shell
-ansible==2.9.6
+ansible==2.10.7
 netaddr==0.7.19
 Jinja2==2.10.3
 requests==2.22.0

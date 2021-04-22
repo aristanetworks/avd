@@ -1,71 +1,11 @@
-l2leaf_node_group: DC1_L2LEAF2
-switch_platform: vEOS-LAB
-switch_rack: null
-leaf_id: 9
-switch_mgmt_ip: 192.168.200.113/24
-switch_inband_management_ip: null
-switch_inband_management_interface: null
-leaf_filter_tenants:
-- all
-leaf_filter_tags:
-- all
-leaf_allowed_vrfs:
-- Tenant_A_APP_Zone
-- Tenant_A_DB_Zone
-- Tenant_A_OP_Zone
-- Tenant_A_WAN_Zone
-- Tenant_A_WEB_Zone
-- Tenant_B_OP_Zone
-- Tenant_B_WAN_Zone
-- Tenant_C_OP_Zone
-- Tenant_C_WAN_Zone
-leaf_allowed_svis:
-- 130
-- 131
-- 140
-- 141
-- 110
-- 111
-- 150
-- 120
-- 121
-- 210
-- 211
-- 250
-- 310
-- 311
-- 350
-leaf_allowed_vlans:
-- 130
-- 131
-- 140
-- 141
-- 110
-- 111
-- 150
-- 120
-- 121
-- 160
-- 161
-- 210
-- 211
-- 250
-- 310
-- 311
-- 350
-leaf_mlag: true
-leaf_mlag_group: DC1_L2LEAF2
-leaf_mlag_role: primary
-leaf_mlag_peer: DC1-L2LEAF2B
-leaf_mlag_ip: 16
-leaf_mlag_peer_ip: 17
-leaf_mlag_peer_id: 10
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
-hardware_counters: null
-hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -81,10 +21,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
 name_server:
   source:
     vrf: MGMT
@@ -97,15 +33,12 @@ ntp_server:
     interface: Management1
   nodes:
   - 192.168.200.5
-redundancy: null
-snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
     '0':
       priority: 16384
   no_spanning_tree_vlan: 4094
-aaa_authorization: null
 local_users:
   admin:
     privilege: 15
@@ -115,7 +48,21 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-clock: null
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.113/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
 vlans:
   4094:
     tenant: system
@@ -173,17 +120,7 @@ vlans:
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
-vrfs:
-  MGMT:
-    ip_routing: false
 port_channel_interfaces:
-  Port-Channel1:
-    description: DC1-SVC3A_Po7
-    type: switched
-    shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
-    mode: trunk
-    mlag: 1
   Port-Channel3:
     description: MLAG_PEER_DC1-L2LEAF2B_Po3
     type: switched
@@ -192,27 +129,14 @@ port_channel_interfaces:
     mode: trunk
     trunk_groups:
     - MLAG
+  Port-Channel1:
+    description: DC1-SVC3A_Po7
+    type: switched
+    shutdown: false
+    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+    mode: trunk
+    mlag: 1
 ethernet_interfaces:
-  Ethernet1:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet7
-    peer_type: l3leaf
-    description: DC1-SVC3A_Ethernet7
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
-  Ethernet2:
-    peer: DC1-SVC3B
-    peer_interface: Ethernet7
-    peer_type: l3leaf
-    description: DC1-SVC3B_Ethernet7
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 1
-      mode: active
   Ethernet3:
     peer: DC1-L2LEAF2B
     peer_interface: Ethernet3
@@ -233,33 +157,26 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
-management_interfaces:
-  Management1:
-    description: oob_management
+  Ethernet1:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: DC1-SVC3A_Ethernet7
+    type: switched
     shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.113/24
-    gateway: 192.168.200.5
-    type: oob
-vlan_interfaces:
-  Vlan4094:
-    description: MLAG_PEER
+    channel_group:
+      id: 1
+      mode: active
+  Ethernet2:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet7
+    peer_type: l3leaf
+    description: DC1-SVC3B_Ethernet7
+    type: switched
     shutdown: false
-    ip_address: 10.255.252.16/31
-    no_autostate: true
-    mtu: 1500
-tcam_profile: null
-platform: null
-mac_address_table: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans:
-    120:
-      enabled: false
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+    channel_group:
+      id: 1
+      mode: active
 mlag_configuration:
   domain_id: DC1_L2LEAF2
   local_interface: Vlan4094
@@ -271,12 +188,8 @@ mlag_configuration:
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
-prefix:
-- my_dci_
-- my_special_dci_
-- custom_structured_configuration_
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false

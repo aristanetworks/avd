@@ -20,11 +20,11 @@
 {%         set fabric_switch.pod = hostvars[node].pod_name | arista.avd.default(hostvars[node].dc_name, fabric_name) %}
 {%         set fabric_switch.type = hostvars[node].type %}
 {%         set fabric_switch.node = node %}
-{%         set fabric_switch.mgmt_ip = hostvars[node].switch_mgmt_ip | arista.avd.default('-') %}
-{%         do assigned_ip_addresses.append(hostvars[node].switch_mgmt_ip) if hostvars[node].switch_mgmt_ip is arista.avd.defined %}
-{%         set fabric_switch.inband_management_interface = hostvars[node].switch_inband_management_interface | arista.avd.default(none) %}
-{%         set fabric_switch.inband_management_ip = hostvars[node].switch_inband_management_ip | arista.avd.default(none) %}
-{%         set fabric_switch.platform = hostvars[node].switch_platform | arista.avd.default('-') %}
+{%         set fabric_switch.mgmt_ip = hostvars[node].switch.mgmt_ip | arista.avd.default('-') %}
+{%         do assigned_ip_addresses.append(hostvars[node].switch.mgmt_ip) if hostvars[node].switch.mgmt_ip is arista.avd.defined %}
+{%         set fabric_switch.inband_management_interface = hostvars[node].switch.inband_management_interface | arista.avd.default(none) %}
+{%         set fabric_switch.inband_management_ip = hostvars[node].switch.inband_management_ip | arista.avd.default(none) %}
+{%         set fabric_switch.platform = hostvars[node].switch.platform | arista.avd.default('-') %}
 {%         set fabric_switch.provisioned = 'Not Available' if hostvars[node].is_deployed is arista.avd.defined(false) else 'Provisioned' %}
 {%         if hostvars[node].loopback_interfaces is arista.avd.defined and hostvars[node].loopback_interfaces.Loopback0 is arista.avd.defined %}
 {%             if hostvars[node].loopback_interfaces.Loopback0.ip_address is arista.avd.defined %}

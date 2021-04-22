@@ -11,6 +11,8 @@
     - [defined test](#defined-test)
   - [Modules](#modules)
     - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
+    - [Add Table Of Contents to existing MarkDown file](#add-table-of-contents-to-existing-markdown-file)
+    - [YAML Templates to Facts](#yaml-templates-to-facts)
 
 ## Plugin Filters
 
@@ -194,4 +196,87 @@ tasks:
   run_once: true
   check_mode: no
   tags: [build, provision]
+```
+
+### YAML Templates to Facts
+
+The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
+- Set Facts based on one or more Jinja2 templates producing YAML output.
+- Recursively combining output of templates to allow templates to update overlapping parts of the data models.
+- Facts set by one template will be accessable by the next templates
+- Returned Facts can be set below a specific `root_key`
+- Facts returned templates can be stripped for `null` values, to avoid them overwriting previous set facts
+
+The module is used in `eos_designs` first to set facts for devices and then to set the `structured_configuration` variable based on all the `eos_designs` templates.
+
+The module arguments are:
+
+```yaml
+- yaml_templates_to_facts:
+    root_key: < optional root_key name >
+    templates:
+        # Path to template file
+      - template: < template file >
+        options:
+          # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
+          list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+          # Filter out keys from the generated output if value is null/none/undefined
+          strip_empty_keys: < true (default) | false >
+```
+
+Example:
+
+```yaml
+- name: Set AVD facts
+  yaml_templates_to_facts:
+    templates: "{{ templates[design.type].facts }}"
+  check_mode: no
+  changed_when: False
+  tags: [build, provision]
+
+- name: Generate device configuration in structured format
+  yaml_templates_to_facts:
+    root_key: structured_config
+    templates: "{{ templates[design.type].structured_config }}"
+  check_mode: no
+  changed_when: False
+  tags: [build, provision]
+```
+
+Role default variables applied to this example:
+
+```yaml
+# Design variables
+design:
+  type: "l3ls-evpn"
+
+templates:
+  # Templates defined per design
+  l3ls-evpn:
+    facts:
+      # Set general "switch.*" variables
+      - template: "facts/main.j2"
+      # Set design specific "switch.*" variables
+      - template: "designs/l3ls-evpn/facts/main.j2"
+    structured_config:
+      # Render Strucured Configuration
+      # Base features
+      - template: "base/main.j2"
+      # MLAG feature
+      - template: "mlag/main.j2"
+      # Underlay feature
+      - template: "designs/l3ls-evpn/underlay/main.j2"
+      # Overlay feature
+      - template: "designs/l3ls-evpn/overlay/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Tenants feature
+      - template: "designs/l3ls-evpn/tenants/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Merge custom_structured_configuration last
+      - template: "custom-structured-configuration-from-var.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
 ```

@@ -12,6 +12,9 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+- [MLAG](#mlag)
+  - [MLAG Summary](#mlag-summary)
+  - [MLAG Device Configuration](#mlag-device-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -204,6 +207,29 @@ snmp-server contact example@example.com
 snmp-server location DC1_FABRIC rackE DC1-L2LEAF1A
 ```
 
+# MLAG
+
+## MLAG Summary
+
+| Domain-id | Local-interface | Peer-address | Peer-link |
+| --------- | --------------- | ------------ | --------- |
+| DC1_L2LEAF1 | Vlan4091 | 10.255.252.15 | Port-Channel3 |
+
+Dual primary detection is disabled.
+
+## MLAG Device Configuration
+
+```eos
+!
+mlag configuration
+   domain-id DC1_L2LEAF1
+   local-interface Vlan4091
+   peer-address 10.255.252.15
+   peer-link Port-Channel3
+   reload-delay mlag 300
+   reload-delay non-mlag 330
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -218,12 +244,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
+Spanning Tree disabled for VLANs: **4091**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
+no spanning-tree vlan-id 4091
 spanning-tree mst 0 priority 16384
 ```
 
@@ -256,6 +284,7 @@ vlan internal order ascending range 1006 1199
 | 131 | Tenant_A_APP_Zone_2 | none  |
 | 160 | Tenant_A_VMOTION | none  |
 | 161 | Tenant_A_NFS | none  |
+| 4091 | MLAG_PEER | MLAG  |
 
 ## VLANs Device Configuration
 
@@ -284,6 +313,10 @@ vlan 160
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 4091
+   name MLAG_PEER
+   trunk group MLAG
 ```
 
 # Interfaces
@@ -298,6 +331,8 @@ vlan 161
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
 | Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
+| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -314,6 +349,16 @@ interface Ethernet2
    description DC1-LEAF2B_Ethernet7
    no shutdown
    channel-group 1 mode active
+!
+interface Ethernet3
+   description MLAG_PEER_DC1-L2LEAF1B_Ethernet3
+   no shutdown
+   channel-group 3 mode active
+!
+interface Ethernet4
+   description MLAG_PEER_DC1-L2LEAF1B_Ethernet4
+   no shutdown
+   channel-group 3 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -324,7 +369,8 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
+| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -336,6 +382,15 @@ interface Port-Channel1
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
+   mlag 1
+!
+interface Port-Channel3
+   description MLAG_PEER_DC1-L2LEAF1B_Po3
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 2-4094
+   switchport mode trunk
+   switchport trunk group MLAG
 ```
 
 # Routing

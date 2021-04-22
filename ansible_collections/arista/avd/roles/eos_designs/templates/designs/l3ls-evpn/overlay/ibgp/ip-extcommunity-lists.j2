@@ -1,0 +1,7 @@
+{# Leaf route-maps for the underlay#}
+{% if switch.vtep_ip is arista.avd.defined %}
+ip_extcommunity_lists:
+  ECL-EVPN-SOO:
+    - type: permit
+      extcommunities: "soo {{ switch.vtep_ip }}:1"
+{% endif %}

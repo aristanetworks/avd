@@ -1,4 +1,5 @@
 {% if hardware_counters is defined and hardware_counters is not none %}
+hardware_counters:
   features:
 {%     if hardware_counters.features is defined and hardware_counters.features is not none %}
 {%         for feature in hardware_counters.features %}

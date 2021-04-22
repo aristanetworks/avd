@@ -15,7 +15,7 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Supported Ansible Versions
 
-- ansible __2.9.2__ or later
+- ansible __2.10.7__ or later
 - previous ansible version not supported as avd is shipped as an [ansible collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
 
 ## Additional Python Libraries required
