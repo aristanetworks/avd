@@ -23,14 +23,14 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
               - '.github/workflows/continuous_integration.yml'
-              - 'ansible_collections/arista/cvp/molecule/*'
-              - 'ansible_collections/arista/cvp/molecule/**/*'
+              - 'ansible_collections/arista/avd/molecule/*'
+              - 'ansible_collections/arista/avd/molecule/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/continuous_integration.yml'
-              - 'ansible_collections/arista/cvp/molecule/*'
-              - 'ansible_collections/arista/cvp/molecule/**/*'
+              - 'ansible_collections/arista/avd/molecule/*'
+              - 'ansible_collections/arista/avd/molecule/**/*'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
@@ -129,11 +129,11 @@ jobs:
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.1
         with:
-          molecule_parentdir: 'ansible_collections/arista/cvp'
+          molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.10.7"
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible>=2.10,<2.11"
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
@@ -166,11 +166,11 @@ jobs:
       - name: Run molecule action
         uses: arista-netdevops-community/action-molecule-avd@v1.1
         with:
-          molecule_parentdir: 'ansible_collections/arista/cvp'
+          molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.10.7"
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible>=2.10,<2.11"
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
@@ -203,7 +203,7 @@ jobs:
         run: make install-requirements
       - name: 'ansible-test linting'
         run: |
-          cd ansible_collections/arista/cvp/
+          cd ansible_collections/arista/avd/
           ansible-test sanity -v --requirements --docker --python 3.6
           rm -rf tests/output/
 
