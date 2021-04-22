@@ -4,7 +4,7 @@ port_channel_interfaces:
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
 {%             if adapter.profile is arista.avd.defined %}
-{%                 set adapter_profile = port_profiles[ adapter.profile ] %}
+{%                 set adapter_profile = port_profiles[adapter.profile] %}
 {%             else %}
 {%                 set adapter_profile = dict() %}
 {%             endif %}
@@ -23,7 +23,7 @@ port_channel_interfaces:
 {%                         set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default(adapter_profile.flowcontrol) %}
 {%                         set adapter_qos_profile = adapter.qos_profile | arista.avd.default(adapter_profile.qos_profile) %}
 {%                         set adapter_mtu = adapter.mtu | arista.avd.default(adapter_profile.mtu) %}
-{%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join ) %}
+{%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
 {%                         set lacp_fallback_mode = adapter_port_channel.lacp_fallback.mode | arista.avd.default(adapter_profile.lacp_fallback.mode) %}
 {%                         set lacp_fallback_timeout = adapter_port_channel.lacp_fallback.timeout | arista.avd.default(adapter_profile.lacp_fallback.timeout) %}
   Port-Channel{{ channel_group_id }}:

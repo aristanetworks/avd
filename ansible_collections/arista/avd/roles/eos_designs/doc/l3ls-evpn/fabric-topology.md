@@ -227,7 +227,7 @@ l3leaf:
       # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
-      # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
+      # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]

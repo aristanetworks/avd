@@ -1,7 +1,7 @@
 {# L2leaf Inband Management VLAN interfaces #}
 {% if l2leaf_inband_management_subnet is arista.avd.defined %}
 management_interfaces:
-  Vlan{{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}:
+  Vlan{{ l2leaf_inband_management_vlan | arista.avd.default('4092') }}:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: {{ p2p_uplinks_mtu }}

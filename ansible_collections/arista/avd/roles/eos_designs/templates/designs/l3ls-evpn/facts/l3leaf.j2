@@ -15,7 +15,7 @@ switch:
 
 {# switch.platform #}
   platform: {{ l3leaf.node_groups[l3leaf_node_group].platform | arista.avd.default(
-               l3leaf.defaults.platform ) }}
+               l3leaf.defaults.platform) }}
 
 {# switch.spine_interfaces #}
   spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces }}
@@ -24,9 +24,9 @@ switch:
   configure_tenants: true
 
 {# switch.filter_tenants #}
-{%             set switch_filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants| arista.avd.default(
+{%             set switch_filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants | arista.avd.default(
                                            l3leaf.defaults.filter.tenants,
-                                           [ 'all' ]) %}
+                                           ['all']) %}
   filter_tenants: {{ switch_filter_tenants }}
 
 {# switch.always_include_vrfs_in_tenants #}
@@ -37,36 +37,36 @@ switch:
 {# switch.igmp_snooping_enabled #}
   igmp_snooping_enabled: {{ l3leaf.node_groups[l3leaf_node_group].igmp_snooping_enabled | arista.avd.default(
                             l3leaf.defaults.igmp_snooping_enabled,
-                            default_igmp_snooping_enabled ) }}
+                            default_igmp_snooping_enabled) }}
 
 {# switch.filter_tags #}
 {%             set switch_filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags | arista.avd.default(
                                         l3leaf.defaults.filter.tags,
-                                        [ 'all' ]) %}
+                                        ['all']) %}
   filter_tags: {{ switch_filter_tags }}
 
 {# switch.max_spines #}
 {%             set switch_max_spines = max_spines | arista.avd.default(
-                                       spine.nodes | length ) %}
+                                       spine.nodes | length) %}
   max_spines: {{ switch_max_spines }}
 
 {# switch.spines #}
 {%             set switch_spines = l3leaf.node_groups[l3leaf_node_group].spines | arista.avd.default(
-                                   l3leaf.defaults.spines ) %}
+                                   l3leaf.defaults.spines) %}
   spines: {{ switch_spines }}
 
 {# switch.uplink_to_spine_interfaces #}
   uplink_to_spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces | arista.avd.default(
-                                 l3leaf.defaults.uplink_to_spine_interfaces ) }}
+                                 l3leaf.defaults.uplink_to_spine_interfaces) }}
 
 {# switch.p2p_link_interface_speed #}
   p2p_link_interface_speed: {{ l3leaf.node_groups[l3leaf_node_group].p2p_link_interface_speed | arista.avd.default(
-                               l3leaf.defaults.p2p_link_interface_speed ) }}
+                               l3leaf.defaults.p2p_link_interface_speed) }}
 
 {# switch.rack #}
   rack: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].rack | arista.avd.default(
            l3leaf.node_groups[l3leaf_node_group].rack,
-           l3leaf.defaults.rack ) }}
+           l3leaf.defaults.rack) }}
 
 {# switch.router_id #}
   router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(switch_id + switch_max_spines) }}
@@ -80,7 +80,7 @@ switch:
 {%             else %}
   bgp_as: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as | arista.avd.default(
              l3leaf.node_groups[l3leaf_node_group].bgp_as,
-             l3leaf.defaults.bgp_as ) }}
+             l3leaf.defaults.bgp_as) }}
 {%             endif %}
 
 {# switch.bgp_defaults #}
@@ -88,24 +88,24 @@ switch:
 
 {# switch.virtual_router_mac_address #}
   virtual_router_mac_address: {{ l3leaf.node_groups[l3leaf_node_group].virtual_router_mac_address | arista.avd.default(
-                                 l3leaf.defaults.virtual_router_mac_address ) }}
+                                 l3leaf.defaults.virtual_router_mac_address) }}
 
 {# switch.spanning_tree_mode #}
   spanning_tree_mode: {{ l3leaf.node_groups[l3leaf_node_group].spanning_tree_mode | arista.avd.default(
-                         l3leaf.defaults.spanning_tree_mode ) }}
+                         l3leaf.defaults.spanning_tree_mode) }}
 
 {# switch.spanning_tree_priority #}
   spanning_tree_priority: {{ l3leaf.node_groups[l3leaf_node_group].spanning_tree_priority | arista.avd.default(
-                             l3leaf.defaults.spanning_tree_priority ) }}
+                             l3leaf.defaults.spanning_tree_priority) }}
 
 {# switch.spanning_tree_root_super #}
   spanning_tree_root_super: {{ l3leaf.node_groups[l3leaf_node_group].spanning_tree_root_super | arista.avd.default(
-                               l3leaf.defaults.spanning_tree_root_super ) }}
+                               l3leaf.defaults.spanning_tree_root_super) }}
 
 {# switch.mlag* and switch.vtep_ip #}
 {%             set mlag = l3leaf.node_groups[l3leaf_node_group].mlag | arista.avd.default(
                           l3leaf.defaults.mlag,
-                          true ) %}
+                          true) %}
   mlag_ibgp_origin_incomplete: {{ l3leaf.node_groups[l3leaf_node_group].mlag_ibgp_origin_incomplete | arista.avd.default(
                                   l3leaf.defaults.mlag_ibgp_origin_incomplete,
                                   true) }}
@@ -122,9 +122,9 @@ switch:
                      4094) }}
   mlag_dual_primary_detection: {{ l3leaf.node_groups[l3leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
                                   l3leaf.defaults.mlag_dual_primary_detection,
-                                  false ) }}
+                                  false) }}
   mlag_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].mlag_interfaces | arista.avd.default(
-                                              l3leaf.defaults.mlag_interfaces ) }}
+                                              l3leaf.defaults.mlag_interfaces) }}
   mlag_peer_l3_vlan: {{ l3leaf.node_groups[l3leaf_node_group].mlag_peer_l3_vlan | arista.avd.default(
                         l3leaf.defaults.mlag_peer_l3_vlan,
                         4093) }}
@@ -157,20 +157,20 @@ switch:
 {# switch.evpn_services_l2_only #}
   evpn_services_l2_only: {{ l3leaf.node_groups[l3leaf_node_group].evpn_services_l2_only | arista.avd.default(
                             l3leaf.defaults.evpn_services_l2_only,
-                            false ) }}
+                            false) }}
 
 {# switch.evpn_role #}
 {# For l3leaf the default value is client #}
   evpn_role: {{ l3leaf.node_groups[l3leaf_node_group].evpn_role | arista.avd.default(
                 l3leaf.defaults.evpn_role,
-                'client' ) }}
+                'client') }}
 
 {# switch.evpn_route_servers #}
 {# For l3leaf the default value for EVPN Route Servers is content of the spines variable set above. For safety we fall back to [] #}
   evpn_route_servers: {{ l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
                                       l3leaf.defaults.evpn_route_servers,
                                       switch_spines,
-                                      [] ) }}
+                                      []) }}
 
 {# switch.vrfs, switch.svis and switch.vlans #}
 {%             set leaf = namespace() %}
@@ -182,9 +182,9 @@ switch:
 {%                     for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
 {%                         for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                             if svi_tag in switch_filter_tags or svi_tag == l3leaf_node_group or "all" in switch_filter_tags %}
-{%                                 do leaf.vrfs.append( vrf ) %}
-{%                                 do leaf.svis.append( svi | int) %}
-{%                                 do leaf.vlans.append( svi | int) %}
+{%                                 do leaf.vrfs.append(vrf) %}
+{%                                 do leaf.svis.append(svi | int) %}
+{%                                 do leaf.vlans.append(svi | int) %}
 {%                                 break %}
 {%                             endif %}
 {%                         endfor %}
@@ -192,14 +192,14 @@ switch:
 {# Append VRFs if there is a BGP neighbor defined for this switch #}
 {%                     for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
 {%                         if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
-{%                             do leaf.vrfs.append( vrf ) %}
+{%                             do leaf.vrfs.append(vrf) %}
 {%                         endif %}
 {%                     endfor %}
 {%                 endfor %}
 {%                 for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%                     for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
 {%                         if vlan_tag in switch_filter_tags or vlan_tag == l3leaf_node_group or "all" in switch_filter_tags %}
-{%                             do leaf.vlans.append( l2vlan | int) %}
+{%                             do leaf.vlans.append(l2vlan | int) %}
 {%                             break %}
 {%                         endif %}
 {%                     endfor %}
@@ -210,7 +210,7 @@ switch:
 {%                 for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
 {%                     if tenant in switch_always_include_vrfs_in_tenants or "all" in switch_always_include_vrfs_in_tenants %}
 {%                         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%                             do leaf.vrfs.append( vrf ) %}
+{%                             do leaf.vrfs.append(vrf) %}
 {%                         endfor %}
 {%                     endif %}
 {%                 endfor %}

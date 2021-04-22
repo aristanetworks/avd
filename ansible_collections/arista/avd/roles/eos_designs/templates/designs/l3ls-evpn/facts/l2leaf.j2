@@ -16,25 +16,25 @@ switch:
 
 {# switch.spanning_tree_mode #}
   spanning_tree_mode: {{ l2leaf.node_groups[l2leaf_node_group].spanning_tree_mode | arista.avd.default(
-                         l2leaf.defaults.spanning_tree_mode ) }}
+                         l2leaf.defaults.spanning_tree_mode) }}
 
 {# switch.igmp_snooping_enabled #}
   igmp_snooping_enabled: {{ l2leaf.node_groups[l2leaf_node_group].igmp_snooping_enabled | arista.avd.default(
                             l2leaf.defaults.igmp_snooping_enabled,
-                            default_igmp_snooping_enabled ) }}
+                            default_igmp_snooping_enabled) }}
 
 {# switch.spanning_tree_priority #}
   spanning_tree_priority: {{ l2leaf.node_groups[l2leaf_node_group].spanning_tree_priority | arista.avd.default(
-                             l2leaf.defaults.spanning_tree_priority ) }}
+                             l2leaf.defaults.spanning_tree_priority) }}
 
 {# switch.platform #}
   platform: {{ l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
-               l2leaf.defaults.platform ) }}
+               l2leaf.defaults.platform) }}
 
 {# switch.rack #}
   rack: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(
            l2leaf.node_groups[l2leaf_node_group].rack,
-           l2leaf.defaults.rack ) }}
+           l2leaf.defaults.rack) }}
 
 {# switch.configure_tenants #}
   configure_tenants: true
@@ -42,13 +42,13 @@ switch:
 {# switch.filter_tenants #}
 {%             set switch_filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants | arista.avd.default(
                                            l2leaf.defaults.filter.tenants,
-                                           [ 'all' ]) %}
+                                           ['all']) %}
   filter_tenants: {{ switch_filter_tenants }}
 
 {# switch.filter_tags #}
 {%             set switch_filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags | arista.avd.default(
                   l2leaf.defaults.filter.tags,
-                  [ 'all' ]) %}
+                  ['all']) %}
   filter_tags: {{ switch_filter_tags }}
 
 {# switch.parent_l3leafs #}
@@ -59,13 +59,13 @@ switch:
 {# switch.inband_management_ip and switch.inband_management_interface #}
 {%             if l2leaf_inband_management_subnet is arista.avd.defined %}
   inband_management_ip: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + switch_id) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
-  inband_management_interface: Vlan{{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}
+  inband_management_interface: Vlan{{ l2leaf_inband_management_vlan | arista.avd.default('4092') }}
 {%             endif %}
 
 {# switch.mlag* #}
 {%             set mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
                                  l2leaf.defaults.mlag,
-                                 true ) %}
+                                 true) %}
 
 {%             if loop.length == 2 and mlag == true %}
   mlag: true
@@ -75,9 +75,9 @@ switch:
                      4094) }}
   mlag_dual_primary_detection: {{ l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
                                   l2leaf.defaults.mlag_dual_primary_detection,
-                                  false ) }}
+                                  false) }}
   mlag_interfaces: {{ l2leaf.node_groups[l2leaf_node_group].mlag_interfaces | arista.avd.default(
-                      l2leaf.defaults.mlag_interfaces ) }}
+                      l2leaf.defaults.mlag_interfaces) }}
   mlag_peer_vlan: {{ l2leaf.node_groups[l2leaf_node_group].mlag_peer_vlan | arista.avd.default(
                      l2leaf.defaults.mlag_peer_vlan,
                      4094) }}
@@ -111,12 +111,12 @@ switch:
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tenants is defined %}
 {%                 set parentl3leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants %}
 {%             else %}
-{%                 set parentl3leaf.filter_tenants = [ 'all' ] %}
+{%                 set parentl3leaf.filter_tenants = ['all'] %}
 {%             endif %}
 {%             if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
 {%                 set parentl3leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
 {%             else %}
-{%                 set parentl3leaf.filter_tags = [ 'all' ] %}
+{%                 set parentl3leaf.filter_tags = ['all'] %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
@@ -134,9 +134,9 @@ switch:
 {%                     for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                         if svi_tag in switch_filter_tags or svi_tag == l2leaf_node_group or "all" in switch_filter_tags %}
 {%                             if svi_tag in parentl3leaf.filter_tags or svi_tag == parentl3leaf.group or "all" in parentl3leaf.filter_tags %}
-{%                                 do leaf.vrfs.append( vrf ) %}
-{%                                 do leaf.svis.append( svi | int) %}
-{%                                 do leaf.vlans.append( svi| int ) %}
+{%                                 do leaf.vrfs.append(vrf) %}
+{%                                 do leaf.svis.append(svi | int) %}
+{%                                 do leaf.vlans.append(svi | int) %}
 {%                                 break %}
 {%                             endif %}
 {%                         endif %}
@@ -149,7 +149,7 @@ switch:
 {%                 for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
 {%                     if vlan_tag in switch_filter_tags or vlan_tag == l2leaf_node_group or "all" in switch_filter_tags %}
 {%                         if vlan_tag in parentl3leaf.filter_tags or vlan_tag == l2leaf_node_group or "all" in parentl3leaf.filter_tags %}
-{%                             do leaf.vlans.append( l2vlan | int) %}
+{%                             do leaf.vlans.append(l2vlan | int) %}
 {%                             break %}
 {%                         endif %}
 {%                     endif %}

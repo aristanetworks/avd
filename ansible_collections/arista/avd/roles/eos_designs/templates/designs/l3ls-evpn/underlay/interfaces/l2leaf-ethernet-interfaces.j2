@@ -13,7 +13,7 @@ ethernet_interfaces:
 {%             elif l2leaf.defaults.p2p_link_interface_speed is defined %}
 {%                 set p2p_link_interface_speed = l2leaf.defaults.p2p_link_interface_speed %}
 {%             endif %}
-{%             set channel_group_id = (uplink_interfaces[0] | regex_findall("\d") | join ) %}
+{%             set channel_group_id = (uplink_interfaces[0] | regex_findall("\d") | join) %}
 {%             for uplink_interface in uplink_interfaces %}
   {{ uplink_interfaces[loop.index0] }}:
     peer: {{ switch.parent_l3leafs[loop.index0]}}

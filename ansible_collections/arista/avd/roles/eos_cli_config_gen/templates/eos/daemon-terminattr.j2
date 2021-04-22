@@ -9,9 +9,9 @@
 {%     set cvp_config = namespace() %}
 {%     for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}
 {%         if "arista.io" not in cvp_ip %}
-{%             do cvp_on_prem.ips.append( cvp_ip ) %}
+{%             do cvp_on_prem.ips.append(cvp_ip) %}
 {%         elif "arista.io" in cvp_ip %}
-{%             do cvaas.ips.append( cvp_ip ) %}
+{%             do cvaas.ips.append(cvp_ip) %}
 {%         endif %}
 {%     endfor %}
 daemon TerminAttr

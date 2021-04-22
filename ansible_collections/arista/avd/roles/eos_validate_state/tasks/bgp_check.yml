@@ -16,7 +16,7 @@
       - ip_route_summary.stdout_lines[0][1] | regex_search("multi-agent")
     fail_msg: "{{ ip_route_summary.stdout_lines[0][0] }}, {{ ip_route_summary.stdout_lines[0][1] }}"
     quiet: yes
-  when: ( service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent" )
+  when: (service_routing_protocols_model is defined and service_routing_protocols_model == "multi-agent")
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: arbgp_state_results
   tags:

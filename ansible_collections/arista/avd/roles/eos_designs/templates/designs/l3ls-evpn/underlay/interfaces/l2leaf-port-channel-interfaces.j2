@@ -6,7 +6,7 @@ port_channel_interfaces:
 {%         if node == inventory_hostname %}
 {%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
 {%                 if loop.first %}
-{%                      set l3leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
+{%                      set l3leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join) %}
 {%                 endif %}
 {%             endfor %}
 {%             if l2leaf.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
@@ -14,13 +14,13 @@ port_channel_interfaces:
 {%             else %}
 {%                 set uplink_interfaces = l2leaf.defaults.uplink_interfaces %}
 {%             endif %}
-{%             set channel_group_id = (uplink_interfaces[0] | regex_findall("\d") | join ) %}
+{%             set channel_group_id = (uplink_interfaces[0] | regex_findall("\d") | join) %}
 {%             set uplink_vlans = switch.vlans %}
 {%             if l2leaf_inband_management_subnet is arista.avd.defined %}
-{%                 do uplink_vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
+{%                 do uplink_vlans.append (l2leaf_inband_management_vlan | arista.avd.default(4092) | int) %}
 {%             endif %}
   Port-Channel{{ channel_group_id }}:
-    description: {{ switch.parent_l3leafs[loop.index0]}}_{{ 'Po' + l3leaf.channel_group_id }}
+    description: {{ switch.parent_l3leafs[loop.index0] }}_{{ 'Po' + l3leaf.channel_group_id }}
     type: switched
     shutdown: false
     vlans: {{ uplink_vlans | arista.avd.list_compress }}

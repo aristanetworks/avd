@@ -14,16 +14,16 @@ port_channel_interfaces:
 {%             if l2leaf.node_groups[l2leaf_node_group].filter.tenants is defined %}
 {%                 set l2_leaf.filter_tenants = l2leaf.node_groups[l2leaf_node_group].filter.tenants %}
 {%             else %}
-{%                 set l2_leaf.filter_tenants = [ 'all' ] %}
+{%                 set l2_leaf.filter_tenants = ['all'] %}
 {%             endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].filter.tags is defined %}
 {%                 set l2_leaf.filter_tags = l2leaf.node_groups[l2leaf_node_group].filter.tags %}
 {%             else %}
-{%                 set l2_leaf.filter_tags = [ 'all' ] %}
+{%                 set l2_leaf.filter_tags = ['all'] %}
 {%             endif %}
 {%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
 {%                 if loop.first %}
-{%                     set l3_leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
+{%                     set l3_leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join) %}
 {%                 endif %}
 {%             endfor %}
 {%             if l2leaf.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
@@ -34,7 +34,7 @@ port_channel_interfaces:
 {# Create allowed vlan lan list based on vlans being provisioned on L2 Leaf #}
 {%             set l2_leaf.vlans = []  %}
 {%             if l2leaf_inband_management_subnet is arista.avd.defined %}
-{%                 do l2_leaf.vlans.append ( l2leaf_inband_management_vlan | arista.avd.default(4092) | int ) %}
+{%                 do l2_leaf.vlans.append(l2leaf_inband_management_vlan | arista.avd.default(4092) | int) %}
 {%             endif %}
 {%             for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
 {%                 if tenant in l2_leaf.filter_tenants or "all" in l2_leaf.filter_tenants %}
@@ -44,7 +44,7 @@ port_channel_interfaces:
 {%                                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags %}
 {%                                     if svi_tag in switch.filter_tags or svi_tag == switch.group or "all" in switch.filter_tags %}
 {%                                         if svi_tag in l2_leaf.filter_tags or svi_tag == l2leaf_node_group or "all" in l2_leaf.filter_tags %}
-{%                                             do l2_leaf.vlans.append( svi | int ) %}
+{%                                             do l2_leaf.vlans.append(svi | int) %}
 {%                                             break %}
 {%                                         endif %}
 {%                                     endif %}
@@ -57,7 +57,7 @@ port_channel_interfaces:
 {%                             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags %}
 {%                                 if vlan_tag in switch.filter_tags or "all" in switch.filter_tags %}
 {%                                     if vlan_tag in l2_leaf.filter_tags or "all" in l2_leaf.filter_tags %}
-{%                                         do l2_leaf.vlans.append( l2vlan | int ) %}
+{%                                         do l2_leaf.vlans.append(l2vlan | int) %}
 {%                                         break %}
 {%                                     endif %}
 {%                                 endif %}

@@ -551,7 +551,7 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
+    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -1110,7 +1110,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
-    encryption_key_common : < true | false >
+    encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -1225,11 +1225,11 @@ router_pim_sparse_mode:
     rp_addresses:
       < rp_address_1 >:
         groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
+          < group_prefix_1/mask >:
+          < group_prefix_2/mask >:
       < rp_address_2 >:
     anycast_rps:
-      < anycast_rp_address_1 > :
+      < anycast_rp_address_1 >:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >

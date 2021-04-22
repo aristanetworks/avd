@@ -3,7 +3,7 @@ switch:
 {%     if node == inventory_hostname %}
 {# switch.id #}
 {%         set switch_id = spine.nodes[node].id %}
-  id : {{ switch_id }}
+  id: {{ switch_id }}
 {# switch.mgmt_ip #}
   mgmt_ip: {{ spine.nodes[node].mgmt_ip }}
 {# switch.spanning_tree_mode #}
@@ -14,7 +14,7 @@ switch:
   bgp_defaults: {{ spine_bgp_defaults | arista.avd.default([]) }}
 {# switch.max_spines #}
   max_spines: {{ max_spines | arista.avd.default(
-                 spine.nodes | length ) }}
+                 spine.nodes | length) }}
 {# switch.platform #}
   platform: {{ spine.nodes[node].platform | arista.avd.default(
                spine.defaults.platform,

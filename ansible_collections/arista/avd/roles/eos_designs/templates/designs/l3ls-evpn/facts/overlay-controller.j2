@@ -3,7 +3,7 @@ switch:
 {%     if node == inventory_hostname %}
 {# switch.id #}
 {%         set switch_id = overlay_controller.nodes[node].id %}
-  id : {{ switch_id }}
+  id: {{ switch_id }}
 {# switch.mgmt_ip #}
   mgmt_ip: {{ overlay_controller.nodes[node].mgmt_ip }}
 {# switch.spanning_tree_mode #}
@@ -18,7 +18,7 @@ switch:
   loopback_network_summary: {{ overlay_controller_loopback_network_summary }}
 {# switch.rack #}
   rack: {{ overlay_controller.nodes[node].rack | arista.avd.default(
-           overlay_controller.defaults.rack ) }}
+           overlay_controller.defaults.rack) }}
 {# switch.bgp_defaults #}
   bgp_defaults: {{ overlay_controller_bgp_defaults | arista.avd.default([]) }}
 {# switch.bgp_as #}
@@ -40,7 +40,7 @@ switch:
 {# switch.remote_switches_asn #}
   remote_switches_asn:
 {%         for remote_switch in switch_remote_switches %}
-{%             set remote_switch_vars = hostvars[ remote_switch ] %}
+{%             set remote_switch_vars = hostvars[remote_switch] %}
 {%             if remote_switch_vars.type == 'l3leaf' %}
 {%                 for l3leaf_node_group in remote_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
 {%                     if remote_switch in remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}

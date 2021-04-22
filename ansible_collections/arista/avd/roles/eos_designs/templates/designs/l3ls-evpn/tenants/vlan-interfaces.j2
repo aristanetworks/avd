@@ -1,9 +1,9 @@
 {# Leaf tenant vlan interfaces #}
 vlan_interfaces:
-{% for tenant in tenants | arista.avd.natural_sort if ( tenant in switch.filter_tenants or "all" in switch.filter_tenants ) and switch.evpn_services_l2_only == false %}
+{% for tenant in tenants | arista.avd.natural_sort if (tenant in switch.filter_tenants or "all" in switch.filter_tenants) and switch.evpn_services_l2_only == false %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi|int in switch.svis %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if svi | int in switch.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                 set per_svi = namespace() %}
@@ -105,7 +105,7 @@ vlan_interfaces:
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
-    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_ip ) }}/31
+    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%                     endif %}
 {%                 endif %}
