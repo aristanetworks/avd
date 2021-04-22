@@ -24,6 +24,7 @@
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -325,6 +326,33 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group MLAG
    service-profile QOS-PROFILE
+```
+
+## VLAN Interfaces
+
+### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan4094 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
+
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan4094
+   description MLAG_PEER
+   no shutdown
+   mtu 1500
+   no autostate
+   ip address 172.19.110.3/31
 ```
 
 # Routing

@@ -279,7 +279,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093,4094
+  no_spanning_tree_vlan: 4093-4094
 local_users:
   admin:
     privilege: 15

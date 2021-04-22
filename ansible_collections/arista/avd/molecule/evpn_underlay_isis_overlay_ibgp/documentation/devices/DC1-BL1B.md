@@ -217,14 +217,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093,4094**
+Spanning Tree disabled for VLANs: **4093-4094**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093,4094
+no spanning-tree vlan-id 4093-4094
 spanning-tree mst 0 priority 4096
 ```
 
