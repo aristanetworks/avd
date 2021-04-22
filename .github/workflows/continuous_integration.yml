@@ -204,8 +204,7 @@ jobs:
       - name: 'ansible-test linting'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity -v --requirements --docker --python 3.6
-          rm -rf tests/output/
+          ansible-test sanity  -v --requirements --docker --skip-test yamllint --exclude docs/
 
   galaxy_importer:
     name: Test galaxy-importer
