@@ -199,7 +199,6 @@ port_channel_interfaces:
     vlans: 4092
     mode: trunk
     service_profile: QOS-PROFILE
-    mlag: 3
 vlans:
   4092:
     tenant: system

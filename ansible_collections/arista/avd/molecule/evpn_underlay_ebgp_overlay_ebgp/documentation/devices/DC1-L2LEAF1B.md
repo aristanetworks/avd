@@ -1,4 +1,4 @@
-# DC1-L2LEAF1A
+# DC1-L2LEAF1B
 # Table of Contents
 <!-- toc -->
 
@@ -52,7 +52,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.200.112/24 | 192.168.200.5 |
+| Management1 | oob_management | oob | MGMT | 192.168.200.115/24 | 192.168.200.5 |
 
 #### IPv6
 
@@ -68,7 +68,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 192.168.200.112/24
+   ip address 192.168.200.115/24
 ```
 
 ## Name Servers
@@ -178,7 +178,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackE DC1-L2LEAF1A |  Disabled  |
+| example@example.com | DC1_FABRIC rackE DC1-L2LEAF1B |  Disabled  |
 
 ### SNMP ACLs
 | IP | ACL | VRF |
@@ -205,7 +205,7 @@ daemon TerminAttr
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC rackE DC1-L2LEAF1A
+snmp-server location DC1_FABRIC rackE DC1-L2LEAF1B
 ```
 
 # MLAG
@@ -214,7 +214,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF1A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF1 | Vlan4094 | 10.255.252.15 | Port-Channel3 |
+| DC1_L2LEAF1 | Vlan4094 | 10.255.252.14 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -225,7 +225,7 @@ Dual primary detection is disabled.
 mlag configuration
    domain-id DC1_L2LEAF1
    local-interface Vlan4094
-   peer-address 10.255.252.15
+   peer-address 10.255.252.14
    peer-link Port-Channel3
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -330,10 +330,10 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
-| Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
-| Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet1 | DC1-LEAF2A_Ethernet8 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
+| Ethernet2 | DC1-LEAF2B_Ethernet8 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
+| Ethernet3 | MLAG_PEER_DC1-L2LEAF1A_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-L2LEAF1A_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -342,22 +342,22 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description DC1-LEAF2A_Ethernet7
+   description DC1-LEAF2A_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description DC1-LEAF2B_Ethernet7
+   description DC1-LEAF2B_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_DC1-L2LEAF1B_Ethernet3
+   description MLAG_PEER_DC1-L2LEAF1A_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_DC1-L2LEAF1B_Ethernet4
+   description MLAG_PEER_DC1-L2LEAF1A_Ethernet4
    no shutdown
    channel-group 3 mode active
 ```
@@ -370,15 +370,15 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 1 | - |
-| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
+| Port-Channel1 | DC1-LEAF2B_Po7 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | 1 | - |
+| Port-Channel3 | MLAG_PEER_DC1-L2LEAF1A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1-LEAF2A_Po7
+   description DC1-LEAF2B_Po7
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
@@ -386,7 +386,7 @@ interface Port-Channel1
    mlag 1
 !
 interface Port-Channel3
-   description MLAG_PEER_DC1-L2LEAF1B_Po3
+   description MLAG_PEER_DC1-L2LEAF1A_Po3
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -406,7 +406,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  10.255.252.14/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  10.255.252.15/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -418,7 +418,7 @@ interface Vlan4094
    no shutdown
    mtu 1500
    no autostate
-   ip address 10.255.252.14/31
+   ip address 10.255.252.15/31
 ```
 
 # Routing

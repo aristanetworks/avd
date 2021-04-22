@@ -44,12 +44,18 @@ all:
                   hosts:
                     DC1-L2LEAF1A:
                       ansible_host: 192.168.200.112
+                    DC1-L2LEAF1B:
+                      ansible_host: 192.168.200.115
                 DC1_L2LEAF2:
                   hosts:
                     DC1-L2LEAF2A:
                       ansible_host: 192.168.200.113
                     DC1-L2LEAF2B:
                       ansible_host: 192.168.200.114
+                DC1_L2LEAF3:
+                  hosts:
+                    DC1-L2LEAF3A:
+                      ansible_host: 192.168.200.116
         DC1_TENANTS_NETWORKS:
           children:
             DC1_LEAFS:

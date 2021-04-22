@@ -180,7 +180,6 @@ port_channel_interfaces:
     vlans: 4085
     mode: trunk
     service_profile: QOS-PROFILE
-    mlag: 3
 vlans:
   4085:
     tenant: system
