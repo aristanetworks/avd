@@ -214,7 +214,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF2B
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF2 | Vlan4094 | 10.255.252.16 | Port-Channel3 |
+| DC1_L2LEAF2 | Vlan4091 | 10.255.252.16 | Port-Channel3 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -224,7 +224,7 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 !
 mlag configuration
    domain-id DC1_L2LEAF2
-   local-interface Vlan4094
+   local-interface Vlan4091
    peer-address 10.255.252.16
    peer-address heartbeat 192.168.200.113 vrf MGMT
    peer-link Port-Channel3
@@ -247,14 +247,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4094**
+Spanning Tree disabled for VLANs: **4091**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4094
+no spanning-tree vlan-id 4091
 spanning-tree mst 0 priority 16384
 ```
 
@@ -296,7 +296,7 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | none  |
 | 311 | Tenant_C_OP_Zone_2 | none  |
 | 350 | Tenant_C_WAN_Zone_1 | none  |
-| 4094 | MLAG_PEER | MLAG  |
+| 4091 | MLAG_PEER | MLAG  |
 
 ## VLANs Device Configuration
 
@@ -353,7 +353,7 @@ vlan 311
 vlan 350
    name Tenant_C_WAN_Zone_1
 !
-vlan 4094
+vlan 4091
    name MLAG_PEER
    trunk group MLAG
 ```
@@ -438,20 +438,20 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4091 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  10.255.252.17/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.252.17/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
 
 ```eos
 !
-interface Vlan4094
+interface Vlan4091
    description MLAG_PEER
    no shutdown
    mtu 1500

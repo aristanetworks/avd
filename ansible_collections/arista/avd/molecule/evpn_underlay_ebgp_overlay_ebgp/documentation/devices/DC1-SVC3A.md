@@ -225,7 +225,7 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_SVC3 | Vlan4094 | 10.255.252.7 | Port-Channel5 |
+| DC1_SVC3 | Vlan4092 | 10.255.252.7 | Port-Channel5 |
 
 Dual primary detection is disabled.
 
@@ -235,7 +235,7 @@ Dual primary detection is disabled.
 !
 mlag configuration
    domain-id DC1_SVC3
-   local-interface Vlan4094
+   local-interface Vlan4092
    peer-address 10.255.252.7
    peer-link Port-Channel5
    reload-delay mlag 300
@@ -258,7 +258,7 @@ STP Root Super: **True**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+Spanning Tree disabled for VLANs: **4090,4092**
 
 ## Spanning Tree Device Configuration
 
@@ -266,7 +266,7 @@ Spanning Tree disabled for VLANs: **4093-4094**
 !
 spanning-tree root super
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093-4094
+no spanning-tree vlan-id 4090,4092
 spanning-tree mst 0 priority 4096
 ```
 
@@ -317,8 +317,8 @@ vlan internal order ascending range 1006 1199
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3  |
 | 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3  |
 | 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3  |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
-| 4094 | MLAG_PEER | MLAG  |
+| 4090 | LEAF_PEER_L3 | LEAF_PEER_L3  |
+| 4092 | MLAG_PEER | MLAG  |
 
 ## VLANs Device Configuration
 
@@ -411,11 +411,11 @@ vlan 3030
    name MLAG_iBGP_Tenant_C_WAN_Zone
    trunk group LEAF_PEER_L3
 !
-vlan 4093
+vlan 4090
    name LEAF_PEER_L3
    trunk group LEAF_PEER_L3
 !
-vlan 4094
+vlan 4092
    name MLAG_PEER
    trunk group MLAG
 ```
@@ -772,8 +772,8 @@ interface Loopback100
 | Vlan3019 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone  |  Tenant_B_OP_Zone  |  1500  |  false  |
 | Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  1500  |  false  |
 | Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  1500  |  false  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4090 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
+| Vlan4092 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -803,8 +803,8 @@ interface Loopback100
 | Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3020 |  Tenant_B_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4090 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -967,13 +967,13 @@ interface Vlan3030
    vrf Tenant_C_WAN_Zone
    ip address 10.255.251.6/31
 !
-interface Vlan4093
+interface Vlan4090
    description MLAG_PEER_L3_PEERING
    no shutdown
    mtu 1500
    ip address 10.255.251.6/31
 !
-interface Vlan4094
+interface Vlan4092
    description MLAG_PEER
    no shutdown
    mtu 1500

@@ -195,6 +195,12 @@ l3leaf:
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
 
+      # Underlay L3 peering SVI interface id
+      mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
+
+      # MLAG Peer Link (control link) SVI interface id
+      mlag_peer_vlan: < 0-4094 | default -> 4094 >
+
       # Spanning tree mode | Required.
       spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
 
@@ -385,6 +391,9 @@ l2leaf:
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
       # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
       mlag_ibgp_origin_incomplete: < true | false -> default true >
+
+      # MLAG Peer Link (control link) SVI interface id
+      mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
       spanning_tree_mode: < mstp >

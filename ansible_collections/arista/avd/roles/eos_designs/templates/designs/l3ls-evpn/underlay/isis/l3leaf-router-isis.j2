@@ -8,7 +8,7 @@ router_isis:
     - {{ uplink_to_spine_interface }}
 {% endfor %}
 {% if switch.mlag is arista.avd.defined(true) %}
-    - Vlan4093
+    - Vlan{{ switch.mlag_peer_l3_vlan }}
     - Loopback1
 {% endif %}
   is_type: level-2

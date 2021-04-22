@@ -61,18 +61,26 @@ switch:
   inband_management_ip: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + switch_id) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
   inband_management_interface: Vlan{{ l2leaf_inband_management_vlan|arista.avd.default('4092') }}
 {%             endif %}
+
 {# switch.mlag* #}
 {%             set mlag = l2leaf.node_groups[l2leaf_node_group].mlag | arista.avd.default(
                                  l2leaf.defaults.mlag,
                                  true ) %}
+
 {%             if loop.length == 2 and mlag == true %}
   mlag: true
   mlag_group: {{ l2leaf_node_group }}
+  mlag_peer_vlan: {{ l2leaf.node_groups[l2leaf_node_group].mlag_peer_vlan | arista.avd.default(
+                     l2leaf.defaults.mlag_peer_vlan,
+                     4094) }}
   mlag_dual_primary_detection: {{ l2leaf.node_groups[l2leaf_node_group].mlag_dual_primary_detection | arista.avd.default(
                                   l2leaf.defaults.mlag_dual_primary_detection,
                                   false ) }}
   mlag_interfaces: {{ l2leaf.node_groups[l2leaf_node_group].mlag_interfaces | arista.avd.default(
                       l2leaf.defaults.mlag_interfaces ) }}
+  mlag_peer_vlan: {{ l2leaf.node_groups[l2leaf_node_group].mlag_peer_vlan | arista.avd.default(
+                     l2leaf.defaults.mlag_peer_vlan,
+                     4094) }}
 {%                 if loop.index == 1 %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
