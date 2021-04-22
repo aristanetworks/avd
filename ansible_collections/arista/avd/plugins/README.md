@@ -93,6 +93,52 @@ text : {{ extremely_long_variable_name }}
 {% endif %}
 Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
 ```
+
+### containing test
+
+The `arista.avd.containing` test will test if a list contains one or more of the supplied value(s).
+The test will return `False` if either the passed value or the test_values are `Undefined` or `none`.
+
+The test accepts either a single test_value or a list of test_values.
+To use this test:
+```jinja
+{% if my_list is arista.avd.containing(item) %}Match{% endif %}
+
+{# or #}
+
+{% if my_list is arista.avd.containing(item_list) %}Match{% endif %}
+```
+
+**Example**
+The `arista.avd.containing` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
+for an element where `switch_platform` is contained in the `platforms` attribute.
+
+Without the `selectattr` and `arista.avd.containing` test:
+```jinja
+switch:
+{% set ns = namespace() %}
+{% for platform_setting in platform_settings %}
+{%     set ns.platform_defined = false %}
+{%     if switch_platform in platform_setting.platforms %}
+{%         set ns.platform_defined = true ]}
+  platform_settings: {{ platform_setting }}
+{%         break; %}
+{%     endif %}
+{% endfor %}
+{% for platform_setting in platform_settings if ns.platform_defined == false %}
+{%     if 'default' in platform_setting.platforms %}
+  platform_settings: {{ platform_setting }}
+{%         break; %}
+{%     endif %}
+{% endfor %}
+```
+Without the `selectattr` and `arista.avd.containing` test:
+```jinja
+switch:
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+```
+
 ## Modules
 
 ### Inventory to CloudVision Containers

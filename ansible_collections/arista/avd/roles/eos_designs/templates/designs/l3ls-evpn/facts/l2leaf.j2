@@ -28,8 +28,13 @@ switch:
                              l2leaf.defaults.spanning_tree_priority) }}
 
 {# switch.platform #}
-  platform: {{ l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
-               l2leaf.defaults.platform) }}
+{%             set switch_platform = l2leaf.node_groups[l2leaf_node_group].platform | arista.avd.default(
+                                     l2leaf.defaults.platform) %}
+  platform: {{ switch_platform }}
+
+{# switch.platform_settings #}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
 
 {# switch.rack #}
   rack: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(

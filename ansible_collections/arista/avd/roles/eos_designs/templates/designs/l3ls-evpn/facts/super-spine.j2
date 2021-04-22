@@ -1,25 +1,39 @@
 switch:
 {% for node in super_spine.nodes | arista.avd.natural_sort %}
 {%     if node == inventory_hostname %}
+
 {# switch.id #}
 {%         set switch_id = super_spine.nodes[node].id %}
   id: {{ switch_id }}
+
 {# switch.mgmt_ip #}
   mgmt_ip: {{ super_spine.nodes[node].mgmt_ip }}
+
 {# switch.spanning_tree_mode #}
   spanning_tree_mode: "none"
+
 {# switch.rack #}
   rack: {{ super_spine.nodes[inventory_hostname].rack | arista.avd.default() }}
+
 {# switch.bgp_defaults #}
   bgp_defaults: {{ super_spine_bgp_defaults | arista.avd.default([]) }}
+
 {# switch.platform #}
-  platform: {{ super_spine.nodes[node].platform | arista.avd.default(
-               super_spine.defaults.platform,
-               super_spine.platform) }}
+{%             set switch_platform = super_spine.nodes[node].platform | arista.avd.default(
+                                     super_spine.defaults.platform,
+                                     super_spine.platform) %}
+  platform: {{ switch_platform }}
+
+{# switch.platform_settings #}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+
 {# switch.router_id #}
   router_id: {{ super_spine_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}
+
 {# switch.loopback_network_summary #}
   loopback_network_summary: {{ super_spine_loopback_network_summary }}
+
 {# switch.bgp_as #}
 {%         if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
   bgp_as: {{ bgp_as }}
@@ -28,10 +42,12 @@ switch:
              super_spine.defaults.bgp_as,
              super_spine.bgp_as) }}
 {%         endif %}
+
 {# switch.evpn_role #}
 {# For super-spine the default value is none #}
   evpn_role: {{ super_spine.nodes[inventory_hostname].evpn_role | arista.avd.default(
                 'none') }}
+
 {# switch.evpn_route_servers #}
   evpn_route_servers: {{ super_spine.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
                              []) }}
