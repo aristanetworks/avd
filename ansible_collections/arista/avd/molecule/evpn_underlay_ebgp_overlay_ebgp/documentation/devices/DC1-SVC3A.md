@@ -442,7 +442,8 @@ vlan 4092
 | Ethernet15 | server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
 | Ethernet16 |  server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 | Ethernet17 | server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
-| Ethernet18 | server10_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
+| Ethernet18 | server11_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
+| Ethernet19 | server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -588,9 +589,15 @@ interface Ethernet17
    lacp port-priority 8192
 !
 interface Ethernet18
-   description server10_inherit_profile_port_channel_lacp_fallback_Eth1
+   description server11_inherit_profile_port_channel_lacp_fallback_Eth1
    no shutdown
    channel-group 18 mode active
+   lacp port-priority 8192
+!
+interface Ethernet19
+   description server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1
+   no shutdown
+   channel-group 19 mode active
    lacp port-priority 8192
 ```
 
@@ -608,7 +615,8 @@ interface Ethernet18
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
 | Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
-| Port-Channel18 | server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel18 | server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel19 | server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -684,12 +692,28 @@ interface Port-Channel17
    storm-control unknown-unicast level 2
 !
 interface Port-Channel18
-   description server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+   description server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    mlag 18
+   port-channel lacp fallback timeout 10
+   port-channel lacp fallback static
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Port-Channel19
+   description server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 19
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    spanning-tree portfast

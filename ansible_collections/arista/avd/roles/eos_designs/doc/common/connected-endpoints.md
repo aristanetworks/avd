@@ -41,10 +41,11 @@ connected_endpoints_keys:
 ```yaml
 # Optional profiles to apply on endpoints facing interfaces
 # Each profile can support all or some of the following keys according to your own needs.
-# Keys are the same used under  endpoints adapters.
-# Keys defined under endpoints Adapters take precedence.
+# Keys are the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
+# Port_profiles can refer to another port_profile to inherit settings in up to two levels (adapter->profile->parent_profile).
 port_profiles:
   < port_profile_1 >:
+    parent_profile: < port_profile_name >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mode: < access | dot1q-tunnel | trunk >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
