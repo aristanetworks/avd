@@ -135,10 +135,13 @@ jobs:
           ansible: "ansible==2.10.7"
           check_git: true
           check_git_enforced: false
+      # Workaround for permissions issue https://github.com/actions/upload-artifact/issues/38
+      - name: 'Tar files'
+        run: tar -cvf ${{ matrix.avd_scenario }}.tar ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
       - uses: actions/upload-artifact@v2
         with:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          path: ${{ matrix.avd_scenario }}.tar
   # ----------------------------------- #
   # EOS Design MOLECULE
   # ----------------------------------- #
