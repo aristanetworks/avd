@@ -35,7 +35,7 @@ Ansible CVP collection comes with a needs of [additional libraries](https://gith
 - jsonschema
 - requests
 - PyYAML
-- md_toc
+- md-toc
 
 ### Create virtual-environment
 

@@ -27,7 +27,7 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 - jsonschema
 - requests
 - PyYAML
-- md_toc
+- md-toc
 
 ### Python requirements installation
 
