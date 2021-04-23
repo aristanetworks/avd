@@ -686,6 +686,10 @@ ethernet_interfaces:
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation:
+        dot1q:
+          vlan: < vlan number >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -789,6 +793,10 @@ port_channel_interfaces:
       dot1q:
         vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation:
+        dot1q:
+          vlan: < vlan number >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:

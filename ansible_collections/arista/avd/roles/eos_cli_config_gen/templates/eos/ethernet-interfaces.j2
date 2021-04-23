@@ -60,6 +60,9 @@ interface {{ ethernet_interface }}
 {%         for trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%         endfor %}
+{%         if ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation.dot1q.vlan is arista.avd.defined %}
+   l2-protocol encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation.dot1q.vlan }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].qos.trust is arista.avd.defined %}
    qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
 {%         endif %}

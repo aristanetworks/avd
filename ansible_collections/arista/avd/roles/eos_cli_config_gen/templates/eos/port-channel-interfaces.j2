@@ -38,6 +38,9 @@ interface {{ port_channel_interface }}
 {%     for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%     endfor %}
+{%     if port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation.dot1q.vlan is arista.avd.defined %}
+   l2-protocol encapsulation dot1q vlan {{ port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation.dot1q.vlan }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].mlag is arista.avd.defined %}
    mlag {{ port_channel_interfaces[port_channel_interface].mlag }}
 {%     endif %}
