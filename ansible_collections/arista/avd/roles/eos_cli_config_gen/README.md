@@ -671,6 +671,9 @@ ethernet_interfaces:
       ip: < true | false >
       ldp:
         interface: < true | false >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -731,6 +734,9 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 #### Interface Defaults
