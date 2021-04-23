@@ -8,57 +8,57 @@ port_channel_interfaces:
 {%             else %}
 {%                 set adapter_profile = dict() %}
 {%             endif %}
-{%             if adapter_profile.profile is arista.avd.defined %}
-{%                 set base_profile = port_profiles[adapter_profile.profile] | arista.avd.default({}) %}
+{%             if adapter_profile.parent_profile is arista.avd.defined %}
+{%                 set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
 {%             endif %}
 {%             set adapter_port_channel = adapter.port_channel | arista.avd.default(
                                           adapter_profile.port_channel,
-                                          base_profile.port_channel) %}
+                                          parent_profile.port_channel) %}
 {%             if adapter_port_channel is arista.avd.defined and adapter_port_channel.mode is arista.avd.defined %}
 {%                 set adapter_port_channel_description = adapter.port_channel.description | arista.avd.default(
                                                           adapter_profile.port_channel.description,
-                                                          base_profile.port_channel.description) %}
+                                                          parent_profile.port_channel.description) %}
 {%                 for switch in adapter.switches | arista.avd.natural_sort %}
 {%                     if switch == inventory_hostname %}
 {%                         set adapter_mode = adapter.mode | arista.avd.default(
                                               adapter_profile.mode,
-                                              base_profile.mode) %}
+                                              parent_profile.mode) %}
 {%                         set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default(
                                                 adapter_profile.l2_mtu,
-                                                base_profile.l2_mtu) %}
+                                                parent_profile.l2_mtu) %}
 {%                         set adapter_vlans = adapter.vlans | arista.avd.default(
                                                adapter_profile.vlans,
-                                               base_profile.vlans) %}
+                                               parent_profile.vlans) %}
 {%                         set adapter_native_vlan = adapter.native_vlan | arista.avd.default(
                                                      adapter_profile.native_vlan,
-                                                     base_profile.native_vlan) %}
+                                                     parent_profile.native_vlan) %}
 {%                         set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default(
                                                                 adapter_profile.spanning_tree_portfast,
-                                                                base_profile.spanning_tree_portfast) %}
+                                                                parent_profile.spanning_tree_portfast) %}
 {%                         set adapter_spanning_tree_bpdufilter = adapter.spanning_tree_bpdufilter | arista.avd.default(
                                                                   adapter_profile.spanning_tree_bpdufilter,
-                                                                  base_profile.spanning_tree_bpdufilter) %}
+                                                                  parent_profile.spanning_tree_bpdufilter) %}
 {%                         set adapter_spanning_tree_bpduguard = adapter.spanning_tree_bpduguard | arista.avd.default(
                                                                  adapter_profile.spanning_tree_bpduguard,
-                                                                 base_profile.spanning_tree_bpduguard) %}
+                                                                 parent_profile.spanning_tree_bpduguard) %}
 {%                         set adapter_storm_control = adapter.storm_control | arista.avd.default(
                                                        adapter_profile.storm_control,
-                                                       base_profile.storm_control) %}
+                                                       parent_profile.storm_control) %}
 {%                         set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default(
                                                      adapter_profile.flowcontrol,
-                                                     base_profile.flowcontrol) %}
+                                                     parent_profile.flowcontrol) %}
 {%                         set adapter_qos_profile = adapter.qos_profile | arista.avd.default(
                                                      adapter_profile.qos_profile,
-                                                     base_profile.qos_profile) %}
+                                                     parent_profile.qos_profile) %}
 {%                         set adapter_mtu = adapter.mtu | arista.avd.default(
                                              adapter_profile.mtu,
-                                             base_profile.mtu) %}
+                                             parent_profile.mtu) %}
 {%                         set lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
                                                     adapter_profile.port_channel.lacp_fallback.mode,
-                                                    base_profile.port_channel.lacp_fallback.mode) %}
+                                                    parent_profile.port_channel.lacp_fallback.mode) %}
 {%                         set lacp_fallback_timeout = adapter.port_channel.lacp_fallback.timeout | arista.avd.default(
                                                        adapter_profile.port_channel.lacp_fallback.timeout,
-                                                       base_profile.port_channel.lacp_fallback.timeout) %}
+                                                       parent_profile.port_channel.lacp_fallback.timeout) %}
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ connected_endpoint }}_{{ adapter_port_channel_description }}

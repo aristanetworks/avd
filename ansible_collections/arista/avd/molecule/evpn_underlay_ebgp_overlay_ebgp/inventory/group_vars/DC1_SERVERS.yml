@@ -17,7 +17,7 @@ port_profiles:
     vlans: "210-211"
 
   ALL_WITH_SECURITY:
-    profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
+    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -90,7 +90,7 @@ port_profiles:
         timeout: 10
 
   NESTED_PORT_PROFILE:
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     port_channel:
       description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
       mode: active
