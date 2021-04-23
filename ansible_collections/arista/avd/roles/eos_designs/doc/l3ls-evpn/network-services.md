@@ -81,7 +81,7 @@ tenants:
         # VRF VNI | Required.
         # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
-        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan : < > } to a lower value (default 3000).
+        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
         vrf_vni: < 1-1024 >
 

@@ -149,7 +149,7 @@
 {%                     set shutdown = port_channel_interfaces[port_channel_interface].shutdown | arista.avd.default("*-") %}
 {%                     set nd_ra_disabled = port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | arista.avd.default("*-") %}
 {%                     set managed_config_flag = port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
-{%                     set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in| arista.avd.default("*-") %}
+{%                     set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in | arista.avd.default("*-") %}
 {%                     set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | arista.avd.default("*-") %}
 | {{ ethernet_interface }} | {{ description }} | *{{ type }} | {{ channel_group }} | *{{ ipv6_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown | lower }} | *{{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | *{{ ipv6_acl_in }} | *{{ ipv6_acl_out }} |
 {%                 endif %}
@@ -163,7 +163,7 @@
 {%                     set shutdown = ethernet_interfaces[ethernet_interface].shutdown | arista.avd.default("-") %}
 {%                     set nd_ra_disabled = ethernet_interfaces[ethernet_interface].ipv6_nd_ra_disabled | arista.avd.default("-") %}
 {%                     set managed_config_flag = ethernet_interfaces[ethernet_interface].ipv6_nd_managed_config_flag | arista.avd.default("*-") %}
-{%                     set ipv6_acl_in = ethernet_interfaces[ethernet_interface].ipv6_access_group_in| arista.avd.default("-") %}
+{%                     set ipv6_acl_in = ethernet_interfaces[ethernet_interface].ipv6_access_group_in | arista.avd.default("-") %}
 {%                     set ipv6_acl_out = ethernet_interfaces[ethernet_interface].ipv6_access_group_out | arista.avd.default("-") %}
 | {{ ethernet_interface }} | {{ description }} | {{ type }} | - | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ nd_ra_disabled | lower }} | {{ managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
 {%                 endif %}

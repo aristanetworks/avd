@@ -8,7 +8,7 @@
 {% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi|int in switch.svis %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi | int in switch.svis %}
 {%                  if tenants[tenant].vrfs[vrf].svis[svi].igmp_snooping is defined %}
 {%                      set igmp_snooping.configured = true %}
 {%                  endif %}
@@ -36,7 +36,7 @@ ip_igmp_snooping:
 {%          if tenants[tenant].vrfs is defined %}
 {%              for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
 {# Tenant VLANs w/SVIs #}
-{%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi|int in switch.svis %}
+{%                  for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi | int in switch.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
 {%                      set per_svi = namespace() %}
@@ -53,8 +53,8 @@ ip_igmp_snooping:
 {# IGMP SNOOPING detection #}
 {%                      if per_svi.values.igmp_snooping_enabled is defined or profile.values.igmp_snooping_enabled is defined %}
 {%                          if switch.igmp_snooping_enabled == true %}
-    {{ svi|int }}:
-      enabled: {{ per_svi.values.igmp_snooping_enabled if per_svi.values.igmp_snooping_enabled is defined else profile.values.igmp_snooping_enabled|default(true) }}
+    {{ svi | int }}:
+      enabled: {{ per_svi.values.igmp_snooping_enabled if per_svi.values.igmp_snooping_enabled is defined else profile.values.igmp_snooping_enabled | default(true) }}
 {%                          endif %}
 {%                      endif %}
 {%                  endfor %}
@@ -67,7 +67,7 @@ ip_igmp_snooping:
 {%              for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%                  if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled is defined %}
 {%                      if tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled == false and switch.igmp_snooping_enabled == true %}
-    {{ l2vlan|int }}:
+    {{ l2vlan | int }}:
       enabled: false
 {%                      endif %}
 {%                  endif %}

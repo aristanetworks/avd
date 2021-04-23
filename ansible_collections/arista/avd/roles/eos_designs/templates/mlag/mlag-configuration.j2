@@ -10,25 +10,9 @@ mlag_configuration:
   dual_primary_detection_delay: 5
 {% endif %}
   peer_link: Port-Channel{{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
-{% set ns = namespace() %}
-{% for platform_setting in platform_settings %}
-{%     set ns.platform_defined = false %}
-{%     if switch.platform in platform_setting.platforms %}
-{%         set ns.platform_defined = true %}
-{%         if platform_setting.reload_delay is defined %}
-  reload_delay_mlag: {{ platform_setting.reload_delay.mlag }}
-  reload_delay_non_mlag: {{ platform_setting.reload_delay.non_mlag }}
-{%         endif %}
-{%         break %}
-{%     endif %}
-{% endfor %}
-{% for platform_setting in platform_settings if ns.platform_defined == false %}
-{%     if 'default' in platform_setting.platforms %}
-{%         if platform_setting.reload_delay is defined %}
-  reload_delay_mlag: {{ platform_setting.reload_delay.mlag }}
-  reload_delay_non_mlag: {{ platform_setting.reload_delay.non_mlag }}
-{%         endif %}
-{%         break %}
-{%     endif %}
-{% endfor %}
-{##}
+{% if switch.platform_settings.reload_delay.mlag is arista.avd.defined %}
+  reload_delay_mlag: {{ switch.platform_settings.reload_delay.mlag }}
+{% endif %}
+{% if switch.platform_settings.reload_delay.non_mlag is arista.avd.defined %}
+  reload_delay_non_mlag: {{ switch.platform_settings.reload_delay.non_mlag }}
+{% endif %}

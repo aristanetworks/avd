@@ -7,7 +7,7 @@ vlan_interfaces:
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
 {%     else %}
-    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_ip ) }}/31
+    ip_address: {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_ip) }}/31
 {%     endif %}
     mtu: {{ p2p_uplinks_mtu }}
 {%     if switch.underlay_routing_protocol == "ospf" %}

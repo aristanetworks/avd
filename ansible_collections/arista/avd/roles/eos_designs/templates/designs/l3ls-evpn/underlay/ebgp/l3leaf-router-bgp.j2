@@ -33,7 +33,7 @@ router_bgp:
 {# Regular EBGP peerings #}
   neighbors:
 {%     for uplink_to_spine_interface in switch.uplink_to_spine_interfaces %}
-    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id - 1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2) }}:
+    {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id - 1) * 2 * switch.max_spines * max_l3leaf_to_spine_links) + loop.index0 * 2) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ switch.spines[loop.index0] }}_{{ switch.spine_interfaces[loop.index0] }}
 {%     endfor %}
@@ -41,13 +41,13 @@ router_bgp:
 {## Underlay network peering to Overlay Controllers #}
 {%     if overlay_controller is defined %}
 {%         for overlay_controller_node in overlay_controller.nodes | arista.avd.natural_sort %}
-{%             set overlay_controller_remote_switches = overlay_controller.nodes[overlay_controller_node].remote_switches | arista.avd.default( overlay_controller.defaults.remote_switches ) %}
+{%             set overlay_controller_remote_switches = overlay_controller.nodes[overlay_controller_node].remote_switches | arista.avd.default(overlay_controller.defaults.remote_switches) %}
 {%             for overlay_controller_remote_switch in overlay_controller_remote_switches %}
 {%                 if overlay_controller_remote_switch == inventory_hostname %}
-    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2 + 1) }}:
+    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links) + loop.index0 * 2 + 1) }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
       description: {{ overlay_controller_node }}
-      remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default( overlay_controller.defaults.bgp_as ) }}
+      remote_as: {{ overlay_controller.nodes[overlay_controller_node].bgp_as | arista.avd.default(overlay_controller.defaults.bgp_as) }}
 {%                     if overlay_controller_p2p_bfd is arista.avd.defined(true) %}
       bfd: true
 {%                     endif %}

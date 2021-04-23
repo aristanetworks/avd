@@ -73,10 +73,10 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined(true) %}
    spanning-tree bpdufilter enable
-{%     endif%}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
    spanning-tree bpduguard enable
-{%     endif%}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].vrf is arista.avd.defined %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%     endif %}

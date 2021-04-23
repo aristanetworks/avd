@@ -64,6 +64,12 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  2500:
+    tenant: Tenant_A
+    name: web-l2-vlan
+  2600:
+    tenant: Tenant_A
+    name: web-l2-vlan-2
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
@@ -85,7 +91,7 @@ port_channel_interfaces:
     description: DC1-POD1-LEAF2B_Po3
     type: switched
     shutdown: false
-    vlans: 110-112,4085
+    vlans: 110-112,2500,2600,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 1

@@ -1,6 +1,6 @@
 # Roles Defaults
 # Root directory where to build output structure
-root_dir: '{{inventory_dir}}'
+root_dir: '{{ inventory_dir }}'
 
 # Design variables
 design:
@@ -125,11 +125,11 @@ mlag_ibgp_peering_vrfs:
 # Recommended default values for Jericho based platform, and all other platforms default tag.
 
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     reload_delay:
       mlag: 300
       non_mlag: 330
-  - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:

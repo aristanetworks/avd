@@ -76,10 +76,10 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined(true) %}
    spanning-tree bpdufilter enable
-{%         endif%}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
    spanning-tree bpduguard enable
-{%         endif%}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vrf is arista.avd.defined %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%         endif %}
@@ -121,7 +121,7 @@ interface {{ ethernet_interface }}
 {%                 if ethernet_interfaces[ethernet_interface].ipv6_nd_prefixes[prefix].no_autoconfig_flag is arista.avd.defined(true) %}
 {%                     set ipv6_nd_prefix_cli = ipv6_nd_prefix_cli ~ " no-autoconfig" %}
 {%                 endif %}
-   {{ipv6_nd_prefix_cli}}
+   {{ ipv6_nd_prefix_cli }}
 {%             endfor %}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].access_group_in is arista.avd.defined %}
@@ -209,9 +209,9 @@ interface {{ ethernet_interface }}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
 {%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined('pps') %}
-   storm-control {{ section | replace("_", "-") }} level pps {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+   storm-control {{ section | replace("_", "-") }} level pps {{ ethernet_interfaces[ethernet_interface].storm_control[section].level }}
 {%                 else %}
-   storm-control {{ section | replace("_", "-") }} level {{ethernet_interfaces[ethernet_interface].storm_control[section].level}}
+   storm-control {{ section | replace("_", "-") }} level {{ ethernet_interfaces[ethernet_interface].storm_control[section].level }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

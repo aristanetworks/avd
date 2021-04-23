@@ -25,13 +25,13 @@ ethernet_interfaces:
 {%         if underlay_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
 {%         else %}
-    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links ) + loop.index0 * 2 + 1) }}/31
+    ip_address: {{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links) + loop.index0 * 2 + 1) }}/31
 {%         endif %}
-{%         if underlay_routing_protocol|lower == "ospf" %}
+{%         if switch.underlay_routing_protocol == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}
-{%         if underlay_routing_protocol|lower == "isis" %}
+{%         if switch.underlay_routing_protocol == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
@@ -74,12 +74,12 @@ ethernet_interfaces:
 {%                 endif %}
     type: routed
     shutdown: false
-    ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links ) + loop.index0 * 2) }}/31
-{%                 if underlay_routing_protocol|lower == "ospf" %}
+    ip_address: {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((overlay_controller.nodes[overlay_controller_node].id -1) * 2 * max_overlay_controller_to_switch_links) + loop.index0 * 2) }}/31
+{%                 if switch.underlay_routing_protocol == "ospf" %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%                 endif %}
-{%                 if underlay_routing_protocol|lower == "isis" %}
+{%                 if switch.underlay_routing_protocol == "isis" %}
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
@@ -101,7 +101,7 @@ ethernet_interfaces:
 {%         if inventory_hostname in parent_l3leafs %}
 {%             for node in l2leaf.node_groups[l2leaf_node_group].nodes | arista.avd.natural_sort %}
 {%                 if loop.first %}
-{%                     set l3leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join ) %}
+{%                     set l3leaf.channel_group_id = (l2leaf.node_groups[l2leaf_node_group].nodes[node].l3leaf_interfaces[0] | regex_findall("\d") | join) %}
 {%                 endif %}
 {%             if l2leaf.node_groups[l2leaf_node_group].uplink_interfaces is defined %}
 {%                 set l2leaf_uplink_interfaces = l2leaf.node_groups[l2leaf_node_group].uplink_interfaces %}

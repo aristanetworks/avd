@@ -136,7 +136,7 @@
 {%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             if router_ospf.process_ids[process].summary_addresses is arista.avd.defined %}
 {%                 for summary_address in router_ospf.process_ids[process].summary_addresses %}
-{%                     set summary_prefix = summary_address.prefix| arista.avd.default('-') %}
+{%                     set summary_prefix = summary_address.prefix | arista.avd.default('-') %}
 {%                     set summary_tag = summary_address.tag | arista.avd.default('-') %}
 {%                     set summary_attribute_map = summary_address.attribute_map | arista.avd.default('-') %}
 {%                     set summary_not_advertise = summary_address.not_advertise | arista.avd.default('-') %}

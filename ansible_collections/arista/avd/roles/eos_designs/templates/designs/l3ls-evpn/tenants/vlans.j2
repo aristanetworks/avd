@@ -4,8 +4,8 @@ vlans:
 {%     if tenants[tenant].vrfs is defined %}
 {%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
 {# Tenant VLANs w/SVIs #}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi|int in switch.svis %}
-  {{ svi| int }}:
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi | int in switch.svis %}
+  {{ svi | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
 {# VLAN for iBGP peering in overlay VRFs #}
@@ -29,8 +29,8 @@ vlans:
 {%     endif %}
 {# Tenant L2 VLANs #}
 {%     if tenants[tenant].l2vlans is defined %}
-{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan|int in switch.vlans %}
-  {{ l2vlan| int }}:
+{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan | int in switch.vlans %}
+  {{ l2vlan | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].l2vlans[l2vlan].name }}
 {%         endfor %}
