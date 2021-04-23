@@ -24,6 +24,12 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].lacp_port_priority is arista.avd.defined %}
    lacp port-priority {{ ethernet_interfaces[ethernet_interface].lacp_port_priority }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].lacp_timer.mode is arista.avd.defined %}
+   lacp timer {{ ethernet_interfaces[ethernet_interface].lacp_timer.mode }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].lacp_timer.multiplier is arista.avd.defined %}
+   lacp timer multiplier {{ ethernet_interfaces[ethernet_interface].lacp_timer.multiplier }}
+{%         endif %}
 {%     else %}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
