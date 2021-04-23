@@ -79,6 +79,7 @@ interface Management1
 | Ethernet4 |  Molecule IPv6 | access | - | - | - | - |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
+| Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -223,6 +224,13 @@ interface Ethernet10
    ip address 172.31.128.10/31
    no mpls ip
    no mpls ldp interface
+!
+interface Ethernet11
+   description interface_in_mode_access_accepting_tagged_LACP
+   switchport
+   switchport access vlan 200
+   switchport mode access
+   l2-protocol encapsulation dot1q vlan 200
 ```
 
 # Routing

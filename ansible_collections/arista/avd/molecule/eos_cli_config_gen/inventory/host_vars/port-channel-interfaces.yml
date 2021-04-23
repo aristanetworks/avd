@@ -95,6 +95,16 @@ port_channel_interfaces:
       min_rx: 500
       multiplier: 5
 
+  Port-Channel20:
+    description: Po_in_mode_access_accepting_tagged_LACP_frames
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation:
+        dot1q:
+          vlan: 200
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -143,3 +153,6 @@ ethernet_interfaces:
     channel_group:
       id: 8
       mode: active
+
+
+

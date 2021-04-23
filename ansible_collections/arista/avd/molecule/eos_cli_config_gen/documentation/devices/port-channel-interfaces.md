@@ -123,6 +123,7 @@ interface Ethernet50
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
@@ -179,6 +180,12 @@ interface Port-Channel10
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
+!
+interface Port-Channel20
+   description Po_in_mode_access_accepting_tagged_LACP_frames
+   switchport
+   switchport access vlan 200
+   l2-protocol encapsulation dot1q vlan 200
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1

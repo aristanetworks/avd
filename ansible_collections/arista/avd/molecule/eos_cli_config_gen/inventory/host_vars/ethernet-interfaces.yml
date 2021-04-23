@@ -182,3 +182,13 @@ ethernet_interfaces:
       ip: false
       ldp:
         interface: false
+
+  Ethernet11:
+    description: interface_in_mode_access_accepting_tagged_LACP
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation:
+        dot1q:
+          vlan: 200
