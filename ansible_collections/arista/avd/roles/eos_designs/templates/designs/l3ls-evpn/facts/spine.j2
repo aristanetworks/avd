@@ -29,8 +29,8 @@ switch:
   platform: {{ switch_platform }}
 
 {# switch.platform_settings #}
-  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 
 {# switch.router_id #}
   router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}

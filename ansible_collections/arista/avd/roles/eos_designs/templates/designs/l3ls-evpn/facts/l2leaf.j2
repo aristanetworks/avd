@@ -33,8 +33,8 @@ switch:
   platform: {{ switch_platform }}
 
 {# switch.platform_settings #}
-  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 
 {# switch.rack #}
   rack: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(

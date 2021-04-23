@@ -94,26 +94,41 @@ text : {{ extremely_long_variable_name }}
 Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
 ```
 
-### containing test
+### contains test
 
-The `arista.avd.containing` test will test if a list contains one or more of the supplied value(s).
+The `arista.avd.contains` test will test if a list contains one or more of the supplied value(s).
 The test will return `False` if either the passed value or the test_values are `Undefined` or `none`.
 
 The test accepts either a single test_value or a list of test_values.
 To use this test:
 ```jinja
-{% if my_list is arista.avd.containing(item) %}Match{% endif %}
+{% if my_list is arista.avd.contains(item) %}Match{% endif %}
 
 {# or #}
 
-{% if my_list is arista.avd.containing(item_list) %}Match{% endif %}
+{% if my_list is arista.avd.contains(item_list) %}Match{% endif %}
 ```
 
 **Example**
-The `arista.avd.containing` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
+The `arista.avd.contains` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
 for an element where `switch_platform` is contained in the `platforms` attribute.
 
-Without the `selectattr` and `arista.avd.containing` test:
+Data model:
+```yaml
+platform_settings:
+  - platforms: [default]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 780
+      non_mlag: 1020
+```
+
+Jinja template without the `selectattr` and `arista.avd.contains` test:
 ```jinja
 switch:
 {% set ns = namespace() %}
@@ -132,11 +147,11 @@ switch:
 {%     endif %}
 {% endfor %}
 ```
-With the `selectattr` and `arista.avd.containing` test:
+Jinja template with the `selectattr` and `arista.avd.contains` test:
 ```jinja
 switch:
-  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 ```
 
 ## Modules

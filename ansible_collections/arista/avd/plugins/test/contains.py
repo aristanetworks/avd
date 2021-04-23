@@ -1,5 +1,5 @@
 #
-# arista.avd.containing
+# arista.avd.contains
 #
 # Example:
 # A is [1, 2]
@@ -7,15 +7,15 @@
 # C is [2, 3]
 #
 # Jinja test examples:
-# {% if A is arista.avd.containing(B) %}  =>  false
-# {% if B is arista.avd.containing(C) %}  =>  true
-# {% if C is arista.avd.containing(A) %}  =>  true
-# {% if C is arista.avd.containing(B) %}  =>  true
+# {% if A is arista.avd.contains(B) %}  =>  false
+# {% if B is arista.avd.contains(C) %}  =>  true
+# {% if C is arista.avd.contains(A) %}  =>  true
+# {% if C is arista.avd.contains(B) %}  =>  true
 #
-# {% if A is arista.avd.containing(0) %}  =>  false
-# {% if B is arista.avd.containing(1) %}  =>  false
-# {% if C is arista.avd.containing(2) %}  =>  true
-# {% if D is arista.avd.containing(3) %}  =>  false <- Protecting against undefined gracefully.
+# {% if A is arista.avd.contains(0) %}  =>  false
+# {% if B is arista.avd.contains(1) %}  =>  false
+# {% if C is arista.avd.contains(2) %}  =>  true
+# {% if D is arista.avd.contains(3) %}  =>  false <- Protecting against undefined gracefully.
 
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
@@ -23,20 +23,20 @@ __metaclass__ = type
 from jinja2.runtime import Undefined
 
 
-def containing(value, test_value=None):
+def contains(value, test_value=None):
     """
-    containing - Ansible test plugin to test if a list contains one or more elements
+    contains - Ansible test plugin to test if a list contains one or more elements
 
-    Arista.avd.containing will test value and argument if defined and is not none and return false if any one them doesn't pass.
+    Arista.avd.contains will test value and argument if defined and is not none and return false if any one them doesn't pass.
     Test value can be one value or a list of values to test for.
 
     Example:
     1. Test for one element in list
-    {% if switch.vlans is arista.avd.containing(123) %}
+    {% if switch.vlans is arista.avd.contains(123) %}
     ...
     {% endif %}
     2. Test for multiple elements in list
-    {% if switch.vlans is arista.avd.containing([123, 456]) %}
+    {% if switch.vlans is arista.avd.contains([123, 456]) %}
     ...
     {% endif %}
 
@@ -71,5 +71,5 @@ def containing(value, test_value=None):
 class TestModule(object):
     def tests(self):
         return {
-            'containing': containing,
+            'contains': contains,
         }

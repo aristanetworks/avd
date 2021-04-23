@@ -19,8 +19,8 @@ switch:
   platform: {{ switch_platform }}
 
 {# switch.platform_settings #}
-  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.containing", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.containing", "default") | first) }}
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 
 {# switch.spine_interfaces #}
   spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces }}
