@@ -174,7 +174,7 @@ CVP_CONTAINERS:
 ### Add Table Of Contents to existing MarkDown file
 
 The `arista.avd.add_toc` module provides following capabilities:
-  - Wrapper of md_toc python library
+  - Wrapper of md-toc python library
   - Produce Table of Contents and add to MD file between markers
 
 The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.

@@ -133,7 +133,7 @@ docker run --rm -it \
                 -e AVD_GIT_EMAIL="xxxxx" \
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -v /Users/tgrimonet/Projects/arista-ansible/:/projects \
-                -v /etc/hosts:/etc/hosts avdteam/base:3.6-v1.0
+                -v /etc/hosts:/etc/hosts avdteam/base:3.6
 Install ansible with version 2.10
 Collecting ansible==2.10
   Downloading ansible-2.10.0.tar.gz (14.1 MB)
@@ -203,7 +203,7 @@ drwxr-xr-x 24 root root  768 Sep  4 15:47 ansible-avd-cloudvision-demo
 drwxr-xr-x 24 root root  768 Sep  4 15:47 Makefile
 ```
 
-You can validate everything is setup correctly:
+You can validate everything is set up correctly:
 
 ```shell
 ➜  /projects python --version
@@ -218,7 +218,7 @@ ansible 2.10.7
   python version = 3.6.12 (default, Aug 18 2020, 04:28:43) [GCC 8.3.0]
 ```
 
-To exit container, just use `exit`
+To exit the container, use `exit`
 
 ```shell
 ➜  /projects exit
@@ -246,9 +246,9 @@ Your environment is now ready and you can start to build your own project levera
 
 This section describes how to configure python to run ansible and AVD.
 
-As a requirement, we consider python3 as default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your own operating system and how they package python.
+As a requirement, we consider python3 as the default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your own operating system and how they package python.
 
-__Disclaimer__: Not preferred method. if you are not an experienced user, please use docker approach.
+__Disclaimer__: Not preferred method. If you are not an experienced user, please use docker approach.
 
 In a shell, install `virtualenv` package:
 
@@ -257,7 +257,7 @@ In a shell, install `virtualenv` package:
 $ sudo pip3 install virtualenv
 ```
 
-Create a dedicated virtual-environment where AVD will installed all required Python pakages:
+Create a dedicated virtual-environment where AVD will install all required Python pakages:
 
 ```shell
 $ pwd
