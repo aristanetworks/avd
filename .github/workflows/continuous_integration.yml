@@ -139,7 +139,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # EOS Design MOLECULE
   # ----------------------------------- #
@@ -176,7 +176,7 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
