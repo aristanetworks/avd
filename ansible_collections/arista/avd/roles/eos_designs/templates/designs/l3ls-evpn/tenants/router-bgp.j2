@@ -1,7 +1,5 @@
 {# Add one blank line after each included template #}
-{% if switch.vlans | arista.avd.default([]) | length > 0 or
-      switch.svis | arista.avd.default([]) | length > 0 or
-      switch.vrfs | arista.avd.default([]) | length > 0 %}
+{% if switch.tenants | arista.avd.default([]) | length > 0 %}
 router_bgp:
 {%     include 'designs/l3ls-evpn/tenants/router-bgp-vrfs.j2' %}
 
