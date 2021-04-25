@@ -112,16 +112,10 @@ switch:
 {%                 for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
 {%                     if node == switch_parent_l3leafs[0] %}
 {%                         set parentl3leaf.group = l3leaf_node_group %}
-{%                         if l3leaf.node_groups[l3leaf_node_group].filter.tenants is defined %}
-{%                             set parentl3leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants %}
-{%                         else %}
-{%                             set parentl3leaf.filter_tenants = ['all'] %}
-{%                         endif %}
-{%                         if l3leaf.node_groups[l3leaf_node_group].filter.tags is defined %}
-{%                             set parentl3leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags %}
-{%                         else %}
-{%                             set parentl3leaf.filter_tags = ['all'] %}
-{%                         endif %}
+{%                         set parentl3leaf.filter_tenants = l3leaf.node_groups[l3leaf_node_group].filter.tenants | arista.avd.default(
+                                                             ['all'])%}
+{%                         set parentl3leaf.filter_tags = l3leaf.node_groups[l3leaf_node_group].filter.tags | arista.avd.default(
+                                                          ['all'])%}
 {%                     endif %}
 {%                 endfor %}
 {%             endfor %}
