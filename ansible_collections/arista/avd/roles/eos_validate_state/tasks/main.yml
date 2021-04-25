@@ -1,10 +1,20 @@
 ---
 
+- name: Check if structure configuration file exists
+  tags:
+    - always
+  stat:
+    path: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+  register: stat_result
+  delegate_to: localhost
+  when: structured_config is not defined
+
 - name: Include device intended structure configuration variables
   include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
   delegate_to: localhost
   tags:
     - always
+  when: structured_config is not defined and stat_result.stat.exists
 
 - name: Generate variables for testing
   template:
