@@ -1,16 +1,14 @@
 static_routes:
-{% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
-{%     if tenants[tenant].vrfs is arista.avd.defined %}
-{%         for vrf in tenants[tenant].vrfs if vrf in switch.vrfs %}
-{%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
-{%                 for static_route in tenants[tenant].vrfs[vrf].static_routes %}
-{%                     if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
+{% for tenant in switch.tenants | arista.avd.natural_sort %}
+{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%         if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%             for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                 if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
   - destination_address_prefix: {{ static_route.destination_address_prefix }}
     vrf: {{ vrf }}
     gateway: {{ static_route.gateway }}
-{%                     endif %}
-{%                 endfor %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
 {% endfor %}

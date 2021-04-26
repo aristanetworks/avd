@@ -1,38 +1,31 @@
 {# Leaf tenant vlans #}
 vlans:
-{% for tenant in tenants | arista.avd.natural_sort if tenant in switch.filter_tenants or "all" in switch.filter_tenants %}
-{%     if tenants[tenant].vrfs is defined %}
-{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
+{% for tenant in switch.tenants | arista.avd.natural_sort %}
+{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
 {# Tenant VLANs w/SVIs #}
-{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi | int in switch.svis %}
+{%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
   {{ svi | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+{%         endfor %}
 {# VLAN for iBGP peering in overlay VRFs #}
-{%                 if loop.last and type == "l3leaf" and switch.mlag is arista.avd.defined(true) %}
-{%                     set configure_mlag_ibgp_peering = true %}
-{%                     if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
-{%                         set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs %}
-{%                     elif tenants[tenant].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].enable_mlag_ibgp_peering_vrfs is not none %}
-{%                         set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
-{%                     endif %}
-{%                     if configure_mlag_ibgp_peering %}
-  {{ tenants[tenant].vrfs[vrf].mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
+{%         if switch.mlag_l3 is arista.avd.defined(true) %}
+{%             set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                 tenants[tenant].enable_mlag_ibgp_peering_vrfs,
+                                                 true) %}
+{%             if configure_mlag_ibgp_peering %}
+  {{ tenants[tenant].vrfs[vrf].mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
     tenant: {{ tenant }}
     name: MLAG_iBGP_{{ vrf }}
     trunk_groups:
       - LEAF_PEER_L3
-{%                     endif %}
-{%                 endif %}
-{%             endfor %}
-{%         endfor %}
-{%     endif %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
 {# Tenant L2 VLANs #}
-{%     if tenants[tenant].l2vlans is defined %}
-{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan | int in switch.vlans %}
+{%     for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
   {{ l2vlan | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].l2vlans[l2vlan].name }}
-{%         endfor %}
-{%     endif %}
+{%     endfor %}
 {% endfor %}

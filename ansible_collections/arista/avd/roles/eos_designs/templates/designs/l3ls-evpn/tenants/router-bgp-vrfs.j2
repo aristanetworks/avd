@@ -1,9 +1,9 @@
 {# Leaf tenant router bgp evpn VRFs #}
+{% if switch.evpn_services_l2_only == false %}
 {% set bgp_vrf = namespace() %}
   vrfs:
-{% for tenant in tenants | arista.avd.natural_sort if (tenant in switch.filter_tenants or "all" in switch.filter_tenants) and switch.evpn_services_l2_only == false %}
-{%     if tenants[tenant].vrfs is defined %}
-{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
+{%     for tenant in switch.tenants | arista.avd.natural_sort %}
+{%         for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
 {%             set bgp_vrf.address_family_ipv4_neighbors = [] %}
 {%             set bgp_vrf.address_family_ipv6_neighbors = [] %}
 {%             set leaf_evpn_rt = (tenants_data.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni) ~ ':' ~ tenants[tenant].vrfs[vrf].vrf_vni %}
@@ -28,13 +28,10 @@
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
       neighbors:
-{%             if switch.mlag is arista.avd.defined(true) %}
-{%                 set configure_mlag_ibgp_peering = true %}
-{%                 if tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs is not none %}
-{%                     set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs %}
-{%                 elif tenants[tenant].enable_mlag_ibgp_peering_vrfs is defined and tenants[tenant].enable_mlag_ibgp_peering_vrfs is not none %}
-{%                     set configure_mlag_ibgp_peering = tenants[tenant].enable_mlag_ibgp_peering_vrfs %}
-{%                 endif %}
+{%             if switch.mlag_l3 is arista.avd.defined(true) %}
+{%                 set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                     tenants[tenant].enable_mlag_ibgp_peering_vrfs,
+                                                     true) %}
 {%                 if configure_mlag_ibgp_peering %}
         {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_peer_ip) }}:
           peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
@@ -107,5 +104,5 @@
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
-{%    endif %}
-{% endfor %}
+{%     endfor %}
+{% endif %}
