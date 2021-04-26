@@ -37,6 +37,12 @@ In a shell, run the following command:
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
 
+```pip
+--8<--
+requirements.txt
+--8<--
+```
+
 !!! warning
     Depending of your operating system settings, `pip3` might be replaced by `pip`.
 

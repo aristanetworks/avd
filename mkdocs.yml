@@ -12,8 +12,19 @@ theme:
     - yaml
     - python
     - shell
+  icon:
+    repo: fontawesome/brands/github
 extra_css:
   - docs/stylesheets/extra.material.css
+
+plugins:
+  - search:
+      lang: en
+  - git-revision-date-localized:
+      type: date
+  # - minify:
+  #     minify_html: true
+  #     minify_js: true
 
 markdown_extensions:
   - mdx_truly_sane_lists
@@ -41,6 +52,10 @@ markdown_extensions:
       # permalink: "#"
       permalink: true
       baselevel: 3
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: 'ansible_collections/arista/avd/'
 
 copyright: Copyright &copy; 2019 - 2020 Arista Networks
 repo_name: AVD on Github
