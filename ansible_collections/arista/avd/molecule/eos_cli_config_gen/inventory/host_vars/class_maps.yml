@@ -8,3 +8,10 @@ class_maps:
       vlan: "200"
     CM_REPLICATION_LD3:
       cos: 3
+  pbr:
+    CM_PBR_EXCLUDE:
+      ip:
+        access_group: ACL_PBR_EXCLUDE
+    CM_PBR_INCLUDE:
+      ip:
+        access_group: ACL_PBR_INCLUDE

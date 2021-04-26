@@ -131,4 +131,11 @@ policy-map type quality-of-service PM_REPLICATION_LD2
    class CM_REPLICATION_LD
       set dscp af11
    !
+!
+policy-map type pbr PM_PBR_BREAKOUT
+   class CM_PBR_EXCLUDE
+   !
+   class CM_PBR_INCLUDE
+      set nexthop recursive 192.168.4.2
+   !
 ```

@@ -114,4 +114,10 @@ class-map type qos match-any CM_REPLICATION_LD2
 !
 class-map type qos match-any CM_REPLICATION_LD3
    match cos 3
+!
+class-map type pbr match-any CM_PBR_EXCLUDE
+   match ip access-group ACL_PBR_EXCLUDE
+!
+class-map type pbr match-any CM_PBR_INCLUDE
+   match ip access-group ACL_PBR_INCLUDE
 ```
