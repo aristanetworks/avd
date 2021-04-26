@@ -73,6 +73,7 @@ tcam-profile
 static-routes
 terminattr-cloud
 terminattr-prem
+terminattr-prem-no-ingestkey
 terminattr-prem-disableaaa
 traffic-policies
 unsupported-transceiver
