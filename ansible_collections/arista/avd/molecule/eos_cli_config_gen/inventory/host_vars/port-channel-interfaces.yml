@@ -74,18 +74,14 @@ port_channel_interfaces:
     description: IFL for TENANT01
     mtu: 1500
     ip_address: 10.1.1.3/31
-    encapsulation:
-      dot1q:
-        vlan: 101
+    encapsulation_dot1q_vlan: 101
   Port-Channel100.102:
     description: IFL for TENANT02
     mtu: 1500
     ip_address: 10.1.2.3/31
     vrf: C2
-    encapsulation:
-      dot1q:
-        vlan: 102
-        bfd:
+    encapsulation_dot1q_vlan: 102
+    bfd:
 
   Port-Channel8:
     description: to Dev02 Port-channel 8
@@ -94,9 +90,7 @@ port_channel_interfaces:
     description: to Dev02 Port-Channel8.101 - VRF-C1
     type: l3dot1q
     ip_address: 10.1.2.3/31
-    encapsulation:
-      dot1q:
-        vlan: 101
+    encapsulation_dot1q_vlan: 101
 
   Port-Channel9:
     type: routed
@@ -106,6 +100,13 @@ port_channel_interfaces:
       min_rx: 500
       multiplier: 5
 
+  Port-Channel20:
+    description: Po_in_mode_access_accepting_tagged_LACP_frames
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation_dot1q_vlan: 200
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -154,6 +155,7 @@ ethernet_interfaces:
     channel_group:
       id: 8
       mode: active
+
 
   Ethernet15:
     peer: DC1-AGG03

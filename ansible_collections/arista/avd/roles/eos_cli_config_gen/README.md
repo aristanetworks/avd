@@ -603,9 +603,7 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -689,6 +687,8 @@ ethernet_interfaces:
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -791,10 +791,10 @@ port_channel_interfaces:
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
