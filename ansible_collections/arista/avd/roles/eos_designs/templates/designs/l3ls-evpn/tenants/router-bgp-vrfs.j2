@@ -107,6 +107,9 @@
       eos_cli: |
         {{ tenants[tenant].vrfs[vrf].bgp.raw_eos_cli | indent(8,false) }}
 {%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp.structured_config is arista.avd.defined %}
+      structured_config: {{ tenants[tenant].vrfs[vrf].bgp.structured_config }}
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endif %}

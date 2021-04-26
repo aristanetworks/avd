@@ -84,6 +84,11 @@ switch:
     {{ switch_raw_eos_cli | indent(4,false) }}
 {%             endif %}
 
+{# switch.structured_config #}
+  structured_config: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].structured_config | arista.avd.default(
+                        l3leaf.node_groups[l3leaf_node_group].structured_config,
+                        l3leaf.defaults.structured_config) }}
+
 {# switch.router_id #}
   router_id: {% include templates[design.type].ip_addressing[type].router_id %}
 

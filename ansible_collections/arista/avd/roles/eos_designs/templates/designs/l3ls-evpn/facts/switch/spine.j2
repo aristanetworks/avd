@@ -23,6 +23,10 @@ switch:
     {{ switch_raw_eos_cli | indent(4,false) }}
 {%         endif %}
 
+{# switch.structured_config #}
+  structured_config: {{ spine.nodes[node].structured_config | arista.avd.default(
+                        spine.defaults.structured_config) }}
+
 {# switch.bgp_defaults #}
   bgp_defaults: {{ spine_bgp_defaults | arista.avd.default([]) }}
 
