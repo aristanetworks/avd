@@ -93,6 +93,67 @@ text : {{ extremely_long_variable_name }}
 {% endif %}
 Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
 ```
+
+### contains test
+
+The `arista.avd.contains` test will test if a list contains one or more of the supplied value(s).
+The test will return `False` if either the passed value or the test_values are `Undefined` or `none`.
+
+The test accepts either a single test_value or a list of test_values.
+To use this test:
+```jinja
+{% if my_list is arista.avd.contains(item) %}Match{% endif %}
+
+{# or #}
+
+{% if my_list is arista.avd.contains(item_list) %}Match{% endif %}
+```
+
+**Example**
+The `arista.avd.contains` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
+for an element where `switch_platform` is contained in the `platforms` attribute.
+
+Data model:
+```yaml
+platform_settings:
+  - platforms: [default]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 780
+      non_mlag: 1020
+```
+
+Jinja template without the `selectattr` and `arista.avd.contains` test:
+```jinja
+switch:
+{% set ns = namespace() %}
+{% for platform_setting in platform_settings %}
+{%     set ns.platform_defined = false %}
+{%     if switch_platform in platform_setting.platforms %}
+{%         set ns.platform_defined = true ]}
+  platform_settings: {{ platform_setting }}
+{%         break; %}
+{%     endif %}
+{% endfor %}
+{% for platform_setting in platform_settings if ns.platform_defined == false %}
+{%     if 'default' in platform_setting.platforms %}
+  platform_settings: {{ platform_setting }}
+{%         break; %}
+{%     endif %}
+{% endfor %}
+```
+Jinja template with the `selectattr` and `arista.avd.contains` test:
+```jinja
+switch:
+  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
+```
+
 ## Modules
 
 ### Inventory to CloudVision Containers
@@ -174,7 +235,7 @@ CVP_CONTAINERS:
 ### Add Table Of Contents to existing MarkDown file
 
 The `arista.avd.add_toc` module provides following capabilities:
-  - Wrapper of md_toc python library
+  - Wrapper of md-toc python library
   - Produce Table of Contents and add to MD file between markers
 
 The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.

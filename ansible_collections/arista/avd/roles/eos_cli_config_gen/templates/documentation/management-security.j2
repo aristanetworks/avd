@@ -16,7 +16,7 @@ Management Security password encryption is common.
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
 | ------------ | --------------------- | -------------------- | ------------ |
 {%       for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
-| {{ ssl_profile.name }} | {{ssl_profile.tls_versions | arista.avd.default('-')}} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} |
+| {{ ssl_profile.name }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} |
 {%       endfor %}
 {%     endif %}
 

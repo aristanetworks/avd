@@ -6,7 +6,7 @@
 
 | Source interface | vrf |
 | ---------------- | --- |
-{%    for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort%}
+{%    for source in ip_domain_lookup.source_interfaces | arista.avd.natural_sort %}
 | {{ source }} | {% if ip_domain_lookup.source_interfaces[source].vrf is defined and ip_domain_lookup.source_interfaces[source].vrf is not none %}
 {{ ip_domain_lookup.source_interfaces[source].vrf }} {% else %} - {% endif %} |
 {%     endfor %}

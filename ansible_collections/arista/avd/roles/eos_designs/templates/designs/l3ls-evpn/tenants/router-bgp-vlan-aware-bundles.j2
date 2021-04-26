@@ -5,8 +5,8 @@
 {%         if tenants[tenant].vrfs is defined %}
 {%             for vrf in tenants[tenant].vrfs | arista.avd.natural_sort if switch.vrfs is not none and vrf in switch.vrfs %}
 {%                 set vlan_range = [] %}
-{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi|int in switch.svis %}
-{%                     do vlan_range.append( svi| int ) %}
+{%                 for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort if switch.svis is not none and svi | int in switch.svis %}
+{%                     do vlan_range.append(svi | int) %}
 {%                 endfor %}
 {%                 if vlan_range | length > 0 %}
     {{ vrf }}:
@@ -21,7 +21,7 @@
 {%             endfor %}
 {%         endif %}
 {%         if tenants[tenant].l2vlans is defined %}
-{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan|int in switch.vlans %}
+{%             for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort if switch.vlans is not none and l2vlan | int in switch.vlans %}
 {%                 set l2vlan_int = l2vlan | int %}
 {%                 if tenants[tenant].l2vlans[l2vlan].vni_override is defined %}
 {%                     set vni = tenants[tenant].l2vlans[l2vlan].vni_override %}

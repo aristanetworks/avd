@@ -31,7 +31,7 @@
   loop_control:
     loop_var: ip_reachability_test
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
-  when: ( ip_reachability_test.skipped is not defined )
+  when: (ip_reachability_test.skipped is not defined)
   register: ip_reachability_results
   tags:
     - ip_reachability

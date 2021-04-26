@@ -40,7 +40,7 @@ traffic-policies
 {%                  set transient_values.counters = [] %}
 {%                  for match in traffic_policies.policies[policy].matches %}
 {%                      if traffic_policies.policies[policy].matches[match].actions.count is arista.avd.defined %}
-{%                          do transient_values.counters.append( traffic_policies.policies[policy].matches[match].actions.count | string ) %}
+{%                          do transient_values.counters.append(traffic_policies.policies[policy].matches[match].actions.count | string) %}
 {%                      endif %}
 {%                  endfor %}
 {%                  if transient_values.counters | length > 0 %}
@@ -52,19 +52,19 @@ traffic-policies
 {#                     -- SOURCE PREFIX MANAGEMENT -- #}
 {%                   if traffic_policies.policies[policy].matches[match].source is arista.avd.defined %}
 {%                        if traffic_policies.policies[policy].matches[match].source.prefixes is arista.avd.defined %}
-         source prefix {{traffic_policies.policies[policy].matches[match].source.prefixes | join(' ') }}
+         source prefix {{ traffic_policies.policies[policy].matches[match].source.prefixes | join(' ') }}
 {%                         endif %}
 {%                         if traffic_policies.policies[policy].matches[match].source.prefix_lists is arista.avd.defined %}
-         source prefix field-set {{traffic_policies.policies[policy].matches[match].source.prefix_lists | join(' ') }}
+         source prefix field-set {{ traffic_policies.policies[policy].matches[match].source.prefix_lists | join(' ') }}
 {%                         endif %}
 {%                     endif %}
 {#                     -- DESTINATION PREFIX MANAGEMENT -- #}
 {%                   if traffic_policies.policies[policy].matches[match].destination is arista.avd.defined %}
 {%                        if traffic_policies.policies[policy].matches[match].destination.prefixes is arista.avd.defined %}
-         destination prefix {{traffic_policies.policies[policy].matches[match].destination.prefixes | join(' ') }}
+         destination prefix {{ traffic_policies.policies[policy].matches[match].destination.prefixes | join(' ') }}
 {%                         endif %}
 {%                         if traffic_policies.policies[policy].matches[match].destination.prefix_lists is arista.avd.defined %}
-         destination prefix field-set {{traffic_policies.policies[policy].matches[match].destination.prefix_lists | join(' ') }}
+         destination prefix field-set {{ traffic_policies.policies[policy].matches[match].destination.prefix_lists | join(' ') }}
 {%                         endif %}
 {%                     endif %}
 {#                     -- PROTOCOL MANAGEMENT -- #}

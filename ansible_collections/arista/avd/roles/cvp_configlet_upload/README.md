@@ -32,9 +32,9 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 
 ![Figure 1: Ansible Role cvp_configlet_upload](./media/role_cvp_configlet_upload.gif)
 
-1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
+1. Read content of `{{ configlet_directory }}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.
-3. Create or update configlets on Cloudvision server with content from `{{configlet_directory}}`
+3. Create or update configlets on Cloudvision server with content from `{{ configlet_directory }}`
 
 ### Inputs
 
@@ -99,9 +99,9 @@ $ ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
 
 ### Tasks
 
-1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
+1. Read content of `{{ configlet_directory }}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.
-3. Create or update configlets on Cloudvision server with content from `{{configlet_directory}}`
+3. Create or update configlets on Cloudvision server with content from `{{ configlet_directory }}`
 
 ## Requirements
 

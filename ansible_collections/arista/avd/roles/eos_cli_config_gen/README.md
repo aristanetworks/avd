@@ -551,7 +551,7 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
+    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -669,6 +669,9 @@ ethernet_interfaces:
       ip: < true | false >
       ldp:
         interface: < true | false >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -731,6 +734,9 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 #### Interface Defaults
@@ -1110,7 +1116,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
-    encryption_key_common : < true | false >
+    encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -1225,11 +1231,11 @@ router_pim_sparse_mode:
     rp_addresses:
       < rp_address_1 >:
         groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
+          < group_prefix_1/mask >:
+          < group_prefix_2/mask >:
       < rp_address_2 >:
     anycast_rps:
-      < anycast_rp_address_1 > :
+      < anycast_rp_address_1 >:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >

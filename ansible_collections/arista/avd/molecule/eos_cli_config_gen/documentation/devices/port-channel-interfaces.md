@@ -77,6 +77,8 @@ interface Management1
 | Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
+| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
@@ -107,6 +109,17 @@ interface Ethernet8
    description MLAG_PEER_DC1-LEAF1B_Ethernet8
    channel-group 8 mode active
 !
+interface Ethernet15
+   description DC1-AGG03_Ethernet1
+   channel-group 15 mode active
+   lacp timer fast
+   lacp timer multiplier 30
+!
+interface Ethernet16
+   description DC1-AGG04_Ethernet1
+   channel-group 16 mode active
+   lacp timer normal
+!
 interface Ethernet50
    description SRV-POD03_Eth1
    channel-group 5 mode active
@@ -123,6 +136,8 @@ interface Ethernet50
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
@@ -180,6 +195,20 @@ interface Port-Channel10
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
+!
+interface Port-Channel15
+   description DC1_L2LEAF3_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 15
+!
+interface Port-Channel16
+   description DC1_L2LEAF4_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 16
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames

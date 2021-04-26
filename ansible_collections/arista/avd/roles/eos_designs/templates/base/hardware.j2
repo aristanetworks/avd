@@ -5,7 +5,7 @@
 {%     if switch.platform is arista.avd.defined %}
 {%         for speed in platform_speed_groups[switch.platform] | arista.avd.natural_sort %}
 {%             for speed_group in platform_speed_groups[switch.platform][speed] | arista.avd.natural_sort %}
-{%                 do tmp_speed_groups.update({ speed_group : speed }) %}
+{%                 do tmp_speed_groups.update({speed_group: speed}) %}
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
