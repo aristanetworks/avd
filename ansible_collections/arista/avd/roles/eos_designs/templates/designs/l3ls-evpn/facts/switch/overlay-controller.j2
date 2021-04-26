@@ -40,9 +40,9 @@ switch:
     {{ switch_raw_eos_cli | indent(4,false) }}
 {%         endif %}
 
-{# switch.structured_config #}
-  structured_config: {{ overlay_controller.nodes[node].structured_config | arista.avd.default(
-                        overlay_controller.defaults.structured_config) }}
+{# switch.struct_cfg #}
+  struct_cfg: {{ overlay_controller.nodes[node].structured_config | arista.avd.default(
+                 overlay_controller.defaults.structured_config) }}
 
 {# switch.bgp_defaults #}
   bgp_defaults: {{ overlay_controller_bgp_defaults | arista.avd.default([]) }}
