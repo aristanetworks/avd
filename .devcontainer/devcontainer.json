@@ -1,11 +1,14 @@
 {
-    "dockerComposeFile": [
-        "../development/docker-compose.yml",
-    ],
-    "postStartCommand": ["sudo", "chmod", "666", "/var/run/docker.sock"],
+    "name": "AVD Development",
+    "build": {
+        "dockerfile": "Dockerfile",
+        // Update 'VARIANT' to pick Python version of AVD runner: 3.6, 3.7, 3.8
+        "args": { "VARIANT": "3.6" },
+    },
     "remoteUser": "avd",
-    "service": "ansible",
-    "workspaceFolder": "/projects/",
+    "updateRemoteUserUID": true,
+    "workspaceMount": "source=${localWorkspaceFolder}/..,target=/workspace,type=bind,consistency=delegated",
+    "workspaceFolder": "/workspace",
     "extensions": [
         "christian-kohler.path-intellisense",
         "codezombiech.gitignore",
@@ -36,7 +39,7 @@
     "settings": {
         "python.pythonPath": "/usr/local/bin/python",
         "python.analysis.extraPaths": [
-            "/projects/"
+            "/workspace/"
         ],
         "python.linting.pylintEnabled": true,
         "python.linting.enabled": true,
