@@ -33,8 +33,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
-{%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan is arista.avd.defined() %}
-   encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation.dot1q.vlan }}
+{%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined() %}
+   encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan }}
 {%         else %}
    switchport
 {%         endif %}
@@ -60,8 +60,8 @@ interface {{ ethernet_interface }}
 {%         for trunk_group in ethernet_interfaces[ethernet_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
 {%         endfor %}
-{%         if ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation.dot1q.vlan is arista.avd.defined %}
-   l2-protocol encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation.dot1q.vlan }}
+{%         if ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
+   l2-protocol encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation_dot1q_vlan }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].qos.trust is arista.avd.defined %}
    qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
