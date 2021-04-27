@@ -434,6 +434,7 @@ vlan 4092
 | Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet10 | server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
 | Ethernet11 |  server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet12 |  server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet13 |  server06_override_profile_Eth2 | access | 210 | - | - | - |
@@ -510,6 +511,11 @@ interface Ethernet8
    description DC1-L2LEAF2B_Ethernet2
    no shutdown
    channel-group 7 mode active
+!
+interface Ethernet10
+   description server03_ESI_Eth2
+   no shutdown
+   channel-group 10 mode active
 !
 interface Ethernet11
    description server04_inherit_all_from_profile_Eth2
@@ -605,6 +611,7 @@ interface Ethernet19
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
 | Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
@@ -631,6 +638,17 @@ interface Port-Channel7
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
    mlag 7
+!
+interface Port-Channel10
+   description server03_ESI_PortChanne1
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
 !
 interface Port-Channel14
    description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
