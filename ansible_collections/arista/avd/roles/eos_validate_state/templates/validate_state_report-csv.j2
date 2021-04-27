@@ -62,7 +62,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%     if hostvars[node].ethernet_interface_state_results is defined and hostvars[node].ethernet_interface_state_results.results is defined %}
 {%         for result in hostvars[node].ethernet_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Interface State,Ethernet Interface Status & Line Protocol == "up",{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},Interface State,Ethernet Interface Status & Line Protocol == "up",{{ result.ethernet_interface.key }} - {{ result.ethernet_interface.value.description | arista.avd.default('') }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -72,7 +72,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%     if hostvars[node].port_channel_interface_state_results is defined and hostvars[node].port_channel_interface_state_results.results is defined %}
 {%         for result in hostvars[node].port_channel_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Interface State,Port-Channel Interface Status & Line Protocol == "up",{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},Interface State,Port-Channel Interface Status & Line Protocol == "up",{{ result.port_channel_interface.key }} - {{ result.port_channel_interface.value.description | arista.avd.default('') }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -82,7 +82,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%     if hostvars[node].vlan_interface_state_results is defined and hostvars[node].vlan_interface_state_results.results is defined %}
 {%         for result in hostvars[node].vlan_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Interface State,Vlan Interface Status & Line Protocol == "up",{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},Interface State,Vlan Interface Status & Line Protocol == "up",{{ result.vlan_interface.key }} - {{ result.vlan_interface.value.description | arista.avd.default('') }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
@@ -100,7 +100,7 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {%     if hostvars[node].loopback_interface_state_results is defined and hostvars[node].loopback_interface_state_results.results is defined %}
 {%         for result in hostvars[node].loopback_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Interface State,Loopback Interface Status & Line Protocol == "up",{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},Interface State,Loopback Interface Status & Line Protocol == "up",{{ result.loopback_interface.key }} - {{ result.loopback_interface.value.description | arista.avd.default('') }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%         endfor %}
 {%    endif %}
