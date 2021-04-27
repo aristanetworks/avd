@@ -150,12 +150,12 @@ servers:
     adapters:
       - server_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A_B
         port_channel:
           description: PortChanne1
           mode: active
-          esi: '0303:0202:0101'
+          short_esi: '0303:0202:0101'
 
   server04_inherit_all_from_profile:
     rack: RackC

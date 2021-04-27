@@ -738,6 +738,15 @@ port_channel_interfaces:
     vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
     mode: trunk
     mlag: 7
+  Port-Channel10:
+    description: server03_ESI_PortChanne1
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    esi: 0000:0000:0303:0202:0101
+    rt: 03:03:02:02:01:01
+    lacp_id: 0303.0202.0101
   Port-Channel14:
     description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
@@ -943,6 +952,19 @@ ethernet_interfaces:
     channel_group:
       id: 7
       mode: active
+  Ethernet10:
+    peer: server03_ESI
+    peer_interface: Eth2
+    peer_type: server
+    description: server03_ESI_Eth2
+    type: switched
+    shutdown: false
+    mode: trunk
+    vlans: 110-111,210-211
+    channel_group:
+      id: 10
+      mode: active
+    profile: TENANT_A_B
   Ethernet11:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth2

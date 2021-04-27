@@ -117,6 +117,7 @@ l3leaf,DC1-SVC3B,Ethernet5,mlag_peer,DC1-SVC3A,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet6,mlag_peer,DC1-SVC3A,Ethernet6
 l3leaf,DC1-SVC3B,Ethernet7,l2leaf,DC1-L2LEAF2A,Ethernet2
 l3leaf,DC1-SVC3B,Ethernet8,l2leaf,DC1-L2LEAF2B,Ethernet2
+l3leaf,DC1-SVC3B,Ethernet10,server,server03_ESI,Eth2
 l3leaf,DC1-SVC3B,Ethernet11,server,server04_inherit_all_from_profile,Eth2
 l3leaf,DC1-SVC3B,Ethernet12,server,server05_no_profile,Eth2
 l3leaf,DC1-SVC3B,Ethernet13,server,server06_override_profile,Eth2
