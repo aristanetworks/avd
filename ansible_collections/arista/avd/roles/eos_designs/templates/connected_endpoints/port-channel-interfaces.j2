@@ -99,7 +99,7 @@ port_channel_interfaces:
 {%                                 if adapter.port_channel.short_esi.split(':') | length == 3 %}
     esi: {{ adapter.port_channel.short_esi | arista.avd.generate_esi }}
     rt: {{ adapter.port_channel.short_esi | arista.avd.generate_route_target }}
-{%                                     if adapter_port_channel_mode == 'active' %}
+{%                                     if adapter_port_channel.mode == 'active' %}
     lacp_id: {{ adapter.port_channel.short_esi | arista.avd.generate_lacp_id }}
 {%                                     endif %}
 {%                                 endif %}
