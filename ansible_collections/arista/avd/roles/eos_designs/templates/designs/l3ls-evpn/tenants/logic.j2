@@ -3,7 +3,7 @@
 {% if evpn_rd_type is defined and evpn_rd_type is not none %}
 {%     if evpn_rd_type.admin_subfield is arista.avd.defined %}
 {%         if evpn_rd_type.admin_subfield == "vtep_loopback" %}
-{%             set tenants_data.evpn_rd_admin_subfield = vtep_ip %}
+{%             set tenants_data.evpn_rd_admin_subfield = switch.vtep_ip %}
 {%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
 {%             set tenants_data.evpn_rd_admin_subfield = switch.bgp_as %}
 {%         elif evpn_rd_type.admin_subfield == "spine_asn" %}
