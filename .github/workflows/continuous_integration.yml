@@ -150,6 +150,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
+          - 'eos_designs_unit_tests'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
