@@ -61,7 +61,8 @@ switch:
   spines: {{ switch_spines }}
 
 {# switch.uplink_to_spine_interfaces #}
-  uplink_to_spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces | arista.avd.default(
+  uplink_to_spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].uplink_to_spine_interfaces | arista.avd.default(
+                                 l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces,
                                  l3leaf.defaults.uplink_to_spine_interfaces) }}
 
 {# switch.p2p_link_interface_speed #}

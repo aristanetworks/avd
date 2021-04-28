@@ -892,7 +892,7 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
-  Ethernet1:
+  Ethernet41:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
     peer_type: spine
@@ -902,7 +902,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.65/31
-  Ethernet2:
+  Ethernet42:
     peer: DC1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
@@ -912,7 +912,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.67/31
-  Ethernet3:
+  Ethernet43:
     peer: DC1-SPINE3
     peer_interface: Ethernet5
     peer_type: spine
@@ -922,7 +922,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.69/31
-  Ethernet4:
+  Ethernet44:
     peer: DC1-SPINE4
     peer_interface: Ethernet5
     peer_type: spine

@@ -307,7 +307,7 @@ loopback_interfaces:
     shutdown: false
     ip_address: 192.168.254.15/32
 ethernet_interfaces:
-  Ethernet1:
+  Ethernet45:
     peer: DC1-SPINE1
     peer_interface: Ethernet7
     peer_type: spine
@@ -317,7 +317,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.97/31
-  Ethernet2:
+  Ethernet46:
     peer: DC1-SPINE2
     peer_interface: Ethernet7
     peer_type: spine
@@ -327,7 +327,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.99/31
-  Ethernet3:
+  Ethernet47:
     peer: DC1-SPINE3
     peer_interface: Ethernet7
     peer_type: spine
@@ -337,7 +337,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.101/31
-  Ethernet4:
+  Ethernet48:
     peer: DC1-SPINE4
     peer_interface: Ethernet7
     peer_type: spine

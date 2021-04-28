@@ -59,7 +59,7 @@ pod_name: < POD_Name >
 ## Type Variable
 
 - The `type:` variable needs to be defined for each device in the fabric.
-- This is leveraged to load to appropriate template, to generate the configuration.
+- This is leveraged to load the appropriate template to generate the configuration.
 
 **Variables and Options:**
 
@@ -161,7 +161,7 @@ l3leaf:
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
+  # The node groups are groups of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   node_groups:
 
@@ -189,7 +189,7 @@ l3leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
-      # Enable / Disable MLAG dual primary detectiom
+      # Enable / Disable MLAG dual primary detection
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
@@ -255,12 +255,17 @@ l3leaf:
           # Node management IP address | Required.
           mgmt_ip: < IPv4_address/Mask >
 
+          # Uplink to spine interfaces (list), interface located on L3 Leaf,
+          # corresponding to spines and spine_interfaces | Required.
+          # Inheritance: node > node_group > defaults
+          uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
           spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
           # L3 Leaf BGP AS. | Required.
-          # Inheritence: node > node_group > defaults
+          # Inheritance: node > node_group > defaults
           bgp_as: < bgp_as >
 
     # node_group_2, will result in MLAG pair.
@@ -382,7 +387,7 @@ l2leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
-      # Enable / Disable MLAG dual primary detectiom
+      # Enable / Disable MLAG dual primary detection
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
@@ -449,7 +454,7 @@ l2leaf:
           l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
 
     # node_group_3, will result in Active/Active connection to L3LEAFs.
-    # Can be applied on sigle L2LEAF or MLAG nodes.
+    # Can be applied on single L2LEAF or MLAG nodes.
     < node_group_3 >:
       parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
       short_esi: < short esi value >
