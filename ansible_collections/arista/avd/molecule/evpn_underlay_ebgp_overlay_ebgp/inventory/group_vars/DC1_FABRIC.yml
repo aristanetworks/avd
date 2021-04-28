@@ -113,6 +113,7 @@ l3leaf:
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
+      uplink_to_spine_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -138,12 +139,14 @@ l3leaf:
           bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
+          uplink_to_spine_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
           spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
         DC1-BL1B:
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
+          uplink_to_spine_interfaces: [ Ethernet45, Ethernet46, Ethernet47, Ethernet48 ]
           spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
 
 l2leaf:
