@@ -20,6 +20,18 @@
 {%         endif %}
 {{ node_cli }}
 {%     endfor %}
+{%     if ntp_server.keys is arista.avd.defined %}
+ntp authenticate
+{%         set trusted_key_ids = [] %}
+{%         for key in ntp_server.keys | arista.avd.natural_sort %}
+{%             set key_cli = "ntp authentication-key " ~ key %}
+{%             set key_cli = key_cli ~ " " ~ ntp_server.keys[key].hash_algorithm %}
+{%             set key_cli = key_cli ~ " " ~ ntp_server.keys[key].hash %}
+{%             if (ntp_server.keys[key].trusted is not arista.avd.defined) or (ntp_server.keys[key].trusted is arista.avd.defined and ntp_server.keys[key].trusted == 'true') %}
+{%                 set trusted_key_ids = trusted_key_ids + [key,] %}
+{%             endif %}
+{{ key_cli }}
+{%         endfor %}
 {%         set trested_ksy_ids_cli = "ntp trusted-key" %}
 {%         for trusted_key_id in trusted_key_ids %}
 {%             if loop.first %}
