@@ -52,25 +52,3 @@ router_bgp:
       description: {{ evpn_route_client }}
       remote_as: {{ overlay_data.evpn_route_clients[evpn_route_client].bgp_as }}
 {% endfor %}
-{% if switch.evpn_role == "sndbfasjf" and underlay_rfc5549 is arista.avd.defined(true)%}
-{%     for l3leaf_node_group in l3leaf.node_groups | arista.avd.natural_sort %}
-{%         if l3leaf.node_groups[l3leaf_node_group].spines is defined %}
-{%             set leaf_spines = l3leaf.node_groups[l3leaf_node_group].spines %}
-{%         else %}
-{%             set leaf_spines = l3leaf.defaults.spines %}
-{%         endif %}
-{%         for node in l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-{#    erlay network peering #}
-{%             for leaf_spine in leaf_spines %}
-{%                 if leaf_spine == inventory_hostname %}
-    {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0] }}:
-      peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
-      remote_as: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].bgp_as | arista.avd.default(
-                    l3leaf.node_groups[l3leaf_node_group].bgp_as,
-                    l3leaf.defaults.bgp_as) }}
-      description: {{ node }}_{{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces[loop.index0] }}
-{%                endif %}
-{%            endfor %}
-{%        endfor %}
-{%    endfor %}
-{% endif %}
