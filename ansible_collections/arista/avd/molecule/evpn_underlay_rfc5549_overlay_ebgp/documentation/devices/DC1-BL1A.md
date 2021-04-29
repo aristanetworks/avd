@@ -586,7 +586,6 @@ router general
 | Ethernet4 | UNDERLAY_PEERS | 65001 |
 
 ### Router BGP EVPN Address Family
-
 #### EVPN Host Flapping Settings
 | Window | Threshold |
 | ------ | --------- |

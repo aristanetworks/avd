@@ -1146,7 +1146,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Vlan4093 | MLAG_PEER | 65103 |
 
 ### Router BGP EVPN Address Family
-
 #### EVPN Host Flapping Settings
 | Window | Threshold |
 | ------ | --------- |
