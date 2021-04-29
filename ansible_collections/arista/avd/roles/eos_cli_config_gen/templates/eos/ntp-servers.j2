@@ -20,4 +20,13 @@
 {%         endif %}
 {{ node_cli }}
 {%     endfor %}
+{%         set trested_ksy_ids_cli = "ntp trusted-key" %}
+{%         for trusted_key_id in trusted_key_ids %}
+{%             if loop.first %}
+{%                 set trested_ksy_ids_cli = trested_ksy_ids_cli ~ " " ~ trusted_key_id %}
+{%             else %}
+{%                 set trested_ksy_ids_cli = trested_ksy_ids_cli ~ ", " ~ trusted_key_id %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

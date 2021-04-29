@@ -22,6 +22,19 @@
 {%         endif %}
 {%     endfor %}
 
+{%   if ntp_server.keys is arista.avd.defined %}
+
+|  ID  |                Hashed Key              | Algo | Trusted |
+|------|----------------------------------------|------|---------|
+{%       for key in ntp_server.keys | arista.avd.natural_sort %}
+{%           if (ntp_server.keys[key].trusted is not arista.avd.defined) or (ntp_server.keys[key].trusted is arista.avd.defined and ntp_server.keys[key].trusted == 'true') %}
+{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.keys[key].hash | center(40, " ")) ~ "|" ~ (ntp_server.keys[key].hash_algorithm | center(6, " ")) ~ "|   True  |" }}
+{%           else %}
+{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.keys[key].hash | center(40, " ")) ~ "|" ~ (ntp_server.keys[key].hash_algorithm | center(6, " ")) ~ "|  False  |" }}
+{%           endif %}
+{%       endfor%}
+{%   endif %}
+
 ### NTP Device Configuration
 
 ```eos

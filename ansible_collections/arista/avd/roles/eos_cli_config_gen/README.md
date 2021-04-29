@@ -1218,6 +1218,13 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
+  keys:
+    <id>:
+      hash: <md5 or sha1 hashed password>
+      hash_algorithm: < md5 | sha1 >
+      trusted: < true | false >
+
+
 ```
 
 ### MPLS
