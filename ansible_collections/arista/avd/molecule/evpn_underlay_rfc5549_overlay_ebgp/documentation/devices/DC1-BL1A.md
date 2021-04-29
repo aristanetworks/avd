@@ -587,6 +587,11 @@ router general
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+| Window | Threshold |
+| ------ | --------- |
+| 20|  30 |
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles
@@ -663,6 +668,8 @@ router bgp 65104
       vlan 350
    !
    address-family evpn
+      host-flap detection window 20
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

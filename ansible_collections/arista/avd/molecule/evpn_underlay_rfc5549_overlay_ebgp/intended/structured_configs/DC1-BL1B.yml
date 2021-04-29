@@ -47,6 +47,9 @@ router_bgp:
       remote_as: 65001
       description: DC1-SPINE4_Ethernet7
   address_family_evpn:
+    evpn_hostflap_detection:
+      window: 20
+      threshold: 30
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true

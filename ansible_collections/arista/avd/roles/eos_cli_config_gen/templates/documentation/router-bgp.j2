@@ -155,6 +155,13 @@
 
 ### Router BGP EVPN Address Family
 
+{%     if evpn_hostflap_detection.window is arista.avd.defined and evpn_hostflap_detection.threshold is arista.avd.defined %}
+#### EVPN Host Flapping Settings
+| Window | Threshold |
+| ------ | --------- |
+| {{ evpn_hostflap_detection.window }}|  {{ evpn_hostflap_detection.threshold }} |
+{%     endif %}
+
 #### Router BGP EVPN MAC-VRFs
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
