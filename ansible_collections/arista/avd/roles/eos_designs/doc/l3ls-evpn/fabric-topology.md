@@ -161,6 +161,9 @@ evpn_hostflap_detection:
 
   # <0-4294967295>  Time (in seconds) to detect a MAC duplication issue
   threshold:
+
+  # If set to false it will disable EVPN host-flap detection
+  enabled: < true | false | default -> true >
 ```
 
 **Example:**

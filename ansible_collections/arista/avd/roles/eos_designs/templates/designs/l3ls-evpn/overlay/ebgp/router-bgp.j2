@@ -19,10 +19,19 @@ router_bgp:
         activate: false
 
   address_family_evpn:
-{%     if switch.evpn_role != "server" and evpn_hostflap_detection.window is arista.avd.defined and evpn_hostflap_detection.threshold is arista.avd.defined %}
+{%     if switch.vtep_ip is arista.avd.defined and ( evpn_hostflap_detection.window is arista.avd.defined or evpn_hostflap_detection.threshold is arista.avd.defined or evpn_hostflap_detection.enabled is arista.avd.defined(false)) %}
     evpn_hostflap_detection:
+{%         if evpn_hostflap_detection.window is arista.avd.defined %}
       window: {{ evpn_hostflap_detection.window }}
+{%         endif %}
+{%         if evpn_hostflap_detection.threshold is arista.avd.defined %}
       threshold: {{ evpn_hostflap_detection.threshold }}
+{%         endif %}
+{%         if evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
+      enabled: 'false'
+{%         else %}
+      enabled: 'true'
+{%         endif %}
 {%     endif %}
     peer_groups:
       {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
