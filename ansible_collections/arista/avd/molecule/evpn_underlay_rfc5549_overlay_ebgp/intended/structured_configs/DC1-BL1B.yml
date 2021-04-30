@@ -50,6 +50,7 @@ router_bgp:
     evpn_hostflap_detection:
       window: 20
       threshold: 30
+      enabled: 'true'
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true

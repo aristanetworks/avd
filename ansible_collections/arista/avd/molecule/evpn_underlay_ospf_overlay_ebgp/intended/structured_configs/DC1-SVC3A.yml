@@ -19,6 +19,9 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   address_family_evpn:
+    evpn_hostflap_detection:
+      threshold: 30
+      enabled: 'true'
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true

@@ -607,6 +607,11 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+| Window | Threshold |
+| ------ | --------- |
+| 180|  30 |
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
@@ -641,6 +646,7 @@ router bgp 65103
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

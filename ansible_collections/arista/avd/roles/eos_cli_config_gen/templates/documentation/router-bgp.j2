@@ -168,11 +168,11 @@
 {%             set evpn_hostflap_detection_window = 'disabled' %}
 {%             set evpn_hostflap_detection_threshold = 'disabled' %}
 {%         endif %}
-{%     endif %}
 #### EVPN Host Flapping Settings
 | Window | Threshold |
 | ------ | --------- |
 | {{ evpn_hostflap_detection_window }}|  {{ evpn_hostflap_detection_threshold }} |
+{%     endif %}
 
 #### Router BGP EVPN MAC-VRFs
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}

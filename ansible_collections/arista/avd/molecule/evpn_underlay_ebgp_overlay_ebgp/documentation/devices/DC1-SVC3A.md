@@ -1240,6 +1240,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+| Window | Threshold |
+| ------ | --------- |
+| disabled|  disabled |
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles
@@ -1391,6 +1396,7 @@ router bgp 65103
       vlan 350
    !
    address-family evpn
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
