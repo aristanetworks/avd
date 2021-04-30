@@ -1218,11 +1218,15 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
-  keys:
-    <id>:
-      hash: <md5 or sha1 hashed password>
+
+  ntp_authenticate: <true | false >
+  
+  ntp_authentication_keys:
+    <key_identifier | 1-65534>:
       hash_algorithm: < md5 | sha1 >
-      trusted: < true | false >
+      key:  "< encypted_key >"
+  
+  ntp_trusted_keys: "< list of trusted-keys as string >"
 
 
 ```

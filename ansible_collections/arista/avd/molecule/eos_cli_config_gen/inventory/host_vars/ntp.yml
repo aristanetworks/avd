@@ -6,3 +6,12 @@ ntp_server:
   nodes:
     - 10.1.1.1
     - 10.1.1.2
+  ntp_authenticate: true
+
+  ntp_authentication_keys:
+    10:
+      hash_algorithm: "md5"
+      key:  "356708192346f678a878d6e99889767a"
+  
+  ntp_trusted_keys:
+    - "10"

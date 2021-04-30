@@ -22,15 +22,15 @@
 {%         endif %}
 {%     endfor %}
 
-{%   if ntp_server.keys is arista.avd.defined %}
+{%   if ntp_server.ntp_authenticate is defined and ntp_server.ntp_authenticate is true %}
 
 |  ID  |                Hashed Key              | Algo | Trusted |
 |------|----------------------------------------|------|---------|
-{%       for key in ntp_server.keys | arista.avd.natural_sort %}
-{%           if (ntp_server.keys[key].trusted is not arista.avd.defined) or (ntp_server.keys[key].trusted is arista.avd.defined and ntp_server.keys[key].trusted == 'true') %}
-{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.keys[key].hash | center(40, " ")) ~ "|" ~ (ntp_server.keys[key].hash_algorithm | center(6, " ")) ~ "|   True  |" }}
+{%       for key_identifier in ntp_server.ntp_authentication_keys | arista.avd.natural_sort %}
+{%           if ntp_server.ntp_trusted_keys is defined and string(key_identifier) in ntp_trusted_keys %}
+{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.ntp_authentication_keys[key_identifier].key | center(40, " ")) ~ "|" ~ (ntp_server.ntp_authentication_keys[key_identifier].hash_algorithm | center(6, " ")) ~ "|   True  |" }}
 {%           else %}
-{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.keys[key].hash | center(40, " ")) ~ "|" ~ (ntp_server.keys[key].hash_algorithm | center(6, " ")) ~ "|  False  |" }}
+{{ "|" ~ (key | center(6,' ')) ~ "|" ~ (ntp_server.ntp_authentication_keys[key_identifier].key | center(40, " ")) ~ "|" ~ (ntp_server.ntp_authentication_keys[key_identifier].hash_algorithm | center(6, " ")) ~ "|  False  |" }}
 {%           endif %}
 {%       endfor%}
 {%   endif %}

@@ -20,25 +20,21 @@
 {%         endif %}
 {{ node_cli }}
 {%     endfor %}
-{%     if ntp_server.keys is arista.avd.defined %}
+{%   if ntp_server.ntp_authenticate is defined and ntp_server.ntp_authenticate is true %}
 ntp authenticate
-{%         set trusted_key_ids = [] %}
-{%         for key in ntp_server.keys | arista.avd.natural_sort %}
-{%             set key_cli = "ntp authentication-key " ~ key %}
-{%             set key_cli = key_cli ~ " " ~ ntp_server.keys[key].hash_algorithm %}
-{%             set key_cli = key_cli ~ " " ~ ntp_server.keys[key].hash %}
-{%             if (ntp_server.keys[key].trusted is not arista.avd.defined) or (ntp_server.keys[key].trusted is arista.avd.defined and ntp_server.keys[key].trusted == 'true') %}
-{%                 set trusted_key_ids = trusted_key_ids + [key,] %}
-{%             endif %}
+{%         for key_identifier in ntp_server.ntp_authentication_keys | arista.avd.natural_sort %}
+{%             set key_cli = "ntp authentication-key " ~ key_identifier %}
+{%             set key_cli = key_cli ~ " " ~ ntp_server.ntp_authentication_keys[key_identifier].hash_algorithm %}
+{%             set key_cli = key_cli ~ " " ~ ntp_server.ntp_authentication_keys[key_identifier].key %}
 {{ key_cli }}
 {%         endfor %}
-{%         set trested_ksy_ids_cli = "ntp trusted-key" %}
-{%         for trusted_key_id in trusted_key_ids %}
+{%         for trusted_key_id in ntp_server.ntp_trusted_keys | arista.avd.natural_sort %}
 {%             if loop.first %}
-{%                 set trested_ksy_ids_cli = trested_ksy_ids_cli ~ " " ~ trusted_key_id %}
+{%                 set trusted_keys_cli = "ntp trusted-key " ~ trusted_key_id %}
 {%             else %}
-{%                 set trested_ksy_ids_cli = trested_ksy_ids_cli ~ ", " ~ trusted_key_id %}
+{%                 set trusted_keys_cli = trusted_keys_cli ~ ", " ~ trusted_key_id %}
 {%             endif %}
 {%         endfor %}
+{{ trusted_keys_cli }}
 {%     endif %}
 {% endif %}
