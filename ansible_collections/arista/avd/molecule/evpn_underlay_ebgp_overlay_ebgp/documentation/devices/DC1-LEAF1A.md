@@ -676,7 +676,7 @@ router bgp 65101
       vlan 120-121
    !
    address-family evpn
-      host-flap detection threshold 30
+      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

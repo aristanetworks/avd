@@ -699,7 +699,7 @@ router bgp 65105
       vlan 350
    !
    address-family evpn
-      host-flap detection threshold 30
+      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

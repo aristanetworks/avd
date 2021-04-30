@@ -27,11 +27,7 @@ router_bgp:
 {%         if evpn_hostflap_detection.threshold is arista.avd.defined %}
       threshold: {{ evpn_hostflap_detection.threshold }}
 {%         endif %}
-{%         if evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
-      enabled: 'false'
-{%         else %}
-      enabled: 'true'
-{%         endif %}
+      enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
 {%     endif %}
     peer_groups:
       {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
