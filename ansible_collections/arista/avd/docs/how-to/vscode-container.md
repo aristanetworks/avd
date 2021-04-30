@@ -75,7 +75,7 @@ CONTAINER ID   IMAGE                   COMMAND                  CREATED         
 0fd39cc2dd3d   avdteam/vscode:latest   "/bin/entrypoint.sh"     10 seconds ago   Up 9 seconds    0.0.0.0:8080->8080/tcp   inspiring_germain
 ```
 
-And you can now connect to your VSCode instance using your favorite browser with following URL:
+And you can now connect to your VSCode instance using your favorite browser with the following URL:
 
 ```bash
 http://<IP ADDR of DOCKER Machine>:8080/?folder=/home/avd/arista-ansible
@@ -85,11 +85,11 @@ http://<IP ADDR of DOCKER Machine>:8080/?folder=/home/avd/arista-ansible
 
 ## Customize your container
 
-Once you run your first AVD demo, you may want to not use volatile storage or install you own repositories.
+Once you run your first AVD demo, you may want to not use non-volatile storage or install your own repositories.
 
 ### Mount your local folder
 
-First option is to mount one of your local folder to save your work from your container. Considering your local folder is empty, you can add this line to your docker CLI:
+The first option is to mount one of your local folder to save your work from your container. Considering your local folder is empty, you can add this line to your docker CLI:
 
 ```bash
 -v ${PWD}/:/home/avd/arista-ansible
@@ -99,7 +99,6 @@ So complete CLI should be:
 
 ```bash
 docker run --rm -it -d \
-    -e AVD_MODE=demo \
     -e AVD_GIT_USER="$(git config --get user.name)" \
     -e AVD_GIT_EMAIL="$(git config --get user.email)" \
     -v ${PWD}/:/home/avd/arista-ansible \
@@ -113,7 +112,6 @@ Now, you want to ship your own demo in your container with git clone instead of 
 
 ```bash
 docker run --rm -it -d \
-    -e AVD_MODE=demo \
     -e AVD_GIT_USER="$(git config --get user.name)" \
     -e AVD_GIT_EMAIL="$(git config --get user.email)" \
     -e AVD_USER_REPOS=/home/avd/arista-ansible/my_repos.txt \
@@ -127,7 +125,6 @@ And then your [`my_repos.txt`](https://github.com/arista-netdevops-community/doc
 ```text
 https://github.com/aristanetworks/ansible-avd.git
 https://github.com/aristanetworks/ansible-cvp.git
-
 ```
 
 !!! note Repository file path
