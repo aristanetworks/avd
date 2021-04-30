@@ -1218,17 +1218,12 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
-
   ntp_authenticate: <true | false >
-  
   ntp_authentication_keys:
     <key_identifier | 1-65534>:
       hash_algorithm: < md5 | sha1 >
       key:  "< encypted_key >"
-  
   ntp_trusted_keys: "< list of trusted-keys as string >"
-
-
 ```
 
 ### MPLS
