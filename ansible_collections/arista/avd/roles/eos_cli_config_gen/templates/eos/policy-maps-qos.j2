@@ -25,7 +25,12 @@ policy-map type pbr {{ policy_map }}
 {%         for class in policy_maps.pbr[policy_map].classes %}
    class {{ class }}
 {%             if policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address is arista.avd.defined %}
-      set nexthop {{ 'recursive' if policy_maps.pbr[policy_map].classes[class].set.nexthop.recursive is arista.avd.defined(true) }} {{ policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address }}
+{%                 set nexthop_cli = 'set nexthop' %}
+{%                 if policy_maps.pbr[policy_map].classes[class].set.nexthop.recursive is arista.avd.defined(true) %}
+{%                     set nexthop_cli = nexthop_cli ~ ' recursive' %}
+{%                 endif %}
+{%                 set nexthop_cli = nexthop_cli ~ ' ' ~ policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address %}
+      {{ nexthop_cli  }}
 {%             endif %}
    !
 {%         endfor %}
