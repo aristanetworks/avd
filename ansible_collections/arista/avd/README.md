@@ -21,6 +21,11 @@
 [Arista Networks](https://www.arista.com/) supports Ansible for managing devices running the EOS operating system natively through eapi or [CloudVision Portal (CVP)](https://www.arista.com/en/products/eos/eos-cloudvision).
 This collection includes a set of ansible roles and modules to help kick-start your automation with Arista. The various roles and templates provided are designed to be customized and extended to your needs!
 
+Full documentation for the collection is available on read-the-docs:
+
+- [Latest stable version](https://www.avd.sh/en/latest/)
+- [Collection development version](https://www.avd.sh/en/devel/)
+
 ## Validated Designs
 
 The arista.avd collection provides abstracted data models and framework to build, document, deploy and validate the following designs:
