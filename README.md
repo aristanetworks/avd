@@ -68,15 +68,15 @@ The documentation how to leverage ansible-avd collection is located here:
 
 **Additional Python Libraries required:**
 
-- netaddr `0.7.19`
-- Jinja2 `2.11.3`
-- treelib `1.5.5`
-- cvprac `1.0.5`
-- paramiko `2.7.1`
-- jsonschema `3.2.0`
-- requests `2.25.1`
-- PyYAML `5.4.1`
-- md-toc `7.1.0`
+- netaddr
+- Jinja2
+- treelib
+- cvprac
+- paramiko
+- jsonschema
+- requests
+- PyYAML
+- md-toc
 
 **Ansible + Additional Python Libraries Installation:**
 
@@ -84,20 +84,6 @@ The documentation how to leverage ansible-avd collection is located here:
 $ pip3 install ansible==2.10.7
 
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
-```
-
-requirements.txt content:
-
-```text
-netaddr==0.7.19
-Jinja2==2.11.3
-treelib==1.5.5
-cvprac==1.0.5
-paramiko==2.7.1
-jsonschema==3.2.0
-requests==2.25.1
-PyYAML==5.4.1
-md-toc==7.1.0
 ```
 
 **Ansible Configuration INI file:**
