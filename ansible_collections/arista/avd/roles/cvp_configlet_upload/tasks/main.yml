@@ -3,17 +3,17 @@
 - name: generate intented variables
   tags: [build, provision, apply]
   arista.avd.configlet_build_config:
-    configlet_dir: '{{ configlet_directory }}'
-    configlet_prefix: '{{ configlets_cvp_prefix }}'
-    configlet_extension: '{{ file_extension }}'
+    configlet_dir: "{{ configlet_directory }}"
+    configlet_prefix: "{{ configlets_cvp_prefix }}"
+    configlet_extension: "{{ file_extension }}"
   register: CVP_VARS
 
-- name: 'collecting facts from CVP {{ inventory_hostname }}.'
+- name: "collecting facts from CVP {{ inventory_hostname }}."
   tags: [provision, apply]
   arista.cvp.cv_facts:
   register: CVP_FACTS
 
-- name: 'create configlets on CVP {{ inventory_hostname }}.'
+- name: "create configlets on CVP {{ inventory_hostname }}."
   tags: [provision, apply]
   arista.cvp.cv_configlet:
     cvp_facts: "{{ CVP_FACTS.ansible_facts }}"

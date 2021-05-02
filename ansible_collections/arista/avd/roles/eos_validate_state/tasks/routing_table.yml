@@ -9,7 +9,7 @@
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
     (loopback1_reachability.loopback1_range is defined and loopback1_reachability.loopback1_range is not none) and
-    (type is defined and type == "l3leaf")
+    (type is defined and type == 'l3leaf')
   register: routing_table_loopback1_state
   tags:
     - routing_table_check
@@ -38,7 +38,7 @@
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
     (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
-    (type is defined and type != "l2leaf")
+    (type is defined and type != 'l2leaf')
   register: routing_table_loopback0_state
   tags:
     - routing_table_check
