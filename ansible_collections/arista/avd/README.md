@@ -134,21 +134,24 @@ ansible-galaxy collection install arista.avd
 
 ![Figure 1: Example Playbook CloudVision Deployment](media/example-playbook-deploy-cvp.gif)
 
-```yml
+```yaml
+# Play to build EOS configuration from EOS_DESIGNS
 - hosts: DC1_FABRIC
   tasks:
 
+    # BUILD EOS configuration
     - name: generate intended variables
       import_role:
          name: arista.avd.eos_designs
-
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
 
+# Play to configure Cloudvision
 - hosts: CVP
   tasks:
 
+  # Generate Cloudvision configuration & deployment
   - name: upload cvp configlets
     import_role:
         name: arista.avd.cvp_configlet_upload
@@ -156,7 +159,6 @@ ansible-galaxy collection install arista.avd
       configlet_directory: 'configlets/'
       file_extension: 'txt'
       configlets_cvp_prefix: 'DC1-AVD'
-
     - name: deploy configuration via CVP
       import_role:
          name: arista.avd.eos_config_deploy_cvp
@@ -165,11 +167,10 @@ ansible-galaxy collection install arista.avd
 Execute eos_state_validation playbook once change control has been approved and deployed to devices in CVP.
 Note: To run this playbook, ansible_host **must** be configured in your inventory for every EOS device. eAPI access **must** be configured and allowed in your networks.
 
-```yml
+```yaml
+# EOS eAPI state validation
 - hosts: DC1_FABRIC
-
   tasks:
-
     - name: audit fabric state using EOS eAPI connection
       import_role:
          name: arista.avd.eos_validate_state
@@ -179,23 +180,25 @@ Note: To run this playbook, ansible_host **must** be configured in your inventor
 
 ![Figure 2: Example Playbook CloudVision Deployment](media/example-playbook-deploy-eapi.gif)
 
-```yml
+```yaml
+# Play to build EOS configuration from EOS_DESIGNS + Deploy using eAPI
 - hosts: DC1_FABRIC
-
   tasks:
 
+    # BUILD EOS configuration
     - name: generate intended variables
       import_role:
          name: arista.avd.eos_designs
-
     - name: generate device intended config and documentation
       import_role:
          name: arista.avd.eos_cli_config_gen
 
+    # EOS eAPI deploy
     - name: deploy configuration via eAPI
       import_role:
          name: arista.avd.eos_config_deploy_eapi
 
+    # EOS eAPI state validation
     - name: audit fabric state using EOS eAPI connection
       import_role:
          name: arista.avd.eos_validate_state
