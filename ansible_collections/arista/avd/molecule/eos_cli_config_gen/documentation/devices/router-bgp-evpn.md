@@ -125,6 +125,12 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Enabled | 10 |  1 |
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles
@@ -183,6 +189,8 @@ router bgp 65101
       vlan 112
    !
    address-family evpn
+      host-flap detection window 10
+      host-flap detection threshold 1
       domain identifier 3906060
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate

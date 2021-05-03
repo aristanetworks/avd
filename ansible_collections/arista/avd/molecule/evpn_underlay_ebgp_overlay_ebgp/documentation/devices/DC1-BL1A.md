@@ -615,9 +615,10 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 ### Router BGP EVPN Address Family
 
 #### EVPN Host Flapping Settings
-| Window | Threshold |
-| ------ | --------- |
-| disabled|  disabled |
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Disabled | - |  - |
 
 #### Router BGP EVPN MAC-VRFs
 

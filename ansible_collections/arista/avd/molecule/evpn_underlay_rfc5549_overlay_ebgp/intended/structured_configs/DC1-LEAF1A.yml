@@ -47,13 +47,13 @@ router_bgp:
       remote_as: 65001
       description: DC1-SPINE4_Ethernet1
   address_family_evpn:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        activate: true
     evpn_hostflap_detection:
       window: 20
       threshold: 30
       enabled: true
-    peer_groups:
-      EVPN-OVERLAY-PEERS:
-        activate: true
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

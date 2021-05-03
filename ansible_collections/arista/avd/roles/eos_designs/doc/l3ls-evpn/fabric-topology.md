@@ -149,32 +149,6 @@ spine:
       id: 2
       mgmt_ip: 192.168.2.102/24
 ```
-## EVPN Host Flapping Settings
-
-**Variables and Options:**
-
-```yaml
-evpn_hostflap_detection:
-
-  # <0-4294967295>  Minimum number of MAC moves that indicate a MAC duplication issue
-  window:
-
-  # <0-4294967295>  Time (in seconds) to detect a MAC duplication issue
-  threshold:
-
-  # If set to false it will disable EVPN host-flap detection
-  enabled: < true | false | default -> true >
-```
-
-**Example:**
-
-```yaml
-
-# EVPN host flapping settings
-evpn_hostflap_detection:
-  window: 20
-  threshold: 30
-```
 
 ## L3 Leaf Variables
 

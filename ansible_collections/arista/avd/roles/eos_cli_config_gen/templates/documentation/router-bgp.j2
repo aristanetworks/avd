@@ -154,24 +154,22 @@
 {%     endif %}
 
 ### Router BGP EVPN Address Family
-{%     if evpn_hostflap_detection.window is arista.avd.defined or evpn_hostflap_detection.threshold is arista.avd.defined or  evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
+{%     if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
-{%         set evpn_hostflap_detection_window = '180' %}
-{%         set evpn_hostflap_detection_threshold = '5' %}
-{%         if evpn_hostflap_detection.window is arista.avd.defined %}
-{%             set evpn_hostflap_detection_window =  evpn_hostflap_detection.window %}
-{%         endif %}
-{%         if evpn_hostflap_detection.threshold is arista.avd.defined %}
-{%             set evpn_hostflap_detection_threshold =  evpn_hostflap_detection.threshold %}
-{%         endif %}
-{%         if evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
-{%             set evpn_hostflap_detection_window = 'disabled' %}
-{%             set evpn_hostflap_detection_threshold = 'disabled' %}
-{%         endif %}
 #### EVPN Host Flapping Settings
-| Window | Threshold |
-| ------ | --------- |
-| {{ evpn_hostflap_detection_window }}|  {{ evpn_hostflap_detection_threshold }} |
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+{%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled | arista.avd.default(true) == true %}
+{%             set evpn_hostflap_detection_state = "Enabled" %}
+{%             set evpn_hostflap_detection_window = router_bgp.address_family_evpn.evpn_hostflap_detection.window | arista.avd.default('-') %}
+{%             set evpn_hostflap_detection_threshold = router_bgp.address_family_evpn.evpn_hostflap_detection.threshold | arista.avd.default('-') %}
+{%         else %}
+{%             set evpn_hostflap_detection_state = "Disabled" %}
+{%             set evpn_hostflap_detection_window = '-' %}
+{%             set evpn_hostflap_detection_threshold = '-' %}
+{%         endif %}
+| {{ evpn_hostflap_detection_state }} | {{ evpn_hostflap_detection_window }} |  {{ evpn_hostflap_detection_threshold }} |
 {%     endif %}
 
 #### Router BGP EVPN MAC-VRFs

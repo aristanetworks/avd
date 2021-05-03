@@ -441,11 +441,6 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
-#### EVPN Host Flapping Settings
-| Window | Threshold |
-| ------ | --------- |
-| 180|  30 |
-
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs

@@ -212,7 +212,7 @@ router bgp {{ router_bgp.as }}
    address-family evpn
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
       no host-flap detection
-{%         else -%}
+{%         else %}
 {%             if router_bgp.address_family_evpn.evpn_hostflap_detection.window is arista.avd.defined %}
       host-flap detection window {{ router_bgp.address_family_evpn.evpn_hostflap_detection.window }}
 {%             endif %}

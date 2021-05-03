@@ -1148,9 +1148,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ### Router BGP EVPN Address Family
 
 #### EVPN Host Flapping Settings
-| Window | Threshold |
-| ------ | --------- |
-| 20|  30 |
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Enabled | 20 |  30 |
 
 #### Router BGP EVPN MAC-VRFs
 

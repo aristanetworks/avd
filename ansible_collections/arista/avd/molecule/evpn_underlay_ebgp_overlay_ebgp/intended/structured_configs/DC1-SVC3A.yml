@@ -72,12 +72,13 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   address_family_evpn:
-    evpn_hostflap_detection:
-      threshold: 30
-      enabled: false
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    evpn_hostflap_detection:
+      window: 180
+      threshold: 30
+      enabled: false
   vrfs:
     Tenant_A_APP_Zone:
       router_id: 192.168.255.12
