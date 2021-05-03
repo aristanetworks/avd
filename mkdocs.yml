@@ -79,7 +79,7 @@ docs_dir: ansible_collections/arista/avd/
 nav:
   - Home: README.md
   - Release Notes:
-      - 2.0.x: docs/release-notes/2.0.x.md
+      - 2.x.x: docs/release-notes/2.x.x.md
       - 1.1.x: docs/release-notes/1.1.x.md
       - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
