@@ -19,7 +19,7 @@
     src: device_text_command.j2
     dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
   loop: "{{ cli_output.results }}"
-  when: '"text" in output_format'
+  when: "'text' in output_format"
 
 - name: Generate json report for fabric
   template:
@@ -27,7 +27,7 @@
     dest: "{{ snapshots_backup_dir }}/report.json"
   delegate_to: localhost
   run_once: true
-  when: '"json" in output_format'
+  when: "'json' in output_format"
 
 - name: Generate yaml report for fabric
   template:
@@ -35,9 +35,8 @@
     dest: "{{ snapshots_backup_dir }}/report.yaml"
   delegate_to: localhost
   run_once: true
-  when: '"yaml" in output_format'
+  when: "'yaml' in output_format"
 
 - name: Generate markdown report for fabric
   include_tasks: "markdown.yml"
-  when:
-    - '"markdown" in output_format'
+  when: "'markdown' in output_format"

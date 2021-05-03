@@ -2,20 +2,21 @@
 - name: Check if structure configuration file exists
   tags: [build, provision]
   stat:
-    path: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+    path: "{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml"
   register: stat_result
   delegate_to: localhost
+  when: structured_config is not defined
 
 - name: Include device intended structure configuration variables
-  include_vars: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+  include_vars: "{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml"
   delegate_to: localhost
   tags: [build, provision]
-  when: stat_result.stat.exists
+  when: structured_config is not defined and stat_result.stat.exists
 
 - name: Generate eos intended configuration
   template:
     src: eos-intended-config.j2
-    dest: '{{ root_dir }}/intended/configs/{{ inventory_hostname }}.cfg'
+    dest: "{{ root_dir }}/intended/configs/{{ inventory_hostname }}.cfg"
   delegate_to: localhost
   register: eosconfig
   tags: [build, provision]
@@ -26,7 +27,7 @@
   block:
     - name: Store checksum of existing device documentation
       ansible.builtin.stat:
-        path: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+        path: "{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md"
         checksum_algorithm: sha224
         get_attributes: no
         get_checksum: yes
@@ -35,11 +36,11 @@
     - name: Generate content of device documentation
       template:
         src: eos-device-documentation.j2
-        dest: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+        dest: "{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md"
       changed_when: false
     - name: Generate TOC for device documentation
       add_toc:
-        md_file: '{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md'
+        md_file: "{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md"
         skip_lines: 3
       register: toc_result
       changed_when: toc_result.checksum | default('1') != doc_stat_result.stat.checksum | default('0')

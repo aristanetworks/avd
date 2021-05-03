@@ -10,7 +10,7 @@
   when: |
     (loopback0_reachability.loopback0_range is defined and loopback0_reachability.loopback0_range is not none) and
     (loopback_interfaces.Loopback0.ip_address is defined and loopback_interfaces.Loopback0.ip_address is not none) and
-    (type is defined and type != "l2leaf")
+    (type is defined and type != 'l2leaf')
   register: loopback0_reachability_state
   tags:
     - loopback0_reachability
@@ -43,7 +43,7 @@
 - name: Validate ip reachability from Inband Management to loopback0 in fabric
   assert:
     that:
-      - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search("1 received")
+      - inb_mgmt_loopback0_reachability_test.stdout[0] | regex_search('1 received')
     fail_msg: "100% packet loss"
     quiet: true
   loop: "{{ inb_mgmt_loopback0_reachability_state.results }}"

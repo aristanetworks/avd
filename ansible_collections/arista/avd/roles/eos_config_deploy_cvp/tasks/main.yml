@@ -13,17 +13,17 @@
   include_tasks: "./main-filter-list.yml"
   when: "device_filter is not string"
 
-- name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
+- name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
   tags: [generate, build, provision]
   template:
     src: "cvp-devices.j2"
-    dest: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
+    dest: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
   delegate_to: localhost
   run_once: true
 
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
-  include_vars: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
+  include_vars: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
   # delegate_to: localhost
 
 #################################################
