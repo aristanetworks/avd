@@ -85,7 +85,7 @@ nav:
   - Getting Started: docs/getting-started.md
   - Installation:
       - Requirements: docs/installation/requirements.md
-      - Setup environment: docs/installation/setup-environement.md
+      - Setup environment: docs/installation/setup-environment.md
       - Ansible-galaxy installation: docs/installation/setup-galaxy.md
       - Git installation: docs/installation/setup-git.md
       - Development tips & tricks: docs/installation/development.md
