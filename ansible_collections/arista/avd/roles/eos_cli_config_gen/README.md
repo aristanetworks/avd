@@ -946,6 +946,9 @@ vlan_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1488,6 +1491,10 @@ qos:
 
 ```yaml
 class_maps:
+  pbr:
+    < class-map name >:
+      ip:
+        access_group: < Standard access-list name >
   qos:
     < class-map name >:
       vlan: < VLAN value(s) or range(s) of VLAN values >
@@ -1500,6 +1507,14 @@ class_maps:
 
 ```yaml
 policy_maps:
+  pbr:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            nexthop:
+              ip_address: < IPv4_address | IPv6_address >
+              recursive: < true | false >
   qos:
     < policy-map name >:
       classes:
