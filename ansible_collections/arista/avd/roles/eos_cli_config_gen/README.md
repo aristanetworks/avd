@@ -1789,12 +1789,16 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < peer_group_name >:
         activate: true
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
         activate: < true | false >
     redistribute_routes:
       < route_type >:
