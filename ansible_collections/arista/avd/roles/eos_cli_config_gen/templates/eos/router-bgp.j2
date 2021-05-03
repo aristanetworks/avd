@@ -210,6 +210,16 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
+{%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
+      no host-flap detection
+{%         else %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.window is arista.avd.defined %}
+      host-flap detection window {{ router_bgp.address_family_evpn.evpn_hostflap_detection.window }}
+{%             endif %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.threshold is arista.avd.defined %}
+      host-flap detection threshold {{ router_bgp.address_family_evpn.evpn_hostflap_detection.threshold }}
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_evpn.domain_identifier }}
 {%         endif %}
