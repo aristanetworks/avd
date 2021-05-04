@@ -27,7 +27,7 @@ $ tree -L 3 -d
 
 ## Requirements
 
-- Ansible runner configured as descried in [this section](../installation/setup-environement.md)
+- Ansible runner configured as descried in [this section](../installation/setup-environment.md)
 - A set of devices configured with their respective management IP address and username.
 - Access to eAPI service for all devices.
 
