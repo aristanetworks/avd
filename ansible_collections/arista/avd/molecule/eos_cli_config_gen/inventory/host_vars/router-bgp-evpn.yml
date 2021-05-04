@@ -24,11 +24,16 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
   redistribute_routes:
   address_family_evpn:
+    domain_identifier: 65101:0
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
       MLAG-IPv4-UNDERLAY-PEER:
         activate: false
+    evpn_hostflap_detection:
+      enabled: true
+      window: 10
+      threshold: 1
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:

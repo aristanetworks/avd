@@ -7,9 +7,10 @@ services:
       - AVD_GIT_USER=${GIT_USER}
       - AVD_GIT_EMAIL=${GIT_EMAIL}
     volumes:
-      - ./../../:/projects
+      - ./../../:/projects:delegated
       - /var/run/docker.sock:/var/run/docker.sock
       - ${HOME}/.gitconfig:/home/avd/.gitconfig
+      - ${HOME}/.ssh:/home/avd/.ssh/
     command: [ "/bin/sh", "-c", "while true; do sleep 30; done;" ]
 
   webdoc_cvp:
@@ -20,7 +21,7 @@ services:
     ports:
       - 8001:8000
     entrypoint: ""
-    command: ["sh", "-c", "pip install -r ansible-cvp/ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f ansible-cvp/mkdocs.yml"]
+    command: ["sh", "-c", "cd ansible-cvp/ && pip install -r ansible_collections/arista/cvp/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]
 
   webdoc_avd:
     image: titom73/mkdocs:latest
@@ -30,4 +31,4 @@ services:
     ports:
       - 8000:8000
     entrypoint: ""
-    command: ["sh", "-c", "pip install -r ansible-avd/ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f ansible-avd/mkdocs.yml"]
+    command: ["sh", "-c", "cd ansible-avd/ && pip install -r ansible_collections/arista/avd/docs/requirements.txt && mkdocs serve --no-livereload --dev-addr=0.0.0.0:8000 -f mkdocs.yml"]

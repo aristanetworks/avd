@@ -13,10 +13,10 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -99,14 +99,15 @@ interface Management1
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | maximum-paths 2 ecmp 2 |
+| bgp bestpath d-path |
 
 ### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
 | ------ | ------ | ------------ | ------------- | --------- | -------------- |
-| 1.1.1.0/24 | False | False  | - | - | True |
-| 1.12.1.0/24 | True | True  | RM-ATTRIBUTE | RM-MATCH | True |
-| 2.2.1.0/24 | False | False  | - | - | False |
+| 1.1.1.0/24 | False | False | - | - | True |
+| 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
+| 2.2.1.0/24 | False | False | - | - | False |
 
 ### Router BGP EVPN Address Family
 
@@ -125,23 +126,25 @@ router bgp 65101
    graceful-restart restart-time 300
    graceful-restart
    maximum-paths 2 ecmp 2
+   bgp bestpath d-path
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
+   !
+   address-family ipv4
+      network 10.0.0.0/8
+      network 172.16.0.0/12
+      network 192.168.0.0/16 route-map RM-FOO-MATCH
+   !
+   address-family ipv6
+      network 2001:db8:100::/40
+      network 2001:db8:200::/40 route-map RM-BAR-MATCH
 ```
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
 
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

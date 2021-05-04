@@ -13,10 +13,10 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -107,7 +107,7 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -126,7 +126,7 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65001 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -137,12 +137,19 @@ interface Management1
 | Address Family | ipv4 |
 | Send community | large |
 
+#### LOCAL-AS
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Local AS | 65000 |
+
 #### MLAG-IPv4-UNDERLAY-PEER
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65101 |
+| Remote AS | 65101 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -190,16 +197,16 @@ interface Management1
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 |  20201:20201  |  |  | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 |  11:11  |  |  | learned | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 |  12:12  |  |  | learned | 112 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected  static |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected  static |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static |
 
 ### Router BGP Device Configuration
 
@@ -229,6 +236,8 @@ router bgp 65101
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor LARGE-COMMUNITY peer group
    neighbor LARGE-COMMUNITY send-community large
+   neighbor LOCAL-AS peer group
+   neighbor LOCAL-AS local-as 65000 no-prepend replace-as
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
@@ -326,18 +335,10 @@ router bgp 65101
       redistribute static route-map RM-CONN-2-BGP
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

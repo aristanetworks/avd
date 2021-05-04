@@ -1,8 +1,8 @@
 {% if qos is defined %}
 
-# QOS
+## QOS
 
-## QOS Summary
+### QOS Summary
 
 {%     if qos.rewrite_dscp is defined and qos.rewrite_dscp == true %}
 QOS rewrite DSCP: **enabled**
@@ -11,7 +11,7 @@ QOS rewrite DSCP: **disabled**
 {%     endif %}
 
 {%     if qos.map is defined and qos is not none %}
-### QOS Mappings
+#### QOS Mappings
 
 {%         if qos.map.cos is defined and qos.map.cos is not none %}
 

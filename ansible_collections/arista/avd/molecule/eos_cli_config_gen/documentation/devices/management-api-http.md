@@ -13,11 +13,11 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -122,16 +122,6 @@ management api http-commands
 | --- | --------------- |
 | default | false |
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
@@ -157,3 +147,5 @@ ip access-list standard ACL-API
    10 permit 10.0.0.0/8
    20 permit 100.0.0.0/8
 ```
+
+# Quality Of Service

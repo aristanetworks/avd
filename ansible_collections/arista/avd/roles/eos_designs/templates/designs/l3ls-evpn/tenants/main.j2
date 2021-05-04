@@ -1,0 +1,37 @@
+{# Add one blank line after each included template #}
+{# Skip these templates if switch.tenants is not even defined (spines, super-spines etc) #}
+{% if switch.configure_tenants is arista.avd.defined(true) %}
+{%         set tenants_data = namespace() %}
+{%         include 'designs/l3ls-evpn/tenants/logic.j2' %}
+
+{%         include 'designs/l3ls-evpn/tenants/ip-igmp-snooping.j2' %}
+
+{%         include 'designs/l3ls-evpn/tenants/vlans.j2' %}
+
+{# Only run EVPN/VXLAN templates for VTEPs #}
+{%     if switch.vtep_ip is arista.avd.defined %}
+{%         include 'designs/l3ls-evpn/tenants/vxlan-tunnel-interface.j2' %}
+
+{%         include 'designs/l3ls-evpn/tenants/router-bgp.j2' %}
+
+{# Only run L3 related templates for L3 VTEPs #}
+{%         if switch.evpn_services_l2_only is not arista.avd.defined(true) %}
+{%             include 'designs/l3ls-evpn/tenants/vrfs.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/vlan-interfaces.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/static-routes.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/ethernet-interfaces.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/loopback-interfaces.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/route-maps.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/virtual-source-nat-vrfs.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/ip_virtual_router_mac_address.j2' %}
+
+{%         endif %}
+{%     endif %}
+{% endif %}

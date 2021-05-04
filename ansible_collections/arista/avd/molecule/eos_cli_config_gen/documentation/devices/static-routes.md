@@ -13,10 +13,10 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -109,18 +109,10 @@ ip route vrf APP 10.3.4.0/24 1.2.3.4
 ip route vrf APP 10.3.5.0/24 Null0
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

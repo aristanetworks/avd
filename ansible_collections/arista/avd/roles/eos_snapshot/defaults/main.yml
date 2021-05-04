@@ -11,8 +11,8 @@ snapshots_backup_dir: '{{ root_dir }}/{{ snapshots_backup_dir_name }}'
 # json: one report per fabric
 # yaml: one report per fabric
 output_format:
- - text
- - markdown
+  - text
+  - markdown
  # - json
  # - yaml
 

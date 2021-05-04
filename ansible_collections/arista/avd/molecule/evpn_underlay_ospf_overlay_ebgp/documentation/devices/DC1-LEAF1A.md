@@ -28,6 +28,7 @@
   - [Static Routes](#static-routes)
   - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -36,6 +37,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -223,18 +225,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet1  |  routed  | - |  172.31.255.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet1  |  routed  | - |  172.31.255.5/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet1  |  routed  | - |  172.31.255.7/31  |  default  |  1500  |  false  |  -  |  -  |
-
-#### OSPF
-| Interface | Channel Group | Area | Cost | Mode |
-| --------- | ------------- | ---- | ---- |----- |
-| Ethernet1 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet2 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet3 | - | 0.0.0.0 |  -  |  point-to-point  |
-| Ethernet4 | - | 0.0.0.0 |  -  |  point-to-point  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -394,21 +388,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- |
-| 101 | 192.168.255.5 |  enabled   |   Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br>|   enabled   | 12000 |  disabled  |  disabled |
-
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
+| 101 | 192.168.255.5 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet1 | 0.0.0.0 |  -  |  True  |
-| Ethernet2 | 0.0.0.0 |  -  |  True  |
-| Ethernet3 | 0.0.0.0 |  -  |  True  |
-| Ethernet4 | 0.0.0.0 |  -  |  True  |
-| Loopback0 | 0.0.0.0 |  -  |  -  |
-| Loopback1 | 0.0.0.0 |  -  |  -  |
+| Ethernet1 | 0.0.0.0 | - | True |
+| Ethernet2 | 0.0.0.0 | - | True |
+| Ethernet3 | 0.0.0.0 | - | True |
+| Ethernet4 | 0.0.0.0 | - | True |
+| Loopback0 | 0.0.0.0 | - | - |
+| Loopback1 | 0.0.0.0 | - | - |
 
 ### Router OSPF Device Configuration
 
@@ -463,6 +456,12 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Enabled | 180 |  30 |
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
@@ -497,11 +496,15 @@ router bgp 65101
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
+      host-flap detection window 180
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
 ```
+
+# BFD
 
 ## Router BFD
 
@@ -551,3 +554,5 @@ IGMP snooping is globally enabled.
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

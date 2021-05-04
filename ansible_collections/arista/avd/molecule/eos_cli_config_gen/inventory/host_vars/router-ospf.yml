@@ -14,6 +14,25 @@ router_ospf:
       redistribute:
         static:
         connected:
+      auto_cost_reference_bandwidth: 100
+      maximum_paths: 10
+      mpls_ldp_sync_default: true
+    101:
+      vrf: CUSTOMER01
+      passive_interface_default: true
+      router_id: 1.0.1.1
+      log_adjacency_changes_detail: true
+      bfd_enable: false
+      no_passive_interfaces:
+        - Ethernet2.101
+      summary_addresses:
+        - prefix: 10.0.0.0/8
+        - prefix: 20.0.0.0/8
+          tag: 10
+        - prefix: 30.0.0.0/8
+          attribute_map: RM-OSPF_SUMMARY
+        - prefix: 40.0.0.0/8
+          not_advertise: true
     200:
       vrf: ospf_zone
       passive_interface_default: false
@@ -28,3 +47,59 @@ router_ospf:
           route_map: rm-ospf-static
         connected:
           route_map: rm-ospf-connected
+      max_metric: # not expected to produce config. Just here to test proper variable checks.
+    300:
+      max_metric:
+        router_lsa:
+    400:
+      max_metric:
+        router_lsa:
+          external_lsa:
+          include_stub: true
+          on_startup: "wait-for-bgp"
+          summary_lsa:
+    500:
+      max_metric:
+        router_lsa:
+          external_lsa:
+            override_metric: 123
+          on_startup: 222
+          summary_lsa:
+            override_metric: 456
+
+ethernet_interfaces:
+  Ethernet1:
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.1
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+loopback_interfaces:
+  Loopback2:
+    ospf_area: 0.0.0.2
+port_channel_interfaces:
+  Port-Channel12:
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.12
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+vlan_interfaces:
+  Vlan24:
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.24
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      55:
+        hash_algorithm: md5
+        key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+

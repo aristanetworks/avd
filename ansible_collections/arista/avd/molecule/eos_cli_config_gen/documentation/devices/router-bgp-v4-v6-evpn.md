@@ -13,10 +13,10 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -105,7 +105,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
@@ -117,7 +117,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -125,7 +125,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65100 |
+| Remote AS | 65100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -134,7 +134,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -142,7 +142,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| Remote_as | 65100 |
+| Remote AS | 65100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -172,17 +172,17 @@ interface Management1
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 24 | 10.50.64.15:10024 |  1:10024 |  -  | -  | learned |
-| 41 | 10.50.64.15:10041 |  1:10041 |  -  | -  | learned |
-| 42 | 10.50.64.15:10042 |  1:10042 |  -  | -  | learned |
-| 65 | 10.50.64.15:10065 |  1:10065 |  -  | -  | learned |
+| 24 | 10.50.64.15:10024 | 1:10024 | - | - | learned |
+| 41 | 10.50.64.15:10041 | 1:10041 | - | - | learned |
+| 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
+| 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Tenant_A | 10.50.64.15:30001 | connected |
-| Tenant_B | 10.50.64.15:30002 ||
+| Tenant_B | 10.50.64.15:30002 | - |
 
 ### Router BGP Device Configuration
 
@@ -295,18 +295,10 @@ router bgp 65100
       route-target export evpn 1:30002
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

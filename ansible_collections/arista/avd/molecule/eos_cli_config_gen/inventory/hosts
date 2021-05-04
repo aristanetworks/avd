@@ -5,6 +5,7 @@ acl
 aliases
 arp
 base
+class-maps
 dns-ntp
 enable-password
 errdisable
@@ -16,7 +17,8 @@ hardware
 igmp-snooping
 interface-defaults
 ip-dhcp-relay
-ip-extended-communities
+ip-extended-community-lists
+ip-extended-community-lists-regexp
 ip-routing
 ip-tacacs-source-interface
 ipv6-access-lists
@@ -33,9 +35,11 @@ management-interfaces
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
+mpls
 none_configuration
 ntp
 platform
+policy-maps
 port-channel-interfaces
 prefix-lists
 prompt
@@ -49,6 +53,7 @@ router-bgp-evpn
 router-bgp-rtc
 router-bgp-v4-evpn
 router-bgp-v4-v6-evpn
+router-bgp-vpn-ipv4
 router-bgp-vrf-lite
 router-general
 router-isis
@@ -68,7 +73,9 @@ tcam-profile
 static-routes
 terminattr-cloud
 terminattr-prem
+terminattr-prem-no-ingestkey
 terminattr-prem-disableaaa
+traffic-policies
 unsupported-transceiver
 vlan-interfaces
 virtual-source-nat

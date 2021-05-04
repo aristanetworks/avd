@@ -19,6 +19,10 @@
 underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
 overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
 
+# Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumberred.
+# Requires "underlay_routing_protocol: EBGP"
+underlay_rfc5549: < true | false | Default -> false >
+
 # Underlay OSFP | Required when < underlay_routing_protocol > == OSPF
 underlay_ospf_process_id: < process_id | Default -> 100 >
 underlay_ospf_area: < ospf_area | Default -> 0.0.0.0 >
@@ -80,10 +84,13 @@ evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
+    name: < name of peer group | default -> IPv4-UNDERLAY-PEERS >
     password: "< encrypted password >"
   MLAG_IPv4_UNDERLAY_PEER:
+      name: < name of peer group | default -> MLAG-IPv4-UNDERLAY-PEER >
       password: "< encrypted password >"
   EVPN_OVERLAY_PEERS:
+      name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
 
 # Spine BGP Tuning | Optional.
@@ -115,6 +122,18 @@ bfd_multihop:
   interval: < | default -> 300 >
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
+
+## EVPN Host Flapping Settings
+evpn_hostflap_detection:
+
+  # If set to false it will disable EVPN host-flap detection
+  enabled: < true | false | default -> true >
+
+  # Minimum number of MAC moves that indicate a MAC duplication issue
+  threshold: < number | default 5 >
+
+  # Time (in seconds) to detect a MAC duplication issue
+  window: < seconds | default 180 >
 
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.

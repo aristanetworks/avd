@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -22,6 +23,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
@@ -31,6 +33,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -108,6 +111,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-SPINE2 |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-SPINE2
+```
+
 # Spanning Tree
 
 ## Spanning Tree Summary
@@ -156,10 +194,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4  |  routed  | - |  172.16.12.3/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4  |  routed  | - |  172.16.12.67/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2  |  routed  | - |  172.17.120.2/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5  |  routed  | - |  200.200.200.101/24  |  default  |  1498  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet4 | routed | - | 172.16.12.3/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet4 | routed | - | 172.16.12.67/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2 | routed | - | 172.17.120.2/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet5 | routed | - | 200.200.200.101/24 | default | 1498 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -355,6 +393,7 @@ router bgp 65120
    neighbor 172.16.120.3 description DC1-POD2-LEAF1A
    neighbor 172.17.120.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.120.3 remote-as 65121
+   neighbor 172.17.120.3 description DC1-POD2-LEAF1A_Ethernet3
    neighbor 200.200.200.201 peer group IPv4-UNDERLAY-PEERS
    neighbor 200.200.200.201 remote-as 65210
    neighbor 200.200.200.201 local-as 65112 no-prepend replace-as
@@ -373,6 +412,8 @@ router bgp 65120
       neighbor IPv4-UNDERLAY-PEERS activate
 ```
 
+# BFD
+
 ## Router BFD
 
 ### Router BFD Multihop Summary
@@ -381,7 +422,13 @@ router bgp 65120
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-*No device configuration required - default values
+### Router BFD Multihop Device Configuration
+
+```eos
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+```
 
 # Multicast
 
@@ -395,14 +442,14 @@ router bgp 65120
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 172.16.120.0/24 le 32 |
+| 10 | permit 172.16.120.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.16.120.0/24 le 32
+   seq 10 permit 172.16.120.0/24 eq 32
 ```
 
 ## Route-maps
@@ -439,3 +486,5 @@ route-map RM-CONN-2-BGP permit 10
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

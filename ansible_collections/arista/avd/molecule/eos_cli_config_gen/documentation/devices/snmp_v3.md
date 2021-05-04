@@ -13,10 +13,10 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -96,6 +96,14 @@ interface Management1
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
 | VW-WRITE | iso |  Included | VW-READ | iso |  Included 
+### SNMP Communities
+
+| Community | Access | Access List IPv4 | Access List IPv6 | View |
+| --------- | ------ | ---------------- | ---------------- | ---- |
+| SNMP-COMMUNITY-1 | ro | onur | - | - |
+| SNMP-COMMUNITY-2 | rw | SNMP-MGMT | SNMP-MGMT | VW-READ |
+| SNMP-COMMUNITY-3 | ro | - | - | - |
+
 ### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |
@@ -126,6 +134,9 @@ snmp-server local-interface Loopback0
 snmp-server vrf Tenant_A_APP_Zone local-interface Loopback12
 snmp-server view VW-WRITE iso included
 snmp-server view VW-READ iso included
+snmp-server community SNMP-COMMUNITY-1 ro onur
+snmp-server community SNMP-COMMUNITY-2 view VW-READ rw ipv6 SNMP-MGMT SNMP-MGMT
+snmp-server community SNMP-COMMUNITY-3 ro
 snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
 snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
@@ -171,18 +182,10 @@ snmp-server vrf mgt
 | --- | --------------- |
 | default | false |
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

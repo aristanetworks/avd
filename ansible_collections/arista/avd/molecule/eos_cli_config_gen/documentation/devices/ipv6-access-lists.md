@@ -12,11 +12,11 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -84,16 +84,6 @@ interface Management1
 | --- | --------------- |
 | default | false |
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
@@ -119,3 +109,5 @@ ipv6 access-list TEST1
    5 deny ip fe80::/64
    10 permit ip fe90::/64
 ```
+
+# Quality Of Service

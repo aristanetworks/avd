@@ -1,0 +1,17 @@
+{% if switch.vtep_ip is arista.avd.defined %}
+route_maps:
+  RM-EVPN-SOO-IN:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - "extcommunity ECL-EVPN-SOO"
+      20:
+        type: permit
+  RM-EVPN-SOO-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - "extcommunity soo {{ switch.vtep_ip }}:1 additive"
+{% endif %}

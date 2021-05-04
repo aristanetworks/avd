@@ -12,10 +12,12 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -83,6 +85,8 @@ interface Management1
 | --- | --------------- |
 | default | false |
 
+# BFD
+
 ## Router BFD
 
 ### Router BFD Multihop Summary
@@ -91,10 +95,18 @@ interface Management1
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-*No device configuration required - default values
+### Router BFD Multihop Device Configuration
+
+```eos
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+```
 
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

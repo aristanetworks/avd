@@ -33,6 +33,7 @@
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
       - [Community Lists](#community-lists)
       - [IP Extended Community Lists](#ip-extended-community-lists)
+      - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
     - [Hardware](#hardware)
@@ -68,6 +69,7 @@
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [NTP Servers](#ntp-servers)
+    - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
       - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -86,6 +88,8 @@
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
       - [QOS](#qos)
+      - [QOS Class-maps](#qos-class-maps)
+      - [QOS Policy-map](#qos-policy-map)
       - [QOS Profiles](#qos-profiles)
       - [Queue Monitor Length](#queue-monitor-length)
       - [Queue Monitor Streaming](#queue-monitor-streaming)
@@ -106,6 +110,7 @@
     - [Router L2 VPN](#router-l2-vpn)
     - [Spanning Tree](#spanning-tree)
     - [Terminal Settings](#terminal-settings)
+    - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [License](#license)
@@ -234,6 +239,8 @@ aaa_authentication:
   login:
     default: < group group_name | local | none > < group group_name | local | none >
     serial_console: < group group_name | local | none > < group group_name | local | none >
+  enable:
+    default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
     default: < group group_name >
   policies:
@@ -351,6 +358,7 @@ tacacs_servers:
       key: < encypted_key >
     - host: < host2_ip_address >
       key: < encypted_key >
+      timeout: < timeout in seconds >
   policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
 
@@ -473,6 +481,15 @@ ip_extcommunity_lists:
       extcommunities: "< communities as string >"
 ```
 
+#### IP Extended Community Lists RegExp
+
+```yaml
+ip_extcommunity_lists_regexp:
+  < community_list_name >:
+    - type: < permit | deny >
+      regexp: "< string >"
+```
+
 #### Peer Filters
 
 ```yaml
@@ -534,7 +551,7 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
+    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -547,6 +564,8 @@ platform:
     lag:
       hardware_only: < true | false >
       mode: < mode | default -> 1024x16 >
+    multicast_replication:
+      default: ingress
 ```
 
 #### Redundancy
@@ -582,8 +601,9 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
-    type: < routed | switched >
+    type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -641,6 +661,17 @@ ethernet_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
+    mpls:
+      ip: < true | false >
+      ldp:
+        interface: < true | false >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -652,9 +683,12 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
+    l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -696,6 +730,13 @@ ethernet_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 #### Interface Defaults
@@ -729,6 +770,9 @@ loopback_interfaces:
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     ospf_area: < ospf_area >
+    mpls:
+      ldp:
+        interface: < true | false >
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -746,7 +790,12 @@ port_channel_interfaces:
     description: < description >
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
+    type: < routed | switched | l3dot1q >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
+    mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
       - < trunk_group_name_1 >
@@ -757,6 +806,10 @@ port_channel_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
@@ -767,6 +820,7 @@ port_channel_interfaces:
   < Port-Channel_interface_3 >:
     description: < description >
     vlans: "< list of vlans as string >"
+    type: < routed | switched | l3dot1q >
     mode: < access | dot1q-tunnel | trunk >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
@@ -787,7 +841,7 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
-    type: < switched | routed >
+    type: < routed | switched | l3dot1q >
     ip_address:  < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
@@ -808,6 +862,15 @@ port_channel_interfaces:
       ipv4:
         sparse_mode: < true | false >
     service_profile: < qos_profile >
+    ospf_network_point_to_point: < true | false >
+    ospf_area: < ospf_area >
+    ospf_cost: < ospf_cost >
+    ospf_authentication: < none | simple | message-digest >
+    ospf_authentication_key: "< encrypted_password >"
+    ospf_message_digest_keys:
+      < id >:
+        hash_algorithm: < md5 | sha1 | sha 256 | sha384 | sha512 >
+        key: "< encrypted_password >"
 ```
 
 #### VLAN Interfaces
@@ -879,6 +942,13 @@ vlan_interfaces:
       ipv6: < virtual_ip_address >
     ip_attached_host_route_export:
       distance: < distance >
+    bfd:
+      interval: < rate in milliseconds >
+      min_rx: < rate in milliseconds >
+      multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1049,7 +1119,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
-    encryption_key_common : < true | false >
+    encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -1106,6 +1176,18 @@ ntp_server:
     - < ntp_server_2 >
 ```
 
+### MPLS
+
+```yaml
+mpls:
+  ip: < true | false >
+  ldp:
+    interface_disabled_default: < true | false >
+    router_id: < string >
+    shutdown: < true | false >
+    transport_address_interface: < interface_name >
+```
+
 ### Multi-Chassis LAG - MLAG
 
 ```yaml
@@ -1152,11 +1234,11 @@ router_pim_sparse_mode:
     rp_addresses:
       < rp_address_1 >:
         groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
+          < group_prefix_1/mask >:
+          < group_prefix_2/mask >:
       < rp_address_2 >:
     anycast_rps:
-      < anycast_rp_address_1 > :
+      < anycast_rp_address_1 >:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
@@ -1265,6 +1347,21 @@ sflow:
 snmp_server:
   contact: < contact_name >
   location: < location >
+  communities:
+    < community_name_1 >:
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
+    < community_name_2 >:
+      access: < ro | rw >
+      access_list_ipv4:
+        name: < acl_ipv4_name >
+      access_list_ipv6:
+        name: < acl_ipv6_name >
+      view: < view_name >
   ipv4_acls:
     - name: < ipv4-access-list >
       vrf: < vrf >
@@ -1390,6 +1487,44 @@ qos:
   rewrite_dscp: < true | false >
 ```
 
+#### QOS Class-maps
+
+```yaml
+class_maps:
+  pbr:
+    < class-map name >:
+      ip:
+        access_group: < Standard access-list name >
+  qos:
+    < class-map name >:
+      vlan: < VLAN value(s) or range(s) of VLAN values >
+      cos: < CoS value(s) or range(s) of CoS values >
+      ip:
+        access_group: < Standard access-list name >
+```
+
+#### QOS Policy-map
+
+```yaml
+policy_maps:
+  pbr:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            nexthop:
+              ip_address: < IPv4_address | IPv6_address >
+              recursive: < true | false >
+  qos:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            dscp: < dscp-code >
+            traffic_class: < traffic-class ID >
+            drop_precedence: < drop-precedence value >
+```
+
 #### QOS Profiles
 
 ```yaml
@@ -1467,6 +1602,20 @@ ip_routing: < true | false >
 
 ```yaml
 ipv6_unicast_routing: < true | false >
+ip_routing_ipv6_interfaces: < true | false >
+```
+
+#### Router General configuration
+
+```yaml
+router_general:
+  vrfs:
+    < destination-vrf >:
+      leak_routes:
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
+        - source_vrf: < source-vrf >
+          subscribe_policy: < route-map policy >
 ```
 
 #### Router General configuration
@@ -1491,9 +1640,14 @@ router_bgp:
   bgp_defaults:
     - "< bgp command as string >"
     - "< bgp command as string >"
+  bgp:
+    bestpath:
+      d_path: < true | false >
   peer_groups:
     < peer_group_name_1>:
       type: < ipv4 | evpn >
+      remote_as: < bgp_as >
+      local_as: < bgp_as >
       description: "< description as string >"
       shutdown: < true | false >
       peer_filter: < peer_filter >
@@ -1534,6 +1688,11 @@ router_bgp:
       password: "< encrypted_password >"
     < IPv6_address_1 >:
       remote_as: < bgp_as >
+  neighbor_interfaces:
+    < interface >:
+      peer_group: < peer_group_name >
+      remote_as: < bgp_as >
+      description: "< description as string >"
   aggregate_addresses:
     < aggregate_address_1/mask >:
       advertise_only: < true | false >
@@ -1601,11 +1760,16 @@ router_bgp:
         - < connected >
         - < learned >
   address_family_evpn:
+    domain_identifier: < string >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+    evpn_hostflap_detection:
+      enabled: < true | false >
+      threshold: < integer >
+      window: < integer >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:
@@ -1649,6 +1813,9 @@ router_bgp:
     redistribute_routes:
       < route_type >:
   address_family_ipv6:
+    networks:
+      < prefix_ipv6 >:
+        route_map: < route_map_name >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
@@ -1666,6 +1833,13 @@ router_bgp:
         route_map: < route_map_name >
       < route_type >:
         route_map: < route_map_name >
+  address_family_vpn_ipv4:
+    domain_identifier: < string >
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: < interface >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
@@ -1785,6 +1959,17 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+      auto_cost_reference_bandwidth: < bandwidth in mbps >
+      maximum_paths: < Integer 1-32 >
+      max_metric:
+        router_lsa:
+          external_lsa:
+            override_metric: < Integer 1-16777215 >
+          include_stub: < true | false >
+          on_startup: < "wait-for-bgp" | Integer 5-86400 >
+          summary_lsa:
+            override_metric: < Integer 1-16777215 >
+      mpls_ldp_sync_default: < true | false >
 ```
 
 #### Router ISIS Configuration
@@ -1873,6 +2058,7 @@ router_l2_vpn:
 
 ```yaml
 spanning_tree:
+  root_super: < true | false >
   edge_port:
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
@@ -1906,6 +2092,90 @@ spanning_tree:
 terminal:
   length: < 0-32767 >
   width: < 0-32767 >
+```
+
+
+### Traffic Policies
+
+```yaml
+traffic_policies:
+  options:
+    counter_per_interface: < true | false >
+  field_sets:
+    ipv4:
+      < PREFIX FIELD SET NAME >:
+        - < IPv4 prefix 01>
+        - < IPv4 prefix 02>
+        - < IPv4 prefix 03>
+    ipv6:
+      < PREFIX FIELD SET NAME >:
+        - < IPv6 prefix 01>
+        - < IPv6 prefix 02>
+        - < IPv6 prefix 03>
+    ports:
+      < L4 PORT FIELD SET NAME >: "< vlan range >"
+  policies:
+    < TRAFFIC POLICY NAME >:
+      matches:
+        < TRAFFIC POLICY ITEM >:
+          type: < ipv4 | ipv6 >
+          source:
+            prefixes:
+              - < prefix 01 >
+              - < prefix 02 >
+            prefix_lists:
+              - < Field Set List 01 >
+              - < Field Set List 02 >
+          ttl: "< ttl range>"
+          # The 'fragment' command is not supported when 'source port'
+          # or 'destination port' command is configured
+          fragment:
+            offset: "< fragment offset range >"
+          protocols:
+            tcp:
+              src_port: "< port range >"
+              dst_port: "< port range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+              flags:
+                - established
+                - initial
+            icmp:
+              icmp_type:
+                - < ICMP message type >
+                - < ICMP message type >
+            udp:
+              src_port: "< port range >"
+              dst_port: "< port range >"
+              src_field: "< L4 port range field set >"
+              dst_field: "< L4 port range field set >"
+            ahp:
+            bgp:
+            icmp:
+            igmp:
+            ospf:
+            pim:
+            rsvp:
+            vrrp:
+            # The 'protocol neighbors' subcommand is not supported when any
+            # other match subcommands are configured
+            neighbors:
+          actions:
+            dscp: < dscp code value >
+            traffic_class: < traffic class id >
+            count: < counter name >
+            drop: < true | false (default false) >
+            # Only supported when action is set to drop
+            log: < true | false (default false) >
+          # Last resort policy
+          default_actions:
+            < ipv4 | ipv6 >:
+              dscp: < dscp code value >
+              traffic_class: < traffic class id >
+              count: < counter name >
+              drop: < true | false (default false) >
+              # Only supported when action is set to drop
+              log: < true | false (default false) >
 ```
 
 ### Virtual Source NAT

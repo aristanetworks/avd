@@ -1,0 +1,5 @@
+{% for connected_endpoints_key in connected_endpoints_keys | arista.avd.natural_sort %}
+{%     if hostvars[inventory_hostname][connected_endpoints_key] is arista.avd.defined %}
+{%         do connected_endpoints.update({connected_endpoints_key: hostvars[inventory_hostname][connected_endpoints_key]}) %}
+{%     endif %}
+{% endfor %}

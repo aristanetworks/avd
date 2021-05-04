@@ -19,10 +19,10 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -90,7 +90,7 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$.I7/ZR/zlLIUv
 !
 tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
 tacacs-server host 10.10.10.158 key 7 071B245F5A
-tacacs-server host 10.10.10.249 key 7 071B245F5A
+tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```
 
 ## RADIUS Servers
@@ -151,6 +151,7 @@ Policy local allow-nopassword-remote-login has been enabled.
 !
 aaa authentication login default group TACACS local
 aaa authentication login serial-console local
+aaa authentication enable default group TACACS local
 aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
@@ -234,18 +235,10 @@ aaa accounting commands 0 default start-stop logging
 | --- | --------------- |
 | default | false |
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

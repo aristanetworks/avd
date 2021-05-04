@@ -36,16 +36,18 @@
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
   - [Route-maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
+  - [IP Extended Community Lists](#ip-extended-community-lists)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -284,19 +286,19 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet5  |  routed  | - |  172.31.255.33/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-SPINE2_Ethernet5  |  routed  | - |  172.31.255.35/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-SPINE3_Ethernet5  |  routed  | - |  172.31.255.37/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SPINE4_Ethernet5  |  routed  | - |  172.31.255.39/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 172.31.255.33/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 172.31.255.35/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | 172.31.255.37/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | 172.31.255.39/31 | default | 1500 | false | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -454,7 +456,6 @@ interface Loopback1
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan4093 |  default  |  10.255.251.7/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  10.255.252.7/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 
 #### ISIS
@@ -617,12 +618,12 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+#### OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Source | Loopback0 |
 | Bfd | true |
 | Send community | all |
@@ -632,8 +633,8 @@ router isis EVPN_UNDERLAY
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.4 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -650,26 +651,28 @@ router bgp 65000
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65000
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor OVERLAY-PEERS peer group
+   neighbor OVERLAY-PEERS remote-as 65000
+   neighbor OVERLAY-PEERS update-source Loopback0
+   neighbor OVERLAY-PEERS bfd
+   neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor OVERLAY-PEERS send-community
+   neighbor OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group OVERLAY-PEERS
    neighbor 192.168.255.1 description DC1-SPINE1
-   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.4 peer group OVERLAY-PEERS
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
-      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
-      neighbor EVPN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
-      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
+      neighbor OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
+      neighbor OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
+      no neighbor OVERLAY-PEERS activate
 ```
+
+# BFD
 
 ## Router BFD
 
@@ -732,15 +735,15 @@ route-map RM-EVPN-SOO-OUT permit 10
    set extcommunity soo 192.168.254.8:1 additive
 ```
 
-## IP Extended Communities
+## IP Extended Community Lists
 
-### IP Extended Communities Summary
+### IP Extended Community Lists Summary
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
+| List Name | Type | Extended Communities |
+| --------- | ---- | -------------------- |
 | ECL-EVPN-SOO | permit | soo 192.168.254.8:1 |
 
-### IP Extended Communities configuration
+### IP Extended Community Lists configuration
 
 ```eos
 !
@@ -763,3 +766,5 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.8:1
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

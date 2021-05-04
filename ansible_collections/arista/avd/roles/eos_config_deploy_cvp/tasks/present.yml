@@ -1,6 +1,6 @@
 ---
 # tasks file for eos-config-deploy-cvp - state=present
-- name: 'Collecting facts from CVP {{ inventory_hostname }}.'
+- name: "Collecting facts from CVP {{ inventory_hostname }}."
   tags: [always]
   arista.cvp.cv_facts:
   register: CVP_FACTS
@@ -11,7 +11,7 @@
     tasks: "{{ CVP_FACTS.ansible_facts.tasks }}"
   when: execute_tasks|bool
 
-- name: 'Create configlets on CVP {{ inventory_hostname }}.'
+- name: "Create configlets on CVP {{ inventory_hostname }}."
   tags: [provision]
   arista.cvp.cv_configlet:
     cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
@@ -19,7 +19,7 @@
     configlet_filter: ["{{ configlets_prefix }}"]
   register: CVP_CONFIGLETS_STATUS
 
-- name: 'Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}'
+- name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task:
     tasks: "{{ CVP_CONFIGLETS_STATUS.data.tasks }}"
@@ -31,8 +31,8 @@
 - name: "Building Containers topology on {{ inventory_hostname }}"
   tags: [provision]
   arista.cvp.cv_container:
-    topology: '{{ CVP_CONTAINERS }}'
-    cvp_facts: '{{ CVP_FACTS.ansible_facts }}'
+    topology: "{{ CVP_CONTAINERS }}"
+    cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
   register: CVP_CONTAINER_RESULTS
 
 - name: "Execute pending tasks on {{ inventory_hostname }}"
@@ -43,7 +43,7 @@
   when:
     - execute_tasks|bool
 
-- name: 'Refreshing facts from CVP {{ inventory_hostname }}.'
+- name: "Refreshing facts from CVP {{ inventory_hostname }}."
   tags: [always]
   arista.cvp.cv_facts:
   register: CVP_FACTS

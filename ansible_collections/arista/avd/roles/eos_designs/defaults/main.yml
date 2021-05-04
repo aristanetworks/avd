@@ -1,6 +1,40 @@
 # Roles Defaults
 # Root directory where to build output structure
-root_dir: '{{inventory_dir}}'
+root_dir: '{{ inventory_dir }}'
+
+# Design variables
+design:
+  type: "l3ls-evpn"
+
+templates:
+  # Templates defined per design
+  l3ls-evpn:
+    facts:
+      # Set general "switch.*" variables
+      - template: "facts/main.j2"
+      # Set design specific "switch.*" variables
+      - template: "designs/l3ls-evpn/facts/main.j2"
+    structured_config:
+      # Render Strucured Configuration
+      # Base features
+      - template: "base/main.j2"
+      # MLAG feature
+      - template: "mlag/main.j2"
+      # Underlay feature
+      - template: "designs/l3ls-evpn/underlay/main.j2"
+      # Overlay feature
+      - template: "designs/l3ls-evpn/overlay/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Tenants feature
+      - template: "designs/l3ls-evpn/tenants/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Merge custom_structured_configuration last
+      - template: "custom-structured-configuration-from-var.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
 
 # Design variables
 design:
@@ -95,16 +129,31 @@ mlag_ibgp_peering_vrfs:
 # Recommended default values for Jericho based platform, and all other platforms default tag.
 
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     reload_delay:
       mlag: 300
       non_mlag: 330
-  - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
       mlag: 780
       non_mlag: 1020
 
+# Infrastructure Elements Keys
+
+connected_endpoints_keys:
+  servers:
+    type: server
+  firewalls:
+    type: firewall
+  routers:
+    type: router
+  load_balancers:
+    type: load_balancer
+  storage_arrays:
+    type: storage_array
+
 #custom_structured_configuration_prefix allows the user to customize the prefix for Custom Structured Configuration variables.
 custom_structured_configuration_prefix: custom_structured_configuration_
+custom_structured_configuration_list_merge: 'replace'

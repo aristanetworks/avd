@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -32,6 +33,7 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
@@ -42,6 +44,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -119,6 +122,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A
+```
+
 # MLAG
 
 ## MLAG Summary
@@ -193,6 +231,8 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | none  |
 | 111 | Tenant_A_OP_Zone_2 | none  |
 | 112 | Tenant_A_OP_Zone_3 | none  |
+| 2500 | web-l2-vlan | none  |
+| 2600 | web-l2-vlan-2 | none  |
 | 4085 | L2LEAF_INBAND_MGMT | none  |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
 | 4094 | MLAG_PEER | MLAG  |
@@ -209,6 +249,12 @@ vlan 111
 !
 vlan 112
    name Tenant_A_OP_Zone_3
+!
+vlan 2500
+   name web-l2-vlan
+!
+vlan 2600
+   name web-l2-vlan-2
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
@@ -232,8 +278,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,4085 | *- | *- | 3 |
+| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
+| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 
@@ -243,9 +289,9 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4  |  routed  | - |  172.17.110.5/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4  |  routed  | - |  172.17.110.7/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6  |  routed  | - |  100.100.100.101/24  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.5/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.7/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -305,7 +351,7 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -316,7 +362,7 @@ interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,4085
+   switchport trunk allowed vlan 110-112,2500,2600,4085
    switchport mode trunk
    mlag 3
    service-profile QOS-PROFILE
@@ -391,7 +437,6 @@ interface Loopback1
 | Vlan4094 |  default  |  172.19.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 
 
-
 ### VLAN Interfaces Device Configuration
 
 ```eos
@@ -451,6 +496,8 @@ interface Vlan4094
 | 110 | 10110 |
 | 111 | 50111 |
 | 112 | 50112 |
+| 2500 | 2500 |
+| 2600 | 2600 |
 
 #### VRF to VNI Mappings
 
@@ -469,6 +516,8 @@ interface Vxlan1
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111
    vxlan vlan 112 vni 50112
+   vxlan vlan 2500 vni 2500
+   vxlan vlan 2600 vni 2600
    vxlan vrf Common_VRF vni 1025
 ```
 
@@ -563,7 +612,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65110 |
+| Remote AS | 65110 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -572,7 +621,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote_as | 65112 |
+| Remote AS | 65112 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -597,9 +646,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.4:10110 |  10110:10110 |  -  | -  | learned |
-| 111 | 172.16.110.4:50111 |  50111:50111 |  -  | -  | learned |
-| 112 | 172.16.110.4:50112 |  50112:50112 |  -  | -  | learned |
+| 110 | 172.16.110.4:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.110.4:50112 | 50112:50112 | - | - | learned |
+| 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.110.4:2600 | 2600:2600 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -653,8 +704,11 @@ router bgp 65112
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
    neighbor 172.17.110.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.4 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.6 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.3 description DC1-POD1-LEAF2B
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
@@ -671,6 +725,16 @@ router bgp 65112
    vlan 112
       rd 172.16.110.4:50112
       route-target both 50112:50112
+      redistribute learned
+   !
+   vlan 2500
+      rd 172.16.110.4:2500
+      route-target both 2500:2500
+      redistribute learned
+   !
+   vlan 2600
+      rd 172.16.110.4:2600
+      route-target both 2600:2600
       redistribute learned
    !
    address-family evpn
@@ -692,6 +756,8 @@ router bgp 65112
       redistribute connected
 ```
 
+# BFD
+
 ## Router BFD
 
 ### Router BFD Multihop Summary
@@ -700,7 +766,13 @@ router bgp 65112
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-*No device configuration required - default values
+### Router BFD Multihop Device Configuration
+
+```eos
+!
+router bfd
+   multihop interval 300 min-rx 300 multiplier 3
+```
 
 # Multicast
 
@@ -831,3 +903,5 @@ vrf instance Common_VRF
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

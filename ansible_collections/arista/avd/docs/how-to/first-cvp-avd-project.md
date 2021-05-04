@@ -43,7 +43,7 @@ This management IP addresses are used in a private virtual-network between Cloud
 
 ### Configure Python environment
 
-Please refer to [__installation page__](../installation/setup-environement.md) to configure AVD and CVP collection.
+Please refer to [__installation page__](../installation/setup-environment.md) to configure AVD and CVP collection.
 
 ### Configure DHCP server on CloudVision
 
@@ -51,7 +51,7 @@ In this scenario, we use CloudVision (CV) as ZTP server to provision devices and
 
 Once you get mac-address of your switches, edit file `/etc/dhcp/dhcpd.conf` in CloudVision. In this scenario, CV use following address to connect to devices: `10.255.0.1`
 
-If CVP has not been configured to activate ZTP services, it is higly recommended to follow [these steps](https://www.arista.com/en/cg-cv/cv-dhcp-service-for-zero-touch-provisioning-ztp-setup)
+If CVP has not been configured to activate ZTP services, it is highly recommended to follow [these steps](https://www.arista.com/en/cg-cv/cv-dhcp-service-for-zero-touch-provisioning-ztp-setup)
 
 #### Ansible playbook approach
 

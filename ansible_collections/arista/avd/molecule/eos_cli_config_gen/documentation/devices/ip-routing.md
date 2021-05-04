@@ -12,13 +12,13 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -101,21 +101,12 @@ no ip icmp redirect
 ```eos
 !
 ipv6 unicast-routing
+ip routing ipv6 interfaces
 !
 ipv6 unicast-routing vrf default
 ipv6 unicast-routing vrf TEST1
 no ipv6 icmp redirect
 ```
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
 
 # Multicast
 
@@ -141,3 +132,5 @@ vrf instance TEST1
 !
 vrf instance TEST2
 ```
+
+# Quality Of Service

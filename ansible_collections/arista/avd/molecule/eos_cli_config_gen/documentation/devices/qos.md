@@ -14,16 +14,12 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-- [QOS](#qos)
-  - [QOS Summary](#qos-summary)
-  - [QOS Device Configuration](#qos-device-configuration)
-- [QOS Profiles](#qos-profiles)
-  - [QOS Profiles Summary](#qos-profiles-summary)
-  - [QOS Profile Device Configuration](#qos-profile-device-configuration)
+- [Quality Of Service](#quality-of-service)
+  - [QOS](#qos)
+  - [QOS Profiles](#qos-profiles)
 
 <!-- toc -->
 # Management
@@ -88,7 +84,7 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-SPINE1_Ethernet1  |  routed  | - |  172.31.255.1/31  |  default  |  1500  |  -  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -168,29 +164,21 @@ interface Port-Channel3
 | --- | --------------- |
 | default | false |
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 # Filters
 
 # ACL
 
-# QOS
+# Quality Of Service
+
+## QOS
 
 ## QOS Summary
 
 QOS rewrite DSCP: **enabled**
 
-### QOS Mappings
+#### QOS Mappings
 
 
 | COS to Traffic Class mappings |
@@ -227,9 +215,9 @@ qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
 ```
 
-# QOS Profiles
+## QOS Profiles
 
-## QOS Profiles Summary
+### QOS Profiles Summary
 
 
 QOS Profile: **experiment**

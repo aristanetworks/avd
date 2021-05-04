@@ -26,6 +26,7 @@
   - [Static Routes](#static-routes)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
+- [BFD](#bfd)
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
@@ -33,6 +34,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -213,25 +215,25 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  P2P_LINK_TO_DC1-LEAF1A_Ethernet1  |  routed  | - |  172.31.255.0/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet2 |  P2P_LINK_TO_DC1-LEAF2A_Ethernet1  |  routed  | - |  172.31.255.8/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet3 |  P2P_LINK_TO_DC1-LEAF2B_Ethernet1  |  routed  | - |  172.31.255.16/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet4 |  P2P_LINK_TO_DC1-SVC3A_Ethernet1  |  routed  | - |  172.31.255.24/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet5 |  P2P_LINK_TO_DC1-SVC3B_Ethernet1  |  routed  | - |  172.31.255.32/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet6 |  P2P_LINK_TO_DC1-BL1A_Ethernet1  |  routed  | - |  172.31.255.40/31  |  default  |  1500  |  false  |  -  |  -  |
-| Ethernet7 |  P2P_LINK_TO_DC1-BL1B_Ethernet1  |  routed  | - |  172.31.255.48/31  |  default  |  1500  |  false  |  -  |  -  |
+| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | routed | - | 172.31.255.0/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | routed | - | 172.31.255.8/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | routed | - | 172.31.255.16/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet1 | routed | - | 172.31.255.24/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet1 | routed | - | 172.31.255.32/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet1 | routed | - | 172.31.255.40/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | routed | - | 172.31.255.48/31 | default | 1500 | false | - | - |
 
 #### ISIS
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
 | --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet5 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet6 | - | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet7 | - | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -443,12 +445,12 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP Peer Groups
 
-#### EVPN-OVERLAY-PEERS
+#### OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote_as | 65000 |
+| Remote AS | 65000 |
 | Route Reflector Client | Yes |
 | Source | Loopback0 |
 | Bfd | true |
@@ -459,13 +461,13 @@ router isis EVPN_UNDERLAY
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 192.168.255.5 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.6 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.7 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.8 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.9 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.10 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.11 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
+| 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.8 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.9 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.10 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.11 | Inherited from peer group OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -483,35 +485,37 @@ router bgp 65000
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS remote-as 65000
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS route-reflector-client
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
-   neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
+   neighbor OVERLAY-PEERS peer group
+   neighbor OVERLAY-PEERS remote-as 65000
+   neighbor OVERLAY-PEERS update-source Loopback0
+   neighbor OVERLAY-PEERS route-reflector-client
+   neighbor OVERLAY-PEERS bfd
+   neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
+   neighbor OVERLAY-PEERS send-community
+   neighbor OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.5 peer group OVERLAY-PEERS
    neighbor 192.168.255.5 description DC1-LEAF1A
-   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.6 peer group OVERLAY-PEERS
    neighbor 192.168.255.6 description DC1-LEAF2A
-   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.7 peer group OVERLAY-PEERS
    neighbor 192.168.255.7 description DC1-LEAF2B
-   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.8 peer group OVERLAY-PEERS
    neighbor 192.168.255.8 description DC1-SVC3A
-   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.9 peer group OVERLAY-PEERS
    neighbor 192.168.255.9 description DC1-SVC3B
-   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.10 peer group OVERLAY-PEERS
    neighbor 192.168.255.10 description DC1-BL1A
-   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.11 peer group OVERLAY-PEERS
    neighbor 192.168.255.11 description DC1-BL1B
    !
    address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
+      no neighbor OVERLAY-PEERS activate
 ```
+
+# BFD
 
 ## Router BFD
 
@@ -549,3 +553,5 @@ router bfd
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

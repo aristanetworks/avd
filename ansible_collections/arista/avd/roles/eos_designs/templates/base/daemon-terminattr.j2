@@ -7,27 +7,28 @@
 {% set cvaas.ips = [] %}
 {%     if cvp_instance_ip is defined %}
 {%          if "arista.io" not in cvp_instance_ip %}
-{%              do cvp_on_prem.ips.append( cvp_instance_ip ) %}
+{%              do cvp_on_prem.ips.append(cvp_instance_ip) %}
 {%          elif "arista.io" in cvp_ip %}
-{%              do cvaas.ips.append( cvp_ip ) %}
+{%              do cvaas.ips.append(cvp_ip) %}
 {%          endif %}
 {%     elif cvp_instance_ips is defined %}
 {%          for cvp_ip in cvp_instance_ips %}
 {%              if "arista.io" not in cvp_ip %}
-{%                  do cvp_on_prem.ips.append( cvp_ip ) %}
+{%                  do cvp_on_prem.ips.append(cvp_ip) %}
 {%              elif "arista.io" in cvp_ip %}
-{%                  do cvaas.ips.append( cvp_ip ) %}
+{%                  do cvaas.ips.append(cvp_ip) %}
 {%              endif %}
 {%          endfor %}
 {%     endif %}
+daemon_terminattr:
   ingestgrpcurl:
     ips:
-{% if cvp_on_prem.ips|length > 0 %}
+{% if cvp_on_prem.ips | length > 0 %}
 {%    for cvp_instance_ip in cvp_on_prem.ips %}
       - {{ cvp_instance_ip }}
 {%    endfor %}
     port: {{ terminattr_ingestgrpcurl_port }}
-{% elif cvaas.ips|length > 0 %}
+{% elif cvaas.ips | length > 0 %}
 {%    for cvp_instance_ip in cvaas.ips %}
       - {{ cvp_instance_ip }}
 {%    endfor %}

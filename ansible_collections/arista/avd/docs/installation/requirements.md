@@ -15,42 +15,32 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Supported Ansible Versions
 
-- ansible __2.9.2__ or later
-- previous ansible version not supported as avd is shipped as an [ansible collection](https://docs.ansible.com/ansible/latest/user_guide/collections_using.html)
+- ansible __2.10.0__ or later
 
 ## Additional Python Libraries required
 
-- netaddr `0.7.19`
-- Jinja2 `2.11.3`
-- treelib `1.5.5`
-- cvprac `1.0.5`
-- paramiko `2.7.1`
-- jsonschema `3.2.0`
-- requests `2.25.1`
-- PyYAML `5.4.1`
-- md-toc `7.1.0`
+- netaddr
+- Jinja2
+- treelib
+- cvprac
+- paramiko
+- jsonschema
+- requests
+- PyYAML
+- md-toc
 
 ### Python requirements installation
 
-In a shell, run following command:
+In a shell, run the following command:
 
 ```shell
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
 
-[`requirements.txt`](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/requirements.txt) has the following content:
-
-```text
-netaddr==0.7.19
-Jinja2==2.11.3
-treelib==1.5.5
-cvprac==1.0.5
-paramiko==2.7.1
-jsonschema==3.2.0
-requests==2.25.1
-PyYAML==5.4.1
-md-toc==7.1.0
-
+```pip
+--8<--
+requirements.txt
+--8<--
 ```
 
 !!! warning

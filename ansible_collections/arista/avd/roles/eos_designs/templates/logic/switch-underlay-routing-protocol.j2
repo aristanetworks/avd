@@ -1,6 +1,0 @@
-{# Logic for underlay routing protocol definition #}
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
-{%     set switch.underlay_routing_protocol = underlay_routing_protocol | lower %}
-{% else %}
-{%     set switch.underlay_routing_protocol = 'ebgp' %}
-{% endif %}

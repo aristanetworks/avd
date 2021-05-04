@@ -14,10 +14,12 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -75,8 +77,16 @@ interface Management1
 | Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
+| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
+*Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -95,6 +105,21 @@ interface Ethernet5
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
 !
+interface Ethernet8
+   description MLAG_PEER_DC1-LEAF1B_Ethernet8
+   channel-group 8 mode active
+!
+interface Ethernet15
+   description DC1-AGG03_Ethernet1
+   channel-group 15 mode active
+   lacp timer fast
+   lacp timer multiplier 30
+!
+interface Ethernet16
+   description DC1-AGG04_Ethernet1
+   channel-group 16 mode active
+   lacp timer normal
+!
 interface Ethernet50
    description SRV-POD03_Eth1
    channel-group 5 mode active
@@ -110,10 +135,21 @@ interface Ethernet50
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
 | Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -137,16 +173,57 @@ interface Port-Channel5
    storm-control multicast level 1
    storm-control unknown-unicast level 1
 !
+interface Port-Channel8
+   description to Dev02 Port-channel 8
+   no switchport
+!
+interface Port-Channel8.101
+   description to Dev02 Port-Channel8.101 - VRF-C1
+   encapsulation dot1q vlan 101
+   ip address 10.1.2.3/31
+!
+interface Port-Channel9
+   no switchport
+   ip address 10.9.2.3/31
+   bfd interval 500 min-rx 500 multiplier 5
+!
+interface Port-Channel10
+   description SRV01_bond0
+   switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0404:0404:0303
+      route-target import 04:04:03:03:02:02
+!
+interface Port-Channel15
+   description DC1_L2LEAF3_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 15
+!
+interface Port-Channel16
+   description DC1_L2LEAF4_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 16
+!
+interface Port-Channel20
+   description Po_in_mode_access_accepting_tagged_LACP_frames
+   switchport
+   switchport access vlan 200
+   l2-protocol encapsulation dot1q vlan 200
+!
 interface Port-Channel50
    description SRV-POD03_PortChanne1
    switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
-   !
-    evpn ethernet-segment
-       identifier 0000:0000:0303:0202:0101
-       route-target import 03:03:02:02:01:01
-   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel51
@@ -196,18 +273,18 @@ interface Port-Channel100.102
 | --- | --------------- |
 | default | false |
 
-## Router BFD
+# BFD
 
-### Router BFD Multihop Summary
+## BFD Interfaces
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Port-Channel9 | 500 | 500 | 5 |
 
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

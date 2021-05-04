@@ -6,9 +6,9 @@ vmtracer session {{ session }}
    url {{ vmtracer_sessions[session].url }}
 {%     endif %}
 {%     if vmtracer_sessions[session].username is arista.avd.defined %}
-   username {{ vmtracer_sessions[session].username}}
+   username {{ vmtracer_sessions[session].username }}
 {%     endif %}
-{%     if vmtracer_sessions[session].password is arista.avd.defined%}
+{%     if vmtracer_sessions[session].password is arista.avd.defined %}
    password 7 {{ vmtracer_sessions[session].password }}
 {%     endif %}
 {%     if vmtracer_sessions[session].autovlan_disable is arista.avd.defined(true) %}

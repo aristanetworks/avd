@@ -13,10 +13,12 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -81,6 +83,7 @@ interface Management1
 | Vlan88 |  SVI Description  |  default  |  -  |  true  |
 | Vlan89 |  SVI Description  |  default  |  -  |  false  |
 | Vlan90 |  SVI Description  |  default  |  -  |  -  |
+| Vlan91 |  PBR Description  |  default  |  -  |  true  |
 | Vlan501 |  SVI Description  |  default  |  -  |  false  |
 | Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
 | Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
@@ -104,6 +107,7 @@ interface Management1
 | Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
@@ -121,7 +125,6 @@ interface Management1
 | Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
-
 
 
 ### VLAN Interfaces Device Configuration
@@ -172,6 +175,7 @@ interface Vlan84
 interface Vlan85
    description SVI Description
    ip address 10.10.84.1/24
+   bfd interval 500 min-rx 500 multiplier 5
 !
 interface Vlan86
    description SVI Description
@@ -206,6 +210,11 @@ interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
    ip attached-host route export
+!
+interface Vlan91
+   description PBR Description
+   shutdown
+   service-policy type pbr input MyServicePolicy
 !
 interface Vlan501
    description SVI Description
@@ -272,18 +281,18 @@ interface Vlan4094
 | --- | --------------- |
 | default | false |
 
-## Router BFD
+# BFD
 
-### Router BFD Multihop Summary
+## BFD Interfaces
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Vlan85 | 500 | 500 | 5 |
 
 # Multicast
 
 # Filters
 
 # ACL
+
+# Quality Of Service

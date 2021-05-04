@@ -17,13 +17,13 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
 - [MACsec](#macsec)
   - [MACsec Summary](#macsec-summary)
   - [MACsec Device Configuration](#macsec-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -110,7 +110,7 @@ management security
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 |  -  |  routed  | - |  1.1.1.1/24  |  default  |  -  |  -  |  -  |  -  |
+| Ethernet1 | - | routed | - | 1.1.1.1/24 | default | - | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -168,16 +168,6 @@ interface Port-Channel3
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
 
 # Multicast
 
@@ -241,3 +231,5 @@ mac security
    profile A2
       key 1234b 7 12485744465E5A53
 ```
+
+# Quality Of Service

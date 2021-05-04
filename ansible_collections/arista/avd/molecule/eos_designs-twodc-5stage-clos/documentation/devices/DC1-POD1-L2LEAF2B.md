@@ -8,6 +8,7 @@
 - [Authentication](#authentication)
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
+  - [SNMP](#snmp)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -28,7 +29,6 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
@@ -36,6 +36,7 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
 # Management
@@ -120,6 +121,41 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 # Monitoring
 
+## SNMP
+
+### SNMP Configuration Summary
+
+| Contact | Location | SNMP Traps |
+| ------- | -------- | ---------- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B |  Disabled  |
+
+### SNMP ACLs
+| IP | ACL | VRF |
+| -- | --- | --- |
+
+
+### SNMP Local Interfaces
+
+| Local Interface | VRF |
+| --------------- | --- |
+
+### SNMP VRF Status
+
+| VRF | Status |
+| --- | ------ |
+
+
+
+
+
+
+### SNMP Device Configuration
+
+```eos
+!
+snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B
+```
+
 # MLAG
 
 ## MLAG Summary
@@ -192,6 +228,8 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | none  |
 | 111 | Tenant_A_OP_Zone_2 | none  |
 | 112 | Tenant_A_OP_Zone_3 | none  |
+| 2500 | web-l2-vlan | none  |
+| 2600 | web-l2-vlan-2 | none  |
 | 4085 | L2LEAF_INBAND_MGMT | none  |
 | 4094 | MLAG_PEER | MLAG  |
 
@@ -207,6 +245,12 @@ vlan 111
 !
 vlan 112
    name Tenant_A_OP_Zone_3
+!
+vlan 2500
+   name web-l2-vlan
+!
+vlan 2600
+   name web-l2-vlan-2
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
@@ -226,8 +270,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-POD1-LEAF2A_Ethernet4 | *trunk | *110-112,4085 | *- | *- | 1 |
-| Ethernet2 | DC1-POD1-LEAF2B_Ethernet4 | *trunk | *110-112,4085 | *- | *- | 1 |
+| Ethernet1 | DC1-POD1-LEAF2A_Ethernet4 | *trunk | *110-112,2500,2600,4085 | *- | *- | 1 |
+| Ethernet2 | DC1-POD1-LEAF2B_Ethernet4 | *trunk | *110-112,2500,2600,4085 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2A_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -266,7 +310,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-POD1-LEAF2B_Po3 | switched | trunk | 110-112,4085 | - | - | - | - | 1 | - |
+| Port-Channel1 | DC1-POD1-LEAF2B_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -277,7 +321,7 @@ interface Port-Channel1
    description DC1-POD1-LEAF2B_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,4085
+   switchport trunk allowed vlan 110-112,2500,2600,4085
    switchport mode trunk
    mlag 1
    service-profile QOS-PROFILE
@@ -305,7 +349,6 @@ interface Port-Channel3
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan4094 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
-
 
 
 ### VLAN Interfaces Device Configuration
@@ -363,16 +406,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ip route 0.0.0.0/0 172.21.110.1
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
 
 ## IP IGMP Snooping
@@ -405,3 +438,5 @@ IGMP snooping is globally enabled.
 !
 vrf instance MGMT
 ```
+
+# Quality Of Service

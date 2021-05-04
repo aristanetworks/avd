@@ -81,7 +81,7 @@ tenants:
         # VRF VNI | Required.
         # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
-        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan : < > } to a lower value (default 3000).
+        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
         vrf_vni: < 1-1024 >
 
@@ -172,6 +172,16 @@ tenants:
             enabled: < true | false >
             ip_address_virtual: < IPv4_address/Mask >
 
+        # List of L3 interfaces | Optional.
+        # This will create IP routed interface inside VRF. Length of interfaces, nodes and ip_addresses must match.
+        l3_interfaces:
+          - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 >, < node_1 > ]
+            description: < description >
+            enabled: < true | false >
+            mtu: <mtu >
+
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
         # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be
@@ -210,6 +220,14 @@ tenants:
             route_map_out: < route-map name >
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
+
+        # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
+        additional_route_targets:
+          - type: < import | export >
+            address_family: < address_family >
+            route_target: "< route_target >"
+            # Nodes is optional. Default is all nodes where the VRF is defined.
+            nodes: [ < node_1 >, < node_2> ]
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
