@@ -32,7 +32,7 @@ version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Build arista.cvp.configlet configuration.
 description:
-  - Build configuration to publish configlets on Cloudvision.
+  - Build configuration to publish configlets to Cloudvision.
 options:
   configlet_dir:
     description: Directory where configlets are located.
@@ -48,7 +48,7 @@ options:
     type: str
     default: ''
   configlet_extension:
-    description: File extensio to look for.
+    description: File extension to look for.
     required: false
     type: str
     default: 'conf'
@@ -56,7 +56,7 @@ options:
 
 EXAMPLES = r'''
 # tasks file for configlet_build_config
-- name: generate intented variables
+- name: generate intended variables
   tags: [build, provision]
   configlet_build_config:
     configlet_dir: '/path/to/configlets/folder/'

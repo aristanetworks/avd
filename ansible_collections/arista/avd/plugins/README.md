@@ -7,11 +7,17 @@
     - [list_compress filter](#list_compress-filter)
     - [natural_sort filter](#natural_sort-filter)
     - [default filter](#default-filter)
+    - [ethernet segment identifiers management filter](#ethernet-segment-identifiers-management-filter)
+      - [generate_esi filter](#generate_esi-filter)
+      - [generate_lacp_id filter](#generate_lacp_id-filter)
+      - [generate_route_target filter](#generate_route_target-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
+    - [contains test](#contains-test)
   - [Modules](#modules)
     - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
-    - [Add Table Of Contents to existing MarkDown file](#add-table-of-contents-to-existing-markdown-file)
+    - [Build Configuration to publish configlets to CloudVision](#build-configuration-to-publish-configlets-to-cloudvision)
+    - [Add Table Of Contents to an existing MarkDown file](#add-table-of-contents-to-an-existing-markdown-file)
     - [YAML Templates to Facts](#yaml-templates-to-facts)
 
 ## Plugin Filters
@@ -50,13 +56,47 @@ To use this filter:
 ### default filter
 
 The `arista.avd.default` filter can provide the same basic capability as the builtin `default` filter. It will return the input value only if it is valid and if not, provide a default value instead. Our custom filter requires a value to be `not undefined` and `not None` to pass through.
-Furthermore the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
+Furthermore, the filter allows multiple default values as arguments, which will undergo the same validation one after one until we find a valid default value.
 As a last resort the filter will return None.
 
 To use this filter:
 
 ```jinja
 {{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
+```
+
+### ethernet segment identifiers management filter
+
+To help provide consistency when configuring EVPN A/A ESI values, the `esi_management` filter plugin provides an abstraction in the form of a `short_esi` key. `short_esi` is an abbreviated 3 octets value to encode Ethernet Segment ID, LACP ID and route target. Transformation from abstraction to network values is managed the following jinja2 filters:
+
+#### generate_esi filter
+
+The `arista.avd.generate_esi` filter transforms short_esi: `0303:0202:0101` with prefix `0000:0000` to EVPN ESI: `0000:0000:0303:0202:0101`
+
+**example:**
+
+```jinja
+esi: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_esi }}
+```
+
+#### generate_lacp_id filter
+
+The `arista.avd.generate_lacp_id` filter transforms short_esi: `0303:0202:0101` to LACP ID format format: `0303.0202.0101`
+
+**example:**
+
+```jinja
+lacp_id: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_lacp_id }}
+```
+
+#### generate_route_target filter
+
+The `arista.avd.generate_route_target` filter transforms short_esi: `0303:0202:0101` to route-target format: `03:03:02:02:01:01`
+
+**example:**
+
+```jinja
+rt: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_route_target }}
 ```
 
 ## Plugin Tests
@@ -109,7 +149,7 @@ To use this test:
 {% if my_list is arista.avd.contains(item_list) %}Match{% endif %}
 ```
 
-**Example**
+**example**
 The `arista.avd.contains` is used in the role `eos_designs` in combination with `selectattr` to parse the `platform_settings` list
 for an element where `switch_platform` is contained in the `platforms` attribute.
 
@@ -164,9 +204,9 @@ The `arista.avd.inventory_to_container` module provides following capabilities:
 
 It saves everything in a `YAML` file using **`destination`** keyword.
 
-It is a module to build structure of data to configure on a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
+It is a module to build a structure of data to configure a CloudVision server. Output is ready to be passed to [`arista.cvp`](https://github.com/aristanetworks/ansible-cvp/) to configure **CloudVision**.
 
-**Example:**
+**example:**
 
 To use this module:
 
@@ -175,11 +215,11 @@ tasks:
   - name: generate intended variables
     tags: [always]
     inventory_to_container:
-      inventory: '{{ inventory_file }}'
-      container_root: '{{ container_root }}'
-      configlet_dir: 'intended/configs'
-      configlet_prefix: '{{ configlets_prefix }}'
-      destination: '{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml'
+      inventory: "{{ inventory_file }}"
+      container_root: "{{ container_root }}"
+      configlet_dir: "intended/configs"
+      configlet_prefix: "{{ configlets_prefix }}"
+      destination: "{{playbook_dir}}/intended/structured_configs/{{inventory_hostname}}.yml"
 ```
 
 Inventory example applied to this example:
@@ -232,7 +272,36 @@ CVP_CONTAINERS:
   DC1_SPINES:
     parent_container: DC1_FABRIC
 ```
-### Add Table Of Contents to existing MarkDown file
+
+### Build Configuration to publish configlets to CloudVision
+
+The `arista.avd.configlet_build_config` module provides the following capabilities:
+- Build arista.cvp.configlet configuration.
+- Build configuration to publish configlets to Cloudvision.
+
+**options:**
+
+```yaml
+- configlet_build_config:
+    configlet_dir:  "< Directory where configlets are located | Required >"
+    configlet_prefix: "< Prefix to append on configlet | Required >"
+    destination: "< File where to save information | Optional >"
+    configlet_extension: "< File extension to look for | Default 'conf' >"
+```
+
+**example:**
+
+```yaml
+# tasks file for configlet_build_config
+- name: generate intended variables
+  tags: [build, provision]
+  configlet_build_config:
+    configlet_dir: "/path/to/configlets/folder/"
+    configlet_prefix: "AVD_"
+    configlet_extension: "cfg"
+```
+
+### Add Table Of Contents to an existing MarkDown file
 
 The `arista.avd.add_toc` module provides following capabilities:
   - Wrapper of md-toc python library
@@ -241,7 +310,7 @@ The `arista.avd.add_toc` module provides following capabilities:
 The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
 The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
 
-**Example:**
+**example:**
 
 To use this module:
 
@@ -249,7 +318,7 @@ To use this module:
 tasks:
 - name: Generate TOC for fabric documentation
   add_toc:
-    md_file: '{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md'
+    md_file: "{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md"
     skip_lines: 3 #Default is 0
     #toc_levels: 2
     #toc_marker: '<!-- toc -->'
@@ -266,7 +335,7 @@ The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin prov
 - Recursively combining output of templates to allow templates to update overlapping parts of the data models.
 - Facts set by one template will be accessable by the next templates
 - Returned Facts can be set below a specific `root_key`
-- Facts returned templates can be stripped for `null` values, to avoid them overwriting previous set facts
+- Facts returned templates can be stripped for `null` values to avoid them overwriting previous set facts
 
 The module is used in `eos_designs` first to set facts for devices and then to set the `structured_configuration` variable based on all the `eos_designs` templates.
 
@@ -277,7 +346,7 @@ The module arguments are:
     root_key: < optional root_key name >
     templates:
         # Path to template file
-      - template: < template file >
+      - template: "< template file >"
         options:
           # Merge strategy for lists for Ansible Combine filter. See Ansible Combine filter for details.
           list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
@@ -285,7 +354,7 @@ The module arguments are:
           strip_empty_keys: < true (default) | false >
 ```
 
-Example:
+**example:**
 
 ```yaml
 - name: Set AVD facts
@@ -320,7 +389,7 @@ templates:
       # Set design specific "switch.*" variables
       - template: "designs/l3ls-evpn/facts/main.j2"
     structured_config:
-      # Render Strucured Configuration
+      # Render Structured Configuration
       # Base features
       - template: "base/main.j2"
       # MLAG feature

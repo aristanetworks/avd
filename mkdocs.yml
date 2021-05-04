@@ -79,13 +79,13 @@ docs_dir: ansible_collections/arista/avd/
 nav:
   - Home: README.md
   - Release Notes:
-      - 2.0.x: docs/release-notes/2.0.x.md
+      - 2.x.x: docs/release-notes/2.x.x.md
       - 1.1.x: docs/release-notes/1.1.x.md
       - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
       - Requirements: docs/installation/requirements.md
-      - Setup environment: docs/installation/setup-environement.md
+      - Setup environment: docs/installation/setup-environment.md
       - Ansible-galaxy installation: docs/installation/setup-galaxy.md
       - Git installation: docs/installation/setup-git.md
       - Development tips & tricks: docs/installation/development.md
