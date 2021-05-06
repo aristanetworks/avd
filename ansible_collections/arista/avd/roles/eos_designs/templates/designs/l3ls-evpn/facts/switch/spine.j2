@@ -62,7 +62,7 @@ switch:
 
 {# switch.isis_net #}
   isis_net: {{ isis_area_id | default('49.0001') }}.{{ isis_site_id | default('0001') }}.0000.{{ '%04d' | format(switch_id) }}.00
-  
+
 {# switch.evpn_role #}
 {# For spine the default value is server #}
   evpn_role: {{ spine.nodes[inventory_hostname].evpn_role | arista.avd.default(

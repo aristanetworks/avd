@@ -3,7 +3,7 @@
 port_channel_interfaces:
 {% for link_interface in underlay_data.links | arista.avd.natural_sort %}
 {%     set link = underlay_data.links[link_interface] %}
-{%     if link.type is arista.avd.defined('underlay_l2') and 
+{%     if link.type is arista.avd.defined('underlay_l2') and
           link.channel_group_id is arista.avd.defined and
           link.channel_group_id not in port_channel_list %}
 {%         do port_channel_list.append(link.channel_group_id) %}
