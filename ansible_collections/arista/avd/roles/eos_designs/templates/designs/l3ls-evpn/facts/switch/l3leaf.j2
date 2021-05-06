@@ -22,9 +22,6 @@ switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 
-{# switch.spine_interfaces #}
-  spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces }}
-
 {# switch.configure_tenants #}
   configure_tenants: true
 
@@ -55,15 +52,19 @@ switch:
                                        spine.nodes | length) %}
   max_spines: {{ switch_max_spines }}
 
-{# switch.spines #}
+{# switch.uplink_switches #}
 {%             set switch_spines = l3leaf.node_groups[l3leaf_node_group].spines | arista.avd.default(
                                    l3leaf.defaults.spines) %}
-  spines: {{ switch_spines }}
+  uplink_switches: {{ switch_spines }}
 
-{# switch.uplink_to_spine_interfaces #}
-  uplink_to_spine_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].uplink_to_spine_interfaces | arista.avd.default(
-                                 l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces,
-                                 l3leaf.defaults.uplink_to_spine_interfaces) }}
+{# switch.uplink_switch_interfaces #}
+  uplink_switch_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].spine_interfaces }}
+
+{# switch.uplink_interfaces #}
+  uplink_interfaces: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].uplink_to_spine_interfaces | arista.avd.default(
+                        l3leaf.node_groups[l3leaf_node_group].uplink_to_spine_interfaces,
+                        l3leaf.defaults.uplink_to_spine_interfaces,
+                        []) }}
 
 {# switch.p2p_link_interface_speed #}
   p2p_link_interface_speed: {{ l3leaf.node_groups[l3leaf_node_group].p2p_link_interface_speed | arista.avd.default(
@@ -151,8 +152,6 @@ switch:
 
   mlag_peer_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_secondary %}
 
-  vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip_mlag %}
-
 {%                 elif loop.index == 2 %}
 {%                     set mlag_primary_id = l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].id %}
 {%                     set mlag_secondary_id = switch_id %}
@@ -167,9 +166,9 @@ switch:
 
   mlag_peer_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_primary %}
 
+{%                 endif %}
   vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip_mlag %}
 
-{%                 endif %}
 {%             else %}
   mlag: false
   vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip %}
@@ -190,9 +189,12 @@ switch:
 {# switch.evpn_route_servers #}
 {# For l3leaf the default value for EVPN Route Servers is content of the spines variable set above. For safety we fall back to [] #}
   evpn_route_servers: {{ l3leaf.node_groups[l3leaf_node_group].evpn_route_servers | arista.avd.default(
-                                      l3leaf.defaults.evpn_route_servers,
-                                      switch_spines,
-                                      []) }}
+                         l3leaf.defaults.evpn_route_servers,
+                         switch_spines,
+                         []) }}
+
+{# switch.isis_net #}
+  isis_net: {{ isis_area_id }}.{{ isis_site_id }}.0001.{{ '%04d' | format(switch_id) }}.00
 
 {%             set leaf = namespace() %}
 {%             set leaf.vlans = []  %}

@@ -43,17 +43,30 @@ switch:
              overlay_controller.defaults.bgp_as) }}
 {%         endif %}
 
-{# switch.uplink_to_remote_switches #}
-  uplink_to_remote_switches: {{ overlay_controller.nodes[node].uplink_to_remote_switches | arista.avd.default(
-                                overlay_controller.defaults.uplink_to_remote_switches) }}
+{# switch.uplink_interfaces #}
+  uplink_interfaces: {{ overlay_controller.nodes[node].uplink_to_remote_switches | arista.avd.default(
+                                overlay_controller.defaults.uplink_to_remote_switches,
+                                []) }}
 
-{# switch.remote_switches_interfaces #}
-  remote_switches_interfaces: {{ overlay_controller.nodes[node].remote_switches_interfaces | arista.avd.default() }}
+{# switch.uplink_switch_interfaces #}
+  uplink_switch_interfaces: {{ overlay_controller.nodes[node].remote_switches_interfaces | arista.avd.default([]) }}
 
-{# switch.remote_switches #}
+{# switch.uplink_switches #}
 {%         set switch_remote_switches = overlay_controller.nodes[node].remote_switches | arista.avd.default(
-                                 overlay_controller.defaults.remote_switches) %}
-  remote_switches: {{ switch_remote_switches }}
+                                        overlay_controller.defaults.remote_switches,
+                                        []) %}
+  uplink_switches: {{ switch_remote_switches }}
+
+{# switch.evpn_role #}
+{# For overlay-controller the default value is none #}
+  evpn_role: {{ overlay_controller.nodes[inventory_hostname].evpn_role | arista.avd.default(
+                overlay_controller.defaults.evpn_role,
+                'none') }}
+
+{# switch.evpn_route_servers #}
+  evpn_route_servers: {{ overlay_controller.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
+                             overlay_controller.defaults.evpn_route_servers,
+                             []) }}
 
 {# switch.remote_switches_asn #}
   remote_switches_asn:
@@ -82,16 +95,6 @@ switch:
 {%             endif %}
 {%         endfor %}
 
-{# switch.evpn_role #}
-{# For overlay-controller the default value is none #}
-  evpn_role: {{ overlay_controller.nodes[inventory_hostname].evpn_role | arista.avd.default(
-                overlay_controller.defaults.evpn_role,
-                'none') }}
-
-{# switch.evpn_route_servers #}
-  evpn_route_servers: {{ overlay_controller.nodes[inventory_hostname].evpn_route_servers | arista.avd.default(
-                             overlay_controller.defaults.evpn_route_servers,
-                             []) }}
 
 {%     endif %}
 {% endfor %}
