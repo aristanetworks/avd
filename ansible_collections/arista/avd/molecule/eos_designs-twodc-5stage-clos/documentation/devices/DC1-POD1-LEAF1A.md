@@ -267,14 +267,14 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_SINGLE_Po1 | switched | trunk | 4085 | - | - | - | - | - | - |
+| Port-Channel3 | DC1-POD1-L2LEAF1A_Po1 | switched | trunk | 4085 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel3
-   description RACK2_SINGLE_Po1
+   description DC1-POD1-L2LEAF1A_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 4085
@@ -528,7 +528,7 @@ router bgp 65111
    neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.5 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.5 remote-as 65101
-   neighbor 172.17.10.5 description DC1-RS1
+   neighbor 172.17.10.5 description DC1-RS1_Ethernet3
    neighbor 172.17.10.5 bfd
    neighbor 172.17.110.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.0 description DC1-POD1-SPINE1_Ethernet3

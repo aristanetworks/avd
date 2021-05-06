@@ -397,8 +397,10 @@ router bgp 65210
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.21.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.0 remote-as 65200
+   neighbor 172.16.21.0 description DC2-SUPER-SPINE1_Ethernet1
    neighbor 172.16.21.64 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.64 remote-as 65200
+   neighbor 172.16.21.64 description DC2-SUPER-SPINE2_Ethernet1
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
@@ -407,7 +409,7 @@ router bgp 65210
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
-   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet3
+   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

@@ -378,10 +378,10 @@ router bgp 65201
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.20.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.0 remote-as 65200
-   neighbor 172.17.20.0 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.0 description DC2-SUPER-SPINE1_Ethernet3
    neighbor 172.17.20.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.2 remote-as 65200
-   neighbor 172.17.20.2 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.2 description DC2-SUPER-SPINE1_Ethernet6
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

@@ -32,28 +32,30 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.17.110.1:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65111
-      description: DC1-POD1-LEAF1A_Ethernet3
-    172.17.110.5:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65112
-      description: DC1-POD1-LEAF2A_Ethernet4
-    172.17.110.9:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65112
-      description: DC1-POD1-LEAF2B_Ethernet5
     172.16.11.0:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+      description: DC1-SUPER-SPINE1_Ethernet1
     172.16.11.64:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+      description: DC1-SUPER-SPINE2_Ethernet1
+    172.17.110.1:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65111
+      description: DC1-POD1-LEAF1A_Ethernet1
+    172.17.110.5:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65112
+      description: DC1-POD1-LEAF2A_Ethernet1
+    172.17.110.9:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65112
+      description: DC1-POD1-LEAF2B_Ethernet1
     172.17.10.3:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-RS1
       remote_as: 65101
+      description: DC1-RS1_Ethernet2
       bfd: true
     172.16.210.3:
       peer_group: EVPN-OVERLAY-PEERS
@@ -134,6 +136,30 @@ loopback_interfaces:
     shutdown: false
     ip_address: 172.16.110.1/32
 ethernet_interfaces:
+  Ethernet1:
+    peer: DC1-SUPER-SPINE1
+    peer_interface: Ethernet1
+    peer_type: super-spine
+    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.11.1/31
+  Ethernet2:
+    peer: DC1-SUPER-SPINE2
+    peer_interface: Ethernet1
+    peer_type: super-spine
+    description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.16.11.65/31
   Ethernet3:
     peer: DC1-POD1-LEAF1A
     peer_interface: Ethernet1
@@ -170,34 +196,10 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.110.8/31
-  Ethernet1:
-    peer: DC1-SUPER-SPINE1
-    peer_interface: Ethernet1
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.11.1/31
-  Ethernet2:
-    peer: DC1-SUPER-SPINE2
-    peer_interface: Ethernet1
-    peer_type: super-spine
-    description: P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.16.11.65/31
   Ethernet6:
     peer: DC1-RS1
     peer_interface: Ethernet2
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS1_Ethernet2
     mtu: 1500
     service_profile: QOS-PROFILE

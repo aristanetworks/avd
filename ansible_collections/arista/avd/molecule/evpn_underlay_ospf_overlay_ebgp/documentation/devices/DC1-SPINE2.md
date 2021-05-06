@@ -366,7 +366,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 101 | 192.168.255.2 | enabled | Ethernet6 <br> Ethernet7 <br> Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | enabled | 12000 | disabled | disabled | - | - | - |
+| 101 | 192.168.255.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet7 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 ### OSPF Interfaces
 
@@ -388,13 +388,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 router ospf 101
    router-id 192.168.255.2
    passive-interface default
-   no passive-interface Ethernet6
-   no passive-interface Ethernet7
    no passive-interface Ethernet1
    no passive-interface Ethernet2
    no passive-interface Ethernet3
    no passive-interface Ethernet4
    no passive-interface Ethernet5
+   no passive-interface Ethernet6
+   no passive-interface Ethernet7
    bfd default
    max-lsa 12000
 ```

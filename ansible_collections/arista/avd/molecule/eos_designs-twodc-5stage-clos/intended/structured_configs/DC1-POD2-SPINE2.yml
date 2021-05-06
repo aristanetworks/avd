@@ -32,16 +32,18 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.17.120.3:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65121
-      description: DC1-POD2-LEAF1A_Ethernet3
     172.16.12.2:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+      description: DC1-SUPER-SPINE1_Ethernet4
     172.16.12.66:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65100
+      description: DC1-SUPER-SPINE2_Ethernet4
+    172.17.120.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65121
+      description: DC1-POD2-LEAF1A_Ethernet2
     172.16.120.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-LEAF1A
@@ -102,18 +104,6 @@ loopback_interfaces:
     shutdown: false
     ip_address: 172.16.120.2/32
 ethernet_interfaces:
-  Ethernet3:
-    peer: DC1-POD2-LEAF1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    ptp:
-      enable: true
-    type: routed
-    shutdown: false
-    ip_address: 172.17.120.2/31
   Ethernet1:
     peer: DC1-SUPER-SPINE1
     peer_interface: Ethernet4
@@ -138,6 +128,18 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.16.12.67/31
+  Ethernet3:
+    peer: DC1-POD2-LEAF1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD2-LEAF1A_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.120.2/31
   Ethernet4:
     peer: DC2-POD1-SPINE2
     peer_interface: Ethernet5

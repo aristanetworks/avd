@@ -88,7 +88,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1-POD1-LEAF2B_Po3
+    description: RACK2_MLAG_Po3
     type: switched
     shutdown: false
     vlans: 110-112,2500,2600,4085

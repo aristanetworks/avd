@@ -129,7 +129,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1-SVC3B_Po7
+    description: DC1_SVC3_Po7
     type: switched
     shutdown: false
     vlans: 110-111,120-121,130-131,140-141,150,210-211,250,310-311,350

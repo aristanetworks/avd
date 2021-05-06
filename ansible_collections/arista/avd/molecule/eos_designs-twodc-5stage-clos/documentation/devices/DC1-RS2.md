@@ -392,15 +392,15 @@ router bgp 65102
    neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.8 remote-as 65100
-   neighbor 172.17.10.8 description DC1-SUPER-SPINE2
+   neighbor 172.17.10.8 description DC1-SUPER-SPINE2_Ethernet5
    neighbor 172.17.10.8 bfd
    neighbor 172.17.10.10 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.10 remote-as 65120
-   neighbor 172.17.10.10 description DC1-POD2-SPINE1
+   neighbor 172.17.10.10 description DC1-POD2-SPINE1_Ethernet4
    neighbor 172.17.10.10 bfd
    neighbor 172.17.10.12 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.12 remote-as 65121
-   neighbor 172.17.10.12 description DC1-POD2-LEAF1A
+   neighbor 172.17.10.12 description DC1-POD2-LEAF1A_Ethernet3
    neighbor 172.17.10.12 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !

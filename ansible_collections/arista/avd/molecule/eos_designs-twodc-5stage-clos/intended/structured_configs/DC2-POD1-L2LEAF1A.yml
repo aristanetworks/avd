@@ -58,30 +58,15 @@ ethernet_interfaces:
       mode: active
 port_channel_interfaces:
   Port-Channel1:
-    description: DC2-POD1-LEAF1A_Po3
+    description: RACK1_SINGLE_Po3
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4092
+    vlans: 4092
     mode: trunk
     service_profile: QOS-PROFILE
 vlans:
   4092:
     tenant: system
     name: L2LEAF_INBAND_MGMT
-  110:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_1
-  111:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_2
-  112:
-    tenant: Tenant_A
-    name: Tenant_A_OP_Zone_3
-  2500:
-    tenant: Tenant_A
-    name: web-l2-vlan
-  2600:
-    tenant: Tenant_A
-    name: web-l2-vlan-2
 ip_igmp_snooping:
   globally_enabled: true

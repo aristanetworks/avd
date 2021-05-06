@@ -84,7 +84,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1-SVC3A_Po7
+    description: DC1_SVC3_Po7
     type: switched
     shutdown: false
     mode: trunk
