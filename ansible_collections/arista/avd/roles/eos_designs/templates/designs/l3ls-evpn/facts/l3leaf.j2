@@ -75,7 +75,7 @@ switch:
            l3leaf.defaults.rack) }}
 
 {# switch.router_id #}
-  router_id: {{ overlay_loopback_network_summary | ipaddr('network') | ipmath(switch_id + switch_max_spines) }}
+  router_id: {% include templates[design.type].ip_addressing[type].router_id %}
 
 {# switch.loopback_network_summary #}
   loopback_network_summary: {{ overlay_loopback_network_summary }}
@@ -138,26 +138,42 @@ switch:
                      l3leaf.defaults.mlag_peer_vlan,
                      4094) }}
 {%                 if loop.index == 1 %}
+{%                     set mlag_primary_id = switch_id %}
+{%                     set mlag_secondary_id = l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].id %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
-  mlag_ip: {{ (switch_id - 1) * 2 }}
-  mlag_peer_ip: {{ ((switch_id - 1) * 2) + 1 }}
-  mlag_peer_id: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].id }}
   mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') }}
-  vtep_ip: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(switch_id + switch_max_spines) }}
+  mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
+
+  mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
+
+  mlag_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_primary %}
+
+  mlag_peer_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_secondary %}
+
+  vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip_mlag %}
+
 {%                 elif loop.index == 2 %}
+{%                     set mlag_primary_id = l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].id %}
+{%                     set mlag_secondary_id = switch_id %}
   mlag_role: "secondary"
   mlag_peer: {{ loop.previtem }}
-{%                     set mlag_peer_id = l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].id %}
-  mlag_ip: {{ ((mlag_peer_id - 1) * 2) + 1 }}
-  mlag_peer_ip: {{ (mlag_peer_id - 1) * 2 }}
-  mlag_peer_id: {{ mlag_peer_id }}
   mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') }}
-  vtep_ip: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(mlag_peer_id + switch_max_spines) }}
+  mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
+
+  mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
+
+  mlag_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_secondary %}
+
+  mlag_peer_l3_ip: {% include templates[design.type].ip_addressing[type].mlag_l3_ip_primary %}
+
+  vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip_mlag %}
+
 {%                 endif %}
 {%             else %}
   mlag: false
-  vtep_ip: {{ vtep_loopback_network_summary | ipaddr('network') | ipmath(switch_id + switch_max_spines) }}
+  vtep_ip: {% include templates[design.type].ip_addressing[type].vtep_ip %}
+
 {%             endif %}
 
 {# switch.evpn_services_l2_only #}

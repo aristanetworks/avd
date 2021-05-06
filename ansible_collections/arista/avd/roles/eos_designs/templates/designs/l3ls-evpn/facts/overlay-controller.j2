@@ -23,7 +23,7 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
 
 {# switch.router_id #}
-  router_id: {{ overlay_controller_loopback_network_summary | ipaddr('network') | ipmath(switch_id) }}
+  router_id: {% include templates[design.type].ip_addressing[type].router_id %}
 
 {# switch.loopback_network_summary #}
   loopback_network_summary: {{ overlay_controller_loopback_network_summary }}

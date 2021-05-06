@@ -1,0 +1,1 @@
+{{ mlag_ips.mlag_peer | ipaddr('network') | ipmath((mlag_primary_id - 1) * 2) }}
