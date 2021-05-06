@@ -35,6 +35,24 @@ templates:
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
+    ip_addressing:
+      l3leaf:
+        router_id: 'designs/l3ls-evpn/ip-addressing/l3leaf/router-id.j2'
+        mlag_ip_primary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-ip-primary.j2'
+        mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-ip-secondary.j2'
+        mlag_l3_ip_primary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-l3-ip-primary.j2'
+        mlag_l3_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-l3-ip-secondary.j2'
+        vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/l3leaf/vtep-ip-mlag.j2'
+        vtep_ip: 'designs/l3ls-evpn/ip-addressing/l3leaf/vtep-ip.j2'
+      l2leaf:
+        mlag_ip_primary: 'designs/l3ls-evpn/ip-addressing/l2leaf/mlag-ip-primary.j2'
+        mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l2leaf/mlag-ip-secondary.j2'
+      spine:
+        router_id: 'designs/l3ls-evpn/ip-addressing/spine/router-id.j2'
+      super-spine:
+        router_id: 'designs/l3ls-evpn/ip-addressing/super-spine/router-id.j2'
+      overlay-controller:
+        router_id: 'designs/l3ls-evpn/ip-addressing/overlay-controller/router-id.j2'
 
 mgmt_vrf_routing: false
 
