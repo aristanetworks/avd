@@ -1,182 +1,3 @@
-switch_platform: 7050SX3
-switch_rack: null
-switch_mgmt_ip: 192.168.200.102/24
-switch_bgp_as: 65001
-switch_router_id: 192.168.255.2
-switch_evpn_role: server
-switch_evpn_route_servers: []
-switch_evpn_route_clients:
-- DC1-BL1A
-- DC1-BL1B
-- DC1-LEAF1A
-- DC1-LEAF2A
-- DC1-LEAF2B
-- DC1-SVC3A
-- DC1-SVC3B
-service_routing_protocols_model: multi-agent
-ip_routing: true
-hardware_counters: null
-hardware: null
-daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  disable_aaa: false
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
-name_server:
-  source:
-    vrf: MGMT
-  nodes:
-  - 192.168.200.5
-  - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
-redundancy: null
-snmp_server:
-  contact: example@example.com
-  location: DC1_FABRIC DC1-SPINE2
-spanning_tree:
-  mode: none
-aaa_authorization: null
-local_users:
-  admin:
-    privilege: 15
-    role: network-admin
-    no_password: true
-  cvpadmin:
-    privilege: 15
-    role: network-admin
-    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-clock: null
-vrfs:
-  MGMT:
-    ip_routing: false
-ethernet_interfaces:
-  Ethernet6:
-    peer: DC1-BL1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.82/31
-  Ethernet7:
-    peer: DC1-BL1B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.98/31
-  Ethernet1:
-    peer: DC1-LEAF1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.2/31
-  Ethernet2:
-    peer: DC1-LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.18/31
-  Ethernet3:
-    peer: DC1-LEAF2B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.34/31
-  Ethernet4:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3A_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.50/31
-  Ethernet5:
-    peer: DC1-SVC3B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3B_Ethernet2
-    speed: forced 100gfull
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.66/31
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.2/32
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.102/24
-    gateway: 192.168.200.5
-    type: oob
-tcam_profile: null
-platform: null
-mac_address_table: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
-prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 192.168.255.0/24 le 32
-route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 1200
-    min_rx: 1200
-    multiplier: 3
-peer_filters: null
 router_bgp:
   as: 65001
   router_id: 192.168.255.2
@@ -187,7 +8,6 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      peer_filter: LEAF-AS-RANGE
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -200,6 +20,15 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
+  address_family_ipv4:
+    peer_groups:
+      UNDERLAY-PEERS:
+        activate: true
+      EVPN-OVERLAY-PEERS:
+        activate: false
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
   neighbors:
     172.31.255.83:
       peer_group: UNDERLAY-PEERS
@@ -257,24 +86,162 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3B
       remote_as: 65103
-  redistribute_routes:
-    connected:
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
-  address_family_ipv4:
-    peer_groups:
-      UNDERLAY-PEERS:
-        activate: true
-      EVPN-OVERLAY-PEERS:
-        activate: false
-  address_family_rtc: null
-router_ospf: null
-router_isis: null
-queue_monitor_streaming: null
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
+service_routing_protocols_model: multi-agent
+ip_routing: true
+daemon_terminattr:
+  ingestgrpcurl:
+    ips:
+    - 192.168.200.11
+    port: 9910
+  ingestauth_key: telarista
+  ingestvrf: MGMT
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  disable_aaa: false
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+name_server:
+  source:
+    vrf: MGMT
+  nodes:
+  - 192.168.200.5
+  - 8.8.8.8
+ntp_server:
+  local_interface:
+    vrf: MGMT
+    interface: Management1
+  nodes:
+  - 192.168.200.5
+snmp_server:
+  contact: example@example.com
+  location: DC1_FABRIC DC1-SPINE2
+spanning_tree:
+  mode: none
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.102/24
+    gateway: 192.168.200.5
+    type: oob
 management_api_http:
-  enable_https: true
   enable_vrfs:
-    MGMT: null
+    MGMT: {}
+  enable_https: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.2/32
+ethernet_interfaces:
+  Ethernet6:
+    peer: DC1-BL1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.82/31
+  Ethernet7:
+    peer: DC1-BL1B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.98/31
+  Ethernet1:
+    peer: DC1-LEAF1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.2/31
+  Ethernet2:
+    peer: DC1-LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.18/31
+  Ethernet3:
+    peer: DC1-LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.34/31
+  Ethernet4:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet42
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-SVC3A_Ethernet42
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.50/31
+  Ethernet5:
+    peer: DC1-SVC3B
+    peer_interface: Ethernet42
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-SVC3B_Ethernet42
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.66/31
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 192.168.255.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3

@@ -1,6 +1,0 @@
-{# Logic for overlay protocol definition #}
-{% if overlay_routing_protocol is arista.avd.defined and overlay_routing_protocol | lower in ['ibgp']  %}
-{%     set switch.overlay_routing_protocol = overlay_routing_protocol | lower %}
-{% else %}
-{%     set switch.overlay_routing_protocol = 'ebgp' %}
-{% endif %}

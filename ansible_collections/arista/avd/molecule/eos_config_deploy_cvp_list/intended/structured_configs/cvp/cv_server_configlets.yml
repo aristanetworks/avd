@@ -787,7 +787,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.1/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.101/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.1\n   no bgp default ipv4-unicast\n   distance\
@@ -859,7 +859,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.2/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.102/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.2\n   no bgp default ipv4-unicast\n   distance\
@@ -931,7 +931,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.3/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.103/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.3\n   no bgp default ipv4-unicast\n   distance\
@@ -1003,7 +1003,7 @@ CVP_CONFIGLETS:
     \   ip address 192.168.255.4/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.104/24\n!\nip routing\n\
     no ip routing vrf MGMT\n!\nip prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n   seq 10\
-    \ permit 192.168.255.0/24 le 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
+    \ permit 192.168.255.0/24 eq 32\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n\
     !\nroute-map RM-CONN-2-BGP permit 10\n   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY\n\
     !\nrouter bfd\n   multihop interval 1200 min-rx 1200 multiplier 3\n!\nrouter bgp\
     \ 65001\n   router-id 192.168.255.4\n   no bgp default ipv4-unicast\n   distance\

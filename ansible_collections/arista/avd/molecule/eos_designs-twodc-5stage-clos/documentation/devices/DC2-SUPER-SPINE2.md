@@ -23,8 +23,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
@@ -361,26 +359,7 @@ router bgp 65200
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-### Router BFD Multihop Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # Multicast
@@ -395,14 +374,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 172.16.200.0/24 le 32 |
+| 10 | permit 172.16.200.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.16.200.0/24 le 32
+   seq 10 permit 172.16.200.0/24 eq 32
 ```
 
 ## Route-maps

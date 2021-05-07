@@ -29,7 +29,7 @@
 | --------------- | --- |
 {% if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
 {%      for interface in snmp_server.local_interfaces %}
-| {{interface}} | {{snmp_server.local_interfaces[interface]['vrf'] | default('default')}} |
+| {{ interface }} | {{ snmp_server.local_interfaces[interface]['vrf'] | default('default') }} |
 {%      endfor %}
 {% endif %}
 
@@ -39,7 +39,7 @@
 | --- | ------ |
 {% if snmp_server.vrfs is defined and snmp_server.vrfs is not none %}
 {%      for vrf in snmp_server.vrfs %}
-| {{vrf.name}} | {% if vrf.enable %} Enabled {% else %} Disabled {% endif %} |
+| {{ vrf.name }} | {% if vrf.enable %} Enabled {% else %} Disabled {% endif %} |
 {%      endfor %}
 {% endif %}
 
@@ -49,7 +49,7 @@
 | Host | VRF | Username | Authentication level | SNMP Version |
 | ---- |---- | -------- | -------------------- | ------------ |
 {%      for host in snmp_server.hosts %}
-{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{user.username}} | {{user.authentication_level}} | {{user.version}} |
+{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{ user.username }} | {{ user.authentication_level }} | {{ user.version }} |
 {% endfor %}
 {%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | - |
 {%         endif %}

@@ -5,7 +5,6 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Name Servers](#name-servers)
-  - [NTP](#ntp)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -94,26 +93,6 @@ interface Management1
 ```eos
 ip name-server vrf MGMT 8.8.8.8
 ip name-server vrf MGMT 192.168.200.5
-```
-
-## NTP
-
-### NTP Summary
-
-- Local Interface: Management1
-
-- VRF: MGMT
-
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
-
-### NTP Device Configuration
-
-```eos
-!
-ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 192.168.200.5 prefer
 ```
 
 ## Management API HTTP
@@ -311,50 +290,18 @@ vlan 350
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | false | - | - |
 | Ethernet7 | test | routed | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | false | - | - |
 | Ethernet8 | test | routed | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
-| Ethernet4000 | My test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
+| Ethernet45 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
+| Ethernet46 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
+| Ethernet47 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
+| Ethernet48 | P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | false | - | - |
+| Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet7
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.97/31
-!
-interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet7
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.99/31
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet7
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.101/31
-!
-interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet7
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.103/31
 !
 interface Ethernet7
    description test
@@ -380,8 +327,40 @@ interface Ethernet9
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.40.20/24
 !
+interface Ethernet45
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet7
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.97/31
+!
+interface Ethernet46
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet7
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.99/31
+!
+interface Ethernet47
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet7
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.101/31
+!
+interface Ethernet48
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet7
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.103/31
+!
 interface Ethernet4000
-   description My test
+   description My second test
    no shutdown
    mtu 1500
    no switchport
@@ -633,6 +612,12 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Disabled | - |  - |
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles
@@ -715,6 +700,7 @@ router bgp 65105
       vlan 350
    !
    address-family evpn
+      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

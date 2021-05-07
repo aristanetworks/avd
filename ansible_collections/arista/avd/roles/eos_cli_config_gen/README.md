@@ -551,7 +551,7 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
+    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -603,9 +603,7 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -671,6 +669,9 @@ ethernet_interfaces:
       ip: < true | false >
       ldp:
         interface: < true | false >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -686,6 +687,8 @@ ethernet_interfaces:
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -731,6 +734,9 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
 ```
 
 #### Interface Defaults
@@ -785,10 +791,10 @@ port_channel_interfaces:
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
@@ -940,6 +946,9 @@ vlan_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1110,7 +1119,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
-    encryption_key_common : < true | false >
+    encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -1225,11 +1234,11 @@ router_pim_sparse_mode:
     rp_addresses:
       < rp_address_1 >:
         groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
+          < group_prefix_1/mask >:
+          < group_prefix_2/mask >:
       < rp_address_2 >:
     anycast_rps:
-      < anycast_rp_address_1 > :
+      < anycast_rp_address_1 >:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
@@ -1482,6 +1491,10 @@ qos:
 
 ```yaml
 class_maps:
+  pbr:
+    < class-map name >:
+      ip:
+        access_group: < Standard access-list name >
   qos:
     < class-map name >:
       vlan: < VLAN value(s) or range(s) of VLAN values >
@@ -1494,6 +1507,14 @@ class_maps:
 
 ```yaml
 policy_maps:
+  pbr:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            nexthop:
+              ip_address: < IPv4_address | IPv6_address >
+              recursive: < true | false >
   qos:
     < policy-map name >:
       classes:
@@ -1732,6 +1753,10 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+    evpn_hostflap_detection:
+      enabled: < true | false >
+      threshold: < integer >
+      window: < integer >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:
@@ -1783,12 +1808,16 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < peer_group_name >:
         activate: true
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
         activate: < true | false >
     redistribute_routes:
       < route_type >:

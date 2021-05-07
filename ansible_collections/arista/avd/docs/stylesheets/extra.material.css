@@ -104,11 +104,21 @@
     color: var(--md-default-fg-color--lighter)
   } */
 }
-
   .md-typeset__table {
     min-width: 100%;
   }
-
   .md-typeset table:not([class]) {
       display: table;
   }
+
+.mdx-content__footer {
+    margin-top: 20px;
+    text-align: center;
+}
+.mdx-content__footer a {
+    display: inline-block;
+    transition: transform 250ms cubic-bezier(0.1, 0.7, 0.1, 1), color 125ms;
+}
+.mdx-content__footer a:focus, .mdx-content__footer a:hover {
+    transform: scale(1.2);
+}

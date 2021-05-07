@@ -231,6 +231,8 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | none  |
 | 111 | Tenant_A_OP_Zone_2 | none  |
 | 112 | Tenant_A_OP_Zone_3 | none  |
+| 2500 | web-l2-vlan | none  |
+| 2600 | web-l2-vlan-2 | none  |
 | 4085 | L2LEAF_INBAND_MGMT | none  |
 | 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
 | 4094 | MLAG_PEER | MLAG  |
@@ -247,6 +249,12 @@ vlan 111
 !
 vlan 112
    name Tenant_A_OP_Zone_3
+!
+vlan 2500
+   name web-l2-vlan
+!
+vlan 2600
+   name web-l2-vlan-2
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
@@ -270,8 +278,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,4085 | *- | *- | 3 |
+| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
+| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 
@@ -343,7 +351,7 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -354,7 +362,7 @@ interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,4085
+   switchport trunk allowed vlan 110-112,2500,2600,4085
    switchport mode trunk
    mlag 3
    service-profile QOS-PROFILE
@@ -488,6 +496,8 @@ interface Vlan4094
 | 110 | 10110 |
 | 111 | 50111 |
 | 112 | 50112 |
+| 2500 | 2500 |
+| 2600 | 2600 |
 
 #### VRF to VNI Mappings
 
@@ -506,6 +516,8 @@ interface Vxlan1
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111
    vxlan vlan 112 vni 50112
+   vxlan vlan 2500 vni 2500
+   vxlan vlan 2600 vni 2600
    vxlan vrf Common_VRF vni 1025
 ```
 
@@ -637,6 +649,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 110 | 172.16.110.4:10110 | 10110:10110 | - | - | learned |
 | 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
 | 112 | 172.16.110.4:50112 | 50112:50112 | - | - | learned |
+| 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.110.4:2600 | 2600:2600 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
@@ -711,6 +725,16 @@ router bgp 65112
    vlan 112
       rd 172.16.110.4:50112
       route-target both 50112:50112
+      redistribute learned
+   !
+   vlan 2500
+      rd 172.16.110.4:2500
+      route-target both 2500:2500
+      redistribute learned
+   !
+   vlan 2600
+      rd 172.16.110.4:2600
+      route-target both 2600:2600
       redistribute learned
    !
    address-family evpn

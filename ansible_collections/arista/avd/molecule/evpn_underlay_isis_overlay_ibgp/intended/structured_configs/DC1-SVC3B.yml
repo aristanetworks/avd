@@ -1,42 +1,42 @@
-l3leaf_node_group: DC1_SVC3
-switch_platform: vEOS-LAB
-switch_rack: null
-switch_bgp_as: 65000
-leaf_id: 5
-switch_mgmt_ip: 192.168.200.109/24
-leaf_evpn_services_l2_only: false
-switch_router_id: 192.168.255.9
-switch_evpn_role: client
-switch_evpn_route_servers:
-- DC1-SPINE1
-- DC1-SPINE4
-switch_evpn_route_clients: []
-leaf_filter_tenants:
-- Tenant_A
-- Tenant_B
-- Tenant_C
-leaf_filter_tags:
-- opzone
-- web
-- app
-- db
-- vmotion
-- nfs
-- wan
-leaf_allowed_vrfs: []
-leaf_allowed_svis: []
-leaf_allowed_vlans: []
-leaf_mlag: true
-leaf_mlag_group: DC1_SVC3
-leaf_mlag_role: secondary
-leaf_mlag_peer: DC1-SVC3A
-leaf_mlag_ip: 7
-leaf_mlag_peer_ip: 6
-leaf_mlag_peer_id: 4
+router_bgp:
+  as: 65000
+  router_id: 192.168.255.9
+  bgp_defaults:
+  - no bgp default ipv4-unicast
+  - distance bgp 20 200 200
+  - maximum-paths 4 ecmp 4
+  peer_groups:
+    OVERLAY-PEERS:
+      type: evpn
+      update_source: Loopback0
+      remote_as: 65000
+      bfd: true
+      password: q+VNViP5i4rVjW1cxFv2wA==
+      send_community: all
+      maximum_routes: 0
+  address_family_ipv4:
+    peer_groups:
+      OVERLAY-PEERS:
+        activate: false
+  address_family_evpn:
+    peer_groups:
+      OVERLAY-PEERS:
+        activate: true
+        route_map_in: RM-EVPN-SOO-IN
+        route_map_out: RM-EVPN-SOO-OUT
+  neighbors:
+    192.168.255.1:
+      peer_group: OVERLAY-PEERS
+      description: DC1-SPINE1
+    192.168.255.4:
+      peer_group: OVERLAY-PEERS
+      description: DC1-SPINE4
+static_routes:
+- vrf: MGMT
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.200.5
 service_routing_protocols_model: multi-agent
 ip_routing: true
-hardware_counters: null
-hardware: null
 daemon_terminattr:
   ingestgrpcurl:
     ips:
@@ -52,10 +52,6 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
-event_monitor: null
-event_handlers: null
-load_interval: null
-queue_monitor_length: null
 name_server:
   source:
     vrf: MGMT
@@ -68,15 +64,12 @@ ntp_server:
     interface: Management1
   nodes:
   - 192.168.200.5
-redundancy: null
-snmp_server: null
 spanning_tree:
   mode: mstp
   mst_instances:
     '0':
       priority: 4096
   no_spanning_tree_vlan: 4093-4094
-aaa_authorization: null
 local_users:
   admin:
     privilege: 15
@@ -86,7 +79,21 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-clock: null
+vrfs:
+  MGMT:
+    ip_routing: false
+management_interfaces:
+  Management1:
+    description: oob_management
+    shutdown: false
+    vrf: MGMT
+    ip_address: 192.168.200.109/24
+    gateway: 192.168.200.5
+    type: oob
+management_api_http:
+  enable_vrfs:
+    MGMT: {}
+  enable_https: true
 vlans:
   4093:
     tenant: system
@@ -98,17 +105,22 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-vrfs:
-  MGMT:
-    ip_routing: false
-port_channel_interfaces:
-  Port-Channel7:
-    description: DC1_L2LEAF2_Po1
-    type: switched
+vlan_interfaces:
+  Vlan4093:
+    description: MLAG_PEER_L3_PEERING
     shutdown: false
-    vlans: null
-    mode: trunk
-    mlag: 7
+    ip_address: 10.255.251.7/31
+    mtu: 1500
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+  Vlan4094:
+    description: MLAG_PEER
+    shutdown: false
+    ip_address: 10.255.252.7/31
+    no_autostate: true
+    mtu: 1500
+port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-SVC3A_Po5
     type: switched
@@ -118,7 +130,33 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel7:
+    description: DC1_L2LEAF2_Po1
+    type: switched
+    shutdown: false
+    mode: trunk
+    mlag: 7
 ethernet_interfaces:
+  Ethernet5:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet5
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-SVC3A_Ethernet5
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet6:
+    peer: DC1-SVC3A
+    peer_interface: Ethernet6
+    peer_type: mlag_peer
+    description: MLAG_PEER_DC1-SVC3A_Ethernet6
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 5
+      mode: active
   Ethernet1:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
@@ -167,26 +205,6 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Ethernet5:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet5
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet5
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
-  Ethernet6:
-    peer: DC1-SVC3A
-    peer_interface: Ethernet6
-    peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3A_Ethernet6
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 5
-      mode: active
   Ethernet7:
     peer: DC1-L2LEAF2A
     peer_interface: Ethernet2
@@ -207,6 +225,13 @@ ethernet_interfaces:
     channel_group:
       id: 7
       mode: active
+mlag_configuration:
+  domain_id: DC1_SVC3
+  local_interface: Vlan4094
+  peer_address: 10.255.252.6
+  peer_link: Port-Channel5
+  reload_delay_mlag: 300
+  reload_delay_non_mlag: 330
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -220,123 +245,6 @@ loopback_interfaces:
     ip_address: 192.168.254.8/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.200.109/24
-    gateway: 192.168.200.5
-    type: oob
-vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 10.255.251.7/31
-    mtu: 1500
-    isis_enable: EVPN_UNDERLAY
-    isis_metric: 50
-    isis_network_point_to_point: true
-  Vlan4094:
-    description: MLAG_PEER
-    shutdown: false
-    ip_address: 10.255.252.7/31
-    no_autostate: true
-    mtu: 1500
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-SVC3B_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans: null
-      vrfs: null
-tcam_profile: null
-platform: null
-mac_address_table: null
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-virtual_source_nat_vrfs: null
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans: null
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
-prefix_lists: null
-mlag_configuration:
-  domain_id: DC1_SVC3
-  local_interface: Vlan4094
-  peer_address: 10.255.252.6
-  peer_link: Port-Channel5
-  reload_delay_mlag: 300
-  reload_delay_non_mlag: 330
-route_maps:
-  RM-EVPN-SOO-IN:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - extcommunity ECL-EVPN-SOO
-      20:
-        type: permit
-  RM-EVPN-SOO-OUT:
-    sequence_numbers:
-      10:
-        type: permit
-        set:
-        - extcommunity soo 192.168.254.8:1 additive
-router_bfd:
-  multihop:
-    interval: 1200
-    min_rx: 1200
-    multiplier: 3
-router_bgp:
-  as: 65000
-  router_id: 192.168.255.9
-  bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - maximum-paths 4 ecmp 4
-  peer_groups:
-    OVERLAY-PEERS:
-      type: evpn
-      update_source: Loopback0
-      remote_as: 65000
-      bfd: true
-      password: q+VNViP5i4rVjW1cxFv2wA==
-      send_community: all
-      maximum_routes: 0
-  neighbor_interfaces: null
-  neighbors:
-    192.168.255.1:
-      peer_group: OVERLAY-PEERS
-      description: DC1-SPINE1
-    192.168.255.4:
-      peer_group: OVERLAY-PEERS
-      description: DC1-SPINE4
-  redistribute_routes: null
-  address_family_evpn:
-    peer_groups:
-      OVERLAY-PEERS:
-        activate: true
-        route_map_in: RM-EVPN-SOO-IN
-        route_map_out: RM-EVPN-SOO-OUT
-  address_family_ipv4:
-    peer_groups:
-      OVERLAY-PEERS:
-        activate: false
-  address_family_rtc: null
-  vlan_aware_bundles: null
-  vlans: null
-  vrfs: null
-ip_extcommunity_lists:
-  ECL-EVPN-SOO:
-  - type: permit
-    extcommunities: soo 192.168.254.8:1
-router_ospf: null
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
@@ -354,8 +262,38 @@ router_isis:
   - ipv4 unicast
   isis_af_defaults:
   - maximum-paths 4
-queue_monitor_streaming: null
-management_api_http:
-  enable_https: true
-  enable_vrfs:
-    MGMT: null
+router_bfd:
+  multihop:
+    interval: 1200
+    min_rx: 1200
+    multiplier: 3
+route_maps:
+  RM-EVPN-SOO-IN:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - extcommunity ECL-EVPN-SOO
+      20:
+        type: permit
+  RM-EVPN-SOO-OUT:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+        - extcommunity soo 192.168.254.8:1 additive
+ip_extcommunity_lists:
+  ECL-EVPN-SOO:
+  - type: permit
+    extcommunities: soo 192.168.254.8:1
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-SVC3B_VTEP
+    source_interface: Loopback1
+    virtual_router:
+      encapsulation_mac_address: mlag-system-id
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings: {}
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a

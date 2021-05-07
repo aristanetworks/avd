@@ -17,6 +17,7 @@ port_profiles:
     vlans: "210-211"
 
   ALL_WITH_SECURITY:
+    parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
@@ -88,6 +89,12 @@ port_profiles:
         mode: static
         timeout: 10
 
+  NESTED_PORT_PROFILE:
+    parent_profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+    port_channel:
+      description: NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+      mode: active
+
 servers:
   server01_MLAG:
     rack: RackB
@@ -143,12 +150,12 @@ servers:
     adapters:
       - server_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet10, Ethernet10 ]
-        switches: [ DC1-SVC3A, DC1-SVC4A ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A_B
         port_channel:
           description: PortChanne1
           mode: active
-          esi: '0303:0202:0101'
+          short_esi: '0303:0202:0101'
 
   server04_inherit_all_from_profile:
     rack: RackC
@@ -302,13 +309,21 @@ servers:
           lacp_fallback:
             mode: static
 
-  server10_inherit_profile_port_channel_lacp_fallback:
+  server11_inherit_profile_port_channel_lacp_fallback:
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
         switch_ports: [ Ethernet18, Ethernet18 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
+
+  server12_inherit_nested_profile_port_channel_lacp_fallback:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet19, Ethernet19 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: NESTED_PORT_PROFILE
 
 firewalls:
   FIREWALL01:

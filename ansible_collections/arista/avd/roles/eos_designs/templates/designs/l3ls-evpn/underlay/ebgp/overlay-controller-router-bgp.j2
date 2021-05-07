@@ -1,0 +1,34 @@
+{# EBGP #}
+{# Underlay network peering #}
+router_bgp:
+  peer_groups:
+    {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+      type: ipv4
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+        activate: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+{# future place to add RFC5549 EBGP peerings #}
+
+{% else %}
+{# Regular EBGP peerings #}
+{# Overlay Controller router bgp neighbors configuration #}
+  neighbors:
+{%     for uplink_to_remote_switches in switch.uplink_to_remote_switches %}
+    {{ overlay_controller_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * max_overlay_controller_to_switch_links) + loop.index0 * 2) }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      description: {{ switch.remote_switches[loop.index0] }}
+      remote_as: {{ switch.remote_switches_asn[loop.index0] }}
+{%         if overlay_controller_p2p_bfd is arista.avd.defined(true) %}
+      bfd: true
+{%         endif %}
+{%     endfor %}
+{% endif %}

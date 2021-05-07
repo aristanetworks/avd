@@ -83,6 +83,7 @@ interface Management1
 | Vlan88 |  SVI Description  |  default  |  -  |  true  |
 | Vlan89 |  SVI Description  |  default  |  -  |  false  |
 | Vlan90 |  SVI Description  |  default  |  -  |  -  |
+| Vlan91 |  PBR Description  |  default  |  -  |  true  |
 | Vlan501 |  SVI Description  |  default  |  -  |  false  |
 | Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
 | Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
@@ -106,6 +107,7 @@ interface Management1
 | Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
@@ -208,6 +210,11 @@ interface Vlan90
    description SVI Description
    ip address 10.10.83.1/24
    ip attached-host route export
+!
+interface Vlan91
+   description PBR Description
+   shutdown
+   service-policy type pbr input MyServicePolicy
 !
 interface Vlan501
    description SVI Description

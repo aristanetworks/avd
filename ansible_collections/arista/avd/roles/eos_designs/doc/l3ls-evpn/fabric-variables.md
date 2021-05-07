@@ -123,6 +123,18 @@ bfd_multihop:
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
 
+## EVPN Host Flapping Settings
+evpn_hostflap_detection:
+
+  # If set to false it will disable EVPN host-flap detection
+  enabled: < true | false | default -> true >
+
+  # Minimum number of MAC moves that indicate a MAC duplication issue
+  threshold: < number | default 5 >
+
+  # Time (in seconds) to detect a MAC duplication issue
+  window: < seconds | default 180 >
+
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >

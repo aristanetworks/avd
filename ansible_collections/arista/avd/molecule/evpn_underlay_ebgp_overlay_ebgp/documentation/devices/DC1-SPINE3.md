@@ -256,8 +256,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | 172.31.255.4/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | 172.31.255.20/31 | default | 1500 | false | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | 172.31.255.36/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet3 | routed | - | 172.31.255.52/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet3 | routed | - | 172.31.255.68/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet43 | routed | - | 172.31.255.52/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet43 | routed | - | 172.31.255.68/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet3 | routed | - | 172.31.255.84/31 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet3 | routed | - | 172.31.255.100/31 | default | 1500 | false | - | - |
 
@@ -290,7 +290,7 @@ interface Ethernet3
    ip address 172.31.255.36/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SVC3A_Ethernet3
+   description P2P_LINK_TO_DC1-SVC3A_Ethernet43
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -298,7 +298,7 @@ interface Ethernet4
    ip address 172.31.255.52/31
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-SVC3B_Ethernet3
+   description P2P_LINK_TO_DC1-SVC3B_Ethernet43
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -554,14 +554,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 192.168.255.0/24 le 32 |
+| 10 | permit 192.168.255.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 le 32
+   seq 10 permit 192.168.255.0/24 eq 32
 ```
 
 ## Route-maps

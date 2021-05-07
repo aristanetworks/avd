@@ -13,7 +13,7 @@ Role support following variables:
 ```yaml
 # Root directory where to build output structure
 # All folder below will be created in this directory folder.
-root_dir: '{{inventory_dir}}'
+root_dir: '{{ inventory_dir }}'
 
 # Main output directory
 output_dir_name: 'intended'

@@ -5,7 +5,7 @@ acl
 aliases
 arp
 base
-class_maps
+class-maps
 dns-ntp
 enable-password
 errdisable
@@ -39,7 +39,7 @@ mpls
 none_configuration
 ntp
 platform
-policy_maps
+policy-maps
 port-channel-interfaces
 prefix-lists
 prompt
@@ -73,6 +73,7 @@ tcam-profile
 static-routes
 terminattr-cloud
 terminattr-prem
+terminattr-prem-no-ingestkey
 terminattr-prem-disableaaa
 traffic-policies
 unsupported-transceiver

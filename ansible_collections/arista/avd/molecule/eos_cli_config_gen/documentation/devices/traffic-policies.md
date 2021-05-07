@@ -150,7 +150,7 @@ traffic-policies
       match BLUE-C1-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
          destination prefix field-set DEMO-01
-         protocol tcp
+         protocol tcp source port 1,10-20
          ttl 10, 20-30
          actions
             set traffic class 5
@@ -158,7 +158,7 @@ traffic-policies
       !
       match BLUE-C1-POLICY-02 ipv4
          source prefix field-set DEMO-01 DEMO-02
-         protocol tcp
+         protocol tcp flags established destination port field-set SERVICE-DEMO
          protocol icmp
          actions
             count DEMO-TRAFFIC
@@ -178,7 +178,7 @@ traffic-policies
       match BLUE-C1-POLICY-04 ipv4
          source prefix field-set DEMO-02
          destination prefix field-set DEMO-01
-         protocol tcp
+         protocol tcp flags established source port 22
          protocol icmp
          actions
             set traffic class 5
@@ -198,7 +198,7 @@ traffic-policies
       counter DEMO-TRAFFIC
       match BLUE-C2-POLICY-01 ipv4
          source prefix 10.0.0.0/8 192.168.0.0/16
-         protocol tcp
+         protocol tcp source port 1,10-20
          protocol icmp
          actions
             set traffic class 5

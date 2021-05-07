@@ -7,7 +7,7 @@
 | Session | URL | Username | Autovlan | Source Interface |
 | ------- | --- | -------- | -------- | ---------------- |
 {%     for session in vmtracer_sessions | arista.avd.natural_sort %}
-| {{ session }} | {% if vmtracer_sessions[session].url is defined and vmtracer_sessions[session].url is not none %} {{ vmtracer_sessions[session].url }} {% else %} - {% endif %}| {{ vmtracer_sessions[session].username}} | {% if vmtracer_sessions[session].autovlan_disable is defined and vmtracer_sessions[session].autovlan_disable == true %}disabled {% else %}enabled {% endif %}| {% if vmtracer_sessions[session].source_interface is defined and vmtracer_sessions[session].source_interface is not none %} {{ vmtracer_sessions[session].source_interface }} {% else %} - {% endif %}|
+| {{ session }} | {% if vmtracer_sessions[session].url is defined and vmtracer_sessions[session].url is not none %} {{ vmtracer_sessions[session].url }} {% else %} - {% endif %}| {{ vmtracer_sessions[session].username }} | {% if vmtracer_sessions[session].autovlan_disable is defined and vmtracer_sessions[session].autovlan_disable == true %}disabled {% else %}enabled {% endif %}| {% if vmtracer_sessions[session].source_interface is defined and vmtracer_sessions[session].source_interface is not none %} {{ vmtracer_sessions[session].source_interface }} {% else %} - {% endif %}|
 {%     endfor %}
 
 ### VM Tracer Device Configuration

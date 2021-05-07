@@ -225,7 +225,7 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_SVC3 | Vlan4094 | 10.255.252.7 | Port-Channel5 |
+| DC1_SVC3 | Vlan4092 | 10.255.252.7 | Port-Channel5 |
 
 Dual primary detection is disabled.
 
@@ -235,7 +235,7 @@ Dual primary detection is disabled.
 !
 mlag configuration
    domain-id DC1_SVC3
-   local-interface Vlan4094
+   local-interface Vlan4092
    peer-address 10.255.252.7
    peer-link Port-Channel5
    reload-delay mlag 300
@@ -258,7 +258,7 @@ STP Root Super: **True**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+Spanning Tree disabled for VLANs: **4090,4092**
 
 ## Spanning Tree Device Configuration
 
@@ -266,7 +266,7 @@ Spanning Tree disabled for VLANs: **4093-4094**
 !
 spanning-tree root super
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093-4094
+no spanning-tree vlan-id 4090,4092
 spanning-tree mst 0 priority 4096
 ```
 
@@ -317,8 +317,8 @@ vlan internal order ascending range 1006 1199
 | 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3  |
 | 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3  |
 | 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3  |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
-| 4094 | MLAG_PEER | MLAG  |
+| 4090 | LEAF_PEER_L3 | LEAF_PEER_L3  |
+| 4092 | MLAG_PEER | MLAG  |
 
 ## VLANs Device Configuration
 
@@ -411,11 +411,11 @@ vlan 3030
    name MLAG_iBGP_Tenant_C_WAN_Zone
    trunk group LEAF_PEER_L3
 !
-vlan 4093
+vlan 4090
    name LEAF_PEER_L3
    trunk group LEAF_PEER_L3
 !
-vlan 4094
+vlan 4092
    name MLAG_PEER
    trunk group MLAG
 ```
@@ -442,7 +442,8 @@ vlan 4094
 | Ethernet15 | server08_no_profile_port_channel_Eth1 | *trunk | *1-4094 | *- | *- | 15 |
 | Ethernet16 |  server09_override_profile_no_port_channel_Eth1 | access | 210 | - | - | - |
 | Ethernet17 | server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
-| Ethernet18 | server10_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
+| Ethernet18 | server11_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
+| Ethernet19 | server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -450,46 +451,14 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | routed | - | 172.31.255.49/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | routed | - | 172.31.255.51/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | routed | - | 172.31.255.53/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | routed | - | 172.31.255.55/31 | default | 1500 | false | - | - |
+| Ethernet41 | P2P_LINK_TO_DC1-SPINE1_Ethernet4 | routed | - | 172.31.255.49/31 | default | 1500 | false | - | - |
+| Ethernet42 | P2P_LINK_TO_DC1-SPINE2_Ethernet4 | routed | - | 172.31.255.51/31 | default | 1500 | false | - | - |
+| Ethernet43 | P2P_LINK_TO_DC1-SPINE3_Ethernet4 | routed | - | 172.31.255.53/31 | default | 1500 | false | - | - |
+| Ethernet44 | P2P_LINK_TO_DC1-SPINE4_Ethernet4 | routed | - | 172.31.255.55/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-!
-interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet4
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.49/31
-!
-interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet4
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.51/31
-!
-interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet4
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.53/31
-!
-interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet4
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.55/31
 !
 interface Ethernet5
    description MLAG_PEER_DC1-SVC3B_Ethernet5
@@ -588,10 +557,48 @@ interface Ethernet17
    lacp port-priority 8192
 !
 interface Ethernet18
-   description server10_inherit_profile_port_channel_lacp_fallback_Eth1
+   description server11_inherit_profile_port_channel_lacp_fallback_Eth1
    no shutdown
    channel-group 18 mode active
    lacp port-priority 8192
+!
+interface Ethernet19
+   description server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1
+   no shutdown
+   channel-group 19 mode active
+   lacp port-priority 8192
+!
+interface Ethernet41
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet4
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.49/31
+!
+interface Ethernet42
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet4
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.51/31
+!
+interface Ethernet43
+   description P2P_LINK_TO_DC1-SPINE3_Ethernet4
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.53/31
+!
+interface Ethernet44
+   description P2P_LINK_TO_DC1-SPINE4_Ethernet4
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.55/31
 ```
 
 ## Port-Channel Interfaces
@@ -604,11 +611,12 @@ interface Ethernet18
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 10 | - |
+| Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
 | Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
-| Port-Channel18 | server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel18 | server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel19 | server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -637,7 +645,10 @@ interface Port-Channel10
    switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   mlag 10
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
 !
 interface Port-Channel14
    description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
@@ -684,12 +695,28 @@ interface Port-Channel17
    storm-control unknown-unicast level 2
 !
 interface Port-Channel18
-   description server10_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+   description server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    mlag 18
+   port-channel lacp fallback timeout 10
+   port-channel lacp fallback static
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
+   storm-control all level 10
+   storm-control broadcast level pps 100
+   storm-control multicast level 1
+   storm-control unknown-unicast level 2
+!
+interface Port-Channel19
+   description server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 1-4094
+   switchport mode trunk
+   mlag 19
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    spanning-tree portfast
@@ -772,8 +799,8 @@ interface Loopback100
 | Vlan3019 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone  |  Tenant_B_OP_Zone  |  1500  |  false  |
 | Vlan3020 |  MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone  |  Tenant_B_WAN_Zone  |  1500  |  false  |
 | Vlan3030 |  MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone  |  Tenant_C_WAN_Zone  |  1500  |  false  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
-| Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
+| Vlan4090 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
+| Vlan4092 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
 
@@ -803,8 +830,8 @@ interface Loopback100
 | Vlan3019 |  Tenant_B_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3020 |  Tenant_B_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3030 |  Tenant_C_WAN_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4090 |  default  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4092 |  default  |  10.255.252.6/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -967,13 +994,13 @@ interface Vlan3030
    vrf Tenant_C_WAN_Zone
    ip address 10.255.251.6/31
 !
-interface Vlan4093
+interface Vlan4090
    description MLAG_PEER_L3_PEERING
    no shutdown
    mtu 1500
    ip address 10.255.251.6/31
 !
-interface Vlan4094
+interface Vlan4092
    description MLAG_PEER
    no shutdown
    mtu 1500
@@ -1213,6 +1240,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Disabled | - |  - |
+
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles
@@ -1364,6 +1397,7 @@ router bgp 65103
       vlan 350
    !
    address-family evpn
+      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

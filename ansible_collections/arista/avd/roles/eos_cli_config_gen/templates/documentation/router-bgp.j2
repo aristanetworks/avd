@@ -154,6 +154,23 @@
 {%     endif %}
 
 ### Router BGP EVPN Address Family
+{%     if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
+
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+{%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled | arista.avd.default(true) == true %}
+{%             set evpn_hostflap_detection_state = "Enabled" %}
+{%             set evpn_hostflap_detection_window = router_bgp.address_family_evpn.evpn_hostflap_detection.window | arista.avd.default('-') %}
+{%             set evpn_hostflap_detection_threshold = router_bgp.address_family_evpn.evpn_hostflap_detection.threshold | arista.avd.default('-') %}
+{%         else %}
+{%             set evpn_hostflap_detection_state = "Disabled" %}
+{%             set evpn_hostflap_detection_window = '-' %}
+{%             set evpn_hostflap_detection_threshold = '-' %}
+{%         endif %}
+| {{ evpn_hostflap_detection_state }} | {{ evpn_hostflap_detection_window }} |  {{ evpn_hostflap_detection_threshold }} |
+{%     endif %}
 
 #### Router BGP EVPN MAC-VRFs
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
