@@ -1,0 +1,90 @@
+{% if maintenance is arista.avd.defined %}
+
+## Maintenance
+
+### Interface groups
+{%     if interface_groups is arista.avd.defined %}
+| Interface group | Ethernet interface | Port-Channel interfaces | Vlan interfaces | BGP maintenance profiles | Interface maintenance Profiles |
+|-----------------|--------------------|-------------------------|-----------------|--------------------------|--------------------------------|
+{%         for interface_group in interface_groups | arista.avd.natural_sort %}
+| {{ interface_group -}}
+| {% if interface_groups[interface_group].interfaces.ethernet is arista.avd.defined %}{{ 'Et' ~ interface_groups[interface_group].interfaces.ethernet }}{% else %}-{% endif -%}
+| {% if interface_groups[interface_group].interfaces.port_channel is arista.avd.defined %}{{ 'Po' ~ interface_groups[interface_group].interfaces.port_channel }}{% else %}-{% endif -%}
+| {% if interface_groups[interface_group].interfaces.vlan is arista.avd.defined %}{{ 'Vl' ~ interface_groups[interface_group].interfaces.vlan }}{% else %}-{% endif -%}
+| {% if interface_groups[interface_group].maintenance.bgp_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.bgp_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif -%}
+| {% if interface_groups[interface_group].maintenance.interface_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.interface_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif %} |
+{%         endfor %}
+### Interface groups configuration
+```eos
+{%     include 'eos/interface-groups.j2' %}
+```
+{%     else %}
+No interface groups defined
+{%     endif %}
+
+### BGP groups
+{%     if bgp_groups is arista.avd.defined %}
+| BGP group | VRF | Neighbors | BGP maintenance profiles |
+|-----------|-----|-----------|--------------------------|
+{%         for bgp_group in bgp_groups | arista.avd.natural_sort %}
+| {{ bgp_group -}}
+| {% if bgp_groups[bgp_group].vrf is arista.avd.defined %}{{ bgp_groups[bgp_group].vrf }}{% else %}default{% endif %}
+| {% if bgp_groups[bgp_group].neighbors is arista.avd.defined %}{{bgp_groups[bgp_group].neighbors | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif -%}
+| {% if bgp_groups[bgp_group].maintenance.bgp_profiles is arista.avd.defined %}{{ bgp_groups[bgp_group].maintenance.bgp_profiles | arista.avd.natural_sort | join(', ') }}{% else %}-{% endif %} |
+{%         endfor %}
+### BGP groups configuration
+```eos
+{%     include 'eos/bgp-groups.j2' %}
+```
+{%     else %}
+No BGP groups defined
+{%     endif %}
+
+### Maintenance defaults
+
+Default maintenance bgp profile: **{{ maintenance.default_bgp_profile | arista.avd.default('Default') }}**
+
+Default maintenance interface profile: **{{ maintenance.default_interface_profile | arista.avd.default('Default') }}**
+
+Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista.avd.default('Default') }}**
+
+### Maintenance profiles
+
+| BGP profile | Initiator route-map
+| -------- | ----- |
+{%     for bgp_profile in maintenance.bgp_profiles | arista.avd.natural_sort %}
+| {{ bgp_profile }} | {{ maintenance.bgp_profiles[bgp_profile].initiator.route_map_inout }} |
+{%     endfor %}
+
+| Interface profile | Rate monitoring load interval | Rate monitoring threshold in/out |
+|-------------------|-------------------------------|------------------|
+{%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort %}
+| {{ interface_profile -}}
+| {{ maintenance.interface_profiles[interface_profile].rate_monitoring.load_interval | arista.avd.default(60) -}}
+| {{ maintenance.interface_profiles[interface_profile].rate_monitoring.threshold | arista.avd.default(100) }} |
+{%     endfor %}
+
+| Unit profile | on-boot duration |
+| -------- | ----- |
+{%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort %}
+| {{ unit_profile }} |{{ maintenance.unit_profiles[unit_profile].on_boot.duration | arista.avd.default('disabled') }} |
+{%     endfor %}
+
+### Maintenance units
+
+| Unit | Interface groups | BGP groups | Unit profile | Quiesce |
+|------|------------------|------------|--------------|---------|
+{%     for unit in maintenance.units | arista.avd.natural_sort %}
+| {{ unit -}}
+| {% if maintenance.units[unit].groups.interface_groups is arista.avd.defined %}{{ maintenance.units[unit].groups.interface_groups | arista.avd.natural_sort | join(', ') }}{% else %}-{% endif %}
+| {% if maintenance.units[unit].groups.bgp_groups is arista.avd.defined %}{{ maintenance.units[unit].groups.bgp_groups | arista.avd.natural_sort | join(', ') -}}{% else %}-{% endif %}
+| {% if maintenance.units[unit].profile is arista.avd.defined %}{{ maintenance.units[unit].profile }}{% else %}{{ maintenance.default_unit_profile | arista.avd.default('Default') }}{% endif -%}
+| {% if maintenance.units[unit].quiesce is arista.avd.defined(true) %} Yes {% else %} No {% endif %} |
+{%     endfor %}
+
+### Maintenance configuration
+
+```eos
+{%     include 'eos/maintenance.j2' %}
+```
+{% endif %}

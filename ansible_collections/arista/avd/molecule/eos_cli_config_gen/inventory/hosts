@@ -29,6 +29,7 @@ logging-minimal
 logging
 loopbacks-interfaces
 mac-address-table
+maintenance
 management-api-http
 management-gnmi
 management-interfaces

@@ -56,6 +56,10 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
+    - [Maintenance](#maintenance)
+      - [BGP Groups](#bgp-groups)
+      - [Interface Groups](#interface-groups)
+      - [Maintenance profiles and units](#maintenance-profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -1012,6 +1016,69 @@ mac_security:
         "< connection_key >":
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
+```
+
+### Maintenance
+
+#### BGP Groups
+```yaml
+bgp_groups_:
+  < bgp_group_1 >:
+    vrf: < vrf_name >
+    neighbors:
+    - < neighbor_1 >
+    - < neighbor_2 >
+    - < peer_group >
+    maintenance:
+      bgp_profiles:
+      - < bgp_profile_1 >
+#### Interface Groups
+```yaml
+interface_groups:
+  < interface_group_1 >:
+    interfaces:
+      ethernet: < ethernet_interface_range >
+      port_channel: < port_channel_interface_range >
+      vlan: < vlan_interface_range >
+    maintenance:
+      bgp_profiles:
+      - < bgp_profile_1 >
+      interface_profiles:
+      - < interface_profile_1 >
+      - < interface_profile_2 >
+```
+#### Profiles and units
+```yaml
+maintenance:
+  default_interface_profile: < interface_profile_1 >
+  default_bgp_profile: < bgp_profile_1 >
+  default_unit_profile: < unit_profile_1 >
+  interface_profiles:
+    < interface_profile_1 >:
+      rate_monitoring:
+        load_interval: < seconds >
+        threshold: < kbps >
+      shutdown:
+        max_delay: < seconds >     
+  bgp_profiles:
+    < bgp_profile_1 >:
+      initiator:
+        route_map_inout: < route_map >
+  unit_profiles:
+    < unit_profile_1 >:
+      on_boot:
+        duration: < 300-3600 >
+  units:
+    < unit_name_1 >:
+      quiesce: < true | false >
+      profile: < unit_profile_1 >
+      groups:
+        bgp_groups:
+        - < bgp_group_1>
+        - < bgp_group_2>
+        interface_groups:
+        - < interface_group_1>
+        - < interface_group_2>
 ```
 
 ### Management

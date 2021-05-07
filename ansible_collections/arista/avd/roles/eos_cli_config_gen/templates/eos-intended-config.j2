@@ -95,6 +95,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
 {% include 'eos/vrf-instances.j2' %}
+{# maintenance bgp groups #}
+{% include 'eos/bgp-groups.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
 {# Ethernet Interfaces #}
@@ -107,6 +109,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/vlan-interfaces.j2' %}
 {# VxLAN interface #}
 {% include 'eos/vxlan-interface.j2' %}
+{# maintenance interface groups #}
+{% include 'eos/interface-groups.j2' %}
 {# Hardware TCAM Profiles #}
 {% include 'eos/tcam-profile.j2' %}
 {# MAC address-table#}
@@ -140,6 +144,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/prefix-lists.j2' %}
 {# IPv6 Prefix-lists #}
 {% include 'eos/ipv6-prefix-lists.j2' %}
+{# maintenance #}
+{% include 'eos/maintenance.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
 {# Static Route #}

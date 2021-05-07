@@ -1,4 +1,4 @@
-# ip-extended-communities
+# terminattr-prem-no-ingestkey
 # Table of Contents
 <!-- toc -->
 
@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+  - [TerminAttr Daemon](#terminattr-daemon)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -14,9 +15,9 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
+- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -50,6 +51,23 @@ interface Management1
 # Authentication
 
 # Monitoring
+
+## TerminAttr Daemon
+
+### TerminAttr Daemon Summary
+
+| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
+| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | UNSET | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | mgt | False |
+
+### TerminAttr Daemon Device Configuration
+
+```eos
+!
+daemon TerminAttr
+   exec /usr/bin/TerminAttr -ingestgrpcurl=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvcompression=gzip -ingestauth=key, -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=mgt -taillogs
+   no shutdown
+```
 
 # Internal VLAN Allocation Policy
 
@@ -88,26 +106,8 @@ interface Management1
 
 # Filters
 
-## IP Extended Communities
-
-### IP Extended Communities Summary
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| TEST1 | deny | 65002:65002 |
-| TEST1 | permit | 65000:65000 |
-| TEST2 | deny | 65001:65001 |
-
-### IP Extended Communities configuration
-
-```eos
-!
-ip extcommunity-list TEST1 deny 65002:65002
-ip extcommunity-list TEST1 permit 65000:65000
-!
-ip extcommunity-list TEST2 deny 65001:65001
-```
-
 # ACL
 
 # Quality Of Service
+
+# Maintenance

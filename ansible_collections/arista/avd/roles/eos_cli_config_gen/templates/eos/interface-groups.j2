@@ -1,0 +1,25 @@
+{# maintenance interface groups #}
+{% for interface_group in interface_groups | arista.avd.natural_sort %}
+!
+group interface {{ interface_group }}
+{%     if interface_groups[interface_group].interfaces is arista.avd.defined %}
+{%         if interface_groups[interface_group].interfaces.ethernet is arista.avd.defined %}
+   interface Et{{ interface_groups[interface_group].interfaces.ethernet }}
+{%         endif %}
+{%         if interface_groups[interface_group].interfaces.port_channel is arista.avd.defined %}
+   interface Po{{ interface_groups[interface_group].interfaces.port_channel }}
+{%         endif %}
+{%         if interface_groups[interface_group].interfaces.vlan is arista.avd.defined %}
+   interface Vl{{ interface_groups[interface_group].interfaces.vlan }}
+{%         endif %}
+{%     endif %}
+{%     if interface_groups[interface_group].maintenance is arista.avd.defined %}
+{%         for bgp_profile in interface_groups[interface_group].maintenance.bgp_profiles | arista.avd.natural_sort %}
+   maintenance profile bgp {{ bgp_profile }}
+{%         endfor %}
+{%         for interface_profile in interface_groups[interface_group].maintenance.interface_profiles | arista.avd.natural_sort %}
+   maintenance profile interface {{ interface_profile }}
+{%         endfor -%}
+{%     endif %}
+   exit
+{% endfor %}
