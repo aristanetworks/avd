@@ -4,7 +4,7 @@ router_bgp:
   peer_groups:
     {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
       type: ipv4
-{% if type == "l3leaf" %}
+{% if type == "l3leaf" and spine.bgp_as is arista.avd.defined %}
       remote_as: {{ spine.bgp_as }}
 {% endif %}
       password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
@@ -39,7 +39,7 @@ router_bgp:
 {%         set link = underlay_data.links[link_interface] %}
     {{ link.peer_ip_address }}:
       peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
-{%         if not (type == "l3leaf" and link.peer_type == "spine") %}
+{%         if not (type == "l3leaf" and link.peer_type == "spine" and spine.bgp_as is arista.avd.defined) %}
       remote_as: {{ link.peer_bgp_as }}
 {%         endif %}
       description: {{ link.peer }}_{{ link.peer_interface }}

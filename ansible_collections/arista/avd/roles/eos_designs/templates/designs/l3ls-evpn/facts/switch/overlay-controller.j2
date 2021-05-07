@@ -68,33 +68,5 @@ switch:
                              overlay_controller.defaults.evpn_route_servers,
                              []) }}
 
-{# switch.remote_switches_asn #}
-  remote_switches_asn:
-{%         for remote_switch in switch_remote_switches %}
-{%             set remote_switch_vars = hostvars[remote_switch] %}
-{%             if remote_switch_vars.type == 'l3leaf' %}
-{%                 for l3leaf_node_group in remote_switch_vars.l3leaf.node_groups | arista.avd.natural_sort %}
-{%                     if remote_switch in remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes | arista.avd.natural_sort %}
-    - {{ remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].nodes[remote_switch].bgp_as | arista.avd.default(
-         remote_switch_vars.l3leaf.node_groups[l3leaf_node_group].bgp_as,
-         remote_switch_vars.l3leaf.defaults.bgp_as) }}
-{%                         break %}
-{%                     endif %}
-{%                 endfor %}
-{%             elif remote_switch_vars.type == 'spine' %}
-    - {{ remote_switch_vars.spine.nodes[node].bgp_as | arista.avd.default(
-         remote_switch_vars.spine.defaults.bgp_as,
-         remote_switch_vars.spine.bgp_as) }}
-{%             elif remote_switch_vars.type == 'super-spine' %}
-    - {{ remote_switch_vars.super_spine.nodes[node].bgp_as | arista.avd.default(
-         remote_switch_vars.super_spine.defaults.bgp_as,
-         remote_switch_vars.super_spine.bgp_as) }}
-{%             elif remote_switch_vars.type == 'overlay-controller' %}
-    - {{ remote_switch_vars.overlay_controller.nodes[some_switch].bgp_as | arista.avd.default(
-         remote_switch_vars.overlay_controller.defaults.bgp_as) }}
-{%             endif %}
-{%         endfor %}
-
-
 {%     endif %}
 {% endfor %}

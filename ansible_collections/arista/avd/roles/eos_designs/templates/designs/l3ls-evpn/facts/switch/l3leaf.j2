@@ -49,7 +49,7 @@ switch:
 
 {# switch.max_spines #}
 {%             set switch_max_spines = max_spines | arista.avd.default(
-                                       spine.nodes | length) %}
+                                       spine.nodes | arista.avd.default([]) | length) %}
   max_spines: {{ switch_max_spines }}
 
 {# switch.uplink_switches #}
