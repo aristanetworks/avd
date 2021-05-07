@@ -20,10 +20,10 @@ topology:
 {%         if p2p_uplinks_ptp.enable is arista.avd.defined %}
       ptp: {{ p2p_uplinks_ptp.enable }}
 {%         endif %}
-{%         set uplink_switch_id = hostvars[uplink_switch].switch.id %}
 {%         if underlay_rfc5549 is arista.avd.defined(true) %}
       ipv6_enable: true
 {%         else %}
+{%             set uplink_switch_id = hostvars[uplink_switch].switch.id %}
       ip_address: {% include templates[design.type].ip_addressing[type].topology_links_ip %}
 
       peer_ip_address: {% include templates[design.type].ip_addressing[type].topology_links_peer_ip %}
