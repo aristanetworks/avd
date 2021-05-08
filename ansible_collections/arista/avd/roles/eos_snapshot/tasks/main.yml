@@ -5,7 +5,7 @@
   file:
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
     state: directory
-    mode: 0664
+    mode: 0755
   when: ("text" in output_format or "markdown" in output_format)
 
 - name: run show commands on remote EOS devices
