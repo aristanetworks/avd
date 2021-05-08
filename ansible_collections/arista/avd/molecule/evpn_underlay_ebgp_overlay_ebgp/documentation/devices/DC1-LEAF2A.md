@@ -459,8 +459,8 @@ interface Ethernet21
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:0808:0707:0606 |
-| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:0000:0606:0707:0808 |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
@@ -477,7 +477,7 @@ interface Port-Channel7
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
    evpn ethernet-segment
-      identifier 0000:0000:0808:0707:0606
+      identifier 0000:1234:0808:0707:0606
       route-target import 08:08:07:07:06:06
    lacp system-id 0808.0707.0606
 !
@@ -488,7 +488,7 @@ interface Port-Channel9
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
    switchport mode trunk
    evpn ethernet-segment
-      identifier 0000:0000:0606:0707:0808
+      identifier 0000:1234:0606:0707:0808
       route-target import 06:06:07:07:08:08
    lacp system-id 0606.0707.0808
 !
