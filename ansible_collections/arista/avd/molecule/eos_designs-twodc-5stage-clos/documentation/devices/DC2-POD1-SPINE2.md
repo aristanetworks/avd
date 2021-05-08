@@ -363,11 +363,13 @@ router bgp 65210
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.2 remote-as 65200
+   neighbor 172.16.21.2 description DC2-SUPER-SPINE1_Ethernet2
    neighbor 172.16.21.66 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.66 remote-as 65200
+   neighbor 172.16.21.66 description DC2-SUPER-SPINE2_Ethernet2
    neighbor 172.17.210.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.3 remote-as 65211
-   neighbor 172.17.210.3 description DC2-POD1-LEAF1A_Ethernet3
+   neighbor 172.17.210.3 description DC2-POD1-LEAF1A_Ethernet2
    neighbor 200.200.200.101 peer group IPv4-UNDERLAY-PEERS
    neighbor 200.200.200.101 remote-as 65112
    neighbor 200.200.200.101 description DC1-POD2-SPINE2

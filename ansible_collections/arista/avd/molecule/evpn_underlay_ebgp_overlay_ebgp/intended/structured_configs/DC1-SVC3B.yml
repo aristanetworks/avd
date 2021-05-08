@@ -896,6 +896,26 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+  Ethernet7:
+    peer: DC1-L2LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF2A_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF2B_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
   Ethernet41:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
@@ -936,26 +956,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.71/31
-  Ethernet7:
-    peer: DC1-L2LEAF2A
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet2
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF2B
-    peer_interface: Ethernet2
-    peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet2
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
   Ethernet10:
     peer: server03_ESI
     peer_interface: Eth2

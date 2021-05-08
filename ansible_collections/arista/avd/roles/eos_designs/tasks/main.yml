@@ -7,6 +7,13 @@
   changed_when: False
   tags: [build, provision]
 
+- name: Set AVD topology facts
+  yaml_templates_to_facts:
+    templates: "{{ templates[design.type].topology_facts }}"
+  check_mode: no
+  changed_when: False
+  tags: [build, provision]
+
 - name: Generate YAML file with hostvars (only for debugging)
   template:
     src: debug/generate-debug-vars.j2

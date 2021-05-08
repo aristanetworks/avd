@@ -240,14 +240,14 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | - | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po7 | switched | trunk | - | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1-LEAF2A_Po7
+   description DC1_LEAF2_Po7
    no shutdown
    switchport
    switchport mode trunk

@@ -41,8 +41,8 @@ router_bgp:
       description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-RS2
       remote_as: 65102
+      description: DC1-RS2_Ethernet3
       bfd: true
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
@@ -191,7 +191,7 @@ ethernet_interfaces:
   Ethernet3:
     peer: DC1-RS2
     peer_interface: Ethernet3
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS2_Ethernet3
     mtu: 1500
     service_profile: QOS-PROFILE

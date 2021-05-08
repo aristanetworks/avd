@@ -30,22 +30,14 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbor_interfaces:
-    Ethernet6:
-      peer_group: UNDERLAY_PEERS
-      remote_as: 65104
-      description: DC1-BL1A_Ethernet6
-    Ethernet7:
-      peer_group: UNDERLAY_PEERS
-      remote_as: 65105
-      description: DC1-BL1B_Ethernet7
     Ethernet1:
       peer_group: UNDERLAY_PEERS
       remote_as: 65101
-      description: DC1-LEAF1A_Ethernet1
+      description: DC1-LEAF1A_Ethernet3
     Ethernet2:
       peer_group: UNDERLAY_PEERS
       remote_as: 65102
-      description: DC1-LEAF2A_Ethernet2
+      description: DC1-LEAF2A_Ethernet3
     Ethernet3:
       peer_group: UNDERLAY_PEERS
       remote_as: 65102
@@ -53,11 +45,19 @@ router_bgp:
     Ethernet4:
       peer_group: UNDERLAY_PEERS
       remote_as: 65103
-      description: DC1-SVC3A_Ethernet4
+      description: DC1-SVC3A_Ethernet3
     Ethernet5:
       peer_group: UNDERLAY_PEERS
       remote_as: 65103
-      description: DC1-SVC3B_Ethernet5
+      description: DC1-SVC3B_Ethernet3
+    Ethernet6:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65104
+      description: DC1-BL1A_Ethernet3
+    Ethernet7:
+      peer_group: UNDERLAY_PEERS
+      remote_as: 65105
+      description: DC1-BL1B_Ethernet3
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -158,24 +158,6 @@ loopback_interfaces:
     shutdown: false
     ip_address: 192.168.255.3/32
 ethernet_interfaces:
-  Ethernet6:
-    peer: DC1-BL1A
-    peer_interface: Ethernet3
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet3
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ipv6_enable: true
-  Ethernet7:
-    peer: DC1-BL1B
-    peer_interface: Ethernet3
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet3
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ipv6_enable: true
   Ethernet1:
     peer: DC1-LEAF1A
     peer_interface: Ethernet3
@@ -221,11 +203,24 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ipv6_enable: true
-peer_filters:
-  LEAF-AS-RANGE:
-    sequence_numbers:
-      10:
-        match: as-range 65101-65132 result accept
+  Ethernet6:
+    peer: DC1-BL1A
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet3
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ipv6_enable: true
+  Ethernet7:
+    peer: DC1-BL1B
+    peer_interface: Ethernet3
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet3
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ipv6_enable: true
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

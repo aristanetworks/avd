@@ -118,28 +118,6 @@ loopback_interfaces:
     ip_address: 192.168.255.4/32
     ospf_area: 0.0.0.0
 ethernet_interfaces:
-  Ethernet6:
-    peer: DC1-BL1A
-    peer_interface: Ethernet4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet4
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.46/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-  Ethernet7:
-    peer: DC1-BL1B
-    peer_interface: Ethernet4
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet4
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.54/31
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
   Ethernet1:
     peer: DC1-LEAF1A
     peer_interface: Ethernet4
@@ -195,19 +173,41 @@ ethernet_interfaces:
     ip_address: 172.31.255.38/31
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
+  Ethernet6:
+    peer: DC1-BL1A
+    peer_interface: Ethernet4
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet4
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.46/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+  Ethernet7:
+    peer: DC1-BL1B
+    peer_interface: Ethernet4
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet4
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.54/31
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
 router_ospf:
   process_ids:
     101:
       passive_interface_default: true
       router_id: 192.168.255.4
       no_passive_interfaces:
-      - Ethernet6
-      - Ethernet7
       - Ethernet1
       - Ethernet2
       - Ethernet3
       - Ethernet4
       - Ethernet5
+      - Ethernet6
+      - Ethernet7
       bfd_enable: true
       max_lsa: 12000
 router_bfd:

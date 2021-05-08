@@ -310,7 +310,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-POD1-LEAF2B_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
+| Port-Channel1 | RACK2_MLAG_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -318,7 +318,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description DC1-POD1-LEAF2B_Po3
+   description RACK2_MLAG_Po3
    no shutdown
    switchport
    switchport trunk allowed vlan 110-112,2500,2600,4085

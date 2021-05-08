@@ -165,6 +165,7 @@ router_isis:
   - Ethernet2
   - Ethernet3
   - Ethernet4
+  - Loopback1
   is_type: level-2
   address_family:
   - ipv4 unicast
