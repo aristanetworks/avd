@@ -5,6 +5,7 @@
   file:
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
     state: directory
+    mode: 0664
   when: ("text" in output_format or "markdown" in output_format)
 
 - name: run show commands on remote EOS devices
@@ -18,6 +19,7 @@
   template:
     src: device_text_command.j2
     dest: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/{{ item.item }}.txt"
+    mode: 0664
   loop: "{{ cli_output.results }}"
   when: "'text' in output_format"
 
@@ -25,6 +27,7 @@
   template:
     src: fabric_json_output.j2
     dest: "{{ snapshots_backup_dir }}/report.json"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   when: "'json' in output_format"
@@ -33,6 +36,7 @@
   template:
     src: fabric_yaml_output.j2
     dest: "{{ snapshots_backup_dir }}/report.yaml"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   when: "'yaml' in output_format"
