@@ -87,19 +87,24 @@ switch:
                      l2leaf.defaults.mlag_peer_vlan,
                      4094) }}
 {%                 if loop.index == 1 %}
+{%                     set mlag_primary_id = switch_id %}
+{%                     set mlag_secondary_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].id %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
-  mlag_ip: {{ (switch_id - 1) * 2 }}
-  mlag_peer_ip: {{ ((switch_id - 1) * 2) + 1 }}
-  mlag_peer_id: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].id }}
+  mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
+
+  mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
+
   mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') }}
 {%                 elif loop.index == 2 %}
+{%                     set mlag_primary_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id %}
+{%                     set mlag_secondary_id = switch_id %}
   mlag_role: "secondary"
   mlag_peer: {{ loop.previtem }}
-{%                     set mlag_peer_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id %}
-  mlag_ip: {{ ((mlag_peer_id - 1) * 2) + 1 }}
-  mlag_peer_ip: {{ (mlag_peer_id -1) * 2 }}
-  mlag_peer_id: {{ mlag_peer_id }}
+  mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
+
+  mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
+
   mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') }}
 {%                 endif %}
 {%             else %}

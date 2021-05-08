@@ -18,6 +18,7 @@
   template:
     src: "cvp-devices.j2"
     dest: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
+    mode: 0664
   delegate_to: localhost
   run_once: true
 

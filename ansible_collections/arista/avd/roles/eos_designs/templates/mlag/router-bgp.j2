@@ -25,7 +25,7 @@ router_bgp:
       description: {{ switch.mlag_peer }}
 {%     else %}
   neighbors:
-    {{ mlag_ips.leaf_peer_l3 | ipaddr('network') | ipmath(switch.mlag_peer_ip) }}:
+    {{ switch.mlag_peer_l3_ip }}:
       peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
       description: {{ switch.mlag_peer }}
 {%     endif %}
