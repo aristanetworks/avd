@@ -32,6 +32,9 @@ evpn_hostflap_detection:
   enabled: false
   threshold: 30
 
+# Set short_esi prefix to non-default value
+evpn_short_esi_prefix: "0000:1234:"
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
