@@ -4,6 +4,7 @@
   template:
     src: ztp_configuration.j2
     dest: "{{ root_dir }}/intended/structured_configs/cvp/ztp_configuration.yml"
+    mode: 0664
   delegate_to: localhost
   run_once: true
 

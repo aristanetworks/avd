@@ -20,6 +20,7 @@
   template:
     src: generate_vars_for_testing.j2
     dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   tags:

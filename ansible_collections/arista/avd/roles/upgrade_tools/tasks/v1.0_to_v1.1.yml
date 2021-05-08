@@ -4,7 +4,7 @@
   file:
     path: "{{ inventory_dir }}/upgrade_1.0_to_1.1/group_vars"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: true
 
@@ -19,6 +19,7 @@
   template:
     src: "DC1_TENANTS_NETWORKS.j2"
     dest: "{{ inventory_dir }}/upgrade_1.0_to_1.1/group_vars/{{ item }}"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   check_mode: no
