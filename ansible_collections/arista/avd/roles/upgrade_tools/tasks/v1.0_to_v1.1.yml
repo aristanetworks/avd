@@ -4,7 +4,7 @@
   file:
     path: "{{ inventory_dir }}/upgrade_1.0_to_1.1/group_vars"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: true
 

@@ -2,7 +2,7 @@
   file:
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}/md_fragments"
     state: directory
-    mode: 0755
+    mode: 0775
 
 - name: save collected commands in md files
   template:
