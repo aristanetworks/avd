@@ -58,7 +58,7 @@ ethernet_interfaces:
       mode: active
 port_channel_interfaces:
   Port-Channel1:
-    description: RACK1_SINGLE_Po3
+    description: DC1-POD1-LEAF1A_Po3
     type: switched
     shutdown: false
     vlans: 4085

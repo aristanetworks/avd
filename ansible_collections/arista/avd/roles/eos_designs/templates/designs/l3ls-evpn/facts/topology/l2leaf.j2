@@ -16,7 +16,10 @@ topology:
 {%         if switch.p2p_link_interface_speed is arista.avd.defined %}
       speed: {{ switch.p2p_link_interface_speed }}
 {%         endif %}
+{%         if hostvars[uplink_switch].switch.mlag is arista.avd.defined(true) or switch.short_esi is arista.avd.defined %}
+{# Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}
       channel_description: {{ hostvars[uplink_switch].switch.group }}
+{%         endif %}
 {%         if switch.mlag is arista.avd.defined(true) %}
 {# Override the peer's description on port-channel to be our group name if we are mlag pair #}
       peer_channel_description: {{ switch.group }}
