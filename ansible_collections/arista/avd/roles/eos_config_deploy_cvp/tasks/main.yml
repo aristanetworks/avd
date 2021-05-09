@@ -1,3 +1,3 @@
 - name: Start creation/update process.
   tags: [provision, online]
-  include_tasks: "./main_{{ cv_collection }}.yml"
+  include_tasks: "{{ cv_collection }}/main.yml"

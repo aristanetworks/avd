@@ -4,13 +4,13 @@
 # Load tasks when device_filter is string
 - name: Generate CVP information using device_filter as string.
   tags: [always]
-  include_tasks: "./main-filter-string.yml"
+  include_tasks: "{{ cv_collection }}/main-filter-string.yml"
   when: "device_filter is string"
 
 # Load tasks when device_filter is list
 - name: Generate CVP information using device_filter as list.
   tags: [always]
-  include_tasks: "./main-filter-list.yml"
+  include_tasks: "{{ cv_collection }}/main-filter-list.yml"
   when: "device_filter is not string"
 
 - name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
@@ -32,6 +32,6 @@
 # If state=absent launch deletion process
 - name: Start creation/update process.
   tags: [provision, online]
-  include_tasks: "./{{ state }}.yml"
+  include_tasks: "{{ cv_collection }}/{{ state }}.yml"
 
 #################################################
