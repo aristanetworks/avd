@@ -124,7 +124,7 @@ spine:
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
-      # Node management IP address | Required.
+      # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
     < inventory_hostname >:
       id: < integer >
@@ -252,7 +252,7 @@ l3leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node management IP address | Required.
+          # Node management IP address | Optional.
           mgmt_ip: < IPv4_address/Mask >
 
           # Uplink to spine interfaces (list), interface located on L3 Leaf,
@@ -429,7 +429,7 @@ l2leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node management IP address | Required.
+          # Node management IP address | Optional.
           mgmt_ip: < IPv4_address/Mask >
 
           # l3leaf interfaces (list), interface located on l3leaf,
