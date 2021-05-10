@@ -328,6 +328,8 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     # W102 Workaround to avoid list as default value.
     if device_filter is None:
         device_filter = ["all"]
+    if dict_inventory is None:
+        return devices
 
     for k1, v1 in dict_inventory.items():
         # Read a leaf
