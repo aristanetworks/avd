@@ -388,15 +388,19 @@ router bgp 65100
    neighbor 11.1.2.1 description DC2-SUPER-SPINE1
    neighbor 172.16.11.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.1 remote-as 65110
+   neighbor 172.16.11.1 description DC1-POD1-SPINE1_Ethernet1
    neighbor 172.16.11.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.3 remote-as 65110
+   neighbor 172.16.11.3 description DC1-POD1-SPINE2_Ethernet1
    neighbor 172.16.12.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.1 remote-as 65120
+   neighbor 172.16.12.1 description DC1-POD2-SPINE1_Ethernet1
    neighbor 172.16.12.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.3 remote-as 65120
+   neighbor 172.16.12.3 description DC1-POD2-SPINE2_Ethernet1
    neighbor 172.17.10.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.1 remote-as 65101
-   neighbor 172.17.10.1 description DC1-RS1
+   neighbor 172.17.10.1 description DC1-RS1_Ethernet1
    neighbor 172.17.10.1 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !

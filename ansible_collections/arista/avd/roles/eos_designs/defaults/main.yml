@@ -13,7 +13,10 @@ templates:
       # Set general "switch.*" variables
       - template: "facts/main.j2"
       # Set design specific "switch.*" variables
-      - template: "designs/l3ls-evpn/facts/main.j2"
+      - template: "designs/l3ls-evpn/facts/switch/main.j2"
+    topology_facts:
+      # Set design specific "topology.*" variables
+      - template: "designs/l3ls-evpn/facts/topology/main.j2"
     structured_config:
       # Render Strucured Configuration
       # Base features
@@ -42,6 +45,8 @@ templates:
         mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-ip-secondary.j2'
         mlag_l3_ip_primary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-l3-ip-primary.j2'
         mlag_l3_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l3leaf/mlag-l3-ip-secondary.j2'
+        topology_links_ip: 'designs/l3ls-evpn/ip-addressing/l3leaf/topology-links-ip.j2'
+        topology_links_peer_ip: 'designs/l3ls-evpn/ip-addressing/l3leaf/topology-links-peer-ip.j2'
         vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/l3leaf/vtep-ip-mlag.j2'
         vtep_ip: 'designs/l3ls-evpn/ip-addressing/l3leaf/vtep-ip.j2'
       l2leaf:
@@ -49,10 +54,16 @@ templates:
         mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/l2leaf/mlag-ip-secondary.j2'
       spine:
         router_id: 'designs/l3ls-evpn/ip-addressing/spine/router-id.j2'
+        topology_links_ip: 'designs/l3ls-evpn/ip-addressing/spine/topology-links-ip.j2'
+        topology_links_peer_ip: 'designs/l3ls-evpn/ip-addressing/spine/topology-links-peer-ip.j2'
       super-spine:
         router_id: 'designs/l3ls-evpn/ip-addressing/super-spine/router-id.j2'
+        topology_links_ip: 'designs/l3ls-evpn/ip-addressing/super-spine/topology-links-ip.j2'
+        topology_links_peer_ip: 'designs/l3ls-evpn/ip-addressing/super-spine/topology-links-peer-ip.j2'
       overlay-controller:
         router_id: 'designs/l3ls-evpn/ip-addressing/overlay-controller/router-id.j2'
+        topology_links_ip: 'designs/l3ls-evpn/ip-addressing/overlay-controller/topology-links-ip.j2'
+        topology_links_peer_ip: 'designs/l3ls-evpn/ip-addressing/overlay-controller/topology-links-peer-ip.j2'
 
 mgmt_vrf_routing: false
 
@@ -83,6 +94,8 @@ underlay_routing_protocol: BGP
 overlay_routing_protocol: BGP
 
 evpn_ebgp_multihop: 3
+
+evpn_short_esi_prefix: "0000:0000:"
 
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100

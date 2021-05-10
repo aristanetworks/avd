@@ -748,7 +748,7 @@ port_channel_interfaces:
     shutdown: false
     mode: trunk
     vlans: 110-111,210-211
-    esi: 0000:0000:0303:0202:0101
+    esi: 0000:1234:0303:0202:0101
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
   Port-Channel14:
@@ -896,6 +896,26 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+  Ethernet7:
+    peer: DC1-L2LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF2A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF2B_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
   Ethernet41:
     peer: DC1-SPINE1
     peer_interface: Ethernet4
@@ -936,26 +956,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.55/31
-  Ethernet7:
-    peer: DC1-L2LEAF2A
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF2B
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
   Ethernet10:
     peer: server03_ESI
     peer_interface: Eth1

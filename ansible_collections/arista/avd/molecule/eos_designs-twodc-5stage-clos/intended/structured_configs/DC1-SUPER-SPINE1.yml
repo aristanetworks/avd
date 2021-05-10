@@ -24,19 +24,23 @@ router_bgp:
     172.16.11.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65110
+      description: DC1-POD1-SPINE1_Ethernet1
     172.16.11.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65110
+      description: DC1-POD1-SPINE2_Ethernet1
     172.16.12.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65120
+      description: DC1-POD2-SPINE1_Ethernet1
     172.16.12.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65120
+      description: DC1-POD2-SPINE2_Ethernet1
     172.17.10.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-RS1
       remote_as: 65101
+      description: DC1-RS1_Ethernet1
       bfd: true
     11.1.2.1:
       remote_as: 65200
@@ -134,7 +138,7 @@ ethernet_interfaces:
   Ethernet5:
     peer: DC1-RS1
     peer_interface: Ethernet1
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS1_Ethernet1
     mtu: 1500
     service_profile: QOS-PROFILE

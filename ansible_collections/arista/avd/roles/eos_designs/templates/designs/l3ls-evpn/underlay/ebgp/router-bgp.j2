@@ -1,0 +1,50 @@
+{# EBGP #}
+{## Underlay network peerings #}
+router_bgp:
+  peer_groups:
+    {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+      type: ipv4
+{% if type == "l3leaf" and spine.bgp_as is arista.avd.defined %}
+      remote_as: {{ spine.bgp_as }}
+{% endif %}
+      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+      maximum_routes: 12000
+      send_community: all
+  address_family_ipv4:
+    peer_groups:
+      {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+        activate: true
+  redistribute_routes:
+    connected:
+      route_map: RM-CONN-2-BGP
+{% if type == "l3leaf" and l2leaf_inband_management_subnet is arista.avd.defined %}
+    attached-host: {}
+{% endif %}
+
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+{# RFC5549 EBGP peerings #}
+  neighbor_interfaces:
+{%     for link_interface in underlay_data.links | arista.avd.natural_sort if underlay_data.links[link_interface].type is arista.avd.defined('underlay_p2p') %}
+{%         set link = underlay_data.links[link_interface] %}
+    {{ link_interface }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+      remote_as: {{ link.peer_bgp_as }}
+      description: {{ link.peer }}_{{ link.peer_interface }}
+{%     endfor %}
+
+{% else %}
+{# Regular EBGP peerings #}
+  neighbors:
+{%     for link_interface in underlay_data.links | arista.avd.natural_sort if underlay_data.links[link_interface].type is arista.avd.defined('underlay_p2p') %}
+{%         set link = underlay_data.links[link_interface] %}
+    {{ link.peer_ip_address }}:
+      peer_group: {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}
+{%         if not (type == "l3leaf" and link.peer_type == "spine" and spine.bgp_as is arista.avd.defined) %}
+      remote_as: {{ link.peer_bgp_as }}
+{%         endif %}
+      description: {{ link.peer }}_{{ link.peer_interface }}
+{%         if link.bfd is arista.avd.defined %}
+      bfd: {{ link.bfd }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

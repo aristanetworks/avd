@@ -24,9 +24,11 @@ router_bgp:
     172.16.21.65:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65210
+      description: DC2-POD1-SPINE1_Ethernet2
     172.16.21.67:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65210
+      description: DC2-POD1-SPINE2_Ethernet2
     11.1.2.2:
       remote_as: 65100
       description: DC1-SUPER-SPINE2

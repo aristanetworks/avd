@@ -29,7 +29,6 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [Peer Filters](#peer-filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
@@ -502,24 +501,6 @@ router bfd
 # Multicast
 
 # Filters
-
-## Peer Filters
-
-### Peer Filters Summary
-
-#### LEAF-AS-RANGE
-
-| Sequence | Match |
-| -------- | ----- |
-| 10 | as-range 65101-65132 result accept |
-
-### Peer Filters Device Configuration
-
-```eos
-!
-peer-filter LEAF-AS-RANGE
-   10 match as-range 65101-65132 result accept
-```
 
 ## Prefix-lists
 

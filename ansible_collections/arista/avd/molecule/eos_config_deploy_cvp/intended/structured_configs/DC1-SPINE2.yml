@@ -30,18 +30,10 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    172.31.255.43:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
-      description: DC1-BL1A_Ethernet6
-    172.31.255.51:
-      peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65104
-      description: DC1-BL1B_Ethernet7
     172.31.255.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65101
-      description: DC1-LEAF1A_Ethernet1
+      description: DC1-LEAF1A_Ethernet2
     172.31.255.11:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65102
@@ -49,15 +41,23 @@ router_bgp:
     172.31.255.19:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65102
-      description: DC1-LEAF2B_Ethernet3
+      description: DC1-LEAF2B_Ethernet2
     172.31.255.27:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65103
-      description: DC1-SVC3A_Ethernet4
+      description: DC1-SVC3A_Ethernet2
     172.31.255.35:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65103
-      description: DC1-SVC3B_Ethernet5
+      description: DC1-SVC3B_Ethernet2
+    172.31.255.43:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65104
+      description: DC1-BL1A_Ethernet2
+    172.31.255.51:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65104
+      description: DC1-BL1B_Ethernet2
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
@@ -155,24 +155,6 @@ loopback_interfaces:
     shutdown: false
     ip_address: 192.168.255.2/32
 ethernet_interfaces:
-  Ethernet6:
-    peer: DC1-BL1A
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.42/31
-  Ethernet7:
-    peer: DC1-BL1B
-    peer_interface: Ethernet2
-    peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
-    mtu: 1500
-    type: routed
-    shutdown: false
-    ip_address: 172.31.255.50/31
   Ethernet1:
     peer: DC1-LEAF1A
     peer_interface: Ethernet2
@@ -218,6 +200,24 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.34/31
+  Ethernet6:
+    peer: DC1-BL1A
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet2
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.42/31
+  Ethernet7:
+    peer: DC1-BL1B
+    peer_interface: Ethernet2
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet2
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.50/31
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

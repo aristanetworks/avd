@@ -17,6 +17,7 @@
   template:
     src: eos-intended-config.j2
     dest: "{{ root_dir }}/intended/configs/{{ inventory_hostname }}.cfg"
+    mode: 0664
   delegate_to: localhost
   register: eosconfig
   tags: [build, provision]
@@ -37,6 +38,7 @@
       template:
         src: eos-device-documentation.j2
         dest: "{{ root_dir }}/documentation/devices/{{ inventory_hostname }}.md"
+        mode: 0664
       changed_when: false
     - name: Generate TOC for device documentation
       add_toc:

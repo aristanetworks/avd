@@ -7,10 +7,18 @@
   changed_when: False
   tags: [build, provision]
 
+- name: Set AVD topology facts
+  yaml_templates_to_facts:
+    templates: "{{ templates[design.type].topology_facts }}"
+  check_mode: no
+  changed_when: False
+  tags: [build, provision]
+
 - name: Generate YAML file with hostvars (only for debugging)
   template:
     src: debug/generate-debug-vars.j2
     dest: "{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}-debug-vars.yml"
+    mode: 0664
   delegate_to: localhost
   changed_when: False
   tags: [debug, never]
@@ -27,6 +35,7 @@
   template:
     src: generate-structured-config.j2
     dest: "{{ root_dir }}/intended/structured_configs/{{ inventory_hostname }}.yml"
+    mode: 0664
   delegate_to: localhost
   changed_when: False
   tags: [build, provision]
@@ -54,6 +63,7 @@
       template:
         src: fabric-documentation.j2
         dest: "{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md"
+        mode: 0664
       changed_when: false
     - name: Generate TOC for fabric documentation
       add_toc:
@@ -66,6 +76,7 @@
   template:
     src: documentation/fabric-p2p-links.j2
     dest: "{{ root_dir }}/documentation/fabric/{{ fabric_name }}-p2p-links.csv"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   check_mode: no
@@ -75,6 +86,7 @@
   template:
     src: documentation/fabric-topology.j2
     dest: "{{ root_dir }}/documentation/fabric/{{ fabric_name }}-topology.csv"
+    mode: 0664
   delegate_to: localhost
   run_once: true
   check_mode: no
