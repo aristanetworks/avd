@@ -2,7 +2,7 @@
 
 - name: Gather fabric reachability from Management Interface {{ management_interface.key }}
   eos_command:
-    commands: "ping {{ loopback0_address | ipaddr('address') }} repeat 1 interface {{ management_interface.key }}"
+    commands: "ping {{ loopback0_address | ansible.netcommon.ipaddr('address') }} repeat 1 interface {{ management_interface.key }}"
   loop: "{{ loopback0_reachability.loopback0_range }}"
   loop_control:
     loop_var: loopback0_address

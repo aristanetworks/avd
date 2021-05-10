@@ -26,7 +26,7 @@ tenants:
             tags: {{ svi_data['tags'] }}
             enabled: {{ svi_data['enabled'] }}
 {%             if svi_data['ip_subnet'] is defined %}
-            ip_address_virtual: {{ svi_data['ip_subnet'] | ipaddr('net') | ipaddr(1) }}
+            ip_address_virtual: {{ svi_data['ip_subnet'] | ansible.netcommon.ipaddr('net') | ansible.netcommon.ipaddr(1) }}
 {%             elif svi_data['ip_address_virtual'] is defined %}
             ip_address_virtual: {{ svi_data['ip_address_virtual'] }}
 {%             endif %}

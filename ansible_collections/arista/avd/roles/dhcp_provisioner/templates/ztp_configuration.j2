@@ -23,8 +23,8 @@ ztp:
   general:
     subnets:
 {% if ztp_network_summary is defined and ztp_network_summary is not none %}
-      - network: {{ ztp_network_summary | ipaddr('network') }}
-        netmask: {{ ztp_network_summary | ipaddr('netmask') }}
+      - network: {{ ztp_network_summary | ansible.netcommon.ipaddr('network') }}
+        netmask: {{ ztp_network_summary | ansible.netcommon.ipaddr('netmask') }}
 {% endif %}
 {% if mgmt_gateway is defined and mgmt_gateway is not none %}
         gateway: {{ mgmt_gateway }}
@@ -52,7 +52,7 @@ ztp:
 {%         if hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: '{{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mac_address }}'
-      ip4: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+      ip4: {{ hostvars[groups[fabric_group][0]].super_spine.node_groups[node_group].nodes[node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -62,7 +62,7 @@ ztp:
 {%      if hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: '{{ hostvars[groups[fabric_group][0]].spine.nodes[node].mac_address }}'
-      ip4: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mgmt_ip | ipaddr('address') }}
+      ip4: {{ hostvars[groups[fabric_group][0]].spine.nodes[node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%      endif %}
 {% endfor %}
 {# Read L3LEAF devices #}
@@ -72,7 +72,7 @@ ztp:
 {%         if hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: '{{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mac_address }}'
-      ip4: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+      ip4: {{ hostvars[groups[fabric_group][0]].l3leaf.node_groups[node_group].nodes[node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -83,7 +83,7 @@ ztp:
 {%         if hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is defined and hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address is not none %}
     - name: {{ node }}
       mac: '{{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mac_address }}'
-      ip4: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mgmt_ip | ipaddr('address') }}
+      ip4: {{ hostvars[groups[fabric_group][0]].l2leaf.node_groups[node_group].nodes[node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}

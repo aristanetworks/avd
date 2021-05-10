@@ -75,7 +75,7 @@ switch:
 
 {# switch.inband_management_ip and switch.inband_management_interface #}
 {%             if l2leaf_inband_management_subnet is arista.avd.defined %}
-  inband_management_ip: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3 + switch_id) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+  inband_management_ip: {{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(3 + switch_id) }}/{{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('prefix') }}
   inband_management_interface: Vlan{{ l2leaf_inband_management_vlan | arista.avd.default('4092') }}
 {%             endif %}
 
@@ -107,7 +107,7 @@ switch:
 
   mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
 
-  mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') }}
+  mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.nextitem].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%                 elif loop.index == 2 %}
 {%                     set mlag_primary_id = l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].id %}
 {%                     set mlag_secondary_id = switch_id %}
@@ -117,7 +117,7 @@ switch:
 
   mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
 
-  mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') }}
+  mlag_peer_mgmt_ip: {{ l2leaf.node_groups[l2leaf_node_group].nodes[loop.previtem].mgmt_ip | ansible.netcommon.ipaddr('address') }}
 {%                 endif %}
 {%             else %}
   mlag: false

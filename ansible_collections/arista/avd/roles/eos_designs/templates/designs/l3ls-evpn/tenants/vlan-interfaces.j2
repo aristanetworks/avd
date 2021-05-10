@@ -43,7 +43,7 @@ vlan_interfaces:
 {%             endif %}
 {# Virtual Router IP Address #}
 {%             if svi_ip_virtual_router_address is arista.avd.defined %}
-    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ipaddr('address') }}
+    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ansible.netcommon.ipaddr('address') }}
 {%             endif %}
 {# Virtual IP address #}
 {%             if svi_ip_address_virtual is arista.avd.defined %}
