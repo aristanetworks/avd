@@ -1,1 +1,1 @@
-{{ vtep_loopback_network_summary | ipaddr('network') | ipmath(mlag_primary_id + switch_max_spines) }}
+{{ vtep_loopback_network_summary | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(mlag_primary_id + switch_max_spines) }}
