@@ -163,14 +163,6 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.8/16
-    gateway: 192.168.1.254
-    type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}

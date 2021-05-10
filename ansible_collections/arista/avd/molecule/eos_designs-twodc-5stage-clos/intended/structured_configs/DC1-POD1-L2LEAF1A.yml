@@ -26,21 +26,6 @@ local_users:
 vrfs:
   MGMT:
     ip_routing: false
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.10/24
-    gateway: 192.168.1.254
-    type: oob
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.4/24
-    gateway: 172.21.110.1
-    type: inband
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -68,5 +53,13 @@ vlans:
   4085:
     tenant: system
     name: L2LEAF_INBAND_MGMT
+management_interfaces:
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.4/24
+    gateway: 172.21.110.1
+    type: inband
 ip_igmp_snooping:
   globally_enabled: true

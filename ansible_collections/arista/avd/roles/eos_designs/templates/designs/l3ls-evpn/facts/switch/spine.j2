@@ -7,7 +7,7 @@ switch:
   id: {{ switch_id }}
 
 {# switch.mgmt_ip #}
-  mgmt_ip: {{ spine.nodes[node].mgmt_ip }}
+  mgmt_ip: {{ spine.nodes[node].mgmt_ip | arista.avd.default() }}
 
 {# switch.spanning_tree_mode #}
   spanning_tree_mode: "none"
