@@ -3,7 +3,6 @@
 <!-- toc -->
 
 - [Management](#management)
-  - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -35,33 +34,6 @@
 
 <!-- toc -->
 # Management
-
-## Management Interfaces
-
-### Management Interfaces Summary
-
-#### IPv4
-
-| Management Interface | description | Type | VRF | IP Address | Gateway |
-| -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.1/24 | 192.168.1.254 |
-
-#### IPv6
-
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
-
-### Management Interfaces Device Configuration
-
-```eos
-!
-interface Management1
-   description oob_management
-   no shutdown
-   vrf MGMT
-   ip address 192.168.1.1/24
-```
 
 ## Management API HTTP
 

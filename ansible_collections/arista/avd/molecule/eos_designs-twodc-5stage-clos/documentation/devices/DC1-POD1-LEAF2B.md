@@ -165,7 +165,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 | --------- | --------------- | ------------ | --------- |
 | RACK2_MLAG | Vlan4094 | 172.19.110.2 | Port-Channel5 |
 
-Dual primary detection is enabled. The detection delay is 5 seconds.
+Dual primary detection is disabled.
 
 ## MLAG Device Configuration
 
@@ -175,9 +175,7 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.19.110.2
-   peer-address heartbeat 192.168.1.8 vrf MGMT
    peer-link Port-Channel5
-   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
