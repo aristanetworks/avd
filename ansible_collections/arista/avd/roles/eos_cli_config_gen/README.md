@@ -755,7 +755,7 @@ switchport_default:
   mode: < routed | access >
   phone:
     cos: < 0-7 >
-    trunk: < untagged >
+    trunk: < tagged | untagged >
     vlan: < 1-4094 >
 ```
 
