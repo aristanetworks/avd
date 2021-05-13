@@ -1,5 +1,6 @@
+
 ---
-- name: generate intented variables
+- name: "Generate intented variables"
   tags: [always]
   arista.avd.inventory_to_container:
     inventory: "{{ inventory_file }}"
@@ -7,7 +8,7 @@
     configlet_dir: "{{ root_dir }}/intended/configs"
     configlet_prefix: "{{ configlets_prefix }}"
     destination: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}_configlets.yml"
-    # device_filter: "{{ device_filter }}"
+    device_filter: "{{ device_filter }}"
   register: CVP_VARS
 
 - name: "Build DEVICES and CONTAINER definition for {{ inventory_hostname }}"
@@ -18,49 +19,12 @@
   delegate_to: localhost
   run_once: true
 
-- name: "Load CVP device information for {{ inventory_hostname }}"
-  tags: [build, provision, online]
-  include_vars: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
+#################################################
 
-- name: "Create configlets on CVP {{ inventory_hostname }}."
-  tags: [provision]
-  arista.cvp.cv_configlet_v3:
-    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
-  register: CVP_CONFIGLETS_STATUS
+# If state=present launch creation/update process
+# If state=absent launch deletion process
+- name: Start creation/update process.
+  tags: [provision, online]
+  include_tasks: "{{ cv_collection }}/{{ state }}.yml"
 
-- name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
-  tags: [apply]
-  arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONFIGLETS_STATUS.tasks }}"
-  when:
-    - CVP_CONFIGLETS_STATUS.tasks | length > 0
-    - execute_tasks|bool
-
-- name: "Building Containers topology on {{ inventory_hostname }}"
-  tags: [provision]
-  arista.cvp.cv_container_v3:
-    topology: "{{ CVP_CONTAINERS }}"
-    state: present
-    apply_mode: loose
-  register: CVP_CONTAINER_RESULTS
-
-- name: "Execute pending tasks on {{ inventory_hostname }}"
-  tags: [apply]
-  arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONTAINER_RESULTS.tasks }}"
-  when:
-    - execute_tasks|bool
-
-- name: "Configure devices on {{ inventory_hostname }}"
-  tags: [provision, apply]
-  arista.cvp.cv_device_v3:
-    devices: "{{ CVP_DEVICES }}"
-    state: present
-  register: CVP_DEVICES_RESULTS
-
-- name: "Execute pending tasks on {{ inventory_hostname }}"
-  tags: [apply]
-  arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_DEVICES_RESULTS.tasks }}"
-  when:
-    - execute_tasks|bool
+#################################################
