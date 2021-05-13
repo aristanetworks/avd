@@ -60,6 +60,12 @@ interface {{ ethernet_interface }}
    switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
 {%             endif %}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].phone.vlan is defined and ethernet_interfaces[ethernet_interface].phone.vlan %}
+   switchport phone vlan {{ ethernet_interfaces[ethernet_interface].phone.vlan }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].phone.trunk is defined and ethernet_interfaces[ethernet_interface].phone.trunk %}
+   switchport phone vlan {{ ethernet_interfaces[ethernet_interface].phone.trunk }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
 {%         endif %}
