@@ -753,6 +753,10 @@ interface_defaults:
 ```yaml
 switchport_default:
   mode: < routed | access >
+  phone:
+    cos: < 0-7 >
+    trunk: < untagged >
+    vlan: < 1-4094 >
 ```
 
 #### Loopback Interfaces
