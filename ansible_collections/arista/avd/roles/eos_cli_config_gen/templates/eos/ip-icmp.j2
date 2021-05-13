@@ -1,0 +1,22 @@
+{# eos - ip icmp #}
+{% if ip_icmp.rate_limit_unreachable is arista.avd.defined(true) %}
+!
+ip icmp rate-limit-unreachable 0
+{% endif %}
+{% if ip_icmp.redirect is arista.avd.defined(true) %}
+!
+ip icmp redirect
+{% elif ip_icmp.redirect is arista.avd.defined(false) %}
+!
+no ip icmp redirect
+{% endif %}
+{% set ip_icmp_source_cli = "ip icmp source-interface " %}
+{% if ip_icmp.source_interface.vrf is arista.avd.defined %}
+{%     set ip_icmp_source_cli = ip_icmp_source_cli ~ ip_icmp.source_interface.name %}
+!
+{{ ip_icmp_source_cli }}
+{% elif ip_icmp.source_interface.name is arista.avd.defined %}
+{%     set ip_icmp_source_cli = ip_icmp_source_cli ~ ip_icmp.source_interface.name ~ " vrf " ~  ip_icmp.source_interface.vrf %}
+!
+{{ ip_icmp_source_cli }}
+{% endif %}

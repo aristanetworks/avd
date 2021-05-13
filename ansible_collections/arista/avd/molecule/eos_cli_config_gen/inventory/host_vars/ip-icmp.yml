@@ -1,0 +1,8 @@
+### IP ICMP ###
+
+ip_icmp:
+  rate_limit_unreachable: true
+  redirect: false
+  source_interface:
+    name: Loopback0
+    vrf: test

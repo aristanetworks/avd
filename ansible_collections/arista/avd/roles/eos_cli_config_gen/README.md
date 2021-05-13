@@ -54,6 +54,7 @@
       - [VxLAN Interface](#vxlan-interface)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP DHCP Relay](#ip-dhcp-relay)
+    - [IP ICMP](#ip-icmp)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Management](#management)
@@ -992,7 +993,17 @@ vlan_internal_allocation_policy:
 ```yaml
 ip_dhcp_relay:
   information_option: < true | false >
+```
 
+### IP ICMP
+
+```yaml
+ip_icmp:
+  rate_limit_unreachable: < true | false >
+  redirect: <true | false >
+  source_interface:
+    name: <interface_name >
+    vrf: < vrf_name >
 ```
 
 ### LLDP

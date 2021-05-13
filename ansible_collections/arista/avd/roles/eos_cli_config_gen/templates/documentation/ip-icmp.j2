@@ -1,0 +1,21 @@
+{% if ip_icmp is defined and ip_icmp is not none %}
+
+## IP ICMP
+
+### IP ICMP Settings
+
+IP ICMP Redirect: {{ ip_icmp.redirect }}
+IP ICMP Rate Limit Unreachable: {% if ip_icmp.rate_limit_unreachable %}0{% else %}Disabled{% endif%}
+
+| VRF | Source Interface Name |
+| --- | --------------- |
+
+{% if ip_icmp.source_interface['vrf'] is defined and ip_icmp.source_interface['vrf'] is not none %} {{ ip_icmp.source_interface['vrf'] }} {% else %}  default {% endif %}|{{ ip_icmp.source_interface['name'] }} |
+{%      endfor %}
+
+### IP ICMP Device Configuration
+
+```eos
+{% include 'eos/ip-icmp.j2' %}
+```
+{% endif %}
