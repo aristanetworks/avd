@@ -32,7 +32,7 @@ Fixes #<ISSUE ID>
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 <!--- If you're unsure about any of these, don't hesitate to ask. We're here to help! -->
 - [ ] My code has been rebased from devel before I start
-- [ ] I have read the [**CONTRIBUTING**](https://www.avd.sh/docs/contributing/) document.
+- [ ] I have read the [**CONTRIBUTING**](https://avd.sh/en/latest/docs/contributing/) document.
 - [ ] My change requires a change to the documentation.
 - [ ] I have updated the documentation accordingly.
 - [ ] I have updated [molecule CI](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/molecule) testing accordingly
