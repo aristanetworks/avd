@@ -25,6 +25,7 @@ from jinja2.runtime import Undefined
 from ansible.utils.display import Display
 from ansible.errors import AnsibleError
 
+
 def defined(value, test_value=None, fail_action=None, var_name=None):
     """
     defined - Ansible test plugin to test if a variable is defined and not none
