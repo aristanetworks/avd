@@ -12,9 +12,9 @@
 - name: "Execute any configlet generated tasks to update configuration on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONFIGLETS_STATUS.tasks }}"
+    tasks: "{{ CVP_CONFIGLETS_STATUS.taskIds }}"
   when:
-    - CVP_CONFIGLETS_STATUS.tasks | length > 0
+    - CVP_CONFIGLETS_STATUS.taskIds | length > 0
     - execute_tasks|bool
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
@@ -28,8 +28,9 @@
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_CONTAINER_RESULTS.tasks }}"
+    tasks: "{{ CVP_CONTAINER_RESULTS.taskIds }}"
   when:
+    - CVP_CONTAINER_RESULTS.taskIds | length > 0
     - execute_tasks|bool
 
 - name: "Configure devices on {{ inventory_hostname }}"
@@ -42,6 +43,7 @@
 - name: "Execute pending tasks on {{ inventory_hostname }}"
   tags: [apply]
   arista.cvp.cv_task_v3:
-    tasks: "{{ CVP_DEVICES_RESULTS.tasks }}"
+    tasks: "{{ CVP_DEVICES_RESULTS.taskIds }}"
   when:
+    - CVP_DEVICES_RESULTS.taskIds | length > 0
     - execute_tasks|bool
