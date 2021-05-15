@@ -37,7 +37,7 @@ tags: ['arista', 'network', 'networking', 'eos', 'avd', 'cloudvision', 'cvp']
 # L(specifiers,https://python-semanticversion.readthedocs.io/en/latest/#requirement-specification). Multiple version
 # range specifiers can be set and are separated by ','
 dependencies:
-    "arista.cvp": ">=2.1.2"
+    "arista.cvp": ">=3.0.0"
     "arista.eos": ">=2.0.0"
     "ansible.netcommon": ">=2.0.0,<3.0.0"
 
