@@ -113,8 +113,8 @@ Compared to the builtin `is defined` test, this test will also test for `none` a
 
 Syntax:
 
-```
-<value> is arista.avd.defined(test_value=<test_value>,fail_action=['warning','error'],var_name=<string representing name of value>)
+```jinja
+{% <value> is arista.avd.defined(test_value=<test_value>,fail_action=['warning','error'],var_name=<string representing name of value>) %}
 ```
 
 To use this test:
