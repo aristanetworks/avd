@@ -2,12 +2,14 @@
 {# #}
 {# Expand data for evpn_route_servers #}
 {% for route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
-{%     set route_server_vars = hostvars[route_server] %}
-{%     if route_server_vars.switch.evpn_role is arista.avd.defined('server') %}
+{%     if hostvars[route_server].switch is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ route_server ~ '].switch') %}
+{%         set route_server_vars = hostvars[route_server] %}
+{%         if route_server_vars.switch.evpn_role is arista.avd.defined('server') %}
 {# Found a matching server. Gathering information for this server #}
-{%         set server = namespace() %}
-{%         set server.bgp_as = route_server_vars.switch.bgp_as %}
-{%         set server.ip_address = route_server_vars.switch.router_id %}
-{%         do overlay_data.evpn_route_servers.update({ route_server: server }) %}
+{%             set server = namespace() %}
+{%             set server.bgp_as = route_server_vars.switch.bgp_as %}
+{%             set server.ip_address = route_server_vars.switch.router_id %}
+{%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
+{%         endif %}
 {%     endif %}
 {% endfor %}
