@@ -11,7 +11,7 @@ The Arista Validated Design (AVD) Core Team is responsible for the direction and
 The following individuals are on the Arista Validated Design (AVD) Core Team:
 
 * Carl Buchmann (@carlbuchmann)
-* Claus Holbeck (@ClausHolbechArista)
+* Claus Holbech (@ClausHolbechArista)
 * Angelique Philipps (@aphillipps)
 * Thomas Grimonet (@titom73)
 
