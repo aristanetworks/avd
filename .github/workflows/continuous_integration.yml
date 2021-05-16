@@ -118,6 +118,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_cli_config_gen']
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.eos_design == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -133,7 +134,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
-          ansible: "ansible>=2.10,<2.11"
+          ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
@@ -156,6 +157,7 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'eos_l3ls_evpn_deprecation_test'
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ molecule_eos_cli_config_gen ]
     if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
     steps:
@@ -171,7 +173,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
-          ansible: "ansible>=2.10,<2.11"
+          ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: false
       - uses: actions/upload-artifact@v2
