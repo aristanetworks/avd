@@ -1,7 +1,7 @@
 {# Read any global set eos_cli and add per tenant-vrf eos_cli #}
 {% set tmp_eos_clis = [] %}
-{% if switch.raw_eos_cli is arista.avd.defined %}
-{%     do tmp_eos_clis.append(switch.raw_eos_cli ) %}
+{% if structured_config.eos_cli is arista.avd.defined %}
+{%     do tmp_eos_clis.append(structured_config.eos_cli) %}
 {% endif %}
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}

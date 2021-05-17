@@ -677,4 +677,7 @@ vrf instance MGMT
 interface Loopback1002
   description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
 
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
 ```

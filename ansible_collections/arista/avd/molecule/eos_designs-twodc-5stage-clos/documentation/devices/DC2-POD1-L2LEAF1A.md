@@ -339,4 +339,7 @@ vrf instance MGMT
 interface Loopback1011
   description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
 
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
 ```

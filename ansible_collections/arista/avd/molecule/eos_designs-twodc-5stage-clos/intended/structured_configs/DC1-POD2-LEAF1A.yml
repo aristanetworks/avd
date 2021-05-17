@@ -161,6 +161,9 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
+  \ under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
+  \ created from raw_eos_cli under VRF Common_VRF\n"
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -301,8 +304,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-eos_cli: "interface Loopback1000\n  description Loopback created from raw_eos_cli\
-  \ under VRF Common_VRF\n"
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
