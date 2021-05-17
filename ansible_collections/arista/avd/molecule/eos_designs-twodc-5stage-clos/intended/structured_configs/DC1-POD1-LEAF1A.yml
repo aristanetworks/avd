@@ -110,6 +110,8 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
+  \ under node DC1-POD1-LEAF1A\n"
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

@@ -53,12 +53,15 @@ port_channel_interfaces:
 {%                         set adapter_mtu = adapter.mtu | arista.avd.default(
                                              adapter_profile.mtu,
                                              parent_profile.mtu) %}
-{%                         set lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
-                                                    adapter_profile.port_channel.lacp_fallback.mode,
-                                                    parent_profile.port_channel.lacp_fallback.mode) %}
-{%                         set lacp_fallback_timeout = adapter.port_channel.lacp_fallback.timeout | arista.avd.default(
-                                                       adapter_profile.port_channel.lacp_fallback.timeout,
-                                                       parent_profile.port_channel.lacp_fallback.timeout) %}
+{%                         set adapter_lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
+                                                            adapter_profile.port_channel.lacp_fallback.mode,
+                                                            parent_profile.port_channel.lacp_fallback.mode) %}
+{%                         set adapter_lacp_fallback_timeout = adapter.port_channel.lacp_fallback.timeout | arista.avd.default(
+                                                               adapter_profile.port_channel.lacp_fallback.timeout,
+                                                               parent_profile.port_channel.lacp_fallback.timeout) %}
+{%                         set adapter_raw_eos_cli = adapter.port_channel.raw_eos_cli | arista.avd.default(
+                                                     adapter_profile.port_channel.raw_eos_cli,
+                                                     parent_profile.port_channel.raw_eos_cli) %}
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ connected_endpoint }}_{{ adapter_port_channel_description }}
@@ -107,14 +110,17 @@ port_channel_interfaces:
     mlag: {{ channel_group_id }}
 {%                             endif %}
 {%                         endif %}
-{%                         if lacp_fallback_mode is arista.avd.defined('static') %}
-    lacp_fallback_mode: {{ lacp_fallback_mode }}
-    lacp_fallback_timeout: {{ lacp_fallback_timeout | arista.avd.default('90') }}
+{%                         if adapter_lacp_fallback_mode is arista.avd.defined('static') %}
+    lacp_fallback_mode: {{ adapter_lacp_fallback_mode }}
+    lacp_fallback_timeout: {{ adapter_lacp_fallback_timeout | arista.avd.default('90') }}
 {%                         endif %}
 {%                         if adapter_qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_qos_profile }}
 {%                         endif %}
-{%                     break %}
+{%                         if adapter_raw_eos_cli is arista.avd.defined %}
+    eos_cli: {{ adapter_raw_eos_cli | to_json }}
+{%                         endif %}
+{%                         break %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

@@ -1,0 +1,3 @@
+{% if switch.raw_eos_cli is arista.avd.defined %}
+eos_cli: {{ switch.raw_eos_cli | to_json }}
+{% endif %}

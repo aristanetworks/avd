@@ -588,5 +588,9 @@ router bgp {{ router_bgp.as }}
          {{ network_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_bgp.vrfs[vrf].eos_cli is arista.avd.defined %}
+      !
+      {{ router_bgp.vrfs[vrf].eos_cli | indent(6, false) }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

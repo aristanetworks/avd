@@ -15,6 +15,10 @@ switch:
 {# switch.rack #}
   rack: {{ super_spine.nodes[inventory_hostname].rack | arista.avd.default() }}
 
+{# switch.raw_eos_cli #}
+  raw_eos_cli: {{ super_spine.nodes[node].raw_eos_cli | arista.avd.default(
+                  super_spine.defaults.raw_eos_cli) | to_json() }}
+
 {# switch.bgp_defaults #}
   bgp_defaults: {{ super_spine_bgp_defaults | arista.avd.default([]) }}
 

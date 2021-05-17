@@ -41,6 +41,11 @@ switch:
            l2leaf.node_groups[l2leaf_node_group].rack,
            l2leaf.defaults.rack) }}
 
+{# switch.raw_eos_cli #}
+  raw_eos_cli: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].raw_eos_cli | arista.avd.default(
+                  l2leaf.node_groups[l2leaf_node_group].raw_eos_cli,
+                  l2leaf.defaults.raw_eos_cli) | to_json() }}
+
 {# switch.configure_tenants #}
   configure_tenants: true
 

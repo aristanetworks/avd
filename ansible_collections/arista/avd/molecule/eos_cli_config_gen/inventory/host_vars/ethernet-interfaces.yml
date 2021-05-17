@@ -13,6 +13,10 @@ ethernet_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    eos_cli: |
+      comment
+      Comment created from eos_cli under ethernet_interfaces.Ethernet1
+      EOF
 
   Ethernet6:
     logging:

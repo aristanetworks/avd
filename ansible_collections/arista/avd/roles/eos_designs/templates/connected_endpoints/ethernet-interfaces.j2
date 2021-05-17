@@ -55,9 +55,12 @@ ethernet_interfaces:
 {%                     set adapter_mtu = adapter.mtu | arista.avd.default(
                                          adapter_profile.mtu,
                                          parent_profile.mtu) %}
-{%                     set lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
-                                                adapter_profile.port_channel.lacp_fallback.mode,
-                                                parent_profile.port_channel.lacp_fallback.mode) %}
+{%                     set adapter_lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
+                                                        adapter_profile.port_channel.lacp_fallback.mode,
+                                                        parent_profile.port_channel.lacp_fallback.mode) %}
+{%                     set adapter_raw_eos_cli = adapter.raw_eos_cli | arista.avd.default(
+                                                 adapter_profile.raw_eos_cli,
+                                                 parent_profile.raw_eos_cli) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
 {%                     set endpoint_ports = adapter.server_ports | arista.avd.default(adapter.endpoint_ports) %}
 {%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
@@ -124,12 +127,15 @@ ethernet_interfaces:
       enable: {{ adapter_ptp.enable }}
 {%                         endif %}
 {%                     endif %}
-{%                     if lacp_fallback_mode is arista.avd.defined('static') %}
+{%                     if adapter_lacp_fallback_mode is arista.avd.defined('static') %}
 {%                         if loop.first %}
     lacp_port_priority: 8192
 {%                         else %}
     lacp_port_priority: 32768
 {%                         endif %}
+{%                     endif %}
+{%                     if adapter_raw_eos_cli is arista.avd.defined %}
+    eos_cli: {{ adapter_raw_eos_cli | to_json }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}

@@ -75,6 +75,11 @@ switch:
            l3leaf.node_groups[l3leaf_node_group].rack,
            l3leaf.defaults.rack) }}
 
+{# switch.raw_eos_cli #}
+  raw_eos_cli: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].raw_eos_cli | arista.avd.default(
+                  l3leaf.node_groups[l3leaf_node_group].raw_eos_cli,
+                  l3leaf.defaults.raw_eos_cli) | to_json() }}
+
 {# switch.router_id #}
   router_id: {% include templates[design.type].ip_addressing[type].router_id %}
 
