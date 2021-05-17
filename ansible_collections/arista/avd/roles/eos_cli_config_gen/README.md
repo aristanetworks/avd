@@ -54,6 +54,7 @@
       - [VxLAN Interface](#vxlan-interface)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP DHCP Relay](#ip-dhcp-relay)
+    - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Management](#management)
@@ -993,6 +994,13 @@ vlan_internal_allocation_policy:
 ip_dhcp_relay:
   information_option: < true | false >
 
+```
+
+### IP ICMP Redirect
+
+```yaml
+ip_icmp_redirect: < true | false >
+ipv6_icmp_redirect: < true | false >
 ```
 
 ### LLDP
