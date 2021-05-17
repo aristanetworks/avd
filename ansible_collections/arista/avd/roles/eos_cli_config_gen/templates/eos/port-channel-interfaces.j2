@@ -32,11 +32,11 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].native_vlan is arista.avd.defined and port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("trunk") %}
    switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
 {%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].phone.vlan is defined and port_channel_interfaces[port_channel_interface].phone.vlan %}
+{%     if port_channel_interfaces[port_channel_interface].phone.vlan is arista.avd.defined %}
    switchport phone vlan {{ port_channel_interfaces[port_channel_interface].phone.vlan }}
 {%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].phone.trunk is defined and port_channel_interfaces[port_channel_interface].phone.trunk %}
-   switchport phone vlan {{ port_channel_interfaces[port_channel_interface].phone.trunk }}
+{%     if port_channel_interfaces[port_channel_interface].phone.trunk is arista.avd.defined%}
+   switchport phone trunk {{ port_channel_interfaces[port_channel_interface].phone.trunk }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("trunk") %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
