@@ -1,0 +1,19 @@
+{% if service-routing is arista.avd.defined %}
+
+## Service Routing
+
+{%     if service_routing.configuration.bgp_no_equals_default is arista.avd.defined %}
+### Service Routing Configuration
+
+- BGP no equals default: "{{ service_routing.configuration.bgp_no_equals_default }}"
+{%     endif %}
+
+{%     if service_routing.protocols_model is arista.avd.defined %}
+### Service Routing Protocols Model: {{ service_routing.protocols_model }}
+{%     endif %}
+
+```eos
+{{ service_routing }}
+!
+```
+{% endif %}

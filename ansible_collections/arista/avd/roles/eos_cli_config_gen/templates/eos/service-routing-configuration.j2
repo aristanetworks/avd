@@ -1,0 +1,6 @@
+{# eos - Service Routing Configuration #}
+{% if service_routing.configuration.bgp_no_equals_default is arista.avd.defined %}
+!
+service routing configuration bgp no-equals-default
+!
+{% endif %}
