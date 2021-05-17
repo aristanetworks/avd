@@ -1078,6 +1078,9 @@ management_interfaces:
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     type: < oob | inband | default -> oob >
+    # For documentation purpose only
+    gateway: < IPv4 address of default gateway in management VRF >
+    ipv6_gateway: < IPv6 address of default gateway in management VRF >
 ```
 
 #### Management HTTP
