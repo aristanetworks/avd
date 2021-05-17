@@ -2,17 +2,17 @@
 {% if ntp_server is arista.avd.defined %}
 !
 {%     if ntp_server.local_interface.interface is arista.avd.defined %}
-{%         set ntp_int_cli = "ntp local-interface " %}
+{%         set ntp_int_cli = "ntp local-interface" %}
 {%         if ntp_server.local_interface.vrf is arista.avd.defined and ntp_server.local_interface.vrf != 'default' %}
-{%             set ntp_int_cli = ntp_int_cli ~ "vrf " ~ ntp_server.local_interface.vrf %}
+{%             set ntp_int_cli = ntp_int_cli ~ " vrf " ~ ntp_server.local_interface.vrf %}
 {%         endif %}
 {%         set ntp_int_cli = ntp_int_cli ~ " " ~ ntp_server.local_interface.interface %}
 {{ ntp_int_cli }}
 {%     endif %}
 {%     for node in ntp_server.nodes %}
-{%         set node_cli = "ntp server " %}
+{%         set node_cli = "ntp server" %}
 {%         if ntp_server.local_interface.vrf is arista.avd.defined and ntp_server.local_interface.vrf != 'default' %}
-{%             set node_cli = node_cli ~ "vrf " ~ ntp_server.local_interface.vrf %}
+{%             set node_cli = node_cli ~ " vrf " ~ ntp_server.local_interface.vrf %}
 {%         endif %}
 {%         set node_cli = node_cli ~ " " ~ node %}
 {%         if loop.first %}
