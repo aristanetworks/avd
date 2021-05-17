@@ -13,6 +13,3 @@ ip routing vrf {{ vrf }}
 no ip routing vrf {{ vrf }}
 {%     endif %}
 {% endfor %}
-{% if ip_icmp_redirect is arista.avd.defined(false) %}
-no ip icmp redirect
-{% endif %}

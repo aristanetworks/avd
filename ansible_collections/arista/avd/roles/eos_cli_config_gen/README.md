@@ -1000,10 +1000,9 @@ ip_dhcp_relay:
 ```yaml
 ip_icmp:
   rate_limit_unreachable: < true | false >
-  redirect: <true | false >
-  source_interface:
-    name: <interface_name >
-    vrf: < vrf_name >
+  redirect: < true | false >
+  source_interfaces:
+    < vrf_name >: <source_interface_name >
 ```
 
 ### LLDP

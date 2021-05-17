@@ -3,6 +3,6 @@
 ip_icmp:
   rate_limit_unreachable: true
   redirect: false
-  source_interface:
-    name: Loopback0
-    vrf: test
+  source_interfaces:
+    default: Loopback0
+    test: Loopback1

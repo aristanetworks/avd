@@ -13,5 +13,4 @@ vrfs:
   default:
     ip_routing: true
     ipv6_routing: true
-ip_icmp_redirect: false
 ipv6_icmp_redirect: false

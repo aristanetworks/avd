@@ -10,13 +10,15 @@ ip icmp redirect
 !
 no ip icmp redirect
 {% endif %}
-{% set ip_icmp_source_cli = "ip icmp source-interface " %}
-{% if ip_icmp.source_interface.vrf is arista.avd.defined %}
-{%     set ip_icmp_source_cli = ip_icmp_source_cli ~ ip_icmp.source_interface.name %}
+{% for source_interface in ip_icmp.source_interfaces %}
+{%     set ip_icmp_source_cli = "ip icmp source-interface " %}
+{%     if source_interface.key == "default" %}
+{%         set ip_icmp_source_cli = ip_icmp_source_cli ~ source_interface %}
 !
 {{ ip_icmp_source_cli }}
-{% elif ip_icmp.source_interface.name is arista.avd.defined %}
-{%     set ip_icmp_source_cli = ip_icmp_source_cli ~ ip_icmp.source_interface.name ~ " vrf " ~  ip_icmp.source_interface.vrf %}
+{%     elif source_interface.name is arista.avd.defined %}
+{%         set ip_icmp_source_cli = ip_icmp_source_cli ~ source_interface ~ " vrf " ~  source_interface.key %}
 !
 {{ ip_icmp_source_cli }}
-{% endif %}
+{%     endif %}
+{% endfor %}

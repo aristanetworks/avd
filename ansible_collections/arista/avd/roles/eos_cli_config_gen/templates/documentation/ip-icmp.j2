@@ -1,4 +1,4 @@
-{% if ip_icmp is defined and ip_icmp is not none %}
+{% if ip_icmp is arista.avd.defined %}
 
 ## IP ICMP
 
@@ -9,13 +9,13 @@ IP ICMP Rate Limit Unreachable: {% if ip_icmp.rate_limit_unreachable %}0{% else 
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-
-{% if ip_icmp.source_interface['vrf'] is defined and ip_icmp.source_interface['vrf'] is not none %} {{ ip_icmp.source_interface['vrf'] }} {% else %}  default {% endif %}|{{ ip_icmp.source_interface['name'] }} |
+{%      for source_interface in ip_icmp.source_interfaces %}
+{%          if source_interface.key != "default" %}| {{ source_interface.key }} {% else %}  default {% endif %}| {{ source_interface }} |
 {%      endfor %}
 
 ### IP ICMP Device Configuration
 
 ```eos
-{% include 'eos/ip-icmp.j2' %}
+{%     include 'eos/ip-icmp.j2' %}
 ```
 {% endif %}
