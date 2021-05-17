@@ -27,6 +27,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
+    - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
@@ -391,6 +392,14 @@ custom_templates:
   - < template 2 relative path below playbook directory >
 ```
 
+### EOS CLI
+
+```yaml
+# EOS CLI rendered directly on the root level of the final EOS configuration
+eos_cli: |
+  < multiline eos cli >
+```
+
 ### Errdisable
 
 ```yaml
@@ -673,6 +682,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -738,6 +750,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 #### Interface Defaults
@@ -811,6 +826,9 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
@@ -950,6 +968,9 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: < policy-map name >
+    # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -1911,6 +1932,9 @@ router_bgp:
         networks:
           < prefix_address >:
             route_map: < route_map_name >
+      # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+      eos_cli: |
+        < multiline eos cli >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
