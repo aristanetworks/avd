@@ -376,6 +376,28 @@ ethernet_interfaces:
     mtu: 9000
     shutdown: false
     description: test
+  Ethernet10.100:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 100
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.11.10/24
+    mtu: 9000
+    shutdown: false
+    description: subinterface test
+  Ethernet10.200:
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 121
+    peer_type: l3_interface
+    vrf: Tenant_L3_VRF_Zone
+    ip_address: 10.10.21.10/24
+    mtu: 9000
+    shutdown: false
+    description: subinterface test with vlan override
+  Ethernet10:
+    type: routed
+    peer_type: l3_interface
+    shutdown: false
   Ethernet4000:
     description: My test
     ip_address: 10.3.2.1/21

@@ -182,6 +182,15 @@ tenants:
             enabled: < true | false >
             mtu: <mtu >
 
+          # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
+          - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
+            encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 > ]
+            description: < description >
+            enabled: < true | false >
+            mtu: <mtu >
+
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
         # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be
