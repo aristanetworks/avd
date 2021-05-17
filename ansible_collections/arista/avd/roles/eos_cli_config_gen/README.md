@@ -686,7 +686,7 @@ ethernet_interfaces:
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
-    mode: < access | dot1q-tunnel | trunk | trunk-phone >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -799,7 +799,7 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
-    mode: < access | dot1q-tunnel | trunk | trunk-phone >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -823,7 +823,7 @@ port_channel_interfaces:
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
-    mode: < access | dot1q-tunnel | trunk | trunk-phone >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -831,7 +831,7 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    mode: < access | dot1q-tunnel | trunk | trunk-phone >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
