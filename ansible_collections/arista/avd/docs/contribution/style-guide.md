@@ -4,7 +4,7 @@ This page provides a list of guidelines to apply when developing Jinja2 template
 
 ## Python code style
 
-As AVD is ansible collection, it is require to follow guidelines from [ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
+As AVD is Ansible collection, it is require to follow guidelines from [ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
 ## YAML Syntax guidelines
 
@@ -170,7 +170,7 @@ __Example__
 
 __Description__
 
-To test type of a variable, it is recommended to use `is`/`is ne` keywords
+To test type of a variable, it is recommended to use `is`/`is not` keywords
 
 __Example__
 
@@ -179,7 +179,7 @@ __Example__
 {% if ethernet_interface is string %}
 
 {# Test if variable is not a string #}
-{% if ethernet_interface is ne string %}
+{% if ethernet_interface is not string %}
 ```
 
 ### VAR-7 - Variable content comparison
@@ -197,6 +197,9 @@ __Example__
 {# Test if variable is not a string #}
 {% if ethernet_interface != 'Ethernet1' %}
 ```
+
+!!! info
+    Also [PLUGIN-2](#plugin-2-test-if-variable-exists-with-given-value) can do test if variable is defined and has specific value
 
 ### VAR-8 - String comparison
 

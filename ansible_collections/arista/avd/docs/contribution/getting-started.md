@@ -13,7 +13,7 @@ help prevent wasting time on something that might we might not be able to
 implement. When suggesting a new feature, also make sure it won't conflict with
 any work that's already in progress.
 
-* Any pull request which does _not_ relate to an accepted issue will be closed.
+* Any pull request which does _not_ relate to an accepted issue will not be approved
 
 * All major new functionality must include relevant tests where applicable.
 
