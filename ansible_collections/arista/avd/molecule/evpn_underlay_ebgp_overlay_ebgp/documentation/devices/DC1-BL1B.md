@@ -293,6 +293,8 @@ vlan 350
 | Ethernet7 | test | routed | - | 10.10.20.20/24 | Tenant_A_WAN_Zone | 9000 | false | - | - |
 | Ethernet8 | test | routed | - | 10.10.30.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
+| Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
+| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet45 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
 | Ethernet46 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
 | Ethernet47 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
@@ -326,6 +328,26 @@ interface Ethernet9
    no switchport
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.40.20/24
+!
+interface Ethernet10
+   no shutdown
+   no switchport
+!
+interface Ethernet10.100
+   description subinterface test
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 100
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.31.10/24
+!
+interface Ethernet10.200
+   description subinterface test with vlan override
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 141
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.41.10/24
 !
 interface Ethernet45
    description P2P_LINK_TO_DC1-SPINE1_Ethernet7
