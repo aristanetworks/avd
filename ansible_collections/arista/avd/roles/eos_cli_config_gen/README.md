@@ -104,7 +104,7 @@
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
-      - [Service Routing Configuration](#service-routing-configuration)
+      - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
@@ -1994,7 +1994,7 @@ router_isis:
     router_id: < router_id >
 ```
 
-#### Service Routing Configuration
+#### Service Routing Configuration BGP
 
 ```yaml
 service_routing_configuration_bgp:

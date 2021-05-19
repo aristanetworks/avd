@@ -1,4 +1,4 @@
-# service-routing-protocols-model
+# service-routing-configuration-bgp
 # Table of Contents
 <!-- toc -->
 
@@ -12,6 +12,7 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
+  - [Service Routing Configuration](#service-routing-configuration)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -82,13 +83,17 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-### Service Routing Protocols Model: multi-agent
+## Service Routing Configuration
+
+
+- BGP no equals default: "True"
 
 
 ```eos
-multi-agent
+{'no_equals_default': True}
 !
 ```
+
 
 # Multicast
 
