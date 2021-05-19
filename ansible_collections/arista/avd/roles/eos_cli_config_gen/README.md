@@ -1996,7 +1996,8 @@ router_isis:
 #### Service Routing
 
 ```yaml
-service_routing_configuration_bgp_no_equals_default: < true | false >
+service_routing_configuration_bgp:
+  no_equals_default: < true | false >
 service_routing_protocols_model: < multi-agent | ribd >
 ```
 

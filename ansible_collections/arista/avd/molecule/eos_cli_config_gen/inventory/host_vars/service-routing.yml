@@ -1,4 +1,5 @@
 #### service-routing ####
 
-service_routing_configuration_bgp_no_equals_default: true
+service_routing_configuration:
+  bgp_no_equals_default: true
 service_routing_protocols_model: multi-agent

@@ -61,7 +61,7 @@ router-l2-vpn
 router-multicast
 router-ospf
 router-pim-sparse-mode
-service-routing-protocols-model
+service-routing
 router-general
 sflow
 snmp_v3
