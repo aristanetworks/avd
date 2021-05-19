@@ -104,7 +104,8 @@
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
-      - [Service Routing](#service-routing)
+      - [Service Routing Configuration](#service-routing-configuration)
+      - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
       - [VRF Instances](#vrf-instances)
@@ -1993,11 +1994,16 @@ router_isis:
     router_id: < router_id >
 ```
 
-#### Service Routing
+#### Service Routing Configuration
 
 ```yaml
 service_routing_configuration_bgp:
   no_equals_default: < true | false >
+```
+
+#### Service Routing Protocols Model
+
+```yaml
 service_routing_protocols_model: < multi-agent | ribd >
 ```
 

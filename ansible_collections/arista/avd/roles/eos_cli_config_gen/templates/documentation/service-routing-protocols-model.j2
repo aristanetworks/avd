@@ -1,0 +1,9 @@
+{% if service_routing_protocols_model is arista.avd.defined %}
+### Service Routing Protocols Model: {{ service_routing_protocols_model }}
+
+
+```eos
+{{ service_routing_protocols_model }}
+!
+```
+{% endif %}
