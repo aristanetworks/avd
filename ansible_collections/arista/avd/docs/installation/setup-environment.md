@@ -1,9 +1,8 @@
 # Setup Ansible AVD environment
 
-Two methods can be used get Ansible up and running quickly with all the requirements to leverage __ansible-avd__:
-A Python Virtual Environment or [Docker container](https://hub.docker.com/repository/docker/avdteam/base).
+Two methods can be used to get Ansible up and running quickly with all the requirements to leverage __ansible-avd__: a **Python Virtual Environment** or a **[Docker container](https://hub.docker.com/repository/docker/avdteam/base).**
 
-In both scenario, this document will leverage git approach to create a local environment with collections installed in their respective folders and additional folders for all your content. It means, all examples will be based on the following folder structure:
+In both scenarios, this document will leverage a git approach to create a local environment with collections installed in their respective folders and additional folders for all your content. All examples will be based on the following folder structure:
 
 ```shell
 ├── git_projects
@@ -17,7 +16,7 @@ In both scenario, this document will leverage git approach to create a local env
 
 As described in [requirement page](../../docs/installation/requirements.md), your runner should run Python 3.6.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
 
-Besides that, local runner will read your gitconfig file to let you manipulate files in container as if you were on your host. So if you have not yet configured git on your host, it is required to at least create a [basic git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) configuration file:
+Besides that, the local runner will read your gitconfig file to let you manipulate files in the container as if you were on your host. So if you have not yet configured git on your host, it is required to at least create a [basic git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) configuration file:
 
 ```shell
 # Create your username exposed in git commit
@@ -29,9 +28,9 @@ $ git config --global user.email johndoe@example.com
 
 ## Create local folder structure
 
-To build local folder structure you manually run all the following commands to git clone [ansible-avd](https://github.com/aristanetworks/ansible-avd), [ansible-cvp collection](https://github.com/aristanetworks/ansible-cvp) and a [repository with demo content](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo)
+To build the local folder structure you can manually run all the following commands to git clone [ansible-avd](https://github.com/aristanetworks/ansible-avd), [ansible-cvp collection](https://github.com/aristanetworks/ansible-cvp) and [repository with demo content](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo)
 
-In addition to this 3 `git clone`, you can also deployed a [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) built to provide some shortcut we will discuss in a second stage.
+In addition to those 3 `git clone`, you can also deploy a [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) built to provide some shortcut. We will discuss this in a second stage.
 
 ```shell
 $ mkdir git_projects
@@ -47,18 +46,11 @@ $ cp ansible-avd/development/Makefile ./
 $ make start
 ```
 
-Or you can use a one-liner script available in ansible-avd repository to create this structure for you. This script does following actions:
-
-- Create local folder for development
-- Instantiate a local git repository (no remote)
-- Clone AVD and CVP collections
-- Deploy Makefile
-
-Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+Or you can use the one-liner scripts available in ansible-avd repository to create this structure for you. 
 
 __To use AVD only__
 
-This one-liner will install AVD and CVP collection using latest version released on github. These branches might have some difference with the devel branch.
+This one-liner will install AVD and CVP collection using the latest version released on Github. These branches might have some difference with the devel branch.
 
 ```shell
 $ sh -c "$(curl -fsSL https://get.avd.sh)"
@@ -71,11 +63,19 @@ This one-liner will install AVD using `devel` branch.
 ```shell
 $ sh -c "$(curl -fsSL https://get.avd.sh/dev/)"
 ```
+*Warning:* As devel branch is always moving on, datamodel might change and demo content could be broken. It should be used for development only.
 
-!!! warning
-    As devel branch is always moving on, datamodel might change and demo content could be broken. It should be used for development only.
+Those scripts do the following actions:
 
-## Use docker as AVD shell
+- Create a local folder for development
+- Instantiate a local git repository (no remote)
+- Clone AVD and CVP collections
+- Deploy Makefile
+
+Because we are cloning ansible collection using git, it is recommended to read the documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+
+
+## OPTION 1: Use Docker as AVD shell
 
 In this approach Docker container will be leveraged to provides all the AVD requirements and playbooks and collection will be shared from your localhost to the container.
 
@@ -242,11 +242,11 @@ bd6eece0221e: Downloading [===================>                               ] 
 
 Your environment is now ready and you can start to build your own project leveraging ansible-avd and ansible-cvp collections.
 
-## Using Python 3 Virtual Environment feature
+## OPTION 2: Using Python 3 Virtual Environments
 
 This section describes how to configure python to run ansible and AVD.
 
-As a requirement, we consider python3 as the default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your own operating system and how they package python.
+As a requirement, we consider python3 as the default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your operating system and how they package python.
 
 __Disclaimer__: Not preferred method. If you are not an experienced user, please use docker approach.
 
