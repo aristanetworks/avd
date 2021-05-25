@@ -1,0 +1,9 @@
+{# eos - daemons #}
+{% if daemons is arista.avd.defined %}
+{%     for daemon in daemons %}
+!
+daemon {{ daemon }}
+   exec {{ daemons[daemon].exec }}
+   no shutdown
+{%     endfor %}
+{% endif %}
