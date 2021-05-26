@@ -188,3 +188,9 @@ ethernet_interfaces:
     vlans: 200
     l2_protocol:
       encapsulation_dot1q_vlan: 200
+
+  Ethernet12:
+    description: interface_with_dot1q_tunnel
+    type: switched
+    mode: dot1q-tunnel
+    vlans: 300
