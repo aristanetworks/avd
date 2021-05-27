@@ -229,6 +229,7 @@ tenants:
             route_map_out: < route-map name >
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
+            weight: < 0-65535>
 
         # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
         additional_route_targets:
