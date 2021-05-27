@@ -486,8 +486,8 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.vrfs[vrf].neighbors[neighbor].password is arista.avd.defined %}
       neighbor {{ neighbor }} password 7 {{ router_bgp.vrfs[vrf].neighbors[neighbor].password }}
 {%         endif %}
-{%             if router_bgp.neighbors[neighbor].weight is arista.avd.defined %}
-      neighbor {{ neighbor }} weight {{ router_bgp.neighbors[neighbor].weight }}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].weight is arista.avd.defined %}
+      neighbor {{ neighbor }} weight {{ router_bgp.vrfs[vrf].neighbors[neighbor].weight }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].local_as is arista.avd.defined %}
       neighbor {{ neighbor }} local-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].local_as }} no-prepend replace-as
