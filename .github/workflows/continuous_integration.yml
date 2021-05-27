@@ -10,6 +10,7 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      cloudvision: ${{ steps.filter.outputs.cloudvision }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
@@ -25,12 +26,26 @@ jobs:
               - '.github/workflows/continuous_integration.yml'
               - 'ansible_collections/arista/avd/molecule/*'
               - 'ansible_collections/arista/avd/molecule/**/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/continuous_integration.yml'
               - 'ansible_collections/arista/avd/molecule/*'
               - 'ansible_collections/arista/avd/molecule/**/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+            cloudvision:
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+              - '.github/workflows/continuous_integration.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
@@ -137,10 +152,11 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: false
-      - uses: actions/upload-artifact@v2
-        with:
-          name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
   # ----------------------------------- #
   # EOS Design MOLECULE
   # ----------------------------------- #
@@ -176,18 +192,50 @@ jobs:
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: false
-      - uses: actions/upload-artifact@v2
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+  # ----------------------------------- #
+  # Cloudvision MOLECULE
+  # ----------------------------------- #
+  molecule_cloudvision:
+    name: Validate cvp_collection
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario: ['eos_config_deploy_cvp', 'eos_config_deploy_cvp_list']
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@v1.1
         with:
-          name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible>=2.10,<2.11"
+          check_git: true
+          check_git_enforced: false
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
   ansible_test:
     name: Run ansible-test validation
     runs-on: ubuntu-16.04
-    needs: [ molecule_eos_designs ]
-    if: needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    needs: [ molecule_eos_designs, molecule_cloudvision ]
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     strategy:
       fail-fast: true
       matrix:
@@ -213,8 +261,8 @@ jobs:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
     container: avdteam/base:3.6-v2.0
-    needs: [ molecule_eos_designs ]
-    if: needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    needs: [ molecule_eos_designs, molecule_cloudvision ]
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions

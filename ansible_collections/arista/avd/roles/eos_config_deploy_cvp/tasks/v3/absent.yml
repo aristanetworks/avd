@@ -1,0 +1,6 @@
+---
+- name: "Unsupported option"
+  delegate_to: localhost
+  debug:
+    msg:
+      - "!!! Absent state not yet supported by Cloudvision collection."
