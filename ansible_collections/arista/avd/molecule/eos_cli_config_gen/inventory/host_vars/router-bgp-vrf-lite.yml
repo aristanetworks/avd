@@ -63,8 +63,10 @@ router_bgp:
           peer_group: OBS_WAN
         10.255.1.1:
           peer_group: WELCOME_ROUTERS
+          weight: 65535
         101.0.3.1:
           peer_group: SEDI
+          weight: 100
       redistribute_routes:
         - static
       aggregate_addresses:
