@@ -17,4 +17,13 @@ interface Vxlan1
 {%     for vrf in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | arista.avd.natural_sort %}
    vxlan vrf {{ vrf }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }}
 {%     endfor %}
+{%     if vxlan_tunnel_interface.Vxlan1.flood_vtep is arista.avd.defined %}
+{%         if vxlan_tunnel_interface.Vxlan1.flood_vtep.vlans is arista.avd.defined %}
+{%            for vlan in vxlan_tunnel_interface.Vxlan1.flood_vtep.vlans | arista.avd.natural_sort %}
+   vxlan vlan {{ vlan }} flood vtep {{ vxlan_tunnel_interface.Vxlan1.flood_vtep.vlans[vlan].remotes | join(' ') }}
+{%            endfor %}
+{%         elif vxlan_tunnel_interface.Vxlan1.flood_vtep.remotes is arista.avd.defined %}
+   vxlan flood vtep {{ vxlan_tunnel_interface.Vxlan1.flood_vtep.remotes | join(' ') }}
+{%         endif %}
+{%    endif %}
 {% endif %}

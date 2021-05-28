@@ -986,6 +986,15 @@ vxlan_tunnel_interface:
     virtual_router:
       encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
     vxlan_udp_port: < udp_port >
+    flood_vtep:
+      remotes:
+        - < remote_1 >
+        - < remote_2 >
+      vlans:
+        < vlan_id_1 >:
+          remotes:
+            - < remote_1 >
+            - < remote_2 >
     vxlan_vni_mappings:
       vlans:
         < vlan_id_1 >:
