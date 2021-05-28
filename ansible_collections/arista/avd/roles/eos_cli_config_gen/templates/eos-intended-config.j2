@@ -162,6 +162,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
+{# router igmp configuration #}
+{% include 'eos/router-igmp.j2' %}
 {# router multicast configuration #}
 {% include 'eos/router-multicast.j2' %}
 {# router general configuration #}

@@ -103,6 +103,7 @@
       - [IPv6 Routing](#ipv6-routing)
       - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router IGMP Configuration](#router-igmp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
@@ -1956,6 +1957,12 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+#### Router IGMP Configuration
+
+```yaml
+router_igmp:
+  ssm_aware: < true | false >
+```
 
 #### Router OSPF Configuration
 
