@@ -2,7 +2,3 @@
 
 switchport_default:
     mode: access
-    #phone:
-        #cos: < 0-7 >
-        #trunk: < tagged | untagged >
-        #vlan: < 1-4094 >
