@@ -15,6 +15,10 @@ switch:
 {# switch.rack #}
   rack: {{ spine.nodes[node].rack | arista.avd.default() }}
 
+{# switch.raw_eos_cli #}
+  raw_eos_cli: {{ spine.nodes[node].raw_eos_cli | arista.avd.default(
+                  spine.defaults.raw_eos_cli) | to_json }}
+
 {# switch.bgp_defaults #}
   bgp_defaults: {{ spine_bgp_defaults | arista.avd.default([]) }}
 
@@ -30,7 +34,7 @@ switch:
 
 {# switch.platform_settings #}
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
 {# switch.router_id #}
   router_id: {% include templates[design.type].ip_addressing[type].router_id %}

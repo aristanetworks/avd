@@ -8,6 +8,8 @@
 
 {%         include 'designs/l3ls-evpn/tenants/vlans.j2' %}
 
+{%         include 'designs/l3ls-evpn/tenants/eos-cli.j2' %}
+
 {# Only run EVPN/VXLAN templates for VTEPs #}
 {%     if switch.vtep_ip is arista.avd.defined %}
 {%         include 'designs/l3ls-evpn/tenants/vxlan-tunnel-interface.j2' %}

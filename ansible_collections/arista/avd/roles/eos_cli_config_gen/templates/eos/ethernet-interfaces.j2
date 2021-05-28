@@ -246,4 +246,7 @@ interface {{ ethernet_interface }}
    no mpls ldp interface
 {%         endif %}
 {%     endif %}
+{%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
+   {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
+{%     endif %}
 {% endfor %}

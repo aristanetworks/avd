@@ -34,12 +34,17 @@ switch:
 
 {# switch.platform_settings #}
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
 {# switch.rack #}
   rack: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].rack | arista.avd.default(
            l2leaf.node_groups[l2leaf_node_group].rack,
            l2leaf.defaults.rack) }}
+
+{# switch.raw_eos_cli #}
+  raw_eos_cli: {{ l2leaf.node_groups[l2leaf_node_group].nodes[node].raw_eos_cli | arista.avd.default(
+                  l2leaf.node_groups[l2leaf_node_group].raw_eos_cli,
+                  l2leaf.defaults.raw_eos_cli) | to_json() }}
 
 {# switch.configure_tenants #}
   configure_tenants: true

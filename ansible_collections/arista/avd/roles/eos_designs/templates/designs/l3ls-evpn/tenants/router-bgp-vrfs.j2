@@ -103,6 +103,9 @@
               activate: true
 {%                 endfor %}
 {%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp.raw_eos_cli is arista.avd.defined %}
+      eos_cli: {{ tenants[tenant].vrfs[vrf].bgp.raw_eos_cli | to_json }}
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endif %}

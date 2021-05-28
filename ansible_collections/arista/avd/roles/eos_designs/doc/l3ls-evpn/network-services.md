@@ -160,11 +160,20 @@ tenants:
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
 
+                # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+                # Overrides the setting on SVI level.
+                raw_eos_cli: |
+                  < multiline eos cli >
+
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
 
             # Defined interface MTU
             mtu: < mtu >
+
+            # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+            raw_eos_cli: |
+              < multiline eos cli >
 
           < 1-4096 >:
             name: < description >
@@ -181,6 +190,9 @@ tenants:
             description: < description >
             enabled: < true | false >
             mtu: <mtu >
+            # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
+            raw_eos_cli: |
+              < multiline eos cli >
 
           # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
@@ -231,6 +243,11 @@ tenants:
             local_as: < local BGP ASN >
             weight: < 0-65535>
 
+        bgp:
+          # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+          raw_eos_cli: |
+            < multiline eos cli >
+
         # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
         additional_route_targets:
           - type: < import | export >
@@ -238,6 +255,10 @@ tenants:
             route_target: "< route_target >"
             # Nodes is optional. Default is all nodes where the VRF is defined.
             nodes: [ < node_1 >, < node_2> ]
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration
+        raw_eos_cli: |
+          < multiline eos cli >
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >

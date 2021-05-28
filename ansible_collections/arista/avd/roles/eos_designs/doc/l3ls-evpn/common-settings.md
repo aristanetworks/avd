@@ -222,7 +222,9 @@ platform_settings:
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
-
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
 ```
 
 note: Recommended default values for Jericho based platform, and all other platforms `default` tag.

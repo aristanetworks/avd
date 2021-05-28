@@ -41,6 +41,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -348,6 +349,10 @@ interface Vlan112
    no shutdown
    vrf Common_VRF
    ip address virtual 10.1.12.1/24
+   comment
+   Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
+   EOF
+
 !
 interface Vlan4092
    description L2LEAF_INBAND_MGMT
@@ -605,6 +610,11 @@ router bgp 65121
       route-target export evpn 1025:1025
       router-id 172.16.120.3
       redistribute connected
+      !
+      comment
+      Comment created from raw_eos_cli under BGP for VRF Common_VRF
+      EOF
+
 ```
 
 # BFD
@@ -724,3 +734,15 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+interface Loopback1000
+  description Loopback created from raw_eos_cli under VRF Common_VRF
+
+```

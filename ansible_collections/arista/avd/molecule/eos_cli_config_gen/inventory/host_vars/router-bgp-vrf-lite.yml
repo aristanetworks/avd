@@ -80,6 +80,10 @@ router_bgp:
           summary_only: true
           attribute_map: RM-BGP-AGG-APPLY-SET
           advertise_only: false
+      eos_cli: |
+        comment
+        Comment created from eos_cli under router_bgp.vrfs.BLUE-C1
+        EOF
 
 static_routes:
   - vrf: BLUE-C1

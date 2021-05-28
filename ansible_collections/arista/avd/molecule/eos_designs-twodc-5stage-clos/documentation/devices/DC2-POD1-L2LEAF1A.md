@@ -33,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -330,3 +331,15 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1011
+  description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```
