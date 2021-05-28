@@ -283,6 +283,16 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out is arista.avd.defined %}
       neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out }} out
 {%             endif %}
+{%             if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate is arista.avd.defined %}
+{%                set neighbor_default_originate_cli = "neighbor " ~ peer_group ~ " default-originate" %}
+{%                if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.route_map is arista.avd.defined %}
+{%                    set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " route-map " ~ router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.route_map %}
+{%                endif %}
+{%                if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.always is arista.avd.defined(true) %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " always" %}
+{%                endif %}
+      {{ neighbor_default_originate_cli }}
+{%             endif%}
 {%             if underlay_rfc5549 is arista.avd.defined(true) %}
       neighbor {{ peer_group }} next-hop address-family ipv6 originate
 {%             endif %}

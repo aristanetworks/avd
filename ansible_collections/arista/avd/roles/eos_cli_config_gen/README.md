@@ -1788,6 +1788,9 @@ router_bgp:
         activate: < true | false >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
+        default_originate:
+          always: < true | false >
+          route_map: < route_map_name >
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
