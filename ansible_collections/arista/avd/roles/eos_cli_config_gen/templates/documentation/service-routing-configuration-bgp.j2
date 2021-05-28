@@ -8,8 +8,7 @@
 {%     endif %}
 
 ```eos
-{{ service_routing_configuration_bgp }}
-!
+{% include 'eos/service-routing-configuration-bgp.j2' %}
 ```
 
 {% endif %}
