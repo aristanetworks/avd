@@ -43,4 +43,11 @@ logging host {{ host }}
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
+{%     if logging.policy.match.match_lists is arista.avd.defined %}
+{%         for match_list in logging.policy.match.match_lists | arista.avd.natural_sort %}
+{%             if match_list in match_lists | arista.avd.natural_sort %}
+logging policy match match-list {{ match_list }} {{ logging.policy.match.match_lists[match_list].action }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

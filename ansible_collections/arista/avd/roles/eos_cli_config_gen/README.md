@@ -37,6 +37,7 @@
       - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
+      - [Match Lists](#match-lists)
     - [Generate Device Documentation](#generate-device-documentation)
     - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
@@ -549,6 +550,16 @@ route_maps:
         set:
           - "< set rule 1 as string >"
           - "< set rule 2 as string >"
+```
+
+#### Match Lists
+
+```yaml
+match_lists:
+  < match_list_1 >:
+    sequence_numbers:
+      < sequence_id 1 >:
+        match: < match string >
 ```
 
 ### Generate Device Documentation
@@ -1422,6 +1433,11 @@ logging:
       hosts:
         - < syslog_server_1>
         - < syslog_server_2>
+  policy:
+    match:
+      match_lists:
+        < match_list >:
+          action: < action >
 ```
 
 #### Sflow
