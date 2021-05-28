@@ -22,21 +22,22 @@ We welcome many forms of contributions to Arista Validated Design (AVD).  While 
 
 ### Communication
 
-Communication among the contributors should always occur via public channels. The following outlines the best ways to communicate and engage on all things Arista Validated Design (AVD).
+Communication among the contributors should always occur via public channels.
+The following outlines the best ways to communicate and engage on all things Arista Validated Design (AVD):
 
 #### Slack
 
-* [**#ansible** on Network to Code Slack](http://slack.networktocode.com/) - Good for quick chats. Avoid any discussion that might need to be referenced later on, as the chat history is not retained long.
+* [**#ansible | #arista** on Network to Code Slack](http://slack.networktocode.com/) - Good for quick chats. Avoid any discussion that might need to be referenced later on, as the chat history is not retained long.
 
 #### GitHub
 
 * [GitHub issues](https://github.com/aristanetworks/ansible-avd/issues) - All feature requests, bug reports, and other substantial changes should be documented in an issue.
 * [GitHub discussions](https://github.com/aristanetworks/ansible-avd/discussions) - The preferred forum for general discussion and support issues. Ideal for shaping a feature request prior to submitting an issue.
 
-GitHub's discussions are the best place to get help or propose rough ideas for new functionality. Their integration with GitHub allows for easily cross- referencing and converting posts to issues as needed. There are severa categories for discussions:
+GitHub's discussions are the best place to get help or propose rough ideas for new functionality. Their integration with GitHub allows for easily cross-referencing and converting posts to issues as needed. There are several categories for discussions:
 
 * **General** - General community discussion.
-* **Ideas** - Ideas for new functionality that isn't yet ready for a formal feature request. These ideas are what will be in scope to review when moving work from _Future_ to _Near Term_ as stated in the previous section.
+* **Ideas** - Ideas for new functionality that isn't ready for a formal feature request.
 * **Q&A** - Request help with installing or using Arista Validated Design (AVD).
 
 ### Deprecation Policy
@@ -49,7 +50,7 @@ Semantic Versioning ([SemVer](https://semver.org/)) is used for Arista Validated
 
 ### Contributor Workflow
 
-The following documents the lifecycle of work within Arista Validated Design (AVD).
+The following documents the lifecycle of work within Arista Validated Design (AVD):
 
 1. Open/request a feature enhancement or file a bug
   a. If bug, see [here](#reporting-bugs)
@@ -61,7 +62,7 @@ The following documents the lifecycle of work within Arista Validated Design (AV
 
 If you follow these steps, there **will** be a GitHub Issue opened prior to submitting a Pull Request (PR).  However, we're quite aware that a PR may come in without ever being discussed in an Issue or Discussion.  While we do not advocate for this, you should be aware of the process that will be followed for those circumstances.
 
-Should this happen and if you followed the project guidelines, have sample tests, code quality, you will first be acknowledged for your work.  So, thank you in advance! After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project, and to gauge the work effort or issues with merging into _current_.  If the effort required by the core team isn't trivial, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. It will just depend on the current backlog.
+Should this happen and if you followed the project guidelines, have sample tests, code quality, you will first be acknowledged for your work.  So, thank you in advance! After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project, and to gauge the work effort or issues with merging into _devel_.  If the effort required by the core team isn't trivial, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. It will just depend on the current backlog.
 
 
 ### Contributing to Arista Validated Design (AVD)

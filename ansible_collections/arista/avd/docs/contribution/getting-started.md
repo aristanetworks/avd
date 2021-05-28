@@ -7,18 +7,18 @@
 
 ## Pull requests
 
-* Be sure to open an issue **before** starting work on a pull request, and
-discuss your idea with the __ansible-avd__ maintainers before beginning work. This will
+* Be sure to open an issue **before** you start working on a pull request, and
+discuss your idea(s) with the __ansible-avd__ maintainers before beginning work. This will
 help prevent wasting time on something that might we might not be able to
 implement. When suggesting a new feature, also make sure it won't conflict with
 any work that's already in progress.
 
-* Any pull request which does _not_ relate to an accepted issue will not be approved
+* Any pull request which does _not_ relate to an accepted issue will not be approved.
 
 * All major new functionality must include relevant tests where applicable.
 
-* When submitting a pull request, please be sure to work off of the `devel`
-branch, rather than `master` (deprecated). The `devel` branch is used for ongoing
+* When submitting a pull request, please be sure to rebase from the `devel`
+branch, rather than a release branch:`releases/*`. The `devel` branch is used for ongoing
 development, while `releases/*` are used for tagging new stable releases.
 
 * All code submissions should meet the following criteria (CI will enforce
@@ -50,8 +50,8 @@ merged:
 - If you cloned a while ago, get the latest changes from upstream:
 
    ```bash
-   git checkout <dev-branch>
-   git pull upstream <dev-branch>
+   git checkout devel
+   git pull upstream devel
    ```
 
 - Create a new topic branch (off the main project development branch) to
@@ -63,7 +63,7 @@ merged:
 
 - Commit your changes in logical chunks. Please adhere to these [git commit
    message guidelines](http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-   or your code is unlikely be merged into the main project. Use Git's
+   or your code is unlikely to be merged into the main project. Use Git's
    [git rebase](https://docs.github.com/en/free-pro-team@latest/github/using-git/about-git-rebase)
    feature to tidy up your commits before making them public.
 
@@ -80,4 +80,4 @@ merged:
    ```
 
 - [Open a Pull Request](https://github.com/aristanetworks/ansible-avd/pulls)
-    with a clear title and description.
+    with a clear title, description, and following the template!

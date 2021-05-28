@@ -4,7 +4,7 @@ This page provides a list of guidelines to apply when developing Jinja2 template
 
 ## Python code style
 
-As AVD is Ansible collection, it is require to follow guidelines from [ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
+As AVD is an Ansible collection, we are required to follow guidelines from [ansible documentation](https://docs.ansible.com/ansible/latest/dev_guide/developing_modules_best_practices.html) for all Python code.
 
 ## YAML Syntax guidelines
 
@@ -12,7 +12,7 @@ As AVD is Ansible collection, it is require to follow guidelines from [ansible d
 
 - _Description_
 
-A space shall be added between Jinja2 curly brackets and variable's name
+A single space shall be added between Jinja2 curly brackets and a variable's name
 
 - _Example_
 
@@ -24,7 +24,7 @@ A space shall be added between Jinja2 curly brackets and variable's name
 
 - _Description_
 
-When variables are used in combination of a filter, `|` shall be enclosed by space
+When variables are used in combination with a filter, `|` shall be enclosed by space
 
 - _Example_
 
@@ -86,7 +86,7 @@ __Example__
 
 - _Description_
 
-When a long CLI with multiple option needs to be built, use a pure J2 logic and then print
+When a long CLI with multiple options needs to be built, use a pure J2 logic and then print
 
 - _Example_
 
@@ -129,7 +129,7 @@ If variable is multi-words, underscore `_` shall be used as a separator.
 {{ my_variable_name }}
 ```
 
-### VAR-3 - Variable for hash
+### VAR-3 - Iterable Variables
 
 - _Description_
 
@@ -141,7 +141,7 @@ For iterable variable, the plural form shall be used
 {{ ethernet_interfaces }}
 ```
 
-### VAR-4 - Variable for hash entries
+### VAR-4 - Variables in a For Loop
 
 - _Description_
 
@@ -157,7 +157,7 @@ For variables in a for loop, the singular form shall be used
 
 __Description__
 
-Tilde `~` symbol should be used for string concatenation as it automatically convert variables to string.
+Tilde `~` symbol should be used for string concatenation as it automatically converts variables to a string.
 
 __Example__
 
