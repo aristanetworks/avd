@@ -1472,6 +1472,12 @@ router bgp 65103
 router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
 ```
+### Service Routing Protocols Model: multi-agent
+
+```eos
+multi-agent
+!
+```
 
 # Multicast
 

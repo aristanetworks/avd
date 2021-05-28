@@ -459,7 +459,7 @@ port_channel_interfaces:
     rt: 08:08:07:07:06:06
     lacp_id: 0808.0707.0606
   Port-Channel9:
-    description: DC1_L2LEAF3_Po1
+    description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
     vlans: 110-111,120-121,130-131,160-161

@@ -10,9 +10,9 @@
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
+  - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Service Routing Configuration](#service-routing-configuration)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -64,6 +64,15 @@ interface Management1
 # Interfaces
 
 # Routing
+## Service Routing Configuration BGP
+
+BGP no equals default enabled
+
+```eos
+!
+service routing configuration bgp no-equals-default
+```
+
 
 ## IP Routing
 
@@ -83,17 +92,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-## Service Routing Configuration
-
-
-- BGP no equals default: "True"
-
-
-```eos
-{'no_equals_default': True}
-!
-```
-
 
 # Multicast
 

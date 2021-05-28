@@ -324,14 +324,14 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po9 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po9 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1-LEAF2A_Po9
+   description DC1_LEAF2_Po9
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131,160-161
@@ -377,6 +377,12 @@ no ip routing vrf MGMT
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+```
+### Service Routing Protocols Model: multi-agent
+
+```eos
+multi-agent
+!
 ```
 
 # Multicast
