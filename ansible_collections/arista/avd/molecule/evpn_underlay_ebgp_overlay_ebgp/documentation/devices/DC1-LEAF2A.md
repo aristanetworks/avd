@@ -358,6 +358,7 @@ vlan 311
 | Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
+| Ethernet13 | server01_MTU_ADAPTOR_MLAG_Eth8 | *access | *- | *- | *- | 12 |
 | Ethernet20 | FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
 | Ethernet21 |  ROUTER01_Eth0 | access | 110 | - | - | - |
 
@@ -435,6 +436,11 @@ interface Ethernet11
 !
 interface Ethernet12
    description server01_MTU_ADAPTOR_MLAG_Eth6
+   no shutdown
+   channel-group 12 mode active
+!
+interface Ethernet13
+   description server01_MTU_ADAPTOR_MLAG_Eth8
    no shutdown
    channel-group 12 mode active
 !
