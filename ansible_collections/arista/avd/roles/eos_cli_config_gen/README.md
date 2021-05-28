@@ -1479,6 +1479,8 @@ vmtracer_sessions:
 
 ```yaml
 ptp:
+  mode: < mode >
+    forward_unicast: < true | false >
   clock_identity: < clock-id >
   source:
     ip: < source-ip>
@@ -1491,6 +1493,10 @@ ptp:
       dscp: < dscp-value >
     event:
       dscp: < dscp-Value >
+  monitor:
+    threshold:
+      offset_from_master: < offset >
+      mean_path_delay: < delay >
 ```
 
 ### Prompt
