@@ -22,7 +22,8 @@ interface Vxlan1
 {%            for vlan in vxlan_tunnel_interface.Vxlan1.flood_vtep.vlans | arista.avd.natural_sort %}
    vxlan vlan {{ vlan }} flood vtep {{ vxlan_tunnel_interface.Vxlan1.flood_vtep.vlans[vlan].remotes | join(' ') }}
 {%            endfor %}
-{%         elif vxlan_tunnel_interface.Vxlan1.flood_vtep.remotes is arista.avd.defined %}
+{%         endif %}
+{%         if vxlan_tunnel_interface.Vxlan1.flood_vtep.remotes is arista.avd.defined %}
    vxlan flood vtep {{ vxlan_tunnel_interface.Vxlan1.flood_vtep.remotes | join(' ') }}
 {%         endif %}
 {%    endif %}
