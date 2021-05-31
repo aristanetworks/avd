@@ -107,8 +107,15 @@ Arista AVD provides built-in test plugins to help verify data efficiently in jin
 
 The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
 `arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
+Optionally the test can emit warnings or errors if the test fails.
 
 Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value.
+
+Syntax:
+
+```jinja
+{% <value> is arista.avd.defined(test_value=<test_value>,fail_action=['warning','error'],var_name=<string representing name of value>) %}
+```
 
 To use this test:
 
@@ -132,6 +139,24 @@ text : {{ extremely_long_variable_name }}
 text : {{ extremely_long_variable_name }}
 {% endif %}
 Feature is {{ "not " if extremely_long_variable_name is defined and extremely_long_variable_name is not none }}configured
+```
+
+Warnings or Errors can be emitted with the optional arguments `fail_action` and `var_name`:
+
+```jinja
+{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var' %}
+>>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
+
+{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='error', var_name='my_dict.my_list[12].my_var' %}
+>>> fatal: [DC2-RS1]: FAILED! => {"msg": "my_dict.my_list[12].my_var was expected but not set!"}
+
+{% set my_dict.my_list[12].my_var = 'not_my_value' %}
+
+{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='warning', var_name='my_dict.my_list[12].my_var' %}
+>>> [WARNING]: my_dict.my_list[12].my_var was set to not_my_value but we expected my_value. Output may be incorrect or incomplete!
+
+{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='error', var_name='my_dict.my_list[12].my_var' %}
+>>> fatal: [DC2-RS1]: FAILED! => {"msg": "my_dict.my_list[12].my_var was set to not_my_value but we expected my_value!"}
 ```
 
 ### contains test
