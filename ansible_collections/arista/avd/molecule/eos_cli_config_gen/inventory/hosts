@@ -83,4 +83,5 @@ vlan-internal-order
 vlans
 vmtracer-sessions
 vxlan-interface
+vxlan-interface-flood-vtep
 vrf-instances
