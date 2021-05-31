@@ -1480,7 +1480,7 @@ vmtracer_sessions:
 ```yaml
 ptp:
   mode: < mode >
-    forward_unicast: < true | false >
+  forward_unicast: < true | false >
   clock_identity: < clock-id >
   source:
     ip: < source-ip>
