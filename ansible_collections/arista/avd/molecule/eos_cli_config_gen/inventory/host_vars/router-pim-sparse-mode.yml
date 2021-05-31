@@ -16,3 +16,4 @@ router_pim_sparse_mode:
         other_anycast_rp_addresses:
           10.50.64.16:
             register_count: 15
+    ssm_range: standard
