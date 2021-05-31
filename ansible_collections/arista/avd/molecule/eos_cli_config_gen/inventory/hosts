@@ -18,6 +18,7 @@ hardware-counter
 hardware
 igmp-snooping
 interface-defaults
+interface-profiles
 ip-dhcp-relay
 ip-extended-community-lists
 ip-extended-community-lists-regexp
