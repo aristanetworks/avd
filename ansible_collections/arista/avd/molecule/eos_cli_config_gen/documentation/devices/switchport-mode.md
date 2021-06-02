@@ -68,12 +68,19 @@ interface Management1
 ### Switchport Defaults Summary
 
 - Default Switchport Mode: access
+- Default Switchport Phone COS: 0
+- Default Switchport Phone Trunk: tagged
+- Default Switchport Phone VLAN: 69
 
 ### Switchport Default Configuration
 
 ```eos
 !
 switchport default mode access
+switchport default phone cos 0
+!
+switchport default phone vlan 69
+!
 ```
 
 # Routing

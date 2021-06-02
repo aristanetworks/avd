@@ -2,17 +2,32 @@
 # Table of Contents
 <!-- toc -->
 
+- [ethernet-interfaces](#ethernet-interfaces)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces-1)
+    - [Ethernet Interfaces Summary](#ethernet-interfaces-summary)
+      - [L2](#l2)
+      - [IPv4](#ipv4-1)
+      - [IPv6](#ipv6-1)
+      - [ISIS](#isis)
+    - [Ethernet Interfaces Device Configuration](#ethernet-interfaces-device-configuration)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
 - [MPLS](#mpls)
@@ -81,6 +96,7 @@ interface Management1
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
+| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -242,6 +258,14 @@ interface Ethernet12
    switchport
    switchport access vlan 300
    switchport mode dot1q-tunnel
+!
+interface Ethernet13
+   description interface_in_mode_access_with_voice
+   switchport
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged
+   switchport mode trunk phone
 ```
 
 # Routing
