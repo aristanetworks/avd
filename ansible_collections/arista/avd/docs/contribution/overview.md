@@ -114,15 +114,20 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 * All new functionality must include relevant tests where applicable.
 
-* When submitting a pull request, please be sure to work off of the `devel` branch, rather than `main`. The `devel` branch is used for ongoing development, while `main` is used for tagging stable releases.
+* When submitting a pull request, please be sure to work off of the `devel` branch, rather than `releases/*`. The `devel` branch is used for ongoing development, while `releases/*` is used for tagging stable releases.
 
 * In most cases, it is not necessary to add a changelog entry: A maintainer will take care of this when the PR is merged. (This helps avoid merge conflicts resulting from multiple PRs being submitted simultaneously.)
 
 * All code submissions should meet the following criteria (CI will enforce these checks):
 
-    * Python syntax is valid
-    * All unit tests pass successfully
-    * PEP 8 compliance is enforced, with the exception that lines may be greater than 80 characters in length
+  * Jinja2 templates follow our [guidelines](../style-guide/).
+  * Molecule is updated with data covering your fix.
+  * Molecule artifacts are updated with your coverage.
+  * Python syntax is valid.
+  * All unit tests pass successfully.
+  * PEP 8 compliance is enforced, with the exception that lines may be greater than 80 characters in length.
+
+* A PR can be opened before all the work is complete. In this situation, PR state should be set to __draft__. All PR marked as ready for review (i.e. not in draft) will be reviewed by the maintainer team.
 
 ## Project Structure
 
