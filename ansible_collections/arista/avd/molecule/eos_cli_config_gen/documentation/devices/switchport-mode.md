@@ -77,10 +77,10 @@ interface Management1
 ```eos
 !
 switchport default mode access
+!
 switchport default phone cos 0
 !
 switchport default phone vlan 69
-!
 ```
 
 # Routing
