@@ -25,6 +25,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -339,6 +340,14 @@ interface Port-Channel1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -377,12 +386,6 @@ no ip routing vrf MGMT
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
-```
-### Service Routing Protocols Model: multi-agent
-
-```eos
-multi-agent
-!
 ```
 
 # Multicast

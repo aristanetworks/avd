@@ -28,6 +28,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -487,6 +488,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -791,12 +800,6 @@ router bgp 65105
 !
 router bfd
    multihop interval 1200 min-rx 1200 multiplier 3
-```
-### Service Routing Protocols Model: multi-agent
-
-```eos
-multi-agent
-!
 ```
 
 # Multicast
