@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+  - [Custom daemons](#custom-daemons)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -49,6 +50,20 @@ interface Management1
 # Authentication
 
 # Monitoring
+## Custom daemons
+
+### Custom Daemons Device Configuration
+
+```eos
+!
+daemon ocprometheus
+   exec /usr/bin/ocprometheus -config /usr/bin/ocprometheus.yml -addr localhost:6042
+   no shutdown
+!
+daemon random
+   exec /usr/bin/random
+   shutdown
+```
 
 # Internal VLAN Allocation Policy
 
