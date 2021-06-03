@@ -6,7 +6,7 @@
 
 | CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
 | -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | {% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} | {{ daemon_terminattr.ingestauth_key | arista.avd.default('UNSET') }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
+| gzip | {% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} | {{ daemon_terminattr.ingestauth_key | arista.avd.default('UNSET') }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf | default('default') }} | {{ daemon_terminattr.ingestvrf | default('default') }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
 
 ### TerminAttr Daemon Device Configuration
 
