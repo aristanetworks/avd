@@ -1283,6 +1283,7 @@ You can either provide a list of IPs to target on-premise Cloudvision cluster or
 daemons:
   < daemon_name >:
     exec: "< command to run as a daemon >"
+    enabled: "< true | false | default -> true >"
 ```
 
 This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
