@@ -50,7 +50,6 @@ bgp_peer_groups:
 spine:
   platform: 7050SX3
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1
