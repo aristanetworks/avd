@@ -4,8 +4,6 @@
 {%     set tenants_data = namespace() %}
 {%     include 'designs/l3ls-evpn/tenants/logic.j2' %}
 
-{%     include 'designs/l3ls-evpn/tenants/eos-cli.j2' %}
-
 {%     if switch.network_services_l2 is arista.avd.defined(true) %}
 {%         include 'designs/l3ls-evpn/tenants/vlans.j2' %}
 
@@ -39,6 +37,8 @@
 {%             include 'designs/l3ls-evpn/tenants/virtual-source-nat-vrfs.j2' %}
 
 {%             include 'designs/l3ls-evpn/tenants/ip-virtual-router-mac-address.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/eos-cli.j2' %}
 
 {%         endif %}
 {%     endif %}

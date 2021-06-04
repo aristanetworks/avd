@@ -96,7 +96,9 @@ switch:
   rack: {{ switch_data.combined.rack | arista.avd.default() }}
 
 {# switch.raw_eos_cli #}
-  raw_eos_cli: {{ switch_data.combined.raw_eos_cli | arista.avd.default() }}
+{% if switch_data.combined.raw_eos_cli is arista.avd.defined %}
+  raw_eos_cli: "{{ switch_data.combined.raw_eos_cli }}"
+{% endif %}
 
 {########################}
 {# Router related facts #}
