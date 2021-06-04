@@ -1,1 +1,0 @@
-{{ mlag_ips.leaf_peer_l3 | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(((mlag_primary_id - 1) * 2) + 1) }}

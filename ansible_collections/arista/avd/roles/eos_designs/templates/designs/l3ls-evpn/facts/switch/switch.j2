@@ -100,6 +100,9 @@ switch:
   raw_eos_cli: "{{ switch_data.combined.raw_eos_cli }}"
 {% endif %}
 
+{# switch.struct_cfg #}
+  struct_cfg: {{ switch_data.combined.structured_config | arista.avd.default() }}
+
 {########################}
 {# Router related facts #}
 {% if switch.underlay_router is arista.avd.defined(true) %}

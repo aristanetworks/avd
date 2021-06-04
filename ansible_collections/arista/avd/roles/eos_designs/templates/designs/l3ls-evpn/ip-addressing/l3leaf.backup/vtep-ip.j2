@@ -1,1 +1,0 @@
-{{ vtep_loopback_network_summary | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch_id + switch_max_spines) }}

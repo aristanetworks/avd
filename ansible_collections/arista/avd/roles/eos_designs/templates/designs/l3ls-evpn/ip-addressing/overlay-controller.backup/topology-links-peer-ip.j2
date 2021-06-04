@@ -1,1 +1,0 @@
-{{ overlay_controller_p2p_network_summary | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(((switch.id -1) * 2 * max_overlay_controller_to_switch_links) + uplink_interface_index * 2) }}
