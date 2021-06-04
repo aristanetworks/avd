@@ -1274,6 +1274,7 @@ router_multicast:
 ```yaml
 router_pim_sparse_mode:
   ipv4:
+    ssm_range: < range >
     rp_addresses:
       < rp_address_1 >:
         groups:
