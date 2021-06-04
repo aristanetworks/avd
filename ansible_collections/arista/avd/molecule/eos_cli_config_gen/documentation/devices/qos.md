@@ -115,7 +115,6 @@ interface Ethernet6
    qos trust cos
    qos cos 2
    service-profile experiment
-   profile ALL
 ```
 
 ## Port-Channel Interfaces
