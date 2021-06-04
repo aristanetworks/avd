@@ -1,0 +1,8 @@
+{% set tmp_hostvars = {} %}
+{% set upgraded_data_model = upgraded_data_model | arista.avd.default({}) %}
+{% for key in upgraded_data_model.keys() %}
+{%     do tmp_hostvars.update({key: hostvars[inventory_hostname][key]}) %}
+{% endfor %}
+{% if tmp_hostvars != {} %}
+{{ tmp_hostvars | combine(upgraded_data_model, recursive=true) | to_nice_yaml(indent=2, sort_keys=False) }}
+{% endif %}

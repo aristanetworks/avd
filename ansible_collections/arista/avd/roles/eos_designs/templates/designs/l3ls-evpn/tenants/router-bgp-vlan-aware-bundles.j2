@@ -1,4 +1,4 @@
-{# Leaf tenant router bgp evpn configuration - MAC-VRF VLAN Aware bundles #}
+{# tenant router bgp evpn configuration - MAC-VRF VLAN Aware bundles #}
   vlan_aware_bundles:
 {% if vxlan_vlan_aware_bundles is arista.avd.defined(true) %}
 {%     for tenant in switch.tenants | arista.avd.natural_sort %}

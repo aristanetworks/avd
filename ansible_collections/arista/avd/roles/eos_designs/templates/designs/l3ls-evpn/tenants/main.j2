@@ -7,9 +7,9 @@
 {%     include 'designs/l3ls-evpn/tenants/eos-cli.j2' %}
 
 {%     if switch.network_services_l2 is arista.avd.defined(true) %}
-{%         include 'designs/l3ls-evpn/tenants/ip-igmp-snooping.j2' %}
-
 {%         include 'designs/l3ls-evpn/tenants/vlans.j2' %}
+
+{%         include 'designs/l3ls-evpn/tenants/ip-igmp-snooping.j2' %}
 
 {%     endif %}
 

@@ -6,7 +6,8 @@ topology:
   links:
 {% for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
 {%     set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default() %}
-{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] and hostvars[uplink_switch].switch is arista.avd.defined %}
+{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] and 
+          hostvars[uplink_switch].switch is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
 {%         do topology_peers.append(uplink_switch) %}
     {{ uplink_interface }}:
       peer: {{ uplink_switch }}
@@ -38,3 +39,8 @@ topology:
 {# topology.peers #}
 {# Used during structured_config rendering to quickly scan if this switch has a peering towards the switch being rendered #}
   peers: {{ topology_peers }}
+
+{# topology.vlans #}
+{# Vlan list taking parent switch vlans into consideration #}
+{# Since this switch is not using port-channels it is just the same as switch.vlans #}
+  vlans: {{ switch.vlans }}

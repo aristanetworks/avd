@@ -1,4 +1,4 @@
-{# Leaf Tenant vrf loopback interfaces for VTEP diagnostic #}
+{# Tenant vrf loopback interfaces for VTEP diagnostic #}
 loopback_interfaces:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs %}

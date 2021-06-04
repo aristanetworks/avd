@@ -1,12 +1,14 @@
 {% set topology_peers = [] %}
+{% set ns = namespace() %}
 
 topology:
 
 {# topology.links #}
   links:
-{% for uplink_interface in switch.uplink_interfaces %}
+{% for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
 {%     set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default() %}
-{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] %}
+{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] and
+          hostvars[uplink_switch].switch is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
 {%         do topology_peers.append(uplink_switch) %}
     {{ uplink_interface }}:
       peer: {{ uplink_switch }}
@@ -31,11 +33,13 @@ topology:
       channel_group_id: {{ switch.uplink_interfaces[0] | regex_findall("\d") | join }}
       peer_channel_group_id: {{ switch.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
 {%         endif %}
-{%         set uplink_vlans = switch.vlans %}
-{%         if switch.inband_management_subnet is arista.avd.defined %}
-{%             do uplink_vlans.append (switch.inband_management_vlan | int) %}
+{# Remove vlans if upstream switch does not have them #}
+{%         set uplink_vlans = switch.vlans | arista.avd.default([]) | select('in', hostvars[uplink_switch].switch.vlans) %}
+{%         set ns.vlans = uplink_vlans %}
+{%         if switch.inband_management_vlan is arista.avd.defined %}
+{%             do uplink_vlans.append(switch.inband_management_vlan | int) %}
 {%         endif %}
-      vlans: {{ uplink_vlans | unique | arista.avd.default([]) }}
+      vlans: {{ uplink_vlans | unique }}
 {%         if switch.short_esi is arista.avd.defined %}
       peer_short_esi: {{ switch.short_esi }}
 {%         endif %}
@@ -45,3 +49,7 @@ topology:
 {# topology.peers #}
 {# Used during structured_config rendering to quickly scan if this switch has a peering towards the switch being rendered #}
   peers: {{ topology_peers }}
+
+{# topology.vlans #}
+{# Vlan list taking parent switch vlans into consideration #}
+  vlans: {{ ns.vlans }}

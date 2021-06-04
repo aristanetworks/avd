@@ -1,0 +1,48 @@
+
+---
+# create required directories
+- name: Create directory for updated data model
+  file:
+    path: "{{ inventory_dir }}/upgrade_2.x_to_3.0/"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: true
+
+# Upgrade AVD data model from AVD version 2.x to 3.0 (Set upgraded_data_model)
+- name: Upgrade AVD data model from AVD version 2.x to 3.0 (Set upgraded_data_model)
+  yaml_templates_to_facts:
+    root_key: upgraded_data_model
+    templates:
+      - template: "upgrade-2.x-to-3.0.j2"
+  check_mode: no
+  changed_when: False
+
+# Write upgraded data model To file
+- name: Write upgraded data model To file
+  template:
+    src: "upgrade-2.x-to-3.0.j2"
+    dest: "{{ inventory_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: false
+  check_mode: no
+
+# Write merged data model To file
+- name: Write upgraded data model To file
+  template:
+    src: "overload-upgraded-data-model.j2"
+    dest: "{{ inventory_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}-merged.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: false
+  check_mode: no
+  tags: [debug, never]
+
+- name: Load upgraded data model
+  yaml_templates_to_facts:
+    templates:
+      - template: "overload-upgraded-data-model.j2"
+  check_mode: no
+  changed_when: False
+

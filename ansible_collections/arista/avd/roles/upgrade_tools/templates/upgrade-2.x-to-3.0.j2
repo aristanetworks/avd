@@ -1,0 +1,235 @@
+# TODO set old defaults if not overridden in old data model.
+{# p2p_ptp #}
+{# bgp defaults from defaults file #}
+
+{####### spine #######}
+{% if spine is arista.avd.defined %}
+spine:
+  defaults:
+{%     for var in ['platform','bgp_as'] %}
+{%         if spine[var] is arista.avd.defined %}
+# Change from spine.{{ var }} to spine.defaults.{{ var }}
+    {{ var }}: {{ spine[var] }}
+{%         endif %}
+{%     endfor %}
+{%     if overlay_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_loopback_network_summary to spine.defaults.loopback_network_summary
+    loopback_network_summary: {{ overlay_loopback_network_summary }}
+{%     endif %}
+{%     if spine.uplinks_to_super_spine_interfaces is arista.avd.defined %}
+# Change from spine.uplinks_to_super_spine_interfaces to spine.defaults.uplink_interfaces
+    uplink_interfaces: {{ spine.uplinks_to_super_spine_interfaces }}
+{%         if super_spine.nodes is arista.avd.defined %}
+# New spine.defaults.uplink_switches variable based on keys in super_spine.nodes
+    uplink_switches: {{ super_spine.nodes.keys() }}
+{%         endif %}
+{%         if max_super_spines is arista.avd.defined %}
+# Change from max_super_spines to spine.defaults.max_uplink_switches
+    max_uplink_switches: {{ max_super_spines }}
+{%         endif %}
+{%         if max_spine_to_super_spine_links is arista.avd.defined %}
+# Change from max_spine_to_super_spine_links to spine.defaults.max_parallel_uplinks
+    max_parallel_uplinks: {{ max_spine_to_super_spine_links }}
+{%         endif %}
+{%         if super_spine_underlay_p2p_network_summary is arista.avd.defined %}
+# Change from super_spine_underlay_p2p_network_summary to spine.defaults.p2p_network_summary
+    p2p_network_summary: {{ super_spine_underlay_p2p_network_summary }}
+{%         endif %}
+{%     endif %}
+{%     if spine_bgp_defaults is arista.avd.defined %}
+# Change from spine_bgp_defaults to spine.defaults.bgp_defaults
+    bgp_defaults: {{ spine_bgp_defaults }}
+{%     endif %}
+  nodes:
+{%     for node in spine.nodes | arista.avd.default([]) %}
+    {{ node }}:
+{%         if spine.nodes[node].super_spine_interfaces is arista.avd.defined %}
+# Change from spine.nodes.{{ node }}.super_spine_interfaces to spine.nodes.{{ node }}.uplink_switch_interfaces
+      uplink_switch_interfaces: {{ spine.nodes[node].super_spine_interfaces }}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+
+
+
+{####### l3leaf #######}
+{% if l3leaf is arista.avd.defined %}
+l3leaf:
+  defaults:
+{%     if overlay_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_network_summary
+    loopback_network_summary: {{ overlay_loopback_network_summary }}
+{%     endif %}
+{%     set switch_max_spines = max_spines | arista.avd.default(
+                               spine.nodes | arista.avd.default([]) | length) %}
+{%     if switch_max_spines > 0 %}
+# New loopback_network_offset variable based on max_spines or length of spine.nodes
+    loopback_network_offset: {{ switch_max_spines }}
+{%     endif %}
+{%     if l3leaf.defaults.uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces
+    uplink_interfaces: {{ l3leaf.defaults.uplink_to_spine_interfaces }}
+{%     endif %}
+{%     if l3leaf.defaults.spines is arista.avd.defined %}
+# Change from l3leaf.defaults.spines to l3leaf.defaults.uplink_switches
+    uplink_switches: {{ l3leaf.defaults.spines }}
+{%     endif %}
+{%     if max_spines is arista.avd.defined %}
+# Change from max_spines to l3leaf.defaults.max_uplink_switches
+    max_uplink_switches: {{ max_spines }}
+{%     endif %}
+{%     if max_l3leaf_to_spine_links is arista.avd.defined %}
+# Change from max_l3leaf_to_spine_links to l3leaf.defaults.max_parallel_uplinks
+    max_parallel_uplinks: {{ max_l3leaf_to_spine_links }}
+{%     endif %}
+{%     if underlay_p2p_network_summary is arista.avd.defined %}
+# Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_network_summary
+    p2p_network_summary: {{ underlay_p2p_network_summary }}
+{%     endif %}
+{%     if leaf_bgp_defaults is arista.avd.defined %}
+# Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
+    bgp_defaults: {{ leaf_bgp_defaults }}
+{%     endif %}
+  node_groups:
+{%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
+    {{ node_group }}:
+{%         if l3leaf.node_groups[node_group].uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.uplink_interfaces
+      uplink_interfaces: {{ l3leaf.node_groups[node_group].uplink_to_spine_interfaces }}
+{%         endif %}
+{%         if l3leaf.node_groups[node_group].spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.spines to l3leaf.node_groups.{{ node_group }}.uplink_switches
+      uplink_switches: {{ l3leaf.node_groups[node_group].spines }}
+{%         endif %}
+      nodes:
+{%         for node in l3leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
+        {{ node }}:
+{%             if l3leaf.node_groups[node_group].nodes[node].spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].spine_interfaces }}
+{%             endif %}
+{%             if l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_to_spine_interfaces to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_interfaces
+          uplink_interfaces: {{ l3leaf.node_groups[node_group].nodes[node].uplink_to_spine_interfaces }}
+{%             endif %}
+{%             if l3leaf.node_groups[node_group].nodes[node].spines is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.spines to l3leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
+          uplink_switches: {{ l3leaf.node_groups[node_group].nodes[node].spines }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+
+
+
+{####### l2leaf #######}
+{% if l2leaf is arista.avd.defined %}
+l2leaf:
+  defaults:
+{%     if l2leaf.defaults.parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
+    uplink_switches: {{ l2leaf.defaults.parent_l3leafs }}
+{%     endif %}
+{%     if l2leaf_inband_management_subnet is arista.avd.defined %}
+# Change from l2leaf_inband_management_subnet to l2leaf.defaults.inband_management_subnet
+    inband_management_subnet: {{ l2leaf_inband_management_subnet }}
+{%     endif %}
+{%     if l2leaf_inband_management_vlan is arista.avd.defined %}
+# Change from l2leaf_inband_management_vlan to l2leaf.defaults.inband_management_vlan
+    inband_management_vlan: {{ l2leaf_inband_management_vlan }}
+{%     endif %}
+  node_groups:
+{%     for node_group in l2leaf.node_groups | arista.avd.default([]) %}
+    {{ node_group }}:
+{%         if l2leaf.node_groups[node_group].parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.uplink_switches
+      uplink_switches: {{ l2leaf.node_groups[node_group].parent_l3leafs }}
+{%         endif %}
+      nodes:
+{%         for node in l2leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
+        {{ node }}:
+{%             if l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.l3leaf_interfaces to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces }}
+{%             endif %}
+{%             if l2leaf.node_groups[node_group].nodes[node].parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
+          uplink_switches: {{ l2leaf.node_groups[node_group].nodes[node].parent_l3leafs }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}
+
+
+
+{####### super-spine #######}
+{% if super_spine is arista.avd.defined %}
+super_spine:
+  defaults:
+{%     for var in ['platform','bgp_as'] %}
+{%         if super_spine[var] is arista.avd.defined %}
+# Change from super_spine.{{ var }} to super_spine.defaults.{{ var }}
+    {{ var }}: {{ super_spine[var] }}
+{%         endif %}
+{%     endfor %}
+{%     if super_spine_loopback_network_summary is arista.avd.defined %}
+# Change from super_spine_loopback_network_summary to super_spine.defaults.loopback_network_summary
+    loopback_network_summary: {{ super_spine_loopback_network_summary }}
+{%     endif %}
+{%     if super_spine_bgp_defaults is arista.avd.defined %}
+# Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
+    bgp_defaults: {{ super_spine_bgp_defaults }}
+{%     endif %}
+{% endif %}
+
+
+
+
+{####### overlay-controller #######}
+{% if overlay_controller is arista.avd.defined %}
+overlay_controller:
+  defaults:
+{%     if overlay_controller_loopback_network_summary is arista.avd.defined %}
+# Change from overlay_controller_loopback_network_summary to overlay_controller.defaults.loopback_network_summary
+    loopback_network_summary: {{ overlay_controller_loopback_network_summary }}
+{%     endif %}
+{%     if overlay_controller_p2p_bfd is arista.avd.defined %}
+# Change from overlay_controller_p2p_bfd to overlay_controller.defaults.loopback_network_summary
+    uplinks_bfd: {{ overlay_controller_p2p_bfd }}
+{%     endif %}
+{%     if overlay_controller.defaults.uplink_to_remote_switches is arista.avd.defined %}
+# Change from overlay_controller.defaults.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+    uplink_interfaces: {{ overlay_controller.defaults.uplink_to_remote_switches }}
+{%     endif %}
+{%     if overlay_controller.defaults.remote_switches is arista.avd.defined %}
+# Change from overlay_controller.defaults.remote_switches to overlay_controller.defaults.uplink_switches
+    uplink_switches: {{ overlay_controller.defaults.remote_switches }}
+{%     endif %}
+# Change from max_overlay_controller_to_switch_links (default=2) to overlay_controller.defaults.max_uplink_switches
+# (old algorithm expected max_overlay_controller_to_switch_links to be the sum of links to all uplink switches)
+    max_uplink_switches: {{ max_overlay_controller_to_switch_links | arista.avd.default(2) }}
+{%     if overlay_controller_p2p_network_summary is arista.avd.defined %}
+# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.p2p_network_summary
+    p2p_network_summary: {{ overlay_controller_p2p_network_summary }}
+{%     endif %}
+{%     if overlay_controller_bgp_defaults is arista.avd.defined %}
+# Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults: {{ overlay_controller_bgp_defaults }}
+{%     endif %}
+  nodes:
+{%     for node in overlay_controller.nodes | arista.avd.default([]) %}
+    {{ node }}:
+{%         if overlay_controller.nodes[node].remote_switches_interfaces is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.remote_switches_interfaces to overlay_controller.nodes.{{ node }}.uplink_switch_interfaces
+      uplink_switch_interfaces: {{ overlay_controller.nodes[node].remote_switches_interfaces }}
+{%         endif %}
+{%         if overlay_controller.nodes[node].uplink_to_remote_switches is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+      uplink_interfaces: {{ overlay_controller.nodes[node].uplink_to_remote_switches }}
+{%         endif %}
+{%         if overlay_controller.nodes[node].remote_switches is arista.avd.defined %}
+# Change from overlay_controller.nodes.{{ node }}.remote_switches to overlay_controller.defaults.uplink_switches
+      uplink_switches: {{ overlay_controller.nodes[node].remote_switches }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

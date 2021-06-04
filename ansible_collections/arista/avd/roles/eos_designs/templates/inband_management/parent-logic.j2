@@ -6,7 +6,9 @@
 {% for fabric_switch in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if inventory_hostname in hostvars[fabric_switch].switch.inband_management_parents | arista.avd.default([]) %}
 {%         set inband_management_data.role = 'parent' %}
-{%         do inband_management_data.vlans.append(hostvars[fabric_switch].switch.inband_management_vlan) %}
-{%         do inband_management_data.subnets.append(hostvars[fabric_switch].switch.inband_management_subnet) %}
+{%         if hostvars[fabric_switch].switch.inband_management_subnet not in inband_management_data.subnets %}
+{%             do inband_management_data.vlans.append(hostvars[fabric_switch].switch.inband_management_vlan) %}
+{%             do inband_management_data.subnets.append(hostvars[fabric_switch].switch.inband_management_subnet) %}
+{%         endif %}
 {%     endif %}
 {% endfor %}
