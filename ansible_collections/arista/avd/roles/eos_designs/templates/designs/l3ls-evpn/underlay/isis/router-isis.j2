@@ -19,7 +19,5 @@ router_isis:
 {% endif %}
   is_type: level-2
   address_family: ['ipv4 unicast']
-{% if switch.max_uplink_switches is arista.avd.defined and 
-      switch.max_parallel_uplinks is arista.avd.defined %}
   isis_af_defaults:
-    - maximum-paths {{ switch.max_uplink_switches * switch.max_parallel_uplinks }}
+    - maximum-paths {{ isis_maximum_paths }}

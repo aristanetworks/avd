@@ -1,5 +1,5 @@
 {% set topology_peers = [] %}
-{% set ns = namespace() %}
+{% set ns = namespace(vlans=switch.vlans) %}
 
 topology:
 
@@ -15,8 +15,8 @@ topology:
       peer_interface: {{ switch.uplink_switch_interfaces[loop.index0] }}
       peer_type: {{ hostvars[uplink_switch].type }}
       type: underlay_l2
-{%         if switch.p2p_link_interface_speed is arista.avd.defined %}
-      speed: {{ switch.p2p_link_interface_speed }}
+{%         if switch.uplink_interface_speed is arista.avd.defined %}
+      speed: {{ switch.uplink_interface_speed }}
 {%         endif %}
 {%         if hostvars[uplink_switch].switch.mlag is arista.avd.defined(true) or switch.short_esi is arista.avd.defined %}
 {# Override our description on port-channel to be peer's group name if they are mlag pair or A/A #}

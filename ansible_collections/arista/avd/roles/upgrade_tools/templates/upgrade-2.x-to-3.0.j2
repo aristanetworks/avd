@@ -35,10 +35,21 @@ spine:
 # Change from super_spine_underlay_p2p_network_summary to spine.defaults.p2p_network_summary
     p2p_network_summary: {{ super_spine_underlay_p2p_network_summary }}
 {%         endif %}
+{%         if p2p_uplinks_ptp.enable is arista.avd.defined %}
+# Change from p2p_uplinks_ptp to spine.defaults.uplink_ptp
+    uplink_ptp: {{ p2p_uplinks_ptp }}
+{%         endif %}
 {%     endif %}
 {%     if spine_bgp_defaults is arista.avd.defined %}
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: {{ spine_bgp_defaults }}
+{%     endif %}
+{%     if underlay_routing_protocol | lower == 'isis' %}
+# Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0000" }}'
+{%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
+# New spine.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
 {%     endif %}
   nodes:
 {%     for node in spine.nodes | arista.avd.default([]) %}
@@ -86,9 +97,26 @@ l3leaf:
 # Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_network_summary
     p2p_network_summary: {{ underlay_p2p_network_summary }}
 {%     endif %}
+{%     if p2p_uplinks_ptp is arista.avd.defined %}
+# Change from p2p_uplinks_ptp.* to l3leaf.defaults.uplink_ptp.*
+    uplink_ptp: {{ p2p_uplinks_ptp }}
+{%     endif %}
+{%     if l3leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
+# Change from l3leaf.defaults.p2p_link_interface_speed to l3leaf.defaults.uplink_interface_speed
+    uplink_interface_speed: {{ l3leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
 {%     if leaf_bgp_defaults is arista.avd.defined %}
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: {{ leaf_bgp_defaults }}
+{%     endif %}
+{%     if underlay_routing_protocol | lower == 'isis' %}
+# Change from isis_site_id.0001 to l3leaf.defaults.isis_system_id_prefix
+    isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0001" }}'
+{%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
+{%         if switch_max_spines > 0 %}
+# New l3leaf.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
+    isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
+{%         endif %}
 {%     endif %}
   node_groups:
 {%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
@@ -100,6 +128,10 @@ l3leaf:
 {%         if l3leaf.node_groups[node_group].spines is arista.avd.defined %}
 # Change from l3leaf.node_groups.{{ node_group }}.spines to l3leaf.node_groups.{{ node_group }}.uplink_switches
       uplink_switches: {{ l3leaf.node_groups[node_group].spines }}
+{%         endif %}
+{%         if l3leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
+# Change from l3leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l3leaf.node_groups.{{ node_group }}.uplink_interface_speed
+      uplink_interface_speed: {{ l3leaf.node_groups[node_group].p2p_link_interface_speed }}
 {%         endif %}
       nodes:
 {%         for node in l3leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
@@ -138,12 +170,20 @@ l2leaf:
 # Change from l2leaf_inband_management_vlan to l2leaf.defaults.inband_management_vlan
     inband_management_vlan: {{ l2leaf_inband_management_vlan }}
 {%     endif %}
+{%     if l2leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
+# Change from l2leaf.defaults.p2p_link_interface_speed to l2leaf.defaults.uplink_interface_speed
+    uplink_interface_speed: {{ l2leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
   node_groups:
 {%     for node_group in l2leaf.node_groups | arista.avd.default([]) %}
     {{ node_group }}:
 {%         if l2leaf.node_groups[node_group].parent_l3leafs is arista.avd.defined %}
 # Change from l2leaf.node_groups.{{ node_group }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.uplink_switches
       uplink_switches: {{ l2leaf.node_groups[node_group].parent_l3leafs }}
+{%         endif %}
+{%         if l2leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l2leaf.node_groups.{{ node_group }}.uplink_interface_speed
+      uplink_interface_speed: {{ l2leaf.node_groups[node_group].p2p_link_interface_speed }}
 {%         endif %}
       nodes:
 {%         for node in l2leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
@@ -194,8 +234,8 @@ overlay_controller:
     loopback_network_summary: {{ overlay_controller_loopback_network_summary }}
 {%     endif %}
 {%     if overlay_controller_p2p_bfd is arista.avd.defined %}
-# Change from overlay_controller_p2p_bfd to overlay_controller.defaults.loopback_network_summary
-    uplinks_bfd: {{ overlay_controller_p2p_bfd }}
+# Change from overlay_controller_p2p_bfd to overlay_controller.defaults.uplink_bfd
+    uplink_bfd: {{ overlay_controller_p2p_bfd }}
 {%     endif %}
 {%     if overlay_controller.defaults.uplink_to_remote_switches is arista.avd.defined %}
 # Change from overlay_controller.defaults.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces

@@ -70,7 +70,8 @@ switch:
   max_uplink_switches: {{ switch_max_uplink_switches }}
 
 {# switch.max_parallel_uplinks #}
-  max_parallel_uplinks: {{ switch_data.combined.max_parallel_uplinks | arista.avd.default(1) }}
+{% set switch_max_parallel_uplinks = switch_data.combined.max_parallel_uplinks | arista.avd.default(1) %}
+  max_parallel_uplinks: {{ switch_max_parallel_uplinks }}
 
 {# switch.uplink_switches #}
 {% set switch_uplink_switches = switch_data.combined.uplink_switches | arista.avd.default() %}
@@ -142,9 +143,13 @@ switch:
 {%     endif %}
 
 {# switch.isis_net #}
-  isis_net: {{ isis_area_id }}.{{ isis_site_id }}.0001.{{ '%04d' | format(switch_id) }}.00
-
+{%     if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
+  isis_net: {{ isis_area_id }}.{{ switch_data.combined.isis_system_id_prefix }}.{{ '%04d' | format(switch_id) }}.00
+{%     endif %}
 {% endif %}
+
+{# switch.short_esi #}
+  short_esi: {{ switch_data.combined.short_esi | arista.avd.default() }}
 
 {########################}
 {# MLAG related facts   #}

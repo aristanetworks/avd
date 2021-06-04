@@ -15,8 +15,8 @@ topology:
       peer_type: {{ hostvars[uplink_switch].type }}
       peer_bgp_as: {{ hostvars[uplink_switch].switch.bgp_as | arista.avd.default() }}
       type: underlay_p2p
-{%         if switch.p2p_link_interface_speed is arista.avd.defined %}
-      speed: {{ switch.p2p_link_interface_speed }}
+{%         if switch.uplink_interface_speed is arista.avd.defined %}
+      speed: {{ switch.uplink_interface_speed }}
 {%         endif %}
 {%         if switch.uplink_bfd is arista.avd.defined(true) %}
       bfd: true
@@ -27,7 +27,7 @@ topology:
 {%         if underlay_rfc5549 is arista.avd.defined(true) %}
       ipv6_enable: true
 {%         else %}
-{%             set uplink_switch_id = hostvars[uplink_switch].switch.id %}
+{%             set uplink_switch_index = loop.index0 %}
       ip_address: {% include switch.ip_addressing.p2p_uplinks_ip %}
 
       peer_ip_address: {% include switch.ip_addressing.p2p_uplinks_peer_ip %}
