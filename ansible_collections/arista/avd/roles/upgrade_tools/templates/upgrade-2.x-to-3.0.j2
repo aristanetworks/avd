@@ -290,7 +290,6 @@ switch_keys:
     ip_addressing:
       p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-ip.j2'
       p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
-
   l3leaf:
     type: l3leaf
     connected_endpoints: true
@@ -300,7 +299,6 @@ switch_keys:
       l2: true
       l3: true
     vtep: true
-
   l2leaf:
     type: l2leaf
     connected_endpoints: true
@@ -309,10 +307,8 @@ switch_keys:
       l2: true
     underlay_router: false
     uplink_type: port-channel
-
   super_spine:
     type: super-spine
-
   overlay_controller:
     type: overlay-controller
 {% endif %}

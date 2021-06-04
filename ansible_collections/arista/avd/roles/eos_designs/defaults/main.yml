@@ -143,29 +143,33 @@ custom_structured_configuration_prefix: custom_structured_configuration_
 custom_structured_configuration_list_merge: 'replace'
 
 # Switch type definitions
+# switch_keys:
+#   <switch_key>:
+#     type: <type value matching this switch_key>
+#     connected_endpoints: < true | false | default -> false >
+#     default_evpn_role: < none | client | server | default -> none >
+#     mlag_support: < true | false | default -> false >
+#     network_services:
+#       l2: < true | false | default -> false >
+#       l3: < true | false | default -> false >
+#     underlay_router: < true | false | default -> true >
+#     uplink_type: < "p2p" | "port-channel" | default -> "p2p" >
+#     vtep: < true | false | default -> false >
+#     ip_addressing:
+#       router_id: <path to J2 template - default inherited from templates[design.type].ip_addressing.router_id >
+#       mlag_ip_primary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_ip_primary >
+#       mlag_ip_secondary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_ip_secondary >
+#       mlag_l3_ip_primary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_l3_ip_primary >
+#       mlag_l3_ip_secondary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_l3_ip_secondary >
+#       p2p_uplinks_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.p2p_uplinks_ip >
+#       p2p_uplinks_peer_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
+#       vtep_ip_mlag: <path to J2 template - default inherited from templates[design.type].ip_addressing.vtep_ip_mlag >
+#       vtep_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.vtep_ip >
+
 switch_keys:
   spine:
     type: spine
-    # connected_endpoints: false
     default_evpn_role: server
-    # mlag_support: false
-    # network_services:
-    #   l2: false
-    #   l3: false
-    # underlay_router: true
-    # uplink_type: p2p
-    # vtep: false
-    ip_addressing:
-    #   router_id: <path to J2 template - default is value of templates[design.type].ip_addressing.router_id >
-    #   mlag_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_primary >
-    #   mlag_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_secondary >
-    #   mlag_l3_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_primary >
-    #   mlag_l3_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-      p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/spine-p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/spine-p2p-uplinks-peer-ip.j2'
-    #   vtep_ip_mlag: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip_mlag >
-    #   vtep_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip >
-
   l3leaf:
     type: l3leaf
     connected_endpoints: true
@@ -174,85 +178,19 @@ switch_keys:
     network_services:
       l2: true
       l3: true
-    # underlay_router: true
-    # uplink_type: p2p
     vtep: true
-    # ip_addressing:
-    #   router_id: <path to J2 template - default is value of templates[design.type].ip_addressing.router_id >
-    #   mlag_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_primary >
-    #   mlag_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_secondary >
-    #   mlag_l3_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_primary >
-    #   mlag_l3_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-    #   p2p_uplinks_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_ip >
-    #   p2p_uplinks_peer_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
-    #   vtep_ip_mlag: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip_mlag >
-    #   vtep_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip >
-
   l2leaf:
     type: l2leaf
     connected_endpoints: true
-    # default_evpn_role: none
     mlag_support: true
     network_services:
       l2: true
-      # l3: false
     underlay_router: false
     uplink_type: port-channel
-    # vtep: false
-    # ip_addressing:
-    #   router_id: <path to J2 template - default is value of templates[design.type].ip_addressing.router_id >
-    #   mlag_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_primary >
-    #   mlag_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_secondary >
-    #   mlag_l3_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_primary >
-    #   mlag_l3_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-    #   p2p_uplinks_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_ip >
-    #   p2p_uplinks_peer_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
-    #   vtep_ip_mlag: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip_mlag >
-    #   vtep_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip >
-
   super_spine:
     type: super-spine
-    # connected_endpoints: false
-    # default_evpn_role: none
-    # mlag_support: false
-    # network_services:
-    #   l2: false
-    #   l3: false
-    # underlay_router: true
-    # uplink_type: p2p
-    # vtep: false
-    # ip_addressing:
-    #   router_id: <path to J2 template - default is value of templates[design.type].ip_addressing.router_id >
-    #   mlag_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_primary >
-    #   mlag_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_secondary >
-    #   mlag_l3_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_primary >
-    #   mlag_l3_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-    #   p2p_uplinks_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_ip >
-    #   p2p_uplinks_peer_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
-    #   vtep_ip_mlag: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip_mlag >
-    #   vtep_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip >
-
   overlay_controller:
     type: overlay-controller
-    # connected_endpoints: false
-    # default_evpn_role: none
-    # mlag_support: false
-    # network_services:
-    #   l2: false
-    #   l3: false
-    # underlay_router: true
-    # uplink_type: p2p
-    # vtep: false
-    # ip_addressing:
-    #   router_id: <path to J2 template - default is value of templates[design.type].ip_addressing.router_id >
-    #   mlag_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_primary >
-    #   mlag_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_ip_secondary >
-    #   mlag_l3_ip_primary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_primary >
-    #   mlag_l3_ip_secondary: <path to J2 template - default is value of templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-    #   p2p_uplinks_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_ip >
-    #   p2p_uplinks_peer_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
-    #   vtep_ip_mlag: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip_mlag >
-    #   vtep_ip: <path to J2 template - default is value of templates[design.type].ip_addressing.vtep_ip >
 
 # Templates used by AVD eos_designs role
 templates:

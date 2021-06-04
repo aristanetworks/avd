@@ -75,11 +75,6 @@ management_api_http:
 eos_cli: "interface Loopback1009\n  description Loopback created from raw_eos_cli\
   \ under spine defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback\
   \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.210.2/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-SUPER-SPINE1
@@ -128,6 +123,11 @@ ethernet_interfaces:
     ip_address: 200.200.200.201/24
     ptp:
       enable: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.210.2/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

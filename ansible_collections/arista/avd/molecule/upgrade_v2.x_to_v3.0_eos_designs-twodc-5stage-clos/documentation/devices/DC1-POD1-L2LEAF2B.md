@@ -452,7 +452,4 @@ interface Loopback1003
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
 
-interface Loopback1000
-  description Loopback created from raw_eos_cli under VRF Common_VRF
-
 ```

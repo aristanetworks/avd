@@ -51,6 +51,8 @@ port_channel_interfaces:
     vlans: 4085
     mode: trunk
     service_profile: QOS-PROFILE
+ip_igmp_snooping:
+  globally_enabled: true
 vlans:
   4085:
     tenant: system
@@ -63,5 +65,3 @@ management_interfaces:
     ip_address: 172.21.110.4/24
     gateway: 172.21.110.1
     type: inband
-ip_igmp_snooping:
-  globally_enabled: true

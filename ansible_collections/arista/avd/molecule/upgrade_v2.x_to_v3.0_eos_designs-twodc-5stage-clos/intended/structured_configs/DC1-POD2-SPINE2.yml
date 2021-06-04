@@ -100,11 +100,6 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
   \ under platform_settings vEOS-LAB\n"
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.120.2/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SUPER-SPINE1
@@ -153,6 +148,11 @@ ethernet_interfaces:
     ip_address: 200.200.200.101/24
     ptp:
       enable: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.120.2/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

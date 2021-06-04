@@ -673,7 +673,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65110 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -695,8 +694,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.1 | 65101 | default |
 | 172.16.110.1 | 65110 | default |
 | 172.16.110.3 | 65111 | default |
-| 172.17.110.4 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.17.110.6 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.4 | 65110 | default |
+| 172.17.110.6 | 65110 | default |
 | 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
@@ -738,7 +737,6 @@ router bgp 65112
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65110
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -765,8 +763,10 @@ router bgp 65112
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
    neighbor 172.17.110.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.4 remote-as 65110
    neighbor 172.17.110.4 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.6 remote-as 65110
    neighbor 172.17.110.6 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B
