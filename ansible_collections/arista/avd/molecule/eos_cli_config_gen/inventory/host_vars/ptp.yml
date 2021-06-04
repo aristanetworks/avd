@@ -13,6 +13,12 @@ ptp:
       dscp: 4
     event:
       dscp: 8
+  monitor:
+    threshold:
+      offset_from_master: 1234
+      mean_path_delay: 4321
+  mode: boundary
+  forward_unicast: true
 
 # port-channels
 port_channel_interfaces:
