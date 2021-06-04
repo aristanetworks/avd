@@ -541,7 +541,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -609,7 +608,6 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY_PEERS peer group
-   neighbor UNDERLAY_PEERS remote-as 65001
    neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000

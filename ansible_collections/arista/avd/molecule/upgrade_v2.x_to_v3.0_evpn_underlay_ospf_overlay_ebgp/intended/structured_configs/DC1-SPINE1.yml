@@ -111,12 +111,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.1/32
-    ospf_area: 0.0.0.0
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF1A
@@ -194,6 +188,12 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.255.48/31
     ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.1/32
     ospf_area: 0.0.0.0
 router_ospf:
   process_ids:

@@ -580,7 +580,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -588,10 +587,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.0 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.2 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.4 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.6 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.0 | 65001 | default |
+| 172.31.255.2 | 65001 | default |
+| 172.31.255.4 | 65001 | default |
+| 172.31.255.6 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -638,17 +637,20 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.0 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.0 remote-as 65001
    neighbor 172.31.255.0 description DC1-SPINE1_Ethernet1
    neighbor 172.31.255.2 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.2 remote-as 65001
    neighbor 172.31.255.2 description DC1-SPINE2_Ethernet1
    neighbor 172.31.255.4 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.4 remote-as 65001
    neighbor 172.31.255.4 description DC1-SPINE3_Ethernet1
    neighbor 172.31.255.6 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.6 remote-as 65001
    neighbor 172.31.255.6 description DC1-SPINE4_Ethernet1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

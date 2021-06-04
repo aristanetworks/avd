@@ -1098,7 +1098,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -1194,7 +1193,6 @@ router bgp 65103
    neighbor MLAG_PEER maximum-routes 12000
    neighbor MLAG_PEER route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY_PEERS peer group
-   neighbor UNDERLAY_PEERS remote-as 65001
    neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000
