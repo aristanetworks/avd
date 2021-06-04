@@ -6,7 +6,7 @@ topology:
   links:
 {% for uplink_interface in switch.uplink_interfaces | arista.avd.default([]) %}
 {%     set uplink_switch = switch.uplink_switches[loop.index0] | arista.avd.default() %}
-{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] and 
+{%     if uplink_switch is arista.avd.defined and uplink_switch in groups[fabric_name] and
           hostvars[uplink_switch].switch is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ uplink_switch ~ '].switch') %}
 {%         do topology_peers.append(uplink_switch) %}
     {{ uplink_interface }}:

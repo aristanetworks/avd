@@ -52,7 +52,7 @@ switch:
                             default_igmp_snooping_enabled) }}
 
 {%     endif %}
-{%     if switch.network_services_l2 is arista.avd.defined(true) and 
+{%     if switch.network_services_l2 is arista.avd.defined(true) and
           switch.network_services_l3 is arista.avd.defined(true) %}
 
 {# switch.virtual_router_mac_address #}
@@ -153,7 +153,7 @@ switch:
 
 {########################}
 {# MLAG related facts   #}
-{% if switch.mlag_support is arista.avd.defined(true) and 
+{% if switch.mlag_support is arista.avd.defined(true) and
       switch_data.combined.mlag | arista.avd.default(true) and
       switch_data.node_group.nodes | arista.avd.default([]) | length == 2 %}
 {%     set switch_data.mlag_configured = true %}

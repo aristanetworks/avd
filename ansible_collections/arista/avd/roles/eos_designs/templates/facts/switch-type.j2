@@ -1,4 +1,4 @@
-{% if type is arista.avd.defined(fail_action='error', var_name='type') and 
+{% if type is arista.avd.defined(fail_action='error', var_name='type') and
       switch_keys is arista.avd.defined(fail_action='error', var_name='switch_keys') %}
 {%     set ns = namespace() %}
 {%     for switch_key in switch_keys %}
