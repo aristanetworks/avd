@@ -1,20 +1,16 @@
 {% set fabric_switches = [] %}
 {% set topology_links = [] %}
-{% set underlay_p2p_network_summaries = [] %}
-{% set overlay_loopback_network_summaries = [] %}
-{% set vtep_loopback_network_summaries = [] %}
+{% set p2p_ipv4_pools = [] %}
+{% set loopback_ipv4_pools = [] %}
+{% set vtep_loopback_ipv4_pools = [] %}
 {% set assigned_ip_addresses = [] %}
 {% set interfaces_done = [] %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {# Populate network summaries #}
-{%         do underlay_p2p_network_summaries.append(hostvars[node].underlay_p2p_network_summary | arista.avd.default()) %}
-{%         do underlay_p2p_network_summaries.append(hostvars[node].super_spine_underlay_p2p_network_summary | arista.avd.default()) %}
-{%         do underlay_p2p_network_summaries.append(hostvars[node].overlay_controller_p2p_network_summary | arista.avd.default()) %}
-{%         do overlay_loopback_network_summaries.append(hostvars[node].overlay_loopback_network_summary | arista.avd.default()) %}
-{%         do overlay_loopback_network_summaries.append(hostvars[node].super_spine_loopback_network_summary | arista.avd.default()) %}
-{%         do overlay_loopback_network_summaries.append(hostvars[node].overlay_controller_loopback_network_summary | arista.avd.default()) %}
-{%         do vtep_loopback_network_summaries.append(hostvars[node].vtep_loopback_network_summary | arista.avd.default()) %}
+{%         do p2p_ipv4_pools.append(hostvars[node].switch.p2p_ipv4_pool | arista.avd.default()) %}
+{%         do loopback_ipv4_pools.append(hostvars[node].switch.loopback_ipv4_pool | arista.avd.default()) %}
+{%         do vtep_loopback_ipv4_pools.append(hostvars[node].switch.vtep_loopback_ipv4_pool | arista.avd.default()) %}
 {# Populate fabric_switch #}
 {%         set fabric_switch = namespace() %}
 {%         set fabric_switch.pod = hostvars[node].pod_name | arista.avd.default(hostvars[node].dc_name, fabric_name) %}
@@ -75,9 +71,9 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{% set underlay_p2p_network_summaries = underlay_p2p_network_summaries | unique | reject("none") %}
-{% set overlay_loopback_network_summaries = overlay_loopback_network_summaries | unique | reject("none") %}
-{% set vtep_loopback_network_summaries = vtep_loopback_network_summaries | unique | reject("none") %}
+{% set p2p_ipv4_pools = p2p_ipv4_pools | unique | reject("none") %}
+{% set loopback_ipv4_pools = loopback_ipv4_pools | unique | reject("none") %}
+{% set vtep_loopback_ipv4_pools = vtep_loopback_ipv4_pools | unique | reject("none") %}
 # {{ fabric_name }}
 
 # Table of Contents
@@ -114,12 +110,12 @@
 
 ## Fabric Point-To-Point Links
 
-| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| P2P Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-{% for underlay_p2p_network_summary in underlay_p2p_network_summaries | arista.avd.natural_sort %}
-{%     set size = underlay_p2p_network_summary | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(underlay_p2p_network_summary) | length %}
-| {{ underlay_p2p_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
+{% for p2p_ipv4_pool in p2p_ipv4_pools | arista.avd.natural_sort %}
+{%     set size = p2p_ipv4_pool | ansible.netcommon.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(p2p_ipv4_pool) | length %}
+| {{ p2p_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ## Point-To-Point Links Node Allocation
@@ -132,11 +128,11 @@
 {%     endif %}
 {% endfor %}
 
-## Overlay Loopback Interfaces (BGP EVPN Peering)
+## Loopback Interfaces (BGP EVPN Peering)
 
-| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ------------------------ | ------------------- | ------------------ | ------------------ |
-{% for overlay_loopback_network_summary in overlay_loopback_network_summaries | arista.avd.natural_sort %}
+| Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------- | ------------------- | ------------------ | ------------------ |
+{% for overlay_loopback_network_summary in loopback_ipv4_pools | arista.avd.natural_sort %}
 {%     set size = overlay_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
 {%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(overlay_loopback_network_summary) | length %}
 | {{ overlay_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
@@ -166,9 +162,9 @@
 {% endif %}
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
 
-| VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-{% for vtep_loopback_network_summary in vtep_loopback_network_summaries | arista.avd.natural_sort %}
+{% for vtep_loopback_network_summary in vtep_loopback_ipv4_pools | arista.avd.natural_sort %}
 {%     set size = vtep_loopback_network_summary | ansible.netcommon.ipaddr('size') %}
 {%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(vtep_loopback_network_summary) | length %}
 | {{ vtep_loopback_network_summary }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
