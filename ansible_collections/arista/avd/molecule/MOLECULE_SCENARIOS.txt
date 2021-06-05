@@ -1,6 +1,5 @@
 eos_cli_config_gen
 eos_config_deploy_cvp
-eos_config_deploy_cvp_list
 eos_designs-twodc-5stage-clos
 eos_l3ls_evpn-twodc-5stage-clos
 evpn_underlay_ebgp_overlay_ebgp

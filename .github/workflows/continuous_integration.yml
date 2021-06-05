@@ -204,7 +204,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_config_deploy_cvp', 'eos_config_deploy_cvp_list']
+        avd_scenario: ['eos_config_deploy_cvp']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
