@@ -11,6 +11,7 @@ jobs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
       cloudvision: ${{ steps.filter.outputs.cloudvision }}
+      dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
@@ -45,6 +46,10 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+              - '.github/workflows/continuous_integration.yml'
+            dhcp:
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
               - '.github/workflows/continuous_integration.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
@@ -135,7 +140,7 @@ jobs:
         avd_scenario: ['eos_cli_config_gen']
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.eos_design == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
         run: |
@@ -143,7 +148,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -151,7 +156,41 @@ jobs:
           pip_file: ansible_collections/arista/avd/requirements.txt
           ansible: ${{ matrix.ansible_version }}
           check_git: true
-          check_git_enforced: false
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
+  # ----------------------------------- #
+  # DHCP PROVISIONNER MOLECULE
+  # ----------------------------------- #
+  molecule_dhcp_provisionner:
+    name: Validate DHCP configuration
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.dhcp == 'true' || startsWith(github.ref, 'refs/heads/release')
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@master
+        with:
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true
       # - uses: actions/upload-artifact@v2
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -172,7 +211,6 @@ jobs:
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
-          - 'eos_l3ls_evpn_deprecation_test'
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ molecule_eos_cli_config_gen ]
     if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
@@ -183,7 +221,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -191,7 +229,7 @@ jobs:
           pip_file: ansible_collections/arista/avd/requirements.txt
           ansible: ${{ matrix.ansible_version }}
           check_git: true
-          check_git_enforced: false
+          check_git_enforced: true
       # - uses: actions/upload-artifact@v2
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -205,7 +243,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_config_deploy_cvp', 'eos_config_deploy_cvp_list']
+        avd_scenario: ['eos_config_deploy_cvp']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -215,7 +253,7 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
           molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
@@ -223,7 +261,7 @@ jobs:
           pip_file: ansible_collections/arista/avd/requirements.txt
           ansible: "ansible>=2.10,<2.11"
           check_git: true
-          check_git_enforced: false
+          check_git_enforced: true
       # - uses: actions/upload-artifact@v2
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts

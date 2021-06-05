@@ -1,4 +1,0 @@
----
-my_special_dci_ethernet_interfaces:
-  Ethernet4000:
-    ip_address: 10.3.2.1/21
