@@ -97,7 +97,6 @@
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-| 172.31.255.0/24 | 256 | 56 | 21.88 % |
 
 ## Point-To-Point Links Node Allocation
 
@@ -136,7 +135,6 @@
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 11 | 4.3 % |
 
 ## Loopback0 Interfaces Node Allocation
 

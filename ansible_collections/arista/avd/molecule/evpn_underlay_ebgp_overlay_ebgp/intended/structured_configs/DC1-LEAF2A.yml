@@ -8,7 +8,6 @@ router_bgp:
   peer_groups:
     UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -32,15 +31,19 @@ router_bgp:
   neighbors:
     172.31.255.16:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE1_Ethernet2
     172.31.255.18:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE2_Ethernet2
     172.31.255.20:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE3_Ethernet2
     172.31.255.22:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE4_Ethernet2
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
@@ -319,20 +322,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.10/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.10/32
-  Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
-    shutdown: false
-    vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.1.10/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -519,6 +508,20 @@ port_channel_interfaces:
     mtu: 1600
     vlans: 110
     mlag: 11
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.10/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.10/32
+  Loopback100:
+    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: Tenant_A_OP_Zone
+    ip_address: 10.255.1.10/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -538,15 +541,6 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans:
-    120:
-      enabled: false
-    160:
-      enabled: true
-    161:
-      enabled: false
 vlans:
   130:
     tenant: Tenant_A
@@ -593,6 +587,11 @@ vlans:
   311:
     tenant: Tenant_C
     name: Tenant_C_OP_Zone_2
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
@@ -756,3 +755,12 @@ virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.10
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false
+    160:
+      enabled: true
+    161:
+      enabled: false
