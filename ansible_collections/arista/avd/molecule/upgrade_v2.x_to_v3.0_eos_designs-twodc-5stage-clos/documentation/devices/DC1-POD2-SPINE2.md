@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -268,6 +269,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -352,7 +361,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | -------- | --------- | --- |
 | 172.16.12.2 | 65100 | default |
 | 172.16.12.66 | 65100 | default |
-| 172.16.120.3 | 65121 | default |
+| 172.16.120.1 | 65121 | default |
 | 172.17.120.3 | 65121 | default |
 | 200.200.200.201 | 65210 | default |
 
@@ -391,9 +400,9 @@ router bgp 65120
    neighbor 172.16.12.66 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.66 remote-as 65100
    neighbor 172.16.12.66 description DC1-SUPER-SPINE2_Ethernet4
-   neighbor 172.16.120.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.120.3 remote-as 65121
-   neighbor 172.16.120.3 description DC1-POD2-LEAF1A
+   neighbor 172.16.120.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.120.1 remote-as 65121
+   neighbor 172.16.120.1 description DC1-POD2-LEAF1A
    neighbor 172.17.120.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.120.3 remote-as 65121
    neighbor 172.17.120.3 description DC1-POD2-LEAF1A_Ethernet2

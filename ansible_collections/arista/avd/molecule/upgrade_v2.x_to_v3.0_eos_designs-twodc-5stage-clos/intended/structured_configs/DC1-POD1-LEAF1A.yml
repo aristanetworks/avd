@@ -1,6 +1,6 @@
 router_bgp:
   as: 65111
-  router_id: 172.16.110.3
+  router_id: 172.16.110.1
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -46,11 +46,6 @@ router_bgp:
       remote_as: 65101
       description: DC1-RS1_Ethernet3
       bfd: true
-    172.16.210.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC2-POD1-LEAF1A
-      remote_as: 65211
-      route_map_out: RM-EVPN-FILTER-AS65211
     172.16.210.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-SPINE1
@@ -66,11 +61,11 @@ router_bgp:
       description: DC2-SUPER-SPINE1
       remote_as: 65200
       route_map_out: RM-EVPN-FILTER-AS65200
-    172.16.110.4:
+    172.16.110.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2A
       remote_as: 65112
-    172.16.110.5:
+    172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2B
       remote_as: 65112
@@ -171,11 +166,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 172.16.110.3/32
+    ip_address: 172.16.110.1/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 172.18.110.3/32
+    ip_address: 172.18.110.1/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

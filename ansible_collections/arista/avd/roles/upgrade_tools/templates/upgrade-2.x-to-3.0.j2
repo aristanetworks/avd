@@ -13,8 +13,8 @@ spine:
 {%         endif %}
 {%     endfor %}
 {%     if overlay_loopback_network_summary is arista.avd.defined %}
-# Change from overlay_loopback_network_summary to spine.defaults.loopback_network_summary
-    loopback_network_summary: {{ overlay_loopback_network_summary }}
+# Change from overlay_loopback_network_summary to spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
 {%     endif %}
 {%     if spine.uplinks_to_super_spine_interfaces is arista.avd.defined %}
 # Change from spine.uplinks_to_super_spine_interfaces to spine.defaults.uplink_interfaces
@@ -32,8 +32,8 @@ spine:
     max_parallel_uplinks: {{ max_spine_to_super_spine_links }}
 {%         endif %}
 {%         if super_spine_underlay_p2p_network_summary is arista.avd.defined %}
-# Change from super_spine_underlay_p2p_network_summary to spine.defaults.p2p_network_summary
-    p2p_network_summary: {{ super_spine_underlay_p2p_network_summary }}
+# Change from super_spine_underlay_p2p_network_summary to spine.defaults.p2p_ipv4_pool
+    p2p_ipv4_pool: {{ super_spine_underlay_p2p_network_summary }}
 {%         endif %}
 {%         if p2p_uplinks_ptp.enable is arista.avd.defined %}
 # Change from p2p_uplinks_ptp to spine.defaults.uplink_ptp
@@ -68,14 +68,18 @@ spine:
 l3leaf:
   defaults:
 {%     if overlay_loopback_network_summary is arista.avd.defined %}
-# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_network_summary
-    loopback_network_summary: {{ overlay_loopback_network_summary }}
+# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
 {%     endif %}
 {%     set switch_max_spines = max_spines | arista.avd.default(
                                spine.nodes | arista.avd.default([]) | length) %}
 {%     if switch_max_spines > 0 %}
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
     loopback_network_offset: {{ switch_max_spines }}
+{%     endif %}
+{%     if vtep_loopback_network_summary is arista.avd.defined %}
+# Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
+    vtep_loopback_ipv4_pool: {{ vtep_loopback_network_summary }}
 {%     endif %}
 {%     if l3leaf.defaults.uplink_to_spine_interfaces is arista.avd.defined %}
 # Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces
@@ -94,8 +98,8 @@ l3leaf:
     max_parallel_uplinks: {{ max_l3leaf_to_spine_links }}
 {%     endif %}
 {%     if underlay_p2p_network_summary is arista.avd.defined %}
-# Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_network_summary
-    p2p_network_summary: {{ underlay_p2p_network_summary }}
+# Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_ipv4_pool
+    p2p_ipv4_pool: {{ underlay_p2p_network_summary }}
 {%     endif %}
 {%     if p2p_uplinks_ptp is arista.avd.defined %}
 # Change from p2p_uplinks_ptp.* to l3leaf.defaults.uplink_ptp.*
@@ -213,8 +217,8 @@ super_spine:
 {%         endif %}
 {%     endfor %}
 {%     if super_spine_loopback_network_summary is arista.avd.defined %}
-# Change from super_spine_loopback_network_summary to super_spine.defaults.loopback_network_summary
-    loopback_network_summary: {{ super_spine_loopback_network_summary }}
+# Change from super_spine_loopback_network_summary to super_spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ super_spine_loopback_network_summary }}
 {%     endif %}
 {%     if super_spine_bgp_defaults is arista.avd.defined %}
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
@@ -236,8 +240,8 @@ overlay_controller:
 {%         endif %}
 {%     endfor %}
 {%     if overlay_controller_loopback_network_summary is arista.avd.defined %}
-# Change from overlay_controller_loopback_network_summary to overlay_controller.defaults.loopback_network_summary
-    loopback_network_summary: {{ overlay_controller_loopback_network_summary }}
+# Change from overlay_controller_loopback_network_summary to overlay_controller.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ overlay_controller_loopback_network_summary }}
 {%     endif %}
 {%     if overlay_controller_p2p_bfd is arista.avd.defined %}
 # Change from overlay_controller_p2p_bfd to overlay_controller.defaults.uplink_bfd
@@ -255,8 +259,8 @@ overlay_controller:
 # (old algorithm expected max_overlay_controller_to_switch_links to be the sum of links to all uplink switches)
     max_uplink_switches: {{ max_overlay_controller_to_switch_links | arista.avd.default(2) }}
 {%     if overlay_controller_p2p_network_summary is arista.avd.defined %}
-# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.p2p_network_summary
-    p2p_network_summary: {{ overlay_controller_p2p_network_summary }}
+# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.p2p_ipv4_pool
+    p2p_ipv4_pool: {{ overlay_controller_p2p_network_summary }}
 {%     endif %}
 {%     if overlay_controller_bgp_defaults is arista.avd.defined %}
 # Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults

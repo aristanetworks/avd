@@ -18,6 +18,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -260,6 +261,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -345,11 +354,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.11.0 | 65100 | default |
 | 172.16.11.64 | 65100 | default |
 | 172.16.20.1 | 65201 | default |
-| 172.16.110.4 | 65112 | default |
-| 172.16.110.5 | 65112 | default |
+| 172.16.110.2 | 65112 | default |
+| 172.16.110.3 | 65112 | default |
 | 172.16.200.1 | 65200 | default |
 | 172.16.210.1 | 65210 | default |
-| 172.16.210.3 | 65211 | default |
 | 172.17.10.3 | 65101 | default |
 | 172.17.110.1 | 65111 | default |
 | 172.17.110.5 | 65112 | default |
@@ -394,12 +402,12 @@ router bgp 65110
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
-   neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112
-   neighbor 172.16.110.4 description DC1-POD1-LEAF2A
-   neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.5 remote-as 65112
-   neighbor 172.16.110.5 description DC1-POD1-LEAF2B
+   neighbor 172.16.110.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.2 remote-as 65112
+   neighbor 172.16.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.3 remote-as 65112
+   neighbor 172.16.110.3 description DC1-POD1-LEAF2B
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1
@@ -408,10 +416,6 @@ router bgp 65110
    neighbor 172.16.210.1 remote-as 65210
    neighbor 172.16.210.1 description DC2-POD1-SPINE1
    neighbor 172.16.210.1 route-map RM-EVPN-FILTER-AS65210 out
-   neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.210.3 remote-as 65211
-   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
-   neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.3 remote-as 65101
    neighbor 172.17.10.3 description DC1-RS1_Ethernet2

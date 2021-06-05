@@ -6,8 +6,8 @@ spine:
     platform: vEOS-LAB
 # Change from spine.bgp_as to spine.defaults.bgp_as
     bgp_as: 65001
-# Change from overlay_loopback_network_summary to spine.defaults.loopback_network_summary
-    loopback_network_summary: 192.168.255.0/24
+# Change from overlay_loopback_network_summary to spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 192.168.255.0/24
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
   nodes:
@@ -20,10 +20,12 @@ spine:
 
 l3leaf:
   defaults:
-# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_network_summary
-    loopback_network_summary: 192.168.255.0/24
+# Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 192.168.255.0/24
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
     loopback_network_offset: 4
+# Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
 # Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
 # Change from l3leaf.defaults.spines to l3leaf.defaults.uplink_switches

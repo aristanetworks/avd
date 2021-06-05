@@ -113,9 +113,9 @@ switch:
 {%     set loopback_ipv4_pool = switch_data.combined.loopback_ipv4_pool | arista.avd.default() %}
   loopback_ipv4_pool: {{ loopback_ipv4_pool }}
 
-{# switch.loopback_network_offset #}
-{%     set loopback_network_offset = switch_data.combined.loopback_network_offset | arista.avd.default(0) %}
-  loopback_network_offset: {{ loopback_network_offset }}
+{# switch.loopback_ipv4_offset #}
+{%     set loopback_ipv4_offset = switch_data.combined.loopback_ipv4_offset | arista.avd.default(0) %}
+  loopback_ipv4_offset: {{ loopback_ipv4_offset }}
 
 {# switch.p2p_ipv4_pool #}
   p2p_ipv4_pool: {{ switch_data.combined.p2p_ipv4_pool | arista.avd.default() }}
@@ -258,7 +258,12 @@ switch:
 
 {########################}
 {# VTEP related facts   #}
-{% if switch.vtep is arista.avd.defined(true) %}
+{% if switch.vtep is arista.avd.defined(true) and
+      switch_data.combined.vtep_loopback_ipv4_pool is arista.avd.defined(fail_action='error',var_name='vtep_loopback_ipv4_pool') %}
+
+{# switch.vtep_loopback_ipv4_pool #}
+{%     set switch_vtep_loopback_ipv4_pool = switch_data.combined.vtep_loopback_ipv4_pool %}
+  vtep_loopback_ipv4_pool: {{ switch_vtep_loopback_ipv4_pool }}
 
 {# switch.vtep_ip #}
 {%     if switch_data.mlag_configured is arista.avd.defined(true) %}

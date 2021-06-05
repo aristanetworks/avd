@@ -24,6 +24,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -277,8 +278,8 @@ interface Ethernet3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.120.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.120.3/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 172.16.120.1/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.120.1/32 |
 
 #### IPv6
 
@@ -295,12 +296,12 @@ interface Ethernet3
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 172.16.120.3/32
+   ip address 172.16.120.1/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 172.18.120.3/32
+   ip address 172.18.120.1/32
 ```
 
 ## VLAN Interfaces
@@ -389,6 +390,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -451,7 +460,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65121|  172.16.120.3 |
+| 65121|  172.16.120.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -500,24 +509,24 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned |
-| 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned |
-| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned |
-| 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.120.3:2600 | 2600:2600 | - | - | learned |
+| 110 | 172.16.120.1:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.120.1:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.120.1:50112 | 50112:50112 | - | - | learned |
+| 2500 | 172.16.120.1:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.120.1:2600 | 2600:2600 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Common_VRF | 172.16.120.3:1025 | connected |
+| Common_VRF | 172.16.120.1:1025 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65121
-   router-id 172.16.120.3
+   router-id 172.16.120.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -555,27 +564,27 @@ router bgp 65121
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 110
-      rd 172.16.120.3:10110
+      rd 172.16.120.1:10110
       route-target both 10110:10110
       redistribute learned
    !
    vlan 111
-      rd 172.16.120.3:50111
+      rd 172.16.120.1:50111
       route-target both 50111:50111
       redistribute learned
    !
    vlan 112
-      rd 172.16.120.3:50112
+      rd 172.16.120.1:50112
       route-target both 50112:50112
       redistribute learned
    !
    vlan 2500
-      rd 172.16.120.3:2500
+      rd 172.16.120.1:2500
       route-target both 2500:2500
       redistribute learned
    !
    vlan 2600
-      rd 172.16.120.3:2600
+      rd 172.16.120.1:2600
       route-target both 2600:2600
       redistribute learned
    !
@@ -590,10 +599,10 @@ router bgp 65121
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Common_VRF
-      rd 172.16.120.3:1025
+      rd 172.16.120.1:1025
       route-target import evpn 1025:1025
       route-target export evpn 1025:1025
-      router-id 172.16.120.3
+      router-id 172.16.120.1
       redistribute connected
       !
       comment

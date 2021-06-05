@@ -1,6 +1,6 @@
 router_bgp:
   as: 65000
-  router_id: 192.168.255.9
+  router_id: 192.168.255.5
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -236,20 +236,20 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.9/32
+    ip_address: 192.168.255.5/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.8/32
+    ip_address: 192.168.254.4/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
   net: 49.0001.0001.0001.0005.00
-  router_id: 192.168.255.9
+  router_id: 192.168.255.5
   no_passive_interfaces:
   - Ethernet1
   - Ethernet2
@@ -281,11 +281,11 @@ route_maps:
       10:
         type: permit
         set:
-        - extcommunity soo 192.168.254.8:1 additive
+        - extcommunity soo 192.168.254.4:1 additive
 ip_extcommunity_lists:
   ECL-EVPN-SOO:
   - type: permit
-    extcommunities: soo 192.168.254.8:1
+    extcommunities: soo 192.168.254.4:1
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_tunnel_interface:

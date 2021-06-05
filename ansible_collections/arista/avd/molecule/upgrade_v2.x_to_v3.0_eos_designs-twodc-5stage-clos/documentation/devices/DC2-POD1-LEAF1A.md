@@ -25,6 +25,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -301,8 +302,8 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.3/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.1/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.1/32 |
 
 #### IPv6
 
@@ -319,12 +320,12 @@ interface Port-Channel3
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 172.16.210.3/32
+   ip address 172.16.210.1/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 172.18.210.3/32
+   ip address 172.18.210.1/32
 ```
 
 ## VLAN Interfaces
@@ -386,6 +387,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -448,7 +457,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65211|  172.16.210.3 |
+| 65211|  172.16.210.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -489,7 +498,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.1 | 65101 | default |
 | 172.16.10.2 | 65102 | default |
 | 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
 | 172.17.210.0 | 65210 | default |
 | 172.17.210.2 | 65210 | default |
 
@@ -501,14 +509,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Common_VRF | 172.16.210.3:1025 | connected |
+| Common_VRF | 172.16.210.1:1025 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65211
-   router-id 172.16.210.3
+   router-id 172.16.210.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -542,9 +550,6 @@ router bgp 65211
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
-   neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3
@@ -566,10 +571,10 @@ router bgp 65211
       neighbor IPv4-UNDERLAY-PEERS activate
    !
    vrf Common_VRF
-      rd 172.16.210.3:1025
+      rd 172.16.210.1:1025
       route-target import evpn 1025:1025
       route-target export evpn 1025:1025
-      router-id 172.16.210.3
+      router-id 172.16.210.1
       redistribute connected
       !
       comment

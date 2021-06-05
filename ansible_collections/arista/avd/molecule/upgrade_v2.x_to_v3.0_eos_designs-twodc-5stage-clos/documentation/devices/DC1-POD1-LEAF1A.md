@@ -24,6 +24,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -263,8 +264,8 @@ interface Port-Channel3
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.3/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.3/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.1/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.1/32 |
 
 #### IPv6
 
@@ -281,12 +282,12 @@ interface Port-Channel3
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 172.16.110.3/32
+   ip address 172.16.110.1/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 172.18.110.3/32
+   ip address 172.18.110.1/32
 ```
 
 ## VLAN Interfaces
@@ -341,6 +342,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -400,7 +409,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65111|  172.16.110.3 |
+| 65111|  172.16.110.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -437,11 +446,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 172.16.20.1 | 65201 | default |
-| 172.16.110.4 | 65112 | default |
-| 172.16.110.5 | 65112 | default |
+| 172.16.110.2 | 65112 | default |
+| 172.16.110.3 | 65112 | default |
 | 172.16.200.1 | 65200 | default |
 | 172.16.210.1 | 65210 | default |
-| 172.16.210.3 | 65211 | default |
 | 172.17.10.5 | 65101 | default |
 | 172.17.110.0 | 65110 | default |
 | 172.17.110.2 | 65110 | default |
@@ -457,7 +465,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 ```eos
 !
 router bgp 65111
-   router-id 172.16.110.3
+   router-id 172.16.110.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -479,12 +487,12 @@ router bgp 65111
    neighbor 172.16.20.1 remote-as 65201
    neighbor 172.16.20.1 description DC2-RS1
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
-   neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112
-   neighbor 172.16.110.4 description DC1-POD1-LEAF2A
-   neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.5 remote-as 65112
-   neighbor 172.16.110.5 description DC1-POD1-LEAF2B
+   neighbor 172.16.110.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.2 remote-as 65112
+   neighbor 172.16.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.3 remote-as 65112
+   neighbor 172.16.110.3 description DC1-POD1-LEAF2B
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
    neighbor 172.16.200.1 description DC2-SUPER-SPINE1
@@ -493,10 +501,6 @@ router bgp 65111
    neighbor 172.16.210.1 remote-as 65210
    neighbor 172.16.210.1 description DC2-POD1-SPINE1
    neighbor 172.16.210.1 route-map RM-EVPN-FILTER-AS65210 out
-   neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.210.3 remote-as 65211
-   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
-   neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.5 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.5 remote-as 65101
    neighbor 172.17.10.5 description DC1-RS1_Ethernet3

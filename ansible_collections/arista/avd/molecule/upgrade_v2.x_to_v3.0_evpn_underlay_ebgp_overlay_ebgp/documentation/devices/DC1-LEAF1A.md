@@ -27,6 +27,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -371,8 +372,8 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.9/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.9/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.1/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.1/32 |
 
 #### IPv6
 
@@ -389,12 +390,12 @@ interface Ethernet7
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.9/32
+   ip address 192.168.255.1/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.9/32
+   ip address 192.168.254.1/32
 ```
 
 ## VLAN Interfaces
@@ -489,6 +490,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -554,7 +563,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.9 |
+| 65101|  192.168.255.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -610,22 +619,22 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130-131 |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_A_APP_Zone | 192.168.255.1:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_WEB_Zone | 192.168.255.1:11 | 11:11 | - | - | learned | 120-121 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | connected |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected |
+| Tenant_A_APP_Zone | 192.168.255.1:12 | connected |
+| Tenant_A_WEB_Zone | 192.168.255.1:11 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65101
-   router-id 192.168.255.9
+   router-id 192.168.255.1
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -667,13 +676,13 @@ router bgp 65101
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
-      rd 192.168.255.9:12
+      rd 192.168.255.1:12
       route-target both 12:12
       redistribute learned
       vlan 130-131
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
-      rd 192.168.255.9:11
+      rd 192.168.255.1:11
       route-target both 11:11
       redistribute learned
       vlan 120-121
@@ -687,17 +696,17 @@ router bgp 65101
       neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_A_APP_Zone
-      rd 192.168.255.9:12
+      rd 192.168.255.1:12
       route-target import evpn 12:12
       route-target export evpn 12:12
-      router-id 192.168.255.9
+      router-id 192.168.255.1
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
-      rd 192.168.255.9:11
+      rd 192.168.255.1:11
       route-target import evpn 11:11
       route-target export evpn 11:11
-      router-id 192.168.255.9
+      router-id 192.168.255.1
       redistribute connected
 ```
 

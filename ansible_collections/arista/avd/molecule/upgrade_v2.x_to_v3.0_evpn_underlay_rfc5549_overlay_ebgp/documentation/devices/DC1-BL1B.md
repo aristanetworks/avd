@@ -28,6 +28,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -330,8 +331,8 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.11/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.11/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.7/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.7/32 |
 
 #### IPv6
 
@@ -348,12 +349,12 @@ interface Ethernet4000
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.11/32
+   ip address 192.168.255.7/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.11/32
+   ip address 192.168.254.7/32
 ```
 
 ## VLAN Interfaces
@@ -438,6 +439,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -515,7 +524,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65105|  192.168.255.11 |
+| 65105|  192.168.255.7 |
 
 | BGP Tuning |
 | ---------- |
@@ -579,24 +588,24 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | 14:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 | 31:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.7:14 | 14:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.7:21 | 21:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.7:31 | 31:31 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected<br>static |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.7:14 | connected<br>static |
+| Tenant_B_WAN_Zone | 192.168.255.7:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.7:31 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65105
-   router-id 192.168.255.11
+   router-id 192.168.255.7
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -630,19 +639,19 @@ router bgp 65105
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
-      rd 192.168.255.11:14
+      rd 192.168.255.7:14
       route-target both 14:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
-      rd 192.168.255.11:21
+      rd 192.168.255.7:21
       route-target both 21:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.11:31
+      rd 192.168.255.7:31
       route-target both 31:31
       redistribute learned
       vlan 350
@@ -659,10 +668,10 @@ router bgp 65105
       neighbor UNDERLAY_PEERS activate
    !
    vrf Tenant_A_WAN_Zone
-      rd 192.168.255.11:14
+      rd 192.168.255.7:14
       route-target import evpn 14:14
       route-target export evpn 14:14
-      router-id 192.168.255.11
+      router-id 192.168.255.7
       neighbor 123.1.1.10 remote-as 1234
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
       neighbor 123.1.1.10 description External IPv4 BGP peer
@@ -687,17 +696,17 @@ router bgp 65105
          neighbor fd5a:fe45:8831:06c5::b activate
    !
    vrf Tenant_B_WAN_Zone
-      rd 192.168.255.11:21
+      rd 192.168.255.7:21
       route-target import evpn 21:21
       route-target export evpn 21:21
-      router-id 192.168.255.11
+      router-id 192.168.255.7
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
-      rd 192.168.255.11:31
+      rd 192.168.255.7:31
       route-target import evpn 31:31
       route-target export evpn 31:31
-      router-id 192.168.255.11
+      router-id 192.168.255.7
       redistribute connected
 ```
 

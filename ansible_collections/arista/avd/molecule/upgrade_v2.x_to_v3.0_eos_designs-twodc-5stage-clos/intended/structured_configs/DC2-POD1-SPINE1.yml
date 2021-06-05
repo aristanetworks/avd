@@ -44,10 +44,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65211
       description: DC2-POD1-LEAF1A_Ethernet1
-    172.16.110.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF1A
-      remote_as: 65111
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1

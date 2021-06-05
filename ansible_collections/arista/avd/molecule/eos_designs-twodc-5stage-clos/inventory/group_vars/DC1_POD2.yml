@@ -1,8 +1,6 @@
 ---
 pod_name: DC1_POD2
 
-vtep_loopback_network_summary: 172.18.120.0/24
-
 mlag_ips:
   mlag_peer: 172.19.120.0/24
   leaf_peer_l3: 172.20.120.0/24
@@ -11,11 +9,11 @@ spine:
   defaults:
     platform: vEOS-LAB
     bgp_as: 65120
-    loopback_network_summary: 172.16.120.0/24
+    loopback_ipv4_pool: 172.16.120.0/24
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-SUPER-SPINE2']
     max_uplink_switches: 4
-    p2p_network_summary: 172.16.12.0/24
+    p2p_ipv4_pool: 172.16.12.0/24
     uplink_ptp:
       enable: True
     bgp_defaults:
@@ -41,9 +39,10 @@ l3leaf:
   defaults:
     bgp_as: 65555
     virtual_router_mac_address: 00:1c:73:00:dc:01
-    loopback_network_summary: 172.16.120.0/24
-    loopback_network_offset: 2
-    p2p_network_summary: 172.17.120.0/24
+    loopback_ipv4_pool: 172.16.120.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 172.18.120.0/24
+    p2p_ipv4_pool: 172.17.120.0/24
     uplink_ptp:
       enable: True
     bgp_defaults:

@@ -1,6 +1,6 @@
 router_bgp:
   as: 65112
-  router_id: 172.16.110.5
+  router_id: 172.16.110.3
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -49,11 +49,6 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet5
-    172.16.110.3:
-      peer_group: EVPN-OVERLAY-PEERS
-      description: DC1-POD1-LEAF1A
-      remote_as: 65111
-      route_map_out: RM-EVPN-FILTER-AS65111
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
@@ -84,8 +79,8 @@ router_bgp:
         activate: true
   vrfs:
     Common_VRF:
-      router_id: 172.16.110.5
-      rd: 172.16.110.5:1025
+      router_id: 172.16.110.3
+      rd: 172.16.110.3:1025
       route_targets:
         import:
           evpn:
@@ -105,7 +100,7 @@ router_bgp:
   vlans:
     110:
       tenant: Tenant_A
-      rd: 172.16.110.5:10110
+      rd: 172.16.110.3:10110
       route_targets:
         both:
         - 10110:10110
@@ -113,7 +108,7 @@ router_bgp:
       - learned
     111:
       tenant: Tenant_A
-      rd: 172.16.110.5:50111
+      rd: 172.16.110.3:50111
       route_targets:
         both:
         - 50111:50111
@@ -121,7 +116,7 @@ router_bgp:
       - learned
     112:
       tenant: Tenant_A
-      rd: 172.16.110.5:50112
+      rd: 172.16.110.3:50112
       route_targets:
         both:
         - 50112:50112
@@ -129,7 +124,7 @@ router_bgp:
       - learned
     2500:
       tenant: Tenant_A
-      rd: 172.16.110.5:2500
+      rd: 172.16.110.3:2500
       route_targets:
         both:
         - 2500:2500
@@ -137,7 +132,7 @@ router_bgp:
       - learned
     2600:
       tenant: Tenant_A
-      rd: 172.16.110.5:2600
+      rd: 172.16.110.3:2600
       route_targets:
         both:
         - 2600:2600
@@ -548,11 +543,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 172.16.110.5/32
+    ip_address: 172.16.110.3/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 172.18.110.4/32
+    ip_address: 172.18.110.2/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

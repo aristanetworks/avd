@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -267,6 +268,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -355,7 +364,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.21.0 | 65200 | default |
 | 172.16.21.64 | 65200 | default |
 | 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
 | 172.17.210.1 | 65211 | default |
 
 ### Router BGP EVPN Address Family
@@ -405,9 +413,6 @@ router bgp 65210
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
-   neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
    neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet1

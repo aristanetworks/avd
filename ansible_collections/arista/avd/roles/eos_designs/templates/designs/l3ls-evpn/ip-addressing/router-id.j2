@@ -1,1 +1,1 @@
-{{ loopback_network_summary | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath(switch_id + loopback_network_offset) }}
+{{ loopback_ipv4_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath(switch_id + loopback_ipv4_offset) }}

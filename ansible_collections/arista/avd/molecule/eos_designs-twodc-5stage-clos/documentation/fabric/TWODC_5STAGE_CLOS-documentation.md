@@ -205,9 +205,6 @@
 
 | VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 172.18.110.0/24 | 256 | 3 | 1.18 % |
-| 172.18.120.0/24 | 256 | 1 | 0.4 % |
-| 172.18.210.0/24 | 256 | 1 | 0.4 % |
 
 ## VTEP Loopback Node allocation
 

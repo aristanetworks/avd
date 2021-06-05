@@ -21,6 +21,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -345,6 +346,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -461,13 +470,13 @@ router isis EVPN_UNDERLAY
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.2 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.3 | Inherited from peer group OVERLAY-PEERS | default |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default |
 | 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default |
 | 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default |
 | 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default |
-| 192.168.255.8 | Inherited from peer group OVERLAY-PEERS | default |
-| 192.168.255.9 | Inherited from peer group OVERLAY-PEERS | default |
-| 192.168.255.10 | Inherited from peer group OVERLAY-PEERS | default |
-| 192.168.255.11 | Inherited from peer group OVERLAY-PEERS | default |
 
 ### Router BGP EVPN Address Family
 
@@ -493,20 +502,20 @@ router bgp 65000
    neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor OVERLAY-PEERS send-community
    neighbor OVERLAY-PEERS maximum-routes 0
+   neighbor 192.168.255.1 peer group OVERLAY-PEERS
+   neighbor 192.168.255.1 description DC1-LEAF1A
+   neighbor 192.168.255.2 peer group OVERLAY-PEERS
+   neighbor 192.168.255.2 description DC1-LEAF2A
+   neighbor 192.168.255.3 peer group OVERLAY-PEERS
+   neighbor 192.168.255.3 description DC1-LEAF2B
+   neighbor 192.168.255.4 peer group OVERLAY-PEERS
+   neighbor 192.168.255.4 description DC1-SVC3A
    neighbor 192.168.255.5 peer group OVERLAY-PEERS
-   neighbor 192.168.255.5 description DC1-LEAF1A
+   neighbor 192.168.255.5 description DC1-SVC3B
    neighbor 192.168.255.6 peer group OVERLAY-PEERS
-   neighbor 192.168.255.6 description DC1-LEAF2A
+   neighbor 192.168.255.6 description DC1-BL1A
    neighbor 192.168.255.7 peer group OVERLAY-PEERS
-   neighbor 192.168.255.7 description DC1-LEAF2B
-   neighbor 192.168.255.8 peer group OVERLAY-PEERS
-   neighbor 192.168.255.8 description DC1-SVC3A
-   neighbor 192.168.255.9 peer group OVERLAY-PEERS
-   neighbor 192.168.255.9 description DC1-SVC3B
-   neighbor 192.168.255.10 peer group OVERLAY-PEERS
-   neighbor 192.168.255.10 description DC1-BL1A
-   neighbor 192.168.255.11 peer group OVERLAY-PEERS
-   neighbor 192.168.255.11 description DC1-BL1B
+   neighbor 192.168.255.7 description DC1-BL1B
    !
    address-family evpn
       neighbor OVERLAY-PEERS activate
