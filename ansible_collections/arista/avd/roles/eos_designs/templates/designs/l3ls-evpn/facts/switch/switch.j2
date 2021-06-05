@@ -106,19 +106,19 @@ switch:
 
 {########################}
 {# Router related facts #}
-{% if switch.underlay_router is arista.avd.defined(true) and 
-      switch_data.combined.loopback_network_summary is arista.avd.defined(fail_action='error',var_name='loopback_network_summary') %}
+{% if switch.underlay_router is arista.avd.defined(true) and
+      switch_data.combined.loopback_ipv4_pool is arista.avd.defined(fail_action='error',var_name='loopback_ipv4_pool') %}
 
-{# switch.loopback_network_summary #}
-{%     set loopback_network_summary = switch_data.combined.loopback_network_summary | arista.avd.default() %}
-  loopback_network_summary: {{ loopback_network_summary }}
+{# switch.loopback_ipv4_pool #}
+{%     set loopback_ipv4_pool = switch_data.combined.loopback_ipv4_pool | arista.avd.default() %}
+  loopback_ipv4_pool: {{ loopback_ipv4_pool }}
 
 {# switch.loopback_network_offset #}
 {%     set loopback_network_offset = switch_data.combined.loopback_network_offset | arista.avd.default(0) %}
   loopback_network_offset: {{ loopback_network_offset }}
 
-{# switch.p2p_network_summary #}
-  p2p_network_summary: {{ switch_data.combined.p2p_network_summary | arista.avd.default() }}
+{# switch.p2p_ipv4_pool #}
+  p2p_ipv4_pool: {{ switch_data.combined.p2p_ipv4_pool | arista.avd.default() }}
 
 {# switch.router_id #}
   router_id: {% include switch.ip_addressing.router_id %}
