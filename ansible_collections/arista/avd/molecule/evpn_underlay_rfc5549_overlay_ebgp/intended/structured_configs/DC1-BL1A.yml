@@ -8,7 +8,6 @@ router_bgp:
   peer_groups:
     UNDERLAY_PEERS:
       type: ipv4
-      remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -248,15 +247,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.10/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.10/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -303,6 +293,15 @@ ethernet_interfaces:
     peer: MY-own-peer
     peer_interface: Ethernet123
     peer_type: my_precious
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.10/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 192.168.254.10/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -334,8 +333,6 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
 vlans:
   150:
     tenant: Tenant_A
@@ -346,6 +343,8 @@ vlans:
   350:
     tenant: Tenant_C
     name: Tenant_C_WAN_Zone_1
+ip_igmp_snooping:
+  globally_enabled: true
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP

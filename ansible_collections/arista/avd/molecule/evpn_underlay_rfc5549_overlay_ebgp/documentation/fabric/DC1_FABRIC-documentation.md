@@ -101,7 +101,6 @@
 
 | Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 11 | 4.3 % |
 
 ## Loopback0 Interfaces Node Allocation
 
