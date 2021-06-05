@@ -1,4 +1,3 @@
-
 ---
 # create required directories
 - name: "Create directory for updated data model {{ root_dir }}/upgrade_2.x_to_3.0/"
@@ -43,4 +42,3 @@
       - template: "overload-upgraded-data-model.j2"
   check_mode: no
   changed_when: False
-
