@@ -10,7 +10,6 @@ router_bgp:
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65210
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -36,9 +35,11 @@ router_bgp:
   neighbors:
     172.17.210.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65210
       description: DC2-POD1-SPINE1_Ethernet3
     172.17.210.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65210
       description: DC2-POD1-SPINE2_Ethernet3
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
@@ -138,15 +139,6 @@ eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cl
   \ under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback\
   \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
   \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.210.3/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 172.18.210.3/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-POD1-SPINE1
@@ -210,19 +202,15 @@ port_channel_interfaces:
     vlans: 4092
     mode: trunk
     service_profile: QOS-PROFILE
-vlans:
-  4092:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
-vlan_interfaces:
-  Vlan4092:
-    description: L2LEAF_INBAND_MGMT
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
     shutdown: false
-    mtu: 1500
-    ip_address: 172.21.210.2/24
-    ip_virtual_router_address: 172.21.210.1
-    ip_attached_host_route_export:
-      distance: 19
+    ip_address: 172.16.210.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.210.3/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -265,5 +253,16 @@ vxlan_tunnel_interface:
         Common_VRF:
           vni: 1025
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-domain_list:
-- structured-config.set.under.vrf.common-vrf
+vlans:
+  4092:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+vlan_interfaces:
+  Vlan4092:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.210.2/24
+    ip_virtual_router_address: 172.21.210.1
+    ip_attached_host_route_export:
+      distance: 19

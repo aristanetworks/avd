@@ -48,17 +48,13 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli\
   \ under l2leaf node DC1-POD1-L2LEAF2B\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
-  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+  \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
   4094:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -74,6 +70,9 @@ vlans:
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER

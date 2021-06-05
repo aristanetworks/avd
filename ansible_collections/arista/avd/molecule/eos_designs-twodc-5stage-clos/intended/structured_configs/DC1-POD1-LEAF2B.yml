@@ -18,7 +18,6 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65110
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -44,9 +43,11 @@ router_bgp:
       description: DC1-POD1-LEAF2A
     172.17.110.16:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet5
     172.17.110.18:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.110.20:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -205,9 +206,6 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -223,6 +221,9 @@ vlans:
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -235,14 +236,6 @@ vlan_interfaces:
     ip_address: 172.19.110.3/31
     no_autostate: true
     mtu: 1500
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.3/24
-    ip_virtual_router_address: 172.21.110.1
-    ip_attached_host_route_export:
-      distance: 19
   Vlan110:
     tenant: Tenant_A
     tags:
@@ -276,6 +269,14 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.3/24
+    ip_virtual_router_address: 172.21.110.1
+    ip_attached_host_route_export:
+      distance: 19
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-POD1-LEAF2A_Po5

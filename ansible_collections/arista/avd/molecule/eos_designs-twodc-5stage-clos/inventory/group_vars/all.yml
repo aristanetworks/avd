@@ -1,5 +1,2 @@
 ---
 root_dir: '{{playbook_dir}}'
-
-snmp_settings:
-  location: true

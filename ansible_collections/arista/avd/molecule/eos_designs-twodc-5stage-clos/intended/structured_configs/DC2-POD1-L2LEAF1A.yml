@@ -67,9 +67,9 @@ port_channel_interfaces:
     vlans: 4092
     mode: trunk
     service_profile: QOS-PROFILE
+ip_igmp_snooping:
+  globally_enabled: true
 vlans:
   4092:
     tenant: system
     name: L2LEAF_INBAND_MGMT
-ip_igmp_snooping:
-  globally_enabled: true
