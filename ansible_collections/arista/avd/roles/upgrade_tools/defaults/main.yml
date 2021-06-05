@@ -1,2 +1,3 @@
 ---
 # defaults file for upgrade_tools
+root_dir: '{{ inventory_dir }}'

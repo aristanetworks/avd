@@ -1,9 +1,9 @@
 
 ---
 # create required directories
-- name: Create directory for updated data model
+- name: "Create directory for updated data model {{ root_dir }}/upgrade_2.x_to_3.0/"
   file:
-    path: "{{ inventory_dir }}/upgrade_2.x_to_3.0/"
+    path: "{{ root_dir }}/upgrade_2.x_to_3.0/"
     state: directory
     mode: 0775
   delegate_to: localhost
@@ -22,20 +22,18 @@
 - name: Write upgraded data model To file
   template:
     src: "upgrade-2.x-to-3.0.j2"
-    dest: "{{ inventory_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
+    dest: "{{ root_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
     mode: 0664
   delegate_to: localhost
-  run_once: false
   check_mode: no
 
 # Write merged data model To file
 - name: Write upgraded data model To file
   template:
     src: "overload-upgraded-data-model.j2"
-    dest: "{{ inventory_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}-merged.yml"
+    dest: "{{ root_dir }}/upgrade_2.x_to_3.0/{{ inventory_hostname }}-upgrade-debug.yml"
     mode: 0664
   delegate_to: localhost
-  run_once: false
   check_mode: no
   tags: [debug, never]
 

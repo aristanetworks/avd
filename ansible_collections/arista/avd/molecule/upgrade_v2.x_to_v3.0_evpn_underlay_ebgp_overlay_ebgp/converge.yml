@@ -4,6 +4,7 @@
   gather_facts: false
   connection: local
   vars:
+    root_dir: '{{playbook_dir}}'
     subset: v2.x_to_v3.0
   tasks:
 

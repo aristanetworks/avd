@@ -97,7 +97,8 @@ switch:
 
 {# switch.raw_eos_cli #}
 {% if switch_data.combined.raw_eos_cli is arista.avd.defined %}
-  raw_eos_cli: "{{ switch_data.combined.raw_eos_cli }}"
+  raw_eos_cli: |
+    {{ switch_data.combined.raw_eos_cli | indent(4,false) }}
 {% endif %}
 
 {# switch.struct_cfg #}
