@@ -91,11 +91,6 @@ port_channel_interfaces:
     shutdown: false
     vlans: 110-111,120-121,130-131,160-161
     mode: trunk
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans:
-    120:
-      enabled: false
 vlans:
   130:
     tenant: Tenant_A
@@ -121,3 +116,8 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+ip_igmp_snooping:
+  globally_enabled: true
+  vlans:
+    120:
+      enabled: false
