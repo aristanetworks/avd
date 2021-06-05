@@ -963,7 +963,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -982,10 +981,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 10.255.251.6 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
-| 172.31.255.32 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.34 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.36 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.38 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.32 | 65001 | default |
+| 172.31.255.34 | 65001 | default |
+| 172.31.255.36 | 65001 | default |
+| 172.31.255.38 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -1049,7 +1048,6 @@ router bgp 65103
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -1063,12 +1061,16 @@ router bgp 65103
    neighbor 10.255.251.6 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.251.6 description DC1-SVC3A
    neighbor 172.31.255.32 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.32 remote-as 65001
    neighbor 172.31.255.32 description DC1-SPINE1_Ethernet5
    neighbor 172.31.255.34 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.34 remote-as 65001
    neighbor 172.31.255.34 description DC1-SPINE2_Ethernet5
    neighbor 172.31.255.36 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.36 remote-as 65001
    neighbor 172.31.255.36 description DC1-SPINE3_Ethernet5
    neighbor 172.31.255.38 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.38 remote-as 65001
    neighbor 172.31.255.38 description DC1-SPINE4_Ethernet5
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
