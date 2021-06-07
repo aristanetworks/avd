@@ -9,6 +9,7 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
+  - [Interface Profiles](#interface-profiles)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -61,6 +62,27 @@ interface Management1
 | ascending | 1006 | 4094 |
 
 # Interfaces
+
+## Interface Profiles
+
+### Interface Profiles Summary
+
+- TEST-PROFILE-1
+- TEST-PROFILE-2
+
+### Interface Profiles Configuration
+
+```eos
+!
+interface profile TEST-PROFILE-1
+   command description Molecule
+   command no switchport
+   command no lldp transmit
+!
+interface profile TEST-PROFILE-2
+   command mtu 9214
+   command ptp enable
+```
 
 # Routing
 
