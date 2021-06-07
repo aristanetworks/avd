@@ -241,10 +241,12 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_1
+    description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.1.10.1/24
+    struct_cfg:
+      description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
   Vlan111:
     tenant: Tenant_A
     tags:
@@ -296,13 +298,15 @@ port_channel_interfaces:
     mlag: 16
     service_profile: bar
   Port-Channel17:
-    description: server-1_PortChannel
+    description: Set using structured_config on server adapter port-channel
     type: switched
     shutdown: false
     mode: access
     vlans: 110
     mlag: 17
     service_profile: foo
+    struct_cfg:
+      description: Set using structured_config on server adapter port-channel
   Port-Channel18:
     description: server-1_PortChannel
     type: switched
@@ -433,7 +437,7 @@ ethernet_interfaces:
     peer: server-1
     peer_interface: Eth4
     peer_type: server
-    description: server-1_Eth4
+    description: Set using structured_config on server adapter
     type: switched
     shutdown: false
     mode: access
@@ -449,6 +453,8 @@ ethernet_interfaces:
       EOF
 
       '
+    struct_cfg:
+      description: Set using structured_config on server adapter
   Ethernet18:
     peer: server-1
     peer_interface: Eth6
@@ -566,6 +572,9 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2B_VTEP
@@ -589,3 +598,5 @@ vxlan_tunnel_interface:
         Common_VRF:
           vni: 1025
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+domain_list:
+- structured-config.set.under.vrf.common-vrf
