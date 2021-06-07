@@ -202,9 +202,14 @@ tenants:
       '160':
         name: Tenant_A_VMOTION
         tags: ['opzone']
+        igmp_snooping_enabled: true
       # L2 vlan as integer
       161:
         name: Tenant_A_NFS
+        tags: ['opzone']
+        igmp_snooping_enabled: false
+      162:
+        name: Tenant_A_FTP
         tags: ['opzone']
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:
