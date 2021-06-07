@@ -18,5 +18,8 @@ router pim sparse-mode
       {{ other_anycast_rp_addresses_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_pim_sparse_mode.ipv4.ssm_range is arista.avd.defined %}
+      ssm range {{ router_pim_sparse_mode.ipv4.ssm_range }}
+{%         endif %}
 {%     endif %}
 {% endif %}

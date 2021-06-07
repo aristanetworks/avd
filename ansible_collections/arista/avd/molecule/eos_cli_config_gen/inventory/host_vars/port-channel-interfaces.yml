@@ -111,6 +111,16 @@ port_channel_interfaces:
     vlans: 200
     l2_protocol:
       encapsulation_dot1q_vlan: 200
+
+  Port-Channel12:
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:

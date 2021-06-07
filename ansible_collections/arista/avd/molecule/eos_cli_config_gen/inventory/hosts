@@ -62,6 +62,7 @@ router-multicast
 router-ospf
 router-pim-sparse-mode
 router-igmp
+service-routing-configuration-bgp
 service-routing-protocols-model
 router-general
 sflow
