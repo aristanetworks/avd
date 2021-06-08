@@ -13,6 +13,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
+  - [Router IGMP](#router-igmp)
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
@@ -84,6 +85,22 @@ interface Management1
 | default | false |
 
 # Multicast
+
+## Router IGMP
+
+### Router IGMP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| SSM Aware | True |
+
+### Router IGMP Device Configuration
+
+```eos
+!
+router igmp
+   ssm aware
+```
 
 # Filters
 
