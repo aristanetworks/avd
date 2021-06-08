@@ -399,7 +399,6 @@ ethernet_interfaces:
     channel_group:
       id: 20
       mode: active
-    profile: TENANT_A_B
   Ethernet21:
     peer: ROUTER01
     peer_interface: Eth1
@@ -409,7 +408,6 @@ ethernet_interfaces:
     shutdown: false
     mode: access
     vlans: 110
-    profile: TENANT_A
   Ethernet10:
     peer: server01_MLAG
     peer_interface: Eth3
@@ -422,7 +420,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_B
   Ethernet12:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth7
@@ -447,7 +444,6 @@ ethernet_interfaces:
     channel_group:
       id: 11
       mode: active
-    profile: TENANT_A_MTU
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
