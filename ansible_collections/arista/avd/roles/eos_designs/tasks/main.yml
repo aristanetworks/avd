@@ -3,6 +3,7 @@
 - name: Set AVD facts
   yaml_templates_to_facts:
     templates: "{{ templates[design.type].facts }}"
+  delegate_to: localhost
   check_mode: no
   changed_when: False
   tags: [build, provision]
@@ -10,6 +11,7 @@
 - name: Set AVD topology facts
   yaml_templates_to_facts:
     templates: "{{ templates[design.type].topology_facts }}"
+  delegate_to: localhost
   check_mode: no
   changed_when: False
   tags: [build, provision]
@@ -27,6 +29,7 @@
   yaml_templates_to_facts:
     root_key: structured_config
     templates: "{{ templates[design.type].structured_config }}"
+  delegate_to: localhost
   check_mode: no
   changed_when: False
   tags: [build, provision]
