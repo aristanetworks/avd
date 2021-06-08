@@ -891,7 +891,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_A_B
   Ethernet11:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth1
@@ -917,7 +916,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY
   Ethernet12:
     peer: server05_no_profile
     peer_interface: Eth1
@@ -968,7 +966,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY
   Ethernet14:
     peer: server07_inherit_all_from_profile_port_channel
     peer_interface: Eth1
@@ -997,7 +994,6 @@ ethernet_interfaces:
     channel_group:
       id: 14
       mode: active
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL
   Ethernet15:
     peer: server08_no_profile_port_channel
     peer_interface: Eth1
@@ -1051,7 +1047,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4094

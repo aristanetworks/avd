@@ -699,7 +699,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_B
   Ethernet12:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth6
@@ -724,7 +723,6 @@ ethernet_interfaces:
     channel_group:
       id: 11
       mode: active
-    profile: TENANT_A_MTU
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

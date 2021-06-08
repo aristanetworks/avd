@@ -592,6 +592,10 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+    160:
+      enabled: true
+    161:
+      enabled: false
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
@@ -755,12 +759,3 @@ virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.11
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
-ip_igmp_snooping:
-  globally_enabled: true
-  vlans:
-    120:
-      enabled: false
-    160:
-      enabled: true
-    161:
-      enabled: false
