@@ -79,6 +79,7 @@
       - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
+      - [Custom Daemons](#custom-daemons)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
@@ -1308,6 +1309,17 @@ daemon_terminattr:
 ```
 
 You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
+#### Custom Daemons
+
+```yaml
+daemons:
+  < daemon_name >:
+    exec: "< command to run as a daemon >"
+    enabled: "< true | false | default -> true >"
+```
+
+This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
 
 #### Event Handler
 
