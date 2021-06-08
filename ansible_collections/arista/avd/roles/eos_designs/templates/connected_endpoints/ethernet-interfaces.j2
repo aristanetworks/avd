@@ -115,9 +115,6 @@ ethernet_interfaces:
       received: {{ adapter_flowcontrol.received }}
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter.profile is arista.avd.defined %}
-    profile: {{ adapter.profile }}
-{%                     endif %}
 {%                     if adapter_qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_qos_profile }}
 {%                     endif %}
