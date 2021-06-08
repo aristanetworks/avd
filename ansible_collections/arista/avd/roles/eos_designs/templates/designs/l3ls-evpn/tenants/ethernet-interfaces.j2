@@ -34,7 +34,8 @@ ethernet_interfaces:
     description: {{ l3_interface.description }}
 {%                         endif %}
 {%                         if l3_interface.raw_eos_cli is arista.avd.defined %}
-    eos_cli: {{ l3_interface.raw_eos_cli }}
+    eos_cli: |
+      {{ l3_interface.raw_eos_cli | indent(6,false) }}
 {%                         endif %}
 {%                     endif %}
 {%                 endfor %}

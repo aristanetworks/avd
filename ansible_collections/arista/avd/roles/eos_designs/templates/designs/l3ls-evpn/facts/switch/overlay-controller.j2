@@ -33,8 +33,12 @@ switch:
            overlay_controller.defaults.rack) }}
 
 {# switch.raw_eos_cli #}
-  raw_eos_cli: {{ overlay_controller.nodes[node].raw_eos_cli | arista.avd.default(
-                  overlay_controller.defaults.raw_eos_cli) | to_json() }}
+{%         set switch_raw_eos_cli = overlay_controller.nodes[node].raw_eos_cli | arista.avd.default(
+                                        overlay_controller.defaults.raw_eos_cli) %}
+{%         if switch_raw_eos_cli is arista.avd.defined %}
+  raw_eos_cli: |
+    {{ switch_raw_eos_cli | indent(4,false) }}
+{%         endif %}
 
 {# switch.bgp_defaults #}
   bgp_defaults: {{ overlay_controller_bgp_defaults | arista.avd.default([]) }}

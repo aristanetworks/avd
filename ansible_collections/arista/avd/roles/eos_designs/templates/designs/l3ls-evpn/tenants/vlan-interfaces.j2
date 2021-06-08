@@ -74,7 +74,8 @@ vlan_interfaces:
 {%                 endfor %}
 {%             endif %}
 {%             if svi_raw_eos_cli is arista.avd.defined %}
-    eos_cli: {{ svi_raw_eos_cli | to_json }}
+    eos_cli: |
+      {{ svi_raw_eos_cli | indent(6,false) }}
 {%             endif %}
 {%         endfor %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
