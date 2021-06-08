@@ -198,3 +198,12 @@ ethernet_interfaces:
     type: switched
     mode: dot1q-tunnel
     vlans: 300
+
+  Ethernet13:
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70

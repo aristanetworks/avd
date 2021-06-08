@@ -115,9 +115,6 @@ ethernet_interfaces:
       received: {{ adapter_flowcontrol.received }}
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter.profile is arista.avd.defined %}
-    profile: {{ adapter.profile }}
-{%                     endif %}
 {%                     if adapter_qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_qos_profile }}
 {%                     endif %}
@@ -135,7 +132,8 @@ ethernet_interfaces:
 {%                         endif %}
 {%                     endif %}
 {%                     if adapter_raw_eos_cli is arista.avd.defined %}
-    eos_cli: {{ adapter_raw_eos_cli | to_json }}
+    eos_cli: |
+      {{ adapter_raw_eos_cli | indent(6,false) }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}

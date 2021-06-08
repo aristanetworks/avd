@@ -421,7 +421,6 @@ ethernet_interfaces:
     channel_group:
       id: 16
       mode: active
-    profile: TENANT_A
     service_profile: bar
     eos_cli: 'comment
 
@@ -442,7 +441,6 @@ ethernet_interfaces:
     channel_group:
       id: 17
       mode: active
-    profile: TENANT_A
     service_profile: foo
     eos_cli: 'comment
 
@@ -463,7 +461,6 @@ ethernet_interfaces:
     channel_group:
       id: 18
       mode: active
-    profile: NESTED_TENANT_A
     service_profile: foo
     eos_cli: 'comment
 
@@ -484,7 +481,6 @@ ethernet_interfaces:
     channel_group:
       id: 19
       mode: active
-    profile: NESTED_TENANT_A
     service_profile: foo
     eos_cli: 'comment
 

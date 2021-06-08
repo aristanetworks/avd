@@ -121,11 +121,14 @@ nav:
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
       - AVD Plugins & Filters: plugins/README.md
       - Cloudvision Module documentation: https://cvp.avd.sh/
+  - Contributing to AVD:
+      - Overview: docs/contribution/overview.md
+      - Getting Started: docs/contribution/getting-started.md
+      - Code Style: docs/contribution/style-guide.md
   - External resources:
       - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - About:
-      - Contribution Guide: docs/contributing.md
       - Ansible Galaxy page: https://galaxy.ansible.com/arista/avd
       - Arista CVP Collection: https://cvp.avd.sh/en/latest/
       - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install

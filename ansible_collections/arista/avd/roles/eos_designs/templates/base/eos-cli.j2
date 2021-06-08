@@ -1,10 +1,10 @@
-{% set tmp_eos_clis = [] %}
-{% if switch.raw_eos_cli is arista.avd.defined %}
-{%     do tmp_eos_clis.append(switch.raw_eos_cli) %}
-{% endif %}
-{% if switch.platform_settings.raw_eos_cli is arista.avd.defined %}
-{%     do tmp_eos_clis.append(switch.platform_settings.raw_eos_cli) %}
-{% endif %}
-{% if tmp_eos_clis | length > 0 %}
-eos_cli: {{ tmp_eos_clis | join('\n') | to_json }}
+{% if switch.raw_eos_cli is arista.avd.defined or
+      switch.platform_settings.raw_eos_cli is arista.avd.defined %}
+eos_cli: |
+{%     if switch.raw_eos_cli is arista.avd.defined %}
+  {{ switch.raw_eos_cli | indent(2,false) }}
+{%     endif %}
+{%     if switch.platform_settings.raw_eos_cli is arista.avd.defined %}
+  {{ switch.platform_settings.raw_eos_cli | indent(2,false) }}
+{%     endif %}
 {% endif %}

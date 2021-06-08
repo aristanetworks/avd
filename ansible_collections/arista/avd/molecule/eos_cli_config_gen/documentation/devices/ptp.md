@@ -76,6 +76,10 @@ ptp ttl 200
 ptp domain 1
 ptp message-type general dscp 4 default
 ptp message-type event dscp 8 default
+ptp mode boundary
+ptp forward-unicast
+ptp monitor threshold offset-from-master 1234
+ptp monitor threshold mean-path-delay 4321
 ```
 
 # Authentication

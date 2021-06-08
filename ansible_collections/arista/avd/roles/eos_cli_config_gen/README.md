@@ -79,6 +79,7 @@
       - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
+      - [Custom Daemons](#custom-daemons)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
@@ -105,6 +106,7 @@
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
+      - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
@@ -699,7 +701,10 @@ ethernet_interfaces:
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
-    mode: < access | dot1q-tunnel | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    phone:
+      trunk: < tagged | untagged >
+      vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
@@ -769,6 +774,10 @@ interface_defaults:
 ```yaml
 switchport_default:
   mode: < routed | access >
+  phone:
+    cos: < 0-7 >
+    trunk: < tagged | untagged >
+    vlan: < 1-4094 >
 ```
 
 #### Loopback Interfaces
@@ -808,7 +817,10 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
-    mode: < access | dot1q-tunnel | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    phone:
+      trunk: < tagged | untagged >
+      vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
     mtu: < mtu >
@@ -832,7 +844,7 @@ port_channel_interfaces:
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
-    mode: < access | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -840,7 +852,7 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    mode: < access | dot1q-tunnel | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
@@ -1263,6 +1275,7 @@ router_multicast:
 ```yaml
 router_pim_sparse_mode:
   ipv4:
+    ssm_range: < range >
     rp_addresses:
       < rp_address_1 >:
         groups:
@@ -1296,6 +1309,17 @@ daemon_terminattr:
 ```
 
 You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
+#### Custom Daemons
+
+```yaml
+daemons:
+  < daemon_name >:
+    exec: "< command to run as a daemon >"
+    enabled: "< true | false | default -> true >"
+```
+
+This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
 
 #### Event Handler
 
@@ -1479,6 +1503,8 @@ vmtracer_sessions:
 
 ```yaml
 ptp:
+  mode: < mode >
+  forward_unicast: < true | false >
   clock_identity: < clock-id >
   source:
     ip: < source-ip>
@@ -1491,6 +1517,10 @@ ptp:
       dscp: < dscp-value >
     event:
       dscp: < dscp-Value >
+  monitor:
+    threshold:
+      offset_from_master: < offset >
+      mean_path_delay: < delay >
 ```
 
 ### Prompt
@@ -2018,6 +2048,13 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+```
+
+#### Service Routing Configuration BGP
+
+```yaml
+service_routing_configuration_bgp:
+  no_equals_default: < true | false >
 ```
 
 #### Service Routing Protocols Model

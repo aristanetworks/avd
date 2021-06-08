@@ -11,5 +11,8 @@
 {%     endfor %}
 {% endfor %}
 {% if tmp_eos_clis | length > 0 %}
-eos_cli: {{ tmp_eos_clis | join('\n') | to_json }}
+eos_cli: |
+{%     for tmp_eos_cli in tmp_eos_clis %}
+  {{ tmp_eos_cli | indent(2,false) }}
+{%     endfor %}
 {% endif %}
