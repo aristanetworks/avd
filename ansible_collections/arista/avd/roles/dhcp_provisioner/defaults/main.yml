@@ -17,6 +17,10 @@ structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 structured_cvp_dir_name: 'cvp'
 structured_cvp_dir: '{{ structured_dir }}/{{ structured_cvp_dir_name }}'
 
+# EOS Configuration Directory name
+eos_config_dir_name: 'configs'
+eos_config_dir: '{{ output_dir }}/{{ eos_config_dir_name }}'
+
 # Default inventory group with Fabric definition
 fabric_group: DC1_FABRIC
 
