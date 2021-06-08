@@ -6,6 +6,7 @@ aliases
 arp
 base
 class-maps
+daemon_terminattr
 daemons
 dns-ntp
 enable-password
