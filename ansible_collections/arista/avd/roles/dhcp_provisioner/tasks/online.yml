@@ -6,4 +6,4 @@
     name: arista.cvp.dhcp_configuration
   vars:
     mode: online
-    output_dir: {{ eos_config_dir }}
+    output_dir: "{{ eos_config_dir }}"
