@@ -261,7 +261,7 @@ custom_structured_configuration_prefix: < variable_prefix, default -> "custom_st
 #or
 custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
 
-custom_structured_configuration_list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+custom_structured_configuration_list_merge: < replace (default) | append | keep | prepend | append_rp | prepend_rp >
 ```
 
 
