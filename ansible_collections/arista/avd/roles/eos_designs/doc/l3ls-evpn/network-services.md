@@ -67,6 +67,10 @@ tenants:
     # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
     mac_vrf_vni_base: < 10000-16770000 >
 
+    # Base number for vlan_aware_bundle | Optional.
+    # The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
+    vlan_aware_bundle_number_base: < number | default -> 0 >
+
     # MLAG IBGP peering per VRF | Optional
     # By default an IBGP peering is configured per VRF between MLAG peers on separate VLANs.
     # Setting enable_mlag_ibgp_peering_vrfs: false under tenant will change this default to prevent configuration of these peerings and VLANs for all VRFs in the tenant.

@@ -208,10 +208,10 @@ router_bgp:
       - learned
       vlan: 210-211
     Tenant_C_OP_Zone:
-      rd: 192.168.255.10:30
+      rd: 192.168.255.10:30030
       route_targets:
         both:
-        - '30:30'
+        - 30030:30030
       redistribute_routes:
       - learned
       vlan: 310-311

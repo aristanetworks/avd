@@ -302,18 +302,18 @@ router_bgp:
       - learned
       vlan: 250
     Tenant_C_OP_Zone:
-      rd: 192.168.255.12:30
+      rd: 192.168.255.12:30030
       route_targets:
         both:
-        - '30:30'
+        - 30030:30030
       redistribute_routes:
       - learned
       vlan: 310-311
     Tenant_C_WAN_Zone:
-      rd: 192.168.255.12:31
+      rd: 192.168.255.12:30031
       route_targets:
         both:
-        - '31:31'
+        - 30031:30031
       redistribute_routes:
       - learned
       vlan: 350

@@ -199,10 +199,10 @@ router_bgp:
       - learned
       vlan: 250
     Tenant_C_WAN_Zone:
-      rd: 192.168.255.15:31
+      rd: 192.168.255.15:30031
       route_targets:
         both:
-        - '31:31'
+        - 30031:30031
       redistribute_routes:
       - learned
       vlan: 350
