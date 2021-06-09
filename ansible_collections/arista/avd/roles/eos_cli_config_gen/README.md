@@ -38,6 +38,7 @@
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
     - [Generate Device Documentation](#generate-device-documentation)
+    - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -554,6 +555,12 @@ route_maps:
 
 ```yaml
 generate_device_documentation: < true | false | default -> true >
+```
+
+### Generate Default Config
+
+```yaml
+generate_default_config: < true | false | default -> true >
 ```
 
 ### Hardware
