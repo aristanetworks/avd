@@ -1,5 +1,5 @@
 {# Device Configuration #}
-!RANCID-CONTENT-TYPE: arista
+{% include 'eos/rancid-content-type.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# cli prompt #}
@@ -30,9 +30,8 @@
 {% include 'eos/interface-defaults.j2' %}
 {# interface profiles #}
 {% include 'eos/interface-profiles.j2' %}
-{# cannot be disabled in current EOS releases #}
-!
-transceiver qsfp default-mode 4x10G
+{# transceiver qsfp default mode #}
+{% include 'eos/transceiver-qsfp-default-mode.j2' %}
 {# errdisable #}
 {% include 'eos/errdisable.j2' %}
 {# service routing protocols model #}
@@ -45,8 +44,8 @@ transceiver qsfp default-mode 4x10G
 {% include 'eos/logging.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
-!
-hostname {{ inventory_hostname }}
+{# hostname #}
+{% include 'eos/hostname.j2' %}
 {# domain lookup #}
 {% include 'eos/domain-lookup.j2' %}
 {# name servers #}
@@ -208,5 +207,5 @@ hostname {{ inventory_hostname }}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}
-!
-end
+{# end #}
+{% include 'eos/end.j2' %}

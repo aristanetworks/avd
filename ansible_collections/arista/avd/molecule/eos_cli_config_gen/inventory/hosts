@@ -15,6 +15,7 @@ ethernet-interfaces
 event-handlers
 event-monitor
 generate_device_documentation
+generate-default-config
 hardware-counter
 hardware
 igmp-snooping
