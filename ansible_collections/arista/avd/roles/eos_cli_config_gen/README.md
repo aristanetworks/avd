@@ -71,6 +71,7 @@
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [NTP Servers](#ntp-servers)
+      - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
@@ -1218,12 +1219,18 @@ ntp_server:
   nodes:
     - < ntp_server_1 >
     - < ntp_server_2 >
-  ntp_authenticate: <true | false >
-  ntp_authentication_keys:
+```
+
+#### NTP
+
+```yaml
+ntp:
+  authenticate: <true | false >
+  authentication_keys:
     <key_identifier | 1-65534>:
       hash_algorithm: < md5 | sha1 >
-      key:  "< encypted_key >"
-  ntp_trusted_keys: "< list of trusted-keys as string >"
+      key: "< type7_obfuscated_key >"
+  trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
 ### MPLS
