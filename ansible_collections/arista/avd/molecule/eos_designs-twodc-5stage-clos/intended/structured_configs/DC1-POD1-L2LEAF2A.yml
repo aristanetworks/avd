@@ -27,25 +27,14 @@ local_users:
 vrfs:
   MGMT:
     ip_routing: false
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.11/24
-    gateway: 192.168.1.254
-    type: oob
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.5/24
-    gateway: 172.21.110.1
-    type: inband
 management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
+  \ under l2leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback\
+  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
+  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
   4094:
     tenant: system
@@ -143,5 +132,13 @@ mlag_configuration:
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
+management_interfaces:
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.5/24
+    gateway: 172.21.110.1
+    type: inband
 ip_igmp_snooping:
   globally_enabled: true

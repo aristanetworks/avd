@@ -136,6 +136,7 @@ interface Ethernet50
 | Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
@@ -172,6 +173,10 @@ interface Port-Channel5
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
+   comment
+   Comment created from eos_cli under port_channel_interfaces.Port-Channel5
+   EOF
+
 !
 interface Port-Channel8
    description to Dev02 Port-channel 8
@@ -195,6 +200,13 @@ interface Port-Channel10
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
+!
+interface Port-Channel12
+   description interface_in_mode_access_with_voice
+   switchport
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged
 !
 interface Port-Channel15
    description DC1_L2LEAF3_Po1

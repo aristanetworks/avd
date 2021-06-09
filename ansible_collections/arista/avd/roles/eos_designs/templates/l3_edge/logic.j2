@@ -40,16 +40,16 @@
                                      p2p_profile.speed) %}
 {%         if ip_list is arista.avd.defined %}
 {%             set p2p_interface.ip_address = ip_list[node_index] %}
-{%             set p2p_interface.peer_ip = ip_list[peer_index] | ipaddr("address") %}
+{%             set p2p_interface.peer_ip = ip_list[peer_index] | ansible.netcommon.ipaddr("address") %}
 {%         elif subnet is arista.avd.defined %}
-{%             set mask = subnet | ipaddr("prefix") %}
-{%             set p2p_interface.ip_address = subnet | ipaddr("network") | ipmath(node_index) ~ "/" ~ mask %}
-{%             set p2p_interface.peer_ip = subnet | ipaddr("network") | ipmath(peer_index) %}
+{%             set mask = subnet | ansible.netcommon.ipaddr("prefix") %}
+{%             set p2p_interface.ip_address = subnet | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath(node_index) ~ "/" ~ mask %}
+{%             set p2p_interface.peer_ip = subnet | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath(peer_index) %}
 {%         elif ip_pool is arista.avd.defined %}
 {%             set link_id = p2p_link.id | arista.avd.default(
                              p2p_profile.id) %}
-{%             set p2p_interface.ip_address = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
-{%             set p2p_interface.peer_ip = ip_pool | ipaddr("network") | ipmath((link_id - 1) * 2 + peer_index) %}
+{%             set p2p_interface.ip_address = ip_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + node_index) ~ "/31" %}
+{%             set p2p_interface.peer_ip = ip_pool | ansible.netcommon.ipaddr("network") | ansible.netcommon.ipmath((link_id - 1) * 2 + peer_index) %}
 {%         endif %}
 {%         set p2p_interface.mtu = p2p_link.mtu | arista.avd.default(
                                    p2p_profile.mtu,

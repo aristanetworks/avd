@@ -42,10 +42,10 @@
 {%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
 {%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
 {%                             set neighbor_params = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
-{%                             if bgp_peer | ipv4 %}
+{%                             if bgp_peer | ansible.netcommon.ipv4 %}
 {%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer) %}
 {%                             endif %}
-{%                             if bgp_peer | ipv6 %}
+{%                             if bgp_peer | ansible.netcommon.ipv6 %}
 {%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer) %}
 {%                             endif %}
 {%                             if neighbor_params.set_ipv4_next_hop is arista.avd.defined or neighbor_params.set_ipv6_next_hop is arista.avd.defined %}
@@ -102,6 +102,10 @@
             {{ ipv6_neighbor }}:
               activate: true
 {%                 endfor %}
+{%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp.raw_eos_cli is arista.avd.defined %}
+      eos_cli: |
+        {{ tenants[tenant].vrfs[vrf].bgp.raw_eos_cli | indent(8,false) }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

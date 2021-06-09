@@ -30,6 +30,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -290,6 +291,7 @@ vlan internal order ascending range 1006 1199
 | 141 | Tenant_A_DB_Zone_2 | none  |
 | 160 | Tenant_A_VMOTION | none  |
 | 161 | Tenant_A_NFS | none  |
+| 162 | Tenant_A_FTP | none  |
 | 210 | Tenant_B_OP_Zone_1 | none  |
 | 211 | Tenant_B_OP_Zone_2 | none  |
 | 310 | Tenant_C_OP_Zone_1 | none  |
@@ -329,6 +331,9 @@ vlan 160
 vlan 161
    name Tenant_A_NFS
 !
+vlan 162
+   name Tenant_A_FTP
+!
 vlan 210
    name Tenant_B_OP_Zone_1
 !
@@ -352,12 +357,13 @@ vlan 311
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF1B_Ethernet1 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 7 |
-| Ethernet9 | DC1-L2LEAF3A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 9 |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 7 |
+| Ethernet8 | DC1-L2LEAF1B_Ethernet1 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 7 |
+| Ethernet9 | DC1-L2LEAF3A_Ethernet1 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
+| Ethernet13 | server01_MTU_ADAPTOR_MLAG_Eth8 | *access | *- | *- | *- | 12 |
 | Ethernet20 | FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
 | Ethernet21 |  ROUTER01_Eth0 | access | 110 | - | - | - |
 
@@ -438,6 +444,11 @@ interface Ethernet12
    no shutdown
    channel-group 12 mode active
 !
+interface Ethernet13
+   description server01_MTU_ADAPTOR_MLAG_Eth8
+   no shutdown
+   channel-group 12 mode active
+!
 interface Ethernet20
    description FIREWALL01_E0
    no shutdown
@@ -459,8 +470,8 @@ interface Ethernet21
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
-| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
@@ -474,7 +485,7 @@ interface Port-Channel7
    description DC1_L2LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
    switchport mode trunk
    evpn ethernet-segment
       identifier 0000:1234:0808:0707:0606
@@ -485,7 +496,7 @@ interface Port-Channel9
    description DC1-L2LEAF3A_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
    switchport mode trunk
    evpn ethernet-segment
       identifier 0000:1234:0606:0707:0808
@@ -705,6 +716,7 @@ interface Vlan311
 | 141 | 10141 |
 | 160 | 10160 |
 | 161 | 10161 |
+| 162 | 10162 |
 | 210 | 20210 |
 | 211 | 20211 |
 | 310 | 30310 |
@@ -738,6 +750,7 @@ interface Vxlan1
    vxlan vlan 141 vni 10141
    vxlan vlan 160 vni 10160
    vxlan vlan 161 vni 10161
+   vxlan vlan 162 vni 10162
    vxlan vlan 210 vni 20210
    vxlan vlan 211 vni 20211
    vxlan vlan 310 vni 30310
@@ -751,6 +764,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -887,6 +908,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.10:12 | 12:12 | - | - | learned | 130-131 |
 | Tenant_A_DB_Zone | 192.168.255.10:13 | 13:13 | - | - | learned | 140-141 |
+| Tenant_A_FTP | 192.168.255.10:10162 | 10162:10162 | - | - | learned | 162 |
 | Tenant_A_NFS | 192.168.255.10:10161 | 10161:10161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.10:10 | 10:10 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 192.168.255.10:10160 | 10160:10160 | - | - | learned | 160 |
@@ -959,6 +981,12 @@ router bgp 65102
       route-target both 13:13
       redistribute learned
       vlan 140-141
+   !
+   vlan-aware-bundle Tenant_A_FTP
+      rd 192.168.255.10:10162
+      route-target both 10162:10162
+      redistribute learned
+      vlan 162
    !
    vlan-aware-bundle Tenant_A_NFS
       rd 192.168.255.10:10161
@@ -1077,12 +1105,15 @@ IGMP snooping is globally enabled.
 | VLAN | IGMP Snooping |
 | --- | --------------- |
 | 120 | disabled |
+| 160 | enabled |
+| 161 | disabled |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
 no ip igmp snooping vlan 120
+no ip igmp snooping vlan 161
 ```
 
 # Filters

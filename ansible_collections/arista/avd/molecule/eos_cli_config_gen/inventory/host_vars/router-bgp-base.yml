@@ -30,6 +30,9 @@ router_bgp:
       foo:
         prefix_list_in: PL-BAR-v4-IN
         prefix_list_out: PL-BAR-v4-OUT
+        default_originate:
+          always: true
+          route_map: RM-FOO-MATCH
     neighbors:
       192.0.2.1:
         prefix_list_in: PL-FOO-v4-IN

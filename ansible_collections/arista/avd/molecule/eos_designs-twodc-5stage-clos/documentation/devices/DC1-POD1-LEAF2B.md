@@ -28,6 +28,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -45,6 +46,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -165,7 +167,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 | --------- | --------------- | ------------ | --------- |
 | RACK2_MLAG | Vlan4094 | 172.19.110.2 | Port-Channel5 |
 
-Dual primary detection is enabled. The detection delay is 5 seconds.
+Dual primary detection is disabled.
 
 ## MLAG Device Configuration
 
@@ -175,9 +177,7 @@ mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
    peer-address 172.19.110.2
-   peer-address heartbeat 192.168.1.8 vrf MGMT
    peer-link Port-Channel5
-   dual-primary detection delay 5 action errdisable all-interfaces
    reload-delay mlag 300
    reload-delay non-mlag 330
 ```
@@ -282,6 +282,10 @@ vlan 4094
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
+| Ethernet17 | server-1_Eth4 | *access | *110 | *- | *- | 17 |
+| Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
+| Ethernet19 | server-1_Eth8 | *access | *110 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -342,6 +346,42 @@ interface Ethernet7
    no switchport
    ip address 11.1.0.38/31
    ptp enable
+!
+interface Ethernet16
+   description server-1_Eth2
+   no shutdown
+   channel-group 16 mode active
+   comment
+   Comment created from raw_eos_cli under profile TENANT_A
+   EOF
+
+!
+interface Ethernet17
+   description server-1_Eth4
+   no shutdown
+   channel-group 17 mode active
+   comment
+   Comment created from raw_eos_cli under adapter for switch Eth17
+   EOF
+
+!
+interface Ethernet18
+   description server-1_Eth6
+   no shutdown
+   channel-group 18 mode active
+   comment
+   Comment created from raw_eos_cli under profile NESTED_TENANT_A
+   EOF
+
+!
+interface Ethernet19
+   description server-1_Eth8
+   no shutdown
+   channel-group 19 mode active
+   comment
+   Comment created from raw_eos_cli under profile NESTED_TENANT_A
+   EOF
+
 ```
 
 ## Port-Channel Interfaces
@@ -354,6 +394,10 @@ interface Ethernet7
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
+| Port-Channel17 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 17 | - |
+| Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
+| Port-Channel19 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 19 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -377,6 +421,46 @@ interface Port-Channel5
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    service-profile QOS-PROFILE
+!
+interface Port-Channel16
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 16
+   service-profile bar
+!
+interface Port-Channel17
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 17
+   service-profile foo
+!
+interface Port-Channel18
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 18
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under port_channel on profile NESTED_TENANT_A
+   EOF
+
+!
+interface Port-Channel19
+   description server-1_PortChannel
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 19
+   service-profile foo
+   comment
+   Comment created from raw_eos_cli under adapter port_channel for switch Po19
+   EOF
+
 ```
 
 ## Loopback Interfaces
@@ -459,6 +543,10 @@ interface Vlan112
    no shutdown
    vrf Common_VRF
    ip address virtual 10.1.12.1/24
+   comment
+   Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
+   EOF
+
 !
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
@@ -523,6 +611,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -757,6 +853,11 @@ router bgp 65112
       route-target export evpn 1025:1025
       router-id 172.16.110.5
       redistribute connected
+      !
+      comment
+      Comment created from raw_eos_cli under BGP for VRF Common_VRF
+      EOF
+
 ```
 
 # BFD
@@ -908,3 +1009,18 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1002
+  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+interface Loopback1000
+  description Loopback created from raw_eos_cli under VRF Common_VRF
+
+```

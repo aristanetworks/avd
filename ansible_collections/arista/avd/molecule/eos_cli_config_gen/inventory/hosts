@@ -6,6 +6,8 @@ aliases
 arp
 base
 class-maps
+daemon_terminattr
+daemons
 dns-ntp
 enable-password
 errdisable
@@ -61,6 +63,7 @@ router-l2-vpn
 router-multicast
 router-ospf
 router-pim-sparse-mode
+service-routing-configuration-bgp
 service-routing-protocols-model
 router-general
 sflow

@@ -8,8 +8,12 @@
 {% include 'eos/aliases.j2' %}
 {# hardware counters #}
 {% include 'eos/hardware-counters.j2' %}
+{# service routing configuration #}
+{% include 'eos/service-routing-configuration-bgp.j2' %}
 {# daemon TerminAttr #}
 {% include 'eos/daemon-terminattr.j2' %}
+{# daemons #}
+{% include 'eos/daemons.j2' %}
 {# ip dhcp relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
 {# switchport default #}
@@ -194,6 +198,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+{# EOS CLI #}
+{% include 'eos/eos-cli.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}
 !

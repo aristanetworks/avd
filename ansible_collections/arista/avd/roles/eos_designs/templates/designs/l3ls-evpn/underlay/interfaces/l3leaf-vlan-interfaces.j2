@@ -6,11 +6,11 @@ vlan_interfaces:
     shutdown: false
     mtu: {{ p2p_uplinks_mtu }}
 {%     if switch.mlag is arista.avd.defined(true) and switch.mlag_role is arista.avd.defined('secondary') %}
-    ip_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(3) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+    ip_address: {{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(3) }}/{{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('prefix') }}
 {%     else %}
-    ip_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(2) }}/{{ l2leaf_inband_management_subnet | ipaddr('prefix') }}
+    ip_address: {{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(2) }}/{{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('prefix') }}
 {%     endif %}
-    ip_virtual_router_address: {{ l2leaf_inband_management_subnet | ipaddr('network') | ipmath(1) }}
+    ip_virtual_router_address: {{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(1) }}
     ip_attached_host_route_export:
       distance: 19
 {% endif %}

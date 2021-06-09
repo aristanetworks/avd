@@ -804,7 +804,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_A_B
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4094

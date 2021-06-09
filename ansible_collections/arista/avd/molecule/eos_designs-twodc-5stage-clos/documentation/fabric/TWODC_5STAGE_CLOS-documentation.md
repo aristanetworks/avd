@@ -19,20 +19,20 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | 192.168.1.10/24 | vEOS-LAB | Provisioned |
-| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | 192.168.1.11/24 | vEOS-LAB | Provisioned |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF1A | - | vEOS-LAB | Provisioned |
+| DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2A | - | vEOS-LAB | Provisioned |
 | DC1_POD1 | l2leaf | DC1-POD1-L2LEAF2B | 192.168.1.12/24 | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | 192.168.1.7/24 | vEOS-LAB | Provisioned |
-| DC1_POD1 | l3leaf | DC1-POD1-LEAF2A | 192.168.1.8/16 | vEOS-LAB | Provisioned |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF1A | - | vEOS-LAB | Provisioned |
+| DC1_POD1 | l3leaf | DC1-POD1-LEAF2A | - | vEOS-LAB | Provisioned |
 | DC1_POD1 | l3leaf | DC1-POD1-LEAF2B | 192.168.1.9/16 | vEOS-LAB | Provisioned |
-| DC1_POD1 | spine | DC1-POD1-SPINE1 | 192.168.1.5/24 | vEOS-LAB | Provisioned |
+| DC1_POD1 | spine | DC1-POD1-SPINE1 | - | vEOS-LAB | Provisioned |
 | DC1_POD1 | spine | DC1-POD1-SPINE2 | 192.168.1.6/24 | vEOS-LAB | Provisioned |
 | DC1_POD2 | l3leaf | DC1-POD2-LEAF1A | 192.168.1.15/24 | vEOS-LAB | Provisioned |
 | DC1_POD2 | spine | DC1-POD2-SPINE1 | 192.168.1.13/24 | vEOS-LAB | Provisioned |
 | DC1_POD2 | spine | DC1-POD2-SPINE2 | 192.168.1.14/24 | vEOS-LAB | Provisioned |
-| DC1 | overlay-controller | DC1-RS1 | 192.168.1.3/24 | vEOS-LAB | Provisioned |
+| DC1 | overlay-controller | DC1-RS1 | - | vEOS-LAB | Provisioned |
 | DC1 | overlay-controller | DC1-RS2 | 192.168.1.4/24 | vEOS-LAB | Provisioned |
-| DC1 | super-spine | DC1-SUPER-SPINE1 | 192.168.1.1/24 | vEOS-LAB | Provisioned |
+| DC1 | super-spine | DC1-SUPER-SPINE1 | - | vEOS-LAB | Provisioned |
 | DC1 | super-spine | DC1-SUPER-SPINE2 | 192.168.1.2/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | l2leaf | DC2-POD1-L2LEAF1A | 192.168.1.23/24 | vEOS-LAB | Provisioned |
 | DC2_POD1 | l3leaf | DC2-POD1-LEAF1A | 192.168.1.22/24 | vEOS-LAB | Provisioned |

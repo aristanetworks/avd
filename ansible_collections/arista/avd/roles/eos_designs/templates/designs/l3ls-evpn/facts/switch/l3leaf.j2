@@ -11,7 +11,7 @@ switch:
   id: {{ switch_id }}
 
 {# switch.mgmt_ip #}
-  mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].mgmt_ip }}
+  mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].mgmt_ip | arista.avd.default() }}
 
 {# switch.platform #}
 {%             set switch_platform = l3leaf.node_groups[l3leaf_node_group].platform | arista.avd.default(
@@ -20,7 +20,7 @@ switch:
 
 {# switch.platform_settings #}
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) }}
+                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
 {# switch.configure_tenants #}
   configure_tenants: true
@@ -74,6 +74,15 @@ switch:
   rack: {{ l3leaf.node_groups[l3leaf_node_group].nodes[node].rack | arista.avd.default(
            l3leaf.node_groups[l3leaf_node_group].rack,
            l3leaf.defaults.rack) }}
+
+{# switch.raw_eos_cli #}
+{%             set switch_raw_eos_cli = l3leaf.node_groups[l3leaf_node_group].nodes[node].raw_eos_cli | arista.avd.default(
+                                        l3leaf.node_groups[l3leaf_node_group].raw_eos_cli,
+                                        l3leaf.defaults.raw_eos_cli) %}
+{%             if switch_raw_eos_cli is arista.avd.defined %}
+  raw_eos_cli: |
+    {{ switch_raw_eos_cli | indent(4,false) }}
+{%             endif %}
 
 {# switch.router_id #}
   router_id: {% include templates[design.type].ip_addressing[type].router_id %}
@@ -143,7 +152,9 @@ switch:
 {%                     set mlag_secondary_id = l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].id %}
   mlag_role: "primary"
   mlag_peer: {{ loop.nextitem }}
-  mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].mgmt_ip | ipaddr('address') }}
+{%                     if l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].mgmt_ip | arista.avd.default() is truthy %}
+  mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.nextitem].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+{%                     endif %}
   mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}
 
   mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
@@ -157,7 +168,9 @@ switch:
 {%                     set mlag_secondary_id = switch_id %}
   mlag_role: "secondary"
   mlag_peer: {{ loop.previtem }}
-  mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].mgmt_ip | ipaddr('address') }}
+{%                     if l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].mgmt_ip | arista.avd.default() is truthy %}
+  mlag_peer_mgmt_ip: {{ l3leaf.node_groups[l3leaf_node_group].nodes[loop.previtem].mgmt_ip | ansible.netcommon.ipaddr('address') }}
+{%                     endif %}
   mlag_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_secondary %}
 
   mlag_peer_ip: {% include templates[design.type].ip_addressing[type].mlag_ip_primary %}

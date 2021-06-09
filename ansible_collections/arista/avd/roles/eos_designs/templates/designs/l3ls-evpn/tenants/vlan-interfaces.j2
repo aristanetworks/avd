@@ -26,7 +26,10 @@ vlan_interfaces:
 {%             set svi_ip_helpers = svi_config.ip_helpers | arista.avd.default(
                                     tenants[tenant].vrfs[vrf].ip_helpers,
                                     svi_profile.ip_helpers) %}
-
+{%             set svi_raw_eos_cli = svi_config.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
+                                     svi_profile.nodes[inventory_hostname].raw_eos_cli,
+                                     svi_config.raw_eos_cli,
+                                     svi_profile.raw_eos_cli) %}
   Vlan{{ svi | int }}:
     tenant: {{ tenant }}
     tags: {{ svi_tags }}
@@ -43,7 +46,7 @@ vlan_interfaces:
 {%             endif %}
 {# Virtual Router IP Address #}
 {%             if svi_ip_virtual_router_address is arista.avd.defined %}
-    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ipaddr('address') }}
+    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ansible.netcommon.ipaddr('address') }}
 {%             endif %}
 {# Virtual IP address #}
 {%             if svi_ip_address_virtual is arista.avd.defined %}
@@ -69,6 +72,10 @@ vlan_interfaces:
         vrf: {{ vrf }}
 {%                     endif %}
 {%                 endfor %}
+{%             endif %}
+{%             if svi_raw_eos_cli is arista.avd.defined %}
+    eos_cli: |
+      {{ svi_raw_eos_cli | indent(6,false) }}
 {%             endif %}
 {%         endfor %}
 {# VLAN interface for iBGP peering in overlay VRFs #}

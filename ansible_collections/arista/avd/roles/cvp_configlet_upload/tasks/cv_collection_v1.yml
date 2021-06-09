@@ -1,0 +1,19 @@
+- name: "collecting facts from CVP {{ inventory_hostname }}."
+  tags: [provision, apply]
+  arista.cvp.cv_facts:
+  register: CVP_FACTS
+
+- name: "create configlets on CVP {{ inventory_hostname }}."
+  tags: [provision, apply]
+  arista.cvp.cv_configlet:
+    cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
+    configlets: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+    configlet_filter: ["{{ configlets_cvp_prefix }}"]
+
+- name: "Execute pending tasks on {{ inventory_hostname }}"
+  tags: [apply]
+  arista.cvp.cv_task:
+    tasks: "{{ CVP_DEVICES_RESULTS.data.tasks }}"
+    wait: 720
+  when:
+    - execute_tasks|bool

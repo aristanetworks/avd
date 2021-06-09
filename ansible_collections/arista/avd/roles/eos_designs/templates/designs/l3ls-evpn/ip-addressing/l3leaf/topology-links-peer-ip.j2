@@ -1,1 +1,1 @@
-{{ underlay_p2p_network_summary | ipaddr('network') | ipmath(((switch.id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links) + (uplink_switch_id - 1) * 2) }}
+{{ underlay_p2p_network_summary | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(((switch.id -1) * 2 * switch.max_spines * max_l3leaf_to_spine_links) + (uplink_switch_id - 1) * 2) }}

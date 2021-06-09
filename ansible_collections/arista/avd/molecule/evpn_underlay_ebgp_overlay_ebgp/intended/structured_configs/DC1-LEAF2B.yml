@@ -190,6 +190,15 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 161
+    Tenant_A_FTP:
+      tenant: Tenant_A
+      rd: 192.168.255.11:10162
+      route_targets:
+        both:
+        - 10162:10162
+      redistribute_routes:
+      - learned
+      vlan: 162
     Tenant_B_OP_Zone:
       rd: 192.168.255.11:20
       route_targets:
@@ -403,7 +412,6 @@ ethernet_interfaces:
     channel_group:
       id: 20
       mode: active
-    profile: TENANT_A_B
   Ethernet21:
     peer: ROUTER01
     peer_interface: Eth1
@@ -413,7 +421,6 @@ ethernet_interfaces:
     shutdown: false
     mode: access
     vlans: 110
-    profile: TENANT_A
   Ethernet10:
     peer: server01_MLAG
     peer_interface: Eth3
@@ -426,12 +433,22 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_B
   Ethernet12:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth7
     peer_type: server
     description: server01_MTU_ADAPTOR_MLAG_Eth7
+    mtu: 1601
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 12
+      mode: active
+  Ethernet13:
+    peer: server01_MTU_ADAPTOR_MLAG
+    peer_interface: Eth9
+    peer_type: server
+    description: server01_MTU_ADAPTOR_MLAG_Eth9
     mtu: 1601
     type: switched
     shutdown: false
@@ -451,13 +468,12 @@ ethernet_interfaces:
     channel_group:
       id: 11
       mode: active
-    profile: TENANT_A_MTU
 port_channel_interfaces:
   Port-Channel7:
     description: DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
+    vlans: 110-111,120-121,130-131,160-162
     mode: trunk
     esi: 0000:1234:0808:0707:0606
     rt: 08:08:07:07:06:06
@@ -466,7 +482,7 @@ port_channel_interfaces:
     description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-161
+    vlans: 110-111,120-121,130-131,160-162
     mode: trunk
     esi: 0000:1234:0606:0707:0808
     rt: 06:06:07:07:08:08
@@ -523,6 +539,10 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+    160:
+      enabled: true
+    161:
+      enabled: false
 vlans:
   130:
     tenant: Tenant_A
@@ -554,6 +574,9 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: Tenant_A_FTP
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -593,6 +616,8 @@ vxlan_tunnel_interface:
           vni: 10160
         161:
           vni: 10161
+        162:
+          vni: 10162
         210:
           vni: 20210
         211:
