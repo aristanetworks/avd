@@ -40,6 +40,9 @@
       - [Match Lists](#match-lists)
     - [Generate Device Documentation](#generate-device-documentation)
     - [Generate Default Config](#generate-default-config)
+    - [Groups](#groups)
+      - [BGP](#group-bgp-neighbor)
+      - [Interface](#group-interface)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -585,6 +588,39 @@ The following commands will be ommited when `generate_default_config` is set to 
 
 ```yaml
 generate_default_config: < true | false | default -> true >
+```
+
+### Groups
+
+#### Group BGP Neighbor
+
+```yaml
+group:
+  bgp:
+    < group_name >:
+      vrf: "< vrf_name >"
+      neighbors:
+        - "< ip_address >"
+        - "< ipv6_address >"
+        - "< peer_group_name >"
+      maintenance_profile:
+        bgp:
+          - < profile_name >
+```
+
+#### Group Interface
+
+```yaml
+group:
+  interface:
+    < group_name >:
+      interfaces:
+        - "< interface_or_interface_range >"
+      maintenance_profile:
+        bgp:
+          - < profile_name >
+        interface:
+          - < profile_name >
 ```
 
 ### Hardware
