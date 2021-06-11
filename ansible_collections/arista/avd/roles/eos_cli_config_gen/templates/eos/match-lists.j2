@@ -4,7 +4,9 @@
 {%     for match_list in match_lists | arista.avd.natural_sort %}
 match-list input string {{ match_list }}
 {%         for sequence in match_lists[match_list].sequence_numbers | arista.avd.natural_sort %}
+{%             if match_lists[match_list].sequence_numbers[sequence].match is arista.avd.defined %}
    {{ sequence }} match {{ match_lists[match_list].sequence_numbers[sequence].match }}
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {% endif %}
