@@ -25,6 +25,7 @@
 - name: Generate device documentation
   tags: [build, provision]
   delegate_to: localhost
+  when: generate_device_documentation | arista.avd.default(true)
   block:
     - name: Store checksum of existing device documentation
       ansible.builtin.stat:
