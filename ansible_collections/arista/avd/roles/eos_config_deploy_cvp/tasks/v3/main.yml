@@ -1,4 +1,3 @@
-
 ---
 - name: "Generate intented variables"
   tags: [always]
@@ -16,6 +15,7 @@
   template:
     src: "cvp-devices-v3.j2"
     dest: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
+    mode: 0664
   delegate_to: localhost
   run_once: true
 
