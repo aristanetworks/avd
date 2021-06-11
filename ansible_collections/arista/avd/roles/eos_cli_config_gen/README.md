@@ -37,6 +37,7 @@
       - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
+    - [Generate Device Documentation](#generate-device-documentation)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -545,6 +546,12 @@ route_maps:
         set:
           - "< set rule 1 as string >"
           - "< set rule 2 as string >"
+```
+
+### Generate Device Documentation
+
+```yaml
+generate_device_documentation: < true | false | default -> true >
 ```
 
 ### Hardware
