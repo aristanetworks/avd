@@ -1,0 +1,8 @@
+{# eos - router igmp #}
+{% if router_igmp is arista.avd.defined %}
+!
+router igmp
+{%     if router_igmp.ssm_aware is arista.avd.defined(true) %}
+   ssm aware
+{%     endif %}
+{% endif %}
