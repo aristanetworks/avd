@@ -1437,7 +1437,7 @@ logging:
     match:
       match_lists:
         < match_list >:
-          action: < action >
+          action: < discard >
 ```
 
 #### Sflow
