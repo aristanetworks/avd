@@ -82,6 +82,7 @@ interface Management1
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
 | Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -251,6 +252,13 @@ interface Ethernet13
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+!
+interface Ethernet14
+   description SRV-POD02_Eth1
+   logging event link-status
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
 ```
 
 # Routing

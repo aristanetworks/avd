@@ -18,17 +18,6 @@ ethernet_interfaces:
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
       EOF
 
-  Ethernet6:
-    logging:
-      event:
-        link_status: true
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
-    description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
-
   Ethernet2:
     peer: SRV-POD03
     peer_interface: Eth1
@@ -204,3 +193,14 @@ ethernet_interfaces:
     phone:
       trunk: untagged
       vlan: 70
+
+  Ethernet14:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
