@@ -562,7 +562,7 @@ generate_device_documentation: < true | false | default -> true >
 The `generate_default_config` knob allows to ommit default EOS configuration.
 This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
 
-The following commands will be commands will be ommited when `generate_default_config` is set to `false`:
+The following commands will be ommited when `generate_default_config` is set to `false`:
 
 - RANCID Content Type
 - Hostname
