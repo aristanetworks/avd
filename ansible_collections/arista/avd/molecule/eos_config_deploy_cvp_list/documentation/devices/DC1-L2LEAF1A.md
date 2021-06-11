@@ -24,6 +24,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -279,14 +280,14 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po7 | switched | trunk | 110-111,120-121,130-131 | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po7 | switched | trunk | 110-111,120-121,130-131 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1-LEAF2A_Po7
+   description DC1_LEAF2_Po7
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-121,130-131
@@ -294,6 +295,14 @@ interface Port-Channel1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 

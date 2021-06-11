@@ -13,18 +13,10 @@ ethernet_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
-
-  Ethernet6:
-    logging:
-      event:
-        link_status: true
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
-    description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
-    profile: ALL
+    eos_cli: |
+      comment
+      Comment created from eos_cli under ethernet_interfaces.Ethernet1
+      EOF
 
   Ethernet2:
     peer: SRV-POD03
@@ -33,7 +25,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
     storm_control:
       all:
         level: 10
@@ -111,7 +102,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
 
   Ethernet7:
     description: Molecule L2
@@ -188,3 +178,29 @@ ethernet_interfaces:
     vlans: 200
     l2_protocol:
       encapsulation_dot1q_vlan: 200
+
+  Ethernet12:
+    description: interface_with_dot1q_tunnel
+    type: switched
+    mode: dot1q-tunnel
+    vlans: 300
+
+  Ethernet13:
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70
+
+  Ethernet14:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211

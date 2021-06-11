@@ -46,6 +46,10 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1003\n  description Loopback created from raw_eos_cli\
+  \ under l2leaf node DC1-POD1-L2LEAF2B\n\ninterface Loopback1111\n  description Loopback\
+  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
+  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
   4094:
     tenant: system
@@ -88,7 +92,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1-POD1-LEAF2B_Po3
+    description: RACK2_MLAG_Po3
     type: switched
     shutdown: false
     vlans: 110-112,2500,2600,4085

@@ -144,6 +144,9 @@ evpn_overlay_bgp_rtc: < true | false , default -> false >
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
 evpn_prevent_readvertise_to_server : < true | false , default -> false >
 
+# Configure prefix for "short_esi" values | Optional
+evpn_short_esi_prefix: < string, default -> "0000:0000:" >
+
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
 # SVI IP address will be assigned as follows:

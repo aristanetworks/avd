@@ -25,6 +25,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -42,6 +43,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -277,14 +279,14 @@ interface Ethernet7
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK1_SINGLE_Po1 | switched | trunk | 4092 | - | - | - | - | - | - |
+| Port-Channel3 | DC2-POD1-L2LEAF1A_Po1 | switched | trunk | 4092 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel3
-   description RACK1_SINGLE_Po1
+   description DC2-POD1-L2LEAF1A_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 4092
@@ -385,6 +387,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -570,6 +580,11 @@ router bgp 65211
       route-target export evpn 1025:1025
       router-id 172.16.210.3
       redistribute connected
+      !
+      comment
+      Comment created from raw_eos_cli under BGP for VRF Common_VRF
+      EOF
+
 ```
 
 # BFD
@@ -678,3 +693,18 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1010
+  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+interface Loopback1000
+  description Loopback created from raw_eos_cli under VRF Common_VRF
+
+```

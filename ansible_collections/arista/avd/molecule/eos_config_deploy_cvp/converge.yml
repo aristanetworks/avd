@@ -13,15 +13,15 @@
       import_role:
         name: arista.avd.eos_cli_config_gen
 
-- name: Converge
-  hosts: cv_server
+- name: "Converge -- Build Cloudvision Configuration"
+  hosts: CVP
   gather_facts: false
   connection: local
   vars:
     root_dir: '{{playbook_dir}}'
   tasks:
     - name: run CVP provisioning
-      tags: generate
+      # tags: generate
       import_role:
         name: arista.avd.eos_config_deploy_cvp
       vars:
@@ -30,3 +30,4 @@
         device_filter: 'DC1'
         execute_tasks: false
         state: present
+        cv_collection: v1

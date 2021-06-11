@@ -41,8 +41,8 @@ router_bgp:
       description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-RS2
       remote_as: 65102
+      description: DC1-RS2_Ethernet3
       bfd: true
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
@@ -75,6 +75,13 @@ router_bgp:
           - 1025:1025
       redistribute_routes:
       - connected
+      eos_cli: 'comment
+
+        Comment created from raw_eos_cli under BGP for VRF Common_VRF
+
+        EOF
+
+        '
   vlans:
     110:
       tenant: Tenant_A
@@ -154,6 +161,9 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
+  \ under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
+  \ created from raw_eos_cli under VRF Common_VRF\n"
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -191,7 +201,7 @@ ethernet_interfaces:
   Ethernet3:
     peer: DC1-RS2
     peer_interface: Ethernet3
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC1-RS2_Ethernet3
     mtu: 1500
     service_profile: QOS-PROFILE
@@ -250,6 +260,13 @@ vlan_interfaces:
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.1.12.1/24
+    eos_cli: 'comment
+
+      Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
+
+      EOF
+
+      '
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

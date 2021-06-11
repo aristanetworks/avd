@@ -35,25 +35,27 @@ router_bgp:
     172.16.21.1:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65210
+      description: DC2-POD1-SPINE1_Ethernet1
     172.16.21.3:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65210
+      description: DC2-POD1-SPINE2_Ethernet1
     172.17.20.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC2-RS1
       remote_as: 65201
-    172.17.20.3:
-      peer_group: IPv4-UNDERLAY-PEERS
-      description: DC2-RS1
-      remote_as: 65201
+      description: DC2-RS1_Ethernet1
     172.17.20.9:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC2-RS2
       remote_as: 65201
+      description: DC2-RS2_Ethernet1
+    172.17.20.3:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65201
+      description: DC2-RS1_Ethernet2
     172.17.20.11:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC2-RS2
       remote_as: 65201
+      description: DC2-RS2_Ethernet2
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
@@ -119,6 +121,8 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
+  \ under platform_settings vEOS-LAB\n"
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
@@ -152,37 +156,37 @@ ethernet_interfaces:
   Ethernet3:
     peer: DC2-RS1
     peer_interface: Ethernet1
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS1_Ethernet1
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
     shutdown: false
     ip_address: 172.17.20.0/31
-  Ethernet6:
-    peer: DC2-RS1
-    peer_interface: Ethernet2
-    peer_type: overlay_controller
-    description: P2P_LINK_TO_DC2-RS1_Ethernet2
-    mtu: 1500
-    service_profile: QOS-PROFILE
-    type: routed
-    shutdown: false
-    ip_address: 172.17.20.2/31
   Ethernet5:
     peer: DC2-RS2
     peer_interface: Ethernet1
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS2_Ethernet1
     mtu: 1500
     service_profile: QOS-PROFILE
     type: routed
     shutdown: false
     ip_address: 172.17.20.8/31
+  Ethernet6:
+    peer: DC2-RS1
+    peer_interface: Ethernet2
+    peer_type: overlay-controller
+    description: P2P_LINK_TO_DC2-RS1_Ethernet2
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    type: routed
+    shutdown: false
+    ip_address: 172.17.20.2/31
   Ethernet7:
     peer: DC2-RS2
     peer_interface: Ethernet2
-    peer_type: overlay_controller
+    peer_type: overlay-controller
     description: P2P_LINK_TO_DC2-RS2_Ethernet2
     mtu: 1500
     service_profile: QOS-PROFILE

@@ -21,6 +21,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -29,7 +30,6 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [Peer Filters](#peer-filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
@@ -307,6 +307,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -502,24 +510,6 @@ router bfd
 # Multicast
 
 # Filters
-
-## Peer Filters
-
-### Peer Filters Summary
-
-#### LEAF-AS-RANGE
-
-| Sequence | Match |
-| -------- | ----- |
-| 10 | as-range 65101-65132 result accept |
-
-### Peer Filters Device Configuration
-
-```eos
-!
-peer-filter LEAF-AS-RANGE
-   10 match as-range 65101-65132 result accept
-```
 
 ## Prefix-lists
 

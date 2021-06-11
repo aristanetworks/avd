@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -32,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -244,6 +246,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -340,10 +350,10 @@ router bgp 65201
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.17.20.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.8 remote-as 65200
-   neighbor 172.17.20.8 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.8 description DC2-SUPER-SPINE1_Ethernet5
    neighbor 172.17.20.10 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.10 remote-as 65200
-   neighbor 172.17.20.10 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.10 description DC2-SUPER-SPINE1_Ethernet7
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
@@ -408,3 +418,12 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

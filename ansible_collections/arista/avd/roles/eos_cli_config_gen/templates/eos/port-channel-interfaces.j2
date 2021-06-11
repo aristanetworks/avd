@@ -32,6 +32,15 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].native_vlan is arista.avd.defined and port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("trunk") %}
    switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("trunk phone") and port_channel_interfaces[port_channel_interface].native_vlan %}
+   switchport trunk native vlan {{ port_channel_interfaces[port_channel_interface].native_vlan }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].phone.vlan is arista.avd.defined %}
+   switchport phone vlan {{ port_channel_interfaces[port_channel_interface].phone.vlan }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].phone.trunk is arista.avd.defined%}
+   switchport phone trunk {{ port_channel_interfaces[port_channel_interface].phone.trunk }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].mode is arista.avd.defined("trunk") %}
    switchport mode {{ port_channel_interfaces[port_channel_interface].mode }}
 {%     endif %}
@@ -200,5 +209,8 @@ interface {{ port_channel_interface }}
           port_channel_interfaces[port_channel_interface].bfd.min_rx is arista.avd.defined and
           port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].eos_cli is arista.avd.defined %}
+   {{ port_channel_interfaces[port_channel_interface].eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}

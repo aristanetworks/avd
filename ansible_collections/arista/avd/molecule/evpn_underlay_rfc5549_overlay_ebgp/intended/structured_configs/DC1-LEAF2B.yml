@@ -594,7 +594,7 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
   Port-Channel7:
-    description: DC1_L2LEAF1_Po1
+    description: DC1-L2LEAF1A_Po1
     type: switched
     shutdown: false
     vlans: 110-111,120-121,130-131,160-161
@@ -700,7 +700,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_B
   Ethernet12:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth7
@@ -725,7 +724,6 @@ ethernet_interfaces:
     channel_group:
       id: 11
       mode: active
-    profile: TENANT_A_MTU
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

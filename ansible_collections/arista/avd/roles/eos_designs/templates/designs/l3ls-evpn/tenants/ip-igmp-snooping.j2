@@ -31,7 +31,7 @@ ip_igmp_snooping:
 {%             set l2vlan_igmp_snooping_enabled = tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled | arista.avd.default() %}
 {%             if l2vlan_igmp_snooping_enabled is arista.avd.defined %}
     {{ l2vlan | int }}:
-      enabled: false
+      enabled: {{ l2vlan_igmp_snooping_enabled }}
 {%             endif %}
 {%         endfor %}
 {%     endfor %}

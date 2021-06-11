@@ -32,6 +32,9 @@ evpn_hostflap_detection:
   enabled: false
   threshold: 30
 
+# Set short_esi prefix to non-default value
+evpn_short_esi_prefix: "0000:1234:"
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
@@ -47,7 +50,6 @@ bgp_peer_groups:
 spine:
   platform: 7050SX3
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1

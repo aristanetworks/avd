@@ -40,9 +40,7 @@ daemon TerminAttr
 {%             set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" %}
 {%         endif %}
 {%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
-{%             if daemon_terminattr.ingestvrf != 'default' %}
 {%                 set cvp_config.cli = cvp_config.cli ~ " -ingestvrf=" ~ daemon_terminattr.ingestvrf %}
-{%             endif %}
 {%         endif %}
 {%         if daemon_terminattr.disable_aaa is arista.avd.defined(true) %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -disableaaa" %}

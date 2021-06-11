@@ -47,7 +47,7 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].flowcontrol.received is arista.avd.defined %}
    flowcontrol receive {{ ethernet_interfaces[ethernet_interface].flowcontrol.received }}
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined('access') %}
+{%         if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined('access') or ethernet_interfaces[ethernet_interface].mode is arista.avd.defined('dot1q-tunnel') %}
 {%             if ethernet_interfaces[ethernet_interface].vlans is arista.avd.defined %}
    switchport access vlan {{ ethernet_interfaces[ethernet_interface].vlans }}
 {%             endif %}
@@ -59,6 +59,15 @@ interface {{ ethernet_interface }}
 {%             if ethernet_interfaces[ethernet_interface].native_vlan is arista.avd.defined %}
    switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
 {%             endif %}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined("trunk phone") and ethernet_interfaces[ethernet_interface].native_vlan %}
+   switchport trunk native vlan {{ ethernet_interfaces[ethernet_interface].native_vlan }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].phone.vlan is arista.avd.defined %}
+   switchport phone vlan {{ ethernet_interfaces[ethernet_interface].phone.vlan }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].phone.trunk is arista.avd.defined %}
+   switchport phone trunk {{ ethernet_interfaces[ethernet_interface].phone.trunk }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].mode is arista.avd.defined %}
    switchport mode {{ ethernet_interfaces[ethernet_interface].mode }}
@@ -215,6 +224,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].service_profile is arista.avd.defined %}
    service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].profile is arista.avd.defined %}
+   profile {{ ethernet_interfaces[ethernet_interface].profile }}
+{%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
 {%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined('pps') %}
@@ -239,5 +251,8 @@ interface {{ ethernet_interface }}
 {%         elif ethernet_interfaces[ethernet_interface].mpls.ldp.interface is arista.avd.defined(false) %}
    no mpls ldp interface
 {%         endif %}
+{%     endif %}
+{%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
+   {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
 {%     endif %}
 {% endfor %}

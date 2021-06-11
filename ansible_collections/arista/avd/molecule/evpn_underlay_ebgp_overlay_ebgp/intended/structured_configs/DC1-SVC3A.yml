@@ -276,6 +276,15 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 161
+    Tenant_A_FTP:
+      tenant: Tenant_A
+      rd: 192.168.255.12:10162
+      route_targets:
+        both:
+        - 10162:10162
+      redistribute_routes:
+      - learned
+      vlan: 162
     Tenant_B_OP_Zone:
       rd: 192.168.255.12:20
       route_targets:
@@ -471,6 +480,9 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+  162:
+    tenant: Tenant_A
+    name: Tenant_A_FTP
   210:
     tenant: Tenant_B
     name: Tenant_B_OP_Zone_1
@@ -739,7 +751,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+    vlans: 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel10:
@@ -748,7 +760,7 @@ port_channel_interfaces:
     shutdown: false
     mode: trunk
     vlans: 110-111,210-211
-    esi: 0000:0000:0303:0202:0101
+    esi: 0000:1234:0303:0202:0101
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
   Port-Channel14:
@@ -896,6 +908,26 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+  Ethernet7:
+    peer: DC1-L2LEAF2A
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF2A_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF2B
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-L2LEAF2B_Ethernet1
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
   Ethernet41:
     peer: DC1-SPINE1
     peer_interface: Ethernet4
@@ -936,26 +968,6 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.55/31
-  Ethernet7:
-    peer: DC1-L2LEAF2A
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
-  Ethernet8:
-    peer: DC1-L2LEAF2B
-    peer_interface: Ethernet1
-    peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet1
-    type: switched
-    shutdown: false
-    channel_group:
-      id: 7
-      mode: active
   Ethernet10:
     peer: server03_ESI
     peer_interface: Eth1
@@ -968,7 +980,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_A_B
   Ethernet11:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth1
@@ -995,7 +1006,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY
   Ethernet12:
     peer: server05_no_profile
     peer_interface: Eth1
@@ -1047,7 +1057,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY
   Ethernet14:
     peer: server07_inherit_all_from_profile_port_channel
     peer_interface: Eth1
@@ -1077,7 +1086,6 @@ ethernet_interfaces:
     channel_group:
       id: 14
       mode: active
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL
   Ethernet15:
     peer: server08_no_profile_port_channel
     peer_interface: Eth1
@@ -1132,7 +1140,6 @@ ethernet_interfaces:
       unknown-unicast:
         level: 2
         unit: percent
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL
   Ethernet17:
     peer: server10_no_profile_port_channel_lacp_fallback
     peer_interface: Eth1
@@ -1191,7 +1198,6 @@ ethernet_interfaces:
     channel_group:
       id: 18
       mode: active
-    profile: ALL_WITH_SECURITY_PORT_CHANNEL_LACP_FALLBACK
     lacp_port_priority: 8192
   Ethernet19:
     peer: server12_inherit_nested_profile_port_channel_lacp_fallback
@@ -1222,7 +1228,6 @@ ethernet_interfaces:
     channel_group:
       id: 19
       mode: active
-    profile: NESTED_PORT_PROFILE
     lacp_port_priority: 8192
 mlag_configuration:
   domain_id: DC1_SVC3
@@ -1277,6 +1282,10 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+    160:
+      enabled: true
+    161:
+      enabled: false
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-SVC3A_VTEP
@@ -1308,6 +1317,8 @@ vxlan_tunnel_interface:
           vni: 10160
         161:
           vni: 10161
+        162:
+          vni: 10162
         210:
           vni: 20210
         211:

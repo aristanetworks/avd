@@ -26,6 +26,7 @@
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -37,6 +38,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -49,25 +51,17 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.11/24 | 192.168.1.254 |
 | Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | 172.21.110.5/24 | 172.21.110.1 |
 
 #### IPv6
 
 | Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
 | Vlan4085 | L2LEAF_INBAND_MGMT | inband | default | -  | - |
 
 ### Management Interfaces Device Configuration
 
 ```eos
-!
-interface Management1
-   description oob_management
-   no shutdown
-   vrf MGMT
-   ip address 192.168.1.11/24
 !
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
@@ -310,7 +304,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-POD1-LEAF2A_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
+| Port-Channel1 | RACK2_MLAG_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -318,7 +312,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description DC1-POD1-LEAF2A_Po3
+   description RACK2_MLAG_Po3
    no shutdown
    switchport
    switchport trunk allowed vlan 110-112,2500,2600,4085
@@ -364,6 +358,14 @@ interface Vlan4094
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -440,3 +442,18 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1002
+  description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+interface Loopback1000
+  description Loopback created from raw_eos_cli under VRF Common_VRF
+
+```

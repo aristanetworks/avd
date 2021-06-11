@@ -28,6 +28,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -295,6 +296,8 @@ vlan 350
 | Ethernet7 | test | routed | - | 10.10.10.10/24 | Tenant_A_WAN_Zone | 9000 | false | - | - |
 | Ethernet8 | test | routed | - | 10.10.10.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet9 | test | routed | - | 10.10.20.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
+| Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
+| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet41 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
 | Ethernet42 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
 | Ethernet43 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.85/31 | default | 1500 | false | - | - |
@@ -328,6 +331,26 @@ interface Ethernet9
    no switchport
    vrf Tenant_L3_VRF_Zone
    ip address 10.10.20.20/24
+!
+interface Ethernet10
+   no shutdown
+   no switchport
+!
+interface Ethernet10.100
+   description subinterface test
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 100
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.11.10/24
+!
+interface Ethernet10.200
+   description subinterface test with vlan override
+   no shutdown
+   mtu 9000
+   encapsulation dot1q vlan 121
+   vrf Tenant_L3_VRF_Zone
+   ip address 10.10.21.10/24
 !
 interface Ethernet41
    description P2P_LINK_TO_DC1-SPINE1_Ethernet6
@@ -489,6 +512,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 

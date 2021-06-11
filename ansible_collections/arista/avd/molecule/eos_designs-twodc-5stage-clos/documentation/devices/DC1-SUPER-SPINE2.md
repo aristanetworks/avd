@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -32,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -283,6 +285,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -386,15 +396,19 @@ router bgp 65100
    neighbor 11.1.2.3 description DC2-SUPER-SPINE2
    neighbor 172.16.11.65 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.65 remote-as 65110
+   neighbor 172.16.11.65 description DC1-POD1-SPINE1_Ethernet2
    neighbor 172.16.11.67 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.67 remote-as 65110
+   neighbor 172.16.11.67 description DC1-POD1-SPINE2_Ethernet2
    neighbor 172.16.12.65 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.65 remote-as 65120
+   neighbor 172.16.12.65 description DC1-POD2-SPINE1_Ethernet2
    neighbor 172.16.12.67 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.67 remote-as 65120
+   neighbor 172.16.12.67 description DC1-POD2-SPINE2_Ethernet2
    neighbor 172.17.10.9 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.9 remote-as 65102
-   neighbor 172.17.10.9 description DC1-RS2
+   neighbor 172.17.10.9 description DC1-RS2_Ethernet1
    neighbor 172.17.10.9 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !
@@ -460,3 +474,12 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

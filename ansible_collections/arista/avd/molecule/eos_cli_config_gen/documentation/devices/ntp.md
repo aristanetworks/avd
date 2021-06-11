@@ -53,20 +53,35 @@ interface Management1
 
 - Local Interface: lo1
 
-- VRF: test
+- VRF: default
+
+- Authentication enabled
+
+- Trusted Keys: 1-2
 
 | Node | Primary |
 | ---- | ------- |
 | 10.1.1.1 | true |
 | 10.1.1.2 | - |
 
+### NTP Authentication Keys
+
+| ID | Algoritm |
+| -- | -------- |
+| 1 | md5 |
+| 2 | sha1 |
+
 ### NTP Device Configuration
 
 ```eos
 !
-ntp local-interface vrf test lo1
-ntp server vrf test 10.1.1.1 prefer
-ntp server vrf test 10.1.1.2
+ntp local-interface lo1
+ntp server 10.1.1.1 prefer
+ntp server 10.1.1.2
+ntp authenticate
+ntp authentication-key 1 md5 044F0E151B
+ntp authentication-key 2 sha1 15060E1F10
+ntp trusted-key 1-2
 ```
 
 # Authentication

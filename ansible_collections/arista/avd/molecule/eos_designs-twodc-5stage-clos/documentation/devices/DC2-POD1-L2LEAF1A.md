@@ -22,6 +22,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -33,6 +34,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -196,31 +198,11 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 112 | Tenant_A_OP_Zone_3 | none  |
-| 2500 | web-l2-vlan | none  |
-| 2600 | web-l2-vlan-2 | none  |
 | 4092 | L2LEAF_INBAND_MGMT | none  |
 
 ## VLANs Device Configuration
 
 ```eos
-!
-vlan 110
-   name Tenant_A_OP_Zone_1
-!
-vlan 111
-   name Tenant_A_OP_Zone_2
-!
-vlan 112
-   name Tenant_A_OP_Zone_3
-!
-vlan 2500
-   name web-l2-vlan
-!
-vlan 2600
-   name web-l2-vlan-2
 !
 vlan 4092
    name L2LEAF_INBAND_MGMT
@@ -236,7 +218,7 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC2-POD1-LEAF1A_Ethernet3 | *trunk | *110-112,2500,2600,4092 | *- | *- | 1 |
+| Ethernet1 | DC2-POD1-LEAF1A_Ethernet3 | *trunk | *4092 | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -258,7 +240,7 @@ interface Ethernet1
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC2-POD1-LEAF1A_Po3 | switched | trunk | 110-112,2500,2600,4092 | - | - | - | - | - | - |
+| Port-Channel1 | DC2-POD1-LEAF1A_Po3 | switched | trunk | 4092 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -268,12 +250,20 @@ interface Port-Channel1
    description DC2-POD1-LEAF1A_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,2500,2600,4092
+   switchport trunk allowed vlan 4092
    switchport mode trunk
    service-profile QOS-PROFILE
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -350,3 +340,15 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1011
+  description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

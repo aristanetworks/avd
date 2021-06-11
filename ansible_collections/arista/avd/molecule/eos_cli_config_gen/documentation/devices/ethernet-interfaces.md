@@ -80,6 +80,9 @@ interface Management1
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 | Ethernet7 |  Molecule L2 | access | - | - | - | - |
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
+| Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
+| Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -117,6 +120,10 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
+   comment
+   Comment created from eos_cli under ethernet_interfaces.Ethernet1
+   EOF
+
 !
 interface Ethernet2
    description SRV-POD02_Eth1
@@ -231,6 +238,27 @@ interface Ethernet11
    switchport access vlan 200
    switchport mode access
    l2-protocol encapsulation dot1q vlan 200
+!
+interface Ethernet12
+   description interface_with_dot1q_tunnel
+   switchport
+   switchport access vlan 300
+   switchport mode dot1q-tunnel
+!
+interface Ethernet13
+   description interface_in_mode_access_with_voice
+   switchport
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged
+   switchport mode trunk phone
+!
+interface Ethernet14
+   description SRV-POD02_Eth1
+   logging event link-status
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
 ```
 
 # Routing

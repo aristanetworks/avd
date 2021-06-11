@@ -22,6 +22,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -350,6 +351,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -477,22 +486,22 @@ router bgp 65001
    neighbor 172.31.255.1 description DC1-LEAF1A_Ethernet1
    neighbor 172.31.255.17 peer group UNDERLAY-PEERS
    neighbor 172.31.255.17 remote-as 65102
-   neighbor 172.31.255.17 description DC1-LEAF2A_Ethernet2
+   neighbor 172.31.255.17 description DC1-LEAF2A_Ethernet1
    neighbor 172.31.255.33 peer group UNDERLAY-PEERS
    neighbor 172.31.255.33 remote-as 65102
-   neighbor 172.31.255.33 description DC1-LEAF2B_Ethernet3
+   neighbor 172.31.255.33 description DC1-LEAF2B_Ethernet1
    neighbor 172.31.255.49 peer group UNDERLAY-PEERS
    neighbor 172.31.255.49 remote-as 65103
-   neighbor 172.31.255.49 description DC1-SVC3A_Ethernet4
+   neighbor 172.31.255.49 description DC1-SVC3A_Ethernet1
    neighbor 172.31.255.65 peer group UNDERLAY-PEERS
    neighbor 172.31.255.65 remote-as 65103
-   neighbor 172.31.255.65 description DC1-SVC3B_Ethernet5
+   neighbor 172.31.255.65 description DC1-SVC3B_Ethernet1
    neighbor 172.31.255.81 peer group UNDERLAY-PEERS
    neighbor 172.31.255.81 remote-as 65104
-   neighbor 172.31.255.81 description DC1-BL1A_Ethernet6
+   neighbor 172.31.255.81 description DC1-BL1A_Ethernet1
    neighbor 172.31.255.97 peer group UNDERLAY-PEERS
    neighbor 172.31.255.97 remote-as 65105
-   neighbor 172.31.255.97 description DC1-BL1B_Ethernet7
+   neighbor 172.31.255.97 description DC1-BL1B_Ethernet1
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A

@@ -34,18 +34,18 @@ router_bgp:
   neighbors:
     172.17.10.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-SUPER-SPINE1
       remote_as: 65100
+      description: DC1-SUPER-SPINE1_Ethernet5
       bfd: true
     172.17.10.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-SPINE1
       remote_as: 65110
+      description: DC1-POD1-SPINE1_Ethernet6
       bfd: true
     172.17.10.4:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-LEAF1A
       remote_as: 65111
+      description: DC1-POD1-LEAF1A_Ethernet4
       bfd: true
     172.16.210.3:
       peer_group: EVPN-OVERLAY-PEERS
@@ -108,18 +108,12 @@ local_users:
 vrfs:
   MGMT:
     ip_routing: false
-management_interfaces:
-  Management1:
-    description: oob_management
-    shutdown: false
-    vrf: MGMT
-    ip_address: 192.168.1.3/24
-    gateway: 192.168.1.254
-    type: oob
 management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
+  \ under platform_settings vEOS-LAB\n"
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

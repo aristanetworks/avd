@@ -3,7 +3,6 @@
 <!-- toc -->
 
 - [Management](#management)
-  - [Management Interfaces](#management-interfaces)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -19,6 +18,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -34,36 +34,10 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
-
-## Management Interfaces
-
-### Management Interfaces Summary
-
-#### IPv4
-
-| Management Interface | description | Type | VRF | IP Address | Gateway |
-| -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.3/24 | 192.168.1.254 |
-
-#### IPv6
-
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | -  | - |
-
-### Management Interfaces Device Configuration
-
-```eos
-!
-interface Management1
-   description oob_management
-   no shutdown
-   vrf MGMT
-   ip address 192.168.1.3/24
-```
 
 ## Management API HTTP
 
@@ -255,6 +229,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -400,15 +382,15 @@ router bgp 65101
    neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.0 remote-as 65100
-   neighbor 172.17.10.0 description DC1-SUPER-SPINE1
+   neighbor 172.17.10.0 description DC1-SUPER-SPINE1_Ethernet5
    neighbor 172.17.10.0 bfd
    neighbor 172.17.10.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.2 remote-as 65110
-   neighbor 172.17.10.2 description DC1-POD1-SPINE1
+   neighbor 172.17.10.2 description DC1-POD1-SPINE1_Ethernet6
    neighbor 172.17.10.2 bfd
    neighbor 172.17.10.4 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.4 remote-as 65111
-   neighbor 172.17.10.4 description DC1-POD1-LEAF1A
+   neighbor 172.17.10.4 description DC1-POD1-LEAF1A_Ethernet4
    neighbor 172.17.10.4 bfd
    redistribute connected route-map RM-CONN-2-BGP
    !
@@ -544,3 +526,12 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

@@ -82,20 +82,12 @@
 | l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet41 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet41 |
-| spine | DC1-SPINE1 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet42 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet42 |
-| spine | DC1-SPINE2 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet2 |
-| spine | DC1-SPINE2 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet2 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet43 |
 | spine | DC1-SPINE3 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet43 |
-| spine | DC1-SPINE3 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet3 |
-| spine | DC1-SPINE3 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet3 |
 | spine | DC1-SPINE4 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet44 |
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet44 |
-| spine | DC1-SPINE4 | Ethernet6 | l3leaf | DC1-BL1A | Ethernet4 |
-| spine | DC1-SPINE4 | Ethernet7 | l3leaf | DC1-BL1B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
 
@@ -105,7 +97,7 @@
 
 | P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-| 172.31.255.0/24 | 256 | 64 | 25.0 % |
+| 172.31.255.0/24 | 256 | 56 | 21.88 % |
 
 ## Point-To-Point Links Node Allocation
 

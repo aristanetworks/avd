@@ -134,6 +134,10 @@ port_profiles:
         ptp:
           enable: < true | false >
 
+        # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+        raw_eos_cli: |
+          < multiline eos cli >
+
       < port_profile_2 >:
         mode: < access | dot1q-tunnel | trunk >
         vlans: < vlans as string >
@@ -173,6 +177,10 @@ port_profiles:
           lacp_fallback:
             mode: < static > Currently only static mode is supported
             timeout: < timeout in seconds > | Optional - default is 90 seconds
+
+          # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
+          raw_eos_cli: |
+            < multiline eos cli >
 
   < endpoint_2 >:
     rack: RackC

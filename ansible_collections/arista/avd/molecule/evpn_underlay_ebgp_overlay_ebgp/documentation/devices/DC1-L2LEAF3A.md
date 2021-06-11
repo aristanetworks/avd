@@ -25,6 +25,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -256,6 +257,7 @@ vlan internal order ascending range 1006 1199
 | 131 | Tenant_A_APP_Zone_2 | none  |
 | 160 | Tenant_A_VMOTION | none  |
 | 161 | Tenant_A_NFS | none  |
+| 162 | Tenant_A_FTP | none  |
 
 ## VLANs Device Configuration
 
@@ -284,6 +286,9 @@ vlan 160
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 162
+   name Tenant_A_FTP
 ```
 
 # Interfaces
@@ -296,8 +301,8 @@ vlan 161
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet9 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet9 | *trunk | *110-111,120-121,130-131,160-161 | *- | *- | 1 |
+| Ethernet1 | DC1-LEAF2A_Ethernet9 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
+| Ethernet2 | DC1-LEAF2B_Ethernet9 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -324,21 +329,29 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1-LEAF2A_Po9 | switched | trunk | 110-111,120-121,130-131,160-161 | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po9 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1-LEAF2A_Po9
+   description DC1_LEAF2_Po9
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-161
+   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
    switchport mode trunk
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -391,12 +404,15 @@ IGMP snooping is globally enabled.
 | VLAN | IGMP Snooping |
 | --- | --------------- |
 | 120 | disabled |
+| 160 | enabled |
+| 161 | disabled |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
 no ip igmp snooping vlan 120
+no ip igmp snooping vlan 161
 ```
 
 # Filters

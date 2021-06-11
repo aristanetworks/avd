@@ -14,7 +14,7 @@
 {## Domain Lookup #}
 {% include 'documentation/domain-lookup.j2' %}
 {## NTP #}
-{% include 'documentation/ntp-servers.j2' %}
+{% include 'documentation/ntp.j2' %}
 {## PTP #}
 {% include 'documentation/ptp.j2' %}
 {## Management SSH #}
@@ -53,6 +53,8 @@
 # Monitoring
 {## TerminAttr Daemon #}
 {% include 'documentation/daemon-terminattr.j2' %}
+{## Custom Daemons #}
+{% include 'documentation/daemons.j2' %}
 {## Logging #}
 {% include 'documentation/logging.j2' %}
 {## SNMP #}
@@ -81,6 +83,8 @@
 {% include 'documentation/switchport-default.j2' %}
 {## Interface Defaults #}
 {% include 'documentation/interface-defaults.j2' %}
+{## Interface Profiles #}
+{% include 'documentation/interface-profiles.j2' %}
 {## Ethernet Interfaces #}
 {% include 'documentation/ethernet-interfaces.j2' %}
 {## Port-Channel Interfaces #}
@@ -93,6 +97,10 @@
 {% include 'documentation/vxlan-interface.j2' %}
 
 # Routing
+{## Service Routing Configuration #}
+{% include 'documentation/service-routing-configuration-bgp.j2' %}
+{## Service Routing Protocols Model #}
+{% include 'documentation/service-routing-protocols-model.j2' %}
 {## Virtual Router MAC Address #}
 {% include 'documentation/virtual-router-mac-address.j2' %}
 {## IP Routing #}
@@ -125,6 +133,8 @@
 {% include 'documentation/router-multicast.j2' %}
 {## Router PIM Sparse Mode #}
 {% include 'documentation/router-pim-sparse-mode.j2' %}
+{## Router IGMP #}
+{% include 'documentation/router-igmp.j2' %}
 
 # Filters
 {## Community-lists #}
@@ -177,5 +187,7 @@
 {% include 'documentation/policy-maps-qos.j2' %}
 {## QOS Profiles #}
 {% include 'documentation/qos-profiles.j2' %}
+{# EOS CLI #}
+{% include 'documentation/eos-cli.j2' %}
 {# Custom Templates #}
 {% include 'documentation/custom-templates.j2' %}

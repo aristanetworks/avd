@@ -222,7 +222,9 @@ platform_settings:
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
-
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
 ```
 
 note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
@@ -259,7 +261,7 @@ custom_structured_configuration_prefix: < variable_prefix, default -> "custom_st
 #or
 custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_prefix_2 > , < variable_prefix_3 > ]
 
-custom_structured_configuration_list_merge: < append (default) | replace | keep | prepend | append_rp | prepend_rp >
+custom_structured_configuration_list_merge: < replace (default) | append | keep | prepend | append_rp | prepend_rp >
 ```
 
 

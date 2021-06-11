@@ -4,13 +4,13 @@
   tags:
     - always
   stat:
-    path: "{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml"
+    path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
   register: stat_result
   delegate_to: localhost
   when: structured_config is not defined
 
 - name: Include device intended structure configuration variables
-  include_vars: "{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml"
+  include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
   delegate_to: localhost
   tags:
     - always

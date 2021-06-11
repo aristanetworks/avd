@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -32,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -276,6 +278,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -375,17 +385,19 @@ router bgp 65110
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.11.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.2 remote-as 65100
+   neighbor 172.16.11.2 description DC1-SUPER-SPINE1_Ethernet2
    neighbor 172.16.11.66 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.11.66 remote-as 65100
+   neighbor 172.16.11.66 description DC1-SUPER-SPINE2_Ethernet2
    neighbor 172.17.110.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.3 remote-as 65111
-   neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet3
+   neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet2
    neighbor 172.17.110.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.7 remote-as 65112
-   neighbor 172.17.110.7 description DC1-POD1-LEAF2A_Ethernet4
+   neighbor 172.17.110.7 description DC1-POD1-LEAF2A_Ethernet2
    neighbor 172.17.110.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.11 remote-as 65112
-   neighbor 172.17.110.11 description DC1-POD1-LEAF2B_Ethernet5
+   neighbor 172.17.110.11 description DC1-POD1-LEAF2B_Ethernet2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
@@ -450,3 +462,12 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

@@ -19,6 +19,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -34,6 +35,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -266,6 +268,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -397,8 +407,10 @@ router bgp 65210
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.21.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.0 remote-as 65200
+   neighbor 172.16.21.0 description DC2-SUPER-SPINE1_Ethernet1
    neighbor 172.16.21.64 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.64 remote-as 65200
+   neighbor 172.16.21.64 description DC2-SUPER-SPINE2_Ethernet1
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
@@ -407,7 +419,7 @@ router bgp 65210
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.1 remote-as 65211
-   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet3
+   neighbor 172.17.210.1 description DC2-POD1-LEAF1A_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -498,3 +510,15 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1009
+  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```
