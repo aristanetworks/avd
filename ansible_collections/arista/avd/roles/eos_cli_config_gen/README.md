@@ -568,7 +568,7 @@ The following commands will be commands will be ommited:
 - Hostname
 - Default configuration for `aaa`
 - Default configuration for `enable password`
-- Tranceiver qsfp default mode
+- Transceiver qsfp default mode
 - End of configuration delimiter
 
 ```yaml
