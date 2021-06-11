@@ -559,6 +559,18 @@ generate_device_documentation: < true | false | default -> true >
 
 ### Generate Default Config
 
+The `generate_default_config` knob allows to ommit default EOS configuration.
+This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+
+The following commands will be commands will be ommited:
+
+- RANCID Content Type
+- Hostname
+- Default configuration for `aaa`
+- Default configuration for `enable password`
+- Tranceiver qsfp default mode
+- End of configuration delimiter
+
 ```yaml
 generate_default_config: < true | false | default -> true >
 ```
