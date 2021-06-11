@@ -50,6 +50,7 @@
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
       - [Switchport Default](#switchport-default)
+      - [Interface Profiles](#interface-profiles)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -744,6 +745,7 @@ ethernet_interfaces:
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
+    profile: < interface_profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -789,6 +791,15 @@ switchport_default:
     vlan: < 1-4094 >
 ```
 
+#### Interface Profiles
+
+```yaml
+interface_profiles:
+  < interface_profile_1 >:
+    commands:
+      - < command_1 >
+      - < command_2 >
+```
 #### Loopback Interfaces
 
 ```yaml

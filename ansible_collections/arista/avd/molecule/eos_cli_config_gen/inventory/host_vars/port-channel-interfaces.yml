@@ -160,7 +160,6 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: "active"
-    profile: ALL
 
   Ethernet8:
     peer: DC1-LEAF1B

@@ -28,7 +28,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
 
   Ethernet2:
     peer: SRV-POD03
@@ -37,7 +36,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
     storm_control:
       all:
         level: 10
@@ -115,7 +113,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
 
   Ethernet7:
     description: Molecule L2
