@@ -33,9 +33,9 @@
   delegate_to: localhost
   run_once: True
 
-- name: "Create folder {{ structured_cvp_name }} for CVP structured YAML files"
+- name: "Create folder {{ structured_cvp_dir_name }} for CVP structured YAML files"
   file:
-    path: "{{ structured_cvp }}"
+    path: "{{ structured_cvp_dir }}"
     state: directory
     mode: 0775
   delegate_to: localhost

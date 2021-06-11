@@ -17,13 +17,13 @@
   tags: [generate, build, provision]
   template:
     src: "cvp-devices.j2"
-    dest: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
+    dest: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
   delegate_to: localhost
   run_once: true
 
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
-  include_vars: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
+  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
   # delegate_to: localhost
 
 #################################################
