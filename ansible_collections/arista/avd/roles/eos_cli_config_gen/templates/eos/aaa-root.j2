@@ -4,7 +4,7 @@
 {%     if aaa_root.secret.sha512_password is arista.avd.defined %}
 aaa root secret sha512 {{ aaa_root.secret.sha512_password }}
 {%     endif %}
-{% else %}
+{% elif not generate_default_config is arista.avd.defined(false) %}
 !
 no aaa root
 {% endif %}

@@ -38,6 +38,7 @@
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
     - [Generate Device Documentation](#generate-device-documentation)
+    - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -554,6 +555,24 @@ route_maps:
 
 ```yaml
 generate_device_documentation: < true | false | default -> true >
+```
+
+### Generate Default Config
+
+The `generate_default_config` knob allows to ommit default EOS configuration.
+This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+
+The following commands will be ommited when `generate_default_config` is set to `false`:
+
+- RANCID Content Type
+- Hostname
+- Default configuration for `aaa`
+- Default configuration for `enable password`
+- Transceiver qsfp default mode
+- End of configuration delimiter
+
+```yaml
+generate_default_config: < true | false | default -> true >
 ```
 
 ### Hardware
