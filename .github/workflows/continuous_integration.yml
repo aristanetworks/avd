@@ -219,7 +219,7 @@ jobs:
           - 'evpn_underlay_rfc5549_overlay_ebgp'
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ molecule_eos_cli_config_gen ]
-    if: (needs.file-changes.outputs.eos_design == 'true' && needs.molecule_eos_cli_config_gen.status != 'failed') || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: (needs.file-changes.outputs.config_gen == 'true' && needs.molecule_eos_cli_config_gen.status != 'failed') || needs.file-changes.outputs.eos_design == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
         run: |
