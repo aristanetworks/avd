@@ -218,7 +218,7 @@ jobs:
           - 'eos_designs-twodc-5stage-clos'
           - 'evpn_underlay_rfc5549_overlay_ebgp'
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
-    needs: [ molecule_eos_cli_config_gen ]
+    needs: [ {{ 'molecule_eos_cli_config_gen' if needs.file-changes.outputs.config_gen == 'true' }} ]
     if: (needs.file-changes.outputs.config_gen == 'true' && needs.molecule_eos_cli_config_gen.status != 'failed') || needs.file-changes.outputs.eos_design == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
