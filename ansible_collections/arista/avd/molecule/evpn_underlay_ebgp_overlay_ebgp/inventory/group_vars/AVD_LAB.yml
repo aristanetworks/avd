@@ -35,3 +35,9 @@ name_servers:
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
 ntp_servers:
   - 192.168.200.5
+
+queue_monitor_length:
+  log: 5
+  notifying: true 
+  # Note "notifying" should only be rendered on 7280R since default 
+  # platform_settings for default has queue_monitor_length_notify_support: false
