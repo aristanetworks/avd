@@ -186,6 +186,9 @@ ethernet_interfaces:
     vlans: 300
 
   Ethernet13:
+    logging:
+      event:
+        link_status: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
