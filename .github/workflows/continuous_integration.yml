@@ -1,8 +1,17 @@
 ---
 name: "Collection code testing"
+
 on:
   push:
+    branches:
+      - devel
+      - releases/**
+      - ci/**
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   file-changes:
@@ -326,7 +335,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: avdteam/base:3.6-v1.0
     needs: [python_requirements]
-    if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases') || startsWith(github.ref, 'refs/heads/devel'))
+    if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.ref, 'refs/heads/devel'))
     steps:
       - uses: actions/checkout@master
       - name: 'Send Webhook to docker hub'
@@ -342,7 +351,7 @@ jobs:
     runs-on: ubuntu-latest
     container: avdteam/base:3.6-v2.0
     needs: [galaxy_importer, ansible_test]
-    if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release')
+    if: startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.base_ref, 'refs/heads/releases/**')
     steps:
       - name: 'set environment variables'
         run: |
