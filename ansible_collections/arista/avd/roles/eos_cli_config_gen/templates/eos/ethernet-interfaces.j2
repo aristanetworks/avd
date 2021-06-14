@@ -7,6 +7,8 @@ interface {{ ethernet_interface }}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].logging.event.link_status is arista.avd.defined(true) %}
    logging event link-status
+{%     elif ethernet_interfaces[ethernet_interface].logging.event.link_status is arista.avd.defined(false) %}
+   no logging event link-status
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].shutdown is arista.avd.defined(true) %}
    shutdown
