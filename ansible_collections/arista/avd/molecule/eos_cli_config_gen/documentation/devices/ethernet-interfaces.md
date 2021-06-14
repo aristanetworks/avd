@@ -247,6 +247,7 @@ interface Ethernet12
 !
 interface Ethernet13
    description interface_in_mode_access_with_voice
+   no logging event link-status
    switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
