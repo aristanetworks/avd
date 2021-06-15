@@ -555,11 +555,12 @@ route_maps:
 #### Match Lists
 
 ```yaml
-match_lists:
-  < match_list_1 >:
-    sequence_numbers:
-      < sequence_id 1 >:
-        match: < match string >
+match_list_input:
+  string:
+    < match_list_1 >:
+      sequence_numbers:
+        < sequence_id 1 >:
+          match_regex: < match string >
 ```
 
 ### Generate Device Documentation

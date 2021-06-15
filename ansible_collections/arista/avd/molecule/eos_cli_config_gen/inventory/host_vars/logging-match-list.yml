@@ -1,11 +1,4 @@
-match_lists:
-  molecule:
-   sequence_numbers:
-      10:
-        match: "regex ^.*MOLECULE.*$"
-      20:
-        match: "regex ^.*TESTING.*$"
-
+---
 logging:
   console: informational
   monitor: debugging
@@ -14,4 +7,3 @@ logging:
       match_lists:
         molecule:
           action: discard
-        doesnotexist:

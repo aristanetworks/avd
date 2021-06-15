@@ -1,7 +1,8 @@
-match_lists:
-  molecule:
-   sequence_numbers:
-      10:
-        match: "regex ^.*MOLECULE.*$"
-      20:
-        match: "regex ^.*TESTING.*$"
+match_list_input:
+  string:
+    molecule:
+      sequence_numbers:
+        10:
+          match_regex: "^.*MOLECULE.*$"
+        20:
+          match_regex: "^.*TESTING.*$"
