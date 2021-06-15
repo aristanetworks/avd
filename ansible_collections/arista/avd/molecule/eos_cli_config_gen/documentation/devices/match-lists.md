@@ -14,6 +14,7 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
+  - [Match-lists](#match-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -86,6 +87,27 @@ interface Management1
 # Multicast
 
 # Filters
+
+## Match-lists
+
+### Match-list Input String Summary
+
+#### molecule
+
+| Sequence | Match Regex |
+| -------- | ------ |
+| 10 | ^.*MOLECULE.*$ |
+| 20 | ^.*TESTING.*$ |
+
+
+### Match-lists Device Configuration
+
+```eos
+!
+match-list input string molecule
+   10 match regex ^.*MOLECULE.*$
+   20 match regex ^.*TESTING.*$
+```
 
 # ACL
 
