@@ -246,6 +246,10 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+queue_monitor_length:
+  enabled: true
+  notifying: true
+  log: 5
 name_server:
   source:
     vrf: MGMT

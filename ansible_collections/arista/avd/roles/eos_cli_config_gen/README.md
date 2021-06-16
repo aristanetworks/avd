@@ -1671,7 +1671,7 @@ qos_profiles:
 ```yaml
 queue_monitor_length:
   log: < seconds >
-  notifying: < true | false >
+  notifying: < true | false - should only be used for platforms supporting the "queue-monitor length notifying" CLI >
 ```
 
 #### Queue Monitor Streaming

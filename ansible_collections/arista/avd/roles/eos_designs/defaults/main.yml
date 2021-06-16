@@ -178,6 +178,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
   - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
     tcam_profile: vxlan-routing
     lag_hardware_only: true

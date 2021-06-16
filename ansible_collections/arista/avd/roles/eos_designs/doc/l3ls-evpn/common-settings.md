@@ -219,6 +219,8 @@ platform_settings:
   - platforms: [ < Arista Platform Family >, < Arista Platform Family > ]
     tcam_profile: < tcam_profile >
     lag_hardware_only: < true | false >
+    feature_support:
+      queue_monitor_length_notify: < true | false | default -> true >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -237,6 +239,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
   - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
