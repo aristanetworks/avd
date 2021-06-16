@@ -32,8 +32,12 @@ router_bgp:
     peer_groups:
       MLAG_PEER:
         activate: true
+        next_hop:
+          address_family_ipv6_originate: true
       UNDERLAY_PEERS:
         activate: true
+        next_hop:
+          address_family_ipv6_originate: true
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbor_interfaces:

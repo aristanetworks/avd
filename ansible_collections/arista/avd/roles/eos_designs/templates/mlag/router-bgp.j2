@@ -16,8 +16,9 @@ router_bgp:
     peer_groups:
       {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}:
         activate: true
-
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
+        next_hop:
+          address_family_ipv6_originate: true
   neighbor_interfaces:
     Vlan{{ switch.mlag_peer_l3_vlan }}:
       peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}

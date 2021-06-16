@@ -1893,6 +1893,8 @@ router_bgp:
         default_originate:
           always: < true | false >
           route_map: < route_map_name >
+        next_hop:
+          address_family_ipv6_originate: < true | false >
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
