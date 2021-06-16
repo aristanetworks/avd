@@ -681,7 +681,6 @@ router bgp 65104
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      neighbor EVPN-OVERLAY-PEERS next-hop address-family ipv6 originate
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
       neighbor UNDERLAY_PEERS activate

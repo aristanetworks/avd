@@ -24,6 +24,8 @@ router_bgp:
     peer_groups:
       UNDERLAY_PEERS:
         activate: true
+        next_hop:
+          address_family_ipv6_originate: true
       EVPN-OVERLAY-PEERS:
         activate: false
   redistribute_routes:
