@@ -98,29 +98,29 @@ interface Management1
 ## Maintenance
 
 ### Interface groups
-| Interface group | Ethernet interface | Port-Channel interfaces | Vlan interfaces | BGP maintenance profiles | Interface maintenance Profiles |
-|-----------------|--------------------|-------------------------|-----------------|--------------------------|--------------------------------|
-| INTERFACE_GROUP_1| Et10-11| -| -|  BP1, BP2|  IP1 |
-| INTERFACE_GROUP_2| Et10-11| -| Vl10,100| -| - |
-| INTERFACE_GROUP_3| Et10| Po10-11,17| -| -| - |
+| Interface group | Interface | BGP maintenance profiles | Interface maintenance Profiles |
+|-----------------|-----------|--------------------------|--------------------------------|
+| INTERFACE_GROUP_1| Ethernet10-11|  BP1, BP2|  IP1 |
+| INTERFACE_GROUP_2| Ethernet10-11,Vlan10,100| -| - |
+| INTERFACE_GROUP_3| Ethernet10,PortChannel10-11,17| -| - |
 ### Interface groups configuration
 ```eos
 !
 group interface INTERFACE_GROUP_1
-   interface Et10-11
+   interface Ethernet10-11
    maintenance profile bgp BP1
    maintenance profile bgp BP2
    maintenance profile interface IP1
    exit
 !
 group interface INTERFACE_GROUP_2
-   interface Et10-11
-   interface Vl10,100
+   interface Ethernet10-11
+   interface Vlan10,100
    exit
 !
 group interface INTERFACE_GROUP_3
-   interface Et10
-   interface Po10-11,17
+   interface Ethernet10
+   interface PortChannel10-11,17
    exit
 ```
 
@@ -170,8 +170,8 @@ Default maintenance unit profile: **IP1**
 
 ### Maintenance units
 
-| Unit | Interface groups | BGP groups | Quiesce |
-|------|------------------|------------|---------|
+| Unit | Interface groups | BGP groups | Unit profile | Quiesce |
+|------|------------------|------------|--------------|---------|
 | UNIT1| INTERFACE_GROUP_1| BGP_GROUP_1, BGP_GROUP_2| UP1|  No  |
 
 ### Maintenance configuration

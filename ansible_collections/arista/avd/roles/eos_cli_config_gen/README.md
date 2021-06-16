@@ -1037,9 +1037,8 @@ bgp_groups_:
 interface_groups:
   < interface_group_1 >:
     interfaces:
-      ethernet: < ethernet_interface_range >
-      port_channel: < port_channel_interface_range >
-      vlan: < vlan_interface_range >
+      - < interface_range_1 >
+      - < interface_range_2 >
     maintenance:
       bgp_profiles:
       - < bgp_profile_1 >

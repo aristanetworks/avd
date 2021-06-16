@@ -4,13 +4,11 @@
 
 ### Interface groups
 {%     if interface_groups is arista.avd.defined %}
-| Interface group | Ethernet interface | Port-Channel interfaces | Vlan interfaces | BGP maintenance profiles | Interface maintenance Profiles |
-|-----------------|--------------------|-------------------------|-----------------|--------------------------|--------------------------------|
+| Interface group | Interface | BGP maintenance profiles | Interface maintenance Profiles |
+|-----------------|-----------|--------------------------|--------------------------------|
 {%         for interface_group in interface_groups | arista.avd.natural_sort %}
 | {{ interface_group -}}
-| {% if interface_groups[interface_group].interfaces.ethernet is arista.avd.defined %}{{ 'Et' ~ interface_groups[interface_group].interfaces.ethernet }}{% else %}-{% endif -%}
-| {% if interface_groups[interface_group].interfaces.port_channel is arista.avd.defined %}{{ 'Po' ~ interface_groups[interface_group].interfaces.port_channel }}{% else %}-{% endif -%}
-| {% if interface_groups[interface_group].interfaces.vlan is arista.avd.defined %}{{ 'Vl' ~ interface_groups[interface_group].interfaces.vlan }}{% else %}-{% endif -%}
+| {{ interface_groups[interface_group].interfaces | arista.avd.natural_sort | join(',' )-}}
 | {% if interface_groups[interface_group].maintenance.bgp_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.bgp_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif -%}
 | {% if interface_groups[interface_group].maintenance.interface_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.interface_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif %} |
 {%         endfor %}
