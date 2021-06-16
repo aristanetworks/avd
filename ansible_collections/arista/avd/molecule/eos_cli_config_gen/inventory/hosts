@@ -30,6 +30,7 @@ ipv6-access-lists
 ipv6-static-routes
 lldp
 load-interval
+logging-match-list
 logging-minimal
 logging
 loopbacks-interfaces
@@ -40,6 +41,7 @@ management-interfaces
 management-ssh
 management-ssh-custom-cipher
 mac-security-eth-po-entropy
+match-lists
 mpls
 none_configuration
 ntp
