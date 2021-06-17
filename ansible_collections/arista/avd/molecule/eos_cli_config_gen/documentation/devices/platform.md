@@ -19,6 +19,7 @@
   - [Platform Summary](#platform-summary)
   - [Platform Configuration](#platform-configuration)
 - [Quality Of Service](#quality-of-service)
+- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -109,3 +110,6 @@ platform sand multicast replication default ingress
 ```
 
 # Quality Of Service
+
+# Maintenance
+No maintenance group defined

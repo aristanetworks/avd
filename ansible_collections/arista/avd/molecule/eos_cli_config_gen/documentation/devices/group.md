@@ -16,6 +16,8 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
+- [Maintenance](#maintenance)
+  - [Groups](#groups)
 
 <!-- toc -->
 # Management
@@ -90,3 +92,36 @@ interface Management1
 # ACL
 
 # Quality Of Service
+
+# Maintenance
+## Groups
+
+| Interface group | Interface | BGP maintenance profiles | Interface maintenance Profiles |
+|-----------------|-----------|--------------------------|--------------------------------|
+
+### Interface groups configuration
+```eos
+!
+group bgp bar
+   vrf red
+   neighbor peer-group-baz
+   maintenance profile bgp downlink-neighbors
+!
+group bgp foo
+   neighbor 169.254.1.1
+   neighbor fe80::1
+   maintenance profile bgp ixp
+   maintenance profile bgp uplink-neighbors
+!
+group interface QSFP_Interface_Group
+   interface Ethernet1,5
+   maintenance profile interface uplink-interfaces
+!
+group interface SFP_Interface_Group
+   interface Ethernet10-20
+   interface Ethernet30-48
+   maintenance profile interface downlink-interfaces
+   maintenance profile interface ix-interfaces
+   maintenance profile bgp downlink-neighbors
+   maintenance profile bgp local-ix
+```
