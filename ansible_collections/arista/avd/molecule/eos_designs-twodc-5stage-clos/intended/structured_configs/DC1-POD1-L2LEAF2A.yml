@@ -141,8 +141,3 @@ management_interfaces:
     ip_address: 172.21.110.5/24
     gateway: 172.21.110.1
     type: inband
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
-domain_list:
-- structured-config.set.under.vrf.common-vrf

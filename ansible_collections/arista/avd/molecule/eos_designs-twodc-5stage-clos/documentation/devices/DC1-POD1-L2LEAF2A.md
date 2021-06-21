@@ -4,7 +4,6 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -68,19 +67,6 @@ interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
    ip address 172.21.110.5/24
-```
-
-## Domain-list
-
-### Domain-list:
- - structured-config.set.under.vrf.common-vrf
-
-### Domain-list Device Configuration
-
-```eos
-!
-ip domain-list structured-config.set.under.vrf.common-vrf
-!
 ```
 
 ## Management API HTTP

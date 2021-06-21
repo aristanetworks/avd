@@ -240,9 +240,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
@@ -253,6 +250,9 @@ vxlan_tunnel_interface:
         Common_VRF:
           vni: 1025
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
 vlans:
   4092:
     tenant: system
@@ -266,3 +266,5 @@ vlan_interfaces:
     ip_virtual_router_address: 172.21.210.1
     ip_attached_host_route_export:
       distance: 19
+domain_list:
+- structured-config.set.under.vrf.common-vrf

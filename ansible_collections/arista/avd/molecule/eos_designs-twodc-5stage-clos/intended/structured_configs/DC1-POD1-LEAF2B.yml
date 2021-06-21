@@ -603,9 +603,6 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2B_VTEP
@@ -629,5 +626,8 @@ vxlan_tunnel_interface:
         Common_VRF:
           vni: 1025
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
 domain_list:
 - structured-config.set.under.vrf.common-vrf

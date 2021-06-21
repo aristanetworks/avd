@@ -10,9 +10,6 @@
 {%         include 'designs/l3ls-evpn/tenants/ip-igmp-snooping.j2' %}
 
 {%     endif %}
-
-{%         include 'designs/l3ls-evpn/tenants/structured-config.j2' %}
-
 {# Only run EVPN/VXLAN templates for VTEPs #}
 {%     if switch.vtep is arista.avd.defined(true) %}
 {%         include 'designs/l3ls-evpn/tenants/vxlan-tunnel-interface.j2' %}
@@ -39,6 +36,8 @@
 {%             include 'designs/l3ls-evpn/tenants/ip-virtual-router-mac-address.j2' %}
 
 {%             include 'designs/l3ls-evpn/tenants/eos-cli.j2' %}
+
+{%             include 'designs/l3ls-evpn/tenants/structured-config.j2' %}
 
 {%         endif %}
 {%     endif %}
