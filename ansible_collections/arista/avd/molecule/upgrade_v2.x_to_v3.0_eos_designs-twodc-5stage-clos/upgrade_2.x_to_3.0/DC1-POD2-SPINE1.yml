@@ -1,4 +1,3 @@
-# TODO set old defaults if not overridden in old data model.
 
 spine:
   defaults:
@@ -87,8 +86,12 @@ overlay_controller:
     max_uplink_switches: 4
 # Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.uplink_ipv4_pool
     uplink_ipv4_pool: 172.17.10.0/24
-# Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
-    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
+# Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
   nodes:
     DC1-RS1:
 # Change from overlay_controller.nodes.DC1-RS1.remote_switches_interfaces to overlay_controller.nodes.DC1-RS1.uplink_switch_interfaces

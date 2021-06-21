@@ -1,4 +1,3 @@
-# TODO set old defaults if not overridden in old data model.
 
 spine:
   defaults:

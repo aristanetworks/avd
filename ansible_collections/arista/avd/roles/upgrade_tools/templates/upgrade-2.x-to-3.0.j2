@@ -1,6 +1,3 @@
-# TODO set old defaults if not overridden in old data model.
-{# p2p_ptp #}
-{# bgp defaults from defaults file #}
 
 {####### spine #######}
 {% if spine is arista.avd.defined %}
@@ -35,7 +32,7 @@ spine:
 # Change from super_spine_underlay_p2p_network_summary to spine.defaults.uplink_ipv4_pool
     uplink_ipv4_pool: {{ super_spine_underlay_p2p_network_summary }}
 {%         endif %}
-{%         if p2p_uplinks_ptp.enable is arista.avd.defined %}
+{%         if p2p_uplinks_ptp is arista.avd.defined %}
 # Change from p2p_uplinks_ptp to spine.defaults.uplink_ptp
     uplink_ptp: {{ p2p_uplinks_ptp }}
 {%         endif %}
@@ -43,6 +40,15 @@ spine:
 {%     if spine_bgp_defaults is arista.avd.defined %}
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: {{ spine_bgp_defaults }}
+{%     else %}
+# Change from old default value of spine_bgp_defaults to spine.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-for-convergence
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
 {%     endif %}
 {%     if underlay_routing_protocol | lower == 'isis' %}
 # Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
@@ -112,6 +118,14 @@ l3leaf:
 {%     if leaf_bgp_defaults is arista.avd.defined %}
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: {{ leaf_bgp_defaults }}
+{%     else %}
+# Change from old default value of leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
 {%     endif %}
 {%     if underlay_routing_protocol | lower == 'isis' %}
 # Change from isis_site_id.0001 to l3leaf.defaults.isis_system_id_prefix
@@ -223,6 +237,15 @@ super_spine:
 {%     if super_spine_bgp_defaults is arista.avd.defined %}
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults: {{ super_spine_bgp_defaults }}
+{%     else %}
+# Change from old default value of super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-for-convergence
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
 {%     endif %}
 {% endif %}
 
@@ -265,6 +288,13 @@ overlay_controller:
 {%     if overlay_controller_bgp_defaults is arista.avd.defined %}
 # Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults: {{ overlay_controller_bgp_defaults }}
+{%     else %}
+# Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
 {%     endif %}
   nodes:
 {%     for node in overlay_controller.nodes | arista.avd.default([]) %}
