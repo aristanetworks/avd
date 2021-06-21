@@ -117,8 +117,8 @@ switch:
 {%     set loopback_ipv4_offset = switch_data.combined.loopback_ipv4_offset | arista.avd.default(0) %}
   loopback_ipv4_offset: {{ loopback_ipv4_offset }}
 
-{# switch.p2p_ipv4_pool #}
-  p2p_ipv4_pool: {{ switch_data.combined.p2p_ipv4_pool | arista.avd.default() }}
+{# switch.uplink_ipv4_pool #}
+  uplink_ipv4_pool: {{ switch_data.combined.uplink_ipv4_pool | arista.avd.default() }}
 
 {# switch.router_id #}
   router_id: {% include switch.ip_addressing.router_id %}

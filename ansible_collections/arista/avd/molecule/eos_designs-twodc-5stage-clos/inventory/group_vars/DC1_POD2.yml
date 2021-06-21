@@ -13,7 +13,7 @@ spine:
     uplink_interfaces: ['Ethernet1', 'Ethernet2']
     uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-SUPER-SPINE2']
     max_uplink_switches: 4
-    p2p_ipv4_pool: 172.16.12.0/24
+    uplink_ipv4_pool: 172.16.12.0/24
     uplink_ptp:
       enable: True
     bgp_defaults:
@@ -42,7 +42,7 @@ l3leaf:
     loopback_ipv4_pool: 172.16.120.0/24
     loopback_ipv4_offset: 2
     vtep_loopback_ipv4_pool: 172.18.120.0/24
-    p2p_ipv4_pool: 172.17.120.0/24
+    uplink_ipv4_pool: 172.17.120.0/24
     uplink_ptp:
       enable: True
     bgp_defaults:

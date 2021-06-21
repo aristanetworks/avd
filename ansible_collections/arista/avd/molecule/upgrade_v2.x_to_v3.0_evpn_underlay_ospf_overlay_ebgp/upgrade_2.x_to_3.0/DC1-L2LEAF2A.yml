@@ -30,8 +30,8 @@ l3leaf:
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
 # Change from l3leaf.defaults.spines to l3leaf.defaults.uplink_switches
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
-# Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_ipv4_pool
-    p2p_ipv4_pool: 172.31.255.0/24
+# Change from underlay_p2p_network_summary to l3leaf.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: 172.31.255.0/24
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
   node_groups:

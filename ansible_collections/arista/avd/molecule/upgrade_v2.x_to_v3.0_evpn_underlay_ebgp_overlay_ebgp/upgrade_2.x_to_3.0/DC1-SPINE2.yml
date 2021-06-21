@@ -32,8 +32,8 @@ l3leaf:
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
 # Change from max_spines to l3leaf.defaults.max_uplink_switches
     max_uplink_switches: 8
-# Change from underlay_p2p_network_summary to l3leaf.defaults.p2p_ipv4_pool
-    p2p_ipv4_pool: 172.31.255.0/24
+# Change from underlay_p2p_network_summary to l3leaf.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: 172.31.255.0/24
 # Change from l3leaf.defaults.p2p_link_interface_speed to l3leaf.defaults.uplink_interface_speed
     uplink_interface_speed: forced 100gfull
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults

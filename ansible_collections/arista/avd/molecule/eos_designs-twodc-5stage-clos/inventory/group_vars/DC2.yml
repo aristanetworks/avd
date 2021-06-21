@@ -27,7 +27,7 @@ overlay_controller:
     uplink_bfd: False
     uplink_switches: ['DC2-SUPER-SPINE1', 'DC2-SUPER-SPINE1']
     max_uplink_switches: 4
-    p2p_ipv4_pool: 172.17.20.0/24
+    uplink_ipv4_pool: 172.17.20.0/24
     bgp_defaults:
       - 'no bgp default ipv4-unicast'
       - 'distance bgp 20 200 200'

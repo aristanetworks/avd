@@ -1,6 +1,6 @@
 {% set fabric_switches = [] %}
 {% set topology_links = [] %}
-{% set p2p_ipv4_pools = [] %}
+{% set uplink_ipv4_pools = [] %}
 {% set loopback_ipv4_pools = [] %}
 {% set vtep_loopback_ipv4_pools = [] %}
 {% set assigned_ip_addresses = [] %}
@@ -8,7 +8,7 @@
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in ['spine', 'l3leaf', 'l2leaf', 'super-spine', 'overlay-controller'] %}
 {# Populate network summaries #}
-{%         do p2p_ipv4_pools.append(hostvars[node].switch.p2p_ipv4_pool | arista.avd.default()) %}
+{%         do uplink_ipv4_pools.append(hostvars[node].switch.uplink_ipv4_pool | arista.avd.default()) %}
 {%         do loopback_ipv4_pools.append(hostvars[node].switch.loopback_ipv4_pool | arista.avd.default()) %}
 {%         do vtep_loopback_ipv4_pools.append(hostvars[node].switch.vtep_loopback_ipv4_pool | arista.avd.default()) %}
 {# Populate fabric_switch #}
@@ -71,7 +71,7 @@
 {%         endfor %}
 {%     endif %}
 {% endfor %}
-{% set p2p_ipv4_pools = p2p_ipv4_pools | unique | reject("none") %}
+{% set uplink_ipv4_pools = uplink_ipv4_pools | unique | reject("none") %}
 {% set loopback_ipv4_pools = loopback_ipv4_pools | unique | reject("none") %}
 {% set vtep_loopback_ipv4_pools = vtep_loopback_ipv4_pools | unique | reject("none") %}
 # {{ fabric_name }}
@@ -112,10 +112,10 @@
 
 | P2P Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ----------- | ------------------- | ------------------ | ------------------ |
-{% for p2p_ipv4_pool in p2p_ipv4_pools | arista.avd.natural_sort %}
-{%     set size = p2p_ipv4_pool | ansible.netcommon.ipaddr('size') %}
-{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(p2p_ipv4_pool) | length %}
-| {{ p2p_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
+{% for uplink_ipv4_pool in uplink_ipv4_pools | arista.avd.natural_sort %}
+{%     set size = uplink_ipv4_pool | ansible.netcommon.ipaddr('size') %}
+{%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(uplink_ipv4_pool) | length %}
+| {{ uplink_ipv4_pool }} | {{ size }} | {{ used }} | {{ (used / size * 100) | round(2,'ceil') }} % |
 {% endfor %}
 
 ## Point-To-Point Links Node Allocation

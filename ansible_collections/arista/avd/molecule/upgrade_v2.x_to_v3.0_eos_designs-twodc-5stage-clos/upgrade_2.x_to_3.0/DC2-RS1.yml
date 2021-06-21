@@ -36,8 +36,8 @@ overlay_controller:
 # Change from max_overlay_controller_to_switch_links (default=2) to overlay_controller.defaults.max_uplink_switches
 # (old algorithm expected max_overlay_controller_to_switch_links to be the sum of links to all uplink switches)
     max_uplink_switches: 4
-# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.p2p_ipv4_pool
-    p2p_ipv4_pool: 172.17.20.0/24
+# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: 172.17.20.0/24
 # Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
   nodes:
@@ -53,7 +53,7 @@ overlay_controller:
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
 
 # Switch type definitions
-switch_keys:
+switch_type_keys:
   spine:
     type: spine
     default_evpn_role: server
