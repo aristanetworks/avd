@@ -1277,8 +1277,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_WEB_Zone | 192.168.255.13:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.13:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_B_WAN_Zone | 192.168.255.13:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_OP_Zone | 192.168.255.13:30 | 30:30 | - | - | learned | 310-311 |
-| Tenant_C_WAN_Zone | 192.168.255.13:31 | 31:31 | - | - | learned | 350 |
+| Tenant_C_OP_Zone | 192.168.255.13:30030 | 30030:30030 | - | - | learned | 310-311 |
+| Tenant_C_WAN_Zone | 192.168.255.13:30031 | 30031:30031 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
@@ -1407,14 +1407,14 @@ router bgp 65103
       vlan 250
    !
    vlan-aware-bundle Tenant_C_OP_Zone
-      rd 192.168.255.13:30
-      route-target both 30:30
+      rd 192.168.255.13:30030
+      route-target both 30030:30030
       redistribute learned
       vlan 310-311
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.13:31
-      route-target both 31:31
+      rd 192.168.255.13:30031
+      route-target both 30031:30031
       redistribute learned
       vlan 350
    !
