@@ -110,8 +110,8 @@
 
 ## Fabric Point-To-Point Links
 
-| P2P Pool | Available Addresses | Assigned addresses | Assigned Address % |
-| ----------- | ------------------- | ------------------ | ------------------ |
+| Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ---------------- | ------------------- | ------------------ | ------------------ |
 {% for uplink_ipv4_pool in uplink_ipv4_pools | arista.avd.natural_sort %}
 {%     set size = uplink_ipv4_pool | ansible.netcommon.ipaddr('size') %}
 {%     set used = assigned_ip_addresses | ansible.netcommon.ipaddr(uplink_ipv4_pool) | length %}
@@ -160,7 +160,7 @@
 {% endfor %}
 
 {% endif %}
-## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |

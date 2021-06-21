@@ -167,6 +167,12 @@ switch_type_keys:
     type: super-spine
   overlay_controller:
     type: overlay-controller
+  spline:
+    type: spline
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
 
 # Templates used by AVD eos_designs role
 templates:
