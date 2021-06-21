@@ -1,32 +1,3 @@
-bgp_groups:
-  BGP_GROUP_1:
-    neighbors:
-    - TEST-PEER_GROUP
-    - 1.1.1.1
-  BGP_GROUP_2:
-    neighbors:
-    - 2.2.2.2
-    vrf: MGMT
-
-interface_groups:
-  INTERFACE_GROUP_1:
-    interfaces:
-      - Ethernet10-11
-    maintenance:
-      bgp_profiles:
-      - BP1
-      - BP2
-      interface_profiles:
-      - IP1
-  INTERFACE_GROUP_2:
-    interfaces:
-      - Ethernet10-11
-      - Vlan10,100
-  INTERFACE_GROUP_3:
-    interfaces:
-      - PortChannel10-11,17
-      - Ethernet10
-
 maintenance:
   default_interface_profile: IP1
   default_bgp_profile: BP1

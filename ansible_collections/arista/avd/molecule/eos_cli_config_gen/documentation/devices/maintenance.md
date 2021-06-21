@@ -97,52 +97,6 @@ interface Management1
 
 ## Maintenance
 
-### Interface groups
-| Interface group | Interface | BGP maintenance profiles | Interface maintenance Profiles |
-|-----------------|-----------|--------------------------|--------------------------------|
-| INTERFACE_GROUP_1| Ethernet10-11|  BP1, BP2|  IP1 |
-| INTERFACE_GROUP_2| Ethernet10-11,Vlan10,100| -| - |
-| INTERFACE_GROUP_3| Ethernet10,PortChannel10-11,17| -| - |
-### Interface groups configuration
-```eos
-!
-group interface INTERFACE_GROUP_1
-   interface Ethernet10-11
-   maintenance profile bgp BP1
-   maintenance profile bgp BP2
-   maintenance profile interface IP1
-   exit
-!
-group interface INTERFACE_GROUP_2
-   interface Ethernet10-11
-   interface Vlan10,100
-   exit
-!
-group interface INTERFACE_GROUP_3
-   interface Ethernet10
-   interface PortChannel10-11,17
-   exit
-```
-
-### BGP groups
-| BGP group | VRF | Neighbors | BGP maintenance profiles |
-|-----------|-----|-----------|--------------------------|
-| BGP_GROUP_1| default| 1.1.1.1, TEST-PEER_GROUP| - |
-| BGP_GROUP_2| MGMT| 2.2.2.2| - |
-### BGP groups configuration
-```eos
-!
-group bgp BGP_GROUP_1
-   neighbor 1.1.1.1
-   neighbor TEST-PEER_GROUP
-   exit
-!
-group bgp BGP_GROUP_2
-   vrf MGMT
-   neighbor 2.2.2.2
-   exit
-```
-
 ### Maintenance defaults
 
 Default maintenance bgp profile: **BP1**

@@ -2,42 +2,6 @@
 
 ## Maintenance
 
-### Interface groups
-{%     if interface_groups is arista.avd.defined %}
-| Interface group | Interface | BGP maintenance profiles | Interface maintenance Profiles |
-|-----------------|-----------|--------------------------|--------------------------------|
-{%         for interface_group in interface_groups | arista.avd.natural_sort %}
-| {{ interface_group -}}
-| {{ interface_groups[interface_group].interfaces | arista.avd.natural_sort | join(',' )-}}
-| {% if interface_groups[interface_group].maintenance.bgp_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.bgp_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif -%}
-| {% if interface_groups[interface_group].maintenance.interface_profiles is arista.avd.defined %} {{ interface_groups[interface_group].maintenance.interface_profiles | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif %} |
-{%         endfor %}
-### Interface groups configuration
-```eos
-{%     include 'eos/interface-groups.j2' %}
-```
-{%     else %}
-No interface groups defined
-{%     endif %}
-
-### BGP groups
-{%     if bgp_groups is arista.avd.defined %}
-| BGP group | VRF | Neighbors | BGP maintenance profiles |
-|-----------|-----|-----------|--------------------------|
-{%         for bgp_group in bgp_groups | arista.avd.natural_sort %}
-| {{ bgp_group -}}
-| {% if bgp_groups[bgp_group].vrf is arista.avd.defined %}{{ bgp_groups[bgp_group].vrf }}{% else %}default{% endif %}
-| {% if bgp_groups[bgp_group].neighbors is arista.avd.defined %}{{bgp_groups[bgp_group].neighbors | arista.avd.natural_sort | join(', ')}}{% else %}-{% endif -%}
-| {% if bgp_groups[bgp_group].maintenance.bgp_profiles is arista.avd.defined %}{{ bgp_groups[bgp_group].maintenance.bgp_profiles | arista.avd.natural_sort | join(', ') }}{% else %}-{% endif %} |
-{%         endfor %}
-### BGP groups configuration
-```eos
-{%     include 'eos/bgp-groups.j2' %}
-```
-{%     else %}
-No BGP groups defined
-{%     endif %}
-
 ### Maintenance defaults
 
 Default maintenance bgp profile: **{{ maintenance.default_bgp_profile | arista.avd.default('Default') }}**
