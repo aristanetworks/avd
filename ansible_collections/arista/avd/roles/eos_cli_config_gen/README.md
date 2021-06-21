@@ -590,37 +590,33 @@ The following commands will be ommited when `generate_default_config` is set to 
 generate_default_config: < true | false | default -> true >
 ```
 
-### Groups
+### Maintenance Mode
 
-#### Group BGP Neighbor
+#### BGP Groups
 
 ```yaml
-group:
-  bgp:
-    < group_name >:
-      vrf: "< vrf_name >"
-      neighbors:
-        - "< ip_address >"
-        - "< ipv6_address >"
-        - "< peer_group_name >"
-      maintenance_profile:
-        bgp:
-          - < profile_name >
+bgp_groups:
+  < group_name >:
+    vrf: "< vrf_name >"
+    neighbors:
+      - "< ip_address >"
+      - "< ipv6_address >"
+      - "< peer_group_name >"
+    bgp_maintenance_profiles:
+      - < profile_name >
 ```
 
-#### Group Interface
+#### Interface Groups
 
 ```yaml
-group:
-  interface:
-    < group_name >:
-      interfaces:
-        - "< interface_or_interface_range >"
-      maintenance_profile:
-        bgp:
-          - < profile_name >
-        interface:
-          - < profile_name >
+interface_groups:
+  < group_name >:
+    interfaces:
+      - "< interface_or_interface_range >"
+    bgp_maintenance_profiles:
+      - "< profile_name >"
+    interface_maintenance_profiles:
+      - "< profile_name >"
 ```
 
 ### Hardware

@@ -20,7 +20,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -160,6 +159,3 @@ ntp server vrf mgt 10.10.111.2
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

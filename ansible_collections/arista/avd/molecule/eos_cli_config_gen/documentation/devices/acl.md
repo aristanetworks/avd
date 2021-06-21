@@ -17,7 +17,6 @@
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -146,6 +145,3 @@ ip access-list standard ACL-SSH-VRF
 ```
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

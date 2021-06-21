@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -129,6 +128,3 @@ ntp trusted-key 1-2
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

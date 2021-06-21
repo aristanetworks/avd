@@ -17,7 +17,6 @@
   - [IP Extended Community RegExp Lists](#ip-extended-community-regexp-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -112,6 +111,3 @@ ip extcommunity-list regexp TEST2 deny 6500[0-1]:650[0-9][0-9]
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -99,6 +98,3 @@ prompt %H__%D{%H:%M:%S}%v%P
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

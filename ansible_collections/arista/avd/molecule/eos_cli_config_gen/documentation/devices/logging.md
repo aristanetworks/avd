@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -125,6 +124,3 @@ logging vrf mgt host 10.10.10.7
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

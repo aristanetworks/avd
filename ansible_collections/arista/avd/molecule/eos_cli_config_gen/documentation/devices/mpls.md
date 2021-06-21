@@ -21,7 +21,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -184,6 +183,3 @@ mpls ldp
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

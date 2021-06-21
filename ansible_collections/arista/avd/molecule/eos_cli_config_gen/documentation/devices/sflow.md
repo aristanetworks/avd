@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -131,6 +130,3 @@ sflow run
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

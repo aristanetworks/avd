@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -109,6 +108,3 @@ daemon TerminAttr
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

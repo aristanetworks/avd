@@ -126,8 +126,10 @@
 {% include 'eos/virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
-{# Group configuration #}
-{% include 'eos/group.j2' %}
+{# BGP Groups configuration #}
+{% include 'eos/bgp-groups.j2' %}
+{# Interface Groups configuration #}
+{% include 'eos/interface-groups.j2' %}
 {# IPv6 Standard access-lists #}
 {# IPv6 Extended Access-lists #}
 {% include 'eos/ipv6-access-lists.j2' %}

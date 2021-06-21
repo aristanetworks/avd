@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -117,6 +116,3 @@ ip route vrf APP 10.3.5.0/24 Null0
 # ACL
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined

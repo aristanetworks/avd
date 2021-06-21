@@ -18,7 +18,6 @@
 - [ACL](#acl)
   - [Standard Access-lists](#standard-access-lists)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -150,6 +149,3 @@ ip access-list standard ACL-API
 ```
 
 # Quality Of Service
-
-# Maintenance
-No maintenance group defined
