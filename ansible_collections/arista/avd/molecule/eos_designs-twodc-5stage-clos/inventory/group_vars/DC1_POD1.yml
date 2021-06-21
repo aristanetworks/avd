@@ -83,6 +83,9 @@ l3leaf:
           description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG
       nodes:
         DC1-POD1-LEAF2A:
+          structured_config:
+            domain_list:
+              - structured-config.set.on.node
           id: 2
           # mgmt_ip: 192.168.1.8/16 Test without management IP
           spine_interfaces: [ Ethernet4, Ethernet4 ]

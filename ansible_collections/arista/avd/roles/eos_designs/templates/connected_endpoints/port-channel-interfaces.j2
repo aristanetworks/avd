@@ -62,6 +62,9 @@ port_channel_interfaces:
 {%                         set adapter_raw_eos_cli = adapter.port_channel.raw_eos_cli | arista.avd.default(
                                                      adapter_profile.port_channel.raw_eos_cli,
                                                      parent_profile.port_channel.raw_eos_cli) %}
+{%                         set adapter_structured_config = adapter.port_channel.structured_config | arista.avd.default(
+                                                           adapter_profile.port_channel.structured_config,
+                                                           parent_profile.port_channel.structured_config) %}
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
   Port-Channel{{ channel_group_id }}:
     description: {{ connected_endpoint }}_{{ adapter_port_channel_description }}
@@ -120,6 +123,9 @@ port_channel_interfaces:
 {%                         if adapter_raw_eos_cli is arista.avd.defined %}
     eos_cli: |
       {{ adapter_raw_eos_cli | indent(6,false) }}
+{%                         endif %}
+{%                         if adapter_structured_config is arista.avd.defined %}
+    struct_cfg: {{ adapter_structured_config }}
 {%                         endif %}
 {%                         break %}
 {%                     endif %}

@@ -52,7 +52,7 @@ templates:
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom-structured-configuration-from-var.j2"
+      - template: "custom_structured_configuration/main.j2"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
