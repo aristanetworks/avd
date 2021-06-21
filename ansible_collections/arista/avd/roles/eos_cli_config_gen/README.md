@@ -1020,32 +1020,6 @@ mac_security:
 
 ### Maintenance
 
-#### BGP Groups
-```yaml
-bgp_groups_:
-  < bgp_group_1 >:
-    vrf: < vrf_name >
-    neighbors:
-    - < neighbor_1 >
-    - < neighbor_2 >
-    - < peer_group >
-    maintenance:
-      bgp_profiles:
-      - < bgp_profile_1 >
-#### Interface Groups
-```yaml
-interface_groups:
-  < interface_group_1 >:
-    interfaces:
-      - < interface_range_1 >
-      - < interface_range_2 >
-    maintenance:
-      bgp_profiles:
-      - < bgp_profile_1 >
-      interface_profiles:
-      - < interface_profile_1 >
-      - < interface_profile_2 >
-```
 #### Profiles and units
 ```yaml
 maintenance:
