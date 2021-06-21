@@ -374,11 +374,12 @@ See [Connected Endpoints]('../common/connected-endpoints.md')
 #### Fabric Topology
 Only the most specific `structured_config` key will be used
 ```yaml
-< spine | super-spine | overlay_controller >:
+< spine | super_spine | overlay_controller >:
   defaults:
     # Custom structured config for eos_cli_config_gen
     structured_config: < dictionary >
   nodes:
+    < node >:
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
 
@@ -387,6 +388,7 @@ Only the most specific `structured_config` key will be used
     # Custom structured config for eos_cli_config_gen
     structured_config: < dictionary >
   node_groups:
+    < node_group >:
       # Custom structured config for eos_cli_config_gen
       structured_config: < dictionary >
       nodes:
@@ -404,20 +406,20 @@ All relevant `structured_config` sections will be merged. Note that setting `str
 tenants:
   vrfs:
     < vrf >:
-        # Custom structured config for eos_cli_config_gen
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
+      bgp:
+        # Custom structured config added under router_bgp.vrfs.<vrf> for eos_cli_config_gen
         structured_config: < dictionary >
-        bgp:
-          # Custom structured config added under router_bgp.vrfs.<vrf> for eos_cli_config_gen
+      svis:
+        < vlan >:
+          # Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen
           structured_config: < dictionary >
-        svis:
-          < vlan >:
-            # Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen
-            structured_config: < dictionary >
-            nodes:
-              < node >:
-                # Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen
-                # Overrides the setting on SVI level.
-                structured_config: < dictionary >
+          nodes:
+            < node >:
+              # Custom structured config added under vlan_interfaces.<interface> for eos_cli_config_gen
+              # Overrides the setting on SVI level.
+              structured_config: < dictionary >
 ```
 
 See [Network Services]('network-services.md')
