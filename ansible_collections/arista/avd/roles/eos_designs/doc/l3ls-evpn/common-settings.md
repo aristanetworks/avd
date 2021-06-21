@@ -369,6 +369,8 @@ All relevant `structured_config` sections will be merged.
           structured_config: < dictionary >
 ```
 
+See [Connected Endpoints]('../common/connected-endpoints.md')
+
 #### Fabric Topology
 Only the most specific `structured_config` key will be used
 ```yaml
@@ -394,6 +396,8 @@ Only the most specific `structured_config` key will be used
           structured_config: < dictionary >
 ```
 
+See [Fabric Topology]('fabric-topology.md')
+
 #### Network Services (a.k.a. "tenants")
 All relevant `structured_config` sections will be merged. Note that setting `structured_config` under `svi.nodes` will override the setting on `svi`.
 ```yaml
@@ -415,6 +419,8 @@ tenants:
                 # Overrides the setting on SVI level.
                 structured_config: < dictionary >
 ```
+
+See [Network Services]('network-services.md')
 
 All `structured_config` knobs honor the `list_merge` strategy set in `custom_structured_configuration_list_merge`
 
