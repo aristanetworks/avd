@@ -72,7 +72,7 @@ For complete list of authentication options available with Cloudvision Ansible c
 - __`cv_collection`__: Version of Cloudvision collection to use. Can be `v1` or `v3`. Default is `v1`.
 
 !!! warning
-    Use of arista.cvp in version is only supported for testing purpose. Please use it carrefully and for lab only
+    Use of arista.cvp in version 3 is only supported for testing purpose. Please use it carrefully and for lab only
 
 _Example_:
 

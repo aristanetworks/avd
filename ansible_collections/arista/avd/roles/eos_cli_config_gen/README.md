@@ -734,6 +734,7 @@ ethernet_interfaces:
 
 ```yaml
 # Switched Interfaces
+ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
@@ -869,6 +870,7 @@ port_channel_interfaces:
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    native_vlan: < native vlan number >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
