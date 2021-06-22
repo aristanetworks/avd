@@ -1,4 +1,15 @@
 ---
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ fabric_dir }}"
+  delegate_to: localhost
+  run_once: true
 
 - name: Set AVD facts
   yaml_templates_to_facts:
