@@ -1,6 +1,16 @@
 ---
 # tasks file for eos_snapshot
 
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ snapshots_backup_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Create output directory for each EOS device
   file:
     path: "{{ snapshots_backup_dir }}/{{ inventory_hostname }}"
