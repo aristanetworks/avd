@@ -1,5 +1,15 @@
 ---
 
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ eos_validate_state_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Check if structure configuration file exists
   tags:
     - always
