@@ -23,7 +23,7 @@ topology:
 {%         if underlay_rfc5549 is arista.avd.defined(true) %}
       ipv6_enable: true
 {%         else %}
-{%             set uplink_switch_id = hostvars[uplink_switch].switch.id %}
+{%             set uplink_id = loop.index0 %}
       ip_address: {% include templates[design.type].ip_addressing[type].topology_links_ip %}
 
       peer_ip_address: {% include templates[design.type].ip_addressing[type].topology_links_peer_ip %}
