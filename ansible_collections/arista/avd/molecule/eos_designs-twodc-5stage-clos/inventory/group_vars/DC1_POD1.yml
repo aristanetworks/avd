@@ -1,6 +1,8 @@
 ---
 pod_name: DC1_POD1
 
+max_l3leaf_to_spine_links: 2
+
 underlay_p2p_network_summary: 172.17.110.0/24
 
 overlay_loopback_network_summary: 172.16.110.0/24
@@ -70,8 +72,8 @@ l3leaf:
     # Regular MLAG pair
     RACK2_MLAG:
       platform: vEOS-LAB
-      spines: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
-      uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
+      spines: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
+      uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       bgp_as: 65112
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
@@ -88,11 +90,11 @@ l3leaf:
               - structured-config.set.on.node
           id: 2
           # mgmt_ip: 192.168.1.8/16 Test without management IP
-          spine_interfaces: [ Ethernet4, Ethernet4 ]
+          spine_interfaces: [ Ethernet4, Ethernet4, Ethernet6, Ethernet6 ]
         DC1-POD1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.1.9/16
-          spine_interfaces: [ Ethernet5, Ethernet5 ]
+          spine_interfaces: [ Ethernet5, Ethernet5, Ethernet7, Ethernet7 ]
 
 # In DC1 we define all variables on specific node / node_group
 l2leaf:

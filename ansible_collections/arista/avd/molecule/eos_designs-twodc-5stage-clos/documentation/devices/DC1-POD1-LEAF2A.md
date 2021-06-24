@@ -283,9 +283,11 @@ vlan 4094
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.5/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.7/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.9/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.11/31 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | 1500 | false | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6 | routed | - | 172.17.110.13/31 | default | 1500 | false | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet6 | routed | - | 172.17.110.15/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -296,7 +298,7 @@ interface Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.17.110.5/31
+   ip address 172.17.110.9/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -305,7 +307,7 @@ interface Ethernet2
    no shutdown
    mtu 1500
    no switchport
-   ip address 172.17.110.7/31
+   ip address 172.17.110.11/31
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -335,6 +337,24 @@ interface Ethernet7
    mtu 1500
    no switchport
    ip address 100.100.100.101/24
+!
+interface Ethernet11
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.17.110.13/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet12
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet6
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.17.110.15/31
+   ptp enable
+   service-profile QOS-PROFILE
 !
 interface Ethernet16
    description server-1_Eth1
@@ -720,8 +740,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.1 | 65101 | default |
 | 172.16.110.1 | 65110 | default |
 | 172.16.110.3 | 65111 | default |
-| 172.17.110.4 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.17.110.6 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.8 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.10 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.12 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.14 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
 | 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
@@ -789,10 +811,14 @@ router bgp 65112
    neighbor 172.16.110.3 remote-as 65111
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
-   neighbor 172.17.110.4 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.4 description DC1-POD1-SPINE1_Ethernet4
-   neighbor 172.17.110.6 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.6 description DC1-POD1-SPINE2_Ethernet4
+   neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
+   neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet6
+   neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet6
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B
    redistribute attached-host
