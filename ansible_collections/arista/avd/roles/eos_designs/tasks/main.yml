@@ -50,7 +50,7 @@
 
 - name: Generate fabric documentation
   run_once: true
-  tags: [build, provision]
+  tags: [build, provision, documentation]
   delegate_to: localhost
   check_mode: no
   block:
@@ -83,7 +83,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  tags: [build, provision]
+  tags: [build, provision, documentation]
 
 - name: Generate fabric topology in csv format.
   template:
@@ -93,4 +93,4 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  tags: [build, provision]
+  tags: [build, provision, documentation]
