@@ -300,8 +300,8 @@ vlan 350
 | Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet41 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
 | Ethernet42 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
-| Ethernet43 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
-| Ethernet44 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
+| Ethernet43 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
+| Ethernet44 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
 | Ethernet4000 | My test | routed | - | 10.3.2.1/21 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -369,7 +369,7 @@ interface Ethernet42
    ip address 172.31.255.83/31
 !
 interface Ethernet43
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -377,7 +377,7 @@ interface Ethernet43
    ip address 172.31.255.81/31
 !
 interface Ethernet44
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet6
+   description P2P_LINK_TO_DC1-SPINE2_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -689,9 +689,9 @@ router bgp 65104
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.80 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.80 description DC1-SPINE1_Ethernet6
+   neighbor 172.31.255.80 description DC1-SPINE1_Ethernet7
    neighbor 172.31.255.82 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.82 description DC1-SPINE2_Ethernet6
+   neighbor 172.31.255.82 description DC1-SPINE2_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1

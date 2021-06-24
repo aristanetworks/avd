@@ -32,10 +32,10 @@ router_bgp:
   neighbors:
     172.31.255.80:
       peer_group: UNDERLAY-PEERS
-      description: DC1-SPINE1_Ethernet6
+      description: DC1-SPINE1_Ethernet7
     172.31.255.82:
       peer_group: UNDERLAY-PEERS
-      description: DC1-SPINE2_Ethernet6
+      description: DC1-SPINE2_Ethernet7
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -324,9 +324,9 @@ ethernet_interfaces:
     ip_address: 172.31.255.83/31
   Ethernet43:
     peer: DC1-SPINE1
-    peer_interface: Ethernet6
+    peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -334,9 +334,9 @@ ethernet_interfaces:
     ip_address: 172.31.255.81/31
   Ethernet44:
     peer: DC1-SPINE2
-    peer_interface: Ethernet6
+    peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed

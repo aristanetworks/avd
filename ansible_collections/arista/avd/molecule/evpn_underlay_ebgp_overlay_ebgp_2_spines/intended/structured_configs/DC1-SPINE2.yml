@@ -213,6 +213,16 @@ ethernet_interfaces:
     ip_address: 172.31.255.66/31
   Ethernet6:
     peer: DC1-BL1A
+    peer_interface: Ethernet42
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1A_Ethernet42
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.82/31
+  Ethernet7:
+    peer: DC1-BL1A
     peer_interface: Ethernet44
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-BL1A_Ethernet44
@@ -221,7 +231,17 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.82/31
-  Ethernet7:
+  Ethernet8:
+    peer: DC1-BL1B
+    peer_interface: Ethernet46
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL1B_Ethernet46
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.98/31
+  Ethernet9:
     peer: DC1-BL1B
     peer_interface: Ethernet48
     peer_type: l3leaf

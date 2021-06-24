@@ -23,7 +23,7 @@
     mode: 0664
   delegate_to: localhost
   changed_when: False
-  tags: [debug, never]
+  tags: [always]
 
 - name: Generate device configuration in structured format
   yaml_templates_to_facts:

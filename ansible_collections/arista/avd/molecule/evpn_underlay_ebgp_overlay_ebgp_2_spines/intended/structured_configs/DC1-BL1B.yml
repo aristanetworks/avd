@@ -32,10 +32,10 @@ router_bgp:
   neighbors:
     172.31.255.96:
       peer_group: UNDERLAY-PEERS
-      description: DC1-SPINE1_Ethernet7
+      description: DC1-SPINE1_Ethernet9
     172.31.255.98:
       peer_group: UNDERLAY-PEERS
-      description: DC1-SPINE2_Ethernet7
+      description: DC1-SPINE2_Ethernet9
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -303,9 +303,9 @@ loopback_interfaces:
 ethernet_interfaces:
   Ethernet45:
     peer: DC1-SPINE1
-    peer_interface: Ethernet7
+    peer_interface: Ethernet8
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet8
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -313,9 +313,9 @@ ethernet_interfaces:
     ip_address: 172.31.255.97/31
   Ethernet46:
     peer: DC1-SPINE2
-    peer_interface: Ethernet7
+    peer_interface: Ethernet8
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet8
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -323,9 +323,9 @@ ethernet_interfaces:
     ip_address: 172.31.255.99/31
   Ethernet47:
     peer: DC1-SPINE1
-    peer_interface: Ethernet7
+    peer_interface: Ethernet9
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet9
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -333,9 +333,9 @@ ethernet_interfaces:
     ip_address: 172.31.255.97/31
   Ethernet48:
     peer: DC1-SPINE2
-    peer_interface: Ethernet7
+    peer_interface: Ethernet9
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet9
     speed: forced 100gfull
     mtu: 1500
     type: routed

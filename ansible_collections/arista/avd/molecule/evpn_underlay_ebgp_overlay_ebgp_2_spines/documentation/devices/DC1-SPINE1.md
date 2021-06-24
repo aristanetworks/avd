@@ -259,8 +259,10 @@ vlan internal order ascending range 1006 1199
 | Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | routed | - | 172.31.255.32/31 | default | 1500 | false | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet41 | routed | - | 172.31.255.48/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet41 | routed | - | 172.31.255.64/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet43 | routed | - | 172.31.255.80/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet47 | routed | - | 172.31.255.96/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet41 | routed | - | 172.31.255.80/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1A_Ethernet43 | routed | - | 172.31.255.80/31 | default | 1500 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-BL1B_Ethernet45 | routed | - | 172.31.255.96/31 | default | 1500 | false | - | - |
+| Ethernet9 | P2P_LINK_TO_DC1-BL1B_Ethernet47 | routed | - | 172.31.255.96/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -307,7 +309,7 @@ interface Ethernet5
    ip address 172.31.255.64/31
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-BL1A_Ethernet43
+   description P2P_LINK_TO_DC1-BL1A_Ethernet41
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -315,6 +317,22 @@ interface Ethernet6
    ip address 172.31.255.80/31
 !
 interface Ethernet7
+   description P2P_LINK_TO_DC1-BL1A_Ethernet43
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.80/31
+!
+interface Ethernet8
+   description P2P_LINK_TO_DC1-BL1B_Ethernet45
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.96/31
+!
+interface Ethernet9
    description P2P_LINK_TO_DC1-BL1B_Ethernet47
    no shutdown
    speed forced 100gfull

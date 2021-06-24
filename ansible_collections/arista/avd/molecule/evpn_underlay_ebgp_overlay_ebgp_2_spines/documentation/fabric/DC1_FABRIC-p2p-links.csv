@@ -1,12 +1,12 @@
 type, Node,Node Interface,Leaf IP Address,Peer Node,Peer Interface,Peer IP Address
 l3leaf,DC1-BL1A,Ethernet41,172.31.255.81/31,spine,DC1-SPINE1,Ethernet6,172.31.255.80/31
 l3leaf,DC1-BL1A,Ethernet42,172.31.255.83/31,spine,DC1-SPINE2,Ethernet6,172.31.255.82/31
-l3leaf,DC1-BL1A,Ethernet43,172.31.255.81/31,spine,DC1-SPINE1,Ethernet6,172.31.255.80/31
-l3leaf,DC1-BL1A,Ethernet44,172.31.255.83/31,spine,DC1-SPINE2,Ethernet6,172.31.255.82/31
-l3leaf,DC1-BL1B,Ethernet45,172.31.255.97/31,spine,DC1-SPINE1,Ethernet7,172.31.255.96/31
-l3leaf,DC1-BL1B,Ethernet46,172.31.255.99/31,spine,DC1-SPINE2,Ethernet7,172.31.255.98/31
-l3leaf,DC1-BL1B,Ethernet47,172.31.255.97/31,spine,DC1-SPINE1,Ethernet7,172.31.255.96/31
-l3leaf,DC1-BL1B,Ethernet48,172.31.255.99/31,spine,DC1-SPINE2,Ethernet7,172.31.255.98/31
+l3leaf,DC1-BL1A,Ethernet43,172.31.255.81/31,spine,DC1-SPINE1,Ethernet7,172.31.255.80/31
+l3leaf,DC1-BL1A,Ethernet44,172.31.255.83/31,spine,DC1-SPINE2,Ethernet7,172.31.255.82/31
+l3leaf,DC1-BL1B,Ethernet45,172.31.255.97/31,spine,DC1-SPINE1,Ethernet8,172.31.255.96/31
+l3leaf,DC1-BL1B,Ethernet46,172.31.255.99/31,spine,DC1-SPINE2,Ethernet8,172.31.255.98/31
+l3leaf,DC1-BL1B,Ethernet47,172.31.255.97/31,spine,DC1-SPINE1,Ethernet9,172.31.255.96/31
+l3leaf,DC1-BL1B,Ethernet48,172.31.255.99/31,spine,DC1-SPINE2,Ethernet9,172.31.255.98/31
 l3leaf,DC1-LEAF1A,Ethernet1,172.31.255.1/31,spine,DC1-SPINE1,Ethernet1,172.31.255.0/31
 l3leaf,DC1-LEAF1A,Ethernet2,172.31.255.3/31,spine,DC1-SPINE2,Ethernet1,172.31.255.2/31
 l3leaf,DC1-LEAF2A,Ethernet1,172.31.255.17/31,spine,DC1-SPINE1,Ethernet2,172.31.255.16/31
