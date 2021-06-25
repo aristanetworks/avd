@@ -85,12 +85,13 @@ interface Management1
 
 ### SNMP Hosts Configuration
 
-| Host | VRF | Username | Authentication level | SNMP Version |
-| ---- |---- | -------- | -------------------- | ------------ |
-| 10.6.75.121 | MGMT | - | - | 1 |
-| 10.6.75.121 | MGMT | - | - | 2c |
-| 10.6.75.99 | MGMT | USER-READ | auth | 3 |
-| 10.6.75.99 | MGMT | USER-WRITE | auth | 3 |
+| Host | VRF | Community | Username | Authentication level | SNMP Version |
+| ---- |---- | --------- | -------- | -------------------- | ------------ |
+| 10.6.75.121 | MGMT | SNMP-COMMUNITY-1 | - | - | 1 |
+| 10.6.75.121 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
+| 10.6.75.99 | MGMT | - | USER-READ | auth | 3  |
+| 10.6.75.99 | MGMT | - | USER-WRITE | auth | 3  |
+| 10.6.75.100 | MGMT | - | USER-READ | priv | 3  |
 
 ### SNMP Views Configuration
 
@@ -142,10 +143,11 @@ snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
 snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
-snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
-snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ
-snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
+snmp-server host 10.6.75.121 vrf MGMT 1 SNMP-COMMUNITY-1
+snmp-server host 10.6.75.121 vrf MGMT 2c SNMP-COMMUNITY-2
+snmp-server host 10.6.75.99 vrf MGMT 3 auth USER-READ
+snmp-server host 10.6.75.99 vrf MGMT 3 auth USER-WRITE
+snmp-server host 10.6.75.100 vrf MGMT 3 priv USER-READ
 snmp-server enable traps
 no snmp-server vrf default
 snmp-server vrf MGMT
