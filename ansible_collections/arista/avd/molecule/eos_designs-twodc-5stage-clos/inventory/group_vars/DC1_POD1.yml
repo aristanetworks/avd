@@ -90,11 +90,11 @@ l3leaf:
               - structured-config.set.on.node
           id: 2
           # mgmt_ip: 192.168.1.8/16 Test without management IP
-          spine_interfaces: [ Ethernet4, Ethernet4, Ethernet6, Ethernet6 ]
+          spine_interfaces: [ Ethernet4, Ethernet4, Ethernet7, Ethernet7 ]
         DC1-POD1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.1.9/16
-          spine_interfaces: [ Ethernet5, Ethernet5, Ethernet7, Ethernet7 ]
+          spine_interfaces: [ Ethernet5, Ethernet5, Ethernet8, Ethernet8 ]
 
 # In DC1 we define all variables on specific node / node_group
 l2leaf:
