@@ -116,22 +116,32 @@ snmp-server location {{ snmp_server.location }}
 {%     endif %}
 {%     if snmp_server.hosts is arista.avd.defined %}
 {%         for host in snmp_server.hosts %}
-{%             if host.users is arista.avd.defined %}
-{%                 for user in host.users %}
-{%                     if host.host is arista.avd.defined %}
-{%                         set host_cli = "snmp-server host " ~ host.host %}
-{%                     endif %}
-{%                     if host.vrf is arista.avd.defined %}
-{%                         set host_cli = host_cli ~ " vrf " ~ host.vrf %}
-{%                     endif %}
-{%                     if user.version is arista.avd.defined %}
-{%                         set host_cli = host_cli ~ " version " ~ user.version %}
-{%                         if user.version == 3 %}
-{%                             set host_cli = host_cli ~ " " ~ user.authentication_level ~ " " ~ user.username %}
+{%             if host.version is arista.avd.defined and host.version in [1, '2c'] %}
+{%                 if host.communities is arista.avd.defined %}
+{%                     for community in host.communities %}
+{%                         if host.host is arista.avd.defined %}
+{%                             set host_cli = "snmp-server host " ~ host.host %}
 {%                         endif %}
-{%                     endif %}
+{%                         if host.vrf is arista.avd.defined %}
+{%                             set host_cli = host_cli ~ " vrf " ~ host.vrf %}
+{%                         endif %}
+{%                         set host_cli = host_cli ~ " version " ~ host.version ~ " " ~ host.communities.community %}
 {{ host_cli }}
-{%                 endfor %}
+{%                     endfor %}
+{%                 endif %}
+{%             elif host.version is arista.avd.defined(3) %}
+{%                 if host.users is arista.avd.defined %}
+{%                     for user in host.users %}
+{%                         if host.host is arista.avd.defined %}
+{%                             set host_cli = "snmp-server host " ~ host.host %}
+{%                         endif %}
+{%                         if host.vrf is arista.avd.defined %}
+{%                             set host_cli = host_cli ~ " vrf " ~ host.vrf %}
+{%                         endif %}
+{%                         set host_cli = host_cli ~ " version " ~ host.version ~ " " ~ user.authentication_level ~ " " ~ user.username %}
+{{ host_cli }}
+{%                     endfor %}
+{%                 endif %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}

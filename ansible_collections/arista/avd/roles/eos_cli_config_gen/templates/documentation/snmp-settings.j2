@@ -49,9 +49,9 @@
 | Host | VRF | Username | Authentication level | SNMP Version |
 | ---- |---- | -------- | -------------------- | ------------ |
 {%      for host in snmp_server.hosts %}
-{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{ user.username }} | {{ user.authentication_level }} | {{ user.version }} |
+{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{ user.username }} | {{ user.authentication_level }} | {{ host.version }} |
 {% endfor %}
-{%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | - |
+{%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | {{ host.version }} |
 {%         endif %}
 {%      endfor %}
 {%  endif %}
