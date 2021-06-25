@@ -4,8 +4,8 @@
   arista.avd.inventory_to_container:
     inventory: "{{ inventory_file }}"
     container_root: "{{ container_root }}"
-    configlet_dir: "{{ root_dir }}/intended/configs"
+    configlet_dir: "{{ eos_config_dir }}"
     configlet_prefix: "{{ configlets_prefix }}"
-    destination: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}_configlets.yml"
+    destination: "{{ structured_cvp_dir }}/{{ inventory_hostname }}_configlets.yml"
     device_filter: "{{ device_filter }}"
   register: CVP_VARS

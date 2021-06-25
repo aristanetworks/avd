@@ -1,5 +1,5 @@
 {# Device Configuration #}
-!RANCID-CONTENT-TYPE: arista
+{% include 'eos/rancid-content-type.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal-settings.j2' %}
 {# cli prompt #}
@@ -28,9 +28,10 @@
 {% include 'eos/load-interval.j2' %}
 {# interface defaults #}
 {% include 'eos/interface-defaults.j2' %}
-{# cannot be disabled in current EOS releases #}
-!
-transceiver qsfp default-mode 4x10G
+{# interface profiles #}
+{% include 'eos/interface-profiles.j2' %}
+{# transceiver qsfp default mode #}
+{% include 'eos/transceiver-qsfp-default-mode.j2' %}
 {# errdisable #}
 {% include 'eos/errdisable.j2' %}
 {# service routing protocols model #}
@@ -41,10 +42,12 @@ transceiver qsfp default-mode 4x10G
 {% include 'eos/lldp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
+{# match-list #}
+{% include 'eos/match-lists.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
-!
-hostname {{ inventory_hostname }}
+{# hostname #}
+{% include 'eos/hostname.j2' %}
 {# domain lookup #}
 {% include 'eos/domain-lookup.j2' %}
 {# name servers #}
@@ -55,6 +58,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/domain-list.j2' %}
 {# ntp servers #}
 {% include 'eos/ntp-servers.j2' %}
+{# ntp #}
+{% include 'eos/ntp.j2' %}
 {# ptp #}
 {% include 'eos/ptp.j2' %}
 {# radius servers #}
@@ -121,6 +126,10 @@ hostname {{ inventory_hostname }}
 {% include 'eos/virtual-source-nat.j2' %}
 {# event handler #}
 {% include 'eos/event-handler.j2' %}
+{# BGP Groups configuration #}
+{% include 'eos/bgp-groups.j2' %}
+{# Interface Groups configuration #}
+{% include 'eos/interface-groups.j2' %}
 {# IPv6 Standard access-lists #}
 {# IPv6 Extended Access-lists #}
 {% include 'eos/ipv6-access-lists.j2' %}
@@ -168,6 +177,8 @@ hostname {{ inventory_hostname }}
 {% include 'eos/peer-filters.j2' %}
 {# router bgp configuration #}
 {% include 'eos/router-bgp.j2' %}
+{# router igmp configuration #}
+{% include 'eos/router-igmp.j2' %}
 {# router multicast configuration #}
 {% include 'eos/router-multicast.j2' %}
 {# router general configuration #}
@@ -204,5 +215,5 @@ hostname {{ inventory_hostname }}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}
 {% include 'eos/custom-templates.j2' %}
-!
-end
+{# end #}
+{% include 'eos/end.j2' %}

@@ -37,6 +37,9 @@
       - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
+      - [Match Lists](#match-lists)
+    - [Generate Device Documentation](#generate-device-documentation)
+    - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -49,6 +52,7 @@
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
       - [Switchport Default](#switchport-default)
+      - [Interface Profiles](#interface-profiles)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -58,7 +62,7 @@
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
-    - [Maintenance](#maintenance)
+    - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
       - [Maintenance profiles and units](#maintenance-profiles-and-units)
@@ -75,6 +79,7 @@
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [NTP Servers](#ntp-servers)
+      - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
@@ -108,6 +113,7 @@
       - [IPv6 Routing](#ipv6-routing)
       - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router IGMP Configuration](#router-igmp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
@@ -550,6 +556,41 @@ route_maps:
           - "< set rule 2 as string >"
 ```
 
+#### Match Lists
+
+```yaml
+match_list_input:
+  string:
+    < match_list_1 >:
+      sequence_numbers:
+        < sequence_id 1 >:
+          match_regex: < match string >
+```
+
+### Generate Device Documentation
+
+```yaml
+generate_device_documentation: < true | false | default -> true >
+```
+
+### Generate Default Config
+
+The `generate_default_config` knob allows to ommit default EOS configuration.
+This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+
+The following commands will be ommited when `generate_default_config` is set to `false`:
+
+- RANCID Content Type
+- Hostname
+- Default configuration for `aaa`
+- Default configuration for `enable password`
+- Transceiver qsfp default mode
+- End of configuration delimiter
+
+```yaml
+generate_default_config: < true | false | default -> true >
+```
+
 ### Hardware
 
 #### Hardware Counters
@@ -697,6 +738,7 @@ ethernet_interfaces:
 
 ```yaml
 # Switched Interfaces
+ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
@@ -739,6 +781,7 @@ ethernet_interfaces:
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
+    profile: < interface_profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -784,6 +827,15 @@ switchport_default:
     vlan: < 1-4094 >
 ```
 
+#### Interface Profiles
+
+```yaml
+interface_profiles:
+  < interface_profile_1 >:
+    commands:
+      - < command_1 >
+      - < command_2 >
+```
 #### Loopback Interfaces
 
 ```yaml
@@ -822,6 +874,7 @@ port_channel_interfaces:
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    native_vlan: < native vlan number >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -1068,6 +1121,7 @@ mac_security:
           fallback: < true | false -> default >
 ```
 
+<<<<<<< HEAD
 ### Maintenance
 
 #### Profiles and units
@@ -1102,6 +1156,35 @@ maintenance:
         interface_groups:
         - < interface_group_1>
         - < interface_group_2>
+=======
+### Maintenance Mode
+
+#### BGP Groups
+
+```yaml
+bgp_groups:
+  < group_name >:
+    vrf: "< vrf_name >"
+    neighbors:
+      - "< ip_address >"
+      - "< ipv6_address >"
+      - "< peer_group_name >"
+    bgp_maintenance_profiles:
+      - < profile_name >
+```
+
+#### Interface Groups
+
+```yaml
+interface_groups:
+  < group_name >:
+    interfaces:
+      - "< interface_or_interface_range >"
+    bgp_maintenance_profiles:
+      - "< profile_name >"
+    interface_maintenance_profiles:
+      - "< profile_name >"
+>>>>>>> 8abeda15b0ca07d510490e6eb99a246a9c791898
 ```
 
 ### Management
@@ -1260,6 +1343,18 @@ ntp_server:
     - < ntp_server_2 >
 ```
 
+#### NTP
+
+```yaml
+ntp:
+  authenticate: <true | false >
+  authentication_keys:
+    <key_identifier | 1-65534>:
+      hash_algorithm: < md5 | sha1 >
+      key: "< type7_obfuscated_key >"
+  trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
+```
+
 ### MPLS
 
 ```yaml
@@ -1411,6 +1506,11 @@ logging:
       hosts:
         - < syslog_server_1>
         - < syslog_server_2>
+  policy:
+    match:
+      match_lists:
+        < match_list >:
+          action: < discard >
 ```
 
 #### Sflow
@@ -1660,7 +1760,7 @@ qos_profiles:
 ```yaml
 queue_monitor_length:
   log: < seconds >
-  notifying: < true | false >
+  notifying: < true | false - should only be used for platforms supporting the "queue-monitor length notifying" CLI >
 ```
 
 #### Queue Monitor Streaming
@@ -1882,6 +1982,8 @@ router_bgp:
         default_originate:
           always: < true | false >
           route_map: < route_map_name >
+        next_hop:
+          address_family_ipv6_originate: < true | false >
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
@@ -2026,6 +2128,12 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+#### Router IGMP Configuration
+
+```yaml
+router_igmp:
+  ssm_aware: < true | false >
+```
 
 #### Router OSPF Configuration
 

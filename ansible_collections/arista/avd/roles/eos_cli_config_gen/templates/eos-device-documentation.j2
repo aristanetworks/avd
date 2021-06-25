@@ -14,7 +14,7 @@
 {## Domain Lookup #}
 {% include 'documentation/domain-lookup.j2' %}
 {## NTP #}
-{% include 'documentation/ntp-servers.j2' %}
+{% include 'documentation/ntp.j2' %}
 {## PTP #}
 {% include 'documentation/ptp.j2' %}
 {## Management SSH #}
@@ -83,6 +83,8 @@
 {% include 'documentation/switchport-default.j2' %}
 {## Interface Defaults #}
 {% include 'documentation/interface-defaults.j2' %}
+{## Interface Profiles #}
+{% include 'documentation/interface-profiles.j2' %}
 {## Ethernet Interfaces #}
 {% include 'documentation/ethernet-interfaces.j2' %}
 {## Port-Channel Interfaces #}
@@ -131,6 +133,8 @@
 {% include 'documentation/router-multicast.j2' %}
 {## Router PIM Sparse Mode #}
 {% include 'documentation/router-pim-sparse-mode.j2' %}
+{## Router IGMP #}
+{% include 'documentation/router-igmp.j2' %}
 
 # Filters
 {## Community-lists #}
@@ -147,6 +151,8 @@
 {% include 'documentation/ip-extended-community-lists.j2' %}
 {## IP Extended Community Lists Regexp #}
 {% include 'documentation/ip-extended-community-lists-regexp.j2' %}
+{## Match-Lists #}
+{% include 'documentation/match-lists.j2' %}
 
 # ACL
 {## Standard Access-lists #}
@@ -183,6 +189,8 @@
 {% include 'documentation/policy-maps-qos.j2' %}
 {## QOS Profiles #}
 {% include 'documentation/qos-profiles.j2' %}
+{# Maintenance Mode #}
+{% include 'documentation/maintenance-mode.j2' %}
 {# EOS CLI #}
 {% include 'documentation/eos-cli.j2' %}
 {# Custom Templates #}
