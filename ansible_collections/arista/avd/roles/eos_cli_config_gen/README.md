@@ -1730,16 +1730,19 @@ snmp_server:
   hosts:
     - host: < host IP address or name >
       vrf: < vrf_name >
+      version: < 1 | 2c | 3 >
+      communities:
+        community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
     - host: < host IP address or name >
       vrf: < vrf_name >
+      communities:
+        community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
   traps:
     enable: < true | false >
   vrfs:
