@@ -51,9 +51,11 @@ router_bgp:
       description: DC1-POD1-SPINE2_Ethernet4
     172.17.110.12:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet7
     172.17.110.14:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet7
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
