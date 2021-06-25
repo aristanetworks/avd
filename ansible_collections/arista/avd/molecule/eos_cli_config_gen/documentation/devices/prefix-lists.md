@@ -18,7 +18,6 @@
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -131,5 +130,3 @@ ipv6 prefix-list PL-IPV6-LOOPBACKS
 # ACL
 
 # Quality Of Service
-
-# Maintenance

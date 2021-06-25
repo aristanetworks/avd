@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -97,5 +96,3 @@ vlan internal order ascending range 10 40
 # ACL
 
 # Quality Of Service
-
-# Maintenance

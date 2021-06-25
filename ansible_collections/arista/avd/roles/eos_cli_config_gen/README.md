@@ -1136,7 +1136,7 @@ maintenance:
         load_interval: < seconds >
         threshold: < kbps >
       shutdown:
-        max_delay: < seconds >     
+        max_delay: < seconds >
   bgp_profiles:
     < bgp_profile_1 >:
       initiator:

@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -96,5 +95,3 @@ Global ARP timeout: 300
 # ACL
 
 # Quality Of Service
-
-# Maintenance

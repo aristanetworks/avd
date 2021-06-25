@@ -17,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
   - [QOS Policy Maps](#qos-policy-maps)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -140,5 +139,3 @@ policy-map type pbr PM_PBR_BREAKOUT
       set nexthop recursive 192.168.4.2
    !
 ```
-
-# Maintenance

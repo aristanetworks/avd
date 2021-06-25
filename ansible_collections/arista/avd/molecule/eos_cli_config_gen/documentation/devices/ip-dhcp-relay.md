@@ -19,7 +19,6 @@
   - [IP DHCP Relay](#ip-dhcp-relay-1)
   - [IP DHCP Relay Configuration](#ip-dhcp-relay-configuration)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -107,5 +106,3 @@ ip dhcp relay information option
 ```
 
 # Quality Of Service
-
-# Maintenance

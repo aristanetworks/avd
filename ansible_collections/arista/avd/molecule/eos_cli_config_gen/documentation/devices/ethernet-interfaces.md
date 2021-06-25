@@ -21,7 +21,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -308,5 +307,3 @@ interface Ethernet14
 # ACL
 
 # Quality Of Service
-
-# Maintenance

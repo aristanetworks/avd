@@ -17,7 +17,6 @@
 - [ACL](#acl)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -112,5 +111,3 @@ ipv6 access-list TEST1
 ```
 
 # Quality Of Service
-
-# Maintenance

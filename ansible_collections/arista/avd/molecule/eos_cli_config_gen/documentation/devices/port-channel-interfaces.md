@@ -20,7 +20,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -302,5 +301,3 @@ interface Port-Channel100.102
 # ACL
 
 # Quality Of Service
-
-# Maintenance

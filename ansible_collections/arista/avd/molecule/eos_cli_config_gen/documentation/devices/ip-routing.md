@@ -19,7 +19,6 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -135,5 +134,3 @@ vrf instance TEST2
 ```
 
 # Quality Of Service
-
-# Maintenance

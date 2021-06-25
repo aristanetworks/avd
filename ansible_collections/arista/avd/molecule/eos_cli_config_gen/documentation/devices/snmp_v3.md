@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -190,5 +189,3 @@ snmp-server vrf mgt
 # ACL
 
 # Quality Of Service
-
-# Maintenance

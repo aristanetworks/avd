@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -113,5 +112,3 @@ ip tacacs source-interface loopback10
 # ACL
 
 # Quality Of Service
-
-# Maintenance

@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -107,5 +106,3 @@ daemon random
 # ACL
 
 # Quality Of Service
-
-# Maintenance

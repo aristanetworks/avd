@@ -20,7 +20,6 @@
   - [Route-maps](#route-maps)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -265,5 +264,3 @@ route-map RM-BGP-EXPORT-DEFAULT-BLUE-C1 permit 10
 # ACL
 
 # Quality Of Service
-
-# Maintenance

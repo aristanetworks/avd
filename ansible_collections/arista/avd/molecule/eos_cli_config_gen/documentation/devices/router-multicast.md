@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -108,5 +107,3 @@ router multicast
 # ACL
 
 # Quality Of Service
-
-# Maintenance

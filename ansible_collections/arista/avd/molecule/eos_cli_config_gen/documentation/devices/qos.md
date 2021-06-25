@@ -20,7 +20,6 @@
 - [Quality Of Service](#quality-of-service)
   - [QOS](#qos)
   - [QOS Profiles](#qos-profiles)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -286,5 +285,3 @@ qos profile test
    tx-queue 6
       bandwidth percent 20
 ```
-
-# Maintenance

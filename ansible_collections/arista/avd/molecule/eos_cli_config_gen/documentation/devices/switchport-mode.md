@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -112,5 +111,3 @@ switchport default phone vlan 69
 # ACL
 
 # Quality Of Service
-
-# Maintenance

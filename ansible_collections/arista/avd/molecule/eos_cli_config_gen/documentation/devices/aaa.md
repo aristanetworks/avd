@@ -23,7 +23,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -243,5 +242,3 @@ aaa accounting commands 0 default start-stop logging
 # ACL
 
 # Quality Of Service
-
-# Maintenance

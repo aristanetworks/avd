@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -128,5 +127,3 @@ interface Vxlan1
 # ACL
 
 # Quality Of Service
-
-# Maintenance

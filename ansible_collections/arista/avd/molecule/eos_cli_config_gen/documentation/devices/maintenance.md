@@ -16,8 +16,8 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
-  - [Maintenance](#maintenance-1)
+- [Maintenance Mode](#maintenance-mode)
+  - [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -93,7 +93,7 @@ interface Management1
 
 # Quality Of Service
 
-# Maintenance
+# Maintenance Mode
 
 ## Maintenance
 

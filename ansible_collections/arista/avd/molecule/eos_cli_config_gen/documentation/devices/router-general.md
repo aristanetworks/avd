@@ -17,7 +17,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -105,5 +104,3 @@ router general
 # ACL
 
 # Quality Of Service
-
-# Maintenance

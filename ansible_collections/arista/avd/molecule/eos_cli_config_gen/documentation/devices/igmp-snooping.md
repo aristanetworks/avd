@@ -21,7 +21,6 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
-- [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -135,5 +134,3 @@ no ip igmp snooping
 # ACL
 
 # Quality Of Service
-
-# Maintenance
