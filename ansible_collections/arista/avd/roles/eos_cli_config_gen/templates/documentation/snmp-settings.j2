@@ -46,12 +46,12 @@
 {%  if snmp_server.hosts is defined and snmp_server.hosts is not none %}
 ### SNMP Hosts Configuration
 
-| Host | VRF | Username | Authentication level | SNMP Version |
-| ---- |---- | -------- | -------------------- | ------------ |
+| Host | VRF | Community | Username | Authentication level | SNMP Version |
+| ---- |---- | --------- | -------- | -------------------- | ------------ |
 {%      for host in snmp_server.hosts %}
-{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{ user.username }} | {{ user.authentication_level }} | {{ host.version }} |
+{%          if host.users is arista.avd.defined %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | arista.avd.default('default') }} | {{ host.community | arista.avd.default('-') }} | {{ user.username }} | {{ user.authentication_level }} | {{ host.version | arista.avd.default('3') }}  |
 {% endfor %}
-{%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | {{ host.version }} |
+{%          else %}| {{ host.host }} | {{ host.vrf | arista.avd.default('default') }} | {{ host.community | arista.avd.default('-') }} | - | - | {{ host.version | arista.avd.default('3') }} |
 {%         endif %}
 {%      endfor %}
 {%  endif %}
