@@ -200,12 +200,21 @@ tenants:
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
             enabled: < true | false >
-            mtu: <mtu >
+            mtu: < mtu >
             # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
             # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
             structured_config: < dictionary >
+
+          # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
+          - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
+            encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 > ]
+            description: < description >
+            enabled: < true | false >
+            mtu: < mtu - should only be used for platforms supporting mtu per subinterface >
 
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
