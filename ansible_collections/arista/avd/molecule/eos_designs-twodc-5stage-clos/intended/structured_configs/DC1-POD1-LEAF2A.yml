@@ -42,12 +42,18 @@ router_bgp:
     172.20.110.3:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2B
-    172.17.110.4:
+    172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
       description: DC1-POD1-SPINE1_Ethernet4
-    172.17.110.6:
+    172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
       description: DC1-POD1-SPINE2_Ethernet4
+    172.17.110.12:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE1_Ethernet7
+    172.17.110.14:
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: DC1-POD1-SPINE2_Ethernet7
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
@@ -355,7 +361,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.5/31
+    ip_address: 172.17.110.9/31
   Ethernet2:
     peer: DC1-POD1-SPINE2
     peer_interface: Ethernet4
@@ -367,7 +373,7 @@ ethernet_interfaces:
       enable: true
     type: routed
     shutdown: false
-    ip_address: 172.17.110.7/31
+    ip_address: 172.17.110.11/31
   Ethernet3:
     peer: DC1-POD1-L2LEAF2A
     peer_interface: Ethernet1
@@ -388,6 +394,30 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+  Ethernet11:
+    peer: DC1-POD1-SPINE1
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.13/31
+  Ethernet12:
+    peer: DC1-POD1-SPINE2
+    peer_interface: Ethernet7
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.15/31
   Ethernet7:
     peer: DC2-POD1-LEAF1A
     peer_interface: Ethernet6
