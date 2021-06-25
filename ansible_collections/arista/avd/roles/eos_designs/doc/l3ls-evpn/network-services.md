@@ -201,15 +201,6 @@ tenants:
             nodes: [ < node_1 >, < node_2 > ]
             description: < description >
             enabled: < true | false >
-            mtu: <mtu >
-
-          # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
-          - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
-            encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
-            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
-            nodes: [ < node_1 >, < node_2 > ]
-            description: < description >
-            enabled: < true | false >
             mtu: < mtu - should only be used for platforms supporting mtu per subinterface >
 
         # Dictionary of static routes | Optional.
