@@ -142,3 +142,8 @@ management_interfaces:
     type: inband
 ip_igmp_snooping:
   globally_enabled: true
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
+domain_list:
+- structured-config.set.under.vrf.common-vrf

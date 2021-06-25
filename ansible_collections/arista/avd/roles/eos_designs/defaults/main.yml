@@ -2,6 +2,24 @@
 # Root directory where to build output structure
 root_dir: '{{ inventory_dir }}'
 
+# Documentation folders
+# Main documentation folder
+documentation_dir_name: 'documentation'
+documentation_dir: '{{ root_dir }}/{{ documentation_dir_name }}'
+
+# Fabric documentation
+fabric_dir_name: 'fabric'
+fabric_dir: '{{ documentation_dir }}/{{ fabric_dir_name }}'
+
+# AVD configurations output
+# Main output directory
+output_dir_name: 'intended'
+output_dir: '{{ root_dir }}/{{ output_dir_name }}'
+
+# Output for structured YAML files:
+structured_dir_name: 'structured_configs'
+structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
+
 # Design variables
 design:
   type: "l3ls-evpn"
@@ -34,7 +52,7 @@ templates:
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Merge custom_structured_configuration last
-      - template: "custom-structured-configuration-from-var.j2"
+      - template: "custom_structured_configuration/main.j2"
         options:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
@@ -160,6 +178,8 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
   - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
     tcam_profile: vxlan-routing
     lag_hardware_only: true

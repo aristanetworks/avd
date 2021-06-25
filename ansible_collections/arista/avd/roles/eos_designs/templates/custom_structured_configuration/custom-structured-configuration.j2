@@ -1,4 +1,3 @@
-{% set tmp_custom_structured_configurations = [{}] %}
 {% if custom_structured_configuration_prefix is arista.avd.defined %}
 {%     if custom_structured_configuration_prefix is string %}
 {%         set tmp_prefixes = [custom_structured_configuration_prefix] %}
@@ -17,11 +16,11 @@
 {%                 do tmp_custom_structured_configuration.update({tmp_key_name: hostvars[inventory_hostname][key_name]}) %}
 {%             endif %}
 {%         endfor %}
-{%         do tmp_custom_structured_configurations.append(tmp_custom_structured_configuration) %}
+{%         do custom_structured_configuration_data.append(tmp_custom_structured_configuration) %}
 {%     endfor %}
 {% endif %}
 {# By parsing the list of custom_structured_configurations to the combine filter,    #}
 {# it will apply them one at a time, so the first can be overridden by the next etc. #}
 {{
-    tmp_custom_structured_configurations | to_nice_yaml(indent=2, sort_keys=False)
+    custom_structured_configuration_data | to_nice_yaml(indent=2, sort_keys=False)
 }}

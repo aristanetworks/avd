@@ -208,10 +208,10 @@ router_bgp:
       - learned
       vlan: 210-211
     Tenant_C_OP_Zone:
-      rd: 192.168.255.10:30
+      rd: 192.168.255.10:30030
       route_targets:
         both:
-        - '30:30'
+        - 30030:30030
       redistribute_routes:
       - learned
       vlan: 310-311
@@ -246,6 +246,10 @@ vlan_internal_order:
   range:
     beginning: 1006
     ending: 1199
+queue_monitor_length:
+  enabled: true
+  notifying: true
+  log: 5
 name_server:
   source:
     vrf: MGMT

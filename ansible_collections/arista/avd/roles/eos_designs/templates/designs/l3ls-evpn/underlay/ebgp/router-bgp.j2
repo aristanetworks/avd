@@ -14,6 +14,10 @@ router_bgp:
     peer_groups:
       {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
         activate: true
+{% if underlay_rfc5549 is arista.avd.defined(true) %}
+        next_hop:
+          address_family_ipv6_originate: true
+{% endif %}
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP

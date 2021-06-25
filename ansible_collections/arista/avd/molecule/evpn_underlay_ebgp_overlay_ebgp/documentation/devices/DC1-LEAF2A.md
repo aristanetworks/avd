@@ -914,7 +914,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_VMOTION | 192.168.255.10:10160 | 10160:10160 | - | - | learned | 160 |
 | Tenant_A_WEB_Zone | 192.168.255.10:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.10:20 | 20:20 | - | - | learned | 210-211 |
-| Tenant_C_OP_Zone | 192.168.255.10:30 | 30:30 | - | - | learned | 310-311 |
+| Tenant_C_OP_Zone | 192.168.255.10:30030 | 30030:30030 | - | - | learned | 310-311 |
 
 #### Router BGP EVPN VRFs
 
@@ -1019,8 +1019,8 @@ router bgp 65102
       vlan 210-211
    !
    vlan-aware-bundle Tenant_C_OP_Zone
-      rd 192.168.255.10:30
-      route-target both 30:30
+      rd 192.168.255.10:30030
+      route-target both 30030:30030
       redistribute learned
       vlan 310-311
    !

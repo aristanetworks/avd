@@ -7,6 +7,8 @@ interface {{ ethernet_interface }}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].logging.event.link_status is arista.avd.defined(true) %}
    logging event link-status
+{%     elif ethernet_interfaces[ethernet_interface].logging.event.link_status is arista.avd.defined(false) %}
+   no logging event link-status
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].shutdown is arista.avd.defined(true) %}
    shutdown
@@ -223,6 +225,9 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].service_profile is arista.avd.defined %}
    service-profile {{ ethernet_interfaces[ethernet_interface].service_profile }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].profile is arista.avd.defined %}
+   profile {{ ethernet_interfaces[ethernet_interface].profile }}
 {%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}

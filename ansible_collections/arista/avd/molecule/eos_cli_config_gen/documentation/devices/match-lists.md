@@ -1,4 +1,4 @@
-# terminattr-prem-no-ingestkey
+# match-lists
 # Table of Contents
 <!-- toc -->
 
@@ -6,7 +6,6 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -15,6 +14,7 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
+  - [Match-lists](#match-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -50,23 +50,6 @@ interface Management1
 # Authentication
 
 # Monitoring
-
-## TerminAttr Daemon
-
-### TerminAttr Daemon Summary
-
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | UNSET | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | mgt | False |
-
-### TerminAttr Daemon Device Configuration
-
-```eos
-!
-daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvcompression=gzip -ingestauth=key, -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=mgt -taillogs
-   no shutdown
-```
 
 # Internal VLAN Allocation Policy
 
@@ -104,6 +87,27 @@ daemon TerminAttr
 # Multicast
 
 # Filters
+
+## Match-lists
+
+### Match-list Input String Summary
+
+#### molecule
+
+| Sequence | Match Regex |
+| -------- | ------ |
+| 10 | ^.*MOLECULE.*$ |
+| 20 | ^.*TESTING.*$ |
+
+
+### Match-lists Device Configuration
+
+```eos
+!
+match-list input string molecule
+   10 match regex ^.*MOLECULE.*$
+   20 match regex ^.*TESTING.*$
+```
 
 # ACL
 

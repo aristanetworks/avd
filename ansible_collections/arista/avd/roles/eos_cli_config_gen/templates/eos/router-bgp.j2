@@ -293,7 +293,7 @@ router bgp {{ router_bgp.as }}
 {%                endif %}
       {{ neighbor_default_originate_cli }}
 {%             endif%}
-{%             if underlay_rfc5549 is arista.avd.defined(true) %}
+{%             if router_bgp.address_family_ipv4.peer_groups[peer_group].next_hop.address_family_ipv6_originate is arista.avd.defined(true) %}
       neighbor {{ peer_group }} next-hop address-family ipv6 originate
 {%             endif %}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].activate is arista.avd.defined(true) %}

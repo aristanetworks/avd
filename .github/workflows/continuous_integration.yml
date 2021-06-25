@@ -1,8 +1,17 @@
 ---
 name: "Collection code testing"
+
 on:
   push:
+    branches:
+      - devel
+      - releases/**
+      - ci/**
   pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
 
 jobs:
   file-changes:
@@ -35,12 +44,8 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/continuous_integration.yml'
-              - 'ansible_collections/arista/avd/molecule/*'
-              - 'ansible_collections/arista/avd/molecule/**/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
-              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
-              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
@@ -211,9 +216,10 @@ jobs:
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
+          - 'evpn_underlay_rfc5549_overlay_ebgp'
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
-    needs: [ molecule_eos_cli_config_gen ]
-    if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - name: 'set environment variables'
         run: |
@@ -329,7 +335,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: avdteam/base:3.6-v1.0
     needs: [python_requirements]
-    if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases') || startsWith(github.ref, 'refs/heads/devel'))
+    if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.ref, 'refs/heads/devel'))
     steps:
       - uses: actions/checkout@master
       - name: 'Send Webhook to docker hub'
@@ -345,7 +351,7 @@ jobs:
     runs-on: ubuntu-latest
     container: avdteam/base:3.6-v2.0
     needs: [galaxy_importer, ansible_test]
-    if: startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release')
+    if: startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.base_ref, 'refs/heads/releases/**')
     steps:
       - name: 'set environment variables'
         run: |
