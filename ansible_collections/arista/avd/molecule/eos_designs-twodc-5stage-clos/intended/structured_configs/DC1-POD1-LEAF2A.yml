@@ -167,7 +167,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: 4094
 local_users:
   admin:
     privilege: 15
@@ -192,11 +192,6 @@ struct_cfg:
   - structured-config.set.on.node
   - structured-config.set.under.vrf.common-vrf
 vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4094:
     tenant: system
     name: MLAG_PEER
@@ -228,6 +223,7 @@ vlan_interfaces:
     mtu: 1500
   Vlan4094:
     description: MLAG_PEER
+    no_autostate: true
     shutdown: false
     ip_address: 172.20.110.2/31
     no_autostate: true
