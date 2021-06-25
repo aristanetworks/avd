@@ -1121,8 +1121,34 @@ mac_security:
           fallback: < true | false -> default >
 ```
 
-<<<<<<< HEAD
-### Maintenance
+### Maintenance Mode
+
+#### BGP Groups
+
+```yaml
+bgp_groups:
+  < group_name >:
+    vrf: "< vrf_name >"
+    neighbors:
+      - "< ip_address >"
+      - "< ipv6_address >"
+      - "< peer_group_name >"
+    bgp_maintenance_profiles:
+      - < profile_name >
+```
+
+#### Interface Groups
+
+```yaml
+interface_groups:
+  < group_name >:
+    interfaces:
+      - "< interface_or_interface_range >"
+    bgp_maintenance_profiles:
+      - "< profile_name >"
+    interface_maintenance_profiles:
+      - "< profile_name >"
+```
 
 #### Profiles and units
 ```yaml
@@ -1156,35 +1182,6 @@ maintenance:
         interface_groups:
         - < interface_group_1>
         - < interface_group_2>
-=======
-### Maintenance Mode
-
-#### BGP Groups
-
-```yaml
-bgp_groups:
-  < group_name >:
-    vrf: "< vrf_name >"
-    neighbors:
-      - "< ip_address >"
-      - "< ipv6_address >"
-      - "< peer_group_name >"
-    bgp_maintenance_profiles:
-      - < profile_name >
-```
-
-#### Interface Groups
-
-```yaml
-interface_groups:
-  < group_name >:
-    interfaces:
-      - "< interface_or_interface_range >"
-    bgp_maintenance_profiles:
-      - "< profile_name >"
-    interface_maintenance_profiles:
-      - "< profile_name >"
->>>>>>> 8abeda15b0ca07d510490e6eb99a246a9c791898
 ```
 
 ### Management
