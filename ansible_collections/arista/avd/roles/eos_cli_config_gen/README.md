@@ -1731,15 +1731,13 @@ snmp_server:
     - host: < host IP address or name >
       vrf: < vrf_name >
       version: < 1 | 2c | 3 >
-      communities:
-        community: < community_name >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
     - host: < host IP address or name >
       vrf: < vrf_name >
-      communities:
-        community: < community_name >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
