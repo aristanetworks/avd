@@ -57,6 +57,10 @@ router_bgp:
       remote_as: 65101
       description: DC1-RS1_Ethernet2
       bfd: true
+    172.17.110.13:
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65112
+      description: DC1-POD1-LEAF2A_Ethernet11
     172.17.110.21:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65112
@@ -205,6 +209,18 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.17.10.2/31
   Ethernet7:
+    peer: DC1-POD1-LEAF2A
+    peer_interface: Ethernet11
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet11
+    mtu: 1500
+    service_profile: QOS-PROFILE
+    ptp:
+      enable: true
+    type: routed
+    shutdown: false
+    ip_address: 172.17.110.12/31
+  Ethernet8:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet11
     peer_type: l3leaf

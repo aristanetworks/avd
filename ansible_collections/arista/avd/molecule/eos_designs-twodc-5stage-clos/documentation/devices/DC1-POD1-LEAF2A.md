@@ -286,8 +286,8 @@ vlan 4094
 | Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | routed | - | 172.17.110.9/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | routed | - | 172.17.110.11/31 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | routed | - | 100.100.100.101/24 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6 | routed | - | 172.17.110.13/31 | default | 1500 | false | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet6 | routed | - | 172.17.110.15/31 | default | 1500 | false | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | routed | - | 172.17.110.13/31 | default | 1500 | false | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | routed | - | 172.17.110.15/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -339,7 +339,7 @@ interface Ethernet7
    ip address 100.100.100.101/24
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
    no shutdown
    mtu 1500
    no switchport
@@ -348,7 +348,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet6
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
    no shutdown
    mtu 1500
    no switchport
@@ -816,9 +816,9 @@ router bgp 65112
    neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet6
+   neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
    neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet6
+   neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B
    redistribute attached-host

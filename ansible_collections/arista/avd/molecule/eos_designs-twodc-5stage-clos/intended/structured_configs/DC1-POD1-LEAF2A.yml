@@ -50,10 +50,10 @@ router_bgp:
       description: DC1-POD1-SPINE2_Ethernet4
     172.17.110.12:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-SPINE1_Ethernet6
+      description: DC1-POD1-SPINE1_Ethernet7
     172.17.110.14:
       peer_group: IPv4-UNDERLAY-PEERS
-      description: DC1-POD1-SPINE2_Ethernet6
+      description: DC1-POD1-SPINE2_Ethernet7
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
@@ -404,9 +404,9 @@ ethernet_interfaces:
       mode: active
   Ethernet11:
     peer: DC1-POD1-SPINE1
-    peer_interface: Ethernet6
+    peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet6
+    description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:
@@ -416,9 +416,9 @@ ethernet_interfaces:
     ip_address: 172.17.110.13/31
   Ethernet12:
     peer: DC1-POD1-SPINE2
-    peer_interface: Ethernet6
+    peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet6
+    description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
     mtu: 1500
     service_profile: QOS-PROFILE
     ptp:

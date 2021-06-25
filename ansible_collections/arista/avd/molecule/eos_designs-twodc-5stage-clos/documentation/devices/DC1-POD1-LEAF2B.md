@@ -310,8 +310,8 @@ vlan 4094
 | Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | routed | - | 172.17.110.17/31 | default | 1500 | false | - | - |
 | Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | routed | - | 172.17.110.19/31 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7 | routed | - | 11.1.0.38/31 | default | 1499 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | routed | - | 172.17.110.21/31 | default | 1500 | false | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | routed | - | 172.17.110.23/31 | default | 1500 | false | - | - |
+| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8 | routed | - | 172.17.110.21/31 | default | 1500 | false | - | - |
+| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8 | routed | - | 172.17.110.23/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -364,7 +364,7 @@ interface Ethernet7
    ptp enable
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
+   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
    no shutdown
    mtu 1500
    no switchport
@@ -373,7 +373,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
+   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
    no shutdown
    mtu 1500
    no switchport
@@ -843,9 +843,9 @@ router bgp 65112
    neighbor 172.17.110.18 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.18 description DC1-POD1-SPINE2_Ethernet5
    neighbor 172.17.110.20 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.20 description DC1-POD1-SPINE1_Ethernet7
+   neighbor 172.17.110.20 description DC1-POD1-SPINE1_Ethernet8
    neighbor 172.17.110.22 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet7
+   neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
    neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.2 description DC1-POD1-LEAF2A
    redistribute attached-host

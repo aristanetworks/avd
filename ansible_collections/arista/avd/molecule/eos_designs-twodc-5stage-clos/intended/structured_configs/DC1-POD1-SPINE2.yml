@@ -152,7 +152,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.110.18/31
-  Ethernet6:
+  Ethernet7:
     peer: DC1-POD1-LEAF2A
     peer_interface: Ethernet12
     peer_type: l3leaf
@@ -164,7 +164,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.110.14/31
-  Ethernet7:
+  Ethernet8:
     peer: DC1-POD1-LEAF2B
     peer_interface: Ethernet12
     peer_type: l3leaf

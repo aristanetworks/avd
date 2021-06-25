@@ -199,8 +199,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet2 | routed | - | 172.17.110.2/31 | default | 1500 | false | - | - |
 | Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet2 | routed | - | 172.17.110.10/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet2 | routed | - | 172.17.110.18/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12 | routed | - | 172.17.110.22/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet12 | routed | - | 172.17.110.14/31 | default | 1500 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12 | routed | - | 172.17.110.22/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -251,7 +251,7 @@ interface Ethernet5
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet6
+interface Ethernet7
    description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet12
    no shutdown
    mtu 1500
@@ -260,7 +260,7 @@ interface Ethernet6
    ptp enable
    service-profile QOS-PROFILE
 !
-interface Ethernet7
+interface Ethernet8
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet12
    no shutdown
    mtu 1500

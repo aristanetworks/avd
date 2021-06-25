@@ -174,7 +174,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet1 | routed | - | 172.17.110.8/31 | default | 1500 | false | - | - |
 | Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1 | routed | - | 172.17.110.16/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_DC1-RS1_Ethernet2 | routed | - | 172.17.10.2/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | routed | - | 172.17.110.20/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet11 | routed | - | 172.17.110.12/31 | default | 1500 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | routed | - | 172.17.110.20/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -234,6 +235,15 @@ interface Ethernet6
    service-profile QOS-PROFILE
 !
 interface Ethernet7
+   description P2P_LINK_TO_DC1-POD1-LEAF2A_Ethernet11
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.17.110.12/31
+   ptp enable
+   service-profile QOS-PROFILE
+!
+interface Ethernet8
    description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11
    no shutdown
    mtu 1500
@@ -372,6 +382,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.10.3 | 65101 | default |
 | 172.17.110.1 | 65111 | default |
 | 172.17.110.9 | 65112 | default |
+| 172.17.110.13 | 65112 | default |
 | 172.17.110.17 | 65112 | default |
 | 172.17.110.21 | 65112 | default |
 
@@ -442,6 +453,9 @@ router bgp 65110
    neighbor 172.17.110.9 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.9 remote-as 65112
    neighbor 172.17.110.9 description DC1-POD1-LEAF2A_Ethernet1
+   neighbor 172.17.110.13 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.13 remote-as 65112
+   neighbor 172.17.110.13 description DC1-POD1-LEAF2A_Ethernet11
    neighbor 172.17.110.17 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.17 remote-as 65112
    neighbor 172.17.110.17 description DC1-POD1-LEAF2B_Ethernet1
