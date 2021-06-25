@@ -65,21 +65,25 @@ snmp_server:
     - host: 10.6.75.121
       vrf: MGMT
       version: 1
-      communities:
-        community: SNMP-COMMUNITY-1
+      community: SNMP-COMMUNITY-1
     - host: 10.6.75.121
       vrf: MGMT
       version: 2c
-      communities:
-        community: SNMP-COMMUNITY-2
+      community: SNMP-COMMUNITY-2
     - host: 10.6.75.99
       vrf: MGMT
       version: 3
       users:
         - username: USER-READ
           authentication_level: auth
+          version: 3
         - username: USER-WRITE
           authentication_level: auth
+    - host: 10.6.75.100
+      vrf: MGMT
+      users:
+        - username: USER-READ
+          authentication_level: priv
   traps:
     enable: true
   vrfs:
