@@ -27,6 +27,14 @@ mlag_ips:
 # Enable vlan aware bundles
 vxlan_vlan_aware_bundles: true
 
+# Disable EVPN host-flap protection
+evpn_hostflap_detection:
+  enabled: false
+  threshold: 30
+
+# Set short_esi prefix to non-default value
+evpn_short_esi_prefix: "0000:1234:"
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
@@ -42,7 +50,6 @@ bgp_peer_groups:
 spine:
   platform: 7050SX3
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1
@@ -73,6 +80,8 @@ l3leaf:
     spines: [ DC1-SPINE1, DC1-SPINE2, DC1-SPINE3, DC1-SPINE4 ]
     uplink_to_spine_interfaces: [ Ethernet1, Ethernet2, Ethernet3, Ethernet4 ]
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_peer_l3_vlan: 4090
+    mlag_peer_vlan: 4092
     spanning_tree_mode: mstp
     spanning_tree_root_super: true
     spanning_tree_priority: 4096
@@ -96,6 +105,7 @@ l3leaf:
     DC1_LEAF2:
       bgp_as: 65102
       rack: "rackD"
+      mlag: false
       nodes:
         DC1-LEAF2A:
           id: 2
@@ -110,6 +120,7 @@ l3leaf:
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
+      uplink_to_spine_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
@@ -135,12 +146,14 @@ l3leaf:
           bgp_as: 65104
           mgmt_ip: 192.168.200.110/24
           mac_address: '0c:1d:c0:1d:62:01'
+          uplink_to_spine_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
           spine_interfaces: [ Ethernet6, Ethernet6, Ethernet6, Ethernet6 ]
         DC1-BL1B:
           id: 7
           bgp_as: 65105
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
+          uplink_to_spine_interfaces: [ Ethernet45, Ethernet46, Ethernet47, Ethernet48 ]
           spine_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
 
 l2leaf:
@@ -150,13 +163,14 @@ l2leaf:
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     mlag: true
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
+    mlag_peer_vlan: 4091
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
     rack: "rackE"
   node_groups:
     DC1_L2LEAF1:
-      mlag: false
       parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: 0808:0707:0606
       filter:
         tenants: [ Tenant_A ]
         tags: [ opzone, web, app ]
@@ -166,6 +180,11 @@ l2leaf:
           mgmt_ip: 192.168.200.112/24
           mac_address: '0c:1d:c0:1d:62:01'
           l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
+        DC1-L2LEAF1B:
+          id: 11
+          mgmt_ip: 192.168.200.115/24
+          mac_address: '0c:1d:c0:1d:62:02'
+          l3leaf_interfaces: [ Ethernet8, Ethernet8 ]
     DC1_L2LEAF2:
       mlag_dual_primary_detection: true
       nodes:
@@ -179,6 +198,18 @@ l2leaf:
           mgmt_ip: 192.168.200.114/24
           mac_address: '0c:1d:c0:1d:62:01'
           l3leaf_interfaces: [ Ethernet8, Ethernet8 ]
+    DC1_L2LEAF3:
+      parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
+      short_esi: 0606:0707:0808
+      filter:
+        tenants: [ Tenant_A ]
+        tags: [ opzone, web, app ]
+      nodes:
+        DC1-L2LEAF3A:
+          id: 12
+          mgmt_ip: 192.168.200.116/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          l3leaf_interfaces: [ Ethernet9, Ethernet9 ]
 
 #### Override for vEOS Lab Caveats ####
 
@@ -204,7 +235,7 @@ bfd_multihop:
   min_rx: 1200
   multiplier: 3
 
-custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_' ]
+custom_structured_configuration_prefix: [ 'my_dci_', 'my_special_dci_', 'override_' ]
 
 # Set Hardware Speed Groups per platform
 platform_speed_groups:

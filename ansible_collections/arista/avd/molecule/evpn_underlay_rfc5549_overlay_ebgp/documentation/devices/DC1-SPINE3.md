@@ -21,6 +21,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -29,7 +30,6 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [Peer Filters](#peer-filters)
   - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [ACL](#acl)
@@ -307,6 +307,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -375,7 +383,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Listen range prefix | 192.168.255.0/24 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
@@ -388,9 +395,32 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Listen range prefix | fe80::/10 |
 | Send community | all |
 | Maximum routes | 12000 |
+
+### BGP Neighbors
+
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.168.255.5 | 65101 | default |
+| 192.168.255.6 | 65102 | default |
+| 192.168.255.7 | 65102 | default |
+| 192.168.255.8 | 65103 | default |
+| 192.168.255.9 | 65103 | default |
+| 192.168.255.10 | 65104 | default |
+| 192.168.255.11 | 65105 | default |
+
+### BGP Neighbor Interfaces
+
+| Neighbor Interface | Peer Group | Remote AS |
+| ------------------ | ---------- | --------- |
+| Ethernet1 | UNDERLAY_PEERS | 65101 |
+| Ethernet2 | UNDERLAY_PEERS | 65102 |
+| Ethernet3 | UNDERLAY_PEERS | 65102 |
+| Ethernet4 | UNDERLAY_PEERS | 65103 |
+| Ethernet5 | UNDERLAY_PEERS | 65103 |
+| Ethernet6 | UNDERLAY_PEERS | 65104 |
+| Ethernet7 | UNDERLAY_PEERS | 65105 |
 
 ### Router BGP EVPN Address Family
 
@@ -407,8 +437,6 @@ router bgp 65001
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
-   bgp listen range 192.168.255.0/24 peer-group EVPN-OVERLAY-PEERS peer-filter LEAF-AS-RANGE
-   bgp listen range fe80::/10 peer-group UNDERLAY_PEERS peer-filter LEAF-AS-RANGE
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -421,6 +449,34 @@ router bgp 65001
    neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000
+   neighbor interface Ethernet1 peer-group UNDERLAY_PEERS remote-as 65101
+   neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65102
+   neighbor interface Ethernet3 peer-group UNDERLAY_PEERS remote-as 65102
+   neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65103
+   neighbor interface Ethernet5 peer-group UNDERLAY_PEERS remote-as 65103
+   neighbor interface Ethernet6 peer-group UNDERLAY_PEERS remote-as 65104
+   neighbor interface Ethernet7 peer-group UNDERLAY_PEERS remote-as 65105
+   neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.5 remote-as 65101
+   neighbor 192.168.255.5 description DC1-LEAF1A
+   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.6 remote-as 65102
+   neighbor 192.168.255.6 description DC1-LEAF2A
+   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.7 remote-as 65102
+   neighbor 192.168.255.7 description DC1-LEAF2B
+   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.8 remote-as 65103
+   neighbor 192.168.255.8 description DC1-SVC3A
+   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.9 remote-as 65103
+   neighbor 192.168.255.9 description DC1-SVC3B
+   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.10 remote-as 65104
+   neighbor 192.168.255.10 description DC1-BL1A
+   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.11 remote-as 65105
+   neighbor 192.168.255.11 description DC1-BL1B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -455,24 +511,6 @@ router bfd
 
 # Filters
 
-## Peer Filters
-
-### Peer Filters Summary
-
-#### LEAF-AS-RANGE
-
-| Sequence | Match |
-| -------- | ----- |
-| 10 | as-range 65101-65132 result accept |
-
-### Peer Filters Device Configuration
-
-```eos
-!
-peer-filter LEAF-AS-RANGE
-   10 match as-range 65101-65132 result accept
-```
-
 ## Prefix-lists
 
 ### Prefix-lists Summary
@@ -481,14 +519,14 @@ peer-filter LEAF-AS-RANGE
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 192.168.255.0/24 le 32 |
+| 10 | permit 192.168.255.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 le 32
+   seq 10 permit 192.168.255.0/24 eq 32
 ```
 
 ## Route-maps

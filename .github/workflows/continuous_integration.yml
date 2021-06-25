@@ -10,6 +10,8 @@ jobs:
     outputs:
       eos_design: ${{ steps.filter.outputs.eos_design }}
       config_gen: ${{ steps.filter.outputs.config_gen }}
+      cloudvision: ${{ steps.filter.outputs.cloudvision }}
+      dhcp: ${{ steps.filter.outputs.dhcp }}
       plugins: ${{ steps.filter.outputs.plugins }}
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
@@ -23,20 +25,39 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
               - '.github/workflows/continuous_integration.yml'
-              - 'ansible_collections/arista/cvp/molecule/*'
-              - 'ansible_collections/arista/cvp/molecule/**/*'
+              - 'ansible_collections/arista/avd/molecule/*'
+              - 'ansible_collections/arista/avd/molecule/**/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
               - '.github/workflows/continuous_integration.yml'
-              - 'ansible_collections/arista/cvp/molecule/*'
-              - 'ansible_collections/arista/cvp/molecule/**/*'
+              - 'ansible_collections/arista/avd/molecule/*'
+              - 'ansible_collections/arista/avd/molecule/**/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+            cloudvision:
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+              - '.github/workflows/continuous_integration.yml'
+            dhcp:
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
+              - '.github/workflows/continuous_integration.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
+              - 'ansible_collections/arista/avd/meta/runtime.yml'
               - '.github/workflows/continuous_integration.yml'
             docs:
               - 'mkdocs.yml'
@@ -51,7 +72,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: avdteam/base:3.6-v1.0
     needs: file-changes
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
       - uses: actions/checkout@v2
       - uses: pre-commit/action@v2.0.2
@@ -68,7 +89,7 @@ jobs:
       - name: 'start docker-compose stack'
         run: |
           cp development/docker-compose.yml .
-          sed -i 's/ansible-avd\///g' docker-compose.yml
+          sed -i 's/cd\sansible-avd\/\s\&\&//g' docker-compose.yml
           docker-compose -f docker-compose.yml up -d webdoc_avd
           docker-compose -f docker-compose.yml ps
       - name: 'test connectivity to mkdoc server'
@@ -76,7 +97,7 @@ jobs:
           until docker exec webdoc_avd curl -s -I http://localhost:8000/ ; do sleep 2; done
       - name: check links for 404
         run: |
-          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
+          docker run --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000/ -e ".*fonts.googleapis.com.*" -e ".*fonts.gstatic.com.*" -e ".*tools.ietf.org.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=30
       - name: 'stop docker-compose stack'
         run: |
           docker-compose -f docker-compose.yml down
@@ -117,6 +138,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_cli_config_gen']
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -126,19 +148,54 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
-          molecule_parentdir: 'ansible_collections/arista/cvp'
+          molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.9.6"
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: ${{ matrix.ansible_version }}
           check_git: true
-          check_git_enforced: false
-      - uses: actions/upload-artifact@v2
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
+  # ----------------------------------- #
+  # DHCP PROVISIONNER MOLECULE
+  # ----------------------------------- #
+  molecule_dhcp_provisionner:
+    name: Validate DHCP configuration
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.dhcp == 'true' || startsWith(github.ref, 'refs/heads/release')
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
-          name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: ${{ matrix.ansible_version }}
+          check_git: true
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
   # ----------------------------------- #
   # EOS Design MOLECULE
   # ----------------------------------- #
@@ -149,11 +206,12 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
+          - 'eos_designs_unit_tests'
           - 'evpn_underlay_ebgp_overlay_ebgp'
           - 'evpn_underlay_ospf_overlay_ebgp'
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
-          - 'eos_l3ls_evpn_deprecation_test'
+        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ molecule_eos_cli_config_gen ]
     if: needs.molecule_eos_cli_config_gen.status != 'failed' && (needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release'))
     steps:
@@ -163,27 +221,59 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.1
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
-          molecule_parentdir: 'ansible_collections/arista/cvp'
+          molecule_parentdir: 'ansible_collections/arista/avd'
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: ansible_collections/arista/cvp/requirements.txt
-          ansible: "ansible==2.9.6"
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: ${{ matrix.ansible_version }}
           check_git: true
-          check_git_enforced: false
-      - uses: actions/upload-artifact@v2
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+  # ----------------------------------- #
+  # Cloudvision MOLECULE
+  # ----------------------------------- #
+  molecule_cloudvision:
+    name: Validate cvp_collection
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        avd_scenario: ['eos_config_deploy_cvp']
+    needs: [ pre_commit ]
+    if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
+    steps:
+      - name: 'set environment variables'
+        run: |
+          echo "PY_COLORS=1" >> $GITHUB_ENV
+          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Run molecule action
+        uses: arista-netdevops-community/action-molecule-avd@master
         with:
-          name: molecule-${{ matrix.avd_scenario }}-artifacts
-          path: ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+          molecule_parentdir: 'ansible_collections/arista/avd'
+          molecule_command: 'test'
+          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
+          pip_file: ansible_collections/arista/avd/requirements.txt
+          ansible: "ansible>=2.10,<2.11"
+          check_git: true
+          check_git_enforced: true
+      # - uses: actions/upload-artifact@v2
+      #   with:
+      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
+      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
   # ----------------------------------- #
   # Ansible tests
   # ----------------------------------- #
   ansible_test:
     name: Run ansible-test validation
     runs-on: ubuntu-16.04
-    needs: [ molecule_eos_designs ]
-    if: needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    needs: [ molecule_eos_designs, molecule_cloudvision ]
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     strategy:
       fail-fast: true
       matrix:
@@ -202,16 +292,15 @@ jobs:
         run: make install-requirements
       - name: 'ansible-test linting'
         run: |
-          cd ansible_collections/arista/cvp/
-          ansible-test sanity -v --requirements --docker --python 3.6
-          rm -rf tests/output/
+          cd ansible_collections/arista/avd/
+          ansible-test sanity  -v --requirements --docker --skip-test yamllint --exclude docs/
 
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
     container: avdteam/base:3.6-v2.0
-    needs: [ molecule_eos_designs ]
-    if: needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    needs: [ molecule_eos_designs, molecule_cloudvision ]
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions

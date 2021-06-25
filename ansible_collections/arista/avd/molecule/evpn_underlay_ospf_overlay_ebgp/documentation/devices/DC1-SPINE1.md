@@ -21,6 +21,7 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -30,7 +31,6 @@
   - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
 - [ACL](#acl)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -321,6 +321,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -367,7 +375,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 101 | 192.168.255.1 | enabled | Ethernet6 <br> Ethernet7 <br> Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> | enabled | 12000 | disabled | disabled | - | - | - |
+| 101 | 192.168.255.1 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet7 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 ### OSPF Interfaces
 
@@ -389,13 +397,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 router ospf 101
    router-id 192.168.255.1
    passive-interface default
-   no passive-interface Ethernet6
-   no passive-interface Ethernet7
    no passive-interface Ethernet1
    no passive-interface Ethernet2
    no passive-interface Ethernet3
    no passive-interface Ethernet4
    no passive-interface Ethernet5
+   no passive-interface Ethernet6
+   no passive-interface Ethernet7
    bfd default
    max-lsa 12000
 ```
@@ -513,24 +521,6 @@ router bfd
 # Multicast
 
 # Filters
-
-## Prefix-lists
-
-### Prefix-lists Summary
-
-#### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 192.168.255.0/24 le 32 |
-
-### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 192.168.255.0/24 le 32
-```
 
 # ACL
 

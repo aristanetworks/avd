@@ -9,7 +9,7 @@
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv4 in traffic_policies.field_sets.ipv4 %}
-| {{field_set_ipv4}} | {% if traffic_policies.field_sets.ipv4[field_set_ipv4] |length > 1 %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4][0] }}{% endif %}|
+| {{ field_set_ipv4 }} | {% if traffic_policies.field_sets.ipv4[field_set_ipv4] | length > 1 %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv4[field_set_ipv4][0] }}{% endif %}|
 {%             endfor %}
 {%         else %}
 No IPv4 field-set configured.
@@ -21,8 +21,8 @@ No IPv4 field-set configured.
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_ipv6 in traffic_policies.field_sets.ipv6 %}
-| {{field_set_ipv6}} | {% if traffic_policies.field_sets.ipv6[field_set_ipv6] |length > 1 %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6][0] }}{% endif %}|
-{%             endfor%}
+| {{ field_set_ipv6 }} | {% if traffic_policies.field_sets.ipv6[field_set_ipv6] | length > 1 %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6] | join('<br/>') }}{% else %}{{ traffic_policies.field_sets.ipv6[field_set_ipv6][0] }}{% endif %}|
+{%             endfor %}
 {%         else %}
 No IPv6 field-set configured.
 {%         endif %}
@@ -33,7 +33,7 @@ No IPv6 field-set configured.
 | Field Set Name | Values |
 | -------------- | ------ |
 {%             for field_set_port in traffic_policies.field_sets.ports %}
-| {{field_set_port}} | {{ traffic_policies.field_sets.ports[field_set_port] }}|
+| {{ field_set_port }} | {{ traffic_policies.field_sets.ports[field_set_port] }}|
 {%             endfor %}
 {%         else %}
 No L4 Port field-set configured.
@@ -117,16 +117,16 @@ No Field-set configured on device.
 {%                            do row.actions.append("action: PASS") %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matches[match].actions.count is arista.avd.defined() %}
-{%                            do row.actions.append("counter: " + traffic_policies.policies[policy].matches[match].actions.count ) %}
+{%                            do row.actions.append("counter: " + traffic_policies.policies[policy].matches[match].actions.count) %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matches[match].actions.log is arista.avd.defined(true) %}
 {%                            do row.actions.append("logging") %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matches[match].actions.dscp is arista.avd.defined() %}
-{%                            do row.actions.append("dscp marking: " + traffic_policies.policies[policy].matches[match].actions.dscp | string ) %}
+{%                            do row.actions.append("dscp marking: " + traffic_policies.policies[policy].matches[match].actions.dscp | string) %}
 {%                        endif %}
 {%                        if traffic_policies.policies[policy].matches[match].actions.traffic_class is arista.avd.defined() %}
-{%                            do row.actions.append("traffic-class: " + traffic_policies.policies[policy].matches[match].actions.traffic_class | string ) %}
+{%                            do row.actions.append("traffic-class: " + traffic_policies.policies[policy].matches[match].actions.traffic_class | string) %}
 {%                        endif %}
 {%                    else %}
 {%                       do row.actions.append("default action: PASS") %}

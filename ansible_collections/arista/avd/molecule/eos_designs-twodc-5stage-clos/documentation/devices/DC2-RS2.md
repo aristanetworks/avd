@@ -19,12 +19,11 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
@@ -34,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -246,6 +246,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -309,6 +317,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
@@ -337,36 +346,18 @@ router bgp 65201
    maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
+   neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.17.20.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.8 remote-as 65200
-   neighbor 172.17.20.8 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.8 description DC2-SUPER-SPINE1_Ethernet5
    neighbor 172.17.20.10 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.10 remote-as 65200
-   neighbor 172.17.20.10 description DC2-SUPER-SPINE1
+   neighbor 172.17.20.10 description DC2-SUPER-SPINE1_Ethernet7
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-### Router BFD Multihop Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # Multicast
@@ -383,21 +374,12 @@ router bfd
 | -------- | ------ |
 | 10 | permit 172.16.20.0/24 eq 32 |
 
-#### PL-P2P-UNDERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.17.20.0/24 le 31 |
-
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 172.16.20.0/24 eq 32
-!
-ip prefix-list PL-P2P-UNDERLAY
-   seq 10 permit 172.17.20.0/24 le 31
 ```
 
 ## Route-maps
@@ -436,3 +418,12 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

@@ -54,7 +54,7 @@ interface Management1
 
 - Local Interface: lo1
 
-- VRF: test
+- VRF: default
 
 | Node | Primary |
 | ---- | ------- |
@@ -65,9 +65,9 @@ interface Management1
 
 ```eos
 !
-ntp local-interface vrf test lo1
-ntp server vrf test 10.1.1.1 prefer
-ntp server vrf test 10.1.1.2
+ntp local-interface lo1
+ntp server 10.1.1.1 prefer
+ntp server 10.1.1.2
 ```
 
 # Authentication

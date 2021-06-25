@@ -19,7 +19,7 @@
 {%          for vrf in router_general.vrfs %}
 {%              for leak in router_general.vrfs[vrf].leaks | arista.avd.natural_sort %}
 {%                  if leak.source_vrf is arista.avd.defined and leak.policy is arista.avd.defined %}
-| {{ vrf }} | {{leak.source_vrf }} | {{ leak.policy }} |
+| {{ vrf }} | {{ leak.source_vrf }} | {{ leak.policy }} |
 {%                  endif %}
 {%              endfor %}
 {%          endfor %}

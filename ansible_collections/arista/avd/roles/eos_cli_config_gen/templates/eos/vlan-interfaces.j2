@@ -171,4 +171,10 @@ interface {{ vlan_interface }}
           vlan_interfaces[vlan_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ vlan_interfaces[vlan_interface].bfd.interval }} min-rx {{ vlan_interfaces[vlan_interface].bfd.min_rx }} multiplier {{ vlan_interfaces[vlan_interface].bfd.multiplier }}
 {%     endif %}
+{%     if vlan_interfaces[vlan_interface].service_policy.pbr.input is arista.avd.defined %}
+   service-policy type pbr input {{ vlan_interfaces[vlan_interface].service_policy.pbr.input }}
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].eos_cli is arista.avd.defined %}
+   {{ vlan_interfaces[vlan_interface].eos_cli | indent(3, false) }}
+{%     endif %}
 {% endfor %}

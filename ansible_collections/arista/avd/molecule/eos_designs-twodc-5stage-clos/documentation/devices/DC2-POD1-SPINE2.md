@@ -19,12 +19,11 @@
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
 - [Filters](#filters)
   - [Prefix-lists](#prefix-lists)
@@ -34,6 +33,7 @@
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 
 <!-- toc -->
 # Management
@@ -267,6 +267,14 @@ interface Loopback0
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## IP Routing
 
@@ -365,37 +373,20 @@ router bgp 65210
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.2 remote-as 65200
+   neighbor 172.16.21.2 description DC2-SUPER-SPINE1_Ethernet2
    neighbor 172.16.21.66 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.66 remote-as 65200
+   neighbor 172.16.21.66 description DC2-SUPER-SPINE2_Ethernet2
    neighbor 172.17.210.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.3 remote-as 65211
-   neighbor 172.17.210.3 description DC2-POD1-LEAF1A_Ethernet3
+   neighbor 172.17.210.3 description DC2-POD1-LEAF1A_Ethernet2
    neighbor 200.200.200.101 peer group IPv4-UNDERLAY-PEERS
    neighbor 200.200.200.101 remote-as 65112
    neighbor 200.200.200.101 description DC1-POD2-SPINE2
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-# BFD
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-### Router BFD Multihop Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
 ```
 
 # Multicast
@@ -410,14 +401,14 @@ router bfd
 
 | Sequence | Action |
 | -------- | ------ |
-| 10 | permit 172.16.210.0/24 le 32 |
+| 10 | permit 172.16.210.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.16.210.0/24 le 32
+   seq 10 permit 172.16.210.0/24 eq 32
 ```
 
 ## Route-maps
@@ -456,3 +447,15 @@ vrf instance MGMT
 ```
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1009
+  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
+
+interface Loopback1111
+  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
+
+```

@@ -22,6 +22,7 @@
   - [Loopback Interfaces](#loopback-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -331,6 +332,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -456,6 +465,12 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Enabled | 180 |  30 |
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
@@ -490,6 +505,8 @@ router bgp 65101
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
+      host-flap detection window 180
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

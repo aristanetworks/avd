@@ -13,6 +13,10 @@ ethernet_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    eos_cli: |
+      comment
+      Comment created from eos_cli under ethernet_interfaces.Ethernet1
+      EOF
 
   Ethernet6:
     logging:
@@ -158,9 +162,7 @@ ethernet_interfaces:
   Ethernet8.101:
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     type: l3dot1q
-    encapsulation:
-      dot1q:
-        vlan: 101
+    encapsulation_dot1q_vlan: 101
     ip_address: 172.31.128.1/31
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
@@ -182,3 +184,26 @@ ethernet_interfaces:
       ip: false
       ldp:
         interface: false
+
+  Ethernet11:
+    description: interface_in_mode_access_accepting_tagged_LACP
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation_dot1q_vlan: 200
+
+  Ethernet12:
+    description: interface_with_dot1q_tunnel
+    type: switched
+    mode: dot1q-tunnel
+    vlans: 300
+
+  Ethernet13:
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70

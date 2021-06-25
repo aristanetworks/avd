@@ -123,6 +123,18 @@ bfd_multihop:
   min_rx: < | default -> 300 >
   multiplier: < | default -> 3 >
 
+## EVPN Host Flapping Settings
+evpn_hostflap_detection:
+
+  # If set to false it will disable EVPN host-flap detection
+  enabled: < true | false | default -> true >
+
+  # Minimum number of MAC moves that indicate a MAC duplication issue
+  threshold: < number | default 5 >
+
+  # Time (in seconds) to detect a MAC duplication issue
+  window: < seconds | default 180 >
+
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
@@ -131,6 +143,9 @@ evpn_overlay_bgp_rtc: < true | false , default -> false >
 # This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.
 evpn_prevent_readvertise_to_server : < true | false , default -> false >
+
+# Configure prefix for "short_esi" values | Optional
+evpn_short_esi_prefix: < string, default -> "0000:0000:" >
 
 # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
 # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet

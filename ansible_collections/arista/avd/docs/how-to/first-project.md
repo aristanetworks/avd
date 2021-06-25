@@ -27,7 +27,7 @@ $ tree -L 3 -d
 
 ## Requirements
 
-- Ansible runner configured as descried in [this section](../installation/setup-environement.md)
+- Ansible runner configured as descried in [this section](../installation/setup-environment.md)
 - A set of devices configured with their respective management IP address and username.
 - Access to eAPI service for all devices.
 
@@ -203,8 +203,6 @@ Then, you have to describe devices for each role. Don't forget to set management
 spine:
   platform: vEOS-LAB
   bgp_as: 65001
-  # defines the range of acceptable remote ASNs from leaf switches
-  leaf_as_range: 65101-65132
   nodes:
     AVD-SPINE1:
       id: 1

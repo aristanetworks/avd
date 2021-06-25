@@ -30,6 +30,10 @@ router_bgp:
         activate: true
       MLAG-IPv4-UNDERLAY-PEER:
         activate: false
+    evpn_hostflap_detection:
+      enabled: true
+      window: 10
+      threshold: 1
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:

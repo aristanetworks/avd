@@ -59,7 +59,7 @@ pod_name: < POD_Name >
 ## Type Variable
 
 - The `type:` variable needs to be defined for each device in the fabric.
-- This is leveraged to load to appropriate template, to generate the configuration.
+- This is leveraged to load the appropriate template to generate the configuration.
 
 **Variables and Options:**
 
@@ -110,6 +110,11 @@ spine:
   # Spine BGP AS | Required.
   bgp_as: < bgp_as >
 
+  defaults:
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
+
   # Specify dictionary of Spine nodes | Required.
   nodes:
     < inventory_hostname >:
@@ -124,8 +129,13 @@ spine:
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
-      # Node management IP address | Required.
+      # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
+
+      # EOS CLI rendered directly on the root level of the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
+
     < inventory_hostname >:
       id: < integer >
       mgmt_ip: < IPv4_address/Mask >
@@ -161,7 +171,7 @@ l3leaf:
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
+  # The node groups are groups of one or multiple nodes where specific variables can be defined related to the topology
   # and allowed L3 and L2 network services.
   node_groups:
 
@@ -189,11 +199,17 @@ l3leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
-      # Enable / Disable MLAG dual primary detectiom
+      # Enable / Disable MLAG dual primary detection
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
       mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+      # Underlay L3 peering SVI interface id
+      mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
+
+      # MLAG Peer Link (control link) SVI interface id
+      mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
       # Spanning tree mode | Required.
       spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
@@ -221,7 +237,7 @@ l3leaf:
       # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
 
-      # Filter L3 and L2 network services based on tenant and tags ( and operation filter )| Optional
+      # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
       # If filter is not defined will default to all
       filter:
         tenants: [ < tenant_1 >, < tenant_2 > | default all ]
@@ -235,6 +251,10 @@ l3leaf:
       # This allows support for centralized routing.
       evpn_services_l2_only: < false | true >
 
+      # EOS CLI rendered directly on the root level of the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
+
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
       # unless the "l3leaf.defaults.mlag:" key is set to false.
@@ -246,16 +266,26 @@ l3leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node management IP address | Required.
+          # Node management IP address | Optional.
           mgmt_ip: < IPv4_address/Mask >
+
+          # Uplink to spine interfaces (list), interface located on L3 Leaf,
+          # corresponding to spines and spine_interfaces | Required.
+          # Inheritance: node > node_group > defaults
+          uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
           # Spine interfaces (list), interface located on Spine,
           # corresponding to spines and uplink_to_spine_interfaces | Required.
           spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
           # L3 Leaf BGP AS. | Required.
-          # Inheritence: node > node_group > defaults
+          # Inheritance: node > node_group > defaults
           bgp_as: < bgp_as >
+
+          # EOS CLI rendered directly on the root level of the final EOS configuration
+          # Overrides the setting on node_group level.
+          raw_eos_cli: |
+            < multiline eos cli >
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:
@@ -376,7 +406,7 @@ l2leaf:
       # Enable / Disable auto MLAG, when two nodes are defined in node group.
       mlag: < true | false -> default true >
 
-      # Enable / Disable MLAG dual primary detectiom
+      # Enable / Disable MLAG dual primary detection
       mlag_dual_primary_detection: < true | false -> default false >
 
       # MLAG interfaces (list) | Required when MLAG leafs present in topology.
@@ -385,6 +415,9 @@ l2leaf:
       # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
       # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
       mlag_ibgp_origin_incomplete: < true | false -> default true >
+
+      # MLAG Peer Link (control link) SVI interface id
+      mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
       # Spanning tree mode (note - only mstp has been validated at this time) | Required.
       spanning_tree_mode: < mstp >
@@ -404,6 +437,10 @@ l2leaf:
       # Activate or deactivate IGMP snooping for node groups devices
       igmp_snooping_enabled: < true | false >
 
+      # EOS CLI rendered directly on the root level of the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
+
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
       # unless the "l2leaf.defaults.mlag:" key is set to false.
@@ -415,15 +452,20 @@ l2leaf:
           # Unique identifier | Required.
           id: < integer >
 
-          # Node management IP address | Required.
+          # Node management IP address | Optional.
           mgmt_ip: < IPv4_address/Mask >
 
           # l3leaf interfaces (list), interface located on l3leaf,
           # corresponding to parent_l3leafs and uplink_interfaces | Required.
           l3leaf_interfaces: [ < ethernet_interface_6 >, < ethernet_interface_6 > ]
 
+          # EOS CLI rendered directly on the root level of the final EOS configuration
+          # Overrides the setting on node_group level.
+          raw_eos_cli: |
+            < multiline eos cli >
+
     # node_group_2, will result in MLAG pair.
-    < node_group_1 >:
+    < node_group_2 >:
       parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
       nodes:
 
@@ -438,7 +480,39 @@ l2leaf:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
           l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
+
+    # node_group_3, will result in Active/Active connection to L3LEAFs.
+    # Can be applied on single L2LEAF or MLAG nodes.
+    < node_group_3 >:
+      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
+      short_esi: < short esi value >
+      nodes:
+
+        # First node.
+        < l2_leaf_inventory_hostname_2 >:
+          id: < integer >
+          mgmt_ip: < IPv4_address/Mask >
+          l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
 ```
+
+???+ note "Short ESI description"
+    To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
+    `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
+    Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/README.md) and provides following result:
+
+    - _EVPN ESI_: 0000:0000:0808:0707:0606
+    - _LACP ID_: 0808.0707.0606
+    - _Route Target_: 08:08:07:07:06:06
+
+    ```yaml
+    # Short ESI setting:
+    short_esi: 0808:0707:0606
+
+    # Short ESI transformation result:
+    esi: 0000:0000:0808:0707:0606
+    rt: 08:08:07:07:06:06
+    lacp_id: 0808.0707.0606
+    ```
 
 **Example:**
 
@@ -475,6 +549,14 @@ l2leaf:
           id: 11
           mgmt_ip: 192.168.2.114/24
           l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
+    DC1_L2LEAF6:
+      parent_l3leafs: [ DC1-LEAF6A, DC1-LEAF6B ]
+      short_esi: 0808:0707:0606
+      nodes:
+        DC1-L2LEAF6A:
+          id: 12
+          mgmt_ip: 192.168.200.116/24
+          l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
 ```
 
 ## Super Spine Variables
@@ -499,6 +581,11 @@ super_spine:
   platform: vEOS-LAB  # super-spine platform
   bgp_as: <super-spine BGP AS>
 
+  defaults:
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
+
   nodes:
     SU-01:  # super-spine name
       id: 1
@@ -508,7 +595,9 @@ super_spine:
       evpn_role: < client | server | none | default -> none  >
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
-    <-- etc. -->
+      # EOS CLI rendered directly on the root level of the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
 
 # IP address range for loopbacks for all super-spines in the DC,
 # assigned as /32s
@@ -600,6 +689,10 @@ overlay_controller:
 
       # Peer with these EVPN Route Servers / Route Reflectors | Optional
       evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname > ]
+
+      # EOS CLI rendered directly on the root level of the final EOS configuration
+      raw_eos_cli: |
+        < multiline eos cli >
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]

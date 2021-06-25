@@ -1,8 +1,0 @@
-{# Underlay network peering #}
-{% if switch.underlay_routing_protocol == "ebgp" %}
-    {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
-      type: ipv4
-      password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
-      maximum_routes: 12000
-      send_community: all
-{% endif %}

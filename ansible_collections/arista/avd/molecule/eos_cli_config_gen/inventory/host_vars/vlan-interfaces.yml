@@ -5,6 +5,10 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.1.1/24
+    eos_cli: |
+      comment
+      Comment created from eos_cli under vlan_interfaces.Vlan2001
+      EOF
 
   Vlan2002:
     description: SVI Description
@@ -46,6 +50,13 @@ vlan_interfaces:
     description: SVI Description
     shutdown: true
     ip_address_virtual: 10.10.87.1/23
+
+  Vlan91:
+    description: PBR Description
+    shutdown: true
+    service_policy:
+      pbr:
+        input: MyServicePolicy
 
   Vlan90:
     description: SVI Description

@@ -30,6 +30,7 @@
   - [VLAN Interfaces](#vlan-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
+  - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
@@ -353,7 +354,7 @@ interface Ethernet7
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | - | - | - | - | - | 7 | - |
+| Port-Channel7 | DC1-L2LEAF1A_Po1 | switched | trunk | - | - | - | - | - | 7 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -369,7 +370,7 @@ interface Port-Channel5
    switchport trunk group MLAG
 !
 interface Port-Channel7
-   description DC1_L2LEAF1_Po1
+   description DC1-L2LEAF1A_Po1
    no shutdown
    switchport
    switchport mode trunk
@@ -474,6 +475,14 @@ interface Vxlan1
 ```
 
 # Routing
+## Service Routing Protocols Model
+
+Multi agent routing protocol model enabled
+
+```eos
+!
+service routing protocols model multi-agent
+```
 
 ## Virtual Router MAC Address
 
@@ -601,6 +610,12 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Host Flapping Settings
+
+| State | Window | Threshold |
+| ----- | ------ | --------- |
+| Enabled | 180 |  30 |
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
@@ -635,6 +650,8 @@ router bgp 65102
    neighbor 192.168.255.4 description DC1-SPINE4
    !
    address-family evpn
+      host-flap detection window 180
+      host-flap detection threshold 30
       neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4

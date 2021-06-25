@@ -27,6 +27,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
+    - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
@@ -54,6 +55,7 @@
       - [VxLAN Interface](#vxlan-interface)
     - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
     - [IP DHCP Relay](#ip-dhcp-relay)
+    - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance](#maintenance)
@@ -81,6 +83,7 @@
       - [Routing PIM Sparse Mode](#routing-pim-sparse-mode)
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
+      - [Custom Daemons](#custom-daemons)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
@@ -107,6 +110,7 @@
       - [Router BGP Configuration](#router-bgp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
+      - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
@@ -394,6 +398,14 @@ custom_templates:
   - < template 2 relative path below playbook directory >
 ```
 
+### EOS CLI
+
+```yaml
+# EOS CLI rendered directly on the root level of the final EOS configuration
+eos_cli: |
+  < multiline eos cli >
+```
+
 ### Errdisable
 
 ```yaml
@@ -555,7 +567,7 @@ hardware_counters:
 tcam_profile:
   system: < tcam profile name to activate >
   profiles:
-    < tcam_profile 01 >: "{{lookup('file', '< path to TCAM profile using EOS syntax >')}}"
+    < tcam_profile 01 >: "{{ lookup('file', '< path to TCAM profile using EOS syntax >') }}"
 ```
 
 #### Platform
@@ -607,9 +619,7 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -675,6 +685,12 @@ ethernet_interfaces:
       ip: < true | false >
       ldp:
         interface: < true | false >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
+    # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 ##### Switched Ethernet Interfaces
@@ -689,7 +705,12 @@ ethernet_interfaces:
     l2_mtu: < l2-mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     vlans: "< list of vlans as string >"
     native_vlan: <native vlan number>
-    mode: < access | dot1q-tunnel | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    phone:
+      trunk: < tagged | untagged >
+      vlan: < 1-4094 >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -735,6 +756,12 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    lacp_timer:
+      mode: < fast | normal >
+      multiplier: < 3 - 3000 >
+    # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 #### Interface Defaults
@@ -751,6 +778,10 @@ interface_defaults:
 ```yaml
 switchport_default:
   mode: < routed | access >
+  phone:
+    cos: < 0-7 >
+    trunk: < tagged | untagged >
+    vlan: < 1-4094 >
 ```
 
 #### Loopback Interfaces
@@ -789,10 +820,13 @@ port_channel_interfaces:
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    encapsulation:
-      dot1q:
-        vlan: < vlan tag to configure on sub-interface >
-    mode: < access | dot1q-tunnel | trunk >
+    encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    phone:
+      trunk: < tagged | untagged >
+      vlan: < 1-4094 >
+    l2_protocol:
+      encapsulation_dot1q_vlan: < vlan number >
     mtu: < mtu >
     mlag: < mlag_id >
     trunk_groups:
@@ -808,10 +842,13 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
   < Port-Channel_interface_2 >:
     description: < description >
     vlans: "< list of vlans as string >"
-    mode: < access | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -819,7 +856,7 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
-    mode: < access | dot1q-tunnel | trunk >
+    mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     spanning_tree_portfast: < edge | network >
@@ -944,6 +981,12 @@ vlan_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
+    # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 < Vlan_id_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -988,6 +1031,13 @@ vlan_internal_allocation_policy:
 ip_dhcp_relay:
   information_option: < true | false >
 
+```
+
+### IP ICMP Redirect
+
+```yaml
+ip_icmp_redirect: < true | false >
+ipv6_icmp_redirect: < true | false >
 ```
 
 ### LLDP
@@ -1109,6 +1159,9 @@ management_interfaces:
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
     type: < oob | inband | default -> oob >
+    # For documentation purpose only
+    gateway: < IPv4 address of default gateway in management VRF >
+    ipv6_gateway: < IPv6 address of default gateway in management VRF >
 ```
 
 #### Management HTTP
@@ -1150,7 +1203,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
-    encryption_key_common : < true | false >
+    encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -1262,14 +1315,15 @@ router_multicast:
 ```yaml
 router_pim_sparse_mode:
   ipv4:
+    ssm_range: < range >
     rp_addresses:
       < rp_address_1 >:
         groups:
-          < group_prefix_1/mask > :
-          < group_prefix_2/mask > :
+          < group_prefix_1/mask >:
+          < group_prefix_2/mask >:
       < rp_address_2 >:
     anycast_rps:
-      < anycast_rp_address_1 > :
+      < anycast_rp_address_1 >:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
@@ -1295,6 +1349,17 @@ daemon_terminattr:
 ```
 
 You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+
+#### Custom Daemons
+
+```yaml
+daemons:
+  < daemon_name >:
+    exec: "< command to run as a daemon >"
+    enabled: "< true | false | default -> true >"
+```
+
+This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
 
 #### Event Handler
 
@@ -1478,6 +1543,8 @@ vmtracer_sessions:
 
 ```yaml
 ptp:
+  mode: < mode >
+  forward_unicast: < true | false >
   clock_identity: < clock-id >
   source:
     ip: < source-ip>
@@ -1490,6 +1557,10 @@ ptp:
       dscp: < dscp-value >
     event:
       dscp: < dscp-Value >
+  monitor:
+    threshold:
+      offset_from_master: < offset >
+      mean_path_delay: < delay >
 ```
 
 ### Prompt
@@ -1522,6 +1593,10 @@ qos:
 
 ```yaml
 class_maps:
+  pbr:
+    < class-map name >:
+      ip:
+        access_group: < Standard access-list name >
   qos:
     < class-map name >:
       vlan: < VLAN value(s) or range(s) of VLAN values >
@@ -1534,6 +1609,14 @@ class_maps:
 
 ```yaml
 policy_maps:
+  pbr:
+    < policy-map name >:
+      classes:
+        < class name >:
+          set:
+            nexthop:
+              ip_address: < IPv4_address | IPv6_address >
+              recursive: < true | false >
   qos:
     < policy-map name >:
       classes:
@@ -1772,6 +1855,10 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+    evpn_hostflap_detection:
+      enabled: < true | false >
+      threshold: < integer >
+      window: < integer >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:
@@ -1792,6 +1879,9 @@ router_bgp:
         activate: < true | false >
         prefix_list_in: < prefix_list_name >
         prefix_list_out: < prefix_list_name >
+        default_originate:
+          always: < true | false >
+          route_map: < route_map_name >
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
@@ -1823,12 +1913,16 @@ router_bgp:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
       < peer_group_name >:
         activate: true
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        prefix_list_in: < prefix_list_name >
+        prefix_list_out: < prefix_list_name >
         activate: < true | false >
     redistribute_routes:
       < route_type >:
@@ -1908,6 +2002,9 @@ router_bgp:
         networks:
           < prefix_address >:
             route_map: < route_map_name >
+      # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+      eos_cli: |
+        < multiline eos cli >
     < vrf_name_2 >:
       rd: "<route distinguisher >"
       route_targets:
@@ -1991,6 +2088,13 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+```
+
+#### Service Routing Configuration BGP
+
+```yaml
+service_routing_configuration_bgp:
+  no_equals_default: < true | false >
 ```
 
 #### Service Routing Protocols Model

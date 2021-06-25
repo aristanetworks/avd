@@ -21,6 +21,7 @@
 - [Filters](#filters)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
+- [EOS CLI](#eos-cli)
 - [Maintenance](#maintenance)
 
 <!-- toc -->
@@ -189,5 +190,13 @@ management security
 # ACL
 
 # Quality Of Service
+
+# EOS CLI
+
+```eos
+!
+interface Loopback1000
+  description Interface created with eos_cli on device level
+```
 
 # Maintenance

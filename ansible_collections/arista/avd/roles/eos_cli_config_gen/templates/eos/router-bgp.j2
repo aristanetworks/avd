@@ -210,6 +210,16 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
    !
    address-family evpn
+{%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled is arista.avd.defined(false) %}
+      no host-flap detection
+{%         else %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.window is arista.avd.defined %}
+      host-flap detection window {{ router_bgp.address_family_evpn.evpn_hostflap_detection.window }}
+{%             endif %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.threshold is arista.avd.defined %}
+      host-flap detection threshold {{ router_bgp.address_family_evpn.evpn_hostflap_detection.threshold }}
+{%             endif %}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_evpn.domain_identifier }}
 {%         endif %}
@@ -273,6 +283,16 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out is arista.avd.defined %}
       neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv4.peer_groups[peer_group].prefix_list_out }} out
 {%             endif %}
+{%             if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate is arista.avd.defined %}
+{%                set neighbor_default_originate_cli = "neighbor " ~ peer_group ~ " default-originate" %}
+{%                if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.route_map is arista.avd.defined %}
+{%                    set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " route-map " ~ router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.route_map %}
+{%                endif %}
+{%                if router_bgp.address_family_ipv4.peer_groups[peer_group].default_originate.always is arista.avd.defined(true) %}
+{%                     set neighbor_default_originate_cli = neighbor_default_originate_cli ~ " always" %}
+{%                endif %}
+      {{ neighbor_default_originate_cli }}
+{%             endif%}
 {%             if underlay_rfc5549 is arista.avd.defined(true) %}
       neighbor {{ peer_group }} next-hop address-family ipv6 originate
 {%             endif %}
@@ -368,6 +388,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.address_family_ipv6.peer_groups[peer_group].route_map_out is arista.avd.defined %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_ipv6.peer_groups[peer_group].route_map_out }} out
 {%             endif %}
+{%             if router_bgp.address_family_ipv6.peer_groups[peer_group].prefix_list_in is arista.avd.defined %}
+      neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv6.peer_groups[peer_group].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.address_family_ipv6.peer_groups[peer_group].prefix_list_out is arista.avd.defined %}
+      neighbor {{ peer_group }} prefix-list {{ router_bgp.address_family_ipv6.peer_groups[peer_group].prefix_list_out }} out
+{%             endif %}
 {%             if router_bgp.address_family_ipv6.peer_groups[peer_group].activate is arista.avd.defined(true) %}
       neighbor {{ peer_group }} activate
 {%             elif router_bgp.address_family_ipv6.peer_groups[peer_group].activate is arista.avd.defined(false) %}
@@ -380,6 +406,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.address_family_ipv6.neighbors[neighbor].route_map_out is arista.avd.defined %}
       neighbor {{ neighbor }} route-map {{ router_bgp.address_family_ipv6.neighbors[neighbor].route_map_out }} out
+{%             endif %}
+{%             if router_bgp.address_family_ipv6.neighbors[neighbor].prefix_list_in is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.address_family_ipv6.neighbors[neighbor].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.address_family_ipv6.neighbors[neighbor].prefix_list_out is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.address_family_ipv6.neighbors[neighbor].prefix_list_out }} out
 {%             endif %}
 {%             if router_bgp.address_family_ipv6.neighbors[neighbor].activate is arista.avd.defined(true) %}
       neighbor {{ neighbor }} activate
@@ -464,6 +496,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.vrfs[vrf].neighbors[neighbor].password is arista.avd.defined %}
       neighbor {{ neighbor }} password 7 {{ router_bgp.vrfs[vrf].neighbors[neighbor].password }}
 {%         endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].weight is arista.avd.defined %}
+      neighbor {{ neighbor }} weight {{ router_bgp.vrfs[vrf].neighbors[neighbor].weight }}
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].local_as is arista.avd.defined %}
       neighbor {{ neighbor }} local-as {{ router_bgp.vrfs[vrf].neighbors[neighbor].local_as }} no-prepend replace-as
 {%             endif %}
@@ -553,5 +588,9 @@ router bgp {{ router_bgp.as }}
          {{ network_cli }}
 {%             endfor %}
 {%         endfor %}
+{%         if router_bgp.vrfs[vrf].eos_cli is arista.avd.defined %}
+      !
+      {{ router_bgp.vrfs[vrf].eos_cli | indent(6, false) }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

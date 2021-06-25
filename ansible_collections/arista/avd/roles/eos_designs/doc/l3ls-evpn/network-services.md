@@ -81,7 +81,7 @@ tenants:
         # VRF VNI | Required.
         # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
-        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan : < > } to a lower value (default 3000).
+        # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
         vrf_vni: < 1-1024 >
 
@@ -160,11 +160,20 @@ tenants:
                 # device unique IP address for node.
                 ip_address: < IPv4_address/Mask >
 
+                # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+                # Overrides the setting on SVI level.
+                raw_eos_cli: |
+                  < multiline eos cli >
+
               < l3_leaf_inventory_hostname_2 >:
                 ip_address: < IPv4_address/Mask >
 
             # Defined interface MTU
             mtu: < mtu >
+
+            # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
+            raw_eos_cli: |
+              < multiline eos cli >
 
           < 1-4096 >:
             name: < description >
@@ -178,6 +187,18 @@ tenants:
           - interfaces: [ <interface_name1>, <interface_name2>, <interface_name3> ]
             ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask>, <IPv4_address/Mask> ]
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
+            description: < description >
+            enabled: < true | false >
+            mtu: <mtu >
+            # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
+            raw_eos_cli: |
+              < multiline eos cli >
+
+          # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
+          - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
+            encapsulation_dot1q_vlan: [ <vlan id>, <vlan id> ]
+            ip_addresses: [ <IPv4_address/Mask>, <IPv4_address/Mask> ]
+            nodes: [ < node_1 >, < node_2 > ]
             description: < description >
             enabled: < true | false >
             mtu: <mtu >
@@ -220,6 +241,12 @@ tenants:
             route_map_out: < route-map name >
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
+            weight: < 0-65535>
+
+        bgp:
+          # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
+          raw_eos_cli: |
+            < multiline eos cli >
 
         # Optional configuration of extra route-targets for this VRF. Useful for route-leaking or gateway between address families.
         additional_route_targets:
@@ -228,6 +255,10 @@ tenants:
             route_target: "< route_target >"
             # Nodes is optional. Default is all nodes where the VRF is defined.
             nodes: [ < node_1 >, < node_2> ]
+
+        # EOS CLI rendered directly on the root level of the final EOS configuration
+        raw_eos_cli: |
+          < multiline eos cli >
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >

@@ -26,8 +26,29 @@ router_bgp:
       172.16.0.0/12:
       192.168.0.0/16:
         route_map: RM-FOO-MATCH
+    peer_groups:
+      foo:
+        prefix_list_in: PL-BAR-v4-IN
+        prefix_list_out: PL-BAR-v4-OUT
+        default_originate:
+          always: true
+          route_map: RM-FOO-MATCH
+    neighbors:
+      192.0.2.1:
+        prefix_list_in: PL-FOO-v4-IN
+        prefix_list_out: PL-FOO-v4-OUT
+
   address_family_ipv6:
     networks:
       2001:db8:100::/40:
       2001:db8:200::/40:
         route_map: RM-BAR-MATCH
+    peer_groups:
+      baz:
+        prefix_list_in: PL-BAR-v6-IN
+        prefix_list_out: PL-BAR-v6-OUT
+    neighbors:
+      2001:db8::1:
+        prefix_list_in: PL-FOO-v6-IN
+        prefix_list_out: PL-FOO-v6-OUT
+

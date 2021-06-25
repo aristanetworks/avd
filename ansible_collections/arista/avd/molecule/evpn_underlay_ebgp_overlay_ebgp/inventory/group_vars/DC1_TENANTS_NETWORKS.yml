@@ -184,14 +184,32 @@ tenants:
             mtu: 9000
             enabled: True
             description: "test"
+          - interfaces: [ Ethernet10.100, Ethernet10.100 ]
+            ip_addresses: [10.10.11.10/24, 10.10.31.10/24]
+            nodes: [DC1-BL1A, DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "subinterface test"
+          - interfaces: [ Ethernet10.200, Ethernet10.200 ]
+            encapsulation_dot1q_vlan: [ 121, 141 ]
+            ip_addresses: [10.10.21.10/24, 10.10.41.10/24]
+            nodes: [DC1-BL1A, DC1-BL1B]
+            mtu: 9000
+            enabled: True
+            description: "subinterface test with vlan override"
     l2vlans:
       # L2 vlan as string
       '160':
         name: Tenant_A_VMOTION
         tags: ['opzone']
+        igmp_snooping_enabled: true
       # L2 vlan as integer
       161:
         name: Tenant_A_NFS
+        tags: ['opzone']
+        igmp_snooping_enabled: false
+      162:
+        name: Tenant_A_FTP
         tags: ['opzone']
   # Tenant_B Specific Information - VRFs / VLANs
   Tenant_B:

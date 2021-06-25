@@ -27,6 +27,11 @@ mlag_ips:
 # Enable vlan aware bundles
 vxlan_vlan_aware_bundles: true
 
+# EVPN host flapping settings
+evpn_hostflap_detection:
+  window: 20
+  threshold: 30
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
@@ -42,7 +47,6 @@ bgp_peer_groups:
 spine:
   platform: vEOS-LAB
   bgp_as: 65001
-  leaf_as_range: 65101-65132
   nodes:
     DC1-SPINE1:
       id: 1

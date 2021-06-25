@@ -1,19 +1,47 @@
+# Project information
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-docs_dir: ansible_collections/arista/avd/
-site_favicon: docs/_media/favicon.ico
+copyright: Copyright &copy; 2019 - 2020 Arista Networks
+
+# Repository information
+repo_name: AVD on Github
+repo_url: https://github.com/aristanetworks/ansible-avd
+
+# Configuration
+use_directory_urls: true
 theme:
   name: material
+  custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
     - navigation.instant
+    - navigation.top
   highlightjs: true
   hljs_languages:
     - yaml
     - python
     - shell
+  icon:
+    repo: fontawesome/brands/github
+    logo: fontawesome/solid/book
+  favicon: docs/_media/favicon.ico
+  font:
+    code: Fira Mono
+  language: en
+  include_search_page: false
+  search_index_only: true
+
 extra_css:
   - docs/stylesheets/extra.material.css
+
+plugins:
+  - search:
+      lang: en
+  - git-revision-date-localized:
+      type: date
+  - minify:
+      minify_html: true
+  #     minify_js: true
 
 markdown_extensions:
   - mdx_truly_sane_lists
@@ -41,21 +69,23 @@ markdown_extensions:
       # permalink: "#"
       permalink: true
       baselevel: 3
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.snippets:
+      base_path: 'ansible_collections/arista/avd/'
 
-copyright: Copyright &copy; 2019 - 2020 Arista Networks
-repo_name: AVD on Github
-repo_url: https://github.com/aristanetworks/ansible-avd
-use_directory_urls: true
+# TOC
+docs_dir: ansible_collections/arista/avd/
 nav:
   - Home: README.md
   - Release Notes:
-      - 2.0.x: docs/release-notes/2.0.x.md
+      - 2.x.x: docs/release-notes/2.x.x.md
       - 1.1.x: docs/release-notes/1.1.x.md
       - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
       - Requirements: docs/installation/requirements.md
-      - Setup environment: docs/installation/setup-environement.md
+      - Setup environment: docs/installation/setup-environment.md
       - Ansible-galaxy installation: docs/installation/setup-galaxy.md
       - Git installation: docs/installation/setup-git.md
       - Development tips & tricks: docs/installation/development.md
@@ -64,6 +94,7 @@ nav:
       - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
       - Use NAT to access eAPI: docs/how-to/lab-with-nat.md
       - AWX & Tower Integration: docs/how-to/tower-integration.md
+      - Configure ZTP server with CV collection: docs/how-to/ztp.md
       - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
     - eos_designs:
@@ -90,13 +121,15 @@ nav:
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
       - AVD Plugins & Filters: plugins/README.md
       - Cloudvision Module documentation: https://cvp.avd.sh/
+  - Contributing to AVD:
+      - Overview: docs/contribution/overview.md
+      - Getting Started: docs/contribution/getting-started.md
+      - Code Style: docs/contribution/style-guide.md
   - External resources:
       - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
   - About:
-      - Contribution Guide: docs/contributing.md
-      - Ansible Galaxy page: https://galaxy.ansible.com/arista/cvp
-      - Arista AVD Modules: https://github.com/aristanetworks/ansible-avd
-      - Arista CVP Modules: https://github.com/aristanetworks/ansible-cvp
+      - Ansible Galaxy page: https://galaxy.ansible.com/arista/avd
+      - Arista CVP Collection: https://cvp.avd.sh/en/latest/
       - Arista Installation Script: https://github.com/arista-netdevops-community/avd-install
-      - Arista Automation Examples: https://github.com/aristanetworks/netdevops-examples
+      - Arista Netdevops Community: https://aristanetworks.github.io/netdevops-examples/

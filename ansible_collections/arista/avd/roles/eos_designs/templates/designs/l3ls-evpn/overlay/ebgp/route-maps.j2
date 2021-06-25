@@ -1,0 +1,21 @@
+{# EBGP #}
+{# Overlay network peering #}
+{% if evpn_prevent_readvertise_to_server is arista.avd.defined(true) %}
+{%     set remote_as_list = [] %}
+{%     for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
+{%         do remote_as_list.append(overlay_data.evpn_route_servers[evpn_route_server].bgp_as) %}
+{%     endfor %}
+{%     for remote_as in remote_as_list | unique | arista.avd.natural_sort %}
+{%         if loop.first %}
+route_maps:
+{%         endif %}
+  RM-EVPN-FILTER-AS{{ remote_as }}:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+          - "as {{ remote_as }}"
+      20:
+        type: permit
+{%     endfor %}
+{% endif %}
