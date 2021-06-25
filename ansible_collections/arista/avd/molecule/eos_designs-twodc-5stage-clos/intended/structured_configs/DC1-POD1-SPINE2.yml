@@ -171,11 +171,14 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.110.22/31
+<<<<<<< HEAD
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 172.16.110.2/32
+=======
+>>>>>>> f3409be7 (eos_designs(fix): incorrect topology/ip calculation when max_l3leaf_to_spine_links > 1 (#1054))
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

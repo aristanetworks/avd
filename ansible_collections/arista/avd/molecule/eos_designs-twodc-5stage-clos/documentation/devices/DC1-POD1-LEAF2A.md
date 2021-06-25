@@ -729,10 +729,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.1 | 65101 | default |
 | 172.16.110.1 | 65110 | default |
 | 172.16.110.3 | 65111 | default |
+<<<<<<< HEAD
 | 172.17.110.8 | 65110 | default |
 | 172.17.110.10 | 65110 | default |
 | 172.17.110.12 | 65110 | default |
 | 172.17.110.14 | 65110 | default |
+=======
+| 172.17.110.8 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.10 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.12 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.110.14 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+>>>>>>> f3409be7 (eos_designs(fix): incorrect topology/ip calculation when max_l3leaf_to_spine_links > 1 (#1054))
 | 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
@@ -800,6 +807,7 @@ router bgp 65112
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
    neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
+<<<<<<< HEAD
    neighbor 172.17.110.8 remote-as 65110
    neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
@@ -810,6 +818,14 @@ router bgp 65112
    neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
    neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.14 remote-as 65110
+=======
+   neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
+   neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
+   neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
+   neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
+>>>>>>> f3409be7 (eos_designs(fix): incorrect topology/ip calculation when max_l3leaf_to_spine_links > 1 (#1054))
    neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B

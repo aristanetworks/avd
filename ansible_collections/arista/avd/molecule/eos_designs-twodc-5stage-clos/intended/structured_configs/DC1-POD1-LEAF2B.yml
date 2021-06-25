@@ -51,11 +51,17 @@ router_bgp:
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.110.20:
       peer_group: IPv4-UNDERLAY-PEERS
+<<<<<<< HEAD
       remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet8
     172.17.110.22:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: 65110
+=======
+      description: DC1-POD1-SPINE1_Ethernet8
+    172.17.110.22:
+      peer_group: IPv4-UNDERLAY-PEERS
+>>>>>>> f3409be7 (eos_designs(fix): incorrect topology/ip calculation when max_l3leaf_to_spine_links > 1 (#1054))
       description: DC1-POD1-SPINE2_Ethernet8
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
