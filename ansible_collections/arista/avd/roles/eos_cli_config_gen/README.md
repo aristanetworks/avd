@@ -12,6 +12,7 @@
       - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
       - [IP Standard Access-Lists](#ip-standard-access-lists)
       - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
+      - [IP as-path access-lists](#IP-as-path-Access-Lists)
     - [Aliases](#aliases)
     - [Authentication](#authentication)
       - [AAA Authentication](#aaa-authentication)
@@ -234,6 +235,15 @@ ipv6_access_lists:
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
+```
+
+#### IP as-path Access-Lists
+
+```yaml
+ip_as_path_access_lists:
+  < as_path_acl_1 >:
+    - type: < permit | deny >
+      regexp: "< string >"
 ```
 
 ### Aliases

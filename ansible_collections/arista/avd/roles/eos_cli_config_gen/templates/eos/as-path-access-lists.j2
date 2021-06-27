@@ -1,0 +1,28 @@
+{# eos - as-path acces-lists #}
+{% if ip_as_path_access_lists is arista.avd.defined %}
+!
+{%     for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
+ip as-path access-list {{ ip_as_path_access_list }} 
+{%             if access_lists[access_list].type is arista.avd.defined %}
+{{ access_lists[access_list].type }} 
+{%             if access_lists[access_list].regexp is arista.avd.defined %}
+{{ access_lists[access_list].regexp }}
+{%             endif %}
+{%          endif %}
+{%       endif %}
+{%    endfor %}
+{% endif %}
+
+{#ip_as_path_access_lists:
+  < as_path_acl_1 >:
+    - type: < permit | deny >
+      regexp: "< string >"
+ip as-path access-list BGP-ACL deny 65400 any
+ip as-path access-list BGP-ACL deny 65400 any
+ip as-path access-list BGP-ACL deny 65200 any
+ip as-path access-list BGP-ACL deny 4200009999 any
+ip as-path access-list BGP-ACL permit .* any
+ip as-path access-list BGP-ACL deny 65400 any
+ip as-path access-list BGP-ACL deny 65200 any
+ip as-path access-list BGP-ACL deny 4200009999 any
+ip as-path access-list BGP-ACL permit .* any}#
