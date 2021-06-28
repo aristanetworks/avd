@@ -189,7 +189,7 @@ tenants:
             nodes: [ < node_1 >, < node_2 >, < node_1 > ]
             description: < description >
             enabled: < true | false >
-            mtu: <mtu >
+            mtu: < mtu >
             # EOS CLI rendered directly on the Ethernet interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -201,7 +201,7 @@ tenants:
             nodes: [ < node_1 >, < node_2 > ]
             description: < description >
             enabled: < true | false >
-            mtu: <mtu >
+            mtu: < mtu - should only be used for platforms supporting mtu per subinterface >
 
         # Dictionary of static routes | Optional.
         # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
