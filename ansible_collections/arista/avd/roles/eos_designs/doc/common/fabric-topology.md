@@ -1,6 +1,18 @@
 # Fabric Topology Variables
 
-The fabric topology variables define the connectivity between the super-spine, spines, L3 leafs, L2 leafs and overlay controllers.
+The fabric topology variables define the connectivity between the various switch types, as well as override the default switch properties.
+
+The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refere to doc/common/switch-type-keys.md
+
+| Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
+| super_spine        | ✅             | p2p          | none              |                     |                     |      |              |                     |
+| spine              | ✅             | p2p          | server            |                     |                     |      |              |                     |
+| spline             | ✅             | p2p          | none              | ✅                  | ✅                 |      | ✅          |                      |
+| l3leaf             | ✅             | p2p          | client            | ✅                  | ✅                 | ✅  | ✅          | ✅                   |
+| l2leaf             |                 | port-channel | none             | ✅                  |                     |      | ✅          | ✅                   |
+| overlay_controller | ✅             | p2p          | none              |                     |                     |      |              |                      |
+
 The variables should be applied to all devices in the fabric.
 
 <div style="text-align:center">
