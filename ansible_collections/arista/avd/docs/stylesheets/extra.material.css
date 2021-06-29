@@ -72,8 +72,16 @@
     color: var(--md-default-fg-color--lighter);
     vertical-align: top;
     background-color: var(--md-accent-bg-color);
+    text-align: left;
     /* min-width: 100%; */
     /* display: table; */
+  }
+  .md-typeset table:not([class]) td {
+    /* padding: .9375em 1.25em; */
+    border-collapse: collapse;
+    vertical-align: center;
+    text-align: left;
+    border-bottom: 1px solid var(--md-default-fg-color--light);
   }
   .md-typeset code {
     padding: 0 .2941176471em;
