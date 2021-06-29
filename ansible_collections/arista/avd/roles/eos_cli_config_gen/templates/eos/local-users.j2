@@ -15,5 +15,10 @@
 {%             set local_user_cli = local_user_cli ~ " nopassword" %}
 {%         endif %}
 {{ local_user_cli }}
+{%         if local_users[local_user].sshkey is arista.avd.defined %}
+{%             set local_sshkey_cli = "username " ~ local_user %}
+{%             set local_sshkey_cli = local_sshkey_cli ~ " ssh-key " ~ local_users[local_user].sshkey %}
+{{ local_sshkey_cli }}
+{%         endif %}
 {%     endfor %}
 {% endif %}
