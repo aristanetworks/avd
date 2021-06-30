@@ -37,6 +37,9 @@ ethernet_interfaces:
     eos_cli: |
       {{ l3_interface.raw_eos_cli | indent(6,false) }}
 {%                         endif %}
+{%                         if l3_interface.structured_config is arista.avd.defined %}
+    struct_cfg: {{ l3_interface.structured_config }}
+{%                         endif %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}

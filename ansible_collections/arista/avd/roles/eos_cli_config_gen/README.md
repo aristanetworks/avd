@@ -62,6 +62,9 @@
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
+    - [Maintenance Mode](#maintenance-mode)
+      - [BGP Groups](#bgp-groups)
+      - [Interface Groups](#interface-groups)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -342,11 +345,13 @@ local_users:
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
   < user_2 >:
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
 ```
 
 #### Radius Servers
@@ -734,6 +739,7 @@ ethernet_interfaces:
 
 ```yaml
 # Switched Interfaces
+ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
@@ -869,6 +875,7 @@ port_channel_interfaces:
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    native_vlan: < native vlan number >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -1113,6 +1120,35 @@ mac_security:
         "< connection_key >":
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
+```
+
+### Maintenance Mode
+
+#### BGP Groups
+
+```yaml
+bgp_groups:
+  < group_name >:
+    vrf: "< vrf_name >"
+    neighbors:
+      - "< ip_address >"
+      - "< ipv6_address >"
+      - "< peer_group_name >"
+    bgp_maintenance_profiles:
+      - < profile_name >
+```
+
+#### Interface Groups
+
+```yaml
+interface_groups:
+  < group_name >:
+    interfaces:
+      - "< interface_or_interface_range >"
+    bgp_maintenance_profiles:
+      - "< profile_name >"
+    interface_maintenance_profiles:
+      - "< profile_name >"
 ```
 
 ### Management

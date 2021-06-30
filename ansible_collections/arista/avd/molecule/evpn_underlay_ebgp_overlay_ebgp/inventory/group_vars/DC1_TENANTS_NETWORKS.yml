@@ -239,6 +239,7 @@ tenants:
   # Tenant_C Specific Information - VRFs / VLANs
   Tenant_C:
     mac_vrf_vni_base: 30000
+    vlan_aware_bundle_number_base: 30000
     vrfs:
       Tenant_C_OP_Zone:
         vrf_vni: 30

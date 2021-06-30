@@ -1,4 +1,16 @@
 ---
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ devices_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Check if structure configuration file exists
   tags: [build, provision]
   stat:

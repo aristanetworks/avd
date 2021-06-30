@@ -61,6 +61,9 @@ ethernet_interfaces:
 {%                     set adapter_raw_eos_cli = adapter.raw_eos_cli | arista.avd.default(
                                                  adapter_profile.raw_eos_cli,
                                                  parent_profile.raw_eos_cli) %}
+{%                     set adapter_structured_config = adapter.structured_config | arista.avd.default(
+                                                       adapter_profile.structured_config,
+                                                       parent_profile.structured_config) %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
 {%                     set endpoint_ports = adapter.server_ports | arista.avd.default(adapter.endpoint_ports) %}
 {%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
@@ -134,6 +137,9 @@ ethernet_interfaces:
 {%                     if adapter_raw_eos_cli is arista.avd.defined %}
     eos_cli: |
       {{ adapter_raw_eos_cli | indent(6,false) }}
+{%                     endif %}
+{%                     if adapter_structured_config is arista.avd.defined %}
+    struct_cfg: {{ adapter_structured_config }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}

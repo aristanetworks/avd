@@ -4,6 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -73,6 +74,19 @@ interface Management1
    no shutdown
    vrf MGMT
    ip address 192.168.1.22/24
+```
+
+## Domain-list
+
+### Domain-list:
+ - structured-config.set.under.vrf.common-vrf
+
+### Domain-list Device Configuration
+
+```eos
+!
+ip domain-list structured-config.set.under.vrf.common-vrf
+!
 ```
 
 ## Management API HTTP

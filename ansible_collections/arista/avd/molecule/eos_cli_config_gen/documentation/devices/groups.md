@@ -1,4 +1,4 @@
-# ip-extended-communities
+# groups
 # Table of Contents
 <!-- toc -->
 
@@ -14,9 +14,11 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
+- [Maintenance Mode](#maintenance-mode)
+  - [BGP Groups](#bgp-groups)
+  - [Interface Groups](#interface-groups)
 
 <!-- toc -->
 # Management
@@ -88,26 +90,59 @@ interface Management1
 
 # Filters
 
-## IP Extended Communities
-
-### IP Extended Communities Summary
-
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| TEST1 | deny | 65002:65002 |
-| TEST1 | permit | 65000:65000 |
-| TEST2 | deny | 65001:65001 |
-
-### IP Extended Communities configuration
-
-```eos
-!
-ip extcommunity-list TEST1 deny 65002:65002
-ip extcommunity-list TEST1 permit 65000:65000
-!
-ip extcommunity-list TEST2 deny 65001:65001
-```
-
 # ACL
 
 # Quality Of Service
+
+# Maintenance Mode
+
+## BGP Groups
+
+### BGP Groups Summary
+
+| BGP group | VRF Name | Neighbors | BGP maintenance profiles |
+| --------- | -------- | --------- | ------------------------ |
+| bar | red | peer-group-baz | downlink-neighbors |
+| foo | - | 169.254.1.1<br>fe80::1 | ixp<br>uplink-neighbors |
+
+### BGP Groups Configuration
+
+```eos
+!
+group bgp bar
+   vrf red
+   neighbor peer-group-baz
+   maintenance profile bgp downlink-neighbors
+!
+group bgp foo
+   neighbor 169.254.1.1
+   neighbor fe80::1
+   maintenance profile bgp ixp
+   maintenance profile bgp uplink-neighbors
+```
+
+## Interface Groups
+
+### Interface Groups Summary
+
+| Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
+| --------------- | ---------- | ----------------------------- | ------------------------ |
+| QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | - |
+| SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
+
+### Interface Groups Configuration
+
+```eos
+!
+group interface QSFP_Interface_Group
+   interface Ethernet1,5
+   maintenance profile interface uplink-interfaces
+!
+group interface SFP_Interface_Group
+   interface Ethernet10-20
+   interface Ethernet30-48
+   maintenance profile interface downlink-interfaces
+   maintenance profile interface ix-interfaces
+   maintenance profile bgp downlink-neighbors
+   maintenance profile bgp local-ix
+```
