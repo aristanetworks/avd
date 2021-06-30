@@ -31,7 +31,6 @@ underlay_ospf_bfd_enable: < true | false | Default -> false >
 
 # Underlay ISIS | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | Default -> "49.0001" >
-isis_site_id: < isis site ID | Default -> "0001" >
 
 # AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
 bgp_as: < AS number >

@@ -2,19 +2,6 @@
 
 The fabric topology variables define the connectivity between the various switch types, as well as override the default switch properties.
 
-The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to [node types definition](../../common/node-types/)
-
-| Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spline             | ✅              | p2p          | none              | ✅                  | ✅                   | ✘    | ✅           | ✘                   |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                   | ✅   | ✅           | ✅                   |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                   |
-| overlay_controller | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-
-The variables should be applied to all devices in the fabric.
-
 <div style="text-align:center">
   <img src="../../../../media/topology.gif" />
 </div>
@@ -68,12 +55,27 @@ pod_name: < POD_Name >
 - Only eBGP underlay is supported for super-spine deployment.
 - Spines in every POD must have unique AS per POD.
 
-## Type Variable
+## Type Variables
+
+The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to [node types definition](../../common/node-types/)
+
+| Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
+| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| spline             | ✅              | p2p          | none              | ✅                  | ✅                   | ✘    | ✅           | ✘                   |
+| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                   | ✅   | ✅           | ✅                   |
+| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                   |
+| overlay_controller | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+
+The variables should be applied to all devices in the fabric.
 
 - The `type:` variable needs to be defined for each device in the fabric.
 - This is leveraged to load the appropriate template to generate the configuration.
 
 **Variables and Options:**
+
+As explained above, you can defined your own types of devices. CLI only provides default node types.
 
 ```yaml
 # define the layer type
@@ -84,18 +86,23 @@ type: < spine | l3leaf | l2leaf | super-spine | overlay-controller >
 
 ```yaml
 # Defined in SPINE.yml file
+# Can also be set directly in your inventory file under spine group
 type: spine
 
 # Defined in L3LEAFS.yml
+# Can also be set directly in your inventory file under l3leaf group
 type: l3leaf
 
 # Defined in L2LEAFS.yml
+# Can also be set directly in your inventory file under l2leaf group
 type: l2leaf
 
 # Defined in SUPER-SPINES.yml
+# Can also be set directly in your inventory file under super-spine group
 type: super-spine
 
 # Defined in ROUTE-SERVERS.yml
+# Can also be set directly in your inventory file under route-server group
 type: overlay-controller
 ```
 
@@ -113,21 +120,49 @@ max_spines: < integer >= number of spine nodes | default spine.nodes | length >
 
 spine:
 
-  # Arista platform family | Required.
-  platform: < Arista Platform Family >
-
-  # Rack that the switch is located in (only used in snmp_settings location) | Optional
-  rack: < rack_name >
-
-  # Spine BGP AS | Required.
-  bgp_as: < bgp_as >
-
   defaults:
-    # EOS CLI rendered directly on the root level of the final EOS configuration
+    # Arista platform family | Required.
+    platform: < Arista Platform Family >
+
+    # Rack that the switch is located in (only used in snmp_settings location) | Optional
+    rack: < rack_name >
+
+    # Spine BGP AS | Required.
+    bgp_as: < bgp_as >
+
+    # IPv4 subnet for Loopback0 allocation
+    loopback_ipv4_pool: < IPv4_address/Mask  >
+
+    # List of EOS command to apply to BGP daemon | Optional
+    bgp_defaults: [ < List of EOS commands> ]
+
+    # isis system-id prefix
+    isis_system_id_prefix: < d{4}.d{4} >
+
+    # Number of path to configure in ECMP for ISIS
+    isis_maximum_paths: < integer >
+
+    # List of Interfaces to use to connect to uplink switches | Optional
+    uplink_interfaces: [ <List of interface name> ]
+
+    # List of switches to connect uplink ports | Optional
+    uplink_switches: [ <List of uplink switches from inventory> ]
+
+    # Number of interfaces towards uplink switches | Optional
+    max_uplink_switches: < integer >
+
+    # Subnet to use for uplink allocation | Optional
+    uplink_ipv4_pool: < IPv4_address/Mask >
+
+    # Enable PTP on uplink links | Optional
+    uplink_ptp:
+      enable: < boolean >
+
+    # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
       < multiline eos cli >
 
-    # Custom structured config for eos_cli_config_gen
+    # Custom structured config for eos_cli_config_gen | Optional
     structured_config: < dictionary >
 
   # Specify dictionary of Spine nodes | Required.
@@ -146,6 +181,9 @@ spine:
 
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
+
+      # List of interfaces to use on uplink switches to connect local switch
+      uplink_switch_interfaces: [ <List of interface name> ]
 
       # EOS CLI rendered directly on the root level of the final EOS configuration
       raw_eos_cli: |
@@ -167,15 +205,13 @@ spine:
 max_spines: 4
 
 spine:
-  platform: vEOS-LAB
-  bgp_as: 65001
-  nodes:
-    DC1-SPINE1:
-      id: 1
-      mgmt_ip: 192.168.2.101/24
-    DC1-SPINE2:
-      id: 2
-      mgmt_ip: 192.168.2.102/24
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
 ```
 
 ## L3 Leaf Variables
@@ -185,18 +221,20 @@ spine:
 ```yaml
 l3leaf:
 
-  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L3 leafs.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults
+  # key will be inherited by all L3 leafs.
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-  # The node groups are groups of one or multiple nodes where specific variables can be defined related to the topology
-  # and allowed L3 and L2 network services.
+  # The node groups are groups of one or multiple nodes where specific variables can be
+  # defined related to the topology and allowed L3 and L2 network services.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
 
-      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+      # All variables defined under `defaults` will be inherited by the node group,
+      # if not specifically set inside it.
 
       # Arista platform family. | Required
       platform: < Arista Platform Family >
@@ -204,7 +242,8 @@ l3leaf:
       # Rack that the switch is located in (only used in snmp_settings location) | Optional
       rack: < rack_name >
 
-      # Parent spine switches (list), corresponding to uplink_to_spine_interfaces and spine_interfaces | Required.
+      # Parent spine switches (list), corresponding to uplink_to_spine_interfaces
+      # and spine_interfaces | Required.
       spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
 
       # Uplink to spine interfaces (list), interface located on L3 Leaf,
@@ -399,18 +438,21 @@ l3leaf:
 ```yaml
 l2leaf:
 
-  # All variables defined under `node_groups` dictionary can be defined under the defaults key will be inherited by all L2 leafs.
+  # All variables defined under `node_groups` dictionary can be defined under the defaults
+  # key will be inherited by all L2 leafs.
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
-  # The node groups are group of one or multiple nodes where specific variables can be defined related to the topology
+  # The node groups are group of one or multiple nodes where specific variables can be
+  # defined related to the topology
   # and allowed L3 and L2 network services.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
 
-      # All variables defined under `defaults` will be inherited by the node group, if not specifically set inside it.
+      # All variables defined under `defaults` will be inherited by the node group,
+      # if not specifically set inside it.
 
       # Arista platform family. | Required
       platform: < Arista Platform Family >
