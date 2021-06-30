@@ -2,7 +2,7 @@
 
 The fabric topology variables define the connectivity between the various switch types, as well as override the default switch properties.
 
-The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to `doc/common/switch-type-keys.md`
+The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to [node types definition](../../common/node-types/)
 
 | Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |

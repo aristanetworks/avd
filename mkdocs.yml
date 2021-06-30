@@ -99,11 +99,11 @@ nav:
   - Roles documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Device types: roles/eos_designs/doc/common/fabric-topology.md
+          - Device types: roles/eos_designs/doc/common/node-types.md
           - l3ls-evpn:
               - Overview: roles/eos_designs/doc/l3ls-evpn.md
               - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
-              - Fabric Topology: roles/eos_designs/doc/common/fabric-topology.md
+              - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
               - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
               - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
               - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
