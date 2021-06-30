@@ -124,6 +124,14 @@ spine:
     # Arista platform family | Required.
     platform: < Arista Platform Family >
 
+    # Acting role in EVPN control plane.
+    # Override role definition from switch_type_keys
+    # Can be set per node
+    evpn_role: < client | server | none | Default -> server >
+
+    # List of inventory hostname acting as EVPN route-servers.
+    evpn_route_servers: [ < inventory_hostname_of_evpn_server > ]
+
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
 
@@ -443,73 +451,100 @@ l2leaf:
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
+    # All variables defined under `defaults` will be inherited by the node group,
+    # if not specifically set inside it.
+
+    # Acting role in EVPN control plane.
+    # Override role definition from switch_type_keys
+    # Can be set per node
+    evpn_role: < client | server | none | Default -> server >
+
+    # List of inventory hostname acting as EVPN route-servers.
+    evpn_route_servers: [ < inventory_hostname_of_evpn_server > ]
+
+    # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
+    # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
+    # SVI IP address will be assigned as follows:
+    # virtual-router: <subnet> + 1
+    # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+    # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+    # l2leafs       : <subnet> + 3 + <l2leaf id>
+    # GW on l2leafs : <subnet> + 1
+    # Assign range larger than total l2leafs + 5
+    inband_management_subnet: < IPv4subnet/mask >
+
+    # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
+    inband_management_vlan: < vlan-id | Default -> 4092 >
+
+    # Arista platform family. | Required
+    platform: < Arista Platform Family >
+
+    # Rack that the switch is located in (only used in snmp_settings location) | Optional
+    rack: < rack_name >
+
+    # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
+    parent_l3leafs: [ '<inventory hostname 1>', '<inventory hostname 2>']
+
+    # Uplink interfaces (list), interface located on L2 Leaf,
+    # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
+    uplink_interfaces: [ '< ethernet_interface_1 >', '< ethernet_interface_2 >' ]
+
+    # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
+    p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
+
+    # Enable / Disable auto MLAG, when two nodes are defined in node group.
+    mlag: < true | false -> default true >
+
+    # Enable / Disable MLAG dual primary detection
+    mlag_dual_primary_detection: < true | false -> default false >
+
+    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    mlag_interfaces: [ '< ethernet_interface_3 >', '< ethernet_interface_4 >' ]
+
+    # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
+    # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
+    mlag_ibgp_origin_incomplete: < true | false -> default true >
+
+    # MLAG Peer Link (control link) SVI interface id
+    mlag_peer_vlan: < 0-4094 | default -> 4094 >
+
+    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
+    spanning_tree_mode: < mstp >
+
+    # Spanning tree priority | Required.
+    spanning_tree_priority: < spanning-tree priority >
+
+    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
+    igmp_snooping_enabled: < true | false >
+
+    # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
+    # If filter is not defined will default to all
+    filter:
+      tenants: [ '< tenant_1 >', '< tenant_2 >' | default 'all' ]
+      tags: [ '< tag_1 >', '< tag_2 >' | default -> 'all' ]
+
+    # Activate or deactivate IGMP snooping for node groups devices
+    igmp_snooping_enabled: < true | false >
+
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
+
+    # Custom structured config for eos_cli_config_gen
+    structured_config: < dictionary >
+
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    # Overrides the setting on node_group level.
+    raw_eos_cli: |
+      < multiline eos cli >
+
   # The node groups are group of one or multiple nodes where specific variables can be
-  # defined related to the topology
-  # and allowed L3 and L2 network services.
+  # defined related to the topology and allowed L3 and L2 network services.
+  # The variables defined under a specific `node_group` will take precedence over defaults.
   node_groups:
 
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
-
-      # All variables defined under `defaults` will be inherited by the node group,
-      # if not specifically set inside it.
-
-      # Arista platform family. | Required
-      platform: < Arista Platform Family >
-
-      # Rack that the switch is located in (only used in snmp_settings location) | Optional
-      rack: < rack_name >
-
-      # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
-      parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B]
-
-      # Uplink interfaces (list), interface located on L2 Leaf,
-      # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
-      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-      # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
-      p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
-
-      # Enable / Disable auto MLAG, when two nodes are defined in node group.
-      mlag: < true | false -> default true >
-
-      # Enable / Disable MLAG dual primary detection
-      mlag_dual_primary_detection: < true | false -> default false >
-
-      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
-
-      # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
-      # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
-      mlag_ibgp_origin_incomplete: < true | false -> default true >
-
-      # MLAG Peer Link (control link) SVI interface id
-      mlag_peer_vlan: < 0-4094 | default -> 4094 >
-
-      # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-      spanning_tree_mode: < mstp >
-
-      # Spanning tree priority | Required.
-      spanning_tree_priority: < spanning-tree priority >
-
-      # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
-      igmp_snooping_enabled: < true | false >
-
-      # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
-      # If filter is not defined will default to all
-      filter:
-        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]
-
-      # Activate or deactivate IGMP snooping for node groups devices
-      igmp_snooping_enabled: < true | false >
-
-      # EOS CLI rendered directly on the root level of the final EOS configuration
-      raw_eos_cli: |
-        < multiline eos cli >
-
-      # Custom structured config for eos_cli_config_gen
-      structured_config: < dictionary >
 
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
