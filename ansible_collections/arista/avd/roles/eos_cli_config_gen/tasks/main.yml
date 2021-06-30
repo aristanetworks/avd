@@ -6,6 +6,7 @@
     mode: 0775
   loop:
     - "{{ structured_dir }}"
+    - "{{ documentation_dir }}"
     - "{{ eos_config_dir }}"
     - "{{ devices_dir }}"
   delegate_to: localhost

@@ -1,5 +1,18 @@
 ---
 # tasks file for dhcp_provisioner
+
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ structured_cvp_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Build DHCP intended variables
   template:
     src: ztp_configuration.j2
