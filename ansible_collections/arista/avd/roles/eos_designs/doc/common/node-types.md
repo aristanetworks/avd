@@ -4,7 +4,7 @@ The fabric topology variables define the connectivity between the various switch
 
 ## Default nodes
 
-The following table provide information on the default switch types that have been pre-defined in [`default variables`](eos_designs/defaults/main.yml).
+The following table provide information on the default switch types that have been pre-defined in [`default variables`](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/defaults/main.yml).
 
 | Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
