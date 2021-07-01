@@ -130,7 +130,7 @@ spine:
     evpn_role: < client | server | none | Default -> server >
 
     # List of inventory hostname acting as EVPN route-servers.
-    evpn_route_servers: [ < inventory_hostname_of_evpn_server > ]
+    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
 
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
@@ -234,94 +234,122 @@ l3leaf:
   # The variables defined under a specific `node_group` will take precedence over defaults.
   defaults:
 
+    # All variables defined under `defaults` will be inherited by the node group,
+    # if not specifically set inside it.
+
+    # Arista platform family. | Required
+    platform: < Arista Platform Family >
+
+    # Parent spine switches (list), corresponding to uplink_to_spine_interfaces
+    # and spine_interfaces | Required.
+    spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
+
+    # IPv4 subnet for Loopback0 allocation.
+    loopback_ipv4_pool: < IPv4_address/Mask  >
+
+    # Offset to define VTEP IP addresses of L3LEAF devices.
+    loopback_ipv4_offset: 2
+
+    # IPv4 subnet for VTEP/Loopback1 allocation.
+    vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
+
+    # IPv4 subnet to use to connect to uplink switches.
+    uplink_ipv4_pool: < IPv4_address/Mask  >
+
+    # Local uplink to spine interfaces (list). | Required.
+    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+    # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+    uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
+
+    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
+    p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
+
+    # L3 Leaf BGP AS. | Required.
+    # Inheritence: node > node_group > defaults
+    bgp_as: < bgp_as >
+
+    # Acting role in EVPN control plane.
+    # Override role definition from switch_type_keys
+    # Can be set per node
+    evpn_role: < client | server | none | Default -> server >
+
+    # List of inventory hostname acting as EVPN route-servers.
+    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
+
+    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
+    # This allows support for centralized routing.
+    evpn_services_l2_only: < false | true >
+
+    # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
+    # If filter is not defined will default to all
+    filter:
+      tenants: [ < tenant_1 >, < tenant_2 > | default all ]
+      tags: [ < tag_1 >, < tag_2 > | default -> all ]
+
+      # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
+      # Useful for "border" leaf.
+      always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
+
+    # List of EOS command to apply to BGP daemon | Optional
+    bgp_defaults: [ < List of EOS commands> ]
+
+    # isis system-id prefix
+    isis_system_id_prefix: < \d{4}.\d{4} >
+
+    # Number of path to configure in ECMP for ISIS
+    isis_maximum_paths: < integer >
+
+    # Enable / Disable auto MLAG, when two nodes are defined in node group.
+    mlag: < true | false -> default true >
+
+    # Enable / Disable MLAG dual primary detection
+    mlag_dual_primary_detection: < true | false -> default false >
+
+    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
+    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
+
+    # Underlay L3 peering SVI interface id
+    mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
+
+    # MLAG Peer Link (control link) SVI interface id
+    mlag_peer_vlan: < 0-4094 | default -> 4094 >
+
+    # Spanning tree mode | Required.
+    spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
+
+    # Spanning tree priority.
+    spanning_tree_priority: < spanning-tree priority -> default 32768 >
+
+    # Spanning tree priority.
+    spanning_tree_root_super: < true | false  >
+
+    # Virtual router mac address for anycast gateway | Required.
+    virtual_router_mac_address: < mac address >
+
+    # Activate or deactivate IGMP snooping | Optional, default is true
+    igmp_snooping_enabled: < true | false >
+
+    # Enable PTP on uplink links | Optional
+    uplink_ptp:
+      enable: < boolean >
+
+    # EOS CLI rendered directly on the root level of the final EOS configuration
+    raw_eos_cli: |
+      < multiline eos cli >
+
+    # Custom structured config for eos_cli_config_gen
+    structured_config: < dictionary >
+
   # The node groups are groups of one or multiple nodes where specific variables can be
   # defined related to the topology and allowed L3 and L2 network services.
   node_groups:
 
+    # Rack that the switch is located in (only used in snmp_settings location) | Optional
+    rack: < rack_name >
+
     # node_group_1, will result in stand-alone leaf.
     < node_group_1 >:
-
-      # All variables defined under `defaults` will be inherited by the node group,
-      # if not specifically set inside it.
-
-      # Arista platform family. | Required
-      platform: < Arista Platform Family >
-
-      # Rack that the switch is located in (only used in snmp_settings location) | Optional
-      rack: < rack_name >
-
-      # Parent spine switches (list), corresponding to uplink_to_spine_interfaces
-      # and spine_interfaces | Required.
-      spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
-
-      # Uplink to spine interfaces (list), interface located on L3 Leaf,
-      # corresponding to spines and spine_interfaces | Required.
-      uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-      # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-      p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
-
-      # Enable / Disable auto MLAG, when two nodes are defined in node group.
-      mlag: < true | false -> default true >
-
-      # Enable / Disable MLAG dual primary detection
-      mlag_dual_primary_detection: < true | false -> default false >
-
-      # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-      mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-      # Underlay L3 peering SVI interface id
-      mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
-
-      # MLAG Peer Link (control link) SVI interface id
-      mlag_peer_vlan: < 0-4094 | default -> 4094 >
-
-      # Spanning tree mode | Required.
-      spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
-
-      # Spanning tree priority.
-      spanning_tree_priority: < spanning-tree priority -> default 32768 >
-
-      # Spanning tree priority.
-      spanning_tree_root_super: < true | false  >
-
-      # Virtual router mac address for anycast gateway | Required.
-      virtual_router_mac_address: < mac address >
-
-      # Activate or deactivate IGMP snooping | Optional, default is true
-      igmp_snooping_enabled: < true | false >
-
-      # L3 Leaf BGP AS. | Required.
-      # Inheritence: node > node_group > defaults
-      bgp_as: < bgp_as >
-
-      # EVPN Role for Overlay BGP Peerings | Optional, default is client
-      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
-      evpn_role: < client | server | none | default -> client  >
-
-      # Peer with these EVPN Route Servers / Route Reflectors | Optional, default to content of spines variable
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
-
-      # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
-      # If filter is not defined will default to all
-      filter:
-        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]
-
-        # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
-        # Useful for "border" leaf.
-        always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
-
-      # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
-      # This allows support for centralized routing.
-      evpn_services_l2_only: < false | true >
-
-      # EOS CLI rendered directly on the root level of the final EOS configuration
-      raw_eos_cli: |
-        < multiline eos cli >
-
-      # Custom structured config for eos_cli_config_gen
-      structured_config: < dictionary >
 
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
@@ -337,14 +365,13 @@ l3leaf:
           # Node management IP address | Optional.
           mgmt_ip: < IPv4_address/Mask >
 
-          # Uplink to spine interfaces (list), interface located on L3 Leaf,
-          # corresponding to spines and spine_interfaces | Required.
+          # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
+          # corresponding to spines and spine_interfaces in generic design | Required.
           # Inheritance: node > node_group > defaults
-          uplink_to_spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+          uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
-          # Spine interfaces (list), interface located on Spine,
-          # corresponding to spines and uplink_to_spine_interfaces | Required.
-          spine_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
+          # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+          uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
 
           # L3 Leaf BGP AS. | Required.
           # Inheritance: node > node_group > defaults
@@ -371,72 +398,61 @@ l3leaf:
         < l3_leaf_inventory_hostname_2 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
+          uplink_switch_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
 
         # Third node
         < l3_leaf_inventory_hostname_3 >:
           id: < integer >
           mgmt_ip: < IPv4_address/Mask >
-          spine_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
+          uplink_switch_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
 ```
 
 **Example:**
 
 ```yaml
 # Defined in FABRIC.yml
-
 l3leaf:
   defaults:
-    platform: 7050X3
-    bgp_as: 65100
-    spines: [ DC1-SPINE1, DC1-SPINE2 ]
-    uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 4096
+    bgp_as: 65555
     virtual_router_mac_address: 00:1c:73:00:dc:01
+    loopback_ipv4_pool: 172.16.110.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 172.18.110.0/24
+    uplink_ipv4_pool: 172.17.110.0/24
+    uplink_ptp:
+      enable: True
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
   node_groups:
-    DC1_LEAF1:
-      bgp_as: 65101
-      filter:
-        tenants: [ Tenant_A, Tenant_B, Tenant_C ]
-        tags: [ opzone ]
-      mlag_dual_primary_detection: false
-      nodes:
-        DC1-LEAF1A:
-          id: 1
-          mgmt_ip: 192.168.2.105/24
-          spine_interfaces: [ Ethernet1, Ethernet1 ]
-    DC1_LEAF2:
-      bgp_as: 65102
-      filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app, db, vmotion, nfs ]
-      nodes:
-        DC1-LEAF2A:
-          id: 2
-          mgmt_ip: 192.168.2.106/24
-          spine_interfaces: [ Ethernet2, Ethernet2 ]
-        DC1-LEAF2B:
-          id: 3
-          mgmt_ip: 192.168.2.107/24
-          spine_interfaces: [ Ethernet3, Ethernet3 ]
-    DC1_SVC3:
-      bgp_as: 65103
-      platform: 7280R
+    # Single switch working as underlay L3 router and EVPN RS
+    RACK1_SINGLE:
+      platform: vEOS-LAB
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
+      spanning_tree_mode: none
+      bgp_as: 65111
       mlag: false
+      evpn_role: server
+      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
       filter:
-        tenants: [ Tenant_A ]
-        tags: [ erp1 ]
+        tenants: []
+        tags: []
+        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
+      # Below will not have any effect since it is overridden on the node level. So just a negative test.
+      raw_eos_cli: |
+        interface Loopback1001
+          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
       nodes:
-        DC1-SVC3A:
-          id: 4
-          mgmt_ip: 192.168.2.108/24
-          spine_interfaces: [ Ethernet4, Ethernet4 ]
-        DC1-SVC3B:
-          id: 5
-          mgmt_ip: 192.168.2.109/24
-          spine_interfaces: [ Ethernet5, Ethernet5 ]
+        DC1-POD1-LEAF1A:
+          id: 1
+          # mgmt_ip: 192.168.1.7/24 Test without management IP
+          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
+          raw_eos_cli: |
+            interface Loopback1002
+              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
 ```
 
 ## L2 Leafs Variables
@@ -482,14 +498,13 @@ l2leaf:
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
 
-    # Parent L3 switches (list), corresponding to uplink_interfaces and l3leaf_interfaces | Required.
-    parent_l3leafs: [ '<inventory hostname 1>', '<inventory hostname 2>']
+    # Local uplink to spine interfaces (list). | Required.
+    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
-    # Uplink interfaces (list), interface located on L2 Leaf,
-    # corresponding to parent_l3leafs and l3leaf_interfaces | Required.
-    uplink_interfaces: [ '< ethernet_interface_1 >', '< ethernet_interface_2 >' ]
+    # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+    uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
-    # Point-to-Point interface speed - will apply to L2 Leaf and L3 Leaf switches | Optional.
+    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
     # Enable / Disable auto MLAG, when two nodes are defined in node group.
