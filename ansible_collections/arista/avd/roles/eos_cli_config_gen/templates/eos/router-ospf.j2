@@ -29,6 +29,35 @@ router ospf {{ process_id }}
 {%     if router_ospf.process_ids[process_id].max_lsa is arista.avd.defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.lsa.rx is arista.avd.defined %}
+   timers lsa rx min interval {{ router_ospf.process_ids[process_id].timers.lsa.rx }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.lsa.tx.delay is arista.avd.defined %}
+{%         set timer_ospf_lsa_tx = "timers lsa tx delay initial" %}
+{%         if router_ospf.process_ids[process_id].timers.lsa.tx.delay.initial is arista.avd.defined %}
+{%             set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx.delay.initial %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].timers.lsa.tx.delay.min is arista.avd.defined %}
+{%             set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx.delay.min %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].timers.lsa.tx.delay.max is arista.avd.defined %}
+{%             set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx.delay.max %}
+{%         endif %}
+   {{ timer_ospf_lsa_tx }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.spf.delay is arista.avd.defined %}
+{%         set timer_ospf_spf_delay = "timers spf delay initial" %}
+{%         if router_ospf.process_ids[process_id].timers.spf.delay.initial is arista.avd.defined %}
+{%             set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf.delay.initial %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].timers.spf.delay.min is arista.avd.defined %}
+{%             set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf.delay.min %}
+{%         endif %}
+{%         if router_ospf.process_ids[process_id].timers.spf.delay.max is arista.avd.defined %}
+{%             set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf.delay.max %}
+{%         endif %}
+   {{ timer_ospf_spf_delay }}
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].default_information_originate is defined %}
 {%         set default_information_originate_cli = "default-information originate"%}
 {%         if router_ospf.process_ids[process_id].default_information_originate.always is arista.avd.defined(true) %}

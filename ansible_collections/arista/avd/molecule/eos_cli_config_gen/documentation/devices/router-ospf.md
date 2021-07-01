@@ -256,6 +256,9 @@ router ospf 101 vrf CUSTOMER01
    router-id 1.0.1.1
    passive-interface default
    no passive-interface Ethernet2.101
+   timers lsa rx min interval 100
+   timers lsa tx delay initial 100 200 300
+   timers spf delay initial 100 200 300
    summary-address 10.0.0.0/8
    summary-address 20.0.0.0/8 tag 10
    summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY

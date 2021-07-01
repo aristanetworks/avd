@@ -33,6 +33,20 @@ router_ospf:
           attribute_map: RM-OSPF_SUMMARY
         - prefix: 40.0.0.0/8
           not_advertise: true
+      timers:
+        lsa:
+          rx: 100
+          tx:
+            delay:
+              initial: 100
+              min: 200
+              max: 300
+        spf:
+          delay:
+            initial: 100
+            min: 200
+            max: 300
+
     200:
       vrf: ospf_zone
       passive_interface_default: false
