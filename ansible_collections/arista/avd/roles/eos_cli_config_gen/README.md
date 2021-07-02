@@ -803,6 +803,12 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -896,6 +902,12 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1038,6 +1050,7 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: < policy-map name >
+    pvlan_mapping: "< list of vlans as string >"
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -2376,6 +2389,9 @@ vlans:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    private_vlan:
+      type: < community | isolated >
+      primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
 ```
