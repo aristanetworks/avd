@@ -62,7 +62,6 @@ interface Management1
 | sw1-sw2-mlag-domain | Vlan4094 | 172.16.0.1 | Port-Channel12 |
 
 Heartbeat Interval is 5000 milliseconds.
-  
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
 ## MLAG Device Configuration
