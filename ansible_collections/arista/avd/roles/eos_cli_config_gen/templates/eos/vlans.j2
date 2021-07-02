@@ -11,4 +11,8 @@ vlan {{ vlan }}
 {%     for trunk_group in vlans[vlan].trunk_groups | arista.avd.natural_sort %}
    trunk group {{ trunk_group }}
 {%     endfor %}
+{%     if vlans[vlan].private_vlan.type is arista.avd.defined and
+          vlans[vlan].private_vlan.primary_vlan is arista.avd.defined %}
+   private-vlan {{ vlans[vlan].private_vlan.type }} primary vlan {{ vlans[vlan].private_vlan.primary_vlan }}
+{%     endif %}
 {% endfor %}

@@ -174,6 +174,9 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ vlan_interfaces[vlan_interface].service_policy.pbr.input }}
 {%     endif %}
+{%     if vlan_interfaces[vlan_interface].pvlan_mapping is arista.avd.defined %}
+   pvlan mapping {{ vlan_interfaces[vlan_interface].pvlan_mapping }}
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].eos_cli is arista.avd.defined %}
    {{ vlan_interfaces[vlan_interface].eos_cli | indent(3, false) }}
 {%     endif %}
