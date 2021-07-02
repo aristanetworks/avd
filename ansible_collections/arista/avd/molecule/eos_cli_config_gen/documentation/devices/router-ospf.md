@@ -214,6 +214,12 @@ interface Vlan24
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
+### Router OSPF timers
+
+| Process ID | LSA rx | LSA tx | SPF |
+| ---------- | ------ | ------ | --- |
+| 101 | 100 | 100 - 200 - 300 | 100 - 200 - 300 |
+
 ### Router OSPF route summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |

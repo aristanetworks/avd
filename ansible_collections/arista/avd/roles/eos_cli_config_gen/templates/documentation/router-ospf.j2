@@ -120,6 +120,44 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# OSPF Timers #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids %}
+{%         if router_ospf.process_ids[process].timers is arista.avd.defined %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### Router OSPF timers
+
+| Process ID | LSA rx | LSA tx | SPF |
+| ---------- | ------ | ------ | --- |
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             if router_ospf.process_ids[process].timers is arista.avd.defined %}
+{%                 if router_ospf.process_ids[process].timers.lsa.rx is defined %}
+{%                     set lsa_rx = router_ospf.process_ids[process].timers.lsa.rx %}
+{%                 else %}
+{%                     set lsa_rx = 'unset' %}
+{%                 endif %}
+{%                 if router_ospf.process_ids[process].timers.lsa.tx is defined %}
+{%                     set lsa_tx = router_ospf.process_ids[process].timers.lsa.tx.delay.initial %}
+{%                     set lsa_tx = lsa_tx ~ " - " ~ router_ospf.process_ids[process].timers.lsa.tx.delay.min %}
+{%                     set lsa_tx = lsa_tx ~ " - " ~ router_ospf.process_ids[process].timers.lsa.tx.delay.max %}
+{%                 else %}
+{%                     set lsa_tx = 'unset' %}
+{%                 endif %}
+{%                 if router_ospf.process_ids[process].timers.spf.delay is defined %}
+{%                     set spf_timers = router_ospf.process_ids[process].timers.spf.delay.initial %}
+{%                     set spf_timers = spf_timers ~ " - " ~ router_ospf.process_ids[process].timers.spf.delay.min %}
+{%                     set spf_timers = spf_timers ~ " - " ~ router_ospf.process_ids[process].timers.spf.delay.max %}
+{%                 else %}
+{%                     set spf_timers = 'unset' %}
+{%                 endif %}
+| {{ process }} | {{ lsa_rx }} | {{ lsa_tx }} | {{ spf_timers }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# Route Summary #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
