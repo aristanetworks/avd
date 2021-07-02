@@ -5,6 +5,9 @@ mlag configuration
 {%     if mlag_configuration.domain_id is arista.avd.defined %}
    domain-id {{ mlag_configuration.domain_id }}
 {%     endif %}
+{%     if mlag_configuration.heartbeat_interval is arista.avd.defined %}
+   heartbeat-interval {{ mlag_configuration.heartbeat_interval }}
+{%     endif %}
 {%     if mlag_configuration.local_interface is arista.avd.defined %}
    local-interface {{ mlag_configuration.local_interface }}
 {%     endif %}
