@@ -60,6 +60,9 @@ router_ospf:
         connected:
           route_map: rm-ospf-connected
       max_metric: # not expected to produce config. Just here to test proper variable checks.
+      timers:
+        lsa:
+          rx_min_interval: 100
     300:
       max_metric:
         router_lsa:

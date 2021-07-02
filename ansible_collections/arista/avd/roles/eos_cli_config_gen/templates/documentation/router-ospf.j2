@@ -135,11 +135,7 @@
 | ---------- | ------ | ------------------------ | --------------------- |
 {%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             if router_ospf.process_ids[process].timers is arista.avd.defined %}
-{%                 if router_ospf.process_ids[process].timers.lsa.rx_min_interval is defined %}
-{%                     set lsa_rx = router_ospf.process_ids[process].timers.lsa.rx_min_interval %}
-{%                 else %}
-{%                     set lsa_rx = 'unset' %}
-{%                 endif %}
+{%                 set lsa_rx = router_ospf.process_ids[process].timers.lsa.rx_min_interval | arista.avd.default('-') %}
 {%                 if router_ospf.process_ids[process].timers.lsa.tx_delay.initial is arista.avd.defined
                       and router_ospf.process_ids[process].timers.lsa.tx_delay.min is arista.avd.defined
                       and router_ospf.process_ids[process].timers.lsa.tx_delay.max is arista.avd.defined %}
@@ -147,7 +143,7 @@
 {%                     set lsa_tx = lsa_tx ~ " / " ~ router_ospf.process_ids[process].timers.lsa.tx_delay.min %}
 {%                     set lsa_tx = lsa_tx ~ " / " ~ router_ospf.process_ids[process].timers.lsa.tx_delay.max %}
 {%                 else %}
-{%                     set lsa_tx = 'unset' %}
+{%                     set lsa_tx = '-' %}
 {%                 endif %}
 {%                 if router_ospf.process_ids[process].timers.spf_delay.initial is arista.avd.defined
                       and router_ospf.process_ids[process].timers.spf_delay.min is arista.avd.defined
@@ -156,7 +152,7 @@
 {%                     set spf_timers = spf_timers ~ " / " ~ router_ospf.process_ids[process].timers.spf_delay.min %}
 {%                     set spf_timers = spf_timers ~ " / " ~ router_ospf.process_ids[process].timers.spf_delay.max %}
 {%                 else %}
-{%                     set spf_timers = 'unset' %}
+{%                     set spf_timers = '-' %}
 {%                 endif %}
 | {{ process }} | {{ lsa_rx }} | {{ lsa_tx }} | {{ spf_timers }} |
 {%             endif %}

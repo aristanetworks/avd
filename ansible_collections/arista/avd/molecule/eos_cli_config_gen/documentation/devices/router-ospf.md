@@ -219,6 +219,7 @@ interface Vlan24
 | Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
 | ---------- | ------ | ------------------------ | --------------------- |
 | 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
+| 200 | 100 | - | - |
 
 ### Router OSPF route summary
 
@@ -274,6 +275,7 @@ router ospf 200 vrf ospf_zone
    log-adjacency-changes detail
    router-id 192.168.254.1
    max-lsa 5
+   timers lsa rx min interval 100
    default-information originate always
    redistribute static route-map rm-ospf-static
    redistribute connected route-map rm-ospf-connected
