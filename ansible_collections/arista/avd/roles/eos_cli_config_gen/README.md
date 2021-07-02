@@ -2116,17 +2116,15 @@ router_ospf:
       max_lsa: < integer >
       timers:
         lsa:
-          rx: < 0-600000 - Min interval in msecs between accepting the same LSA >
-          tx:
-            delay:
-              initial: < 0-600000 - Delay to generate first occurrence of LSA in msecs >
-              min: < 1-600000 Min delay between originating the same LSA in msecs >
-              max: < 1-600000 Maximum delay between originating the same LSA in msecs >
-        spf:
-          delay:
-            initial: < 0-600000 - Initial SPF schedule delay in msecs >
-            min: < 0-65535000  Min Hold time between two SPFs in msecs >
-            max: < 0-65535000  Max wait time between two SPFs in msecs >
+          rx_min_interval: < 0-600000 - Min interval in msecs between accepting the same LSA >
+          tx_delay:
+            initial: < 0-600000 - Delay to generate first occurrence of LSA in msecs >
+            min: < 1-600000 Min delay between originating the same LSA in msecs >
+            max: < 1-600000 Maximum delay between originating the same LSA in msecs >
+        spf_delay:
+          initial: < 0-600000 - Initial SPF schedule delay in msecs >
+          min: < 0-65535000  Min Hold time between two SPFs in msecs >
+          max: < 0-65535000  Max wait time between two SPFs in msecs >
       default_information_originate:
         always: true
       summary_addresses:

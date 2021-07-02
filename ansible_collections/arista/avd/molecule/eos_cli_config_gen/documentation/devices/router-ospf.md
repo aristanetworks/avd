@@ -216,9 +216,9 @@ interface Vlan24
 
 ### Router OSPF timers
 
-| Process ID | LSA rx | LSA tx | SPF |
-| ---------- | ------ | ------ | --- |
-| 101 | 100 | 100 - 200 - 300 | 100 - 200 - 300 |
+| Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
+| ---------- | ------ | ------------------------ | --------------------- |
+| 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
 
 ### Router OSPF route summary
 

@@ -35,17 +35,15 @@ router_ospf:
           not_advertise: true
       timers:
         lsa:
-          rx: 100
-          tx:
-            delay:
-              initial: 100
-              min: 200
-              max: 300
-        spf:
-          delay:
+          rx_min_interval: 100
+          tx_delay:
             initial: 100
             min: 200
             max: 300
+        spf_delay:
+          initial: 100
+          min: 200
+          max: 300
 
     200:
       vrf: ospf_zone
