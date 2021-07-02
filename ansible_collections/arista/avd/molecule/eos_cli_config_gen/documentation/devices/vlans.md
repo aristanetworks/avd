@@ -62,6 +62,7 @@ interface Management1
 | Policy Allocation | Range Beginning | Range Ending |
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
+
 # VLANs
 
 ## VLANs Summary

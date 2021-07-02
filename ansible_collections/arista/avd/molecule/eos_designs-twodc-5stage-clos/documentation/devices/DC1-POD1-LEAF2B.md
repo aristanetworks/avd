@@ -242,14 +242,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 112 | Tenant_A_OP_Zone_3 | none  |
-| 2500 | web-l2-vlan | none  |
-| 2600 | web-l2-vlan-2 | none  |
-| 4085 | L2LEAF_INBAND_MGMT | none  |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3  |
-| 4094 | MLAG_PEER | MLAG  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 112 | Tenant_A_OP_Zone_3 | - |
+| 2500 | web-l2-vlan | - |
+| 2600 | web-l2-vlan-2 | - |
+| 4085 | L2LEAF_INBAND_MGMT | - |
+| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
+| 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 

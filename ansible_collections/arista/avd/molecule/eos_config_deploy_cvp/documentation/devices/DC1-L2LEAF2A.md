@@ -241,22 +241,22 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 120 | Tenant_A_WEB_Zone_1 | none  |
-| 121 | Tenant_A_WEBZone_2 | none  |
-| 130 | Tenant_A_APP_Zone_1 | none  |
-| 131 | Tenant_A_APP_Zone_2 | none  |
-| 140 | Tenant_A_DB_BZone_1 | none  |
-| 141 | Tenant_A_DB_Zone_2 | none  |
-| 150 | Tenant_A_WAN_Zone_1 | none  |
-| 210 | Tenant_B_OP_Zone_1 | none  |
-| 211 | Tenant_B_OP_Zone_2 | none  |
-| 250 | Tenant_B_WAN_Zone_1 | none  |
-| 310 | Tenant_C_OP_Zone_1 | none  |
-| 311 | Tenant_C_OP_Zone_2 | none  |
-| 350 | Tenant_C_WAN_Zone_1 | none  |
-| 4094 | MLAG_PEER | MLAG  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 120 | Tenant_A_WEB_Zone_1 | - |
+| 121 | Tenant_A_WEBZone_2 | - |
+| 130 | Tenant_A_APP_Zone_1 | - |
+| 131 | Tenant_A_APP_Zone_2 | - |
+| 140 | Tenant_A_DB_BZone_1 | - |
+| 141 | Tenant_A_DB_Zone_2 | - |
+| 150 | Tenant_A_WAN_Zone_1 | - |
+| 210 | Tenant_B_OP_Zone_1 | - |
+| 211 | Tenant_B_OP_Zone_2 | - |
+| 250 | Tenant_B_WAN_Zone_1 | - |
+| 310 | Tenant_C_OP_Zone_1 | - |
+| 311 | Tenant_C_OP_Zone_2 | - |
+| 350 | Tenant_C_WAN_Zone_1 | - |
+| 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
