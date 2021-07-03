@@ -129,6 +129,23 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 * A PR can be opened before all the work is complete. In this situation, PR state should be set to __draft__. All PR marked as ready for review (i.e. not in draft) will be reviewed by the maintainer team.
 
+* To automate release-notes creation and make filtering process easier, it is strongly recommended to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) syntax at least for PR title. Scope should be module or role updated. As a reminder, the list below provides all supported commit types:
+
+  * `Feat`: Create a capability e.g. feature, test, dependency.
+  * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
+  * `Cut`: Remove a capability e.g. feature, test, dependency.
+  * `Doc`: Refactor of documentation, e.g. help files.
+  * `Start`: Begin doing something; e.g. create a feature flag.
+  * `Stop`: End doing something; e.g. remove a feature flag.
+  * `Bump`: Increase the version of something e.g. dependency.
+  * `Test`: Add or refector anything regard test, e.g add a new testCases.
+  * `Make`: Change the build process, or tooling, or infra.
+  * `Refactor`: A code change that MUST be just a refactoring.
+  * `Reformat`: Refactor of formatting, e.g. omit whitespace.
+  * `Optimize`: Refactor of performance, e.g. speed up code.
+  * `License`: Edits regarding licensing; no production code change.
+  * `Revert`: Change back to the previous commit
+
 ## Project Structure
 
 All development of the current AVD release occurs in the `devel` branch; releases are packaged from the `releases/*` branches. A `releases/v*` branch should _always_ represent a stable release in its entirety, such that installing AVD by either downloading a packaged release or cloning the `releases/v*` branch provides the same code base.
