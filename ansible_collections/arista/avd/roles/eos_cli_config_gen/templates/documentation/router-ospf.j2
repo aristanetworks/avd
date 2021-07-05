@@ -122,7 +122,7 @@
 {%     endif %}
 {# OSPF Timers #}
 {%     set has.found = false %}
-{%     for process in router_ospf.process_ids %}
+{%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%         if router_ospf.process_ids[process].timers is arista.avd.defined %}
 {%             set has.found = true %}
 {%         endif %}
