@@ -294,8 +294,8 @@ l3leaf:
     # List of EOS command to apply to BGP daemon | Optional
     bgp_defaults: [ < List of EOS commands> ]
 
-    # isis system-id prefix
-    isis_system_id_prefix: < \d{4}.\d{4} >
+    # isis system-id prefix (4.4 hexadecimal)
+    isis_system_id_prefix: < hhhh.hhhh >
 
     # Number of path to configure in ECMP for ISIS
     isis_maximum_paths: < integer >

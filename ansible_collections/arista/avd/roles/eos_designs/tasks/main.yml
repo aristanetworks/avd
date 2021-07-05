@@ -12,7 +12,7 @@
 
 - name: Set AVD facts
   yaml_templates_to_facts:
-    templates: "{{ templates[design.type].facts }}"
+    templates: "{{ templates.facts }}"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -20,7 +20,7 @@
 
 - name: Set AVD topology facts
   yaml_templates_to_facts:
-    templates: "{{ templates[design.type].topology_facts }}"
+    templates: "{{ templates.topology_facts }}"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -38,7 +38,7 @@
 - name: Generate device configuration in structured format
   yaml_templates_to_facts:
     root_key: structured_config
-    templates: "{{ templates[design.type].structured_config }}"
+    templates: "{{ templates.structured_config }}"
   delegate_to: localhost
   check_mode: no
   changed_when: False

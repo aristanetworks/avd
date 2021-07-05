@@ -56,15 +56,15 @@ switch_type_keys:
 
     # Optional | Override ip_adressing templates
     ip_addressing:
-      router_id: <path to J2 template - default inherited from templates[design.type].ip_addressing.router_id >
-      mlag_ip_primary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_ip_primary >
-      mlag_ip_secondary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_ip_secondary >
-      mlag_l3_ip_primary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_l3_ip_primary >
-      mlag_l3_ip_secondary: <path to J2 template - default inherited from templates[design.type].ip_addressing.mlag_l3_ip_secondary >
-      p2p_uplinks_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.p2p_uplinks_ip >
-      p2p_uplinks_peer_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.p2p_uplinks_peer_ip >
-      vtep_ip_mlag: <path to J2 template - default inherited from templates[design.type].ip_addressing.vtep_ip_mlag >
-      vtep_ip: <path to J2 template - default inherited from templates[design.type].ip_addressing.vtep_ip >
+      router_id: <path to J2 template - default inherited from templates.ip_addressing.router_id >
+      mlag_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_primary >
+      mlag_ip_secondary: <path to J2 template - default inherited from templates.ip_addressing.mlag_ip_secondary >
+      mlag_l3_ip_primary: <path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_primary >
+      mlag_l3_ip_secondary: <path to J2 template - default inherited from templates.ip_addressing.mlag_l3_ip_secondary >
+      p2p_uplinks_ip: <path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_ip >
+      p2p_uplinks_peer_ip: <path to J2 template - default inherited from templates.ip_addressing.p2p_uplinks_peer_ip >
+      vtep_ip_mlag: <path to J2 template - default inherited from templates.ip_addressing.vtep_ip_mlag >
+      vtep_ip: <path to J2 template - default inherited from templates.ip_addressing.vtep_ip >
 ```
 
 The next output is structure example based on default definition:

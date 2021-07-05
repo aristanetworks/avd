@@ -41,6 +41,6 @@
   vtep: {{ ns.switch_type_key_data.vtep | arista.avd.default(false) }}
 
 {# switch.ip_addressing #}
-  ip_addressing: {{ templates[design.type].ip_addressing | combine(ns.switch_type_key_data.ip_addressing | arista.avd.default({})) }}
+  ip_addressing: {{ templates.ip_addressing | combine(ns.switch_type_key_data.ip_addressing | arista.avd.default({})) }}
 
 {% endif %}
