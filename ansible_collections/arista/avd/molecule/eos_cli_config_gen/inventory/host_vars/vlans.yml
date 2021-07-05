@@ -3,6 +3,18 @@ vlans:
   110:
     tenant: Tenant_A
     name: PR01-DMZ
+  111:
+    tenant: Tenant_A
+    name: PRIVATE_VLAN_COMMUNITY
+    private_vlan:
+      type: community
+      primary_vlan: 110
+  112:
+    tenant: Tenant_A
+    name: PRIVATE_VLAN_ISOLATED
+    private_vlan:
+      type: isolated
+      primary_vlan: 110
   3010:
     tenant: Tenant_A
     name: MLAG_iBGP_TENANT_A_PROJECT01

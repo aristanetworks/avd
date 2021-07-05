@@ -207,3 +207,24 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
+
+  Ethernet15:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Ethernet16:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Ethernet17:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true

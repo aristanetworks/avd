@@ -194,3 +194,10 @@ vlan_interfaces:
       ipv4:
         sparse_mode: true
         local_interface: Loopback0
+
+  Vlan110:
+    description: PVLAN Primary with vlan mapping
+    shutdown: false
+    vrf: Tenant_A
+    ip address: 10.0.101.1/24
+    pvlan_mapping: 111-112
