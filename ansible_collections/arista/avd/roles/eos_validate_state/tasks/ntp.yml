@@ -5,8 +5,6 @@
 - name: Gather ntp status
   eos_command:
     commands: "show ntp status"
-  when: |
-    (ntp_server.nodes is defined and ntp_server.nodes is not none)
   register: ntp_status
   tags:
     - ntp
@@ -14,7 +12,7 @@
 - name: Validate ntp status
   assert:
     that:
-      - ntp_status.stdout[0] | regex_search("synchronised to NTP server")
+      - ntp_status.stdout[0] | regex_search('synchronised to NTP server')
     fail_msg: not synchronised to NTP server
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"

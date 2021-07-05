@@ -1,0 +1,9 @@
+---
+- name: "Configure devices on {{ inventory_hostname }}"
+  tags: [provision, apply]
+  arista.cvp.cv_device:
+    devices: "{{ CVP_DEVICES }}"
+    cvp_facts: "{{ CVP_FACTS.ansible_facts }}"
+    device_filter: ["{{ device_filter }}"]
+    state: "{{ state }}"
+  register: CVP_DEVICES_RESULTS

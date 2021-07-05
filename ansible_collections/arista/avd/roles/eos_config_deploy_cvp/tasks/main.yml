@@ -1,35 +1,14 @@
 ---
-# Common action for all states.
-- name: generate intented variables
-  tags: [always]
-  arista.avd.inventory_to_container:
-    inventory: '{{ inventory_file }}'
-    container_root: '{{ container_root }}'
-    configlet_dir: '{{ root_dir }}/intended/configs'
-    configlet_prefix: '{{ configlets_prefix }}'
-    destination: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}_configlets.yml'
-    device_filter: ['{{ device_filter }}']
-  register: CVP_VARS
-
-- name: 'Build DEVICES and CONTAINER definition for {{ inventory_hostname }}'
-  tags: [build, provision]
-  template:
-    src: "cvp-devices.j2"
-    dest: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_cvp_dir }}"
   delegate_to: localhost
   run_once: true
 
-- name: "Load CVP device information for {{ inventory_hostname }}"
-  tags: [build, provision]
-  include_vars: '{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml'
-  # delegate_to: localhost
-
-#################################################
-
-# If state=present launch creation/update process
-# If state=absent launch deletion process
 - name: Start creation/update process.
-  tags: [provision]
-  include_tasks: "./{{ state }}.yml"
-
-#################################################
+  tags: [always]
+  include_tasks: "{{ cv_collection }}/main.yml"

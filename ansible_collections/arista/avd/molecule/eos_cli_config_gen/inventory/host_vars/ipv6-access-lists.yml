@@ -1,0 +1,10 @@
+### IPv6 ACLs ###
+
+ipv6_access_lists:
+  TEST1 : 
+    sequence_numbers: 
+      10:
+        action: "permit ip fe90::/64"
+      5:
+        action: "deny ip fe80::/64"
+        

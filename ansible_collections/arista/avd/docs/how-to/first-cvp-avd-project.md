@@ -43,7 +43,7 @@ This management IP addresses are used in a private virtual-network between Cloud
 
 ### Configure Python environment
 
-Please refer to [__installation page__](../installation/setup-environement.md) to configure AVD and CVP collection.
+Please refer to [__installation page__](../installation/setup-environment.md) to configure AVD and CVP collection.
 
 ### Configure DHCP server on CloudVision
 
@@ -51,7 +51,7 @@ In this scenario, we use CloudVision (CV) as ZTP server to provision devices and
 
 Once you get mac-address of your switches, edit file `/etc/dhcp/dhcpd.conf` in CloudVision. In this scenario, CV use following address to connect to devices: `10.255.0.1`
 
-If CVP has not been configured to activate ZTP services, it is higly recommended to follow [these steps](https://www.arista.com/en/cg-cv/cv-dhcp-service-for-zero-touch-provisioning-ztp-setup)
+If CVP has not been configured to activate ZTP services, it is highly recommended to follow [these steps](https://www.arista.com/en/cg-cv/cv-dhcp-service-for-zero-touch-provisioning-ztp-setup)
 
 #### Ansible playbook approach
 
@@ -325,7 +325,7 @@ Use tag `build` to only generate
 # Deploy EVPN/VXLAN Fabric
 $ ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags build
 
-TASK [eos_l3ls_evpn : Include device structured configuration, that was previously generated.]
+TASK [eos_designs : Include device structured configuration, that was previously generated.]
 ok: [DC1-SPINE1 -> localhost]
 ok: [DC1-SPINE2 -> localhost]
 ok: [DC1-LEAF1A -> localhost]
@@ -333,13 +333,13 @@ ok: [DC1-LEAF1B -> localhost]
 ok: [DC1-LEAF2A -> localhost]
 ok: [DC1-LEAF2B -> localhost]
 
-TASK [eos_l3ls_evpn : Generate EVPN fabric documentation in Markdown Format.]
+TASK [eos_designs : Generate EVPN fabric documentation in Markdown Format.]
 changed: [DC1-SPINE1 -> localhost]
 
-TASK [eos_l3ls_evpn : Generate Leaf and Spine Point-To-Point Links summary in csv format.]
+TASK [eos_designs : Generate Leaf and Spine Point-To-Point Links summary in csv format.]
 changed: [DC1-SPINE1 -> localhost]
 
-TASK [eos_l3ls_evpn : Generate Fabric Topology in csv format.]
+TASK [eos_designs : Generate Fabric Topology in csv format.]
 changed: [DC1-SPINE1 -> localhost]
 
 TASK [eos_cli_config_gen : include device intended structure configuration variables]

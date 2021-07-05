@@ -1,15 +1,16 @@
 {% if daemon_terminattr is defined and daemon_terminattr is not none %}
+
+## TerminAttr Daemon
+
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- |
-| gzip | {% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} | {{ daemon_terminattr.ingestauth_key }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.ingestvrf }} |
+| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
+| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
+| gzip | {% for cvp_ip in daemon_terminattr.ingestgrpcurl.ips %}{{ cvp_ip }}:{{ daemon_terminattr.ingestgrpcurl.port }}{% if not loop.last %},{% endif %}{% endfor %} | {{ daemon_terminattr.ingestauth_key | arista.avd.default('UNSET') }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.ingestvrf }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 {% include 'eos/daemon-terminattr.j2' %}
 ```
-{% else %}
-TerminAttr daemon not defined
 {% endif %}

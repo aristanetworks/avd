@@ -1,8 +1,46 @@
 ---
 
-- name: Include device intended structure configuration variables
-  include_vars: '{{ inventory_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+- name: Create required output directories if not present
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ eos_validate_state_dir }}"
   delegate_to: localhost
+  run_once: true
+
+- name: Check if structure configuration file exists
+  tags:
+    - always
+  stat:
+    path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+  register: stat_result
+  delegate_to: localhost
+  when: structured_config is not defined
+
+- name: Include device intended structure configuration variables
+  include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+  delegate_to: localhost
+  tags:
+    - always
+  when: structured_config is not defined and stat_result.stat.exists
+
+- name: Generate variables for testing
+  template:
+    src: generate_vars_for_testing.j2
+    dest: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
+- name: Include vars from validate_state_vars.yml
+  include_vars:
+    file: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+  delegate_to: localhost
+  run_once: true
   tags:
     - always
 
@@ -43,10 +81,17 @@
   tags:
     - interfaces_state
 
-- name: Load LLDP Topology tasks
-  include_tasks: "lldp_topology.yml"
+- name: Load LLDP Topology tasks when dns domain is defined
+  include_tasks: "lldp_topology_fqdn.yml"
   tags:
     - lldp_topology
+  when: dns_domain is defined
+
+- name: Load LLDP Topology tasks when dns domain is not defined
+  include_tasks: "lldp_topology_no_fqdn.yml"
+  tags:
+    - lldp_topology
+  when: dns_domain is not defined
 
 - name: Load mlag tasks
   include_tasks: "mlag.yml"
@@ -74,11 +119,30 @@
     - optional
     - never
 
+- name: Validate routing table
+  include_tasks: "routing_table.yml"
+  tags:
+    - routing_table
+
+- name: Validate loopback0 reachability
+  include_tasks: "loopback0_reachability.yml"
+  tags:
+    - loopback0_reachability
+
+- name: Remove generated vars for testing
+  file:
+    path: "{{ eos_validate_state_dir }}/validate_state_vars.yml"
+    state: absent
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+
   ####################################
   ##       Validation Reports       ##
   ####################################
 
-- name: Validate reload cause
+- name: Create reports
   include_tasks: "reports.yml"
   tags:
     - always

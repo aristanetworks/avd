@@ -19,7 +19,7 @@ For example, see the file/folder structure below.
 
 ## Build local environment
 
-Please refer to [Setup environment page](./setup-environement.md)
+Please refer to [Setup environment page](./setup-environment.md)
 
 Once installed, use `dev-start` command to bring up all the required containers:
 
@@ -29,7 +29,7 @@ Once installed, use `dev-start` command to bring up all the required containers:
 
 ## Docker things
 
-he docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repo you are making changes in. You can inspect the Dockerfile to see what packages have been installed.
+The docker container approach for development can be used to ensure that everybody is using the same development environment while still being flexible enough to use the repo you are making changes in. You can inspect the Dockerfile to see what packages have been installed.
 The container will mount the current working directory, so you can work with your local files.
 
 The ansible version is passed in with the docker build command using **`ANSIBLE_VERSION`** variable.  If the ***ANSIBLE*** variable is not used the Dockerfile will by default set the ansible version to describe in AVD requirements.
@@ -40,7 +40,7 @@ Since docker image is now automatically published on [__docker-hub__](https://hu
 
 ```shell
 # Start development stack
-$ make dev-start
+$ make start
 docker-compose -f ansible-avd/development/docker-compose.yml up -d
 Recreating development_ansible_1    ... done
 Recreating development_webdoc_cvp_1 ... done
@@ -146,7 +146,7 @@ To remove installation, use `uninstall` option.
 
 ### Check 404 links
 
-To validate documentation, you should check for _not found_ links in your local version of the documentation. This test requires to run mkdocs container as explained in [installation documentation](./setup-environement.md).
+To validate documentation, you should check for _not found_ links in your local version of the documentation. This test requires to run mkdocs container as explained in [installation documentation](./setup-environment.md).
 
 In a shell, run the following make command. It starts a container in AVD documentation network and leverage [`muffet`](https://github.com/raviqqe/muffet) tool to check 404 HTTP code:
 
@@ -159,7 +159,7 @@ docker run --network container:webdoc_avd raviqqe/muffet \
     -f --limit-redirections=3 \
     --timeout=60
 http://127.0.0.1:8000/docs/installation/development/
-        404     http://127.0.0.1:8000/docs/installation/development/setup-environement2.md
+        404     http://127.0.0.1:8000/docs/installation/development/setup-environment2.md
 make: *** [check-avd-404] Error 1
 ```
 

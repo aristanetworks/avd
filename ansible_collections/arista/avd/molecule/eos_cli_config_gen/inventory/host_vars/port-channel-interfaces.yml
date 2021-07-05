@@ -6,7 +6,32 @@ port_channel_interfaces:
     vlans: 110,201
     mode: trunk
     mlag: 5
+    storm_control:
+      broadcast:
+        level: 1
+        unit: percent
+      multicast:
+        level: 1
+        unit: percent
+      unknown_unicast:
+        level: 1
+        unit: percent
+    eos_cli: |
+      comment
+      Comment created from eos_cli under port_channel_interfaces.Port-Channel5
+      EOF
 
+  Port-Channel15:
+    description: DC1_L2LEAF3_Po1
+    vlans: 110,201
+    mode: trunk
+    mlag: 15
+
+  Port-Channel16:
+    description: DC1_L2LEAF4_Po1
+    vlans: 110,201
+    mode: trunk
+    mlag: 16
 
   Port-Channel3:
     description: MLAG_PEER_DC1-LEAF1B_Po3
@@ -16,6 +41,13 @@ port_channel_interfaces:
       - LEAF_PEER_L3
       - MLAG
 
+  Port-Channel10:
+    description: SRV01_bond0
+    vlans: 2-3000
+    mode: trunk
+    esi: 0000:0000:0404:0404:0303
+    rt: 04:04:03:03:02:02
+
   Port-Channel50:
     description: SRV-POD03_PortChanne1
     vlans: 1-4000
@@ -23,6 +55,97 @@ port_channel_interfaces:
     esi: 0000:0000:0303:0202:0101
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
+
+  Port-Channel51:
+    description: ipv6_prefix
+    vlans: 1-500
+    mode: trunk
+    ipv6_nd_prefixes:
+      a1::/64:
+        valid_lifetime: infinite
+        preferred_lifetime: infinite
+        no_autoconfig_flag: true
+
+  Port-Channel100:
+    type: routed
+    logging:
+      event:
+        link_status: true
+  Port-Channel100.101:
+    logging:
+      event:
+        link_status: true
+    description: IFL for TENANT01
+    mtu: 1500
+    ip_address: 10.1.1.3/31
+    encapsulation_dot1q_vlan: 101
+  Port-Channel100.102:
+    logging:
+      event:
+        link_status: false
+    description: IFL for TENANT02
+    mtu: 1500
+    ip_address: 10.1.2.3/31
+    vrf: C2
+    encapsulation_dot1q_vlan: 102
+    bfd:
+
+  Port-Channel8:
+    description: to Dev02 Port-channel 8
+    type: routed
+  Port-Channel8.101:
+    description: to Dev02 Port-Channel8.101 - VRF-C1
+    type: l3dot1q
+    ip_address: 10.1.2.3/31
+    encapsulation_dot1q_vlan: 101
+
+  Port-Channel9:
+    type: routed
+    ip_address: 10.9.2.3/31
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
+
+  Port-Channel20:
+    description: Po_in_mode_access_accepting_tagged_LACP_frames
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation_dot1q_vlan: 200
+
+  Port-Channel12:
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70
+
+
+  Port-Channel101:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Port-Channel102:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Port-Channel103:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true
+
 
 # Children interfaces
 ethernet_interfaces:
@@ -63,4 +186,53 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: "active"
-    profile: ALL
+
+  Ethernet8:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    description: MLAG_PEER_DC1-LEAF1B_Ethernet8
+    channel_group:
+      id: 8
+      mode: active
+
+
+  Ethernet15:
+    peer: DC1-AGG03
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-AGG03_Ethernet1
+    channel_group:
+      id: 15
+      mode: active
+    lacp_timer:
+      mode: fast
+      multiplier: 30
+
+  Ethernet16:
+    peer: DC1-AGG04
+    peer_interface: Ethernet1
+    peer_type: l2leaf
+    description: DC1-AGG04_Ethernet1
+    channel_group:
+      id: 16
+      mode: active
+    lacp_timer:
+      mode: normal
+
+  Ethernet10/1:
+    description: LAG Member
+    channel_group:
+      id: 101
+      mode: active
+
+  Ethernet10/2:
+    description: LAG Member
+    channel_group:
+      id: 102
+      mode: active
+
+  Ethernet10/3:
+    description: LAG Member
+    channel_group:
+      id: 103
+      mode: active

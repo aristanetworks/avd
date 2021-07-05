@@ -1,100 +1,98 @@
 ---
 # tasks file for build_directories
 
-- name: 'Cleanup existing folders in {{ output_dir }}'
+- name: "Cleanup existing folders in {{ output_dir }}"
   file:
-    path: '{{ output_dir }}'
+    path: "{{ output_dir }}"
     state: absent
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ output_dir }}'
+- name: "Create folder {{ output_dir }}"
   file:
-    path: '{{ output_dir }}'
+    path: "{{ output_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ structured_dir_name }} for structured YAML files'
+- name: "Create folder {{ structured_dir_name }} for structured YAML files"
   file:
-    path: '{{ structured_dir }}'
+    path: "{{ structured_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ eos_config_dir_name }} for EOS Configuration files'
+- name: "Create folder {{ eos_config_dir_name }} for EOS Configuration files"
   file:
-    path: '{{ eos_config_dir }}'
+    path: "{{ eos_config_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ structured_cvp_name }} for CVP structured YAML files'
+- name: "Create folder {{ structured_cvp_dir_name }} for CVP structured YAML files"
   file:
-    path: '{{ structured_cvp }}'
+    path: "{{ structured_cvp_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create documentation folder: {{ documentation_dir_name }}'
+- name: "Create documentation folder: {{ documentation_dir_name }}"
   file:
-    path: '{{ documentation_dir }}'
+    path: "{{ documentation_dir }}"
     state: directory
-    mode: 0755
-  delegate_to: localhost
-  run_once: True
-  
-- name: "Create folders for Fabric documentation"
-  when: type is defined and fabric_name is defined and type == "spine" and spine.nodes | list | first == inventory_hostname #Only run for first spine per fabric
-  file:
-    path: '{{ documentation_dir }}/{{ fabric_name }}'
-    state: directory
-    mode: 0755
-  delegate_to: localhost
-  run_once: False
-
-- name: 'Create folders for DC documentation'
-  when: type is defined and dc_name is defined and type == "super-spine" and super_spine.nodes | list | first == inventory_hostname #Only run for first super-spine per dc
-  file:
-    path: '{{ documentation_dir }}/{{ dc_name }}'
-    state: directory
-    mode: 0755
-  delegate_to: localhost
-  run_once: False
-
-- name: 'Create folder {{ devices_dir_name }} for EOS documentation'
-  file:
-    path: '{{ devices_dir }}'
-    state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ post_running_config_backup_dir }} for EOS post backup dir'
+- name: "Create folder {{ fabric_dir_name }} for Fabric documentation"
   file:
-    path: '{{ post_running_config_backup_dir }}'
+    path: "{{ fabric_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ pre_running_config_backup_dir }} for EOS pre backup dir'
+- name: "Create folder {{ devices_dir_name }} for EOS documentation"
   file:
-    path: '{{ pre_running_config_backup_dir }}'
+    path: "{{ devices_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
   delegate_to: localhost
   run_once: True
 
-- name: 'Create folder {{ eos_validate_state_name }} for EOS state report dir'
+- name: "Create folder {{ post_running_config_backup_dir }} for EOS post backup dir"
   file:
-    path: '{{ eos_validate_state_dir }}'
+    path: "{{ post_running_config_backup_dir }}"
     state: directory
-    mode: 0755
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: "Create folder {{ pre_running_config_backup_dir }} for EOS pre backup dir"
+  file:
+    path: "{{ pre_running_config_backup_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: "Create folder {{ eos_validate_state_name }} for EOS state report dir"
+  file:
+    path: "{{ eos_validate_state_dir }}"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: True
+
+- name: Create output directory for each EOS device
+  file:
+    path: "{{ snapshots_backup_dir }}"
+    state: directory
+    mode: 0775
   delegate_to: localhost
   run_once: True

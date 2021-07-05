@@ -1,22 +1,20 @@
 {# eos - vmtracer sessions #}
-{% if vmtracer_sessions is defined and vmtracer_sessions is not none %}
-{%     for session in vmtracer_sessions | arista.avd.natural_sort %}
+{% for session in vmtracer_sessions | arista.avd.natural_sort %}
 !
 vmtracer session {{ session }}
-{%         if vmtracer_sessions[session].url is defined and vmtracer_sessions[session].url is not none %}
+{%     if vmtracer_sessions[session].url is arista.avd.defined %}
    url {{ vmtracer_sessions[session].url }}
-{%         endif %}
-{%         if vmtracer_sessions[session].username is defined and vmtracer_sessions[session].username is not none %}
-   username {{ vmtracer_sessions[session].username}}
-{%         endif %}
-{%         if vmtracer_sessions[session].password is defined and vmtracer_sessions[session].password is not none %}
+{%     endif %}
+{%     if vmtracer_sessions[session].username is arista.avd.defined %}
+   username {{ vmtracer_sessions[session].username }}
+{%     endif %}
+{%     if vmtracer_sessions[session].password is arista.avd.defined %}
    password 7 {{ vmtracer_sessions[session].password }}
-{%         endif %}
-{%         if vmtracer_sessions[session].autovlan_disable is defined and vmtracer_sessions[session].autovlan_disable == true %}
+{%     endif %}
+{%     if vmtracer_sessions[session].autovlan_disable is arista.avd.defined(true) %}
    autovlan disable
-{%         endif %}
-{%         if vmtracer_sessions[session].source_interface is defined and vmtracer_sessions[session].source_interface is not none %}
+{%     endif %}
+{%     if vmtracer_sessions[session].source_interface is arista.avd.defined %}
    source-interface {{ vmtracer_sessions[session].source_interface }}
-{%         endif %}
-{%     endfor %}
-{% endif %}
+{%     endif %}
+{% endfor %}

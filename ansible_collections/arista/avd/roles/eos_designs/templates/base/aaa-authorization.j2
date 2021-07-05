@@ -1,0 +1,6 @@
+{% if aaa_authorization is defined %}
+{%     if aaa_authorization.exec_default is defined %}
+aaa_authorization:
+  exec_default: {{ aaa_authorization.exec_default }}
+{%     endif %}
+{% endif %}

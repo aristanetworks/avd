@@ -10,7 +10,7 @@ __arista.avd__ collection is available on [Ansible Galaxy](https://galaxy.ansibl
 $ ansible-galaxy collection install arista.avd
 ```
 
-### Install specific version
+### Install a specific version
 
 ```shell
 $ ansible-galaxy collection install arista.avd:==1.0.2
@@ -26,7 +26,7 @@ You can specify multiple range identifiers which are split by ,. You can use the
 - `<=`: Version is less than or equal to the one specified.
 - `<`: Version is less than the one specified.
 
-### Install in specific directory
+### Install in a specific directory
 
 If you want to install collection in a specific directory part of your project, you can call `ansible-galaxy` and update your `ansible.cfg`
 

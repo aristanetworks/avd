@@ -1,8 +1,11 @@
+
+## IP Routing
+
 ### IP Routing Summary
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |{% if ip_routing is defined and ip_routing is not none and ip_routing == true %} true| {% else %} false| {% endif %}
+| default |{% if ip_routing is defined and ip_routing is not none and ip_routing == true %} true|{% else %} false|{% endif %}
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ip_routing == true %}
@@ -18,4 +21,3 @@
 ```eos
 {% include 'eos/ip-routing.j2' %}
 ```
-

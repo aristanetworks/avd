@@ -1,0 +1,13 @@
+{% for bgp_group in bgp_groups | arista.avd.natural_sort %}
+!
+group bgp {{ bgp_group }}
+{%     if bgp_groups[bgp_group].vrf is arista.avd.defined %}
+   vrf {{ bgp_groups[bgp_group].vrf }}
+{%     endif %}
+{%     for neighbor in bgp_groups[bgp_group].neighbors | arista.avd.natural_sort %}
+   neighbor {{ neighbor }}
+{%     endfor %}
+{%     for bgp_profile in bgp_groups[bgp_group].bgp_maintenance_profiles | arista.avd.natural_sort %}
+   maintenance profile bgp {{ bgp_profile }}
+{%     endfor %}
+{% endfor %}

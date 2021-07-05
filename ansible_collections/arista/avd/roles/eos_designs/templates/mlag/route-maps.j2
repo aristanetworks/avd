@@ -1,0 +1,13 @@
+{# Origin Incomplete for MLAG iBGP learned routes #}
+{% if switch.mlag_l3 is arista.avd.defined(true) and
+      switch.mlag_ibgp_origin_incomplete is arista.avd.defined(true) and
+      switch.underlay_routing_protocol == "ebgp" %}
+route_maps:
+  RM-MLAG-PEER-IN:
+    sequence_numbers:
+      10:
+        type: permit
+        set:
+          - "origin incomplete"
+        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+{% endif %}

@@ -1,0 +1,33 @@
+{% if router_general is arista.avd.defined %}
+
+## Router General
+
+{%      set has = namespace() %}
+{%      set has.found = false %}
+{%      if router_general.vrfs is arista.avd.defined %}
+{%          for vrf in router_general.vrfs %}
+{%              if router_general.vrfs[vrf].leaks is arista.avd.defined %}
+{%                  set has.found = true %}
+{%              endif %}
+{%          endfor %}
+{%      endif %}
+{%      if has.found is arista.avd.defined(true) %}
+### VRF Route leaking
+
+| VRF | Source VRF | Route Map Policy |
+|-----|------------|------------------|
+{%          for vrf in router_general.vrfs %}
+{%              for leak in router_general.vrfs[vrf].leaks | arista.avd.natural_sort %}
+{%                  if leak.source_vrf is arista.avd.defined and leak.policy is arista.avd.defined %}
+| {{ vrf }} | {{ leak.source_vrf }} | {{ leak.policy }} |
+{%                  endif %}
+{%              endfor %}
+{%          endfor %}
+
+{%      endif %}
+### Router General configuration
+
+```eos
+{% include 'eos/router-general.j2' %}
+```
+{% endif %}

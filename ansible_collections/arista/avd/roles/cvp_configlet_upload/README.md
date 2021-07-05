@@ -32,9 +32,9 @@ Figure 1 below provides a visualization of the roles inputs, outputs and tasks i
 
 ![Figure 1: Ansible Role cvp_configlet_upload](./media/role_cvp_configlet_upload.gif)
 
-1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
+1. Read content of `{{ configlet_directory }}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.
-3. Create or update configlets on Cloudvision server with content from `{{configlet_directory}}`
+3. Create or update configlets on Cloudvision server with content from `{{ configlet_directory }}`
 
 ### Inputs
 
@@ -61,13 +61,18 @@ all:
           ansible_python_interpreter: $(which python3)
 ```
 
-For complete list of authentication options available with Cloudvision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/docs/how-to/cvp-authentication/).
+For complete list of authentication options available with Cloudvision Ansible collection, you can read dedicated page on [arista.cvp collection](https://cvp.avd.sh/en/latest/docs/how-to/cvp-authentication/).
 
 #### Module variables
 
 - __`configlet_directory`__: Folder where local configlets are stored. Default: `configlets`.
 - __`file_extension`__: File extension to look for configlet in their local folder. Default: `conf`.
 - __`configlets_cvp_prefix`__: Prefix to use for configlet on CV side. Default: _Not set_ and it is required.
+- __`execute_tasks`__:  `true` / `false`. Support automatically excuting pending tasks. Default: `false`.
+- __`cv_collection`__: Version of Cloudvision collection to use. Can be `v1` or `v3`. Default is `v1`.
+
+!!! warning
+    Use of arista.cvp in version 3 is only supported for testing purpose. Please use it carrefully and for lab only
 
 _Example_:
 
@@ -80,6 +85,8 @@ tasks:
       configlet_directory: 'configlets/'
       file_extension: 'txt'
       configlets_cvp_prefix: 'DC1-AVD'
+      execute_tasks: false
+      cv_collection: v1
 ```
 
 This module also supports tags to run a subset of ansible tasks:
@@ -97,9 +104,9 @@ $ ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
 
 ### Tasks
 
-1. Read content of `{{configlet_directory}}` and create **cv_configlet** input structure.
+1. Read content of `{{ configlet_directory }}` and create **cv_configlet** input structure.
 2. Collect Cloudvision facts.
-3. Create or update configlets on Cloudvision server with content from `{{configlet_directory}}`
+3. Create or update configlets on Cloudvision server with content from `{{ configlet_directory }}`
 
 ## Requirements
 

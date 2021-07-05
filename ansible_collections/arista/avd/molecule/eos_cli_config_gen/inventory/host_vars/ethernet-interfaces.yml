@@ -1,5 +1,5 @@
 ---
-### Port-Channel Interfaces ###
+### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -9,15 +9,14 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
-
-  Ethernet6:
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
-    description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
-    profile: ALL
+    bfd:
+      interval: 500
+      min_rx: 500
+      multiplier: 5
+    eos_cli: |
+      comment
+      Comment created from eos_cli under ethernet_interfaces.Ethernet1
+      EOF
 
   Ethernet2:
     peer: SRV-POD03
@@ -26,7 +25,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
     storm_control:
       all:
         level: 10
@@ -36,3 +34,197 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+
+  Ethernet3:
+    peer: DC1-SPINE2
+    peer_interface: Ethernet2
+    peer_type: spine
+    description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    mtu: 1500
+    type: routed
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+    ipv6_nd_prefixes:
+      2345:ABCD:3FE0::1/96:
+        valid_lifetime: infinite
+        preferred_lifetime: 50
+        no_autoconfig_flag: true
+      2345:ABCD:3FE0::2/96:
+        valid_lifetime: 50
+        preferred_lifetime: infinite
+        no_autoconfig_flag: false
+      2345:ABCD:3FE0::3/96:
+        valid_lifetime: 100000
+        no_autoconfig_flag: true
+
+  Ethernet4:
+    description: Molecule IPv6
+    shutdown: true
+    mtu: 9100
+    ipv6_enable: true
+    ipv6_address: 2020::2020/64
+    ipv6_address_link_local: FE80:FEA::AB65/64
+    ipv6_nd_ra_disabled: true
+    ipv6_nd_managed_config_flag: true
+    ipv6_access_group_in: IPv6_ACL_IN
+    ipv6_access_group_out: IPv6_ACL_OUT
+
+  Ethernet5:
+    description: Molecule Routing
+    shutdown: false
+    mtu: 9100
+    type: routed
+    ospf_network_point_to_point: true
+    ospf_area: 100
+    ospf_cost: 99
+    ospf_authentication: message-digest
+    ospf_authentication_key: "asfddja23452"
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha512
+        key: "asfddja23452"
+    pim:
+      ipv4:
+        sparse_mode: true
+    isis_enable: ISIS_TEST
+    isis_passive: false
+    isis_metric: 99
+    isis_network_point_to_point: true
+
+  Ethernet6:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+
+  Ethernet7:
+    description: Molecule L2
+    shutdown: false
+    type: switched
+    mtu: 7000
+    ptp:
+      enable: true
+      announce:
+        interval: 10
+        timeout: 30
+      delay_req: 20
+      delay_mechanism: p2p
+      sync_message:
+        interval: 5
+      role: master
+      vlan: all
+      transport: layer2
+    service_profile: QoS
+    qos:
+      trust: cos
+      cos: 5
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
+    spanning_tree_portfast: edge
+    vmtracer: true
+    storm_control:
+      all:
+        level: 75
+        unit: percent
+      broadcast:
+        level: 10
+        unit: pps
+      multicast:
+        level: 50
+        unit:
+      unknown_unicast:
+        level: 10
+        unit: percent
+
+  Ethernet8:
+    description: to WAN-ISP1-01 Ethernet2
+    type: routed
+  Ethernet8.101:
+    description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
+    type: l3dot1q
+    encapsulation_dot1q_vlan: 101
+    ip_address: 172.31.128.1/31
+    ipv6_enable: true
+    ipv6_address: 2002:ABDC::1/64
+
+  Ethernet9:
+    description: interface_with_mpls_enabled
+    type: routed
+    ip_address: 172.31.128.9/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+
+  Ethernet10:
+    description: interface_with_mpls_disabled
+    type: routed
+    ip_address: 172.31.128.10/31
+    mpls:
+      ip: false
+      ldp:
+        interface: false
+
+  Ethernet11:
+    description: interface_in_mode_access_accepting_tagged_LACP
+    type: switched
+    mode: access
+    vlans: 200
+    l2_protocol:
+      encapsulation_dot1q_vlan: 200
+
+  Ethernet12:
+    description: interface_with_dot1q_tunnel
+    type: switched
+    mode: dot1q-tunnel
+    vlans: 300
+
+  Ethernet13:
+    logging:
+      event:
+        link_status: false
+    description: interface_in_mode_access_with_voice
+    type: switched
+    native_vlan: 100
+    mode: "trunk phone"
+    phone:
+      trunk: untagged
+      vlan: 70
+
+  Ethernet14:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+
+  Ethernet15:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Ethernet16:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Ethernet17:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true

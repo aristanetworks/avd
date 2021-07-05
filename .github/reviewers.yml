@@ -3,31 +3,43 @@ ansible_collections/arista/avd/roles/build_output_folders/**/*:
   - carlbuchmann
   - titom73
   - aphillipps
-ansible_collections/arista/avd/roles/eos_l3ls_evpn/**/*:
+ansible_collections/arista/avd/roles/eos_designs/**/*:
   - carlbuchmann
-  - titom73
-  - aphillipps
+  - ankudinov
+  - ClausHolbechArista
 ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*:
   - carlbuchmann
   - aphillipps
+  - ClausHolbechArista
 ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*:
-  - carlbuchmann
+  - onurgashi
   - titom73
   - aphillipps
 ansible_collections/arista/avd/roles/eos_validate_state/**/*:
   - ksator
   - carlbuchmann
+  - titom73
 ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*:
+  - guillaumeVilar
   - titom73
-  - carlbuchmann
+  - noredistribution
 ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*:
+  - guillaumeVilar
   - titom73
-  - carlbuchmann
+  - noredistribution
 ansible_collections/arista/avd/roles/dhcp_provisioner/**/*:
+  - guillaumeVilar
+  - titom73
+  - noredistribution
+ansible_collections/arista/avd/plugins/filter/**/*:
   - carlbuchmann
   - titom73
-  - aphillipps
-ansible_collections/arista/avd/plugins/**/*:
+  - ClausHolbechArista
+ansible_collections/arista/avd/plugins/modules/**/*:
+  - guillaumeVilar
+  - titom73
+  - noredistribution
+ansible_collections/arista/avd/molecule/**/*:
   - carlbuchmann
   - titom73
 ansible_collections/arista/avd/docs/**/*:

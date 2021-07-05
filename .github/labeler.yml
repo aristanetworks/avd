@@ -18,13 +18,21 @@
   - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/*
   - ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*
 
-"role: eos_l3ls_evpn":
-  - ansible_collections/arista/avd/roles/eos_l3ls_evpn/*
-  - ansible_collections/arista/avd/roles/eos_l3ls_evpn/**/*
+"role: eos_designs":
+  - ansible_collections/arista/avd/roles/eos_designs/*
+  - ansible_collections/arista/avd/roles/eos_designs/**/*
 
 "role: eos_validate_state":
   - ansible_collections/arista/avd/roles/eos_validate_state/*
   - ansible_collections/arista/avd/roles/eos_validate_state/**/*
+
+"role: eos_snapshot":
+  - ansible_collections/arista/avd/roles/eos_snapshot/*
+  - ansible_collections/arista/avd/roles/eos_snapshot/**/*
+
+"role: dhcp_provisioner":
+  - ansible_collections/arista/avd/roles/dhcp_provisioner/*
+  - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
 
 "filter: natural_sort":
   - ansible_collections/arista/avd/plugins/filter/natural_sort.py
@@ -35,11 +43,24 @@
 "filter: list_compress":
   - ansible_collections/arista/avd/plugins/filter/list_compress.py
 
+"filter: defined":
+  - ansible_collections/arista/avd/plugins/filter/defined.py
+
 "module: configlet_build_config":
   - ansible_collections/arista/avd/plugins/modules/configlet_build_config.py
 
 "module: inventory_to_container":
   - ansible_collections/arista/avd/plugins/modules/inventory_to_container.py
+
+"type: Python filters":
+  - ansible_collections/arista/avd/plugins/filter/*.py
+
+"type: Ansible roles":
+  - ansible_collections/arista/avd/plugins/roles/**/*.yml
+  - ansible_collections/arista/avd/plugins/roles/**/*.j2
+
+"state: Documentation role Updated":
+  - 'ansible_collections/arista/avd/roles/**/*.md'
 
 "type: documentation":
   - README.md
@@ -63,6 +84,3 @@
 "state: CI Updated":
   - ansible_collections/arista/avd/molecule/*
   - ansible_collections/arista/avd/molecule/**/*
-
-"state: Documentation role Updated":
-  - 'ansible_collections/arista/avd/roles/**/*.md'

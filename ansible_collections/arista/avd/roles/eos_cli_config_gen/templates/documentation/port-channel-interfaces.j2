@@ -1,29 +1,160 @@
 {% if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+
+## Port-Channel Interfaces
+
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-{%   for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-| {{ port_channel_interface }} | {{ port_channel_interfaces[port_channel_interface].description }} |
-{%-    if port_channel_interfaces[port_channel_interface].mtu is defined and port_channel_interfaces[port_channel_interface].mtu  != 1500  %} {{ port_channel_interfaces[port_channel_interface].mtu }} {% else %} 1500 {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type == "routed" %} {{ port_channel_interfaces[port_channel_interface].type }} {% else %} switched {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].mode is defined %} {{ port_channel_interfaces[port_channel_interface].mode }} {% else %} access {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].vlans is defined %} {{ port_channel_interfaces[port_channel_interface].vlans }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].trunk_groups is defined %} {% for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}{{ trunk_group }}{% if not loop.last %}<br>{% endif %} {% endfor %}{% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].lacp_fallback_timeout is defined %} {{ port_channel_interfaces[port_channel_interface].lacp_fallback_timeout }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].lacp_fallback_mode is defined %} {{ port_channel_interfaces[port_channel_interface].lacp_fallback_mode }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].mlag is defined %} {{ port_channel_interfaces[port_channel_interface].mlag }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].esi is defined %} {{ port_channel_interfaces[port_channel_interface].esi }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].vrf is defined %} {{ port_channel_interfaces[port_channel_interface].vrf }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].ip_address is defined %} {{ port_channel_interfaces[port_channel_interface].ip_address }} {% else %} - {% endif -%} |
-{%-    if port_channel_interfaces[port_channel_interface].ipv6_address is defined %} {{ port_channel_interfaces[port_channel_interface].ipv6_address }} {% else %} - {% endif -%} |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q'] %}
+{%             set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
+{%             set type = port_channel_interfaces[port_channel_interface].type | default ("switched")%}
+{%             set mode = port_channel_interfaces[port_channel_interface].mode | default ("access")%}
+{%             set vlans = port_channel_interfaces[port_channel_interface].vlans | default ("-")%}
+{%             set native_vlan = port_channel_interfaces[port_channel_interface].native_vlan | default ("-")%}
+{%             if port_channel_interfaces[port_channel_interface].trunk_groups is defined %}
+{%                 set l2 = namespace() %}
+{%                 set l2.trunk_groups = [] %}
+{%                 for trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
+{%                      do l2.trunk_groups.append(trunk_group) %}
+{%                 endfor %}
+{%             else %}
+{%                 set l2 = namespace() %}
+{%                 set l2.trunk_groups = "-" %}
+{%             endif %}
+{%             set lacp_fallback_timeout = port_channel_interfaces[port_channel_interface].lacp_fallback_timeout | default ("-")%}
+{%             set lacp_fallback_mode = port_channel_interfaces[port_channel_interface].lacp_fallback_mode | default ("-")%}
+{%             set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}
+{%             set esi = port_channel_interfaces[port_channel_interface].esi | default ("-")%}
+| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
+{%         endif %}
 {%   endfor %}
+{# PVLAN #}
+{%     set port_channel_interface_pvlan = namespace() %}
+{%     set port_channel_interface_pvlan.configured = false %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].pvlan_mapping is arista.avd.defined or
+              port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%             set port_channel_interface_pvlan.configured = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface_pvlan.configured == true %}
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%             if port_channel_interfaces[port_channel_interface].pvlan_mapping is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%                 set row_pvlan_mapping = port_channel_interfaces[port_channel_interface].pvlan_mapping | arista.avd.default('-') %}
+{%                 set row_trunk_private_vlan_secondary = port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary | arista.avd.default('-') %}
+| {{ port_channel_interface }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# VLAN Translations #}
+{%     set port_channel_interface_vlan_xlate = namespace() %}
+{%     set port_channel_interface_vlan_xlate.configured = false %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].vlan_translations is arista.avd.defined %}
+{%              set port_channel_interface_vlan_xlate.configured = true %}
+{%              break %}
+{%          endif %}
+{%     endfor %}
+{%     if port_channel_interface_vlan_xlate.configured == true %}
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%             if port_channel_interfaces[port_channel_interface].vlan_translations is arista.avd.defined %}
+{%                 for vlan_translation in port_channel_interfaces[port_channel_interface].vlan_translations | arista.avd.natural_sort %}
+{%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
+| {{ port_channel_interface }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# IPv4 #}
+{%   set port_channel_interface_ipv4 = namespace() %}
+{%   set port_channel_interface_ipv4.configured = false %}
+{%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%       for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ip_address is defined %}
+{%               set port_channel_interface_ipv4.configured = true %}
+{%           endif %}
+{%        endfor %}
+{%    endif %}
+{%    if port_channel_interface_ipv4.configured == true %}
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+{%        for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ip_address is defined and port_channel_interfaces[port_channel_interface].ip_address is not none %}
+{%                set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
+{%                set type = "routed" %}
+{%                set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}
+{%                set ip_address = port_channel_interfaces[port_channel_interface].ip_address | default ("-")%}
+{%                set vrf = port_channel_interfaces[port_channel_interface].vrf | default ("default")%}
+{%                set mtu = port_channel_interfaces[port_channel_interface].mtu | default ("-")%}
+{%                set shutdown = port_channel_interfaces[port_channel_interface].shutdown | default ("-")%}
+{%                set acl_in = port_channel_interfaces[port_channel_interface].access_group_in | default ("-")%}
+{%                set acl_out = port_channel_interfaces[port_channel_interface].access_group_out | default ("-")%}
+| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ip_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ acl_in }} | {{ acl_out }} |
+{%            endif %}
+{%        endfor %}
+{%    endif %}
+{# IPv6 #}
+{%   set port_channel_interface_ipv6 = namespace() %}
+{%   set port_channel_interface_ipv6.configured = false %}
+{%   if port_channel_interfaces is defined and port_channel_interfaces is not none %}
+{%       for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%           if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ipv6_address is defined %}
+{%               set port_channel_interface_ipv6.configured = true %}
+{%           endif %}
+{%        endfor %}
+{%    endif %}
+{%    if port_channel_interface_ipv6.configured == true %}
+
+#### IPv6
+
+| Interface | Description | Type | MLAG ID | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | ----------- | ---- | ------- | -------------| --- | --- | -------- | -------------- | ------------------- | ----------- | ------------ |
+{%        for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%            if port_channel_interfaces[port_channel_interface].type is defined and port_channel_interfaces[port_channel_interface].type in ['routed', 'l3dot1q'] and port_channel_interfaces[port_channel_interface].ipv6_address is defined and port_channel_interfaces[port_channel_interface].ipv6_address is not none %}
+{%                set description = port_channel_interfaces[port_channel_interface].description | default ("-")%}
+{%                set type = "routed" %}
+{%                set mlag = port_channel_interfaces[port_channel_interface].mlag | default ("-")%}
+{%                set ipv6_address = port_channel_interfaces[port_channel_interface].ipv6_address | default ("-")%}
+{%                set vrf = port_channel_interfaces[port_channel_interface].vrf | default ("default")%}
+{%                set mtu = port_channel_interfaces[port_channel_interface].mtu | default ("-")%}
+{%                set shutdown = port_channel_interfaces[port_channel_interface].shutdown | default ("-")%}
+{%                set ipv6_nd_ra_disabled = port_channel_interfaces[port_channel_interface].ipv6_nd_ra_disabled | default ("-")%}
+{%                if port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag is defined and port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag is not none %}
+{%                      set ipv6_nd_managed_config_flag = port_channel_interfaces[port_channel_interface].ipv6_nd_managed_config_flag | lower %}
+{%                else %}
+{%                      set ipv6_nd_managed_config_flag = '-' %}
+{%                endif %}
+{%                set ipv6_acl_in = port_channel_interfaces[port_channel_interface].ipv6_access_group_in | default ("-")%}
+{%                set ipv6_acl_out = port_channel_interfaces[port_channel_interface].ipv6_access_group_out | default ("-")%}
+| {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mlag }} | {{ ipv6_address }} | {{ vrf }} | {{ mtu }} | {{ shutdown | lower }} | {{ ipv6_nd_ra_disabled | lower  }} | {{ ipv6_nd_managed_config_flag | lower }} | {{ ipv6_acl_in }} | {{ ipv6_acl_out }} |
+{%            endif %}
+{%        endfor %}
+{%    endif %}
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 {% include 'eos/port-channel-interfaces.j2' %}
 ```
-{% else %}
-No port-channels defined
 {% endif %}

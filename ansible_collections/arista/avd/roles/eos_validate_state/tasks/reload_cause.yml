@@ -13,7 +13,7 @@
 
 - name: validate reload cause
   assert:
-    that: reload_cause.stdout_lines[0][2] == "Reload requested by the user."
+    that: reload_cause.stdout_lines[0][2] == 'Reload requested by the user.'
     fail_msg: "{{ reload_cause.stdout_lines[0][2] }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"

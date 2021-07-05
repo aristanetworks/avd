@@ -1,4 +1,7 @@
 {% if tacacs_servers.hosts is defined and tacacs_servers.hosts is not none %}
+
+## TACACS Servers
+
 ### TACACS Servers
 
 | VRF | TACACS Servers |
@@ -7,11 +10,13 @@
 | {% if host['vrf'] is defined and host['vrf'] is not none %} {{ host['vrf'] }} {% else %} default {% endif %}| {{ host['host'] }} |
 {%  endfor %}
 
+{%    if tacacs_servers.policy_unknown_mandatory_attribute_ignore is defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}
+Policy unknown-mandatory-attribute ignore is configured
+
+{%    endif %}
 ### TACACS Servers Device Configuration
 
 ```eos
 {% include 'eos/tacacs-servers.j2' %}
 ```
-{% else %}
-TACACS servers not defined
 {% endif %}

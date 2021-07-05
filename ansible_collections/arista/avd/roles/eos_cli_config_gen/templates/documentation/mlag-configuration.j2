@@ -1,4 +1,7 @@
 {% if mlag_configuration is defined and mlag_configuration is not none %}
+
+# MLAG
+
 ## MLAG Summary
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
@@ -17,6 +20,4 @@ Dual primary detection is disabled.
 ```eos
 {% include 'eos/mlag-configuration.j2' %}
 ```
-{% else %}
-MLAG not defined
 {% endif %}
