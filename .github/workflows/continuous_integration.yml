@@ -65,10 +65,12 @@ jobs:
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - '.github/workflows/continuous_integration.yml'
             docs:
+              - '.github/workflows/continuous_integration.yml'
               - 'mkdocs.yml'
               - 'ansible_collections/arista/avd/docs/**'
               - 'ansible_collections/arista/avd/roles/**/*.md'
               - 'ansible_collections/arista/avd/**/*.md'
+              - 'ansible_collections/arista/avd/README.md'
   # ----------------------------------- #
   # Pre Commit code validation
   # ----------------------------------- #
