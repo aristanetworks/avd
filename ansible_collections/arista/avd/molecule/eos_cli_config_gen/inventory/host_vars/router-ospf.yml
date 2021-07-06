@@ -59,6 +59,13 @@ router_ospf:
           route_map: rm-ospf-static
         connected:
           route_map: rm-ospf-connected
+      areas:
+        '0.0.0.2':
+          filter:
+            network: 1.1.1.0/24
+        '0.0.0.3':
+          filter:
+            prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.
       timers:
         lsa:

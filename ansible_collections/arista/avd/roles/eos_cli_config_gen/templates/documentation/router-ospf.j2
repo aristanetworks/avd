@@ -183,6 +183,30 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# Route Filtering #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%         for area in router_ospf.process_ids[process].areas | arista.avd.natural_sort %}
+{%             if router_ospf.process_ids[process].areas[area].filter.network is arista.avd.defined
+                  or router_ospf.process_ids[process].areas[area].filter.prefix_list is arista.avd.defined  %}
+{%                 set has.found = true %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### Router OSPF route filtering
+
+| Process ID | Area | Subnet filtering | Prefix List |
+| ---------- | ---- | ---------------- | ----------- |
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             for area in router_ospf.process_ids[process].areas | arista.avd.natural_sort %}
+{%                 set subnet_filter = router_ospf.process_ids[process].areas[area].filter.network | arista.avd.default('-') %}
+{%                 set prefix_list_filter = router_ospf.process_ids[process].areas[area].filter.prefix_list | arista.avd.default('-') %}
+| {{ process }} | {{ area }} | {{ subnet_filter }} | {{ prefix_list_filter }} |
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {# Interfaces #}
 {%     set ethernet_interface_ospf = namespace(configured=false) %}
 {%     set port_channel_interface_ospf = namespace(configured=false) %}
