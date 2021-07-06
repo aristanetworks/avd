@@ -36,7 +36,7 @@
   tags: [build, provision]
 
 - name: Generate device documentation
-  tags: [build, provision]
+  tags: [build, provision, documentation]
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
   block:
