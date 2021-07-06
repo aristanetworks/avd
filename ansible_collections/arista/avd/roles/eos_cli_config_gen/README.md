@@ -1608,10 +1608,10 @@ system:
     tcp_mss:
       ipv4: < Segment size >
       ipv6: < Segment size >
-    ipv4_access_group:
+    ipv4_access_groups:
       - acl_name: < access-list name >
         vrf: < Optional vrf field >
-    ipv6_access_group:
+    ipv6_access_groups:
       - acl_name: < access-list name >
         vrf: < Optional vrf field >
 ```
