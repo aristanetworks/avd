@@ -41,7 +41,7 @@ The arista.avd collection provides abstracted data models and framework to build
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
 | RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
 
-<center><img src="media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
+<center><img src="ansible_collections/arista/avd/media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
 
 ## Project Documentation
 
