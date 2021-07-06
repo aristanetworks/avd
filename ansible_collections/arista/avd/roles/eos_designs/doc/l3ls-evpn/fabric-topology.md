@@ -1,6 +1,6 @@
 # Fabric Topology Variables
 
-The fabric topology variables define the connectivity between the various switch types, as well as override the default switch properties.
+The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
 <div style="text-align:center">
   <img src="../../../../media/topology.gif" />
@@ -57,16 +57,15 @@ pod_name: < POD_Name >
 
 ## Type Variables
 
-The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to [node types definition](../../common/node-types/)
+The following table provide information on the default node types that have been pre-defined in `eos_designs/defaults/main/defaults-node-type-keys.yml`. To customize or create new node types, please refer to [node types definition](../extending-avd/node-types.md)
 
-| Node Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spline             | ✅              | p2p          | none              | ✅                  | ✅                   | ✘    | ✅           | ✘                   |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                   | ✅   | ✅           | ✅                   |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                   |
-| overlay_controller | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
+| super_spine        | ✅              | p2p          | none              | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
+| spine              | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
+| l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
+| l2leaf             | ✘               | port-channel | none              | ✅                 | ✘                   | ✘   | ✅           | ✅                 |
+| overlay_controller | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 
 The variables should be applied to all devices in the fabric.
 
