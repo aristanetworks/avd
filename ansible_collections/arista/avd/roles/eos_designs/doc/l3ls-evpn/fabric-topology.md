@@ -125,7 +125,7 @@ spine:
     platform: < Arista Platform Family >
 
     # Acting role in EVPN control plane.
-    # Override role definition from switch_type_keys
+    # Override role definition from node_type_keys
     # Can be set per node
     evpn_role: < client | server | none | Default -> server >
 
@@ -270,7 +270,7 @@ l3leaf:
     bgp_as: < bgp_as >
 
     # Acting role in EVPN control plane.
-    # Override role definition from switch_type_keys
+    # Override role definition from node_type_keys
     # Can be set per node
     evpn_role: < client | server | none | Default -> server >
 
@@ -471,7 +471,7 @@ l2leaf:
     # if not specifically set inside it.
 
     # Acting role in EVPN control plane.
-    # Override role definition from switch_type_keys
+    # Override role definition from node_type_keys
     # Can be set per node
     evpn_role: < client | server | none | Default -> server >
 

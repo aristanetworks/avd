@@ -102,7 +102,7 @@ platform_settings:
 custom_structured_configuration_list_merge: 'append'
 
 # Switch type definitions
-switch_type_keys:
+node_type_keys:
   spine:
     type: spine
     default_evpn_role: server

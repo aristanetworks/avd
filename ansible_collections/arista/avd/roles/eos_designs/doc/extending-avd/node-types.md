@@ -17,16 +17,16 @@ The following table provide information on the default switch types that have be
 
 ## Node type definition
 
-Node type definition is done under `switch_type_keys`. This dictionary has all type of devices you can use in your topologies. Each node type can be configured with the following knobs:
+Node type definition is done under `node_type_keys`. This dictionary has all type of devices you can use in your topologies. Each node type can be configured with the following knobs:
 
 ```yaml
 # Define Switch Type Keys, to specify the properties of each switch type in the fabric
 # This allows for complete customization of the fabric layout.
 # This should be defined in top level group_var for the fabric.
-switch_type_keys:
-  <switch_type_key>:
+node_type_keys:
+  <node_type_key>:
     # Required | The value of "type" set on each switch
-    type: <type value matching this switch_type_key>
+    type: <type value matching this node_type_key>
 
     # Optional | Are endpoints connected to this switch type
     connected_endpoints: < true | false | default -> false >
@@ -72,7 +72,7 @@ The next output is structure example based on default definition:
 ```yaml
 # Example
 # The below key/pair values are the role defaults.
-switch_type_keys:
+node_type_keys:
   spine:
     type: spine
     default_evpn_role: server

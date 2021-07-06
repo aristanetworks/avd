@@ -1,4 +1,4 @@
-default_switch_type_keys:
+default_node_type_keys:
   "l3ls-evpn":
     spine:
       type: spine

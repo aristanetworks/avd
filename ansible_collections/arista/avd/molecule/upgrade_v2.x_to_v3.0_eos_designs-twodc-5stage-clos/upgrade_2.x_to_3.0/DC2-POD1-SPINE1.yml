@@ -119,7 +119,7 @@ overlay_controller:
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
 
 # Switch type definitions
-switch_type_keys:
+node_type_keys:
   spine:
     type: spine
     default_evpn_role: server

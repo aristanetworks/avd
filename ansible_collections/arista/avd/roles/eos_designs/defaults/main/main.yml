@@ -114,7 +114,7 @@ custom_structured_configuration_prefix: custom_structured_configuration_
 custom_structured_configuration_list_merge: 'replace'
 
 
-switch_type_keys: "{{ default_switch_type_keys[design.type] }}"
+node_type_keys: "{{ default_node_type_keys[design.type] }}"
 
 templates: "{{ default_templates[design.type] }}"
 
