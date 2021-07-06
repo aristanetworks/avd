@@ -29,6 +29,27 @@ router ospf {{ process_id }}
 {%     if router_ospf.process_ids[process_id].max_lsa is arista.avd.defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.lsa.rx_min_interval is arista.avd.defined %}
+   timers lsa rx min interval {{ router_ospf.process_ids[process_id].timers.lsa.rx_min_interval }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.lsa.tx_delay.initial is arista.avd.defined
+          and router_ospf.process_ids[process_id].timers.lsa.tx_delay.min is arista.avd.defined
+          and router_ospf.process_ids[process_id].timers.lsa.tx_delay.max is arista.avd.defined %}
+{%         set timer_ospf_lsa_tx = "timers lsa tx delay initial" %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx_delay.initial %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx_delay.min %}
+{%         set timer_ospf_lsa_tx = timer_ospf_lsa_tx ~ " " ~ router_ospf.process_ids[process_id].timers.lsa.tx_delay.max %}
+   {{ timer_ospf_lsa_tx }}
+{%     endif %}
+{%     if router_ospf.process_ids[process_id].timers.spf_delay.initial is arista.avd.defined
+          and router_ospf.process_ids[process_id].timers.spf_delay.min is arista.avd.defined
+          and router_ospf.process_ids[process_id].timers.spf_delay.max is arista.avd.defined %}
+{%         set timer_ospf_spf_delay = "timers spf delay initial" %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf_delay.initial %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf_delay.min %}
+{%         set timer_ospf_spf_delay = timer_ospf_spf_delay ~ " " ~ router_ospf.process_ids[process_id].timers.spf_delay.max %}
+   {{ timer_ospf_spf_delay }}
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].default_information_originate is defined %}
 {%         set default_information_originate_cli = "default-information originate"%}
 {%         if router_ospf.process_ids[process_id].default_information_originate.always is arista.avd.defined(true) %}
