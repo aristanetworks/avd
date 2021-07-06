@@ -1,0 +1,14 @@
+{# eos - ip-as-path-access-lists #}
+{% if ip_as_path_access_lists is arista.avd.defined %}
+!
+{%     for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
+ip as-path access-list {{ ip_as_path_access_list }} 
+{%             if access_lists[access_list].type is arista.avd.defined %}
+{{ access_lists[access_list].type }} 
+{%             if access_lists[access_list].regexp is arista.avd.defined %}
+{{ access_lists[access_list].regexp }}
+{%             endif %}
+{%          endif %}
+{%       endif %}
+{%    endfor %}
+{% endif %}

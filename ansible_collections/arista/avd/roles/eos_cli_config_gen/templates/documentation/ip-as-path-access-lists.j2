@@ -1,11 +1,11 @@
-{% if ip_as_path_access_lists is defined and ip_as_path_access_lists is not none %}
+{% if ip_as_path_access_lists is defined and ip_as_path_access_lists is  arista.avd.defined %}
 
 ## AS Path access-listts 
 
 ### AS Path Access-lists Summary
 
 {%     for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
-#### {{ ip_as_path_access_list }}
+### {{ ip_as_path_access_list }}
 
 | Type | Permit | Deny  |
 | -------- | ------ |
@@ -14,9 +14,10 @@
 {%         endfor %}
 
 {%     endfor %}
+
 ###  AS extended community path Device Configuration
 
 ```eos
-{% include 'eos/as-path-access-lists.j2' %}
+{% include 'eos/ip-as-path-access-lists.j2' %}
 ```
 {% endif %}
