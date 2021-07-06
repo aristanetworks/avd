@@ -1,5 +1,6 @@
 
 MOLECULE ?= eos_cli_config_gen
+LIMIT ?= 'all'
 
 .PHONY: help
 help: ## Display help message
@@ -17,7 +18,7 @@ run: ## Execute molecule TEST sequence. By default eos_cli_config_gen. Can be se
 .PHONY: converge
 converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
 	cd .. && \
-	molecule converge --scenario-name $(MOLECULE)
+	molecule converge --scenario-name $(MOLECULE) -- --limit $(LIMIT)
 
 .PHONY: refresh-facts
 refresh-facts: ## Run all molecule scenarios
