@@ -10,7 +10,7 @@ As per the diagram above, the topology hierarchy is the following:
 
 fabric_name > dc_name > pod_name
 
-- Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required.
+- Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 
 ```yaml
 fabric_name: < Fabric_Name >
@@ -22,7 +22,7 @@ fabric_name: < Fabric_Name >
 dc_name: < DC_Name >
 ```
 
--  POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
+- POD Name, only used in Fabric Documentation | Optional, fallback to dc_name and then to fabric_name. Recommended to be common between Spines, Leafs within a POD (One l3ls topology)
 
 ```yaml
 pod_name: < POD_Name >
@@ -36,30 +36,32 @@ pod_name: < POD_Name >
   - This reduces user input requirements, limiting errors.
   - The default variables can be overridden when defined under the node groups.
 
-## 3 Stage CLOS Topology Support (Leaf & Spine)
+## Supported designs
 
- - The **eos_designs** role support various deployments with layer 3 leaf and spine (3 stage CLOS) and optionally, with dedicated overlay controllers.
- - 3 stage CLOS fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
+`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](../../extending-avd/node-types/) to create your own node type
 
+### 3-stage CLOS Topology Support (Leaf & Spine)
 
-## 5 Stage CLOS Topology Support (Super Spine)
+- The **eos_designs** role support various deployments with layer 3 leaf and spine (3-stage CLOS) and optionally, with dedicated overlay controllers.
+- 3 stage CLOS fabric can be represented as spines, L3 leafs and L2 leafs, and also referred to as a "POD".
 
-- The **eos_designs** role support lager deployments with super-spines (5 stage CLOS) and optionally, with dedicated overlay controllers.
+### 5-stage CLOS Topology Support (Super Spine)
+
+- The **eos_designs** role support lager deployments with super-spines (5-stage CLOS) and optionally, with dedicated overlay controllers.
 - 5 stage CLOS fabric can be represented as multiple leaf-spine structures (called PODs - Point of Delivery) interconnected by super-spines.
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 
-**Limitations:**
+!!! warning "5-stage CLOS limitations"
+    - Current AVD release supports single plane deployment only.
+    - Only eBGP underlay is supported for super-spine deployment.
+    - Spines in every POD must have unique AS per POD.
 
-- Current AVD release supports single plane deployment only.
-- Only eBGP underlay is supported for super-spine deployment.
-- Spines in every POD must have unique AS per POD.
+## Node Type Variables
 
-## Type Variables
+The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](../extending-avd/node-types.md)
 
-The following table provide information on the default node types that have been pre-defined in `eos_designs/defaults/main/defaults-node-type-keys.yml`. To customize or create new node types, please refer to [node types definition](../extending-avd/node-types.md)
-
-| Node Type Key      | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key      | Underlay Router <br/>(`underlay_router`) | Uplink Type <br/>(`uplink_type`)  | Default EVPN Role <br/>(`default_evpn_role`) | L2 Network Services <br/>(`network_services.l2`) | L3 Network Services <br/>(`network_services.l3`) | VTEP <br/>(`vtep`) | MLAG Support <br/>(`mlag_support`) | Connected Endpoints <br/>(`connected_endpoints`) |
 | :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
 | super_spine        | ✅              | p2p          | none              | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 | spine              | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
@@ -72,7 +74,7 @@ The variables should be applied to all devices in the fabric.
 - The `type:` variable needs to be defined for each device in the fabric.
 - This is leveraged to load the appropriate template to generate the configuration.
 
-**Variables and Options:**
+### Variables and Options
 
 As explained above, you can defined your own types of devices. CLI only provides default node types.
 
@@ -81,7 +83,7 @@ As explained above, you can defined your own types of devices. CLI only provides
 type: < spine | l3leaf | l2leaf | super-spine | overlay-controller >
 ```
 
-**Example:**
+### Example
 
 ```yaml
 # Defined in SPINE.yml file
@@ -105,145 +107,54 @@ type: super-spine
 type: overlay-controller
 ```
 
-## Spine Variables
+All node types have the same structure based on `defaults`, `node_group`, `node` and all variables can be defined in any section and support inheritence like this:
 
-**Variables and Options:**
+```bash
+defaults < node_group < node
+```
+
+## Node type structure
+
+```yaml
+---
+<node_type>:
+  defaults:
+    # Define vars for all nodes of this type
+  <node group name>:
+    # Vars related to all nodes part of this group
+    nodes:
+      <node inventory hostname>:
+        # Vars defined per node
+  nodes:
+    <node inventory hostname>:
+      # Vars defined per node
+
+      # Unique identifier | Required.
+      id: < integer >
+
+      # Node management IP address | Optional.
+      mgmt_ip: < IPv4_address/Mask >
+
+      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces in generic design | Required.
+      # Inheritance: node > node_group > defaults
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+```
+
+## Node Variables details (All-in-one)
 
 ```yaml
 # Defined in FABRIC.yml
-
-# Maximum number of spines, changing this parameter affects address allocation.
-# Set this number to potential growth of spine nodes, so fabric IPs don't get recalculated
-# when additional spines are added in the future
-max_spines: < integer >= number of spine nodes | default spine.nodes | length >
-
-spine:
+< node_type >:
 
   defaults:
     # Arista platform family | Required.
     platform: < Arista Platform Family >
 
-    # Acting role in EVPN control plane.
-    # Override role definition from node_type_keys
-    # Can be set per node
-    evpn_role: < client | server | none | Default -> server >
-
-    # List of inventory hostname acting as EVPN route-servers.
-    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
-
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
 
-    # Spine BGP AS | Required.
-    bgp_as: < bgp_as >
-
     # IPv4 subnet for Loopback0 allocation
-    loopback_ipv4_pool: < IPv4_address/Mask  >
-
-    # List of EOS command to apply to BGP daemon | Optional
-    bgp_defaults: [ < List of EOS commands> ]
-
-    # isis system-id prefix
-    isis_system_id_prefix: < d{4}.d{4} >
-
-    # Number of path to configure in ECMP for ISIS
-    isis_maximum_paths: < integer >
-
-    # List of Interfaces to use to connect to uplink switches | Optional
-    uplink_interfaces: [ <List of interface name> ]
-
-    # List of switches to connect uplink ports | Optional
-    uplink_switches: [ <List of uplink switches from inventory> ]
-
-    # Number of interfaces towards uplink switches | Optional
-    max_uplink_switches: < integer >
-
-    # Subnet to use for uplink allocation | Optional
-    uplink_ipv4_pool: < IPv4_address/Mask >
-
-    # Enable PTP on uplink links | Optional
-    uplink_ptp:
-      enable: < boolean >
-
-    # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
-    raw_eos_cli: |
-      < multiline eos cli >
-
-    # Custom structured config for eos_cli_config_gen | Optional
-    structured_config: < dictionary >
-
-  # Specify dictionary of Spine nodes | Required.
-  nodes:
-    < inventory_hostname >:
-
-      # Unique identifier | Required.
-      id: < integer >
-
-      # EVPN Role for Overlay BGP Peerings | Optional, default is server
-      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
-      evpn_role: < client | server | none | default -> server  >
-
-      # Peer with these EVPN Route Servers / Route Reflectors | Optional
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
-
-      # Node management IP address | Optional.
-      mgmt_ip: < IPv4_address/Mask >
-
-      # List of interfaces to use on uplink switches to connect local switch
-      uplink_switch_interfaces: [ <List of interface name> ]
-
-      # EOS CLI rendered directly on the root level of the final EOS configuration
-      raw_eos_cli: |
-        < multiline eos cli >
-
-      # Custom structured config for eos_cli_config_gen
-      structured_config: < dictionary >
-
-    < inventory_hostname >:
-      id: < integer >
-      mgmt_ip: < IPv4_address/Mask >
-```
-
-**Example:**
-
-```yaml
-# Defined in FABRIC.yml
-
-max_spines: 4
-
-spine:
-  defaults:
-    platform: vEOS-LAB
-    bgp_as: 65001
-    loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-```
-
-## L3 Leaf Variables
-
-**Variables and Options:**
-
-```yaml
-l3leaf:
-
-  # All variables defined under `node_groups` dictionary can be defined under the defaults
-  # key will be inherited by all L3 leafs.
-  # The variables defined under a specific `node_group` will take precedence over defaults.
-  defaults:
-
-    # All variables defined under `defaults` will be inherited by the node group,
-    # if not specifically set inside it.
-
-    # Arista platform family. | Required
-    platform: < Arista Platform Family >
-
-    # Parent spine switches (list), corresponding to uplink_to_spine_interfaces
-    # and spine_interfaces | Required.
-    spines: [ < spine_inventory_hostname >, < spine_inventory_hostname > ]
-
-    # IPv4 subnet for Loopback0 allocation.
     loopback_ipv4_pool: < IPv4_address/Mask  >
 
     # Offset to define VTEP IP addresses of L3LEAF devices.
@@ -261,12 +172,27 @@ l3leaf:
     # Uplink switches interfaces (list), interface located on uplink switch. | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
+    # Number of interfaces towards uplink switches | Optional
+    max_uplink_switches: < integer >
+
+    # Enable PTP on uplink links | Optional
+    uplink_ptp:
+      enable: < boolean >
+
     # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-    # L3 Leaf BGP AS. | Required.
-    # Inheritence: node > node_group > defaults
+    # isis system-id prefix (4.4 hexadecimal)
+    isis_system_id_prefix: < hhhh.hhhh >
+
+    # Number of path to configure in ECMP for ISIS
+    isis_maximum_paths: < integer >
+
+    # node BGP AS | Required.
     bgp_as: < bgp_as >
+
+    # List of EOS command to apply to BGP daemon | Optional
+    bgp_defaults: [ < List of EOS commands> ]
 
     # Acting role in EVPN control plane.
     # Override role definition from node_type_keys
@@ -276,7 +202,8 @@ l3leaf:
     # List of inventory hostname acting as EVPN route-servers.
     evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
 
-    # Possibility to prevent configuration of Tenant VRFs and SVIs | Optional, default is false
+    # Possibility to prevent configuration of Tenant VRFs and SVIs
+    # Override role definition from node_type_keys
     # This allows support for centralized routing.
     evpn_services_l2_only: < false | true >
 
@@ -289,15 +216,6 @@ l3leaf:
       # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
       # Useful for "border" leaf.
       always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
-
-    # List of EOS command to apply to BGP daemon | Optional
-    bgp_defaults: [ < List of EOS commands> ]
-
-    # isis system-id prefix (4.4 hexadecimal)
-    isis_system_id_prefix: < hhhh.hhhh >
-
-    # Number of path to configure in ECMP for ISIS
-    isis_maximum_paths: < integer >
 
     # Enable / Disable auto MLAG, when two nodes are defined in node group.
     mlag: < true | false -> default true >
@@ -329,154 +247,6 @@ l3leaf:
     # Activate or deactivate IGMP snooping | Optional, default is true
     igmp_snooping_enabled: < true | false >
 
-    # Enable PTP on uplink links | Optional
-    uplink_ptp:
-      enable: < boolean >
-
-    # EOS CLI rendered directly on the root level of the final EOS configuration
-    raw_eos_cli: |
-      < multiline eos cli >
-
-    # Custom structured config for eos_cli_config_gen
-    structured_config: < dictionary >
-
-  # The node groups are groups of one or multiple nodes where specific variables can be
-  # defined related to the topology and allowed L3 and L2 network services.
-  node_groups:
-
-    # Rack that the switch is located in (only used in snmp_settings location) | Optional
-    rack: < rack_name >
-
-    # node_group_1, will result in stand-alone leaf.
-    < node_group_1 >:
-
-      # The node name must be the same name as inventory_hostname | Required
-      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
-      # unless the "l3leaf.defaults.mlag:" key is set to false.
-      nodes:
-
-        # First node
-        < l3_leaf_inventory_hostname_1 >:
-
-          # Unique identifier | Required.
-          id: < integer >
-
-          # Node management IP address | Optional.
-          mgmt_ip: < IPv4_address/Mask >
-
-          # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
-          # corresponding to spines and spine_interfaces in generic design | Required.
-          # Inheritance: node > node_group > defaults
-          uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-          # Uplink switches interfaces (list), interface located on uplink switch. | Required.
-          uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_1 > ]
-
-          # L3 Leaf BGP AS. | Required.
-          # Inheritance: node > node_group > defaults
-          bgp_as: < bgp_as >
-
-          # EOS CLI rendered directly on the root level of the final EOS configuration
-          # Overrides the setting on node_group level.
-          raw_eos_cli: |
-            < multiline eos cli >
-
-          # Custom structured config for eos_cli_config_gen
-          # Overrides the setting on node_group level.
-          structured_config: < dictionary >
-
-    # node_group_2, will result in MLAG pair.
-    < node_group_2 >:
-      bgp_as: < bgp_as >
-      filter:
-        tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-        tags: [ < tag_1 >, < tag_2 > | default -> all ]
-      nodes:
-
-        # Second node
-        < l3_leaf_inventory_hostname_2 >:
-          id: < integer >
-          mgmt_ip: < IPv4_address/Mask >
-          uplink_switch_interfaces: [ < ethernet_interface_2 >, < ethernet_interface_2 > ]
-
-        # Third node
-        < l3_leaf_inventory_hostname_3 >:
-          id: < integer >
-          mgmt_ip: < IPv4_address/Mask >
-          uplink_switch_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_3 > ]
-```
-
-**Example:**
-
-```yaml
-# Defined in FABRIC.yml
-l3leaf:
-  defaults:
-    bgp_as: 65555
-    virtual_router_mac_address: 00:1c:73:00:dc:01
-    loopback_ipv4_pool: 172.16.110.0/24
-    loopback_ipv4_offset: 2
-    vtep_loopback_ipv4_pool: 172.18.110.0/24
-    uplink_ipv4_pool: 172.17.110.0/24
-    uplink_ptp:
-      enable: True
-    bgp_defaults:
-      - 'no bgp default ipv4-unicast'
-      - 'distance bgp 20 200 200'
-      - 'graceful-restart restart-time 300'
-      - 'graceful-restart'
-  node_groups:
-    # Single switch working as underlay L3 router and EVPN RS
-    RACK1_SINGLE:
-      platform: vEOS-LAB
-      uplink_interfaces: ['Ethernet1', 'Ethernet2']
-      uplink_switches: ['DC1-POD1-SPINE1', 'DC1-POD1-SPINE2']
-      spanning_tree_mode: none
-      bgp_as: 65111
-      mlag: false
-      evpn_role: server
-      evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
-      filter:
-        tenants: []
-        tags: []
-        always_include_vrfs_in_tenants: [ 'all' ] #Testing that we respect the empty tenants list, so no VRFs will be configured.
-      # Below will not have any effect since it is overridden on the node level. So just a negative test.
-      raw_eos_cli: |
-        interface Loopback1001
-          description Loopback created from raw_eos_cli under node-group RACK1_SINGLE
-      nodes:
-        DC1-POD1-LEAF1A:
-          id: 1
-          # mgmt_ip: 192.168.1.7/24 Test without management IP
-          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
-          raw_eos_cli: |
-            interface Loopback1002
-              description Loopback created from raw_eos_cli under node DC1-POD1-LEAF1A
-```
-
-## L2 Leafs Variables
-
-**Variables and Options:**
-
-```yaml
-l2leaf:
-
-  # All variables defined under `node_groups` dictionary can be defined under the defaults
-  # key will be inherited by all L2 leafs.
-  # The variables defined under a specific `node_group` will take precedence over defaults.
-  defaults:
-
-    # All variables defined under `defaults` will be inherited by the node group,
-    # if not specifically set inside it.
-
-    # Acting role in EVPN control plane.
-    # Override role definition from node_type_keys
-    # Can be set per node
-    evpn_role: < client | server | none | Default -> server >
-
-    # List of inventory hostname acting as EVPN route-servers.
-    evpn_route_servers: [ < inventory_hostname_of_evpn_server > ]
-
     # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
     # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
     # SVI IP address will be assigned as follows:
@@ -491,11 +261,59 @@ l2leaf:
     # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     inband_management_vlan: < vlan-id | Default -> 4092 >
 
-    # Arista platform family. | Required
+    # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
+    raw_eos_cli: |
+      < multiline eos cli >
+
+    # Custom structured config for eos_cli_config_gen | Optional
+    structured_config: < dictionary >
+
+  # Specify dictionary of Spine nodes | Required.
+  nodes:
+    < inventory_hostname >:
+      # Unique identifier | Required.
+      id: < integer >
+
+      # Node management IP address | Optional.
+      mgmt_ip: < IPv4_address/Mask >
+
+      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces in generic design | Required.
+      # Inheritance: node > node_group > defaults
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+```
+
+
+## Node Variables details
+
+### Generic configuration management
+
+```yaml
+< node_type >:
+
+  defaults:
+    # Arista platform family | Required.
     platform: < Arista Platform Family >
 
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
+
+    # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
+    raw_eos_cli: |
+      < multiline eos cli >
+
+    # Custom structured config for eos_cli_config_gen | Optional
+    structured_config: < dictionary >
+```
+
+### Uplink management
+
+```yaml
+< node_type >:
+
+  defaults:
+    # IPv4 subnet to use to connect to uplink switches.
+    uplink_ipv4_pool: < IPv4_address/Mask  >
 
     # Local uplink to spine interfaces (list). | Required.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
@@ -503,9 +321,114 @@ l2leaf:
     # Uplink switches interfaces (list), interface located on uplink switch. | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
+    # Number of interfaces towards uplink switches | Optional
+    max_uplink_switches: < integer >
+
+    # Enable PTP on uplink links | Optional
+    uplink_ptp:
+      enable: < boolean >
+
     # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
     p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
+  # When nodes are part of node group
+  < node-group-name >:
+    nodes:
+      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces in generic design | Required.
+      # Inheritance: node > node_group > defaults
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+
+  # When nodes are not in node_group
+  nodes:
+    <node inventory hostname>:
+      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
+      # corresponding to spines and spine_interfaces in generic design | Required.
+      # Inheritance: node > node_group > defaults
+      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+```
+
+#### ISIS underlay protocol management
+
+```yaml
+< node_type >:
+
+  defaults:
+    # isis system-id prefix (4.4 hexadecimal)
+    isis_system_id_prefix: < hhhh.hhhh >
+
+    # Number of path to configure in ECMP for ISIS
+    isis_maximum_paths: < integer >
+```
+
+### Loopback and VTEP management
+
+```yaml
+< node_type >:
+
+  defaults:
+    # IPv4 subnet for Loopback0 allocation
+    loopback_ipv4_pool: < IPv4_address/Mask  >
+
+    # Offset to define VTEP IP addresses of L3LEAF devices.
+    loopback_ipv4_offset: 2
+
+    # IPv4 subnet for VTEP/Loopback1 allocation.
+    vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
+```
+
+### BGP & EVPN Control plane
+
+```yaml
+< node_type >:
+
+  defaults:
+    # node BGP AS | Required.
+    bgp_as: < bgp_as >
+
+    # List of EOS command to apply to BGP daemon | Optional
+    bgp_defaults: [ < List of EOS commands> ]
+
+    # Acting role in EVPN control plane.
+    # Override role definition from node_type_keys
+    # Can be set per node
+    evpn_role: < client | server | none | Default -> server >
+
+    # List of inventory hostname acting as EVPN route-servers.
+    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
+```
+
+### EVPN services management
+
+```yaml
+< node_type >:
+
+  defaults:
+    # Possibility to prevent configuration of Tenant VRFs and SVIs
+    # Override role definition from node_type_keys
+    # This allows support for centralized routing.
+    evpn_services_l2_only: < false | true >
+
+    # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
+    # If filter is not defined will default to all
+    filter:
+      tenants: [ < tenant_1 >, < tenant_2 > | default all ]
+      tags: [ < tag_1 >, < tag_2 > | default -> all ]
+
+      # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
+      # Useful for "border" leaf.
+      always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
+
+    # Activate or deactivate IGMP snooping | Optional, default is true
+    igmp_snooping_enabled: < true | false >
+```
+
+### MLAG configuration management
+
+```yaml
+< node_type >:
+
+  defaults:
     # Enable / Disable auto MLAG, when two nodes are defined in node group.
     mlag: < true | false -> default true >
 
@@ -513,337 +436,44 @@ l2leaf:
     mlag_dual_primary_detection: < true | false -> default false >
 
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ '< ethernet_interface_3 >', '< ethernet_interface_4 >' ]
+    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
-    # Set origin of routes received from MLAG iBGP peer to incomplete. The purpose is to optimize routing for leaf
-    # loopbacks from spine perspective and avoid suboptimal routing via peerlink for control plane traffic.
-    mlag_ibgp_origin_incomplete: < true | false -> default true >
+    # Underlay L3 peering SVI interface id
+    mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
 
     # MLAG Peer Link (control link) SVI interface id
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
-    # Spanning tree mode (note - only mstp has been validated at this time) | Required.
-    spanning_tree_mode: < mstp >
+    # Spanning tree mode | Required.
+    spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
 
-    # Spanning tree priority | Required.
-    spanning_tree_priority: < spanning-tree priority >
+    # Spanning tree priority.
+    spanning_tree_priority: < spanning-tree priority -> default 32768 >
 
-    # Activate or deactivate IGMP snooping for all l2leaf devices | Optional default is true
-    igmp_snooping_enabled: < true | false >
+    # Spanning tree priority.
+    spanning_tree_root_super: < true | false  >
 
-    # Filter L3 and L2 network services based on tenant and tags - and filter | Optional
-    # If filter is not defined will default to all
-    filter:
-      tenants: [ '< tenant_1 >', '< tenant_2 >' | default 'all' ]
-      tags: [ '< tag_1 >', '< tag_2 >' | default -> 'all' ]
-
-    # Activate or deactivate IGMP snooping for node groups devices
-    igmp_snooping_enabled: < true | false >
-
-    # EOS CLI rendered directly on the root level of the final EOS configuration
-    raw_eos_cli: |
-      < multiline eos cli >
-
-    # Custom structured config for eos_cli_config_gen
-    structured_config: < dictionary >
-
-    # EOS CLI rendered directly on the root level of the final EOS configuration
-    # Overrides the setting on node_group level.
-    raw_eos_cli: |
-      < multiline eos cli >
-
-  # The node groups are group of one or multiple nodes where specific variables can be
-  # defined related to the topology and allowed L3 and L2 network services.
-  # The variables defined under a specific `node_group` will take precedence over defaults.
-  node_groups:
-
-    # node_group_1, will result in stand-alone leaf.
-    < node_group_1 >:
-
-      # The node name must be the same name as inventory_hostname | Required
-      # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
-      # unless the "l2leaf.defaults.mlag:" key is set to false.
-      nodes:
-
-        # First node
-        < l2_leaf_inventory_hostname_1 >:
-
-          # Unique identifier | Required.
-          id: < integer >
-
-          # Node management IP address | Optional.
-          mgmt_ip: < IPv4_address/Mask >
-
-          # l3leaf interfaces (list), interface located on l3leaf,
-          # corresponding to parent_l3leafs and uplink_interfaces | Required.
-          l3leaf_interfaces: [ < ethernet_interface_6 >, < ethernet_interface_6 > ]
-
-          # EOS CLI rendered directly on the root level of the final EOS configuration
-          # Overrides the setting on node_group level.
-          raw_eos_cli: |
-            < multiline eos cli >
-
-          # Custom structured config for eos_cli_config_gen
-          # Overrides the setting on node_group level.
-          structured_config: < dictionary >
-
-    # node_group_2, will result in MLAG pair.
-    < node_group_2 >:
-      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
-      nodes:
-
-        # Second node.
-        < l2_leaf_inventory_hostname_2 >:
-          id: < integer >
-          mgmt_ip: < IPv4_address/Mask >
-          l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
-
-        # Third node.
-        < l2_leaf_inventory_hostname_3 >:
-          id: < integer >
-          mgmt_ip: < IPv4_address/Mask >
-          l3leaf_interfaces: [ < ethernet_interface_8 >, < ethernet_interface_8 > ]
-
-    # node_group_3, will result in Active/Active connection to L3LEAFs.
-    # Can be applied on single L2LEAF or MLAG nodes.
-    < node_group_3 >:
-      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
-      short_esi: < short esi value >
-      nodes:
-
-        # First node.
-        < l2_leaf_inventory_hostname_2 >:
-          id: < integer >
-          mgmt_ip: < IPv4_address/Mask >
-          l3leaf_interfaces: [ < ethernet_interface_7 >, < ethernet_interface_7 > ]
+    # Virtual router mac address for anycast gateway | Required.
+    virtual_router_mac_address: < mac address >
 ```
 
-???+ note "Short ESI description"
-    To help provide consistency when configuring EVPN A/A ESI values, arista.avd provides an abstraction in the form of a `short_esi` key.
-    `short_esi` is an abbreviated 3 octets value to encode [Ethernet Segment ID](https://tools.ietf.org/html/rfc7432#section-8.3.1) and LACP ID.
-    Transformation from abstraction to network values is managed by a [filter_plugin](../../../../plugins/README.md) and provides following result:
-
-    - _EVPN ESI_: 0000:0000:0808:0707:0606
-    - _LACP ID_: 0808.0707.0606
-    - _Route Target_: 08:08:07:07:06:06
-
-    ```yaml
-    # Short ESI setting:
-    short_esi: 0808:0707:0606
-
-    # Short ESI transformation result:
-    esi: 0000:0000:0808:0707:0606
-    rt: 08:08:07:07:06:06
-    lacp_id: 0808.0707.0606
-    ```
-
-**Example:**
+### Inband management VLAN
 
 ```yaml
-# Defined in FABRIC.yml
-
-l2leaf:
-  defaults:
-    platform: vEOS-LAB
-    parent_l3leafs: [ DC1-LEAF2A, DC1-LEAF2B ]
-    uplink_interfaces: [ Ethernet1, Ethernet2 ]
-    mlag_interfaces: [ Ethernet3, Ethernet4 ]
-    spanning_tree_mode: mstp
-    spanning_tree_priority: 16384
-  node_groups:
-    DC1_L2LEAF4:
-      uplink_interfaces: [ Ethernet11, Ethernet12 ]
-      filter:
-        tenants: [ Tenant_A ]
-        tags: [ opzone, web, app ]
-      nodes:
-        DC1-L2LEAF4A:
-          id: 8
-          mgmt_ip: 192.168.2.112/24
-          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
-    DC1_L2LEAF5:
-      parent_l3leafs: [ DC1-SVC3A, DC1-SVC3B ]
-      nodes:
-        DC1-L2LEAF5A:
-          id: 10
-          mgmt_ip: 192.168.2.113/24
-          l3leaf_interfaces: [ Ethernet5, Ethernet5 ]
-        DC1-L2LEAF5B:
-          id: 11
-          mgmt_ip: 192.168.2.114/24
-          l3leaf_interfaces: [ Ethernet6, Ethernet6 ]
-    DC1_L2LEAF6:
-      parent_l3leafs: [ DC1-LEAF6A, DC1-LEAF6B ]
-      short_esi: 0808:0707:0606
-      nodes:
-        DC1-L2LEAF6A:
-          id: 12
-          mgmt_ip: 192.168.200.116/24
-          l3leaf_interfaces: [ Ethernet7, Ethernet7 ]
-```
-
-## Super Spine Variables
-
-This section provides additional settings to support super-spine in your l3ls-evpn topology
-
-Defaults:
-
-```yaml
-max_spine_to_super_spine_links: 1  # number of parallel links between spines and super-spines
-```
-
-Assigned to the DC group:
-
-```yaml
-
-# maximum number of super-spines, changing this parameter affects address allocation.
-# Set this number to potential growth of super spine nodes, so fabric IPs don't get recalculated
-# when additional super spines are added in the future
-max_super_spines: < integer >= number of super_spine nodes >
-super_spine:
-  platform: vEOS-LAB  # super-spine platform
-  bgp_as: <super-spine BGP AS>
+< node_type >:
 
   defaults:
-    # EOS CLI rendered directly on the root level of the final EOS configuration
-    raw_eos_cli: |
-      < multiline eos cli >
-    # Custom structured config for eos_cli_config_gen
-    structured_config: < dictionary >
+    # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
+    # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
+    # SVI IP address will be assigned as follows:
+    # virtual-router: <subnet> + 1
+    # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
+    # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
+    # l2leafs       : <subnet> + 3 + <l2leaf id>
+    # GW on l2leafs : <subnet> + 1
+    # Assign range larger than total l2leafs + 5
+    inband_management_subnet: < IPv4subnet/mask >
 
-  nodes:
-    SU-01:  # super-spine name
-      id: 1
-      mgmt_ip: 192.168.0.1/24
-      # EVPN Role for Overlay BGP Peerings | Optional, default is none
-      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
-      evpn_role: < client | server | none | default -> none  >
-      # Peer with these EVPN Route Servers / Route Reflectors | Optional
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname >]
-      # EOS CLI rendered directly on the root level of the final EOS configuration
-      raw_eos_cli: |
-        < multiline eos cli >
-      # Custom structured config for eos_cli_config_gen
-      structured_config: < dictionary >
-
-# IP address range for loopbacks for all super-spines in the DC,
-# assigned as /32s
-# Assign range larger then total super-spines
-super_spine_loopback_network_summary: 192.168.100.0/24
-
-# additional lines for super-spine BGP config
-super_spine_bgp_defaults:
-  #  - update wait-for-convergence
-  #  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-```
-
-Assigned to Super Spine Group:
-
-```yaml
-type: super-spine  # identifies every host in the group as super-spine
-```
-
-Assigned to Every POD Group:
-
-```yaml
-spine:
-  # list of spine interfaces used as uplinks to super-spines
-  # taking `max_spine_to_super_spine_links` into account
-  # for example: spine1, spine2, spine3, ...
-  # or spine1, spine1, spine2, spine2, etc.
-  uplinks_to_super_spine_interfaces: [ Ethernet10, Ethernet11, Ethernet12, Ethernet13 ]
-  nodes:
-    <spine-hostname>:
-      # super-spine interfaces to spines
-      # taking `max_spine_to_super_spine_links` into account
-      # for example: super-spine1, super-spine2, super-spine3, ...
-      # or super-spine1, super-spine1, super-spine2, super-spine2, etc.
-      super_spine_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
-    <-- etc. -->
-
-# Point to Point Network Summary range, assigned as /31 for each
-# uplink interfaces
-# Assign range larger then total
-# [ max_spines_in_a_POD * max_super_spines * max_spine_to_super_spine_links * 2 ]
-super_spine_underlay_p2p_network_summary: 172.31.1.0/24
-```
-
-Following variables must be now defined on DC and not POD level:
-
-- `p2p_uplinks_mtu`
-- `bgp_peer_groups`
-
-## Overlay Controllers Variables
-
-This section provides options to enable overlay-controller in your l3ls-evpn topology.
-
-Defaults:
-```yaml
-# The maximum number of uplinks for each overlay_controller.
-#This is used to calculate P2P Link IP addresses, and should not be changed after deployment.
-max_overlay_controller_to_switch_links: 2
-```
-
-Assigned to the DC group:
-
-```yaml
-overlay_controller:
-  platform: <platform>   # overlay-controller platform
-
-  # All variables defined under `nodes` dictionary can be defined under the defaults key will be inherited by all overlay-controllers.
-  # The variables defined under a specific node will take precedence over defaults.
-  defaults:
-
-  nodes:
-    <inventory_hostname>:
-      id: <number> # Starting from 1
-      # Rack that the switch is located in (only used in snmp_settings location) | Optional
-      rack: < rack_name >
-      mgmt_ip: < IPv4_address/Mask >
-      remote_switches_interfaces: [ <remote_switch_interface> , <remote_switch_interface> ] # Interfaces on remote switch
-
-      remote_switches: [ <switch_inventory_hostname> , <switch_inventory_hostname> ] #Remote Switches connected to uplink interfaces
-      uplink_to_remote_switches: [ <uplink_interface> , <uplink_interface> ]
-      bgp_as: <BGP AS>
-
-      # EVPN Role for Overlay BGP Peerings | Optional, default is none
-      # For IBGP overlay "server" means route-reflector. For EBGP overlay "server" means route-server.
-      evpn_role: < client | server | none | default -> none  >
-
-      # Peer with these EVPN Route Servers / Route Reflectors | Optional
-      evpn_route_servers: [ < route_server_inventory_hostname >, < route_server_inventory_hostname > ]
-
-      # EOS CLI rendered directly on the root level of the final EOS configuration
-      raw_eos_cli: |
-        < multiline eos cli >
-
-      # Custom structured config for eos_cli_config_gen
-      structured_config: < dictionary >
-
-# Point to Point Network Summary range, assigned as /31 for each uplink interfaces
-# Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]
-overlay_controller_p2p_network_summary: < IPv4_network/Mask >
-# IP address summary for BGP evpn overlay peering loopback for Overlay Controllers | Required
-# Assigned as /32 to Loopback0
-# Assign range larger then:
-# [ total overlay_controllers ]
-overlay_controller_loopback_network_summary: < IPv4_network/Mask >
-# Enable BFD for p2p BGP sessions - useful if the overlay_controller is a VM | Optional
-overlay_controller_p2p_bfd: < true | false | default -> false >
-# additional lines for overlay-controller BGP config
-overlay_controller_bgp_defaults:
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-```
-
-Assigned to Overlay Controller Group:
-
-```yaml
-type: overlay-controller # identifies every host in the group as overlay-controller
+    # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
+    inband_management_vlan: < vlan-id | Default -> 4092 >
 ```
