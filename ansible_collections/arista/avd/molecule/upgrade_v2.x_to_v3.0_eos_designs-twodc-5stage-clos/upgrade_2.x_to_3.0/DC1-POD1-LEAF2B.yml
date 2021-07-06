@@ -144,7 +144,7 @@ overlay_controller:
 # Change from overlay_controller.nodes.DC1-RS2.remote_switches to overlay_controller.defaults.uplink_switches
       uplink_switches: ['DC1-SUPER-SPINE2', 'DC1-POD2-SPINE1', 'DC1-POD2-LEAF1A']
 
-# Switch type definitions
+# Node type definitions
 node_type_keys:
   spine:
     type: spine

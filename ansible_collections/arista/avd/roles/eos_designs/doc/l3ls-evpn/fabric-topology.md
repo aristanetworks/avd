@@ -59,7 +59,7 @@ pod_name: < POD_Name >
 
 The following table provide information on the default switch types that have been pre-defined in `eos_designs/defaults/main.yml`. To customize or create new switch types, please refer to [node types definition](../../common/node-types/)
 
-| Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| Node Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
 | super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
 | spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |

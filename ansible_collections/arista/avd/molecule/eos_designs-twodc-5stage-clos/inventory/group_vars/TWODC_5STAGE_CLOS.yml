@@ -101,7 +101,7 @@ platform_settings:
 
 custom_structured_configuration_list_merge: 'append'
 
-# Switch type definitions
+# Node type definitions
 node_type_keys:
   spine:
     type: spine

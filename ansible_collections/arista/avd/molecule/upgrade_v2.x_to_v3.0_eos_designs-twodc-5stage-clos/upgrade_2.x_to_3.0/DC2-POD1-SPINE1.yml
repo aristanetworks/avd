@@ -118,7 +118,7 @@ overlay_controller:
 # Change from overlay_controller.nodes.DC2-RS2.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
 
-# Switch type definitions
+# Node type definitions
 node_type_keys:
   spine:
     type: spine

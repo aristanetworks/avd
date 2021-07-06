@@ -1,26 +1,9 @@
-# Node types definition
+# Node Types Definition
 
-The fabric topology variables define the connectivity between the various switch types, as well as override the default switch properties.
-
-## Default nodes
-
-The following table provide information on the default switch types that have been pre-defined in [`default variables`](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/defaults/main.yml).
-
-| Switch Type Key    | Underlay Router | Uplink Type  | Default EVPN Role | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
-| :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
-| super_spine        | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spine              | ✅              | p2p          | server            | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-| spline             | ✅              | p2p          | none              | ✅                  | ✅                   | ✘    | ✅           | ✘                   |
-| l3leaf             | ✅              | p2p          | client            | ✅                  | ✅                   | ✅   | ✅           | ✅                   |
-| l2leaf             | ✘               | port-channel | none              | ✅                  | ✘                   | ✘    | ✅           | ✅                   |
-| overlay_controller | ✅              | p2p          | none              | ✘                   | ✘                   | ✘    | ✘            | ✘                   |
-
-## Node type definition
-
-Node type definition is done under `node_type_keys`. This dictionary has all type of devices you can use in your topologies. Each node type can be configured with the following knobs:
+The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured with the following options:
 
 ```yaml
-# Define Switch Type Keys, to specify the properties of each switch type in the fabric
+# Define Node Type Keys, to specify the properties of each node type in the fabric
 # This allows for complete customization of the fabric layout.
 # This should be defined in top level group_var for the fabric.
 node_type_keys:
@@ -28,16 +11,16 @@ node_type_keys:
     # Required | The value of "type" set on each switch
     type: <type value matching this node_type_key>
 
-    # Optional | Are endpoints connected to this switch type
+    # Optional | Are endpoints connected to this node type
     connected_endpoints: < true | false | default -> false >
 
     # Optional | Default evpn_role. Can be overridden in topology vars.
     default_evpn_role: < none | client | server | default -> none >
 
-    # Optional | Can this switch type support mlag
+    # Optional | Can this node type support mlag
     mlag_support: < true | false | default -> false >
 
-    # Optional | Will network services be deployed on this switch type
+    # Optional | Will network services be deployed on this node type
     network_services:
       # Vlans
       l2: < true | false | default -> false >
@@ -45,7 +28,7 @@ node_type_keys:
       # Only supported with underlay_router
       l3: < true | false | default -> false >
 
-    # Optional | Is this switch type a L3 device
+    # Optional | Is this node type a L3 device
     underlay_router: < true | false | default -> true >
 
     # Optional | Uplinks must be p2p if "vtep" or "underlay_router" is true.
