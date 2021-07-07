@@ -8,7 +8,7 @@ When we use a lab solution like [EVE-NG](https://www.eve-ng.net/) or GNS3, it mi
 
 Below is a standard lab we use for development. And of course our laptop are not directly connected to EOS management plane.
 
-![Standard EVE-NG lab with NAT](../../_media/lab-nat-topology-example.png)
+![Standard EVE-NG lab with NAT](../_media/lab-nat-topology-example.png)
 
 ## Requirements
 
