@@ -2154,15 +2154,6 @@ router_ospf:
           summary_lsa:
             override_metric: < Integer 1-16777215 >
       mpls_ldp_sync_default: < true | false >
-      # area specific configuration
-      area:
-        - ospf_area: < ospf_area >
-          stub: < no_summary | default | on >  # any string except no_summary will produce default stub configuration
-        - ospf_area: < ospf_area >
-          nssa: < no_summary | nssa-only | default | on >  # any string except no_summary or nssa-only will produce default stub configuration
-          default-information-originate:
-            metric: < Integer 1-65535 >  # Value of the route metric
-            metric-type: < 1 | 2 >  # OSPF metric type
 ```
 
 #### Router ISIS Configuration
