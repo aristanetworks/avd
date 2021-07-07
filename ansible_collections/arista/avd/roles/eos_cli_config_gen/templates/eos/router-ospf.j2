@@ -143,9 +143,9 @@ router ospf {{ process_id }}
 {%                if ospf_area_vars.nssa | lower == "no_summary" %}
 {%                    set ospf_area_cli = ospf_area_cli ~ " nssa no-summary" %}
 {%                elif ospf_area_vars.nssa | lower == "nssa_only" %}
-{%                    set ospf_area_cli = ospf_area_cli ~ " nssa " ~ default_information_cli ~ " nssa-only" %}
+{%                    set ospf_area_cli = ospf_area_cli ~ " nssa" ~ default_information_cli ~ " nssa-only" %}
 {%                elif ospf_area_vars.nssa | lower in ("true", true, "on") %}
-{%                    set ospf_area_cli = ospf_area_cli ~ " nssa " ~ default_information_cli %}
+{%                    set ospf_area_cli = ospf_area_cli ~ " nssa" ~ default_information_cli %}
 {%                else %}
 {# raise an error using non-existing variable and arista.avd.defined if the value is out of acceptable range #}
 {%                    if non_existing_var is arista.avd.defined(
