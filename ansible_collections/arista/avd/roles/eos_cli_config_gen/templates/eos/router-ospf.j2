@@ -115,6 +115,13 @@ router ospf {{ process_id }}
 {%         endif %}
    {{ redistribute_connected_cli }}
 {%     endif %}
+{%     if router_ospf.process_ids[process_id].redistribute.bgp is defined %}
+{%         set redistribute_bgp_cli = "redistribute bgp" %}
+{%         if router_ospf.process_ids[process_id].redistribute.bgp.route_map is arista.avd.defined %}
+{%             set redistribute_bgp_cli = redistribute_bgp_cli ~ " route-map " ~ router_ospf.process_ids[process_id].redistribute.bgp.route_map %}
+{%         endif %}
+   {{ redistribute_bgp_cli }}
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].auto_cost_reference_bandwidth is arista.avd.defined %}
    auto-cost reference-bandwidth {{ router_ospf.process_ids[process_id].auto_cost_reference_bandwidth }}
 {%     endif %}
