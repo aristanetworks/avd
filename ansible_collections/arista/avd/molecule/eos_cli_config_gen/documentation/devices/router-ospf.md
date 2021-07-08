@@ -198,6 +198,8 @@ interface Vlan24
 | 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 700 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -222,6 +224,13 @@ interface Vlan24
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+### OSPF area specific configuration
+
+| Process ID | OSPF Area | Area Specific Config | Area Specific Config Options |
+|------------|-----------|----------------------|------------------------------|
+| 600 | 0.0.10.10 | stub |  |
+| 700 | 0.0.20.20 | nssa | nssa-only, default-information originate metric 50 metric-type 1 |
 
 ### OSPF Interfaces
 
@@ -277,6 +286,12 @@ router ospf 400
 !
 router ospf 500
    max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
+!
+router ospf 600
+   area 0.0.10.10 stub no-summary
+!
+router ospf 700
+   area 0.0.20.20 nssa metric 50 metric-type 1 nssa-only
 ```
 
 # Multicast
