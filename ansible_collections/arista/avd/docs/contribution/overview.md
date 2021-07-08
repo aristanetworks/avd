@@ -106,7 +106,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 #### Submitting Pull Requests
 
-* If you're interested in contributing to Arista Validated Design (AVD), be sure to check out our [getting started](../getting-started) documentation for tips on setting up your development environment.
+* If you're interested in contributing to Arista Validated Design (AVD), be sure to check out our [getting started](getting-started.html) documentation for tips on setting up your development environment.
 
 * It is recommended to open an issue **before** starting work on a pull request, and discuss your idea with the Arista Validated Design (AVD) maintainers before beginning work. This will help prevent wasting time on something that might we might not be able to implement. When suggesting a new feature, also make sure it won't conflict with any work that's already in progress.
 
@@ -120,7 +120,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 * All code submissions should meet the following criteria (CI will enforce these checks):
 
-  * Jinja2 templates follow our [guidelines](../style-guide/).
+  * Jinja2 templates follow our [guidelines](style-guide.html).
   * Molecule is updated with data covering your fix.
   * Molecule artifacts are updated with your coverage.
   * Python syntax is valid.

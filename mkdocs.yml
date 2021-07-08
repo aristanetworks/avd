@@ -9,7 +9,7 @@ repo_name: AVD on Github
 repo_url: https://github.com/aristanetworks/ansible-avd
 
 # Configuration
-use_directory_urls: true
+use_directory_urls: false
 theme:
   name: material
   custom_dir: ansible_collections/arista/avd/docs/_overrides
