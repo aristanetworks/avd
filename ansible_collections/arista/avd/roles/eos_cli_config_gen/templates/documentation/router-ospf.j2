@@ -145,6 +145,69 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# OSPF area specific configuration #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids %}
+{%         if router_ospf.process_ids[process].area_specific_config is arista.avd.defined %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### OSPF area specific configuration
+
+| Process ID | OSPF Area | Area Specific Config | Area Specific Config Options |
+|------------|-----------|----------------------|------------------------------|
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             if router_ospf.process_ids[process].area_specific_config is arista.avd.defined %}
+{%                 for ospf_area_vars in router_ospf.process_ids[process].area_specific_config | arista.avd.natural_sort %}
+{%                     set area_specific_cfg_options = "" %}
+{%                     if ospf_area_vars.stub is arista.avd.defined %}
+{%                         set area_specific_cfg = "stub" %}
+{%                         if ospf_area_vars.stub == "no_summary" %}
+{%                             if area_specific_cfg_options|length > 0 %}
+{#                             add comma if string is not empty #}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ ", " %}
+{%                             endif %}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ "no-summary" %}
+{%                         endif %}
+{%                     elif ospf_area_vars.nssa is arista.avd.defined %}
+{%                         set area_specific_cfg = "nssa" %}
+{%                         if ospf_area_vars.nssa == "no_summary" %}
+{%                             if area_specific_cfg_options|length > 0 %}
+{#                             add comma if string is not empty #}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ ", " %}
+{%                             endif %}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ "no-summary" %}
+{%                         endif %}
+{%                         if ospf_area_vars.nssa == "nssa_only" %}
+{%                             if area_specific_cfg_options|length > 0 %}
+{#                             add comma if string is not empty #}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ ", " %}
+{%                             endif %}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ "nssa-only" %}
+{%                         endif %}
+{%                         if ospf_area_vars.default_information_originate is arista.avd.defined %}
+{%                             if area_specific_cfg_options|length > 0 %}
+{#                             add comma if string is not empty #}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ ", " %}
+{%                             endif %}
+{%                             set area_specific_cfg_options = area_specific_cfg_options ~ "default-information originate" %}
+{%                             if ospf_area_vars.default_information_originate.metric is arista.avd.defined %}
+{%                                 set area_specific_cfg_options = area_specific_cfg_options ~ " metric " ~ ospf_area_vars.default_information_originate.metric %}
+{%                             endif %}
+{%                             if ospf_area_vars.default_information_originate.metric_type is arista.avd.defined %}
+{%                                 set area_specific_cfg_options = area_specific_cfg_options ~ " metric-type " ~ ospf_area_vars.default_information_originate.metric_type %}
+{%                             endif %}
+{%                         endif %}
+{%                     else %}
+{%                         set area_specific_cfg = "undefined" %}{# to highlight potential errors #}
+{%                     endif %}
+| {{ process }} | {{ ospf_area_vars.ospf_area }} | {{ area_specific_cfg }} | {{ area_specific_cfg_options }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# Interfaces #}
 {%     set ethernet_interface_ospf = namespace(configured=false) %}
 {%     set port_channel_interface_ospf = namespace(configured=false) %}
