@@ -241,7 +241,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4094 | MLAG_PEER | MLAG  |
+| 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
