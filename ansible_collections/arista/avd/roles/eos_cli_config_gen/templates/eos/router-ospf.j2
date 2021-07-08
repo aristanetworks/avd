@@ -111,7 +111,7 @@ router ospf {{ process_id }}
 {%                     if non_existing_var is arista.avd.defined(
    'my_value', fail_action='error',
    var_name='Incorrect variable value. Acceptable values: true, on, no_summary. router_ospf.process_ids[process_id].area_specific_config[<index>].stub') %}
- {%                    endif %}  
+{%                     endif %}
 {%                endif %}
 {# if nssa area is configured... #}
 {%            elif ospf_area_vars.nssa is arista.avd.defined %}
