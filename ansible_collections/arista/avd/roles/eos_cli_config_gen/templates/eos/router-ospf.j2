@@ -118,6 +118,7 @@ router ospf {{ process_id }}
 {# 1st, produce default-information-originate config, if defined. Otherwise use empty string.  #}
 {%            set default_information_cli = '' %}
 {%                if ospf_area_vars.default_information_originate is arista.avd.defined %}
+{%                    set default_information_cli = default_information_cli ~ ' default-information-originate' %}
 {# set metric for default-information-originate #}
 {%                    if ospf_area_vars.default_information_originate.metric is arista.avd.defined %}
 {%                        set default_information_cli = default_information_cli ~ " metric " ~ ospf_area_vars.default_information_originate.metric %}
