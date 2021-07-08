@@ -211,7 +211,6 @@ vlan internal order ascending range 1006 1199
 | 112 | Tenant_A_OP_Zone_3 | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
-| 4092 | L2LEAF_INBAND_MGMT | - |
 
 ## VLANs Device Configuration
 
