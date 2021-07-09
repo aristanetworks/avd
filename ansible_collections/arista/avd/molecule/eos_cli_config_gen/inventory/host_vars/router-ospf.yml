@@ -62,7 +62,9 @@ router_ospf:
       areas:
         '0.0.0.2':
           filter:
-            network: 1.1.1.0/24
+            networks:
+              - 1.1.1.0/24
+              - 2.2.2.0/24
         '0.0.0.3':
           filter:
             prefix_list: PL-OSPF-FILTERING

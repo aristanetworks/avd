@@ -27,9 +27,9 @@ router ospf {{ process_id }}
    bfd default
 {%     endif %}
 {%     for area in router_ospf.process_ids[process_id].areas | arista.avd.natural_sort %}
-{%         if router_ospf.process_ids[process_id].areas[area].filter.network is arista.avd.defined %}
-   area {{ area }} filter {{ router_ospf.process_ids[process_id].areas[area].filter.network }}
-{%         endif %}
+{%         for filter_network in router_ospf.process_ids[process_id].areas[area].filter.networks | arista.avd.natural_sort %}
+   area {{ area }} filter {{ filter_network }}
+{%         endfor %}
 {%         if router_ospf.process_ids[process_id].areas[area].filter.prefix_list is arista.avd.defined %}
    area {{ area }} filter prefix-list {{ router_ospf.process_ids[process_id].areas[area].filter.prefix_list }}
 {%         endif %}

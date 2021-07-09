@@ -2158,7 +2158,9 @@ router_ospf:
       areas:
         < area >:
           filter:
-            network: < IPv4 subnet / netmask >
+            networks:
+              - < IPv4 subnet / netmask >
+              - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
       maximum_paths: < Integer 1-32 >
       max_metric:
