@@ -194,8 +194,8 @@
 
 ### Router OSPF Areas
 
-| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Config Options |
-| ---------- | ---- | --------- | --------------- | ------------------ | ------------------------- |
+| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
+| ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
 {%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             for area in router_ospf.process_ids[process].areas | arista.avd.natural_sort %}
 {%                 if router_ospf.process_ids[process].areas[area].filter.networks is arista.avd.defined %}
@@ -209,15 +209,18 @@
 {%                 if router_ospf.process_ids[process].areas[area].no_summary is arista.avd.defined(true) %}
 {%                     do additional_cfg_options_list.append('no-summary') %}
 {%                 endif %}
+{%                 if router_ospf.process_ids[process].areas[area].default_information_originate is defined %}
+{%                     set tmp_cli = "default-information-originate" %}
+{%                     if router_ospf.process_ids[process].areas[area].default_information_originate.metric is arista.avd.defined %}
+{%                         set tmp_cli = tmp_cli ~ " metric " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric | arista.avd.default('1') %}
+{%                     endif %}
+{%                     if router_ospf.process_ids[process].areas[area].default_information_originate.metric_type is arista.avd.defined %}
+{%                         set tmp_cli = tmp_cli ~ " metric-type " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
+{%                     endif %}
+{%                     do additional_cfg_options_list.append(tmp_cli) %}
+{%                 endif %}
 {%                 if router_ospf.process_ids[process].areas[area].nssa_only is arista.avd.defined(true) %}
 {%                     do additional_cfg_options_list.append('nssa-only') %}
-{%                 endif %}
-{%                 if router_ospf.process_ids[process].areas[area].default_information_originate is arista.avd.defined %}
-{%                     do additional_cfg_options_list.append(
-    "default-information-originate metric " ~
-    router_ospf.process_ids[process].areas[area].default_information_originate.metric | arista.avd.default('1') ~ " metric-type " ~
-    router_ospf.process_ids[process].areas[area].default_information_originate.metric_type | arista.avd.default('2')
-) %}
 {%                 endif %}
 | {{ process }} | {{ area }} | {{ area_type }} | {{ network_filter }} | {{ prefix_list_filter }} | {{ additional_cfg_options_list | join(', ') }} |
 {%             endfor %}

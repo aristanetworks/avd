@@ -28,29 +28,39 @@ router ospf {{ process_id }}
 {%     endif %}
 {%     for area in router_ospf.process_ids[process_id].areas | arista.avd.natural_sort %}
 {# OSPF stub area configuration #}
-{%     if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "stub" %}
-{%         set stub_area_cli = "area " ~ area ~ " stub" %}
-{%         if router_ospf.process_ids[process_id].areas[area].no_summary is arista.avd.defined(true) %}
-{%             set stub_area_cli = stub_area_cli ~ " no-summary" %}
-{%         endif %}
+{%         if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "stub" %}
+{%             set stub_area_cli = "area " ~ area ~ " stub" %}
+{%             if router_ospf.process_ids[process_id].areas[area].no_summary is arista.avd.defined(true) %}
+{%                 set stub_area_cli = stub_area_cli ~ " no-summary" %}
+{%             endif %}
    {{ stub_area_cli }}
-{%     endif %}
+{%         endif %}
 {# OSPF nssa area configuration #}
-{%     if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "nssa" %}
-{%         set nssa_area_cli = "area " ~ area ~ " nssa" %}
-{%         if router_ospf.process_ids[process_id].areas[area].no_summary is arista.avd.defined(true) %}
-{%             set nssa_area_cli = nssa_area_cli ~ " no-summary" %}
-{%         else %}
-{%             if router_ospf.process_ids[process_id].areas[area].default_information_originate is arista.avd.defined %}
-{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate metric " ~
-   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric | arista.avd.default('1') ~ " metric-type " ~
-   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
+{%         if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "nssa" %}
+{#             print_nssa is set to ensure not to print "area xx nssa" twice in certain corner cases #}
+{%             set ns = namespace(print_nssa = true) %}
+{%             set nssa_area_cli = "area " ~ area ~ " nssa" %}
+{%             if router_ospf.process_ids[process_id].areas[area].no_summary is arista.avd.defined(true) %}
+{%                 set ns.print_nssa = false %}
+   {{ nssa_area_cli }} no-summary
+{%             endif %}
+{%             if router_ospf.process_ids[process_id].areas[area].default_information_originate is defined %}
+{%                 set ns.print_nssa = true %}
+{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate" %}
+{%                 if router_ospf.process_ids[process_id].areas[area].default_information_originate.metric is arista.avd.defined %}
+{%                     set nssa_area_cli = nssa_area_cli ~ " metric " ~ router_ospf.process_ids[process_id].areas[area].default_information_originate.metric | arista.avd.default('1') %}
+{%                 endif %}
+{%                 if router_ospf.process_ids[process_id].areas[area].default_information_originate.metric_type is arista.avd.defined %}
+{%                     set nssa_area_cli = nssa_area_cli ~ " metric-type " ~ router_ospf.process_ids[process_id].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
+{%                 endif %}
 {%             endif %}
 {%             if router_ospf.process_ids[process_id].areas[area].nssa_only is arista.avd.defined(true) %}
+{%                 set ns.print_nssa = true %}
 {%                 set nssa_area_cli = nssa_area_cli ~ " nssa-only" %}
 {%             endif %}
-{%         endif %}
+{%             if ns.print_nssa == true %}
    {{ nssa_area_cli }}
+{%             endif %}
 {%         endif %}
 {# OSPF inter-area filtering configuration #}
 {%         for filter_network in router_ospf.process_ids[process_id].areas[area].filter.networks | arista.avd.natural_sort %}
