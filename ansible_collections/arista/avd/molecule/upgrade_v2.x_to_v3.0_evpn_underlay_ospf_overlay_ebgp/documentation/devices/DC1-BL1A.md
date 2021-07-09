@@ -371,8 +371,8 @@ interface Port-Channel5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.6/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.6/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
 
 #### IPv6
 
@@ -389,13 +389,13 @@ interface Port-Channel5
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.6/32
+   ip address 192.168.255.10/32
    ip ospf area 0.0.0.0
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.6/32
+   ip address 192.168.254.10/32
    ip ospf area 0.0.0.0
 ```
 
@@ -528,7 +528,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 101 | 192.168.255.6 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | - | - | - |
+| 101 | 192.168.255.10 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | - | - | - |
 
 ### OSPF Interfaces
 
@@ -547,7 +547,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router ospf 101
-   router-id 192.168.255.6
+   router-id 192.168.255.10
    passive-interface default
    no passive-interface Ethernet1
    no passive-interface Ethernet2
@@ -564,7 +564,7 @@ router ospf 101
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65104|  192.168.255.6 |
+| 65104|  192.168.255.10 |
 
 | BGP Tuning |
 | ---------- |
@@ -611,7 +611,7 @@ router ospf 101
 ```eos
 !
 router bgp 65104
-   router-id 192.168.255.6
+   router-id 192.168.255.10
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 10 ecmp 10

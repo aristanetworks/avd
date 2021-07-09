@@ -406,8 +406,8 @@ interface Port-Channel7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.4/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.4/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.8/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.8/32 |
 
 #### IPv6
 
@@ -430,14 +430,14 @@ interface Port-Channel7
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.4/32
+   ip address 192.168.255.8/32
    isis enable EVPN_UNDERLAY
    isis passive
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.4/32
+   ip address 192.168.254.8/32
    isis enable EVPN_UNDERLAY
    isis passive
 ```
@@ -603,7 +603,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 router isis EVPN_UNDERLAY
    net 49.0001.0001.0001.0004.00
    is-type level-2
-   router-id ipv4 192.168.255.4
+   router-id ipv4 192.168.255.8
    log-adjacency-changes
    !
    address-family ipv4 unicast
@@ -617,7 +617,7 @@ router isis EVPN_UNDERLAY
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000|  192.168.255.4 |
+| 65000|  192.168.255.8 |
 
 | BGP Tuning |
 | ---------- |
@@ -656,7 +656,7 @@ router isis EVPN_UNDERLAY
 ```eos
 !
 router bgp 65000
-   router-id 192.168.255.4
+   router-id 192.168.255.8
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -729,7 +729,7 @@ IGMP snooping is globally enabled.
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | permit | set extcommunity soo 192.168.254.4:1 additive |
+| 10 | permit | set extcommunity soo 192.168.254.8:1 additive |
 
 ### Route-maps Device Configuration
 
@@ -741,7 +741,7 @@ route-map RM-EVPN-SOO-IN deny 10
 route-map RM-EVPN-SOO-IN permit 20
 !
 route-map RM-EVPN-SOO-OUT permit 10
-   set extcommunity soo 192.168.254.4:1 additive
+   set extcommunity soo 192.168.254.8:1 additive
 ```
 
 ## IP Extended Community Lists
@@ -750,13 +750,13 @@ route-map RM-EVPN-SOO-OUT permit 10
 
 | List Name | Type | Extended Communities |
 | --------- | ---- | -------------------- |
-| ECL-EVPN-SOO | permit | soo 192.168.254.4:1 |
+| ECL-EVPN-SOO | permit | soo 192.168.254.8:1 |
 
 ### IP Extended Community Lists configuration
 
 ```eos
 !
-ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.4:1
+ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.254.8:1
 ```
 
 # ACL

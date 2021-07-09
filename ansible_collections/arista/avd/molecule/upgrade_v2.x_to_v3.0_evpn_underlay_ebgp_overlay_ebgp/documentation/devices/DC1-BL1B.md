@@ -398,8 +398,8 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.7/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.7/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.15/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.15/32 |
 
 #### IPv6
 
@@ -416,12 +416,12 @@ interface Ethernet4000
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.7/32
+   ip address 192.168.255.15/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.7/32
+   ip address 192.168.254.15/32
 ```
 
 ## VLAN Interfaces
@@ -594,7 +594,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65105|  192.168.255.7 |
+| 65105|  192.168.255.15 |
 
 | BGP Tuning |
 | ---------- |
@@ -654,26 +654,26 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.255.7:14 | 14:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.255.7:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.7:31 | 31:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 | 14:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 | 21:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.255.15:31 | 31:31 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.7:14 | connected<br>static |
-| Tenant_B_OP_Zone | 192.168.255.7:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.7:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.7:31 | connected |
-| Tenant_L3_VRF_Zone | 192.168.255.7:15 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.15:14 | connected<br>static |
+| Tenant_B_OP_Zone | 192.168.255.15:20 | connected |
+| Tenant_B_WAN_Zone | 192.168.255.15:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.15:31 | connected |
+| Tenant_L3_VRF_Zone | 192.168.255.15:15 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65105
-   router-id 192.168.255.7
+   router-id 192.168.255.15
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
@@ -715,19 +715,19 @@ router bgp 65105
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
-      rd 192.168.255.7:14
+      rd 192.168.255.15:14
       route-target both 14:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
-      rd 192.168.255.7:21
+      rd 192.168.255.15:21
       route-target both 21:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.7:31
+      rd 192.168.255.15:31
       route-target both 31:31
       redistribute learned
       vlan 350
@@ -741,14 +741,14 @@ router bgp 65105
       neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_A_WAN_Zone
-      rd 192.168.255.7:14
+      rd 192.168.255.15:14
       route-target import evpn 14:14
       route-target import evpn 65000:456
       route-target import vpn-ipv4 65000:123
       route-target export evpn 14:14
       route-target export evpn 65000:789
       route-target export vpn-ipv4 65000:123
-      router-id 192.168.255.7
+      router-id 192.168.255.15
       neighbor 123.1.1.10 remote-as 1234
       neighbor 123.1.1.10 password 7 AQQvKeimxJu+uGQ/yYvv9w==
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
@@ -787,31 +787,31 @@ router bgp 65105
          neighbor fd5a:fe45:8831:06c5::b activate
    !
    vrf Tenant_B_OP_Zone
-      rd 192.168.255.7:20
+      rd 192.168.255.15:20
       route-target import evpn 20:20
       route-target export evpn 20:20
-      router-id 192.168.255.7
+      router-id 192.168.255.15
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
-      rd 192.168.255.7:21
+      rd 192.168.255.15:21
       route-target import evpn 21:21
       route-target export evpn 21:21
-      router-id 192.168.255.7
+      router-id 192.168.255.15
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
-      rd 192.168.255.7:31
+      rd 192.168.255.15:31
       route-target import evpn 31:31
       route-target export evpn 31:31
-      router-id 192.168.255.7
+      router-id 192.168.255.15
       redistribute connected
    !
    vrf Tenant_L3_VRF_Zone
-      rd 192.168.255.7:15
+      rd 192.168.255.15:15
       route-target import evpn 15:15
       route-target export evpn 15:15
-      router-id 192.168.255.7
+      router-id 192.168.255.15
       redistribute connected
 ```
 

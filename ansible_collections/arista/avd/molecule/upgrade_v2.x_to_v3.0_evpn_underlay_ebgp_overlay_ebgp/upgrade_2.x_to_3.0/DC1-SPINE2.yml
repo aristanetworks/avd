@@ -22,7 +22,7 @@ l3leaf:
 # Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
     loopback_ipv4_pool: 192.168.255.0/24
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
-    loopback_network_offset: 8
+    loopback_ipv4_offset: 8
 # Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
     vtep_loopback_ipv4_pool: 192.168.254.0/24
 # Change from l3leaf.defaults.uplink_to_spine_interfaces to l3leaf.defaults.uplink_interfaces

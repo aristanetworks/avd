@@ -1,6 +1,6 @@
 router_bgp:
   as: 65121
-  router_id: 172.16.120.1
+  router_id: 172.16.120.3
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -64,8 +64,8 @@ router_bgp:
         activate: true
   vrfs:
     Common_VRF:
-      router_id: 172.16.120.1
-      rd: 172.16.120.1:1025
+      router_id: 172.16.120.3
+      rd: 172.16.120.3:1025
       route_targets:
         import:
           evpn:
@@ -85,7 +85,7 @@ router_bgp:
   vlans:
     110:
       tenant: Tenant_A
-      rd: 172.16.120.1:10110
+      rd: 172.16.120.3:10110
       route_targets:
         both:
         - 10110:10110
@@ -93,7 +93,7 @@ router_bgp:
       - learned
     111:
       tenant: Tenant_A
-      rd: 172.16.120.1:50111
+      rd: 172.16.120.3:50111
       route_targets:
         both:
         - 50111:50111
@@ -101,7 +101,7 @@ router_bgp:
       - learned
     112:
       tenant: Tenant_A
-      rd: 172.16.120.1:50112
+      rd: 172.16.120.3:50112
       route_targets:
         both:
         - 50112:50112
@@ -109,7 +109,7 @@ router_bgp:
       - learned
     2500:
       tenant: Tenant_A
-      rd: 172.16.120.1:2500
+      rd: 172.16.120.3:2500
       route_targets:
         both:
         - 2500:2500
@@ -117,7 +117,7 @@ router_bgp:
       - learned
     2600:
       tenant: Tenant_A
-      rd: 172.16.120.1:2600
+      rd: 172.16.120.3:2600
       route_targets:
         both:
         - 2600:2600
@@ -203,11 +203,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 172.16.120.1/32
+    ip_address: 172.16.120.3/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 172.18.120.1/32
+    ip_address: 172.18.120.3/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

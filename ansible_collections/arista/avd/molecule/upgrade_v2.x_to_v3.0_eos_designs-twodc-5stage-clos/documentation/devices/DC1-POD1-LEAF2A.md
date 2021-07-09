@@ -444,8 +444,8 @@ interface Port-Channel19
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.2/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.2/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 172.16.110.4/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.110.4/32 |
 
 #### IPv6
 
@@ -462,12 +462,12 @@ interface Port-Channel19
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 172.16.110.2/32
+   ip address 172.16.110.4/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 172.18.110.2/32
+   ip address 172.18.110.4/32
 ```
 
 ## VLAN Interfaces
@@ -654,7 +654,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112|  172.16.110.2 |
+| 65112|  172.16.110.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -702,6 +702,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 100.100.100.201 | 65211 | default |
 | 172.16.10.1 | 65101 | default |
 | 172.16.110.1 | 65110 | default |
+| 172.16.110.3 | 65111 | default |
 | 172.17.110.4 | 65110 | default |
 | 172.17.110.6 | 65110 | default |
 | 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
@@ -714,24 +715,24 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.110.2:10110 | 10110:10110 | - | - | learned |
-| 111 | 172.16.110.2:50111 | 50111:50111 | - | - | learned |
-| 112 | 172.16.110.2:50112 | 50112:50112 | - | - | learned |
-| 2500 | 172.16.110.2:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.110.2:2600 | 2600:2600 | - | - | learned |
+| 110 | 172.16.110.4:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.110.4:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.110.4:50112 | 50112:50112 | - | - | learned |
+| 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.110.4:2600 | 2600:2600 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Common_VRF | 172.16.110.2:1025 | connected |
+| Common_VRF | 172.16.110.4:1025 | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65112
-   router-id 172.16.110.2
+   router-id 172.16.110.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
@@ -766,6 +767,10 @@ router bgp 65112
    neighbor 172.16.110.1 remote-as 65110
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
    neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110 out
+   neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
+   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
    neighbor 172.17.110.4 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.4 remote-as 65110
    neighbor 172.17.110.4 description DC1-POD1-SPINE1_Ethernet4
@@ -778,27 +783,27 @@ router bgp 65112
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 110
-      rd 172.16.110.2:10110
+      rd 172.16.110.4:10110
       route-target both 10110:10110
       redistribute learned
    !
    vlan 111
-      rd 172.16.110.2:50111
+      rd 172.16.110.4:50111
       route-target both 50111:50111
       redistribute learned
    !
    vlan 112
-      rd 172.16.110.2:50112
+      rd 172.16.110.4:50112
       route-target both 50112:50112
       redistribute learned
    !
    vlan 2500
-      rd 172.16.110.2:2500
+      rd 172.16.110.4:2500
       route-target both 2500:2500
       redistribute learned
    !
    vlan 2600
-      rd 172.16.110.2:2600
+      rd 172.16.110.4:2600
       route-target both 2600:2600
       redistribute learned
    !
@@ -814,10 +819,10 @@ router bgp 65112
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    vrf Common_VRF
-      rd 172.16.110.2:1025
+      rd 172.16.110.4:1025
       route-target import evpn 1025:1025
       route-target export evpn 1025:1025
-      router-id 172.16.110.2
+      router-id 172.16.110.4
       redistribute connected
       !
       comment

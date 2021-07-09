@@ -25,25 +25,25 @@ router_bgp:
       OVERLAY-PEERS:
         activate: true
   neighbors:
-    192.168.255.6:
+    192.168.255.10:
       peer_group: OVERLAY-PEERS
       description: DC1-BL1A
-    192.168.255.7:
+    192.168.255.11:
       peer_group: OVERLAY-PEERS
       description: DC1-BL1B
-    192.168.255.1:
+    192.168.255.5:
       peer_group: OVERLAY-PEERS
       description: DC1-LEAF1A
-    192.168.255.2:
+    192.168.255.6:
       peer_group: OVERLAY-PEERS
       description: DC1-LEAF2A
-    192.168.255.3:
+    192.168.255.7:
       peer_group: OVERLAY-PEERS
       description: DC1-LEAF2B
-    192.168.255.4:
+    192.168.255.8:
       peer_group: OVERLAY-PEERS
       description: DC1-SVC3A
-    192.168.255.5:
+    192.168.255.9:
       peer_group: OVERLAY-PEERS
       description: DC1-SVC3B
 static_routes:

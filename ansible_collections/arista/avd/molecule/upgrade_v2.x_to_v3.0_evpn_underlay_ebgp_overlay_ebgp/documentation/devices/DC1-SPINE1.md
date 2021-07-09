@@ -446,13 +446,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 172.31.255.65 | 65103 | default |
 | 172.31.255.81 | 65104 | default |
 | 172.31.255.97 | 65105 | default |
-| 192.168.255.1 | 65101 | default |
-| 192.168.255.2 | 65102 | default |
-| 192.168.255.3 | 65102 | default |
-| 192.168.255.4 | 65103 | default |
-| 192.168.255.5 | 65103 | default |
-| 192.168.255.6 | 65104 | default |
-| 192.168.255.7 | 65105 | default |
+| 192.168.255.9 | 65101 | default |
+| 192.168.255.10 | 65102 | default |
+| 192.168.255.11 | 65102 | default |
+| 192.168.255.12 | 65103 | default |
+| 192.168.255.13 | 65103 | default |
+| 192.168.255.14 | 65104 | default |
+| 192.168.255.15 | 65105 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -502,27 +502,27 @@ router bgp 65001
    neighbor 172.31.255.97 peer group UNDERLAY-PEERS
    neighbor 172.31.255.97 remote-as 65105
    neighbor 172.31.255.97 description DC1-BL1B_Ethernet45
-   neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.1 remote-as 65101
-   neighbor 192.168.255.1 description DC1-LEAF1A
-   neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.2 remote-as 65102
-   neighbor 192.168.255.2 description DC1-LEAF2A
-   neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.3 remote-as 65102
-   neighbor 192.168.255.3 description DC1-LEAF2B
-   neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.4 remote-as 65103
-   neighbor 192.168.255.4 description DC1-SVC3A
-   neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.5 remote-as 65103
-   neighbor 192.168.255.5 description DC1-SVC3B
-   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.6 remote-as 65104
-   neighbor 192.168.255.6 description DC1-BL1A
-   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.7 remote-as 65105
-   neighbor 192.168.255.7 description DC1-BL1B
+   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.9 remote-as 65101
+   neighbor 192.168.255.9 description DC1-LEAF1A
+   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.10 remote-as 65102
+   neighbor 192.168.255.10 description DC1-LEAF2A
+   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.11 remote-as 65102
+   neighbor 192.168.255.11 description DC1-LEAF2B
+   neighbor 192.168.255.12 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.12 remote-as 65103
+   neighbor 192.168.255.12 description DC1-SVC3A
+   neighbor 192.168.255.13 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.13 remote-as 65103
+   neighbor 192.168.255.13 description DC1-SVC3B
+   neighbor 192.168.255.14 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.14 remote-as 65104
+   neighbor 192.168.255.14 description DC1-BL1A
+   neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.15 remote-as 65105
+   neighbor 192.168.255.15 description DC1-BL1B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

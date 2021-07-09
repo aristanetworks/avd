@@ -1,6 +1,6 @@
 router_bgp:
   as: 65101
-  router_id: 192.168.255.1
+  router_id: 192.168.255.5
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -74,8 +74,8 @@ router_bgp:
       remote_as: 65001
   vrfs:
     Tenant_A_APP_Zone:
-      router_id: 192.168.255.1
-      rd: 192.168.255.1:12
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:12
       route_targets:
         import:
           evpn:
@@ -86,8 +86,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
-      router_id: 192.168.255.1
-      rd: 192.168.255.1:11
+      router_id: 192.168.255.5
+      rd: 192.168.255.5:11
       route_targets:
         import:
           evpn:
@@ -99,7 +99,7 @@ router_bgp:
       - connected
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
-      rd: 192.168.255.1:12
+      rd: 192.168.255.5:12
       route_targets:
         both:
         - '12:12'
@@ -107,7 +107,7 @@ router_bgp:
       - learned
       vlan: 130-131
     Tenant_A_WEB_Zone:
-      rd: 192.168.255.1:11
+      rd: 192.168.255.5:11
       route_targets:
         both:
         - '11:11'
@@ -265,11 +265,11 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.1/32
+    ip_address: 192.168.255.5/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.1/32
+    ip_address: 192.168.254.5/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

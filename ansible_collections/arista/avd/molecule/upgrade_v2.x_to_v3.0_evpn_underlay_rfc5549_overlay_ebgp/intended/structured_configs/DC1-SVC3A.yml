@@ -1,6 +1,6 @@
 router_bgp:
   as: 65103
-  router_id: 192.168.255.4
+  router_id: 192.168.255.8
   bgp_defaults:
   - no bgp default ipv4-unicast
   - distance bgp 20 200 200
@@ -90,8 +90,8 @@ router_bgp:
       remote_as: 65001
   vrfs:
     Tenant_A_APP_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:12
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:12
       route_targets:
         import:
           evpn:
@@ -105,8 +105,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:13
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:13
       route_targets:
         import:
           evpn:
@@ -120,8 +120,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:10
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:10
       route_targets:
         import:
           evpn:
@@ -135,8 +135,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_WAN_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:14
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:14
       route_targets:
         import:
           evpn:
@@ -150,8 +150,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:11
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:11
       route_targets:
         import:
           evpn:
@@ -165,8 +165,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:20
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:20
       route_targets:
         import:
           evpn:
@@ -180,8 +180,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:21
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:21
       route_targets:
         import:
           evpn:
@@ -195,8 +195,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:30
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:30
       route_targets:
         import:
           evpn:
@@ -210,8 +210,8 @@ router_bgp:
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
-      router_id: 192.168.255.4
-      rd: 192.168.255.4:31
+      router_id: 192.168.255.8
+      rd: 192.168.255.8:31
       route_targets:
         import:
           evpn:
@@ -226,7 +226,7 @@ router_bgp:
       - connected
   vlan_aware_bundles:
     Tenant_A_APP_Zone:
-      rd: 192.168.255.4:12
+      rd: 192.168.255.8:12
       route_targets:
         both:
         - '12:12'
@@ -234,7 +234,7 @@ router_bgp:
       - learned
       vlan: 130-131
     Tenant_A_DB_Zone:
-      rd: 192.168.255.4:13
+      rd: 192.168.255.8:13
       route_targets:
         both:
         - '13:13'
@@ -242,7 +242,7 @@ router_bgp:
       - learned
       vlan: 140-141
     Tenant_A_OP_Zone:
-      rd: 192.168.255.4:10
+      rd: 192.168.255.8:10
       route_targets:
         both:
         - '10:10'
@@ -250,7 +250,7 @@ router_bgp:
       - learned
       vlan: 110-111
     Tenant_A_WAN_Zone:
-      rd: 192.168.255.4:14
+      rd: 192.168.255.8:14
       route_targets:
         both:
         - '14:14'
@@ -258,7 +258,7 @@ router_bgp:
       - learned
       vlan: 150
     Tenant_A_WEB_Zone:
-      rd: 192.168.255.4:11
+      rd: 192.168.255.8:11
       route_targets:
         both:
         - '11:11'
@@ -267,7 +267,7 @@ router_bgp:
       vlan: 120-121
     Tenant_A_VMOTION:
       tenant: Tenant_A
-      rd: 192.168.255.4:10160
+      rd: 192.168.255.8:10160
       route_targets:
         both:
         - 10160:10160
@@ -276,7 +276,7 @@ router_bgp:
       vlan: 160
     Tenant_A_NFS:
       tenant: Tenant_A
-      rd: 192.168.255.4:10161
+      rd: 192.168.255.8:10161
       route_targets:
         both:
         - 10161:10161
@@ -284,7 +284,7 @@ router_bgp:
       - learned
       vlan: 161
     Tenant_B_OP_Zone:
-      rd: 192.168.255.4:20
+      rd: 192.168.255.8:20
       route_targets:
         both:
         - '20:20'
@@ -292,7 +292,7 @@ router_bgp:
       - learned
       vlan: 210-211
     Tenant_B_WAN_Zone:
-      rd: 192.168.255.4:21
+      rd: 192.168.255.8:21
       route_targets:
         both:
         - '21:21'
@@ -300,7 +300,7 @@ router_bgp:
       - learned
       vlan: 250
     Tenant_C_OP_Zone:
-      rd: 192.168.255.4:30
+      rd: 192.168.255.8:30
       route_targets:
         both:
         - '30:30'
@@ -308,7 +308,7 @@ router_bgp:
       - learned
       vlan: 310-311
     Tenant_C_WAN_Zone:
-      rd: 192.168.255.4:31
+      rd: 192.168.255.8:31
       route_targets:
         both:
         - '31:31'
@@ -1077,16 +1077,16 @@ loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.4/32
+    ip_address: 192.168.255.8/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.4/32
+    ip_address: 192.168.254.8/32
   Loopback100:
     description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.1.4/32
+    ip_address: 10.255.1.8/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -1168,5 +1168,5 @@ vxlan_tunnel_interface:
           vni: 31
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
-    ip_address: 10.255.1.4
+    ip_address: 10.255.1.8
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

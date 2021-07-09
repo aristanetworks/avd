@@ -47,6 +47,11 @@ router_bgp:
       remote_as: 65121
       description: DC1-POD2-LEAF1A_Ethernet3
       bfd: true
+    172.16.210.3:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC2-POD1-LEAF1A
+      remote_as: 65211
+      route_map_out: RM-EVPN-FILTER-AS65211
     172.16.210.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-SPINE1
