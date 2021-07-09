@@ -206,10 +206,10 @@
 {%                 set prefix_list_filter = router_ospf.process_ids[process].areas[area].filter.prefix_list | arista.avd.default('-') %}
 {%                 set area_type = router_ospf.process_ids[process].areas[area].type | arista.avd.default('normal') %}
 {%                 set additional_cfg_options_list = [] %}
-{%                 if router_ospf.process_ids[process_id].areas[area].no_summary | arista.avd.default(false) %}
+{%                 if router_ospf.process_ids[process].areas[area].no_summary | arista.avd.default(false) %}
 {%                     do additional_cfg_options_list.append('no_summary') %}
 {%                 endif %}
-{%                 if router_ospf.process_ids[process_id].areas[area].nssa_only | arista.avd.default(false) %}
+{%                 if router_ospf.process_ids[process].areas[area].nssa_only | arista.avd.default(false) %}
 {%                     do additional_cfg_options_list.append('nssa-only') %}
 {%                 endif %}
 {%                 if router_ospf.process_ids[process].areas[area].default_information_originate is arista.avd.defined %}
