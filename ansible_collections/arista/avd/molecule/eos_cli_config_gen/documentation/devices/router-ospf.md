@@ -230,6 +230,13 @@ interface Vlan24
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
 
+### Router OSPF Areas
+
+| Process ID | Area | Filter Networks | Filter Prefix List |
+| ---------- | ---- | --------------- | ------------------ |
+| 200 | 0.0.0.2 | 1.1.1.0/24, 2.2.2.0/24 | - |
+| 200 | 0.0.0.3 | - | PL-OSPF-FILTERING |
+
 ### OSPF Interfaces
 
 | Interface | Area | Cost | Point To Point |
@@ -274,6 +281,9 @@ router ospf 101 vrf CUSTOMER01
 router ospf 200 vrf ospf_zone
    log-adjacency-changes detail
    router-id 192.168.254.1
+   area 0.0.0.2 filter 1.1.1.0/24
+   area 0.0.0.2 filter 2.2.2.0/24
+   area 0.0.0.3 filter prefix-list PL-OSPF-FILTERING
    max-lsa 5
    timers lsa rx min interval 100
    default-information originate always

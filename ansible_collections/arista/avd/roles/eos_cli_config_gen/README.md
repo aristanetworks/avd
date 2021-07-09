@@ -2155,6 +2155,13 @@ router_ospf:
         connected:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
+      areas:
+        < area >:
+          filter:
+            networks:
+              - < IPv4 subnet / netmask >
+              - < IPv4 subnet / netmask >
+            prefix_list: < prefix list name >
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:
