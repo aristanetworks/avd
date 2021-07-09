@@ -273,6 +273,9 @@ interface {{ ethernet_interface }}
    no mpls ldp interface
 {%         endif %}
 {%     endif %}
+{%     if ethernet_interfaces[ethernet_interface].transceiver.media.override is arista.avd.defined %}
+   transceiver media override {{ ethernet_interfaces[ethernet_interface].transceiver.media.override }}
+{%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
    {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
 {%     endif %}

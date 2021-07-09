@@ -730,6 +730,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    transceiver:
+      media:
+        override: < transceiver_type >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >

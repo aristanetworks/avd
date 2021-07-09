@@ -141,6 +141,9 @@ ethernet_interfaces:
       unknown_unicast:
         level: 10
         unit: percent
+    transceiver:
+      media:
+        override: 100gbase-ar4
 
   Ethernet8:
     description: to WAN-ISP1-01 Ethernet2

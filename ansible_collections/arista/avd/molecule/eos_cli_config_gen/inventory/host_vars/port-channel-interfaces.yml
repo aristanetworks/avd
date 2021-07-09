@@ -157,6 +157,9 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+    transceiver:
+      media:
+        override: 100gbase-ar4
 
   Ethernet3:
     peer: DC1-LEAF1B
