@@ -232,21 +232,14 @@ interface Vlan24
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
 
-<<<<<<< HEAD
-### OSPF area specific configuration
-
-| Process ID | OSPF Area | Area Specific Config | Area Specific Config Options |
-|------------|-----------|----------------------|------------------------------|
-| 600 | 0.0.10.10 | stub |  |
-| 700 | 0.0.20.20 | nssa | nssa-only, default-information originate metric 50 metric-type 1 |
-=======
 ### Router OSPF Areas
 
-| Process ID | Area | Filter Networks | Filter Prefix List |
-| ---------- | ---- | --------------- | ------------------ |
-| 200 | 0.0.0.2 | 1.1.1.0/24, 2.2.2.0/24 | - |
-| 200 | 0.0.0.3 | - | PL-OSPF-FILTERING |
->>>>>>> b64bfa5074edd714ad6b934607f60ce254bd0871
+| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Config Options |
+| ---------- | ---- | --------- | --------------- | ------------------ | ------------------------- |
+| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
+| 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
+| 600 | 0.0.10.10 | StUb | - | - | no-summary |
+| 600 | 0.0.20.20 | nssa | - | - |  default-information-originate metric 50 metric-type 1 |
 
 ### OSPF Interfaces
 
@@ -312,9 +305,9 @@ router ospf 500
 !
 router ospf 600
    area 0.0.10.10 stub no-summary
+   area 0.0.20.20 nssa default-information-originate metric 50 metric-type 1
 !
 router ospf 700
-   area 0.0.20.20 nssa default-information-originate metric 50 metric-type 1 nssa-only
 ```
 
 # Multicast
