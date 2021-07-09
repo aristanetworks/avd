@@ -212,10 +212,10 @@
 {%                 if router_ospf.process_ids[process].areas[area].default_information_originate is defined %}
 {%                     set tmp_cli = "default-information-originate" %}
 {%                     if router_ospf.process_ids[process].areas[area].default_information_originate.metric is arista.avd.defined %}
-{%                         set tmp_cli = tmp_cli ~ " metric " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric | arista.avd.default('1') %}
+{%                         set tmp_cli = tmp_cli ~ " metric " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric %}
 {%                     endif %}
 {%                     if router_ospf.process_ids[process].areas[area].default_information_originate.metric_type is arista.avd.defined %}
-{%                         set tmp_cli = tmp_cli ~ " metric-type " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
+{%                         set tmp_cli = tmp_cli ~ " metric-type " ~ router_ospf.process_ids[process].areas[area].default_information_originate.metric_type %}
 {%                     endif %}
 {%                     do additional_cfg_options_list.append(tmp_cli) %}
 {%                 endif %}
