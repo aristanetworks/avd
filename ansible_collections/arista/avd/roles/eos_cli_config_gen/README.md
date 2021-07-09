@@ -2163,7 +2163,7 @@ router_ospf:
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
         < area >:
-          area_type: < normal | stub | nssa | default -> normal >
+          type: < normal | stub | nssa | default -> normal >
           no_summary: < true | false >
           nssa_only: <true | false >
           default_information_originate:

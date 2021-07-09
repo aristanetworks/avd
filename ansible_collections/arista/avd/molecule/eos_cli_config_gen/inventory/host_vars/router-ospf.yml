@@ -91,9 +91,15 @@ router_ospf:
           summary_lsa:
             override_metric: 456
     600:
-      area_specific_config:
-        - ospf_area: 0.0.10.10
-          stub: NO_suMMary
+      areas:
+        0.0.10.10:
+          type: StUb
+          no_summary: true
+        0.0.20.20:
+          type: nssa
+          default_information_originate:
+            metric: 50
+            metric_type: 1
     700:
       area_specific_config:
         - ospf_area: 0.0.20.20

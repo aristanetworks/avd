@@ -27,6 +27,32 @@ router ospf {{ process_id }}
    bfd default
 {%     endif %}
 {%     for area in router_ospf.process_ids[process_id].areas | arista.avd.natural_sort %}
+{# OSPF stub area configuration #}
+{%     if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "stub" %}
+{%         set stub_area_cli = "area " ~ area ~ " stub" %}
+{%         if router_ospf.process_ids[process_id].areas[area].no_summary | arista.avd.default(false) %}
+{%             set stub_area_cli = stub_area_cli ~ " no-summary" %}
+{%         endif %}
+   {{ stub_area_cli }}
+{%     endif %}
+{# OSPF nssa area configuration #}
+{%     if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "nssa" %}
+{%         set nssa_area_cli = "area " ~ area ~ " nssa" %}
+{%         if router_ospf.process_ids[process_id].areas[area].no_summary | arista.avd.default(false) %}
+{%             set nssa_area_cli = nssa_area_cli ~ " no-summary" %}
+{%         else %}
+{%             if router_ospf.process_ids[process_id].areas[area].default_information_originate is arista.avd.defined %}
+{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate metric " ~ 
+   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric | arista.avd.default('1') ~ " metric-type " ~ 
+   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
+{%             endif %}
+{%             if router_ospf.process_ids[process_id].areas[area].nssa_only | arista.avd.default(false) %}
+{%                 set nssa_area_cli = nssa_area_cli ~ " nssa-only" %}
+{%             endif %}
+{%         endif %}
+   {{ nssa_area_cli }}
+{%         endif %}
+{# OSPF inter-area filtering configuration #}
 {%         for filter_network in router_ospf.process_ids[process_id].areas[area].filter.networks | arista.avd.natural_sort %}
    area {{ area }} filter {{ filter_network }}
 {%         endfor %}
@@ -123,74 +149,6 @@ router ospf {{ process_id }}
    summary-address {{ summary_address.prefix }}
 {%                 endif %}
 {%             endif %}
-{%         endfor %}
-{%     endif %}
-{# area specific configuration #}
-{%     if router_ospf.process_ids[process_id].area_specific_config is arista.avd.defined %}
-{%         for ospf_area_vars in router_ospf.process_ids[process_id].area_specific_config | arista.avd.natural_sort %}
-{%             set ospf_area_cli = "area " ~ ospf_area_vars.ospf_area %}
-{# if stub area is configured... #}
-{%             if ospf_area_vars.stub is arista.avd.defined %}
-{%                 if ospf_area_vars.stub | lower == "no_summary" %}
-{%                     set ospf_area_cli = ospf_area_cli ~ " stub no-summary" %}
-{%                 elif ospf_area_vars.stub | lower in ("true", "on", true) %}
-{%                     set ospf_area_cli = ospf_area_cli ~ " stub" %}
-{%                 else %}
-{# raise an error using non-existing variable and arista.avd.defined if the value is out of acceptable range #}
-{%                     if non_existing_var is arista.avd.defined(
-   'my_value', fail_action='error',
-   var_name='Incorrect variable value. Acceptable values: true, on, no_summary. router_ospf.process_ids[process_id].area_specific_config[<index>].stub') %}
-{%                     endif %}
-{%                endif %}
-{# if nssa area is configured... #}
-{%            elif ospf_area_vars.nssa is arista.avd.defined %}
-{# 1st, produce default-information-originate config, if defined. Otherwise use empty string.  #}
-{%            set default_information_cli = '' %}
-{%                if ospf_area_vars.default_information_originate is arista.avd.defined %}
-{%                    set default_information_cli = default_information_cli ~ ' default-information-originate' %}
-{# set metric for default-information-originate #}
-{%                    if ospf_area_vars.default_information_originate.metric is arista.avd.defined %}
-{%                        set default_information_cli = default_information_cli ~ " metric " ~ ospf_area_vars.default_information_originate.metric %}
-{%                    else %}
-{%                        set default_information_cli = default_information_cli ~ " metric 1" %}
-{%                    endif %}
-{# set metric type for default-information-originate #}
-{%                    if ospf_area_vars.default_information_originate.metric_type is arista.avd.defined %}
-{%                        if ospf_area_vars.default_information_originate.metric_type in ("1", "2", 1, 2) %}
-{%                            set default_information_cli = default_information_cli ~ " metric-type " ~ ospf_area_vars.default_information_originate.metric_type %}
-{%                        else %}
-{# raise an error using non-existing variable and arista.avd.defined if the value is out of acceptable range #}
-{%                            if non_existing_var is arista.avd.defined(
-   'my_value', fail_action='error',
-   var_name='Incorrect variable value. Acceptable values: 1, 2. router_ospf.process_ids[process_id].area_specific_config.default_information_originate.metric_type') %}
-{%                            endif %}
-{%                        endif %}
-{%                    else %}
-{%                        set default_information_cli = default_information_cli ~ " metric-type 2" %}
-{%                    endif %}
-{%                endif %}
-{# 2nd, produce nssa config and add default-information-originate config if not empty #}
-{%                if ospf_area_vars.nssa | lower == "no_summary" %}
-{%                    set ospf_area_cli = ospf_area_cli ~ " nssa no-summary" %}
-{%                elif ospf_area_vars.nssa | lower == "nssa_only" %}
-{%                    set ospf_area_cli = ospf_area_cli ~ " nssa" ~ default_information_cli ~ " nssa-only" %}
-{%                elif ospf_area_vars.nssa | lower in ("true", true, "on") %}
-{%                    set ospf_area_cli = ospf_area_cli ~ " nssa" ~ default_information_cli %}
-{%                else %}
-{# raise an error using non-existing variable and arista.avd.defined if the value is out of acceptable range #}
-{%                    if non_existing_var is arista.avd.defined(
-   'my_value', fail_action='error',
-   var_name='Incorrect variable value. Acceptable values: no_summary, nssa_only, true, on. router_ospf.process_ids[process_id].area_specific_config.default_information_originate.metric_type') %}
-{%                    endif %}
-{%                endif %}
-{%            else %}
-{# raise an error using non-existing variable and arista.avd.defined if the value is out of acceptable range #}
-{%                if non_existing_var is arista.avd.defined(fail_action='error',
-   var_name='Incorrect variable value. Acceptable values: stub, nssa. router_ospf.process_ids[process_id].area_specific_config') %}
-{%                endif %}
-{%            endif %}
-{# print the configuration line #}
-   {{ ospf_area_cli }}
 {%         endfor %}
 {%     endif %}
 {% endfor %}
