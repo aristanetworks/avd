@@ -33,6 +33,18 @@ router_ospf:
           attribute_map: RM-OSPF_SUMMARY
         - prefix: 40.0.0.0/8
           not_advertise: true
+      timers:
+        lsa:
+          rx_min_interval: 100
+          tx_delay:
+            initial: 100
+            min: 200
+            max: 300
+        spf_delay:
+          initial: 100
+          min: 200
+          max: 300
+
     200:
       vrf: ospf_zone
       passive_interface_default: false
@@ -47,7 +59,19 @@ router_ospf:
           route_map: rm-ospf-static
         connected:
           route_map: rm-ospf-connected
+      areas:
+        '0.0.0.2':
+          filter:
+            networks:
+              - 1.1.1.0/24
+              - 2.2.2.0/24
+        '0.0.0.3':
+          filter:
+            prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.
+      timers:
+        lsa:
+          rx_min_interval: 100
     300:
       max_metric:
         router_lsa:

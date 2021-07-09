@@ -16,7 +16,7 @@ The following topologies are supported:
 | RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
 
 <div style="text-align:center">
-  <img src="../../../../media/topology.gif" />
+  <img src="../../../media/topology.gif" />
 </div>
 
 Across all designs the following functionality is provided:
@@ -49,4 +49,3 @@ all:
             < leaf group >:
               <-- omitted -->
 ```
-

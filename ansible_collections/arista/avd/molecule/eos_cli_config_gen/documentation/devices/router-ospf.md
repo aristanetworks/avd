@@ -216,6 +216,13 @@ interface Vlan24
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
+### Router OSPF timers
+
+| Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
+| ---------- | ------ | ------------------------ | --------------------- |
+| 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
+| 200 | 100 | - | - |
+
 ### Router OSPF route summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
@@ -225,12 +232,21 @@ interface Vlan24
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
 
+<<<<<<< HEAD
 ### OSPF area specific configuration
 
 | Process ID | OSPF Area | Area Specific Config | Area Specific Config Options |
 |------------|-----------|----------------------|------------------------------|
 | 600 | 0.0.10.10 | stub |  |
 | 700 | 0.0.20.20 | nssa | nssa-only, default-information originate metric 50 metric-type 1 |
+=======
+### Router OSPF Areas
+
+| Process ID | Area | Filter Networks | Filter Prefix List |
+| ---------- | ---- | --------------- | ------------------ |
+| 200 | 0.0.0.2 | 1.1.1.0/24, 2.2.2.0/24 | - |
+| 200 | 0.0.0.3 | - | PL-OSPF-FILTERING |
+>>>>>>> b64bfa5074edd714ad6b934607f60ce254bd0871
 
 ### OSPF Interfaces
 
@@ -265,6 +281,9 @@ router ospf 101 vrf CUSTOMER01
    router-id 1.0.1.1
    passive-interface default
    no passive-interface Ethernet2.101
+   timers lsa rx min interval 100
+   timers lsa tx delay initial 100 200 300
+   timers spf delay initial 100 200 300
    summary-address 10.0.0.0/8
    summary-address 20.0.0.0/8 tag 10
    summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
@@ -273,7 +292,11 @@ router ospf 101 vrf CUSTOMER01
 router ospf 200 vrf ospf_zone
    log-adjacency-changes detail
    router-id 192.168.254.1
+   area 0.0.0.2 filter 1.1.1.0/24
+   area 0.0.0.2 filter 2.2.2.0/24
+   area 0.0.0.3 filter prefix-list PL-OSPF-FILTERING
    max-lsa 5
+   timers lsa rx min interval 100
    default-information originate always
    redistribute static route-map rm-ospf-static
    redistribute connected route-map rm-ospf-connected
