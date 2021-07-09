@@ -42,8 +42,8 @@ router ospf {{ process_id }}
 {%             set nssa_area_cli = nssa_area_cli ~ " no-summary" %}
 {%         else %}
 {%             if router_ospf.process_ids[process_id].areas[area].default_information_originate is arista.avd.defined %}
-{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate metric " ~ 
-   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric | arista.avd.default('1') ~ " metric-type " ~ 
+{%                 set nssa_area_cli = nssa_area_cli ~ " default-information-originate metric " ~
+   router_ospf.process_ids[process_id].areas[area].default_information_originate.metric | arista.avd.default('1') ~ " metric-type " ~
    router_ospf.process_ids[process_id].areas[area].default_information_originate.metric_type | arista.avd.default('2') %}
 {%             endif %}
 {%             if router_ospf.process_ids[process_id].areas[area].nssa_only is arista.avd.defined(true) %}
