@@ -239,7 +239,7 @@ interface Vlan24
 | 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
 | 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
 | 600 | 0.0.10.10 | StUb | - | - | no-summary |
-| 600 | 0.0.20.20 | nssa | - | - |  default-information-originate metric 50 metric-type 1 |
+| 600 | 0.0.20.20 | nssa | - | - | default-information-originate metric 50 metric-type 1 |
 
 ### OSPF Interfaces
 
