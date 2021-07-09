@@ -81,7 +81,7 @@ l3leaf:
                                spine.nodes | arista.avd.default([]) | length) %}
 {%     if switch_max_spines > 0 %}
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
-    loopback_network_offset: {{ switch_max_spines }}
+    loopback_ipv4_offset: {{ switch_max_spines }}
 {%     endif %}
 {%     if vtep_loopback_network_summary is arista.avd.defined %}
 # Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
