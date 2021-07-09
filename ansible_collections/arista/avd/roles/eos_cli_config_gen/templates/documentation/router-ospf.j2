@@ -183,23 +183,19 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-<<<<<<< HEAD
 {# OSPF area specific configuration #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
 {%         if router_ospf.process_ids[process].area_specific_config is arista.avd.defined %}
-=======
 {# OSPF Areas #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
 {%         if router_ospf.process_ids[process].areas is arista.avd.defined %}
->>>>>>> b64bfa5074edd714ad6b934607f60ce254bd0871
 {%             set has.found = true %}
 {%         endif %}
 {%     endfor %}
 {%     if has.found is arista.avd.defined(true) %}
 
-<<<<<<< HEAD
 ### OSPF area specific configuration
 
 | Process ID | OSPF Area | Area Specific Config | Area Specific Config Options |
@@ -252,7 +248,6 @@
 | {{ process }} | {{ ospf_area_vars.ospf_area }} | {{ area_specific_cfg }} | {{ area_specific_cfg_options }} |
 {%                 endfor %}
 {%             endif %}
-=======
 ### Router OSPF Areas
 
 | Process ID | Area | Filter Networks | Filter Prefix List |
@@ -267,7 +262,6 @@
 {%                 set prefix_list_filter = router_ospf.process_ids[process].areas[area].filter.prefix_list | arista.avd.default('-') %}
 | {{ process }} | {{ area }} | {{ network_filter }} | {{ prefix_list_filter }} |
 {%             endfor %}
->>>>>>> b64bfa5074edd714ad6b934607f60ce254bd0871
 {%         endfor %}
 {%     endif %}
 {# Interfaces #}
