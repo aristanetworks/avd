@@ -8,6 +8,9 @@
 | --------- | --------------- | ------------ | --------- |
 | {{ mlag_configuration.domain_id }} | {{ mlag_configuration.local_interface }} | {{ mlag_configuration.peer_address }} | {{ mlag_configuration.peer_link }} |
 
+{%   if mlag_configuration.heartbeat_interval is arista.avd.defined %}
+Heartbeat Interval is {{ mlag_configuration.heartbeat_interval }} milliseconds.
+{%   endif %}
 {%   if mlag_configuration.dual_primary_detection_delay is defined and mlag_configuration.peer_mlag_configuration.dual_primary_detection_delay
 is not none %}
 Dual primary detection is enabled. The detection delay is {{ mlag_configuration.dual_primary_detection_delay }} seconds.

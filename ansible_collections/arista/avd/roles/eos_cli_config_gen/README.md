@@ -1352,6 +1352,7 @@ mpls:
 ```yaml
 mlag_configuration:
   domain_id: < domain_id_name >
+  heartbeat_interval: < milliseconds >
   local_interface: < interface_name >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
@@ -1601,6 +1602,21 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+###  System Control-Plane
+```yaml
+system:
+  control_plane:
+    tcp_mss:
+      ipv4: < Segment size >
+      ipv6: < Segment size >
+    ipv4_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
+    ipv6_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
 ```
 
 #### VM Tracer Sessions
