@@ -61,8 +61,8 @@ pod_name: < POD_Name >
 
 The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](../extending-avd/node-types.md)
 
-| Node Type Key      | Underlay Router <br/>(`underlay_router`) | Uplink Type <br/>(`uplink_type`)  | Default EVPN Role <br/>(`default_evpn_role`) | L2 Network Services <br/>(`network_services.l2`) | L3 Network Services <br/>(`network_services.l3`) | VTEP <br/>(`vtep`) | MLAG Support <br/>(`mlag_support`) | Connected Endpoints <br/>(`connected_endpoints`) |
-| :----------------: | :-------------: | :----------: | :---------------: | :-----------------: | :-----------------: | :--: | :----------: | :-----------------: |
+| Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
+| ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
 | super_spine        | ✅              | p2p          | none              | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 | spine              | ✅              | p2p          | server            | ✘                  | ✘                   | ✘   | ✘            | ✘                  |
 | l3leaf             | ✅              | p2p          | client            | ✅                 | ✅                  | ✅  | ✅           | ✅                 |
@@ -107,24 +107,27 @@ type: super-spine
 type: overlay-controller
 ```
 
-All node types have the same structure based on `defaults`, `node_group`, `node` and all variables can be defined in any section and support inheritence like this:
+All node types have the same structure based on `defaults`, `node_group`, `node` and all variables can be defined in any section and support inheritance like this:
+
+Under `node_type_key:`
 
 ```bash
-defaults < node_group < node
+defaults <- node_group <- node_group.node <- node
 ```
 
 ## Node type structure
 
 ```yaml
 ---
-<node_type>:
+<node_type_key>:
   defaults:
     # Define vars for all nodes of this type
-  <node group name>:
+  node_groups:
+    <node group name>:
     # Vars related to all nodes part of this group
-    nodes:
-      <node inventory hostname>:
-        # Vars defined per node
+      nodes:
+        <node inventory hostname>:
+          # Vars defined per node
   nodes:
     <node inventory hostname>:
       # Vars defined per node
@@ -134,162 +137,14 @@ defaults < node_group < node
 
       # Node management IP address | Optional.
       mgmt_ip: < IPv4_address/Mask >
-
-      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
-      # corresponding to spines and spine_interfaces in generic design | Required.
-      # Inheritance: node > node_group > defaults
-      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 ```
-
-## Node Variables details (All-in-one)
-
-```yaml
-# Defined in FABRIC.yml
-< node_type >:
-
-  defaults:
-    # Arista platform family | Required.
-    platform: < Arista Platform Family >
-
-    # Rack that the switch is located in (only used in snmp_settings location) | Optional
-    rack: < rack_name >
-
-    # IPv4 subnet for Loopback0 allocation
-    loopback_ipv4_pool: < IPv4_address/Mask  >
-
-    # Offset to define VTEP IP addresses of L3LEAF devices.
-    loopback_ipv4_offset: 2
-
-    # IPv4 subnet for VTEP/Loopback1 allocation.
-    vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
-
-    # IPv4 subnet to use to connect to uplink switches.
-    uplink_ipv4_pool: < IPv4_address/Mask  >
-
-    # Local uplink to spine interfaces (list). | Required.
-    uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-
-    # Uplink switches interfaces (list), interface located on uplink switch. | Required.
-    uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
-
-    # Number of interfaces towards uplink switches | Optional
-    max_uplink_switches: < integer >
-
-    # Enable PTP on uplink links | Optional
-    uplink_ptp:
-      enable: < boolean >
-
-    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-    p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
-
-    # isis system-id prefix (4.4 hexadecimal)
-    isis_system_id_prefix: < hhhh.hhhh >
-
-    # Number of path to configure in ECMP for ISIS
-    isis_maximum_paths: < integer >
-
-    # node BGP AS | Required.
-    bgp_as: < bgp_as >
-
-    # List of EOS command to apply to BGP daemon | Optional
-    bgp_defaults: [ < List of EOS commands> ]
-
-    # Acting role in EVPN control plane.
-    # Override role definition from node_type_keys
-    # Can be set per node
-    evpn_role: < client | server | none | Default -> server >
-
-    # List of inventory hostname acting as EVPN route-servers.
-    evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
-
-    # Possibility to prevent configuration of Tenant VRFs and SVIs
-    # Override role definition from node_type_keys
-    # This allows support for centralized routing.
-    evpn_services_l2_only: < false | true >
-
-    # Filter L3 and L2 network services based on tenant and tags (and operation filter) | Optional
-    # If filter is not defined will default to all
-    filter:
-      tenants: [ < tenant_1 >, < tenant_2 > | default all ]
-      tags: [ < tag_1 >, < tag_2 > | default -> all ]
-
-      # Force VRFs in a tenant to be configured even if VLANs are not included in tags | Optional
-      # Useful for "border" leaf.
-      always_include_vrfs_in_tenants: [ < tenant_1 >, < tenant_2 >, "all" ]
-
-    # Enable / Disable auto MLAG, when two nodes are defined in node group.
-    mlag: < true | false -> default true >
-
-    # Enable / Disable MLAG dual primary detection
-    mlag_dual_primary_detection: < true | false -> default false >
-
-    # MLAG interfaces (list) | Required when MLAG leafs present in topology.
-    mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 >]
-
-    # Underlay L3 peering SVI interface id
-    mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
-
-    # MLAG Peer Link (control link) SVI interface id
-    mlag_peer_vlan: < 0-4094 | default -> 4094 >
-
-    # Spanning tree mode | Required.
-    spanning_tree_mode: < mstp | rstp | rapid-pvst | none >
-
-    # Spanning tree priority.
-    spanning_tree_priority: < spanning-tree priority -> default 32768 >
-
-    # Spanning tree priority.
-    spanning_tree_root_super: < true | false  >
-
-    # Virtual router mac address for anycast gateway | Required.
-    virtual_router_mac_address: < mac address >
-
-    # Activate or deactivate IGMP snooping | Optional, default is true
-    igmp_snooping_enabled: < true | false >
-
-    # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
-    # Parent l3leafs will have SVI with "ip virtual-router" and host-route injection based on ARP. This allows all l3leafs to reuse the same subnet
-    # SVI IP address will be assigned as follows:
-    # virtual-router: <subnet> + 1
-    # l3leaf A      : <subnet> + 2 (same IP on all l3leaf A)
-    # l3leaf B      : <subnet> + 3 (same IP on all l3leaf B)
-    # l2leafs       : <subnet> + 3 + <l2leaf id>
-    # GW on l2leafs : <subnet> + 1
-    # Assign range larger than total l2leafs + 5
-    inband_management_subnet: < IPv4subnet/mask >
-
-    # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
-    inband_management_vlan: < vlan-id | Default -> 4092 >
-
-    # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
-    raw_eos_cli: |
-      < multiline eos cli >
-
-    # Custom structured config for eos_cli_config_gen | Optional
-    structured_config: < dictionary >
-
-  # Specify dictionary of Spine nodes | Required.
-  nodes:
-    < inventory_hostname >:
-      # Unique identifier | Required.
-      id: < integer >
-
-      # Node management IP address | Optional.
-      mgmt_ip: < IPv4_address/Mask >
-
-      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
-      # corresponding to spines and spine_interfaces in generic design | Required.
-      # Inheritance: node > node_group > defaults
-      uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
-```
-
 
 ## Node Variables details
 
 ### Generic configuration management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # Arista platform family | Required.
@@ -309,16 +164,16 @@ defaults < node_group < node
 ### Uplink management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # IPv4 subnet to use to connect to uplink switches.
     uplink_ipv4_pool: < IPv4_address/Mask  >
 
-    # Local uplink to spine interfaces (list). | Required.
+    # Local uplink interfaces (list). | Required.
     uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
-    # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+    # Uplink switches (list). | Required.
     uplink_switches: [ < uplink_switch_inventory_hostname 01 >, < uplink_switch_inventory_hostname 02 > ]
 
     # Number of interfaces towards uplink switches | Optional
@@ -328,30 +183,26 @@ defaults < node_group < node
     uplink_ptp:
       enable: < boolean >
 
-    # Point-to-Point interface speed - will apply to L3 Leaf and Spine switches | Optional.
-    p2p_link_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
+    # Point-to-Point interface speed - will apply to uplinks on both ends | Optional.
+    uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
   # When nodes are part of node group
   < node-group-name >:
     nodes:
-      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
-      # corresponding to spines and spine_interfaces in generic design | Required.
-      # Inheritance: node > node_group > defaults
-      uplink_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+      # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+      uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
   # When nodes are not in node_group
   nodes:
     <node inventory hostname>:
-      # Uplink to remote switches interfaces (list), interface located on L3 Leaf,
-      # corresponding to spines and spine_interfaces in generic design | Required.
-      # Inheritance: node > node_group > defaults
+      # Uplink switches interfaces (list), interface located on uplink switch. | Required.
       uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 ```
 
 #### ISIS underlay protocol management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # isis system-id prefix (4.4 hexadecimal)
@@ -364,23 +215,23 @@ defaults < node_group < node
 ### Loopback and VTEP management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # IPv4 subnet for Loopback0 allocation
     loopback_ipv4_pool: < IPv4_address/Mask  >
 
-    # Offset to define VTEP IP addresses of L3LEAF devices.
-    loopback_ipv4_offset: 2
-
     # IPv4 subnet for VTEP/Loopback1 allocation.
     vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
+
+    # Offset all assigned loopback IP addresses.
+    loopback_ipv4_offset: 2
 ```
 
 ### BGP & EVPN Control plane
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # node BGP AS | Required.
@@ -401,7 +252,7 @@ defaults < node_group < node
 ### EVPN services management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # Possibility to prevent configuration of Tenant VRFs and SVIs
@@ -426,7 +277,7 @@ defaults < node_group < node
 ### MLAG configuration management
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # Enable / Disable auto MLAG, when two nodes are defined in node group.
@@ -460,7 +311,7 @@ defaults < node_group < node
 ### Inband management VLAN
 
 ```yaml
-< node_type >:
+< node_type_key >:
 
   defaults:
     # Optional IP subnet assigned to Inband Management SVI on l2leafs in default VRF.
