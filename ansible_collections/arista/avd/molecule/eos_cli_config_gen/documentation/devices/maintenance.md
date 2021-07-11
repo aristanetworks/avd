@@ -107,26 +107,26 @@ Default maintenance unit profile: **IP1**
 
 ### Maintenance profiles
 
-| BGP profile | Initiator route-map
-| -------- | ----- |
+| BGP profile | Initiator route-map |
+| ----------- | ------------------- |
 | BP1 | RM-MAINTENANCE |
 | BP2 | RM-MAINTENANCE2 |
 | BP3 | RM-MAINTENANCE3 |
 
-| Interface profile | Rate monitoring load interval | Rate monitoring threshold in/out |
-|-------------------|-------------------------------|------------------|
-| IP1| 10| 500 |
+| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) |
+|-------------------|-----------------------------------|-----------------------------------------|
+| IP1 | 10 | 500 |
 
-| Unit profile | on-boot duration |
-| -------- | ----- |
-| UP1 |900 |
-| UP2 |600 |
+| Unit profile | on-boot duration (s) |
+| ------------ | -------------------- |
+| UP1 | 900 |
+| UP2 | 600 |
 
 ### Maintenance units
 
 | Unit | Interface groups | BGP groups | Unit profile | Quiesce |
-|------|------------------|------------|--------------|---------|
-| UNIT1| INTERFACE_GROUP_1| BGP_GROUP_1, BGP_GROUP_2| UP1|  No  |
+| ---- | ---------------- | ---------- | ------------ | ------- |
+| UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
 
 ### Maintenance configuration
 

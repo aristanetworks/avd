@@ -65,6 +65,8 @@ maintenance
 {%         endif %}
 {%         if maintenance.units[unit].quiesce is arista.avd.defined(true) %}
       quiesce
+{%         elif maintenance.units[unit].quiesce is arista.avd.defined(false) %}
+      no quiesce
 {%         endif %}
 {%     endfor %}
 {% endif %}

@@ -127,7 +127,7 @@ group bgp foo
 
 | Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
 | --------------- | ---------- | ----------------------------- | ------------------------ |
-| QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | - |
+| QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | Default |
 | SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
 
 ### Interface Groups Configuration
