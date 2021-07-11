@@ -41,7 +41,7 @@ The arista.avd collection provides abstracted data models and framework to build
 | OSPF | iBGP | [ 3 stage ] + L2 Leafs |
 | RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
 
-<center><img src="media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
+<center><img src="ansible_collections/arista/avd/media/topology.gif" alt="Arista AVD Overview" width="800"/></center>
 
 ## Project Documentation
 
@@ -89,7 +89,7 @@ $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 **Ansible Configuration INI file:**
 
 - enable jinja2 extensions: loop controls and do
-  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
+  - [Jinja2 Extensions Documentation](https://jinja.palletsprojects.com/extensions/)
 - By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
 ```ini

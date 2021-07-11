@@ -37,6 +37,9 @@
       - [IP Extended Community Lists RegExp](#ip-extended-community-lists-regexp)
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
+      - [Match Lists](#match-lists)
+    - [Generate Device Documentation](#generate-device-documentation)
+    - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
       - [Hardware Counters](#hardware-counters)
       - [Hardware TCAM Profiles](#hardware-tcam-profiles)
@@ -49,6 +52,7 @@
         - [Switched Ethernet Interfaces](#switched-ethernet-interfaces)
       - [Interface Defaults](#interface-defaults)
       - [Switchport Default](#switchport-default)
+      - [Interface Profiles](#interface-profiles)
       - [Loopback Interfaces](#loopback-interfaces)
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
@@ -58,6 +62,9 @@
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
+    - [Maintenance Mode](#maintenance-mode)
+      - [BGP Groups](#bgp-groups)
+      - [Interface Groups](#interface-groups)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -71,6 +78,7 @@
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
       - [NTP Servers](#ntp-servers)
+      - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
     - [Multicast](#multicast)
@@ -104,6 +112,7 @@
       - [IPv6 Routing](#ipv6-routing)
       - [Router General configuration](#router-general-configuration)
       - [Router BGP Configuration](#router-bgp-configuration)
+      - [Router IGMP Configuration](#router-igmp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
@@ -336,11 +345,13 @@ local_users:
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
   < user_2 >:
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
 ```
 
 #### Radius Servers
@@ -546,6 +557,41 @@ route_maps:
           - "< set rule 2 as string >"
 ```
 
+#### Match Lists
+
+```yaml
+match_list_input:
+  string:
+    < match_list_1 >:
+      sequence_numbers:
+        < sequence_id 1 >:
+          match_regex: < match string >
+```
+
+### Generate Device Documentation
+
+```yaml
+generate_device_documentation: < true | false | default -> true >
+```
+
+### Generate Default Config
+
+The `generate_default_config` knob allows to ommit default EOS configuration.
+This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
+
+The following commands will be ommited when `generate_default_config` is set to `false`:
+
+- RANCID Content Type
+- Hostname
+- Default configuration for `aaa`
+- Default configuration for `enable password`
+- Transceiver qsfp default mode
+- End of configuration delimiter
+
+```yaml
+generate_default_config: < true | false | default -> true >
+```
+
 ### Hardware
 
 #### Hardware Counters
@@ -684,6 +730,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    transceiver:
+      media:
+        override: < transceiver_type >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -693,6 +742,7 @@ ethernet_interfaces:
 
 ```yaml
 # Switched Interfaces
+ethernet_interfaces:
   <Ethernet_interface_2 >:
     description: < description >
     shutdown: < true | false >
@@ -735,6 +785,7 @@ ethernet_interfaces:
       vlan: < all | list of vlans as string >
       transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
+    profile: < interface_profile >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -755,6 +806,12 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -780,6 +837,15 @@ switchport_default:
     vlan: < 1-4094 >
 ```
 
+#### Interface Profiles
+
+```yaml
+interface_profiles:
+  < interface_profile_1 >:
+    commands:
+      - < command_1 >
+      - < command_2 >
+```
 #### Loopback Interfaces
 
 ```yaml
@@ -818,6 +884,7 @@ port_channel_interfaces:
     type: < routed | switched | l3dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    native_vlan: < native vlan number >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -838,6 +905,25 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent) >
+      unknown_unicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -980,6 +1066,7 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: < policy-map name >
+    pvlan_mapping: "< list of vlans as string >"
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1062,6 +1149,35 @@ mac_security:
         "< connection_key >":
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
+```
+
+### Maintenance Mode
+
+#### BGP Groups
+
+```yaml
+bgp_groups:
+  < group_name >:
+    vrf: "< vrf_name >"
+    neighbors:
+      - "< ip_address >"
+      - "< ipv6_address >"
+      - "< peer_group_name >"
+    bgp_maintenance_profiles:
+      - < profile_name >
+```
+
+#### Interface Groups
+
+```yaml
+interface_groups:
+  < group_name >:
+    interfaces:
+      - "< interface_or_interface_range >"
+    bgp_maintenance_profiles:
+      - "< profile_name >"
+    interface_maintenance_profiles:
+      - "< profile_name >"
 ```
 
 ### Management
@@ -1220,6 +1336,18 @@ ntp_server:
     - < ntp_server_2 >
 ```
 
+#### NTP
+
+```yaml
+ntp:
+  authenticate: <true | false >
+  authentication_keys:
+    <key_identifier | 1-65534>:
+      hash_algorithm: < md5 | sha1 >
+      key: "< type7_obfuscated_key >"
+  trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
+```
+
 ### MPLS
 
 ```yaml
@@ -1237,6 +1365,7 @@ mpls:
 ```yaml
 mlag_configuration:
   domain_id: < domain_id_name >
+  heartbeat_interval: < milliseconds >
   local_interface: < interface_name >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
@@ -1371,6 +1500,11 @@ logging:
       hosts:
         - < syslog_server_1>
         - < syslog_server_2>
+  policy:
+    match:
+      match_lists:
+        < match_list >:
+          action: < discard >
 ```
 
 #### Sflow
@@ -1481,6 +1615,21 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+###  System Control-Plane
+```yaml
+system:
+  control_plane:
+    tcp_mss:
+      ipv4: < Segment size >
+      ipv6: < Segment size >
+    ipv4_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
+    ipv6_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
 ```
 
 #### VM Tracer Sessions
@@ -1620,7 +1769,7 @@ qos_profiles:
 ```yaml
 queue_monitor_length:
   log: < seconds >
-  notifying: < true | false >
+  notifying: < true | false - should only be used for platforms supporting the "queue-monitor length notifying" CLI >
 ```
 
 #### Queue Monitor Streaming
@@ -1842,6 +1991,8 @@ router_bgp:
         default_originate:
           always: < true | false >
           route_map: < route_map_name >
+        next_hop:
+          address_family_ipv6_originate: < true | false >
     neighbors:
       < neighbor_ip_address>:
         route_map_in: < route_map_name >
@@ -1986,6 +2137,12 @@ router_bgp:
           route_map: < route_map_name >
 ```
 
+#### Router IGMP Configuration
+
+```yaml
+router_igmp:
+  ssm_aware: < true | false >
+```
 
 #### Router OSPF Configuration
 
@@ -2002,6 +2159,17 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      timers:
+        lsa:
+          rx_min_interval: < 0-600000 - Min interval in msecs between accepting the same LSA >
+          tx_delay:
+            initial: < 0-600000 - Delay to generate first occurrence of LSA in msecs >
+            min: < 1-600000 Min delay between originating the same LSA in msecs >
+            max: < 1-600000 Maximum delay between originating the same LSA in msecs >
+        spf_delay:
+          initial: < 0-600000 - Initial SPF schedule delay in msecs >
+          min: < 0-65535000  Min Hold time between two SPFs in msecs >
+          max: < 0-65535000  Max wait time between two SPFs in msecs >
       default_information_originate:
         always: true
       summary_addresses:
@@ -2019,6 +2187,13 @@ router_ospf:
         connected:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
+      areas:
+        < area >:
+          filter:
+            networks:
+              - < IPv4 subnet / netmask >
+              - < IPv4 subnet / netmask >
+            prefix_list: < prefix list name >
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:
@@ -2264,6 +2439,9 @@ vlans:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    private_vlan:
+      type: < community | isolated >
+      primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
 ```

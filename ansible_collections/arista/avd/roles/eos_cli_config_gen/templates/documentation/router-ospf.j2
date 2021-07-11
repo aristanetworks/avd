@@ -120,6 +120,44 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# OSPF Timers #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%         if router_ospf.process_ids[process].timers is arista.avd.defined %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### Router OSPF timers
+
+| Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
+| ---------- | ------ | ------------------------ | --------------------- |
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             if router_ospf.process_ids[process].timers is arista.avd.defined %}
+{%                 set lsa_rx = router_ospf.process_ids[process].timers.lsa.rx_min_interval | arista.avd.default('-') %}
+{%                 if router_ospf.process_ids[process].timers.lsa.tx_delay.initial is arista.avd.defined
+                      and router_ospf.process_ids[process].timers.lsa.tx_delay.min is arista.avd.defined
+                      and router_ospf.process_ids[process].timers.lsa.tx_delay.max is arista.avd.defined %}
+{%                     set lsa_tx = router_ospf.process_ids[process].timers.lsa.tx_delay.initial %}
+{%                     set lsa_tx = lsa_tx ~ " / " ~ router_ospf.process_ids[process].timers.lsa.tx_delay.min %}
+{%                     set lsa_tx = lsa_tx ~ " / " ~ router_ospf.process_ids[process].timers.lsa.tx_delay.max %}
+{%                 else %}
+{%                     set lsa_tx = '-' %}
+{%                 endif %}
+{%                 if router_ospf.process_ids[process].timers.spf_delay.initial is arista.avd.defined
+                      and router_ospf.process_ids[process].timers.spf_delay.min is arista.avd.defined
+                      and router_ospf.process_ids[process].timers.spf_delay.max is arista.avd.defined %}
+{%                     set spf_timers = router_ospf.process_ids[process].timers.spf_delay.initial %}
+{%                     set spf_timers = spf_timers ~ " / " ~ router_ospf.process_ids[process].timers.spf_delay.min %}
+{%                     set spf_timers = spf_timers ~ " / " ~ router_ospf.process_ids[process].timers.spf_delay.max %}
+{%                 else %}
+{%                     set spf_timers = '-' %}
+{%                 endif %}
+| {{ process }} | {{ lsa_rx }} | {{ lsa_tx }} | {{ spf_timers }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# Route Summary #}
 {%     set has.found = false %}
 {%     for process in router_ospf.process_ids %}
@@ -143,6 +181,31 @@
 | {{ process }} | {{ summary_prefix }} | {{ summary_tag }} | {{ summary_attribute_map }} | {{ summary_not_advertise }} |
 {%                 endfor %}
 {%             endif %}
+{%         endfor %}
+{%     endif %}
+{# OSPF Areas #}
+{%     set has.found = false %}
+{%     for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%         if router_ospf.process_ids[process].areas is arista.avd.defined %}
+{%             set has.found = true %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+### Router OSPF Areas
+
+| Process ID | Area | Filter Networks | Filter Prefix List |
+| ---------- | ---- | --------------- | ------------------ |
+{%         for process in router_ospf.process_ids | arista.avd.natural_sort %}
+{%             for area in router_ospf.process_ids[process].areas | arista.avd.natural_sort %}
+{%                 if router_ospf.process_ids[process].areas[area].filter.networks is arista.avd.defined %}
+{%                     set network_filter = router_ospf.process_ids[process].areas[area].filter.networks | join(', ') %}
+{%                 else %}
+{%                     set network_filter = '-' %}
+{%                 endif %}
+{%                 set prefix_list_filter = router_ospf.process_ids[process].areas[area].filter.prefix_list | arista.avd.default('-') %}
+| {{ process }} | {{ area }} | {{ network_filter }} | {{ prefix_list_filter }} |
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 {# Interfaces #}

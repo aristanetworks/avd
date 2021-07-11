@@ -124,3 +124,5 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
+
+custom_structured_configuration_list_merge: 'append'

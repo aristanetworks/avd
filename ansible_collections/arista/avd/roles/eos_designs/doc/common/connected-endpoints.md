@@ -138,6 +138,9 @@ port_profiles:
         raw_eos_cli: |
           < multiline eos cli >
 
+        # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
+        structured_config: < dictionary >
+
       < port_profile_2 >:
         mode: < access | dot1q-tunnel | trunk >
         vlans: < vlans as string >
@@ -181,6 +184,9 @@ port_profiles:
           # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
           raw_eos_cli: |
             < multiline eos cli >
+
+          # Custom structured config added under port_channel_interfaces.<interface> for eos_cli_config_gen
+          structured_config: < dictionary >
 
   < endpoint_2 >:
     rack: RackC

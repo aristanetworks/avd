@@ -61,7 +61,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
     service_profile: experiment
     qos:
       trust: cos

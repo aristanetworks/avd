@@ -4,7 +4,7 @@ The fabric topology variables define the connectivity between the super-spine, s
 The variables should be applied to all devices in the fabric.
 
 <div style="text-align:center">
-  <img src="../../../../../media/topology.gif" />
+  <img src="../../../../media/topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -115,6 +115,9 @@ spine:
     raw_eos_cli: |
       < multiline eos cli >
 
+    # Custom structured config for eos_cli_config_gen
+    structured_config: < dictionary >
+
   # Specify dictionary of Spine nodes | Required.
   nodes:
     < inventory_hostname >:
@@ -135,6 +138,9 @@ spine:
       # EOS CLI rendered directly on the root level of the final EOS configuration
       raw_eos_cli: |
         < multiline eos cli >
+
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
 
     < inventory_hostname >:
       id: < integer >
@@ -255,6 +261,9 @@ l3leaf:
       raw_eos_cli: |
         < multiline eos cli >
 
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
+
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
       # unless the "l3leaf.defaults.mlag:" key is set to false.
@@ -286,6 +295,10 @@ l3leaf:
           # Overrides the setting on node_group level.
           raw_eos_cli: |
             < multiline eos cli >
+
+          # Custom structured config for eos_cli_config_gen
+          # Overrides the setting on node_group level.
+          structured_config: < dictionary >
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:
@@ -441,6 +454,9 @@ l2leaf:
       raw_eos_cli: |
         < multiline eos cli >
 
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
+
       # The node name must be the same name as inventory_hostname | Required
       # When two nodes are defined, this will automatically configure the nodes as an MLAG pair,
       # unless the "l2leaf.defaults.mlag:" key is set to false.
@@ -463,6 +479,10 @@ l2leaf:
           # Overrides the setting on node_group level.
           raw_eos_cli: |
             < multiline eos cli >
+
+          # Custom structured config for eos_cli_config_gen
+          # Overrides the setting on node_group level.
+          structured_config: < dictionary >
 
     # node_group_2, will result in MLAG pair.
     < node_group_2 >:
@@ -585,6 +605,8 @@ super_spine:
     # EOS CLI rendered directly on the root level of the final EOS configuration
     raw_eos_cli: |
       < multiline eos cli >
+    # Custom structured config for eos_cli_config_gen
+    structured_config: < dictionary >
 
   nodes:
     SU-01:  # super-spine name
@@ -598,6 +620,8 @@ super_spine:
       # EOS CLI rendered directly on the root level of the final EOS configuration
       raw_eos_cli: |
         < multiline eos cli >
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
 
 # IP address range for loopbacks for all super-spines in the DC,
 # assigned as /32s
@@ -693,6 +717,9 @@ overlay_controller:
       # EOS CLI rendered directly on the root level of the final EOS configuration
       raw_eos_cli: |
         < multiline eos cli >
+
+      # Custom structured config for eos_cli_config_gen
+      structured_config: < dictionary >
 
 # Point to Point Network Summary range, assigned as /31 for each uplink interfaces
 # Assign range larger than [ total overlay_controllers * max_overlay_controller_to_switch_links * 2]

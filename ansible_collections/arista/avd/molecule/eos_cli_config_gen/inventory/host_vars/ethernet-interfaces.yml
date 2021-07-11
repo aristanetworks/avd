@@ -18,18 +18,6 @@ ethernet_interfaces:
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
       EOF
 
-  Ethernet6:
-    logging:
-      event:
-        link_status: true
-    peer: SRV-POD02
-    peer_interface: Eth1
-    peer_type: server
-    description: SRV-POD02_Eth1
-    mode: trunk
-    vlans: 110-111,210-211
-    profile: ALL
-
   Ethernet2:
     peer: SRV-POD03
     peer_interface: Eth1
@@ -37,7 +25,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
     storm_control:
       all:
         level: 10
@@ -115,7 +102,6 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
-    profile: ALL
 
   Ethernet7:
     description: Molecule L2
@@ -155,6 +141,9 @@ ethernet_interfaces:
       unknown_unicast:
         level: 10
         unit: percent
+    transceiver:
+      media:
+        override: 100gbase-ar4
 
   Ethernet8:
     description: to WAN-ISP1-01 Ethernet2
@@ -200,6 +189,9 @@ ethernet_interfaces:
     vlans: 300
 
   Ethernet13:
+    logging:
+      event:
+        link_status: false
     description: interface_in_mode_access_with_voice
     type: switched
     native_vlan: 100
@@ -207,3 +199,35 @@ ethernet_interfaces:
     phone:
       trunk: untagged
       vlan: 70
+
+  Ethernet14:
+    logging:
+      event:
+        link_status: true
+    peer: SRV-POD02
+    peer_interface: Eth1
+    peer_type: server
+    description: SRV-POD02_Eth1
+    mode: trunk
+    vlans: 110-111,210-211
+
+  Ethernet15:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Ethernet16:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Ethernet17:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true

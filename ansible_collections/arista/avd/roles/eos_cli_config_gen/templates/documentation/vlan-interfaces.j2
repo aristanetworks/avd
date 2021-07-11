@@ -9,6 +9,27 @@
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
 | {{ vlan_interface }} | {% if vlan_interfaces[vlan_interface].description is defined and vlan_interfaces[vlan_interface].description is not none %} {{ vlan_interfaces[vlan_interface].description }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].vrf is defined and vlan_interfaces[vlan_interface].vrf is not none %} {{ vlan_interfaces[vlan_interface].vrf }} {% else %} default {% endif %} | {% if vlan_interfaces[vlan_interface].mtu is defined and vlan_interfaces[vlan_interface].mtu is not none %} {{ vlan_interfaces[vlan_interface].mtu }} {% else %} - {% endif %} | {% if vlan_interfaces[vlan_interface].shutdown is defined and vlan_interfaces[vlan_interface].shutdown is not none %} {{ vlan_interfaces[vlan_interface].shutdown | lower }} {% else %} - {% endif %} |
 {%     endfor %}
+{# PVLAN #}
+{%     set vlan_interface_pvlan = namespace() %}
+{%     set vlan_interface_pvlan.configured = false %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%         if vlan_interfaces[vlan_interface].pvlan_mapping is arista.avd.defined %}
+{%             set vlan_interface_pvlan.configured = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if vlan_interface_pvlan.configured == true %}
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping |
+| --------- | ------------- |
+{%         for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%             if vlan_interfaces[vlan_interface].pvlan_mapping is arista.avd.defined %}
+| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].pvlan_mapping }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 #### IPv4
 

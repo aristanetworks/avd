@@ -1,0 +1,12 @@
+{# eos - match-lists #}
+{% if match_list_input is arista.avd.defined %}
+!
+{%     for match_list in match_list_input.string | arista.avd.natural_sort %}
+match-list input string {{ match_list }}
+{%         for sequence in match_list_input.string[match_list].sequence_numbers | arista.avd.natural_sort %}
+{%             if match_list_input.string[match_list].sequence_numbers[sequence].match_regex is arista.avd.defined %}
+   {{ sequence }} match regex {{ match_list_input.string[match_list].sequence_numbers[sequence].match_regex }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

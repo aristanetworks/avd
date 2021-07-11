@@ -54,7 +54,7 @@ Or you can use a one-liner script available in ansible-avd repository to create 
 - Clone AVD and CVP collections
 - Deploy Makefile
 
-Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](../setup-git/#update-your-ansiblecfg).
+Because we are cloning ansible collection using git, it is recommended to read documentation about [how to setup ansible to use collection based on git clone](setup-git.html#update-your-ansiblecfg).
 
 __To use AVD only__
 

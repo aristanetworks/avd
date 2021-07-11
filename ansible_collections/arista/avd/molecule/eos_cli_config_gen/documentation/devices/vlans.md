@@ -69,10 +69,19 @@ interface Management1
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | PR01-DMZ | none  |
-| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
-| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP  |
-| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP  |
+| 110 | PR01-DMZ | - |
+| 111 | PRIVATE_VLAN_COMMUNITY | - |
+| 112 | PRIVATE_VLAN_ISOLATED | - |
+| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3 |
+| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP |
+| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP |
+
+### Private VLANs
+
+| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| --------------- | ----------------- | ----------------- |
+| community | 111 | 110 |
+| isolated | 112 | 110 |
 
 ## VLANs Device Configuration
 
@@ -80,6 +89,14 @@ interface Management1
 !
 vlan 110
    name PR01-DMZ
+!
+vlan 111
+   name PRIVATE_VLAN_COMMUNITY
+   private-vlan community primary vlan 110
+!
+vlan 112
+   name PRIVATE_VLAN_ISOLATED
+   private-vlan isolated primary vlan 110
 !
 vlan 3010
    name MLAG_iBGP_TENANT_A_PROJECT01

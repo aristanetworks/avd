@@ -32,6 +32,57 @@
 | {{ port_channel_interface }} | {{ description }} | {{ type }} | {{ mode }} | {{ vlans }} | {{ native_vlan }} | {{ l2.trunk_groups }} | {{ lacp_fallback_timeout }} | {{ lacp_fallback_mode }} | {{ mlag }} | {{ esi }} |
 {%         endif %}
 {%   endfor %}
+{# PVLAN #}
+{%     set port_channel_interface_pvlan = namespace() %}
+{%     set port_channel_interface_pvlan.configured = false %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].pvlan_mapping is arista.avd.defined or
+              port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%             set port_channel_interface_pvlan.configured = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if port_channel_interface_pvlan.configured == true %}
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%             if port_channel_interfaces[port_channel_interface].pvlan_mapping is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%                 set row_pvlan_mapping = port_channel_interfaces[port_channel_interface].pvlan_mapping | arista.avd.default('-') %}
+{%                 set row_trunk_private_vlan_secondary = port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary | arista.avd.default('-') %}
+| {{ port_channel_interface }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# VLAN Translations #}
+{%     set port_channel_interface_vlan_xlate = namespace() %}
+{%     set port_channel_interface_vlan_xlate.configured = false %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].vlan_translations is arista.avd.defined %}
+{%              set port_channel_interface_vlan_xlate.configured = true %}
+{%              break %}
+{%          endif %}
+{%     endfor %}
+{%     if port_channel_interface_vlan_xlate.configured == true %}
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%             if port_channel_interfaces[port_channel_interface].vlan_translations is arista.avd.defined %}
+{%                 for vlan_translation in port_channel_interfaces[port_channel_interface].vlan_translations | arista.avd.natural_sort %}
+{%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
+| {{ port_channel_interface }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# IPv4 #}
 {%   set port_channel_interface_ipv4 = namespace() %}
 {%   set port_channel_interface_ipv4.configured = false %}

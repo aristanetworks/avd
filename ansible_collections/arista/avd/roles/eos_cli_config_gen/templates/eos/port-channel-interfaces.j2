@@ -7,6 +7,8 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].logging.event.link_status is arista.avd.defined(true) %}
    logging event link-status
+{%     elif port_channel_interfaces[port_channel_interface].logging.event.link_status is arista.avd.defined(false) %}
+   no logging event link-status
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].shutdown is arista.avd.defined(true) %}
    shutdown
@@ -46,6 +48,25 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     for  trunk_group in port_channel_interfaces[port_channel_interface].trunk_groups | arista.avd.natural_sort %}
    switchport trunk group {{ trunk_group }}
+{%     endfor %}
+{%     if port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined(true) %}
+   switchport trunk private-vlan secondary
+{%     elif port_channel_interfaces[port_channel_interface].trunk_private_vlan_secondary is arista.avd.defined(false) %}
+   no switchport trunk private-vlan secondary
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].pvlan_mapping is arista.avd.defined %}
+   switchport pvlan mapping {{ port_channel_interfaces[port_channel_interface].pvlan_mapping }}
+{%     endif %}
+{%     for vlan_translation in port_channel_interfaces[port_channel_interface].vlan_translations | arista.avd.natural_sort %}
+{%         if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%             set vlan_translation_cli = 'switchport vlan translation' %}
+{%             if vlan_translation.direction | arista.avd.default in ['in', 'out'] %}
+{%                 set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.direction %}
+{%             endif %}
+{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.from %}
+{%             set vlan_translation_cli = vlan_translation_cli ~ ' ' ~ vlan_translation.to %}
+   {{ vlan_translation_cli }}
+{%         endif %}
 {%     endfor %}
 {%     if port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ port_channel_interfaces[port_channel_interface].l2_protocol.encapsulation_dot1q_vlan }}

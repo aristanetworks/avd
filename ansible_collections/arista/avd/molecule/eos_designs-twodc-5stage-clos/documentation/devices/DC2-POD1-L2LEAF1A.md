@@ -198,7 +198,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4092 | L2LEAF_INBAND_MGMT | none  |
+| 4092 | L2LEAF_INBAND_MGMT | - |
 
 ## VLANs Device Configuration
 

@@ -77,6 +77,9 @@ interface Management1
 | Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 |
+| Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
+| Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
@@ -104,10 +107,23 @@ interface Ethernet4
 interface Ethernet5
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
+   transceiver media override 100gbase-ar4
 !
 interface Ethernet8
    description MLAG_PEER_DC1-LEAF1B_Ethernet8
    channel-group 8 mode active
+!
+interface Ethernet10/1
+   description LAG Member
+   channel-group 101 mode active
+!
+interface Ethernet10/2
+   description LAG Member
+   channel-group 102 mode active
+!
+interface Ethernet10/3
+   description LAG Member
+   channel-group 103 mode active
 !
 interface Ethernet15
    description DC1-AGG03_Ethernet1
@@ -144,6 +160,22 @@ interface Ethernet50
 | Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
 | Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
 | Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
+| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+| Port-Channel101 | 111 | - |
+| Port-Channel103 | - | True |
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+| Port-Channel102 | 111-112 | 110 | out
 
 #### IPv4
 
@@ -258,10 +290,31 @@ interface Port-Channel100.101
 !
 interface Port-Channel100.102
    description IFL for TENANT02
+   no logging event link-status
    mtu 1500
    switchport
    vrf C2
    ip address 10.1.2.3/31
+!
+interface Port-Channel101
+   description PVLAN Promiscuous Access - only one secondary
+   switchport
+   switchport access vlan 110
+   switchport pvlan mapping 111
+!
+interface Port-Channel102
+   description PVLAN Promiscuous Trunk - vlan translation out
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport vlan translation out 111-112 110
+!
+interface Port-Channel103
+   description PVLAN Secondary Trunk
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport trunk private-vlan secondary
 ```
 
 # Routing

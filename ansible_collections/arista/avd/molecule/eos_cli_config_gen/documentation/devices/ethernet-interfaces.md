@@ -82,8 +82,25 @@ interface Management1
 | Ethernet11 |  interface_in_mode_access_accepting_tagged_LACP | access | 200 | - | - | - |
 | Ethernet12 |  interface_with_dot1q_tunnel | dot1q-tunnel | 300 | - | - | - |
 | Ethernet13 |  interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - |
+| Ethernet14 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
+| Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
+| Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+| Ethernet15 | 111 | - |
+| Ethernet17 | - | True |
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+| Ethernet16 | 111-112 | 110 | out
 
 #### IPv4
 
@@ -205,6 +222,7 @@ interface Ethernet7
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
+   transceiver media override 100gbase-ar4
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
@@ -246,11 +264,40 @@ interface Ethernet12
 !
 interface Ethernet13
    description interface_in_mode_access_with_voice
+   no logging event link-status
    switchport
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
+!
+interface Ethernet14
+   description SRV-POD02_Eth1
+   logging event link-status
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+!
+interface Ethernet15
+   description PVLAN Promiscuous Access - only one secondary
+   switchport
+   switchport access vlan 110
+   switchport mode access
+   switchport pvlan mapping 111
+!
+interface Ethernet16
+   description PVLAN Promiscuous Trunk - vlan translation out
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport vlan translation out 111-112 110
+!
+interface Ethernet17
+   description PVLAN Secondary Trunk
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport trunk private-vlan secondary
 ```
 
 # Routing

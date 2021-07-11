@@ -1,4 +1,4 @@
-# ip-extended-communities
+# match-lists
 # Table of Contents
 <!-- toc -->
 
@@ -14,7 +14,7 @@
   - [IPv6 Routing](#ipv6-routing)
 - [Multicast](#multicast)
 - [Filters](#filters)
-  - [IP Extended Communities](#ip-extended-communities)
+  - [Match-lists](#match-lists)
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
@@ -88,24 +88,25 @@ interface Management1
 
 # Filters
 
-## IP Extended Communities
+## Match-lists
 
-### IP Extended Communities Summary
+### Match-list Input String Summary
 
-| Sequence | Type | Match and/or Set |
-| -------- | ---- | ---------------- |
-| TEST1 | deny | 65002:65002 |
-| TEST1 | permit | 65000:65000 |
-| TEST2 | deny | 65001:65001 |
+#### molecule
 
-### IP Extended Communities configuration
+| Sequence | Match Regex |
+| -------- | ------ |
+| 10 | ^.*MOLECULE.*$ |
+| 20 | ^.*TESTING.*$ |
+
+
+### Match-lists Device Configuration
 
 ```eos
 !
-ip extcommunity-list TEST1 deny 65002:65002
-ip extcommunity-list TEST1 permit 65000:65000
-!
-ip extcommunity-list TEST2 deny 65001:65001
+match-list input string molecule
+   10 match regex ^.*MOLECULE.*$
+   20 match regex ^.*TESTING.*$
 ```
 
 # ACL

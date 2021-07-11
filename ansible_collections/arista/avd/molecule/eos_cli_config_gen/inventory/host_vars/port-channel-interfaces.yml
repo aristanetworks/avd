@@ -80,6 +80,9 @@ port_channel_interfaces:
     ip_address: 10.1.1.3/31
     encapsulation_dot1q_vlan: 101
   Port-Channel100.102:
+    logging:
+      event:
+        link_status: false
     description: IFL for TENANT02
     mtu: 1500
     ip_address: 10.1.2.3/31
@@ -121,6 +124,29 @@ port_channel_interfaces:
       trunk: untagged
       vlan: 70
 
+
+  Port-Channel101:
+    description: PVLAN Promiscuous Access - only one secondary
+    mode: access
+    vlans: 110
+    pvlan_mapping: 111
+
+  Port-Channel102:
+    description: PVLAN Promiscuous Trunk - vlan translation out
+    mode: trunk
+    vlans: 110-112
+    vlan_translations:
+      - direction: out
+        from: 111-112
+        to: 110
+
+  Port-Channel103:
+    description: PVLAN Secondary Trunk
+    mode: trunk
+    vlans: 110-112
+    trunk_private_vlan_secondary: true
+
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -131,6 +157,9 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+    transceiver:
+      media:
+        override: 100gbase-ar4
 
   Ethernet3:
     peer: DC1-LEAF1B
@@ -160,7 +189,6 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: "active"
-    profile: ALL
 
   Ethernet8:
     peer: DC1-LEAF1B
@@ -194,3 +222,20 @@ ethernet_interfaces:
     lacp_timer:
       mode: normal
 
+  Ethernet10/1:
+    description: LAG Member
+    channel_group:
+      id: 101
+      mode: active
+
+  Ethernet10/2:
+    description: LAG Member
+    channel_group:
+      id: 102
+      mode: active
+
+  Ethernet10/3:
+    description: LAG Member
+    channel_group:
+      id: 103
+      mode: active

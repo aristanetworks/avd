@@ -1,7 +1,7 @@
 ---
 - name: "Load CVP device information for {{ inventory_hostname }}"
   tags: [build, provision, online]
-  include_vars: "{{ root_dir }}/intended/structured_configs/cvp/{{ inventory_hostname }}.yml"
+  include_vars: "{{ structured_cvp_dir }}/{{ inventory_hostname }}.yml"
 
 - name: "Create configlets on CVP {{ inventory_hostname }}."
   tags: [provision]

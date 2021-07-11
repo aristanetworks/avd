@@ -112,7 +112,7 @@ requirements.txt content:
 **Ansible Configuration INI file:**
 
 - enable jinja2 extensions: loop controls and do
-  - [Jinja2 Extensions Documentation](https://svn.python.org/projects/external/Jinja-2.1.1/docs/_build/html/extensions.html)
+  - [Jinja2 Extensions Documentation](https://jinja.palletsprojects.com/extensions/)
 - By default, Ansible will issue a warning when a duplicate dict key is encountered in YAML. We recommend to change to error instead and stop playbook execution when a duplicate key is detected.
 
 ```ini
