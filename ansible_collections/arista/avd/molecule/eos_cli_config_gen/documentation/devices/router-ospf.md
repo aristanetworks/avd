@@ -202,10 +202,15 @@ interface Vlan24
 
 ### Router OSPF Router Redistribution
 
-| Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
-| ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
-| 100 | enabled| - | enabled | - |
-| 200 | enabled| rm-ospf-connected | enabled | rm-ospf-static |
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 100 | connected | - |
+| 100 | static | - |
+| 100 | bgp | - |
+| 200 | connected | rm-ospf-connected |
+| 200 | static | rm-ospf-static |
+| 200 | bgp | rm-ospf-bgp |
+
 
 ### Router OSPF Router Max-Metric
 
