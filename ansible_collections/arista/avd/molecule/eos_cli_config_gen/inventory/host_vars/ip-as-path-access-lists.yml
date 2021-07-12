@@ -1,0 +1,9 @@
+### ip as-path access-lists ###
+
+ip_as_path_access_lists:
+  bgppermit:
+    - type: permit
+      regexp: ".*"
+  bgpdeny:
+    - type: deny
+      regexp: ".*"

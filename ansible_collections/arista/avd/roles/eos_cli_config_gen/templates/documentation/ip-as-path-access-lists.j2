@@ -1,18 +1,17 @@
-{% if ip_as_path_access_lists is defined and ip_as_path_access_lists is  arista.avd.defined %}
+{% if ip_as_path_access_lists is arista.avd.defined %}
 
-## AS Path access-listts 
+## AS Path access-lists
 
 ### AS Path Access-lists Summary
 
 {%     for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
 ### {{ ip_as_path_access_list }}
 
-| Type | Permit | Deny  |
-| -------- | ------ |
+| Type | Permit | Deny |
+| ---- | ------ | ---- |
 {%         for action in ip_as_path_access_lists[ip_as_path_access_list].type | arista.avd.natural_sort %}
 | {{ action }}
 {%         endfor %}
-
 {%     endfor %}
 
 ###  AS extended community path Device Configuration
