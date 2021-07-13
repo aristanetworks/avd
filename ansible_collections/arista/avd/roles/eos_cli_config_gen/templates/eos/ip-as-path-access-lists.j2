@@ -1,17 +1,9 @@
 {# eos - ip-as-path-access-lists #}
-{% if ip_as_path_access_lists is arista.avd.defined %}
+{% for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
 !
-{%     for ip_as_path_access_list in ip_as_path_access_lists | arista.avd.natural_sort %}
-{%          for ip_as_path_access_list_elements in ip_as_path_access_list %}
-{%         set ip_as_path_access_list_cli = "ip as-path access-list " ~ ip_as_path_access_list %}
-{%         if access_lists[access_list].type is arista.avd.defined %}
-{%             set ip_as_path_access_list_cli = ip_as_path_access_list_cli ~ access_lists[access_list].type %}
+{%     for ip_as_path_access_list_elements in ip_as_path_access_lists[ip_as_path_access_list] | arista.avd.default([]) %}
+{%         if ip_as_path_access_list_elements.type is arista.avd.defined and ip_as_path_access_list_elements.regexp is arista.avd.defined %}
+ip as-path access-list {{ ip_as_path_access_list}} {{ ip_as_path_access_list_elements.type }} {{ ip_as_path_access_list_elements.regexp }} any
 {%         endif %}
-{%         if access_lists[access_list].regexp is arista.avd.defined %}
-{%             set ip_as_path_access_list_cli = ip_as_path_access_list_cli ~ access_lists[access_list].regexp %}
-{%         endif %}
-{%         set ip_as_path_access_list_cli = ip_as_path_access_list_cli ~ " any" %}
-{{ ip_as_path_access_list_cli }}
-{%          endfor %}
 {%     endfor %}
-{% endif %}
+{% endfor %}
