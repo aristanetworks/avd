@@ -238,7 +238,6 @@ interface Vlan24
 | 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
 | 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
 | 600 | 0.0.0.1 | normal | - | - |  |
-| 600 | 0.0.10.10 | StUb | - | - |  |
 | 600 | 0.0.10.11 | stub | - | - | no-summary |
 | 600 | 0.0.20.20 | nssa | - | - |  |
 | 600 | 0.0.20.21 | nssa | - | - | no-summary |
@@ -311,7 +310,6 @@ router ospf 500
    max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
 !
 router ospf 600
-   area 0.0.10.10 stub
    area 0.0.10.11 stub no-summary
    area 0.0.20.20 nssa
    area 0.0.20.21 nssa no-summary

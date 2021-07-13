@@ -28,7 +28,7 @@ router ospf {{ process_id }}
 {%     endif %}
 {%     for area in router_ospf.process_ids[process_id].areas | arista.avd.natural_sort %}
 {# OSPF stub area configuration #}
-{%         if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "stub" %}
+{%         if router_ospf.process_ids[process_id].areas[area].type is arista.avd.defined("stub") %}
 {%             set stub_area_cli = "area " ~ area ~ " stub" %}
 {%             if router_ospf.process_ids[process_id].areas[area].no_summary is arista.avd.defined(true) %}
 {%                 set stub_area_cli = stub_area_cli ~ " no-summary" %}
@@ -36,7 +36,7 @@ router ospf {{ process_id }}
    {{ stub_area_cli }}
 {%         endif %}
 {# OSPF nssa area configuration #}
-{%         if router_ospf.process_ids[process_id].areas[area].type | arista.avd.default("normal") | lower == "nssa" %}
+{%         if router_ospf.process_ids[process_id].areas[area].type is arista.avd.defined("nssa") %}
 {#             print_nssa is set to ensure not to print "area xx nssa" twice in certain corner cases #}
 {%             set ns = namespace(print_nssa = true) %}
 {%             set nssa_area_cli = "area " ~ area ~ " nssa" %}
