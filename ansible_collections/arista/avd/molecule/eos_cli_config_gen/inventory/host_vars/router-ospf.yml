@@ -93,8 +93,6 @@ router_ospf:
     600:
       areas:
         0.0.0.1:
-        0.0.10.10:
-          type: StUb #Testing case insensitive
         0.0.10.11:
           type: stub
           no_summary: true
