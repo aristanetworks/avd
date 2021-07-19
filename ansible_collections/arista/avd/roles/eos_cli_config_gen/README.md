@@ -94,6 +94,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+    - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
     - [Prompt](#prompt)
@@ -371,6 +372,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
+      single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encypted_key >
       timeout: < timeout in seconds >
