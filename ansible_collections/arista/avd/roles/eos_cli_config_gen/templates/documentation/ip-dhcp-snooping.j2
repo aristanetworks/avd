@@ -1,0 +1,15 @@
+{% if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
+!
+ip dhcp snooping
+| VLAN | 
+| ---  | 
+{%   for vlan in ip_dhcp_snooping.vlans | arista.avd.natural_sort %}
+ip dhcp snooping vlan {{ vlan }}
+{%   endfor %}
+{%   if ip_dhcp_snooping.information_option is arista.avd.defined(true) %}
+ip dhcp snooping information option
+{% endif %}
+```eos
+{% include 'eos/ip-dhcp-snooping.j2' %}
+```
+{% endif %}

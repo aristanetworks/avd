@@ -1,0 +1,9 @@
+### ip dhcp snooping
+
+ip_dhcp_snooping:
+  enabled: true
+  vlans: 
+    - 100
+    - 200
+    - 300
+  information_option: true 
