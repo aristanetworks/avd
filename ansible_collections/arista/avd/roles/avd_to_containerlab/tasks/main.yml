@@ -1,0 +1,8 @@
+---
+# tasks file for avd_to_containerlab
+- name: Generate containerlab topology
+  template:
+    src: topology.yml.j2
+    dest: '{{ containerlab_configuration }}'
+  delegate_to: localhost
+  run_once: true

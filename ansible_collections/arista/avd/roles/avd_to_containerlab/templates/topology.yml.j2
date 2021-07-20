@@ -1,0 +1,73 @@
+{# HEADER -- LOGIC implementation #}
+{% set node_types = dict() %}
+{% for node_type_key in node_type_keys | arista.avd.default(['spine', 'l3leaf', 'l2leaf']) | arista.avd.natural_sort %}
+{%     if hostvars[inventory_hostname][node_type_key] is arista.avd.defined %}
+{%         do node_types.update({node_type_key: hostvars[inventory_hostname][node_type_key]}) %}
+{%     endif %}
+{% endfor %}
+{# CONTAINERLABS configuration rendering #}
+---
+name: {{ fabric_name }}
+
+mgmt:
+  network: 'mgmt_{{fabric_name}}'
+  ipv4_subnet: {{ mgmt_network_v4 }}
+
+{# NODES definition #}
+topology:
+  nodes:
+{% for node_type in node_types | arista.avd.natural_sort %}
+{# --------------------- NODE GROUPS LIST --------------------- #}
+{%     for node_group in node_types[node_type]['node_groups'] | arista.avd.natural_sort %}
+{%         for node in node_types[node_type]['node_groups'][node_group]['nodes'] | arista.avd.natural_sort %}
+    {{ node }}:
+      image: {{ceos_version}}
+      mgmt_ipv4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip }}
+      kind: ceos
+      startup-config: {{ inventory_dir }}/intended/configs/{{node}}.cfg
+{%         endfor %}
+{%     endfor %}
+{# --------------------- FLAT NODES LIST --------------------- #}
+{%     for node in node_types[node_type]['nodes'] | arista.avd.natural_sort %}
+    {{ node }}:
+      image: {{ceos_version}}
+      mgmt_ipv4: {{ node_types[node_type]['nodes'][node].mgmt_ip }}
+      kind: ceos
+      startup-config: {{ inventory_dir }}/intended/configs/{{node}}.cfg
+{%     endfor %}
+{% endfor %}
+
+{# LINKS definition #}
+  links:
+{% for node_type in node_types | arista.avd.natural_sort %}
+{# --------------------- NODE GROUPS LIST --------------------- #}
+{%     for node_group in node_types[node_type]['node_groups'] | arista.avd.natural_sort %}
+{%         for node in node_types[node_type]['node_groups'][node_group]['nodes'] | arista.avd.natural_sort %}
+{# UPLINK interfaces #}
+{%             for uplink_switch_interface in node_types[node_type]['node_groups'][node_group]['nodes'][node].uplink_switch_interfaces %}
+{%                 set uplink_interfaces = node_types[node_type]['node_groups'][node_group]['nodes'][node].uplink_interfaces | arista.avd.default( node_types[node_type]['node_groups'][node_group].uplink_interfaces, node_types[node_type].defaults.uplink_interfaces ) %}
+{%                 set uplink_switches = node_types[node_type]['node_groups'][node_group]['nodes'].uplink_switches | arista.avd.default( node_types[node_type]['node_groups'][node_group].uplink_switches, node_types[node_type].defaults.uplink_switches ) %}
+    - endpoints: ["{{ node }}:{{ uplink_interfaces[loop.index0] }}", "{{ uplink_switches[ loop.index0 ] }}:{{ uplink_switch_interface | replace('Ethernet', 'eth') }}"]
+{%                 endfor %}
+{# - End Uplink Interfaces #}
+{# - MLAG interfaces #}
+{%             if loop.index == 1 and node_types[node_type]['node_groups'][node_group]['nodes'] | length > 1 %}
+{%                  set mlag_peer = loop.nextitem %}
+{%                  set mlag_interfaces = node_types[node_type]['node_groups'][node_group]['nodes'][node].mlag_interfaces | arista.avd.default( node_types[node_type]['node_groups'][node_group].mlag_interfaces, node_types[node_type].defaults.mlag_interfaces ) %}
+{%                  set mlag_remote_interfaces = node_types[node_type]['node_groups'][node_group]['nodes'][mlag_peer].mlag_interfaces | arista.avd.default( node_types[node_type]['node_groups'][node_group].mlag_interfaces, node_types[node_type].defaults.mlag_interfaces ) %}
+{%                  for mlag_interface in mlag_interfaces %}
+    - endpoints: ["{{ node }}:{{ mlag_interface | replace('Ethernet', 'eth') }}", "{{ mlag_peer }}:{{ mlag_remote_interfaces[loop.index0] | replace('Ethernet', 'eth') }}"]
+{%                  endfor %}
+{%             endif %}
+{# - End MLAG interfaces #}
+{%         endfor %}
+{%     endfor %}
+{# --------------------- FLAT NODES LIST --------------------- #}
+{%     for node in node_types[node_type]['nodes'] | arista.avd.natural_sort %}
+{%         for uplink_switch_interface in node_types[node_type]['nodes'][node].uplink_switch_interfaces | arista.avd.natural_sort %}
+{%             set uplink_interfaces = node_types[node_type]['nodes'][node].uplink_interfaces | arista.avd.default( node_types[node_type].uplink_interfaces, node_types[node_type].defaults.uplink_interfaces ) %}
+{%             set uplink_switches = node_types[node_type]['nodes'].uplink_switches | arista.avd.default( node_types[node_type].uplink_switches, node_types[node_type].defaults.uplink_switches ) %}
+    - endpoints: ["{{ node }}:{{ uplink_interfaces[loop.index0] }}", "{{ uplink_switches[ loop.index0 ] }}:{{ uplink_switch_interface | replace('Ethernet', 'eth') }}"]
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
