@@ -243,7 +243,7 @@ defaults <- node_group <- node_group.node <- node
     # Acting role in EVPN control plane.
     # Override role definition from node_type_keys
     # Can be set per node
-    evpn_role: < client | server | none | Default -> server >
+    evpn_role: < client | server | none | Default -> refer to node type variable table >
 
     # List of inventory hostname acting as EVPN route-servers.
     evpn_route_servers: [ '< inventory_hostname_of_evpn_server >' ]
