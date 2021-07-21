@@ -2194,6 +2194,13 @@ router_ospf:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
+        < area >:
+          type: < normal | stub | nssa | default -> normal >
+          no_summary: < true | false >
+          nssa_only: < true | false >
+          default_information_originate:
+            metric: < Integer 1-65535 > # Value of the route metric
+            metric_type: < 1 | 2 > # OSPF metric type
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:
