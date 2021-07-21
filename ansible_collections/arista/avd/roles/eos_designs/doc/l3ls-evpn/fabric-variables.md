@@ -38,34 +38,9 @@ bgp_as: < AS number >
 # Point to Point Links MTU | Required.
 p2p_uplinks_mtu: < 0-9216 | default -> 9000 >
 
-# IP Summary for Point to Point interfaces between L3 leafs and spines used for underlay peering | Required
-# Assigned as /31 for each uplink interfaces
-# Needs to be unique per pod
-# Assign network summary larger then:
-# [ total spines * total potential L3 leafs * 2 * max_l3leaf_to_spine_links(default: 1) ]
-underlay_p2p_network_summary: < IPv4_network/Mask >
-
-# IP address summary for BGP evpn overlay peering loopback for L3 leafs and spines | Required
-# Assigned as /32 to Loopback0
-# Assign range larger then:
-# [ total spines + total potential L3 leafs ]
-overlay_loopback_network_summary: < IPv4_network/Mask >
-
-# IP address summary VTEP VXLAN Tunnel source loopback1 IP for L3 leafs | Required
-# Assigned as /32 to Loopback1
-# Assign range larger then total L3 leafs
-vtep_loopback_network_summary: < IPv4_network/Mask >
-
 # IP Address used as Virtual VTEP. Will be configured as secondary IP on loopback1 | Optional
 # This is only needed for centralized routing designs
 vtep_vvtep_ip: < IPv4_address/Mask >
-
-# IP address summary used for MLAG Peer Link (control link) and underlay L3 peering | *Required
-# * When MLAG leafs present in topology.
-# Assign range larger then total: L3 Leafs + 2 ]
-mlag_ips:
-  leaf_peer_l3: < IPv4_network/Mask >
-  mlag_peer: < IPv4_network/Mask >
 
 # BGP multi-path | Optional
 bgp_maximum_paths: < number_of_max_paths | default -> 4 >
