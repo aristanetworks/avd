@@ -34,6 +34,10 @@
   - ansible_collections/arista/avd/roles/dhcp_provisioner/*
   - ansible_collections/arista/avd/roles/dhcp_provisioner/**/*
 
+"role: eos_designs_to_containerlab":
+  - ansible_collections/arista/avd/roles/eos_designs_to_containerlab/*
+  - ansible_collections/arista/avd/roles/eos_designs_to_containerlab/**/*
+
 "filter: natural_sort":
   - ansible_collections/arista/avd/plugins/filter/natural_sort.py
 
