@@ -2165,7 +2165,7 @@ router_ospf:
         < area >:
           type: < normal | stub | nssa | default -> normal >
           no_summary: < true | false >
-          nssa_only: <true | false >
+          nssa_only: < true | false >
           default_information_originate:
             metric: < Integer 1-65535 > # Value of the route metric
             metric_type: < 1 | 2 > # OSPF metric type
