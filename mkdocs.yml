@@ -116,6 +116,7 @@ nav:
     - dhcp_provisioner: roles/dhcp_provisioner/README.md
     - build_output_folders: roles/build_output_folders/README.md
     - upgrade_tools: roles/upgrade_tools/README.md
+    - eos_designs_to_containerlab: roles/eos_designs_to_containerlab/README.md
   - Modules documentation:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
