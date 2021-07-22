@@ -22,8 +22,8 @@
 | DC1_FABRIC | l3leaf | DC1-BL1A | 192.168.200.110/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2A | - | - | Provisioned |
-| DC1_FABRIC | l2leaf | DC1-L2LEAF2B | - | - | Provisioned |
+| DC1_FABRIC | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
+| DC1_FABRIC | l2leaf | DC1-L2LEAF2B | 192.168.200.114/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-LEAF1A | 192.168.200.105/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-LEAF2A | 192.168.200.106/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-LEAF2B | 192.168.200.107/24 | vEOS-LAB | Provisioned |
@@ -56,6 +56,12 @@
 | l3leaf | DC1-BL1B | Ethernet4 | spine | DC1-SPINE4 | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
+| l2leaf | DC1-L2LEAF2A | Ethernet1 | l3leaf | DC1-SVC3A | Ethernet7 |
+| l2leaf | DC1-L2LEAF2A | Ethernet2 | l3leaf | DC1-SVC3B | Ethernet7 |
+| l2leaf | DC1-L2LEAF2A | Ethernet3 | mlag_peer | DC1-L2LEAF2B | Ethernet3 |
+| l2leaf | DC1-L2LEAF2A | Ethernet4 | mlag_peer | DC1-L2LEAF2B | Ethernet4 |
+| l2leaf | DC1-L2LEAF2B | Ethernet1 | l3leaf | DC1-SVC3A | Ethernet8 |
+| l2leaf | DC1-L2LEAF2B | Ethernet2 | l3leaf | DC1-SVC3B | Ethernet8 |
 | l3leaf | DC1-LEAF1A | Ethernet1 | spine | DC1-SPINE1 | Ethernet1 |
 | l3leaf | DC1-LEAF1A | Ethernet2 | spine | DC1-SPINE2 | Ethernet1 |
 | l3leaf | DC1-LEAF1A | Ethernet3 | spine | DC1-SPINE3 | Ethernet1 |

@@ -746,6 +746,13 @@ port_channel_interfaces:
     trunk_groups:
     - LEAF_PEER_L3
     - MLAG
+  Port-Channel7:
+    description: DC1_L2LEAF2_Po1
+    type: switched
+    shutdown: false
+    vlans: 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
+    mode: trunk
+    mlag: 7
   Port-Channel14:
     description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
@@ -849,6 +856,26 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ipv6_enable: true
+  Ethernet7:
+    peer: DC1-L2LEAF2A
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF2A_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
+  Ethernet8:
+    peer: DC1-L2LEAF2B
+    peer_interface: Ethernet2
+    peer_type: l2leaf
+    description: DC1-L2LEAF2B_Ethernet2
+    type: switched
+    shutdown: false
+    channel_group:
+      id: 7
+      mode: active
   Ethernet11:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth2
