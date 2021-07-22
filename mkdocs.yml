@@ -2,7 +2,7 @@
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-copyright: Copyright &copy; 2019 - 2020 Arista Networks
+copyright: Copyright &copy; 2019 - 2021 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
