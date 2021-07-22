@@ -1,8 +1,8 @@
 {% if ip_dhcp_snooping.enabled is arista.avd.defined(true) %}
 !
 ip dhcp snooping
-| VLAN | 
-| ---  | 
+| VLAN |
+| ---  |
 {%   for vlan in ip_dhcp_snooping.vlans | arista.avd.natural_sort %}
 ip dhcp snooping vlan {{ vlan }}
 {%   endfor %}
