@@ -45,6 +45,10 @@ theme:
 extra_css:
   - docs/stylesheets/extra.material.css
 
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - docs/stylesheets/tables.js
+
 plugins:
   - search:
       lang: en
