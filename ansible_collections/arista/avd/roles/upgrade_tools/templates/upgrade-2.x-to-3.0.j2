@@ -57,6 +57,14 @@ spine:
 # New spine.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
     isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
 {%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
+{%     endif %}
   nodes:
 {%     for node in spine.nodes | arista.avd.default([]) %}
     {{ node }}:
@@ -114,6 +122,14 @@ l3leaf:
 {%     if l3leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
 # Change from l3leaf.defaults.p2p_link_interface_speed to l3leaf.defaults.uplink_interface_speed
     uplink_interface_speed: {{ l3leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
 {%     if leaf_bgp_defaults is arista.avd.defined %}
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
@@ -191,6 +207,14 @@ l2leaf:
 {%     if l2leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
 # Change from l2leaf.defaults.p2p_link_interface_speed to l2leaf.defaults.uplink_interface_speed
     uplink_interface_speed: {{ l2leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
   node_groups:
 {%     for node_group in l2leaf.node_groups | arista.avd.default([]) %}
