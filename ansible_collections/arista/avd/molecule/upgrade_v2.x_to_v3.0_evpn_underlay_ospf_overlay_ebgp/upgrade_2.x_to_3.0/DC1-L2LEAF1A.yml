@@ -9,6 +9,10 @@ spine:
     loopback_ipv4_pool: 192.168.255.0/24
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
   nodes:
     DC1-SPINE1:
     DC1-SPINE2:
@@ -31,6 +35,10 @@ l3leaf:
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
 # Change from underlay_p2p_network_summary to l3leaf.defaults.uplink_ipv4_pool
     uplink_ipv4_pool: 172.31.255.0/24
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
   node_groups:
@@ -70,6 +78,10 @@ l2leaf:
   defaults:
 # Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
     uplink_switches: ['DC1-SVC3A', 'DC1-SVC3B']
+# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
   node_groups:
     DC1_L2LEAF1:
 # Change from l2leaf.node_groups.DC1_L2LEAF1.parent_l3leafs to l2leaf.node_groups.DC1_L2LEAF1.uplink_switches
