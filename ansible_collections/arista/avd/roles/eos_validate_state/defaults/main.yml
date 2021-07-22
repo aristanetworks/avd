@@ -10,7 +10,7 @@ eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name 
 eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
 
 # Output level
-# Can be set to "verbose" to include details about succesfull tests
+# Can be set to "verbose" to include details about successful tests
 eos_validate_output_level: "default"
 
 # Markdown flavor to support non-text rendering

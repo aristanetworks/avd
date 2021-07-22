@@ -89,6 +89,10 @@ eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
 eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
 
+# Output level
+# Can be set to "verbose" to include details about successful tests
+eos_validate_output_level: "default"
+
 # Markdown flavor to support non-text rendering
 # Only support default and github
 validate_state_markdown_flavor: "default"
@@ -201,6 +205,10 @@ dns_domain: lab.local
 
 ```shell
 ansible-playbook playbooks/pb_validate_yml --inventory inventory/inventory.yml
+```
+
+```shell
+ansible-playbook playbooks/pb_validate_yml --inventory inventory/inventory.yml --extra-vars eos_validate_output_level=verbose
 ```
 
 ## License
