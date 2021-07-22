@@ -9,15 +9,18 @@
 {%         set ntp_int_cli = ntp_int_cli ~ " " ~ ntp_server.local_interface.interface %}
 {{ ntp_int_cli }}
 {%     endif %}
-{%     for node in ntp_server.nodes %}
-{%         set node_cli = "ntp server" %}
-{%         if ntp_server.local_interface.vrf is arista.avd.defined and ntp_server.local_interface.vrf != 'default' %}
-{%             set node_cli = node_cli ~ " vrf " ~ ntp_server.local_interface.vrf %}
-{%         endif %}
-{%         set node_cli = node_cli ~ " " ~ node %}
-{%         if loop.first %}
-{%             set node_cli = node_cli ~ " prefer" %}
-{%         endif %}
+{%     if ntp_server.nodes is arista.avd.defined %}
+{%         set firstEntry = ntp_server.nodes.0 %}
+{%         for node in ntp_server.nodes | arista.avd.sort %}
+{%             set node_cli = "ntp server" %}
+{%             if ntp_server.local_interface.vrf is arista.avd.defined and ntp_server.local_interface.vrf != 'default' %}
+{%                 set node_cli = node_cli ~ " vrf " ~ ntp_server.local_interface.vrf %}
+{%             endif %}
+{%             set node_cli = node_cli ~ " " ~ node %}
+{%             if node == firstEntry  %}
+{%                set node_cli = node_cli ~ " prefer" %}
+{%             endif %}
 {{ node_cli }}
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 {% endif %}

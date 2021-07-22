@@ -5,7 +5,11 @@ ntp_server:
     interface: lo1
   nodes:
     - 10.1.1.1
+    - 2.2.2.55
+    - ie.pool.ntp.org
     - 10.1.1.2
+    - 1.2.3.4
+    - 20.20.20.1
 
 ntp:
   authenticate: true
