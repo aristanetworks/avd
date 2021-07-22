@@ -12,7 +12,7 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: false
 theme:
   name: material
-  custom_dir: ansible_collections/arista/avd/docs/_overrides
+  # custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
     - navigation.instant
     - navigation.top
@@ -30,6 +30,17 @@ theme:
   language: en
   include_search_page: false
   search_index_only: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 extra_css:
   - docs/stylesheets/extra.material.css
