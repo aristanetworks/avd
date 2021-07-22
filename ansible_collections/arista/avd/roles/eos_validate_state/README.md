@@ -85,6 +85,18 @@ root_dir: '{{ inventory_dir }}'
 eos_validate_state_name: 'reports'
 eos_validate_state_dir: '{{ root_dir }}/{{ eos_validate_state_name }}'
 
+# Tests to include
+eos_validate_state_bgp_check: true
+eos_validate_state_hardware: true
+eos_validate_state_interfaces_state: true
+eos_validate_state_ip_reachability: true
+eos_validate_state_lldp_topology: true
+eos_validate_state_loopback0_reachability: true
+eos_validate_state_mlag: true
+eos_validate_state_ntp: true
+eos_validate_state_routing_table: true
+eos_validate_state_reload_cause: false
+
 # Reports name
 eos_validate_state_md_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.md'
 eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name }}-state.csv'
