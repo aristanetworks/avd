@@ -90,8 +90,8 @@ interface Management1
 # ACL
 !
 ip dhcp snooping
-| VLAN | 
-| ---  | 
+| VLAN |
+| ---  |
 ip dhcp snooping vlan 100
 ip dhcp snooping vlan 200
 ip dhcp snooping vlan 300
