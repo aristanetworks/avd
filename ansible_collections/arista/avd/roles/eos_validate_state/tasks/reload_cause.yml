@@ -8,8 +8,6 @@
   register: reload_cause
   tags:
     - reload_cause
-    - optional
-    - never
 
 - name: validate reload cause
   assert:
@@ -20,5 +18,3 @@
   register: reload_cause_results
   tags:
     - reload_cause
-    - optional
-    - never
