@@ -29,7 +29,11 @@
 - [Validate State Report](validate-state-report)
   - [Test Results Summary](#test-results-summary)
   - [Failed Test Results Summary](#failed-test-results-summary)
+{% if eos_validate_output_level is arista.avd.defined %}
+{%     if eos_validate_output_level == "verbose" %}
   - [All Test Results](#all-test-results)
+{%     endif %}
+{% endif %}
 
 ## Test Results Summary
 
@@ -38,6 +42,25 @@
 | Total Tests | Total Tests Passed | Total Tests Failed |
 | ----------- | ------------------ | ------------------ |
 | {{ validate_state_report.total_tests }} | {{ validate_state_report.total_tests_passed }} | {{ validate_state_report.total_tests_failed }} |
+
+### Summary Totals Per Category
+
+| Test Category | Total Tests | Tests Passed | Tests Failed |
+| ------------- | ----------- | ------------ | ------------ |
+{% for test_category in validate_state_report.test_categories %}
+{%     for test_id in validation_report_csv.dict %}
+{%         if validation_report_csv.dict[test_id].test_category == test_category %}
+{%             if validation_report_csv.dict[test_id].result == "PASS" %}
+{%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
+{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
+{%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+| {{ test_category }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} |
+{%     set validate_state_report.tests_passed = 0 %}
+{%     set validate_state_report.tests_failed = 0 %}
+{% endfor %}
 
 ### Summary Totals Devices Under Tests
 
@@ -60,25 +83,6 @@
 {%     set validate_state_report.test_categories_failed = [] %}
 {% endfor %}
 
-### Summary Totals Per Category
-
-| Test Category | Total Tests | Tests Passed | Tests Failed |
-| ------------- | ----------- | ------------ | ------------ |
-{% for test_category in validate_state_report.test_categories %}
-{%     for test_id in validation_report_csv.dict %}
-{%         if validation_report_csv.dict[test_id].test_category == test_category %}
-{%             if validation_report_csv.dict[test_id].result == "PASS" %}
-{%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
-{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
-{%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
-{%             endif %}
-{%         endif %}
-{%     endfor %}
-| {{ test_category }} |  {{ validate_state_report.tests_passed + validate_state_report.tests_failed }} | {{ validate_state_report.tests_passed }} | {{ validate_state_report.tests_failed }} |
-{%     set validate_state_report.tests_passed = 0 %}
-{%     set validate_state_report.tests_failed = 0 %}
-{% endfor %}
-
 ## Failed Test Results Summary
 
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
@@ -88,11 +92,14 @@
 | {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
 {%     endif %}
 {% endfor %}
-
+{% if eos_validate_output_level is arista.avd.defined %}
+{%     if eos_validate_output_level == "verbose" %}
 ## All Test Results
 
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
-{% for test_id in validation_report_csv.dict %}
+{%         for test_id in validation_report_csv.dict %}
 | {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
-{% endfor %}
+{%         endfor %}
+{%     endif %}
+{% endif %}
