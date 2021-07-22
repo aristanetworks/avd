@@ -221,7 +221,6 @@ ethernet_interfaces:
     shutdown: false
     mode: access
     vlans: 110
-    profile: TENANT_A
   Ethernet6:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
@@ -231,7 +230,6 @@ ethernet_interfaces:
     shutdown: false
     mode: trunk
     vlans: 110-111,210-211
-    profile: TENANT_A_B
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

@@ -21,6 +21,8 @@
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
+  - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
   - [IP Routing](#ip-routing)
@@ -241,6 +243,56 @@ vlan 131
 ```
 
 # Interfaces
+
+## Ethernet Interfaces
+
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-121,130-131 | *- | *- | 1 |
+| Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-121,130-131 | *- | *- | 1 |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description DC1-LEAF2A_Ethernet7
+   no shutdown
+   channel-group 1 mode active
+!
+interface Ethernet2
+   description DC1-LEAF2B_Ethernet7
+   no shutdown
+   channel-group 1 mode active
+```
+
+## Port-Channel Interfaces
+
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel1 | DC1_LEAF2_Po7 | switched | trunk | 110-111,120-121,130-131 | - | - | - | - | - | - |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel1
+   description DC1_LEAF2_Po7
+   no shutdown
+   switchport
+   switchport trunk allowed vlan 110-111,120-121,130-131
+   switchport mode trunk
+```
 
 # Routing
 ## Service Routing Protocols Model

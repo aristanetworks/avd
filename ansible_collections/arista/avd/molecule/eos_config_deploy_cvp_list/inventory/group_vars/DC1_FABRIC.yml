@@ -4,11 +4,6 @@
 
 fabric_name: DC1_FABRIC
 
-# mlag pair IP assignment - assign blocks - Assign range larger then total spines + total leafs switches
-mlag_ips:
-  leaf_peer_l3: 10.255.251.0/24
-  mlag_peer: 10.255.252.0/24
-
 # Enable vlan aware bundles
 vxlan_vlan_aware_bundles: true
 
@@ -61,6 +56,8 @@ l3leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     DC1_LEAF1:
       bgp_as: 65101
@@ -123,6 +120,8 @@ l2leaf:
     mlag_interfaces: [ Ethernet3, Ethernet4 ]
     spanning_tree_mode: mstp
     spanning_tree_priority: 16384
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     DC1_L2LEAF1:
       uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]

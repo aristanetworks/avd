@@ -647,7 +647,6 @@ ethernet_interfaces:
     channel_group:
       id: 10
       mode: active
-    profile: TENANT_B
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094

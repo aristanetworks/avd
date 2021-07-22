@@ -218,6 +218,12 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet1 | routed | - | 172.31.255.0/31 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet1 | routed | - | 172.31.255.8/31 | default | 1500 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet1 | routed | - | 172.31.255.16/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet1 | routed | - | 172.31.255.24/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet1 | routed | - | 172.31.255.32/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet1 | routed | - | 172.31.255.40/31 | default | 1500 | false | - | - |
+| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | routed | - | 172.31.255.48/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -229,6 +235,48 @@ interface Ethernet1
    mtu 1500
    no switchport
    ip address 172.31.255.0/31
+!
+interface Ethernet2
+   description P2P_LINK_TO_DC1-LEAF2A_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.8/31
+!
+interface Ethernet3
+   description P2P_LINK_TO_DC1-LEAF2B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.16/31
+!
+interface Ethernet4
+   description P2P_LINK_TO_DC1-SVC3A_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.24/31
+!
+interface Ethernet5
+   description P2P_LINK_TO_DC1-SVC3B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.32/31
+!
+interface Ethernet6
+   description P2P_LINK_TO_DC1-BL1A_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.40/31
+!
+interface Ethernet7
+   description P2P_LINK_TO_DC1-BL1B_Ethernet1
+   no shutdown
+   mtu 1500
+   no switchport
+   ip address 172.31.255.48/31
 ```
 
 ## Loopback Interfaces
@@ -348,7 +396,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 172.31.255.1 | 65101 | default |
+| 172.31.255.9 | 65102 | default |
+| 172.31.255.17 | 65102 | default |
+| 172.31.255.25 | 65103 | default |
+| 172.31.255.33 | 65103 | default |
+| 172.31.255.41 | 65104 | default |
+| 172.31.255.49 | 65104 | default |
 | 192.168.255.5 | 65101 | default |
+| 192.168.255.6 | 65102 | default |
+| 192.168.255.7 | 65102 | default |
+| 192.168.255.8 | 65103 | default |
+| 192.168.255.9 | 65103 | default |
+| 192.168.255.10 | 65104 | default |
+| 192.168.255.11 | 65104 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -380,9 +440,45 @@ router bgp 65001
    neighbor 172.31.255.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.31.255.1 remote-as 65101
    neighbor 172.31.255.1 description DC1-LEAF1A_Ethernet1
+   neighbor 172.31.255.9 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.9 remote-as 65102
+   neighbor 172.31.255.9 description DC1-LEAF2A_Ethernet1
+   neighbor 172.31.255.17 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.17 remote-as 65102
+   neighbor 172.31.255.17 description DC1-LEAF2B_Ethernet1
+   neighbor 172.31.255.25 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.25 remote-as 65103
+   neighbor 172.31.255.25 description DC1-SVC3A_Ethernet1
+   neighbor 172.31.255.33 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.33 remote-as 65103
+   neighbor 172.31.255.33 description DC1-SVC3B_Ethernet1
+   neighbor 172.31.255.41 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.41 remote-as 65104
+   neighbor 172.31.255.41 description DC1-BL1A_Ethernet1
+   neighbor 172.31.255.49 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.49 remote-as 65104
+   neighbor 172.31.255.49 description DC1-BL1B_Ethernet1
    neighbor 192.168.255.5 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.5 remote-as 65101
    neighbor 192.168.255.5 description DC1-LEAF1A
+   neighbor 192.168.255.6 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.6 remote-as 65102
+   neighbor 192.168.255.6 description DC1-LEAF2A
+   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.7 remote-as 65102
+   neighbor 192.168.255.7 description DC1-LEAF2B
+   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.8 remote-as 65103
+   neighbor 192.168.255.8 description DC1-SVC3A
+   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.9 remote-as 65103
+   neighbor 192.168.255.9 description DC1-SVC3B
+   neighbor 192.168.255.10 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.10 remote-as 65104
+   neighbor 192.168.255.10 description DC1-BL1A
+   neighbor 192.168.255.11 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.11 remote-as 65104
+   neighbor 192.168.255.11 description DC1-BL1B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
