@@ -1,4 +1,4 @@
-type, Node,Node Interface,Leaf IP Address,Peer Node,Peer Interface,Peer IP Address
+Type, Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
 {% set interfaces_done = [] %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].type | arista.avd.default('undefined') in node_type_keys | dict2items | map(attribute='value.type') | list %}
