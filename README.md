@@ -1,6 +1,6 @@
 # Ansible Collection For Arista Validated Designs - arista.avd
 
-![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
+![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/ansible-avd) ![continuous integration](https://github.com/aristanetworks/ansible-avd/actions/workflows/continuous_integration.yml/badge.svg) ![License](https://img.shields.io/github/license/aristanetworks/ansible-avd)
 
 **Table of Contents:**
 
