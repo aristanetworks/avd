@@ -1,10 +1,6 @@
 ---
 pod_name: DC2_POD1
 
-mlag_ips:
-  mlag_peer: 172.19.210.0/24
-  leaf_peer_l3: 172.20.210.0/24
-
 spine:
   defaults:
     platform: vEOS-LAB
@@ -67,6 +63,8 @@ l3leaf:
     raw_eos_cli: |
       interface Loopback1010
         description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
+    mlag_peer_l3_ipv4_pool: 172.19.120.0/24
+    mlag_peer_ipv4_pool: 172.20.120.0/24
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:

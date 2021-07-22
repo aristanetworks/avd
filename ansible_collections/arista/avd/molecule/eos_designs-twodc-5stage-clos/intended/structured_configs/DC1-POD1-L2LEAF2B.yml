@@ -77,7 +77,7 @@ vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.19.110.3/31
+    ip_address: 172.20.110.3/31
     no_autostate: true
     mtu: 1500
 port_channel_interfaces:
@@ -142,7 +142,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.19.110.2
+  peer_address: 172.20.110.2
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330

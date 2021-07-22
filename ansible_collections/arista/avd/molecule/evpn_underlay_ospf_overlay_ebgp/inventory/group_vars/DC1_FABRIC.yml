@@ -11,11 +11,6 @@ underlay_ospf_area: 0.0.0.0
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
 
-# mlag pair IP assignment - assign blocks - Assign range larger then total spines + total leafs switches
-mlag_ips:
-  leaf_peer_l3: 10.255.251.0/24
-  mlag_peer: 10.255.252.0/24
-
 # Enable vlan aware bundles
 vxlan_vlan_aware_bundles: true
 
@@ -78,6 +73,8 @@ l3leaf:
     spanning_tree_mode: mstp
     spanning_tree_priority: 4096
     virtual_router_mac_address: 00:dc:00:00:00:0a
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     DC1_LEAF1:
       bgp_as: 65101

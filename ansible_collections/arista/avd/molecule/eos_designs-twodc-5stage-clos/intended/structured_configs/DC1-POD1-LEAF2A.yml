@@ -38,7 +38,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.110.3:
+    172.19.110.3:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2B
     172.17.110.8:
@@ -224,12 +224,12 @@ vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 172.20.110.2/31
+    ip_address: 172.19.110.2/31
     mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.19.110.2/31
+    ip_address: 172.20.110.2/31
     no_autostate: true
     mtu: 1500
   Vlan110:
@@ -523,7 +523,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.19.110.3
+  peer_address: 172.20.110.3
   peer_address_heartbeat:
     peer_ip: 192.168.1.9
     vrf: MGMT

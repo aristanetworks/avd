@@ -179,7 +179,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.19.110.2 | Port-Channel5 |
+| RACK2_MLAG | Vlan4094 | 172.20.110.2 | Port-Channel5 |
 
 Dual primary detection is disabled.
 
@@ -190,7 +190,7 @@ Dual primary detection is disabled.
 mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
-   peer-address 172.19.110.2
+   peer-address 172.20.110.2
    peer-link Port-Channel5
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -552,8 +552,8 @@ interface Loopback1
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4085 |  default  |  172.21.110.3/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
-| Vlan4094 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4093 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -594,14 +594,14 @@ interface Vlan4093
    description MLAG_PEER_L3_PEERING
    no shutdown
    mtu 1500
-   ip address 172.20.110.3/31
+   ip address 172.19.110.3/31
 !
 interface Vlan4094
    description MLAG_PEER
    no shutdown
    mtu 1500
    no autostate
-   ip address 172.19.110.3/31
+   ip address 172.20.110.3/31
 ```
 
 ## VXLAN Interface
@@ -768,7 +768,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.110.18 | 65110 | default |
 | 172.17.110.20 | 65110 | default |
 | 172.17.110.22 | 65110 | default |
-| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.19.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
 
@@ -848,8 +848,8 @@ router bgp 65112
    neighbor 172.17.110.22 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.22 remote-as 65110
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
-   neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.19.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.19.110.2 description DC1-POD1-LEAF2A
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

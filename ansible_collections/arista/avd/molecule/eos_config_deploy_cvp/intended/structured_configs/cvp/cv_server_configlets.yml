@@ -243,15 +243,11 @@ CVP_CONFIGLETS:
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
-    !\nvrf instance MGMT\n!\ninterface Port-Channel1\n   description DC1_LEAF2_Po7\n\
-    \   no shutdown\n   switchport\n   switchport trunk allowed vlan 110-111,120-121,130-131\n\
-    \   switchport mode trunk\n!\ninterface Ethernet1\n   description DC1-LEAF2A_Ethernet7\n\
-    \   no shutdown\n   channel-group 1 mode active\n!\ninterface Ethernet2\n   description\
-    \ DC1-LEAF2B_Ethernet7\n   no shutdown\n   channel-group 1 mode active\n!\ninterface\
-    \ Management1\n   description oob_management\n   no shutdown\n   vrf MGMT\n  \
-    \ ip address 192.168.200.112/24\n!\nip routing\nno ip routing vrf MGMT\n!\nip\
-    \ route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement api http-commands\n  \
-    \ protocol https\n   no shutdown\n   !\n   vrf MGMT\n      no shutdown\n!\nend\n"
+    !\nvrf instance MGMT\n!\ninterface Management1\n   description oob_management\n\
+    \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.112/24\n!\nip routing\n\
+    no ip routing vrf MGMT\n!\nip route vrf MGMT 0.0.0.0/0 192.168.200.5\n!\nmanagement\
+    \ api http-commands\n   protocol https\n   no shutdown\n   !\n   vrf MGMT\n  \
+    \    no shutdown\n!\nend\n"
   AVD_DC1-L2LEAF2A: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
     \ -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista\
     \ -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent\
@@ -782,17 +778,6 @@ CVP_CONFIGLETS:
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet1\n\
     \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.0/31\n\
-    !\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet1\n   no\
-    \ shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.8/31\n!\n\
-    interface Ethernet3\n   description P2P_LINK_TO_DC1-LEAF2B_Ethernet1\n   no shutdown\n\
-    \   mtu 1500\n   no switchport\n   ip address 172.31.255.16/31\n!\ninterface Ethernet4\n\
-    \   description P2P_LINK_TO_DC1-SVC3A_Ethernet1\n   no shutdown\n   mtu 1500\n\
-    \   no switchport\n   ip address 172.31.255.24/31\n!\ninterface Ethernet5\n  \
-    \ description P2P_LINK_TO_DC1-SVC3B_Ethernet1\n   no shutdown\n   mtu 1500\n \
-    \  no switchport\n   ip address 172.31.255.32/31\n!\ninterface Ethernet6\n   description\
-    \ P2P_LINK_TO_DC1-BL1A_Ethernet1\n   no shutdown\n   mtu 1500\n   no switchport\n\
-    \   ip address 172.31.255.40/31\n!\ninterface Ethernet7\n   description P2P_LINK_TO_DC1-BL1B_Ethernet1\n\
-    \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.48/31\n\
     !\ninterface Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n\
     \   ip address 192.168.255.1/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.101/24\n!\nip routing\n\
@@ -810,32 +795,9 @@ CVP_CONFIGLETS:
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
     \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.1\
     \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.1 remote-as 65101\n \
-    \  neighbor 172.31.255.1 description DC1-LEAF1A_Ethernet1\n   neighbor 172.31.255.9\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.9 remote-as 65102\n \
-    \  neighbor 172.31.255.9 description DC1-LEAF2A_Ethernet1\n   neighbor 172.31.255.17\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.17 remote-as 65102\n\
-    \   neighbor 172.31.255.17 description DC1-LEAF2B_Ethernet1\n   neighbor 172.31.255.25\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.25 remote-as 65103\n\
-    \   neighbor 172.31.255.25 description DC1-SVC3A_Ethernet1\n   neighbor 172.31.255.33\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.33 remote-as 65103\n\
-    \   neighbor 172.31.255.33 description DC1-SVC3B_Ethernet1\n   neighbor 172.31.255.41\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.41 remote-as 65104\n\
-    \   neighbor 172.31.255.41 description DC1-BL1A_Ethernet1\n   neighbor 172.31.255.49\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.49 remote-as 65104\n\
-    \   neighbor 172.31.255.49 description DC1-BL1B_Ethernet1\n   neighbor 192.168.255.5\
+    \  neighbor 172.31.255.1 description DC1-LEAF1A_Ethernet1\n   neighbor 192.168.255.5\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n \
-    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   neighbor 192.168.255.6 peer\
-    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n   neighbor\
-    \ 192.168.255.6 description DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description\
-    \ DC1-LEAF2B\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n\
-    \   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9\
-    \ remote-as 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor\
-    \ 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as\
-    \ 65104\n   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n\
-    \   neighbor 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map\
+    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   redistribute connected route-map\
     \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
     \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
     \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
@@ -854,17 +816,6 @@ CVP_CONFIGLETS:
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2\n\
     \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.2/31\n\
-    !\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet2\n   no\
-    \ shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.10/31\n!\n\
-    interface Ethernet3\n   description P2P_LINK_TO_DC1-LEAF2B_Ethernet2\n   no shutdown\n\
-    \   mtu 1500\n   no switchport\n   ip address 172.31.255.18/31\n!\ninterface Ethernet4\n\
-    \   description P2P_LINK_TO_DC1-SVC3A_Ethernet2\n   no shutdown\n   mtu 1500\n\
-    \   no switchport\n   ip address 172.31.255.26/31\n!\ninterface Ethernet5\n  \
-    \ description P2P_LINK_TO_DC1-SVC3B_Ethernet2\n   no shutdown\n   mtu 1500\n \
-    \  no switchport\n   ip address 172.31.255.34/31\n!\ninterface Ethernet6\n   description\
-    \ P2P_LINK_TO_DC1-BL1A_Ethernet2\n   no shutdown\n   mtu 1500\n   no switchport\n\
-    \   ip address 172.31.255.42/31\n!\ninterface Ethernet7\n   description P2P_LINK_TO_DC1-BL1B_Ethernet2\n\
-    \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.50/31\n\
     !\ninterface Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n\
     \   ip address 192.168.255.2/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.102/24\n!\nip routing\n\
@@ -882,32 +833,9 @@ CVP_CONFIGLETS:
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
     \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.3\
     \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.3 remote-as 65101\n \
-    \  neighbor 172.31.255.3 description DC1-LEAF1A_Ethernet2\n   neighbor 172.31.255.11\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.11 remote-as 65102\n\
-    \   neighbor 172.31.255.11 description DC1-LEAF2A_Ethernet2\n   neighbor 172.31.255.19\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.19 remote-as 65102\n\
-    \   neighbor 172.31.255.19 description DC1-LEAF2B_Ethernet2\n   neighbor 172.31.255.27\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.27 remote-as 65103\n\
-    \   neighbor 172.31.255.27 description DC1-SVC3A_Ethernet2\n   neighbor 172.31.255.35\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.35 remote-as 65103\n\
-    \   neighbor 172.31.255.35 description DC1-SVC3B_Ethernet2\n   neighbor 172.31.255.43\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.43 remote-as 65104\n\
-    \   neighbor 172.31.255.43 description DC1-BL1A_Ethernet2\n   neighbor 172.31.255.51\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.51 remote-as 65104\n\
-    \   neighbor 172.31.255.51 description DC1-BL1B_Ethernet2\n   neighbor 192.168.255.5\
+    \  neighbor 172.31.255.3 description DC1-LEAF1A_Ethernet2\n   neighbor 192.168.255.5\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n \
-    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   neighbor 192.168.255.6 peer\
-    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n   neighbor\
-    \ 192.168.255.6 description DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description\
-    \ DC1-LEAF2B\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n\
-    \   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9\
-    \ remote-as 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor\
-    \ 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as\
-    \ 65104\n   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n\
-    \   neighbor 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map\
+    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   redistribute connected route-map\
     \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
     \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
     \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
@@ -926,17 +854,6 @@ CVP_CONFIGLETS:
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet3\n\
     \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.4/31\n\
-    !\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet3\n   no\
-    \ shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.12/31\n!\n\
-    interface Ethernet3\n   description P2P_LINK_TO_DC1-LEAF2B_Ethernet3\n   no shutdown\n\
-    \   mtu 1500\n   no switchport\n   ip address 172.31.255.20/31\n!\ninterface Ethernet4\n\
-    \   description P2P_LINK_TO_DC1-SVC3A_Ethernet3\n   no shutdown\n   mtu 1500\n\
-    \   no switchport\n   ip address 172.31.255.28/31\n!\ninterface Ethernet5\n  \
-    \ description P2P_LINK_TO_DC1-SVC3B_Ethernet3\n   no shutdown\n   mtu 1500\n \
-    \  no switchport\n   ip address 172.31.255.36/31\n!\ninterface Ethernet6\n   description\
-    \ P2P_LINK_TO_DC1-BL1A_Ethernet3\n   no shutdown\n   mtu 1500\n   no switchport\n\
-    \   ip address 172.31.255.44/31\n!\ninterface Ethernet7\n   description P2P_LINK_TO_DC1-BL1B_Ethernet3\n\
-    \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.52/31\n\
     !\ninterface Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n\
     \   ip address 192.168.255.3/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.103/24\n!\nip routing\n\
@@ -954,32 +871,9 @@ CVP_CONFIGLETS:
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
     \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.5\
     \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.5 remote-as 65101\n \
-    \  neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet3\n   neighbor 172.31.255.13\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.13 remote-as 65102\n\
-    \   neighbor 172.31.255.13 description DC1-LEAF2A_Ethernet3\n   neighbor 172.31.255.21\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.21 remote-as 65102\n\
-    \   neighbor 172.31.255.21 description DC1-LEAF2B_Ethernet3\n   neighbor 172.31.255.29\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.29 remote-as 65103\n\
-    \   neighbor 172.31.255.29 description DC1-SVC3A_Ethernet3\n   neighbor 172.31.255.37\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.37 remote-as 65103\n\
-    \   neighbor 172.31.255.37 description DC1-SVC3B_Ethernet3\n   neighbor 172.31.255.45\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.45 remote-as 65104\n\
-    \   neighbor 172.31.255.45 description DC1-BL1A_Ethernet3\n   neighbor 172.31.255.53\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.53 remote-as 65104\n\
-    \   neighbor 172.31.255.53 description DC1-BL1B_Ethernet3\n   neighbor 192.168.255.5\
+    \  neighbor 172.31.255.5 description DC1-LEAF1A_Ethernet3\n   neighbor 192.168.255.5\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n \
-    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   neighbor 192.168.255.6 peer\
-    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n   neighbor\
-    \ 192.168.255.6 description DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description\
-    \ DC1-LEAF2B\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n\
-    \   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9\
-    \ remote-as 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor\
-    \ 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as\
-    \ 65104\n   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n\
-    \   neighbor 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map\
+    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   redistribute connected route-map\
     \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
     \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
     \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\
@@ -998,17 +892,6 @@ CVP_CONFIGLETS:
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet4\n\
     \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.6/31\n\
-    !\ninterface Ethernet2\n   description P2P_LINK_TO_DC1-LEAF2A_Ethernet4\n   no\
-    \ shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.14/31\n!\n\
-    interface Ethernet3\n   description P2P_LINK_TO_DC1-LEAF2B_Ethernet4\n   no shutdown\n\
-    \   mtu 1500\n   no switchport\n   ip address 172.31.255.22/31\n!\ninterface Ethernet4\n\
-    \   description P2P_LINK_TO_DC1-SVC3A_Ethernet4\n   no shutdown\n   mtu 1500\n\
-    \   no switchport\n   ip address 172.31.255.30/31\n!\ninterface Ethernet5\n  \
-    \ description P2P_LINK_TO_DC1-SVC3B_Ethernet4\n   no shutdown\n   mtu 1500\n \
-    \  no switchport\n   ip address 172.31.255.38/31\n!\ninterface Ethernet6\n   description\
-    \ P2P_LINK_TO_DC1-BL1A_Ethernet4\n   no shutdown\n   mtu 1500\n   no switchport\n\
-    \   ip address 172.31.255.46/31\n!\ninterface Ethernet7\n   description P2P_LINK_TO_DC1-BL1B_Ethernet4\n\
-    \   no shutdown\n   mtu 1500\n   no switchport\n   ip address 172.31.255.54/31\n\
     !\ninterface Loopback0\n   description EVPN_Overlay_Peering\n   no shutdown\n\
     \   ip address 192.168.255.4/32\n!\ninterface Management1\n   description oob_management\n\
     \   no shutdown\n   vrf MGMT\n   ip address 192.168.200.104/24\n!\nip routing\n\
@@ -1026,32 +909,9 @@ CVP_CONFIGLETS:
     \ password 7 AQQvKeimxJu+uGQ/yYvv9w==\n   neighbor IPv4-UNDERLAY-PEERS send-community\n\
     \   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000\n   neighbor 172.31.255.7\
     \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.7 remote-as 65101\n \
-    \  neighbor 172.31.255.7 description DC1-LEAF1A_Ethernet4\n   neighbor 172.31.255.15\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.15 remote-as 65102\n\
-    \   neighbor 172.31.255.15 description DC1-LEAF2A_Ethernet4\n   neighbor 172.31.255.23\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.23 remote-as 65102\n\
-    \   neighbor 172.31.255.23 description DC1-LEAF2B_Ethernet4\n   neighbor 172.31.255.31\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.31 remote-as 65103\n\
-    \   neighbor 172.31.255.31 description DC1-SVC3A_Ethernet4\n   neighbor 172.31.255.39\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.39 remote-as 65103\n\
-    \   neighbor 172.31.255.39 description DC1-SVC3B_Ethernet4\n   neighbor 172.31.255.47\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.47 remote-as 65104\n\
-    \   neighbor 172.31.255.47 description DC1-BL1A_Ethernet4\n   neighbor 172.31.255.55\
-    \ peer group IPv4-UNDERLAY-PEERS\n   neighbor 172.31.255.55 remote-as 65104\n\
-    \   neighbor 172.31.255.55 description DC1-BL1B_Ethernet4\n   neighbor 192.168.255.5\
+    \  neighbor 172.31.255.7 description DC1-LEAF1A_Ethernet4\n   neighbor 192.168.255.5\
     \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.5 remote-as 65101\n \
-    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   neighbor 192.168.255.6 peer\
-    \ group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.6 remote-as 65102\n   neighbor\
-    \ 192.168.255.6 description DC1-LEAF2A\n   neighbor 192.168.255.7 peer group EVPN-OVERLAY-PEERS\n\
-    \   neighbor 192.168.255.7 remote-as 65102\n   neighbor 192.168.255.7 description\
-    \ DC1-LEAF2B\n   neighbor 192.168.255.8 peer group EVPN-OVERLAY-PEERS\n   neighbor\
-    \ 192.168.255.8 remote-as 65103\n   neighbor 192.168.255.8 description DC1-SVC3A\n\
-    \   neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.9\
-    \ remote-as 65103\n   neighbor 192.168.255.9 description DC1-SVC3B\n   neighbor\
-    \ 192.168.255.10 peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.10 remote-as\
-    \ 65104\n   neighbor 192.168.255.10 description DC1-BL1A\n   neighbor 192.168.255.11\
-    \ peer group EVPN-OVERLAY-PEERS\n   neighbor 192.168.255.11 remote-as 65104\n\
-    \   neighbor 192.168.255.11 description DC1-BL1B\n   redistribute connected route-map\
+    \  neighbor 192.168.255.5 description DC1-LEAF1A\n   redistribute connected route-map\
     \ RM-CONN-2-BGP\n   !\n   address-family evpn\n      neighbor EVPN-OVERLAY-PEERS\
     \ activate\n   !\n   address-family ipv4\n      no neighbor EVPN-OVERLAY-PEERS\
     \ activate\n      neighbor IPv4-UNDERLAY-PEERS activate\n!\nmanagement api http-commands\n\

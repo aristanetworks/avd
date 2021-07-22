@@ -3,10 +3,6 @@ pod_name: DC1_POD1
 
 max_l3leaf_to_spine_links: 2
 
-mlag_ips:
-  mlag_peer: 172.19.110.0/24
-  leaf_peer_l3: 172.20.110.0/24
-
 spine:
   defaults:
     platform: vEOS-LAB
@@ -53,6 +49,8 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
+    mlag_peer_l3_ipv4_pool: 172.19.110.0/24
+    mlag_peer_ipv4_pool: 172.20.110.0/24
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:
@@ -113,6 +111,8 @@ l2leaf:
   defaults:
     inband_management_subnet: 172.21.110.0/24
     inband_management_vlan: 4085
+    mlag_peer_l3_ipv4_pool: 172.19.110.0/24
+    mlag_peer_ipv4_pool: 172.20.110.0/24
   node_groups:
     RACK2_SINGLE:
       platform: vEOS-LAB

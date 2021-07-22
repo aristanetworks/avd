@@ -1,10 +1,6 @@
 ---
 pod_name: DC1_POD2
 
-mlag_ips:
-  mlag_peer: 172.19.120.0/24
-  leaf_peer_l3: 172.20.120.0/24
-
 spine:
   defaults:
     platform: vEOS-LAB
@@ -50,6 +46,8 @@ l3leaf:
       - 'distance bgp 20 200 200'
       - 'graceful-restart restart-time 300'
       - 'graceful-restart'
+    mlag_peer_l3_ipv4_pool: 172.19.120.0/24
+    mlag_peer_ipv4_pool: 172.20.120.0/24
   node_groups:
     # Single switch evpn to spine->super-spine2->rs2.
     RACK1_SINGLE:
