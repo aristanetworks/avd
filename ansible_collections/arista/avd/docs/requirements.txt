@@ -1,8 +1,8 @@
 mkdocs
-mkdocs-bootswatch>=1.1
-mkdocs-material>=6.2.3
-mkdocs-material-extensions>=1.0.1
-fontawesome-markdown>=0.2.6
+mkdocs-bootswatch
+mkdocs-material==7.2.0
+mkdocs-material-extensions
+fontawesome-markdown
 pymdown-extensions
 mdx_truly_sane_lists
 mkdocs-git-revision-date-localized-plugin

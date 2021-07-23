@@ -138,3 +138,9 @@
 .mdx-content__footer a:focus, .mdx-content__footer a:hover {
     transform: scale(1.2);
 }
+
+.md-typeset table:not([class]) th {
+    min-width: 5rem;
+    padding: .6rem .8rem;
+    color: var(--md-primary-fg-color--light);
+}

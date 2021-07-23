@@ -2,7 +2,7 @@
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-copyright: Copyright &copy; 2019 - 2020 Arista Networks
+copyright: Copyright &copy; 2019 - 2021 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
@@ -12,7 +12,7 @@ repo_url: https://github.com/aristanetworks/ansible-avd
 use_directory_urls: false
 theme:
   name: material
-  custom_dir: ansible_collections/arista/avd/docs/_overrides
+  # custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
     - navigation.instant
     - navigation.top
@@ -30,9 +30,26 @@ theme:
   language: en
   include_search_page: false
   search_index_only: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 extra_css:
   - docs/stylesheets/extra.material.css
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - docs/stylesheets/tables.js
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
+  - docs/stylesheets/highlight.js
 
 plugins:
   - search:
