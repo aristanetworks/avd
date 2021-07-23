@@ -4,10 +4,10 @@
 
 ### TACACS Servers
 
-| VRF | TACACS Servers |
-| --- | ---------------|
+| VRF | TACACS Servers | Single-Connection |
+| --- | -------------- | ----------------- |
 {%  for host in tacacs_servers.hosts %}
-| {% if host['vrf'] is defined and host['vrf'] is not none %} {{ host['vrf'] }} {% else %} default {% endif %}| {{ host['host'] }} |
+| {% if host['vrf'] is defined and host['vrf'] is not none %} {{ host['vrf'] }} {% else %} default {% endif %}| {{ host['host'] }} | {{ host['single_connection'] | default(false) }} |
 {%  endfor %}
 
 {%    if tacacs_servers.policy_unknown_mandatory_attribute_ignore is defined and tacacs_servers.policy_unknown_mandatory_attribute_ignore == true %}

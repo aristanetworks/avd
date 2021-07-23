@@ -1,25 +1,22 @@
 ---
 pod_name: DC2_POD1
 
-underlay_p2p_network_summary: 172.17.210.0/24
-
-overlay_loopback_network_summary: 172.16.210.0/24
-
-vtep_loopback_network_summary: 172.18.210.0/24
-
-mlag_ips:
-  mlag_peer: 172.19.210.0/24
-  leaf_peer_l3: 172.20.210.0/24
-
-l2leaf_inband_management_subnet: 172.21.210.0/24
-
-super_spine_underlay_p2p_network_summary: 172.16.21.0/24
-
 spine:
-  platform: vEOS-LAB
-  bgp_as: 65210
-  uplinks_to_super_spine_interfaces: [ Ethernet1, Ethernet2 ]
   defaults:
+    platform: vEOS-LAB
+    bgp_as: 65210
+    loopback_ipv4_pool: 172.16.210.0/24
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['DC2-SUPER-SPINE1', 'DC2-SUPER-SPINE2']
+    max_uplink_switches: 4
+    uplink_ipv4_pool: 172.16.21.0/24
+    uplink_ptp:
+      enable: True
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
     raw_eos_cli: |
       interface Loopback1009
         description Loopback created from raw_eos_cli under spine defaults in DC2 POD1
@@ -29,21 +26,31 @@ spine:
       id: 1
       mgmt_ip: 192.168.1.20/24
       evpn_role: server
-      super_spine_interfaces: [ Ethernet1, Ethernet1 ]
+      uplink_switch_interfaces: ['Ethernet1', 'Ethernet1']
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
     DC2-POD1-SPINE2:
       id: 2
       evpn_role: none
       mgmt_ip: 192.168.1.21/24
-      super_spine_interfaces: [ Ethernet2, Ethernet2 ]
+      uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
 
 # In DC2 we define all variables via defaults
 l3leaf:
   defaults:
+    loopback_ipv4_pool: 172.16.210.0/24
+    loopback_ipv4_offset: 2
+    vtep_loopback_ipv4_pool: 172.18.210.0/24
+    uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ['DC2-POD1-SPINE1', 'DC2-POD1-SPINE2']
+    uplink_ipv4_pool: 172.17.210.0/24
+    uplink_ptp: {'enable': True}
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
     bgp_as: 65555
     platform: vEOS-LAB
-    spines: [ DC2-POD1-SPINE1, DC2-POD1-SPINE2 ]
-    uplink_to_spine_interfaces: [ Ethernet1, Ethernet2 ]
     evpn_role: server
     evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
     spanning_tree_mode: rstp
@@ -56,7 +63,8 @@ l3leaf:
     raw_eos_cli: |
       interface Loopback1010
         description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1
-
+    mlag_peer_l3_ipv4_pool: 172.19.120.0/24
+    mlag_peer_ipv4_pool: 172.20.120.0/24
   node_groups:
     # Single switch working as underlay L3 router and EVPN RS
     RACK1_SINGLE:
@@ -65,11 +73,12 @@ l3leaf:
         DC2-POD1-LEAF1A:
           id: 1
           mgmt_ip: 192.168.1.22/24
-          spine_interfaces: [ Ethernet3, Ethernet3 ]
+          uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
 
 # In DC2 we define all variables via defaults if possible
 l2leaf:
   defaults:
+    inband_management_subnet: 172.21.210.0/24
     platform: vEOS-LAB
     uplink_interfaces: [ Ethernet1 ]
     spanning_tree_mode: mstp
@@ -80,9 +89,9 @@ l2leaf:
         description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1
   node_groups:
     RACK1_SINGLE:
-      parent_l3leafs: [ DC2-POD1-LEAF1A ]
+      uplink_switches: ['DC2-POD1-LEAF1A']
       nodes:
         DC2-POD1-L2LEAF1A:
           id: 1
           mgmt_ip: 192.168.1.23/24
-          l3leaf_interfaces: [ Ethernet3 ]
+          uplink_switch_interfaces: ['Ethernet3']

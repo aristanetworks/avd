@@ -215,7 +215,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF1A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF1 | Vlan4091 | 10.255.252.15 | Port-Channel3 |
+| DC1_L2LEAF1 | Vlan4091 | 10.255.247.15 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -226,7 +226,7 @@ Dual primary detection is disabled.
 mlag configuration
    domain-id DC1_L2LEAF1
    local-interface Vlan4091
-   peer-address 10.255.252.15
+   peer-address 10.255.247.15
    peer-link Port-Channel3
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -278,16 +278,16 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 120 | Tenant_A_WEB_Zone_1 | none  |
-| 121 | Tenant_A_WEBZone_2 | none  |
-| 130 | Tenant_A_APP_Zone_1 | none  |
-| 131 | Tenant_A_APP_Zone_2 | none  |
-| 160 | Tenant_A_VMOTION | none  |
-| 161 | Tenant_A_NFS | none  |
-| 162 | Tenant_A_FTP | none  |
-| 4091 | MLAG_PEER | MLAG  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 120 | Tenant_A_WEB_Zone_1 | - |
+| 121 | Tenant_A_WEBZone_2 | - |
+| 130 | Tenant_A_APP_Zone_1 | - |
+| 131 | Tenant_A_APP_Zone_2 | - |
+| 160 | Tenant_A_VMOTION | - |
+| 161 | Tenant_A_NFS | - |
+| 162 | Tenant_A_FTP | - |
+| 4091 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
@@ -411,7 +411,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4091 |  default  |  10.255.252.14/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.247.14/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -423,7 +423,7 @@ interface Vlan4091
    no shutdown
    mtu 1500
    no autostate
-   ip address 10.255.252.14/31
+   ip address 10.255.247.14/31
 ```
 
 # Routing

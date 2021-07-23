@@ -1,12 +1,14 @@
-{# Leaf tenant vlans #}
+{# tenant vlans #}
 vlans:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
 {# Tenant VLANs w/SVIs #}
 {%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%             if svi | int in topology.vlans %}
   {{ svi | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].vrfs[vrf].svis[svi].name }}
+{%             endif %}
 {%         endfor %}
 {# VLAN for iBGP peering in overlay VRFs #}
 {%         if switch.mlag_l3 is arista.avd.defined(true) %}
@@ -24,8 +26,10 @@ vlans:
 {%     endfor %}
 {# Tenant L2 VLANs #}
 {%     for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%         if l2vlan | int in topology.vlans %}
   {{ l2vlan | int }}:
     tenant: {{ tenant }}
     name: {{ tenants[tenant].l2vlans[l2vlan].name }}
+{%         endif %}
 {%     endfor %}
 {% endfor %}

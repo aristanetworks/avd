@@ -198,6 +198,7 @@ interface Vlan24
 | 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -214,6 +215,13 @@ interface Vlan24
 | 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
 | 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
+### Router OSPF timers
+
+| Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
+| ---------- | ------ | ------------------------ | --------------------- |
+| 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
+| 200 | 100 | - | - |
+
 ### Router OSPF route summary
 
 | Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
@@ -222,6 +230,22 @@ interface Vlan24
 | 101 | 20.0.0.0/8 | 10 | - | - |
 | 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
 | 101 | 40.0.0.0/8 | - | - | True |
+
+### Router OSPF Areas
+
+| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
+| ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
+| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
+| 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
+| 600 | 0.0.0.1 | normal | - | - |  |
+| 600 | 0.0.10.11 | stub | - | - | no-summary |
+| 600 | 0.0.20.20 | nssa | - | - |  |
+| 600 | 0.0.20.21 | nssa | - | - | no-summary |
+| 600 | 0.0.20.22 | nssa | - | - | nssa-only |
+| 600 | 0.0.20.23 | nssa | - | - | default-information-originate |
+| 600 | 0.0.20.24 | nssa | - | - | default-information-originate metric 50 |
+| 600 | 0.0.20.25 | nssa | - | - | no-summary, default-information-originate metric-type 1 |
+| 600 | 0.0.20.26 | nssa | - | - | no-summary, default-information-originate metric 50 metric-type 1, nssa-only |
 
 ### OSPF Interfaces
 
@@ -256,6 +280,9 @@ router ospf 101 vrf CUSTOMER01
    router-id 1.0.1.1
    passive-interface default
    no passive-interface Ethernet2.101
+   timers lsa rx min interval 100
+   timers lsa tx delay initial 100 200 300
+   timers spf delay initial 100 200 300
    summary-address 10.0.0.0/8
    summary-address 20.0.0.0/8 tag 10
    summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
@@ -264,7 +291,11 @@ router ospf 101 vrf CUSTOMER01
 router ospf 200 vrf ospf_zone
    log-adjacency-changes detail
    router-id 192.168.254.1
+   area 0.0.0.2 filter 1.1.1.0/24
+   area 0.0.0.2 filter 2.2.2.0/24
+   area 0.0.0.3 filter prefix-list PL-OSPF-FILTERING
    max-lsa 5
+   timers lsa rx min interval 100
    default-information originate always
    redistribute static route-map rm-ospf-static
    redistribute connected route-map rm-ospf-connected
@@ -277,6 +308,18 @@ router ospf 400
 !
 router ospf 500
    max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
+!
+router ospf 600
+   area 0.0.10.11 stub no-summary
+   area 0.0.20.20 nssa
+   area 0.0.20.21 nssa no-summary
+   area 0.0.20.22 nssa nssa-only
+   area 0.0.20.23 nssa default-information-originate
+   area 0.0.20.24 nssa default-information-originate metric 50
+   area 0.0.20.25 nssa no-summary
+   area 0.0.20.25 nssa default-information-originate metric-type 1
+   area 0.0.20.26 nssa no-summary
+   area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
 ```
 
 # Multicast

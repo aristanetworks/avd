@@ -49,6 +49,57 @@
 {%     endfor %}
 
 *Inherited from Port-Channel Interface
+{# PVLAN #}
+{%     set ethernet_interface_pvlan = namespace() %}
+{%     set ethernet_interface_pvlan.configured = false %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%         if ethernet_interfaces[ethernet_interface].pvlan_mapping is arista.avd.defined or
+              ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%             set ethernet_interface_pvlan.configured = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if ethernet_interface_pvlan.configured == true %}
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%             if ethernet_interfaces[ethernet_interface].pvlan_mapping is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary is arista.avd.defined %}
+{%                 set row_pvlan_mapping = ethernet_interfaces[ethernet_interface].pvlan_mapping | arista.avd.default('-') %}
+{%                 set row_trunk_private_vlan_secondary = ethernet_interfaces[ethernet_interface].trunk_private_vlan_secondary | arista.avd.default('-') %}
+| {{ ethernet_interface }} | {{ row_pvlan_mapping }} | {{ row_trunk_private_vlan_secondary }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# VLAN Translations #}
+{%     set ethernet_interface_vlan_xlate = namespace() %}
+{%     set ethernet_interface_vlan_xlate.configured = false %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%          if ethernet_interfaces[ethernet_interface].vlan_translations is arista.avd.defined %}
+{%              set ethernet_interface_vlan_xlate.configured = true %}
+{%              break %}
+{%          endif %}
+{%     endfor %}
+{%     if ethernet_interface_vlan_xlate.configured == true %}
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+{%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%             if ethernet_interfaces[ethernet_interface].vlan_translations is arista.avd.defined %}
+{%                 for vlan_translation in ethernet_interfaces[ethernet_interface].vlan_translations | arista.avd.natural_sort %}
+{%                     if vlan_translation.from is arista.avd.defined and vlan_translation.to is arista.avd.defined %}
+{%                         set row_direction = vlan_translation.direction | arista.avd.default('both') %}
+| {{ ethernet_interface }} | {{ vlan_translation.from }} | {{ vlan_translation.to }} | {{ row_direction }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# IPv4 #}
 {%     set ethernet_interface_ipv4 = namespace() %}
 {%     set ethernet_interface_ipv4.configured = false %}

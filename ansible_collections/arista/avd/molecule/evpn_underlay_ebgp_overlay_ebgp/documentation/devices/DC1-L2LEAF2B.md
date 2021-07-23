@@ -215,7 +215,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF2B
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF2 | Vlan4091 | 10.255.252.16 | Port-Channel3 |
+| DC1_L2LEAF2 | Vlan4091 | 10.255.249.16 | Port-Channel3 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -226,7 +226,7 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 mlag configuration
    domain-id DC1_L2LEAF2
    local-interface Vlan4091
-   peer-address 10.255.252.16
+   peer-address 10.255.249.16
    peer-address heartbeat 192.168.200.113 vrf MGMT
    peer-link Port-Channel3
    dual-primary detection delay 5 action errdisable all-interfaces
@@ -280,25 +280,25 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 120 | Tenant_A_WEB_Zone_1 | none  |
-| 121 | Tenant_A_WEBZone_2 | none  |
-| 130 | Tenant_A_APP_Zone_1 | none  |
-| 131 | Tenant_A_APP_Zone_2 | none  |
-| 140 | Tenant_A_DB_BZone_1 | none  |
-| 141 | Tenant_A_DB_Zone_2 | none  |
-| 150 | Tenant_A_WAN_Zone_1 | none  |
-| 160 | Tenant_A_VMOTION | none  |
-| 161 | Tenant_A_NFS | none  |
-| 162 | Tenant_A_FTP | none  |
-| 210 | Tenant_B_OP_Zone_1 | none  |
-| 211 | Tenant_B_OP_Zone_2 | none  |
-| 250 | Tenant_B_WAN_Zone_1 | none  |
-| 310 | Tenant_C_OP_Zone_1 | none  |
-| 311 | Tenant_C_OP_Zone_2 | none  |
-| 350 | Tenant_C_WAN_Zone_1 | none  |
-| 4091 | MLAG_PEER | MLAG  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 120 | Tenant_A_WEB_Zone_1 | - |
+| 121 | Tenant_A_WEBZone_2 | - |
+| 130 | Tenant_A_APP_Zone_1 | - |
+| 131 | Tenant_A_APP_Zone_2 | - |
+| 140 | Tenant_A_DB_BZone_1 | - |
+| 141 | Tenant_A_DB_Zone_2 | - |
+| 150 | Tenant_A_WAN_Zone_1 | - |
+| 160 | Tenant_A_VMOTION | - |
+| 161 | Tenant_A_NFS | - |
+| 162 | Tenant_A_FTP | - |
+| 210 | Tenant_B_OP_Zone_1 | - |
+| 211 | Tenant_B_OP_Zone_2 | - |
+| 250 | Tenant_B_WAN_Zone_1 | - |
+| 310 | Tenant_C_OP_Zone_1 | - |
+| 311 | Tenant_C_OP_Zone_2 | - |
+| 350 | Tenant_C_WAN_Zone_1 | - |
+| 4091 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
@@ -449,7 +449,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4091 |  default  |  10.255.252.17/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.249.17/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -461,7 +461,7 @@ interface Vlan4091
    no shutdown
    mtu 1500
    no autostate
-   ip address 10.255.252.17/31
+   ip address 10.255.249.17/31
 ```
 
 # Routing

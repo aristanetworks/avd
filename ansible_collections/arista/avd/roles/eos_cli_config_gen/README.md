@@ -95,6 +95,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+    - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
     - [Prompt](#prompt)
@@ -346,11 +347,13 @@ local_users:
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
   < user_2 >:
     privilege: < 1-15 >
     role: < role >
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
+    ssh_key: "< ssh_key_string >"
 ```
 
 #### Radius Servers
@@ -370,6 +373,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
+      single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encypted_key >
       timeout: < timeout in seconds >
@@ -729,6 +733,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    transceiver:
+      media:
+        override: < transceiver_type >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -802,6 +809,12 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -895,6 +908,25 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    trunk_private_vlan_secondary: < true | false >
+    pvlan_mapping: "< list of vlans as string >"
+    vlan_translations:
+      - from: < list of vlans as string (only one vlan if direction is "both") >
+        to: < vlan_id >
+        direction: < in | out | both | default -> both >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent) >
+      unknown_unicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1037,6 +1069,7 @@ vlan_interfaces:
     service_policy:
       pbr:
         input: < policy-map name >
+    pvlan_mapping: "< list of vlans as string >"
     # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1368,6 +1401,7 @@ mpls:
 ```yaml
 mlag_configuration:
   domain_id: < domain_id_name >
+  heartbeat_interval: < milliseconds >
   local_interface: < interface_name >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
@@ -1617,6 +1651,21 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+###  System Control-Plane
+```yaml
+system:
+  control_plane:
+    tcp_mss:
+      ipv4: < Segment size >
+      ipv6: < Segment size >
+    ipv4_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
+    ipv6_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
 ```
 
 #### VM Tracer Sessions
@@ -2146,6 +2195,17 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      timers:
+        lsa:
+          rx_min_interval: < 0-600000 - Min interval in msecs between accepting the same LSA >
+          tx_delay:
+            initial: < 0-600000 - Delay to generate first occurrence of LSA in msecs >
+            min: < 1-600000 Min delay between originating the same LSA in msecs >
+            max: < 1-600000 Maximum delay between originating the same LSA in msecs >
+        spf_delay:
+          initial: < 0-600000 - Initial SPF schedule delay in msecs >
+          min: < 0-65535000  Min Hold time between two SPFs in msecs >
+          max: < 0-65535000  Max wait time between two SPFs in msecs >
       default_information_originate:
         always: true
       summary_addresses:
@@ -2163,6 +2223,20 @@ router_ospf:
         connected:
           route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
+      areas:
+        < area >:
+          filter:
+            networks:
+              - < IPv4 subnet / netmask >
+              - < IPv4 subnet / netmask >
+            prefix_list: < prefix list name >
+        < area >:
+          type: < normal | stub | nssa | default -> normal >
+          no_summary: < true | false >
+          nssa_only: < true | false >
+          default_information_originate:
+            metric: < Integer 1-65535 > # Value of the route metric
+            metric_type: < 1 | 2 > # OSPF metric type
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:
@@ -2408,6 +2482,9 @@ vlans:
     trunk_groups:
       - < trunk_group_name_1 >
       - < trunk_group_name_2 >
+    private_vlan:
+      type: < community | isolated >
+      primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
 ```

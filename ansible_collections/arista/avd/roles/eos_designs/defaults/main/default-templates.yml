@@ -1,0 +1,45 @@
+# Templates used by AVD eos_designs role
+default_templates:
+  # Templates defined per design
+  l3ls-evpn:
+    facts:
+      # Set general "switch.*" variables
+      - template: "facts/main.j2"
+      # Set design specific "switch.*" variables
+      - template: "designs/l3ls-evpn/facts/switch/main.j2"
+    topology_facts:
+      # Set design specific "topology.*" variables
+      - template: "designs/l3ls-evpn/facts/topology/main.j2"
+    structured_config:
+      # Render Strucured Configuration
+      # Base features
+      - template: "base/main.j2"
+      # MLAG feature
+      - template: "mlag/main.j2"
+      # Underlay feature
+      - template: "designs/l3ls-evpn/underlay/main.j2"
+      # Overlay feature
+      - template: "designs/l3ls-evpn/overlay/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Tenants feature
+      - template: "designs/l3ls-evpn/tenants/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Inband Management feature
+      - template: "inband_management/main.j2"
+      # Merge custom_structured_configuration last
+      - template: "custom_structured_configuration/main.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    ip_addressing:
+      router_id: 'designs/l3ls-evpn/ip-addressing/router-id.j2'
+      mlag_ip_primary: 'designs/l3ls-evpn/ip-addressing/mlag-ip-primary.j2'
+      mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/mlag-ip-secondary.j2'
+      mlag_l3_ip_primary: 'designs/l3ls-evpn/ip-addressing/mlag-l3-ip-primary.j2'
+      mlag_l3_ip_secondary: 'designs/l3ls-evpn/ip-addressing/mlag-l3-ip-secondary.j2'
+      p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-peer-ip.j2'
+      vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'designs/l3ls-evpn/ip-addressing/vtep-ip.j2'

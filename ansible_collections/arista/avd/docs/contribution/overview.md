@@ -106,7 +106,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 #### Submitting Pull Requests
 
-* If you're interested in contributing to Arista Validated Design (AVD), be sure to check out our [getting started](../getting-started) documentation for tips on setting up your development environment.
+* If you're interested in contributing to Arista Validated Design (AVD), be sure to check out our [getting started](getting-started.html) documentation for tips on setting up your development environment.
 
 * It is recommended to open an issue **before** starting work on a pull request, and discuss your idea with the Arista Validated Design (AVD) maintainers before beginning work. This will help prevent wasting time on something that might we might not be able to implement. When suggesting a new feature, also make sure it won't conflict with any work that's already in progress.
 
@@ -120,7 +120,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 * All code submissions should meet the following criteria (CI will enforce these checks):
 
-  * Jinja2 templates follow our [guidelines](../style-guide/).
+  * Jinja2 templates follow our [guidelines](style-guide.html).
   * Molecule is updated with data covering your fix.
   * Molecule artifacts are updated with your coverage.
   * Python syntax is valid.
@@ -128,6 +128,23 @@ The issue will be reviewed by a moderator after submission and the appropriate l
   * PEP 8 compliance is enforced, with the exception that lines may be greater than 80 characters in length.
 
 * A PR can be opened before all the work is complete. In this situation, PR state should be set to __draft__. All PR marked as ready for review (i.e. not in draft) will be reviewed by the maintainer team.
+
+* To automate release-notes creation and make filtering process easier, it is strongly recommended to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) syntax at least for PR title. Scope should be module or role updated. As a reminder, the list below provides all supported commit types:
+
+  * `Feat`: Create a capability e.g. feature, test, dependency.
+  * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
+  * `Cut`: Remove a capability e.g. feature, test, dependency.
+  * `Doc`: Refactor of documentation, e.g. help files.
+  * `Start`: Begin doing something; e.g. create a feature flag.
+  * `Stop`: End doing something; e.g. remove a feature flag.
+  * `Bump`: Increase the version of something e.g. dependency.
+  * `Test`: Add or refector anything regard test, e.g add a new testCases.
+  * `Make`: Change the build process, or tooling, or infra.
+  * `Refactor`: A code change that MUST be just a refactoring.
+  * `Reformat`: Refactor of formatting, e.g. omit whitespace.
+  * `Optimize`: Refactor of performance, e.g. speed up code.
+  * `License`: Edits regarding licensing; no production code change.
+  * `Revert`: Change back to the previous commit
 
 ## Project Structure
 

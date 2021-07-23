@@ -4,7 +4,6 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [Domain-list](#domain-list)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
@@ -76,19 +75,6 @@ interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
    ip address 172.21.110.6/24
-```
-
-## Domain-list
-
-### Domain-list:
- - structured-config.set.under.vrf.common-vrf
-
-### Domain-list Device Configuration
-
-```eos
-!
-ip domain-list structured-config.set.under.vrf.common-vrf
-!
 ```
 
 ## Management API HTTP
@@ -178,7 +164,7 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2B
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| RACK2_MLAG | Vlan4094 | 172.19.110.2 | Port-Channel3 |
+| RACK2_MLAG | Vlan4094 | 172.20.110.2 | Port-Channel3 |
 
 Dual primary detection is disabled.
 
@@ -189,7 +175,7 @@ Dual primary detection is disabled.
 mlag configuration
    domain-id RACK2_MLAG
    local-interface Vlan4094
-   peer-address 172.19.110.2
+   peer-address 172.20.110.2
    peer-link Port-Channel3
    reload-delay mlag 300
    reload-delay non-mlag 330
@@ -241,13 +227,13 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 112 | Tenant_A_OP_Zone_3 | none  |
-| 2500 | web-l2-vlan | none  |
-| 2600 | web-l2-vlan-2 | none  |
-| 4085 | L2LEAF_INBAND_MGMT | none  |
-| 4094 | MLAG_PEER | MLAG  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 112 | Tenant_A_OP_Zone_3 | - |
+| 2500 | web-l2-vlan | - |
+| 2600 | web-l2-vlan-2 | - |
+| 4085 | L2LEAF_INBAND_MGMT | - |
+| 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
 
@@ -364,7 +350,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4094 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -376,7 +362,7 @@ interface Vlan4094
    no shutdown
    mtu 1500
    no autostate
-   ip address 172.19.110.3/31
+   ip address 172.20.110.3/31
 ```
 
 # Routing
@@ -474,8 +460,5 @@ interface Loopback1003
 
 interface Loopback1111
   description Loopback created from raw_eos_cli under platform_settings vEOS-LAB
-
-interface Loopback1000
-  description Loopback created from raw_eos_cli under VRF Common_VRF
 
 ```

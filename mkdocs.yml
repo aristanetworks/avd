@@ -2,17 +2,17 @@
 site_name: Arista AVD collection
 site_author: Arista Ansible Team
 site_description: Arista Validated Design collection's documentation
-copyright: Copyright &copy; 2019 - 2020 Arista Networks
+copyright: Copyright &copy; 2019 - 2021 Arista Networks
 
 # Repository information
 repo_name: AVD on Github
 repo_url: https://github.com/aristanetworks/ansible-avd
 
 # Configuration
-use_directory_urls: true
+use_directory_urls: false
 theme:
   name: material
-  custom_dir: ansible_collections/arista/avd/docs/_overrides
+  # custom_dir: ansible_collections/arista/avd/docs/_overrides
   features:
     - navigation.instant
     - navigation.top
@@ -30,9 +30,26 @@ theme:
   language: en
   include_search_page: false
   search_index_only: true
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
 
 extra_css:
   - docs/stylesheets/extra.material.css
+
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.2.1/tablesort.min.js
+  - docs/stylesheets/tables.js
+  - https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.7.2/highlight.min.js
+  - docs/stylesheets/highlight.js
 
 plugins:
   - search:
@@ -79,6 +96,7 @@ docs_dir: ansible_collections/arista/avd/
 nav:
   - Home: README.md
   - Release Notes:
+      - 3.x.x: docs/release-notes/3.x.x.md
       - 2.x.x: docs/release-notes/2.x.x.md
       - 1.1.x: docs/release-notes/1.1.x.md
       - 1.0.x: docs/release-notes/1.0.x.md
@@ -97,25 +115,28 @@ nav:
       - Configure ZTP server with CV collection: docs/how-to/ztp.md
       - VScode Container: docs/how-to/vscode-container.md
   - Roles documentation:
-    - eos_designs:
-      - Overview: roles/eos_designs/README.md
-      - l3ls-evpn:
-        - Overview: roles/eos_designs/doc/l3ls-evpn.md
-        - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
-        - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
-        - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
-        - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
-        - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
-        - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
-    - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
-    - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
-    - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
-    - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
-    - eos_validate_state: roles/eos_validate_state/README.md
-    - eos_snapshot: roles/eos_snapshot/README.md
-    - dhcp_provisioner: roles/dhcp_provisioner/README.md
-    - build_output_folders: roles/build_output_folders/README.md
-    - upgrade_tools: roles/upgrade_tools/README.md
+      - eos_designs:
+          - Overview: roles/eos_designs/README.md
+          - Generic:
+            - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
+            - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
+          - Extending eos_designs:
+            - Node types: roles/eos_designs/doc/extending-avd/node-types.md
+          - l3ls-evpn:
+            - Overview: roles/eos_designs/doc/l3ls-evpn.md
+            - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
+            - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
+            - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
+            - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
+      - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
+      - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
+      - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
+      - eos_config_deploy_eapi: roles/eos_config_deploy_eapi/README.md
+      - eos_validate_state: roles/eos_validate_state/README.md
+      - eos_snapshot: roles/eos_snapshot/README.md
+      - dhcp_provisioner: roles/dhcp_provisioner/README.md
+      - build_output_folders: roles/build_output_folders/README.md
+      - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md

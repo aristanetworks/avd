@@ -84,12 +84,19 @@ interface Management1
 | Vlan89 |  SVI Description  |  default  |  -  |  false  |
 | Vlan90 |  SVI Description  |  default  |  -  |  -  |
 | Vlan91 |  PBR Description  |  default  |  -  |  true  |
+| Vlan110 |  PVLAN Primary with vlan mapping  |  Tenant_A  |  -  |  false  |
 | Vlan501 |  SVI Description  |  default  |  -  |  false  |
 | Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
 | Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
 | Vlan2001 |  SVI Description  |  Tenant_B  |  -  |  -  |
 | Vlan2002 |  SVI Description  |  Tenant_B  |  -  |  -  |
 | Vlan4094 |  SVI Description  |  default  |  9214  |  -  |
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping |
+| --------- | ------------- |
+| Vlan110 | 111-112 |
 
 #### IPv4
 
@@ -108,6 +115,7 @@ interface Management1
 | Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
 | Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A  |  -  |  -  |  -  |  -  |  -  |  -  |
 | Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
 | Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
 | Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
@@ -215,6 +223,12 @@ interface Vlan91
    description PBR Description
    shutdown
    service-policy type pbr input MyServicePolicy
+!
+interface Vlan110
+   description PVLAN Primary with vlan mapping
+   no shutdown
+   vrf Tenant_A
+   pvlan mapping 111-112
 !
 interface Vlan501
    description SVI Description

@@ -281,20 +281,20 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | Tenant_A_OP_Zone_1 | none  |
-| 111 | Tenant_A_OP_Zone_2 | none  |
-| 120 | Tenant_A_WEB_Zone_1 | none  |
-| 121 | Tenant_A_WEBZone_2 | none  |
-| 130 | Tenant_A_APP_Zone_1 | none  |
-| 131 | Tenant_A_APP_Zone_2 | none  |
-| 140 | Tenant_A_DB_BZone_1 | none  |
-| 141 | Tenant_A_DB_Zone_2 | none  |
-| 160 | Tenant_A_VMOTION | none  |
-| 161 | Tenant_A_NFS | none  |
-| 210 | Tenant_B_OP_Zone_1 | none  |
-| 211 | Tenant_B_OP_Zone_2 | none  |
-| 310 | Tenant_C_OP_Zone_1 | none  |
-| 311 | Tenant_C_OP_Zone_2 | none  |
+| 110 | Tenant_A_OP_Zone_1 | - |
+| 111 | Tenant_A_OP_Zone_2 | - |
+| 120 | Tenant_A_WEB_Zone_1 | - |
+| 121 | Tenant_A_WEBZone_2 | - |
+| 130 | Tenant_A_APP_Zone_1 | - |
+| 131 | Tenant_A_APP_Zone_2 | - |
+| 140 | Tenant_A_DB_BZone_1 | - |
+| 141 | Tenant_A_DB_Zone_2 | - |
+| 160 | Tenant_A_VMOTION | - |
+| 161 | Tenant_A_NFS | - |
+| 210 | Tenant_B_OP_Zone_1 | - |
+| 211 | Tenant_B_OP_Zone_2 | - |
+| 310 | Tenant_C_OP_Zone_1 | - |
+| 311 | Tenant_C_OP_Zone_2 | - |
 
 ## VLANs Device Configuration
 
@@ -863,7 +863,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -871,10 +870,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.32 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.34 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.36 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.38 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.32 | 65001 | default |
+| 172.31.255.34 | 65001 | default |
+| 172.31.255.36 | 65001 | default |
+| 172.31.255.38 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -925,17 +924,20 @@ router bgp 65102
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.32 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.32 remote-as 65001
    neighbor 172.31.255.32 description DC1-SPINE1_Ethernet3
    neighbor 172.31.255.34 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.34 remote-as 65001
    neighbor 172.31.255.34 description DC1-SPINE2_Ethernet3
    neighbor 172.31.255.36 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.36 remote-as 65001
    neighbor 172.31.255.36 description DC1-SPINE3_Ethernet3
    neighbor 172.31.255.38 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.38 remote-as 65001
    neighbor 172.31.255.38 description DC1-SPINE4_Ethernet3
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

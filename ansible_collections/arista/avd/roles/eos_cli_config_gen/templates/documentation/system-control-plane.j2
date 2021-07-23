@@ -1,0 +1,38 @@
+{% if system.control_plane is arista.avd.defined %}
+
+## System Control-Plane
+{%     if system.control_plane.tcp_mss.ipv4 is arista.avd.defined or system.control_plane.tcp_mss.ipv6 is arista.avd.defined %}
+
+#### TCP MSS Ceiling
+
+| Protocol | Segment Size |
+| -------- | -------------|
+{%         if system.control_plane.tcp_mss.ipv4 is arista.avd.defined %}
+| IPv4 | {{ system.control_plane.tcp_mss.ipv4 }} |
+{%         endif %}
+{%         if system.control_plane.tcp_mss.ipv6 is arista.avd.defined %}
+| IPv6 | {{ system.control_plane.tcp_mss.ipv6 }} |
+{%         endif %}
+{%     endif %}
+{%     if system.control_plane.ipv4_access_groups is arista.avd.defined or system.control_plane.ipv6_access_groups is arista.avd.defined %}
+
+#### Control-Plane Access-Groups
+
+| Protocol | VRF | Access-list |
+| -------- | --- | ------------|
+{#         IPv4 Access-groups #}
+{%         for acl_set in system.control_plane.ipv4_access_groups | arista.avd.natural_sort %}
+| IPv4 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} |
+{%         endfor %}
+{#         IPv6 Access-groups #}
+{%         for acl_set in system.control_plane.ipv6_access_groups | arista.avd.natural_sort %}
+| IPv6 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} |
+{%         endfor %}
+{%     endif %}
+
+### System Control-Plane Configuration
+
+```eos
+{%     include 'eos/system-control-plane.j2' %}
+```
+{% endif %}

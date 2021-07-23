@@ -1,0 +1,33 @@
+# Nashua EVE-NG LAB shared attributes
+root_dir: '{{playbook_dir}}'
+
+# local users
+local_users:
+  admin:
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  cvpadmin:
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj."
+
+# Cloud Vision server
+cvp_instance_ips:
+  - 192.168.200.11
+
+cvp_ingestauth_key: telarista
+terminattr_disable_aaa: true
+
+# OOB Management network default gateway.
+mgmt_gateway: 192.168.200.5
+
+# dns servers.
+name_servers:
+ - 192.168.200.5
+ - 8.8.8.8
+
+# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment
+ntp_servers:
+  - 192.168.200.5

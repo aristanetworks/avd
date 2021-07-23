@@ -1,7 +1,0 @@
-{# L2leaf Inband Management VLAN #}
-{% if l2leaf_inband_management_subnet is arista.avd.defined %}
-vlans:
-  {{ l2leaf_inband_management_vlan | arista.avd.default('4092') }}:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
-{% endif %}

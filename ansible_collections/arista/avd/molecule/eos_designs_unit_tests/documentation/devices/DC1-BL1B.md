@@ -256,9 +256,9 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 150 | Tenant_A_WAN_Zone_1 | none  |
-| 250 | Tenant_B_WAN_Zone_1 | none  |
-| 350 | Tenant_C_WAN_Zone_1 | none  |
+| 150 | Tenant_A_WAN_Zone_1 | - |
+| 250 | Tenant_B_WAN_Zone_1 | - |
+| 350 | Tenant_C_WAN_Zone_1 | - |
 
 ## VLANs Device Configuration
 
@@ -598,7 +598,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -606,10 +605,10 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.96 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.98 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.100 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.102 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.96 | 65001 | default |
+| 172.31.255.98 | 65001 | default |
+| 172.31.255.100 | 65001 | default |
+| 172.31.255.102 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -658,17 +657,20 @@ router bgp 65105
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.96 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.96 remote-as 65001
    neighbor 172.31.255.96 description DC1-SPINE1_Ethernet7
    neighbor 172.31.255.98 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.98 remote-as 65001
    neighbor 172.31.255.98 description DC1-SPINE2_Ethernet7
    neighbor 172.31.255.100 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.100 remote-as 65001
    neighbor 172.31.255.100 description DC1-SPINE3_Ethernet7
    neighbor 172.31.255.102 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.102 remote-as 65001
    neighbor 172.31.255.102 description DC1-SPINE4_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

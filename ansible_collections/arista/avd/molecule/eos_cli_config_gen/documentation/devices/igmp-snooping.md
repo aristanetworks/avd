@@ -76,8 +76,8 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 110 | PR01-DMZ | none  |
-| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3  |
+| 110 | PR01-DMZ | - |
+| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3 |
 
 ## VLANs Device Configuration
 

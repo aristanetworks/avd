@@ -9,9 +9,9 @@
 - [Fabric IP Allocation](#fabric-ip-allocation)
   - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-  - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
+  - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
-  - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
+  - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
 <!-- toc -->
@@ -114,8 +114,8 @@
 
 ## Fabric Point-To-Point Links
 
-| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ----------- | ------------------- | ------------------ | ------------------ |
+| Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ---------------- | ------------------- | ------------------ | ------------------ |
 | 172.16.11.0/24 | 256 | 8 | 3.13 % |
 | 172.16.12.0/24 | 256 | 8 | 3.13 % |
 | 172.16.21.0/24 | 256 | 8 | 3.13 % |
@@ -172,10 +172,10 @@
 | DC2-RS2 | Ethernet1 | 172.17.20.9/31 | DC2-SUPER-SPINE1 | Ethernet5 | 172.17.20.8/31 |
 | DC2-RS2 | Ethernet2 | 172.17.20.11/31 | DC2-SUPER-SPINE1 | Ethernet7 | 172.17.20.10/31 |
 
-## Overlay Loopback Interfaces (BGP EVPN Peering)
+## Loopback Interfaces (BGP EVPN Peering)
 
-| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ------------------------ | ------------------- | ------------------ | ------------------ |
+| Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------- | ------------------- | ------------------ | ------------------ |
 | 172.16.10.0/24 | 256 | 2 | 0.79 % |
 | 172.16.20.0/24 | 256 | 2 | 0.79 % |
 | 172.16.100.0/24 | 256 | 2 | 0.79 % |
@@ -208,9 +208,9 @@
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
 
-## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
-| VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
 | 172.18.110.0/24 | 256 | 3 | 1.18 % |
 | 172.18.120.0/24 | 256 | 1 | 0.4 % |

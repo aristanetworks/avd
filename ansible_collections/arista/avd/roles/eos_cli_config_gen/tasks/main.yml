@@ -1,4 +1,18 @@
 ---
+- name: Create required output directories if not present
+  tags: [build, provision]
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: 0775
+  loop:
+    - "{{ structured_dir }}"
+    - "{{ documentation_dir }}"
+    - "{{ eos_config_dir }}"
+    - "{{ devices_dir }}"
+  delegate_to: localhost
+  run_once: true
+
 - name: Check if structure configuration file exists
   tags: [build, provision]
   stat:
@@ -8,22 +22,22 @@
   when: structured_config is not defined
 
 - name: Include device intended structure configuration variables
+  tags: [build, provision]
   include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
   delegate_to: localhost
-  tags: [build, provision]
   when: structured_config is not defined and stat_result.stat.exists
 
 - name: Generate eos intended configuration
+  tags: [build, provision]
   template:
     src: eos-intended-config.j2
     dest: "{{ eos_config_dir }}/{{ inventory_hostname }}.cfg"
     mode: 0664
   delegate_to: localhost
   register: eosconfig
-  tags: [build, provision]
 
 - name: Generate device documentation
-  tags: [build, provision]
+  tags: [build, provision, documentation]
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
   block:
