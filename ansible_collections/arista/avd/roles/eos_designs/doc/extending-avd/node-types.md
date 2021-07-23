@@ -83,4 +83,4 @@ node_type_keys:
 ```
 
 !!! info
-    The default node definition is available in the [default section](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/defaults/main.yml) of the eos_designs role.
+    The default node definition is available in the [default section](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/defaults/main/main.yml) of the eos_designs role.
