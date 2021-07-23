@@ -4,13 +4,13 @@
 {%     if evpn_rd_type.admin_subfield is arista.avd.defined %}
 {%         if evpn_rd_type.admin_subfield == "vtep_loopback" %}
 {%             set tenants_data.evpn_rd_admin_subfield = switch.vtep_ip %}
-{%         elif evpn_rd_type.admin_subfield == "leaf_asn" %}
+{%         elif evpn_rd_type.admin_subfield == "bgp_as" %}
 {%             set tenants_data.evpn_rd_admin_subfield = switch.bgp_as %}
-{%         elif evpn_rd_type.admin_subfield == "spine_asn" and spine.bgp_as is arista.avd.defined %}
-{%             set tenants_data.evpn_rd_admin_subfield = spine.bgp_as %}
 {%         elif evpn_rd_type.admin_subfield | ansible.netcommon.ipaddr %}
 {%             set tenants_data.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
-{%         elif evpn_rd_type.admin_subfield is number and evpn_rd_type.admin_subfield >= 0 and evpn_rd_type.admin_subfield <= 4294967295 %}
+{%         elif evpn_rd_type.admin_subfield is number and
+                evpn_rd_type.admin_subfield >= 0 and
+                evpn_rd_type.admin_subfield <= 4294967295 %}
 {%             set tenants_data.evpn_rd_admin_subfield = evpn_rd_type.admin_subfield %}
 {%         endif %}
 {%     endif %}
@@ -18,12 +18,12 @@
 {# Setting evpn_rt_admin_subfield #}
 {% set tenants_data.evpn_rt_admin_subfield = false %}
 {% if evpn_rt_type is defined and evpn_rt_type is not none %}
-{%     if evpn_rt_type.admin_subfield is defined and evpn_rt_type.admin_subfield is not none %}
-{%         if evpn_rt_type.admin_subfield == "leaf_asn" %}
+{%     if evpn_rt_type.admin_subfield is arista.avd.defined %}
+{%         if evpn_rt_type.admin_subfield == "bgp_as" %}
 {%             set tenants_data.evpn_rt_admin_subfield = switch.bgp_as %}
-{%         elif evpn_rt_type.admin_subfield == "spine_asn" and spine.bgp_as is arista.avd.defined %}
-{%             set tenants_data.evpn_rt_admin_subfield = spine.bgp_as %}
-{%         elif evpn_rt_type.admin_subfield is number and evpn_rt_type.admin_subfield >= 0 and evpn_rt_type.admin_subfield <= 4294967295 %}
+{%         elif evpn_rt_type.admin_subfield is number and
+                evpn_rt_type.admin_subfield >= 0 and
+                evpn_rt_type.admin_subfield <= 4294967295 %}
 {%             set tenants_data.evpn_rt_admin_subfield = evpn_rt_type.admin_subfield %}
 {%         endif %}
 {%     endif %}

@@ -6,9 +6,4 @@ route_maps:
         type: permit
         match:
           - "ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"
-{% if type == "l3leaf" and l2leaf_inband_management_subnet is arista.avd.defined %}
-      20:
-        type: permit
-        match:
-          - "ip address prefix-list PL-L2LEAF-INBAND-MGMT"
-{% endif %}
+{# SEQ 20 is set by inband management if applicable, so avoid setting that here #}

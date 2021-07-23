@@ -10,7 +10,6 @@ router_bgp:
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65120
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -31,13 +30,14 @@ router_bgp:
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
-    attached-host: {}
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65120
       description: DC1-POD2-SPINE1_Ethernet3
     172.17.120.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65120
       description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -164,15 +164,6 @@ management_api_http:
 eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
   \ under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
   \ created from raw_eos_cli under VRF Common_VRF\n"
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.120.3/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 172.18.120.3/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD2-SPINE1
@@ -208,10 +199,43 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.17.10.12/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 172.16.120.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.120.3/32
+prefix_lists:
+  PL-LOOPBACKS-EVPN-OVERLAY:
+    sequence_numbers:
+      10:
+        action: permit 172.16.120.0/24 eq 32
+      20:
+        action: permit 172.18.120.0/24 eq 32
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  RM-EVPN-FILTER-AS65120:
+    sequence_numbers:
+      10:
+        type: deny
+        match:
+        - as 65120
+      20:
+        type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 vlans:
-  4092:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -227,15 +251,29 @@ vlans:
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+ip_igmp_snooping:
+  globally_enabled: true
+vxlan_tunnel_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    source_interface: Loopback1
+    vxlan_udp_port: 4789
+    vxlan_vni_mappings:
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+        2500:
+          vni: 2500
+        2600:
+          vni: 2600
+      vrfs:
+        Common_VRF:
+          vni: 1025
 vlan_interfaces:
-  Vlan4092:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.120.2/24
-    ip_virtual_router_address: 172.21.120.1
-    ip_attached_host_route_export:
-      distance: 19
   Vlan110:
     tenant: Tenant_A
     tags:
@@ -269,66 +307,9 @@ vlan_interfaces:
       EOF
 
       '
-prefix_lists:
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: permit 172.16.120.0/24 eq 32
-      20:
-        action: permit 172.18.120.0/24 eq 32
-  PL-L2LEAF-INBAND-MGMT:
-    sequence_numbers:
-      10:
-        action: permit 172.21.120.0/24
-route_maps:
-  RM-CONN-2-BGP:
-    sequence_numbers:
-      10:
-        type: permit
-        match:
-        - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-      20:
-        type: permit
-        match:
-        - ip address prefix-list PL-L2LEAF-INBAND-MGMT
-  RM-EVPN-FILTER-AS65120:
-    sequence_numbers:
-      10:
-        type: deny
-        match:
-        - as 65120
-      20:
-        type: permit
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
-ip_igmp_snooping:
-  globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
-      vrfs:
-        Common_VRF:
-          vni: 1025
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 domain_list:
 - structured-config.set.under.vrf.common-vrf

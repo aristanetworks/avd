@@ -384,7 +384,7 @@ The module arguments are:
 ```yaml
 - name: Set AVD facts
   yaml_templates_to_facts:
-    templates: "{{ templates[design.type].facts }}"
+    templates: "{{ templates.facts }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
@@ -392,7 +392,7 @@ The module arguments are:
 - name: Generate device configuration in structured format
   yaml_templates_to_facts:
     root_key: structured_config
-    templates: "{{ templates[design.type].structured_config }}"
+    templates: "{{ templates.structured_config }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]

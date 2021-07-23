@@ -215,7 +215,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF2 | Vlan4091 | 10.255.252.17 | Port-Channel3 |
+| DC1_L2LEAF2 | Vlan4091 | 10.255.249.17 | Port-Channel3 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -226,7 +226,7 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 mlag configuration
    domain-id DC1_L2LEAF2
    local-interface Vlan4091
-   peer-address 10.255.252.17
+   peer-address 10.255.249.17
    peer-address heartbeat 192.168.200.114 vrf MGMT
    peer-link Port-Channel3
    dual-primary detection delay 5 action errdisable all-interfaces
@@ -449,7 +449,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4091 |  default  |  10.255.252.16/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.249.16/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -461,7 +461,7 @@ interface Vlan4091
    no shutdown
    mtu 1500
    no autostate
-   ip address 10.255.252.16/31
+   ip address 10.255.249.16/31
 ```
 
 # Routing

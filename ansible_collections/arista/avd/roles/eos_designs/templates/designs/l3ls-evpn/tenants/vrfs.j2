@@ -1,4 +1,4 @@
-{# Leaf tenant vrfs #}
+{# tenant vrfs #}
 vrfs:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}

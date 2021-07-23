@@ -71,7 +71,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 The role variables are documented inline within YAML formatted output with: "< >"
 Some variables are required, while others are optional.
-Default values, are stored in the role defaults [main.yml](./defaults/main.yml) file.
+Default values, are stored in the role defaults [main.yml](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults) file.
 
 Role variables are grouped by configuration elements and are typically stored in different group_vars files.
 

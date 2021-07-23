@@ -131,7 +131,7 @@ vlan_interfaces:
   Vlan4091:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 10.255.252.17/31
+    ip_address: 10.255.249.17/31
     no_autostate: true
     mtu: 1500
 port_channel_interfaces:
@@ -194,7 +194,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: DC1_L2LEAF2
   local_interface: Vlan4091
-  peer_address: 10.255.252.16
+  peer_address: 10.255.249.16
   peer_address_heartbeat:
     peer_ip: 192.168.200.113
     vrf: MGMT

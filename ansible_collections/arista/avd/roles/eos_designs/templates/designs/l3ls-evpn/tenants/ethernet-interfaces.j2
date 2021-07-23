@@ -1,4 +1,4 @@
-{# Leaf Tenant l3 interfaces #}
+{# Tenant l3 interfaces #}
 {% set l3_interface_subif_parents = [] %}
 ethernet_interfaces:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}

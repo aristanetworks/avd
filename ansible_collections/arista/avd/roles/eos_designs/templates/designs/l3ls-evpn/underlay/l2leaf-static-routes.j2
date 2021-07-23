@@ -1,5 +1,0 @@
-{% if l2leaf_inband_management_subnet is arista.avd.defined %}
-static_routes:
-  - destination_address_prefix: 0.0.0.0/0
-    gateway: {{ l2leaf_inband_management_subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(1) }}
-{% endif %}

@@ -219,6 +219,11 @@ jobs:
           - 'evpn_underlay_isis_overlay_ibgp'
           - 'eos_designs-twodc-5stage-clos'
           - 'evpn_underlay_rfc5549_overlay_ebgp'
+          - 'upgrade_v2.x_to_v3.0_evpn_underlay_ebgp_overlay_ebgp'
+          - 'upgrade_v2.x_to_v3.0_evpn_underlay_ospf_overlay_ebgp'
+          - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
+          - 'upgrade_v2.x_to_v3.0_eos_designs-twodc-5stage-clos'
+          - 'upgrade_v2.x_to_v3.0_evpn_underlay_rfc5549_overlay_ebgp'
         ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
