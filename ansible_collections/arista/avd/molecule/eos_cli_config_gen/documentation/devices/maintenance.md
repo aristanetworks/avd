@@ -1,4 +1,4 @@
-# groups
+# maintenance
 # Table of Contents
 <!-- toc -->
 
@@ -17,8 +17,7 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 - [Maintenance Mode](#maintenance-mode)
-  - [BGP Groups](#bgp-groups)
-  - [Interface Groups](#interface-groups)
+  - [Maintenance](#maintenance)
 
 <!-- toc -->
 # Management
@@ -96,53 +95,69 @@ interface Management1
 
 # Maintenance Mode
 
-## BGP Groups
+## Maintenance
 
-### BGP Groups Summary
+### Maintenance defaults
 
-| BGP group | VRF Name | Neighbors | BGP maintenance profiles |
-| --------- | -------- | --------- | ------------------------ |
-| bar | red | peer-group-baz | downlink-neighbors |
-| foo | - | 169.254.1.1<br>fe80::1 | ixp<br>uplink-neighbors |
+Default maintenance bgp profile: **BP1**
 
-### BGP Groups Configuration
+Default maintenance interface profile: **IP1**
+
+Default maintenance unit profile: **IP1**
+
+### Maintenance profiles
+
+| BGP profile | Initiator route-map |
+| ----------- | ------------------- |
+| BP1 | RM-MAINTENANCE |
+| BP2 | RM-MAINTENANCE2 |
+| BP3 | RM-MAINTENANCE3 |
+
+| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) |
+|-------------------|-----------------------------------|-----------------------------------------|
+| IP1 | 10 | 500 |
+
+| Unit profile | on-boot duration (s) |
+| ------------ | -------------------- |
+| UP1 | 900 |
+| UP2 | 600 |
+
+### Maintenance units
+
+| Unit | Interface groups | BGP groups | Unit profile | Quiesce |
+| ---- | ---------------- | ---------- | ------------ | ------- |
+| UNIT1 | INTERFACE_GROUP_1 | BGP_GROUP_1<br/>BGP_GROUP_2 | UP1 | No |
+
+### Maintenance configuration
 
 ```eos
 !
-group bgp bar
-   vrf red
-   neighbor peer-group-baz
-   maintenance profile bgp downlink-neighbors
-!
-group bgp foo
-   neighbor 169.254.1.1
-   neighbor fe80::1
-   maintenance profile bgp ixp
-   maintenance profile bgp uplink-neighbors
-```
-
-## Interface Groups
-
-### Interface Groups Summary
-
-| Interface Group | Interfaces | Interface maintenance profile | BGP maintenance profiles |
-| --------------- | ---------- | ----------------------------- | ------------------------ |
-| QSFP_Interface_Group | Ethernet1,5 | uplink-interfaces | Default |
-| SFP_Interface_Group | Ethernet10-20<br>Ethernet30-48 | downlink-interfaces<br>ix-interfaces | downlink-neighbors<br>local-ix |
-
-### Interface Groups Configuration
-
-```eos
-!
-group interface QSFP_Interface_Group
-   interface Ethernet1,5
-   maintenance profile interface uplink-interfaces
-!
-group interface SFP_Interface_Group
-   interface Ethernet10-20
-   interface Ethernet30-48
-   maintenance profile interface downlink-interfaces
-   maintenance profile interface ix-interfaces
-   maintenance profile bgp downlink-neighbors
-   maintenance profile bgp local-ix
+maintenance
+   profile bgp BP1
+      initiator route-map RM-MAINTENANCE inout
+   !
+   profile bgp BP2
+      initiator route-map RM-MAINTENANCE2 inout
+   !
+   profile bgp BP3
+      initiator route-map RM-MAINTENANCE3 inout
+   profile bgp BP1 default
+   profile interface IP1 default
+   profile unit IP1 default
+   !
+   profile interface IP1
+      rate-monitoring load-interval 10
+      rate-monitoring threshold 500
+   !
+   profile unit UP1
+      on-boot duration 900
+   !
+   profile unit UP2
+      on-boot duration 600
+   !
+   unit UNIT1
+      group bgp BGP_GROUP_1
+      group bgp BGP_GROUP_2
+      group interface INTERFACE_GROUP_1
+      profile unit UP1
 ```

@@ -11,12 +11,12 @@
 {%         if interface_groups[interface_group].interface_maintenance_profiles is arista.avd.defined %}
 {%             set interface_profile = interface_groups[interface_group].interface_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
 {%         else %}
-{%             set interface_profile = '-' %}
+{%             set interface_profile = maintenance.default_interface_profile |arista.avd.default('Default') %}
 {%         endif %}
 {%         if interface_groups[interface_group].bgp_maintenance_profiles is arista.avd.defined %}
 {%             set bgp_profile = interface_groups[interface_group].bgp_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
 {%         else %}
-{%             set bgp_profile = '-' %}
+{%             set bgp_profile = maintenance.default_bgp_profile | arista.avd.default('Default') %}
 {%         endif %}
 | {{ interface_group }} | {{ interfaces }} | {{ interface_profile }} | {{ bgp_profile }} |
 {%     endfor %}
