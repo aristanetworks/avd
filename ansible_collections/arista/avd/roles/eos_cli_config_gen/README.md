@@ -74,6 +74,7 @@
       - [Domain-List](#domain-list)
       - [Management Interfaces](#management-interfaces)
       - [Management HTTP](#management-http)
+      - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
       - [Management Security](#management-security)
@@ -1288,6 +1289,16 @@ management_api_http:
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
+```
+
+#### IP HTTP Client Source Interfaces
+
+```yaml
+ip_http_client_source_interfaces:
+    - name: <interface_name_1>
+      vrf: <vrf_name_1>
+    - name: <interface_name_2>
+      vrf: <vrf_name_2>
 ```
 
 #### Management GNMI
