@@ -1,7 +1,4 @@
 {# eos - NTP #}
-{% if ntp.authenticate is arista.avd.defined(true) %}
-ntp authenticate
-{% endif %}
 {% for authentication_key in ntp.authentication_keys | arista.avd.natural_sort %}
 {%     if ntp.authentication_keys[authentication_key].key is arista.avd.defined and
           ntp.authentication_keys[authentication_key].hash_algorithm is arista.avd.defined %}
@@ -13,4 +10,7 @@ ntp authenticate
 {% endfor %}
 {% if ntp.trusted_keys is arista.avd.defined %}
 ntp trusted-key {{ ntp.trusted_keys }}
+{% endif %}
+{% if ntp.authenticate is arista.avd.defined(true) %}
+ntp authenticate
 {% endif %}
