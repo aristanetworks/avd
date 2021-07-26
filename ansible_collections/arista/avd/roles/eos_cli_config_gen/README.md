@@ -1096,21 +1096,33 @@ vlan_interfaces:
 vxlan_tunnel_interface:
   Vxlan1:
     description: < description >
-    source_interface: < source_interface_name >
-    virtual_router:
-      encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
-    vxlan_udp_port: < udp_port >
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: < source_interface_name >
+      udp_port: < udp_port >
+      virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name >:
+        < vrf_name_1 >:
           vni: < vni_id_3 >
-        < vrf_name >:
+        < vrf_name_2 >:
           vni: < vni_id_4 >
+      flood_vteps:
+        - < remote_vtep_1_ip_address >
+        - < remote_vtep_2_ip_address >
+      flood_vtep_learned_data_plane: < true | false >
+    # EOS CLI rendered directly on the Vxlan interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 ### Internal VLAN Allocation Policy
