@@ -55,9 +55,9 @@ interface Management1
 
 | VRF | Source Interface Name |
 | --- | --------------- |
-|  default  | loopback1 |
-|  MGMT  | Ma1 |
-|   default  | loopback10 |
+| default | loopback1 |
+| MGMT | Ma1 |
+| default | loopback10 |
 
 ### IP SOURCE Source Interfaces Device Configuration
 
