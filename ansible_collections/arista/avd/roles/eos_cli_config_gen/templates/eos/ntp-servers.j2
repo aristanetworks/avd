@@ -1,6 +1,8 @@
 {# eos - NTP Server #}
 {% if ntp_server is arista.avd.defined %}
+{% if ntp is not arista.avd.defined %}
 !
+{% endif %}
 {%     if ntp_server.local_interface.interface is arista.avd.defined %}
 {%         set ntp_int_cli = "ntp local-interface" %}
 {%         if ntp_server.local_interface.vrf is arista.avd.defined and ntp_server.local_interface.vrf != 'default' %}
