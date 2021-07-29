@@ -20,6 +20,7 @@
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
       - [Enable Password](#enable-password)
+      - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
       - [Radius Servers](#radius-servers)
@@ -328,6 +329,16 @@ aaa_server_groups:
 enable_password:
   hash_algorithm: < md5 | sha512 >
   key: "< hashed_password >"
+```
+
+#### IP RADIUS Source Interfaces
+
+```yaml
+ip_radius_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
+      vrf: < vrf_name_2 >
 ```
 
 #### IP TACACS+ Source Interfaces
