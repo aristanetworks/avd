@@ -53,9 +53,9 @@ interface Management1
 
 | VRF | Source Interface Name |
 | --- | --------------- |
- default |Loopback0 |
- MGMT |Management0 |
-  default |Ethernet10 |
+| default | Loopback0 |
+| MGMT | Management0 |
+| default | Ethernet10 |
 
 ### IP HTTP Client Source Interfaces Device Configuration
 
