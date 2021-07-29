@@ -118,6 +118,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
    spanning-tree bpduguard enable
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(false) %}
+   spanning-tree bpduguard disable
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vrf is arista.avd.defined %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
@@ -276,6 +278,26 @@ interface {{ ethernet_interface }}
 {%     if ethernet_interfaces[ethernet_interface].transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interfaces[ethernet_interface].transceiver.media.override }}
 {%     endif %}
+{%         if ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(true) %}
+{%                if ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(true) %}
+   error-correction encoding fire-code
+{%                elif ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(false) %}
+   no error-correction encoding fire-code
+{%                elif ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined('default') %}
+   default error-correction encoding fire-code
+{%                endif %}
+{%                if ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+   error-correction encoding reed-solomon
+{%                elif ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
+   no error-correction encoding reed-solomon
+{%                elif ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined('default') %}
+   default error-correction encoding reed-solomon
+{%                endif %}
+{%         elif ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(false) %}
+   no error-correction encoding
+{%         elif ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined('default') %}
+   default error-correction encoding
+{%         endif %}
 {%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
    {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
 {%     endif %}
