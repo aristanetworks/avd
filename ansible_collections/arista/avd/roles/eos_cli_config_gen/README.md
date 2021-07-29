@@ -20,6 +20,7 @@
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
       - [Enable Password](#enable-password)
+      - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
       - [Radius Servers](#radius-servers)
@@ -65,6 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
+      - [Maintenance profiles and units](#maintenance-profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -94,6 +96,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+    - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
     - [Prompt](#prompt)
@@ -327,6 +330,16 @@ enable_password:
   key: "< hashed_password >"
 ```
 
+#### IP RADIUS Source Interfaces
+
+```yaml
+ip_radius_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
+      vrf: < vrf_name_2 >
+```
+
 #### IP TACACS+ Source Interfaces
 
 ```yaml
@@ -371,6 +384,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
+      single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encypted_key >
       timeout: < timeout in seconds >
@@ -1178,6 +1192,39 @@ interface_groups:
       - "< profile_name >"
     interface_maintenance_profiles:
       - "< profile_name >"
+```
+
+#### Profiles and units
+```yaml
+maintenance:
+  default_interface_profile: < interface_profile_1 >
+  default_bgp_profile: < bgp_profile_1 >
+  default_unit_profile: < unit_profile_1 >
+  interface_profiles:
+    < interface_profile_1 >:
+      rate_monitoring:
+        load_interval: < seconds >
+        threshold: < kbps >
+      shutdown:
+        max_delay: < seconds >
+  bgp_profiles:
+    < bgp_profile_1 >:
+      initiator:
+        route_map_inout: < route_map >
+  unit_profiles:
+    < unit_profile_1 >:
+      on_boot:
+        duration: < 300-3600 >
+  units:
+    < unit_name_1 >:
+      quiesce: < true | false >
+      profile: < unit_profile_1 >
+      bgp_groups:
+        - < bgp_group_1>
+        - < bgp_group_2>
+      interface_groups:
+        - < interface_group_1>
+        - < interface_group_2>
 ```
 
 ### Management
@@ -2194,6 +2241,13 @@ router_ospf:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
+        < area >:
+          type: < normal | stub | nssa | default -> normal >
+          no_summary: < true | false >
+          nssa_only: < true | false >
+          default_information_originate:
+            metric: < Integer 1-65535 > # Value of the route metric
+            metric_type: < 1 | 2 > # OSPF metric type
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:

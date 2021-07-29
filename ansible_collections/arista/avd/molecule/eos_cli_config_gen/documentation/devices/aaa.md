@@ -79,17 +79,17 @@ username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9s
 
 ### TACACS Servers
 
-| VRF | TACACS Servers |
-| --- | ---------------|
-|  mgt | 10.10.10.157 |
-|  default | 10.10.10.249 |
-|  default | 10.10.10.158 |
+| VRF | TACACS Servers | Single-Connection |
+| --- | -------------- | ----------------- |
+|  mgt | 10.10.10.157 | True |
+|  default | 10.10.10.249 | False |
+|  default | 10.10.10.158 | False |
 
 ### TACACS Servers Device Configuration
 
 ```eos
 !
-tacacs-server host 10.10.10.157 vrf mgt key 7 071B245F5A
+tacacs-server host 10.10.10.157 single-connection vrf mgt key 7 071B245F5A
 tacacs-server host 10.10.10.158 key 7 071B245F5A
 tacacs-server host 10.10.10.249 timeout 23 key 7 071B245F5A
 ```

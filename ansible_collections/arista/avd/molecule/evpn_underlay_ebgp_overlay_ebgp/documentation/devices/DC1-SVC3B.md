@@ -1226,7 +1226,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -1235,10 +1234,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 10.255.251.6 | Inherited from peer group MLAG-PEERS | default |
-| 172.31.255.64 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.66 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.68 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.70 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.64 | 65001 | default |
+| 172.31.255.66 | 65001 | default |
+| 172.31.255.68 | 65001 | default |
+| 172.31.255.70 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -1318,19 +1317,22 @@ router bgp 65103
    neighbor MLAG-PEERS maximum-routes 12000
    neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.251.6 peer group MLAG-PEERS
    neighbor 10.255.251.6 description DC1-SVC3A
    neighbor 172.31.255.64 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.64 remote-as 65001
    neighbor 172.31.255.64 description DC1-SPINE1_Ethernet5
    neighbor 172.31.255.66 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.66 remote-as 65001
    neighbor 172.31.255.66 description DC1-SPINE2_Ethernet5
    neighbor 172.31.255.68 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.68 remote-as 65001
    neighbor 172.31.255.68 description DC1-SPINE3_Ethernet5
    neighbor 172.31.255.70 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.70 remote-as 65001
    neighbor 172.31.255.70 description DC1-SPINE4_Ethernet5
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

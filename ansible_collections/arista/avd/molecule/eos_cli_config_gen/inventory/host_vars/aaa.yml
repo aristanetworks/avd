@@ -4,9 +4,11 @@ tacacs_servers:
     - host: 10.10.10.157
       vrf: mgt
       key: 071B245F5A
+      single_connection: true
     - host: 10.10.10.249
       key: 071B245F5A
       timeout: 23
+      single_connection: false
     - host: 10.10.10.158
       vrf: default
       key: 071B245F5A

@@ -13,7 +13,7 @@ loopback_interfaces:
     isis_passive: true
 {%     endif %}
 {% endif %}
-{% if switch.vtep_ip is arista.avd.defined %}
+{% if switch.vtep is arista.avd.defined(true) %}
 {# Leaf VTEP vxlan tunnel loopback source interface #}
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source

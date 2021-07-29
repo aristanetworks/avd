@@ -198,6 +198,7 @@ interface Vlan24
 | 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -232,10 +233,19 @@ interface Vlan24
 
 ### Router OSPF Areas
 
-| Process ID | Area | Filter Networks | Filter Prefix List |
-| ---------- | ---- | --------------- | ------------------ |
-| 200 | 0.0.0.2 | 1.1.1.0/24, 2.2.2.0/24 | - |
-| 200 | 0.0.0.3 | - | PL-OSPF-FILTERING |
+| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
+| ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
+| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
+| 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
+| 600 | 0.0.0.1 | normal | - | - |  |
+| 600 | 0.0.10.11 | stub | - | - | no-summary |
+| 600 | 0.0.20.20 | nssa | - | - |  |
+| 600 | 0.0.20.21 | nssa | - | - | no-summary |
+| 600 | 0.0.20.22 | nssa | - | - | nssa-only |
+| 600 | 0.0.20.23 | nssa | - | - | default-information-originate |
+| 600 | 0.0.20.24 | nssa | - | - | default-information-originate metric 50 |
+| 600 | 0.0.20.25 | nssa | - | - | no-summary, default-information-originate metric-type 1 |
+| 600 | 0.0.20.26 | nssa | - | - | no-summary, default-information-originate metric 50 metric-type 1, nssa-only |
 
 ### OSPF Interfaces
 
@@ -298,6 +308,18 @@ router ospf 400
 !
 router ospf 500
    max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
+!
+router ospf 600
+   area 0.0.10.11 stub no-summary
+   area 0.0.20.20 nssa
+   area 0.0.20.21 nssa no-summary
+   area 0.0.20.22 nssa nssa-only
+   area 0.0.20.23 nssa default-information-originate
+   area 0.0.20.24 nssa default-information-originate metric 50
+   area 0.0.20.25 nssa no-summary
+   area 0.0.20.25 nssa default-information-originate metric-type 1
+   area 0.0.20.26 nssa no-summary
+   area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
 ```
 
 # Multicast

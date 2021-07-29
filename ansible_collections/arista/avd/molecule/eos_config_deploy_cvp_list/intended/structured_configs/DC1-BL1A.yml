@@ -16,7 +16,6 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -42,15 +41,19 @@ router_bgp:
       description: DC1-BL1B
     172.31.255.40:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE1_Ethernet6
     172.31.255.42:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE2_Ethernet6
     172.31.255.44:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE3_Ethernet6
     172.31.255.46:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE4_Ethernet6
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

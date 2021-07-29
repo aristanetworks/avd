@@ -18,7 +18,6 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65110
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -39,20 +38,24 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.20.110.3:
+    172.19.110.3:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2B
     172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet4
     172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet4
     172.17.110.12:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet7
     172.17.110.14:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet7
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
@@ -199,9 +202,6 @@ vlans:
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -217,26 +217,21 @@ vlans:
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
-    ip_address: 172.20.110.2/31
+    ip_address: 172.19.110.2/31
     mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.19.110.2/31
+    ip_address: 172.20.110.2/31
     no_autostate: true
     mtu: 1500
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
-    shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.2/24
-    ip_virtual_router_address: 172.21.110.1
-    ip_attached_host_route_export:
-      distance: 19
   Vlan110:
     tenant: Tenant_A
     tags:
@@ -270,6 +265,14 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.2/24
+    ip_virtual_router_address: 172.21.110.1
+    ip_attached_host_route_export:
+      distance: 19
 port_channel_interfaces:
   Port-Channel5:
     description: MLAG_PEER_DC1-POD1-LEAF2B_Po5
@@ -520,7 +523,7 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.19.110.3
+  peer_address: 172.20.110.3
   peer_address_heartbeat:
     peer_ip: 192.168.1.9
     vrf: MGMT

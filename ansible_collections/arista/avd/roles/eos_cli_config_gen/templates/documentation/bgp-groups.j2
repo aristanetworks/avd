@@ -16,7 +16,7 @@
 {%         if bgp_groups[bgp_group].bgp_maintenance_profiles is arista.avd.defined %}
 {%             set bgp_profile = bgp_groups[bgp_group].bgp_maintenance_profiles | arista.avd.natural_sort | join('<br>') %}
 {%         else %}
-{%             set bgp_profile = '-' %}
+{%             set bgp_profile = maintenance.default_bgp_profile | arista.avd.default('Default') %}
 {%         endif %}
 | {{ bgp_group }} | {{ vrf }} | {{ neighbors }} | {{ bgp_profile }} |
 {%     endfor %}

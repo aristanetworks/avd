@@ -12,6 +12,7 @@
 ```yaml
 # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
 # The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + vrf_vni
+# The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
 
@@ -24,7 +25,7 @@ mlag_ibgp_peering_vrfs:
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rd_type:
-  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "leaf_asn" | "spine_asn" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
@@ -35,7 +36,7 @@ evpn_rd_type:
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rt_type:
-  admin_subfield: < "leaf_asn" | "spine_asn" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
+  admin_subfield: < "bgp_as" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
 
 # Optional profiles to apply on SVI interfaces
 # Each profile can support all or some of the following keys according your own needs.
