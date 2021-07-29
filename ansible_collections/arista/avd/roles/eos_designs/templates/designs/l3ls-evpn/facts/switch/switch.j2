@@ -305,7 +305,7 @@ switch:
 {% set leaf = namespace() %}
 {% set leaf.vlans = []  %}
 {% set leaf.tenants = {} %}
-{% for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
+{% for tenant in tenants | arista.avd.natural_sort if switch_filter_tenants is arista.avd.defined and ( tenant in switch_filter_tenants or "all" in switch_filter_tenants) %}
 {%     set add_vrfs = {} %}
 {%     for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
 {%         set add_svis = [] %}
