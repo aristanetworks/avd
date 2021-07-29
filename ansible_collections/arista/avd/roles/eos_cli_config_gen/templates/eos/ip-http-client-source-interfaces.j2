@@ -1,0 +1,12 @@
+{# eos - IP HTTP Client Source Interfaces#}
+{% for ip_http_client_source_interface in ip_http_client_source_interfaces | arista.avd.natural_sort %}
+!
+{%     set ip_http_client_cli = "ip http client" %}
+{%     if ip_http_client_source_interface.name is arista.avd.defined %}
+{%         set ip_http_client_cli = ip_http_client_cli ~ " local-interface " ~ ip_http_client_source_interface.name %}
+{%     endif %}
+{%     if ip_http_client_source_interface.vrf is arista.avd.defined %}
+{%         set ip_http_client_cli = ip_http_client_cli ~ " vrf " ~ ip_http_client_source_interface.vrf %}
+{%     endif %}
+{{ ip_http_client_cli }}
+{% endfor %}
