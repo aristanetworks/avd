@@ -1,4 +1,4 @@
-{% if vxlan_tunnel_interface is defined %}
+{% if vxlan_tunnel_interface is arista.avd.defined %}
 
 ## VXLAN Interface
 
@@ -6,9 +6,9 @@
 
 #### Source Interface: {{ vxlan_tunnel_interface.Vxlan1.vxlan.source_interface }}
 
-#### UDP port: {{ vxlan_tunnel_interface.Vxlan1.vxlan.udp_port }}
+#### UDP port: {{ vxlan_tunnel_interface.Vxlan1.vxlan.udp_port | arista.avd.default('4789') }}
 
-{% if vxlan_tunnel_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is defined %}
+{% if vxlan_tunnel_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
 
 #### EVPN MLAG Shared Router MAC : {{ vxlan_tunnel_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }}
 
@@ -19,11 +19,11 @@
 | VLAN | VNI | Flood List |
 | ---- | --- | ---------- |
 {%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort %}
-| {{ vlan }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].vni }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps | join('<br/>') if vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps is defined else 'N/A' }}
+| {{ vlan }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].vni }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps | join('<br/>') if vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps is arista.avd.defined else 'N/A' }} |
 {%     else %}
 | N/A | N/A | N/A |
 {%     endfor %}
-{% if vxlan_tunnel_interface.Vxlan1.vxlan.vrfs is defined and vxlan_tunnel_interface.Vxlan1.vxlan.vrfs is not none %}
+{% if vxlan_tunnel_interface.Vxlan1.vxlan.vrfs is arista.avd.defined and vxlan_tunnel_interface.Vxlan1.vxlan.vrfs is not none %}
 
 #### VRF to VNI Mappings
 
@@ -38,7 +38,7 @@
 
 | Default Flood List |
 | ---------- |
-{% if vxlan_tunnel_interface.Vxlan1.vxlan.flood_vteps is defined %}
+{% if vxlan_tunnel_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
 | {{ vxlan_tunnel_interface.Vxlan1.vxlan.flood_vteps | join('<br/>') }} |
 {% else %}
 | N/A |
