@@ -197,7 +197,7 @@ function display-release {
     case "$output" in
     raw) printf "$hash" ;;
     text) printf "\e[33m$hash\e[0m" ;; # red
-    md) printf "[\`$hash\`](https://github.com/aristanetworks/ansible-avd/$hash)" ;;
+    md) printf "[\`$hash\`](https://github.com/aristanetworks/ansible-avd/commit/$hash)" ;;
     esac
   }
 
