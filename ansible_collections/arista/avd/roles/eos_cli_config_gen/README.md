@@ -2244,6 +2244,8 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+        bgp:
+          route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:
         < area >:

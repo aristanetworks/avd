@@ -59,25 +59,26 @@
 
 ### Router OSPF Router Redistribution
 
-| Process ID | Redistribute Connected | Redistribute Connected Route-map | Redistribute Static | Redistribute Static Route-map |
-| ---------- | ---------------------- | -------------------------------- | ------------------- | ----------------------------- |
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
 {%         for process_id in router_ospf.process_ids | arista.avd.natural_sort %}
 {%             if router_ospf.process_ids[process_id].redistribute is arista.avd.defined %}
+{%                 set source_protocols = [] %}
 {%                 if router_ospf.process_ids[process_id].redistribute.connected is defined %}
-{%                     set connected = 'enabled' %}
-{%                 else %}
-{%                     set connected = 'disabled' %}
+{%                   do source_protocols.append(('connected', router_ospf.process_ids[process_id].redistribute.connected.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
-{%                 set connected_rm = router_ospf.process_ids[process_id].redistribute.connected.route_map | arista.avd.default('-') %}
 {%                 if router_ospf.process_ids[process_id].redistribute.static is defined %}
-{%                     set static = 'enabled' %}
-{%                 else %}
-{%                     set static = 'disabled' %}
+{%                   do source_protocols.append(('static', router_ospf.process_ids[process_id].redistribute.static.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
-{%                 set static_rm = router_ospf.process_ids[process_id].redistribute.static.route_map | arista.avd.default('-') %}
-| {{ process_id }} | {{ connected }}| {{ connected_rm }} | {{ static }} | {{ static_rm }} |
+{%                 if router_ospf.process_ids[process_id].redistribute.bgp is defined %}
+{%                   do source_protocols.append(('bgp', router_ospf.process_ids[process_id].redistribute.bgp.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 for source_protocol in source_protocols %}
+| {{ process_id }} | {{ source_protocol[0] }} | {{ source_protocol[1] }} |
+{%                 endfor %}
 {%             endif %}
 {%         endfor %}
+
 {%     endif %}
 {# Max-Metric #}
 {%     set has.found = false %}
