@@ -57,7 +57,7 @@ interface Management1
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| DC1_OPS | DC1 |  Enabled  |
+| DC1_OPS | DC1 | Enabled |
 
 ### SNMP ACLs
 | IP | ACL | VRF |
@@ -66,7 +66,6 @@ interface Management1
 | IPv4 | onur | default |
 | IPv6 | SNMP-MGMT | MGMT |
 | IPv6 | onur_v6 | default |
-
 
 ### SNMP Local Interfaces
 
@@ -89,15 +88,18 @@ interface Management1
 | ---- |---- | --------- | -------- | -------------------- | ------------ |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-1 | - | - | 1 |
 | 10.6.75.121 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
-| 10.6.75.99 | MGMT | - | USER-READ | auth | 3  |
-| 10.6.75.99 | MGMT | - | USER-WRITE | auth | 3  |
-| 10.6.75.100 | MGMT | - | USER-READ | priv | 3  |
+| 10.6.75.122 | MGMT | SNMP-COMMUNITY-2 | - | - | 2c |
+| 10.6.75.99 | MGMT | - | USER-READ | auth | 3 |
+| 10.6.75.99 | MGMT | - | USER-WRITE | auth | 3 |
+| 10.6.75.100 | MGMT | - | USER-READ | priv | 3 |
 
 ### SNMP Views Configuration
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
-| VW-WRITE | iso |  Included | VW-READ | iso |  Included 
+| VW-WRITE | iso | Included |
+| VW-READ | iso | Included |
+
 ### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
@@ -119,7 +121,6 @@ interface Management1
 | ---- | ----- | ------- | -------------- | ------- |
 | USER-READ | GRP-READ-ONLY | v3 | sha | aes |
 | USER-WRITE | GRP-READ-WRITE | v3 | sha | aes |
-
 
 ### SNMP Device Configuration
 
@@ -143,11 +144,12 @@ snmp-server group GRP-READ-ONLY v3 priv read v3read
 snmp-server group GRP-READ-WRITE v3 auth read v3read write v3write
 snmp-server user USER-READ GRP-READ-ONLY v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
 snmp-server user USER-WRITE GRP-READ-WRITE v3 auth sha 7a07246a6e3467909098d01619e076adb4e2fe08 priv aes 7a07246a6e3467909098d01619e076ad
-snmp-server host 10.6.75.121 vrf MGMT 1 SNMP-COMMUNITY-1
-snmp-server host 10.6.75.121 vrf MGMT 2c SNMP-COMMUNITY-2
-snmp-server host 10.6.75.99 vrf MGMT 3 auth USER-READ
-snmp-server host 10.6.75.99 vrf MGMT 3 auth USER-WRITE
-snmp-server host 10.6.75.100 vrf MGMT 3 priv USER-READ
+snmp-server host 10.6.75.121 vrf MGMT version 1 SNMP-COMMUNITY-1
+snmp-server host 10.6.75.121 vrf MGMT version 2c SNMP-COMMUNITY-2
+snmp-server host 10.6.75.122 vrf MGMT version 2c SNMP-COMMUNITY-2
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-READ
+snmp-server host 10.6.75.99 vrf MGMT version 3 auth USER-WRITE
+snmp-server host 10.6.75.100 vrf MGMT version 3 priv USER-READ
 snmp-server enable traps
 no snmp-server vrf default
 snmp-server vrf MGMT

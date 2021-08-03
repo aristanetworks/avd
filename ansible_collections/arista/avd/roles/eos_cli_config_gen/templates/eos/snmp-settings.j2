@@ -105,10 +105,14 @@ snmp-server location {{ snmp_server.location }}
 {%             if user.version is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " " ~ user.version %}
 {%             endif %}
-{%             if user.auth is arista.avd.defined and user.version is arista.avd.defined('v3') and user.auth_passphrase is arista.avd.defined %}
+{%             if user.auth is arista.avd.defined
+                  and user.version is arista.avd.defined('v3')
+                  and user.auth_passphrase is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " auth " ~ user.auth ~ " " ~ user.auth_passphrase %}
 {%             endif %}
-{%             if user.priv is arista.avd.defined and user.version is arista.avd.defined('v3') and user.priv_passphrase is arista.avd.defined %}
+{%             if user.priv is arista.avd.defined
+                  and user.version is arista.avd.defined('v3')
+                  and user.priv_passphrase is arista.avd.defined %}
 {%                 set user_cli = user_cli ~ " priv " ~ user.priv ~ " " ~ user.priv_passphrase %}
 {%             endif %}
 {{ user_cli }}
@@ -118,19 +122,20 @@ snmp-server location {{ snmp_server.location }}
 {%         for host in snmp_server.hosts %}
 {%             if host.host is arista.avd.defined %}
 {%                 set host_cli = "snmp-server host " ~ host.host %}
-{%             endif %}
-{%             if host.vrf is arista.avd.defined %}
-{%                 set host_cli = host_cli ~ " vrf " ~ host.vrf %}
-{%             endif %}
-{%             if host.users is arista.avd.defined  %}
-{%                 for user in host.users %}
-{%                     set host_cli = host_cli ~ " " ~ host.version | arista.avd.default('3') ~ " " ~ user.authentication_level ~ " " ~ user.username %}
-{{ host_cli }}
-{%                 endfor %}
-{%             else %}
-{%                 if host.community is arista.avd.defined %}
-{%                     set host_cli = host_cli ~  " " ~ host.version | arista.avd.default('2c') ~ " " ~ host.community %}
-{{ host_cli }}
+{%                 if host.vrf is arista.avd.defined %}
+{%                     set host_cli = host_cli ~ " vrf " ~ host.vrf %}
+{%                 endif %}
+{%                 if host.users is arista.avd.defined
+                      and host.version | arista.avd.default('3') | string == '3' %}
+{%                     for user in host.users %}
+{%                         if user.username is arista.avd.defined
+                              and user.authentication_level is arista.avd.defined %}
+{{ host_cli }} version 3 {{ user.authentication_level }} {{ user.username }}
+{%                         endif %}
+{%                     endfor %}
+{%                 elif host.community is arista.avd.defined
+                        and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
+{{ host_cli }} version {{ host.version | arista.avd.default('2c') }} {{ host.community }}
 {%                 endif %}
 {%             endif %}
 {%         endfor %}
