@@ -127,7 +127,12 @@
 | User | Group | Version | Authentication | Privacy |
 | ---- | ----- | ------- | -------------- | ------- |
 {%         for user in snmp_server.users %}
-| {{ user.name | default('default') }} | {{ user.group | default('-') }} | {{ user.version | default('-') }} | {{ user.auth | default('-') }} | {{ user.priv | default('-') }} |
+{%             set row_user = user.name | arista.avd.default('default') %}
+{%             set row_group = user.group | arista.avd.default('-') %}
+{%             set row_version = user.version | arista.avd.default('-') %}
+{%             set row_auth = user.auth | arista.avd.default('-') %}
+{%             set row_policy = user.priv | arista.avd.default('-') %}
+| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} |
 {%         endfor %}
 {%     endif %}
 
