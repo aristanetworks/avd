@@ -301,55 +301,57 @@ switch:
 {% endif %}
 
 
-
-{% set leaf = namespace() %}
-{% set leaf.vlans = []  %}
-{% set leaf.tenants = {} %}
-{% for tenant in tenants | arista.avd.natural_sort if switch_filter_tenants is arista.avd.defined and ( tenant in switch_filter_tenants or "all" in switch_filter_tenants) %}
-{%     set add_vrfs = {} %}
-{%     for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         set add_svis = [] %}
-{%         for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
-{%             for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags | arista.avd.natural_sort %}
-{%                 if svi_tag in switch_filter_tags or svi_tag == switch_data.group or "all" in switch_filter_tags %}
-{%                     do add_svis.append(svi) %}
-{%                     do leaf.vlans.append(svi | int) %}
+{% if switch.network_services_l2 is arista.avd.defined(true) or
+      switch.network_services_l3 is arista.avd.defined(true) %}
+{%     set leaf = namespace() %}
+{%     set leaf.vlans = []  %}
+{%     set leaf.tenants = {} %}
+{%     for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
+{%         set add_vrfs = {} %}
+{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%             set add_svis = [] %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags | arista.avd.natural_sort %}
+{%                     if svi_tag in switch_filter_tags or svi_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                         do add_svis.append(svi) %}
+{%                         do leaf.vlans.append(svi | int) %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%             endfor %}
+{# Append VRF if we found SVIs #}
+{%             if add_svis | length > 0 %}
+{%                 do add_vrfs.update({ vrf: {"svis": add_svis}}) %}
+{# Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
+{%             elif switch_always_include_vrfs_in_tenants is arista.avd.contains([tenant, 'all']) %}
+{%                 do add_vrfs.update({ vrf: {}}) %}
+{%             else %}
+{# Or Append VRF if there is a BGP neighbor defined under tenants for this switch #}
+{%                 for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
+{%                     if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
+{%                         do add_vrfs.update({ vrf: {}}) %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         set add_l2vlans = [] %}
+{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags | arista.avd.natural_sort %}
+{%                 if vlan_tag in switch_filter_tags or vlan_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                     do add_l2vlans.append(l2vlan) %}
+{%                     do leaf.vlans.append(l2vlan | int) %}
 {%                     break %}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
-{# Append VRF if we found SVIs #}
-{%         if add_svis | length > 0 %}
-{%             do add_vrfs.update({ vrf: {"svis": add_svis}}) %}
-{# Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
-{%         elif switch_always_include_vrfs_in_tenants is arista.avd.contains([tenant, 'all']) %}
-{%             do add_vrfs.update({ vrf: {}}) %}
-{%         else %}
-{# Or Append VRF if there is a BGP neighbor defined under tenants for this switch #}
-{%             for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
-{%                 if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
-{%                     do add_vrfs.update({ vrf: {}}) %}
-{%                 endif %}
-{%             endfor %}
+{%         if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
+{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans}}) %}
 {%         endif %}
 {%     endfor %}
-{%     set add_l2vlans = [] %}
-{%     for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
-{%         for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags | arista.avd.natural_sort %}
-{%             if vlan_tag in switch_filter_tags or vlan_tag == switch_data.group or "all" in switch_filter_tags %}
-{%                 do add_l2vlans.append(l2vlan) %}
-{%                 do leaf.vlans.append(l2vlan | int) %}
-{%                 break %}
-{%             endif %}
-{%         endfor %}
-{%     endfor %}
-{%     if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
-{%         do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans}}) %}
-{%     endif %}
-{% endfor %}
 
 {# switch.tenants #}
   tenants: {{ leaf.tenants }}
 
 {# switch.vlans #}
   vlans: {{ leaf.vlans | unique }}
+{% endif %}
