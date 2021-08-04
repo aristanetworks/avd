@@ -1,0 +1,26 @@
+---
+  name: Check PR title
+  on:
+    pull_request:
+      # types: [opened, reopened, ready_for_review] # Currently, this action only support these events
+      types:
+        - opened
+        - reopened
+        - edited
+        - ready_for_review
+        - synchronize
+
+  jobs:
+    hqprs:
+      runs-on: ubuntu-latest
+      steps:
+        - name: conventional-pr
+          uses: Namchee/conventional-pr@v0.4.1
+          with:
+            close: false
+            check_draft: true
+            template: |-
+              Thank you for your contribution attempt in AVD repository!
+
+              Unfortunately, this pull request doesn't meet our standards by reason we stated below. Please update your pull request to meet our standards.
+            access_token: ${{ secrets.GITHUB_TOKEN }}
