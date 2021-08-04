@@ -24,7 +24,7 @@
 | Node | Primary |
 | ---- | ------- |
 {%     set firstEntry = ntp_server.nodes.0 %}
-{%     for node in ntp_server.nodes | arista.avd.default([]) | arista.avd.natural_sort %}
+{%     for node in ntp_server.nodes | arista.avd.natural_sort %}
 {%         if node == firstEntry %}
 | {{ node }} | true |
 {%         else %}
