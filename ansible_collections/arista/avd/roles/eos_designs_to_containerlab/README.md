@@ -14,12 +14,12 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 The following default variables are defined, and can be modified as desired:
 
 - `containerlabs_configuration`: Location and name of the containerlabs configuration generated. (default: `{{ inventory_dir }}/containerlabs.yml`)
-- `ceos_version`: Version of cEOS to use for the topology (default: 4.25.2F)
+- `ceos_lab_version`: Version of cEOS to use for the topology (default: 4.25.2F)
 - `mgmt_network_v4`: Subnet for management IPs use for OOB
 
 ```yaml
 # cEOS Image to use
-ceos_version: ceos:latest
+ceos_lab_version: ceos:latest
 
 # Default management network IP
 mgmt_network_v4: 192.168.1.0/24
@@ -51,7 +51,7 @@ $ containerlab version
 
 ## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Here is a playbook example to use `arista.avd.eos_designs_to_containerlab`:
 
 ```yaml
 ---
@@ -65,7 +65,7 @@ Including an example of how to use your role (for instance, with variables passe
         name: arista.avd.eos_designs_to_containerlab
       vars:
         mgmt_network_v4: 10.73.0.0/16
-        ceos_version: arista/ceos:4.25.2F
+        ceos_lab_version: arista/ceos:4.25.2F
 ```
 
 ## License

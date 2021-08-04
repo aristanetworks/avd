@@ -21,7 +21,7 @@ topology:
 {%     for node_group in node_types[node_type]['node_groups'] | arista.avd.natural_sort %}
 {%         for node in node_types[node_type]['node_groups'][node_group]['nodes'] | arista.avd.natural_sort %}
     {{ node }}:
-      image: {{ceos_version}}
+      image: {{ceos_lab_version}}
       mgmt_ipv4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip }}
       kind: ceos
       startup-config: {{ inventory_dir }}/intended/configs/{{node}}.cfg
@@ -30,7 +30,7 @@ topology:
 {# --------------------- FLAT NODES LIST --------------------- #}
 {%     for node in node_types[node_type]['nodes'] | arista.avd.natural_sort %}
     {{ node }}:
-      image: {{ceos_version}}
+      image: {{ceos_lab_version}}
       mgmt_ipv4: {{ node_types[node_type]['nodes'][node].mgmt_ip }}
       kind: ceos
       startup-config: {{ inventory_dir }}/intended/configs/{{node}}.cfg

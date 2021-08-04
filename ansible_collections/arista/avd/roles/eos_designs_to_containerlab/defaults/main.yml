@@ -2,7 +2,7 @@
 # defaults file for avd_to_containerlab
 
 # cEOS Image to use
-ceos_version: ceos:latest
+ceos_lab_version: ceos:latest
 
 # Default management network IP
 mgmt_network_v4: 192.168.1.0/24
