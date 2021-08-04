@@ -1,9 +1,7 @@
-name: Bug Report NG
-description: File a bug report
-title: "[Bug]: "
-labels: [bug, triage]
-assignees:
-  - octocat
+name: Bug Report
+description: Report a bug impacting AVD collection
+title: "Bug Report Title"
+labels: ['type: bug', triage]
 body:
   - type: markdown
     attributes:
@@ -34,6 +32,20 @@ body:
         - eos_config_deploy_eapi
         - eos_snapshot
         - eos_validate_state
+    validations:
+      required: true
+
+  - type: dropdown
+    id: runner
+    attributes:
+      label: How do you run AVD ?
+      validations:
+        required: true
+      multiple: false
+      options:
+        - Ansible CLI (with virtual-env or native python)
+        - Ansible CLI with AVD Runner
+        - Ansible AWX
 
   - type: textarea
     id: step-to-reproduce
