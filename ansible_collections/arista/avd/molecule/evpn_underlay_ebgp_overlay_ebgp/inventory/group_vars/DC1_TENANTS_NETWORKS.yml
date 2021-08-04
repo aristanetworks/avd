@@ -68,6 +68,33 @@ tenants:
             name: Tenant_A_WEBZone_2
             tags: ['web']
             profile: GENERIC_FULL
+          122:
+            name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.22.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                #source_vrf: TEST
+          123:
+            name: Tenant_a_WEB_DHCP_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.23.1/24
+            ip_helpers:
+              1.1.1.1:
+                source_interface: lo100
+                #source_vrf: TEST
+          124:
+            name: Tenant_a_WEB_DHCP_vrf_no_source_int
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.24.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                source_vrf: TEST
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
