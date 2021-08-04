@@ -8,26 +8,17 @@
 #* and the display string of such type
 local -A TYPES
 TYPES=(
-  build     "Build system"
   Build     "Build system"
-  chore     "Chore"
   Chore     "Chore"
   ci        "CI"
-  docs      "Documentation"
   Docs      "Documentation"
-  doc       "Documentation"
   Doc       "Documentation"
-  feat      "Features"
   Feat      "Features"
-  fix       "Bug fixes"
   Fix       "Bug fixes"
-  make      "Build system"
   Make      "Build system"
-  perf      "Performance"
-  refactor  "Refactor"
+  Perf      "Performance"
   Refactor  "Refactor"
-  style     "Style"
-  test      "Testing"
+  Style     "Style"
   Test      "Testing"
 )
 
