@@ -43,4 +43,4 @@ topology:
 {# topology.vlans #}
 {# Vlan list taking parent switch vlans into consideration #}
 {# Since this switch is not using port-channels it is just the same as switch.vlans #}
-  vlans: {{ switch.vlans }}
+  vlans: {{ switch.vlans | arista.avd.default([]) }}
