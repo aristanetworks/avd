@@ -22,7 +22,7 @@ body:
     id: component
     attributes:
       label: Which component of AVD is impacted
-      multiple: true
+      multiple: false
       options:
         - eos_designs
         - eos_cli_config_gen
@@ -32,15 +32,11 @@ body:
         - eos_config_deploy_eapi
         - eos_snapshot
         - eos_validate_state
-    validations:
-      required: true
 
   - type: dropdown
     id: runner
     attributes:
       label: How do you run AVD ?
-      validations:
-        required: true
       multiple: false
       options:
         - Ansible CLI (with virtual-env or native python)
