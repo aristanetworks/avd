@@ -1547,6 +1547,8 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  synchronous:
+    level: < severity_level | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
