@@ -4,8 +4,17 @@ ntp_server:
     vrf: default
     interface: lo1
   nodes:
-    - 10.1.1.1
-    - 10.1.1.2
+    2.2.2.55: {}
+    10.1.1.1: {}
+    ie.pool.ntp.org:
+      iburst: true
+      burst: false
+      key: 1
+    10.1.1.2: {}
+      preferred: true
+    20.20.20.1:
+      key: 2
+    1.2.3.4: {}
 
 ntp:
   authenticate: true
