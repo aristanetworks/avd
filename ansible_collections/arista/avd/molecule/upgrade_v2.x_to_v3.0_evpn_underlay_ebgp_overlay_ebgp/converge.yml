@@ -1,0 +1,17 @@
+---
+- name: Converge
+  hosts: all
+  gather_facts: false
+  connection: local
+  vars:
+    root_dir: '{{playbook_dir}}'
+  tasks:
+
+    - name: convert data model from 2.x to 3.0
+      import_role:
+        name: arista.avd.upgrade_tools
+
+    - name: generate intented variables
+      delegate_to: 127.0.0.1
+      import_role:
+         name: arista.avd.eos_designs

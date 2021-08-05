@@ -1,0 +1,16 @@
+{# Leaf mlag interfaces #}
+{% if switch.mlag_interfaces is arista.avd.defined and switch.mlag_interfaces | length > 0 %}
+ethernet_interfaces:
+{%     for mlag_interface in switch.mlag_interfaces %}
+  {{ mlag_interface }}:
+    peer: {{ switch.mlag_peer }}
+    peer_interface: {{ mlag_interface }}
+    peer_type: mlag_peer
+    description: MLAG_PEER_{{ switch.mlag_peer }}_{{ mlag_interface }}
+    type: switched
+    shutdown: false
+    channel_group:
+      id: {{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
+      mode: active
+{%     endfor %}
+{% endif %}

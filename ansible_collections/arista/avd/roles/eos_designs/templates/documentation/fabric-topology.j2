@@ -1,0 +1,15 @@
+Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
+{%     if hostvars[node].type | arista.avd.default('undefined') in node_type_keys | dict2items | map(attribute='value.type') | list %}
+{%         for ethernet_interface in hostvars[node].ethernet_interfaces | arista.avd.natural_sort %}
+{%             set csv_line = [] %}
+{%             do csv_line.append(hostvars[node].type) %}
+{%             do csv_line.append(node) %}
+{%             do csv_line.append(ethernet_interface) %}
+{%             do csv_line.append(hostvars[node].ethernet_interfaces[ethernet_interface].peer_type | arista.avd.default("")) %}
+{%             do csv_line.append(hostvars[node].ethernet_interfaces[ethernet_interface].peer | arista.avd.default("")) %}
+{%             do csv_line.append(hostvars[node].ethernet_interfaces[ethernet_interface].peer_interface | arista.avd.default("")) %}
+{{ csv_line | join(",") }}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

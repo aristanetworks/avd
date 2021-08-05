@@ -1,0 +1,38 @@
+{# tenant IGMP snooping #}
+ip_igmp_snooping:
+  globally_enabled: {{ switch.igmp_snooping_enabled }}
+{% if switch.igmp_snooping_enabled is arista.avd.defined(true) %}
+  vlans:
+{# ---------------------------- #}
+{# SVI & L3VLANs services       #}
+{# ---------------------------- #}
+{%     for tenant in switch.tenants | arista.avd.natural_sort %}
+{%         for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{# Tenant VLANs w/SVIs #}
+{%             for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%                 set svi_config = tenants[tenant].vrfs[vrf].svis[svi] %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%                 if svi_config.profile is arista.avd.defined %}
+{%                     set svi_profile = svi_profiles[svi_config.profile] | arista.avd.default() %}
+{%                 endif %}
+{%                 set svi_igmp_snooping_enabled = svi_config.igmp_snooping_enabled | arista.avd.default(
+                                                   svi_profile.igmp_snooping_enabled) %}
+{%                 if svi_igmp_snooping_enabled is arista.avd.defined %}
+    {{ svi | int }}:
+      enabled: {{ svi_igmp_snooping_enabled }}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{# ---------------------------- #}
+{# L2VLANs services             #}
+{# ---------------------------- #}
+{%         for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%             set l2vlan_igmp_snooping_enabled = tenants[tenant].l2vlans[l2vlan].igmp_snooping_enabled | arista.avd.default() %}
+{%             if l2vlan_igmp_snooping_enabled is arista.avd.defined %}
+    {{ l2vlan | int }}:
+      enabled: {{ l2vlan_igmp_snooping_enabled }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

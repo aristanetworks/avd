@@ -1,5 +1,6 @@
 
 MOLECULE ?= eos_cli_config_gen
+ANSIBLE_OPTIONS ?=
 
 .PHONY: help
 help: ## Display help message
@@ -10,25 +11,31 @@ help: ## Display help message
 ###############################################################################
 
 .PHONY: run
-run: ## Execute molecule test. By default eos_cli_config_gen. Can be set with MOLECULE=
+run: ## Execute molecule TEST sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
 	cd .. && \
-	molecule test --scenario-name $(MOLECULE)
+	molecule test --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
+
+.PHONY: converge
+converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. Can be set with MOLECULE=
+	cd .. && \
+	molecule converge --scenario-name $(MOLECULE) -- $(ANSIBLE_OPTIONS)
 
 .PHONY: refresh-facts
-refresh-facts: ## Run all molecule scenario and commit changes
-	cd .. && \
-	molecule test --scenario-name eos_cli_config_gen && \
-	molecule test --scenario-name evpn_underlay_ebgp_overlay_ebgp && \
-	molecule test --scenario-name evpn_underlay_isis_overlay_ibgp && \
-	molecule test --scenario-name evpn_underlay_ospf_overlay_ebgp && \
-	molecule test --scenario-name upgrade_v1.0_to_v1.1 && \
-	cd molecule
+refresh-facts: ## Run all molecule scenarios
+	@while read -r MOLECULE_SCENARIO; do \
+		if [ -d "$$MOLECULE_SCENARIO" ]; then\
+			echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+			cd .. ; \
+			molecule converge --scenario-name $$MOLECULE_SCENARIO -- $(ANSIBLE_OPTIONS); \
+			cd ./molecule ; \
+		fi \
+	done <MOLECULE_SCENARIOS.txt
 
 .PHONY: commit-facts
 commit-facts: ## Commit updated facts for CI
 	git status --short
 	git add .
-	git commit --no-verify -m 'Update CI artifacts' ./
+	git commit --no-verify -m 'Ci(molecule): Update Molecule artifacts' ./
 
 .PHONY: test-git-status
 test-git-status: ## Run post molecule script to check git status
@@ -36,3 +43,14 @@ test-git-status: ## Run post molecule script to check git status
 
 .PHONY: sync-facts
 sync-facts: refresh-facts commit-facts ## Refresh and commit CI artifacts
+
+.PHONY: cleanup
+destroy: ## destroy all molecule scenarios
+	@for MOLECULE_SCENARIO in * ; do \
+        if [ -d "$$MOLECULE_SCENARIO" ]; then\
+        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+		cd .. ; \
+		molecule cleanup --scenario-name $$MOLECULE_SCENARIO -- $(ANSIBLE_OPTIONS); \
+		cd ./molecule ; \
+        fi \
+    done

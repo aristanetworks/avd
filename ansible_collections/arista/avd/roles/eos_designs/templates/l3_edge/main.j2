@@ -1,0 +1,9 @@
+{% if l3_edge is arista.avd.defined %}
+{%     set l3_edge_data = namespace() %}
+{%     include 'l3_edge/logic.j2' %}
+
+{%     include 'l3_edge/ethernet-interfaces.j2' %}
+
+{%     include 'l3_edge/router-bgp-neighbors.j2' %}
+
+{% endif %}

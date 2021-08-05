@@ -1,0 +1,25 @@
+{% if match_list_input is arista.avd.defined %}
+
+## Match-lists
+
+{%    if match_list_input.string is arista.avd.defined %}
+### Match-list Input String Summary
+
+{%        for match_list in match_list_input.string | arista.avd.natural_sort %}
+#### {{ match_list }}
+
+| Sequence | Match Regex |
+| -------- | ------ |
+{%            for sequence in match_list_input.string[match_list].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ match_list_input.string[match_list].sequence_numbers[sequence].match_regex }} |
+{%            endfor %}
+
+{%        endfor %}
+
+{%    endif %}
+### Match-lists Device Configuration
+
+```eos
+{% include 'eos/match-lists.j2' %}
+```
+{% endif %}

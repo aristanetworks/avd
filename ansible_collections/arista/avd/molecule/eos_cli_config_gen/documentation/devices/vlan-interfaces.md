@@ -1,89 +1,43 @@
 # vlan-interfaces
-
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
+- [Quality Of Service](#quality-of-service)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-IPv6
+#### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -95,109 +49,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-List
-
-Domain-list not defined
-
-## Name Servers
-
-No Name Servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## Management SSH
-
-Management SSH is not defined
-
 # Authentication
-
-## Local Users
-
-No Users Defined
-
-## TACACS Servers
-
-TACACS servers not configured
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not configured
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management Security not defined
-
-# Aliases
-
-Aliases not defined
 
 # Monitoring
 
-## TerminAttr Daemon
-
-TerminAttr Daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No Hardware Counters defined
-
-## VM Tracer Sessions
-
-No VM tracer session defined
-
-## Event Handler
-
-No Event Handler Defined
-
-# MLAG
-
-MLAG not defined
-
-# Spanning Tree
-
-Spanning-Tree Not Defined
-
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
@@ -205,46 +63,77 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
-
-## Ethernet Interfaces
-
-No Ethernet interface defined
-
-## Port-Channel Interfaces
-
-No Port-Channels defined
-
-## Loopback Interfaces
-
-No Loopback interfaces defined
 
 ## VLAN Interfaces
 
 ### VLAN Interfaces Summary
 
-| Interface | Description | VRF | IP Address | IP Address Virtual | IP Router Virtual Address (vARP) |
-| --------- | ----------- | --- | ---------- | ------------------ | -------------------------------- |
-| Vlan24 | SVI Description | Global Routing Table | - | 10.10.24.1/24 | - |
-| Vlan41 | SVI Description | Global Routing Table | - | 10.10.41.1/24 | - |
-| Vlan42 | SVI Description | Global Routing Table | - | 10.10.42.1/24 | - |
-| Vlan75 | SVI Description | Global Routing Table | - | 10.10.75.1/24 | - |
-| Vlan83 | SVI Description | Global Routing Table | - | 10.10.83.1/24 | - |
-| Vlan84 | SVI Description | Global Routing Table | - | 10.10.84.1/24 | - |
-| Vlan85 | SVI Description | Global Routing Table | 10.10.84.1/24 | - | - |
-| Vlan87 | SVI Description | Global Routing Table | 10.10.87.1/24 | - | - |
-| Vlan88 | SVI Description | Global Routing Table | - | 10.10.87.1/23 | - |
-| Vlan89 | SVI Description | Global Routing Table | - | 10.10.144.3/20 | - |
-| Vlan501 | SVI Description | Global Routing Table | 10.50.26.29/27 | - | - |
-| Vlan1001 | SVI Description | Tenant_A | - | 10.1.1.1/24 | - |
-| Vlan1002 | SVI Description | Tenant_A | - | 10.1.2.1/24 | - |
-| Vlan2001 | SVI Description | Tenant_B | - | 10.2.1.1/24 | - |
-| Vlan2002 | SVI Description | Tenant_B | - | 10.2.2.1/24 | - |
-| Vlan4094 | SVI Description | Global Routing Table | 169.254.252.0/31 | - | - |
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan24 |  SVI Description  |  default  |  -  |  false  |
+| Vlan41 |  SVI Description  |  default  |  -  |  false  |
+| Vlan42 |  SVI Description  |  default  |  -  |  false  |
+| Vlan75 |  SVI Description  |  default  |  -  |  false  |
+| Vlan83 |  SVI Description  |  default  |  -  |  false  |
+| Vlan84 |  SVI Description  |  default  |  -  |  -  |
+| Vlan85 |  SVI Description  |  default  |  -  |  -  |
+| Vlan86 |  SVI Description  |  default  |  -  |  -  |
+| Vlan87 |  SVI Description  |  default  |  -  |  true  |
+| Vlan88 |  SVI Description  |  default  |  -  |  true  |
+| Vlan89 |  SVI Description  |  default  |  -  |  false  |
+| Vlan90 |  SVI Description  |  default  |  -  |  -  |
+| Vlan91 |  PBR Description  |  default  |  -  |  true  |
+| Vlan110 |  PVLAN Primary with vlan mapping  |  Tenant_A  |  -  |  false  |
+| Vlan501 |  SVI Description  |  default  |  -  |  false  |
+| Vlan1001 |  SVI Description  |  Tenant_A  |  -  |  false  |
+| Vlan1002 |  SVI Description  |  Tenant_A  |  -  |  false  |
+| Vlan2001 |  SVI Description  |  Tenant_B  |  -  |  -  |
+| Vlan2002 |  SVI Description  |  Tenant_B  |  -  |  -  |
+| Vlan4094 |  SVI Description  |  default  |  9214  |  -  |
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping |
+| --------- | ------------- |
+| Vlan110 | 111-112 |
+
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan24 |  default  |  -  |  10.10.24.1/24  |  -  |  -  |  -  |  -  |
+| Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
+| Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
+| Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
+| Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
+| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254  |  -  |  -  |  -  |
+| Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
+| Vlan88 |  default  |  -  |  10.10.87.1/23  |  -  |  -  |  -  |  -  |
+| Vlan89 |  default  |  -  |  10.10.144.3/20  |  -  |  -  |  -  |  -  |
+| Vlan90 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Vlan91 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan110 |  Tenant_A  |  -  |  -  |  -  |  -  |  -  |  -  |
+| Vlan501 |  default  |  10.50.26.29/27  |  -  |  -  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  -  |  10.1.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  -  |  10.1.2.1/24  |  -  |  -  |  -  |  -  |
+| Vlan2001 |  Tenant_B  |  -  |  10.2.1.1/24  |  -  |  -  |  -  |  -  |
+| Vlan2002 |  Tenant_B  |  -  |  10.2.2.1/24  |  -  |  -  |  -  |  -  |
+| Vlan4094 |  default  |  169.254.252.0/31  |  -  |  -  |  -  |  -  |  -  |
+
+#### IPv6
+
+| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
+| Vlan24 |  default  |  1b11:3a00:22b0:6::15/64  |  1b11:3a00:22b0:6::1  |  -  |  -  |  true  |  -  |  -  |
+| Vlan75 |  default  |  1b11:3a00:22b0:1000::15/64  |  1b11:3a00:22b0:1000::1  |  -  |  -  |  true  |  -  |  -  |
+| Vlan89 |  default  |  1b11:3a00:22b0:5200::15/64  |  1b11:3a00:22b0:5200::3  |  -  |  -  |  true  |  -  |  -  |
+| Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
+| Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
+| Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
+
 
 ### VLAN Interfaces Device Configuration
 
@@ -252,6 +141,7 @@ No Loopback interfaces defined
 !
 interface Vlan24
    description SVI Description
+   no shutdown
    ip address virtual 10.10.24.1/24
    ipv6 address 1b11:3a00:22b0:6::15/64
    ipv6 nd managed-config-flag
@@ -260,17 +150,20 @@ interface Vlan24
 !
 interface Vlan41
    description SVI Description
+   no shutdown
    ip address virtual 10.10.41.1/24
-   ip helper-address 10.10.64.150  source-interface Loopback0
-   ip helper-address 10.10.96.150  source-interface Loopback0
-   ip helper-address 10.10.96.151  source-interface Loopback0
+   ip helper-address 10.10.64.150 source-interface Loopback0
+   ip helper-address 10.10.96.150 source-interface Loopback0
+   ip helper-address 10.10.96.151 source-interface Loopback0
 !
 interface Vlan42
    description SVI Description
+   no shutdown
    ip address virtual 10.10.42.1/24
 !
 interface Vlan75
    description SVI Description
+   no shutdown
    ip address virtual 10.10.75.1/24
    ipv6 address 1b11:3a00:22b0:1000::15/64
    ipv6 nd managed-config-flag
@@ -279,15 +172,23 @@ interface Vlan75
 !
 interface Vlan83
    description SVI Description
+   no shutdown
    ip address virtual 10.10.83.1/24
 !
 interface Vlan84
    description SVI Description
-   ip address virtual 10.10.84.1/24
+   ip address 10.10.84.1/24
+   ip virtual-router address 10.10.84.254
 !
 interface Vlan85
    description SVI Description
    ip address 10.10.84.1/24
+   bfd interval 500 min-rx 500 multiplier 5
+!
+interface Vlan86
+   description SVI Description
+   ip address 10.10.83.1/24
+   ip attached-host route export 10
 !
 interface Vlan87
    description SVI Description
@@ -303,23 +204,42 @@ interface Vlan88
 !
 interface Vlan89
    description SVI Description
+   no shutdown
    ip address virtual 10.10.144.3/20
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
-   multicast ipv4 source route export 
+   multicast ipv4 source route export
    pim ipv4 sparse-mode
    pim ipv4 local-interface Loopback0
    ipv6 virtual-router address 1b11:3a00:22b0:5200::3
 !
+interface Vlan90
+   description SVI Description
+   ip address 10.10.83.1/24
+   ip attached-host route export
+!
+interface Vlan91
+   description PBR Description
+   shutdown
+   service-policy type pbr input MyServicePolicy
+!
+interface Vlan110
+   description PVLAN Primary with vlan mapping
+   no shutdown
+   vrf Tenant_A
+   pvlan mapping 111-112
+!
 interface Vlan501
    description SVI Description
+   no shutdown
    ip address 10.50.26.29/27
    ipv6 address 1b11:3a00:22b0:0088::207/127
    ipv6 nd ra disabled
 !
 interface Vlan1001
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.1.1/24
    ipv6 address a1::1/64
@@ -328,6 +248,7 @@ interface Vlan1001
 !
 interface Vlan1002
    description SVI Description
+   no shutdown
    vrf Tenant_A
    ip address virtual 10.1.2.1/24
    ipv6 address a2::1/64
@@ -339,6 +260,10 @@ interface Vlan2001
    description SVI Description
    vrf Tenant_B
    ip address virtual 10.2.1.1/24
+   comment
+   Comment created from eos_cli under vlan_interfaces.Vlan2001
+   EOF
+
 !
 interface Vlan2002
    description SVI Description
@@ -353,15 +278,7 @@ interface Vlan4094
    pim ipv4 sparse-mode
 ```
 
-## VXLAN Interface
-
-No VXLAN interface defined
-
 # Routing
-
-## Virtual Router MAC Address
-
-IP Virtual Router MAC Address is not defined
 
 ## IP Routing
 
@@ -369,8 +286,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
-
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
@@ -381,110 +297,20 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default | false |
 
-## Static Routes
+# BFD
 
+## BFD Interfaces
 
-## IPv6 Static Routes
-
-
-## Router ISIS
-
-Router ISIS not defined
-
-# Router BGP
-
-Router BGP not defined
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Vlan85 | 500 | 500 | 5 |
 
 # Multicast
 
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
-
 # Filters
-
-## Community Lists
-
-Community Lists not defined
-
-## Peer Filters
-
-No Peer Filters defined
-
-## Prefix Lists
-
-Prefix lists not defined
-
-## IPv6 Prefix Lists
-
-IPv6 Prefix lists not defined
-
-## Route Maps
-
-No route maps defined
-
-## IP Extended Communities
-
-No Extended community defined
 
 # ACL
 
-## Standard Access-lists
-
-Standard Access-lists not defined
-
-## Extended Access-lists
-
-Extended Access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 Standard Access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 Extended Access-lists not defined
-
-# VRF Instances
-
-No VRFs defined
-
-# Virtual Source NAT
-
-Virtual Source NAT is not defined
-
-# Platform
-
-No Platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP Relay not defined
-
-## Custom Templates
-
-No Custom Templates Defined
+# Quality Of Service

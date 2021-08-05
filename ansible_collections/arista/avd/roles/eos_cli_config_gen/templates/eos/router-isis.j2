@@ -1,26 +1,42 @@
-{# eos - router ospf #}
-{% if router_isis is defined and router_isis is not none %}
+{# eos - Router ISIS #}
+{% if router_isis.instance is arista.avd.defined %}
+!
 router isis {{ router_isis.instance }}
+{%     if router_isis.net is arista.avd.defined %}
    net {{ router_isis.net }}
+{%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
    is-type {{ router_isis.is_type }}
+{%     endif %}
+{%     if router_isis.router_id is arista.avd.defined %}
    router-id ipv4 {{ router_isis.router_id }}
+{%     endif %}
+{%     if router_isis.log_adjacency_changes is arista.avd.defined(true) %}
    log-adjacency-changes
-   !
-{%     if router_isis.address_family is defined and router_isis.address_family is iterable %}
-{%          for address_family in router_isis.address_family %}
-   address-family {{ address_family }}
-{%             for af_default in router_isis.isis_af_defaults %}
-      {{af_default}}
-{%             endfor %}
-{%          endfor %}
+{%     elif router_isis.log_adjacency_changes is arista.avd.defined(false) %}
+   no log-adjacency-changes
 {%     endif %}
    !
-{%     if router_isis.segment_routing_mpls is defined %}
+{%     if router_isis.address_family is arista.avd.defined %}
+{%         for address_family in router_isis.address_family %}
+   address-family {{ address_family }}
+{%             if router_isis.isis_af_defaults is arista.avd.defined %}
+{%                 for af_default in router_isis.isis_af_defaults %}
+      {{ af_default }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+   !
+{%     if router_isis.segment_routing_mpls is arista.avd.defined %}
    segment-routing mpls
-{%         if router_isis.segment_routing_mpls.router_id is defined %}
+{%         if router_isis.segment_routing_mpls.router_id is arista.avd.defined %}
       router-id {{ router_isis.segment_routing_mpls.router_id }}
 {%         endif %}
+{%         if router_isis.segment_routing_mpls.enabled is arista.avd.defined(true) %}
       no shutdown
+{%         elif router_isis.segment_routing_mpls.enabled is arista.avd.defined(false) %}
+      shutdown
+{%         endif %}
 {%     endif %}
-!
 {% endif %}

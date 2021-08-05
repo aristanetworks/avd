@@ -1,89 +1,41 @@
 # router-bgp-v4-v6-evpn
-
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [Loopback Interfaces](#loopback-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
+- [Quality Of Service](#quality-of-service)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-IPv6
+#### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -95,109 +47,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-List
-
-Domain-list not defined
-
-## Name Servers
-
-No Name Servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## Management SSH
-
-Management SSH is not defined
-
 # Authentication
-
-## Local Users
-
-No Users Defined
-
-## TACACS Servers
-
-TACACS servers not configured
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not configured
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management Security not defined
-
-# Aliases
-
-Aliases not defined
 
 # Monitoring
 
-## TerminAttr Daemon
-
-TerminAttr Daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No Hardware Counters defined
-
-## VM Tracer Sessions
-
-No VM tracer session defined
-
-## Event Handler
-
-No Event Handler Defined
-
-# MLAG
-
-MLAG not defined
-
-# Spanning Tree
-
-Spanning-Tree Not Defined
-
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
@@ -205,37 +61,9 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
 
-## Ethernet Interfaces
-
-No Ethernet interface defined
-
-## Port-Channel Interfaces
-
-No Port-Channels defined
-
-## Loopback Interfaces
-
-No Loopback interfaces defined
-
-## VLAN Interfaces
-
-No VLAN interfaces defined
-
-## VXLAN Interface
-
-No VXLAN interface defined
-
 # Routing
-
-## Virtual Router MAC Address
-
-IP Virtual Router MAC Address is not defined
 
 ## IP Routing
 
@@ -243,8 +71,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
-
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
@@ -255,19 +82,9 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default | false |
 
-## Static Routes
-
-
-## IPv6 Static Routes
-
-
-## Router ISIS
-
-Router ISIS not defined
-
-# Router BGP
+## Router BGP
 
 ### Router BGP Summary
 
@@ -284,88 +101,88 @@ Router ISIS not defined
 
 ### Router BGP Peer Groups
 
-**EVPN-OVERLAY**:
+#### EVPN-OVERLAY
 
 | Settings | Value |
 | -------- | ----- |
-| remote_as | 65000 |
-| next-hop unchanged | true |
-| source | Loopback0 |
-| bfd | true |
-| ebgp multihop | 5 |
-| send community | true |
-| maximum routes | 0 (no limit) |
+| Remote AS | 65000 |
+| Next-hop unchanged | True |
+| Source | Loopback0 |
+| Bfd | true |
+| Ebgp multihop | 5 |
+| Send community | all |
+| Maximum routes | 0 (no limit) |
 
-**IPV4-UNDERLAY**:
-
-| Settings | Value |
-| -------- | ----- |
-| remote_as | 65000 |
-| send community | true |
-| maximum routes | 12000 |
-
-**IPV4-UNDERLAY-MLAG**:
+#### IPV4-UNDERLAY
 
 | Settings | Value |
 | -------- | ----- |
-| remote_as | 65100 |
-| next-hop self | true |
-| send community | true |
-| maximum routes | 12000 |
+| Remote AS | 65000 |
+| Send community | all |
+| Maximum routes | 12000 |
 
-**IPV6-UNDERLAY**:
-
-| Settings | Value |
-| -------- | ----- |
-| remote_as | 65000 |
-| send community | true |
-| maximum routes | 12000 |
-
-**IPV6-UNDERLAY-MLAG**:
+#### IPV4-UNDERLAY-MLAG
 
 | Settings | Value |
 | -------- | ----- |
-| remote_as | 65100 |
-| next-hop self | true |
-| send community | true |
-| maximum routes | 12000 |
+| Remote AS | 65100 |
+| Next-hop self | True |
+| Send community | all |
+| Maximum routes | 12000 |
+
+#### IPV6-UNDERLAY
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65000 |
+| Send community | all |
+| Maximum routes | 12000 |
+
+#### IPV6-UNDERLAY-MLAG
+
+| Settings | Value |
+| -------- | ----- |
+| Remote AS | 65100 |
+| Next-hop self | True |
+| Send community | all |
+| Maximum routes | 12000 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS |
-| -------- | ---------
-| 1.1.1.1 | 1 |
-| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY |
-| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY |
-| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY |
-| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY |
-| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY |
-| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG |
-| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG |
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 1.1.1.1 | 1 | default |
+| 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default |
+| 1b11:3a00:22b0:0088::5 | Inherited from peer group IPV6-UNDERLAY | default |
+| 10.50.2.1 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.3 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.2.5 | Inherited from peer group IPV4-UNDERLAY | default |
+| 10.50.64.11 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.12 | Inherited from peer group EVPN-OVERLAY | default |
+| 10.50.64.13 | Inherited from peer group EVPN-OVERLAY | default |
+| 169.254.252.1 | Inherited from peer group IPV4-UNDERLAY-MLAG | default |
+| fe80::b%Vl4094 | Inherited from peer group IPV6-UNDERLAY-MLAG | default |
 
 ### Router BGP EVPN Address Family
 
 #### Router BGP EVPN MAC-VRFs
 
-**VLAN Based:**
+##### VLAN Based
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 24 | 10.50.64.15:10024 |  1:10024 |  -  | -  | learned |
-| 41 | 10.50.64.15:10041 |  1:10041 |  -  | -  | learned |
-| 42 | 10.50.64.15:10042 |  1:10042 |  -  | -  | learned |
-| 65 | 10.50.64.15:10065 |  1:10065 |  -  | -  | learned |
+| 24 | 10.50.64.15:10024 | 1:10024 | - | - | learned |
+| 41 | 10.50.64.15:10041 | 1:10041 | - | - | learned |
+| 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
+| 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A | 10.50.64.15:30001 | connected  |
-| Tenant_B | 10.50.64.15:30002 | |
+| Tenant_A | 10.50.64.15:30001 | connected |
+| Tenant_B | 10.50.64.15:30002 | - |
 
 ### Router BGP Device Configuration
 
@@ -445,6 +262,8 @@ router bgp 65100
       redistribute learned
    !
    address-family evpn
+      neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH in
+      neighbor EVPN-OVERLAY route-map RM-HIDE-AS-PATH out
       neighbor EVPN-OVERLAY activate
    !
    address-family ipv4
@@ -456,7 +275,7 @@ router bgp 65100
    address-family ipv4 multicast
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
-      redistribute attached-host 
+      redistribute attached-host
    !
    address-family ipv6
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
@@ -476,94 +295,10 @@ router bgp 65100
       route-target export evpn 1:30002
 ```
 
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
-
 # Multicast
-
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
 
 # Filters
 
-## Community Lists
-
-Community Lists not defined
-
-## Peer Filters
-
-No Peer Filters defined
-
-## Prefix Lists
-
-Prefix lists not defined
-
-## IPv6 Prefix Lists
-
-IPv6 Prefix lists not defined
-
-## Route Maps
-
-No route maps defined
-
-## IP Extended Communities
-
-No Extended community defined
-
 # ACL
 
-## Standard Access-lists
-
-Standard Access-lists not defined
-
-## Extended Access-lists
-
-Extended Access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 Standard Access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 Extended Access-lists not defined
-
-# VRF Instances
-
-No VRFs defined
-
-# Virtual Source NAT
-
-Virtual Source NAT is not defined
-
-# Platform
-
-No Platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP Relay not defined
-
-## Custom Templates
-
-No Custom Templates Defined
+# Quality Of Service

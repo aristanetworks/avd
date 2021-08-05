@@ -1,89 +1,45 @@
 # router-ospf
-
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
+  - [Router OSPF](#router-ospf)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
+- [Quality Of Service](#quality-of-service)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-IPv6
+#### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -95,109 +51,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-List
-
-Domain-list not defined
-
-## Name Servers
-
-No Name Servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## Management SSH
-
-Management SSH is not defined
-
 # Authentication
-
-## Local Users
-
-No Users Defined
-
-## TACACS Servers
-
-TACACS servers not configured
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not configured
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management Security not defined
-
-# Aliases
-
-Aliases not defined
 
 # Monitoring
 
-## TerminAttr Daemon
-
-TerminAttr Daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No Hardware Counters defined
-
-## VM Tracer Sessions
-
-No VM tracer session defined
-
-## Event Handler
-
-No Event Handler Defined
-
-# MLAG
-
-MLAG not defined
-
-# Spanning Tree
-
-Spanning-Tree Not Defined
-
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
@@ -205,37 +65,107 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
 
 ## Ethernet Interfaces
 
-No Ethernet interface defined
+### Ethernet Interfaces Summary
+
+#### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+
+*Inherited from Port-Channel Interface
+
+### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   no switchport
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.1
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
 
 ## Port-Channel Interfaces
 
-No Port-Channels defined
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel12
+   no switchport
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.12
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
 
 ## Loopback Interfaces
 
-No Loopback interfaces defined
+### Loopback Interfaces Summary
+
+#### IPv4
+
+| Interface | Description | VRF | IP Address |
+| --------- | ----------- | --- | ---------- |
+| Loopback2 | - | default | - |
+
+#### IPv6
+
+| Interface | Description | VRF | IPv6 Address |
+| --------- | ----------- | --- | ------------ |
+| Loopback2 | - | default | - |
+
+
+### Loopback Interfaces Device Configuration
+
+```eos
+!
+interface Loopback2
+   ip ospf area 0.0.0.2
+```
 
 ## VLAN Interfaces
 
-No VLAN interfaces defined
+### VLAN Interfaces Summary
 
-## VXLAN Interface
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan24 |  -  |  default  |  -  |  -  |
 
-No VXLAN interface defined
+#### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
+| Vlan24 |  default  |  -  |  -  |  -  |  -  |  -  |  -  |
+
+
+### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan24
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.24
+   ip ospf cost 99
+   ip ospf authentication message-digest
+   ip ospf message-digest-key 55 md5 7 ABCDEFGHIJKLMNOPQRSTUVWXYZ
+```
 
 # Routing
-
-## Virtual Router MAC Address
-
-IP Virtual Router MAC Address is not defined
 
 ## IP Routing
 
@@ -243,8 +173,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
-
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
@@ -255,110 +184,155 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default | false |
 
-## Static Routes
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
+| 100 | 192.168.255.3 | enabled | Ethernet1 <br> Ethernet2 <br> Vlan4093 <br> | enabled | 12000 | disabled | disabled | 100 | 10 | True |
+| 101 | 1.0.1.1 | enabled | Ethernet2.101 <br> | disabled | default | disabled | enabled | - | - | - |
+| 200 | 192.168.254.1 | disabled |- | disabled | 5 | Always | enabled | - | - | - |
+| 300 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 400 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+| 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
+
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 100 | connected | - |
+| 100 | static | - |
+| 100 | bgp | - |
+| 200 | connected | rm-ospf-connected |
+| 200 | static | rm-ospf-static |
+| 200 | bgp | rm-ospf-bgp |
 
 
-## IPv6 Static Routes
+### Router OSPF Router Max-Metric
 
+| Process ID | Router-LSA | External-LSA (metric) | Include Stub | On Startup Delay | Summary-LSA (metric) |
+| ---------- | ---------- | --------------------- | ------------ | ---------------- | -------------------- |
+| 300 | enabled | disabled | disabled | disabled | disabled |
+| 400 | enabled | enabled | enabled | wait-for-bgp | enabled |
+| 500 | enabled | enabled (123) | disabled | 222 | enabled (456) |
 
-## Router ISIS
+### Router OSPF timers
 
-Router ISIS not defined
+| Process ID | LSA rx | LSA tx (initial/min/max) | SPF (initial/min/max) |
+| ---------- | ------ | ------------------------ | --------------------- |
+| 101 | 100 | 100 / 200 / 300 | 100 / 200 / 300 |
+| 200 | 100 | - | - |
 
-# Router BGP
+### Router OSPF route summary
 
-Router BGP not defined
+| Process ID | Prefix | Tag | Attribute Route Map | Not Advertised |
+|------------|--------|-----|---------------------|----------------|
+| 101 | 10.0.0.0/8 | - | - | - |
+| 101 | 20.0.0.0/8 | 10 | - | - |
+| 101 | 30.0.0.0/8 | - | RM-OSPF_SUMMARY | - |
+| 101 | 40.0.0.0/8 | - | - | True |
 
-## Router BFD
+### Router OSPF Areas
 
-### Router BFD Multihop Summary
+| Process ID | Area | Area Type | Filter Networks | Filter Prefix List | Additional Options |
+| ---------- | ---- | --------- | --------------- | ------------------ | ------------------ |
+| 200 | 0.0.0.2 | normal | 1.1.1.0/24, 2.2.2.0/24 | - |  |
+| 200 | 0.0.0.3 | normal | - | PL-OSPF-FILTERING |  |
+| 600 | 0.0.0.1 | normal | - | - |  |
+| 600 | 0.0.10.11 | stub | - | - | no-summary |
+| 600 | 0.0.20.20 | nssa | - | - |  |
+| 600 | 0.0.20.21 | nssa | - | - | no-summary |
+| 600 | 0.0.20.22 | nssa | - | - | nssa-only |
+| 600 | 0.0.20.23 | nssa | - | - | default-information-originate |
+| 600 | 0.0.20.24 | nssa | - | - | default-information-originate metric 50 |
+| 600 | 0.0.20.25 | nssa | - | - | no-summary, default-information-originate metric-type 1 |
+| 600 | 0.0.20.26 | nssa | - | - | no-summary, default-information-originate metric 50 metric-type 1, nssa-only |
 
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
+### OSPF Interfaces
 
-*No device configuration required - default values
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Ethernet1 | 0.0.0.1 | 99 | True |
+| Port-Channel12 | 0.0.0.12 | 99 | True |
+| Vlan24 | 0.0.0.24 | 99 | True |
+| Loopback2 | 0.0.0.2 | - | - |
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 100
+   router-id 192.168.255.3
+   passive-interface default
+   no passive-interface Ethernet1
+   no passive-interface Ethernet2
+   no passive-interface Vlan4093
+   bfd default
+   max-lsa 12000
+   default-information originate
+   redistribute static
+   redistribute connected
+   redistribute bgp
+   auto-cost reference-bandwidth 100
+   maximum-paths 10
+   mpls ldp sync default
+!
+router ospf 101 vrf CUSTOMER01
+   log-adjacency-changes detail
+   router-id 1.0.1.1
+   passive-interface default
+   no passive-interface Ethernet2.101
+   timers lsa rx min interval 100
+   timers lsa tx delay initial 100 200 300
+   timers spf delay initial 100 200 300
+   summary-address 10.0.0.0/8
+   summary-address 20.0.0.0/8 tag 10
+   summary-address 30.0.0.0/8 attribute-map RM-OSPF_SUMMARY
+   summary-address 40.0.0.0/8 not-advertise
+!
+router ospf 200 vrf ospf_zone
+   log-adjacency-changes detail
+   router-id 192.168.254.1
+   area 0.0.0.2 filter 1.1.1.0/24
+   area 0.0.0.2 filter 2.2.2.0/24
+   area 0.0.0.3 filter prefix-list PL-OSPF-FILTERING
+   max-lsa 5
+   timers lsa rx min interval 100
+   default-information originate always
+   redistribute static route-map rm-ospf-static
+   redistribute connected route-map rm-ospf-connected
+   redistribute bgp route-map rm-ospf-bgp
+!
+router ospf 300
+   max-metric router-lsa
+!
+router ospf 400
+   max-metric router-lsa external-lsa include-stub on-startup wait-for-bgp summary-lsa
+!
+router ospf 500
+   max-metric router-lsa external-lsa 123 on-startup 222 summary-lsa 456
+!
+router ospf 600
+   area 0.0.10.11 stub no-summary
+   area 0.0.20.20 nssa
+   area 0.0.20.21 nssa no-summary
+   area 0.0.20.22 nssa nssa-only
+   area 0.0.20.23 nssa default-information-originate
+   area 0.0.20.24 nssa default-information-originate metric 50
+   area 0.0.20.25 nssa no-summary
+   area 0.0.20.25 nssa default-information-originate metric-type 1
+   area 0.0.20.26 nssa no-summary
+   area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+```
 
 # Multicast
 
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
-
 # Filters
-
-## Community Lists
-
-Community Lists not defined
-
-## Peer Filters
-
-No Peer Filters defined
-
-## Prefix Lists
-
-Prefix lists not defined
-
-## IPv6 Prefix Lists
-
-IPv6 Prefix lists not defined
-
-## Route Maps
-
-No route maps defined
-
-## IP Extended Communities
-
-No Extended community defined
 
 # ACL
 
-## Standard Access-lists
-
-Standard Access-lists not defined
-
-## Extended Access-lists
-
-Extended Access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 Standard Access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 Extended Access-lists not defined
-
-# VRF Instances
-
-No VRFs defined
-
-# Virtual Source NAT
-
-Virtual Source NAT is not defined
-
-# Platform
-
-No Platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP Relay not defined
-
-## Custom Templates
-
-No Custom Templates Defined
+# Quality Of Service

@@ -12,3 +12,9 @@ file_extension: 'conf'
 
 # Prefix to add to configlets name on Cloudvision
 configlets_cvp_prefix: ''
+
+# CVP Deployment methodology, whether to exectute or stage tasks
+execute_tasks: false
+
+# Version of the Cloudvision collection to use for upload
+cv_collection: v1

@@ -104,6 +104,8 @@ venv.bak/
 .mypy_cache/
 
 .vscode/*
+*/.vscode/*
+**/.vscode/*
 
 # Installation path for CVP example
 examples/evpn-l3ls-cvp-deployment/collections
@@ -120,3 +122,8 @@ ansible_collections/arista/avd/docs/*.rst
 
 # Molecule AVD build folders
 ansible_collections/arista/avd/molecule/*/config_backup
+
+# Ansible test folder
+ansible_collections/arista/avd/tests/
+# Ignore TAR GZ files
+*.tar.gz

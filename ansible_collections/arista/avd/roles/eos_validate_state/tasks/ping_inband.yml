@@ -1,0 +1,16 @@
+---
+
+- name: Gather fabric reachability from Management Interface {{ management_interface.key }}
+  eos_command:
+    commands: "ping {{ loopback0_address | ansible.netcommon.ipaddr('address') }} repeat 1 interface {{ management_interface.key }}"
+  loop: "{{ loopback0_reachability.loopback0_range }}"
+  loop_control:
+    loop_var: loopback0_address
+  ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
+  when: |
+    (loopback0_reachability.loopback0_range is arista.avd.defined) and
+    (management_interface.value.type is arista.avd.defined('inband'))
+  register: inb_mgmt_loopback0_reachability_state
+  tags:
+    - loopback0_reachability
+    - optional

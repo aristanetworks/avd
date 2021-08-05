@@ -1,9 +1,7 @@
 name: Test Installation
 on:
-  push:
-  pull_request:
   schedule:
-    - cron:  '0 6 * * *'
+    - cron: '0 6 * * *'
 jobs:
   'setup':
     name: 'One liner installation'

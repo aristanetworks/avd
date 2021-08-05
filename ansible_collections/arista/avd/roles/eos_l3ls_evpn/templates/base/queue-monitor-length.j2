@@ -1,9 +1,0 @@
-{% if queue_monitor_length is defined %}
-  enabled: true
-{%    if queue_monitor_length.notifying is defined %}
-  notifying: {{ queue_monitor_length.notifying}}
-{%    endif %}
-{%    if queue_monitor_length.log is defined %}
-  log: {{ queue_monitor_length.log }}
-{%    endif %}
-{% endif %}

@@ -1,0 +1,20 @@
+{# platform-speed-groups #}
+{% if platform_speed_groups is arista.avd.defined %}
+{# Using tmp variable to be able to sort final output and handle duplicate assignments gracefully #}
+{%     set tmp_speed_groups = {} %}
+{%     if switch.platform is arista.avd.defined %}
+{%         for speed in platform_speed_groups[switch.platform] | arista.avd.natural_sort %}
+{%             for speed_group in platform_speed_groups[switch.platform][speed] | arista.avd.natural_sort %}
+{%                 do tmp_speed_groups.update({speed_group: speed}) %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
+{%     if tmp_speed_groups | arista.avd.natural_sort | length > 0 %}
+hardware:
+  speed_groups:
+{%         for speed_group in tmp_speed_groups | arista.avd.natural_sort %}
+    {{ speed_group }}:
+      serdes: {{ tmp_speed_groups[speed_group] }}
+{%         endfor %}
+{%     endif %}
+{% endif %}

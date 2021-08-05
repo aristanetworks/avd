@@ -1,8 +1,0 @@
-{% if queue_monitor_streaming is defined %}
-{%    if queue_monitor_streaming.enable is defined and queue_monitor_streaming.enable == true %}
-  enable: {{ queue_monitor_streaming.enable }}
-{%    endif %}
-{%    if queue_monitor_streaming.vrf is defined %}
-  vrf: {{ queue_monitor_streaming.vrf }}
-{%    endif %}
-{% endif %}

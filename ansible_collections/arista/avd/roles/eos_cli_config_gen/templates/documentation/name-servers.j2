@@ -1,4 +1,7 @@
 {% if name_server is defined and name_server is not none %}
+
+## Name Servers
+
 ### Name Servers Summary
 
 | Name Server | Source VRF |
@@ -12,6 +15,4 @@
 ```eos
 {% include 'eos/name-servers.j2' %}
 ```
-{% else %}
-No Name Servers defined
 {% endif %}

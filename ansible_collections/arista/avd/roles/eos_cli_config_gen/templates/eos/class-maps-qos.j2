@@ -1,0 +1,20 @@
+{# QOS class-map #}
+{% for class_map in class_maps.qos | arista.avd.natural_sort %}
+!
+class-map type qos match-any {{ class_map }}
+{%     if class_maps.qos[class_map].vlan is arista.avd.defined %}
+   match vlan {{ class_maps.qos[class_map].vlan }}
+{%     elif class_maps.qos[class_map].cos is arista.avd.defined %}
+   match cos {{ class_maps.qos[class_map].cos }}
+{%     elif class_maps.qos[class_map].ip.access_group is arista.avd.defined %}
+   match ip access-group {{ class_maps.qos[class_map].ip.access_group }}
+{%     endif %}
+{% endfor %}
+{# PBR class-map #}
+{% for class_map in class_maps.pbr | arista.avd.natural_sort %}
+!
+class-map type pbr match-any {{ class_map }}
+{%     if class_maps.pbr[class_map].ip.access_group is arista.avd.defined %}
+   match ip access-group {{ class_maps.pbr[class_map].ip.access_group }}
+{%     endif %}
+{% endfor %}

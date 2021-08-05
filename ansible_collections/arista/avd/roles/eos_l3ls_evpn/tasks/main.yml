@@ -1,41 +1,15 @@
 ---
 
-- name: Generate device configuration in structured format (yaml).
-  template:
-    src: "evpn-fabric-{{ type }}-yml.j2"
-    dest: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
+- name: Deprecation warning!
   delegate_to: localhost
-  check_mode: no
-  tags: [build, provision]
-
-- name: Include device structured configuration, that was previously generated.
-  include_vars: '{{ root_dir }}/intended/structured_configs//{{ inventory_hostname }}.yml'
-  delegate_to: localhost
-  tags: [build, provision]
-
-- name: Generate EVPN fabric documentation in Markdown Format.
-  template:
-    src: documentation/dc-fabric-documentation.j2
-    dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}.md'
-  delegate_to: localhost
+  debug:
+    msg:
+      - "!!! Deprecation Warning - Please note this role has been replaced with arista.avd.eos_designs role."
+      - "!!! Deprecation Warning - Please update your playbook accordingly."
+      - "!!! Deprecation Warning - This role will be removed in version 3.0.0."
+      - "!!! Deprecation Warning - Importing role: arista.avd.eos_designs ..."
   run_once: true
-  check_mode: no
-  tags: [build, provision]
 
-- name: Generate Leaf and Spine Point-To-Point Links summary in csv format.
-  template:
-    src: documentation/dc-fabric-p2p-links.j2
-    dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-p2p-links.csv'
-  delegate_to: localhost
-  run_once: true
-  check_mode: no
-  tags: [build, provision]
-
-- name: Generate Fabric Topology in csv format.
-  template:
-    src: documentation/dc-fabric-topology.j2
-    dest: '{{ root_dir }}/documentation/{{ fabric_name }}/{{ fabric_name }}-topology.csv'
-  delegate_to: localhost
-  run_once: true
-  check_mode: no
-  tags: [build, provision]
+- name: import new role eos_designs
+  import_role:
+    name: arista.avd.eos_designs

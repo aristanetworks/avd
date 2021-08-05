@@ -1,5 +1,8 @@
 {# eos - event-handler #}
 {% if event_handlers is defined and event_handlers is iterable %}
+
+## Event Handler
+
 ### Event Handler Summary
 
 | Handler | Action Type | Action | Trigger |
@@ -13,6 +16,4 @@
 ```eos
 {% include 'eos/event-handler.j2' %}
 ```
-{% else %}
-No Event Handler Defined
 {% endif %}

@@ -1,0 +1,7 @@
+{# platform #}
+{% if switch.platform_settings.lag_hardware_only is arista.avd.defined %}
+platform:
+  sand:
+    lag:
+      hardware_only: {{ switch.platform_settings.lag_hardware_only }}
+{% endif %}

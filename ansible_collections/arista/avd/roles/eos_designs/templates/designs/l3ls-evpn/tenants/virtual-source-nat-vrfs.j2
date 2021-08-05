@@ -1,0 +1,10 @@
+{# Tenant virtual source NAT vrfs #}
+virtual_source_nat_vrfs:
+{% for tenant in switch.tenants | arista.avd.natural_sort %}
+{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%         if tenants[tenant].vrfs[vrf].vtep_diagnostic is defined %}
+  {{ vrf }}:
+    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch.id + switch.loopback_ipv4_offset) }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

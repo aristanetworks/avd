@@ -1,30 +1,28 @@
-{% if router_l2_vpn is defined and router_l2_vpn is not none %}
-### Router L2 VPN
-{%    if '7020' in switch_platform or '7160' in switch_platform %}
-{%    else %}
-{%       if router_l2_vpn.nd_rs_flooding_disabled is defined and router_l2_vpn.nd_rs_flooding_disabled == true %}
+{% if router_l2_vpn is arista.avd.defined %}
+
+# Router L2 VPN
+
+## Router L2 VPN Summary
+{%     if router_l2_vpn.nd_rs_flooding_disabled is arista.avd.defined(true) %}
 
    Neighbor discovery router solicitation VTEP flooding is disabled.
-{%       endif %}
-{%       if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is defined and router_l2_vpn.virtual_router_nd_ra_flooding_disabled == true %}
+{%     endif %}
+{%     if router_l2_vpn.virtual_router_nd_ra_flooding_disabled is arista.avd.defined(true) %}
 
    Virtual router neighbor advertisement VTEP flooding is disabled.
-{%       endif %}
-{%    endif %}
-{%       if router_l2_vpn.arp_selective_install is defined and router_l2_vpn.arp_selective_install == true %}
+{%     endif %}
+{%     if router_l2_vpn.arp_selective_install is arista.avd.defined(true) %}
 
    Selective ARP is enabled.
-{%       endif %}
-{%       if router_l2_vpn.arp_proxy.prefix_list is defined and router_l2_vpn.arp_proxy.prefix_list is not none %}
+{%     endif %}
+{%     if router_l2_vpn.arp_proxy.prefix_list is arista.avd.defined %}
 
-   VLXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}.
-{%       endif %}
+   VXLAN ARP Proxying is disabled for IPv4 addresses defined in the prefix-list {{ router_l2_vpn.arp_proxy.prefix_list }}.
+{%     endif %}
 
-### Router L2 VPN Device Configuration
+## Router L2 VPN Device Configuration
 
 ```eos
 {% include 'eos/router-l2-vpn.j2' %}
 ```
-{% else %}
-Router L2 VPN not defined
 {% endif %}

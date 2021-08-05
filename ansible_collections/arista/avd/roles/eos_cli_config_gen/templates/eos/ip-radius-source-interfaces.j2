@@ -1,0 +1,12 @@
+{# eos - IP radius Source interfaces#}
+{% for ip_radius_source_interface in ip_radius_source_interfaces | arista.avd.natural_sort %}
+!
+{%     set ip_radius_cli = "ip radius" %}
+{%     if ip_radius_source_interface.vrf is arista.avd.defined %}
+{%         set ip_radius_cli = ip_radius_cli ~ " vrf " ~ ip_radius_source_interface.vrf %}
+{%     endif %}
+{%     if ip_radius_source_interface.name is arista.avd.defined %}
+{%         set ip_radius_cli = ip_radius_cli ~ " source-interface " ~ ip_radius_source_interface.name %}
+{%     endif %}
+{{ ip_radius_cli }}
+{% endfor %}

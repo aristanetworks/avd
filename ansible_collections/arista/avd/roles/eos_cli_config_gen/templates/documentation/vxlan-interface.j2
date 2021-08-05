@@ -1,23 +1,25 @@
 {% if vxlan_tunnel_interface is defined %}
+
+## VXLAN Interface
+
 ### VXLAN Interface Summary
 
-**Source Interface:** {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
-**UDP port:** {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+#### Source Interface: {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
 
-**VLAN to VNI Mappings:**
+#### UDP port: {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+
+#### VLAN to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
-{%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans is iterable %}
-{%          for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
+{%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
 | {{ vlan }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans[vlan].vni }} |
-{%          endfor %}
-{% else %}
+{%     else %}
 | N/A | N/A |
-{%      endif %}
+{%     endfor %}
 {% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
 
-**VRF to VNI Mappings:**
+#### VRF to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
@@ -31,6 +33,4 @@
 ```eos
 {% include 'eos/vxlan-interface.j2' %}
 ```
-{% else %}
-No VXLAN interface defined
 {% endif %}

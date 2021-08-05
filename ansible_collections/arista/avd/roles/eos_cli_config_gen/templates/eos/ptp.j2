@@ -1,0 +1,40 @@
+{# eos - PTP #}
+{% if ptp is arista.avd.defined %}
+!
+{%     if ptp.clock_identity is arista.avd.defined %}
+ptp clock-identity {{ ptp.clock_identity }}
+{%     endif %}
+{%     if ptp.source.ip is arista.avd.defined %}
+ptp source ip {{ ptp.source.ip }}
+{%     endif %}
+{%     if ptp.priority1 is arista.avd.defined %}
+ptp priority1 {{ ptp.priority1 }}
+{%     endif %}
+{%     if ptp.priority2 is arista.avd.defined %}
+ptp priority2 {{ ptp.priority2 }}
+{%     endif %}
+{%     if ptp.ttl is arista.avd.defined %}
+ptp ttl {{ ptp.ttl }}
+{%     endif %}
+{%     if ptp.domain is arista.avd.defined %}
+ptp domain {{ ptp.domain }}
+{%     endif %}
+{%     if ptp.message_type.general.dscp is arista.avd.defined %}
+ptp message-type general dscp {{ ptp.message_type.general.dscp }} default
+{%     endif %}
+{%     if ptp.message_type.event.dscp is arista.avd.defined %}
+ptp message-type event dscp {{ ptp.message_type.event.dscp }} default
+{%     endif %}
+{%     if ptp.mode is arista.avd.defined %}
+ptp mode {{ ptp.mode }}
+{%     endif %}
+{%     if ptp.forward_unicast is arista.avd.defined(true) %}
+ptp forward-unicast
+{%     endif %}
+{%     if ptp.monitor.threshold.offset_from_master is arista.avd.defined %}
+ptp monitor threshold offset-from-master {{ ptp.monitor.threshold.offset_from_master }}
+{%     endif %}
+{%     if ptp.monitor.threshold.mean_path_delay is arista.avd.defined %}
+ptp monitor threshold mean-path-delay {{ ptp.monitor.threshold.mean_path_delay }}
+{%     endif %}
+{% endif %}

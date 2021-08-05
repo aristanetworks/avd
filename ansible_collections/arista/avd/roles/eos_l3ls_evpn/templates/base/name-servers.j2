@@ -1,9 +1,0 @@
-{# name servers #}
-{% if name_servers is defined and name_servers is not none %}
-  source:
-    vrf: {{ mgmt_interface_vrf }}
-  nodes:
-{%     for name_server in name_servers %}
-    - {{ name_server }}
-{%     endfor %}
-{% endif %}

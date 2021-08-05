@@ -1,89 +1,44 @@
 # port-channel-interfaces
-
 # Table of Contents
+<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [DNS Domain](#dns-domain)
-  - [Name Servers](#name-servers)
-  - [Domain Lookup](#domain-lookup)
-  - [NTP](#ntp)
-  - [Management SSH](#management-ssh)
 - [Authentication](#authentication)
-  - [Local Users](#local-users)
-  - [TACACS Servers](#tacacs-servers)
-  - [IP TACACS Source Interfaces](#ip-tacacs-source-interfaces)
-  - [RADIUS Servers](#radius-servers)
-  - [AAA Server Groups](#aaa-server-groups)
-  - [AAA Authentication](#aaa-authentication)
-  - [AAA Authorization](#aaa-authorization)
-  - [AAA Accounting](#aaa-accounting)
-- [Management Security](#management-security)
-- [Aliases](#aliases)
 - [Monitoring](#monitoring)
-  - [TerminAttr Daemon](#terminattr-daemon)
-  - [Logging](#logging)
-  - [SFlow](#sflow)
-  - [Hardware Counters](#hardware-counters)
-  - [VM Tracer Sessions](#vm-tracer-sessions)
-  - [Event Handler](#event-handler)
-- [MLAG](#mlag)
-- [Spanning Tree](#spanning-tree)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
-- [VLANs](#vlans)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Port-Channel Interfaces](#port-channel-interfaces)
-  - [Loopback Interfaces](#loopback-interfaces)
-  - [VLAN Interfaces](#vlan-interfaces)
-  - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
-  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Static Routes](#static-routes)
-  - [Router ISIS](#router-isis)
-  - [Router BGP](#router-bgp)
-  - [Router BFD](#router-bfd)
+- [BFD](#bfd)
+  - [BFD Interfaces](#bfd-interfaces)
 - [Multicast](#multicast)
-  - [IP IGMP Snooping](#ip-igmp-snooping)
-  - [Router Multicast](#router-multicast)
-  - [Router PIM Sparse Mode](#router-pim-sparse-mode)
 - [Filters](#filters)
-  - [Community Lists](#community-lists)
-  - [Peer Filters](#peer-filters)
-  - [Prefix Lists](#prefix-lists)
-  - [IPv6 Prefix Lists](#ipv6-prefix-lists)
-  - [Route Maps](#route-maps)
-  - [IP Extended Communities](#ip-extended-communities)
 - [ACL](#acl)
-  - [Standard Access-lists](#standard-access-lists)
-  - [Extended Access-lists](#extended-access-lists)
-  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
-  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
-- [VRF Instances](#vrf-instances)
-- [Virtual Source NAT](#virtual-source-nat)
-- [Platform](#platform)
-- [Router L2 VPN](#router-l2-vpn)
-- [IP DHCP Relay](#ip-dhcp-relay)
+- [Quality Of Service](#quality-of-service)
 
+<!-- toc -->
 # Management
 
 ## Management Interfaces
 
 ### Management Interfaces Summary
 
-IPv4
+#### IPv4
 
-| Management Interface | description | VRF | IP Address | Gateway |
-| -------------------- | ----------- | --- | ---------- | ------- |
-| Management1 | oob_management | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management Interface | description | Type | VRF | IP Address | Gateway |
+| -------------------- | ----------- | ---- | --- | ---------- | ------- |
+| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
-IPv6
+#### IPv6
 
-| Management Interface | description | VRF | IPv6 Address | IPv6 Gateway |
-| -------------------- | ----------- | --- | ------------ | ------------ |
-| Management1 | oob_management | MGMT | not configured  | not configured |
+| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| -------------------- | ----------- | ---- | --- | ------------ | ------------ |
+| Management1 | oob_management | oob | MGMT | -  | - |
 
 ### Management Interfaces Device Configuration
 
@@ -95,109 +50,13 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## DNS Domain
-
-DNS domain not defined
-
-## Domain-List
-
-Domain-list not defined
-
-## Name Servers
-
-No Name Servers defined
-
-## Domain Lookup
-
-DNS domain lookup not defined
-
-## NTP
-
-No NTP servers defined
-
-## Management SSH
-
-Management SSH is not defined
-
 # Authentication
-
-## Local Users
-
-No Users Defined
-
-## TACACS Servers
-
-TACACS servers not configured
-
-## IP TACACS Source Interfaces
-
-IP TACACS source interfaces not defined
-
-## RADIUS Servers
-
-RADIUS servers not configured
-
-## AAA Server Groups
-
-AAA server groups not defined
-
-## AAA Authentication
-
-AAA authentication not defined
-
-## AAA Authorization
-
-AAA authorization not defined
-
-## AAA Accounting
-
-AAA accounting not defined
-
-# Management Security
-
-Management Security not defined
-
-# Aliases
-
-Aliases not defined
 
 # Monitoring
 
-## TerminAttr Daemon
-
-TerminAttr Daemon not defined
-
-## Logging
-
-No logging settings defined
-
-## SFlow
-
-No sFlow defined
-
-## Hardware Counters
-
-No Hardware Counters defined
-
-## VM Tracer Sessions
-
-No VM tracer session defined
-
-## Event Handler
-
-No Event Handler Defined
-
-# MLAG
-
-MLAG not defined
-
-# Spanning Tree
-
-Spanning-Tree Not Defined
-
 # Internal VLAN Allocation Policy
 
-### Internal VLAN Allocation Policy Summary
+## Internal VLAN Allocation Policy Summary
 
 **Default Allocation Policy**
 
@@ -205,23 +64,32 @@ Spanning-Tree Not Defined
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 4094 |
 
-# VLANs
-
-No VLANs defined
-
 # Interfaces
 
 ## Ethernet Interfaces
 
 ### Ethernet Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (Trunk) | Trunk Group | VRF | IP Address | Channel-Group ID | Channel-Group Type |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --- | ---------- | ---------------- | ------------------ |
-| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *1500 | *switched | *trunk | *2-4094 | *LEAF_PEER_L3<br> *MLAG | - | - | 3 | active |
-| Ethernet5 | DC1-AGG01_Ethernet1 | *1500 | *switched | *trunk | *110,201 | - | - | - | 5 | active |
-| Ethernet50 | SRV-POD03_Eth1 | *1500 | *switched | *trunk | *110,201 | - | - | - | 5 | active |
+#### L2
 
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet5 | DC1-AGG01_Ethernet1 | *trunk | *110,201 | *- | *- | 5 |
+| Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 |
+| Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
+| Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
+| Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
+| Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
+| Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
+
+*Inherited from Port-Channel Interface
+
+#### IPv4
+
+| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -239,6 +107,34 @@ interface Ethernet4
 interface Ethernet5
    description DC1-AGG01_Ethernet1
    channel-group 5 mode active
+   transceiver media override 100gbase-ar4
+!
+interface Ethernet8
+   description MLAG_PEER_DC1-LEAF1B_Ethernet8
+   channel-group 8 mode active
+!
+interface Ethernet10/1
+   description LAG Member
+   channel-group 101 mode active
+!
+interface Ethernet10/2
+   description LAG Member
+   channel-group 102 mode active
+!
+interface Ethernet10/3
+   description LAG Member
+   channel-group 103 mode active
+!
+interface Ethernet15
+   description DC1-AGG03_Ethernet1
+   channel-group 15 mode active
+   lacp timer fast
+   lacp timer multiplier 30
+!
+interface Ethernet16
+   description DC1-AGG04_Ethernet1
+   channel-group 16 mode active
+   lacp timer normal
 !
 interface Ethernet50
    description SRV-POD03_Eth1
@@ -249,11 +145,44 @@ interface Ethernet50
 
 ### Port-Channel Interfaces Summary
 
-| Interface | Description | MTU | Type | Mode | Allowed VLANs (trunk) | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI | VRF | IP Address | IPv6 Address |
-| --------- | ----------- | --- | ---- | ---- | --------------------- | ----------- | --------------------- ! ------------------ | ------- | -------- | --- | ---------- | ------------ |
-| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | 1500 | switched | trunk | 2-4094 | LEAF_PEER_L3<br> MLAG | - | - | - | - | - | - | - |
-| Port-Channel5 | DC1_L2LEAF1_Po1 | 1500 | switched | trunk | 110,201 | - | - | - | 5 | - | - | - | - |
-| Port-Channel50 | SRV-POD03_PortChanne1 | 1500 | switched | trunk | 1-4000 | - | - | - | - | 0000:0000:0303:0202:0101 | - | - | - |
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+| Port-Channel3 | MLAG_PEER_DC1-LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
+| Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
+| Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
+| Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
+| Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
+| Port-Channel50 | SRV-POD03_PortChanne1 | switched | trunk | 1-4000 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
+| Port-Channel51 | ipv6_prefix | switched | trunk | 1-500 | - | - | - | - | - | - |
+| Port-Channel100.101 | IFL for TENANT01 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel100.102 | IFL for TENANT02 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
+| Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
+
+#### Private VLAN
+
+| Interface | PVLAN Mapping | Secondary Trunk |
+| --------- | ------------- | ----------------|
+| Port-Channel101 | 111 | - |
+| Port-Channel103 | - | True |
+
+#### VLAN Translations
+
+| Interface | From VLAN ID(s) | To VLAN ID | Direction |
+| --------- | --------------- | -----------| --------- |
+| Port-Channel102 | 111-112 | 110 | out
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
+| Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -261,6 +190,7 @@ interface Ethernet50
 !
 interface Port-Channel3
    description MLAG_PEER_DC1-LEAF1B_Po3
+   switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
@@ -268,39 +198,126 @@ interface Port-Channel3
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
+   switchport
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 5
+   storm-control broadcast level 1
+   storm-control multicast level 1
+   storm-control unknown-unicast level 1
+   comment
+   Comment created from eos_cli under port_channel_interfaces.Port-Channel5
+   EOF
+
+!
+interface Port-Channel8
+   description to Dev02 Port-channel 8
+   no switchport
+!
+interface Port-Channel8.101
+   description to Dev02 Port-Channel8.101 - VRF-C1
+   encapsulation dot1q vlan 101
+   ip address 10.1.2.3/31
+!
+interface Port-Channel9
+   no switchport
+   ip address 10.9.2.3/31
+   bfd interval 500 min-rx 500 multiplier 5
+!
+interface Port-Channel10
+   description SRV01_bond0
+   switchport
+   switchport trunk allowed vlan 2-3000
+   switchport mode trunk
+   evpn ethernet-segment
+      identifier 0000:0000:0404:0404:0303
+      route-target import 04:04:03:03:02:02
+!
+interface Port-Channel12
+   description interface_in_mode_access_with_voice
+   switchport
+   switchport trunk native vlan 100
+   switchport phone vlan 70
+   switchport phone trunk untagged
+!
+interface Port-Channel15
+   description DC1_L2LEAF3_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 15
+!
+interface Port-Channel16
+   description DC1_L2LEAF4_Po1
+   switchport
+   switchport trunk allowed vlan 110,201
+   switchport mode trunk
+   mlag 16
+!
+interface Port-Channel20
+   description Po_in_mode_access_accepting_tagged_LACP_frames
+   switchport
+   switchport access vlan 200
+   l2-protocol encapsulation dot1q vlan 200
 !
 interface Port-Channel50
    description SRV-POD03_PortChanne1
+   switchport
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
-   !
-    evpn ethernet-segment
-       identifier 0000:0000:0303:0202:0101
-       route-target import 03:03:02:02:01:01
-   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
+!
+interface Port-Channel51
+   description ipv6_prefix
+   switchport
+   switchport trunk allowed vlan 1-500
+   switchport mode trunk
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
+!
+interface Port-Channel100
+   logging event link-status
+   no switchport
+!
+interface Port-Channel100.101
+   description IFL for TENANT01
+   logging event link-status
+   mtu 1500
+   switchport
+   ip address 10.1.1.3/31
+!
+interface Port-Channel100.102
+   description IFL for TENANT02
+   no logging event link-status
+   mtu 1500
+   switchport
+   vrf C2
+   ip address 10.1.2.3/31
+!
+interface Port-Channel101
+   description PVLAN Promiscuous Access - only one secondary
+   switchport
+   switchport access vlan 110
+   switchport pvlan mapping 111
+!
+interface Port-Channel102
+   description PVLAN Promiscuous Trunk - vlan translation out
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport vlan translation out 111-112 110
+!
+interface Port-Channel103
+   description PVLAN Secondary Trunk
+   switchport
+   switchport trunk allowed vlan 110-112
+   switchport mode trunk
+   switchport trunk private-vlan secondary
 ```
 
-## Loopback Interfaces
-
-No Loopback interfaces defined
-
-## VLAN Interfaces
-
-No VLAN interfaces defined
-
-## VXLAN Interface
-
-No VXLAN interface defined
-
 # Routing
-
-## Virtual Router MAC Address
-
-IP Virtual Router MAC Address is not defined
 
 ## IP Routing
 
@@ -308,8 +325,7 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False| 
-
+| default | false|
 ### IP Routing Device Configuration
 
 ```eos
@@ -320,110 +336,20 @@ IP Virtual Router MAC Address is not defined
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |  False | 
+| default | false |
 
-## Static Routes
+# BFD
 
+## BFD Interfaces
 
-## IPv6 Static Routes
-
-
-## Router ISIS
-
-Router ISIS not defined
-
-# Router BGP
-
-Router BGP not defined
-
-## Router BFD
-
-### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-*No device configuration required - default values
+| Interface | Interval | Minimum RX | Multiplier |
+| --------- | -------- | ---------- | ---------- |
+| Port-Channel9 | 500 | 500 | 5 |
 
 # Multicast
 
-## IP IGMP Snooping
-
-No IP IGMP configuration
-
-## Router Multicast
-
-Routing multicast not defined
-
-## Router PIM Sparse Mode
-
-Router PIM sparse mode not defined
-
 # Filters
-
-## Community Lists
-
-Community Lists not defined
-
-## Peer Filters
-
-No Peer Filters defined
-
-## Prefix Lists
-
-Prefix lists not defined
-
-## IPv6 Prefix Lists
-
-IPv6 Prefix lists not defined
-
-## Route Maps
-
-No route maps defined
-
-## IP Extended Communities
-
-No Extended community defined
 
 # ACL
 
-## Standard Access-lists
-
-Standard Access-lists not defined
-
-## Extended Access-lists
-
-Extended Access-lists not defined
-
-## IPv6 Standard Access-lists
-
-IPv6 Standard Access-lists not defined
-
-## IPv6 Extended Access-lists
-
-IPv6 Extended Access-lists not defined
-
-# VRF Instances
-
-No VRFs defined
-
-# Virtual Source NAT
-
-Virtual Source NAT is not defined
-
-# Platform
-
-No Platform parameters defined
-
-# Router L2 VPN
-
-Router L2 VPN not defined
-
-# IP DHCP Relay
-
-IP DHCP Relay not defined
-
-## Custom Templates
-
-No Custom Templates Defined
+# Quality Of Service

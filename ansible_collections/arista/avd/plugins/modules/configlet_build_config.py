@@ -28,11 +28,11 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 DOCUMENTATION = r'''
 ---
 module: configlet_build_config
-version_added: "2.9"
+version_added: "1.0.0"
 author: EMEA AS Team (@aristanetworks)
 short_description: Build arista.cvp.configlet configuration.
 description:
-  - Build configuration to publish configlets on Cloudvision.
+  - Build configuration to publish configlets to Cloudvision.
 options:
   configlet_dir:
     description: Directory where configlets are located.
@@ -48,26 +48,26 @@ options:
     type: str
     default: ''
   configlet_extension:
-    description: File extensio to look for.
+    description: File extension to look for.
     required: false
     type: str
     default: 'conf'
 '''
 
 EXAMPLES = r'''
-# tasks file for cvp_configlet_upload
-- name: generate intented variables
+# tasks file for configlet_build_config
+- name: generate intended variables
   tags: [build, provision]
   configlet_build_config:
-    configlet_dir: '{{ configlet_dir }}'
-    configlet_prefix: '{{ configlets_prefix }}'
-    configlet_extension: '{{configlet_extension}}'
+    configlet_dir: '/path/to/configlets/folder/'
+    configlet_prefix: 'AVD_'
+    configlet_extension: 'cfg'
 '''
 
-import glob
-import os
-import traceback
 from ansible.module_utils.basic import AnsibleModule
+import traceback
+import os
+import glob
 YAML_IMP_ERR = None
 try:
     import yaml
@@ -120,6 +120,9 @@ def main():
     module = AnsibleModule(argument_spec=argument_spec,
                            supports_check_mode=False)
     result = dict(changed=False)
+
+    if not HAS_YAML:
+        module.fail_json(msg='yaml lib is required for this module')
 
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:

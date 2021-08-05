@@ -1,0 +1,8 @@
+---
+# Tasks to build online dhcpd.conf to specified server
+
+- name: Execute DHCP configuration role
+  import_role:
+    name: arista.cvp.dhcp_configuration
+  vars:
+    mode: online

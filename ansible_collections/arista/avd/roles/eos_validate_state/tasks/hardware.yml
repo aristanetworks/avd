@@ -69,7 +69,7 @@
 - name: Validate system temperature
   assert:
     that:
-      - environment_temperature.stdout[0].systemStatus == "temperatureOk"
+      - environment_temperature.stdout[0].systemStatus == 'temperatureOk'
     fail_msg: system temperature is "{{ environment_temperature.stdout[0].systemStatus }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"

@@ -1,0 +1,24 @@
+{# eos - qos profiles #}
+{% for profile in qos_profiles | arista.avd.natural_sort %}
+!
+qos profile {{ profile }}
+{%     if qos_profiles[profile].trust is arista.avd.defined %}
+   qos trust {{ qos_profiles[profile].trust }}
+{%     endif %}
+{%     if qos_profiles[profile].cos is arista.avd.defined %}
+   qos cos {{ qos_profiles[profile].cos }}
+{%     endif %}
+{%     if qos_profiles[profile].dscp is arista.avd.defined %}
+   qos dscp {{ qos_profiles[profile].dscp }}
+{%     endif %}
+{%     for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
+   !
+   tx-queue {{ tx_queue }}
+{%         if qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent is arista.avd.defined %}
+      bandwidth percent {{ qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent }}
+{%         endif %}
+{%         if qos_profiles[profile].tx_queues[tx_queue].priority is arista.avd.defined %}
+      {{ qos_profiles[profile].tx_queues[tx_queue].priority }}
+{%         endif %}
+{%     endfor %}
+{% endfor %}

@@ -1,0 +1,6 @@
+spanning_tree:
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
+  no_spanning_tree_vlan: {{ [switch.mlag_peer_l3_vlan, switch.mlag_peer_vlan] | arista.avd.list_compress }}
+{% else %}
+  no_spanning_tree_vlan: {{ switch.mlag_peer_vlan }}
+{% endif %}

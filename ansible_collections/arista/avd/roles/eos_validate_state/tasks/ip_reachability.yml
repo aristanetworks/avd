@@ -4,8 +4,8 @@
 
 - name: Gather ip reachability state (directly connected interfaces)
   eos_command:
-    commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ipaddr('address')}} source {{ ethernet_interface.value.ip_address  | ipaddr('address')}} repeat 1"
-  loop: "{{ethernet_interfaces | default({}, true) | dict2items}}"
+    commands: "ping {{ hostvars[ethernet_interface.value.peer]['ethernet_interfaces'][ethernet_interface.value.peer_interface]['ip_address'] | ansible.netcommon.ipaddr('address') }} source {{ ethernet_interface.value.ip_address  | ansible.netcommon.ipaddr('address') }} repeat 1"
+  loop: "{{ ethernet_interfaces | default({}, true) | dict2items }}"
   loop_control:
     loop_var: ethernet_interface
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
@@ -24,14 +24,14 @@
 - name: Validate ip reachability (directly connected interfaces)
   assert:
     that:
-      - ip_reachability_test.stdout[0] | regex_search("1 received")
+      - ip_reachability_test.stdout[0] | regex_search('1 received')
     fail_msg: "100% packet loss"
     quiet: true
   loop: "{{ ip_reachability_state.results }}"
   loop_control:
     loop_var: ip_reachability_test
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
-  when: ( ip_reachability_test.skipped is not defined )
+  when: (ip_reachability_test.skipped is not defined)
   register: ip_reachability_results
   tags:
     - ip_reachability

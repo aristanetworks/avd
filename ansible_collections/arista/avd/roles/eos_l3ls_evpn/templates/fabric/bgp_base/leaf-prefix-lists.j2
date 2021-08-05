@@ -1,9 +1,0 @@
-{# Leaf prefix-lists #}
-{% if switch.underlay_routing_protocol == "ebgp" %}
-  PL-LOOPBACKS-EVPN-OVERLAY:
-    sequence_numbers:
-      10:
-        action: "permit {{ overlay_loopback_network_summary }} eq 32"
-      20:
-        action: "permit {{ vtep_loopback_network_summary }} eq 32"
-{% endif %}
