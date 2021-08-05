@@ -284,10 +284,22 @@ aaa_authorization:
 ```yaml
 aaa_accounting:
   exec:
+    console:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
     default:
       type: < none | start-stop | stop-only >
       group: < group_name >
   commands:
+    commands_console:
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
     commands_default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
