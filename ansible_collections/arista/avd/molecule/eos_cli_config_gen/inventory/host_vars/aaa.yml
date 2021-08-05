@@ -37,7 +37,7 @@ aaa_server_groups:
 aaa_authentication:
   login:
     default: group TACACS local
-    serial_console: local
+    console: local
   enable:
     default: group TACACS local
   dot1x:
