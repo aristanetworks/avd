@@ -8,28 +8,31 @@
 #* and the display string of such type
 local -A TYPES
 TYPES=(
-  Build     "Build system"
-  Chore     "Chore"
-  ci        "CI"
-  Docs      "Documentation"
-  Doc       "Documentation"
-  Feat      "Features"
-  Fix       "Bug fixes"
-  Make      "Build system"
-  Perf      "Performance"
-  Refactor  "Refactor"
-  Style     "Style"
-  Test      "Testing"
+  BUILD     "Build system"
+  CHORE     "Chore"
+  CI        "CI"
+  CUT       "Features removed"
+  DOC       "Documentation"
+  FEAT      "Features"
+  FIX       "Bug fixes"
+  LICENSE   "License update"
+  MAKE      "Build system"
+  OPTIMIZE  "Code optimization"
+  PERF      "Performance"
+  REFACTOR  "Code Refactoring"
+  REFORMAT  "Code Reformating"
+  REVERT    "Revert"
+  TEST      "Testing"
 )
 
 #* Types that will be displayed in their own section,
 #* in the order specified here.
 local -a MAIN_TYPES
-MAIN_TYPES=(feat Feat fix Fix Perf perf Docs docs Doc doc)
+MAIN_TYPES=(FEAT FIX PERF DOCS DOC)
 
 #* Types that will be displayed under the category of other changes
 local -a OTHER_TYPES
-OTHER_TYPES=(Make make test Test refactor style CI ci other)
+OTHER_TYPES=(MAKE TEST REFACTOR STYLE CI OTHER)
 
 #* Commit types that don't appear in $MAIN_TYPES nor $OTHER_TYPES
 #* will not be displayed and will simply be ignored.
@@ -51,10 +54,10 @@ function parse-commit {
   #   make a breaking change
 
   function commit:type {
-    local type="$(sed -E 's/^([a-zA-Z_\-]+)(\(.+\))?!?: .+$/\1/' <<< "$1")"
-
+    local commit_message="$1"
+    local type="$(sed -E 's/^([a-zA-Z_\-]+)(\(.+\))?!?: .+$/\1/' <<< "$commit_message"| tr '[:lower:]' '[:upper:]')"
     # If $type doesn't appear in $TYPES array mark it as 'other'
-    if [[ -n "${(k)TYPES[(i)$type]}" ]]; then
+    if [[ -n "${(k)TYPES[(i)${type}]}" ]]; then
       echo $type
     else
       echo other
@@ -65,9 +68,10 @@ function parse-commit {
     local scope
 
     # Try to find scope in "type(<scope>):" format
+    # Scope will be formatted in lower cases
     scope=$(sed -nE 's/^[a-zA-Z_\-]+\((.+)\)!?: .+$/\1/p' <<< "$1")
     if [[ -n "$scope" ]]; then
-      echo "$scope"
+      echo "$scope" | tr '[:upper:]' '[:lower:]'
       return
     fi
 
