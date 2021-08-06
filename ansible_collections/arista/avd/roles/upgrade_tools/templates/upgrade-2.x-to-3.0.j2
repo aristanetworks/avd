@@ -40,7 +40,7 @@ spine:
 {%     if spine_bgp_defaults is arista.avd.defined %}
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: {{ spine_bgp_defaults }}
-{%     else %}
+{%     elif spine.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults:
       - update wait-for-convergence
@@ -84,12 +84,12 @@ l3leaf:
 {%     if overlay_loopback_network_summary is arista.avd.defined %}
 # Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
     loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
-{%     endif %}
-{%     set switch_max_spines = max_spines | arista.avd.default(
-                               spine.nodes | arista.avd.default([]) | length) %}
-{%     if switch_max_spines > 0 %}
+{%         set switch_max_spines = max_spines | arista.avd.default(
+                                   spine.nodes | arista.avd.default([]) | length) %}
+{%         if switch_max_spines > 0 %}
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
     loopback_ipv4_offset: {{ switch_max_spines }}
+{%         endif %}
 {%     endif %}
 {%     if vtep_loopback_network_summary is arista.avd.defined %}
 # Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
@@ -134,7 +134,7 @@ l3leaf:
 {%     if leaf_bgp_defaults is arista.avd.defined %}
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: {{ leaf_bgp_defaults }}
-{%     else %}
+{%     elif l3leaf.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults:
       - update wait-install
@@ -261,7 +261,7 @@ super_spine:
 {%     if super_spine_bgp_defaults is arista.avd.defined %}
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults: {{ super_spine_bgp_defaults }}
-{%     else %}
+{%     elif super_spine.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults:
       - update wait-for-convergence
@@ -312,7 +312,7 @@ overlay_controller:
 {%     if overlay_controller_bgp_defaults is arista.avd.defined %}
 # Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults: {{ overlay_controller_bgp_defaults }}
-{%     else %}
+{%     elif overlay_controller.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults:
       - no bgp default ipv4-unicast
