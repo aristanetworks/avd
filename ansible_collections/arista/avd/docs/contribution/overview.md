@@ -152,14 +152,18 @@ The issue will be reviewed by a moderator after submission and the appropriate l
   * __Scopes__:
 
     * `{{ role name }}`: AVD role impacting by PR. __Required__ for `Feat`, `Cut` and `Fix` types
-    * `{{ plugin_name }}`: AVD plugin impacting by PR. __Required__ for `Feat`, `Cut` and `Fix` types
-    * `{{ script_name }}`: Internal repository script name with no extension. __Should__ not be used with `Feat`, `Fix`, `Cut`
+    * `plugins`: To use when AVD plugin is impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `requirements`: To use when using `Bump` type and when any AVD requirement is updated
     * `mkdoc`: represents generic documentation published on www.avd.sh
     * `contribution`: documentation related to contribution
-    * `how-to`: documentation in the How to section of avd.
-    * `actions`: represents Github Actions update.
+    * `how-to`: documentation in the How to section of avd
+    * `actions`: represents Github Actions update
     * `molecule`: represents Molecule CI update
-    * `ansible`: For any ansible information update like galaxy.yml or ansible requirements.
+    * `ansible`: For any ansible information update like galaxy.yml or ansible requirements
+    * `github`: For any content related to Github processes
+
+!!! info "Scopes"
+    Scope is an optional field and can be ignore safely if your PR covers an undefined scope.
 
 ## Project Structure
 
