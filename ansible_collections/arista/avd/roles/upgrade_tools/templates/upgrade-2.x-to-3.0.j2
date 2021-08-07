@@ -209,11 +209,11 @@ l2leaf:
     uplink_interface_speed: {{ l2leaf.defaults.p2p_link_interface_speed }}
 {%     endif %}
 {%     if mlag_ips.mlag_peer is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l2leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
 {%     endif %}
 {%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l2leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
   node_groups:
