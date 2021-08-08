@@ -145,6 +145,7 @@ router_bgp:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      - static
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.12
       rd: 192.168.255.12:11
@@ -324,6 +325,9 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- destination_address_prefix: 10.3.5.0/24
+  vrf: Tenant_A_WAN_Zone
+  interface: Null0
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:

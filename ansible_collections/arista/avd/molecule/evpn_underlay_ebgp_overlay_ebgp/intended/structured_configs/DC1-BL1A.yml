@@ -216,6 +216,20 @@ static_routes:
 - destination_address_prefix: 10.3.4.0/24
   vrf: Tenant_A_WAN_Zone
   gateway: 1.2.3.4
+- destination_address_prefix: 1.1.1.0/24
+  vrf: Tenant_A_WAN_Zone
+  gateway: 10.1.1.1
+  interface: vlan101
+- destination_address_prefix: 1.1.2.0/24
+  vrf: Tenant_A_WAN_Zone
+  gateway: 10.1.1.1
+  distance: 200
+  tag: 666
+  name: RT-TO-FAKE-DMZ
+  interface: vlan101
+- destination_address_prefix: 10.3.5.0/24
+  vrf: Tenant_A_WAN_Zone
+  interface: Null0
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
