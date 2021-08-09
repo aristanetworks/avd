@@ -43,6 +43,8 @@ body:
         - arista.avd.configlet_build_config
         - arista.avd.inventory_to_container
         - arista.avd.yaml_templates_to_facts
+        - new components
+        - others
 
   - type: dropdown
     id: runner
@@ -71,8 +73,8 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://avd.sh/en/latest/docs/contribution/overview.html)
+      label: Contributing Guide
+      description: By submitting this issue, you agree to follow our [Contributing Guide](https://avd.sh/en/latest/docs/contribution/overview.html)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true

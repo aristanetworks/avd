@@ -30,6 +30,8 @@ body:
         - eos_config_deploy_eapi
         - eos_snapshot
         - eos_validate_state
+        - plugins
+        - others
     validations:
       required: true
 
@@ -44,7 +46,7 @@ body:
   - type: textarea
     id: expected-solution
     attributes:
-      label: Describe the solution you'd like
+      label: Describe the solution you would like
       description: A clear and concise description of what you want to happen.
     validations:
       required: true
@@ -52,8 +54,8 @@ body:
   - type: textarea
     id: alternative-solution
     attributes:
-      label: Describe alternatives you've considered
-      description: A clear and concise description of any alternative solutions or features you've considered.
+      label: Describe alternatives you have considered
+      description: A clear and concise description of any alternative solutions or features you have considered.
     validations:
       required: false
 
@@ -68,8 +70,8 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Code of Conduct
-      description: By submitting this issue, you agree to follow our [Code of Conduct](https://avd.sh/en/latest/docs/contribution/overview.html)
+      label: Contributing Guide
+      description: By submitting this issue, you agree to follow our [Contributing Guide](https://avd.sh/en/latest/docs/contribution/overview.html)
       options:
         - label: I agree to follow this project's Code of Conduct
           required: true
