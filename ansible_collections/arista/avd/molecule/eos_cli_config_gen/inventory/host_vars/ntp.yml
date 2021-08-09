@@ -10,7 +10,7 @@ ntp_server:
       iburst: true
       burst: false
       key: 1
-    10.1.1.2: {}
+    10.1.1.2:
       preferred: true
     20.20.20.1:
       key: 2
