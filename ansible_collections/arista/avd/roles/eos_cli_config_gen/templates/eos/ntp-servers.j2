@@ -22,7 +22,7 @@
 {%         endif %}
 {# WIP \/#}
 {%         for flag in ntp_server.nodes.node | arista.avd.natural_sort %}
-{%             if ntp_server_nodes.node.flag != 'preferred' and ntp_server_nodes.node.flag != 'key') %}
+{%             if flag != 'preferred' and flag != 'key') %}
 {%                 set node_cli = node_cli ~ " " ~ ntp_server_nodes.node.flag %}
 {%             endif %}
 {%         endfor %}
