@@ -138,7 +138,7 @@ aaa group server tacacs+ TACACS
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 | Login | default | group TACACS local |
-| Login | serial-console | local |
+| Login | console | local |
 
 AAA Authentication on-failure log has been enabled
 
@@ -151,7 +151,7 @@ Policy local allow-nopassword-remote-login has been enabled.
 ```eos
 !
 aaa authentication login default group TACACS local
-aaa authentication login serial-console local
+aaa authentication login console local
 aaa authentication enable default group TACACS local
 aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
