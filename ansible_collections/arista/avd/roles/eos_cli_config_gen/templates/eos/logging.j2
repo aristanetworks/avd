@@ -31,20 +31,31 @@ logging format sequence-numbers
 logging source-interface {{ logging.source_interface }}
 {%     endif %}
 {%     for vrf in logging.vrfs | arista.avd.natural_sort %}
-{%         if logging.vrfs[vrf].source_interface is arista.avd.defined and vrf != 'default' %}
-logging vrf {{ vrf }} source-interface {{ logging.vrfs[vrf].source_interface }}
-{%         elif logging.vrfs[vrf].source_interface is arista.avd.defined and vrf == 'default' %}
-logging source-interface {{ logging.vrfs[vrf].source_interface }}
+{%         set logging_cli = "logging" %}
+{%         if logging.vrfs[vrf].source_interface is arista.avd.defined and vrf is not arista.avd.defined('default') %}
+{%             set logging_cli = logging_cli ~ " vrf " ~ vrf %}
 {%         endif %}
-{%         if logging.vrfs[vrf].hosts is arista.avd.defined and vrf != 'default' %}
-{%             for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
-logging vrf {{ vrf }} host {{ host }}
-{%             endfor %}
-{%         elif logging.vrfs[vrf].hosts is arista.avd.defined and vrf == 'default' %}
-{%             for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
-logging host {{ host }}
-{%             endfor %}
-{%         endif %}
+{%         set logging_cli = logging_cli ~ " source-interface " ~ logging.vrfs[vrf].source_interface %}
+{{ logging_cli }}
+{%         for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
+{%             set logging_host_cli = "logging" %}
+{%             if logging.vrfs[vrf].hosts is arista.avd.defined and vrf is not arista.avd.defined('default') %}
+{%                 set logging_host_cli = logging_host_cli ~ " vrf " ~ vrf %}
+{%             endif %}
+{%             set logging_host_cli = logging_host_cli ~ " host " ~ host %}
+{%             if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined() %}
+{%                 set logging_ports = namespace() %}
+{%                 set logging_ports.concatenate = " " %}
+{%                 for port in logging.vrfs[vrf].hosts[host].ports %}
+{%                     set logging_ports.concatenate = logging_ports.concatenate ~ port ~ " " %}
+{%                 endfor %}
+{%                 set logging_host_cli = logging_host_cli ~ logging_ports.concatenate %}
+{%             endif %}
+{%             if logging.vrfs[vrf].hosts[host].protocol is arista.avd.defined() and logging.vrfs[vrf].hosts[host].protocol is not arista.avd.defined("udp") %}
+{%                 set logging_host_cli = logging_host_cli ~ "protocol " ~ logging.vrfs[vrf].hosts[host].protocol | lower %}
+{%             endif %}
+{{ logging_host_cli }}
+{%         endfor %}
 {%     endfor %}
 {%     for match_list in logging.policy.match.match_lists | arista.avd.natural_sort %}
 logging policy match match-list {{ match_list }} {{ logging.policy.match.match_lists[match_list].action }}

@@ -1645,8 +1645,14 @@ logging:
     < vrf_name >:
       source_interface: < source_interface_name >
       hosts:
-        - < syslog_server_1>
-        - < syslog_server_2>
+        < syslog_server_1 >:
+          protocol: < tcp | udp (default udp) >
+          ports:
+            < custom_port_1 >
+            < custom_port_2 >
+        < syslog_server_2 >:
+          ports:
+            < custom_port_1 >
   policy:
     match:
       match_lists:
