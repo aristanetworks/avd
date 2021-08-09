@@ -49,9 +49,9 @@ l3leaf:
     uplink_ipv4_pool: 172.17.210.0/24
 # Change from p2p_uplinks_ptp.* to l3leaf.defaults.uplink_ptp.*
     uplink_ptp: {'enable': True}
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l3leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: 172.19.210.0/24
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l3leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: 172.20.210.0/24
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
