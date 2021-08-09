@@ -1176,12 +1176,14 @@ ip routing vrf Tenant_C_WAN_Zone
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| Tenant_A_WAN_Zone  | 10.3.5.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 ```
 
 ## Router BGP
@@ -1286,7 +1288,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_APP_Zone | 192.168.255.12:12 | connected |
 | Tenant_A_DB_Zone | 192.168.255.12:13 | connected |
 | Tenant_A_OP_Zone | 192.168.255.12:10 | connected |
-| Tenant_A_WAN_Zone | 192.168.255.12:14 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.12:14 | connected<br>static |
 | Tenant_A_WEB_Zone | 192.168.255.12:11 | connected |
 | Tenant_B_OP_Zone | 192.168.255.12:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.255.12:21 | connected |
@@ -1462,6 +1464,7 @@ router bgp 65103
       router-id 192.168.255.12
       neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
+      redistribute static
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.12:11

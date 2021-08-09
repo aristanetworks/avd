@@ -113,6 +113,19 @@ tenants:
           - destination_address_prefix: 10.3.4.0/24
             gateway: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.1.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.2.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            distance: 200
+            tag: 666
+            name: RT-TO-FAKE-DMZ
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 10.3.5.0/24
+            interface: Null0
         bgp_peers:
           123.1.1.10:
             remote_as: 1234
