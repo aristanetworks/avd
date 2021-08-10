@@ -52,7 +52,7 @@ svi_profiles:
     ip_helpers:
       < IPv4 dhcp server IP >:
         source_interface: < interface-name >
-        source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+        source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 

@@ -261,7 +261,7 @@ router_bgp:
         - '11:11'
       redistribute_routes:
       - learned
-      vlan: 120-121
+      vlan: 120-124
     Tenant_A_VMOTION:
       tenant: Tenant_A
       rd: 192.168.255.12:10160
@@ -479,6 +479,15 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  122:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+  123:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_source_int_no_vrf
+  124:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_vrf_no_source_int
   3010:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_WEB_Zone
@@ -659,6 +668,38 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+  Vlan122:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.22.1/24
+    ip_helpers:
+      1.1.1.1: {}
+  Vlan123:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.23.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+  Vlan124:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_vrf_no_source_int
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.24.1/24
+    ip_helpers:
+      1.1.1.1:
+        vrf: TEST
   Vlan3010:
     tenant: Tenant_A
     type: underlay_peering
@@ -761,7 +802,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350
+    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel10:
@@ -1323,6 +1364,12 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
         160:
           vni: 10160
         161:
