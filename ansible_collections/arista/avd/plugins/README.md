@@ -185,11 +185,15 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
-  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
+  - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
-      mlag: 780
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ 7280R3, 7500R3, 7800R3 ]
+    reload_delay:
+      mlag: 900
       non_mlag: 1020
 ```
 

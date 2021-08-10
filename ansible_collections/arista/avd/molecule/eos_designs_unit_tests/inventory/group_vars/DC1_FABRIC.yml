@@ -31,14 +31,17 @@ spine:
       mgmt_ip: 192.168.200.101/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE2:
+      platform: 7500R
       id: 2
       mgmt_ip: 192.168.200.102/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE3:
+      platform: 7800R3
       id: 3
       mgmt_ip: 192.168.200.103/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE4:
+      platform: 7280R3
       id: 4
       mgmt_ip: 192.168.200.104/24
       mac_address: '0c:1d:c0:1d:62:01'
@@ -135,6 +138,27 @@ l3leaf:
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+    DC1_BL2:
+      mlag: false
+      filter:
+        tenants: [ all ]
+        tags: [ wan ]
+        always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+      nodes:
+        DC1-BL2A:
+          platform: 7280R2
+          id: 8
+          bgp_as: 65106
+          mgmt_ip: 192.168.200.117/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet8, Ethernet8, Ethernet8, Ethernet8 ]
+        DC1-BL2B:
+          platform: 7280R3
+          id: 9
+          bgp_as: 65107
+          mgmt_ip: 192.168.200.118/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
 
 l2leaf:
   defaults:

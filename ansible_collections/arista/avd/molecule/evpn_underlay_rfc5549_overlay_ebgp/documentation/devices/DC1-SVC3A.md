@@ -219,7 +219,7 @@ mlag configuration
    local-interface Vlan4094
    peer-address 10.255.252.7
    peer-link Port-Channel5
-   reload-delay mlag 780
+   reload-delay mlag 900
    reload-delay non-mlag 1020
 ```
 
