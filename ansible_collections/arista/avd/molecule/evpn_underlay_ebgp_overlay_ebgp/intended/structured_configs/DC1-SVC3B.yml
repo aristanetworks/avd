@@ -36,7 +36,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    10.255.251.6:
+    10.255.252.6:
       peer_group: MLAG-PEERS
       description: DC1-SVC3A
     172.31.255.64:
@@ -94,7 +94,7 @@ router_bgp:
           evpn:
           - '12:12'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -109,7 +109,7 @@ router_bgp:
           evpn:
           - '13:13'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -124,7 +124,7 @@ router_bgp:
           evpn:
           - '10:10'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -141,7 +141,7 @@ router_bgp:
           - '14:14'
           - 65000:789
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -157,7 +157,7 @@ router_bgp:
           evpn:
           - '11:11'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -172,7 +172,7 @@ router_bgp:
           evpn:
           - '20:20'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -187,7 +187,7 @@ router_bgp:
           evpn:
           - '21:21'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -202,7 +202,7 @@ router_bgp:
           evpn:
           - '30:30'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -217,7 +217,7 @@ router_bgp:
           evpn:
           - '31:31'
       neighbors:
-        10.255.251.6:
+        10.255.252.6:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -369,7 +369,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4090,4092
+  no_spanning_tree_vlan: 4092
 local_users:
   admin:
     privilege: 15
@@ -422,11 +422,6 @@ management_api_http:
     MGMT: {}
   enable_https: true
 vlans:
-  4090:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4092:
     tenant: system
     name: MLAG_PEER
@@ -541,11 +536,6 @@ vlans:
     trunk_groups:
     - LEAF_PEER_L3
 vlan_interfaces:
-  Vlan4090:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 10.255.251.7/31
-    mtu: 1500
   Vlan4092:
     description: MLAG_PEER
     shutdown: false
@@ -575,7 +565,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
     vrf: Tenant_A_APP_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan140:
     tenant: Tenant_A
@@ -600,7 +590,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
     vrf: Tenant_A_DB_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan110:
     tenant: Tenant_A
@@ -628,7 +618,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
     vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan150:
     tenant: Tenant_A
@@ -644,7 +634,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
     vrf: Tenant_A_WAN_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan120:
     tenant: Tenant_A
@@ -706,7 +696,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
     vrf: Tenant_A_WEB_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan210:
     tenant: Tenant_B
@@ -730,7 +720,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
     vrf: Tenant_B_OP_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan250:
     tenant: Tenant_B
@@ -746,7 +736,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
     vrf: Tenant_B_WAN_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan310:
     tenant: Tenant_C
@@ -770,7 +760,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
     vrf: Tenant_C_OP_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
   Vlan350:
     tenant: Tenant_C
@@ -786,7 +776,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
     vrf: Tenant_C_WAN_Zone
-    ip_address: 10.255.251.7/31
+    ip_address: 10.255.252.7/31
     mtu: 1500
 port_channel_interfaces:
   Port-Channel5:

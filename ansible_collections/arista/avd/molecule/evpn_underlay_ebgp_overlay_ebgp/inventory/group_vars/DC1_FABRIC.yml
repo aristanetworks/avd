@@ -117,6 +117,7 @@ l3leaf:
       platform: 7050SX3
       bgp_as: 65103
       uplink_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
+      mlag_peer_l3_vlan: false #False means using mlag_peer_vlan (4094) for both mlag peer and l3 peerings.
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]
