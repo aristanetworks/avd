@@ -9,7 +9,7 @@ router_bgp:
     OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
-      remote_as: 65000
+      remote_as: 65001
       bfd: true
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
@@ -94,6 +94,11 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      OVERLAY-PEERS:
+        remote_as: 65001
 vlans:
   4093:
     tenant: system
