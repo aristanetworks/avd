@@ -152,6 +152,16 @@ l3leaf:
     isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
 {%         endif %}
 {%     endif %}
+{%     if spine.bgp_as is arista.avd.defined %}
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+            IPv4-UNDERLAY-PEERS:
+              remote_as: {{ spine.bgp_as }}
+            EVPN-OVERLAY-PEERS:
+              remote_as: {{ spine.bgp_as }}
+{%     endif %}
   node_groups:
 {%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
     {{ node_group }}:
