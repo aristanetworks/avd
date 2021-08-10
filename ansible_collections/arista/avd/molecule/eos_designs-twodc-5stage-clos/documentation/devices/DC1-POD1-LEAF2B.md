@@ -248,7 +248,6 @@ vlan internal order ascending range 1006 1199
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
@@ -290,8 +289,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
 | Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
-| Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet5 | *trunk | *2-4094 | *- | *['MLAG'] | 5 |
+| Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2A_Ethernet6 | *trunk | *2-4094 | *- | *['MLAG'] | 5 |
 | Ethernet16 | server-1_Eth2 | *access | *110 | *- | *- | 16 |
 | Ethernet17 | Set using structured_config on server adapter | *access | *110 | *- | *- | 17 |
 | Ethernet18 | server-1_Eth6 | *access | *110 | *- | *- | 18 |
@@ -423,7 +422,7 @@ interface Ethernet19
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
-| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2A_Po5 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 | Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
 | Port-Channel18 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 18 | - |
@@ -448,7 +447,6 @@ interface Port-Channel5
    switchport
    switchport trunk allowed vlan 2-4094
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    service-profile QOS-PROFILE
 !
@@ -547,7 +545,6 @@ interface Loopback1
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4085 |  default  |  172.21.110.3/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 
@@ -584,12 +581,6 @@ interface Vlan4085
    ip address 172.21.110.3/24
    ip virtual-router address 172.21.110.1
    ip attached-host route export 19
-!
-interface Vlan4093
-   description MLAG_PEER_L3_PEERING
-   no shutdown
-   mtu 1500
-   ip address 172.19.110.3/31
 !
 interface Vlan4094
    description MLAG_PEER
@@ -763,7 +754,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.110.18 | 65110 | default |
 | 172.17.110.20 | 65110 | default |
 | 172.17.110.22 | 65110 | default |
-| 172.19.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
 
@@ -843,8 +834,8 @@ router bgp 65112
    neighbor 172.17.110.22 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.22 remote-as 65110
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
-   neighbor 172.19.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.19.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.2 description DC1-POD1-LEAF2A
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

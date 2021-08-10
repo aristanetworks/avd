@@ -1,7 +1,7 @@
 {# leaf mlag vlan interfaces #}
 vlan_interfaces:
-{% if switch.mlag_l3 is arista.avd.defined(true) 
-      and switch.mlag_peer_l3_vlan is arista.avd.defined %}
+{% if switch.mlag_peer_l3_vlan is arista.avd.defined %}
+{#     Use seperate VLAN for L3 peering #}
   Vlan{{ switch.mlag_peer_l3_vlan }}:
     description: MLAG_PEER_L3_PEERING
     shutdown: false
@@ -28,6 +28,7 @@ vlan_interfaces:
     mtu: {{ p2p_uplinks_mtu }}
 {% if switch.mlag_l3 is arista.avd.defined(true) 
       and switch.mlag_peer_l3_vlan is not arista.avd.defined %}
+{#     Reuse MLAG vlan for L3 peering #}
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
     ipv6_enable: true
 {%     endif %}

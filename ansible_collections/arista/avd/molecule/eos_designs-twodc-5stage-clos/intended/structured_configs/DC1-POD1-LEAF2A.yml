@@ -38,7 +38,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.19.110.3:
+    172.20.110.3:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2B
     172.17.110.8:
@@ -216,14 +216,8 @@ vlans:
     tenant: system
     name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 172.19.110.2/31
-    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
-    no_autostate: true
     shutdown: false
     ip_address: 172.20.110.2/31
     no_autostate: true
@@ -278,7 +272,6 @@ port_channel_interfaces:
     mode: trunk
     service_profile: QOS-PROFILE
     trunk_groups:
-    - LEAF_PEER_L3
     - MLAG
   Port-Channel3:
     description: RACK2_MLAG_Po1
