@@ -26,7 +26,7 @@ vlan_interfaces:
     ip_address: {{ switch.mlag_ip }}/31
     no_autostate: true
     mtu: {{ p2p_uplinks_mtu }}
-{% if switch.mlag_l3 is arista.avd.defined(true) 
+{% if switch.mlag_l3 is arista.avd.defined(true)
       and switch.mlag_peer_l3_vlan is not arista.avd.defined %}
 {#     Reuse MLAG vlan for L3 peering #}
 {%     if underlay_rfc5549 is arista.avd.defined(true) %}
