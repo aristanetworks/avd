@@ -68,6 +68,33 @@ tenants:
             name: Tenant_A_WEBZone_2
             tags: ['web']
             profile: GENERIC_FULL
+          122:
+            name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.22.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                #source_vrf: TEST
+          123:
+            name: Tenant_a_WEB_DHCP_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.23.1/24
+            ip_helpers:
+              1.1.1.1:
+                source_interface: lo100
+                #source_vrf: TEST
+          124:
+            name: Tenant_a_WEB_DHCP_vrf_no_source_int
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.24.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                source_vrf: TEST
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -113,6 +140,19 @@ tenants:
           - destination_address_prefix: 10.3.4.0/24
             gateway: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.1.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.2.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            distance: 200
+            tag: 666
+            name: RT-TO-FAKE-DMZ
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 10.3.5.0/24
+            interface: Null0
         bgp_peers:
           123.1.1.10:
             remote_as: 1234

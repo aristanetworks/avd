@@ -52,7 +52,7 @@ svi_profiles:
     ip_helpers:
       < IPv4 dhcp server IP >:
         source_interface: < interface-name >
-        source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+        source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
@@ -224,6 +224,11 @@ tenants:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            distance: < 1-255 >
+            tag: < 0-4294967295 >
+            name: < description >
+            metric: < 0-4294967295 >
+            interface: < interface >
             nodes: [ < node_1 >, < node_2 >]
 
         # Non-selectively enabling or disabling redistribute static inside the VRF | Optional.

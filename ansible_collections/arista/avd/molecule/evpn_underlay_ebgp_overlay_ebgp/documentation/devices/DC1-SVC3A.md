@@ -297,6 +297,9 @@ vlan internal order ascending range 1006 1199
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 140 | Tenant_A_DB_BZone_1 | - |
@@ -341,6 +344,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -437,8 +449,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
 | Ethernet11 |  server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
 | Ethernet12 |  server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
@@ -615,7 +627,7 @@ interface Ethernet44
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
@@ -640,7 +652,7 @@ interface Port-Channel7
    description DC1_L2LEAF2_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350
+   switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
    mlag 7
 !
@@ -785,6 +797,9 @@ interface Loopback100
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
+| Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan123 |  Tenant_a_WEB_DHCP_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan124 |  Tenant_a_WEB_DHCP_vrf_no_source_int  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan140 |  Tenant_A_DB_BZone_1  |  Tenant_A_DB_Zone  |  -  |  false  |
@@ -816,6 +831,9 @@ interface Loopback100
 | Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
+| Vlan122 |  Tenant_A_WEB_Zone  |  -  |  10.1.22.1/24  |  -  |  -  |  -  |  -  |
+| Vlan123 |  Tenant_A_WEB_Zone  |  -  |  10.1.23.1/24  |  -  |  -  |  -  |  -  |
+| Vlan124 |  Tenant_A_WEB_Zone  |  -  |  10.1.24.1/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
 | Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
@@ -876,6 +894,27 @@ interface Vlan121
    mtu 1560
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.10.254/24
+!
+interface Vlan122
+   description Tenant_a_WEB_DHCP_no_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.22.1/24
+   ip helper-address 1.1.1.1
+!
+interface Vlan123
+   description Tenant_a_WEB_DHCP_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.23.1/24
+   ip helper-address 1.1.1.1 source-interface lo100
+!
+interface Vlan124
+   description Tenant_a_WEB_DHCP_vrf_no_source_int
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.24.1/24
+   ip helper-address 1.1.1.1 vrf TEST
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
@@ -1029,6 +1068,9 @@ interface Vlan4092
 | 111 | 50111 |
 | 120 | 10120 |
 | 121 | 10121 |
+| 122 | 10122 |
+| 123 | 10123 |
+| 124 | 10124 |
 | 130 | 10130 |
 | 131 | 10131 |
 | 140 | 10140 |
@@ -1070,6 +1112,9 @@ interface Vxlan1
    vxlan vlan 111 vni 50111
    vxlan vlan 120 vni 10120
    vxlan vlan 121 vni 10121
+   vxlan vlan 122 vni 10122
+   vxlan vlan 123 vni 10123
+   vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
    vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
@@ -1176,12 +1221,14 @@ ip routing vrf Tenant_C_WAN_Zone
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| Tenant_A_WAN_Zone  | 10.3.5.0/24 |  -  |  Null0  |  1  |  -  |  -  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 ```
 
 ## Router BGP
@@ -1273,7 +1320,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_OP_Zone | 192.168.255.12:10 | 10:10 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 192.168.255.12:10160 | 10160:10160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 192.168.255.12:14 | 14:14 | - | - | learned | 150 |
-| Tenant_A_WEB_Zone | 192.168.255.12:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_A_WEB_Zone | 192.168.255.12:11 | 11:11 | - | - | learned | 120-124 |
 | Tenant_B_OP_Zone | 192.168.255.12:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_B_WAN_Zone | 192.168.255.12:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.12:30030 | 30030:30030 | - | - | learned | 310-311 |
@@ -1286,7 +1333,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_APP_Zone | 192.168.255.12:12 | connected |
 | Tenant_A_DB_Zone | 192.168.255.12:13 | connected |
 | Tenant_A_OP_Zone | 192.168.255.12:10 | connected |
-| Tenant_A_WAN_Zone | 192.168.255.12:14 | connected |
+| Tenant_A_WAN_Zone | 192.168.255.12:14 | connected<br>static |
 | Tenant_A_WEB_Zone | 192.168.255.12:11 | connected |
 | Tenant_B_OP_Zone | 192.168.255.12:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.255.12:21 | connected |
@@ -1394,7 +1441,7 @@ router bgp 65103
       rd 192.168.255.12:11
       route-target both 11:11
       redistribute learned
-      vlan 120-121
+      vlan 120-124
    !
    vlan-aware-bundle Tenant_B_OP_Zone
       rd 192.168.255.12:20
@@ -1462,6 +1509,7 @@ router bgp 65103
       router-id 192.168.255.12
       neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
+      redistribute static
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.12:11
