@@ -1,6 +1,23 @@
 # hardware-counter
 # Table of Contents
 <!-- toc -->
+
+- [Management](#management)
+  - [Management Interfaces](#management-interfaces)
+- [Authentication](#authentication)
+- [Monitoring](#monitoring)
+  - [Hardware Counters](#hardware-counters)
+- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
+- [Interfaces](#interfaces)
+- [Routing](#routing)
+  - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+- [Multicast](#multicast)
+- [Filters](#filters)
+- [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
+
 <!-- toc -->
 # Management
 
