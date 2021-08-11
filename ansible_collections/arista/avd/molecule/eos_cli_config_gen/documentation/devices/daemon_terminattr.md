@@ -1,6 +1,23 @@
 # daemon_terminattr
 # Table of Contents
 <!-- toc -->
+
+- [Management](#management)
+  - [Management Interfaces](#management-interfaces)
+- [Authentication](#authentication)
+- [Monitoring](#monitoring)
+  - [TerminAttr Daemon](#terminattr-daemon)
+- [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+  - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
+- [Interfaces](#interfaces)
+- [Routing](#routing)
+  - [IP Routing](#ip-routing)
+  - [IPv6 Routing](#ipv6-routing)
+- [Multicast](#multicast)
+- [Filters](#filters)
+- [ACL](#acl)
+- [Quality Of Service](#quality-of-service)
+
 <!-- toc -->
 # Management
 
@@ -38,16 +55,17 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 10.10.10.10:9910 | key | test | test | default | default | False |
+| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF  | AAA Disabled |
+| --- | --- | --- | ---| --- | --- | --- |
+| gzip |  10.10.10.10:9910 | key | test | test | default | |
+
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=10.10.10.10:9910 -cvcompression=gzip -ingestauth=key,key -smashexcludes=test -ingestexclude=test -ingestvrf=default -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.10:9910 -cvauth=key,key -cvvrf=default -smashexcludes=test -ingestexclude=test -taillogs
    no shutdown
 ```
 
