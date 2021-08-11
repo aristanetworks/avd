@@ -1,0 +1,34 @@
+{# eos - system #}
+{% if system.control_plane is arista.avd.defined %}
+!
+system control-plane
+{#     control_plane tcp mss ceiling #}
+{%     if system.control_plane.tcp_mss.ipv4 is arista.avd.defined or system.control_plane.tcp_mss.ipv6 is arista.avd.defined %}
+{%         set cp_mss_cli = "tcp mss ceiling" %}
+{%         if system.control_plane.tcp_mss.ipv4 is arista.avd.defined %}
+{%             set cp_mss_cli = cp_mss_cli ~ " ipv4 " ~ system.control_plane.tcp_mss.ipv4 %}
+{%         endif %}
+{%         if system.control_plane.tcp_mss.ipv6 is arista.avd.defined %}
+{%             set cp_mss_cli = cp_mss_cli ~ " ipv6 " ~ system.control_plane.tcp_mss.ipv6 %}
+{%         endif %}
+   {{ cp_mss_cli }}
+{%     endif %}
+{#     control_plane access_groups ipv4 #}
+{%     for acl_set in system.control_plane.ipv4_access_groups | arista.avd.natural_sort %}
+{%         set cp_ipv4_access_grp = "ip access-group " ~ acl_set.acl_name %}
+{%         if acl_set.vrf is arista.avd.defined %}
+{%             set cp_ipv4_access_grp = cp_ipv4_access_grp ~ " vrf " ~ acl_set.vrf %}
+{%         endif %}
+{%         set cp_ipv4_access_grp = cp_ipv4_access_grp ~ " in" %}
+   {{ cp_ipv4_access_grp }}
+{%     endfor %}
+{#     control_plane access_groups ipv6 #}
+{%     for acl_set in system.control_plane.ipv6_access_groups | arista.avd.natural_sort %}
+{%         set cp_ipv6_access_grp = "ipv6 access-group " ~ acl_set.acl_name %}
+{%         if acl_set.vrf is arista.avd.defined %}
+{%             set cp_ipv6_access_grp = cp_ipv6_access_grp ~ " vrf " ~ acl_set.vrf %}
+{%         endif %}
+{%         set cp_ipv6_access_grp = cp_ipv6_access_grp ~ " in" %}
+   {{ cp_ipv6_access_grp }}
+{%     endfor %}
+{% endif %}

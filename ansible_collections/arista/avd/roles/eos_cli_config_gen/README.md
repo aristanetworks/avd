@@ -20,6 +20,7 @@
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
       - [Enable Password](#enable-password)
+      - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
       - [Radius Servers](#radius-servers)
@@ -65,6 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
+      - [Maintenance profiles and units](#maintenance-profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -73,6 +75,7 @@
       - [Domain-List](#domain-list)
       - [Management Interfaces](#management-interfaces)
       - [Management HTTP](#management-http)
+      - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
       - [Management Security](#management-security)
@@ -94,6 +97,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+    - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
     - [Prompt](#prompt)
@@ -251,7 +255,7 @@ aliases: |
 aaa_authentication:
   login:
     default: < group group_name | local | none > < group group_name | local | none >
-    serial_console: < group group_name | local | none > < group group_name | local | none >
+    console: < group group_name | local | none > < group group_name | local | none >
   enable:
     default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
@@ -327,6 +331,16 @@ enable_password:
   key: "< hashed_password >"
 ```
 
+#### IP RADIUS Source Interfaces
+
+```yaml
+ip_radius_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
+      vrf: < vrf_name_2 >
+```
+
 #### IP TACACS+ Source Interfaces
 
 ```yaml
@@ -371,6 +385,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
+      single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encypted_key >
       timeout: < timeout in seconds >
@@ -730,6 +745,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    transceiver:
+      media:
+        override: < transceiver_type >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -908,6 +926,19 @@ port_channel_interfaces:
       - from: < list of vlans as string (only one vlan if direction is "both") >
         to: < vlan_id >
         direction: < in | out | both | default -> both >
+    storm_control:
+      all:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      broadcast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+      multicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent) >
+      unknown_unicast:
+        level: < Configure maximum storm-control level >
+        unit: < percent* | pps (optional and is hardware dependant - default is percent)>
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1164,6 +1195,39 @@ interface_groups:
       - "< profile_name >"
 ```
 
+#### Profiles and units
+```yaml
+maintenance:
+  default_interface_profile: < interface_profile_1 >
+  default_bgp_profile: < bgp_profile_1 >
+  default_unit_profile: < unit_profile_1 >
+  interface_profiles:
+    < interface_profile_1 >:
+      rate_monitoring:
+        load_interval: < seconds >
+        threshold: < kbps >
+      shutdown:
+        max_delay: < seconds >
+  bgp_profiles:
+    < bgp_profile_1 >:
+      initiator:
+        route_map_inout: < route_map >
+  unit_profiles:
+    < unit_profile_1 >:
+      on_boot:
+        duration: < 300-3600 >
+  units:
+    < unit_name_1 >:
+      quiesce: < true | false >
+      profile: < unit_profile_1 >
+      bgp_groups:
+        - < bgp_group_1>
+        - < bgp_group_2>
+      interface_groups:
+        - < interface_group_1>
+        - < interface_group_2>
+```
+
 ### Management
 
 #### Clock Timezone
@@ -1236,6 +1300,16 @@ management_api_http:
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
+```
+
+#### IP HTTP Client Source Interfaces
+
+```yaml
+ip_http_client_source_interfaces:
+    - name: <interface_name_1>
+      vrf: <vrf_name_1>
+    - name: <interface_name_2>
+      vrf: <vrf_name_2>
 ```
 
 #### Management GNMI
@@ -1349,6 +1423,7 @@ mpls:
 ```yaml
 mlag_configuration:
   domain_id: < domain_id_name >
+  heartbeat_interval: < milliseconds >
   local_interface: < interface_name >
   peer_address: < IPv4_address >
   peer_address_heartbeat:
@@ -1598,6 +1673,21 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+###  System Control-Plane
+```yaml
+system:
+  control_plane:
+    tcp_mss:
+      ipv4: < Segment size >
+      ipv6: < Segment size >
+    ipv4_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
+    ipv6_access_groups:
+      - acl_name: < access-list name >
+        vrf: < Optional vrf field >
 ```
 
 #### VM Tracer Sessions
@@ -2127,6 +2217,17 @@ router_ospf:
         - < interface_1 >
         - < interface_2 >
       max_lsa: < integer >
+      timers:
+        lsa:
+          rx_min_interval: < 0-600000 - Min interval in msecs between accepting the same LSA >
+          tx_delay:
+            initial: < 0-600000 - Delay to generate first occurrence of LSA in msecs >
+            min: < 1-600000 Min delay between originating the same LSA in msecs >
+            max: < 1-600000 Maximum delay between originating the same LSA in msecs >
+        spf_delay:
+          initial: < 0-600000 - Initial SPF schedule delay in msecs >
+          min: < 0-65535000  Min Hold time between two SPFs in msecs >
+          max: < 0-65535000  Max wait time between two SPFs in msecs >
       default_information_originate:
         always: true
       summary_addresses:
@@ -2143,7 +2244,23 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+        bgp:
+          route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
+      areas:
+        < area >:
+          filter:
+            networks:
+              - < IPv4 subnet / netmask >
+              - < IPv4 subnet / netmask >
+            prefix_list: < prefix list name >
+        < area >:
+          type: < normal | stub | nssa | default -> normal >
+          no_summary: < true | false >
+          nssa_only: < true | false >
+          default_information_originate:
+            metric: < Integer 1-65535 > # Value of the route metric
+            metric_type: < 1 | 2 > # OSPF metric type
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:

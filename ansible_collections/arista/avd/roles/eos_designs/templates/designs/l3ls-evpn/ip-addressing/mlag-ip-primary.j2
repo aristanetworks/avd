@@ -1,0 +1,1 @@
+{{ switch_data.combined.mlag_peer_ipv4_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath((mlag_primary_id - 1) * 2) }}

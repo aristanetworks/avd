@@ -19,7 +19,7 @@ port_channel_interfaces:
 {%         if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%         endif %}
-{%         if switch.mlag == true %}
+{%         if switch.mlag is arista.avd.defined(true) %}
     mlag: {{ link.channel_group_id }}
 {%         elif link.short_esi is arista.avd.defined %}
     esi: {{ link.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}

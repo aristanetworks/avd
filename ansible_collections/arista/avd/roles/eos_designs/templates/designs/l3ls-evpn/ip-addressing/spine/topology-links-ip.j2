@@ -1,6 +1,0 @@
-{% set ip_pool = super_spine_underlay_p2p_network_summary %}
-{# max number of hosts in subnet will be divided by max super-spine number to avoid address changes when provisioning new spines #}
-{% set ip_pool_max_hosts_in_subnet = ip_pool | ansible.netcommon.ipaddr('size') %}
-{% set offset = (switch.id - 1) % max_spine_to_super_spine_links %}
-{{ ip_pool | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(
-    (ip_pool_max_hosts_in_subnet / max_super_spines) | int * (uplink_switch_id - 1) + ((switch.id - 1) * max_spine_to_super_spine_links + offset) * 2 + 1) }}

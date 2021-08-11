@@ -14,6 +14,7 @@ router_ospf:
       redistribute:
         static:
         connected:
+        bgp:
       auto_cost_reference_bandwidth: 100
       maximum_paths: 10
       mpls_ldp_sync_default: true
@@ -33,6 +34,18 @@ router_ospf:
           attribute_map: RM-OSPF_SUMMARY
         - prefix: 40.0.0.0/8
           not_advertise: true
+      timers:
+        lsa:
+          rx_min_interval: 100
+          tx_delay:
+            initial: 100
+            min: 200
+            max: 300
+        spf_delay:
+          initial: 100
+          min: 200
+          max: 300
+
     200:
       vrf: ospf_zone
       passive_interface_default: false
@@ -47,7 +60,21 @@ router_ospf:
           route_map: rm-ospf-static
         connected:
           route_map: rm-ospf-connected
+        bgp:
+          route_map: rm-ospf-bgp
+      areas:
+        '0.0.0.2':
+          filter:
+            networks:
+              - 1.1.1.0/24
+              - 2.2.2.0/24
+        '0.0.0.3':
+          filter:
+            prefix_list: PL-OSPF-FILTERING
       max_metric: # not expected to produce config. Just here to test proper variable checks.
+      timers:
+        lsa:
+          rx_min_interval: 100
     300:
       max_metric:
         router_lsa:
@@ -66,6 +93,40 @@ router_ospf:
           on_startup: 222
           summary_lsa:
             override_metric: 456
+    600:
+      areas:
+        0.0.0.1:
+        0.0.10.11:
+          type: stub
+          no_summary: true
+        0.0.20.20:
+          type: nssa
+        0.0.20.21:
+          type: nssa
+          no_summary: true
+        0.0.20.22:
+          type: nssa
+          nssa_only: true
+        0.0.20.23:
+          type: nssa
+          default_information_originate:
+        0.0.20.24:
+          type: nssa
+          default_information_originate:
+            metric: 50
+        0.0.20.25:
+          type: nssa
+          default_information_originate:
+            metric_type: 1
+          no_summary: true
+        0.0.20.26:
+          type: nssa
+          no_summary: true
+          nssa_only: true
+          default_information_originate:
+            metric: 50
+            metric_type: 1
+
 
 ethernet_interfaces:
   Ethernet1:

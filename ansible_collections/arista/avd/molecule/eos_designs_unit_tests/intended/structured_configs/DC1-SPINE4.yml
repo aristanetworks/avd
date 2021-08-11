@@ -152,11 +152,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.4/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-LEAF1A
@@ -228,6 +223,11 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.102/31
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.4/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:

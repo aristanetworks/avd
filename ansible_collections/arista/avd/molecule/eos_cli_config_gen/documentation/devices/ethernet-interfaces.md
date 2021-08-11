@@ -222,6 +222,7 @@ interface Ethernet7
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
+   transceiver media override 100gbase-ar4
 !
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2

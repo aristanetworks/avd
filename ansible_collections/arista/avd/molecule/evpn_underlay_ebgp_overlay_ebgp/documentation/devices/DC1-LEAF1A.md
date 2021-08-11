@@ -262,6 +262,9 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 
@@ -274,6 +277,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -406,6 +418,9 @@ interface Loopback1
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
+| Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan123 |  Tenant_a_WEB_DHCP_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan124 |  Tenant_a_WEB_DHCP_vrf_no_source_int  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
 
@@ -415,6 +430,9 @@ interface Loopback1
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
 | Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
+| Vlan122 |  Tenant_A_WEB_Zone  |  -  |  10.1.22.1/24  |  -  |  -  |  -  |  -  |
+| Vlan123 |  Tenant_A_WEB_Zone  |  -  |  10.1.23.1/24  |  -  |  -  |  -  |  -  |
+| Vlan124 |  Tenant_A_WEB_Zone  |  -  |  10.1.24.1/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
 
@@ -436,6 +454,27 @@ interface Vlan121
    mtu 1560
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.10.254/24
+!
+interface Vlan122
+   description Tenant_a_WEB_DHCP_no_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.22.1/24
+   ip helper-address 1.1.1.1
+!
+interface Vlan123
+   description Tenant_a_WEB_DHCP_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.23.1/24
+   ip helper-address 1.1.1.1 source-interface lo100
+!
+interface Vlan124
+   description Tenant_a_WEB_DHCP_vrf_no_source_int
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.24.1/24
+   ip helper-address 1.1.1.1 vrf TEST
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
@@ -464,6 +503,9 @@ interface Vlan131
 | ---- | --- |
 | 120 | 10120 |
 | 121 | 10121 |
+| 122 | 10122 |
+| 123 | 10123 |
+| 124 | 10124 |
 | 130 | 10130 |
 | 131 | 10131 |
 
@@ -483,6 +525,9 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120
    vxlan vlan 121 vni 10121
+   vxlan vlan 122 vni 10122
+   vxlan vlan 123 vni 10123
+   vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
    vxlan vlan 131 vni 10131
    vxlan vrf Tenant_A_APP_Zone vni 12
@@ -589,7 +634,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -597,10 +641,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.0 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.2 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.4 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.6 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.0 | 65001 | default |
+| 172.31.255.2 | 65001 | default |
+| 172.31.255.4 | 65001 | default |
+| 172.31.255.6 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -621,7 +665,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130-131 |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-124 |
 
 #### Router BGP EVPN VRFs
 
@@ -647,17 +691,20 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.0 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.0 remote-as 65001
    neighbor 172.31.255.0 description DC1-SPINE1_Ethernet1
    neighbor 172.31.255.2 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.2 remote-as 65001
    neighbor 172.31.255.2 description DC1-SPINE2_Ethernet1
    neighbor 172.31.255.4 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.4 remote-as 65001
    neighbor 172.31.255.4 description DC1-SPINE3_Ethernet1
    neighbor 172.31.255.6 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.6 remote-as 65001
    neighbor 172.31.255.6 description DC1-SPINE4_Ethernet1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
@@ -683,7 +730,7 @@ router bgp 65101
       rd 192.168.255.9:11
       route-target both 11:11
       redistribute learned
-      vlan 120-121
+      vlan 120-124
    !
    address-family evpn
       no host-flap detection

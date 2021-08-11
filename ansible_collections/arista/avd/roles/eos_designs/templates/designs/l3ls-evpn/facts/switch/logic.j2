@@ -1,0 +1,18 @@
+{% if inventory_hostname in hostvars[inventory_hostname][switch.node_type_key].nodes | arista.avd.default([]) %}
+{%     set switch_data.node = hostvars[inventory_hostname][switch.node_type_key].nodes[inventory_hostname] %}
+{%     set switch_data.node_group = {} %}
+{% endif %}
+{% if switch_data.node is not arista.avd.defined %}
+{%     for node_group in hostvars[inventory_hostname][switch.node_type_key].node_groups | arista.avd.default([]) %}
+{%         if inventory_hostname in hostvars[inventory_hostname][switch.node_type_key].node_groups[node_group].nodes | arista.avd.default([]) %}
+{%             set switch_data.node_group = hostvars[inventory_hostname][switch.node_type_key].node_groups[node_group] %}
+{%             set switch_data.group = node_group %}
+{%             set switch_data.node = switch_data.node_group.nodes[inventory_hostname] %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
+{% if switch_data.node is arista.avd.defined(fail_action='error',var_name=switch.node_type_key ~ '.(node_groups.)nodes.' ~ inventory_hostname) %}
+{%     set switch_data.defaults = hostvars[inventory_hostname][switch.node_type_key].defaults | arista.avd.default() %}
+{% endif %}
+{% set switch_data.combined = switch_data.defaults | combine(switch_data.node_group, switch_data.node, recursive=true, list_merge='replace') %}

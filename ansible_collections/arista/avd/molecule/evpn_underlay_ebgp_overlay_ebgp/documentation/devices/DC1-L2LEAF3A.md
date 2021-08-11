@@ -253,6 +253,9 @@ vlan internal order ascending range 1006 1199
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 160 | Tenant_A_VMOTION | - |
@@ -274,6 +277,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -301,8 +313,8 @@ vlan 162
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet9 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet9 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
+| Ethernet1 | DC1-LEAF2A_Ethernet9 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet2 | DC1-LEAF2B_Ethernet9 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -329,7 +341,7 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_LEAF2_Po9 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | - |
+| Port-Channel1 | DC1_LEAF2_Po9 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -339,7 +351,7 @@ interface Port-Channel1
    description DC1_LEAF2_Po9
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
+   switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
 ```
 

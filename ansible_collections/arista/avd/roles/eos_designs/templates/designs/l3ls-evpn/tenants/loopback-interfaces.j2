@@ -1,4 +1,4 @@
-{# Leaf Tenant vrf loopback interfaces for VTEP diagnostic #}
+{# Tenant vrf loopback interfaces for VTEP diagnostic #}
 loopback_interfaces:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs %}
@@ -7,7 +7,7 @@ loopback_interfaces:
     description: {{ vrf }}_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: {{ vrf }}
-    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch.id + switch.max_spines) }}/32
+    ip_address: {{ tenants[tenant].vrfs[vrf].vtep_diagnostic.loopback_ip_range | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(switch.id + switch.loopback_ipv4_offset) }}/32
 {%         endif %}
 {%     endfor %}
 {% endfor %}

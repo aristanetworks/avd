@@ -1,4 +1,4 @@
-{# Leaf tenant vlan interfaces #}
+{# tenant vlan interfaces #}
 vlan_interfaces:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
@@ -69,12 +69,8 @@ vlan_interfaces:
     ip_helpers:
 {%                 for helper_ip in svi_ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ svi_ip_helpers[helper_ip].source_interface }}
-{%                     if svi_ip_helpers[helper_ip].source_vrf is arista.avd.defined %}
-        vrf: {{ svi_ip_helpers[helper_ip].source_vrf }}
-{%                     else %}
-        vrf: {{ vrf }}
-{%                     endif %}
+        source_interface: {{ svi_ip_helpers[helper_ip].source_interface | arista.avd.default }}
+        vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
 {%             if svi_raw_eos_cli is arista.avd.defined %}
