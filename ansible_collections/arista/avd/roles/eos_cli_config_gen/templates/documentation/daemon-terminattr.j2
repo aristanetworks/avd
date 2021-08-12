@@ -4,8 +4,8 @@
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF  | AAA Disabled |
-| -------------- | --------------- | --------------------- | ---------------| -------------- | --- | --- |
+| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF | AAA Disabled |
+| -------------- | --------------- | --------------------- | ---------------| -------------- | ---------- | ------------ |
 {% for cluster_name in daemon_terminattr.clusters | arista.avd.natural_sort %}{% set cluster = daemon_terminattr.clusters[cluster_name] %}
 {%     set url = cluster.cvaddrs | join(',') %}
 {%     if cluster.cvauth.method == 'key' %}
@@ -32,7 +32,7 @@
 {% elif daemon_terminattr.cvauth.method == 'token-secure' %}
 {%     set auth = 'token-secure,' ~ daemon_terminattr.cvauth.token_file %}
 {% endif %}
-| gzip | {{ url }} | {{ auth }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.cvvrf }} | |
+| gzip | {{ url }} | {{ auth }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.cvvrf }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
 
 ### TerminAttr Daemon Device Configuration
 
