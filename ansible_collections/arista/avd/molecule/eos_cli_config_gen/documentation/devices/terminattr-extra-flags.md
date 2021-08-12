@@ -1,4 +1,4 @@
-# terminattr-prem-no-ingestkey
+# terminattr-extra-flags
 # Table of Contents
 <!-- toc -->
 
@@ -57,14 +57,14 @@ interface Management1
 
 | CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF  | AAA Disabled |
 | -------------- | --------------- | --------------------- | ---------------| -------------- | --- | --- |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | key, | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | key,magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key, -cvvrf=mgt -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,magickey -cvvrf=mgt -cvgnmi -disableaaa -cvproxy=http://arista:arista@10.10.10.1:3128 -grpcaddr=mgmt/0.0.0.0:6042 -grpcreadonly -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs=/var/log/messages,/var/log/agents/
    no shutdown
 ```
 

@@ -1,4 +1,4 @@
-# terminattr-prem-no-ingestkey
+# terminattr-multi-cluster
 # Table of Contents
 <!-- toc -->
 
@@ -57,14 +57,16 @@ interface Management1
 
 | CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF  | AAA Disabled |
 | -------------- | --------------- | --------------------- | ---------------| -------------- | --- | --- |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | key, | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | |
+| gzip | 10.20.20.1:9910 | key,arista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
+| gzip | 10.30.30.1:9910 | token,/tmp/tokenDC2 | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | key,magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key, -cvvrf=mgt -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvopt DC1.addr=10.20.20.1:9910 -cvopt DC1.auth=key,arista -cvopt DC1.vrf=mgt -cvopt DC2.addr=10.30.30.1:9910 -cvopt DC2.auth=token,/tmp/tokenDC2 -cvopt DC2.vrf=mgt -cvaddr=10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 -cvauth=key,magickey -cvvrf=mgt -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 

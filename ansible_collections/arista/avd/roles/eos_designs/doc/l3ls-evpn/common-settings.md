@@ -44,7 +44,6 @@ terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardwar
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
 terminattr_disable_aaa: "< boolean | default -> false >"
 
-
 # Management interface configuration | Required
 mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
@@ -276,7 +275,6 @@ custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_pre
 
 custom_structured_configuration_list_merge: < replace (default) | append | keep | prepend | append_rp | prepend_rp >
 ```
-
 
 **Example:**
 

@@ -65,13 +65,9 @@ daemon TerminAttr
 {%     endif%}
 {%     if daemon_terminattr.smashexcludes  %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
-{%     else %}
-{%         set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" %}
 {%     endif %}
 {%     if daemon_terminattr.ingestexclude  %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
-{%     else %}
-{%         set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" %}
 {%     endif %}
 {%     if daemon_terminattr.taillogs is arista.avd.defined  %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -taillogs=" ~ daemon_terminattr.taillogs %}
@@ -97,9 +93,6 @@ daemon TerminAttr
 {%     if daemon_terminattr.sflowaddr is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflowaddr=" ~ daemon_terminattr.sflowaddr %}
 {%     endif%}
-{%     if daemon_terminattr.cvgnmi is true %}
-{%         set cvp_config.cli = cvp_config.cli ~ " -cvgnmi" %}
-{%     endif %}
    {{ cvp_config.cli }}
    no shutdown
 {% endif%}
