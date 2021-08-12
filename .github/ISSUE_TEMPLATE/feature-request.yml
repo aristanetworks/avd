@@ -1,0 +1,77 @@
+name: Feature Request
+description: Ask for new feature or feature enhancement
+title: "Feature request Title"
+labels: ['type: enhancement', triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this feature request!
+
+  - type: textarea
+    id: feature-summary
+    attributes:
+      label: Enhancement summary
+      value: "please detail your feature enhancement"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component of AVD is impacted
+      multiple: true
+      options:
+        - eos_designs
+        - eos_cli_config_gen
+        - cvp_configlet_upload
+        - dhcp_provisioner
+        - eos_config_deploy_cvp
+        - eos_config_deploy_eapi
+        - eos_snapshot
+        - eos_validate_state
+        - plugins
+        - others
+    validations:
+      required: true
+
+  - type: textarea
+    id: feature-use-case
+    attributes:
+      label: Use case example
+      value: "please detail your use case"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-solution
+    attributes:
+      label: Describe the solution you would like
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternative-solution
+    attributes:
+      label: Describe alternatives you have considered
+      description: A clear and concise description of any alternative solutions or features you have considered.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Contributing Guide
+      description: By submitting this issue, you agree to follow our [Contributing Guide](https://avd.sh/en/latest/docs/contribution/overview.html)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
