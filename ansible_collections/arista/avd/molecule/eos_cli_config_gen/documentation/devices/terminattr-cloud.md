@@ -55,9 +55,9 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF  | AAA Disabled |
-| -------------- | --------------- | --------------------- | ---------------| -------------- | --- | --- |
-| gzip | apiserver.arista.io:443 | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | |
+| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF | AAA Disabled |
+| -------------- | --------------- | --------------------- | ---------------| -------------- | ---------- | ------------ |
+| gzip | apiserver.arista.io:443 | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
 
 ### TerminAttr Daemon Device Configuration
 
