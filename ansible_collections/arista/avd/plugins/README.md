@@ -42,14 +42,19 @@ To use this filter:
 ### natural_sort filter
 
 The `arista.avd.natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
+An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
 
-The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `none` or `undefined`.
+The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 
 To use this filter:
 
 ```jinja
 {% for item in dictionary_to_natural_sort | arista.avd.natural_sort %}
 {{ natural_sorted_item }}
+{% endfor %}
+
+{% for item in list_of_dicts_to_natural_sort | arista.avd.natural_sort('name') %}
+{{ dict_sorted_on_name }}
 {% endfor %}
 ```
 
