@@ -2,7 +2,7 @@ vxlan_tunnel_interface:
 {# vxlan-vtep interface #}
   Vxlan1:
     description: {{ inventory_hostname }}_VTEP
-    source_interface: {{ vxlan_source_interface | arista.avd.default('Loopback1') }}
+    source_interface: {{ switch.vtep_loopback }}
 {% if switch.mlag is arista.avd.defined(true) %}
     virtual_router:
       encapsulation_mac_address: "mlag-system-id"
