@@ -401,21 +401,21 @@ interface Port-Channel7
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.7/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.6/32 |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.6/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| Loopback10 | EVPN_UNDERLAY |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -428,7 +428,7 @@ interface Loopback0
    isis enable EVPN_UNDERLAY
    isis passive
 !
-interface Loopback1
+interface Loopback10
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.168.254.6/32
@@ -484,7 +484,7 @@ interface Vlan4094
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback10
 
 #### UDP port: 4789
 
@@ -499,7 +499,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback10
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
 ```
@@ -588,7 +588,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| Loopback10 | EVPN_UNDERLAY |  - |  passive |
 
 ### Router ISIS Device Configuration
 
