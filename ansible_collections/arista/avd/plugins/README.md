@@ -106,15 +106,20 @@ Arista AVD provides built-in test plugins to help verify data efficiently in jin
 ### defined test
 
 The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
-`arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
+`arista.avd.defined` test also accepts an optional `test_value` argument to test if the value equals this.
+The optional `var_type` argument can be used to also test if the variable is of the expected type.
+
 Optionally the test can emit warnings or errors if the test fails.
 
-Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value.
+Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value and/or class.
 
 Syntax:
 
 ```jinja
-{% <value> is arista.avd.defined(test_value=<test_value>,fail_action=['warning','error'],var_name=<string representing name of value>) %}
+{% <value> is arista.avd.defined(test_value=<test_value>,
+                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple'],
+                                 fail_action=['warning','error'],
+                                 var_name=<string representing name of value>) %}
 ```
 
 To use this test:
