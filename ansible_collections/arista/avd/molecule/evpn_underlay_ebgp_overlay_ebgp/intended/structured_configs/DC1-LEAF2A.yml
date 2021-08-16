@@ -513,7 +513,7 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 192.168.255.10/32
-  Loopback1:
+  Loopback10:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.168.254.10/32
@@ -608,7 +608,7 @@ ip_igmp_snooping:
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
-    source_interface: Loopback1
+    source_interface: Loopback10
     vxlan_udp_port: 4789
     vxlan_vni_mappings:
       vlans:
