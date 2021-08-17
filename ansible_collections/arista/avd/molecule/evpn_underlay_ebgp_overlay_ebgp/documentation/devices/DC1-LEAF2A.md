@@ -556,7 +556,7 @@ interface Port-Channel20
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.10/32 |
 
 #### IPv6
@@ -564,7 +564,7 @@ interface Port-Channel20
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
 
 
@@ -577,7 +577,7 @@ interface Loopback0
    no shutdown
    ip address 192.168.255.10/32
 !
-interface Loopback1
+interface Loopback10
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.168.254.10/32
@@ -737,7 +737,7 @@ interface Vlan311
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback10
 
 #### UDP port: 4789
 
@@ -780,7 +780,7 @@ interface Vlan311
 ```eos
 !
 interface Vxlan1
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback10
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111

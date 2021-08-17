@@ -296,21 +296,18 @@ interface Ethernet4
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.5/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.5/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -322,20 +319,13 @@ interface Loopback0
    ip address 192.168.255.5/32
    isis enable EVPN_UNDERLAY
    isis passive
-!
-interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
-   no shutdown
-   ip address 192.168.254.5/32
-   isis enable EVPN_UNDERLAY
-   isis passive
 ```
 
 ## VXLAN Interface
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback0
 
 #### UDP port: 4789
 
@@ -350,7 +340,7 @@ interface Loopback1
 ```eos
 !
 interface Vxlan1
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback0
    vxlan udp-port 4789
 ```
 
@@ -437,7 +427,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
 
 ### Router ISIS Device Configuration
 

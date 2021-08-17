@@ -229,7 +229,7 @@ loopback_interfaces:
     ip_address: 192.168.255.7/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
-  Loopback1:
+  Loopback10:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.168.254.6/32
@@ -246,7 +246,7 @@ router_isis:
   - Ethernet3
   - Ethernet4
   - Vlan4093
-  - Loopback1
+  - Loopback10
   is_type: level-2
   address_family:
   - ipv4 unicast
@@ -281,7 +281,7 @@ ip_igmp_snooping:
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
-    source_interface: Loopback1
+    source_interface: Loopback10
     virtual_router:
       encapsulation_mac_address: mlag-system-id
     vxlan_udp_port: 4789

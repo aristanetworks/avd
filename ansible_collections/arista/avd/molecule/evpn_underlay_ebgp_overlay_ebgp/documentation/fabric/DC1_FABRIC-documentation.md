@@ -158,7 +158,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 7 | 2.74 % |
+| 192.168.254.0/24 | 256 | 4 | 1.57 % |
 
 ## VTEP Loopback Node allocation
 
@@ -166,8 +166,5 @@
 | --- | ---- | --------- |
 | DC1_FABRIC | DC1-BL1A | 192.168.254.14/32 |
 | DC1_FABRIC | DC1-BL1B | 192.168.254.15/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.254.9/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.254.10/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.254.11/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.12/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.12/32 |

@@ -15,7 +15,7 @@ router_isis:
     - Vlan{{ switch.mlag_peer_l3_vlan }}
 {% endif %}
 {% if switch.vtep is arista.avd.defined(true) %}
-    - Loopback1
+    - {{ switch.vtep_loopback }}
 {% endif %}
   is_type: level-2
   address_family: ['ipv4 unicast']

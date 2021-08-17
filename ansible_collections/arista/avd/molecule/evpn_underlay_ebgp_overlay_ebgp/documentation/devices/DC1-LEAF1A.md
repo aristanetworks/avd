@@ -385,14 +385,12 @@ interface Ethernet7
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.9/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.9/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -403,11 +401,6 @@ interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
    ip address 192.168.255.9/32
-!
-interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
-   no shutdown
-   ip address 192.168.254.9/32
 ```
 
 ## VLAN Interfaces
@@ -493,7 +486,7 @@ interface Vlan131
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback0
 
 #### UDP port: 4789
 
@@ -521,7 +514,7 @@ interface Vlan131
 ```eos
 !
 interface Vxlan1
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback0
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120
    vxlan vlan 121 vni 10121
@@ -804,7 +797,6 @@ no ip igmp snooping vlan 120
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 192.168.255.0/24 eq 32 |
-| 20 | permit 192.168.254.0/24 eq 32 |
 
 ### Prefix-lists Device Configuration
 
@@ -812,7 +804,6 @@ no ip igmp snooping vlan 120
 !
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
-   seq 20 permit 192.168.254.0/24 eq 32
 ```
 
 ## Route-maps

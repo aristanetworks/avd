@@ -226,6 +226,10 @@ defaults <- node_group <- node_group.node <- node
 
     # Offset all assigned loopback IP addresses.
     loopback_ipv4_offset: 2
+
+    # Set VXLAN source interface. Loopback1 is default
+    vtep_loopback: < Loopback_interface_1 >
+
 ```
 
 ### BGP & EVPN Control plane
