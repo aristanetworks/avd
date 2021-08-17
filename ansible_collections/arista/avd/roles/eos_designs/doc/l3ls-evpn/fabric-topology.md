@@ -228,7 +228,7 @@ defaults <- node_group <- node_group.node <- node
     loopback_ipv4_offset: 2
 
     # Set VXLAN source interface. Loopback1 is default
-    vtep_loopback: Loopback1
+    vtep_loopback: < Loopback_interface_1 >
 
 ```
 
