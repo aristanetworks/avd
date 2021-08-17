@@ -59,7 +59,7 @@
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].hosts is arista.avd.defined %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
-| {{ vrf }} | {{ host }} | {% if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined %}{% for port in logging.vrfs[vrf].hosts[host].ports %} {{ port }} {%endfor%}{%else%}Default{%endif%} | {{ logging.vrfs[vrf].hosts[host].protocol | arista.avd.default('UDP') | upper }} |
+| {{ vrf }} | {{ host }} | {% if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined %}{% for port in logging.vrfs[vrf].hosts[host].ports %} {{ port }} {% endfor %}{% else %}Default{% endif %} | {{ logging.vrfs[vrf].hosts[host].protocol | arista.avd.default('UDP') | upper }} |
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}
