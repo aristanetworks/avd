@@ -1508,7 +1508,7 @@ daemon_terminattr:
         - < ip/fqdn >:<port>
         - < ip/fqdn >:<port>
       cvauth:
-        method: < "token", "token-secure", "key" >
+        method: < "token" | "token-secure" | "key" >
         key: < key >
         token_file: < path | e.g. "/tmp/token" >
       cvobscurekeyfile: < true | false >
@@ -1517,7 +1517,7 @@ daemon_terminattr:
       cvvrf: < vrf >
   # Authentication scheme used to connect to CloudVision
   cvauth:
-    method: < "token", "token-secure", "key" >
+    method: < "token" | "token-secure" | "key" >
     key: < key >
     token_file: < path | e.g. "/tmp/token" >
   # Compression scheme when streaming to CloudVision. The default is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
@@ -1526,7 +1526,7 @@ daemon_terminattr:
   # Encrypt the private key used for authentication to CloudVision
   cvobscurekeyfile: < true | false >
   # Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
-  # The expected form is http://[user:password@]ip:port, e.g.: -cvproxy=http://arista:arista@10.83.12.78:3128
+  # The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'
   # Available as of TerminAttr v1.13.0
   cvproxy: < URL >
   # set source IP address in case of in-band managament

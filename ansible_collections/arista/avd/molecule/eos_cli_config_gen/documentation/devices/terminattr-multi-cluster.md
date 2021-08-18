@@ -55,11 +55,11 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF | AAA Disabled |
-| -------------- | --------------- | --------------------- | ---------------| -------------- | ---------- | ------------ |
-| gzip | 10.20.20.1:9910 | key,arista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
-| gzip | 10.30.30.1:9910 | token,/tmp/tokenDC2 | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
-| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | key,magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | mgt | False |
+| CV Compression | CloudVision Servers |  VRF | Authentication | Smash Excludes | Ingest Exclude | AAA Disabled |
+| -------------- | ------------------- | ---- | -------------- | -------------- | -------------- | ------------ |
+| gzip | 10.20.20.1:9910 | mgt | key,arista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| gzip | 10.30.30.1:9910 | mgt | token,/tmp/tokenDC2 | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
+| gzip | 10.10.10.8:9910,10.10.10.9:9910,10.10.10.10:9910 | mgt | key,magickey | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 

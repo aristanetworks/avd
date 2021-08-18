@@ -4,15 +4,15 @@
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF | AAA Disabled |
-| -------------- | --------------- | --------------------- | ---------------| -------------- | ---------- | ------------ |
+| CV Compression | CloudVision Servers |  VRF | Authentication | Smash Excludes | Ingest Exclude | AAA Disabled |
+| -------------- | ------------------- | ---- | -------------- | -------------- | -------------- | ------------ |
 {% for cluster_name in daemon_terminattr.clusters | arista.avd.natural_sort %}{% set cluster = daemon_terminattr.clusters[cluster_name] %}
 {%     set url = cluster.cvaddrs | join(',') %}
-{%     if cluster.cvauth.method == 'key' %}
+{%     if cluster.cvauth.method is arista.avd.defined('key') and cluster.cvauth.key is arista.avd.defined %}
 {%         set auth = 'key,' ~ cluster.cvauth.key %}
-{%     elif cluster.cvauth.method == 'token' %}
+{%     elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
 {%         set auth = 'token,' ~ cluster.cvauth.token_file %}
-{%     elif cluster.cvauth.method == 'token-secure' %}
+{%     elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
 {%         set auth = 'token-secure,' ~ cluster.cvauth.token_file %}+
 {%     endif%}
 {%     if cluster.cvvrf is arista.avd.defined %}
@@ -20,19 +20,19 @@
 {%     else %}
 {%         set cvvrf = daemon_terminattr.cvvrf %}
 {%     endif %}
-| gzip | {{ url }} | {{ auth }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ cvvrf }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
+| gzip | {{ url }} | {{ cvvrf }} | {{ auth }} | {{ daemon_terminattr.smashexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.ingestexclude | arista.avd.default('-') }} | {{ daemon_terminattr.disable_aaa | arista.avd.default (false) }} |
 {% endfor %}
 {% if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%     set url = daemon_terminattr.cvaddrs | join(',') %}
 {% endif %}
-{% if daemon_terminattr.cvauth.method == 'key' %}
+{% if daemon_terminattr.cvauth.method is arista.avd.defined('key') and daemon_terminattr.cvauth.key is arista.avd.defined %}
 {%     set auth = 'key,' ~ daemon_terminattr.cvauth.key %}
-{% elif daemon_terminattr.cvauth.method == 'token' %}
+{% elif daemon_terminattr.cvauth.method is arista.avd.defined('token') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%     set auth = 'token,' ~ daemon_terminattr.cvauth.token_file %}
-{% elif daemon_terminattr.cvauth.method == 'token-secure' %}
+{% elif daemon_terminattr.cvauth.method is arista.avd.defined('token-secure') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%     set auth = 'token-secure,' ~ daemon_terminattr.cvauth.token_file %}
 {% endif %}
-| gzip | {{ url }} | {{ auth }} | {{ daemon_terminattr.smashexcludes }} | {{ daemon_terminattr.ingestexclude }} | {{ daemon_terminattr.cvvrf }} | {{ daemon_terminattr.disable_aaa | default (false) }} |
+| gzip | {{ url }} | {{ daemon_terminattr.cvvrf }} | {{ auth }} | {{ daemon_terminattr.smashexcludes | arista.avd.default('-') }} | {{ daemon_terminattr.ingestexclude | arista.avd.default('-') }} | {{ daemon_terminattr.disable_aaa | arista.avd.default (false) }} |
 
 ### TerminAttr Daemon Device Configuration
 

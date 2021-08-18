@@ -55,9 +55,9 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication | Smash Excludes | Ingest Exclude | Ingest VRF | AAA Disabled |
-| -------------- | --------------- | --------------------- | ---------------| -------------- | ---------- | ------------ |
-| gzip | 10.10.10.10:9910 | key,key | test | test | default | False |
+| CV Compression | CloudVision Servers |  VRF | Authentication | Smash Excludes | Ingest Exclude | AAA Disabled |
+| -------------- | ------------------- | ---- | -------------- | -------------- | -------------- | ------------ |
+| gzip | 10.10.10.10:9910 | default | key,key | test | test | False |
 
 ### TerminAttr Daemon Device Configuration
 
