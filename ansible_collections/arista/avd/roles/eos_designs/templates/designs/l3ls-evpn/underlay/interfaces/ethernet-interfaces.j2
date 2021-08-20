@@ -8,7 +8,7 @@ ethernet_interfaces:
     peer: {{ link.peer }}
     peer_interface: {{ link.peer_interface }}
     peer_type: {{ link.peer_type }}
-    description: {{ link.description }}
+    description: "{% include switch.interface_descriptions.p2p_uplinks %}"
 {%         if link.speed is arista.avd.defined %}
     speed: {{ link.speed }}
 {%         endif %}
