@@ -45,5 +45,5 @@ default_templates:
       vtep_ip: 'designs/l3ls-evpn/ip-addressing/vtep-ip.j2'
 
     interface_descriptions:
-      p2p_uplinks: 'designs/l3ls-evpn/interface-descriptions/p2p-uplinks.j2'
-      port_channel_uplinks: 'designs/l3ls-evpn/interface-descriptions/port-channel-uplinks.j2'
+      underlay_ethernet_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay-ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay-port-channel-interfaces.j2'
