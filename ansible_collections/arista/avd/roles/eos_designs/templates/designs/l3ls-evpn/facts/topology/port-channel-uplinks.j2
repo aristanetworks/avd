@@ -15,6 +15,7 @@ topology:
       peer_interface: {{ switch.uplink_switch_interfaces[loop.index0] }}
       peer_type: {{ hostvars[uplink_switch].type }}
       type: underlay_l2
+      description: {% include switch.interface_descriptions.port_channel_uplinks %}
 {%         if switch.uplink_interface_speed is arista.avd.defined %}
       speed: {{ switch.uplink_interface_speed }}
 {%         endif %}
