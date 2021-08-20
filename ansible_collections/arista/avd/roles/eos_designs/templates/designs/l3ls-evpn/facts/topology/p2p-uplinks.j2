@@ -15,7 +15,7 @@ topology:
       peer_type: {{ hostvars[uplink_switch].type }}
       peer_bgp_as: {{ hostvars[uplink_switch].switch.bgp_as | arista.avd.default() }}
       type: underlay_p2p
-      description: {% include switch.interface_descriptions.p2p_uplinks %}
+      description: "{% include switch.interface_descriptions.p2p_uplinks %}"
 {%         if switch.uplink_interface_speed is arista.avd.defined %}
       speed: {{ switch.uplink_interface_speed }}
 {%         endif %}

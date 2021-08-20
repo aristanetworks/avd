@@ -43,3 +43,7 @@ default_templates:
       p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-peer-ip.j2'
       vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/vtep-ip-mlag.j2'
       vtep_ip: 'designs/l3ls-evpn/ip-addressing/vtep-ip.j2'
+
+    interface_descriptions:
+      p2p_uplinks: 'designs/l3ls-evpn/interface-descriptions/p2p-uplinks.j2'
+      port_channel_uplinks: 'designs/l3ls-evpn/interface-descriptions/port-channel-uplinks.j2'
