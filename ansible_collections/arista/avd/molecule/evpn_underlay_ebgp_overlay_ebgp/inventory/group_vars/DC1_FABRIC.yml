@@ -20,6 +20,11 @@ evpn_hostflap_detection:
 # Set short_esi prefix to non-default value
 evpn_short_esi_prefix: "0000:1234:"
 
+# Custom loopback descriptions
+interface_descriptions:
+  loopback0: CUSTOM_EVPN_Overlay_Peering
+  vtep_loopback: CUSTOM_VTEP_VXLAN_Tunnel_Source
+
 # bgp peer groups passwords
 bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:

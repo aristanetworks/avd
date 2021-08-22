@@ -555,17 +555,17 @@ interface Port-Channel20
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
-| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.10/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | 192.168.255.10/32 |
+| Loopback10 | CUSTOM_VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
+| Loopback100 | CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC | Tenant_A_OP_Zone | 10.255.1.10/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | - |
+| Loopback10 | CUSTOM_VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback100 | CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC | Tenant_A_OP_Zone | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -573,17 +573,17 @@ interface Port-Channel20
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering
    no shutdown
    ip address 192.168.255.10/32
 !
 interface Loopback10
-   description VTEP_VXLAN_Tunnel_Source
+   description CUSTOM_VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.168.254.10/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.10/32
@@ -595,8 +595,8 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan110 |  SVI 110 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan111 |  SVI 111 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
 | Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
@@ -637,13 +637,13 @@ interface Loopback100
 ```eos
 !
 interface Vlan110
-   description Tenant_A_OP_Zone_1
+   description SVI 110 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.10.1/24
 !
 interface Vlan111
-   description Tenant_A_OP_Zone_2
+   description SVI 111 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24
