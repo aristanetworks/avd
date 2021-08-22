@@ -104,6 +104,8 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
           vtep_loopback: Loopback0
+          structured_config:
+            tags: no-monitor
     DC1_LEAF2:
       bgp_as: 65102
       rack: "rackD"

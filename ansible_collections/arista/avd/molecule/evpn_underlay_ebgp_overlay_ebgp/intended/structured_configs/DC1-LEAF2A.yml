@@ -327,7 +327,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet2
     peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2
+    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2 '
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -337,7 +337,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet2
     peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2
+    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2 '
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -347,7 +347,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet2
     peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2
+    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2 '
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -357,7 +357,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet2
     peer_type: spine
-    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2
+    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2 '
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -367,7 +367,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1A
     peer_interface: Ethernet1
     peer_type: l2leaf
-    description: DC1-L2LEAF1A_Ethernet1
+    description: 'DC1-L2LEAF1A_Ethernet1 '
     type: switched
     shutdown: false
     channel_group:
@@ -377,7 +377,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1B
     peer_interface: Ethernet1
     peer_type: l2leaf
-    description: DC1-L2LEAF1B_Ethernet1
+    description: 'DC1-L2LEAF1B_Ethernet1 '
     type: switched
     shutdown: false
     channel_group:
@@ -387,7 +387,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF3A
     peer_interface: Ethernet1
     peer_type: l2leaf
-    description: DC1-L2LEAF3A_Ethernet1
+    description: 'DC1-L2LEAF3A_Ethernet1 '
     type: switched
     shutdown: false
     channel_group:

@@ -313,17 +313,17 @@ vlan 131
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -331,7 +331,7 @@ interface Ethernet1
    ip address 172.31.255.1/31
 !
 interface Ethernet2
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -339,7 +339,7 @@ interface Ethernet2
    ip address 172.31.255.3/31
 !
 interface Ethernet3
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -347,7 +347,7 @@ interface Ethernet3
    ip address 172.31.255.5/31
 !
 interface Ethernet4
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500

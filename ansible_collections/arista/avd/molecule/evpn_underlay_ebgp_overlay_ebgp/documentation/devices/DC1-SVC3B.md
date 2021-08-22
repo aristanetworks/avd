@@ -449,8 +449,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet7 | DC1-L2LEAF2A_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | DC1-L2LEAF2B_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
 | Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet12 |  CUSTOM_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
@@ -468,10 +468,10 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 172.31.255.65/31 | default | 1500 | false | - | - |
-| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 172.31.255.67/31 | default | 1500 | false | - | - |
-| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | 172.31.255.69/31 | default | 1500 | false | - | - |
-| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | 172.31.255.71/31 | default | 1500 | false | - | - |
+| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5  | routed | - | 172.31.255.65/31 | default | 1500 | false | - | - |
+| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5  | routed | - | 172.31.255.67/31 | default | 1500 | false | - | - |
+| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5  | routed | - | 172.31.255.69/31 | default | 1500 | false | - | - |
+| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5  | routed | - | 172.31.255.71/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -488,12 +488,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet2
+   description DC1-L2LEAF2A_Ethernet2 
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet2
+   description DC1-L2LEAF2B_Ethernet2 
    no shutdown
    channel-group 7 mode active
 !
@@ -586,7 +586,7 @@ interface Ethernet19
    lacp port-priority 32768
 !
 interface Ethernet41
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5 
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -594,7 +594,7 @@ interface Ethernet41
    ip address 172.31.255.65/31
 !
 interface Ethernet42
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5 
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -602,7 +602,7 @@ interface Ethernet42
    ip address 172.31.255.67/31
 !
 interface Ethernet43
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5 
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -610,7 +610,7 @@ interface Ethernet43
    ip address 172.31.255.69/31
 !
 interface Ethernet44
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5 
    no shutdown
    speed forced 100gfull
    mtu 1500
