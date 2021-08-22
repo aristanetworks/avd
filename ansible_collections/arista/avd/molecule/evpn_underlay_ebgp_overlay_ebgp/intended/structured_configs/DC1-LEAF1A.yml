@@ -191,7 +191,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -201,7 +201,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -211,7 +211,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -221,7 +221,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -231,7 +231,7 @@ ethernet_interfaces:
     peer: server02_SINGLE_NODE
     peer_interface: Eth1
     peer_type: server
-    description: server02_SINGLE_NODE_Eth1
+    description: CUSTOM_server02_SINGLE_NODE_Eth1
     type: switched
     shutdown: false
     mode: access
@@ -240,7 +240,7 @@ ethernet_interfaces:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
     peer_type: server
-    description: server02_SINGLE_NODE_TRUNK_Eth1
+    description: CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
     l2_mtu: 8000
     type: switched
     shutdown: false

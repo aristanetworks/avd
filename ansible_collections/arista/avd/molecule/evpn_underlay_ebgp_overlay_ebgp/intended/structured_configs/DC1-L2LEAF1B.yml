@@ -126,7 +126,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1_LEAF2_Po7
+    description: CUSTOM_DC1_LEAF2_Po7
     type: switched
     shutdown: false
     vlans: 110-111,120-124,130-131,160-162

@@ -341,14 +341,14 @@ interface Ethernet2
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_LEAF2_Po9 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | - |
+| Port-Channel1 | CUSTOM_DC1_LEAF2_Po9 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC1_LEAF2_Po9
+   description CUSTOM_DC1_LEAF2_Po9
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162

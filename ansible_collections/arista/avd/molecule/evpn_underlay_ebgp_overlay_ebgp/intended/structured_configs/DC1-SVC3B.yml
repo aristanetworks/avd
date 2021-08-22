@@ -799,14 +799,14 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
   Port-Channel7:
-    description: DC1_L2LEAF2_Po1
+    description: CUSTOM_DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
     vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel10:
-    description: server03_ESI_PortChanne1
+    description: CUSTOM_server03_ESI_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
@@ -815,7 +815,7 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
   Port-Channel14:
-    description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -839,7 +839,7 @@ port_channel_interfaces:
         unit: percent
     mlag: 14
   Port-Channel15:
-    description: server08_no_profile_port_channel_server08_no_profile_port_channel
+    description: CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
     type: switched
     shutdown: false
     mode: trunk
@@ -862,7 +862,7 @@ port_channel_interfaces:
         unit: percent
     mlag: 15
   Port-Channel17:
-    description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+    description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
     type: switched
     shutdown: false
     mode: trunk
@@ -887,7 +887,7 @@ port_channel_interfaces:
     lacp_fallback_mode: static
     lacp_fallback_timeout: 90
   Port-Channel18:
-    description: server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -913,7 +913,7 @@ port_channel_interfaces:
     lacp_fallback_mode: static
     lacp_fallback_timeout: 10
   Port-Channel19:
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -983,7 +983,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -993,7 +993,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -1003,7 +1003,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -1013,7 +1013,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -1023,7 +1023,7 @@ ethernet_interfaces:
     peer: server03_ESI
     peer_interface: Eth2
     peer_type: server
-    description: server03_ESI_Eth2
+    description: CUSTOM_server03_ESI_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1035,7 +1035,7 @@ ethernet_interfaces:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth2
     peer_type: server
-    description: server04_inherit_all_from_profile_Eth2
+    description: CUSTOM_server04_inherit_all_from_profile_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1061,7 +1061,7 @@ ethernet_interfaces:
     peer: server05_no_profile
     peer_interface: Eth2
     peer_type: server
-    description: server05_no_profile_Eth2
+    description: CUSTOM_server05_no_profile_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1086,7 +1086,7 @@ ethernet_interfaces:
     peer: server06_override_profile
     peer_interface: Eth2
     peer_type: server
-    description: server06_override_profile_Eth2
+    description: CUSTOM_server06_override_profile_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1112,7 +1112,7 @@ ethernet_interfaces:
     peer: server07_inherit_all_from_profile_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server07_inherit_all_from_profile_port_channel_Eth2
+    description: CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1141,7 +1141,7 @@ ethernet_interfaces:
     peer: server08_no_profile_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server08_no_profile_port_channel_Eth2
+    description: CUSTOM_server08_no_profile_port_channel_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1169,7 +1169,7 @@ ethernet_interfaces:
     peer: server09_override_profile_no_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server09_override_profile_no_port_channel_Eth2
+    description: CUSTOM_server09_override_profile_no_port_channel_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1195,7 +1195,7 @@ ethernet_interfaces:
     peer: server10_no_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server10_no_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1224,7 +1224,7 @@ ethernet_interfaces:
     peer: server11_inherit_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1254,7 +1254,7 @@ ethernet_interfaces:
     peer: server12_inherit_nested_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false

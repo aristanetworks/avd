@@ -254,20 +254,20 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet42 | routed | - | 172.31.255.50/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet42 | routed | - | 172.31.255.66/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet42 | routed | - | 172.31.255.82/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet46 | routed | - | 172.31.255.98/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | routed | - | 172.31.255.2/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | routed | - | 172.31.255.18/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | routed | - | 172.31.255.34/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42 | routed | - | 172.31.255.50/31 | default | 1500 | false | - | - |
+| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42 | routed | - | 172.31.255.66/31 | default | 1500 | false | - | - |
+| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42 | routed | - | 172.31.255.82/31 | default | 1500 | false | - | - |
+| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46 | routed | - | 172.31.255.98/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -275,7 +275,7 @@ interface Ethernet1
    ip address 172.31.255.2/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -283,7 +283,7 @@ interface Ethernet2
    ip address 172.31.255.18/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -291,7 +291,7 @@ interface Ethernet3
    ip address 172.31.255.34/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SVC3A_Ethernet42
+   description CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -299,7 +299,7 @@ interface Ethernet4
    ip address 172.31.255.50/31
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-SVC3B_Ethernet42
+   description CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -307,7 +307,7 @@ interface Ethernet5
    ip address 172.31.255.66/31
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-BL1A_Ethernet42
+   description CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -315,7 +315,7 @@ interface Ethernet6
    ip address 172.31.255.82/31
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-BL1B_Ethernet46
+   description CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46
    no shutdown
    speed forced 100gfull
    mtu 1500

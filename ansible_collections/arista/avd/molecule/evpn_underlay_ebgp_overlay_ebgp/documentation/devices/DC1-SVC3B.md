@@ -451,16 +451,16 @@ vlan 4092
 | Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet10 | server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
-| Ethernet11 |  server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet12 |  server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet13 |  server06_override_profile_Eth2 | access | 210 | - | - | - |
-| Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
-| Ethernet15 | server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 |  server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
-| Ethernet17 | server10_no_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 17 |
-| Ethernet18 | server11_inherit_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 18 |
-| Ethernet19 | server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 19 |
+| Ethernet10 | CUSTOM_server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
+| Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet12 |  CUSTOM_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet13 |  CUSTOM_server06_override_profile_Eth2 | access | 210 | - | - | - |
+| Ethernet14 | CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
+| Ethernet15 | CUSTOM_server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
+| Ethernet16 |  CUSTOM_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
+| Ethernet17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 17 |
+| Ethernet18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 18 |
+| Ethernet19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 19 |
 
 *Inherited from Port-Channel Interface
 
@@ -468,10 +468,10 @@ vlan 4092
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet41 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 172.31.255.65/31 | default | 1500 | false | - | - |
-| Ethernet42 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 172.31.255.67/31 | default | 1500 | false | - | - |
-| Ethernet43 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | 172.31.255.69/31 | default | 1500 | false | - | - |
-| Ethernet44 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | 172.31.255.71/31 | default | 1500 | false | - | - |
+| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5 | routed | - | 172.31.255.65/31 | default | 1500 | false | - | - |
+| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5 | routed | - | 172.31.255.67/31 | default | 1500 | false | - | - |
+| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5 | routed | - | 172.31.255.69/31 | default | 1500 | false | - | - |
+| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5 | routed | - | 172.31.255.71/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -498,12 +498,12 @@ interface Ethernet8
    channel-group 7 mode active
 !
 interface Ethernet10
-   description server03_ESI_Eth2
+   description CUSTOM_server03_ESI_Eth2
    no shutdown
    channel-group 10 mode active
 !
 interface Ethernet11
-   description server04_inherit_all_from_profile_Eth2
+   description CUSTOM_server04_inherit_all_from_profile_Eth2
    no shutdown
    l2 mtu 8000
    switchport
@@ -517,7 +517,7 @@ interface Ethernet11
    storm-control unknown-unicast level 2
 !
 interface Ethernet12
-   description server05_no_profile_Eth2
+   description CUSTOM_server05_no_profile_Eth2
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
@@ -530,7 +530,7 @@ interface Ethernet12
    storm-control unknown-unicast level 2
 !
 interface Ethernet13
-   description server06_override_profile_Eth2
+   description CUSTOM_server06_override_profile_Eth2
    no shutdown
    l2 mtu 8000
    switchport
@@ -544,17 +544,17 @@ interface Ethernet13
    storm-control unknown-unicast level 2
 !
 interface Ethernet14
-   description server07_inherit_all_from_profile_port_channel_Eth2
+   description CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2
    no shutdown
    channel-group 14 mode active
 !
 interface Ethernet15
-   description server08_no_profile_port_channel_Eth2
+   description CUSTOM_server08_no_profile_port_channel_Eth2
    no shutdown
    channel-group 15 mode on
 !
 interface Ethernet16
-   description server09_override_profile_no_port_channel_Eth2
+   description CUSTOM_server09_override_profile_no_port_channel_Eth2
    no shutdown
    l2 mtu 8000
    switchport
@@ -568,25 +568,25 @@ interface Ethernet16
    storm-control unknown-unicast level 2
 !
 interface Ethernet17
-   description server10_no_profile_port_channel_lacp_fallback_Eth2
+   description CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2
    no shutdown
    channel-group 17 mode active
    lacp port-priority 32768
 !
 interface Ethernet18
-   description server11_inherit_profile_port_channel_lacp_fallback_Eth2
+   description CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
    no shutdown
    channel-group 18 mode active
    lacp port-priority 32768
 !
 interface Ethernet19
-   description server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
+   description CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
    no shutdown
    channel-group 19 mode active
    lacp port-priority 32768
 !
 interface Ethernet41
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -594,7 +594,7 @@ interface Ethernet41
    ip address 172.31.255.65/31
 !
 interface Ethernet42
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -602,7 +602,7 @@ interface Ethernet42
    ip address 172.31.255.67/31
 !
 interface Ethernet43
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -610,7 +610,7 @@ interface Ethernet43
    ip address 172.31.255.69/31
 !
 interface Ethernet44
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -627,13 +627,13 @@ interface Ethernet44
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel10 | server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
-| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
-| Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
-| Port-Channel18 | server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
-| Port-Channel19 | server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
+| Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
+| Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel | switched | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
+| Port-Channel18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
+| Port-Channel19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -649,7 +649,7 @@ interface Port-Channel5
    switchport trunk group MLAG
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description CUSTOM_DC1_L2LEAF2_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
@@ -657,7 +657,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel10
-   description server03_ESI_PortChanne1
+   description CUSTOM_server03_ESI_PortChanne1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,210-211
@@ -668,7 +668,7 @@ interface Port-Channel10
    lacp system-id 0303.0202.0101
 !
 interface Port-Channel14
-   description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+   description CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
@@ -682,7 +682,7 @@ interface Port-Channel14
    storm-control unknown-unicast level 2
 !
 interface Port-Channel15
-   description server08_no_profile_port_channel_server08_no_profile_port_channel
+   description CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
@@ -696,7 +696,7 @@ interface Port-Channel15
    storm-control unknown-unicast level 2
 !
 interface Port-Channel17
-   description server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+   description CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
@@ -712,7 +712,7 @@ interface Port-Channel17
    storm-control unknown-unicast level 2
 !
 interface Port-Channel18
-   description server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+   description CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
@@ -728,7 +728,7 @@ interface Port-Channel18
    storm-control unknown-unicast level 2
 !
 interface Port-Channel19
-   description server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+   description CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport
    switchport trunk allowed vlan 1-4094
