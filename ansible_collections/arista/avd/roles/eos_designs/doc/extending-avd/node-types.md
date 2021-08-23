@@ -57,27 +57,31 @@ node_type_keys:
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
 ```
 
-!!! info
-    To help format the custom interface descriptions, the following contextual variables are available to the custom template:
-    underlay_ethernet_interfaces:
-    - `{{ link.peer }}`
-    - `{{ link.peer_interface }}`
-    - `{{ link.type }} (underlay_p2p or underlay_l2)`
-    underlay_port_channel_interfaces:
-    - `{{ link.channel_description }}`
-    - `{{ link.channel_group_id }}`
-    - `{{ link.peer_channel_group_id }}`
-    connected_endpoints_ethernet_interfaces:
-    - `{{ peer }}`
-    - `{{ peer_interface }}`
-    connected_endpoints_port_channel_interfaces:
-    - `{{ peer }}`
-    - `{{ adapter_port_channel_description }}`
-    For more information about the available contextual properties, see the following links
-    - [underlay_ethernet_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/designs/l3ls-evpn/facts/topology/p2p-uplinks.j2)
-    - [underlay_port_channel_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/designs/l3ls-evpn/facts/topology/port-channel-uplinks.j2)
-    - [connected_endpoints_ethernet_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/connected_endpoints/ethernet-interfaces.j2)
-    - [connected_endpoints_port_channel_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/connected_endpoints/port-channel-interfaces.j2)
+To help format the custom interface descriptions, the following contextual variables are available to the custom template:
+
+underlay_ethernet_interfaces:
+- `{{ link.peer }}`
+- `{{ link.peer_interface }}`
+- `{{ link.type }} (underlay_p2p or underlay_l2)`
+
+underlay_port_channel_interfaces:
+- `{{ link.channel_description }}`
+- `{{ link.channel_group_id }}`
+- `{{ link.peer_channel_group_id }}`
+
+connected_endpoints_ethernet_interfaces:
+- `{{ peer }}`
+- `{{ peer_interface }}`
+
+connected_endpoints_port_channel_interfaces:
+- `{{ peer }}`
+- `{{ adapter_port_channel_description }}`
+
+For more information about the available contextual properties, see the following links:
+- [underlay_ethernet_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/designs/l3ls-evpn/facts/topology/p2p-uplinks.j2)
+- [underlay_port_channel_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/designs/l3ls-evpn/facts/topology/port-channel-uplinks.j2)
+- [connected_endpoints_ethernet_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/connected_endpoints/ethernet-interfaces.j2)
+- [connected_endpoints_port_channel_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/connected_endpoints/port-channel-interfaces.j2)
 
 The next output is structure example based on default definition:
 
