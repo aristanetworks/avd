@@ -200,7 +200,7 @@ ip_igmp_snooping:
 vxlan_tunnel_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings: {}
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

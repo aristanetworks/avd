@@ -511,13 +511,17 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 150 | 10150 |
-| 250 | 20250 |
-| 350 | 30350 |
+#### EVPN MLAG Shared Router MAC : mlag-system-id
+
+
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 150 | 10150 | N/A |
+| 250 | 20250 | N/A |
+| 350 | 30350 | N/A |
 
 #### VRF to VNI Mappings
 
@@ -527,11 +531,19 @@ interface Vlan4094
 | Tenant_B_WAN_Zone | 21 |
 | Tenant_C_WAN_Zone | 31 |
 
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| N/A |
+
+
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-BL1B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789

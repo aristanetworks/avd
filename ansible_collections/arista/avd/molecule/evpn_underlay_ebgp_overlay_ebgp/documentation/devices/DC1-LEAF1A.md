@@ -490,17 +490,18 @@ interface Vlan131
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 120 | 10120 |
-| 121 | 10121 |
-| 122 | 10122 |
-| 123 | 10123 |
-| 124 | 10124 |
-| 130 | 10130 |
-| 131 | 10131 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 120 | 10120 | N/A |
+| 121 | 10121 | N/A |
+| 122 | 10122 | N/A |
+| 123 | 10123 | N/A |
+| 124 | 10124 | N/A |
+| 130 | 10130 | N/A |
+| 131 | 10131 | N/A |
 
 #### VRF to VNI Mappings
 
@@ -509,11 +510,19 @@ interface Vlan131
 | Tenant_A_APP_Zone | 12 |
 | Tenant_A_WEB_Zone | 11 |
 
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| N/A |
+
+
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-LEAF1A_VTEP
    vxlan source-interface Loopback0
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120

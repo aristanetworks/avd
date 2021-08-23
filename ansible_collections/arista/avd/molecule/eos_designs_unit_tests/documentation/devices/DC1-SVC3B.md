@@ -999,27 +999,31 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
-| 140 | 10140 |
-| 141 | 10141 |
-| 150 | 10150 |
-| 160 | 10160 |
-| 161 | 10161 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 250 | 20250 |
-| 310 | 30310 |
-| 311 | 30311 |
-| 350 | 30350 |
+#### EVPN MLAG Shared Router MAC : mlag-system-id
+
+
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | N/A |
+| 111 | 50111 | N/A |
+| 120 | 10120 | N/A |
+| 121 | 10121 | N/A |
+| 130 | 10130 | N/A |
+| 131 | 10131 | N/A |
+| 140 | 10140 | N/A |
+| 141 | 10141 | N/A |
+| 150 | 10150 | N/A |
+| 160 | 10160 | N/A |
+| 161 | 10161 | N/A |
+| 210 | 20210 | N/A |
+| 211 | 20211 | N/A |
+| 250 | 20250 | N/A |
+| 310 | 30310 | N/A |
+| 311 | 30311 | N/A |
+| 350 | 30350 | N/A |
 
 #### VRF to VNI Mappings
 
@@ -1035,11 +1039,19 @@ interface Vlan4092
 | Tenant_C_OP_Zone | 30 |
 | Tenant_C_WAN_Zone | 31 |
 
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| N/A |
+
+
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-SVC3B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789

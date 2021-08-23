@@ -408,13 +408,14 @@ interface Vlan350
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 150 | 10150 |
-| 250 | 20250 |
-| 350 | 30350 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 150 | 10150 | N/A |
+| 250 | 20250 | N/A |
+| 350 | 30350 | N/A |
 
 #### VRF to VNI Mappings
 
@@ -424,11 +425,19 @@ interface Vlan350
 | Tenant_B_WAN_Zone | 21 |
 | Tenant_C_WAN_Zone | 31 |
 
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| N/A |
+
+
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-BL1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 150 vni 10150
