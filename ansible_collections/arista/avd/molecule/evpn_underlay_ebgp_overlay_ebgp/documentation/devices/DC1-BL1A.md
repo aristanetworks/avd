@@ -400,15 +400,15 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | 192.168.255.14/32 |
-| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source | default | 192.168.254.14/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.14/32 |
+| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | 192.168.254.14/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | - |
-| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
+| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -416,12 +416,12 @@ interface Ethernet4000
 ```eos
 !
 interface Loopback0
-   description CUSTOM_EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering_L3LEAF
    no shutdown
    ip address 192.168.255.14/32
 !
 interface Loopback1
-   description CUSTOM_VTEP_VXLAN_Tunnel_Source
+   description CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
    no shutdown
    ip address 192.168.254.14/32
 ```

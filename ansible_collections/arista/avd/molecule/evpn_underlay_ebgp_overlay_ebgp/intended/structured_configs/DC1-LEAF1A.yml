@@ -266,7 +266,7 @@ ethernet_interfaces:
         unit: percent
 loopback_interfaces:
   Loopback0:
-    description: CUSTOM_EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.9/32
 prefix_lists:

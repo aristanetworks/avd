@@ -384,13 +384,13 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | 192.168.255.9/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.9/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | CUSTOM_EVPN_Overlay_Peering | default | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -398,7 +398,7 @@ interface Ethernet7
 ```eos
 !
 interface Loopback0
-   description CUSTOM_EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering_L3LEAF
    no shutdown
    ip address 192.168.255.9/32
 ```

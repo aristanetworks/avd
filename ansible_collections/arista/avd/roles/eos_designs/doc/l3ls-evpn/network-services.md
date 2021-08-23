@@ -131,8 +131,11 @@ tenants:
             # If variables are configured in profile AND SVI, SVI information will overwrite profile.
             profile: < svi-profile-name >
 
-            # vlan name + svi description. | Required
-            name: < description >
+            # vlan name | Required
+            name: < name >
+
+            # vlan description. | Optional
+            description: < description | Default -> vlan name >
 
             # Tags leveraged for networks services filtering. | Required
             tags: [ < tag_1 >, < tag_2 > ]
