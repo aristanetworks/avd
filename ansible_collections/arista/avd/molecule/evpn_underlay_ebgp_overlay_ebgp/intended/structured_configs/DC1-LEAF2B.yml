@@ -367,7 +367,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1A
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: 'DC1-L2LEAF1A_Ethernet2 '
+    description: 'CUSTOM_DC1-L2LEAF1A_Ethernet2 '
     type: switched
     shutdown: false
     channel_group:
@@ -377,7 +377,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1B
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: 'DC1-L2LEAF1B_Ethernet2 '
+    description: 'CUSTOM_DC1-L2LEAF1B_Ethernet2 '
     type: switched
     shutdown: false
     channel_group:
@@ -387,7 +387,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF3A
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: 'DC1-L2LEAF3A_Ethernet2 '
+    description: 'CUSTOM_DC1-L2LEAF3A_Ethernet2 '
     type: switched
     shutdown: false
     channel_group:

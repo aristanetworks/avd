@@ -369,9 +369,9 @@ vlan 311
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF1B_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet9 | DC1-L2LEAF3A_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
+| Ethernet7 | CUSTOM_DC1-L2LEAF1A_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet8 | CUSTOM_DC1-L2LEAF1B_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet1  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | CUSTOM_server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
@@ -427,17 +427,17 @@ interface Ethernet4
    ip address 172.31.255.23/31
 !
 interface Ethernet7
-   description DC1-L2LEAF1A_Ethernet1 
+   description CUSTOM_DC1-L2LEAF1A_Ethernet1 
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF1B_Ethernet1 
+   description CUSTOM_DC1-L2LEAF1B_Ethernet1 
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet9
-   description DC1-L2LEAF3A_Ethernet1 
+   description CUSTOM_DC1-L2LEAF3A_Ethernet1 
    no shutdown
    channel-group 9 mode active
 !

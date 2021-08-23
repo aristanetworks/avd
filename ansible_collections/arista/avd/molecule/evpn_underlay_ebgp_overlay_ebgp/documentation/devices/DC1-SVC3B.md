@@ -449,8 +449,8 @@ vlan 4092
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet2  | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth2 | *trunk | *110-111,210-211 | *- | *- | 10 |
 | Ethernet11 |  CUSTOM_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet12 |  CUSTOM_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
@@ -488,12 +488,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet2 
+   description CUSTOM_DC1-L2LEAF2A_Ethernet2 
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet2 
+   description CUSTOM_DC1-L2LEAF2B_Ethernet2 
    no shutdown
    channel-group 7 mode active
 !
