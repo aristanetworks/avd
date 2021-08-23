@@ -326,20 +326,6 @@ interface Vlan4085
 
 #### UDP port: 4789
 
-
-#### VLAN to VNI and Flood List Mappings
-
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| N/A | N/A | N/A |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
-
 ### VXLAN Interface Device Configuration
 
 ```eos

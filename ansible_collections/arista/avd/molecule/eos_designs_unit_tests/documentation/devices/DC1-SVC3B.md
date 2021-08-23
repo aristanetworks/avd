@@ -999,9 +999,7 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-
 #### EVPN MLAG Shared Router MAC : mlag-system-id
-
 
 #### VLAN to VNI and Flood List Mappings
 
@@ -1038,13 +1036,6 @@ interface Vlan4092
 | Tenant_B_WAN_Zone | 21 |
 | Tenant_C_OP_Zone | 30 |
 | Tenant_C_WAN_Zone | 31 |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
 
 ### VXLAN Interface Device Configuration
 

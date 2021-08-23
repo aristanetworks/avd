@@ -698,7 +698,6 @@ interface Vlan311
 
 #### UDP port: 4789
 
-
 #### VLAN to VNI and Flood List Mappings
 
 | VLAN | VNI | Flood List |
@@ -728,13 +727,6 @@ interface Vlan311
 | Tenant_A_WEB_Zone | 11 |
 | Tenant_B_OP_Zone | 20 |
 | Tenant_C_OP_Zone | 30 |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
 
 ### VXLAN Interface Device Configuration
 

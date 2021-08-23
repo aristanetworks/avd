@@ -71,9 +71,7 @@ interface Management1
 
 #### UDP port: 4789
 
-
 #### EVPN MLAG Shared Router MAC : mlag-system-id
-
 
 #### VLAN to VNI and Flood List Mappings
 
@@ -95,11 +93,7 @@ interface Management1
 | ---------- |
 | 10.1.0.10<br/>10.1.0.11 |
 
-
-#### VXLAN flood-lists learning from data-plane
-| State |
-| ----- |
-| Enabled |
+#### VXLAN flood-lists learning from data-plane: Enabled
 
 ### VXLAN Interface Device Configuration
 

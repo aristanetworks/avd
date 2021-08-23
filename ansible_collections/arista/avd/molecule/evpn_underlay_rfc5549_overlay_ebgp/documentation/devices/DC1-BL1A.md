@@ -408,7 +408,6 @@ interface Vlan350
 
 #### UDP port: 4789
 
-
 #### VLAN to VNI and Flood List Mappings
 
 | VLAN | VNI | Flood List |
@@ -424,13 +423,6 @@ interface Vlan350
 | Tenant_A_WAN_Zone | 14 |
 | Tenant_B_WAN_Zone | 21 |
 | Tenant_C_WAN_Zone | 31 |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
 
 ### VXLAN Interface Device Configuration
 

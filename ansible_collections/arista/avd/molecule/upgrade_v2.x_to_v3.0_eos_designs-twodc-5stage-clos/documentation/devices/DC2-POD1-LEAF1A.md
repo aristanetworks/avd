@@ -364,25 +364,11 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-
-#### VLAN to VNI and Flood List Mappings
-
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| N/A | N/A | N/A |
-
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
 | ---- | --- |
 | Common_VRF | 1025 |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
 
 ### VXLAN Interface Device Configuration
 

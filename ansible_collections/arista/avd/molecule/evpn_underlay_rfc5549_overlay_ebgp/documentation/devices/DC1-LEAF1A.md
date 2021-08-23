@@ -430,7 +430,6 @@ interface Vlan131
 
 #### UDP port: 4789
 
-
 #### VLAN to VNI and Flood List Mappings
 
 | VLAN | VNI | Flood List |
@@ -446,13 +445,6 @@ interface Vlan131
 | ---- | --- |
 | Tenant_A_APP_Zone | 12 |
 | Tenant_A_WEB_Zone | 11 |
-
-#### Default Flood List
-
-| Default Flood List |
-| ---------- |
-| N/A |
-
 
 ### VXLAN Interface Device Configuration
 
