@@ -16,7 +16,6 @@
 {%                 set link.type = fabric_switch_link.type | arista.avd.default() %}
 {%                 set link.speed = fabric_switch_link.speed | arista.avd.default() %}
 {%                 set link.ip_address = fabric_switch_link.peer_ip_address | arista.avd.default() %}
-{%                 set link.description = fabric_switch_link.description | arista.avd.default() %}
 {%                 set link.peer_ip_address = fabric_switch_link.ip_address | arista.avd.default() %}
 {%                 set link.channel_group_id = fabric_switch_link.peer_channel_group_id | arista.avd.default() %}
 {%                 set link.peer_channel_group_id = fabric_switch_link.channel_group_id | arista.avd.default() %}
