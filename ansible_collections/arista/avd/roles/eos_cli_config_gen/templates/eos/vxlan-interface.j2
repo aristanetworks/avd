@@ -1,5 +1,5 @@
 {# eos- VxLAN Interface #}
-{% if vxlan_tunnel_interface is arista.avd.defined %}
+{% if vxlan_tunnel_interface.Vxlan1 is arista.avd.defined %}
 !
 interface Vxlan1
 {%     if vxlan_tunnel_interface.Vxlan1.description is arista.avd.defined %}
@@ -24,7 +24,9 @@ interface Vxlan1
 {%         endif %}
 {%     endfor %}
 {%     for vrf in vxlan_tunnel_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort %}
+{%         if vxlan_tunnel_interface.Vxlan1.vxlan.vrfs[vrf].vni is arista.avd.defined %}
    vxlan vrf {{ vrf }} vni {{ vxlan_tunnel_interface.Vxlan1.vxlan.vrfs[vrf].vni }}
+{%         endif %}
 {%     endfor %}
 {%     if vxlan_tunnel_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
    vxlan flood vtep {{ vxlan_tunnel_interface.Vxlan1.vxlan.flood_vteps | join(' ') }}
