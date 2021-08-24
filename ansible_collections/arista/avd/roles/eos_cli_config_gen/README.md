@@ -66,7 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
-      - [Maintenance profiles and units](#maintenance-profiles-and-units)
+      - [Profiles and units](#profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -1093,7 +1093,7 @@ vlan_interfaces:
 #### VxLAN Interface
 
 ```yaml
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: < description >
     vxlan:
