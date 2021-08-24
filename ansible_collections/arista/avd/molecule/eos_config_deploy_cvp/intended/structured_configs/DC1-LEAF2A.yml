@@ -700,7 +700,7 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
     vxlan:

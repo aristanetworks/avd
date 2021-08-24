@@ -1337,7 +1337,7 @@ ip_igmp_snooping:
       enabled: true
     161:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
     vxlan:

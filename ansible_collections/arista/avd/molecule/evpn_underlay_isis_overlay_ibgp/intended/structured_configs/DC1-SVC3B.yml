@@ -288,7 +288,7 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.254.8:1
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
     vxlan:

@@ -253,7 +253,7 @@ vlans:
     name: web-l2-vlan-2
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-POD2-LEAF1A_VTEP
     vxlan:
