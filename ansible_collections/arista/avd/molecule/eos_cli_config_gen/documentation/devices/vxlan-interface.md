@@ -77,7 +77,7 @@ interface Management1
 
 | VLAN | VNI | Flood List |
 | ---- | --- | ---------- |
-| 110 | 10110 | N/A |
+| 110 | 10110 | - |
 | 111 | 10111 | 10.1.1.10<br/>10.1.1.11 |
 
 #### VRF to VNI Mappings
