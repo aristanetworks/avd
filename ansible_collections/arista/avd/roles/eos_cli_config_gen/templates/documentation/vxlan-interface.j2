@@ -22,7 +22,7 @@
 {%             if vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps is arista.avd.defined %}
 {%                 set flood_list = vxlan_tunnel_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps | join('<br/>')  %}
 {%             else %}
-{%                 set flood_list = 'N/A' %}
+{%                 set flood_list = '-' %}
 {%             endif %}
 | {{ vlan }} | {{ vni }} | {{  flood_list }} |
 {%         endfor %}
