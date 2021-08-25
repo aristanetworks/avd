@@ -20,9 +20,7 @@ underlay_routing_protocol: < EBGP or OSPF or ISIS | Default -> EBGP >
 overlay_routing_protocol: <EBGP or IBGP | default -> EBGP >
 
 # Loopbacks | Optional. Default --> Defined in defaults/main.yml
-overlay_loopback_description: < Overlay loopback description >
 vtep_loopback: < VTEP Loopback interface | Default -> Loopback1 >
-vtep_loopback_description: < VTEP loopback description >
 
 # Point to Point Underlay with RFC 5549(eBGP), i.e. IPv6 Unnumberred.
 # Requires "underlay_routing_protocol: EBGP"
@@ -173,9 +171,7 @@ overlay_loopback_network_summary: 192.168.255.0/24
 
 vtep_loopback_network_summary: 192.168.254.0/24
 
-# overlay_loopback_description: EVPN_Overlay_Peering
 # vtep_loopback: Loopback1
-# vtep_loopback_description: VTEP_VXLAN_Tunnel_Source
 
 mlag_ips:
   leaf_peer_l3: 10.255.251.0/24

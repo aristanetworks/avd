@@ -55,6 +55,8 @@ node_type_keys:
       underlay_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces >
       connected_endpoints_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces >
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
+      overlay_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface >
+      vtep_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface >
 ```
 
 To help format the custom interface descriptions, the following contextual variables are available to the custom template:
@@ -76,6 +78,8 @@ connected_endpoints_ethernet_interfaces:
 connected_endpoints_port_channel_interfaces:
 - `{{ peer }}`
 - `{{ adapter_port_channel_description }}`
+
+All templates can leverage the switch facts (switch.*) to customize the interface descriptions.
 
 For more information about the available contextual properties, see the following links:
 - [underlay_ethernet_interfaces facts](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/templates/designs/l3ls-evpn/facts/topology/p2p-uplinks.j2)

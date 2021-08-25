@@ -30,6 +30,8 @@ node_type_keys:
       underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
       connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
       connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface-descriptions/loopbacks/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface-descriptions/loopbacks/vtep-loopback.j2'
   l2leaf:
     type: l2leaf
     connected_endpoints: true
@@ -109,9 +111,7 @@ l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24
     loopback_ipv4_offset: 8
-    loopback_ipv4_description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     vtep_loopback_ipv4_pool: 192.168.254.0/24
-    vtep_loopback_description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
     uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3', 'Ethernet4']
     uplink_switches: ['DC1-SPINE1', 'DC1-SPINE2', 'DC1-SPINE3', 'DC1-SPINE4']
     max_uplink_switches: 8
@@ -160,15 +160,11 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
           vtep_loopback: Loopback10
-          loopback_ipv4_description: CUSTOM_EVPN_Overlay_Peering_LEAF2A
-          vtep_loopback_description: CUSTOM_VTEP_VXLAN_Tunnel_Source_LEAF2A
         DC1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
           vtep_loopback: Loopback10
-          loopback_ipv4_description: CUSTOM_EVPN_Overlay_Peering_LEAF2B
-          vtep_loopback_description: CUSTOM_VTEP_VXLAN_Tunnel_Source_LEAF2B
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103

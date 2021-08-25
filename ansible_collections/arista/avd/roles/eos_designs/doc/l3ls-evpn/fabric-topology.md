@@ -221,9 +221,6 @@ defaults <- node_group <- node_group.node <- node
     # IPv4 subnet for Loopback0 allocation
     loopback_ipv4_pool: < IPv4_address/Mask  >
 
-    # Descripiton for the overlay Loopback interface. Defaults to the value defined in "overlay_loopback_description" fabric variable
-    loopback_ipv4_description: < Loopback0 description  >
-
     # IPv4 subnet for VTEP/Loopback1 allocation.
     vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
 
@@ -232,10 +229,6 @@ defaults <- node_group <- node_group.node <- node
 
     # Set VXLAN source interface. Default value is defined in "vtep_loopback" fabric variable (default is Loopback1)
     vtep_loopback: < Loopback_interface_1 >
-
-    # Descripiton for the VTEP Loopback interface. Defaults to the value defined in "vtep_loopback_description"
-    vtep_loopback_description: < VTEP loopback description  >
-
 ```
 
 ### BGP & EVPN Control plane
