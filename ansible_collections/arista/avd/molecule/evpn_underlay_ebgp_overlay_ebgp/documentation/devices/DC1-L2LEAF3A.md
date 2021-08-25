@@ -313,8 +313,8 @@ vlan 162
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet9  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
-| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet9  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet9 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet9 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -323,12 +323,12 @@ vlan 162
 ```eos
 !
 interface Ethernet1
-   description CUSTOM_DC1-LEAF2A_Ethernet9 
+   description CUSTOM_DC1-LEAF2A_Ethernet9
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description CUSTOM_DC1-LEAF2B_Ethernet9 
+   description CUSTOM_DC1-LEAF2B_Ethernet9
    no shutdown
    channel-group 1 mode active
 ```

@@ -184,7 +184,7 @@ ethernet_interfaces:
     peer: DC1-SVC3A
     peer_interface: Ethernet8
     peer_type: l3leaf
-    description: 'CUSTOM_DC1-SVC3A_Ethernet8 '
+    description: CUSTOM_DC1-SVC3A_Ethernet8
     type: switched
     shutdown: false
     channel_group:
@@ -194,7 +194,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet8
     peer_type: l3leaf
-    description: 'CUSTOM_DC1-SVC3B_Ethernet8 '
+    description: CUSTOM_DC1-SVC3B_Ethernet8
     type: switched
     shutdown: false
     channel_group:

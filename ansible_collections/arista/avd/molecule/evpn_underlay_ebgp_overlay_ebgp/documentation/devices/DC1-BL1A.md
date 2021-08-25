@@ -298,10 +298,10 @@ vlan 350
 | Ethernet9 | test | routed | - | 10.10.20.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.11.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.21.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
-| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6  | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
-| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6  | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
-| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6  | routed | - | 172.31.255.85/31 | default | 1500 | false | - | - |
-| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6  | routed | - | 172.31.255.87/31 | default | 1500 | false | - | - |
+| Ethernet41 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6 | routed | - | 172.31.255.81/31 | default | 1500 | false | - | - |
+| Ethernet42 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6 | routed | - | 172.31.255.83/31 | default | 1500 | false | - | - |
+| Ethernet43 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6 | routed | - | 172.31.255.85/31 | default | 1500 | false | - | - |
+| Ethernet44 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6 | routed | - | 172.31.255.87/31 | default | 1500 | false | - | - |
 | Ethernet4000 | My test | routed | - | 10.3.2.1/21 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -353,7 +353,7 @@ interface Ethernet10.200
    ip address 10.10.21.10/24
 !
 interface Ethernet41
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -361,7 +361,7 @@ interface Ethernet41
    ip address 172.31.255.81/31
 !
 interface Ethernet42
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -369,7 +369,7 @@ interface Ethernet42
    ip address 172.31.255.83/31
 !
 interface Ethernet43
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -377,7 +377,7 @@ interface Ethernet43
    ip address 172.31.255.85/31
 !
 interface Ethernet44
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6
    no shutdown
    speed forced 100gfull
    mtu 1500

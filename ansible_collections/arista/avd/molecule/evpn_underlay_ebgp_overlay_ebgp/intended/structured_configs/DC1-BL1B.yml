@@ -327,7 +327,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet7
     peer_type: spine
-    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 '
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -337,7 +337,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet7
     peer_type: spine
-    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 '
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -347,7 +347,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet7
     peer_type: spine
-    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 '
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -357,7 +357,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet7
     peer_type: spine
-    description: 'CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 '
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed

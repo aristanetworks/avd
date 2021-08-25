@@ -369,9 +369,9 @@ vlan 311
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet7 | CUSTOM_DC1-L2LEAF1A_Ethernet2  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet8 | CUSTOM_DC1-L2LEAF1B_Ethernet2  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet2  | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
+| Ethernet7 | CUSTOM_DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet8 | CUSTOM_DC1-L2LEAF1B_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | CUSTOM_server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
@@ -385,17 +385,17 @@ vlan 311
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3  | routed | - | 172.31.255.33/31 | default | 1500 | false | - | - |
-| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3  | routed | - | 172.31.255.35/31 | default | 1500 | false | - | - |
-| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3  | routed | - | 172.31.255.37/31 | default | 1500 | false | - | - |
-| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3  | routed | - | 172.31.255.39/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3 | routed | - | 172.31.255.33/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3 | routed | - | 172.31.255.35/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3 | routed | - | 172.31.255.37/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3 | routed | - | 172.31.255.39/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -403,7 +403,7 @@ interface Ethernet1
    ip address 172.31.255.33/31
 !
 interface Ethernet2
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -411,7 +411,7 @@ interface Ethernet2
    ip address 172.31.255.35/31
 !
 interface Ethernet3
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -419,7 +419,7 @@ interface Ethernet3
    ip address 172.31.255.37/31
 !
 interface Ethernet4
-   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3 
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -427,17 +427,17 @@ interface Ethernet4
    ip address 172.31.255.39/31
 !
 interface Ethernet7
-   description CUSTOM_DC1-L2LEAF1A_Ethernet2 
+   description CUSTOM_DC1-L2LEAF1A_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description CUSTOM_DC1-L2LEAF1B_Ethernet2 
+   description CUSTOM_DC1-L2LEAF1B_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet9
-   description CUSTOM_DC1-L2LEAF3A_Ethernet2 
+   description CUSTOM_DC1-L2LEAF3A_Ethernet2
    no shutdown
    channel-group 9 mode active
 !
