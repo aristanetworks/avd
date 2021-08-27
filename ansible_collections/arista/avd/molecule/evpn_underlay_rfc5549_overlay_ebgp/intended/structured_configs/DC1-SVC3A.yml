@@ -1056,7 +1056,7 @@ mlag_configuration:
   local_interface: Vlan4094
   peer_address: 10.255.252.7
   peer_link: Port-Channel5
-  reload_delay_mlag: 780
+  reload_delay_mlag: 900
   reload_delay_non_mlag: 1020
 route_maps:
   RM-MLAG-PEER-IN:
