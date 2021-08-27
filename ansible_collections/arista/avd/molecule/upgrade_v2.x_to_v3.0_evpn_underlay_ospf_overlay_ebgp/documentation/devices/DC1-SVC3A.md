@@ -596,6 +596,7 @@ router ospf 101
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -633,6 +634,7 @@ router bgp 65103
    distance bgp 20 200 200
    maximum-paths 10 ecmp 10
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3

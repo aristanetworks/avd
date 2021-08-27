@@ -49,6 +49,12 @@ l3leaf:
     isis_system_id_prefix: '0001.0001'
 # New l3leaf.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
     isis_maximum_paths: 4
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+            OVERLAY-PEERS:
+              remote_as: 65001
   node_groups:
     DC1_LEAF1:
       nodes:

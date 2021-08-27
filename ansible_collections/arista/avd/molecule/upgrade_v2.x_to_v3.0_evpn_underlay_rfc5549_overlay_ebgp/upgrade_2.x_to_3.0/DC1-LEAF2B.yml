@@ -39,6 +39,14 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200']
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+            UNDERLAY_PEERS:
+              remote_as: 65001
+            EVPN-OVERLAY-PEERS:
+              remote_as: 65001
   node_groups:
     DC1_LEAF1:
       nodes:

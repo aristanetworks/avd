@@ -14,6 +14,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      remote_as: 65001
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -106,6 +107,11 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        remote_as: 65001
 vlans:
   4093:
     tenant: system
