@@ -364,12 +364,6 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
@@ -381,6 +375,7 @@ interface Vlan4092
 ```eos
 !
 interface Vxlan1
+   description DC2-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025

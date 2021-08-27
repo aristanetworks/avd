@@ -71,12 +71,14 @@ interface Management1
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 10111 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 |
 
 #### VRF to VNI Mappings
 
@@ -85,18 +87,31 @@ interface Management1
 | Tenant_A_OP_Zone | 10 |
 | Tenant_A_WEB_Zone | 11 |
 
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| 10.1.0.10<br/>10.1.0.11 |
+
+#### VXLAN flood-lists learning from data-plane: Enabled
+
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-LEAF2A_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
+   vxlan flood vtep learned data-plane
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
+   vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
    vxlan vrf Tenant_A_OP_Zone vni 10
    vxlan vrf Tenant_A_WEB_Zone vni 11
+   vxlan flood vtep 10.1.0.10 10.1.0.11
+   vxlan encapsulation ipv4
 ```
 
 # Routing

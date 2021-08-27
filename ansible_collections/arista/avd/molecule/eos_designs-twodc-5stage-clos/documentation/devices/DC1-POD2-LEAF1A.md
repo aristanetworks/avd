@@ -372,15 +372,15 @@ interface Vlan112
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 112 | 50112 |
-| 2500 | 2500 |
-| 2600 | 2600 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 112 | 50112 | - |
+| 2500 | 2500 | - |
+| 2600 | 2600 | - |
 
 #### VRF to VNI Mappings
 
@@ -393,6 +393,7 @@ interface Vlan112
 ```eos
 !
 interface Vxlan1
+   description DC1-POD2-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110

@@ -278,12 +278,11 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.254.6:1
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings: {}
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

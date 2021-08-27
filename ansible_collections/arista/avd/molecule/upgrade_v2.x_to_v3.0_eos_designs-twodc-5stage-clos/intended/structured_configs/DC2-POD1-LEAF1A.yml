@@ -240,12 +240,12 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC2-POD1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
       vrfs:
         Common_VRF:
           vni: 1025

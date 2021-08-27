@@ -897,27 +897,29 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
-| 140 | 10140 |
-| 141 | 10141 |
-| 150 | 10150 |
-| 160 | 10160 |
-| 161 | 10161 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 250 | 20250 |
-| 310 | 30310 |
-| 311 | 30311 |
-| 350 | 30350 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 120 | 10120 | - |
+| 121 | 10121 | - |
+| 130 | 10130 | - |
+| 131 | 10131 | - |
+| 140 | 10140 | - |
+| 141 | 10141 | - |
+| 150 | 10150 | - |
+| 160 | 10160 | - |
+| 161 | 10161 | - |
+| 210 | 20210 | - |
+| 211 | 20211 | - |
+| 250 | 20250 | - |
+| 310 | 30310 | - |
+| 311 | 30311 | - |
+| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -938,6 +940,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
+   description DC1-SVC3B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789

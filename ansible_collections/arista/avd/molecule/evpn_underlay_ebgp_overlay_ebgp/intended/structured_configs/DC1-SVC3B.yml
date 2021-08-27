@@ -1327,14 +1327,13 @@ ip_igmp_snooping:
       enabled: true
     161:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
