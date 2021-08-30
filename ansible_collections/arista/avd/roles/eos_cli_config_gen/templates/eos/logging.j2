@@ -13,6 +13,9 @@ logging buffered {{ logging.buffered.size }} {{ logging.buffered.level }}
 {%     if logging.trap is arista.avd.defined %}
 logging trap {{ logging.trap }}
 {%     endif %}
+{%     if logging.synchronous is arista.avd.defined() %}
+logging synchronous level {{ logging.synchronous.level | arista.avd.default("critical") }}
+{%     endif %}
 {%     if logging.format.timestamp is arista.avd.defined('high-resolution') %}
 logging format timestamp high-resolution
 {%     endif %}

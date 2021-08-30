@@ -18,6 +18,9 @@
 {%     if logging.trap is defined and logging.trap is not none %}
 | Trap | {{ logging.trap }} |
 {%     endif %}
+{%     if logging.synchronous is arista.avd.defined() %}
+| Synchronous | {{ logging.synchronous.level | arista.avd.default("critical") }} |
+{%     endif %}
 {%     if logging.format is defined and logging.format is not none %}
 
 | Format Type | Setting |
