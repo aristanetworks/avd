@@ -407,14 +407,14 @@ interface Vlan131
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 120 | 10120 | - |
+| 121 | 10121 | - |
+| 130 | 10130 | - |
+| 131 | 10131 | - |
 
 #### VRF to VNI Mappings
 
@@ -428,6 +428,7 @@ interface Vlan131
 ```eos
 !
 interface Vxlan1
+   description DC1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120
@@ -538,7 +539,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -546,10 +546,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
-| 172.31.255.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.2 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.4 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.6 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.0 | 65001 | default |
+| 172.31.255.2 | 65001 | default |
+| 172.31.255.4 | 65001 | default |
+| 172.31.255.6 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -590,17 +590,20 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.31.255.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.0 remote-as 65001
    neighbor 172.31.255.0 description DC1-SPINE1_Ethernet1
    neighbor 172.31.255.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.2 remote-as 65001
    neighbor 172.31.255.2 description DC1-SPINE2_Ethernet1
    neighbor 172.31.255.4 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.4 remote-as 65001
    neighbor 172.31.255.4 description DC1-SPINE3_Ethernet1
    neighbor 172.31.255.6 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.6 remote-as 65001
    neighbor 172.31.255.6 description DC1-SPINE4_Ethernet1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

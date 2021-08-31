@@ -20,6 +20,7 @@
       - [AAA Root](#aaa-root)
       - [AAA Server Groups](#aaa-server-groups)
       - [Enable Password](#enable-password)
+      - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
       - [Radius Servers](#radius-servers)
@@ -65,6 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
+      - [Profiles and units](#profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -73,6 +75,7 @@
       - [Domain-List](#domain-list)
       - [Management Interfaces](#management-interfaces)
       - [Management HTTP](#management-http)
+      - [IP HTTP Client Source Interfaces](#ip-http-client-source-interfaces)
       - [Management GNMI](#management-gnmi)
       - [Management Console](#management-console)
       - [Management Security](#management-security)
@@ -94,6 +97,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+    - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [PTP](#ptp)
     - [Prompt](#prompt)
@@ -251,7 +255,7 @@ aliases: |
 aaa_authentication:
   login:
     default: < group group_name | local | none > < group group_name | local | none >
-    serial_console: < group group_name | local | none > < group group_name | local | none >
+    console: < group group_name | local | none > < group group_name | local | none >
   enable:
     default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
@@ -327,6 +331,16 @@ enable_password:
   key: "< hashed_password >"
 ```
 
+#### IP RADIUS Source Interfaces
+
+```yaml
+ip_radius_source_interfaces:
+    - name: <interface_name_1 >
+      vrf: < vrf_name_1 >
+    - name: <interface_name_2 >
+      vrf: < vrf_name_2 >
+```
+
 #### IP TACACS+ Source Interfaces
 
 ```yaml
@@ -371,6 +385,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encypted_key >
+      single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encypted_key >
       timeout: < timeout in seconds >
@@ -1078,24 +1093,36 @@ vlan_interfaces:
 #### VxLAN Interface
 
 ```yaml
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: < description >
-    source_interface: < source_interface_name >
-    virtual_router:
-      encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
-    vxlan_udp_port: < udp_port >
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: < source_interface_name >
+      udp_port: < udp_port >
+      virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name >:
+        < vrf_name_1 >:
           vni: < vni_id_3 >
-        < vrf_name >:
+        < vrf_name_2 >:
           vni: < vni_id_4 >
+      flood_vteps:
+        - < remote_vtep_1_ip_address >
+        - < remote_vtep_2_ip_address >
+      flood_vtep_learned_data_plane: < true | false >
+    # EOS CLI rendered directly on the Vxlan interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 ### Internal VLAN Allocation Policy
@@ -1180,6 +1207,39 @@ interface_groups:
       - "< profile_name >"
 ```
 
+#### Profiles and units
+```yaml
+maintenance:
+  default_interface_profile: < interface_profile_1 >
+  default_bgp_profile: < bgp_profile_1 >
+  default_unit_profile: < unit_profile_1 >
+  interface_profiles:
+    < interface_profile_1 >:
+      rate_monitoring:
+        load_interval: < seconds >
+        threshold: < kbps >
+      shutdown:
+        max_delay: < seconds >
+  bgp_profiles:
+    < bgp_profile_1 >:
+      initiator:
+        route_map_inout: < route_map >
+  unit_profiles:
+    < unit_profile_1 >:
+      on_boot:
+        duration: < 300-3600 >
+  units:
+    < unit_name_1 >:
+      quiesce: < true | false >
+      profile: < unit_profile_1 >
+      bgp_groups:
+        - < bgp_group_1>
+        - < bgp_group_2>
+      interface_groups:
+        - < interface_group_1>
+        - < interface_group_2>
+```
+
 ### Management
 
 #### Clock Timezone
@@ -1252,6 +1312,16 @@ management_api_http:
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
+```
+
+#### IP HTTP Client Source Interfaces
+
+```yaml
+ip_http_client_source_interfaces:
+    - name: <interface_name_1>
+      vrf: <vrf_name_1>
+    - name: <interface_name_2>
+      vrf: <vrf_name_2>
 ```
 
 #### Management GNMI
@@ -1489,6 +1559,8 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  synchronous:
+    level: < severity_level | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
@@ -2186,6 +2258,8 @@ router_ospf:
           route_map: < route_map_name >
         connected:
           route_map: < route_map_name >
+        bgp:
+          route_map: < route_map_name >
       auto_cost_reference_bandwidth: < bandwidth in mbps >
       areas:
         < area >:
@@ -2194,6 +2268,13 @@ router_ospf:
               - < IPv4 subnet / netmask >
               - < IPv4 subnet / netmask >
             prefix_list: < prefix list name >
+        < area >:
+          type: < normal | stub | nssa | default -> normal >
+          no_summary: < true | false >
+          nssa_only: < true | false >
+          default_information_originate:
+            metric: < Integer 1-65535 > # Value of the route metric
+            metric_type: < 1 | 2 > # OSPF metric type
       maximum_paths: < Integer 1-32 >
       max_metric:
         router_lsa:

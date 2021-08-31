@@ -33,17 +33,13 @@ management_api_http:
   enable_https: true
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
   \ under l2leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
-  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+  \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
   4094:
     tenant: system
     name: MLAG_PEER
     trunk_groups:
     - MLAG
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
   110:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_1
@@ -59,11 +55,14 @@ vlans:
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
-    ip_address: 172.19.110.2/31
+    ip_address: 172.20.110.2/31
     no_autostate: true
     mtu: 1500
 port_channel_interfaces:
@@ -128,10 +127,12 @@ ethernet_interfaces:
 mlag_configuration:
   domain_id: RACK2_MLAG
   local_interface: Vlan4094
-  peer_address: 172.19.110.3
+  peer_address: 172.20.110.3
   peer_link: Port-Channel3
   reload_delay_mlag: 300
   reload_delay_non_mlag: 330
+ip_igmp_snooping:
+  globally_enabled: true
 management_interfaces:
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
@@ -140,10 +141,3 @@ management_interfaces:
     ip_address: 172.21.110.5/24
     gateway: 172.21.110.1
     type: inband
-ip_igmp_snooping:
-  globally_enabled: true
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
-domain_list:
-- structured-config.set.under.vrf.common-vrf

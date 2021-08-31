@@ -63,7 +63,7 @@
     fail_msg: "interface status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.interfaceStatus }} - line protocol status: {{ interfaces_state.stdout[0].interfaceDescriptions.Vxlan1.lineProtocolStatus }}"
     quiet: true
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
-  when: (vxlan_tunnel_interface is defined and vxlan_tunnel_interface is not none)
+  when: (vxlan_interface.Vxlan1 is arista.avd.defined)
   register: vxlan_interface_state_results
   tags:
     - interfaces_state

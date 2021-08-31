@@ -511,13 +511,15 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 150 | 10150 |
-| 250 | 20250 |
-| 350 | 30350 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 150 | 10150 | - |
+| 250 | 20250 | - |
+| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -532,6 +534,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
+   description DC1-BL1B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -646,7 +649,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -665,10 +667,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 10.255.251.10 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
-| 172.31.255.48 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.50 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.52 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.31.255.54 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.31.255.48 | 65001 | default |
+| 172.31.255.50 | 65001 | default |
+| 172.31.255.52 | 65001 | default |
+| 172.31.255.54 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -714,7 +716,6 @@ router bgp 65104
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65001
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -728,12 +729,16 @@ router bgp 65104
    neighbor 10.255.251.10 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 10.255.251.10 description DC1-BL1A
    neighbor 172.31.255.48 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.48 remote-as 65001
    neighbor 172.31.255.48 description DC1-SPINE1_Ethernet7
    neighbor 172.31.255.50 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.50 remote-as 65001
    neighbor 172.31.255.50 description DC1-SPINE2_Ethernet7
    neighbor 172.31.255.52 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.52 remote-as 65001
    neighbor 172.31.255.52 description DC1-SPINE3_Ethernet7
    neighbor 172.31.255.54 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.31.255.54 remote-as 65001
    neighbor 172.31.255.54 description DC1-SPINE4_Ethernet7
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

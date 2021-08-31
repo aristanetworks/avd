@@ -1,13 +1,16 @@
 ---
 dc_name: DC1
 
-super_spine_loopback_network_summary: 172.16.100.0/24
-
-max_super_spines: 4
-
 super_spine:
-  platform: vEOS-LAB
-  bgp_as: 65100
+  defaults:
+    platform: vEOS-LAB
+    bgp_as: 65100
+    loopback_ipv4_pool: 172.16.100.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
   nodes:
     DC1-SUPER-SPINE1:
       id: 1
@@ -20,15 +23,19 @@ super_spine:
       # evpn_role: none
       # evpn_route_servers: []
 
-overlay_controller_loopback_network_summary: 172.16.10.0/24
-overlay_controller_p2p_network_summary: 172.17.10.0/24
-overlay_controller_p2p_bfd: true
-
-max_overlay_controller_to_switch_links: 4
-
 # In DC1 we define all variables on specific node
 overlay_controller:
-  platform: vEOS-LAB
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 172.16.10.0/24
+    uplink_bfd: True
+    max_uplink_switches: 4
+    uplink_ipv4_pool: 172.17.10.0/24
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
   nodes:
     DC1-RS1:
       id: 1
@@ -36,17 +43,17 @@ overlay_controller:
       bgp_as: 65101
       evpn_role: server
       evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
-      remote_switches_interfaces: [ Ethernet5, Ethernet6, Ethernet4 ]
-      remote_switches: [ DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
-      uplink_to_remote_switches: [ Ethernet1, Ethernet2, Ethernet3 ]
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet6', 'Ethernet4']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3']
+      uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-POD1-SPINE1', 'DC1-POD1-LEAF1A']
     DC1-RS2:
       id: 2
       mgmt_ip: 192.168.1.4/24
       bgp_as: 65102
       evpn_role: server
       evpn_route_servers: [ DC2-RS1, DC2-SUPER-SPINE1, DC2-POD1-SPINE1, DC2-POD1-LEAF1A ]
-      remote_switches_interfaces: [ Ethernet5, Ethernet4, Ethernet3 ]
-      remote_switches: [ DC1-SUPER-SPINE2, DC1-POD2-SPINE1, DC1-POD2-LEAF1A ]
-      uplink_to_remote_switches: [ Ethernet1, Ethernet2, Ethernet3 ]
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet4', 'Ethernet3']
+      uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3']
+      uplink_switches: ['DC1-SUPER-SPINE2', 'DC1-POD2-SPINE1', 'DC1-POD2-LEAF1A']
 
 evpn_prevent_readvertise_to_server : true

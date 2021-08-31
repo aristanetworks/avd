@@ -10,7 +10,6 @@ router_bgp:
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65110
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -36,9 +35,11 @@ router_bgp:
   neighbors:
     172.17.110.0:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE1_Ethernet3
     172.17.110.2:
       peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: 65110
       description: DC1-POD1-SPINE2_Ethernet3
     172.17.10.5:
       peer_group: IPv4-UNDERLAY-PEERS
@@ -113,15 +114,6 @@ management_api_http:
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
   \ under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n  description Loopback created\
   \ from raw_eos_cli under platform_settings vEOS-LAB\n"
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 172.16.110.3/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 172.18.110.3/32
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-SPINE1
@@ -175,19 +167,15 @@ port_channel_interfaces:
     vlans: 4085
     mode: trunk
     service_profile: QOS-PROFILE
-vlans:
-  4085:
-    tenant: system
-    name: L2LEAF_INBAND_MGMT
-vlan_interfaces:
-  Vlan4085:
-    description: L2LEAF_INBAND_MGMT
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
     shutdown: false
-    mtu: 1500
-    ip_address: 172.21.110.2/24
-    ip_virtual_router_address: 172.21.110.1
-    ip_attached_host_route_export:
-      distance: 19
+    ip_address: 172.16.110.3/32
+  Loopback1:
+    description: VTEP_VXLAN_Tunnel_Source
+    shutdown: false
+    ip_address: 172.18.110.3/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -249,10 +237,23 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings: {}
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+vlans:
+  4085:
+    tenant: system
+    name: L2LEAF_INBAND_MGMT
+vlan_interfaces:
+  Vlan4085:
+    description: L2LEAF_INBAND_MGMT
+    shutdown: false
+    mtu: 1500
+    ip_address: 172.21.110.2/24
+    ip_virtual_router_address: 172.21.110.1
+    ip_attached_host_route_export:
+      distance: 19

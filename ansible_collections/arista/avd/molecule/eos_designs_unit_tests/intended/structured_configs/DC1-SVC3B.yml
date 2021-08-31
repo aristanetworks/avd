@@ -16,7 +16,6 @@ router_bgp:
       route_map_in: RM-MLAG-PEER-IN
     UNDERLAY-PEERS:
       type: ipv4
-      remote_as: 65001
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
@@ -42,15 +41,19 @@ router_bgp:
       description: DC1-SVC3A
     172.31.255.64:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE1_Ethernet5
     172.31.255.66:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE2_Ethernet5
     172.31.255.68:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE3_Ethernet5
     172.31.255.70:
       peer_group: UNDERLAY-PEERS
+      remote_as: 65001
       description: DC1-SPINE4_Ethernet5
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
@@ -1245,14 +1248,13 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-SVC3B_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         130:
           vni: 10130

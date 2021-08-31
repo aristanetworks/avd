@@ -1,0 +1,8 @@
+route_maps:
+  RM-CONN-2-BGP:
+    sequence_numbers:
+{# sequence 10 is set in underlay so avoid setting it here #}
+      20:
+        type: permit
+        match:
+          - "ip address prefix-list PL-L2LEAF-INBAND-MGMT"

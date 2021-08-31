@@ -430,14 +430,14 @@ interface Vlan131
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 120 | 10120 | - |
+| 121 | 10121 | - |
+| 130 | 10130 | - |
+| 131 | 10131 | - |
 
 #### VRF to VNI Mappings
 
@@ -451,6 +451,7 @@ interface Vlan131
 ```eos
 !
 interface Vxlan1
+   description DC1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120
@@ -568,7 +569,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -631,7 +631,6 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY_PEERS peer group
-   neighbor UNDERLAY_PEERS remote-as 65001
    neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000

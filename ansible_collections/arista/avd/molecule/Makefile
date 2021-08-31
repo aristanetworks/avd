@@ -24,7 +24,7 @@ converge: ## Execute molecule CONVERGE sequence. By default eos_cli_config_gen. 
 refresh-facts: ## Run all molecule scenarios
 	@while read -r MOLECULE_SCENARIO; do \
 		if [ -d "$$MOLECULE_SCENARIO" ]; then\
-			echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+			echo "Run scenario for "$$MOLECULE_SCENARIO && \
 			cd .. ; \
 			molecule converge --scenario-name $$MOLECULE_SCENARIO -- $(ANSIBLE_OPTIONS); \
 			cd ./molecule ; \
@@ -35,7 +35,7 @@ refresh-facts: ## Run all molecule scenarios
 commit-facts: ## Commit updated facts for CI
 	git status --short
 	git add .
-	git commit --no-verify -m 'Ci(molecule): Update Molecule artifacts' ./
+	git commit --no-verify -m 'CI(molecule): Update Molecule artifacts' ./
 
 .PHONY: test-git-status
 test-git-status: ## Run post molecule script to check git status
@@ -48,7 +48,7 @@ sync-facts: refresh-facts commit-facts ## Refresh and commit CI artifacts
 destroy: ## destroy all molecule scenarios
 	@for MOLECULE_SCENARIO in * ; do \
         if [ -d "$$MOLECULE_SCENARIO" ]; then\
-        echo "Run scenrario for "$$MOLECULE_SCENARIO && \
+        echo "Run scenario for "$$MOLECULE_SCENARIO && \
 		cd .. ; \
 		molecule cleanup --scenario-name $$MOLECULE_SCENARIO -- $(ANSIBLE_OPTIONS); \
 		cd ./molecule ; \

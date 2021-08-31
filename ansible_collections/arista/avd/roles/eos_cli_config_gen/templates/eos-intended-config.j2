@@ -155,6 +155,8 @@
 {% include 'eos/ipv6-prefix-lists.j2' %}
 {# System Control-Plane#}
 {% include 'eos/system-control-plane.j2' %}
+{# maintenance #}
+{% include 'eos/maintenance.j2' %}
 {# mlag configuration #}
 {% include 'eos/mlag-configuration.j2' %}
 {# Static Route #}
@@ -195,6 +197,8 @@
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}
 {% include 'eos/ip-tacacs-source-interfaces.j2' %}
+{# ip radius source interfaces #}
+{% include 'eos/ip-radius-source-interfaces.j2' %}
 {# vmtracer sessions #}
 {% include 'eos/vmtracer-sessions.j2' %}
 {# traffic policies #}
@@ -203,6 +207,8 @@
 {% include 'eos/banners.j2' %}
 {# management api http #}
 {% include 'eos/management-api-http.j2' %}
+{# ip http client source interfaces #}
+{% include 'eos/ip-http-client-source-interfaces.j2' %}
 {# management api gnmi #}
 {% include 'eos/management-api-gnmi.j2' %}
 {# management console #}

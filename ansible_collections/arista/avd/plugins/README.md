@@ -42,14 +42,19 @@ To use this filter:
 ### natural_sort filter
 
 The `arista.avd.natural_sort` filter provides the capabilities to sort a list or a dictionary of integers and/or strings that contain alphanumeric characters naturally. When leveraged on a dictionary, only the key value will be returned.
+An optional `sort_key` can be specified, to sort on content of certain key if the items are dictionaries.
 
-The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `none` or `undefined`.
+The filter will return an empty list if the value parsed to `arista.avd.natural_sort` is `None` or `undefined`.
 
 To use this filter:
 
 ```jinja
 {% for item in dictionary_to_natural_sort | arista.avd.natural_sort %}
 {{ natural_sorted_item }}
+{% endfor %}
+
+{% for item in list_of_dicts_to_natural_sort | arista.avd.natural_sort('name') %}
+{{ dict_sorted_on_name }}
 {% endfor %}
 ```
 
@@ -105,16 +110,21 @@ Arista AVD provides built-in test plugins to help verify data efficiently in jin
 
 ### defined test
 
-The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `none`. Else it will return `True`.
-`arista.avd.defined` test also accepts an optional argument to test if the value equals this argument.
+The `arista.avd.defined` test will return `False` if the passed value is `Undefined` or `None`. Else it will return `True`.
+`arista.avd.defined` test also accepts an optional `test_value` argument to test if the value equals this.
+The optional `var_type` argument can be used to also test if the variable is of the expected type.
+
 Optionally the test can emit warnings or errors if the test fails.
 
-Compared to the builtin `is defined` test, this test will also test for `none` and can even test for a specific value.
+Compared to the builtin `is defined` test, this test will also test for `None` and can even test for a specific value and/or class.
 
 Syntax:
 
 ```jinja
-{% <value> is arista.avd.defined(test_value=<test_value>,fail_action=['warning','error'],var_name=<string representing name of value>) %}
+{% <value> is arista.avd.defined(test_value=<test_value>,
+                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple'],
+                                 fail_action=['warning','error'],
+                                 var_name=<string representing name of value>) %}
 ```
 
 To use this test:
@@ -185,11 +195,15 @@ platform_settings:
     reload_delay:
       mlag: 300
       non_mlag: 330
-  - platforms: [7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R]
+  - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
-      mlag: 780
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ 7280R3, 7500R3, 7800R3 ]
+    reload_delay:
+      mlag: 900
       non_mlag: 1020
 ```
 
@@ -384,7 +398,7 @@ The module arguments are:
 ```yaml
 - name: Set AVD facts
   yaml_templates_to_facts:
-    templates: "{{ templates[design.type].facts }}"
+    templates: "{{ templates.facts }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]
@@ -392,7 +406,7 @@ The module arguments are:
 - name: Generate device configuration in structured format
   yaml_templates_to_facts:
     root_key: structured_config
-    templates: "{{ templates[design.type].structured_config }}"
+    templates: "{{ templates.structured_config }}"
   check_mode: no
   changed_when: False
   tags: [build, provision]

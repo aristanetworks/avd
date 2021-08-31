@@ -1,4 +1,4 @@
-{# Leaf tenant IGMP snooping #}
+{# tenant IGMP snooping #}
 ip_igmp_snooping:
   globally_enabled: {{ switch.igmp_snooping_enabled }}
 {% if switch.igmp_snooping_enabled is arista.avd.defined(true) %}

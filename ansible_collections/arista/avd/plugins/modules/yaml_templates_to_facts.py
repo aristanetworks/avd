@@ -67,10 +67,10 @@ EXAMPLES = r'''
     templates:
       - template: "base/main.j2"
       - template: "mlag/main.j2"
-      - template: "designs/{{ design.type }}/underlay/main.j2"
-      - template: "designs/{{ design.type }}/overlay/main.j2"
+      - template: "designs/underlay/main.j2"
+      - template: "designs/overlay/main.j2"
       - template: "l3_edge/main.j2"
-      - template: "designs/{{ design.type }}/tenants/main.j2"
+      - template: "designs/tenants/main.j2"
       - template: "connected_endpoints/main.j2"
       - template: "custom-structured-configuration-from-var.j2"
         options:

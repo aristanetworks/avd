@@ -5,6 +5,8 @@ logging:
     size: 1000000
     level: informational
   trap: informational
+  synchronous:
+    level: error
   source_interface:
   vrfs:
     mgt:

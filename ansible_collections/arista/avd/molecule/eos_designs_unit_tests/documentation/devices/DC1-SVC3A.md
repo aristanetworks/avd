@@ -1014,27 +1014,29 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
-| 140 | 10140 |
-| 141 | 10141 |
-| 150 | 10150 |
-| 160 | 10160 |
-| 161 | 10161 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 250 | 20250 |
-| 310 | 30310 |
-| 311 | 30311 |
-| 350 | 30350 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 120 | 10120 | - |
+| 121 | 10121 | - |
+| 130 | 10130 | - |
+| 131 | 10131 | - |
+| 140 | 10140 | - |
+| 141 | 10141 | - |
+| 150 | 10150 | - |
+| 160 | 10160 | - |
+| 161 | 10161 | - |
+| 210 | 20210 | - |
+| 211 | 20211 | - |
+| 250 | 20250 | - |
+| 310 | 30310 | - |
+| 311 | 30311 | - |
+| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -1055,6 +1057,7 @@ interface Vlan4092
 ```eos
 !
 interface Vxlan1
+   description DC1-SVC3A_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -1217,7 +1220,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -1226,10 +1228,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 10.255.251.7 | Inherited from peer group MLAG-PEERS | default |
-| 172.31.255.48 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.50 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.52 | Inherited from peer group UNDERLAY-PEERS | default |
-| 172.31.255.54 | Inherited from peer group UNDERLAY-PEERS | default |
+| 172.31.255.48 | 65001 | default |
+| 172.31.255.50 | 65001 | default |
+| 172.31.255.52 | 65001 | default |
+| 172.31.255.54 | 65001 | default |
 | 192.168.255.1 | 65001 | default |
 | 192.168.255.2 | 65001 | default |
 | 192.168.255.3 | 65001 | default |
@@ -1302,19 +1304,22 @@ router bgp 65103
    neighbor MLAG-PEERS maximum-routes 12000
    neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY-PEERS peer group
-   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.251.7 peer group MLAG-PEERS
    neighbor 10.255.251.7 description DC1-SVC3B
    neighbor 172.31.255.48 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.48 remote-as 65001
    neighbor 172.31.255.48 description DC1-SPINE1_Ethernet4
    neighbor 172.31.255.50 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.50 remote-as 65001
    neighbor 172.31.255.50 description DC1-SPINE2_Ethernet4
    neighbor 172.31.255.52 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.52 remote-as 65001
    neighbor 172.31.255.52 description DC1-SPINE3_Ethernet4
    neighbor 172.31.255.54 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.54 remote-as 65001
    neighbor 172.31.255.54 description DC1-SPINE4_Ethernet4
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001

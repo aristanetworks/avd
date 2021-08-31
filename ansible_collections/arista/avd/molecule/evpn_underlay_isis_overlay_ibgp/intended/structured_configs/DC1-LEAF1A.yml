@@ -93,19 +93,6 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-loopback_interfaces:
-  Loopback0:
-    description: EVPN_Overlay_Peering
-    shutdown: false
-    ip_address: 192.168.255.5/32
-    isis_enable: EVPN_UNDERLAY
-    isis_passive: true
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.5/32
-    isis_enable: EVPN_UNDERLAY
-    isis_passive: true
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -155,6 +142,13 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
+loopback_interfaces:
+  Loopback0:
+    description: EVPN_Overlay_Peering
+    shutdown: false
+    ip_address: 192.168.255.5/32
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
 router_isis:
   instance: EVPN_UNDERLAY
   log_adjacency_changes: true
@@ -165,7 +159,7 @@ router_isis:
   - Ethernet2
   - Ethernet3
   - Ethernet4
-  - Loopback1
+  - Loopback0
   is_type: level-2
   address_family:
   - ipv4 unicast
@@ -197,10 +191,10 @@ ip_extcommunity_lists:
     extcommunities: soo 192.168.254.5:1
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings: {}
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

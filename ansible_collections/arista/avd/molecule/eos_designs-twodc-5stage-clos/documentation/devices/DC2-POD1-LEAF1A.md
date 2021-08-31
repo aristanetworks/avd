@@ -378,12 +378,6 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
@@ -395,6 +389,7 @@ interface Vlan4092
 ```eos
 !
 interface Vxlan1
+   description DC2-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025
@@ -500,7 +495,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65210 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -514,8 +508,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.16.10.2 | 65102 | default |
 | 172.16.110.1 | 65110 | default |
 | 172.16.110.3 | 65111 | default |
-| 172.17.210.0 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
-| 172.17.210.2 | Inherited from peer group IPv4-UNDERLAY-PEERS | default |
+| 172.17.210.0 | 65210 | default |
+| 172.17.210.2 | 65210 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -547,7 +541,6 @@ router bgp 65211
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS remote-as 65210
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -571,8 +564,10 @@ router bgp 65211
    neighbor 172.16.110.3 remote-as 65111
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3
    neighbor 172.17.210.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 172.17.210.2 remote-as 65210
    neighbor 172.17.210.2 description DC2-POD1-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP

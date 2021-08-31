@@ -408,13 +408,13 @@ interface Vlan350
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 150 | 10150 |
-| 250 | 20250 |
-| 350 | 30350 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 150 | 10150 | - |
+| 250 | 20250 | - |
+| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -429,6 +429,7 @@ interface Vlan350
 ```eos
 !
 interface Vxlan1
+   description DC1-BL1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 150 vni 10150
@@ -569,7 +570,6 @@ router general
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
@@ -637,7 +637,6 @@ router bgp 65104
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY_PEERS peer group
-   neighbor UNDERLAY_PEERS remote-as 65001
    neighbor UNDERLAY_PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY_PEERS send-community
    neighbor UNDERLAY_PEERS maximum-routes 12000

@@ -9,10 +9,10 @@
 - [Fabric IP Allocation](#fabric-ip-allocation)
   - [Fabric Point-To-Point Links](#fabric-point-to-point-links)
   - [Point-To-Point Links Node Allocation](#point-to-point-links-node-allocation)
-  - [Overlay Loopback Interfaces (BGP EVPN Peering)](#overlay-loopback-interfaces-bgp-evpn-peering)
+  - [Loopback Interfaces (BGP EVPN Peering)](#loopback-interfaces-bgp-evpn-peering)
   - [Loopback0 Interfaces Node Allocation](#loopback0-interfaces-node-allocation)
   - [ISIS CLNS interfaces](#isis-clns-interfaces)
-  - [VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-leafs-only)
+  - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
 <!-- toc -->
@@ -92,8 +92,8 @@
 
 ## Fabric Point-To-Point Links
 
-| P2P Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ----------- | ------------------- | ------------------ | ------------------ |
+| Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ---------------- | ------------------- | ------------------ | ------------------ |
 | 172.31.255.0/24 | 256 | 56 | 21.88 % |
 
 ## Point-To-Point Links Node Allocation
@@ -129,10 +129,10 @@
 | DC1-SPINE4 | Ethernet4 | 172.31.255.30/31 | DC1-SVC3A | Ethernet4 | 172.31.255.31/31 |
 | DC1-SPINE4 | Ethernet5 | 172.31.255.38/31 | DC1-SVC3B | Ethernet4 | 172.31.255.39/31 |
 
-## Overlay Loopback Interfaces (BGP EVPN Peering)
+## Loopback Interfaces (BGP EVPN Peering)
 
-| Overlay Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
-| ------------------------ | ------------------- | ------------------ | ------------------ |
+| Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
+| ------------- | ------------------- | ------------------ | ------------------ |
 | 192.168.255.0/24 | 256 | 11 | 4.3 % |
 
 ## Loopback0 Interfaces Node Allocation
@@ -167,11 +167,11 @@
 | DC1_FABRIC | DC1-SVC3A | 49.0001.0001.0001.0004.00 |
 | DC1_FABRIC | DC1-SVC3B | 49.0001.0001.0001.0005.00 |
 
-## VTEP Loopback VXLAN Tunnel Source Interfaces (Leafs Only)
+## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
-| VTEP Loopback Summary | Available Addresses | Assigned addresses | Assigned Address % |
+| VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 7 | 2.74 % |
+| 192.168.254.0/24 | 256 | 4 | 1.57 % |
 
 ## VTEP Loopback Node allocation
 
@@ -179,8 +179,5 @@
 | --- | ---- | --------- |
 | DC1_FABRIC | DC1-BL1A | 192.168.254.10/32 |
 | DC1_FABRIC | DC1-BL1B | 192.168.254.10/32 |
-| DC1_FABRIC | DC1-LEAF1A | 192.168.254.5/32 |
-| DC1_FABRIC | DC1-LEAF2A | 192.168.254.6/32 |
-| DC1_FABRIC | DC1-LEAF2B | 192.168.254.6/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.8/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.8/32 |

@@ -215,7 +215,7 @@ snmp-server location DC1_FABRIC rackE DC1-L2LEAF2A
 
 | Domain-id | Local-interface | Peer-address | Peer-link |
 | --------- | --------------- | ------------ | --------- |
-| DC1_L2LEAF2 | Vlan4091 | 10.255.252.17 | Port-Channel3 |
+| DC1_L2LEAF2 | Vlan4091 | 10.255.249.17 | Port-Channel3 |
 
 Dual primary detection is enabled. The detection delay is 5 seconds.
 
@@ -226,7 +226,7 @@ Dual primary detection is enabled. The detection delay is 5 seconds.
 mlag configuration
    domain-id DC1_L2LEAF2
    local-interface Vlan4091
-   peer-address 10.255.252.17
+   peer-address 10.255.249.17
    peer-address heartbeat 192.168.200.114 vrf MGMT
    peer-link Port-Channel3
    dual-primary detection delay 5 action errdisable all-interfaces
@@ -284,6 +284,9 @@ vlan internal order ascending range 1006 1199
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 140 | Tenant_A_DB_BZone_1 | - |
@@ -315,6 +318,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -373,8 +385,8 @@ vlan 4091
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 1 |
-| Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet1 | DC1-SVC3A_Ethernet7 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 1 |
+| Ethernet2 | DC1-SVC3B_Ethernet7 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-L2LEAF2B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-L2LEAF2B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -413,7 +425,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel1 | DC1_SVC3_Po7 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-L2LEAF2B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -424,7 +436,7 @@ interface Port-Channel1
    description DC1_SVC3_Po7
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350
+   switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
    mlag 1
 !
@@ -449,7 +461,7 @@ interface Port-Channel3
 
 | Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
 | --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan4091 |  default  |  10.255.252.16/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan4091 |  default  |  10.255.249.16/31  |  -  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -461,7 +473,7 @@ interface Vlan4091
    no shutdown
    mtu 1500
    no autostate
-   ip address 10.255.252.16/31
+   ip address 10.255.249.16/31
 ```
 
 # Routing
