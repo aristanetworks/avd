@@ -41,7 +41,7 @@ router_bgp:
 {% endif %}
 
 {# EBGP #}
-{# Overlay network peering, forcing string for ASN #}
+{# Overlay network peering #}
   neighbors:
 {% for evpn_route_server in overlay_data.evpn_route_servers | arista.avd.natural_sort %}
     {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
