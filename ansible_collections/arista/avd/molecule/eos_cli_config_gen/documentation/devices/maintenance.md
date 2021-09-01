@@ -113,9 +113,9 @@ Default maintenance unit profile: **IP1**
 | BP2 | RM-MAINTENANCE2 |
 | BP3 | RM-MAINTENANCE3 |
 
-| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) |
-|-------------------|-----------------------------------|-----------------------------------------|
-| IP1 | 10 | 500 |
+| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown time |
+|-------------------|-----------------------------------|-----------------------------------------|---------------|
+| IP1 | 10 | 500 | 300 |
 
 | Unit profile | on-boot duration (s) |
 | ------------ | -------------------- |
@@ -148,6 +148,7 @@ maintenance
    profile interface IP1
       rate-monitoring load-interval 10
       rate-monitoring threshold 500
+      shutdown max-delay 300
    !
    profile unit UP1
       on-boot duration 900
