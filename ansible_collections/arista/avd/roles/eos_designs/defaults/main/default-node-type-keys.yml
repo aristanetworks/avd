@@ -25,3 +25,29 @@ default_node_type_keys:
     overlay_controller:
       type: overlay-controller
       default_evpn_role: server
+
+  "mpls":
+    p:
+      type: p
+      mpls_lsr: true
+      default_mpls_overlay_role: none
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    pe:
+      type: pe
+      mpls_lsr: true
+      connected_endpoints: true
+      default_mpls_overlay_role: client
+      network_services:
+        l1: true
+        l2: true
+        l3: true
+      mpls_ler: true
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr
+    rr:
+      type: rr
+      mpls_lsr: true
+      default_mpls_overlay_role: server
+      default_overlay_routing_protocol: ibgp
+      default_underlay_routing_protocol: isis-sr

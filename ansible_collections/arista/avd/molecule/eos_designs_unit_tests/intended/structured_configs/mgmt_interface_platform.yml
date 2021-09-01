@@ -43,19 +43,13 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management0:
+  Management1:
     description: oob_management
     shutdown: false
     vrf: MGMT
     ip_address: 1.1.1.2
     gateway: 192.168.200.5
     type: oob
-tcam_profile:
-  system: vxlan-routing
-platform:
-  sand:
-    lag:
-      hardware_only: true
 management_api_http:
   enable_vrfs:
     MGMT: {}

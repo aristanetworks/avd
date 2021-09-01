@@ -1,0 +1,51 @@
+patch_panel:
+  patches:
+{% for tenant in network_services_data.tenants %}
+{%     for point_to_point_service in tenant.point_to_point_services %}
+{%         set patch = namespace() %}
+{%         for endpoint in point_to_point_service.endpoints | arista.avd.default([]) %}
+{%             if inventory_hostname in endpoint.nodes | arista.avd.default([]) %}
+{%                 for node in endpoint.nodes %}
+{%                     if inventory_hostname == node %}
+{%                         set patch.node_index = loop.index0 %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%                 set patch.interface = endpoint.interfaces[patch.node_index] %}
+{%                 if endpoint.port_channel.mode is arista.avd.defined and endpoint.port_channel.mode in ["active", "on"] %}
+{%                     set channel_group_id = (patch.interface | regex_findall("\d") | join) %}
+{%                     set patch.interface = "Port-Channel" ~ channel_group_id %}
+{%                 endif %}
+{%                 if point_to_point_service.subinterfaces is arista.avd.defined %}
+{%                     for subif in point_to_point_service.subinterfaces %}
+{%                         if subif.number is arista.avd.defined and subif.number is number %}
+    - name: {{ point_to_point_service.name ~ "_" ~ subif.number }}
+      enabled: true
+      connectors:
+        - id: 1
+          type: interface
+          endpoint: {{ patch.interface ~ "." ~ subif.number }}
+{%                             if point_to_point_service.type is arista.avd.defined("vpws-pseudowire") %}
+        - id: 2
+          type: pseudowire
+          endpoint: "bgp vpws {{ tenant.name }} pseudowire {{ point_to_point_service.name ~ "_" ~ subif.number }}"
+{%                             endif %}
+{%                         endif %}
+{%                     endfor %}
+{%                 else %}
+    - name: {{ point_to_point_service.name }}
+      enabled: true
+      connectors:
+        - id: 1
+          type: interface
+          endpoint: {{ patch.interface }}
+{%                     if point_to_point_service.type is arista.avd.defined("vpws-pseudowire") %}
+        - id: 2
+          type: pseudowire
+          endpoint: "bgp vpws {{ tenant.name }} pseudowire {{ point_to_point_service.name }}"
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}
