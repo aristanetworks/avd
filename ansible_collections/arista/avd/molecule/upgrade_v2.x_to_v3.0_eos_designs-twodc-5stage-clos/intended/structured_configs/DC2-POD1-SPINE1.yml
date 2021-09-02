@@ -64,7 +64,6 @@ router_bgp:
       remote_as: '65120'
       description: DC1-POD2-SPINE1
       peer_group: IPv4-UNDERLAY-PEERS
-      local_as: 65210
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:

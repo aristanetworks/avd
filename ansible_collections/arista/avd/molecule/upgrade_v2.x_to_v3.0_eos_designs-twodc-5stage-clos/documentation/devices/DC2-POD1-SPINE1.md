@@ -398,7 +398,6 @@ router bgp 65210
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.1.18 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.1.18 remote-as 65120
-   neighbor 11.1.1.18 local-as 65210 no-prepend replace-as
    neighbor 11.1.1.18 description DC1-POD2-SPINE1
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101

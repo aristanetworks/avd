@@ -33,7 +33,6 @@ router_bgp:
       remote_as: '65100'
       description: DC1-SUPER-SPINE2
       peer_group: IPv4-UNDERLAY-PEERS
-      local_as: 65200
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
