@@ -765,6 +765,7 @@ router bgp 65112
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 100.100.100.201 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.100.100.201 remote-as 65211
+   neighbor 100.100.100.201 local-as 65112 no-prepend replace-as
    neighbor 100.100.100.201 description DC2-POD1-LEAF1A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101

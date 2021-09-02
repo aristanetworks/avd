@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65101
+  as: '65101'
   router_id: 192.168.255.5
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -33,19 +33,19 @@ router_bgp:
   neighbor_interfaces:
     Ethernet1:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet1
     Ethernet2:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet1
     Ethernet3:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet1
     Ethernet4:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet1
   address_family_evpn:
     peer_groups:
@@ -59,19 +59,19 @@ router_bgp:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   vrfs:
     Tenant_A_APP_Zone:
       router_id: 192.168.255.5

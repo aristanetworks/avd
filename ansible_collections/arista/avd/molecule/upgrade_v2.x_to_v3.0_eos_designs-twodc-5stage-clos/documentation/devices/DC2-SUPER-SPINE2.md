@@ -361,6 +361,7 @@ router bgp 65200
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.2.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.2.2 remote-as 65100
+   neighbor 11.1.2.2 local-as 65200 no-prepend replace-as
    neighbor 11.1.2.2 description DC1-SUPER-SPINE2
    neighbor 172.16.21.65 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.21.65 remote-as 65210
