@@ -546,12 +546,10 @@ router bgp 65211
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.0.38 peer group IPv4-UNDERLAY-PEERS
    neighbor 11.1.0.38 remote-as 65120
-   neighbor 11.1.0.38 local-as 65211 no-prepend replace-as
    neighbor 11.1.0.38 description DC1-POD1-LEAF2B
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.100.100.101 remote-as 65112
-   neighbor 100.100.100.101 local-as 65211 no-prepend replace-as
    neighbor 100.100.100.101 description DC1-POD1-LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101

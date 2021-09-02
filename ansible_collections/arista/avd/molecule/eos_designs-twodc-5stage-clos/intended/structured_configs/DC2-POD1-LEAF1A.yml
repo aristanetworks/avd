@@ -62,12 +62,10 @@ router_bgp:
       description: DC1-POD1-LEAF2B
       peer_group: IPv4-UNDERLAY-PEERS
       bfd: true
-      local_as: 65211
     100.100.100.101:
       remote_as: '65112'
       description: DC1-POD1-LEAF2A
       peer_group: IPv4-UNDERLAY-PEERS
-      local_as: 65211
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
