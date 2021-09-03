@@ -364,7 +364,9 @@ name_server:
 This feature enables the user to supply `structured_config` on various levels in the `eos_designs` data model.
 
 #### Connected Endpoints (a.k.a. "servers")
+
 All relevant `structured_config` sections will be merged.
+
 ```yaml
 < connected_endpoints_keys.key >:
   < endpoint_1 >:
@@ -380,7 +382,9 @@ All relevant `structured_config` sections will be merged.
 See [Connected Endpoints]('../common/connected-endpoints.md')
 
 #### Fabric Topology
+
 Only the most specific `structured_config` key will be used
+
 ```yaml
 < spine | super_spine | overlay_controller >:
   defaults:
@@ -409,7 +413,9 @@ Only the most specific `structured_config` key will be used
 See [Fabric Topology]('fabric-topology.md')
 
 #### Network Services (a.k.a. "tenants")
+
 All relevant `structured_config` sections will be merged. Note that setting `structured_config` under `svi.nodes` will override the setting on `svi`.
+
 ```yaml
 tenants:
   vrfs:
