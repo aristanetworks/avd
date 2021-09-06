@@ -596,6 +596,8 @@ router general
 
 ### Router BGP EVPN Address Family
 
+- VPN import prunning is disbaled
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
