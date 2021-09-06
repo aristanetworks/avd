@@ -236,6 +236,9 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ peer_group }} activate
 {%             endif %}
 {%         endfor %}
+{%         if router_bgp.address_family_evpn.route.import.match_failure.action is arista.avd.defined('discard') %}
+      route import match-failure action discard
+{%         endif %}
 {%     endif %}
 {# address family rt-membership activation #}
 {%     if router_bgp.address_family_rtc is arista.avd.defined %}
