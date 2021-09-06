@@ -1,4 +1,4 @@
-# router-bgp-evpn
+# router-bgp-evpn-vpn-import-prunning
 # Table of Contents
 <!-- toc -->
 
@@ -125,7 +125,7 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disbaled
+- VPN import prunning is __enabled__
 
 #### EVPN Host Flapping Settings
 
@@ -196,6 +196,7 @@ router bgp 65101
       domain identifier 3906060
       neighbor EVPN-OVERLAY-PEERS activate
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      route import match-failure action discard
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
