@@ -67,23 +67,6 @@ bgp_peer_groups:
       name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
 
-# Spine BGP Tuning | Optional.
-spine_bgp_defaults:
-  - update wait-for-convergence
-  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Leaf BGP Tuning | Optional.
-leaf_bgp_defaults:
-  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
 
