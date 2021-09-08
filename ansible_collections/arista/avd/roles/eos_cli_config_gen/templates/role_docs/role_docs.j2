@@ -1,0 +1,57 @@
+{# TODO: Find out how to print required for dict / list keys #}
+{% macro print_line(key, value, prefix='', indentation=0) %}
+{%     set required = ' | Optional' %}
+{%     set unique = '' %}
+{%     set choices = '' %}
+{%     set def = '' %}
+{%     if value.required | arista.avd.default(false) %}
+{%         set required = ' | Required' %}
+{%     endif %}
+{%     if value.unique | arista.avd.default(false) == true %}
+{%         set unique = ' (unique)' %}
+{%     endif %}
+{%     if value.choices | arista.avd.default([]) | length > 0 %}
+{%         set choices = ', options: [' ~ value.choices | join(' | ') ~ ']' %}
+{%     endif %}
+{%     if value.default is arista.avd.defined %}
+{%         set def = ', default: ' ~ value.default %}
+{%     endif %}
+{%     set line = key ~ ':' %}
+{%     if value.type | arista.avd.default('str') not in ['list', 'dict'] %}
+{%         set line = line ~ ' <' ~ value.type ~ unique ~ choices ~ def ~ '>' %}
+{%     endif %}
+{%     set line_indent = indentation - prefix | length %}
+{%     if indentation > 0 %}
+{{ ('# ' ~ value.description | arista.avd.default(key) ~ required) | indent(indentation,first=true) }}
+{%     endif %}
+{{ (prefix ~ line) | indent(line_indent,first=true) }}
+{%     if value.type | arista.avd.default in ['list', 'dict'] %}
+{%         if value.elements | default == 'dict' and value.options is arista.avd.defined(var_type='dict') %}
+{#             print options with unique=true first #}
+{%             set unique_options = [] %}
+{%             for option in value.options if value.options[option].unique | arista.avd.default(false) %}
+{%                 do unique_options.append(option) %}
+{%             endfor %}
+{%             set non_unique_options = value.options | reject('in', unique_options) | list %}
+{%             for option in unique_options + non_unique_options %}
+{%                 if value.type == 'list' and loop.first %}
+{%                     set option_prefix = '- ' %}
+{%                 else %}
+{%                     set option_prefix = '' %}
+{%                 endif %}
+{{                 print_line(option, value.options[option], prefix=option_prefix, indentation=(indentation + 2)) -}}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
+{% endmacro %}
+# {{ ansible_role_name }}
+
+## Data Model
+{% for key in schemas %}
+
+### {{ schemas[key].description | arista.avd.default(key) }}
+
+```yaml
+{{ print_line(key, schemas[key]) -}}
+```
+{% endfor %}

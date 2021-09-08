@@ -1,0 +1,5 @@
+---
+# arista.avd.eos_cli_config_gen argument_specs
+argument_specs:
+  main:
+    options: "{{ schemas }}"

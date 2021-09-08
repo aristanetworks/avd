@@ -93,6 +93,10 @@ webdoc: ## Build documentation to publish static content
 check-avd-404: ## Check local 404 links for AVD documentation
 	docker run --rm --network container:webdoc_avd raviqqe/muffet:1.5.7 http://127.0.0.1:8000 -e ".*fonts.gstatic.com.*" -e ".*edit.*" -f --limit-redirections=3 --timeout=$(MUFFET_TIMEOUT)
 
+.PHONY: roledocs
+roledocs:
+	( cd $(WEBDOC_BUILD) ; \
+    ansible-playbook playbook_roles_documentation.yml --tags role_docs )
 #########################################
 # Misc Actions (configure CI runner) 	#
 #########################################

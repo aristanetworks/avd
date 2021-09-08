@@ -1,0 +1,32 @@
+---
+# create required directories
+- name: "Create directory for updated data model {{ root_dir }}/upgrade_eos_cli_config_gen/"
+  tags: [build, provision, migration]
+  file:
+    path: "{{ root_dir }}/upgrade_eos_cli_config_gen/"
+    state: directory
+    mode: 0775
+  delegate_to: localhost
+  run_once: true
+
+# Upgrade AVD data model for eos_cli_config_gen
+- name: Upgrade Data Model for eos_cli_config_gen AVD 3.0
+  tags: [build, provision, data_model_migration]
+  delegate_to: localhost
+  yaml_templates_to_facts:
+    templates:
+      - template: main.j2
+        strip_empty_keys: false
+  check_mode: no
+  register: upgrade_result
+
+# Write upgraded data model To file
+- name: Write upgraded data model To file
+  tags: [build, provision, migration]
+  copy:
+    content: "{{ upgrade_result.ansible_facts | to_nice_yaml(indent=2) }}"
+    dest: "{{ root_dir }}/upgrade_eos_cli_config_gen/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  check_mode: no
+  when: upgrade_result.ansible_facts
