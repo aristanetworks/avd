@@ -38,9 +38,7 @@ router_bgp:
 {% endif %}
 {% if switch.vtep_ip is arista.avd.defined and evpn_import_prunning is arista.avd.defined(true) %}
     route:
-      import:
-        match_failure:
-          action: discard
+      import_match_failure_action: discard
 {% endif %}
 
 {% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
