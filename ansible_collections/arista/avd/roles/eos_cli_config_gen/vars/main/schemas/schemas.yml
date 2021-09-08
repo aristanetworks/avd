@@ -1,2 +1,3 @@
-schemas_vars: []
+schemas_vars:
+  - "{{ access_lists_schema }}"
 schemas: "{{ {} | combine(schemas_vars) }}"

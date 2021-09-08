@@ -1,0 +1,28 @@
+# schema - extended access-lists
+---
+access_lists_schema:
+  access_lists:
+    description: IP Extended Access-Lists
+    type: list
+    elements: dict
+    options:
+      name:
+        type: str
+        description: Access-List Name
+        unique: true
+        required: true
+      sequence_numbers:
+        type: list
+        description: List of ACL Lines
+        elements: dict
+        required: true
+        options:
+          sequence:
+            type: int
+            description: Sequence ID
+            unique: true
+            required: true
+          action:
+            type: str
+            description: Action as string
+            required: true

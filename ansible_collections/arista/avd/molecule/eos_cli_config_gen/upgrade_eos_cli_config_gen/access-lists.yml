@@ -1,0 +1,13 @@
+access_lists:
+- name: ACL-TEST
+  sequence_numbers:
+  - action: permit ip 4.5.6.0/23 1.2.3.0/24
+    sequence: 10
+  - action: deny tcp any eq 80 any
+    sequence: 5
+- name: ACL-TEST2
+  sequence_numbers:
+  - action: permit ip 4.5.6.0/23 1.2.3.0/24
+    sequence: 10
+  - action: deny tcp any eq 80 any
+    sequence: 20

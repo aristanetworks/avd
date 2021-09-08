@@ -1,22 +1,22 @@
-{% if access_lists is defined and access_lists is not none %}
+{% if access_lists is arista.avd.defined %}
 
 ## Extended Access-lists
 
 ### Extended Access-lists Summary
 
-{%     for access_list in access_lists | arista.avd.natural_sort %}
-#### {{ access_list }}
+{%     for access_list in access_lists | arista.avd.natural_sort('name') %}
+#### {{ access_list.name }}
 
 | Sequence | Action |
 | -------- | ------ |
-{%         for sequence in access_lists[access_list].sequence_numbers | arista.avd.natural_sort %}
-| {{ sequence }} | {{ access_lists[access_list].sequence_numbers[sequence].action }} |
+{%         for sequence_number in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+| {{ sequence_number.sequence }} | {{ sequence_number.action }} |
 {%         endfor %}
 
 {%     endfor %}
 ### Extended Access-lists Device Configuration
 
 ```eos
-{% include 'eos/access-lists.j2' %}
+{%     include 'eos/access-lists.j2' %}
 ```
 {% endif %}

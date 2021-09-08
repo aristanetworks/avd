@@ -180,15 +180,15 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ```yaml
 access_lists:
-  < access_list_name_1 >:
+  - name: "< access_list_name_1 >"
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
-      < sequence_id_2 >:
+      - sequence: < sequence_id_2 >
         action: "< action as string >"
-  < access_list_name_2 >:
+  - name: "< access_list_name_2 >"
     sequence_numbers:
-      < sequence_id_1 >:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 

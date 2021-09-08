@@ -1,12 +1,10 @@
 {# eos - extended access-lists #}
 {% if access_lists is arista.avd.defined %}
 !
-{%     for access_list in access_lists | arista.avd.natural_sort %}
-ip access-list {{ access_list }}
-{%         for sequence in access_lists[access_list].sequence_numbers | arista.avd.natural_sort %}
-{%             if access_lists[access_list].sequence_numbers[sequence].action is arista.avd.defined %}
-   {{ sequence }} {{ access_lists[access_list].sequence_numbers[sequence].action }}
-{%             endif %}
+{%     for access_list in access_lists | arista.avd.natural_sort('name') %}
+ip access-list {{ access_list.name }}
+{%         for sequence_number in access_list.sequence_numbers | arista.avd.natural_sort('sequence') %}
+   {{ sequence_number.sequence }} {{ sequence_number.action }}
 {%         endfor %}
 {%     endfor %}
 {% endif %}
