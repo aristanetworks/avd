@@ -59,9 +59,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: true
     route:
-      import:
-        match_failure:
-          action: discard
+      import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:

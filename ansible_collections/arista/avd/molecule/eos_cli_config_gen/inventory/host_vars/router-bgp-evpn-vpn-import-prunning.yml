@@ -35,9 +35,7 @@ router_bgp:
       window: 10
       threshold: 1
     route:
-      import:
-        match_failure:
-          action: discard
+      import_match_failure_action: discard
   address_family_ipv4:
     peer_groups:
       EVPN-OVERLAY-PEERS:
