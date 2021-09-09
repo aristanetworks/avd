@@ -11,7 +11,7 @@ router_bgp:
       bfd: true
 {%         endif %}
 {%         if bgp_neighbor.local_as is arista.avd.defined %}
-      local_as: {{ bgp_neighbor.local_as }}
+      local_as: "{{ bgp_neighbor.local_as }}"
 {%         endif %}
 {%     endfor %}
 {% endif %}

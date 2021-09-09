@@ -49,7 +49,7 @@ router_bgp:
       description: {{ evpn_route_server }}
       remote_as: "{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}"
 {%     if evpn_prevent_readvertise_to_server is arista.avd.defined(true) %}
-      route_map_out: "RM-EVPN-FILTER-AS{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}"
+      route_map_out: RM-EVPN-FILTER-AS{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}
 {%     endif %}
 {% endfor %}
 {% for evpn_route_client in overlay_data.evpn_route_clients | arista.avd.natural_sort %}
