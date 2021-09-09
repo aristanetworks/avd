@@ -77,7 +77,7 @@ jobs:
   pre_commit:
     name: Run pre-commit validation hooks
     runs-on: ubuntu-20.04
-    container: avdteam/base:3.6-v1.0
+    container: avdteam/base:3.8-v2.0
     needs: file-changes
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -119,7 +119,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.6, 3.7, 3.8, 3.9 ]
+        python_version: [ 3.8, 3.9 ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -145,7 +145,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_cli_config_gen']
-        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -161,6 +161,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
@@ -179,7 +180,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
-        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -195,6 +196,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
@@ -224,7 +226,7 @@ jobs:
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
           - 'upgrade_v2.x_to_v3.0_eos_designs-twodc-5stage-clos'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_rfc5549_overlay_ebgp'
-        ansible_version: ['ansible>=2.10,<2.11', 'ansible>=3.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -240,6 +242,7 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
           ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
@@ -257,6 +260,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_config_deploy_cvp']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
     steps:
@@ -272,7 +276,8 @@ jobs:
           molecule_command: 'test'
           molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
           pip_file: ansible_collections/arista/avd/requirements.txt
-          ansible: "ansible>=2.10,<2.11"
+          galaxy_file: "ansible_collections/arista/avd/collections.yml"
+          ansible: ${{ matrix.ansible_version }}
           check_git: true
           check_git_enforced: true
       # - uses: actions/upload-artifact@v2
@@ -284,13 +289,13 @@ jobs:
   # ----------------------------------- #
   ansible_test:
     name: Run ansible-test validation
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-20.04
     needs: [ molecule_eos_designs, molecule_cloudvision ]
     if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     strategy:
       fail-fast: true
       matrix:
-        python_version: [ 3.6 ]
+        python_version: [ 3.8 ]
     steps:
       - name: 'set environment variables'
         run: |
@@ -311,7 +316,7 @@ jobs:
   galaxy_importer:
     name: Test galaxy-importer
     runs-on: ubuntu-latest
-    container: avdteam/base:3.6-v2.0
+    container: avdteam/base:3.8-v2.0
     needs: [ molecule_eos_designs, molecule_cloudvision ]
     if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
     env:
@@ -340,7 +345,7 @@ jobs:
   docker_build:
     name: Webhook to Docker Hub to build image
     runs-on: ubuntu-18.04
-    container: avdteam/base:3.6-v1.0
+    container: avdteam/base:3.8-v2.0
     needs: [python_requirements]
     if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.ref, 'refs/heads/devel'))
     steps:
@@ -356,7 +361,7 @@ jobs:
   build_package:
     name: Build collection package
     runs-on: ubuntu-latest
-    container: avdteam/base:3.6-v2.0
+    container: avdteam/base:3.8-v2.0
     needs: [galaxy_importer, ansible_test]
     if: startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.base_ref, 'refs/heads/releases/**')
     steps:
