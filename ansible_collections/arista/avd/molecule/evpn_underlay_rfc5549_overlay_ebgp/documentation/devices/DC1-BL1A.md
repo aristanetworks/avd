@@ -596,7 +596,7 @@ router general
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disbaled
+- VPN import prunning is disabled
 
 #### EVPN Host Flapping Settings
 

@@ -156,6 +156,8 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### Router BGP EVPN Address Family
 
+- VPN import prunning is disabled
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
