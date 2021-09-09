@@ -1,5 +1,5 @@
 router_bgp:
-  as: '65112'
+  as: '65112.100'
   router_id: 172.16.110.5
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -10,7 +10,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: '65112'
+      remote_as: '65112.100'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -43,30 +43,30 @@ router_bgp:
       description: DC1-POD1-LEAF2A
     172.17.110.16:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110'
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet5
     172.17.110.18:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110'
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.110.20:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110'
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet8
     172.17.110.22:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: '65110'
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet8
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: '65111'
-      route_map_out: RM-EVPN-FILTER-AS65111
+      remote_as: '65111.100'
+      route_map_out: RM-EVPN-FILTER-AS65111.100
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: '65110'
-      route_map_out: RM-EVPN-FILTER-AS65110
+      remote_as: '65110.100'
+      route_map_out: RM-EVPN-FILTER-AS65110.100
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
@@ -552,20 +552,20 @@ route_maps:
         - as 65101
       20:
         type: permit
-  RM-EVPN-FILTER-AS65110:
+  RM-EVPN-FILTER-AS65110.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65110
+        - as 65110.100
       20:
         type: permit
-  RM-EVPN-FILTER-AS65111:
+  RM-EVPN-FILTER-AS65111.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65111
+        - as 65111.100
       20:
         type: permit
 loopback_interfaces:
