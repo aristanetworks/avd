@@ -67,7 +67,7 @@ aaa_accounting:
       type: start-stop
       group: TACACS
   commands:
-    commands_console:
+    console:
       - commands: all
         type: start-stop
         group: TACACS
@@ -75,7 +75,7 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
-    commands_default:
+    default:
       - commands: all
         type: start-stop
         group: TACACS

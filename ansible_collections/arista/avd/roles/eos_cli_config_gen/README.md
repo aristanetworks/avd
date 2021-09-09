@@ -291,7 +291,7 @@ aaa_accounting:
       type: < none | start-stop | stop-only >
       group: < group_name >
   commands:
-    commands_console:
+    console:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         group: < group_name >
@@ -300,7 +300,7 @@ aaa_accounting:
         type: < none | start-stop | stop-only >
         group: < group_name >
         logging: < true | false >
-    commands_default:
+    default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         group: < group_name >
