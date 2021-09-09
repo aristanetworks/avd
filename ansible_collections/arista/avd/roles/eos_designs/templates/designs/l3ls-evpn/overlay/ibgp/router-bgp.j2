@@ -36,7 +36,7 @@ router_bgp:
       threshold: {{ evpn_hostflap_detection.threshold | arista.avd.default(5) }}
       enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
 {% endif %}
-{% if switch.vtep_ip is arista.avd.defined and evpn_import_prunning is arista.avd.defined(true) %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_import_pruning is arista.avd.defined(true) %}
     route:
       import_match_failure_action: discard
 {% endif %}
