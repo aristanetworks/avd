@@ -598,7 +598,6 @@ router general
 
 ### Router BGP EVPN Address Family
 
-
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |

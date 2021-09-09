@@ -137,7 +137,6 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-
 #### Router BGP EVPN MAC-VRFs
 
 ##### VLAN aware bundles

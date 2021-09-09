@@ -478,7 +478,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
-
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
