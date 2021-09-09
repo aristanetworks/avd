@@ -77,7 +77,7 @@ router_bgp:
       description: DC2-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
       bfd: true
-      local_as: 65120
+      local_as: '65120'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP

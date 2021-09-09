@@ -84,7 +84,7 @@ l3leaf:
       platform: vEOS-LAB
       uplink_interfaces: [ Ethernet1, Ethernet2, Ethernet11, Ethernet12 ]
       uplink_switches: [ DC1-POD1-SPINE1, DC1-POD1-SPINE2, DC1-POD1-SPINE1, DC1-POD1-SPINE2 ]
-      bgp_as: 65112
+      bgp_as: "65112.100"
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
