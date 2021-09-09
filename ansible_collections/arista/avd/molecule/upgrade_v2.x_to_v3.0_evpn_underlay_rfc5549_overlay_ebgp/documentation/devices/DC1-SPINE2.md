@@ -424,7 +424,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disabled
 
 #### Router BGP EVPN MAC-VRFs
 

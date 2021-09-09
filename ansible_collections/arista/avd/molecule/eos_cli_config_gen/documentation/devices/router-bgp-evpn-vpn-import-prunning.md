@@ -125,7 +125,7 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is __enabled__
+- VPN import pruning is __enabled__
 
 #### EVPN Host Flapping Settings
 

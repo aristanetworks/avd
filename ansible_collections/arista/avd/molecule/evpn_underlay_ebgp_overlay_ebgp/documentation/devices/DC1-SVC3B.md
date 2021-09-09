@@ -1291,7 +1291,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disabled
 
 #### EVPN Host Flapping Settings
 

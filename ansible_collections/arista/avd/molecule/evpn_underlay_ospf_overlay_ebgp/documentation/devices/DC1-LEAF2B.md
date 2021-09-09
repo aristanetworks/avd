@@ -607,7 +607,6 @@ router ospf 101
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disabled
 
 #### EVPN Host Flapping Settings
 

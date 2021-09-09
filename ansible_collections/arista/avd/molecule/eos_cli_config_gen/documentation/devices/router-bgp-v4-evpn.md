@@ -191,7 +191,6 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-- VPN import prunning is disabled
 
 #### Router BGP EVPN MAC-VRFs
 
