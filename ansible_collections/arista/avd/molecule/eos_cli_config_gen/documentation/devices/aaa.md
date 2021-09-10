@@ -192,8 +192,8 @@ aaa authorization commands all default group aaaAuth
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
 | Exec - Default | - | start-stop | TACACS | - |
-| Commands - Default | all | start-stop | TACACS  | True  |
-| Commands - Default | 0 | start-stop |  -  | True  |
+| Commands - Default | all | start-stop | TACACS | True |
+| Commands - Default | 0 | start-stop | - | True |
 
 ### AAA Accounting Device Configuration
 
