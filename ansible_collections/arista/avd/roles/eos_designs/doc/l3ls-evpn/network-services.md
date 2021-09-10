@@ -47,7 +47,7 @@ svi_profiles:
     enabled: < true | false >
     ip_virtual_router_address: < IPv4_address/Mask >
     ip_address_virtual: < IPv4_address/Mask >
-    ip_address_virtual_secondaries: 
+    ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
@@ -149,7 +149,7 @@ tenants:
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
             ip_address_virtual: < IPv4_address/Mask >
-            ip_address_virtual_secondaries: 
+            ip_address_virtual_secondaries:
               - < IPv4_address/Mask >
               - < IPv4_address/Mask >
 
