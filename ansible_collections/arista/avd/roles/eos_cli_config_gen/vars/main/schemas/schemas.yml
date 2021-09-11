@@ -1,0 +1,2 @@
+schemas_vars: []
+schemas: "{{ {} | combine(schemas_vars) }}"

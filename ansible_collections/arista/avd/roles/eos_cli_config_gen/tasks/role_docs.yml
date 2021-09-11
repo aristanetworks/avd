@@ -1,0 +1,8 @@
+---
+- name: Generate Role Documentation
+  tags: [role_docs]
+  template:
+    src: "role_docs/role_docs.j2"
+    dest: "{{ dest }}"
+    mode: 0664
+  delegate_to: localhost
