@@ -55,8 +55,8 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | CloudVision Servers |  VRF | Authentication | Smash Excludes | Ingest Exclude | AAA Disabled |
-| -------------- | ------------------- | ---- | -------------- | -------------- | -------------- | ------------ |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
 | gzip | apiserver.arista.io:443 | mgt | token-secure,/tmp/cv-onboarding-token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
