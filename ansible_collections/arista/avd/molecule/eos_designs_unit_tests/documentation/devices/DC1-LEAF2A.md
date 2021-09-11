@@ -118,7 +118,7 @@ ip name-server vrf MGMT 192.168.200.5
 ```eos
 !
 ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT 192.168.200.5 prefer
+ntp server vrf MGMT 192.168.200.5
 ```
 
 ## Management API HTTP

@@ -5,9 +5,9 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-BL1A\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst\
+    \ 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
@@ -120,9 +120,9 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-BL1B\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree\
-    \ mst 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode mstp\nno spanning-tree vlan-id 4093-4094\nspanning-tree mst\
+    \ 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
     \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 150\n   name Tenant_A_WAN_Zone_1\n!\nvlan 250\n   name Tenant_B_WAN_Zone_1\n\
@@ -236,9 +236,9 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-L2LEAF1A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nspanning-tree mst\
-    \ 0 priority 16384\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
-    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nspanning-tree mst 0 priority\
+    \ 16384\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
@@ -259,10 +259,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-L2LEAF2A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4094\nspanning-tree mst 0 priority 16384\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -297,10 +297,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-L2LEAF2B\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4094\nspanning-tree mst 0 priority 16384\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4094\nspanning-tree mst 0 priority 16384\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -335,9 +335,9 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-LEAF1A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nspanning-tree mst\
-    \ 0 priority 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege\
-    \ 15 role network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nspanning-tree mst 0 priority\
+    \ 4096\n!\nno aaa root\nno enable password\n!\nusername admin privilege 15 role\
+    \ network-admin nopassword\nusername cvpadmin privilege 15 role network-admin\
     \ secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -419,10 +419,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-LEAF2A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -597,10 +597,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-LEAF2B\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -774,8 +774,8 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SPINE1\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
     \ privilege 15 role network-admin nopassword\nusername cvpadmin privilege 15 role\
     \ network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet1\n\
@@ -845,8 +845,8 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SPINE2\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
     \ privilege 15 role network-admin nopassword\nusername cvpadmin privilege 15 role\
     \ network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2\n\
@@ -916,8 +916,8 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SPINE3\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
     \ privilege 15 role network-admin nopassword\nusername cvpadmin privilege 15 role\
     \ network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet3\n\
@@ -987,8 +987,8 @@ CVP_CONFIGLETS:
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-SPINE4\n\
     ip name-server vrf MGMT 8.8.8.8\nip name-server vrf MGMT 192.168.200.5\n!\nntp\
-    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5 prefer\n\
-    !\nspanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
+    \ local-interface vrf MGMT Management1\nntp server vrf MGMT 192.168.200.5\n!\n\
+    spanning-tree mode none\n!\nno aaa root\nno enable password\n!\nusername admin\
     \ privilege 15 role network-admin nopassword\nusername cvpadmin privilege 15 role\
     \ network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvrf instance MGMT\n!\ninterface Ethernet1\n   description P2P_LINK_TO_DC1-LEAF1A_Ethernet4\n\
@@ -1059,10 +1059,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-SVC3A\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\
@@ -1274,10 +1274,10 @@ CVP_CONFIGLETS:
     \ 120\n!\ntransceiver qsfp default-mode 4x10G\n!\nservice routing protocols model\
     \ multi-agent\n!\nhostname DC1-SVC3B\nip name-server vrf MGMT 8.8.8.8\nip name-server\
     \ vrf MGMT 192.168.200.5\n!\nntp local-interface vrf MGMT Management1\nntp server\
-    \ vrf MGMT 192.168.200.5 prefer\n!\nspanning-tree mode mstp\nno spanning-tree\
-    \ vlan-id 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable\
-    \ password\n!\nusername admin privilege 15 role network-admin nopassword\nusername\
-    \ cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
+    \ vrf MGMT 192.168.200.5\n!\nspanning-tree mode mstp\nno spanning-tree vlan-id\
+    \ 4093-4094\nspanning-tree mst 0 priority 4096\n!\nno aaa root\nno enable password\n\
+    !\nusername admin privilege 15 role network-admin nopassword\nusername cvpadmin\
+    \ privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.\n\
     !\nvlan 110\n   name Tenant_A_OP_Zone_1\n!\nvlan 111\n   name Tenant_A_OP_Zone_2\n\
     !\nvlan 120\n   name Tenant_A_WEB_Zone_1\n!\nvlan 121\n   name Tenant_A_WEBZone_2\n\
     !\nvlan 130\n   name Tenant_A_APP_Zone_1\n!\nvlan 131\n   name Tenant_A_APP_Zone_2\n\

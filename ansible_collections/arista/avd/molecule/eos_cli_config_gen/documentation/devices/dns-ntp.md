@@ -111,7 +111,7 @@ ip domain lookup vrf mgt source-interface Management0
 ```eos
 !
 ntp local-interface vrf mgt Management0
-ntp server vrf mgt 10.10.111.1 prefer
+ntp server vrf mgt 10.10.111.1
 ntp server vrf mgt 10.10.111.2
 ```
 

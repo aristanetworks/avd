@@ -61,8 +61,12 @@ interface Management1
 
 | Node | Primary |
 | ---- | ------- |
-| 10.1.1.1 | true |
+| 2.2.2.55 | true |
+| 10.1.1.1 | - |
+| ie.pool.ntp.org | - |
 | 10.1.1.2 | - |
+| 20.20.20.1 | - |
+| 1.2.3.4 | - |
 
 ### NTP Authentication Keys
 
@@ -74,14 +78,18 @@ interface Management1
 ### NTP Device Configuration
 
 ```eos
-!
 ntp local-interface lo1
-ntp server 10.1.1.1 prefer
+ntp server 1.2.3.4
+ntp server 2.2.2.55
+ntp server 10.1.1.1
 ntp server 10.1.1.2
-ntp authenticate
+ntp server 20.20.20.1
+ntp server ie.pool.ntp.org
+!
 ntp authentication-key 1 md5 044F0E151B
 ntp authentication-key 2 sha1 15060E1F10
 ntp trusted-key 1-2
+ntp authenticate
 ```
 
 # Authentication
