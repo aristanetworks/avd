@@ -55,16 +55,16 @@ interface Management1
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 10.10.10.10:9910 | key | test | test | default | default | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 10.10.10.10:9910 | default | key,key | test | test | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=10.10.10.10:9910 -cvcompression=gzip -ingestauth=key,key -smashexcludes=test -ingestexclude=test -ingestvrf=default -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=10.10.10.10:9910 -cvauth=key,key -cvvrf=default -smashexcludes=test -ingestexclude=test -taillogs
    no shutdown
 ```
 
