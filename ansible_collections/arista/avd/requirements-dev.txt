@@ -1,4 +1,4 @@
-ansible>=2.10,<2.11
+ansible-core>=2.11.3
 ansible-lint
 galaxy-importer>=0.3.1,<0.3.2
 pycodestyle

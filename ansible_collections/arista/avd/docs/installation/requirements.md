@@ -11,11 +11,11 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Python
 
-- Python __3.6.8__ or later
+- Python __3.8__ or later
 
 ## Supported Ansible Versions
 
-- ansible __2.10.0__ or later
+- ansible-core __2.11.3__ or later
 
 ## Additional Python Libraries required
 
