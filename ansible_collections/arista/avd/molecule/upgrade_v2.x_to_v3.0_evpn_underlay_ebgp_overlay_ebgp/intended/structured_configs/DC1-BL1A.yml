@@ -252,7 +252,6 @@ name_server:
   - 192.168.200.5
   - 8.8.8.8
   - 1.1.1.1
-ntp_server: null
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC DC1-BL1A
@@ -512,3 +511,4 @@ vlan_interfaces:
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp: null

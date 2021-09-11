@@ -404,3 +404,24 @@ evpn_rt_type:
 evpn_rt_type:
   admin_subfield: "bgp_as"
 {% endif %}
+{##}
+{# Migrate from ntp_server to ntp with expanded data model - set using custom_structured_configuration since this is no longer handled by eos_designs #}
+{% if ntp_servers is arista.avd.defined %}
+{%     if custom_structured_configuration_prefix is arista.avd.defined(var_type='list') %}
+{%         set prefix = custom_structured_configuration_prefix | first %}
+{%     else %}
+{%         set prefix = custom_structured_configuration_prefix | arista.avd.default('custom_structured_configuration_') %}
+{%     endif %}
+{{ prefix }}ntp:
+  local_interfaces:
+  - name: {{ mgmt_interface }}
+    vrf: {{ mgmt_interface_vrf }}
+  servers:
+{%     for ntp_server in ntp_servers %}
+  - name: {{ ntp_server }}
+{%         if loop.first %}
+    preferred: true
+{%         endif %}
+    vrf: {{ mgmt_interface_vrf }}
+{%     endfor %}
+{% endif %}

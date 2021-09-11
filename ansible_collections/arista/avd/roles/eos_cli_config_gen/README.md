@@ -80,7 +80,6 @@
       - [Management Console](#management-console)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
-      - [NTP Servers](#ntp-servers)
       - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -1394,27 +1393,29 @@ management_ssh:
       enable: < true | false >
 ```
 
-#### NTP Servers
-
-```yaml
-ntp_server:
-  local_interface:
-    vrf: < vrf_name >
-    interface: < source_interface >
-  nodes:
-    - < ntp_server_1 >
-    - < ntp_server_2 >
-```
-
 #### NTP
 
 ```yaml
 ntp:
+  local_interfaces:
+  - name: < source_interface >
+    vrf: < vrf_name >
+  servers:
+  - name: < IP | hostname >:
+    burst: < true | false >
+    iburst:  < true | false >
+    key: < 1 - 65535 >
+    local_interface: < source_interface >
+    maxpoll: < 3 - 17 (logorithmic)>
+    minpoll: < 3 - 17 (logorithmic)>
+    preferred: < true | false >			
+    version: < 1 - 4 >
+    vrf: < vrf_name >
   authenticate: <true | false >
   authentication_keys:
-    <key_identifier | 1-65534>:
-      hash_algorithm: < md5 | sha1 >
-      key: "< type7_obfuscated_key >"
+  - id: <key_identifier | 1-65534>:
+    hash_algorithm: < md5 | sha1 >
+    key: "< type7_obfuscated_key >"
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 

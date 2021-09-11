@@ -145,12 +145,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -377,3 +371,11 @@ vlan_interfaces:
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp:
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

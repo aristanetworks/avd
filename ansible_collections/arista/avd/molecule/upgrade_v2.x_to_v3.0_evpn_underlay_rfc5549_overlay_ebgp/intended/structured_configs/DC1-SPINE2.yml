@@ -122,12 +122,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: none
 local_users:
@@ -240,3 +234,11 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+ntp:
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

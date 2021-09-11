@@ -114,3 +114,11 @@ l2leaf:
 
 
 
+my_dci_ntp:
+  local_interfaces:
+  - name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

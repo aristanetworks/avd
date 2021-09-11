@@ -155,9 +155,13 @@ name_servers:
   - 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
-ntp_servers:
-  - uk.pool.ntp.org
-  - fr.pool.ntp.org
+ntp:
+  servers:
+  - name: uk.pool.ntp.org
+    preferred: true
+    vrf: MGMT
+  - name: fr.pool.ntp.org
+    vrf: MGMT
 ```
 
 #### Configure Fabric topology
