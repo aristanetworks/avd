@@ -120,7 +120,7 @@
 | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_read }} | {{ row_write }} | {{ row_notify }} |
 {%         endfor %}
 {%     endif %}
-{%     if snmp_server.users is defined and snmp_server.users is not none %}
+{%     if snmp_server.users is arista.avd.defined %}
 
 ### SNMP Users Configuration
 
