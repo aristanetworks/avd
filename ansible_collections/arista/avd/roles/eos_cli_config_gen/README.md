@@ -1408,7 +1408,7 @@ ntp:
     local_interface: < source_interface >
     maxpoll: < 3 - 17 (logorithmic)>
     minpoll: < 3 - 17 (logorithmic)>
-    preferred: < true | false >			
+    preferred: < true | false >
     version: < 1 - 4 >
     vrf: < vrf_name >
   authenticate: <true | false >
