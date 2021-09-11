@@ -43,8 +43,3 @@ jobs:
           project: Priority
           column: Needs Triage
           repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - uses: alex-page/github-project-automation-plus@v0.8.1
-        with:
-          project: General AVD Enhancements
-          column: Medium
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
