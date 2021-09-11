@@ -99,9 +99,15 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         # Invalid class - return false
         if str(fail_action).lower() == 'warning':
             if var_name is not None:
-                Display().warning('%s was a %s but we expected a %s. Output may be incorrect or incomplete!' % (var_name, type(value).__name__, str(var_type).lower()))
+                Display().warning(
+                    '%s was a %s but we expected a %s. Output may be incorrect or incomplete!'
+                    % (var_name, type(value).__name__, str(var_type).lower())
+                )
             else:
-                Display().warning('A variable was a %s but we expected a %s. Output may be incorrect or incomplete!' % (type(value).__name__, str(var_type).lower()))
+                Display().warning(
+                    'A variable was a %s but we expected a %s. Output may be incorrect or incomplete!'
+                    % (type(value).__name__, str(var_type).lower())
+                )
         elif str(fail_action).lower() == 'error':
             if var_name is not None:
                 raise AnsibleError('%s was a %s but we expected a %s"!' % (var_name, type(value).__name__, str(var_type).lower()))

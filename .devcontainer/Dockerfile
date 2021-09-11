@@ -1,4 +1,4 @@
-ARG VARIANT="3.6"
+ARG VARIANT="3.8"
 FROM avdteam/base:${VARIANT}
 
 WORKDIR /workspace
