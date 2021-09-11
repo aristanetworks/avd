@@ -58,5 +58,5 @@ overlay_controller:
 
 evpn_prevent_readvertise_to_server : true
 
-# VPN import prunning
-evpn_import_prunning: true
+# VPN import pruning
+evpn_import_pruning: true
