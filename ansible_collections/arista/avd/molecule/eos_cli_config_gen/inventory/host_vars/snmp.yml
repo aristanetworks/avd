@@ -62,25 +62,36 @@ snmp_server:
       priv: aes
       priv_passphrase: 7a07246a6e3467909098d01619e076ad
   hosts:
+    - host: 10.6.75.121
+      vrf: MGMT
+      version: 1
+      community: SNMP-COMMUNITY-1
+    - host: 10.6.75.121
+      vrf: MGMT
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    - host: 10.6.75.122
+      vrf: MGMT
+      #version: 2c should be autodetected based on community key.
+      community: SNMP-COMMUNITY-2
     - host: 10.6.75.99
-      vrf: mgt
+      vrf: MGMT
+      version: 3
       users:
         - username: USER-READ
           authentication_level: auth
-          version: 3
         - username: USER-WRITE
           authentication_level: auth
-          version: 3
-    - host: 10.6.75.121
-      vrf: mgt
+    - host: 10.6.75.100
+      vrf: MGMT
+      #version: 3 should be autodetected based on users key.
       users:
         - username: USER-READ
-          authentication_level: auth
-          version: 3
+          authentication_level: priv
   traps:
     enable: true
   vrfs:
     - name: default
       enable: false
-    - name: mgt
+    - name: MGMT
       enable: true

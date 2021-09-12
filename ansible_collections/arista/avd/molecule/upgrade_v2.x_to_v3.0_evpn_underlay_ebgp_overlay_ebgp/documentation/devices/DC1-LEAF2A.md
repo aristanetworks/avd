@@ -192,27 +192,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackC DC1-LEAF2A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| example@example.com | DC1_FABRIC rackC DC1-LEAF2A | Disabled |
 
 ### SNMP Device Configuration
 
