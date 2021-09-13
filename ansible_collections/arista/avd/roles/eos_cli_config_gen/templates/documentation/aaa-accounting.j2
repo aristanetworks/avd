@@ -11,6 +11,9 @@
 | Exec | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | - |
 {%        endif %}
 {%     endif %}
+{%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined  %}
+| System | Default | {{ aaa_accounting.system.default.type }} | {{ aaa_accounting.system.default.group }} | - |
+{%     endif %}
 {%     if aaa_accounting.commands is defined and aaa_accounting.commands is not none %}
 {%        if aaa_accounting.commands.commands_default is defined and aaa_accounting.commands.commands_default is not none %}
 {%            for command_default in aaa_accounting.commands.commands_default %}

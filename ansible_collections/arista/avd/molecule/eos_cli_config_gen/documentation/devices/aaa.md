@@ -189,6 +189,7 @@ aaa authorization commands all default group aaaAuth
 | Type | Sub-type | Record | Accounting Stores | Logging |
 | ---- | -------- | ------ |------------------ | ------- |
 | Exec | - | start-stop | TACACS | - |
+| System | Default | start-stop | TACACS | - |
 | Commands | all | start-stop | TACACS  | True  |
 | Commands | 0 | start-stop |  -  | True  |
 
@@ -197,6 +198,7 @@ aaa authorization commands all default group aaaAuth
 ```eos
 !
 aaa accounting exec default start-stop group TACACS
+aaa accounting system default start-stop group TACACS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
 ```
