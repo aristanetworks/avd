@@ -144,27 +144,7 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2B | Disabled |
 
 ### SNMP Device Configuration
 
@@ -210,14 +190,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093-4094
+no spanning-tree vlan-id 4094
 spanning-tree mst 0 priority 4096
 ```
 
@@ -248,7 +228,6 @@ vlan internal order ascending range 1006 1199
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
@@ -272,10 +251,6 @@ vlan 2600
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
-!
-vlan 4093
-   name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
 !
 vlan 4094
    name MLAG_PEER
@@ -541,7 +516,6 @@ interface Loopback1
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
 | Vlan4085 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
@@ -552,7 +526,6 @@ interface Loopback1
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4085 |  default  |  172.21.110.3/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  172.19.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.3/31  |  -  |  -  |  -  |  -  |  -  |
 
 
@@ -590,12 +563,6 @@ interface Vlan4085
    ip virtual-router address 172.21.110.1
    ip attached-host route export 19
 !
-interface Vlan4093
-   description MLAG_PEER_L3_PEERING
-   no shutdown
-   mtu 1500
-   ip address 172.19.110.3/31
-!
 interface Vlan4094
    description MLAG_PEER
    no shutdown
@@ -612,15 +579,17 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 112 | 50112 |
-| 2500 | 2500 |
-| 2600 | 2600 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 112 | 50112 | - |
+| 2500 | 2500 | - |
+| 2600 | 2600 | - |
 
 #### VRF to VNI Mappings
 
@@ -633,6 +602,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
+   description DC1-POD1-LEAF2B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -768,7 +738,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.110.18 | 65110 | default |
 | 172.17.110.20 | 65110 | default |
 | 172.17.110.22 | 65110 | default |
-| 172.19.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
 
@@ -848,8 +818,8 @@ router bgp 65112
    neighbor 172.17.110.22 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.22 remote-as 65110
    neighbor 172.17.110.22 description DC1-POD1-SPINE2_Ethernet8
-   neighbor 172.19.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.19.110.2 description DC1-POD1-LEAF2A
+   neighbor 172.20.110.2 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.2 description DC1-POD1-LEAF2A
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !

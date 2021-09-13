@@ -226,6 +226,10 @@ defaults <- node_group <- node_group.node <- node
 
     # Offset all assigned loopback IP addresses.
     loopback_ipv4_offset: 2
+
+    # Set VXLAN source interface. Loopback1 is default
+    vtep_loopback: < Loopback_interface_1 >
+
 ```
 
 ### BGP & EVPN Control plane
@@ -290,15 +294,18 @@ defaults <- node_group <- node_group.node <- node
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # Underlay L3 peering SVI interface id
+    # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.
+    mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
+
     # IP address pool used for MLAG underlay L3 peering | *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
-    mlag_peer_l3_vlan: < 0-4094 | default -> 4093 >
     mlag_peer_l3_ipv4_pool: < IPv4_network/Mask >
 
     # MLAG Peer Link (control link) SVI interface id
+    mlag_peer_vlan: < 0-4094 | default -> 4094 >
+
     # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
-    mlag_peer_vlan: < 0-4094 | default -> 4094 >
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 
     # Spanning tree mode | Required.

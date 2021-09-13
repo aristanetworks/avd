@@ -9,8 +9,8 @@
 {%     if aaa_authentication.login.default is arista.avd.defined %}
 | Login | default | {{ aaa_authentication.login.default }} |
 {%     endif %}
-{%     if aaa_authentication.login.serial_console is arista.avd.defined %}
-| Login | serial-console | {{ aaa_authentication.login.serial_console }} |
+{%     if aaa_authentication.login.console is arista.avd.defined %}
+| Login | console | {{ aaa_authentication.login.console }} |
 {%     endif %}
 {%     if aaa_authentication.policies is arista.avd.defined %}
 {%         if aaa_authentication.policies.on_failure_log is arista.avd.defined(true) %}

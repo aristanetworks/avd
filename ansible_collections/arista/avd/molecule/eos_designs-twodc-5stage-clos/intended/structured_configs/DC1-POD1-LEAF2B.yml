@@ -38,7 +38,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.19.110.2:
+    172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2A
     172.17.110.16:
@@ -169,7 +169,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: 4094
 local_users:
   admin:
     privilege: 15
@@ -198,11 +198,6 @@ eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cl
   \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
   \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4094:
     tenant: system
     name: MLAG_PEER
@@ -227,11 +222,6 @@ vlans:
     tenant: system
     name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 172.19.110.3/31
-    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
@@ -605,14 +595,13 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2B_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         110:
           vni: 10110

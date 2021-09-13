@@ -45,12 +45,20 @@ l3leaf:
     uplink_ipv4_pool: 172.17.110.0/24
 # Change from p2p_uplinks_ptp.* to l3leaf.defaults.uplink_ptp.*
     uplink_ptp: {'enable': True}
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l3leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: 172.19.110.0/24
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l3leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: 172.20.110.0/24
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+            IPv4-UNDERLAY-PEERS:
+              remote_as: 65110
+            EVPN-OVERLAY-PEERS:
+              remote_as: 65110
   node_groups:
     RACK1_SINGLE:
 # Change from l3leaf.node_groups.RACK1_SINGLE.uplink_to_spine_interfaces to l3leaf.node_groups.RACK1_SINGLE.uplink_interfaces
@@ -82,9 +90,9 @@ l2leaf:
     inband_management_subnet: 172.21.110.0/24
 # Change from l2leaf_inband_management_vlan to l2leaf.defaults.inband_management_vlan
     inband_management_vlan: 4085
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l2leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: 172.19.110.0/24
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l2leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: 172.20.110.0/24
   node_groups:
     RACK2_SINGLE:

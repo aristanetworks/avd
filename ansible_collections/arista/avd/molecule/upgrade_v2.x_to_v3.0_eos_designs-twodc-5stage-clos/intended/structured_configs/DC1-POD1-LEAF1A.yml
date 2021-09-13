@@ -13,6 +13,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
+      remote_as: 65110
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -22,6 +23,7 @@ router_bgp:
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
+      remote_as: 65110
   address_family_ipv4:
     peer_groups:
       IPv4-UNDERLAY-PEERS:
@@ -114,6 +116,13 @@ management_api_http:
 eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
   \ under node DC1-POD1-LEAF1A\n\ninterface Loopback1111\n  description Loopback created\
   \ from raw_eos_cli under platform_settings vEOS-LAB\n"
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        remote_as: 65110
+      IPv4-UNDERLAY-PEERS:
+        remote_as: 65110
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD1-SPINE1
@@ -237,12 +246,12 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings: {}
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlans:
   4085:

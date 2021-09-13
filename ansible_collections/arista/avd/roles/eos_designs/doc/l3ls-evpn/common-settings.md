@@ -44,7 +44,6 @@ terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardwar
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
 terminattr_disable_aaa: "< boolean | default -> false >"
 
-
 # Management interface configuration | Required
 mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
@@ -241,11 +240,15 @@ platform_settings:
       non_mlag: 330
     feature_support:
       queue_monitor_length_notify: false
-  - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+  - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
-      mlag: 780
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ 7280R3, 7500R3, 7800R3 ]
+    reload_delay:
+      mlag: 900
       non_mlag: 1020
 ```
 
@@ -272,7 +275,6 @@ custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_pre
 
 custom_structured_configuration_list_merge: < replace (default) | append | keep | prepend | append_rp | prepend_rp >
 ```
-
 
 **Example:**
 
@@ -360,7 +362,9 @@ name_server:
 This feature enables the user to supply `structured_config` on various levels in the `eos_designs` data model.
 
 #### Connected Endpoints (a.k.a. "servers")
+
 All relevant `structured_config` sections will be merged.
+
 ```yaml
 < connected_endpoints_keys.key >:
   < endpoint_1 >:
@@ -376,7 +380,9 @@ All relevant `structured_config` sections will be merged.
 See [Connected Endpoints]('../common/connected-endpoints.md')
 
 #### Fabric Topology
+
 Only the most specific `structured_config` key will be used
+
 ```yaml
 < spine | super_spine | overlay_controller >:
   defaults:
@@ -405,7 +411,9 @@ Only the most specific `structured_config` key will be used
 See [Fabric Topology]('fabric-topology.md')
 
 #### Network Services (a.k.a. "tenants")
+
 All relevant `structured_config` sections will be merged. Note that setting `structured_config` under `svi.nodes` will override the setting on `svi`.
+
 ```yaml
 tenants:
   vrfs:

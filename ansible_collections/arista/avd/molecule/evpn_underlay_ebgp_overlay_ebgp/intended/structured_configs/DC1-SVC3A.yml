@@ -36,7 +36,7 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    10.255.251.7:
+    10.255.252.7:
       peer_group: MLAG-PEERS
       description: DC1-SVC3B
     172.31.255.48:
@@ -94,7 +94,7 @@ router_bgp:
           evpn:
           - '12:12'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -109,7 +109,7 @@ router_bgp:
           evpn:
           - '13:13'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -124,7 +124,7 @@ router_bgp:
           evpn:
           - '10:10'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -141,10 +141,11 @@ router_bgp:
           - '14:14'
           - 65000:789
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
+      - static
     Tenant_A_WEB_Zone:
       router_id: 192.168.255.12
       rd: 192.168.255.12:11
@@ -156,7 +157,7 @@ router_bgp:
           evpn:
           - '11:11'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -171,7 +172,7 @@ router_bgp:
           evpn:
           - '20:20'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -186,7 +187,7 @@ router_bgp:
           evpn:
           - '21:21'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -201,7 +202,7 @@ router_bgp:
           evpn:
           - '30:30'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -216,7 +217,7 @@ router_bgp:
           evpn:
           - '31:31'
       neighbors:
-        10.255.251.7:
+        10.255.252.7:
           peer_group: MLAG-PEERS
       redistribute_routes:
       - connected
@@ -260,7 +261,7 @@ router_bgp:
         - '11:11'
       redistribute_routes:
       - learned
-      vlan: 120-121
+      vlan: 120-124
     Tenant_A_VMOTION:
       tenant: Tenant_A
       rd: 192.168.255.12:10160
@@ -324,15 +325,18 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- destination_address_prefix: 10.3.5.0/24
+  vrf: Tenant_A_WAN_Zone
+  interface: Null0
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -365,7 +369,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4090,4092
+  no_spanning_tree_vlan: 4092
 local_users:
   admin:
     privilege: 15
@@ -418,11 +422,6 @@ management_api_http:
     MGMT: {}
   enable_https: true
 vlans:
-  4090:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4092:
     tenant: system
     name: MLAG_PEER
@@ -475,6 +474,15 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  122:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+  123:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_source_int_no_vrf
+  124:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_vrf_no_source_int
   3010:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_WEB_Zone
@@ -528,11 +536,6 @@ vlans:
     trunk_groups:
     - LEAF_PEER_L3
 vlan_interfaces:
-  Vlan4090:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 10.255.251.6/31
-    mtu: 1500
   Vlan4092:
     description: MLAG_PEER
     shutdown: false
@@ -562,7 +565,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone'
     vrf: Tenant_A_APP_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan140:
     tenant: Tenant_A
@@ -587,7 +590,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone'
     vrf: Tenant_A_DB_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan110:
     tenant: Tenant_A
@@ -615,7 +618,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone'
     vrf: Tenant_A_OP_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan150:
     tenant: Tenant_A
@@ -631,7 +634,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone'
     vrf: Tenant_A_WAN_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan120:
     tenant: Tenant_A
@@ -655,13 +658,45 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+  Vlan122:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.22.1/24
+    ip_helpers:
+      1.1.1.1: {}
+  Vlan123:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.23.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+  Vlan124:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_vrf_no_source_int
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.24.1/24
+    ip_helpers:
+      1.1.1.1:
+        vrf: TEST
   Vlan3010:
     tenant: Tenant_A
     type: underlay_peering
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone'
     vrf: Tenant_A_WEB_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan210:
     tenant: Tenant_B
@@ -685,7 +720,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone'
     vrf: Tenant_B_OP_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan250:
     tenant: Tenant_B
@@ -701,7 +736,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone'
     vrf: Tenant_B_WAN_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan310:
     tenant: Tenant_C
@@ -725,7 +760,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone'
     vrf: Tenant_C_OP_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
   Vlan350:
     tenant: Tenant_C
@@ -741,7 +776,7 @@ vlan_interfaces:
     shutdown: false
     description: 'MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone'
     vrf: Tenant_C_WAN_Zone
-    ip_address: 10.255.251.6/31
+    ip_address: 10.255.252.6/31
     mtu: 1500
 port_channel_interfaces:
   Port-Channel5:
@@ -757,7 +792,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,140-141,150,160-162,210-211,250,310-311,350
+    vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel10:
@@ -1292,14 +1327,13 @@ ip_igmp_snooping:
       enabled: true
     161:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-SVC3A_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
@@ -1319,6 +1353,12 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
         160:
           vni: 10160
         161:

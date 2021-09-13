@@ -26,12 +26,13 @@ from ansible.utils.display import Display
 from ansible.errors import AnsibleError
 
 
-def defined(value, test_value=None, fail_action=None, var_name=None):
+def defined(value, test_value=None, var_type=None, fail_action=None, var_name=None):
     """
     defined - Ansible test plugin to test if a variable is defined and not none
 
     Arista.avd.defined will test value if defined and is not none and return true or false.
     If test_value is supplied, the value must also pass == test_value to return true.
+    If var_type is supplied, the value must also be of the specified class/type
     If fail_action is 'warning' a warning will be emitted on failure.
     If fail_action is 'error' an error will be emitted on failure and the task will fail.
     If var_name is supplied it will be used in the warning and error messages to ease troubleshooting.
@@ -56,6 +57,8 @@ def defined(value, test_value=None, fail_action=None, var_name=None):
         Value to test from ansible
     test_value : any, optional
         Value to test in addition of defined and not none, by default None
+    var_type : ['float', 'int', 'str', 'list', 'dict', 'tuple'], optional
+        Type or Class to test for
     fail_action : ['warning', 'error'], optional
         Optional action if test fails to emit a Warning or Error
     var_name : <string>, optional
@@ -91,6 +94,19 @@ def defined(value, test_value=None, fail_action=None, var_name=None):
                 raise AnsibleError('%s was set to %s but we expected %s!' % var_name, value, test_value)
             else:
                 raise AnsibleError('A variable was set to %s but we expected %s!')
+        return False
+    elif str(var_type).lower() in ['float', 'int', 'str', 'list', 'dict', 'tuple'] and str(var_type).lower() != type(value).__name__:
+        # Invalid class - return false
+        if str(fail_action).lower() == 'warning':
+            if var_name is not None:
+                Display().warning('%s was a %s but we expected a %s. Output may be incorrect or incomplete!' % (var_name, type(value).__name__, str(var_type).lower()))
+            else:
+                Display().warning('A variable was a %s but we expected a %s. Output may be incorrect or incomplete!' % (type(value).__name__, str(var_type).lower()))
+        elif str(fail_action).lower() == 'error':
+            if var_name is not None:
+                raise AnsibleError('%s was a %s but we expected a %s"!' % (var_name, type(value).__name__, str(var_type).lower()))
+            else:
+                raise AnsibleError('A variable was a %s but we expected a %s!' % (type(value).__name__, str(var_type).lower()))
         return False
     else:
         # Valid value and is matching optional argument if provided - return true

@@ -66,7 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
-      - [Maintenance profiles and units](#maintenance-profiles-and-units)
+      - [Profiles and units](#profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -255,7 +255,7 @@ aliases: |
 aaa_authentication:
   login:
     default: < group group_name | local | none > < group group_name | local | none >
-    serial_console: < group group_name | local | none > < group group_name | local | none >
+    console: < group group_name | local | none > < group group_name | local | none >
   enable:
     default: < group group_name | local | none > < group group_name | local | none >
   dot1x:
@@ -1093,24 +1093,36 @@ vlan_interfaces:
 #### VxLAN Interface
 
 ```yaml
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: < description >
-    source_interface: < source_interface_name >
-    virtual_router:
-      encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
-    vxlan_udp_port: < udp_port >
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: < source_interface_name >
+      udp_port: < udp_port >
+      virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name >:
+        < vrf_name_1 >:
           vni: < vni_id_3 >
-        < vrf_name >:
+        < vrf_name_2 >:
           vni: < vni_id_4 >
+      flood_vteps:
+        - < remote_vtep_1_ip_address >
+        - < remote_vtep_2_ip_address >
+      flood_vtep_learned_data_plane: < true | false >
+    # EOS CLI rendered directly on the Vxlan interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
 ### Internal VLAN Allocation Policy
@@ -1482,20 +1494,80 @@ router_pim_sparse_mode:
 
 ```yaml
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-      - < IPv4_address >
-      - < IPv4_address >
-      - < IPv4_address >
-    port: < port_id >
-  ingestauth_key: < ingest_key >
-  ingestvrf: < vrf_name >
-  smashexcludes: "< list as string >"
-  ingestexclude: "< list as string >"
-  disable_aaa: < false | true >
+  # Address of the gRPC server on CloudVision
+  # TCP 9910 is used on on-prem
+  # TCP 443 is used on CV as a Service
+  cvaddrs: # For single cluster
+    - < ip/fqdn >:<port>
+    - < ip/fqdn >:<port>
+    - < ip/fqdn >:<port>
+  clusters: # For multiple cluster support
+    < cluster_name >:
+      cvaddrs:
+        - < ip/fqdn >:<port>
+        - < ip/fqdn >:<port>
+        - < ip/fqdn >:<port>
+      cvauth:
+        method: < "token" | "token-secure" | "key" >
+        key: < key >
+        token_file: < path | e.g. "/tmp/token" >
+      cvobscurekeyfile: < true | false >
+      cvproxy: < URL >
+      cvsourceip: < IP Address >
+      cvvrf: < vrf >
+  # Authentication scheme used to connect to CloudVision
+  cvauth:
+    method: < "token" | "token-secure" | "key" >
+    key: < key >
+    token_file: < path | e.g. "/tmp/token" >
+  # Compression scheme when streaming to CloudVision. The default is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
+  # This flag does not have to be set to take effect.
+  cvcompression: < gzip | none >
+  # Encrypt the private key used for authentication to CloudVision
+  cvobscurekeyfile: < true | false >
+  # Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
+  # The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'
+  # Available as of TerminAttr v1.13.0
+  cvproxy: < URL >
+  # set source IP address in case of in-band managament
+  cvsourceip: < IP Address >
+  # Name of the VRF to use to connect to CloudVision
+  cvvrf: < vrf >
+  # Stream states from EOS GNMI servers (Openconfig) to CloudVision
+  # Available as of TerminAttr v1.13.1
+  cvgnmi: < true | false >
+  # Disable AAA authorization and accounting. When setting this flag, all commands pushed
+  # from CloudVision are applied directly to the CLI without authorization
+  disable_aaa: < true | false >
+  # Set the gRPC server address, the default is 127.0.0.1:6042
+  grpcaddr: < string | e.g. "MGMT/0.0.0.0:6042" >
+  # gNMI read-only mode – Disable gnmi.Set()
+  grpcreadonly: < true | false >
+  # Exclude paths from Sysdb on the ingest side
+  ingestexclude: < string | e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent" >
+  # Exclude paths from the shared memory table
+  smashexcludes: < string | e.g. "ale,flexCounter,hardware,kni,pulse,strata" >
+  # Enable log file collection; /var/log/messages is streamed by default if no path is set.
+  taillogs: < path | e.g. "/var/log/messages" >
+  # ECO DHCP Collector address or ECO DHCP Fingerprint listening addressin standalone mode (default “127.0.0.1:67”)
+  ecodhcpaddr: < IPV4_address:port >
+  # Enable IPFIX provider (default true)
+  # This flag is enabled by default and does not have to be added to the daemon configuration.
+  ipfix: < true | false >
+  # ECO IPFIX Collector address to listen on to receive IPFIX packets (default “127.0.0.1:4739”)
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  ipfixaddr: < IPV4_address:port >
+  # Enable sFlow provider (default true)
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  sflow: < true | false >
+  # ECO sFlow Collector address to listen on to receive sFlow packets (default “127.0.0.1:6343”)
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  sflowaddr: < IPV4_address:port >
 ```
 
-You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance. Streaming to multiple clusters both on-prem and cloud service is supported.
+
+> Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes which always contain the latest recommended versions and minimum required versions per EOS release.
 
 #### Custom Daemons
 
@@ -1547,6 +1619,8 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  synchronous:
+    level: < severity_level | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
@@ -1656,16 +1730,17 @@ snmp_server:
   hosts:
     - host: < host IP address or name >
       vrf: < vrf_name >
+      version: < 1 | 2c | 3 >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
     - host: < host IP address or name >
       vrf: < vrf_name >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
   traps:
     enable: < true | false >
   vrfs:

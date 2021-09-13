@@ -175,7 +175,8 @@ switch:
   mlag_ibgp_origin_incomplete: {{ switch_data.combined.mlag_ibgp_origin_incomplete | arista.avd.default(true) }}
 
 {# switch.mlag_peer_vlan #}
-  mlag_peer_vlan: {{ switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) }}
+{%     set mlag_peer_vlan = switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) %}
+  mlag_peer_vlan: {{ mlag_peer_vlan }}
 
 {# switch.mlag_dual_primary_detection #}
   mlag_dual_primary_detection: {{ switch_data.combined.mlag_dual_primary_detection | arista.avd.default(false) }}
@@ -187,7 +188,10 @@ switch:
 {# switch.mlag_peer_l3_vlan #}
 {%     if switch.underlay_router is arista.avd.defined(true) %}
   mlag_l3: true
-  mlag_peer_l3_vlan: {{ switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) }}
+{%         if switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) is not in [false,mlag_peer_vlan] %}
+{%             set mlag_peer_l3_vlan = switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) %}
+  mlag_peer_l3_vlan: {{ mlag_peer_l3_vlan }}
+{%         endif %}
 {%     endif %}
 
 {%     if switch_data.node_group.nodes.keys() | list | first == inventory_hostname %}
@@ -214,7 +218,7 @@ switch:
 
 {# switch.mlag_l3_ip #}
 {# switch.mlag_peer_l3_ip #}
-{%         if switch.underlay_router is arista.avd.defined(true) %}
+{%         if switch.underlay_router is arista.avd.defined(true) and mlag_peer_l3_vlan is arista.avd.defined %}
   mlag_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_primary %}
 
   mlag_peer_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_secondary %}
@@ -245,7 +249,7 @@ switch:
 
 {# switch.mlag_l3_ip #}
 {# switch.mlag_peer_l3_ip #}
-{%         if switch.underlay_router is arista.avd.defined(true) %}
+{%         if switch.underlay_router is arista.avd.defined(true) and mlag_peer_l3_vlan is arista.avd.defined %}
   mlag_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_secondary %}
 
   mlag_peer_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_primary %}
@@ -264,6 +268,9 @@ switch:
 {# switch.vtep_loopback_ipv4_pool #}
 {%     set switch_vtep_loopback_ipv4_pool = switch_data.combined.vtep_loopback_ipv4_pool %}
   vtep_loopback_ipv4_pool: {{ switch_vtep_loopback_ipv4_pool }}
+
+{# switch.vtep_loopback #}
+  vtep_loopback: {{ switch_data.combined.vtep_loopback | arista.avd.default('Loopback1') }}
 
 {# switch.vtep_ip #}
 {%     if switch_data.mlag_configured is arista.avd.defined(true) %}

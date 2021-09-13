@@ -69,12 +69,8 @@ vlan_interfaces:
     ip_helpers:
 {%                 for helper_ip in svi_ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ svi_ip_helpers[helper_ip].source_interface }}
-{%                     if svi_ip_helpers[helper_ip].source_vrf is arista.avd.defined %}
-        vrf: {{ svi_ip_helpers[helper_ip].source_vrf }}
-{%                     else %}
-        vrf: {{ vrf }}
-{%                     endif %}
+        source_interface: {{ svi_ip_helpers[helper_ip].source_interface | arista.avd.default }}
+        vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
 {%             if svi_raw_eos_cli is arista.avd.defined %}
@@ -97,7 +93,7 @@ vlan_interfaces:
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
-    ip_address: {{ switch.mlag_l3_ip }}/31
+    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%             endif %}
 {%         endif %}

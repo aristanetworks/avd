@@ -110,7 +110,7 @@ router_bgp:
         - '11:11'
       redistribute_routes:
       - learned
-      vlan: 120-121
+      vlan: 120-124
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -118,12 +118,12 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -267,17 +267,11 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 192.168.255.9/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.9/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
         action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -303,17 +297,26 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  122:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+  123:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_source_int_no_vrf
+  124:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_vrf_no_source_int
 ip_igmp_snooping:
   globally_enabled: true
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
@@ -323,6 +326,12 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
       vrfs:
         Tenant_A_APP_Zone:
           vni: 12
@@ -368,4 +377,36 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+  Vlan122:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.22.1/24
+    ip_helpers:
+      1.1.1.1: {}
+  Vlan123:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.23.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+  Vlan124:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_vrf_no_source_int
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.24.1/24
+    ip_helpers:
+      1.1.1.1:
+        vrf: TEST
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a

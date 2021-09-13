@@ -60,6 +60,7 @@ interface Management1
 | Console | debugging |
 | Buffer | informational  |
 | Trap | informational |
+| Synchronous | error |
 
 | VRF | Source Interface |
 | --- | ---------------- |
@@ -78,6 +79,7 @@ interface Management1
 logging console debugging
 logging buffered 1000000 informational
 logging trap informational
+logging synchronous level error
 logging source-interface Loopback0
 logging host 20.20.20.7
 logging vrf mgt source-interface Management0

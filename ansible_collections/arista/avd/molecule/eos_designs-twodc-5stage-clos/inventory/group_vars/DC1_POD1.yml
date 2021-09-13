@@ -88,6 +88,7 @@ l3leaf:
       evpn_route_servers: [ DC1-RS1, DC1-SUPER-SPINE1, DC1-POD1-SPINE1, DC1-POD1-LEAF1A ]
       mlag_interfaces: [ Ethernet5, Ethernet6 ]
       mlag_dual_primary_detection: true
+      mlag_peer_l3_vlan: 4094 #Using 4094 for both mlag peer and l3 peerings.
       spanning_tree_mode: mstp
       spanning_tree_priority: 4096
       raw_eos_cli: |

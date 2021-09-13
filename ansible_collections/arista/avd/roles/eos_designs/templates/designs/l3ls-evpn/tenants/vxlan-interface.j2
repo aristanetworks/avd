@@ -1,14 +1,13 @@
-vxlan_tunnel_interface:
+vxlan_interface:
 {# vxlan-vtep interface #}
   Vxlan1:
     description: {{ inventory_hostname }}_VTEP
-    source_interface: Loopback1
+    vxlan:
+      source_interface: {{ switch.vtep_loopback }}
 {% if switch.mlag is arista.avd.defined(true) %}
-    virtual_router:
-      encapsulation_mac_address: "mlag-system-id"
+      virtual_router_encapsulation_mac_address: "mlag-system-id"
 {% endif %}
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+      udp_port: 4789
       vlans:
 {% for tenant in switch.tenants | arista.avd.natural_sort %}
 {%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}

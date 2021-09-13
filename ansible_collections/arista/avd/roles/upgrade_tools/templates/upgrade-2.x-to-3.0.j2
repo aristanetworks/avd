@@ -40,7 +40,7 @@ spine:
 {%     if spine_bgp_defaults is arista.avd.defined %}
 # Change from spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults: {{ spine_bgp_defaults }}
-{%     else %}
+{%     elif spine.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of spine_bgp_defaults to spine.defaults.bgp_defaults
     bgp_defaults:
       - update wait-for-convergence
@@ -50,7 +50,7 @@ spine:
       - graceful-restart restart-time 300
       - graceful-restart
 {%     endif %}
-{%     if underlay_routing_protocol | lower == 'isis' %}
+{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol| lower is arista.avd.defined('isis') %}
 # Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
     isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0000" }}'
 {%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
@@ -84,12 +84,12 @@ l3leaf:
 {%     if overlay_loopback_network_summary is arista.avd.defined %}
 # Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
     loopback_ipv4_pool: {{ overlay_loopback_network_summary }}
-{%     endif %}
-{%     set switch_max_spines = max_spines | arista.avd.default(
-                               spine.nodes | arista.avd.default([]) | length) %}
-{%     if switch_max_spines > 0 %}
+{%         set switch_max_spines = max_spines | arista.avd.default(
+                                   spine.nodes | arista.avd.default([]) | length) %}
+{%         if switch_max_spines > 0 %}
 # New loopback_network_offset variable based on max_spines or length of spine.nodes
     loopback_ipv4_offset: {{ switch_max_spines }}
+{%         endif %}
 {%     endif %}
 {%     if vtep_loopback_network_summary is arista.avd.defined %}
 # Change from vtep_loopback_network_summary to l3leaf.defaults.vtep_loopback_ipv4_pool
@@ -124,17 +124,17 @@ l3leaf:
     uplink_interface_speed: {{ l3leaf.defaults.p2p_link_interface_speed }}
 {%     endif %}
 {%     if mlag_ips.mlag_peer is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l3leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
 {%     endif %}
 {%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l3leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
 {%     if leaf_bgp_defaults is arista.avd.defined %}
 # Change from leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults: {{ leaf_bgp_defaults }}
-{%     else %}
+{%     elif l3leaf.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of leaf_bgp_defaults to l3leaf.defaults.bgp_defaults
     bgp_defaults:
       - update wait-install
@@ -143,7 +143,7 @@ l3leaf:
       - graceful-restart restart-time 300
       - graceful-restart
 {%     endif %}
-{%     if underlay_routing_protocol | lower == 'isis' %}
+{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol| lower is arista.avd.defined('isis') %}
 # Change from isis_site_id.0001 to l3leaf.defaults.isis_system_id_prefix
     isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0001" }}'
 {%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}
@@ -151,6 +151,18 @@ l3leaf:
 # New l3leaf.defaults.isis_maximum_paths based on max_spines * max_l3leaf_to_spine_links
     isis_maximum_paths: {{ switch_max_spines * max_l3leaf_to_spine_links | arista.avd.default(1) }}
 {%         endif %}
+{%     endif %}
+{%     if spine.bgp_as is arista.avd.defined %}
+# Retain 2.x behavior by setting spine.bgp_as on peer-node_groups
+    structured_config:
+      router_bgp:
+        peer_groups:
+{%         if underlay_routing_protocol | arista.avd.default('ebgp') | lower in ['bgp','ebgp'] %}
+            {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+              remote_as: {{ spine.bgp_as }}
+{%         endif %}
+            {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+              remote_as: {{ spine.bgp_as }}
 {%     endif %}
   node_groups:
 {%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
@@ -209,11 +221,11 @@ l2leaf:
     uplink_interface_speed: {{ l2leaf.defaults.p2p_link_interface_speed }}
 {%     endif %}
 {%     if mlag_ips.mlag_peer is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer to spine.defaults.mlag_peer_ipv4_pool
+# Change from mlag_ips.mlag_peer to l2leaf.defaults.mlag_peer_ipv4_pool
     mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
 {%     endif %}
 {%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
-# Change from mlag_ips.mlag_peer_l3_ipv4_pool to spine.defaults.mlag_peer_l3_ipv4_pool
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l2leaf.defaults.mlag_peer_l3_ipv4_pool
     mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
 {%     endif %}
   node_groups:
@@ -261,7 +273,7 @@ super_spine:
 {%     if super_spine_bgp_defaults is arista.avd.defined %}
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults: {{ super_spine_bgp_defaults }}
-{%     else %}
+{%     elif super_spine.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults:
       - update wait-for-convergence
@@ -312,7 +324,7 @@ overlay_controller:
 {%     if overlay_controller_bgp_defaults is arista.avd.defined %}
 # Change from overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults: {{ overlay_controller_bgp_defaults }}
-{%     else %}
+{%     elif overlay_controller.defaults.bgp_defaults is not arista.avd.defined %}
 # Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
     bgp_defaults:
       - no bgp default ipv4-unicast

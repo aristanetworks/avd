@@ -98,6 +98,7 @@ l3leaf:
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+          vtep_loopback: Loopback0
     DC1_LEAF2:
       bgp_as: 65102
       rack: "rackD"
@@ -109,14 +110,17 @@ l3leaf:
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
+          vtep_loopback: Loopback10
         DC1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
+          vtep_loopback: Loopback10
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
       uplink_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
+      mlag_peer_l3_vlan: false #False means using mlag_peer_vlan (4094) for both mlag peer and l3 peerings.
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]

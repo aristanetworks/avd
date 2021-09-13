@@ -173,16 +173,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -192,27 +192,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackD DC1-LEAF2B |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| example@example.com | DC1_FABRIC rackD DC1-LEAF2B | Disabled |
 
 ### SNMP Device Configuration
 
@@ -285,6 +265,9 @@ vlan internal order ascending range 1006 1199
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 140 | Tenant_A_DB_BZone_1 | - |
@@ -312,6 +295,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -357,9 +349,9 @@ vlan 311
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF1B_Ethernet2 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 7 |
-| Ethernet9 | DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 9 |
+| Ethernet7 | DC1-L2LEAF1A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet8 | DC1-L2LEAF1B_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet9 | DC1-L2LEAF3A_Ethernet2 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
 | Ethernet10 | server01_MLAG_Eth3 | *trunk | *210-211 | *- | *- | 10 |
 | Ethernet11 | server01_MTU_PROFILE_MLAG_Eth5 | *access | *110 | *- | *- | 11 |
 | Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth7 | *access | *- | *- | *- | 12 |
@@ -470,8 +462,8 @@ interface Ethernet21
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
-| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
 | Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
 | Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
@@ -485,7 +477,7 @@ interface Port-Channel7
    description DC1_L2LEAF1_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
+   switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
    evpn ethernet-segment
       identifier 0000:1234:0808:0707:0606
@@ -496,7 +488,7 @@ interface Port-Channel9
    description DC1-L2LEAF3A_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
+   switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
    evpn ethernet-segment
       identifier 0000:1234:0606:0707:0808
@@ -544,7 +536,7 @@ interface Port-Channel20
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.11/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.11/32 |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.11/32 |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.11/32 |
 
 #### IPv6
@@ -552,7 +544,7 @@ interface Port-Channel20
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
 
 
@@ -565,7 +557,7 @@ interface Loopback0
    no shutdown
    ip address 192.168.255.11/32
 !
-interface Loopback1
+interface Loopback10
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 192.168.254.11/32
@@ -587,6 +579,9 @@ interface Loopback100
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
+| Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan123 |  Tenant_a_WEB_DHCP_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
+| Vlan124 |  Tenant_a_WEB_DHCP_vrf_no_source_int  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan140 |  Tenant_A_DB_BZone_1  |  Tenant_A_DB_Zone  |  -  |  false  |
@@ -604,6 +599,9 @@ interface Loopback100
 | Vlan111 |  Tenant_A_OP_Zone  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan120 |  Tenant_A_WEB_Zone  |  -  |  10.1.20.1/24  |  -  |  -  |  -  |  -  |
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
+| Vlan122 |  Tenant_A_WEB_Zone  |  -  |  10.1.22.1/24  |  -  |  -  |  -  |  -  |
+| Vlan123 |  Tenant_A_WEB_Zone  |  -  |  10.1.23.1/24  |  -  |  -  |  -  |  -  |
+| Vlan124 |  Tenant_A_WEB_Zone  |  -  |  10.1.24.1/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
 | Vlan140 |  Tenant_A_DB_Zone  |  -  |  10.1.40.1/24  |  -  |  -  |  -  |  -  |
@@ -644,6 +642,27 @@ interface Vlan121
    mtu 1560
    vrf Tenant_A_WEB_Zone
    ip address virtual 10.1.10.254/24
+!
+interface Vlan122
+   description Tenant_a_WEB_DHCP_no_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.22.1/24
+   ip helper-address 1.1.1.1
+!
+interface Vlan123
+   description Tenant_a_WEB_DHCP_source_int_no_vrf
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.23.1/24
+   ip helper-address 1.1.1.1 source-interface lo100
+!
+interface Vlan124
+   description Tenant_a_WEB_DHCP_vrf_no_source_int
+   no shutdown
+   vrf Tenant_A_WEB_Zone
+   ip address virtual 10.1.24.1/24
+   ip helper-address 1.1.1.1 vrf TEST
 !
 interface Vlan130
    description Tenant_A_APP_Zone_1
@@ -698,29 +717,32 @@ interface Vlan311
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback10
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
-| 140 | 10140 |
-| 141 | 10141 |
-| 160 | 10160 |
-| 161 | 10161 |
-| 162 | 10162 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 310 | 30310 |
-| 311 | 30311 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 120 | 10120 | - |
+| 121 | 10121 | - |
+| 122 | 10122 | - |
+| 123 | 10123 | - |
+| 124 | 10124 | - |
+| 130 | 10130 | - |
+| 131 | 10131 | - |
+| 140 | 10140 | - |
+| 141 | 10141 | - |
+| 160 | 10160 | - |
+| 161 | 10161 | - |
+| 162 | 10162 | - |
+| 210 | 20210 | - |
+| 211 | 20211 | - |
+| 310 | 30310 | - |
+| 311 | 30311 | - |
 
 #### VRF to VNI Mappings
 
@@ -738,12 +760,16 @@ interface Vlan311
 ```eos
 !
 interface Vxlan1
-   vxlan source-interface Loopback1
+   description DC1-LEAF2B_VTEP
+   vxlan source-interface Loopback10
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111
    vxlan vlan 120 vni 10120
    vxlan vlan 121 vni 10121
+   vxlan vlan 122 vni 10122
+   vxlan vlan 123 vni 10123
+   vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
    vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
@@ -911,7 +937,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_NFS | 192.168.255.11:10161 | 10161:10161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.11:10 | 10:10 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 192.168.255.11:10160 | 10160:10160 | - | - | learned | 160 |
-| Tenant_A_WEB_Zone | 192.168.255.11:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_A_WEB_Zone | 192.168.255.11:11 | 11:11 | - | - | learned | 120-124 |
 | Tenant_B_OP_Zone | 192.168.255.11:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_C_OP_Zone | 192.168.255.11:30030 | 30030:30030 | - | - | learned | 310-311 |
 
@@ -1012,7 +1038,7 @@ router bgp 65102
       rd 192.168.255.11:11
       route-target both 11:11
       redistribute learned
-      vlan 120-121
+      vlan 120-124
    !
    vlan-aware-bundle Tenant_B_OP_Zone
       rd 192.168.255.11:20

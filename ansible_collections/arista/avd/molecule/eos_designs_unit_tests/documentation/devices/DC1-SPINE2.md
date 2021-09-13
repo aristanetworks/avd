@@ -12,6 +12,8 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+- [Hardware TCAM Profile](#hardware-tcam-profile)
+  - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -37,6 +39,9 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Platform](#platform)
+  - [Platform Summary](#platform-summary)
+  - [Platform Configuration](#platform-configuration)
 - [Quality Of Service](#quality-of-service)
 
 <!-- toc -->
@@ -157,16 +162,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -176,27 +181,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC DC1-SPINE2 |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| example@example.com | DC1_FABRIC DC1-SPINE2 | Disabled |
 
 ### SNMP Device Configuration
 
@@ -204,6 +189,18 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-SPINE2
+```
+
+# Hardware TCAM Profile
+
+TCAM profile __`vxlan-routing`__ is active
+
+## Hardware TCAM configuration
+
+```eos
+!
+hardware tcam
+   system profile vxlan-routing
 ```
 
 # Spanning Tree
@@ -261,6 +258,8 @@ vlan internal order ascending range 1006 1199
 | Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet2 | routed | - | 172.31.255.66/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | routed | - | 172.31.255.82/31 | default | 1500 | false | - | - |
 | Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | routed | - | 172.31.255.98/31 | default | 1500 | false | - | - |
+| Ethernet8 | P2P_LINK_TO_DC1-BL2A_Ethernet2 | routed | - | 172.31.255.114/31 | default | 1500 | false | - | - |
+| Ethernet9 | P2P_LINK_TO_DC1-BL2B_Ethernet2 | routed | - | 172.31.255.130/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -321,6 +320,22 @@ interface Ethernet7
    mtu 1500
    no switchport
    ip address 172.31.255.98/31
+!
+interface Ethernet8
+   description P2P_LINK_TO_DC1-BL2A_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.114/31
+!
+interface Ethernet9
+   description P2P_LINK_TO_DC1-BL2B_Ethernet2
+   no shutdown
+   speed forced 100gfull
+   mtu 1500
+   no switchport
+   ip address 172.31.255.130/31
 ```
 
 ## Loopback Interfaces
@@ -446,6 +461,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 172.31.255.67 | 65103 | default |
 | 172.31.255.83 | 65104 | default |
 | 172.31.255.99 | 65105 | default |
+| 172.31.255.115 | 65106 | default |
+| 172.31.255.131 | 65107 | default |
 | 192.168.255.9 | 65101 | default |
 | 192.168.255.10 | 65102 | default |
 | 192.168.255.11 | 65102 | default |
@@ -453,6 +470,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.13 | 65103 | default |
 | 192.168.255.14 | 65104 | default |
 | 192.168.255.15 | 65105 | default |
+| 192.168.255.16 | 65106 | default |
+| 192.168.255.17 | 65107 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -502,6 +521,12 @@ router bgp 65001
    neighbor 172.31.255.99 peer group UNDERLAY-PEERS
    neighbor 172.31.255.99 remote-as 65105
    neighbor 172.31.255.99 description DC1-BL1B_Ethernet2
+   neighbor 172.31.255.115 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.115 remote-as 65106
+   neighbor 172.31.255.115 description DC1-BL2A_Ethernet2
+   neighbor 172.31.255.131 peer group UNDERLAY-PEERS
+   neighbor 172.31.255.131 remote-as 65107
+   neighbor 172.31.255.131 description DC1-BL2B_Ethernet2
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A
@@ -523,6 +548,12 @@ router bgp 65001
    neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.15 remote-as 65105
    neighbor 192.168.255.15 description DC1-BL1B
+   neighbor 192.168.255.16 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.16 remote-as 65106
+   neighbor 192.168.255.16 description DC1-BL2A
+   neighbor 192.168.255.17 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.17 remote-as 65107
+   neighbor 192.168.255.17 description DC1-BL2B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
@@ -606,6 +637,17 @@ route-map RM-CONN-2-BGP permit 10
 ```eos
 !
 vrf instance MGMT
+```
+
+# Platform
+
+## Platform Summary
+
+## Platform Configuration
+
+```eos
+!
+platform sand lag hardware-only
 ```
 
 # Quality Of Service

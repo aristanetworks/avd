@@ -174,7 +174,7 @@ router_bgp:
         - '11:11'
       redistribute_routes:
       - learned
-      vlan: 120-121
+      vlan: 120-124
     Tenant_A_VMOTION:
       tenant: Tenant_A
       rd: 192.168.255.10:10160
@@ -235,12 +235,12 @@ hardware:
     4:
       serdes: 10G
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -466,7 +466,7 @@ port_channel_interfaces:
     description: DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-162
+    vlans: 110-111,120-124,130-131,160-162
     mode: trunk
     esi: 0000:1234:0808:0707:0606
     rt: 08:08:07:07:06:06
@@ -475,7 +475,7 @@ port_channel_interfaces:
     description: DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-162
+    vlans: 110-111,120-124,130-131,160-162
     mode: trunk
     esi: 0000:1234:0606:0707:0808
     rt: 06:06:07:07:08:08
@@ -513,7 +513,7 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 192.168.255.10/32
-  Loopback1:
+  Loopback10:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 192.168.254.10/32
@@ -566,6 +566,15 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  122:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+  123:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_source_int_no_vrf
+  124:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_vrf_no_source_int
   160:
     tenant: Tenant_A
     name: Tenant_A_VMOTION
@@ -596,12 +605,12 @@ ip_igmp_snooping:
       enabled: true
     161:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback10
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
@@ -619,6 +628,12 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
         160:
           vni: 10160
         161:
@@ -723,6 +738,38 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+  Vlan122:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.22.1/24
+    ip_helpers:
+      1.1.1.1: {}
+  Vlan123:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.23.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+  Vlan124:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_vrf_no_source_int
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.24.1/24
+    ip_helpers:
+      1.1.1.1:
+        vrf: TEST
   Vlan210:
     tenant: Tenant_B
     tags:
