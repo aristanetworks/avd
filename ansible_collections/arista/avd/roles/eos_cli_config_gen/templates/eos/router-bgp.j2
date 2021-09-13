@@ -125,6 +125,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
    neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
 {%         endif %}
+{%         if router_bgp.neighbors[neighbor].maximum_routes is arista.avd.defined %}
+   neighbor {{ neighbor }} maximum-routes {{ router_bgp.neighbors[neighbor].maximum_routes }}
+{%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
 {%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address %}
