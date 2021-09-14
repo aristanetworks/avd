@@ -1,4 +1,3 @@
-
 {####### spine #######}
 {% if spine is arista.avd.defined %}
 spine:
@@ -74,8 +73,6 @@ spine:
 {%         endif %}
 {%     endfor %}
 {% endif %}
-
-
 
 {####### l3leaf #######}
 {% if l3leaf is arista.avd.defined %}
@@ -198,8 +195,6 @@ l3leaf:
 {%     endfor %}
 {% endif %}
 
-
-
 {####### l2leaf #######}
 {% if l2leaf is arista.avd.defined %}
 l2leaf:
@@ -254,8 +249,6 @@ l2leaf:
 {%     endfor %}
 {% endif %}
 
-
-
 {####### super-spine #######}
 {% if super_spine is arista.avd.defined %}
 super_spine:
@@ -284,9 +277,6 @@ super_spine:
       - graceful-restart
 {%     endif %}
 {% endif %}
-
-
-
 
 {####### overlay-controller #######}
 {% if overlay_controller is arista.avd.defined %}
@@ -404,7 +394,7 @@ evpn_rt_type:
 evpn_rt_type:
   admin_subfield: "bgp_as"
 {% endif %}
-{##}
+
 {# Migrate from ntp_server to ntp with expanded data model - set using custom_structured_configuration since this is no longer handled by eos_designs #}
 {% if ntp_servers is arista.avd.defined %}
 {%     if custom_structured_configuration_prefix is arista.avd.defined(var_type='list') %}
