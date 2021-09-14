@@ -1,4 +1,3 @@
-
 spine:
   defaults:
 # Change from spine.platform to spine.defaults.platform
@@ -18,8 +17,6 @@ spine:
     DC1-SPINE2:
     DC1-SPINE3:
     DC1-SPINE4:
-
-
 
 l3leaf:
   defaults:
@@ -90,8 +87,6 @@ l3leaf:
 # Change from l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.uplink_to_spine_interfaces to l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.uplink_interfaces
           uplink_interfaces: ['Ethernet45', 'Ethernet46', 'Ethernet47', 'Ethernet48']
 
-
-
 l2leaf:
   defaults:
 # Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
@@ -126,10 +121,6 @@ l2leaf:
         DC1-L2LEAF3A:
 # Change from l2leaf.node_groups.DC1_L2LEAF3.nodes.DC1-L2LEAF3A.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF3.nodes.DC1-L2LEAF3A.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet9', 'Ethernet9']
-
-
-
-
 
 
 

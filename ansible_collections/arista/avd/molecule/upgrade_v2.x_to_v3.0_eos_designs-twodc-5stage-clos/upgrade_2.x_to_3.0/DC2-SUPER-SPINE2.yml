@@ -1,13 +1,6 @@
 
 
 
-
-
-
-
-
-
-
 super_spine:
   defaults:
 # Change from super_spine.platform to super_spine.defaults.platform
@@ -18,9 +11,6 @@ super_spine:
     loopback_ipv4_pool: 172.16.200.0/24
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
-
-
-
 
 overlay_controller:
   defaults:
@@ -84,5 +74,6 @@ node_type_keys:
     type: super-spine
   overlay_controller:
     type: overlay-controller
+
 
 
