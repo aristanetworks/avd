@@ -50,7 +50,7 @@ node_type_keys:
       vtep_ip: <path to J2 template - default inherited from templates.ip_addressing.vtep_ip >
 
     # Optional | Override interface_descriptions templates
-    # If description templates use Jinja2 conditionnal blocks, they have to use  {%- -%} on any code blocks
+    # If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks
     interface descriptions:
       underlay_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces >
       underlay_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces >
