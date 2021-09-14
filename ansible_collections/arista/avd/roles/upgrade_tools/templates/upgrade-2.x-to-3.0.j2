@@ -403,8 +403,8 @@ evpn_rt_type:
 {%         set prefix = custom_structured_configuration_prefix | arista.avd.default('custom_structured_configuration_') %}
 {%     endif %}
 {{ prefix }}ntp:
-  local_interfaces:
-  - name: {{ mgmt_interface }}
+  local_interface:
+    name: {{ mgmt_interface }}
     vrf: {{ mgmt_interface_vrf }}
   servers:
 {%     for ntp_server in ntp_servers %}

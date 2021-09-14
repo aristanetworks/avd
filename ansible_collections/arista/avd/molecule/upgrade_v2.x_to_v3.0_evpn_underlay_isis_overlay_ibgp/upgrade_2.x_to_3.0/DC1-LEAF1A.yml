@@ -114,8 +114,8 @@ l2leaf:
 
 
 custom_structured_configuration_ntp:
-  local_interfaces:
-  - name: Management1
+  local_interface:
+    name: Management1
     vrf: MGMT
   servers:
   - name: 192.168.200.5

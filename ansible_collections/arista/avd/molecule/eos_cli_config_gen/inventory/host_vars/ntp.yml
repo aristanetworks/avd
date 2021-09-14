@@ -1,7 +1,7 @@
 ### NTP tests (Tested with default VRF here. Tested with Management VRF in "dns-ntp")
 ntp:
-  local_interfaces:
-  - name: lo1
+  local_interface:
+    name: lo1
     vrf: default
   servers:
   - name: 2.2.2.55

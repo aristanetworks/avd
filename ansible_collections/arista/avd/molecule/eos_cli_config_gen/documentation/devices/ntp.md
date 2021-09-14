@@ -51,7 +51,7 @@ interface Management1
 
 ### NTP Summary
 
-#### NTP Local Interfaces
+#### NTP Local Interface
 
 | Interface | VRF |
 | --------- | --- |
@@ -85,6 +85,10 @@ interface Management1
 
 ```eos
 !
+ntp authentication-key 1 md5 044F0E151B
+ntp authentication-key 2 sha1 15060E1F10
+ntp trusted-key 1-2
+ntp authenticate
 ntp local-interface lo1
 ntp server 1.2.3.4 local-interface lo0
 ntp server 2.2.2.55
@@ -92,10 +96,6 @@ ntp server 10.1.1.1
 ntp server 10.1.1.2 prefer
 ntp server 20.20.20.1 key 2
 ntp server ie.pool.ntp.org iburst key 1
-ntp authentication-key 1 md5 044F0E151B
-ntp authentication-key 2 sha1 15060E1F10
-ntp trusted-key 1-2
-ntp authenticate
 ```
 
 # Authentication

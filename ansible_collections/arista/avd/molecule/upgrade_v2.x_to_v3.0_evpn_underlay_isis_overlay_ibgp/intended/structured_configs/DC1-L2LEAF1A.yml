@@ -84,8 +84,8 @@ port_channel_interfaces:
 ip_igmp_snooping:
   globally_enabled: true
 ntp:
-  local_interfaces:
-  - name: Management1
+  local_interface:
+    name: Management1
     vrf: MGMT
   servers:
   - name: 192.168.200.5

@@ -97,7 +97,7 @@ ip domain lookup vrf mgt source-interface Management0
 
 ### NTP Summary
 
-#### NTP Local Interfaces
+#### NTP Local Interface
 
 | Interface | VRF |
 | --------- | --- |

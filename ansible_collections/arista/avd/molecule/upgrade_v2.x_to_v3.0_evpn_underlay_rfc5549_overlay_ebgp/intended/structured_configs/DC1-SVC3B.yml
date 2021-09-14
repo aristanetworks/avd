@@ -1154,8 +1154,8 @@ virtual_source_nat_vrfs:
     ip_address: 10.255.1.9
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ntp:
-  local_interfaces:
-  - name: Management1
+  local_interface:
+    name: Management1
     vrf: MGMT
   servers:
   - name: 192.168.200.5

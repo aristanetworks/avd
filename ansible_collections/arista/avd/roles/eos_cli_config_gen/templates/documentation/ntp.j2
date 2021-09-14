@@ -4,17 +4,13 @@
 ## NTP
 
 ### NTP Summary
-{%     if ntp.local_interfaces is arista.avd.defined %}
+{%     if ntp.local_interface.name is arista.avd.defined %}
 
-#### NTP Local Interfaces
+#### NTP Local Interface
 
 | Interface | VRF |
 | --------- | --- |
-{%         for local_interface in ntp.local_interfaces | arista.avd.natural_sort('name') %}
-{%             if local_interface.name is arista.avd.defined %}
-| {{ local_interface.name }} | {{ local_interface.vrf | arista.avd.default('-') }} |
-{%             endif %}
-{%         endfor %}
+| {{ ntp.local_interface.name }} | {{ ntp.local_interface.vrf | arista.avd.default('-') }} |
 {%     endif %}
 {%     if ntp.servers is arista.avd.defined %}
 

@@ -17,8 +17,8 @@ dns_domain: test.local
 
 ### NTP Servers ###
 ntp:
-  local_interfaces:
-  - name: Management0
+  local_interface:
+    name: Management0
     vrf: mgt
   servers:
   - name: 10.10.111.1

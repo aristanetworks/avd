@@ -169,8 +169,8 @@ router_isis:
   isis_af_defaults:
   - maximum-paths 4
 ntp:
-  local_interfaces:
-  - name: Management1
+  local_interface:
+    name: Management1
     vrf: MGMT
   servers:
   - name: 192.168.200.5

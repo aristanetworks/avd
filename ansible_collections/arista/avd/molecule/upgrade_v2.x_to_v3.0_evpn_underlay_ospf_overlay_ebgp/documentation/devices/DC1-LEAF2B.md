@@ -98,7 +98,7 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-#### NTP Local Interfaces
+#### NTP Local Interface
 
 | Interface | VRF |
 | --------- | --- |

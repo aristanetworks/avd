@@ -1397,8 +1397,8 @@ management_ssh:
 
 ```yaml
 ntp:
-  local_interfaces:
-  - name: < source_interface >
+  local_interface:
+    name: < source_interface >
     vrf: < vrf_name >
   servers:
   - name: < IP | hostname >:

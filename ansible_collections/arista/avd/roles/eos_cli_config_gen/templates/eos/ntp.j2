@@ -1,16 +1,27 @@
 {# eos - NTP #}
 {% if ntp is arista.avd.defined %}
 !
-{%     for local_interface in ntp.local_interfaces | arista.avd.natural_sort('name') %}
-{%         if local_interface.name is arista.avd.defined %}
-{%             set ntp_int_cli = "ntp local-interface" %}
-{%             if local_interface.vrf is arista.avd.defined and local_interface.vrf != 'default' %}
-{%                 set ntp_int_cli = ntp_int_cli ~ " vrf " ~ local_interface.vrf %}
-{%             endif %}
-{%             set ntp_int_cli = ntp_int_cli ~ " " ~ local_interface.name %}
-{{ ntp_int_cli }}
+{%     for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}
+{%         if authentication_key.id is arista.avd.defined and
+              authentication_key.key is arista.avd.defined and
+              authentication_key.hash_algorithm is arista.avd.defined %}
+ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_algorithm }} {{ authentication_key.key }}
 {%         endif %}
 {%     endfor %}
+{%     if ntp.trusted_keys is arista.avd.defined %}
+ntp trusted-key {{ ntp.trusted_keys }}
+{%     endif %}
+{%     if ntp.authenticate is arista.avd.defined(true) %}
+ntp authenticate
+{%     endif %}
+{%     if ntp.local_interface.name is arista.avd.defined %}
+{%         set ntp_int_cli = "ntp local-interface" %}
+{%         if ntp.local_interface.vrf is arista.avd.defined and ntp.local_interface.vrf != 'default' %}
+{%             set ntp_int_cli = ntp_int_cli ~ " vrf " ~ ntp.local_interface.vrf %}
+{%         endif %}
+{%         set ntp_int_cli = ntp_int_cli ~ " " ~ ntp.local_interface.name %}
+{{ ntp_int_cli }}
+{%     endif %}
 {%     for server in ntp.servers | arista.avd.natural_sort('name') %}
 {%         if server.name is arista.avd.defined %}
 {%             set ntp_server_cli = "ntp server" %}
@@ -45,17 +56,4 @@
 {{ ntp_server_cli }}
 {%         endif %}
 {%     endfor %}
-{%     for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}
-{%         if authentication_key.id is arista.avd.defined and
-              authentication_key.key is arista.avd.defined and
-              authentication_key.hash_algorithm is arista.avd.defined %}
-ntp authentication-key {{ authentication_key.id }} {{ authentication_key.hash_algorithm }} {{ authentication_key.key }}
-{%         endif %}
-{%     endfor %}
-{%     if ntp.trusted_keys is arista.avd.defined %}
-ntp trusted-key {{ ntp.trusted_keys }}
-{%     endif %}
-{%     if ntp.authenticate is arista.avd.defined(true) %}
-ntp authenticate
-{%     endif %}
 {% endif %}
