@@ -269,10 +269,7 @@ switch:
   vtep_loopback_ipv4_pool: {{ switch_vtep_loopback_ipv4_pool }}
 
 {# switch.vtep_loopback #}
-  vtep_loopback: {{ switch_data.combined.vtep_loopback | arista.avd.default(vtep_loopback) }}
-
-{# switch.vtep_loopback_description #}
-  vtep_loopback_description: {{ switch_data.combined.vtep_loopback_description | arista.avd.default(vtep_loopback_description) }}
+  vtep_loopback: {{ switch_data.combined.vtep_loopback | arista.avd.default('Loopback1') }}
 
 {# switch.vtep_ip #}
 {%     if switch_data.mlag_configured is arista.avd.defined(true) %}

@@ -69,9 +69,9 @@ ethernet_interfaces:
 {%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
   {{ adapter.switch_ports[loop.index0] }}:
     peer: {{ connected_endpoint }}
-{%  set peer = connected_endpoint %}
+{%                     set peer = connected_endpoint %}
     peer_interface: {{ endpoint_ports[loop.index0] }}
-{%  set peer_interface = endpoint_ports[loop.index0] %}
+{%                     set peer_interface = endpoint_ports[loop.index0] %}
     peer_type: {{ peer_type }}
     description: "{% include switch.interface_descriptions.connected_endpoints_ethernet_interfaces %}"
 {%                     if adapter_speed is arista.avd.defined %}

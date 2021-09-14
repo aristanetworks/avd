@@ -227,7 +227,7 @@ defaults <- node_group <- node_group.node <- node
     # Offset all assigned loopback IP addresses.
     loopback_ipv4_offset: 2
 
-    # Set VXLAN source interface. Default value is defined in "vtep_loopback" fabric variable (default is Loopback1)
+    # Set VXLAN source interface. Loopback1 is default
     vtep_loopback: < Loopback_interface_1 >
 ```
 

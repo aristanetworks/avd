@@ -14,6 +14,7 @@ vlan_interfaces:
 {%             set svi_name = svi_config.name | arista.avd.default(
                               svi_profile.name) %}
 {%             set svi_description = svi_config.description | arista.avd.default(
+                                     svi_profile.description,
                                      svi_name) %}
 {%             set svi_enabled = svi_config.enabled | arista.avd.default(
                                  svi_profile.enabled) %}

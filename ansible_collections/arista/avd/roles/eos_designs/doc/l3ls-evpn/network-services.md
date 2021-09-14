@@ -134,7 +134,7 @@ tenants:
             # vlan name | Required
             name: < name >
 
-            # vlan description. | Optional
+            # SVI description. | Optional
             description: < description | Default -> vlan name >
 
             # Tags leveraged for networks services filtering. | Required

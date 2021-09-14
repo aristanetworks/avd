@@ -52,9 +52,6 @@ evpn_ebgp_multihop: 3
 
 evpn_short_esi_prefix: "0000:0000:"
 
-# Loopback defaults
-vtep_loopback: Loopback1
-
 # Underlay OSPF Defaults
 underlay_ospf_process_id: 100
 underlay_ospf_area: 0.0.0.0

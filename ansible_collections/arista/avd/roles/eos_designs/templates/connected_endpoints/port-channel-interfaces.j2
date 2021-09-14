@@ -67,7 +67,7 @@ port_channel_interfaces:
                                                            parent_profile.port_channel.structured_config) %}
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
   Port-Channel{{ channel_group_id }}:
-{%  set peer = connected_endpoint %}
+{%                         set peer = connected_endpoint %}
     description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
     type: switched
     shutdown: false
