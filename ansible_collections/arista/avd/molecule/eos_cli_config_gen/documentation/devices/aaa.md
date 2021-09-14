@@ -186,16 +186,22 @@ aaa authorization commands all default group aaaAuth
 
 ### AAA Accounting Summary
 
-| Type | Sub-type | Record | Accounting Stores | Logging |
-| ---- | -------- | ------ |------------------ | ------- |
-| Exec | - | start-stop | TACACS | - |
-| Commands | all | start-stop | TACACS  | True  |
-| Commands | 0 | start-stop |  -  | True  |
+| Type | Commands | Record type | Group | Logging |
+| ---- | -------- | ----------- | ----- | ------- |
+| Exec - Console | - | start-stop | TACACS | - |
+| Commands - Console | all | start-stop | TACACS | True |
+| Commands - Console | 0 | start-stop |  -  | True |
+| Exec - Default | - | start-stop | TACACS | - |
+| Commands - Default | all | start-stop | TACACS | True |
+| Commands - Default | 0 | start-stop | - | True |
 
 ### AAA Accounting Device Configuration
 
 ```eos
 !
+aaa accounting exec console start-stop group TACACS
+aaa accounting commands all console start-stop group TACACS logging
+aaa accounting commands 0 console start-stop logging
 aaa accounting exec default start-stop group TACACS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
