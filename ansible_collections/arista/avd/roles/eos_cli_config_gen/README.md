@@ -1020,6 +1020,9 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_virtual_router_address: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
+    ip_address_virtual_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >

@@ -174,6 +174,8 @@ interface Vlan83
    description SVI Description
    no shutdown
    ip address virtual 10.10.83.1/24
+   ip address virtual 10.11.83.1/24 secondary
+   ip address virtual 10.11.84.1/24 secondary
 !
 interface Vlan84
    description SVI Description
