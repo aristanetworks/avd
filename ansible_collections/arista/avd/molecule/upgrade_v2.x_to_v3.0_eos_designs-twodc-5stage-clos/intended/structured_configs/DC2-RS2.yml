@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65201
+  as: '65201'
   router_id: 172.16.20.2
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -23,11 +23,11 @@ router_bgp:
   neighbors:
     172.17.20.8:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65200
+      remote_as: '65200'
       description: DC2-SUPER-SPINE1_Ethernet5
     172.17.20.10:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65200
+      remote_as: '65200'
       description: DC2-SUPER-SPINE1_Ethernet7
 static_routes:
 - vrf: MGMT

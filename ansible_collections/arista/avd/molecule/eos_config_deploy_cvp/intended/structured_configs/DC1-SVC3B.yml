@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65103
+  as: '65103'
   router_id: 192.168.255.9
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: 65103
+      remote_as: '65103'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -41,36 +41,36 @@ router_bgp:
       description: DC1-SVC3A
     172.31.255.32:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet5
     172.31.255.34:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet5
     172.31.255.36:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet5
     172.31.255.38:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet5
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP

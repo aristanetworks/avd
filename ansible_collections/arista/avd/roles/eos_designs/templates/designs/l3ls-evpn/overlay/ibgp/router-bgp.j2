@@ -8,7 +8,7 @@ router_bgp:
     {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
       type: evpn
       update_source: Loopback0
-      remote_as: {{ switch.bgp_as }}
+      remote_as: "{{ switch.bgp_as }}"
       bfd: true
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
       send_community: all
