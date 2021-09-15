@@ -2634,7 +2634,7 @@ The upgraded data will be saved in `{{ inventory_dir }}/eos_cli_config_gen_upgra
 The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
 running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
 
-This `eos_cli_config_gen` upgrade feature is not required when using `eos_designs`. Upgrade should be done on `eos_designs` instead. 
+This `eos_cli_config_gen` upgrade feature is not required when using `eos_designs`. Upgrade should be done on `eos_designs` instead.
 See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_designs-data-model) for details on the `eos_designs` upgrade feature.
 
 ### Example Playbook
