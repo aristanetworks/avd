@@ -47,7 +47,9 @@ svi_profiles:
     enabled: < true | false >
     ip_virtual_router_address: < IPv4_address/Mask >
     ip_address_virtual: < IPv4_address/Mask >
-    ip_address_virtual_secondary: < IPv4_address/Mask >
+    ip_address_virtual_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
       < IPv4 dhcp server IP >:
@@ -131,8 +133,11 @@ tenants:
             # If variables are configured in profile AND SVI, SVI information will overwrite profile.
             profile: < svi-profile-name >
 
-            # vlan name + svi description. | Required
-            name: < description >
+            # vlan name | Required
+            name: < name >
+
+            # SVI description. | Optional
+            description: < description | Default -> vlan name >
 
             # Tags leveraged for networks services filtering. | Required
             tags: [ < tag_1 >, < tag_2 > ]
@@ -147,6 +152,9 @@ tenants:
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
             ip_address_virtual: < IPv4_address/Mask >
+            ip_address_virtual_secondaries:
+              - < IPv4_address/Mask >
+              - < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.

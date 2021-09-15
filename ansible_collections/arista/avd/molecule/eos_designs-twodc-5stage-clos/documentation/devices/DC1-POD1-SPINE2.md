@@ -332,7 +332,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65110|  172.16.110.2 |
+| 65110.100|  172.16.110.2 |
 
 | BGP Tuning |
 | ---------- |
@@ -358,11 +358,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | -------- | --------- | --- |
 | 172.16.11.2 | 65100 | default |
 | 172.16.11.66 | 65100 | default |
-| 172.17.110.3 | 65111 | default |
-| 172.17.110.11 | 65112 | default |
-| 172.17.110.15 | 65112 | default |
-| 172.17.110.19 | 65112 | default |
-| 172.17.110.23 | 65112 | default |
+| 172.17.110.3 | 65111.100 | default |
+| 172.17.110.11 | 65112.100 | default |
+| 172.17.110.15 | 65112.100 | default |
+| 172.17.110.19 | 65112.100 | default |
+| 172.17.110.23 | 65112.100 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -374,7 +374,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ```eos
 !
-router bgp 65110
+router bgp 65110.100
    router-id 172.16.110.2
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -392,19 +392,19 @@ router bgp 65110
    neighbor 172.16.11.66 remote-as 65100
    neighbor 172.16.11.66 description DC1-SUPER-SPINE2_Ethernet2
    neighbor 172.17.110.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.3 remote-as 65111
+   neighbor 172.17.110.3 remote-as 65111.100
    neighbor 172.17.110.3 description DC1-POD1-LEAF1A_Ethernet2
    neighbor 172.17.110.11 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.11 remote-as 65112
+   neighbor 172.17.110.11 remote-as 65112.100
    neighbor 172.17.110.11 description DC1-POD1-LEAF2A_Ethernet2
    neighbor 172.17.110.15 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.15 remote-as 65112
+   neighbor 172.17.110.15 remote-as 65112.100
    neighbor 172.17.110.15 description DC1-POD1-LEAF2A_Ethernet12
    neighbor 172.17.110.19 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.19 remote-as 65112
+   neighbor 172.17.110.19 remote-as 65112.100
    neighbor 172.17.110.19 description DC1-POD1-LEAF2B_Ethernet2
    neighbor 172.17.110.23 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.23 remote-as 65112
+   neighbor 172.17.110.23 remote-as 65112.100
    neighbor 172.17.110.23 description DC1-POD1-LEAF2B_Ethernet12
    redistribute connected route-map RM-CONN-2-BGP
    !

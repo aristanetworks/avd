@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65103
+  as: '65103'
   router_id: 192.168.255.13
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -8,7 +8,7 @@ router_bgp:
   peer_groups:
     MLAG-PEERS:
       type: ipv4
-      remote_as: 65103
+      remote_as: '65103'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -41,36 +41,36 @@ router_bgp:
       description: DC1-SVC3A
     172.31.255.64:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet5
     172.31.255.66:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet5
     172.31.255.68:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet5
     172.31.255.70:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet5
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -596,7 +596,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_1
+    description: SVI 110 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
@@ -604,7 +604,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_2
+    description: SVI 111 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
@@ -789,14 +789,14 @@ port_channel_interfaces:
     - LEAF_PEER_L3
     - MLAG
   Port-Channel7:
-    description: DC1_L2LEAF2_Po1
+    description: CUSTOM_DC1_L2LEAF2_Po1
     type: switched
     shutdown: false
     vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
     mode: trunk
     mlag: 7
   Port-Channel10:
-    description: server03_ESI_PortChanne1
+    description: CUSTOM_server03_ESI_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
@@ -805,7 +805,7 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
   Port-Channel14:
-    description: server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -829,7 +829,7 @@ port_channel_interfaces:
         unit: percent
     mlag: 14
   Port-Channel15:
-    description: server08_no_profile_port_channel_server08_no_profile_port_channel
+    description: CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
     type: switched
     shutdown: false
     mode: trunk
@@ -852,7 +852,7 @@ port_channel_interfaces:
         unit: percent
     mlag: 15
   Port-Channel17:
-    description: server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
+    description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
     type: switched
     shutdown: false
     mode: trunk
@@ -877,7 +877,7 @@ port_channel_interfaces:
     lacp_fallback_mode: static
     lacp_fallback_timeout: 90
   Port-Channel18:
-    description: server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -903,7 +903,7 @@ port_channel_interfaces:
     lacp_fallback_mode: static
     lacp_fallback_timeout: 10
   Port-Channel19:
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
+    description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
     type: switched
     shutdown: false
     mode: trunk
@@ -953,7 +953,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF2A
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-L2LEAF2A_Ethernet2
+    description: CUSTOM_DC1-L2LEAF2A_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -963,7 +963,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF2B
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-L2LEAF2B_Ethernet2
+    description: CUSTOM_DC1-L2LEAF2B_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -973,7 +973,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -983,7 +983,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -993,7 +993,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -1003,7 +1003,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet5
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet5
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -1013,7 +1013,7 @@ ethernet_interfaces:
     peer: server03_ESI
     peer_interface: Eth2
     peer_type: server
-    description: server03_ESI_Eth2
+    description: CUSTOM_server03_ESI_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1025,7 +1025,7 @@ ethernet_interfaces:
     peer: server04_inherit_all_from_profile
     peer_interface: Eth2
     peer_type: server
-    description: server04_inherit_all_from_profile_Eth2
+    description: CUSTOM_server04_inherit_all_from_profile_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1051,7 +1051,7 @@ ethernet_interfaces:
     peer: server05_no_profile
     peer_interface: Eth2
     peer_type: server
-    description: server05_no_profile_Eth2
+    description: CUSTOM_server05_no_profile_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1076,7 +1076,7 @@ ethernet_interfaces:
     peer: server06_override_profile
     peer_interface: Eth2
     peer_type: server
-    description: server06_override_profile_Eth2
+    description: CUSTOM_server06_override_profile_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1102,7 +1102,7 @@ ethernet_interfaces:
     peer: server07_inherit_all_from_profile_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server07_inherit_all_from_profile_port_channel_Eth2
+    description: CUSTOM_server07_inherit_all_from_profile_port_channel_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1131,7 +1131,7 @@ ethernet_interfaces:
     peer: server08_no_profile_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server08_no_profile_port_channel_Eth2
+    description: CUSTOM_server08_no_profile_port_channel_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1159,7 +1159,7 @@ ethernet_interfaces:
     peer: server09_override_profile_no_port_channel
     peer_interface: Eth2
     peer_type: server
-    description: server09_override_profile_no_port_channel_Eth2
+    description: CUSTOM_server09_override_profile_no_port_channel_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1185,7 +1185,7 @@ ethernet_interfaces:
     peer: server10_no_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server10_no_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth2
     type: switched
     shutdown: false
     mode: trunk
@@ -1214,7 +1214,7 @@ ethernet_interfaces:
     peer: server11_inherit_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server11_inherit_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1244,7 +1244,7 @@ ethernet_interfaces:
     peer: server12_inherit_nested_profile_port_channel_lacp_fallback
     peer_interface: Eth2
     peer_type: server
-    description: server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
+    description: CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -1294,15 +1294,15 @@ route_maps:
         - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.13/32
   Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
+    description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
     shutdown: false
     ip_address: 192.168.254.12/32
   Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address: 10.255.1.13/32

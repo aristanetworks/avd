@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65211
+  as: '65211'
   router_id: 172.16.210.3
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -37,35 +37,35 @@ router_bgp:
   neighbors:
     172.17.210.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65210
+      remote_as: '65210'
       description: DC2-POD1-SPINE1_Ethernet3
     172.17.210.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65210
+      remote_as: '65210'
       description: DC2-POD1-SPINE2_Ethernet3
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: 65111
+      remote_as: '65111'
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: 65110
+      remote_as: '65110'
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
-      remote_as: 65101
+      remote_as: '65101'
     172.16.10.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS2
-      remote_as: 65102
+      remote_as: '65102'
     11.1.0.38:
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD1-LEAF2B
       peer_group: IPv4-UNDERLAY-PEERS
       bfd: true
     100.100.100.101:
-      remote_as: 65112
+      remote_as: '65112'
       description: DC1-POD1-LEAF2A
       peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:

@@ -284,8 +284,8 @@ vlan 131
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet6 |  server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
-| Ethernet7 |  server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
+| Ethernet6 |  CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1 | trunk | 1-4094 | - | - | - |
+| Ethernet7 |  CUSTOM_server02_SINGLE_NODE_Eth1 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -293,17 +293,17 @@ vlan 131
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet1 | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet1 | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor | routed | - | 172.31.255.1/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor | routed | - | 172.31.255.3/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor | routed | - | 172.31.255.5/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor | routed | - | 172.31.255.7/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -311,7 +311,7 @@ interface Ethernet1
    ip address 172.31.255.1/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -319,7 +319,7 @@ interface Ethernet2
    ip address 172.31.255.3/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -327,7 +327,7 @@ interface Ethernet3
    ip address 172.31.255.5/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet1
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -335,7 +335,7 @@ interface Ethernet4
    ip address 172.31.255.7/31
 !
 interface Ethernet6
-   description server02_SINGLE_NODE_TRUNK_Eth1
+   description CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
    no shutdown
    l2 mtu 8000
    switchport
@@ -349,7 +349,7 @@ interface Ethernet6
    storm-control unknown-unicast level 2
 !
 interface Ethernet7
-   description server02_SINGLE_NODE_Eth1
+   description CUSTOM_server02_SINGLE_NODE_Eth1
    no shutdown
    switchport
    switchport access vlan 110
@@ -364,13 +364,13 @@ interface Ethernet7
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.9/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.9/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -378,7 +378,7 @@ interface Ethernet7
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering_L3LEAF
    no shutdown
    ip address 192.168.255.9/32
 ```

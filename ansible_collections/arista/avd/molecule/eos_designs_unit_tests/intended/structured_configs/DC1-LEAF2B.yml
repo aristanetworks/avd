@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65102
+  as: '65102'
   router_id: 192.168.255.11
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -31,36 +31,36 @@ router_bgp:
   neighbors:
     172.31.255.32:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet3
     172.31.255.34:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet3
     172.31.255.36:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet3
     172.31.255.38:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet3
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -673,6 +673,9 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.20.1/24
+    ip_address_virtual_secondaries:
+    - 10.2.20.1/24
+    - 10.2.21.1/24
     ip_helpers:
       1.1.1.1:
         source_interface: lo100

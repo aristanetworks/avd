@@ -320,8 +320,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | -------- | --------- | --- |
 | 172.16.10.1 | 65101 | default |
 | 172.16.10.2 | 65102 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
+| 172.16.110.1 | 65110.100 | default |
+| 172.16.110.3 | 65111.100 | default |
 | 172.17.20.0 | 65200 | default |
 | 172.17.20.2 | 65200 | default |
 
@@ -361,10 +361,10 @@ router bgp 65201
    neighbor 172.16.10.2 remote-as 65102
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.20.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.20.0 remote-as 65200

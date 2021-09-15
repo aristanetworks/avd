@@ -117,6 +117,9 @@ switch:
 {%     set loopback_ipv4_offset = switch_data.combined.loopback_ipv4_offset | arista.avd.default(0) %}
   loopback_ipv4_offset: {{ loopback_ipv4_offset }}
 
+{# switch.loopback_ipv4_description #}
+  loopback_ipv4_description: {{ switch_data.combined.loopback_ipv4_description | arista.avd.default(overlay_loopback_description) }}
+
 {# switch.uplink_ipv4_pool #}
   uplink_ipv4_pool: {{ switch_data.combined.uplink_ipv4_pool | arista.avd.default() }}
 
@@ -125,10 +128,10 @@ switch:
 
 {# switch.bgp_as #}
 {%     if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
-  bgp_as: {{ bgp_as }}
+  bgp_as: "{{ bgp_as }}"
 {%     else %}
 {%         if switch_data.combined.bgp_as is arista.avd.defined(fail_action='error', var_name='bgp_as') %}
-  bgp_as: {{ switch_data.combined.bgp_as }}
+  bgp_as: "{{ switch_data.combined.bgp_as }}"
 {%         endif %}
 {%     endif %}
 

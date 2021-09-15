@@ -483,11 +483,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 11.1.0.38 | 65120 | default |
-| 100.100.100.101 | 65112 | default |
+| 100.100.100.101 | 65112.100 | default |
 | 172.16.10.1 | 65101 | default |
 | 172.16.10.2 | 65102 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
+| 172.16.110.1 | 65110.100 | default |
+| 172.16.110.3 | 65111.100 | default |
 | 172.17.210.0 | 65210 | default |
 | 172.17.210.2 | 65210 | default |
 
@@ -529,7 +529,7 @@ router bgp 65211
    neighbor 11.1.0.38 description DC1-POD1-LEAF2B
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
-   neighbor 100.100.100.101 remote-as 65112
+   neighbor 100.100.100.101 remote-as 65112.100
    neighbor 100.100.100.101 description DC1-POD1-LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
@@ -538,10 +538,10 @@ router bgp 65211
    neighbor 172.16.10.2 remote-as 65102
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210

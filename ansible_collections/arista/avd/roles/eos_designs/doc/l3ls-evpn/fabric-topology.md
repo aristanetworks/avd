@@ -229,7 +229,6 @@ defaults <- node_group <- node_group.node <- node
 
     # Set VXLAN source interface. Loopback1 is default
     vtep_loopback: < Loopback_interface_1 >
-
 ```
 
 ### BGP & EVPN Control plane

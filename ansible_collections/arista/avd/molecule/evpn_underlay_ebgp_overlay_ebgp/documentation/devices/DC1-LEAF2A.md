@@ -349,15 +349,15 @@ vlan 311
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF1B_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
-| Ethernet9 | DC1-L2LEAF3A_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
-| Ethernet10 | server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
-| Ethernet11 | server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
-| Ethernet12 | server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
-| Ethernet13 | server01_MTU_ADAPTOR_MLAG_Eth8 | *access | *- | *- | *- | 12 |
-| Ethernet20 | FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
-| Ethernet21 |  ROUTER01_Eth0 | access | 110 | - | - | - |
+| Ethernet7 | CUSTOM_DC1-L2LEAF1A_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet8 | CUSTOM_DC1-L2LEAF1B_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 7 |
+| Ethernet9 | CUSTOM_DC1-L2LEAF3A_Ethernet1 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 9 |
+| Ethernet10 | CUSTOM_server01_MLAG_Eth2 | *trunk | *210-211 | *- | *- | 10 |
+| Ethernet11 | CUSTOM_server01_MTU_PROFILE_MLAG_Eth4 | *access | *110 | *- | *- | 11 |
+| Ethernet12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6 | *access | *- | *- | *- | 12 |
+| Ethernet13 | CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth8 | *access | *- | *- | *- | 12 |
+| Ethernet20 | CUSTOM_FIREWALL01_E0 | *trunk | *110-111,210-211 | *- | *- | 20 |
+| Ethernet21 |  CUSTOM_ROUTER01_Eth0 | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -365,17 +365,17 @@ vlan 311
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 172.31.255.17/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.255.19/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 172.31.255.21/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 172.31.255.23/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2 | routed | - | 172.31.255.17/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2 | routed | - | 172.31.255.19/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2 | routed | - | 172.31.255.21/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2 | routed | - | 172.31.255.23/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -383,7 +383,7 @@ interface Ethernet1
    ip address 172.31.255.17/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -391,7 +391,7 @@ interface Ethernet2
    ip address 172.31.255.19/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -399,7 +399,7 @@ interface Ethernet3
    ip address 172.31.255.21/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet2
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet2
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -407,47 +407,47 @@ interface Ethernet4
    ip address 172.31.255.23/31
 !
 interface Ethernet7
-   description DC1-L2LEAF1A_Ethernet1
+   description CUSTOM_DC1-L2LEAF1A_Ethernet1
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF1B_Ethernet1
+   description CUSTOM_DC1-L2LEAF1B_Ethernet1
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet9
-   description DC1-L2LEAF3A_Ethernet1
+   description CUSTOM_DC1-L2LEAF3A_Ethernet1
    no shutdown
    channel-group 9 mode active
 !
 interface Ethernet10
-   description server01_MLAG_Eth2
+   description CUSTOM_server01_MLAG_Eth2
    no shutdown
    channel-group 10 mode active
 !
 interface Ethernet11
-   description server01_MTU_PROFILE_MLAG_Eth4
+   description CUSTOM_server01_MTU_PROFILE_MLAG_Eth4
    no shutdown
    channel-group 11 mode active
 !
 interface Ethernet12
-   description server01_MTU_ADAPTOR_MLAG_Eth6
+   description CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth6
    no shutdown
    channel-group 12 mode active
 !
 interface Ethernet13
-   description server01_MTU_ADAPTOR_MLAG_Eth8
+   description CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth8
    no shutdown
    channel-group 12 mode active
 !
 interface Ethernet20
-   description FIREWALL01_E0
+   description CUSTOM_FIREWALL01_E0
    no shutdown
    channel-group 20 mode active
 !
 interface Ethernet21
-   description ROUTER01_Eth0
+   description CUSTOM_ROUTER01_Eth0
    no shutdown
    switchport
    switchport access vlan 110
@@ -462,19 +462,19 @@ interface Ethernet21
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
-| Port-Channel9 | DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
-| Port-Channel10 | server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
-| Port-Channel11 | server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
-| Port-Channel12 | server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
-| Port-Channel20 | FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
+| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
+| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
+| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
+| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel7
-   description DC1_L2LEAF1_Po1
+   description CUSTOM_DC1_L2LEAF1_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
@@ -485,7 +485,7 @@ interface Port-Channel7
    lacp system-id 0808.0707.0606
 !
 interface Port-Channel9
-   description DC1-L2LEAF3A_Po1
+   description CUSTOM_DC1-L2LEAF3A_Po1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
@@ -496,7 +496,7 @@ interface Port-Channel9
    lacp system-id 0606.0707.0808
 !
 interface Port-Channel10
-   description server01_MLAG_PortChanne1
+   description CUSTOM_server01_MLAG_PortChanne1
    no shutdown
    switchport
    switchport trunk allowed vlan 210-211
@@ -504,7 +504,7 @@ interface Port-Channel10
    mlag 10
 !
 interface Port-Channel11
-   description server01_MTU_PROFILE_MLAG_PortChanne1
+   description CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
    no shutdown
    mtu 1600
    switchport
@@ -512,14 +512,14 @@ interface Port-Channel11
    mlag 11
 !
 interface Port-Channel12
-   description server01_MTU_ADAPTOR_MLAG_PortChanne1
+   description CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
    no shutdown
    mtu 1601
    switchport
    mlag 12
 !
 interface Port-Channel20
-   description FIREWALL01_PortChanne1
+   description CUSTOM_FIREWALL01_PortChanne1
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,210-211
@@ -535,17 +535,17 @@ interface Port-Channel20
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.10/32 |
-| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.10/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.10/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.10/32 |
+| Loopback10 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | 192.168.254.10/32 |
+| Loopback100 | CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC | Tenant_A_OP_Zone | 10.255.1.10/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback10 | VTEP_VXLAN_Tunnel_Source | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
+| Loopback10 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
+| Loopback100 | CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC | Tenant_A_OP_Zone | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -553,17 +553,17 @@ interface Port-Channel20
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering_L3LEAF
    no shutdown
    ip address 192.168.255.10/32
 !
 interface Loopback10
-   description VTEP_VXLAN_Tunnel_Source
+   description CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
    no shutdown
    ip address 192.168.254.10/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.10/32
@@ -575,8 +575,8 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan110 |  Tenant_A_OP_Zone_1  |  Tenant_A_OP_Zone  |  -  |  false  |
-| Vlan111 |  Tenant_A_OP_Zone_2  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan110 |  SVI 110 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
+| Vlan111 |  SVI 111 CUSTOM DESCRIPTION  |  Tenant_A_OP_Zone  |  -  |  false  |
 | Vlan120 |  Tenant_A_WEB_Zone_1  |  Tenant_A_WEB_Zone  |  -  |  false  |
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
 | Vlan122 |  Tenant_a_WEB_DHCP_no_source_int_no_vrf  |  Tenant_A_WEB_Zone  |  -  |  false  |
@@ -617,13 +617,13 @@ interface Loopback100
 ```eos
 !
 interface Vlan110
-   description Tenant_A_OP_Zone_1
+   description SVI 110 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.10.1/24
 !
 interface Vlan111
-   description Tenant_A_OP_Zone_2
+   description SVI 111 CUSTOM DESCRIPTION
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address virtual 10.1.11.1/24

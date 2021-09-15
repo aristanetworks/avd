@@ -4,7 +4,7 @@ router_bgp:
   peer_groups:
     {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}:
       type: ipv4
-      remote_as: {{ switch.bgp_as }}
+      remote_as: "{{ switch.bgp_as }}"
       next_hop_self: true
       password: "{{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password }}"
       maximum_routes: 12000
@@ -22,7 +22,7 @@ router_bgp:
   neighbor_interfaces:
     Vlan{{ switch.mlag_peer_l3_vlan | arista.avd.default(switch.mlag_peer_vlan) }}:
       peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
-      remote_as: {{ switch.bgp_as }}
+      remote_as: "{{ switch.bgp_as }}"
       description: {{ switch.mlag_peer }}
 {%     else %}
   neighbors:

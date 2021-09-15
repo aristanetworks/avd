@@ -327,8 +327,8 @@ vlan 4091
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet7 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-L2LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-L2LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -339,12 +339,12 @@ vlan 4091
 ```eos
 !
 interface Ethernet1
-   description DC1-LEAF2A_Ethernet7
+   description CUSTOM_DC1-LEAF2A_Ethernet7
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description DC1-LEAF2B_Ethernet7
+   description CUSTOM_DC1-LEAF2B_Ethernet7
    no shutdown
    channel-group 1 mode active
 !
@@ -367,7 +367,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_LEAF2_Po7 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
+| Port-Channel1 | CUSTOM_DC1_LEAF2_Po7 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-L2LEAF1B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -375,7 +375,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description DC1_LEAF2_Po7
+   description CUSTOM_DC1_LEAF2_Po7
    no shutdown
    switchport
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
