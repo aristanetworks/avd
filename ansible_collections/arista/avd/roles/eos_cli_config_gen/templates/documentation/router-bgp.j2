@@ -154,6 +154,10 @@
 {%     endif %}
 
 ### Router BGP EVPN Address Family
+{%     if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
+
+- VPN import pruning is __enabled__
+{%     endif %}
 {%     if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
 #### EVPN Host Flapping Settings

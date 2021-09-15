@@ -432,6 +432,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP EVPN Address Family
 
+- VPN import pruning is __enabled__
+
 #### Router BGP EVPN MAC-VRFs
 
 #### Router BGP EVPN VRFs
@@ -496,6 +498,7 @@ router bgp 65111.100
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate

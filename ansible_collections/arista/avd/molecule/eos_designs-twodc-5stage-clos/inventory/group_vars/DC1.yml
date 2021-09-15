@@ -57,3 +57,6 @@ overlay_controller:
       uplink_switches: ['DC1-SUPER-SPINE2', 'DC1-POD2-SPINE1', 'DC1-POD2-LEAF1A']
 
 evpn_prevent_readvertise_to_server : true
+
+# VPN import pruning
+evpn_import_pruning: true

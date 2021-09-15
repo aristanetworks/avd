@@ -2116,6 +2116,8 @@ router_bgp:
       enabled: < true | false >
       threshold: < integer >
       window: < integer >
+    route:
+      import_match_failure_action: < 'discard' >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:

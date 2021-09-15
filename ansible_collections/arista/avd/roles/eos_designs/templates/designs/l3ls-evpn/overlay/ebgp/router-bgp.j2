@@ -28,6 +28,10 @@ router_bgp:
       threshold: {{ evpn_hostflap_detection.threshold | arista.avd.default(5) }}
       enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
 {% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_import_pruning is arista.avd.defined(true) %}
+    route:
+      import_match_failure_action: discard
+{% endif %}
 
 {% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
   address_family_rtc:
