@@ -70,11 +70,11 @@ interface Management1
 | VRF | Hosts | Ports | Protocol |
 | --- | ----- | ----- | -------- |
 | default | 20.20.20.7 | Default | UDP |
-| default | 50.50.50.7 |  100, 200 | TCP |
-| default | 60.60.60.7 |  100, 200 | UDP |
+| default | 50.50.50.7 | 100, 200 | TCP |
+| default | 60.60.60.7 | 100, 200 | UDP |
 | mgt | 10.10.10.7 | Default | UDP |
-| mgt | 30.30.30.7 |  100, 200 | TCP |
-| mgt | 40.40.40.7 |  300, 400 | UDP |
+| mgt | 30.30.30.7 | 100, 200 | TCP |
+| mgt | 40.40.40.7 | 300, 400 | UDP |
 
 ### Logging Servers and Features Device Configuration
 
