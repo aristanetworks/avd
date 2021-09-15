@@ -398,9 +398,9 @@ evpn_rt_type:
 evpn_rt_type:
   admin_subfield: "bgp_as"
 {% endif %}
+{% if ntp_servers is arista.avd.defined %}
 
 {# Migrate from ntp_server to ntp with expanded data model - set using custom_structured_configuration since this is no longer handled by eos_designs #}
-{% if ntp_servers is arista.avd.defined %}
 {%     if custom_structured_configuration_prefix is arista.avd.defined(var_type='list') %}
 {%         set prefix = custom_structured_configuration_prefix | first %}
 {%     else %}

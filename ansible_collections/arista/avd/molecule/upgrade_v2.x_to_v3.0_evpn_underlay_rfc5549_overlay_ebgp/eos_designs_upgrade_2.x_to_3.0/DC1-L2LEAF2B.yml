@@ -99,3 +99,12 @@ l2leaf:
         DC1-L2LEAF2B:
 # Change from l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet8', 'Ethernet8']
+
+my_dci_ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT
