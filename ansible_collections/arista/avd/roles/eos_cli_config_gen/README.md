@@ -2621,6 +2621,35 @@ vlans:
     name: < vlan_name >
 ```
 
+## Upgrade of eos_cli_config_gen data model
+
+The AVD **major** releases can contain breaking changes to the data models.
+Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_cli_config_gen`
+role can provide automatic upgrade of the data model for AVD 2.x to 3.0 upgrades.
+
+To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_cli_config_gen`.
+
+The upgraded data will be saved in `{{ inventory_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0` directory.
+
+The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
+running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
+
+This `eos_cli_config_gen` upgrade feature is not required when using `eos_designs`. Upgrade should be done on `eos_designs` instead. 
+See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_designs-data-model) for details on the `eos_designs` upgrade feature.
+
+### Example Playbook
+
+```yaml
+---
+
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_designs
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_designs
+```
+
 ## License
 
 Project is published under [Apache 2.0 License](../../LICENSE)
