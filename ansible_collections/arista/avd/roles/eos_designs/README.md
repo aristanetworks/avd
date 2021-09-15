@@ -75,11 +75,11 @@ Default values, are stored in the role defaults [main.yml](https://github.com/ar
 
 Role variables are grouped by configuration elements and are typically stored in different group_vars files.
 
-## Upgrade of eos_designs data model for AVD 2.x to 3.0
+## Upgrade of eos_designs data model
 
 The AVD **major** releases can contain breaking changes to the data models.
 Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_designs`
-role can provide automatic upgrade of the data model.
+role can provide automatic upgrade of the data model for AVD 2.x to 3.0 upgrades.
 
 To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_designs`.
 
