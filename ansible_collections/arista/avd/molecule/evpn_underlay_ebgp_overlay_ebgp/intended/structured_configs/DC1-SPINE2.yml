@@ -160,7 +160,7 @@ ethernet_interfaces:
     peer: DC1-LEAF1A
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -170,7 +170,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2A
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -180,7 +180,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2B
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -190,7 +190,7 @@ ethernet_interfaces:
     peer: DC1-SVC3A
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3A_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -200,7 +200,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3B_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -210,7 +210,7 @@ ethernet_interfaces:
     peer: DC1-BL1A
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -220,7 +220,7 @@ ethernet_interfaces:
     peer: DC1-BL1B
     peer_interface: Ethernet46
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet46
+    description: CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46
     speed: forced 100gfull
     mtu: 1500
     type: routed

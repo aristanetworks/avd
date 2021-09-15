@@ -276,10 +276,10 @@ vlan 350
 | Ethernet9 | test | routed | - | 10.10.40.20/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet10.100 | subinterface test | l3dot1q | - | 10.10.31.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
 | Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 10.10.41.10/24 | Tenant_L3_VRF_Zone | 9000 | false | - | - |
-| Ethernet45 | P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
-| Ethernet46 | P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
-| Ethernet47 | P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
-| Ethernet48 | P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | false | - | - |
+| Ethernet45 | CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7 | routed | - | 172.31.255.97/31 | default | 1500 | false | - | - |
+| Ethernet46 | CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7 | routed | - | 172.31.255.99/31 | default | 1500 | false | - | - |
+| Ethernet47 | CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7 | routed | - | 172.31.255.101/31 | default | 1500 | false | - | - |
+| Ethernet48 | CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7 | routed | - | 172.31.255.103/31 | default | 1500 | false | - | - |
 | Ethernet4000 | My second test | routed | - | 10.1.2.3/12 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
@@ -331,7 +331,7 @@ interface Ethernet10.200
    ip address 10.10.41.10/24
 !
 interface Ethernet45
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet7
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -339,7 +339,7 @@ interface Ethernet45
    ip address 172.31.255.97/31
 !
 interface Ethernet46
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet7
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -347,7 +347,7 @@ interface Ethernet46
    ip address 172.31.255.99/31
 !
 interface Ethernet47
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet7
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -355,7 +355,7 @@ interface Ethernet47
    ip address 172.31.255.101/31
 !
 interface Ethernet48
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet7
+   description CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -378,15 +378,15 @@ interface Ethernet4000
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.15/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.15/32 |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | 192.168.255.15/32 |
+| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | 192.168.254.15/32 |
 
 #### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback0 | CUSTOM_EVPN_Overlay_Peering_L3LEAF | default | - |
+| Loopback1 | CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF | default | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -394,12 +394,12 @@ interface Ethernet4000
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description CUSTOM_EVPN_Overlay_Peering_L3LEAF
    no shutdown
    ip address 192.168.255.15/32
 !
 interface Loopback1
-   description VTEP_VXLAN_Tunnel_Source
+   description CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
    no shutdown
    ip address 192.168.254.15/32
 ```

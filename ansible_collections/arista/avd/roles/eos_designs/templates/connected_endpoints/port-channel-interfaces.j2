@@ -18,8 +18,8 @@ port_channel_interfaces:
 {%                 set adapter_port_channel_description = adapter.port_channel.description | arista.avd.default(
                                                           adapter_profile.port_channel.description,
                                                           parent_profile.port_channel.description) %}
-{%                 for switch in adapter.switches | arista.avd.natural_sort %}
-{%                     if switch == inventory_hostname %}
+{%                 for adapter_switch in adapter.switches | arista.avd.natural_sort %}
+{%                     if adapter_switch == inventory_hostname %}
 {%                         set adapter_mode = adapter.mode | arista.avd.default(
                                               adapter_profile.mode,
                                               parent_profile.mode) %}
@@ -67,7 +67,8 @@ port_channel_interfaces:
                                                            parent_profile.port_channel.structured_config) %}
 {%                         set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
   Port-Channel{{ channel_group_id }}:
-    description: {{ connected_endpoint }}_{{ adapter_port_channel_description }}
+{%                         set peer = connected_endpoint %}
+    description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
     type: switched
     shutdown: false
     mode: {{ adapter_mode }}

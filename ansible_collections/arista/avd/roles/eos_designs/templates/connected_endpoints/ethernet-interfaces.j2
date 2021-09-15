@@ -3,8 +3,8 @@ ethernet_interfaces:
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
-{%             for switch in adapter.switches | arista.avd.default([]) %}
-{%                 if switch == inventory_hostname %}
+{%             for adapter_switch in adapter.switches | arista.avd.default([]) %}
+{%                 if adapter_switch == inventory_hostname %}
 {%                     if adapter.profile is arista.avd.defined %}
 {%                         set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
 {%                     else %}
@@ -69,9 +69,11 @@ ethernet_interfaces:
 {%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
   {{ adapter.switch_ports[loop.index0] }}:
     peer: {{ connected_endpoint }}
+{%                     set peer = connected_endpoint %}
     peer_interface: {{ endpoint_ports[loop.index0] }}
+{%                     set peer_interface = endpoint_ports[loop.index0] %}
     peer_type: {{ peer_type }}
-    description: {{ connected_endpoint }}_{{ endpoint_ports[loop.index0] }}
+    description: "{% include switch.interface_descriptions.connected_endpoints_ethernet_interfaces %}"
 {%                     if adapter_speed is arista.avd.defined %}
     speed: {{ adapter_speed }}
 {%                     endif %}

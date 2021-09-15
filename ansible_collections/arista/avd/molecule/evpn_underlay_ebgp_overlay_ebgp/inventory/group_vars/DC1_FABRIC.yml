@@ -4,6 +4,49 @@
 
 fabric_name: DC1_FABRIC
 
+# Node type definitions
+node_type_keys:
+  spine:
+    type: spine
+    default_evpn_role: server
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+  l3leaf:
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface-descriptions/loopbacks/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface-descriptions/loopbacks/vtep-loopback.j2'
+  l2leaf:
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+
 # mlag pair IP assignment - assign blocks - Assign range larger then total spines + total leafs switches
 # mlag_ips:
 #   leaf_peer_l3: 10.255.251.0/24
@@ -99,6 +142,8 @@ l3leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
           vtep_loopback: Loopback0
+          structured_config:
+            tags: no-monitor
     DC1_LEAF2:
       bgp_as: 65102
       rack: "rackD"

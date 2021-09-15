@@ -153,7 +153,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1_SVC3_Po7
+    description: CUSTOM_DC1_SVC3_Po7
     type: switched
     shutdown: false
     vlans: 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
@@ -184,7 +184,7 @@ ethernet_interfaces:
     peer: DC1-SVC3A
     peer_interface: Ethernet7
     peer_type: l3leaf
-    description: DC1-SVC3A_Ethernet7
+    description: CUSTOM_DC1-SVC3A_Ethernet7
     type: switched
     shutdown: false
     channel_group:
@@ -194,7 +194,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet7
     peer_type: l3leaf
-    description: DC1-SVC3B_Ethernet7
+    description: CUSTOM_DC1-SVC3B_Ethernet7
     type: switched
     shutdown: false
     channel_group:

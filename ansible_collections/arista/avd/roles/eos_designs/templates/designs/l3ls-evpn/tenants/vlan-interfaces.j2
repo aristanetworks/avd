@@ -13,6 +13,9 @@ vlan_interfaces:
                               svi_profile.tags) %}
 {%             set svi_name = svi_config.name | arista.avd.default(
                               svi_profile.name) %}
+{%             set svi_description = svi_config.description | arista.avd.default(
+                                     svi_profile.description,
+                                     svi_name) %}
 {%             set svi_enabled = svi_config.enabled | arista.avd.default(
                                  svi_profile.enabled) %}
 {%             set svi_ip_virtual_router_address = svi_config.ip_virtual_router_address | arista.avd.default(
@@ -37,7 +40,7 @@ vlan_interfaces:
   Vlan{{ svi | int }}:
     tenant: {{ tenant }}
     tags: {{ svi_tags }}
-    description: {{ svi_name }}
+    description: {{ svi_description }}
 {%             if svi_enabled is arista.avd.defined(true) %}
     shutdown: false
 {%             else %}

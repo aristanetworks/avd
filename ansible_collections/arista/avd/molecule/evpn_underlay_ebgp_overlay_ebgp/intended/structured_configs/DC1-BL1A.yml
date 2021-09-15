@@ -328,7 +328,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet6
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet6
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -338,7 +338,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet6
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet6
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -348,7 +348,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet6
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet6
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet6
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -358,7 +358,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet6
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet6
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet6
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -421,11 +421,11 @@ ethernet_interfaces:
     peer_type: my_precious
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.14/32
   Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
+    description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
     shutdown: false
     ip_address: 192.168.254.14/32
 prefix_lists:
