@@ -89,6 +89,7 @@ The user should then replace the old data structures manually in `group_vars` an
 running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
 
 The upgrade will _not_ does not support `custom_structured_configuration` or `structured_config` keys. Content of these keys _must_ be upgraded manually as applicable.
+
 ### Example Playbook
 
 ```yaml
