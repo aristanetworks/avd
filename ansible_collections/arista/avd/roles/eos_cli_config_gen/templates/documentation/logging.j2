@@ -13,7 +13,7 @@
 | Monitor | {{ logging.monitor }} |
 {%     endif %}
 {%     if logging.buffered is arista.avd.defined %}
-| Buffer |{% if logging.buffered.level is arista.avd.defined %} {{ logging.buffered.level }} {% else %} - {% endif %} |
+| Buffer | {{ logging.buffered.level | arista.avd.default('-') }} |
 {%     endif %}
 {%     if logging.trap is arista.avd.defined %}
 | Trap | {{ logging.trap }} |
@@ -59,7 +59,7 @@
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
 {%              if logging.vrfs[vrf].hosts is arista.avd.defined %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
-| {{ vrf }} | {{ host }} | {% if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined %}{% for port in logging.vrfs[vrf].hosts[host].ports %} {{ port }} {% endfor %}{% else %}Default{% endif %} | {{ logging.vrfs[vrf].hosts[host].protocol | arista.avd.default('UDP') | upper }} |
+| {{ vrf }} | {{ host }} | {{ logging.vrfs[vrf].hosts[host].ports | arista.avd.default(['Default']) | join(', ') }} | {{ logging.vrfs[vrf].hosts[host].protocol | arista.avd.default('UDP') | upper }} |
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}
