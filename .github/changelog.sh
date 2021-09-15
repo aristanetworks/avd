@@ -28,11 +28,11 @@ TYPES=(
 #* Types that will be displayed in their own section,
 #* in the order specified here.
 local -a MAIN_TYPES
-MAIN_TYPES=(FEAT FIX PERF DOCS DOC)
+MAIN_TYPES=(FEAT FIX PERF REFACTOR DOCS DOC)
 
 #* Types that will be displayed under the category of other changes
 local -a OTHER_TYPES
-OTHER_TYPES=(MAKE TEST REFACTOR STYLE CI OTHER)
+OTHER_TYPES=(MAKE TEST STYLE CI OTHER)
 
 #* Commit types that don't appear in $MAIN_TYPES nor $OTHER_TYPES
 #* will not be displayed and will simply be ignored.
