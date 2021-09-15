@@ -16,7 +16,7 @@ dependency:
 driver:
   name: delegated
 platforms:
-  - name: ethernet_interfaces
+  - name: aaa
     image: avdteam/base:3.6
     pre_build_image: true
     managed: false

@@ -1,0 +1,5 @@
+- name: Upgrade eos_cli_config_gen data model
+  include_tasks: "upgrade-2.x-to-3.0.yml"
+
+- name: Run eos_cli_config_gen
+  include_tasks: "main.yml"

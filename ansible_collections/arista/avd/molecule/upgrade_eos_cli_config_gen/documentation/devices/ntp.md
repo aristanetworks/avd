@@ -61,12 +61,8 @@ interface Management1
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| 1.2.3.4 | - | - | - | - | - | - | - | lo0 | - |
-| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
-| 10.1.1.2 | - | True | - | - | - | - | - | - | - |
-| 20.20.20.1 | - | - | - | - | - | - | - | - | 2 |
-| ie.pool.ntp.org | - | - | False | True | - | - | - | - | 1 |
+| 10.1.1.1 | default | True | - | - | - | - | - | - | - |
+| 10.1.1.2 | default | - | - | - | - | - | - | - | - |
 
 #### NTP Authentication
 
@@ -78,24 +74,16 @@ interface Management1
 
 | ID | Algoritm |
 | -- | -------- |
-| 1 | md5 |
-| 2 | sha1 |
 
 ### NTP Device Configuration
 
 ```eos
 !
-ntp authentication-key 1 md5 044F0E151B
-ntp authentication-key 2 sha1 15060E1F10
 ntp trusted-key 1-2
 ntp authenticate
 ntp local-interface lo1
-ntp server 1.2.3.4 local-interface lo0
-ntp server 2.2.2.55
-ntp server 10.1.1.1
-ntp server 10.1.1.2 prefer
-ntp server 20.20.20.1 key 2
-ntp server ie.pool.ntp.org iburst key 1
+ntp server 10.1.1.1 prefer
+ntp server 10.1.1.2
 ```
 
 # Authentication
