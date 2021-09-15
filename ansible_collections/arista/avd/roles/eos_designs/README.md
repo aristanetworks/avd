@@ -78,8 +78,8 @@ Role variables are grouped by configuration elements and are typically stored in
 ## Upgrade of eos_designs data model for AVD 2.x to 3.0
 
 The AVD **major** releases can contain breaking changes to the data models.
-Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_designs` 
-role can provide automatic upgrade of the data model. 
+Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_designs`
+role can provide automatic upgrade of the data model.
 
 To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_designs`.
 
