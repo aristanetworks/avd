@@ -1,4 +1,3 @@
-
 spine:
   defaults:
 # Change from spine.platform to spine.defaults.platform
@@ -22,8 +21,6 @@ spine:
     DC1-SPINE2:
     DC1-SPINE3:
     DC1-SPINE4:
-
-
 
 l3leaf:
   defaults:
@@ -86,8 +83,6 @@ l3leaf:
 # Change from l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.spine_interfaces to l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet7', 'Ethernet7', 'Ethernet7', 'Ethernet7']
 
-
-
 l2leaf:
   defaults:
 # Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
@@ -118,7 +113,11 @@ l2leaf:
 
 
 
-
-
-
-
+custom_structured_configuration_ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

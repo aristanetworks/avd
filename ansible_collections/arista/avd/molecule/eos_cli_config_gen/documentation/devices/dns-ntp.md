@@ -97,14 +97,18 @@ ip domain lookup vrf mgt source-interface Management0
 
 ### NTP Summary
 
-- Local Interface: Management0
+#### NTP Local Interface
 
-- VRF: mgt
+| Interface | VRF |
+| --------- | --- |
+| Management0 | mgt |
 
-| Node | Primary |
-| ---- | ------- |
-| 10.10.111.1 | true |
-| 10.10.111.2 | - |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 10.10.111.1 | mgt | True | - | - | - | - | - | - | - |
+| 10.10.111.2 | mgt | - | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 

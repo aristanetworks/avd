@@ -59,13 +59,6 @@ name_servers:
  - < IPv4_address_1 >
  - < IPv4_address_2 >
 
-# List of NTP Servers IP or DNS name | Optional
-# The first NTP server in the list will be preferred
-# NTP request will be sourced from < management_interface_vrf >
-ntp_servers:
- - < ntp_server_1 >
- - < ntp_server_1 >
-
 # Internal vlan allocation order and range | Required
 internal_vlan_order:
   allocation: < ascending or descending | default -> ascending >
