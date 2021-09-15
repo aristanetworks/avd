@@ -75,6 +75,33 @@ Default values, are stored in the role defaults [main.yml](https://github.com/ar
 
 Role variables are grouped by configuration elements and are typically stored in different group_vars files.
 
+## Upgrade of eos_designs data model for AVD 2.x to 3.0
+
+The AVD **major** releases can contain breaking changes to the data models.
+Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_designs` 
+role can provide automatic upgrade of the data model. 
+
+To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_designs`.
+
+The upgraded data will be saved in `{{ inventory_dir }}/eos_designs_upgrade_2.x_to_3.0` directory.
+
+The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
+running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
+
+The upgrade will _not_ does not support `custom_structured_configuration` or `structured_config` keys. Content of these keys _must_ be upgraded manually as applicable.
+### Example Playbook
+
+```yaml
+---
+
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_designs
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_designs
+```
+
 ## vEOS-LAB Know Caveats and Recommendations
 
 - vEOS-LAB is a great tool to learn and test ansible-avd automation framework.This is the primary tool leveraged by Arista Ansible Team for development and testing efforts.
