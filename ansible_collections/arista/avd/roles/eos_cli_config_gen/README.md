@@ -289,6 +289,10 @@ aaa_accounting:
     default:
       type: < none | start-stop | stop-only >
       group: < group_name >
+  system:
+    default:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
   commands:
     console:
       - commands: < all | 0-15 >

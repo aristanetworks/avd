@@ -192,6 +192,7 @@ aaa authorization commands all default group aaaAuth
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
 | Exec - Default | - | start-stop | TACACS | - |
+| System - Default | - | start-stop | TACACS | - |
 | Commands - Default | all | start-stop | TACACS | True |
 | Commands - Default | 0 | start-stop | - | True |
 
@@ -203,6 +204,7 @@ aaa accounting exec console start-stop group TACACS
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
 aaa accounting exec default start-stop group TACACS
+aaa accounting system default start-stop group TACACS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
 ```

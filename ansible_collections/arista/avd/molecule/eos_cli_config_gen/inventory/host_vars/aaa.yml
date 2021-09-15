@@ -66,6 +66,10 @@ aaa_accounting:
     default:
       type: start-stop
       group: TACACS
+  system:
+    default:
+      type: start-stop
+      group: TACACS
   commands:
     console:
       - commands: all
