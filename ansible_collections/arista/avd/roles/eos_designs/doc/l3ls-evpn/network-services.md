@@ -164,6 +164,10 @@ tenants:
                 source_interface: < interface-name >
                 source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
 
+            # VXLAN | Optional - default true
+            # Extend this SVI over VXLAN
+            vxlan: < true | false | default -> true >
+
             # Define node specific configuration, such as unique IP addresses.
             nodes:
               < l3_leaf_inventory_hostname_1 >:
@@ -321,6 +325,10 @@ tenants:
 
         # Tags leveraged for networks services filtering.
         tags: [ < tag_1 >, < tag_2 > ]
+
+        # VXLAN | Optional - default true
+        # Extend this L2VLAN over VXLAN
+        vxlan: < true | false | default -> true >
 
       < 1-4096 >:
         name: < description >

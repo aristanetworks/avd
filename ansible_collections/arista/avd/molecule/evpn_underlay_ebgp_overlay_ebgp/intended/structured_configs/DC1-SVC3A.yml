@@ -229,7 +229,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130-131
+      vlan: 130
     Tenant_A_DB_Zone:
       rd: 192.168.255.12:13
       route_targets:
@@ -313,14 +313,6 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 310-311
-    Tenant_C_WAN_Zone:
-      rd: 192.168.255.12:30031
-      route_targets:
-        both:
-        - 30031:30031
-      redistribute_routes:
-      - learned
-      vlan: 350
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -1337,8 +1329,6 @@ vxlan_interface:
       vlans:
         130:
           vni: 10130
-        131:
-          vni: 10131
         140:
           vni: 10140
         141:
@@ -1375,8 +1365,6 @@ vxlan_interface:
           vni: 30310
         311:
           vni: 30311
-        350:
-          vni: 30350
       vrfs:
         Tenant_A_APP_Zone:
           vni: 12

@@ -1041,7 +1041,6 @@ interface Vlan4092
 | 123 | 10123 | - |
 | 124 | 10124 | - |
 | 130 | 10130 | - |
-| 131 | 10131 | - |
 | 140 | 10140 | - |
 | 141 | 10141 | - |
 | 150 | 10150 | - |
@@ -1053,7 +1052,6 @@ interface Vlan4092
 | 250 | 20250 | - |
 | 310 | 30310 | - |
 | 311 | 30311 | - |
-| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -1086,7 +1084,6 @@ interface Vxlan1
    vxlan vlan 123 vni 10123
    vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
-   vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
    vxlan vlan 150 vni 10150
@@ -1098,7 +1095,6 @@ interface Vxlan1
    vxlan vlan 250 vni 20250
    vxlan vlan 310 vni 30310
    vxlan vlan 311 vni 30311
-   vxlan vlan 350 vni 30350
    vxlan vrf Tenant_A_APP_Zone vni 12
    vxlan vrf Tenant_A_DB_Zone vni 13
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -1283,7 +1279,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.13:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_APP_Zone | 192.168.255.13:12 | 12:12 | - | - | learned | 130 |
 | Tenant_A_DB_Zone | 192.168.255.13:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_FTP | 192.168.255.13:10162 | 10162:10162 | - | - | learned | 162 |
 | Tenant_A_NFS | 192.168.255.13:10161 | 10161:10161 | - | - | learned | 161 |
@@ -1294,7 +1290,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Tenant_B_OP_Zone | 192.168.255.13:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_B_WAN_Zone | 192.168.255.13:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.13:30030 | 30030:30030 | - | - | learned | 310-311 |
-| Tenant_C_WAN_Zone | 192.168.255.13:30031 | 30031:30031 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
@@ -1369,7 +1364,7 @@ router bgp 65103
       rd 192.168.255.13:12
       route-target both 12:12
       redistribute learned
-      vlan 130-131
+      vlan 130
    !
    vlan-aware-bundle Tenant_A_DB_Zone
       rd 192.168.255.13:13
@@ -1430,12 +1425,6 @@ router bgp 65103
       route-target both 30030:30030
       redistribute learned
       vlan 310-311
-   !
-   vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.13:30031
-      route-target both 30031:30031
-      redistribute learned
-      vlan 350
    !
    address-family evpn
       no host-flap detection

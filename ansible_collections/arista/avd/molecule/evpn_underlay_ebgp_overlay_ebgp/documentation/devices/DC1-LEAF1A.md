@@ -480,7 +480,6 @@ interface Vlan131
 | 123 | 10123 | - |
 | 124 | 10124 | - |
 | 130 | 10130 | - |
-| 131 | 10131 | - |
 
 #### VRF to VNI Mappings
 
@@ -503,7 +502,6 @@ interface Vxlan1
    vxlan vlan 123 vni 10123
    vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
-   vxlan vlan 131 vni 10131
    vxlan vrf Tenant_A_APP_Zone vni 12
    vxlan vrf Tenant_A_WEB_Zone vni 11
 ```
@@ -638,7 +636,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130 |
 | Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-124 |
 
 #### Router BGP EVPN VRFs
@@ -698,7 +696,7 @@ router bgp 65101
       rd 192.168.255.9:12
       route-target both 12:12
       redistribute learned
-      vlan 130-131
+      vlan 130
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 192.168.255.9:11

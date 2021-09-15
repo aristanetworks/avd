@@ -201,8 +201,10 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 112 | Tenant_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
+| 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
 | 4094 | MLAG_PEER | MLAG |
 
@@ -219,11 +221,17 @@ vlan 111
 vlan 112
    name Tenant_A_OP_Zone_3
 !
+vlan 113
+   name SVI_with_no_vxlan
+!
 vlan 2500
    name web-l2-vlan
 !
 vlan 2600
    name web-l2-vlan-2
+!
+vlan 2601
+   name l2vlan_with_no_vxlan
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
@@ -243,8 +251,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
+| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-113,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-113,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet16 | server-1_Eth1 | *access | *110 | *- | *- | 16 |
@@ -376,7 +384,7 @@ interface Ethernet19
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-113,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
@@ -391,7 +399,7 @@ interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,2500,2600,4085
+   switchport trunk allowed vlan 110-113,2500,2600-2601,4085
    switchport mode trunk
    mlag 3
    service-profile QOS-PROFILE
@@ -490,6 +498,7 @@ interface Loopback1
 | Vlan110 |  set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
+| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
 | Vlan4085 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
@@ -500,6 +509,7 @@ interface Loopback1
 | Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4085 |  default  |  172.21.110.2/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 
@@ -529,6 +539,12 @@ interface Vlan112
    Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
    EOF
 
+!
+interface Vlan113
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Common_VRF
+   ip address virtual 10.10.13.1/24
 !
 interface Vlan4085
    description L2LEAF_INBAND_MGMT

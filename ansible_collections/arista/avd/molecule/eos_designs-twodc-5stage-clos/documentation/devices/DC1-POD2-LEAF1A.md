@@ -189,8 +189,10 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 112 | Tenant_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
+| 2601 | l2vlan_with_no_vxlan | - |
 
 ## VLANs Device Configuration
 
@@ -205,11 +207,17 @@ vlan 111
 vlan 112
    name Tenant_A_OP_Zone_3
 !
+vlan 113
+   name SVI_with_no_vxlan
+!
 vlan 2500
    name web-l2-vlan
 !
 vlan 2600
    name web-l2-vlan-2
+!
+vlan 2601
+   name l2vlan_with_no_vxlan
 ```
 
 # Interfaces
@@ -307,6 +315,7 @@ interface Loopback1
 | Vlan110 |  set from structured_config on svi (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
+| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
 
 #### IPv4
 
@@ -315,6 +324,7 @@ interface Loopback1
 | Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -342,6 +352,12 @@ interface Vlan112
    Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
    EOF
 
+!
+interface Vlan113
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Common_VRF
+   ip address virtual 10.10.13.1/24
 ```
 
 ## VXLAN Interface

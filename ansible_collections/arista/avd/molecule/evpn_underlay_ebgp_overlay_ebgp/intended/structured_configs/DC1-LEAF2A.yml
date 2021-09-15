@@ -150,7 +150,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130-131
+      vlan: 130
     Tenant_A_DB_Zone:
       rd: 192.168.255.10:13
       route_targets:
@@ -614,8 +614,6 @@ vxlan_interface:
       vlans:
         130:
           vni: 10130
-        131:
-          vni: 10131
         140:
           vni: 10140
         141:

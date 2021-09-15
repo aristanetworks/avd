@@ -201,14 +201,6 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 250
-    Tenant_C_WAN_Zone:
-      rd: 192.168.255.15:30031
-      route_targets:
-        both:
-        - 30031:30031
-      redistribute_routes:
-      - learned
-      vlan: 350
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -481,8 +473,6 @@ vxlan_interface:
           vni: 10150
         250:
           vni: 20250
-        350:
-          vni: 30350
       vrfs:
         Tenant_A_WAN_Zone:
           vni: 14
