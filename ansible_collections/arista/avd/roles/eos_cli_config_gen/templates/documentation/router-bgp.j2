@@ -111,6 +111,26 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.neighbors is arista.avd.defined %}
+{%         set community = namespace(found=false) %}
+{%         for neighbor in router_bgp.neighbors %}
+{%             if router_bgp.neighbors[neighbor].send_community is arista.avd.defined %}
+{%                 set community.found = true %}
+{%             endif %}
+{%         endfor %}
+{%         if community.found is arista.avd.defined(true) %}
+
+### BGP Neighbor send-community
+
+| Neighbor | Value |
+| -------- | ----- |
+{%             for neighbor in router_bgp.neighbors %}
+{%                 if router_bgp.neighbors[neighbor].send_community is arista.avd.defined %}
+| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].send_community }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.neighbor_interfaces is arista.avd.defined %}
 
 ### BGP Neighbor Interfaces

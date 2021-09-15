@@ -101,6 +101,24 @@ interface Management1
 | maximum-paths 2 ecmp 2 |
 | bgp bestpath d-path |
 
+### BGP Neighbors
+
+| Neighbor | Remote AS | VRF |
+| -------- | --------- | --- |
+| 192.0.3.1 | 65432 | default |
+| 192.0.3.2 | 65433 | default |
+| 192.0.3.3 | 65434 | default |
+| 192.0.3.4 | 65435 | default |
+
+### BGP Neighbor send-community
+
+| Neighbor | Value |
+| -------- | ----- |
+| 192.0.3.1 | all |
+| 192.0.3.2 | extended |
+| 192.0.3.3 | standard |
+| 192.0.3.4 | large |
+
 ### BGP Route Aggregation
 
 | Prefix | AS Set | Summary Only | Attribute Map | Match Map | Advertise Only |
@@ -127,6 +145,14 @@ router bgp 65101
    graceful-restart
    maximum-paths 2 ecmp 2
    bgp bestpath d-path
+   neighbor 192.0.3.1 remote-as 65432
+   neighbor 192.0.3.1 send-community
+   neighbor 192.0.3.2 remote-as 65433
+   neighbor 192.0.3.2 send-community extended
+   neighbor 192.0.3.3 remote-as 65434
+   neighbor 192.0.3.3 send-community standard
+   neighbor 192.0.3.4 remote-as 65435
+   neighbor 192.0.3.4 send-community large
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
