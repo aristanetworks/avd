@@ -49,6 +49,8 @@ jobs:
               - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
+              - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/*'
+              - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/**/*'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
