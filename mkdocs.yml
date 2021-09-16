@@ -56,8 +56,10 @@ plugins:
       lang: en
   - git-revision-date-localized:
       type: date
-  - minify:
-      minify_html: true
+  # Deactivated due to https://github.com/tikitu/jsmin/issues/33
+  # Issue in progress: https://github.com/byrnereese/mkdocs-minify-plugin/issues/15
+  # - minify:
+  #     minify_html: true
   #     minify_js: true
 
 markdown_extensions:
