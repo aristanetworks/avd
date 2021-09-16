@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65000
+  as: '65000'
   router_id: 192.168.255.2
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -32,12 +32,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: none
 local_users:

@@ -13,14 +13,17 @@ vlan_interfaces:
                               svi_profile.tags) %}
 {%             set svi_name = svi_config.name | arista.avd.default(
                               svi_profile.name) %}
+{%             set svi_description = svi_config.description | arista.avd.default(
+                                     svi_profile.description,
+                                     svi_name) %}
 {%             set svi_enabled = svi_config.enabled | arista.avd.default(
                                  svi_profile.enabled) %}
 {%             set svi_ip_virtual_router_address = svi_config.ip_virtual_router_address | arista.avd.default(
                                                    svi_profile.ip_virtual_router_address) %}
 {%             set svi_ip_address_virtual = svi_config.ip_address_virtual | arista.avd.default(
                                             svi_profile.ip_address_virtual) %}
-{%             set svi_ip_address_virtual_secondary = svi_config.ip_address_virtual_secondary | arista.avd.default(
-                                                      svi_profile.ip_address_virtual_secondary) %}
+{%             set svi_ip_address_virtual_secondaries = svi_config.ip_address_virtual_secondaries | arista.avd.default(
+                                                      svi_profile.ip_address_virtual_secondaries) %}
 {%             set svi_mtu = svi_config.mtu | arista.avd.default(
                              svi_profile.mtu) %}
 {%             set svi_ip_helpers = svi_config.ip_helpers | arista.avd.default(
@@ -37,7 +40,7 @@ vlan_interfaces:
   Vlan{{ svi | int }}:
     tenant: {{ tenant }}
     tags: {{ svi_tags }}
-    description: {{ svi_name }}
+    description: {{ svi_description }}
 {%             if svi_enabled is arista.avd.defined(true) %}
     shutdown: false
 {%             else %}
@@ -57,8 +60,8 @@ vlan_interfaces:
     ip_address_virtual: {{ svi_ip_address_virtual }}
 {%             endif %}
 {# Virtual Secondary IP address #}
-{%             if svi_ip_address_virtual_secondary is arista.avd.defined %}
-    ip_address_virtual_secondary: {{ svi_ip_address_virtual_secondary }}
+{%             if svi_ip_address_virtual_secondaries is arista.avd.defined %}
+    ip_address_virtual_secondaries: {{ svi_ip_address_virtual_secondaries }}
 {%             endif %}
 {# MTU definition #}
 {%             if svi_mtu is arista.avd.defined %}

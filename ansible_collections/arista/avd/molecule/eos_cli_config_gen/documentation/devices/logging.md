@@ -58,7 +58,7 @@ interface Management1
 | Type | Level |
 | -----| ----- |
 | Console | debugging |
-| Buffer | informational  |
+| Buffer | informational |
 | Trap | informational |
 | Synchronous | error |
 
@@ -67,10 +67,14 @@ interface Management1
 | default | Loopback0 |
 | mgt | Management0 |
 
-| VRF | Hosts |
-| --- | ---------------- |
-| default | 20.20.20.7 |
-| mgt | 10.10.10.7 |
+| VRF | Hosts | Ports | Protocol |
+| --- | ----- | ----- | -------- |
+| default | 20.20.20.7 | Default | UDP |
+| default | 50.50.50.7 | 100, 200 | TCP |
+| default | 60.60.60.7 | 100, 200 | UDP |
+| mgt | 10.10.10.7 | Default | UDP |
+| mgt | 30.30.30.7 | 100, 200 | TCP |
+| mgt | 40.40.40.7 | 300, 400 | UDP |
 
 ### Logging Servers and Features Device Configuration
 
@@ -82,8 +86,12 @@ logging trap informational
 logging synchronous level error
 logging source-interface Loopback0
 logging host 20.20.20.7
+logging host 50.50.50.7 100 200 protocol tcp
+logging host 60.60.60.7 100 200 
 logging vrf mgt source-interface Management0
 logging vrf mgt host 10.10.10.7
+logging vrf mgt host 30.30.30.7 100 200 protocol tcp
+logging vrf mgt host 40.40.40.7 300 400 
 ```
 
 # Internal VLAN Allocation Policy

@@ -28,6 +28,10 @@ router_bgp:
       threshold: {{ evpn_hostflap_detection.threshold | arista.avd.default(5) }}
       enabled: {{ evpn_hostflap_detection.enabled | arista.avd.default(true) }}
 {% endif %}
+{% if switch.vtep_ip is arista.avd.defined and evpn_import_pruning is arista.avd.defined(true) %}
+    route:
+      import_match_failure_action: discard
+{% endif %}
 
 {% if evpn_overlay_bgp_rtc is arista.avd.defined(true) %}
   address_family_rtc:
@@ -47,7 +51,7 @@ router_bgp:
     {{ overlay_data.evpn_route_servers[evpn_route_server].ip_address }}:
       peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
       description: {{ evpn_route_server }}
-      remote_as: {{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}
+      remote_as: "{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}"
 {%     if evpn_prevent_readvertise_to_server is arista.avd.defined(true) %}
       route_map_out: RM-EVPN-FILTER-AS{{ overlay_data.evpn_route_servers[evpn_route_server].bgp_as }}
 {%     endif %}
@@ -56,5 +60,5 @@ router_bgp:
     {{ overlay_data.evpn_route_clients[evpn_route_client].ip_address }}:
       peer_group: {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}
       description: {{ evpn_route_client }}
-      remote_as: {{ overlay_data.evpn_route_clients[evpn_route_client].bgp_as }}
+      remote_as: "{{ overlay_data.evpn_route_clients[evpn_route_client].bgp_as }}"
 {% endfor %}

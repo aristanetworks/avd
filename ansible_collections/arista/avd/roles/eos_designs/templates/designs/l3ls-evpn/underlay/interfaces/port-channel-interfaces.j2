@@ -8,7 +8,7 @@ port_channel_interfaces:
           link.channel_group_id not in port_channel_list %}
 {%         do port_channel_list.append(link.channel_group_id) %}
   Port-Channel{{ link.channel_group_id }}:
-    description: {{ link.channel_description | arista.avd.default(link.peer) | upper }}_Po{{ link.peer_channel_group_id }}
+    description: "{% include switch.interface_descriptions.underlay_port_channel_interfaces %}"
 {%         if link.speed is arista.avd.defined %}
     speed: {{ link.speed }}
 {%         endif %}

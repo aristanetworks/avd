@@ -87,13 +87,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 

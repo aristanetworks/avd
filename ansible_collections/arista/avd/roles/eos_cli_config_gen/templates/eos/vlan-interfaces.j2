@@ -38,6 +38,11 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_address_virtual is arista.avd.defined %}
    ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
+{%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondaries is arista.avd.defined %}
+{%             for ip_address_virtual_secondary in vlan_interfaces[vlan_interface].ip_address_virtual_secondaries %}
+   ip address virtual {{ ip_address_virtual_secondary }} secondary
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     for ip_helper in vlan_interfaces[vlan_interface].ip_helpers | arista.avd.natural_sort %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper %}

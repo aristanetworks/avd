@@ -96,6 +96,12 @@ evpn_hostflap_detection:
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
 
+# Enable VPN import pruning (Min. EOS 4.24.2F)
+# The Route Target extended communities carried by incoming VPN paths will
+# be examined. If none of those Route Targets have been configured for import,
+# the path will be immediately discarded
+evpn_import_pruning: true
+
 # Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received
 # from Route-server-1 to Router-server-2 just for Route-server-2 to throw them away because of AS Path loop detection.

@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65105
+  as: '65105'
   router_id: 192.168.255.15
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -31,36 +31,36 @@ router_bgp:
   neighbors:
     172.31.255.96:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet7
     172.31.255.98:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet7
     172.31.255.100:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet7
     172.31.255.102:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet7
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -245,7 +245,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server: null
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC DC1-BL1B
@@ -476,3 +475,4 @@ vlan_interfaces:
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp: null

@@ -28,12 +28,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackE DC1-L2LEAF1A
@@ -126,7 +120,7 @@ port_channel_interfaces:
     trunk_groups:
     - MLAG
   Port-Channel1:
-    description: DC1_LEAF2_Po7
+    description: CUSTOM_DC1_LEAF2_Po7
     type: switched
     shutdown: false
     vlans: 110-111,120-124,130-131,160-162
@@ -157,7 +151,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2A
     peer_interface: Ethernet7
     peer_type: l3leaf
-    description: DC1-LEAF2A_Ethernet7
+    description: CUSTOM_DC1-LEAF2A_Ethernet7
     type: switched
     shutdown: false
     channel_group:
@@ -167,7 +161,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2B
     peer_interface: Ethernet7
     peer_type: l3leaf
-    description: DC1-LEAF2B_Ethernet7
+    description: CUSTOM_DC1-LEAF2B_Ethernet7
     type: switched
     shutdown: false
     channel_group:

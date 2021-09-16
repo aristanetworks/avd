@@ -11,7 +11,7 @@ my_dci_ethernet_interfaces:
     peer_type: my_precious
 
 # Override the default structured config (override_ is a custom_structured_configuration_prefix set in DC1_FABRIC.yml)
-override_ntp_server: null
+override_ntp: null
 
 # Override other custom_structured_config (above)
 # Will only take effect on DC1_BL1B since the same key is set in hostvars for DC1_BL1A.

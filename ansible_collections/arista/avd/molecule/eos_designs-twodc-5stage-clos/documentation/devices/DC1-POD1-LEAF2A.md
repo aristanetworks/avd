@@ -660,7 +660,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112|  172.16.110.4 |
+| 65112.100|  172.16.110.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -696,7 +696,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65112 |
+| Remote AS | 65112.100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
@@ -707,15 +707,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | -------- | --------- | --- |
 | 100.100.100.201 | 65211 | default |
 | 172.16.10.1 | 65101 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.110.8 | 65110 | default |
-| 172.17.110.10 | 65110 | default |
-| 172.17.110.12 | 65110 | default |
-| 172.17.110.14 | 65110 | default |
+| 172.16.110.1 | 65110.100 | default |
+| 172.16.110.3 | 65111.100 | default |
+| 172.17.110.8 | 65110.100 | default |
+| 172.17.110.10 | 65110.100 | default |
+| 172.17.110.12 | 65110.100 | default |
+| 172.17.110.14 | 65110.100 | default |
 | 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
 
 ### Router BGP EVPN Address Family
+
+- VPN import pruning is __enabled__
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -739,7 +741,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ```eos
 !
-router bgp 65112
+router bgp 65112.100
    router-id 172.16.110.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -758,7 +760,7 @@ router bgp 65112
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
@@ -772,24 +774,24 @@ router bgp 65112
    neighbor 172.16.10.1 description DC1-RS1
    neighbor 172.16.10.1 route-map RM-EVPN-FILTER-AS65101 out
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
-   neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110 out
+   neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110.100 out
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
-   neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
+   neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.8 remote-as 65110
+   neighbor 172.17.110.8 remote-as 65110.100
    neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.10 remote-as 65110
+   neighbor 172.17.110.10 remote-as 65110.100
    neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.12 remote-as 65110
+   neighbor 172.17.110.12 remote-as 65110.100
    neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
    neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.14 remote-as 65110
+   neighbor 172.17.110.14 remote-as 65110.100
    neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B
@@ -823,6 +825,7 @@ router bgp 65112
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
@@ -925,17 +928,17 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ---------------- |
 | 10 | deny | match as 65101 |
 
-#### RM-EVPN-FILTER-AS65110
+#### RM-EVPN-FILTER-AS65110.100
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match as 65110 |
+| 10 | deny | match as 65110.100 |
 
-#### RM-EVPN-FILTER-AS65111
+#### RM-EVPN-FILTER-AS65111.100
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match as 65111 |
+| 10 | deny | match as 65111.100 |
 
 #### RM-MLAG-PEER-IN
 
@@ -958,15 +961,15 @@ route-map RM-EVPN-FILTER-AS65101 deny 10
 !
 route-map RM-EVPN-FILTER-AS65101 permit 20
 !
-route-map RM-EVPN-FILTER-AS65110 deny 10
-   match as 65110
+route-map RM-EVPN-FILTER-AS65110.100 deny 10
+   match as 65110.100
 !
-route-map RM-EVPN-FILTER-AS65110 permit 20
+route-map RM-EVPN-FILTER-AS65110.100 permit 20
 !
-route-map RM-EVPN-FILTER-AS65111 deny 10
-   match as 65111
+route-map RM-EVPN-FILTER-AS65111.100 deny 10
+   match as 65111.100
 !
-route-map RM-EVPN-FILTER-AS65111 permit 20
+route-map RM-EVPN-FILTER-AS65111.100 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

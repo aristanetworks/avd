@@ -300,14 +300,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 172.16.20.1 | 65201 | default |
-| 172.16.110.4 | 65112 | default |
-| 172.16.110.5 | 65112 | default |
+| 172.16.110.4 | 65112.100 | default |
+| 172.16.110.5 | 65112.100 | default |
 | 172.16.200.1 | 65200 | default |
 | 172.16.210.1 | 65210 | default |
 | 172.16.210.3 | 65211 | default |
 | 172.17.10.0 | 65100 | default |
-| 172.17.10.2 | 65110 | default |
-| 172.17.10.4 | 65111 | default |
+| 172.17.10.2 | 65110.100 | default |
+| 172.17.10.4 | 65111.100 | default |
 
 ### Router BGP EVPN Address Family
 
@@ -343,10 +343,10 @@ router bgp 65101
    neighbor 172.16.20.1 description DC2-RS1
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
    neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112
+   neighbor 172.16.110.4 remote-as 65112.100
    neighbor 172.16.110.4 description DC1-POD1-LEAF2A
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.5 remote-as 65112
+   neighbor 172.16.110.5 remote-as 65112.100
    neighbor 172.16.110.5 description DC1-POD1-LEAF2B
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
@@ -365,11 +365,11 @@ router bgp 65101
    neighbor 172.17.10.0 description DC1-SUPER-SPINE1_Ethernet5
    neighbor 172.17.10.0 bfd
    neighbor 172.17.10.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.10.2 remote-as 65110
+   neighbor 172.17.10.2 remote-as 65110.100
    neighbor 172.17.10.2 description DC1-POD1-SPINE1_Ethernet6
    neighbor 172.17.10.2 bfd
    neighbor 172.17.10.4 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.10.4 remote-as 65111
+   neighbor 172.17.10.4 remote-as 65111.100
    neighbor 172.17.10.4 description DC1-POD1-LEAF1A_Ethernet4
    neighbor 172.17.10.4 bfd
    redistribute connected route-map RM-CONN-2-BGP

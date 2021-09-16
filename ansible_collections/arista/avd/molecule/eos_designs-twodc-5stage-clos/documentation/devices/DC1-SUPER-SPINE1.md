@@ -318,8 +318,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Neighbor | Remote AS | VRF |
 | -------- | --------- | --- |
 | 11.1.2.1 | 65200 | default |
-| 172.16.11.1 | 65110 | default |
-| 172.16.11.3 | 65110 | default |
+| 172.16.11.1 | 65110.100 | default |
+| 172.16.11.3 | 65110.100 | default |
 | 172.16.12.1 | 65120 | default |
 | 172.16.12.3 | 65120 | default |
 | 172.17.10.1 | 65101 | default |
@@ -349,10 +349,10 @@ router bgp 65100
    neighbor 11.1.2.1 remote-as 65200
    neighbor 11.1.2.1 description DC2-SUPER-SPINE1
    neighbor 172.16.11.1 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.1 remote-as 65110
+   neighbor 172.16.11.1 remote-as 65110.100
    neighbor 172.16.11.1 description DC1-POD1-SPINE1_Ethernet1
    neighbor 172.16.11.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.3 remote-as 65110
+   neighbor 172.16.11.3 remote-as 65110.100
    neighbor 172.16.11.3 description DC1-POD1-SPINE2_Ethernet1
    neighbor 172.16.12.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.1 remote-as 65120

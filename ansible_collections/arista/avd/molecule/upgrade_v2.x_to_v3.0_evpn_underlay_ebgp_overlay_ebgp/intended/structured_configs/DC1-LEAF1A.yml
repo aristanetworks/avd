@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65101
+  as: '65101'
   router_id: 192.168.255.9
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -33,36 +33,36 @@ router_bgp:
   neighbors:
     172.31.255.0:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet1
     172.31.255.2:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet1
     172.31.255.4:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet1
     172.31.255.6:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -140,12 +140,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackA DC1-LEAF1A
@@ -375,3 +369,11 @@ vlan_interfaces:
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

@@ -80,7 +80,6 @@
       - [Management Console](#management-console)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
-      - [NTP Servers](#ntp-servers)
       - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -284,11 +283,27 @@ aaa_authorization:
 ```yaml
 aaa_accounting:
   exec:
+    console:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
+    default:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
+  system:
     default:
       type: < none | start-stop | stop-only >
       group: < group_name >
   commands:
-    commands_default:
+    console:
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+    default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         group: < group_name >
@@ -1020,6 +1035,9 @@ vlan_interfaces:
       - < IPv4_address/Mask >
     ip_virtual_router_address: < IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
+    ip_address_virtual_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -1394,27 +1412,29 @@ management_ssh:
       enable: < true | false >
 ```
 
-#### NTP Servers
-
-```yaml
-ntp_server:
-  local_interface:
-    vrf: < vrf_name >
-    interface: < source_interface >
-  nodes:
-    - < ntp_server_1 >
-    - < ntp_server_2 >
-```
-
 #### NTP
 
 ```yaml
 ntp:
+  local_interface:
+    name: < source_interface >
+    vrf: < vrf_name >
+  servers:
+  - name: < IP | hostname >:
+    burst: < true | false >
+    iburst:  < true | false >
+    key: < 1 - 65535 >
+    local_interface: < source_interface >
+    maxpoll: < 3 - 17 (logorithmic)>
+    minpoll: < 3 - 17 (logorithmic)>
+    preferred: < true | false >
+    version: < 1 - 4 >
+    vrf: < vrf_name >
   authenticate: <true | false >
   authentication_keys:
-    <key_identifier | 1-65534>:
-      hash_algorithm: < md5 | sha1 >
-      key: "< type7_obfuscated_key >"
+  - id: <key_identifier | 1-65534>:
+    hash_algorithm: < md5 | sha1 >
+    key: "< type7_obfuscated_key >"
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
@@ -1630,8 +1650,14 @@ logging:
     < vrf_name >:
       source_interface: < source_interface_name >
       hosts:
-        - < syslog_server_1>
-        - < syslog_server_2>
+        < syslog_server_1 >:
+          protocol: < tcp | udp (default udp) >
+          ports:
+            < custom_port_1 >
+            < custom_port_2 >
+        < syslog_server_2 >:
+          ports:
+            < custom_port_1 >
   policy:
     match:
       match_lists:
@@ -2013,6 +2039,7 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      send_community: < all | extended | large | standard >
       maximum_routes: < maximum routes >
         warning_limit: < warning limit value (Optional) >
           percent: < true | false (Optional) >
@@ -2105,6 +2132,8 @@ router_bgp:
       enabled: < true | false >
       threshold: < integer >
       window: < integer >
+    route:
+      import_match_failure_action: < 'discard' >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:
