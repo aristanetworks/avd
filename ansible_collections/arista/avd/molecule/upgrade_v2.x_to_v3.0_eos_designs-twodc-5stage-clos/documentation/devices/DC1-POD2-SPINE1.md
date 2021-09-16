@@ -345,14 +345,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.1.19 | 65210 | default |
-| 172.16.12.0 | 65100 | default |
-| 172.16.12.64 | 65100 | default |
-| 172.16.120.3 | 65121 | default |
-| 172.17.10.11 | 65102 | default |
-| 172.17.120.1 | 65121 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.1.19 | 65210 | default | - | - |
+| 172.16.12.0 | 65100 | default | - | - |
+| 172.16.12.64 | 65100 | default | - | - |
+| 172.16.120.3 | 65121 | default | - | - |
+| 172.17.10.11 | 65102 | default | - | - |
+| 172.17.120.1 | 65121 | default | - | - |
 
 ### Router BGP EVPN Address Family
 

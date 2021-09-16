@@ -562,15 +562,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 192.168.255.1 | 65001 | default |
-| 192.168.255.2 | 65001 | default |
-| 192.168.255.3 | 65001 | default |
-| 192.168.255.4 | 65001 | default |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.168.255.1 | 65001 | default | - | - |
+| 192.168.255.2 | 65001 | default | - | - |
+| 192.168.255.3 | 65001 | default | - | - |
+| 192.168.255.4 | 65001 | default | - | - |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | - |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - |
 
 ### BGP Neighbor Interfaces
 

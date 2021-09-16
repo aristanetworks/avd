@@ -302,10 +302,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.17.20.8 | 65200 | default |
-| 172.17.20.10 | 65200 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.17.20.8 | 65200 | default | - | - |
+| 172.17.20.10 | 65200 | default | - | - |
 
 ### Router BGP EVPN Address Family
 

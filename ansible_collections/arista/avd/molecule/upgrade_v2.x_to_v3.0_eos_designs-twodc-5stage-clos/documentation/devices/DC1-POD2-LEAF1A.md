@@ -476,13 +476,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.16.120.1 | 65120 | default |
-| 172.16.120.2 | 65120 | default |
-| 172.17.10.13 | 65102 | default |
-| 172.17.120.0 | 65120 | default |
-| 172.17.120.2 | 65120 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.120.1 | 65120 | default | - | - |
+| 172.16.120.2 | 65120 | default | - | - |
+| 172.17.10.13 | 65102 | default | - | - |
+| 172.17.120.0 | 65120 | default | - | - |
+| 172.17.120.2 | 65120 | default | - | - |
 
 ### Router BGP EVPN Address Family
 

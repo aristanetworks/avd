@@ -341,14 +341,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.2.3 | 65200 | default |
-| 172.16.11.65 | 65110 | default |
-| 172.16.11.67 | 65110 | default |
-| 172.16.12.65 | 65120 | default |
-| 172.16.12.67 | 65120 | default |
-| 172.17.10.9 | 65102 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.2.3 | 65200 | default | - | - |
+| 172.16.11.65 | 65110 | default | - | - |
+| 172.16.11.67 | 65110 | default | - | - |
+| 172.16.12.65 | 65120 | default | - | - |
+| 172.16.12.67 | 65120 | default | - | - |
+| 172.17.10.9 | 65102 | default | - | - |
 
 ### Router BGP EVPN Address Family
 

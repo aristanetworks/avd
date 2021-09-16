@@ -312,11 +312,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.2.2 | 65100 | default |
-| 172.16.21.65 | 65210 | default |
-| 172.16.21.67 | 65210 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.2.2 | 65100 | default | - | - |
+| 172.16.21.65 | 65210 | default | - | - |
+| 172.16.21.67 | 65210 | default | - | - |
 
 ### Router BGP EVPN Address Family
 

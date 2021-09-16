@@ -709,15 +709,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.0.39 | 65211 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.110.8 | 65110 | default |
-| 172.17.110.10 | 65110 | default |
-| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.0.39 | 65211 | default | - | - |
+| 172.16.10.1 | 65101 | default | - | - |
+| 172.16.110.1 | 65110 | default | - | - |
+| 172.16.110.3 | 65111 | default | - | - |
+| 172.17.110.8 | 65110 | default | - | - |
+| 172.17.110.10 | 65110 | default | - | - |
+| 172.20.110.2 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER|
 
 ### Router BGP EVPN Address Family
 
