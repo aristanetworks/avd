@@ -2013,6 +2013,10 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      maximum_routes: < maximum routes >
+        warning_limit: < warning limit value (Optional) >
+          percent: < true | false (Optional) >
+        warning_only: < true | false (Optional) >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
