@@ -6,7 +6,9 @@ router_bgp:
       type: ipv4
       remote_as: "{{ switch.bgp_as }}"
       next_hop_self: true
+{% if bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password is arista.avd.defined() %}
       password: "{{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.password }}"
+{% endif %}
       maximum_routes: 12000
       send_community: all
 {%     if switch.mlag_ibgp_origin_incomplete == true %}

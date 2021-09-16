@@ -10,7 +10,9 @@ router_bgp:
       update_source: Loopback0
       remote_as: "{{ switch.bgp_as }}"
       bfd: true
+{% if bgp_peer_groups.EVPN_OVERLAY_PEERS.password is arista.avd.defined() %}
       password: "{{ bgp_peer_groups.EVPN_OVERLAY_PEERS.password }}"
+{% endif %}
       send_community: all
       maximum_routes: 0
 {% if switch.evpn_role == "server" %}
