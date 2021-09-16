@@ -111,6 +111,20 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.neighbors is arista.avd.defined %}
+{%         for neighbor in router_bgp.neighbors %}
+{%             if router_bgp.neighbors[neighbor].send_community is arista.avd.defined %}
+{%                 if loop.first %}
+
+### BGP Neighbor send-community
+
+| Neighbor | Value |
+| -------- | ----- |
+{%                 endif %}
+| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].send_community }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {%     if router_bgp.neighbor_interfaces is arista.avd.defined %}
 
 ### BGP Neighbor Interfaces
