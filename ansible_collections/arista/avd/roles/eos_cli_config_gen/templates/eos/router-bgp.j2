@@ -131,17 +131,7 @@ router bgp {{ router_bgp.as }}
    neighbor {{ neighbor }} send-community {{ router_bgp.neighbors[neighbor].send_community }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].maximum_routes is arista.avd.defined %}
-{%             set maximum_routes_cli = "neighbor " ~ neighbor ~ " maximum-routes " ~ router_bgp.neighbors[neighbor].maximum_routes %}
-{%             if router_bgp.neighbors[neighbor].maximum_routes.warning_limit is arista.avd.defined %}
-{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ router_bgp.neighbors[neighbor].maximum_routes.warning_limit %}
-{%                 if router_bgp.neighbors[neighbor].maximum_routes.warning_limit.percent is arista.avd.defined %}
-{%                     set maximum_routes_cli = maximum_routes_cli ~ " percent" %}
-{%                 endif %}
-{%             endif %}
-{%             if router_bgp.neighbors[neighbor].maximum_routes.warning_only is arista.avd.defined %}
-{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
-{%             endif %}
-   {{ maximum_routes_cli }}
+   neighbor {{ neighbor }} maximum-routes {{ router_bgp.neighbors[neighbor].maximum_routes }}
 {%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}

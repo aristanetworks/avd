@@ -90,38 +90,24 @@
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.neighbors[neighbor].remote_as is arista.avd.defined %}
-| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | default |
+| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | default | {{ router_bgp.neighbors[neighbor].send_community | arista.avd.default("-") }} | {{ router_bgp.neighbors[neighbor].maximum_routes | arista.avd.default("-") }} |
 {%             elif router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
-| {{ neighbor }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | default |
+| {{ neighbor }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | default | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }}|
 {%             endif %}
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
 {%             if router_bgp.vrfs[vrf].neighbors is arista.avd.defined %}
 {%                 for neighbor in router_bgp.vrfs[vrf].neighbors %}
 {%                     if router_bgp.vrfs[vrf].neighbors[neighbor].remote_as is arista.avd.defined %}
-| {{ neighbor }} | {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }} | {{ vrf }} |
+| {{ neighbor }} | {{ router_bgp.vrfs[vrf].neighbors[neighbor].remote_as }} | {{ vrf }} | {{ router_bgp.neighbors[neighbor].send_community | arista.avd.default("-") }} | {{ router_bgp.neighbors[neighbor].maximum_routes | arista.avd.default("-") }} |
 {%                     elif router_bgp.vrfs[vrf].neighbors[neighbor].peer_group is arista.avd.defined %}
-| {{ neighbor }} | Inherited from peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }} | {{ vrf }} |
+| {{ neighbor }} | Inherited from peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }} | {{ vrf }} | Inherited from peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }} | Inherited from peer group {{ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group }} |
 {%                     endif %}
 {%                 endfor %}
-{%             endif %}
-{%         endfor %}
-{%     endif %}
-{%     if router_bgp.neighbors is arista.avd.defined %}
-{%         for neighbor in router_bgp.neighbors %}
-{%             if router_bgp.neighbors[neighbor].send_community is arista.avd.defined %}
-{%                 if loop.first %}
-
-### BGP Neighbor send-community
-
-| Neighbor | Value |
-| -------- | ----- |
-{%                 endif %}
-| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].send_community }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

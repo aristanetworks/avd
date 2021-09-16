@@ -2040,10 +2040,7 @@ router_bgp:
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
       send_community: < all | extended | large | standard >
-      maximum_routes: < maximum routes >
-        warning_limit: < warning limit value (Optional) >
-          percent: < true | false (Optional) >
-        warning_only: < true | false (Optional) >
+      maximum_routes: < integer >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
