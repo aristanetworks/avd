@@ -21,7 +21,7 @@ vxlan_interface:
                   tenants[tenant].mac_vrf_vni_base + svi_int) }}
 {%         endfor %}
 {%     endfor %}
-{%     for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort | rejectattr('vxlan','false') %}
+{%     for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%         if tenants[tenant].l2vlans[l2vlan].vxlan is arista.avd.defined(false) %}
 {%             continue %}
 {%         endif %}
