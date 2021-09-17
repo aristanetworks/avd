@@ -1569,18 +1569,18 @@ daemon_terminattr:
   smashexcludes: < string | e.g. "ale,flexCounter,hardware,kni,pulse,strata" >
   # Enable log file collection; /var/log/messages is streamed by default if no path is set.
   taillogs: < path | e.g. "/var/log/messages" >
-  # ECO DHCP Collector address or ECO DHCP Fingerprint listening addressin standalone mode (default “127.0.0.1:67”)
+  # ECO DHCP Collector address or ECO DHCP Fingerprint listening addressin standalone mode (default "127.0.0.1:67")
   ecodhcpaddr: < IPV4_address:port >
   # Enable IPFIX provider (default true)
   # This flag is enabled by default and does not have to be added to the daemon configuration.
   ipfix: < true | false >
-  # ECO IPFIX Collector address to listen on to receive IPFIX packets (default “127.0.0.1:4739”)
+  # ECO IPFIX Collector address to listen on to receive IPFIX packets (default "127.0.0.1:4739")
   # This flag is enabled by default and does not have to be added to the daemon configuration
   ipfixaddr: < IPV4_address:port >
   # Enable sFlow provider (default true)
   # This flag is enabled by default and does not have to be added to the daemon configuration
   sflow: < true | false >
-  # ECO sFlow Collector address to listen on to receive sFlow packets (default “127.0.0.1:6343”)
+  # ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343")
   # This flag is enabled by default and does not have to be added to the daemon configuration
   sflowaddr: < IPV4_address:port >
 ```

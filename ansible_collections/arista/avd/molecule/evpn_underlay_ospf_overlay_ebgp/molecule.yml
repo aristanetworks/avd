@@ -19,7 +19,7 @@ driver:
   name: delegated
 platforms:
   - name: DC1-LEAF1A
-    image: avdteam/base:3.6
+    image: avdteam/base:3.8-v2.0
     pre_build_image: true
     managed: false
     groups:
