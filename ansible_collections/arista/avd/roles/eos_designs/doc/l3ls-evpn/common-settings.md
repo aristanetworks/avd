@@ -213,6 +213,7 @@ platform_settings:
     lag_hardware_only: < true | false >
     feature_support:
       queue_monitor_length_notify: < true | false | default -> true >
+      interface_storm_control: < true | false | default -> true >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -233,6 +234,7 @@ platform_settings:
       non_mlag: 330
     feature_support:
       queue_monitor_length_notify: false
+      interface_storm_control: false
   - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
