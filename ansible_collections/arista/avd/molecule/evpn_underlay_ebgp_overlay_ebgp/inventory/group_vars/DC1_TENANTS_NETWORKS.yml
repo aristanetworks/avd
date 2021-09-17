@@ -111,6 +111,7 @@ tenants:
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
+            vxlan: false
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -307,3 +308,4 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.3.50.1/24
+            vxlan: False

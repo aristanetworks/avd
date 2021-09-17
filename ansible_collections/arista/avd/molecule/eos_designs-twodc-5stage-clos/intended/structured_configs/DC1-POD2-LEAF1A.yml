@@ -247,12 +247,18 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: SVI_with_no_vxlan
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  2601:
+    tenant: Tenant_A
+    name: l2vlan_with_no_vxlan
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:
@@ -309,6 +315,14 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.10.13.1/24
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 struct_cfg:
   domain_list:

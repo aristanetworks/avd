@@ -208,12 +208,18 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: SVI_with_no_vxlan
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  2601:
+    tenant: Tenant_A
+    name: l2vlan_with_no_vxlan
   4085:
     tenant: system
     name: L2LEAF_INBAND_MGMT
@@ -257,6 +263,14 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.10.13.1/24
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
@@ -280,7 +294,7 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4085
+    vlans: 110-113,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 3

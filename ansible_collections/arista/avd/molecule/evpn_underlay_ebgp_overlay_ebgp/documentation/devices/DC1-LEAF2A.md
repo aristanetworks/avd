@@ -737,7 +737,6 @@ interface Vlan311
 | 123 | 10123 | - |
 | 124 | 10124 | - |
 | 130 | 10130 | - |
-| 131 | 10131 | - |
 | 140 | 10140 | - |
 | 141 | 10141 | - |
 | 160 | 10160 | - |
@@ -775,7 +774,6 @@ interface Vxlan1
    vxlan vlan 123 vni 10123
    vxlan vlan 124 vni 10124
    vxlan vlan 130 vni 10130
-   vxlan vlan 131 vni 10131
    vxlan vlan 140 vni 10140
    vxlan vlan 141 vni 10141
    vxlan vlan 160 vni 10160
@@ -935,7 +933,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.10:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_APP_Zone | 192.168.255.10:12 | 12:12 | - | - | learned | 130 |
 | Tenant_A_DB_Zone | 192.168.255.10:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_FTP | 192.168.255.10:10162 | 10162:10162 | - | - | learned | 162 |
 | Tenant_A_NFS | 192.168.255.10:10161 | 10161:10161 | - | - | learned | 161 |
@@ -1006,7 +1004,7 @@ router bgp 65102
       rd 192.168.255.10:12
       route-target both 12:12
       redistribute learned
-      vlan 130-131
+      vlan 130
    !
    vlan-aware-bundle Tenant_A_DB_Zone
       rd 192.168.255.10:13

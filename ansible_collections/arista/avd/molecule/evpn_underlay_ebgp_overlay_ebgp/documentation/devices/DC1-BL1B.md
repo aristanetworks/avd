@@ -460,7 +460,6 @@ interface Vlan350
 | ---- | --- | ---------- |
 | 150 | 10150 | - |
 | 250 | 20250 | - |
-| 350 | 30350 | - |
 
 #### VRF to VNI Mappings
 
@@ -482,7 +481,6 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 150 vni 10150
    vxlan vlan 250 vni 20250
-   vxlan vlan 350 vni 30350
    vxlan vrf Tenant_A_WAN_Zone vni 14
    vxlan vrf Tenant_B_OP_Zone vni 20
    vxlan vrf Tenant_B_WAN_Zone vni 21
@@ -643,7 +641,6 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_WAN_Zone | 192.168.255.15:14 | 14:14 | - | - | learned | 150 |
 | Tenant_B_WAN_Zone | 192.168.255.15:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.255.15:30031 | 30031:30031 | - | - | learned | 350 |
 
 #### Router BGP EVPN VRFs
 
@@ -712,12 +709,6 @@ router bgp 65105
       route-target both 21:21
       redistribute learned
       vlan 250
-   !
-   vlan-aware-bundle Tenant_C_WAN_Zone
-      rd 192.168.255.15:30031
-      route-target both 30031:30031
-      redistribute learned
-      vlan 350
    !
    address-family evpn
       no host-flap detection
