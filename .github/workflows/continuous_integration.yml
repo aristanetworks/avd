@@ -352,9 +352,16 @@ jobs:
       - uses: actions/checkout@master
       - name: 'Send Webhook to docker hub'
         env:
-          DOCKER_WEBHOOK: ${{secrets.DOCKER_WEBHOOK}}
+          AUTH_TOKEN: ${{secrets.AVD_BUILDER_TOKEN}}
+          AVD_BASE_DISPATCH: ${{secrets.AVD_BUILDER_WEBHOOK}}
+          AVD_BASE_ACTION: ${{secret.AVD_BASE_ACTION}}
         run: |
-          curl  -H "Content-Type: application/json" --data '{}' -X POST $DOCKER_WEBHOOK
+          curl \
+          -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token $AUTH_TOKEN" \
+          https://api.github.com/repos/$AVD_BASE_DISPATCH/dispatches \
+          -d '{"event_type":"refresh"}'
   # ----------------------------------- #
   # Generate an ansible-galaxy package
   # ----------------------------------- #
