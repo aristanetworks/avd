@@ -211,6 +211,15 @@ This module also supports tags to run a subset of ansible tasks:
 $ ansible-playbook playbook.to.deploy.with.cvp.yml --tags "provision"
 ```
 
+Other option to run a subset of ansible tasks is to use __`--skip-tags <tag>`__:
+- in order to run module to update existing configlets only, following command can be used:
+```shell
+$ ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers"
+```
+- Skipping multiple tags could make playbook even more lightweight. For example, above command with avoiding CVP task execution
+```shell
+$ ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers,apply"
+```
 ### Outputs
 
 - None.
