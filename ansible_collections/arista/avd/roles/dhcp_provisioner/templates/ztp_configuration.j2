@@ -1,6 +1,8 @@
 {# HEADER -- LOGIC implementation #}
 {% set node_types = dict() %}
-{% for node_type_key in hostvars[groups[fabric_group][0]]['node_type_keys'] | arista.avd.natural_sort %}
+{% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] |
+        arista.avd.default(['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller']) %}
+{% for node_type_key in node_type_keys | arista.avd.natural_sort %}
 {%     for host in hostvars | arista.avd.natural_sort %}
 {%         if host in groups[fabric_group] %}
 {%             if hostvars[host][node_type_key] is arista.avd.defined %}
@@ -11,20 +13,19 @@
 {% endfor %}
 {# DHCP YAML configuration rendering #}
 ---
-{# {{ node_types | to_nice_yaml }} #}
 ztp:
   default:
-{% if hostvars[groups[fabric_group][0]].cvp_instance_ip is arista.avd.defined %}
-    registration: http://{{ hostvars[groups[fabric_group][0]].cvp_instance_ip }}/ztp/bootstrap
-{% elif hostvars[groups[fabric_group][0]].cvp_instance_ips is arista.avd.defined %}
-    registration: http://{{ hostvars[groups[fabric_group][0]].cvp_instance_ips[0] }}/ztp/bootstrap
+{% if hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
+    registration: http://{{ hostvars[groups[fabric_group][0]]['cvp_instance_ip'] }}/ztp/bootstrap
+{% elif hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
+    registration: http://{{ hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] }}/ztp/bootstrap
 {% endif %}
-{% if mgmt_gateway is defined and mgmt_gateway is not none %}
-    gateway: {{ mgmt_gateway }}
+{% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
+    gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
 {% endif %}
-{% if name_servers is defined and name_servers is not none %}
+{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
     nameservers:
-{%     for name_server in name_servers %}
+{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
       - {{ name_server }}
 {%     endfor %}
 {% endif %}
@@ -39,14 +40,14 @@ ztp:
       - network: {{ ztp_network_summary | ansible.netcommon.ipaddr('network') }}
         netmask: {{ ztp_network_summary | ansible.netcommon.ipaddr('netmask') }}
 {% endif %}
-{% if mgmt_gateway is defined and mgmt_gateway is not none %}
-        gateway: {{ mgmt_gateway }}
+{% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
+        gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
 {% endif %}
-{% if name_servers is defined and name_servers is not none %}
+{% if hostvars[groups[fabric_group][0]]['name_servers'] is arista.avd.defined %}
         nameservers:
-{% for name_server in name_servers %}
+{%     for name_server in hostvars[groups[fabric_group][0]]['name_servers'] | arista.avd.natural_sort %}
           - {{ name_server }}
-{% endfor %}
+{%     endfor %}
 {% endif %}
 {% if ztp_pool_start is defined and ztp_pool_start is not none %}
         start: {{ ztp_pool_start }}
