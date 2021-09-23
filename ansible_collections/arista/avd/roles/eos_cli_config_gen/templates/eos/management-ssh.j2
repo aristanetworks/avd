@@ -25,6 +25,12 @@ management ssh
 {%     if management_ssh.idle_timeout is arista.avd.defined %}
    idle-timeout {{ management_ssh.idle_timeout }}
 {%     endif %}
+{%     if management_ssh.connection.limit is arista.avd.defined %}
+   connection limit {{ management_ssh.connection.limit }}
+{%     endif %}
+{%     if management_ssh.connection.per_host is arista.avd.defined %}
+   connection per-host {{ management_ssh.connection.per_host }}
+{%     endif %}
 {%     if management_ssh.cipher is arista.avd.defined %}
    cipher {{ management_ssh.cipher | join(" ") }}
 {%     endif %}

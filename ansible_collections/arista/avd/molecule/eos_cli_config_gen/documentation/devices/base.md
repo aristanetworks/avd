@@ -74,6 +74,12 @@ interface Management1
 | ------------ | -------------- |
 | 15 |  Enabled  |
 
+### Max number of SSH sessions limit and per-host limit
+
+| Connection Limit | Max from a single Host |
+| ---------------- | ---------------------- |
+| - | 12 |
+
 ### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
@@ -96,6 +102,7 @@ management ssh
    ipv6 access-group ACL-SSH6 in
    ipv6 access-group ACL-SSH-VRF6 vrf mgt in
    idle-timeout 15
+   connection per-host 12
    no shutdown
    vrf mgt
       no shutdown

@@ -1405,6 +1405,9 @@ management_ssh:
       - < algorithm1 >
       - < algorithm2 >
   enable: < true | false >
+  connection:
+    limit: < 1-100 SSH Connections >
+    per_host: < 1-20 max sessions from a host >
   vrfs:
     < vrf_name_1 >:
       enable: < true | false >
