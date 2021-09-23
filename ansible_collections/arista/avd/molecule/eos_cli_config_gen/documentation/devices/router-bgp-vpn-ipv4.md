@@ -116,8 +116,8 @@ interface Management1
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS|
-| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS|
+| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
+| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
 
 ### Router BGP EVPN Address Family
 

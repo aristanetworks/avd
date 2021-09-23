@@ -93,10 +93,23 @@
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
-{%             if router_bgp.neighbors[neighbor].remote_as is arista.avd.defined %}
-| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | default | {{ router_bgp.neighbors[neighbor].send_community | arista.avd.default("-") }} | {{ router_bgp.neighbors[neighbor].maximum_routes | arista.avd.default("-") }} |
-{%             elif router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
-| {{ neighbor }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | default | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }} | Inherited from peer group {{ router_bgp.neighbors[neighbor].peer_group }}|
+{%             if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
+{%                 set inherited = namespace() %}
+{%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].remote_as is arista.avd.defined %}
+{%                     set inherited.remote_as = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
+{%                 endif %}
+{%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].vrf is arista.avd.defined %}
+{%                     set inherited.vrf = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
+{%                 endif %}
+{%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].send_community is arista.avd.defined %}
+{%                     set inherited.send_community = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
+{%                 endif %}
+{%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].maximum_routes is arista.avd.defined %}
+{%                     set inherited.maximum_routes = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
+{%                 endif %}
+| {{ neighbor }} | {{ inherited.remote_as | arista.avd.default(router_bgp.neighbors[neighbor].remote_as) }} | {{ inherited.vrf | arista.avd.default("default") }} | {{ inherited.send_community | arista.avd.default("-") }} | {{ inherited.maximum_routes | arista.avd.default("-") }} |
+{%             else %}
+| {{ neighbor }} | {{ router_bgp.neighbors[neighbor].remote_as }} | {{ router_bgp.neighbors[neighbor].vrf | arista.avd.default("default") }} | {{ router_bgp.neighbors[neighbor].send_community | arista.avd.default("-") }} | {{ router_bgp.neighbors[neighbor].maximum_routes | arista.avd.default("-") }} |
 {%             endif %}
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
