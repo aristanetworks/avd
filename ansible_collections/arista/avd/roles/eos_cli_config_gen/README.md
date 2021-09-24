@@ -129,6 +129,7 @@
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
+  - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
   - [License](#license)
 
 ## Overview
@@ -2627,7 +2628,8 @@ The AVD **major** releases can contain breaking changes to the data models.
 Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_cli_config_gen`
 role can provide automatic upgrade of the data model for AVD 2.x to 3.0 upgrades.
 
-To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_cli_config_gen`.
+To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` or `tasks_from: upgrade-and-run` for the `import_role` of `eos_cli_config_gen`. Using `upgrade` alone will output the upgraded data files as described below. `upgrade-and-run` will also
+run the regular `eos_cli_config_gen` tasks after upgrading the data model.
 
 The upgraded data will be saved in `{{ inventory_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0` directory.
 
@@ -2637,17 +2639,51 @@ running the playbook. After all data has been upgraded, the `tasks_from: upgrade
 This `eos_cli_config_gen` upgrade feature is not required when using `eos_designs`. Upgrade should be done on `eos_designs` instead.
 See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_designs-data-model) for details on the `eos_designs` upgrade feature.
 
-### Example Playbook
+### Versioning
 
+To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+```yaml
+avd:
+  eos_cli_config_gen:
+    upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
+```
+
+### Example Playbooks
+
+Running upgrade only
 ```yaml
 ---
-
 - hosts: DC1_FABRIC
   tasks:
-    - name: Run AVD eos_designs
+    - name: Run AVD eos_cli_config_gen
       import_role:
         tasks_from: upgrade
-        name: arista.avd.eos_designs
+        name: arista.avd.eos_cli_config_gen
+```
+
+Running upgrade and the regular `eos_cli_config_gen` tasks
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_cli_config_gen
+      import_role:
+        tasks_from: upgrade-and-run
+        name: arista.avd.eos_cli_config_gen
+```
+
+Alternative with separate tasks:
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Upgrade AVD eos_cli_config_gen data model
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_cli_config_gen
+    - name: Run AVD eos_cli_config_gen
+      import_role:
+        name: arista.avd.eos_cli_config_gen
 ```
 
 ## License
