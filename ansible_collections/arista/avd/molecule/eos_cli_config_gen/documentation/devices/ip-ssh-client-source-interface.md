@@ -4,7 +4,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-  - [IP ssh Client Source Interfaces](#ip-ssh-client-source-interfaces)
+  - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -47,9 +47,9 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
-## IP ssh Client Source Interfaces
+## IP SSH Client Source Interfaces
 
-### IP ssh Client Source Interfaces
+### IP SSH Client Source Interfaces
 
 | VRF | Source Interface Name |
 | --- | --------------- |
@@ -57,7 +57,7 @@ interface Management1
 | default | Loopback0 |
 | MGMT | Management0 |
 
-### IP ssh Client Source Interfaces Device Configuration
+### IP SSH Client Source Interfaces Device Configuration
 
 ```eos
 !
