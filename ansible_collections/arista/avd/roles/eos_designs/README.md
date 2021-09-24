@@ -7,6 +7,7 @@
   - [Role Inputs and Outputs](#role-inputs-and-outputs)
   - [Requirements](#requirements)
   - [Role Variables](#role-variables)
+  - [Upgrade of eos_designs data model](#upgrade-of-eos_designs-data-model)
   - [vEOS-LAB Know Caveats and Recommendations](#veos-lab-know-caveats-and-recommendations)
   - [License](#license)
 
@@ -81,25 +82,60 @@ The AVD **major** releases can contain breaking changes to the data models.
 Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_designs`
 role can provide automatic upgrade of the data model for AVD 2.x to 3.0 upgrades.
 
-To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` for the `import_role` of `eos_designs`.
+To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` or `tasks_from: upgrade-and-run` for the `import_role` of `eos_designs`. Using `upgrade` alone will output the upgraded data files as described below. `upgrade-and-run` will also
+run the regular `eos_designs` tasks after upgrading the data model.
 
 The upgraded data will be saved in `{{ inventory_dir }}/eos_designs_upgrade_2.x_to_3.0` directory.
 
 The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
-running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
+running the playbook. After all data has been upgraded, the `tasks_from: upgrade` or `tasks_from: upgrade-and-run` can be removed again.
 
 The upgrade will _not_ does not support `custom_structured_configuration` or `structured_config` keys. Content of these keys _must_ be upgraded manually as applicable.
 
-### Example Playbook
+### Versioning
 
+To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+```yaml
+avd:
+  eos_designs:
+    upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
+```
+
+### Example Playbooks
+
+Running upgrade only
 ```yaml
 ---
-
 - hosts: DC1_FABRIC
   tasks:
     - name: Run AVD eos_designs
       import_role:
         tasks_from: upgrade
+        name: arista.avd.eos_designs
+```
+
+Running upgrade and the regular `eos_designs` tasks
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_designs
+      import_role:
+        tasks_from: upgrade-and-run
+        name: arista.avd.eos_designs
+```
+
+Alternative with separate tasks:
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Upgrade AVD eos_designs data model
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_designs
+    - name: Run AVD eos_designs
+      import_role:
         name: arista.avd.eos_designs
 ```
 

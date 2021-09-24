@@ -1,5 +1,3 @@
 - name: Upgrade eos_designs data model
   include_tasks: "upgrade-2.x-to-3.0.yml"
-
-- name: Run eos_designs
-  include_tasks: "main.yml"
+  when: avd.eos_designs.upgrade | arista.avd.default('2.x-to-3.0') == '2.x-to-3.0'
