@@ -16,13 +16,16 @@ jobs:
         stale-issue-message: 'This issue is stale because it has been open 90 days with no activity. Remove stale label or comment or this will be closed in 15 days'
         stale-issue-label: 'state: stale'
         exempt-issue-labels: 'state: accepted, state: in-progress'
-
-      # PR Stale Management
-    - uses: actions/stale@v4
-      with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        days-before-stale: 30
-        days-before-close: 15
         stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
         stale-pr-label: 'state: stale'
         exempt-pr-labels: 'state: accepted, state: in-progress'
+
+    #   # PR Stale Management
+    # - uses: actions/stale@v4
+    #   with:
+    #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+    #     days-before-stale: 30
+    #     days-before-close: 15
+    #     stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
+    #     stale-pr-label: 'state: stale'
+    #     exempt-pr-labels: 'state: accepted, state: in-progress'
