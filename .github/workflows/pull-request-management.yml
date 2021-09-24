@@ -2,12 +2,15 @@
 name: "Collection code testing"
 
 on:
-  push:
-    branches:
-      - devel
-      - releases/**
-      - ci/**
+  # push:
+  #   branches-ignore:
+  #     - devel
+  #     - releases/**
+  #     - ci/**
+  # For a pull_request event, only branches and tags on the base are evaluated.
   pull_request:
+    branches-ignore:
+      - releases/**
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
@@ -33,7 +36,7 @@ jobs:
             eos_design:
               - 'ansible_collections/arista/avd/roles/eos_designs/*'
               - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/molecule/*'
               - 'ansible_collections/arista/avd/molecule/**/*'
               - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
@@ -43,7 +46,7 @@ jobs:
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
             cloudvision:
@@ -51,11 +54,11 @@ jobs:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
@@ -63,9 +66,9 @@ jobs:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
             docs:
-              - '.github/workflows/continuous_integration.yml'
+              - '.github/workflows/pull-request-management.yml'
               - 'mkdocs.yml'
               - 'ansible_collections/arista/avd/docs/**'
               - 'ansible_collections/arista/avd/roles/**/*.md'
@@ -79,7 +82,7 @@ jobs:
     runs-on: ubuntu-20.04
     container: avdteam/base:3.8-v2.0
     needs: file-changes
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v2
       - uses: pre-commit/action@v2.0.2
@@ -90,7 +93,7 @@ jobs:
     name: 'Validate mkdoc content'
     runs-on: ubuntu-20.04
     needs: [ file-changes ]
-    if: needs.file-changes.outputs.docs == 'true' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.docs == 'true'
     steps:
       - uses: actions/checkout@master
       - name: 'start docker-compose stack'
@@ -115,7 +118,7 @@ jobs:
     name: Test Python requirements installation
     runs-on: ubuntu-20.04
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.requirements == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -147,7 +150,7 @@ jobs:
         avd_scenario: ['eos_cli_config_gen']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - name: 'set environment variables'
         run: |
@@ -182,7 +185,7 @@ jobs:
         avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.dhcp == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.dhcp == 'true'
     steps:
       - name: 'set environment variables'
         run: |
@@ -228,7 +231,7 @@ jobs:
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_rfc5549_overlay_ebgp'
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
       - name: 'set environment variables'
         run: |
@@ -262,7 +265,7 @@ jobs:
         avd_scenario: ['eos_config_deploy_cvp']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
-    if: needs.file-changes.outputs.cloudvision == 'true' || startsWith(github.ref, 'refs/heads/release')
+    if: needs.file-changes.outputs.cloudvision == 'true'
     steps:
       - name: 'set environment variables'
         run: |
@@ -291,7 +294,7 @@ jobs:
     name: Run ansible-test validation
     runs-on: ubuntu-20.04
     needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     strategy:
       fail-fast: true
       matrix:
@@ -318,7 +321,7 @@ jobs:
     runs-on: ubuntu-latest
     container: avdteam/base:3.8-v2.0
     needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && (needs.file-changes.outputs.plugins == 'true' || startsWith(github.ref, 'refs/heads/release') || startsWith(github.base_ref, 'refs/heads/release'))
+    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     env:
       PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
       ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
@@ -338,43 +341,3 @@ jobs:
         with:
           name: importer-logs
           path: ./importer_result.json
-
-  # ----------------------------------- #
-  # Rebuild docker image
-  # ----------------------------------- #
-  docker_build:
-    name: Webhook to Docker Hub to build image
-    runs-on: ubuntu-18.04
-    container: avdteam/base:3.8-v2.0
-    needs: [python_requirements]
-    if: needs.file-changes.outputs.requirements == 'true' && (startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.ref, 'refs/heads/devel'))
-    steps:
-      - uses: actions/checkout@master
-      - name: 'Send Webhook to docker hub'
-        env:
-          DOCKER_WEBHOOK: ${{secrets.DOCKER_WEBHOOK}}
-        run: |
-          curl  -H "Content-Type: application/json" --data '{}' -X POST $DOCKER_WEBHOOK
-  # ----------------------------------- #
-  # Generate an ansible-galaxy package
-  # ----------------------------------- #
-  build_package:
-    name: Build collection package
-    runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
-    needs: [galaxy_importer, ansible_test]
-    if: startsWith(github.ref, 'refs/heads/releases/**') || startsWith(github.base_ref, 'refs/heads/releases/**')
-    steps:
-      - name: 'set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: make install-requirements
-      - name: 'build ansible package'
-        run: make collection-build
-      - uses: actions/upload-artifact@v2
-        with:
-          name: ansible-package
-          path: ./*.tar.gz
