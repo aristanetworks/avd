@@ -149,7 +149,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_cli_config_gen']
+        avd_scenario: ['eos_cli_config_gen','upgrade_eos_cli_config_gen']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
