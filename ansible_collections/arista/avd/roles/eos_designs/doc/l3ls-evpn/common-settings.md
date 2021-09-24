@@ -222,7 +222,7 @@ platform_settings:
 ```
 
 note: 
-Recommended default values for Jericho based platform, VEOS and all other platforms `default` tag. 
+Recommended default values for Jericho based platform, VEOS and all other platforms `default` tag.
 The reload delay values should be reviewed and tuned to the specific environment.
 
 **Example:**
