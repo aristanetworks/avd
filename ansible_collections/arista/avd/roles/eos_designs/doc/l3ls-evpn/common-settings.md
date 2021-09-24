@@ -221,7 +221,9 @@ platform_settings:
       < multiline eos cli >
 ```
 
-note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
+note: 
+Recommended default values for Jericho based platform, VEOS and all other platforms `default` tag. 
+The reload delay values should be reviewed and tuned to the specific environment.
 
 **Example:**
 
@@ -232,6 +234,7 @@ platform_settings:
       mlag: 300
       non_mlag: 330
     feature_support:
+      # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
   - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
@@ -243,6 +246,13 @@ platform_settings:
     reload_delay:
       mlag: 900
       non_mlag: 1020
+  - platforms: ["VEOS", "VEOS-LAB"]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
 ```
 
 ## Custom EOS Structured Configuration
