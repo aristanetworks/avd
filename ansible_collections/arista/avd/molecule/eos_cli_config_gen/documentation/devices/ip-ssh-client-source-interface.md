@@ -62,9 +62,7 @@ interface Management1
 ```eos
 !
 ip ssh client source-interface Ethernet10
-!
 ip ssh client source-interface Loopback0 vrf default
-!
 ip ssh client source-interface Management0 vrf MGMT
 ```
 
