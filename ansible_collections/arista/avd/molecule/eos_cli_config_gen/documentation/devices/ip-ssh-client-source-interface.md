@@ -53,19 +53,19 @@ interface Management1
 
 | VRF | Source Interface Name |
 | --- | --------------- |
+| default | Ethernet10 |
 | default | Loopback0 |
 | MGMT | Management0 |
-| default | Ethernet10 |
 
 ### IP ssh Client Source Interfaces Device Configuration
 
 ```eos
 !
+ip ssh client source-interface Ethernet10
+!
 ip ssh client source-interface Loopback0 vrf default
 !
 ip ssh client source-interface Management0 vrf MGMT
-!
-ip ssh client source-interface Ethernet10
 ```
 
 # Authentication

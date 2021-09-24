@@ -5,5 +5,4 @@ ip_ssh_client_source_interfaces:
     name: Loopback0
   - vrf : MGMT
     name: manaGement0
-  - vrf : 
-    name: Ethernet10
+  - name: ethernet10
