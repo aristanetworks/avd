@@ -56,10 +56,10 @@ l3leaf:
     structured_config:
       router_bgp:
         peer_groups:
-            IPv4-UNDERLAY-PEERS:
-              remote_as: 65210
-            EVPN-OVERLAY-PEERS:
-              remote_as: 65210
+          IPv4-UNDERLAY-PEERS:
+            remote_as: 65210
+          EVPN-OVERLAY-PEERS:
+            remote_as: 65210
   node_groups:
     RACK1_SINGLE:
       nodes:

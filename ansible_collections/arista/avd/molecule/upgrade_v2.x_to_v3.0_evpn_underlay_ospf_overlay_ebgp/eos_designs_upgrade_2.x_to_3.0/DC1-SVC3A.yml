@@ -42,8 +42,8 @@ l3leaf:
     structured_config:
       router_bgp:
         peer_groups:
-            EVPN-OVERLAY-PEERS:
-              remote_as: 65001
+          EVPN-OVERLAY-PEERS:
+            remote_as: 65001
   node_groups:
     DC1_LEAF1:
       nodes:

@@ -13,7 +13,7 @@
   yaml_templates_to_facts:
     root_key: eos_designs_upgraded_data_model
     templates:
-      - template: "upgrade/upgrade-2.x-to-3.0.j2"
+      - template: "upgrade/upgrade-2.x-to-3.0/main.j2"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -21,7 +21,7 @@
 - name: Write upgraded data model To file
   tags: [build, provision, upgrade]
   template:
-    src: "upgrade/upgrade-2.x-to-3.0.j2"
+    src: "upgrade/upgrade-2.x-to-3.0/main.j2"
     dest: "{{ root_dir }}/eos_designs_upgrade_2.x_to_3.0/{{ inventory_hostname }}.yml"
     mode: 0664
   delegate_to: localhost

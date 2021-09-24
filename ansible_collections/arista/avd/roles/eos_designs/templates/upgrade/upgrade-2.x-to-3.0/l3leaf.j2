@@ -80,11 +80,11 @@ l3leaf:
       router_bgp:
         peer_groups:
 {%         if underlay_routing_protocol | arista.avd.default('ebgp') | lower in ['bgp','ebgp'] %}
-            {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
-              remote_as: {{ spine.bgp_as }}
+          {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
+            remote_as: {{ spine.bgp_as }}
 {%         endif %}
-            {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
-              remote_as: {{ spine.bgp_as }}
+          {{ bgp_peer_groups.EVPN_OVERLAY_PEERS.name | arista.avd.default("EVPN-OVERLAY-PEERS") }}:
+            remote_as: {{ spine.bgp_as }}
 {%     endif %}
   node_groups:
 {%     for node_group in l3leaf.node_groups | arista.avd.default([]) %}
