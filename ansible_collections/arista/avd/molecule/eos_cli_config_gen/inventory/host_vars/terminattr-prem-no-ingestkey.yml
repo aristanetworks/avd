@@ -7,6 +7,7 @@ daemon_terminattr:
   cvvrf: mgt
   cvauth:
       method: "key"
-      key: ""
+      # Testing without key variable even set.
+      #key: ""
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
