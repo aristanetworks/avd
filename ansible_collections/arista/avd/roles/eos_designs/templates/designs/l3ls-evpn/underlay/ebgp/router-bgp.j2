@@ -4,7 +4,9 @@ router_bgp:
   peer_groups:
     {{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") }}:
       type: ipv4
+{% if bgp_peer_groups.IPv4_UNDERLAY_PEERS.password is arista.avd.defined() %}
       password: "{{ bgp_peer_groups.IPv4_UNDERLAY_PEERS.password }}"
+{% endif %}
       maximum_routes: 12000
       send_community: all
   address_family_ipv4:
