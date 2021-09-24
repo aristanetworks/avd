@@ -136,11 +136,6 @@ name_servers:
  - 192.168.2.1
  - 8.8.8.8
 
-# NTP Servers
-ntp_servers:
- - 0.north-america.pool.ntp.org
- - 1.north-america.pool.ntp.org
-
 # Internal vlan allocation order and range
 # internal_vlan_order:
 #   allocation: ascending

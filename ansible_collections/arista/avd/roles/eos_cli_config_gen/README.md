@@ -1423,7 +1423,7 @@ ntp:
     name: < source_interface >
     vrf: < vrf_name >
   servers:
-  - name: < IP | hostname >:
+  - name: < IP | hostname >
     burst: < true | false >
     iburst:  < true | false >
     key: < 1 - 65535 >
