@@ -610,17 +610,17 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.31.255.96 | 65001 | default | - | - |
-| 172.31.255.98 | 65001 | default | - | - |
-| 172.31.255.100 | 65001 | default | - | - |
-| 172.31.255.102 | 65001 | default | - | - |
-| 192.168.255.1 | 65001 | default | - | - |
-| 192.168.255.2 | 65001 | default | - | - |
-| 192.168.255.3 | 65001 | default | - | - |
-| 192.168.255.4 | 65001 | default | - | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | - | - |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | - | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | - | - |
+| 172.31.255.96 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.98 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.100 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.102 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | all | - |
 | fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - |
 
 ### Router BGP EVPN Address Family

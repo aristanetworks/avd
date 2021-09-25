@@ -478,11 +478,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
 | -------- | --------- | --- | -------------- | -------------- |
-| 172.16.120.1 | 65120 | default | - | - |
-| 172.16.120.2 | 65120 | default | - | - |
-| 172.17.10.13 | 65102 | default | - | - |
-| 172.17.120.0 | 65120 | default | - | - |
-| 172.17.120.2 | 65120 | default | - | - |
+| 172.16.120.1 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.120.2 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.13 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.0 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.2 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
