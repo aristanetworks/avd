@@ -334,13 +334,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.16.11.2 | 65100 | default |
-| 172.16.11.66 | 65100 | default |
-| 172.17.110.3 | 65111 | default |
-| 172.17.110.7 | 65112 | default |
-| 172.17.110.11 | 65112 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.11.2 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.11.66 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.3 | 65111 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.7 | 65112 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.11 | 65112 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

@@ -364,19 +364,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.2.0 | 65100 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.10.2 | 65102 | default |
-| 172.16.21.1 | 65210 | default |
-| 172.16.21.3 | 65210 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.20.1 | 65201 | default |
-| 172.17.20.3 | 65201 | default |
-| 172.17.20.9 | 65201 | default |
-| 172.17.20.11 | 65201 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.2.0 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.10.2 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.21.1 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.21.3 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.110.1 | 65110 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.20.1 | 65201 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.20.3 | 65201 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.20.9 | 65201 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.20.11 | 65201 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

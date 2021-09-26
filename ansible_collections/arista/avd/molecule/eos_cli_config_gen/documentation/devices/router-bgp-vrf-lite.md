@@ -148,11 +148,11 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 |
-| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 |
-| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - |
+| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - |
+| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - |
 
 ### Router BGP EVPN Address Family
 

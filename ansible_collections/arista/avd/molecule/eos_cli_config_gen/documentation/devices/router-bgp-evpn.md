@@ -114,14 +114,24 @@ interface Management1
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
+#### MLAG-IPv4-UNDERLAY-PEER
+
+| Settings | Value |
+| -------- | ----- |
+| Address Family | ipv4 |
+| Remote AS | 65101 |
+| Next-hop self | True |
+| Send community | all |
+| Maximum routes | 12000 |
+
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
 
@@ -167,6 +177,14 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor MLAG-IPv4-UNDERLAY-PEER peer group
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
+   neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
+   neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
+   neighbor MLAG-IPv4-UNDERLAY-PEER send-community
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    !

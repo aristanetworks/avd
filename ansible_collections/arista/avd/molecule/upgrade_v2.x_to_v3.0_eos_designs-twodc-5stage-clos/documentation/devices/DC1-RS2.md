@@ -325,15 +325,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.16.20.1 | 65201 | default |
-| 172.16.200.1 | 65200 | default |
-| 172.16.210.1 | 65210 | default |
-| 172.16.210.3 | 65211 | default |
-| 172.17.10.8 | 65100 | default |
-| 172.17.10.10 | 65120 | default |
-| 172.17.10.12 | 65121 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.20.1 | 65201 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.200.1 | 65200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.1 | 65210 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.3 | 65211 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.8 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.10.10 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.10.12 | 65121 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
