@@ -32,7 +32,7 @@ jobs:
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
   pr_reviewvers:
-    name: "Assign PR reviewver"
+    name: "Assign PR reviewer"
     # https://github.com/shufo/auto-assign-reviewer-by-files
     runs-on: ubuntu-latest
     steps:
