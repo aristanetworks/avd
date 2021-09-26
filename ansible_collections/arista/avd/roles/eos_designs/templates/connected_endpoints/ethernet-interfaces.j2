@@ -1,7 +1,5 @@
 {# Leaf connected_endpoint interfaces #}
 ethernet_interfaces:
-{# This must be assigned outside the loop as switch is overridden in the loop sinner scope and can no longer be referenced #}
-{% set support_storm_control = switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
@@ -101,7 +99,7 @@ ethernet_interfaces:
 {%                     if adapter_spanning_tree_bpduguard is arista.avd.defined %}
     spanning_tree_bpduguard: {{ adapter_spanning_tree_bpduguard }}
 {%                     endif %}
-{%                     if adapter_storm_control is arista.avd.defined and support_storm_control is arista.avd.defined(true) %}
+{%                     if adapter_storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
     storm_control:
 {%                         for section in adapter_storm_control %}
       {{ section }}:
