@@ -220,6 +220,7 @@ $ ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers"
 ```shell
 $ ansible-playbook playbook.to.deploy.with.cvp.yml --skip-tags "containers,apply"
 ```
+
 ### Outputs
 
 - None.
