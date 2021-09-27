@@ -5,7 +5,21 @@
 
 | Patch Name | Connector 1 | Connector 2 |
 | ---------- | ----------- | ----------- |
-{% for patch in patch_panel %}
+{% for patch in patch_panel.patches %}
+{%     set patch_panel_patch = namespace() %}
+{%     for connector in patch.connectors %}
+{%         if "interface" in connector %}
+{%             set attachment_point = "Interface: " ~ connector.interface %}
+{%         elif "pseudowire" in connector %}
+{%             set attachment_point = "Pseudowire: " ~ connector.pseudowire %}
+{%         endif %}
+{%         if connector.id == 1 %}
+{%             set patch_panel_patch.connector_1 = attachment_point %}
+{%         elif connector.id == 2 %}
+{%             set patch_panel_patch.connector_2 = attachment_point %}
+{%         endif %}
+{%     endfor %}
+| {{ patch.name }} | {{ patch_panel_patch.connector_1 }} | {{ patch_panel_patch.connector_2 }} |
 {% endfor %}
 
 {% endif %}

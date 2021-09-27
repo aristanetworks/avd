@@ -1,0 +1,8 @@
+patch_panel:
+  patches:
+  - name: TEN_A_site2_site5_eline
+    connectors:
+    - id: 1
+      interface: Ethernet5
+    - id: 2
+      pseudowire: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline
