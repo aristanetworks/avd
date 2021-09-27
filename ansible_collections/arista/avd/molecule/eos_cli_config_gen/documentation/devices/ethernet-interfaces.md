@@ -333,10 +333,10 @@ interface Ethernet17
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Ethernet9 | True | True |
-| Ethernet10 | False | False |
+| Interface | MPLS IP Enabled | LDP Enabled | LDP-IGP Sync Configured |
+| --------- | --------------- | ----------- | ----------------------- |
+| Ethernet9 | True | True | False |
+| Ethernet10 | False | False | False |
 
 # Multicast
 

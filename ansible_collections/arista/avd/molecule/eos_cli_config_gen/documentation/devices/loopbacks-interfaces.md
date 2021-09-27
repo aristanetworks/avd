@@ -152,9 +152,9 @@ interface Loopback100
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Loopback99 | - | True |
+| Interface | MPLS IP Enabled | LDP Enabled | LDP-IGP Sync Configured |
+| --------- | --------------- | ----------- | ----------------------- |
+| Loopback99 | - | True | - |
 
 # Multicast
 
