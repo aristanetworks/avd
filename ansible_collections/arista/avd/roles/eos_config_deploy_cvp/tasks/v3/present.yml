@@ -18,7 +18,7 @@
     - execute_tasks|bool
 
 - name: "Building Containers topology on {{ inventory_hostname }}"
-  tags: [provision]
+  tags: [provision, containers]
   arista.cvp.cv_container_v3:
     topology: "{{ CVP_CONTAINERS }}"
     state: present
