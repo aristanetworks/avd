@@ -96,9 +96,7 @@ The upgrade will _not_ does not support `custom_structured_configuration` or `st
 
 To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
 ```yaml
-avd:
-  eos_designs:
-    upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
+avd_eos_designs_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ```
 
 ### Example Playbooks
