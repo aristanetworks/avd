@@ -92,13 +92,13 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | **point-to-point |
-| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | **passive |
-| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | **- |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | - |
+| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | - |
+| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | - |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration

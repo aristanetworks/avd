@@ -124,9 +124,9 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |  level-1-2 |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -190,6 +190,7 @@ interface Ethernet5
    isis enable ISIS_TEST
    isis metric 99
    isis network point-to-point
+   isis circuit-type level-1-2
    pim ipv4 sparse-mode
 !
 interface Ethernet6
