@@ -3,7 +3,8 @@ name: "Devel Code Management"
 
 on:
   push:
-    - devel
+    branches:
+      - devel
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref }}
