@@ -8,8 +8,8 @@
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
 {%     for cluster_name in daemon_terminattr.clusters | arista.avd.natural_sort %}{% set cluster = daemon_terminattr.clusters[cluster_name] %}
 {%         set url = cluster.cvaddrs | arista.avd.default([]) | join(',') %}
-{%         if cluster.cvauth.method is arista.avd.defined('key') and cluster.cvauth.key is arista.avd.defined %}
-{%             set auth = 'key,' ~ cluster.cvauth.key %}
+{%         if cluster.cvauth.method is arista.avd.defined('key') %}
+{%             set auth = 'key,' ~ cluster.cvauth.key | arista.avd.default('') %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set auth = 'token,' ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
@@ -25,8 +25,8 @@
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%         set url = daemon_terminattr.cvaddrs | arista.avd.default([]) | join(',') %}
 {%     endif %}
-{%     if daemon_terminattr.cvauth.method is arista.avd.defined('key') and daemon_terminattr.cvauth.key is arista.avd.defined %}
-{%         set auth = 'key,' ~ daemon_terminattr.cvauth.key %}
+{%     if daemon_terminattr.cvauth.method is arista.avd.defined('key') %}
+{%         set auth = 'key,' ~ daemon_terminattr.cvauth.key | arista.avd.default('') %}
 {%     elif daemon_terminattr.cvauth.method is arista.avd.defined('token') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
 {%         set auth = 'token,' ~ daemon_terminattr.cvauth.token_file %}
 {%     elif daemon_terminattr.cvauth.method is arista.avd.defined('token-secure') and daemon_terminattr.cvauth.token_file is arista.avd.defined %}
