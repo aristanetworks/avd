@@ -71,7 +71,7 @@ jobs:
     runs-on: ubuntu-18.04
     container: avdteam/base:3.8-v2.0
     needs: [python_requirements]
-    if: needs.file-changes.outputs.requirements == 'true')
+    if: needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@master
       - name: 'Send Webhook to docker hub'
