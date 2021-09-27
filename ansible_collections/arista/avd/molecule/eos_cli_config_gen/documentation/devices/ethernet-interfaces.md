@@ -126,7 +126,7 @@ interface Management1
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |  level-1-2 |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-1-2 |
 
 ### Ethernet Interfaces Device Configuration
 

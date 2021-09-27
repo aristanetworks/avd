@@ -241,10 +241,10 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |  - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |  - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |  - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |  - |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 
 ### Ethernet Interfaces Device Configuration
 
