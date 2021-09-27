@@ -2643,9 +2643,7 @@ See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_desig
 
 To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
 ```yaml
-avd:
-  eos_cli_config_gen:
-    upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
+avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ```
 
 ### Example Playbooks
