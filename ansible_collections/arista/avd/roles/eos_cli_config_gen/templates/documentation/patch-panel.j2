@@ -1,0 +1,11 @@
+{% if patch_panel is arista.avd.defined %}
+## Patch Panel
+
+### Patch Panel Summary
+
+| Patch Name | Connector 1 | Connector 2 |
+| ---------- | ----------- | ----------- |
+{% for patch in patch_panel %}
+{% endfor %}
+
+{% endif %}
