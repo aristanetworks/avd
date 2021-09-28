@@ -70,6 +70,7 @@ jobs:
     name: Webhook to Docker Hub to build image
     runs-on: ubuntu-18.04
     container: avdteam/base:3.8-v2.0
+    needs: ['file-changes']
     if: needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@master
