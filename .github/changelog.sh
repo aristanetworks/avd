@@ -306,7 +306,7 @@ function display-release {
     # If no commits found of type $type, go to next type
     (( $#hashes != 0 )) || return 0
 
-    fmt:header "${TYPES[$type]}" 3
+    fmt:header "${TYPES[$type]}" 2
     for hash in $hashes; do
       echo " - $(fmt:hash) $(fmt:scope)$(fmt:subject)"
     done | sort -k3 # sort by scope
@@ -323,7 +323,7 @@ function display-release {
     # If no commits found under "other" types, don't display anything
     (( $#changes != 0 )) || return 0
 
-    fmt:header "Other changes" 3
+    fmt:header "Other changes" 2
     for hash type in ${(kv)changes}; do
       case "$type" in
       other) echo " - $(fmt:hash) $(fmt:scope)$(fmt:subject)" ;;
