@@ -3,9 +3,16 @@
 patch panel
 {%     for patch in patch_panel.patches | arista.avd.natural_sort %}
    patch {{ patch.name }}
+{%         if patch.enabled is arista.avd.defined(false) %}
+      shutdown
+{%         endif %}
 {%         for connector in patch.connectors %}
 {%             if connector.interface is arista.avd.defined %}
+{%                 if connector.dot1q_vlan is arista.avd.defined %}
+      connector {{ connector.id }} interface {{ connector.interface }} dot1q vlan {{ connector.dot1q_vlan }}
+{%                 else %}
       connector {{ connector.id }} interface {{ connector.interface }}
+{%                 endif %}
 {%             elif connector.pseudowire is arista.avd.defined %}
       connector {{ connector.id }} pseudowire {{ connector.pseudowire }}
 {%             endif %}

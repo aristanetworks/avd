@@ -83,14 +83,14 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ## Patch Panel
 
 ### Patch Panel Summary
 
-| Patch Name | Connector 1 | Connector 2 |
-| ---------- | ----------- | ----------- |
-| TEN_A_site2_site5_eline | Interface: Ethernet5 | Pseudowire: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline |
-
+| Patch Name | Connector 1 | Connector 2 | Enabled |
+| ---------- | ----------- | ----------- | ------- |
+| TEN_A_site2_site5_eline | Interface: Ethernet5 vlan 1234 | Pseudowire: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline | True |
 
 # Multicast
 

@@ -1,15 +1,20 @@
 {% if patch_panel is arista.avd.defined %}
+
 ## Patch Panel
 
 ### Patch Panel Summary
 
-| Patch Name | Connector 1 | Connector 2 |
-| ---------- | ----------- | ----------- |
+| Patch Name | Connector 1 | Connector 2 | Enabled |
+| ---------- | ----------- | ----------- | ------- |
 {% for patch in patch_panel.patches %}
 {%     set patch_panel_patch = namespace() %}
+{%     set patch_panel_patch.enabled = patch.enabled | arista.avd.default(true) %}
 {%     for connector in patch.connectors %}
-{%         if "interface" in connector %}
+{%         if connector.interface is arista.avd.defined %}
 {%             set attachment_point = "Interface: " ~ connector.interface %}
+{%             if connector.dot1q_vlan is arista.avd.defined %}
+{%                 set attachment_point = attachment_point ~ " vlan " ~ connector.dot1q_vlan %}
+{%             endif %}
 {%         elif "pseudowire" in connector %}
 {%             set attachment_point = "Pseudowire: " ~ connector.pseudowire %}
 {%         endif %}
@@ -19,7 +24,6 @@
 {%             set patch_panel_patch.connector_2 = attachment_point %}
 {%         endif %}
 {%     endfor %}
-| {{ patch.name }} | {{ patch_panel_patch.connector_1 }} | {{ patch_panel_patch.connector_2 }} |
+| {{ patch.name }} | {{ patch_panel_patch.connector_1 }} | {{ patch_panel_patch.connector_2 }} | {{ patch_panel_patch.enabled }} |
 {% endfor %}
-
 {% endif %}

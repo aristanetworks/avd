@@ -4,5 +4,6 @@ patch_panel:
     connectors:
     - id: 1
       interface: Ethernet5
+      dot1q_vlan: 1234
     - id: 2
       pseudowire: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline
