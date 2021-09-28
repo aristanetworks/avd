@@ -12,7 +12,9 @@
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
-  - [Patch Panel](#patch-panel)
+- [Patch Panel](#patch-panel)
+  - [Patch Panel Summary](#patch-panel-summary)
+  - [Patch Panel Configuration](#patch-panel-configuration)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -84,13 +86,30 @@ interface Management1
 | --- | --------------- |
 | default | false |
 
-## Patch Panel
+# Patch Panel
 
-### Patch Panel Summary
+## Patch Panel Summary
 
-| Patch Name | Connector 1 | Connector 2 | Enabled |
-| ---------- | ----------- | ----------- | ------- |
-| TEN_A_site2_site5_eline | Interface: Ethernet5 vlan 1234 | Pseudowire: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline | True |
+| Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
+| ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
+| TEN_B_site2_site5_eline | True | Interface | Ethernet6 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline |
+| TEN_A_site2_site5_eline | False | Interface | Ethernet5 dot1q vlan 1234 | Pseudowire | ldp LDP_PW_1 |
+
+## Patch Panel Configuration
+
+```eos
+!
+patch panel
+   patch TEN_A_site2_site5_eline
+      shutdown
+      connector 1 interface Ethernet5 dot1q vlan 1234
+      connector 2 pseudowire ldp LDP_PW_1
+   !
+   patch TEN_B_site2_site5_eline
+      connector 1 interface Ethernet6
+      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
+   !
+```
 
 # Multicast
 

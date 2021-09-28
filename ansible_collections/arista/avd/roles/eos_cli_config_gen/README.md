@@ -98,6 +98,7 @@
       - [SNMP Settings](#snmp-settings)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
+    - [Patch Panel](#patch-panel)
     - [PTP](#ptp)
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
@@ -1808,6 +1809,21 @@ vmtracer_sessions:
     url: < url >
     username: < username >
     password: "< encrypted_password >"
+```
+
+### Patch Panel
+
+```yaml
+patch_panel:
+  patches:
+    - name: < name >
+      enabled: < true | false >
+      connectors:
+      - id: < id >
+        interface: < interface >
+        dot1q_vlan: < vlan id (Optional and is not compatible with bgp vpws pseudowires)
+      - id: < id >
+        pseudowire: < pseudowire >
 ```
 
 ### PTP

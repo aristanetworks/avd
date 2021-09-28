@@ -1,29 +1,39 @@
 {% if patch_panel is arista.avd.defined %}
 
-## Patch Panel
+# Patch Panel
 
-### Patch Panel Summary
+## Patch Panel Summary
 
-| Patch Name | Connector 1 | Connector 2 | Enabled |
-| ---------- | ----------- | ----------- | ------- |
-{% for patch in patch_panel.patches %}
+| Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
+| ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
+{% for patch in patch_panel.patches | arista.avd.default([]) %}
 {%     set patch_panel_patch = namespace() %}
 {%     set patch_panel_patch.enabled = patch.enabled | arista.avd.default(true) %}
-{%     for connector in patch.connectors %}
+{%     for connector in patch.connectors | arista.avd.default([]) %}
 {%         if connector.interface is arista.avd.defined %}
-{%             set attachment_point = "Interface: " ~ connector.interface %}
+{%             set connector_type = "Interface" %}
+{%             set connector_endpoint = connector.interface %}
 {%             if connector.dot1q_vlan is arista.avd.defined %}
-{%                 set attachment_point = attachment_point ~ " vlan " ~ connector.dot1q_vlan %}
+{%                 set connector_endpoint = connector_endpoint ~ " dot1q vlan " ~ connector.dot1q_vlan %}
 {%             endif %}
-{%         elif "pseudowire" in connector %}
-{%             set attachment_point = "Pseudowire: " ~ connector.pseudowire %}
+{%         elif connector.pseudowire is arista.avd.defined %}
+{%             set connector_type = "Pseudowire" %}
+{%             set connector_endpoint = connector.pseudowire %}
 {%         endif %}
-{%         if connector.id == 1 %}
-{%             set patch_panel_patch.connector_1 = attachment_point %}
-{%         elif connector.id == 2 %}
-{%             set patch_panel_patch.connector_2 = attachment_point %}
+{%         if loop.first %}
+{%             set patch_panel_patch.connector_A_type = connector_type %}
+{%             set patch_panel_patch.connector_A_endpoint = connector_endpoint %}
+{%         else %}
+{%             set patch_panel_patch.connector_B_type = connector_type %}
+{%             set patch_panel_patch.connector_B_endpoint = connector_endpoint %}
 {%         endif %}
 {%     endfor %}
-| {{ patch.name }} | {{ patch_panel_patch.connector_1 }} | {{ patch_panel_patch.connector_2 }} | {{ patch_panel_patch.enabled }} |
+| {{ patch.name }} | {{ patch_panel_patch.enabled }} | {{ patch_panel_patch.connector_A_type }} | {{ patch_panel_patch.connector_A_endpoint }} | {{ patch_panel_patch.connector_B_type }} | {{ patch_panel_patch.connector_B_endpoint }} |
 {% endfor %}
+
+## Patch Panel Configuration
+
+```eos
+{% include 'eos/patch-panel.j2' %}
+```
 {% endif %}
