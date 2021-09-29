@@ -1824,7 +1824,8 @@ patch_panel:
         type: < interface | pseudowire >
         endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
       - id: < string or integer >
-        pseudowire: < pseudowire >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
 ```
 
 ### PTP
