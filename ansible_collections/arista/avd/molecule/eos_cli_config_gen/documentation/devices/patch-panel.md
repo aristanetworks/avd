@@ -92,22 +92,22 @@ interface Management1
 
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
-| TEN_B_site2_site5_eline | True | Interface | Ethernet6 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline |
-| TEN_A_site2_site5_eline | False | Interface | Ethernet5 dot1q vlan 1234 | Pseudowire | ldp LDP_PW_1 |
+| TEN_B_site2_site5_eline | True | Interface | Ethernet5 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline |
+| TEN_A_site2_site5_eline | False | Interface | Ethernet6 dot1q vlan 123 | Pseudowire | ldp LDP_PW_1 |
 
 ## Patch Panel Configuration
 
 ```eos
 !
 patch panel
+   patch TEN_B_site2_site5_eline
+      connector 1 interface Ethernet5
+      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
+   !
    patch TEN_A_site2_site5_eline
       shutdown
-      connector 1 interface Ethernet5 dot1q vlan 1234
+      connector 1 interface Ethernet6 dot1q vlan 123
       connector 2 pseudowire ldp LDP_PW_1
-   !
-   patch TEN_B_site2_site5_eline
-      connector 1 interface Ethernet6
-      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
    !
 ```
 

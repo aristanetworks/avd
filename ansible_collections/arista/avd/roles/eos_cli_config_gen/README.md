@@ -1819,10 +1819,11 @@ patch_panel:
     - name: < name >
       enabled: < true | false >
       connectors:
-      - id: < id >
-        interface: < interface >
-        dot1q_vlan: < vlan id (Optional and is not compatible with bgp vpws pseudowires)
-      - id: < id >
+        < there must be 2 connectors to a patch, atleast 1 of which must be an interface >
+      - id: < string or integer >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
+      - id: < string or integer >
         pseudowire: < pseudowire >
 ```
 

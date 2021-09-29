@@ -3,15 +3,18 @@ patch_panel:
   - name: TEN_B_site2_site5_eline
     connectors:
     - id: 1
-      interface: Ethernet6
+      type: interface
+      endpoint: Ethernet5
     - id: 2
-      pseudowire: bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire TEN_B_site2_site5_eline
 
   - name: TEN_A_site2_site5_eline
     enabled: false
     connectors:
     - id: 1
-      interface: Ethernet5
-      dot1q_vlan: 1234
+      type: interface
+      endpoint: Ethernet6 dot1q vlan 123
     - id: 2
-      pseudowire: ldp LDP_PW_1
+      type: pseudowire
+      endpoint: ldp LDP_PW_1

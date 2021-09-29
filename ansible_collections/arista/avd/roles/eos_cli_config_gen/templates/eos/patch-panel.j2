@@ -1,7 +1,7 @@
 {% if patch_panel is arista.avd.defined %}
 !
 patch panel
-{%     for patch in patch_panel.patches | arista.avd.natural_sort %}
+{%     for patch in patch_panel.patches | arista.avd.default([]) %}
 {%         if patch.name is arista.avd.defined %}
    patch {{ patch.name }}
 {%             if patch.enabled is arista.avd.defined(false) %}
@@ -9,15 +9,12 @@ patch panel
 {%             endif %}
 {%             for connector in patch.connectors | arista.avd.natural_sort %}
 {%                 if connector.id is arista.avd.defined %}
-{%                     if connector.interface is arista.avd.defined %}
-{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.interface %}
-{%                         if connector.dot1q_vlan is arista.avd.defined %}
-{%                             set connector_cli = connector_cli ~ " dot1q vlan " ~ connector.dot1q_vlan %}
-{%                         endif %}
-      {{ connector_cli }}
-{%                     elif connector.pseudowire is arista.avd.defined %}
-      connector {{ connector.id }} pseudowire {{ connector.pseudowire }}
+{%                     if connector.type is arista.avd.defined("interface") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
+{%                     elif connector.type is arista.avd.defined("pseudowire") %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
 {%                     endif %}
+      {{ connector_cli }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
