@@ -757,6 +757,7 @@ ethernet_interfaces:
       ip: < true | false >
       ldp:
         interface: < true | false >
+        ldp_igp_sync: < true | false >
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
