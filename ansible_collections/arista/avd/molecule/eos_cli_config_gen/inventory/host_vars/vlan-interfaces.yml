@@ -26,7 +26,9 @@ vlan_interfaces:
   Vlan84:
     description: SVI Description
     ip_address: 10.10.84.1/24
-    ip_virtual_router_address: 10.10.84.254
+    ip_virtual_router_addresses:
+      - 10.10.84.254
+      - 10.11.84.254/24
 
   Vlan85:
     description: SVI Description
