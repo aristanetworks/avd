@@ -317,7 +317,7 @@ interface Ethernet18
    no lldp receive
 !
 interface Ethernet19
-   description Port patched through patch-panel to pseudowire
+   description Interface patched through patch-panel to pseudowire
    no switchport
    no lldp transmit
    no lldp receive
