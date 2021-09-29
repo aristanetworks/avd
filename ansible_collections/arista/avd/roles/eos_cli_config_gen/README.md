@@ -743,6 +743,7 @@ ethernet_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    isis_circuit_type: < level-1-2 | level-1 | level-2 >
     ptp:
       enable: < true | false >
       announce:
