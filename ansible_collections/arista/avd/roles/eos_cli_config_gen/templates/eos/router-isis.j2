@@ -16,6 +16,19 @@ router isis {{ router_isis.instance }}
 {%     elif router_isis.log_adjacency_changes is arista.avd.defined(false) %}
    no log-adjacency-changes
 {%     endif %}
+{%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
+   mpls ldp sync default
+{%     endif %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
+{%         if router_isis.timers.local_convergence.delay is arista.avd.defined %}
+   timers local-convergence-delay {{router_isis.timers.local_convergence.delay}} protected-prefixes
+{%         else %}
+   timers local-convergence-delay protected-prefixes
+{%         endif %}
+{%     endif %}
+{%     if router_isis.advertise_passive_only is arista.avd.defined(true) %}
+   advertise passive-only
+{%     endif %}
    !
 {%     if router_isis.address_family is arista.avd.defined %}
 {%         for address_family in router_isis.address_family %}
