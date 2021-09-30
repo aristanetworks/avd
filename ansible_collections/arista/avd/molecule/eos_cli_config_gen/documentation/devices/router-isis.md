@@ -324,7 +324,7 @@ interface Vlan4094
 | Type | level-2 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
-| Local Convergence Delay (ms) | 20000 |
+| Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | Address Family | ipv4 unicast |
 | SR MPLS Enabled | True |
@@ -357,7 +357,7 @@ router isis EVPN_UNDERLAY
    router-id ipv4 192.168.255.3
    log-adjacency-changes
    mpls ldp sync default
-   timers local-convergence-delay 20000 protected-prefixes
+   timers local-convergence-delay 15000 protected-prefixes
    advertise passive-only
    !
    address-family ipv4 unicast
