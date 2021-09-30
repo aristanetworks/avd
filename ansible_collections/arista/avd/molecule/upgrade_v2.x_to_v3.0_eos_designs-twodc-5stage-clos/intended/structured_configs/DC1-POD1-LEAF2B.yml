@@ -275,7 +275,8 @@ vlan_interfaces:
     shutdown: false
     mtu: 1500
     ip_address: 172.21.110.3/24
-    ip_virtual_router_address: 172.21.110.1
+    ip_virtual_router_addresses:
+    - 172.21.110.1
     ip_attached_host_route_export:
       distance: 19
 port_channel_interfaces:
