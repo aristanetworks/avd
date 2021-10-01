@@ -58,7 +58,6 @@ ztp:
 {% if ztp_lease_time is defined and ztp_lease_time is not none %}
         lease_time: 300
 {% endif %}
-
   clients:
 {% for node_type in node_types | arista.avd.natural_sort %}
     # {{ node_type }}
