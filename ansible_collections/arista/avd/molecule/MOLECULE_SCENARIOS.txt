@@ -1,4 +1,5 @@
 eos_cli_config_gen
+upgrade_eos_cli_config_gen
 eos_config_deploy_cvp
 eos_designs-twodc-5stage-clos
 eos_designs_unit_tests
