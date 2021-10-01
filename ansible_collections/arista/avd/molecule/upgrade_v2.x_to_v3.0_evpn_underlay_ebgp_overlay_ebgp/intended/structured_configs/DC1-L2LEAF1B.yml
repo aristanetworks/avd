@@ -5,12 +5,12 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -25,12 +25,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackE DC1-L2LEAF1B
@@ -170,3 +164,11 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

@@ -87,13 +87,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -155,16 +159,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -438,15 +442,15 @@ router ospf 101
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 192.168.255.5 | 65101 | default |
-| 192.168.255.6 | 65102 | default |
-| 192.168.255.7 | 65102 | default |
-| 192.168.255.8 | 65103 | default |
-| 192.168.255.9 | 65103 | default |
-| 192.168.255.10 | 65104 | default |
-| 192.168.255.11 | 65104 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.168.255.5 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.6 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.7 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.8 | 65103 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.9 | 65103 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.10 | 65104 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.11 | 65104 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

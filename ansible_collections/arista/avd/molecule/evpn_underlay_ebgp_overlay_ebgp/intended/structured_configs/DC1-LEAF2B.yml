@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65102
+  as: '65102'
   router_id: 192.168.255.11
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -31,36 +31,36 @@ router_bgp:
   neighbors:
     172.31.255.32:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet3
     172.31.255.34:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet3
     172.31.255.36:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet3
     172.31.255.38:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet3
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -150,7 +150,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130-131
+      vlan: 130
     Tenant_A_DB_Zone:
       rd: 192.168.255.11:13
       route_targets:
@@ -174,7 +174,7 @@ router_bgp:
         - '11:11'
       redistribute_routes:
       - learned
-      vlan: 120-121
+      vlan: 120-124
     Tenant_A_VMOTION:
       tenant: Tenant_A
       rd: 192.168.255.11:10160
@@ -235,12 +235,12 @@ hardware:
     4:
       serdes: 10G
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -259,12 +259,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackD DC1-LEAF2B
@@ -327,7 +321,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet3
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet3
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -337,7 +331,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet3
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet3
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -347,7 +341,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet3
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet3
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -357,7 +351,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet3
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet3
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet3
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -367,7 +361,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1A
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-L2LEAF1A_Ethernet2
+    description: CUSTOM_DC1-L2LEAF1A_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -377,7 +371,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF1B
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-L2LEAF1B_Ethernet2
+    description: CUSTOM_DC1-L2LEAF1B_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -387,7 +381,7 @@ ethernet_interfaces:
     peer: DC1-L2LEAF3A
     peer_interface: Ethernet2
     peer_type: l2leaf
-    description: DC1-L2LEAF3A_Ethernet2
+    description: CUSTOM_DC1-L2LEAF3A_Ethernet2
     type: switched
     shutdown: false
     channel_group:
@@ -397,7 +391,7 @@ ethernet_interfaces:
     peer: FIREWALL01
     peer_interface: E1
     peer_type: firewall
-    description: FIREWALL01_E1
+    description: CUSTOM_FIREWALL01_E1
     type: switched
     shutdown: false
     mode: trunk
@@ -409,7 +403,7 @@ ethernet_interfaces:
     peer: ROUTER01
     peer_interface: Eth1
     peer_type: router
-    description: ROUTER01_Eth1
+    description: CUSTOM_ROUTER01_Eth1
     type: switched
     shutdown: false
     mode: access
@@ -418,7 +412,7 @@ ethernet_interfaces:
     peer: server01_MLAG
     peer_interface: Eth3
     peer_type: server
-    description: server01_MLAG_Eth3
+    description: CUSTOM_server01_MLAG_Eth3
     type: switched
     shutdown: false
     mode: trunk
@@ -430,7 +424,7 @@ ethernet_interfaces:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth7
     peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth7
+    description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth7
     mtu: 1601
     type: switched
     shutdown: false
@@ -441,7 +435,7 @@ ethernet_interfaces:
     peer: server01_MTU_ADAPTOR_MLAG
     peer_interface: Eth9
     peer_type: server
-    description: server01_MTU_ADAPTOR_MLAG_Eth9
+    description: CUSTOM_server01_MTU_ADAPTOR_MLAG_Eth9
     mtu: 1601
     type: switched
     shutdown: false
@@ -452,7 +446,7 @@ ethernet_interfaces:
     peer: server01_MTU_PROFILE_MLAG
     peer_interface: Eth5
     peer_type: server
-    description: server01_MTU_PROFILE_MLAG_Eth5
+    description: CUSTOM_server01_MTU_PROFILE_MLAG_Eth5
     mtu: 1600
     type: switched
     shutdown: false
@@ -463,45 +457,45 @@ ethernet_interfaces:
       mode: active
 port_channel_interfaces:
   Port-Channel7:
-    description: DC1_L2LEAF1_Po1
+    description: CUSTOM_DC1_L2LEAF1_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-162
+    vlans: 110-111,120-124,130-131,160-162
     mode: trunk
     esi: 0000:1234:0808:0707:0606
     rt: 08:08:07:07:06:06
     lacp_id: 0808.0707.0606
   Port-Channel9:
-    description: DC1-L2LEAF3A_Po1
+    description: CUSTOM_DC1-L2LEAF3A_Po1
     type: switched
     shutdown: false
-    vlans: 110-111,120-121,130-131,160-162
+    vlans: 110-111,120-124,130-131,160-162
     mode: trunk
     esi: 0000:1234:0606:0707:0808
     rt: 06:06:07:07:08:08
     lacp_id: 0606.0707.0808
   Port-Channel20:
-    description: FIREWALL01_PortChanne1
+    description: CUSTOM_FIREWALL01_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
     vlans: 110-111,210-211
     mlag: 20
   Port-Channel10:
-    description: server01_MLAG_PortChanne1
+    description: CUSTOM_server01_MLAG_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
     vlans: 210-211
     mlag: 10
   Port-Channel12:
-    description: server01_MTU_ADAPTOR_MLAG_PortChanne1
+    description: CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
     mtu: 1601
     mlag: 12
   Port-Channel11:
-    description: server01_MTU_PROFILE_MLAG_PortChanne1
+    description: CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
     shutdown: false
     mode: access
@@ -510,15 +504,15 @@ port_channel_interfaces:
     mlag: 11
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.11/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
+  Loopback10:
+    description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
     shutdown: false
     ip_address: 192.168.254.11/32
   Loopback100:
-    description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+    description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address: 10.255.1.11/32
@@ -566,6 +560,15 @@ vlans:
   121:
     tenant: Tenant_A
     name: Tenant_A_WEBZone_2
+  122:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+  123:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_source_int_no_vrf
+  124:
+    tenant: Tenant_A
+    name: Tenant_a_WEB_DHCP_vrf_no_source_int
   160:
     tenant: Tenant_A
     name: Tenant_A_VMOTION
@@ -596,17 +599,15 @@ ip_igmp_snooping:
       enabled: true
     161:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2B_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback10
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
-        131:
-          vni: 10131
         140:
           vni: 10140
         141:
@@ -619,6 +620,12 @@ vxlan_tunnel_interface:
           vni: 10120
         121:
           vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
         160:
           vni: 10160
         161:
@@ -685,7 +692,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_1
+    description: SVI 110 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.10.1/24
@@ -693,7 +700,7 @@ vlan_interfaces:
     tenant: Tenant_A
     tags:
     - opzone
-    description: Tenant_A_OP_Zone_2
+    description: SVI 111 CUSTOM DESCRIPTION
     shutdown: false
     vrf: Tenant_A_OP_Zone
     ip_address_virtual: 10.1.11.1/24
@@ -723,6 +730,38 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+  Vlan122:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.22.1/24
+    ip_helpers:
+      1.1.1.1: {}
+  Vlan123:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_source_int_no_vrf
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.23.1/24
+    ip_helpers:
+      1.1.1.1:
+        source_interface: lo100
+  Vlan124:
+    tenant: Tenant_A
+    tags:
+    - web
+    description: Tenant_a_WEB_DHCP_vrf_no_source_int
+    shutdown: false
+    vrf: Tenant_A_WEB_Zone
+    ip_address_virtual: 10.1.24.1/24
+    ip_helpers:
+      1.1.1.1:
+        vrf: TEST
   Vlan210:
     tenant: Tenant_B
     tags:

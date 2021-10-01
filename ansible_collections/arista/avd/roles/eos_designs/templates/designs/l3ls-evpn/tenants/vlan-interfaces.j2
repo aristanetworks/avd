@@ -13,14 +13,17 @@ vlan_interfaces:
                               svi_profile.tags) %}
 {%             set svi_name = svi_config.name | arista.avd.default(
                               svi_profile.name) %}
+{%             set svi_description = svi_config.description | arista.avd.default(
+                                     svi_profile.description,
+                                     svi_name) %}
 {%             set svi_enabled = svi_config.enabled | arista.avd.default(
                                  svi_profile.enabled) %}
-{%             set svi_ip_virtual_router_address = svi_config.ip_virtual_router_address | arista.avd.default(
-                                                   svi_profile.ip_virtual_router_address) %}
+{%             set svi_ip_virtual_router_addresses = svi_config.ip_virtual_router_addresses | arista.avd.default(
+                                                     svi_profile.ip_virtual_router_addresses) %}
 {%             set svi_ip_address_virtual = svi_config.ip_address_virtual | arista.avd.default(
                                             svi_profile.ip_address_virtual) %}
-{%             set svi_ip_address_virtual_secondary = svi_config.ip_address_virtual_secondary | arista.avd.default(
-                                                      svi_profile.ip_address_virtual_secondary) %}
+{%             set svi_ip_address_virtual_secondaries = svi_config.ip_address_virtual_secondaries | arista.avd.default(
+                                                      svi_profile.ip_address_virtual_secondaries) %}
 {%             set svi_mtu = svi_config.mtu | arista.avd.default(
                              svi_profile.mtu) %}
 {%             set svi_ip_helpers = svi_config.ip_helpers | arista.avd.default(
@@ -37,7 +40,7 @@ vlan_interfaces:
   Vlan{{ svi | int }}:
     tenant: {{ tenant }}
     tags: {{ svi_tags }}
-    description: {{ svi_name }}
+    description: {{ svi_description }}
 {%             if svi_enabled is arista.avd.defined(true) %}
     shutdown: false
 {%             else %}
@@ -49,16 +52,16 @@ vlan_interfaces:
     ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address }}
 {%             endif %}
 {# Virtual Router IP Address #}
-{%             if svi_ip_virtual_router_address is arista.avd.defined %}
-    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ansible.netcommon.ipaddr('address') }}
+{%             if svi_ip_virtual_router_addresses is arista.avd.defined %}
+    ip_virtual_router_addresses: {{ svi_ip_virtual_router_addresses }}
 {%             endif %}
 {# Virtual IP address #}
 {%             if svi_ip_address_virtual is arista.avd.defined %}
     ip_address_virtual: {{ svi_ip_address_virtual }}
 {%             endif %}
 {# Virtual Secondary IP address #}
-{%             if svi_ip_address_virtual_secondary is arista.avd.defined %}
-    ip_address_virtual_secondary: {{ svi_ip_address_virtual_secondary }}
+{%             if svi_ip_address_virtual_secondaries is arista.avd.defined %}
+    ip_address_virtual_secondaries: {{ svi_ip_address_virtual_secondaries }}
 {%             endif %}
 {# MTU definition #}
 {%             if svi_mtu is arista.avd.defined %}
@@ -69,12 +72,8 @@ vlan_interfaces:
     ip_helpers:
 {%                 for helper_ip in svi_ip_helpers %}
       {{ helper_ip }}:
-        source_interface: {{ svi_ip_helpers[helper_ip].source_interface }}
-{%                     if svi_ip_helpers[helper_ip].source_vrf is arista.avd.defined %}
-        vrf: {{ svi_ip_helpers[helper_ip].source_vrf }}
-{%                     else %}
-        vrf: {{ vrf }}
-{%                     endif %}
+        source_interface: {{ svi_ip_helpers[helper_ip].source_interface | arista.avd.default }}
+        vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
 {%             if svi_raw_eos_cli is arista.avd.defined %}
@@ -97,7 +96,7 @@ vlan_interfaces:
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
     vrf: {{ vrf }}
-    ip_address: {{ switch.mlag_l3_ip }}/31
+    ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%             endif %}
 {%         endif %}

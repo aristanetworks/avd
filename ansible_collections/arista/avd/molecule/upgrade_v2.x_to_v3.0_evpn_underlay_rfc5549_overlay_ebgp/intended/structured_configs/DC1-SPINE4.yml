@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65001
+  as: '65001'
   router_id: 192.168.255.4
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -34,31 +34,31 @@ router_bgp:
   neighbor_interfaces:
     Ethernet1:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65101
+      remote_as: '65101'
       description: DC1-LEAF1A_Ethernet4
     Ethernet2:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-LEAF2A_Ethernet4
     Ethernet3:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-LEAF2B_Ethernet4
     Ethernet4:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65103
+      remote_as: '65103'
       description: DC1-SVC3A_Ethernet4
     Ethernet5:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65103
+      remote_as: '65103'
       description: DC1-SVC3B_Ethernet4
     Ethernet6:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65104
+      remote_as: '65104'
       description: DC1-BL1A_Ethernet4
     Ethernet7:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65105
+      remote_as: '65105'
       description: DC1-BL1B_Ethernet4
   address_family_evpn:
     peer_groups:
@@ -68,31 +68,31 @@ router_bgp:
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
-      remote_as: 65104
+      remote_as: '65104'
     192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1B
-      remote_as: 65105
+      remote_as: '65105'
     192.168.255.5:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
-      remote_as: 65101
+      remote_as: '65101'
     192.168.255.6:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2A
-      remote_as: 65102
+      remote_as: '65102'
     192.168.255.7:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2B
-      remote_as: 65102
+      remote_as: '65102'
     192.168.255.8:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3A
-      remote_as: 65103
+      remote_as: '65103'
     192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3B
-      remote_as: 65103
+      remote_as: '65103'
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -102,12 +102,12 @@ ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -122,12 +122,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: none
 local_users:
@@ -240,3 +234,11 @@ router_bfd:
     interval: 1200
     min_rx: 1200
     multiplier: 3
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

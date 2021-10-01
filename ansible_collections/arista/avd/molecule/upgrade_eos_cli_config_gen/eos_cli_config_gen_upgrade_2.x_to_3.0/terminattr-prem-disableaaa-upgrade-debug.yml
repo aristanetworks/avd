@@ -1,0 +1,13 @@
+daemon_terminattr:
+  cvaddrs: ['10.10.10.8:9910', '10.10.10.9:9910', '10.10.10.10:9910']
+  cvauth: {key: magickey, method: key}
+  cvcompression: gzip
+  cvvrf: mgt
+  disable_aaa: true
+  ingestauth_key: magickey
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  ingestgrpcurl:
+    ips: [10.10.10.8, 10.10.10.9, 10.10.10.10]
+    port: 9910
+  ingestvrf: mgt
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata

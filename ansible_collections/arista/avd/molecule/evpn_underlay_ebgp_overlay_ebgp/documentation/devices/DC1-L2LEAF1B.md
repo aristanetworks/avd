@@ -92,13 +92,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -160,16 +164,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -179,27 +183,7 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackE DC1-L2LEAF1B |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| example@example.com | DC1_FABRIC rackE DC1-L2LEAF1B | Disabled |
 
 ### SNMP Device Configuration
 
@@ -282,6 +266,9 @@ vlan internal order ascending range 1006 1199
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
 | 121 | Tenant_A_WEBZone_2 | - |
+| 122 | Tenant_a_WEB_DHCP_no_source_int_no_vrf | - |
+| 123 | Tenant_a_WEB_DHCP_source_int_no_vrf | - |
+| 124 | Tenant_a_WEB_DHCP_vrf_no_source_int | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
 | 160 | Tenant_A_VMOTION | - |
@@ -304,6 +291,15 @@ vlan 120
 !
 vlan 121
    name Tenant_A_WEBZone_2
+!
+vlan 122
+   name Tenant_a_WEB_DHCP_no_source_int_no_vrf
+!
+vlan 123
+   name Tenant_a_WEB_DHCP_source_int_no_vrf
+!
+vlan 124
+   name Tenant_a_WEB_DHCP_vrf_no_source_int
 !
 vlan 130
    name Tenant_A_APP_Zone_1
@@ -335,8 +331,8 @@ vlan 4091
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-LEAF2A_Ethernet8 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
-| Ethernet2 | DC1-LEAF2B_Ethernet8 | *trunk | *110-111,120-121,130-131,160-162 | *- | *- | 1 |
+| Ethernet1 | CUSTOM_DC1-LEAF2A_Ethernet8 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
+| Ethernet2 | CUSTOM_DC1-LEAF2B_Ethernet8 | *trunk | *110-111,120-124,130-131,160-162 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-L2LEAF1A_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-L2LEAF1A_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -347,12 +343,12 @@ vlan 4091
 ```eos
 !
 interface Ethernet1
-   description DC1-LEAF2A_Ethernet8
+   description CUSTOM_DC1-LEAF2A_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description DC1-LEAF2B_Ethernet8
+   description CUSTOM_DC1-LEAF2B_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
@@ -375,7 +371,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_LEAF2_Po7 | switched | trunk | 110-111,120-121,130-131,160-162 | - | - | - | - | 1 | - |
+| Port-Channel1 | CUSTOM_DC1_LEAF2_Po7 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-L2LEAF1A_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -383,10 +379,10 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description DC1_LEAF2_Po7
+   description CUSTOM_DC1_LEAF2_Po7
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-111,120-121,130-131,160-162
+   switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
    mlag 1
 !

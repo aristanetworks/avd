@@ -12,7 +12,7 @@
 {%     endif %}
 {# Only run EVPN/VXLAN templates for VTEPs #}
 {%     if switch.vtep is arista.avd.defined(true) %}
-{%         include 'designs/l3ls-evpn/tenants/vxlan-tunnel-interface.j2' %}
+{%         include 'designs/l3ls-evpn/tenants/vxlan-interface.j2' %}
 
 {%         include 'designs/l3ls-evpn/tenants/router-bgp.j2' %}
 

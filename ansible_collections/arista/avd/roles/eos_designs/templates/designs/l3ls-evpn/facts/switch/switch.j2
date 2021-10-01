@@ -117,6 +117,9 @@ switch:
 {%     set loopback_ipv4_offset = switch_data.combined.loopback_ipv4_offset | arista.avd.default(0) %}
   loopback_ipv4_offset: {{ loopback_ipv4_offset }}
 
+{# switch.loopback_ipv4_description #}
+  loopback_ipv4_description: {{ switch_data.combined.loopback_ipv4_description | arista.avd.default(overlay_loopback_description) }}
+
 {# switch.uplink_ipv4_pool #}
   uplink_ipv4_pool: {{ switch_data.combined.uplink_ipv4_pool | arista.avd.default() }}
 
@@ -125,10 +128,10 @@ switch:
 
 {# switch.bgp_as #}
 {%     if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
-  bgp_as: {{ bgp_as }}
+  bgp_as: "{{ bgp_as }}"
 {%     else %}
 {%         if switch_data.combined.bgp_as is arista.avd.defined(fail_action='error', var_name='bgp_as') %}
-  bgp_as: {{ switch_data.combined.bgp_as }}
+  bgp_as: "{{ switch_data.combined.bgp_as }}"
 {%         endif %}
 {%     endif %}
 
@@ -175,7 +178,8 @@ switch:
   mlag_ibgp_origin_incomplete: {{ switch_data.combined.mlag_ibgp_origin_incomplete | arista.avd.default(true) }}
 
 {# switch.mlag_peer_vlan #}
-  mlag_peer_vlan: {{ switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) }}
+{%     set mlag_peer_vlan = switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) %}
+  mlag_peer_vlan: {{ mlag_peer_vlan }}
 
 {# switch.mlag_dual_primary_detection #}
   mlag_dual_primary_detection: {{ switch_data.combined.mlag_dual_primary_detection | arista.avd.default(false) }}
@@ -187,7 +191,10 @@ switch:
 {# switch.mlag_peer_l3_vlan #}
 {%     if switch.underlay_router is arista.avd.defined(true) %}
   mlag_l3: true
-  mlag_peer_l3_vlan: {{ switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) }}
+{%         if switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) is not in [false,mlag_peer_vlan] %}
+{%             set mlag_peer_l3_vlan = switch_data.combined.mlag_peer_l3_vlan | arista.avd.default(4093) %}
+  mlag_peer_l3_vlan: {{ mlag_peer_l3_vlan }}
+{%         endif %}
 {%     endif %}
 
 {%     if switch_data.node_group.nodes.keys() | list | first == inventory_hostname %}
@@ -214,7 +221,7 @@ switch:
 
 {# switch.mlag_l3_ip #}
 {# switch.mlag_peer_l3_ip #}
-{%         if switch.underlay_router is arista.avd.defined(true) %}
+{%         if switch.underlay_router is arista.avd.defined(true) and mlag_peer_l3_vlan is arista.avd.defined %}
   mlag_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_primary %}
 
   mlag_peer_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_secondary %}
@@ -245,7 +252,7 @@ switch:
 
 {# switch.mlag_l3_ip #}
 {# switch.mlag_peer_l3_ip #}
-{%         if switch.underlay_router is arista.avd.defined(true) %}
+{%         if switch.underlay_router is arista.avd.defined(true) and mlag_peer_l3_vlan is arista.avd.defined %}
   mlag_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_secondary %}
 
   mlag_peer_l3_ip: {% include switch.ip_addressing.mlag_l3_ip_primary %}
@@ -264,6 +271,9 @@ switch:
 {# switch.vtep_loopback_ipv4_pool #}
 {%     set switch_vtep_loopback_ipv4_pool = switch_data.combined.vtep_loopback_ipv4_pool %}
   vtep_loopback_ipv4_pool: {{ switch_vtep_loopback_ipv4_pool }}
+
+{# switch.vtep_loopback #}
+  vtep_loopback: {{ switch_data.combined.vtep_loopback | arista.avd.default('Loopback1') }}
 
 {# switch.vtep_ip #}
 {%     if switch_data.mlag_configured is arista.avd.defined(true) %}
@@ -301,55 +311,57 @@ switch:
 {% endif %}
 
 
-
-{% set leaf = namespace() %}
-{% set leaf.vlans = []  %}
-{% set leaf.tenants = {} %}
-{% for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
-{%     set add_vrfs = {} %}
-{%     for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         set add_svis = [] %}
-{%         for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
-{%             for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags | arista.avd.natural_sort %}
-{%                 if svi_tag in switch_filter_tags or svi_tag == switch_data.group or "all" in switch_filter_tags %}
-{%                     do add_svis.append(svi) %}
-{%                     do leaf.vlans.append(svi | int) %}
+{% if switch.network_services_l2 is arista.avd.defined(true) or
+      switch.network_services_l3 is arista.avd.defined(true) %}
+{%     set leaf = namespace() %}
+{%     set leaf.vlans = []  %}
+{%     set leaf.tenants = {} %}
+{%     for tenant in tenants | arista.avd.natural_sort if tenant in switch_filter_tenants or "all" in switch_filter_tenants %}
+{%         set add_vrfs = {} %}
+{%         for vrf in tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%             set add_svis = [] %}
+{%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags | arista.avd.natural_sort %}
+{%                     if svi_tag in switch_filter_tags or svi_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                         do add_svis.append(svi) %}
+{%                         do leaf.vlans.append(svi | int) %}
+{%                         break %}
+{%                     endif %}
+{%                 endfor %}
+{%             endfor %}
+{# Append VRF if we found SVIs #}
+{%             if add_svis | length > 0 %}
+{%                 do add_vrfs.update({ vrf: {"svis": add_svis}}) %}
+{# Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
+{%             elif switch_always_include_vrfs_in_tenants is arista.avd.contains([tenant, 'all']) %}
+{%                 do add_vrfs.update({ vrf: {}}) %}
+{%             else %}
+{# Or Append VRF if there is a BGP neighbor defined under tenants for this switch #}
+{%                 for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
+{%                     if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
+{%                         do add_vrfs.update({ vrf: {}}) %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%         set add_l2vlans = [] %}
+{%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags | arista.avd.natural_sort %}
+{%                 if vlan_tag in switch_filter_tags or vlan_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                     do add_l2vlans.append(l2vlan) %}
+{%                     do leaf.vlans.append(l2vlan | int) %}
 {%                     break %}
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
-{# Append VRF if we found SVIs #}
-{%         if add_svis | length > 0 %}
-{%             do add_vrfs.update({ vrf: {"svis": add_svis}}) %}
-{# Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
-{%         elif switch_always_include_vrfs_in_tenants is arista.avd.contains([tenant, 'all']) %}
-{%             do add_vrfs.update({ vrf: {}}) %}
-{%         else %}
-{# Or Append VRF if there is a BGP neighbor defined under tenants for this switch #}
-{%             for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
-{%                 if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
-{%                     do add_vrfs.update({ vrf: {}}) %}
-{%                 endif %}
-{%             endfor %}
+{%         if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
+{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans}}) %}
 {%         endif %}
 {%     endfor %}
-{%     set add_l2vlans = [] %}
-{%     for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
-{%         for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags | arista.avd.natural_sort %}
-{%             if vlan_tag in switch_filter_tags or vlan_tag == switch_data.group or "all" in switch_filter_tags %}
-{%                 do add_l2vlans.append(l2vlan) %}
-{%                 do leaf.vlans.append(l2vlan | int) %}
-{%                 break %}
-{%             endif %}
-{%         endfor %}
-{%     endfor %}
-{%     if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
-{%         do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans}}) %}
-{%     endif %}
-{% endfor %}
 
 {# switch.tenants #}
   tenants: {{ leaf.tenants }}
 
 {# switch.vlans #}
   vlans: {{ leaf.vlans | unique }}
+{% endif %}

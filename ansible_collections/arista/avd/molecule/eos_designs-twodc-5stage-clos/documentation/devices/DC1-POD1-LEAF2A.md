@@ -118,27 +118,7 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF2A | Disabled |
 
 ### SNMP Device Configuration
 
@@ -186,14 +166,14 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
 spanning-tree mode mstp
-no spanning-tree vlan-id 4093-4094
+no spanning-tree vlan-id 4094
 spanning-tree mst 0 priority 4096
 ```
 
@@ -221,10 +201,11 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 112 | Tenant_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
+| 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
 | 4094 | MLAG_PEER | MLAG |
 
 ## VLANs Device Configuration
@@ -240,18 +221,20 @@ vlan 111
 vlan 112
    name Tenant_A_OP_Zone_3
 !
+vlan 113
+   name SVI_with_no_vxlan
+!
 vlan 2500
    name web-l2-vlan
 !
 vlan 2600
    name web-l2-vlan-2
 !
+vlan 2601
+   name l2vlan_with_no_vxlan
+!
 vlan 4085
    name L2LEAF_INBAND_MGMT
-!
-vlan 4093
-   name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
 !
 vlan 4094
    name MLAG_PEER
@@ -268,8 +251,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-112,2500,2600,4085 | *- | *- | 3 |
+| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-113,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-113,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet6 | MLAG_PEER_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet16 | server-1_Eth1 | *access | *110 | *- | *- | 16 |
@@ -401,7 +384,7 @@ interface Ethernet19
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | RACK2_MLAG_Po1 | switched | trunk | 110-113,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_PEER_DC1-POD1-LEAF2B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel16 | server-1_PortChannel | switched | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | switched | access | 110 | - | - | - | - | 17 | - |
@@ -416,7 +399,7 @@ interface Port-Channel3
    description RACK2_MLAG_Po1
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,2500,2600,4085
+   switchport trunk allowed vlan 110-113,2500,2600-2601,4085
    switchport mode trunk
    mlag 3
    service-profile QOS-PROFILE
@@ -515,8 +498,8 @@ interface Loopback1
 | Vlan110 |  set from structured_config on svi for DC1-POD1-LEAF2A (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
+| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
 | Vlan4085 |  L2LEAF_INBAND_MGMT  |  default  |  1500  |  false  |
-| Vlan4093 |  MLAG_PEER_L3_PEERING  |  default  |  1500  |  false  |
 | Vlan4094 |  MLAG_PEER  |  default  |  1500  |  false  |
 
 #### IPv4
@@ -526,8 +509,8 @@ interface Loopback1
 | Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |  -  |
 | Vlan4085 |  default  |  172.21.110.2/24  |  -  |  172.21.110.1  |  -  |  -  |  -  |
-| Vlan4093 |  default  |  172.19.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan4094 |  default  |  172.20.110.2/31  |  -  |  -  |  -  |  -  |  -  |
 
 
@@ -557,6 +540,12 @@ interface Vlan112
    EOF
 
 !
+interface Vlan113
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Common_VRF
+   ip address virtual 10.10.13.1/24
+!
 interface Vlan4085
    description L2LEAF_INBAND_MGMT
    no shutdown
@@ -564,12 +553,6 @@ interface Vlan4085
    ip address 172.21.110.2/24
    ip virtual-router address 172.21.110.1
    ip attached-host route export 19
-!
-interface Vlan4093
-   description MLAG_PEER_L3_PEERING
-   no shutdown
-   mtu 1500
-   ip address 172.19.110.2/31
 !
 interface Vlan4094
    description MLAG_PEER
@@ -587,15 +570,17 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 112 | 50112 |
-| 2500 | 2500 |
-| 2600 | 2600 |
+#### VLAN to VNI and Flood List Mappings
+
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 112 | 50112 | - |
+| 2500 | 2500 | - |
+| 2600 | 2600 | - |
 
 #### VRF to VNI Mappings
 
@@ -608,6 +593,7 @@ interface Vlan4094
 ```eos
 !
 interface Vxlan1
+   description DC1-POD1-LEAF2A_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -690,7 +676,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65112|  172.16.110.4 |
+| 65112.100|  172.16.110.4 |
 
 | BGP Tuning |
 | ---------- |
@@ -726,26 +712,28 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
-| Remote AS | 65112 |
+| Remote AS | 65112.100 |
 | Next-hop self | True |
 | Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 100.100.100.201 | 65211 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.110.8 | 65110 | default |
-| 172.17.110.10 | 65110 | default |
-| 172.17.110.12 | 65110 | default |
-| 172.17.110.14 | 65110 | default |
-| 172.19.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 100.100.100.201 | 65211 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.1 | 65110.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.110.8 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.10 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.12 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.14 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.20.110.3 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
+
+- VPN import pruning is __enabled__
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -769,7 +757,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ```eos
 !
-router bgp 65112
+router bgp 65112.100
    router-id 172.16.110.4
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -788,7 +776,7 @@ router bgp 65112
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
-   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112
+   neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65112.100
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
@@ -802,27 +790,27 @@ router bgp 65112
    neighbor 172.16.10.1 description DC1-RS1
    neighbor 172.16.10.1 route-map RM-EVPN-FILTER-AS65101 out
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
-   neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110 out
+   neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110.100 out
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
-   neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111 out
+   neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.8 remote-as 65110
+   neighbor 172.17.110.8 remote-as 65110.100
    neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
    neighbor 172.17.110.10 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.10 remote-as 65110
+   neighbor 172.17.110.10 remote-as 65110.100
    neighbor 172.17.110.10 description DC1-POD1-SPINE2_Ethernet4
    neighbor 172.17.110.12 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.12 remote-as 65110
+   neighbor 172.17.110.12 remote-as 65110.100
    neighbor 172.17.110.12 description DC1-POD1-SPINE1_Ethernet7
    neighbor 172.17.110.14 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.14 remote-as 65110
+   neighbor 172.17.110.14 remote-as 65110.100
    neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
-   neighbor 172.19.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.19.110.3 description DC1-POD1-LEAF2B
+   neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
+   neighbor 172.20.110.3 description DC1-POD1-LEAF2B
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
@@ -853,6 +841,7 @@ router bgp 65112
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
@@ -955,17 +944,17 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ---------------- |
 | 10 | deny | match as 65101 |
 
-#### RM-EVPN-FILTER-AS65110
+#### RM-EVPN-FILTER-AS65110.100
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match as 65110 |
+| 10 | deny | match as 65110.100 |
 
-#### RM-EVPN-FILTER-AS65111
+#### RM-EVPN-FILTER-AS65111.100
 
 | Sequence | Type | Match and/or Set |
 | -------- | ---- | ---------------- |
-| 10 | deny | match as 65111 |
+| 10 | deny | match as 65111.100 |
 
 #### RM-MLAG-PEER-IN
 
@@ -988,15 +977,15 @@ route-map RM-EVPN-FILTER-AS65101 deny 10
 !
 route-map RM-EVPN-FILTER-AS65101 permit 20
 !
-route-map RM-EVPN-FILTER-AS65110 deny 10
-   match as 65110
+route-map RM-EVPN-FILTER-AS65110.100 deny 10
+   match as 65110.100
 !
-route-map RM-EVPN-FILTER-AS65110 permit 20
+route-map RM-EVPN-FILTER-AS65110.100 permit 20
 !
-route-map RM-EVPN-FILTER-AS65111 deny 10
-   match as 65111
+route-map RM-EVPN-FILTER-AS65111.100 deny 10
+   match as 65111.100
 !
-route-map RM-EVPN-FILTER-AS65111 permit 20
+route-map RM-EVPN-FILTER-AS65111.100 permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

@@ -44,7 +44,6 @@ terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardwar
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"
 terminattr_disable_aaa: "< boolean | default -> false >"
 
-
 # Management interface configuration | Required
 mgmt_vrf_routing: < boolean | default -> false >
 mgmt_interface: < mgmt_interface | default -> Management1 >
@@ -59,13 +58,6 @@ mgmt_destination_networks:
 name_servers:
  - < IPv4_address_1 >
  - < IPv4_address_2 >
-
-# List of NTP Servers IP or DNS name | Optional
-# The first NTP server in the list will be preferred
-# NTP request will be sourced from < management_interface_vrf >
-ntp_servers:
- - < ntp_server_1 >
- - < ntp_server_1 >
 
 # Internal vlan allocation order and range | Required
 internal_vlan_order:
@@ -144,11 +136,6 @@ name_servers:
  - 192.168.2.1
  - 8.8.8.8
 
-# NTP Servers
-ntp_servers:
- - 0.north-america.pool.ntp.org
- - 1.north-america.pool.ntp.org
-
 # Internal vlan allocation order and range
 # internal_vlan_order:
 #   allocation: ascending
@@ -221,6 +208,7 @@ platform_settings:
     lag_hardware_only: < true | false >
     feature_support:
       queue_monitor_length_notify: < true | false | default -> true >
+      interface_storm_control: < true | false | default -> true >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -229,7 +217,9 @@ platform_settings:
       < multiline eos cli >
 ```
 
-note: Recommended default values for Jericho based platform, and all other platforms `default` tag.
+note:
+Recommended default values for Jericho based platform, VEOS and all other platforms `default` tag.
+The reload delay values should be reviewed and tuned to the specific environment.
 
 **Example:**
 
@@ -240,13 +230,26 @@ platform_settings:
       mlag: 300
       non_mlag: 330
     feature_support:
+      # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
-  - platforms: [ 7800R3, 7500R3, 7500R, 7280R3, 7280R2, 7280R ]
+      interface_storm_control: false
+  - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
-      mlag: 780
+      mlag: 900
       non_mlag: 1020
+  - platforms: [ 7280R3, 7500R3, 7800R3 ]
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: ["VEOS", "VEOS-LAB"]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
 ```
 
 ## Custom EOS Structured Configuration
@@ -272,7 +275,6 @@ custom_structured_configuration_prefix: [ < variable_prefix_1 > , < variable_pre
 
 custom_structured_configuration_list_merge: < replace (default) | append | keep | prepend | append_rp | prepend_rp >
 ```
-
 
 **Example:**
 
@@ -360,7 +362,9 @@ name_server:
 This feature enables the user to supply `structured_config` on various levels in the `eos_designs` data model.
 
 #### Connected Endpoints (a.k.a. "servers")
+
 All relevant `structured_config` sections will be merged.
+
 ```yaml
 < connected_endpoints_keys.key >:
   < endpoint_1 >:
@@ -376,7 +380,9 @@ All relevant `structured_config` sections will be merged.
 See [Connected Endpoints]('../common/connected-endpoints.md')
 
 #### Fabric Topology
+
 Only the most specific `structured_config` key will be used
+
 ```yaml
 < spine | super_spine | overlay_controller >:
   defaults:
@@ -405,7 +411,9 @@ Only the most specific `structured_config` key will be used
 See [Fabric Topology]('fabric-topology.md')
 
 #### Network Services (a.k.a. "tenants")
+
 All relevant `structured_config` sections will be merged. Note that setting `structured_config` under `svi.nodes` will override the setting on `svi`.
+
 ```yaml
 tenants:
   vrfs:

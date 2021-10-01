@@ -52,8 +52,8 @@ bgp_ecmp: < number_of_ecmp_paths | default -> 4 >
 evpn_ebgp_multihop: < ebgp_multihop | default -> 3 >
 
 # BGP peer groups encrypted password
-# IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Required when < underlay_routing_protocol > == BGP
-# EVPN_OVERLAY_PEERS | Required
+# IPv4_UNDERLAY_PEERS and MLAG_IPv4_UNDERLAY_PEER | Optional
+# EVPN_OVERLAY_PEERS | Optional
 # Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
 # Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
 bgp_peer_groups:
@@ -66,23 +66,6 @@ bgp_peer_groups:
   EVPN_OVERLAY_PEERS:
       name: < name of peer group | default -> EVPN-OVERLAY-PEERS >
       password: "< encrypted password >"
-
-# Spine BGP Tuning | Optional.
-spine_bgp_defaults:
-  - update wait-for-convergence
-  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
-
-# Leaf BGP Tuning | Optional.
-leaf_bgp_defaults:
-  - update wait-install
-  - no bgp default ipv4-unicast
-  - distance bgp 20 200 200
-  - graceful-restart restart-time 300
-  - graceful-restart
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
 vxlan_vlan_aware_bundles: < boolean | default -> false >
@@ -112,6 +95,12 @@ evpn_hostflap_detection:
 # Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS 4.25.1F)
 # Requires use eBGP as overlay protocol.
 evpn_overlay_bgp_rtc: < true | false , default -> false >
+
+# Enable VPN import pruning (Min. EOS 4.24.2F)
+# The Route Target extended communities carried by incoming VPN paths will
+# be examined. If none of those Route Targets have been configured for import,
+# the path will be immediately discarded
+evpn_import_pruning: true
 
 # Configure route-map on eBGP sessions towards route-servers, where prefixes with the peer's ASN in the AS Path are filtered away.
 # This is very useful in very large scale networks, where convergence will be quicker by not having to return all updates received

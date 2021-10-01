@@ -45,14 +45,18 @@ svi_profiles:
   < profile_name >:
     mtu: < mtu >
     enabled: < true | false >
-    ip_virtual_router_address: < IPv4_address/Mask >
+    ip_virtual_router_addresses:
+      - < IPv4_address/Mask | IPv4_address >
+      - < IPv4_address/Mask | IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
-    ip_address_virtual_secondary: < IPv4_address/Mask >
+    ip_address_virtual_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     igmp_snooping_enabled: < true | false | default true (eos) >
     ip_helpers:
       < IPv4 dhcp server IP >:
         source_interface: < interface-name >
-        source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+        source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
 # Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
 
@@ -131,8 +135,11 @@ tenants:
             # If variables are configured in profile AND SVI, SVI information will overwrite profile.
             profile: < svi-profile-name >
 
-            # vlan name + svi description. | Required
-            name: < description >
+            # vlan name | Required
+            name: < name >
+
+            # SVI description. | Optional
+            description: < description | Default -> vlan name >
 
             # Tags leveraged for networks services filtering. | Required
             tags: [ < tag_1 >, < tag_2 > ]
@@ -147,17 +154,26 @@ tenants:
             # Conserves IP addresses in VXLAN deployments as it doesn't require unique IP addresses on each node.
             # Optional
             ip_address_virtual: < IPv4_address/Mask >
+            ip_address_virtual_secondaries:
+              - < IPv4_address/Mask >
+              - < IPv4_address/Mask >
 
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
-            ip_virtual_router_address: < IPv4_address/Mask >
+            ip_virtual_router_addresses:
+              - < IPv4_address/Mask | IPv4_address >
+              - < IPv4_address/Mask | IPv4_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
               < IPv4 dhcp server IP >:
                 source_interface: < interface-name >
                 source_vrf: < VRF to originate DHCP relay packets to DHCP server. If not set, uses current VRF >
+
+            # VXLAN | Optional - default true
+            # Extend this SVI over VXLAN
+            vxlan: < true | false | default -> true >
 
             # Define node specific configuration, such as unique IP addresses.
             nodes:
@@ -224,6 +240,11 @@ tenants:
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
+            distance: < 1-255 >
+            tag: < 0-4294967295 >
+            name: < description >
+            metric: < 0-4294967295 >
+            interface: < interface >
             nodes: [ < node_1 >, < node_2 >]
 
         # Non-selectively enabling or disabling redistribute static inside the VRF | Optional.
@@ -312,6 +333,10 @@ tenants:
         # Tags leveraged for networks services filtering.
         tags: [ < tag_1 >, < tag_2 > ]
 
+        # VXLAN | Optional - default true
+        # Extend this L2VLAN over VXLAN
+        vxlan: < true | false | default -> true >
+
       < 1-4096 >:
         name: < description >
         tags: [ < tag_1 >, < tag_2 > ]
@@ -380,7 +405,9 @@ tenants:
             name: Tenant_A_OP_Zone_3
             tags: [ DC1_LEAF2 ]
             enabled: true
-            ip_virtual_router_address: 10.1.12.1/24
+            ip_virtual_router_addresses:
+              - 10.1.12.1
+              - 10.2.12.1/24
             nodes:
               DC1-LEAF2A:
                 ip_address: 10.1.12.2/24

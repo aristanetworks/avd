@@ -141,27 +141,7 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A | Disabled |
 
 ### SNMP Device Configuration
 
@@ -378,12 +358,6 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
 #### VRF to VNI Mappings
 
 | VLAN | VNI |
@@ -395,6 +369,7 @@ interface Vlan4092
 ```eos
 !
 interface Vxlan1
+   description DC2-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025
@@ -505,16 +480,16 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.0.38 | 65120 | default |
-| 100.100.100.101 | 65112 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.10.2 | 65102 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.210.0 | 65210 | default |
-| 172.17.210.2 | 65210 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.0.38 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 100.100.100.101 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.10.2 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.1 | 65110.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.210.0 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.210.2 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -542,11 +517,9 @@ router bgp 65211
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.0.38 peer group IPv4-UNDERLAY-PEERS
@@ -554,7 +527,7 @@ router bgp 65211
    neighbor 11.1.0.38 description DC1-POD1-LEAF2B
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
-   neighbor 100.100.100.101 remote-as 65112
+   neighbor 100.100.100.101 remote-as 65112.100
    neighbor 100.100.100.101 description DC1-POD1-LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
@@ -563,10 +536,10 @@ router bgp 65211
    neighbor 172.16.10.2 remote-as 65102
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210

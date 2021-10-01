@@ -3,7 +3,7 @@
 SHELL := /bin/bash
 # AVD Shell container information
 CONTAINER_NAME = avdteam/base
-DOCKER_TAG ?= 3.6
+DOCKER_TAG ?= 3.8-v2.0
 CONTAINER = $(CONTAINER_NAME):$(DOCKER_TAG)
 # Vscode container information
 VSCODE_CONTAINER_NAME ?= avdteam/vscode

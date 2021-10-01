@@ -36,6 +36,8 @@ all:
     < DC-group-name >:
       children:
         < Super Spines group name >:
+          vars:
+            type: < node type >
           hosts:
             < super-spine name >:
               ansible_host: < management IP >

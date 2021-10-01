@@ -1,0 +1,86 @@
+---
+name: "Devel Code Management"
+
+on:
+  push:
+    branches:
+      - devel
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  file-changes:
+    runs-on: ubuntu-20.04
+    outputs:
+      eos_design: ${{ steps.filter.outputs.eos_design }}
+      config_gen: ${{ steps.filter.outputs.config_gen }}
+      cloudvision: ${{ steps.filter.outputs.cloudvision }}
+      dhcp: ${{ steps.filter.outputs.dhcp }}
+      plugins: ${{ steps.filter.outputs.plugins }}
+      requirements: ${{ steps.filter.outputs.requirements }}
+      docs: ${{ steps.filter.outputs.docs }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            eos_design:
+              - 'ansible_collections/arista/avd/roles/eos_designs/*'
+              - 'ansible_collections/arista/avd/roles/eos_designs/**/*'
+              - 'ansible_collections/arista/avd/molecule/*'
+              - 'ansible_collections/arista/avd/molecule/**/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+            config_gen:
+              - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
+              - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/*'
+              - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
+            cloudvision:
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
+              - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
+              - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+            dhcp:
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
+              - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
+            plugins:
+              - 'ansible_collections/arista/avd/plugins/filter/**'
+              - 'ansible_collections/arista/avd/plugins/test/**'
+            requirements:
+              - 'ansible_collections/arista/avd/requirements.txt'
+              - 'ansible_collections/arista/avd/requirements-dev.txt'
+              - 'ansible_collections/arista/avd/meta/runtime.yml'
+            docs:
+              - 'mkdocs.yml'
+              - 'ansible_collections/arista/avd/docs/**'
+              - 'ansible_collections/arista/avd/roles/**/*.md'
+              - 'ansible_collections/arista/avd/**/*.md'
+              - 'ansible_collections/arista/avd/README.md'
+
+  # ----------------------------------- #
+  # Rebuild docker image
+  # ----------------------------------- #
+  docker_build:
+    name: Webhook to Docker Hub to build image
+    runs-on: ubuntu-18.04
+    container: avdteam/base:3.8-v2.0
+    if: needs.file-changes.outputs.requirements == 'true'
+    steps:
+      - uses: actions/checkout@master
+      - name: 'Send Webhook to docker hub'
+        env:
+          AUTH_TOKEN: ${{secrets.AVD_BUILDER_TOKEN}}
+          AVD_BASE_DISPATCH: ${{secrets.AVD_BUILDER_WEBHOOK}}
+        run: |
+          curl \
+          -X POST \
+          -H "Accept: application/vnd.github.v3+json" \
+          -H "Authorization: token $AUTH_TOKEN" \
+          https://api.github.com/repos/$AVD_BASE_DISPATCH/dispatches \
+          -d '{"event_type":"refresh"}'

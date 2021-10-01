@@ -43,3 +43,11 @@ default_templates:
       p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-peer-ip.j2'
       vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/vtep-ip-mlag.j2'
       vtep_ip: 'designs/l3ls-evpn/ip-addressing/vtep-ip.j2'
+
+    interface_descriptions:
+      underlay_ethernet_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'designs/l3ls-evpn/interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'designs/l3ls-evpn/interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'designs/l3ls-evpn/interface-descriptions/loopback-interfaces/overlay-loopback.j2'
+      vtep_loopback_interface: 'designs/l3ls-evpn/interface-descriptions/loopback-interfaces/vtep-loopback.j2'

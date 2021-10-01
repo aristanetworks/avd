@@ -8,7 +8,7 @@ ethernet_interfaces:
     peer: {{ link.peer }}
     peer_interface: {{ link.peer_interface }}
     peer_type: {{ link.peer_type }}
-    description: P2P_LINK_TO_{{ link.peer | upper }}_{{ link.peer_interface }}
+    description: "{% include switch.interface_descriptions.underlay_ethernet_interfaces %}"
 {%         if link.speed is arista.avd.defined %}
     speed: {{ link.speed }}
 {%         endif %}
@@ -43,7 +43,7 @@ ethernet_interfaces:
     peer: {{ link.peer }}
     peer_interface: {{ link.peer_interface }}
     peer_type: {{ link.peer_type }}
-    description: {{ link.peer | upper }}_{{ link.peer_interface }}
+    description: "{% include switch.interface_descriptions.underlay_ethernet_interfaces %}"
 {%         if link.speed is arista.avd.defined %}
     speed: {{ link.speed }}
 {%         endif %}

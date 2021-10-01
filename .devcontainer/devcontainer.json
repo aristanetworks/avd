@@ -2,8 +2,7 @@
     "name": "AVD Development",
     "build": {
         "dockerfile": "Dockerfile",
-        // Update 'VARIANT' to pick Python version of AVD runner: 3.6, 3.7, 3.8
-        "args": { "VARIANT": "3.6" },
+        "args": { "VARIANT": "3.8-v2.0" },
     },
     "remoteUser": "avd",
     "updateRemoteUserUID": true,

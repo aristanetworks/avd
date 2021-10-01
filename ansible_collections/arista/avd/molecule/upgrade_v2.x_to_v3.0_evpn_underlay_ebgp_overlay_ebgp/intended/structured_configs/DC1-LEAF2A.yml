@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65102
+  as: '65102'
   router_id: 192.168.255.10
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -11,6 +11,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
+      remote_as: 65001
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -19,6 +20,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      remote_as: 65001
   address_family_ipv4:
     peer_groups:
       UNDERLAY-PEERS:
@@ -31,36 +33,36 @@ router_bgp:
   neighbors:
     172.31.255.16:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet2
     172.31.255.18:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet2
     172.31.255.20:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet2
     172.31.255.22:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet2
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -226,12 +228,12 @@ hardware:
     4:
       serdes: 10G
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -246,12 +248,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackC DC1-LEAF2A
@@ -309,6 +305,13 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        remote_as: 65001
+      UNDERLAY-PEERS:
+        remote_as: 65001
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -576,12 +579,12 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-LEAF2A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
       vlans:
         130:
           vni: 10130
@@ -737,3 +740,11 @@ virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.10
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
+  servers:
+  - name: 192.168.200.5
+    preferred: true
+    vrf: MGMT

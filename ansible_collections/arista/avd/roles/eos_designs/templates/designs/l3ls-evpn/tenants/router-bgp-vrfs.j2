@@ -33,7 +33,7 @@
                                                      tenants[tenant].enable_mlag_ibgp_peering_vrfs,
                                                      true) %}
 {%                 if configure_mlag_ibgp_peering %}
-        {{ switch.mlag_peer_l3_ip }}:
+        {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
           peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
 {%                 endif %}
 {%             endif %}

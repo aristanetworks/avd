@@ -38,10 +38,12 @@ tenants:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
+          loopback_description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
         svis:
           # SVI as string
           '110':
             name: Tenant_A_OP_Zone_1
+            description: SVI 110 CUSTOM DESCRIPTION
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.10.1/24
@@ -49,6 +51,7 @@ tenants:
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
+            description: SVI 111 CUSTOM DESCRIPTION
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.11.1/24
@@ -68,6 +71,33 @@ tenants:
             name: Tenant_A_WEBZone_2
             tags: ['web']
             profile: GENERIC_FULL
+          122:
+            name: Tenant_a_WEB_DHCP_no_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.22.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                #source_vrf: TEST
+          123:
+            name: Tenant_a_WEB_DHCP_source_int_no_vrf
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.23.1/24
+            ip_helpers:
+              1.1.1.1:
+                source_interface: lo100
+                #source_vrf: TEST
+          124:
+            name: Tenant_a_WEB_DHCP_vrf_no_source_int
+            tags: ['web']
+            enabled: true
+            ip_address_virtual: 10.1.24.1/24
+            ip_helpers:
+              1.1.1.1:
+                #source_interface: lo100
+                source_vrf: TEST
       Tenant_A_APP_Zone:
         vrf_vni: 12
         svis:
@@ -81,6 +111,7 @@ tenants:
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
+            vxlan: false
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -113,6 +144,19 @@ tenants:
           - destination_address_prefix: 10.3.4.0/24
             gateway: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.1.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 1.1.2.0/24
+            interface: vlan101
+            gateway: 10.1.1.1
+            distance: 200
+            tag: 666
+            name: RT-TO-FAKE-DMZ
+            nodes: [DC1-BL1A, DC1-BL1B]
+          - destination_address_prefix: 10.3.5.0/24
+            interface: Null0
         bgp_peers:
           123.1.1.10:
             remote_as: 1234
@@ -264,3 +308,4 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.3.50.1/24
+            vxlan: False

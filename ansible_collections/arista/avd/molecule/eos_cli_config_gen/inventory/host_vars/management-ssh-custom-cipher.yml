@@ -17,6 +17,8 @@ management_ssh:
     - name: ACL-SSH-VRF
       vrf: mgt
   idle_timeout: 15
+  connection:
+    limit: 55
   enable: true
   vrfs:
     mgt:

@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65000
+  as: '65000'
   router_id: 192.168.255.2
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -12,12 +12,12 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: true
@@ -32,12 +32,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: none
 local_users:

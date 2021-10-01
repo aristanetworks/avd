@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65105
+  as: '65105'
   router_id: 192.168.255.15
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -31,36 +31,36 @@ router_bgp:
   neighbors:
     172.31.255.96:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet7
     172.31.255.98:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet7
     172.31.255.100:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet7
     172.31.255.102:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet7
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -201,14 +201,6 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: 250
-    Tenant_C_WAN_Zone:
-      rd: 192.168.255.15:30031
-      route_targets:
-        both:
-        - 30031:30031
-      redistribute_routes:
-      - learned
-      vlan: 350
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
@@ -216,6 +208,20 @@ static_routes:
 - destination_address_prefix: 10.3.4.0/24
   vrf: Tenant_A_WAN_Zone
   gateway: 1.2.3.4
+- destination_address_prefix: 1.1.1.0/24
+  vrf: Tenant_A_WAN_Zone
+  gateway: 10.1.1.1
+  interface: vlan101
+- destination_address_prefix: 1.1.2.0/24
+  vrf: Tenant_A_WAN_Zone
+  gateway: 10.1.1.1
+  distance: 200
+  tag: 666
+  name: RT-TO-FAKE-DMZ
+  interface: vlan101
+- destination_address_prefix: 10.3.5.0/24
+  vrf: Tenant_A_WAN_Zone
+  interface: Null0
 service_routing_protocols_model: multi-agent
 ip_routing: true
 hardware:
@@ -229,12 +235,12 @@ hardware:
     4:
       serdes: 10G
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -253,7 +259,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server: null
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC DC1-BL1B
@@ -313,7 +318,7 @@ ethernet_interfaces:
     peer: DC1-SPINE1
     peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -323,7 +328,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -333,7 +338,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -343,7 +348,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet7
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet7
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -406,11 +411,11 @@ ethernet_interfaces:
     peer_type: my_precious
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.15/32
   Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
+    description: CUSTOM_VTEP_VXLAN_Tunnel_Source_L3LEAF
     shutdown: false
     ip_address: 192.168.254.15/32
 prefix_lists:
@@ -456,19 +461,17 @@ vlans:
     name: Tenant_C_WAN_Zone_1
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
       vlans:
         150:
           vni: 10150
         250:
           vni: 20250
-        350:
-          vni: 30350
       vrfs:
         Tenant_A_WAN_Zone:
           vni: 14
@@ -506,3 +509,4 @@ vlan_interfaces:
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+ntp: null

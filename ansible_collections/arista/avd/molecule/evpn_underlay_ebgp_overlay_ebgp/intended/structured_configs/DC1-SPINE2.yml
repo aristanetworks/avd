@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65001
+  as: '65001'
   router_id: 192.168.255.2
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -32,60 +32,60 @@ router_bgp:
   neighbors:
     172.31.255.3:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65101
+      remote_as: '65101'
       description: DC1-LEAF1A_Ethernet2
     172.31.255.19:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-LEAF2A_Ethernet2
     172.31.255.35:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-LEAF2B_Ethernet2
     172.31.255.51:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65103
+      remote_as: '65103'
       description: DC1-SVC3A_Ethernet42
     172.31.255.67:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65103
+      remote_as: '65103'
       description: DC1-SVC3B_Ethernet42
     172.31.255.83:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65104
+      remote_as: '65104'
       description: DC1-BL1A_Ethernet42
     172.31.255.99:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65105
+      remote_as: '65105'
       description: DC1-BL1B_Ethernet46
     192.168.255.14:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
-      remote_as: 65104
+      remote_as: '65104'
     192.168.255.15:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1B
-      remote_as: 65105
+      remote_as: '65105'
     192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
-      remote_as: 65101
+      remote_as: '65101'
     192.168.255.10:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2A
-      remote_as: 65102
+      remote_as: '65102'
     192.168.255.11:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF2B
-      remote_as: 65102
+      remote_as: '65102'
     192.168.255.12:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3A
-      remote_as: 65103
+      remote_as: '65103'
     192.168.255.13:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SVC3B
-      remote_as: 65103
+      remote_as: '65103'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -97,12 +97,12 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -120,12 +120,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC DC1-SPINE2
@@ -160,7 +154,7 @@ ethernet_interfaces:
     peer: DC1-LEAF1A
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -170,7 +164,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2A
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -180,7 +174,7 @@ ethernet_interfaces:
     peer: DC1-LEAF2B
     peer_interface: Ethernet2
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+    description: CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet2
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -190,7 +184,7 @@ ethernet_interfaces:
     peer: DC1-SVC3A
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3A_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -200,7 +194,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-SVC3B_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -210,7 +204,7 @@ ethernet_interfaces:
     peer: DC1-BL1A
     peer_interface: Ethernet42
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1A_Ethernet42
+    description: CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet42
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -220,7 +214,7 @@ ethernet_interfaces:
     peer: DC1-BL1B
     peer_interface: Ethernet46
     peer_type: l3leaf
-    description: P2P_LINK_TO_DC1-BL1B_Ethernet46
+    description: CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet46
     speed: forced 100gfull
     mtu: 1500
     type: routed
