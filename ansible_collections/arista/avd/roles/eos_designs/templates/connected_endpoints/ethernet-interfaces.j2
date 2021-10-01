@@ -99,7 +99,7 @@ ethernet_interfaces:
 {%                     if adapter_spanning_tree_bpduguard is arista.avd.defined %}
     spanning_tree_bpduguard: {{ adapter_spanning_tree_bpduguard }}
 {%                     endif %}
-{%                     if adapter_storm_control is arista.avd.defined %}
+{%                     if adapter_storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
     storm_control:
 {%                         for section in adapter_storm_control %}
       {{ section }}:

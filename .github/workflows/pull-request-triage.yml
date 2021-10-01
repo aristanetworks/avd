@@ -84,7 +84,6 @@ jobs:
             eos_l3ls_evpn
             eos_snapshot
             eos_validate_state
-            upgrade_tools
             plugins
             mkdoc
             contribution

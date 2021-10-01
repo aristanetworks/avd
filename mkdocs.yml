@@ -138,7 +138,6 @@ nav:
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
-      - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md

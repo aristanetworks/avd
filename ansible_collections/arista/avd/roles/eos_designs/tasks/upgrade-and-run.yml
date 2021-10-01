@@ -1,0 +1,7 @@
+- name: Upgrade eos_designs data model
+  tags: [always]
+  include_tasks: "upgrade.yml"
+
+- name: Run eos_designs
+  tags: [always]
+  include_tasks: "main.yml"
