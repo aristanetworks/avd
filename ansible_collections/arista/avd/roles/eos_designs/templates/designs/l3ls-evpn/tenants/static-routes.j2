@@ -27,5 +27,25 @@ static_routes:
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
+{%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%             set svi_config = tenants[tenant].vrfs[vrf].svis[svi] %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%             if svi_config.profile is arista.avd.defined %}
+{%                 set svi_profile = svi_profiles[svi_config.profile] | arista.avd.default() %}
+{%             endif %}
+{%             set svi_varp = svi_config.ip_virtual_router_addresses | arista.avd.default(
+                              svi_profile.ip_virtual_router_addresses) %}
+{%             if svi_varp is arista.avd.defined %}
+{# Detect if VARP addresses with prefixes exist and loop through the ip_address/prefix #}
+{# If the VARP address with prefix doesn't exist then it will loop through empty_list [], so config is not generated in this scenario #}
+{%                 for dest_addr_prefix in svi_varp | ansible.netcommon.ipaddr(0) | ansible.netcommon.ipaddr('net') %}
+  - destination_address_prefix: {{ dest_addr_prefix }}
+    vrf: {{ vrf }}
+    name: "VARP"
+    interface: Vlan{{ svi | int }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
 {%     endfor %}
 {% endfor %}

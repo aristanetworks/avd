@@ -45,7 +45,9 @@ svi_profiles:
   < profile_name >:
     mtu: < mtu >
     enabled: < true | false >
-    ip_virtual_router_address: < IPv4_address/Mask >
+    ip_virtual_router_addresses:
+      - < IPv4_address/Mask | IPv4_address >
+      - < IPv4_address/Mask | IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
     ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
@@ -159,7 +161,9 @@ tenants:
             # ip virtual-router address
             # note, also requires an IP address to be configured on the SVI where it is applied.
             # Optional
-            ip_virtual_router_address: < IPv4_address/Mask >
+            ip_virtual_router_addresses:
+              - < IPv4_address/Mask | IPv4_address >
+              - < IPv4_address/Mask | IPv4_address >
 
             # IP Helper for DHCP relay
             ip_helpers:
@@ -401,7 +405,9 @@ tenants:
             name: Tenant_A_OP_Zone_3
             tags: [ DC1_LEAF2 ]
             enabled: true
-            ip_virtual_router_address: 10.1.12.1/24
+            ip_virtual_router_addresses:
+              - 10.1.12.1
+              - 10.2.12.1/24
             nodes:
               DC1-LEAF2A:
                 ip_address: 10.1.12.2/24

@@ -80,7 +80,7 @@ l3leaf:
       platform: 7050SX3
       filter:
         tenants: [ all ]
-        tags: [ web, app ]
+        tags: [ web, app, erp2 ]
       nodes:
         DC1-LEAF1A:
           id: 1

@@ -98,7 +98,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130-131
+      vlan: 130-132
     Tenant_A_WEB_Zone:
       rd: 1.1.1.1:11
       route_targets:
@@ -111,6 +111,14 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- destination_address_prefix: 10.2.32.0/24
+  vrf: Tenant_A_APP_Zone
+  name: VARP
+  interface: Vlan132
+- destination_address_prefix: 10.3.32.0/24
+  vrf: Tenant_A_APP_Zone
+  name: VARP
+  interface: Vlan132
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -284,6 +292,9 @@ vlans:
   131:
     tenant: Tenant_A
     name: Tenant_A_APP_Zone_2
+  132:
+    tenant: Tenant_A
+    name: Tenant_A_APP_Zone_3
   120:
     tenant: Tenant_A
     name: Tenant_A_WEB_Zone_1
@@ -306,6 +317,8 @@ vxlan_interface:
           vni: 10130
         131:
           vni: 10131
+        132:
+          vni: 10132
         120:
           vni: 10120
         121:
@@ -333,6 +346,18 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_APP_Zone
     ip_address_virtual: 10.1.31.1/24
+  Vlan132:
+    tenant: Tenant_A
+    tags:
+    - erp2
+    description: Tenant_A_APP_Zone_3
+    shutdown: false
+    vrf: Tenant_A_APP_Zone
+    ip_address: 10.1.32.1/24
+    ip_virtual_router_addresses:
+    - 10.1.32.254
+    - 10.2.32.254/24
+    - 10.3.32.254/24
   Vlan120:
     tenant: Tenant_A
     tags:

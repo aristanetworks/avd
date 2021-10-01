@@ -9,7 +9,7 @@ vlan_interfaces:
 {%     else %}
     ip_address: {{ subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(2) }}/{{ subnet | ansible.netcommon.ipaddr('prefix') }}
 {%     endif %}
-    ip_virtual_router_address: {{ subnet | ansible.netcommon.ipaddr('network') | ansible.netcommon.ipmath(1) }}
+    ip_virtual_router_addresses: [ {{ subnet | ansible.netcommon.ipaddr(1) | ansible.netcommon.ipaddr('address') }} ]
     ip_attached_host_route_export:
       distance: 19
 {% endfor %}

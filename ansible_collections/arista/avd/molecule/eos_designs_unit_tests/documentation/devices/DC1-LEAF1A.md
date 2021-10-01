@@ -248,6 +248,7 @@ vlan internal order ascending range 1006 1199
 | 121 | Tenant_A_WEBZone_2 | - |
 | 130 | Tenant_A_APP_Zone_1 | - |
 | 131 | Tenant_A_APP_Zone_2 | - |
+| 132 | Tenant_A_APP_Zone_3 | - |
 
 ## VLANs Device Configuration
 
@@ -264,6 +265,9 @@ vlan 130
 !
 vlan 131
    name Tenant_A_APP_Zone_2
+!
+vlan 132
+   name Tenant_A_APP_Zone_3
 ```
 
 # Interfaces
@@ -392,6 +396,7 @@ interface Loopback1
 | Vlan121 |  Tenant_A_WEBZone_2  |  Tenant_A_WEB_Zone  |  1560  |  true  |
 | Vlan130 |  Tenant_A_APP_Zone_1  |  Tenant_A_APP_Zone  |  -  |  false  |
 | Vlan131 |  Tenant_A_APP_Zone_2  |  Tenant_A_APP_Zone  |  -  |  false  |
+| Vlan132 |  Tenant_A_APP_Zone_3  |  Tenant_A_APP_Zone  |  -  |  false  |
 
 #### IPv4
 
@@ -401,6 +406,7 @@ interface Loopback1
 | Vlan121 |  Tenant_A_WEB_Zone  |  -  |  10.1.10.254/24  |  -  |  -  |  -  |  -  |
 | Vlan130 |  Tenant_A_APP_Zone  |  -  |  10.1.30.1/24  |  -  |  -  |  -  |  -  |
 | Vlan131 |  Tenant_A_APP_Zone  |  -  |  10.1.31.1/24  |  -  |  -  |  -  |  -  |
+| Vlan132 |  Tenant_A_APP_Zone  |  10.1.32.1/24  |  -  |  10.1.32.254, 10.2.32.254/24, 10.3.32.254/24  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -434,6 +440,15 @@ interface Vlan131
    no shutdown
    vrf Tenant_A_APP_Zone
    ip address virtual 10.1.31.1/24
+!
+interface Vlan132
+   description Tenant_A_APP_Zone_3
+   no shutdown
+   vrf Tenant_A_APP_Zone
+   ip address 10.1.32.1/24
+   ip virtual-router address 10.1.32.254
+   ip virtual-router address 10.2.32.254/24
+   ip virtual-router address 10.3.32.254/24
 ```
 
 ## VXLAN Interface
@@ -452,6 +467,7 @@ interface Vlan131
 | 121 | 10121 | - |
 | 130 | 10130 | - |
 | 131 | 10131 | - |
+| 132 | 10132 | - |
 
 #### VRF to VNI Mappings
 
@@ -472,6 +488,7 @@ interface Vxlan1
    vxlan vlan 121 vni 10121
    vxlan vlan 130 vni 10130
    vxlan vlan 131 vni 10131
+   vxlan vlan 132 vni 10132
    vxlan vrf Tenant_A_APP_Zone vni 12
    vxlan vrf Tenant_A_WEB_Zone vni 11
 ```
@@ -536,12 +553,16 @@ ip routing vrf Tenant_A_WEB_Zone
 | VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 | MGMT  | 0.0.0.0/0 |  192.168.200.5  |  -  |  1  |  -  |  -  |  - |
+| Tenant_A_APP_Zone  | 10.2.32.0/24 |  -  |  Vlan132  |  1  |  -  |  VARP  |  - |
+| Tenant_A_APP_Zone  | 10.3.32.0/24 |  -  |  Vlan132  |  1  |  -  |  VARP  |  - |
 
 ### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf Tenant_A_APP_Zone 10.2.32.0/24 Vlan132 name VARP
+ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 ```
 
 ## Router BGP
@@ -600,7 +621,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 1.1.1.1:12 | 12:12 | - | - | learned | 130-131 |
+| Tenant_A_APP_Zone | 1.1.1.1:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_WEB_Zone | 1.1.1.1:11 | 11:11 | - | - | learned | 120-121 |
 
 #### Router BGP EVPN VRFs
@@ -660,7 +681,7 @@ router bgp 65101
       rd 1.1.1.1:12
       route-target both 12:12
       redistribute learned
-      vlan 130-131
+      vlan 130-132
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 1.1.1.1:11

@@ -84,6 +84,17 @@ tenants:
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
+          132:
+            name: Tenant_A_APP_Zone_3
+            tags: ['erp2']
+            enabled: True
+            nodes:
+              DC1-LEAF1A:
+                ip_address: 10.1.32.1/24
+            ip_virtual_router_addresses:
+              - 10.1.32.254
+              - 10.2.32.254/24
+              - 10.3.32.254/24
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:

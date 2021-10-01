@@ -18,8 +18,8 @@ vlan_interfaces:
                                      svi_name) %}
 {%             set svi_enabled = svi_config.enabled | arista.avd.default(
                                  svi_profile.enabled) %}
-{%             set svi_ip_virtual_router_address = svi_config.ip_virtual_router_address | arista.avd.default(
-                                                   svi_profile.ip_virtual_router_address) %}
+{%             set svi_ip_virtual_router_addresses = svi_config.ip_virtual_router_addresses | arista.avd.default(
+                                                     svi_profile.ip_virtual_router_addresses) %}
 {%             set svi_ip_address_virtual = svi_config.ip_address_virtual | arista.avd.default(
                                             svi_profile.ip_address_virtual) %}
 {%             set svi_ip_address_virtual_secondaries = svi_config.ip_address_virtual_secondaries | arista.avd.default(
@@ -52,8 +52,8 @@ vlan_interfaces:
     ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address }}
 {%             endif %}
 {# Virtual Router IP Address #}
-{%             if svi_ip_virtual_router_address is arista.avd.defined %}
-    ip_virtual_router_address: {{ svi_ip_virtual_router_address | ansible.netcommon.ipaddr('address') }}
+{%             if svi_ip_virtual_router_addresses is arista.avd.defined %}
+    ip_virtual_router_addresses: {{ svi_ip_virtual_router_addresses }}
 {%             endif %}
 {# Virtual IP address #}
 {%             if svi_ip_address_virtual is arista.avd.defined %}
