@@ -36,7 +36,7 @@ ztp:
 {% endif %}
   general:
     subnets:
-{% if ztp_network_summary is defined and ztp_network_summary is not none %}
+{% if ztp_network_summary is arista.avd.defined %}
       - network: {{ ztp_network_summary | ansible.netcommon.ipaddr('network') }}
         netmask: {{ ztp_network_summary | ansible.netcommon.ipaddr('netmask') }}
 {% endif %}
@@ -49,13 +49,13 @@ ztp:
           - {{ name_server }}
 {%     endfor %}
 {% endif %}
-{% if ztp_pool_start is defined and ztp_pool_start is not none %}
+{% if ztp_pool_start is arista.avd.defined %}
         start: {{ ztp_pool_start }}
 {% endif %}
-{% if ztp_pool_end is defined and ztp_pool_end is not none %}
+{% if ztp_pool_end is arista.avd.defined %}
         end: {{ ztp_pool_end }}
 {% endif %}
-{% if ztp_lease_time is defined and ztp_lease_time is not none %}
+{% if ztp_lease_time is arista.avd.defined %}
         lease_time: 300
 {% endif %}
   clients:
