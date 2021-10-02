@@ -1,0 +1,35 @@
+---
+name: "Tag & Release management"
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+name: Upload Release Asset
+
+jobs:
+  build:
+    name: Upload Release Asset
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build project # This would actually build your project, using zip for an example artifact
+        run: |
+          sed -i 's/version: null/version: '"$(git describe --abbrev=0 --tags | sed 's/v//')"'/' ansible_collections/arista/avd/galaxy.yml
+          make collection-build
+
+      - name: Release on Github
+        uses: softprops/action-gh-release@v1
+        with:
+          files: '*.tar.gz'
+
+      # - name: Publish Collection to galaxy
+      #   uses: artis3n/ansible_galaxy_collection@v2
+      #   with:
+      #     api_key: '${{ secrets.GALAXY_API_KEY }}'
+      #     collection_dir: 'ansible_collections/titom74/avd/'
+      #     build: false
