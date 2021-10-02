@@ -2,12 +2,6 @@
 name: "Collection code testing"
 
 on:
-  # push:
-  #   branches-ignore:
-  #     - devel
-  #     - releases/**
-  #     - ci/**
-  # For a pull_request event, only branches and tags on the base are evaluated.
   pull_request:
     branches-ignore:
       - releases/**
@@ -43,6 +37,7 @@ jobs:
               - '!ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - '!ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             config_gen:
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*'
@@ -51,24 +46,29 @@ jobs:
               - 'ansible_collections/arista/avd/molecule/eos_cli_config_gen/**/*'
               - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/*'
               - 'ansible_collections/arista/avd/molecule/upgrade_eos_cli_config_gen/**/*'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             cloudvision:
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/*'
               - 'ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/*'
               - 'ansible_collections/arista/avd/molecule/cvp_configlet_upload/**/*'
               - '.github/workflows/pull-request-management.yml'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             dhcp:
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/*'
               - 'ansible_collections/arista/avd/roles/dhcp_provisioner/**/*'
               - '.github/workflows/pull-request-management.yml'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             plugins:
               - 'ansible_collections/arista/avd/plugins/filter/**'
               - 'ansible_collections/arista/avd/plugins/test/**'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             requirements:
               - 'ansible_collections/arista/avd/requirements.txt'
               - 'ansible_collections/arista/avd/requirements-dev.txt'
               - 'ansible_collections/arista/avd/meta/runtime.yml'
               - '.github/workflows/pull-request-management.yml'
+              - '!ansible_collections/arista/avd/galaxy.yml'
             docs:
               - '.github/workflows/pull-request-management.yml'
               - 'mkdocs.yml'
@@ -76,6 +76,7 @@ jobs:
               - 'ansible_collections/arista/avd/roles/**/*.md'
               - 'ansible_collections/arista/avd/**/*.md'
               - 'ansible_collections/arista/avd/README.md'
+              - '!ansible_collections/arista/avd/galaxy.yml'
   # ----------------------------------- #
   # Pre Commit code validation
   # ----------------------------------- #
@@ -289,57 +290,3 @@ jobs:
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
       #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
-  # ----------------------------------- #
-  # Ansible tests
-  # ----------------------------------- #
-  ansible_test:
-    name: Run ansible-test validation
-    runs-on: ubuntu-20.04
-    needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
-    strategy:
-      fail-fast: true
-      matrix:
-        python_version: [ 3.8 ]
-    steps:
-      - name: 'set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
-      - name: Set up Python 3
-        uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python_version }}
-      - name: 'Install Python requirements'
-        run: make install-requirements
-      - name: 'ansible-test linting'
-        run: |
-          cd ansible_collections/arista/avd/
-          ansible-test sanity  -v --requirements --docker --skip-test yamllint --exclude docs/
-
-  galaxy_importer:
-    name: Test galaxy-importer
-    runs-on: ubuntu-latest
-    container: avdteam/base:3.8-v2.0
-    needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
-    env:
-      PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
-      ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
-    steps:
-      - name: 'set environment variables'
-        run: |
-          echo "PY_COLORS=1" >> $GITHUB_ENV
-          echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
-      - uses: actions/checkout@v2
-      - name: install requirements
-        run: make install-requirements
-      - name: 'build ansible package'
-        run: make collection-build
-      - name: 'run ansible-importer checks'
-        run: python -m galaxy_importer.main *.tar.gz
-      - uses: actions/upload-artifact@v2
-        with:
-          name: importer-logs
-          path: ./importer_result.json
