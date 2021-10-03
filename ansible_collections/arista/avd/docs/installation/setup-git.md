@@ -2,6 +2,9 @@
 
 Using GIT as source of collection in ansible provides an easy way to implement all the changes once they are part of the development branch without waiting for a new tagged version shipped to ansible-galaxy.
 
+!!! warning "For AVD contribution only"
+    This method should be used for development only. For basic usage, please refer to [ansible-galaxy approach](./setup-galaxy.html)
+
 ## Use Git as source of collection
 
 In this setup, git repository will be used by ansible as collection. It is useful when working on feature development as we can change git branch and test code lively.

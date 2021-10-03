@@ -26,6 +26,63 @@ You can specify multiple range identifiers which are split by ,. You can use the
 - `<=`: Version is less than or equal to the one specified.
 - `<`: Version is less than the one specified.
 
+### Use ansible requirements file
+
+This approach gives you option to use arista.avd directly from github or via ansible galaxy.
+
+#### Set arista.avd from github
+
+The `version` knob supports any [branch](https://github.com/aristanetworks/ansible-avd/branches) available on github and also any [tag or version](https://github.com/aristanetworks/ansible-avd/releases) available in the repository
+
+```yaml
+collections:
+  - name: https://github.com/aristanetworks/ansible-avd.git#ansible_collections/arista/avd
+    type: git
+    version: devel
+```
+
+#### Set arista.avd from ansible-galaxy
+
+The `version` knob supports any [tag or version](https://galaxy.ansible.com/arista/avd) available in ansible-galaxy servers.
+
+```yaml
+collections:
+  - name: arista.avd
+    version: 3.0.0-rc2
+```
+
+#### Install required collection
+
+With ansible requirements file, you can install all required collections with the following commands
+
+```bash
+➜  ~ ansible-galaxy collection install -r requirements.yml
+Starting galaxy collection install process
+Process install dependency map
+Cloning into '/home/avd/.ansible/tmp/ansible-local-2741xjxm4bv/tmp07wpis9v/avd-ci-testrgl6qy3w'...
+remote: Enumerating objects: 1945, done.
+remote: Counting objects: 100% (1945/1945), done.
+remote: Compressing objects: 100% (975/975), done.
+remote: Total 1945 (delta 895), reused 1921 (delta 871), pack-reused 0
+Receiving objects: 100% (1945/1945), 3.44 MiB | 2.72 MiB/s, done.
+Resolving deltas: 100% (895/895), done.
+Already on 'main'
+Your branch is up to date with 'origin/main'.
+Starting collection install process
+Installing 'arista.avd:*' to '/home/avd/.ansible/collections/ansible_collections/arista/avd'
+[...]
+➜  ~ ansible-galaxy collection list
+
+# /home/avd/.ansible/collections/ansible_collections
+Collection        Version
+----------------- -------
+ansible.netcommon 2.4.0
+ansible.utils     2.4.1
+arista.cvp        3.2.0
+arista.eos        3.1.0
+arista.avd       *
+```
+
 ### Install in a specific directory
 
 If you want to install collection in a specific directory part of your project, you can call `ansible-galaxy` and update your `ansible.cfg`
