@@ -95,40 +95,90 @@ interface Management1
 
 ### IPv6 Standard Access-lists Summary
 
-#### TEST2
+#### TEST4
 
 | Sequence | Action |
 | -------- | ------ |
-| 5 | deny fe80::/64 |
-| 10 | permit 2001:db8::/64 |
+| 5 | deny ip fe80::/64 |
+| 10 | permit ip fe90::/64 |
+
+#### TEST5
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | permit ip 2001:db8::/64 |
+| 10 | deny ip 2001:db8::/32 |
+
+#### TEST6
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny ip 2001:db8:1000::/64 |
+| 10 | permit ip 2001:db8::/32 |
 
 ### IPv6 Standard Access-lists Device Configuration
 
 ```eos
 !
-ipv6 access-list standard TEST2
-   5 deny fe80::/64
-   10 permit 2001:db8::/64
+ipv6 access-list standard TEST4
+   5 deny ip fe80::/64
+   10 permit ip fe90::/64
+!
+ipv6 access-list standard TEST5
+   counters per-entry
+   5 permit ip 2001:db8::/64
+   10 deny ip 2001:db8::/32
+!
+ipv6 access-list standard TEST6
+   5 deny ip 2001:db8:1000::/64
+   10 permit ip 2001:db8::/32
 ```
 
 ## IPv6 Extended Access-lists
 
 ### IPv6 Extended Access-lists Summary
 
-**TEST1:**
+#### TEST1
 
 | Sequence | Action |
 | -------- | ------ |
 | 5 | deny ipv6 fe80::/64 any |
 | 10 | permit ipv6 fe90::/64 any |
 
+#### TEST2
+
+ACL has counting mode `counters per-entry` enabled!
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | permit ip 2001:db8::/64 |
+| 10 | deny ip 2001:db8::/32 |
+
+#### TEST3
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny ip 2001:db8:1000::/64 |
+| 10 | permit ip 2001:db8::/32 |
+
 ### IPv6 Extended Access-lists Device Configuration
 
 ```eos
 !
 ipv6 access-list TEST1
-   5 deny ipv6 fe80::/64 any
-   10 permit ipv6 fe90::/64 any
+   5 deny ip fe80::/64
+   10 permit ip fe90::/64
+!
+ipv6 access-list TEST2
+   counters per-entry
+   5 permit ip 2001:db8::/64
+   10 deny ip 2001:db8::/32
+!
+ipv6 access-list TEST3
+   5 deny ip 2001:db8:1000::/64
+   10 permit ip 2001:db8::/32
 ```
 
 # Quality Of Service
