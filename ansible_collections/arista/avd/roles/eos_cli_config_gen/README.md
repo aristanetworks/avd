@@ -1420,10 +1420,10 @@ management_ssh:
 
 ```yaml
 ip_ssh_client_source_interfaces:
-    - name: <interface_name_1>
-      vrf: <vrf_name_1 | optional set to default>
+    - name: < interface_name_1 >
+      vrf: < vrf_name_1 | default -> "default" >
     - name: <interface_name_2>
-      vrf: <vrf_name_2 | optional set to default>
+      vrf: < vrf_name_2 | default -> "default" >
 ```
 
 #### NTP
