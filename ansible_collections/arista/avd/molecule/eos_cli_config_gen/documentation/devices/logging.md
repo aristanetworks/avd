@@ -2,17 +2,28 @@
 # Table of Contents
 <!-- toc -->
 
+- [logging](#logging)
+- [Table of Contents](#table-of-contents)
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+    - [Management Interfaces Summary](#management-interfaces-summary)
+      - [IPv4](#ipv4)
+      - [IPv6](#ipv6)
+    - [Management Interfaces Device Configuration](#management-interfaces-device-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
-  - [Logging](#logging)
+  - [Logging](#logging-1)
+    - [Logging Servers and Features Summary](#logging-servers-and-features-summary)
+    - [Logging Servers and Features Device Configuration](#logging-servers-and-features-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
 - [Routing](#routing)
   - [IP Routing](#ip-routing)
+    - [IP Routing Summary](#ip-routing-summary)
+    - [IP Routing Device Configuration](#ip-routing-device-configuration)
   - [IPv6 Routing](#ipv6-routing)
+    - [IPv6 Routing Summary](#ipv6-routing-summary)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -87,11 +98,11 @@ logging synchronous level error
 logging source-interface Loopback0
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp
-logging host 60.60.60.7 100 200 
+logging host 60.60.60.7 100 200
 logging vrf mgt source-interface Management0
 logging vrf mgt host 10.10.10.7
 logging vrf mgt host 30.30.30.7 100 200 protocol tcp
-logging vrf mgt host 40.40.40.7 300 400 
+logging vrf mgt host 40.40.40.7 300 400
 ```
 
 # Internal VLAN Allocation Policy
