@@ -80,6 +80,7 @@
       - [Management Console](#management-console)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
+      - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
       - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -1416,6 +1417,16 @@ management_ssh:
       enable: < true | false >
     < vrf_name_2 >:
       enable: < true | false >
+```
+
+#### IP SSH Client Source Interfaces
+
+```yaml
+ip_ssh_client_source_interfaces:
+    - name: < interface_name_1 >
+      vrf: < vrf_name_1 | default -> "default" >
+    - name: <interface_name_2>
+      vrf: < vrf_name_2 | default -> "default" >
 ```
 
 #### NTP
