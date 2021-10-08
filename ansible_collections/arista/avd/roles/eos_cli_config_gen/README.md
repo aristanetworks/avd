@@ -993,7 +993,7 @@ port_channel_interfaces:
     description: < description >
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
-    ip_address:  < IP_address/mask >
+    ip_address: < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
     ipv6_address_link_local: < link_local_IPv6_address/mask >
@@ -1443,7 +1443,7 @@ ntp:
   servers:
   - name: < IP | hostname >
     burst: < true | false >
-    iburst:  < true | false >
+    iburst: < true | false >
     key: < 1 - 65535 >
     local_interface: < source_interface >
     maxpoll: < 3 - 17 (logorithmic)>
