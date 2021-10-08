@@ -44,7 +44,6 @@ logging source-interface {{ logging.source_interface }}
 {%             endif %}
 {%             set logging_host_cli = logging_host_cli ~ " host " ~ host %}
 {%             if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined() %}
-{%                 set logging_ports = namespace() %}
 {%                 set logging_ports.concatenate = logging.vrfs[vrf].hosts[host].ports | join(' ') %}
 {%                 set logging_host_cli = logging_host_cli ~ ' ' ~ logging_ports.concatenate %}
 {%             endif %}
