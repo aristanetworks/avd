@@ -2264,6 +2264,8 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
+          prefix_list_in: < prefix_list_name >
+          prefix_list_out: < prefix_list_name >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
