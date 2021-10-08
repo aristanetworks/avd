@@ -323,6 +323,7 @@ aaa_root:
   secret:
     sha512_password: "< sha_512_password >"
 ```
+
 #### AAA Server Groups
 
 ```yaml
@@ -878,6 +879,7 @@ interface_profiles:
       - < command_1 >
       - < command_2 >
 ```
+
 #### Loopback Interfaces
 
 ```yaml
@@ -1230,6 +1232,7 @@ interface_groups:
 ```
 
 #### Profiles and units
+
 ```yaml
 maintenance:
   default_interface_profile: < interface_profile_1 >
@@ -1794,7 +1797,8 @@ snmp_server:
       enable: < true | false >
 ```
 
-###  System Control-Plane
+### System Control-Plane
+
 ```yaml
 system:
   control_plane:
@@ -2525,7 +2529,6 @@ terminal:
   width: < 0-32767 >
 ```
 
-
 ### Traffic Policies
 
 ```yaml
@@ -2656,6 +2659,7 @@ See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_desig
 ### Versioning
 
 To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+
 ```yaml
 avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ```
@@ -2663,6 +2667,7 @@ avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ### Example Playbooks
 
 Running upgrade only
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -2674,6 +2679,7 @@ Running upgrade only
 ```
 
 Running upgrade and the regular `eos_cli_config_gen` tasks
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -2685,6 +2691,7 @@ Running upgrade and the regular `eos_cli_config_gen` tasks
 ```
 
 Alternative with separate tasks:
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
