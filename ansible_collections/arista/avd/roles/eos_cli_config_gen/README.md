@@ -1254,12 +1254,13 @@ maintenance:
     < unit_name_1 >:
       quiesce: < true | false >
       profile: < unit_profile_1 >
-      bgp_groups:
-        - < bgp_group_1>
-        - < bgp_group_2>
-      interface_groups:
-        - < interface_group_1>
-        - < interface_group_2>
+      groups:
+        bgp_groups:
+          - < bgp_group_1>
+          - < bgp_group_2>
+        interface_groups:
+          - < interface_group_1>
+          - < interface_group_2>
 ```
 
 ### Management
