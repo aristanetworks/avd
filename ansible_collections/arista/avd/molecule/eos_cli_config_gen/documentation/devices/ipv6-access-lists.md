@@ -15,6 +15,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+  - [IPv6 Standard Access-lists](#ipv6-standard-access-lists)
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
 
@@ -90,6 +91,26 @@ interface Management1
 
 # ACL
 
+## IPv6 Standard Access-lists
+
+### IPv6 Standard Access-lists Summary
+
+#### TEST2
+
+| Sequence | Action |
+| -------- | ------ |
+| 5 | deny fe80::/64 |
+| 10 | permit 2001:db8::/64 |
+
+### IPv6 Standard Access-lists Device Configuration
+
+```eos
+!
+ipv6 access-list standard TEST2
+   5 deny fe80::/64
+   10 permit 2001:db8::/64
+```
+
 ## IPv6 Extended Access-lists
 
 ### IPv6 Extended Access-lists Summary
@@ -98,16 +119,16 @@ interface Management1
 
 | Sequence | Action |
 | -------- | ------ |
-| 5 | deny ip fe80::/64 |
-| 10 | permit ip fe90::/64 |
+| 5 | deny fe80::/64 |
+| 10 | permit fe90::/64 |
 
 ### IPv6 Extended Access-lists Device Configuration
 
 ```eos
 !
 ipv6 access-list TEST1
-   5 deny ip fe80::/64
-   10 permit ip fe90::/64
+   5 deny fe80::/64
+   10 permit fe90::/64
 ```
 
 # Quality Of Service
