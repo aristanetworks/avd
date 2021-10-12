@@ -30,7 +30,7 @@ management_eapi:
   enable_https: < boolean | default -> true >
 
 # CloudVision - Telemetry Agent (TerminAttr) configuration | Optional
-# You can either provide a list of IPs to target on-premise CloudVision cluster or 
+# You can either provide a list of IPs to target on-premise CloudVision cluster or
 # use DNS name for your CloudVision as a Service instance. If you have both on-prem and
 # CVaaS defined, only on-prem is going to be configured.
 
