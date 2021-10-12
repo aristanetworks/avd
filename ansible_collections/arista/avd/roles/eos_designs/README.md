@@ -15,7 +15,7 @@
 
 **eos_designs**, is a role that provides an abstracted data model to deploy the following design:
 
-- [**l3ls-evpn** design](doc/l3ls-evpn.md): Configure various Layer 3 Leaf & Spine topologies leveraging a VXLAN data-plane with an EVPN control-plane.
+- [**l3ls-evpn** design](doc/designs.md): Configure various Layer 3 Leaf & Spine topologies leveraging a VXLAN data-plane with an EVPN control-plane.
 
 The **eos_designs** role:
 
