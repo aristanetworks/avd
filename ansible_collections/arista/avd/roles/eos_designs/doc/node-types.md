@@ -1,6 +1,8 @@
 # Node Types Definition
 
-The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured with the following options:
+The node type definition is done under `node_type_keys`. This dictionary defines type of devices you can use in your topologies. Each node type can be configured to fit the role in the network.
+
+## Variables and Options
 
 ```yaml
 # Define Node Type Keys, to specify the properties of each node type in the fabric
@@ -60,7 +62,52 @@ node_type_keys:
       vtep_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.vtep_loopback_interface >
 ```
 
-To help format the custom interface descriptions, the following contextual variables are available to the custom template:
+## Context for ip_addressing templates
+
+To help calculate the custom IP addressing, the following contextual variables are available to the custom templates:
+
+router_id:
+- `{{ switch_id }}`
+- `{{ loopback_ipv4_pool }}`
+- `{{ loopback_ipv4_offset }}`
+
+mlag_ip_primary & mlag_ip_secondary:
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_ipv4_pool }}`
+
+mlag_l3_ip_primary & mlag_l3_ip_secondary:
+- `{{ mlag_primary_id }}`
+- `{{ mlag_secondary_id }}`
+- `{{ switch_data.combined.mlag_peer_l3_ipv4_pool }}`
+
+p2p_uplinks_ip & p2p_uplinks_peer_ip:
+- `{{ switch.uplink_ipv4_pool }}`
+- `{{ switch.id }}`
+- `{{ switch.max_uplink_switches }}`
+- `{{ switch.max_parallel_uplinks }}`
+- `{{ uplink_switch_index }}`
+
+vtep_ip_mlag:
+- `{{ switch_vtep_loopback_ipv4_pool }}`
+- `{{ mlag_primary_id }}`
+- `{{ loopback_ipv4_offset }}`
+
+vtep_ip:
+- `{{ switch_vtep_loopback_ipv4_pool }}`
+- `{{ switch_id }}`
+- `{{ loopback_ipv4_offset }}`
+
+`p2p_uplinks_ip` & `p2p_uplinks_peer_ip` can leverage the switch facts (switch.*) to customize the IP adressing.
+All other templates can only leverage the input variables and variables set in switch facts template.
+
+For more information about the available contextual properties, see the following links:
+- [underlay_ethernet_interfaces facts](../templates/designs/l3ls-evpn/facts/topology/p2p-uplinks.j2)
+- [switch facts](../templates/designs/l3ls-evpn/facts/switch/switch.j2)
+
+## Context for interface_descriptions templates
+
+To help format the custom interface descriptions, the following contextual variables are available to the custom templates:
 
 underlay_ethernet_interfaces:
 - `{{ link.peer }}`
@@ -83,10 +130,10 @@ connected_endpoints_port_channel_interfaces:
 All templates can leverage the switch facts (switch.*) to customize the interface descriptions.
 
 For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../../templates/facts/topology/p2p-uplinks.j2)
-- [underlay_port_channel_interfaces facts](../../templates/facts/topology/port-channel-uplinks.j2)
-- [connected_endpoints_ethernet_interfaces facts](../../templates/connected_endpoints/ethernet-interfaces.j2)
-- [connected_endpoints_port_channel_interfaces facts](../../templates/connected_endpoints/port-channel-interfaces.j2)
+- [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
+- [underlay_port_channel_interfaces facts](../templates/facts/topology/port-channel-uplinks.j2)
+- [connected_endpoints_ethernet_interfaces facts](../templates/connected_endpoints/ethernet-interfaces.j2)
+- [connected_endpoints_port_channel_interfaces facts](../templates/connected_endpoints/port-channel-interfaces.j2)
 
 The next output is structure example based on default definition:
 
@@ -121,4 +168,4 @@ node_type_keys:
 ```
 
 !!! info
-    The default node definition is available in the [default section](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/defaults/main/main.yml) of the eos_designs role.
+    The default node definition is available in the [default section](../defaults/main/main.yml) of the eos_designs role.
