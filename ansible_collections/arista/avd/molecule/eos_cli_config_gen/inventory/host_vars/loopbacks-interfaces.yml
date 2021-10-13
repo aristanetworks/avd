@@ -30,3 +30,16 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: true
+
+  Loopback101:
+    description: ISIS-SR Node-SID
+    ip_address: 10.1.255.3/32
+    isis_enable: ISIS_TEST
+    isis_passive: true
+    isis_metric: 50
+    mpls:
+      ip: true
+    node_segment:
+      index: 10
+      ipv4: true
+      ipv6: true
