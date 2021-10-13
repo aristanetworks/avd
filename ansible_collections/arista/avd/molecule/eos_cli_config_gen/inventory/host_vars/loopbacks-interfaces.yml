@@ -37,8 +37,6 @@ loopback_interfaces:
     isis_enable: ISIS_TEST
     isis_passive: true
     isis_metric: 50
-    mpls:
-      ip: true
     node_segment:
       index: 10
       ipv4: true

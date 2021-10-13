@@ -14,8 +14,7 @@
 {%         endif %}
 {%     endfor %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         if loopback_interfaces[loopback_interface].mpls is arista.avd.defined %}
-{%             set row_mpls_ip = true %}
+{%         if loopback_interfaces[loopback_interface].mpls is arista.avd.defined or loopback_interfaces[loopback_interface].node_segment is arista.avd.defined %}
 {%             set row_ldp_interface = loopback_interfaces[loopback_interface].mpls.ldp.interface | arista.avd.default('-') %}
 | {{ loopback_interface }} | - | {{ row_ldp_interface }} | - |
 {%         endif %}
