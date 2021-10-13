@@ -213,6 +213,28 @@ router bgp {{ router_bgp.as }}
 {%         endfor %}
       vlan {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan }}
 {%     endfor %}
+{# bgp vpws services #}
+{%     if router_bgp.vpws is arista.avd.defined %}
+{%         for vpws_service in router_bgp.vpws | arista.avd.natural_sort %}
+   !
+{%             if vpws_service.tenant is arista.avd.defined %}
+   vpws {{ vpws_service.tenant }}
+{%                 if vpws_service.rd is arista.avd.defined %}
+      rd {{ vpws_service.rd }}
+{%                 endif %}
+{%                 if vpws_service.route_targets.import_export is arista.avd.defined %}
+      route-target import export evpn {{ vpws_service.route_targets.import_export }}
+{%                 endif %}
+{%                 for pw in vpws_service.pseudowires | arista.avd.natural_sort %}
+{%                     if pw.name is arista.avd.defined and pw.id_local is arista.avd.defined and pw.id_remote is arista.avd.defined %}
+      !
+      pseudowire {{ pw.name }}
+         evpn vpws id local {{ pw.id_local }} remote {{ pw.id_remote }}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 {# address families activation #}
 {# address family evpn activation #}
 {%     if router_bgp.address_family_evpn is arista.avd.defined %}
