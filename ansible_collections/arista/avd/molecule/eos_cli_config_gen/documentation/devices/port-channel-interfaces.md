@@ -90,6 +90,7 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -135,6 +136,10 @@ interface Ethernet16
    description DC1-AGG04_Ethernet1
    channel-group 16 mode active
    lacp timer normal
+!
+interface Ethernet17
+   description LAG Member
+   channel-group 17 mode active
 !
 interface Ethernet50
    description SRV-POD03_Eth1
@@ -183,6 +188,7 @@ interface Ethernet50
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -253,6 +259,12 @@ interface Port-Channel16
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 16
+!
+interface Port-Channel17
+   description PBR Description
+   no switchport
+   ip address 192.0.2.3/31
+   service-policy type pbr input MyPolicy
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames

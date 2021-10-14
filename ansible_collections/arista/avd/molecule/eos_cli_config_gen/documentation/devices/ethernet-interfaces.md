@@ -111,6 +111,7 @@ interface Management1
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 
 #### IPv6
 
@@ -298,6 +299,13 @@ interface Ethernet17
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport trunk private-vlan secondary
+!
+interface Ethernet18
+   description PBR Description
+   mtu 1500
+   no switchport
+   ip address 192.0.2.1/31
+   service-policy type pbr input MyLANServicePolicy
 ```
 
 # Routing

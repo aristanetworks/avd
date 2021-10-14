@@ -124,6 +124,13 @@ port_channel_interfaces:
       trunk: untagged
       vlan: 70
 
+  Port-Channel17:
+    description: PBR Description
+    type: routed
+    ip_address: 192.0.2.3/31
+    service_policy:
+      pbr:
+        input: MyPolicy
 
   Port-Channel101:
     description: PVLAN Promiscuous Access - only one secondary
@@ -145,7 +152,6 @@ port_channel_interfaces:
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
-
 
 # Children interfaces
 ethernet_interfaces:
@@ -198,7 +204,6 @@ ethernet_interfaces:
       id: 8
       mode: active
 
-
   Ethernet15:
     peer: DC1-AGG03
     peer_interface: Ethernet1
@@ -222,6 +227,12 @@ ethernet_interfaces:
     lacp_timer:
       mode: normal
 
+  Ethernet17:
+    description: LAG Member
+    channel_group:
+      id: 17
+      mode: active
+
   Ethernet10/1:
     description: LAG Member
     channel_group:
@@ -239,3 +250,4 @@ ethernet_interfaces:
     channel_group:
       id: 103
       mode: active
+
