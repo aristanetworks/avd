@@ -753,6 +753,9 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     mpls:
       ip: < true | false >
       ldp:
@@ -935,6 +938,9 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
