@@ -2180,6 +2180,10 @@ router_bgp:
         - < learned >
   address_family_evpn:
     domain_identifier: < string >
+    neighbor_default_encapsulation:
+      mpls: < true | false >
+      next_hop_self:
+        source_interface: < source interface >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >

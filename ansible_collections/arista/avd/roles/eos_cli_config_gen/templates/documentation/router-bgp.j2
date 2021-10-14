@@ -186,6 +186,16 @@
 
 - VPN import pruning is __enabled__
 {%     endif %}
+{%     if router_bgp.address_family_evpn.neighbor_default_encapsulation.mpls is arista.avd.defined(true) %}
+#### EVPN Default Encapsulation
+
+| Default Neighbor Encapsulation | Next-hop-self Source Interface |
+| ------------------------------ | ------------------------------ |
+{%         set row_default_encapsulation = "MPLS" %}
+{%         set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default_encapsulation.next_hop_self.source_interface | arista.avd.default('-') %}
+| {{ row_default_encapsulation }} | {{ row_nhs_source_interface }} |
+
+{%     endif %}
 {%     if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
 #### EVPN Host Flapping Settings
