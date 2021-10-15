@@ -4,9 +4,9 @@ ipv6_access_lists:
   TEST1:
     sequence_numbers:
       10:
-        action: "permit fe90::/64"
+        action: "permit ipv6 fe90::/64 any"
       5:
-        action: "deny fe80::/64"
+        action: "deny ipv6 fe80::/64 any"
 
 ### IPv6 Standard ACLs ###
 ipv6_standard_access_lists:
