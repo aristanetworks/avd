@@ -6,7 +6,7 @@
 
 {%     for ipv6_standard_access_list in ipv6_standard_access_lists | arista.avd.natural_sort %}
 #### {{ ipv6_standard_access_list }}
-{%       if ipv6_standard_access_lists[ipv6_standard_access_list].enable_counters is arista.avd.defined(true) %}
+{%       if ipv6_standard_access_lists[ipv6_standard_access_list].counters_per_entry is arista.avd.defined(true) %}
 
 ACL has counting mode `counters per-entry` enabled!
 {%       endif %}

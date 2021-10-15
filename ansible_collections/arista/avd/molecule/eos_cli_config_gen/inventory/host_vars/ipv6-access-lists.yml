@@ -7,14 +7,14 @@ ipv6_access_lists:
       5:
         action: "deny ipv6 fe80::/64 any"
   TEST2:
-    enable_counters: true
+    counters_per_entry: true
     sequence_numbers:
       5:
         action: "permit ipv6 2001:db8::/64 any"
       10:
         action: "deny ipv6 2001:db8::/32 any"
   TEST3:
-    enable_counters: false
+    counters_per_entry: false
     sequence_numbers:
       5:
         action: "deny ipv6 2001:db8:1000::/64 any"
@@ -31,14 +31,14 @@ ipv6_standard_access_lists:
       5:
         action: "deny fe80::/64"
   TEST5:
-    enable_counters: true
+    counters_per_entry: true
     sequence_numbers:
       5:
         action: "permit 2001:db8::/64"
       10:
         action: "deny 2001:db8::/32"
   TEST6:
-    enable_counters: false
+    counters_per_entry: false
     sequence_numbers:
       5:
         action: "deny 2001:db8:1000::/64"

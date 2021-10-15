@@ -9,7 +9,7 @@ access_lists:
       30:
         action: "permit ip 192.0.2.0/24 any"
   ACL-02:
-    enable_counters: true
+    counters_per_entry: true
     sequence_numbers:
       10:
         action: "remark ACL to restrict access RFC1918 addresses"
@@ -18,7 +18,7 @@ access_lists:
       30:
         action: "permit ip 192.0.2.0/24 any"
   ACL-03:
-    enable_counters: false
+    counters_per_entry: false
     sequence_numbers:
       10:
         action: "remark ACL to restrict access RFC1918 addresses"
@@ -40,7 +40,7 @@ standard_access_lists:
       40:
         action: "permit host 10.10.10.12"
   ACL-SSH:
-    enable_counters: true
+    counters_per_entry: true
     sequence_numbers:
       10:
         action: "remark ACL to restrict access RFC1918 addresses"
@@ -51,7 +51,7 @@ standard_access_lists:
       40:
         action: "permit 192.168.0.0/16"
   ACL-SSH-VRF:
-    enable_counters: false
+    counters_per_entry: false
     sequence_numbers:
       10:
         action: "remark ACL to restrict access RFC1918 addresses"
