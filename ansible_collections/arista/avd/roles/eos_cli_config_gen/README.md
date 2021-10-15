@@ -1670,11 +1670,11 @@ logging:
         < syslog_server_1 >:
           protocol: < tcp | udp (default udp) >
           ports:
-            < custom_port_1 >
-            < custom_port_2 >
+            - < custom_port_1 >
+            - < custom_port_2 >
         < syslog_server_2 >:
           ports:
-            < custom_port_1 >
+            - < custom_port_1 >
   policy:
     match:
       match_lists:

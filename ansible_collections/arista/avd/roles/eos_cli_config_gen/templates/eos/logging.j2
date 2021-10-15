@@ -44,15 +44,10 @@ logging source-interface {{ logging.source_interface }}
 {%             endif %}
 {%             set logging_host_cli = logging_host_cli ~ " host " ~ host %}
 {%             if logging.vrfs[vrf].hosts[host].ports is arista.avd.defined() %}
-{%                 set logging_ports = namespace() %}
-{%                 set logging_ports.concatenate = " " %}
-{%                 for port in logging.vrfs[vrf].hosts[host].ports %}
-{%                     set logging_ports.concatenate = logging_ports.concatenate ~ port ~ " " %}
-{%                 endfor %}
-{%                 set logging_host_cli = logging_host_cli ~ logging_ports.concatenate %}
+{%                 set logging_host_cli = logging_host_cli ~ ' ' ~ logging.vrfs[vrf].hosts[host].ports | join(' ') %}
 {%             endif %}
 {%             if logging.vrfs[vrf].hosts[host].protocol is arista.avd.defined() and logging.vrfs[vrf].hosts[host].protocol is not arista.avd.defined("udp") %}
-{%                 set logging_host_cli = logging_host_cli ~ "protocol " ~ logging.vrfs[vrf].hosts[host].protocol | lower %}
+{%                 set logging_host_cli = logging_host_cli ~ " protocol " ~ logging.vrfs[vrf].hosts[host].protocol | lower %}
 {%             endif %}
 {{ logging_host_cli }}
 {%         endfor %}
