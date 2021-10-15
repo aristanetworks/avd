@@ -5,6 +5,6 @@ ipv6 access-list standard {{ ipv6_standard_access_list }}
 {%     for sequence in ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers | arista.avd.natural_sort %}
 {%         if ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action is arista.avd.defined %}
    {{ sequence }} {{ ipv6_standard_access_lists[ipv6_standard_access_list].sequence_numbers[sequence].action }}
-{%         endif %}}
+{%         endif %}
 {%     endfor %}
 {% endfor %}
