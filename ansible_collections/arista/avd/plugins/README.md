@@ -154,18 +154,18 @@ Feature is {{ "not " if extremely_long_variable_name is defined and extremely_lo
 Warnings or Errors can be emitted with the optional arguments `fail_action` and `var_name`:
 
 ```jinja
-{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var' %}
+{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='warning', var_name='my_dict.my_list[12].my_var') %}
 >>> [WARNING]: my_dict.my_list[12].my_var was expected but not set. Output may be incorrect or incomplete!
 
-{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='error', var_name='my_dict.my_list[12].my_var' %}
+{% if my_dict.my_list[12].my_var is arista.avd.defined(fail_action='error', var_name='my_dict.my_list[12].my_var') %}
 >>> fatal: [DC2-RS1]: FAILED! => {"msg": "my_dict.my_list[12].my_var was expected but not set!"}
 
 {% set my_dict.my_list[12].my_var = 'not_my_value' %}
 
-{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='warning', var_name='my_dict.my_list[12].my_var' %}
+{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='warning', var_name='my_dict.my_list[12].my_var') %}
 >>> [WARNING]: my_dict.my_list[12].my_var was set to not_my_value but we expected my_value. Output may be incorrect or incomplete!
 
-{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='error', var_name='my_dict.my_list[12].my_var' %}
+{% if my_dict.my_list[12].my_var is arista.avd.defined('my_value', fail_action='error', var_name='my_dict.my_list[12].my_var') %}
 >>> fatal: [DC2-RS1]: FAILED! => {"msg": "my_dict.my_list[12].my_var was set to not_my_value but we expected my_value!"}
 ```
 
@@ -176,6 +176,7 @@ The test will return `False` if either the passed value or the test_values are `
 
 The test accepts either a single test_value or a list of test_values.
 To use this test:
+
 ```jinja
 {% if my_list is arista.avd.contains(item) %}Match{% endif %}
 
@@ -189,6 +190,7 @@ The `arista.avd.contains` is used in the role `eos_designs` in combination with 
 for an element where `switch_platform` is contained in the `platforms` attribute.
 
 Data model:
+
 ```yaml
 platform_settings:
   - platforms: [default]
@@ -208,6 +210,7 @@ platform_settings:
 ```
 
 Jinja template without the `selectattr` and `arista.avd.contains` test:
+
 ```jinja
 switch:
 {% set ns = namespace() %}
@@ -226,7 +229,9 @@ switch:
 {%     endif %}
 {% endfor %}
 ```
+
 Jinja template with the `selectattr` and `arista.avd.contains` test:
+
 ```jinja
 switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
@@ -238,6 +243,7 @@ switch:
 ### Inventory to CloudVision Containers
 
 The `arista.avd.inventory_to_container` module provides following capabilities:
+
 - Transform inventory groups into CloudVision containers topology.
 - Create list of configlets definition.
 
@@ -315,6 +321,7 @@ CVP_CONTAINERS:
 ### Build Configuration to publish configlets to CloudVision
 
 The `arista.avd.configlet_build_config` module provides the following capabilities:
+
 - Build arista.cvp.configlet configuration.
 - Build configuration to publish configlets to Cloudvision.
 
@@ -343,8 +350,9 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
 ### Add Table Of Contents to an existing MarkDown file
 
 The `arista.avd.add_toc` module provides following capabilities:
-  - Wrapper of md-toc python library
-  - Produce Table of Contents and add to MD file between markers
+
+- Wrapper of md-toc python library
+- Produce Table of Contents and add to MD file between markers
 
 The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
 The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
@@ -370,9 +378,10 @@ tasks:
 ### YAML Templates to Facts
 
 The `arista.avd.yaml_templates_to_facts` module is an Ansible Action Plugin providing the following capabilities:
+
 - Set Facts based on one or more Jinja2 templates producing YAML output.
 - Recursively combining output of templates to allow templates to update overlapping parts of the data models.
-- Facts set by one template will be accessable by the next templates
+- Facts set by one template will be accessible by the next templates
 - Returned Facts can be set below a specific `root_key`
 - Facts returned templates can be stripped for `null` values to avoid them overwriting previous set facts
 
