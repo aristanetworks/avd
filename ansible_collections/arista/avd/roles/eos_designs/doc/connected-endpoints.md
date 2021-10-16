@@ -4,8 +4,7 @@
 - The connected endpoints are leveraged to define any device that connects to a leaf switch ports, i.e.: servers, firewalls, routers, load balancers, and storage arrays.
 - Connected endpoints key/value pairs are designed to be extended for your own needs and leveraged to configure the endpoint itself.
 
-
-## Variables and Options:
+## Variables and Options
 
 ### Connected Endpoints Keys
 
@@ -80,7 +79,7 @@ port_profiles:
         timeout: < timeout in seconds > | Optional - default is 90 seconds
 
 # Dictionary key of connected endpoint as defined in connected_endpoints_keys
-# This should be applied to group_vars or host_vars where endpoint are connecting.
+# This should be applied to group_vars or host_vars where endpoints are connecting.
 < connected_endpoints_keys.key >:
 
   # Endpoint name, this will be used in the switchport description
@@ -205,6 +204,7 @@ port_profiles:
           mode: '< active | passive | on >'
           short_esi: < 0000:0000:0000 >
 ```
+
 ## Examples
 
 ```yaml

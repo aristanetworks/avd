@@ -52,11 +52,6 @@ pod_name: < POD_Name >
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 
-!!! warning "5-stage CLOS limitations"
-    - Current AVD release supports single plane deployment only.
-    - Only eBGP underlay is supported for super-spine deployment.
-    - Spines in every POD must have unique AS per POD.
-
 ## Node Type Variables
 
 The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
