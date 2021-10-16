@@ -119,7 +119,6 @@ nav:
   - Roles documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Designs: roles/eos_designs/doc/designs.md
           - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
           - DCI & L3 Edge: roles/eos_designs/doc/l3-edge.md
           - Fabric Topology: roles/eos_designs/doc/fabric-topology.md
