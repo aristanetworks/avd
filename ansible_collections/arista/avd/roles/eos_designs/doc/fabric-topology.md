@@ -3,7 +3,7 @@
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
 <div style="text-align:center">
-  <img src="../../../../media/topology.gif" />
+  <img src="../../../../media/5-stage-topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
