@@ -3,9 +3,9 @@ default_templates:
   # Templates defined per design
   l3ls-evpn:
     facts:
+      # Set "switch.*" variables based on node type
+      - template: "facts/node_type/main.j2"
       # Set general "switch.*" variables
-      - template: "facts/main.j2"
-      # Set design specific "switch.*" variables
       - template: "facts/switch/main.j2"
     topology_facts:
       # Set design specific "topology.*" variables
