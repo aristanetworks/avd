@@ -174,10 +174,10 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a

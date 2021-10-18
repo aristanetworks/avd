@@ -262,26 +262,7 @@ vlans:
     name: web-l2-vlan-2
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    vxlan:
-      source_interface: Loopback1
-      udp_port: 4789
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
-      vrfs:
-        Common_VRF:
-          vni: 1025
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
   Vlan110:
     tenant: Tenant_A
@@ -314,4 +295,23 @@ vlan_interfaces:
       EOF
 
       '
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+vxlan_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+        2500:
+          vni: 2500
+        2600:
+          vni: 2600
+      vrfs:
+        Common_VRF:
+          vni: 1025

@@ -854,6 +854,10 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+virtual_source_nat_vrfs:
+  Tenant_A_OP_Zone:
+    ip_address: 10.255.1.8
 vxlan_interface:
   Vxlan1:
     description: DC1-SVC3A_VTEP
@@ -911,7 +915,3 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
-virtual_source_nat_vrfs:
-  Tenant_A_OP_Zone:
-    ip_address: 10.255.1.8
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a

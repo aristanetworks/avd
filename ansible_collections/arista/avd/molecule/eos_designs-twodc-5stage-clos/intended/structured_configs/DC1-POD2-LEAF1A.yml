@@ -261,26 +261,7 @@ vlans:
     name: l2vlan_with_no_vxlan
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    vxlan:
-      source_interface: Loopback1
-      udp_port: 4789
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
-      vrfs:
-        Common_VRF:
-          vni: 1025
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
   Vlan110:
     tenant: Tenant_A
@@ -323,9 +304,28 @@ vlan_interfaces:
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.10.13.1/24
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
+vxlan_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+        2500:
+          vni: 2500
+        2600:
+          vni: 2600
+      vrfs:
+        Common_VRF:
+          vni: 1025
 domain_list:
 - structured-config.set.under.vrf.common-vrf
