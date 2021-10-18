@@ -422,6 +422,7 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP
@@ -443,4 +444,3 @@ vxlan_interface:
           vni: 21
         Tenant_C_WAN_Zone:
           vni: 31
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a

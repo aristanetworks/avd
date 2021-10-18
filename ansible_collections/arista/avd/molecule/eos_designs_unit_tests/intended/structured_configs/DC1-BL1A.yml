@@ -426,30 +426,7 @@ vlans:
     name: Tenant_C_WAN_Zone_1
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_interface:
-  Vxlan1:
-    description: DC1-BL1A_VTEP
-    vxlan:
-      source_interface: Loopback1
-      udp_port: 4789
-      vlans:
-        150:
-          vni: 10150
-        250:
-          vni: 20250
-        350:
-          vni: 30350
-      vrfs:
-        Tenant_A_WAN_Zone:
-          vni: 14
-        Tenant_L3_VRF_Zone:
-          vni: 15
-        Tenant_B_OP_Zone:
-          vni: 20
-        Tenant_B_WAN_Zone:
-          vni: 21
-        Tenant_C_WAN_Zone:
-          vni: 31
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
   Vlan150:
     tenant: Tenant_A
@@ -475,5 +452,28 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: DC1-BL1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        150:
+          vni: 10150
+        250:
+          vni: 20250
+        350:
+          vni: 30350
+      vrfs:
+        Tenant_A_WAN_Zone:
+          vni: 14
+        Tenant_L3_VRF_Zone:
+          vni: 15
+        Tenant_B_OP_Zone:
+          vni: 20
+        Tenant_B_WAN_Zone:
+          vni: 21
+        Tenant_C_WAN_Zone:
+          vni: 31
 ntp: null

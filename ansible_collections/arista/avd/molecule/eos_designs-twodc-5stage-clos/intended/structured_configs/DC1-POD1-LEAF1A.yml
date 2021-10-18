@@ -239,13 +239,13 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF1A_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlans:
   4085:
     tenant: system
