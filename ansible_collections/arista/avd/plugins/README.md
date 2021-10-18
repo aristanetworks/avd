@@ -435,7 +435,7 @@ templates:
       # Set general "switch.*" variables
       - template: "facts/main.j2"
       # Set design specific "switch.*" variables
-      - template: "designs/l3ls-evpn/facts/main.j2"
+      - template: "facts/main.j2"
     structured_config:
       # Render Structured Configuration
       # Base features
@@ -443,13 +443,13 @@ templates:
       # MLAG feature
       - template: "mlag/main.j2"
       # Underlay feature
-      - template: "designs/l3ls-evpn/underlay/main.j2"
+      - template: "underlay/main.j2"
       # Overlay feature
-      - template: "designs/l3ls-evpn/overlay/main.j2"
+      - template: "overlay/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Tenants feature
-      - template: "designs/l3ls-evpn/tenants/main.j2"
+      - template: "network_services/main.j2"
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Merge custom_structured_configuration last

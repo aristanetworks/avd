@@ -70,7 +70,7 @@ EXAMPLES = r'''
       - template: "designs/underlay/main.j2"
       - template: "designs/overlay/main.j2"
       - template: "l3_edge/main.j2"
-      - template: "designs/tenants/main.j2"
+      - template: "designs/network_services/main.j2"
       - template: "connected_endpoints/main.j2"
       - template: "custom-structured-configuration-from-var.j2"
         options:
