@@ -1,7 +1,0 @@
-{% if switch.uplink_type == 'p2p' %}
-{%     include 'designs/l3ls-evpn/facts/topology/p2p-uplinks.j2' %}
-
-{% elif switch.uplink_type == 'port-channel' %}
-{%     include 'designs/l3ls-evpn/facts/topology/port-channel-uplinks.j2' %}
-
-{% endif %}

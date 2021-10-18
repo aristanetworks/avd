@@ -20,6 +20,20 @@ switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
+{# switch.underlay_routing_protocol #}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
+  underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
+{% else %}
+  underlay_routing_protocol: 'ebgp'
+{% endif %}
+
+{# switch.overlay_routing_protocol #}
+{% if overlay_routing_protocol is arista.avd.defined and overlay_routing_protocol | lower in ['ibgp']  %}
+{%     set switch_overlay_routing_protocol = overlay_routing_protocol | lower %}
+{% else %}
+{%     set switch_overlay_routing_protocol = 'ebgp' %}
+{% endif %}
+  overlay_routing_protocol: {{ switch_overlay_routing_protocol }}
 
 {# Network services related facts #}
 {% if switch.network_services_l2 is arista.avd.defined(true) or
@@ -127,7 +141,7 @@ switch:
   router_id: {% include switch.ip_addressing.router_id %}
 
 {# switch.bgp_as #}
-{%     if bgp_as is arista.avd.defined and switch.overlay_routing_protocol == 'ibgp' %}
+{%     if bgp_as is arista.avd.defined and switch_overlay_routing_protocol == 'ibgp' %}
   bgp_as: "{{ bgp_as }}"
 {%     else %}
 {%         if switch_data.combined.bgp_as is arista.avd.defined(fail_action='error', var_name='bgp_as') %}

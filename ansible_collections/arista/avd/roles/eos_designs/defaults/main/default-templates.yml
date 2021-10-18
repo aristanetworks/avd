@@ -3,13 +3,13 @@ default_templates:
   # Templates defined per design
   l3ls-evpn:
     facts:
+      # Set "switch.*" variables based on node type
+      - template: "facts/node_type/main.j2"
       # Set general "switch.*" variables
-      - template: "facts/main.j2"
-      # Set design specific "switch.*" variables
-      - template: "designs/l3ls-evpn/facts/switch/main.j2"
+      - template: "facts/switch/main.j2"
     topology_facts:
       # Set design specific "topology.*" variables
-      - template: "designs/l3ls-evpn/facts/topology/main.j2"
+      - template: "facts/topology/main.j2"
     structured_config:
       # Render Strucured Configuration
       # Base features
@@ -17,13 +17,13 @@ default_templates:
       # MLAG feature
       - template: "mlag/main.j2"
       # Underlay feature
-      - template: "designs/l3ls-evpn/underlay/main.j2"
+      - template: "underlay/main.j2"
       # Overlay feature
-      - template: "designs/l3ls-evpn/overlay/main.j2"
+      - template: "overlay/main.j2"
       # L3 Edge feature
       - template: "l3_edge/main.j2"
       # Tenants feature
-      - template: "designs/l3ls-evpn/tenants/main.j2"
+      - template: "network_services/main.j2"
       # Connected Endpoints feature
       - template: "connected_endpoints/main.j2"
       # Inband Management feature
@@ -34,20 +34,20 @@ default_templates:
           list_merge: "{{ custom_structured_configuration_list_merge }}"
           strip_empty_keys: false
     ip_addressing:
-      router_id: 'designs/l3ls-evpn/ip-addressing/router-id.j2'
-      mlag_ip_primary: 'designs/l3ls-evpn/ip-addressing/mlag-ip-primary.j2'
-      mlag_ip_secondary: 'designs/l3ls-evpn/ip-addressing/mlag-ip-secondary.j2'
-      mlag_l3_ip_primary: 'designs/l3ls-evpn/ip-addressing/mlag-l3-ip-primary.j2'
-      mlag_l3_ip_secondary: 'designs/l3ls-evpn/ip-addressing/mlag-l3-ip-secondary.j2'
-      p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/p2p-uplinks-peer-ip.j2'
-      vtep_ip_mlag: 'designs/l3ls-evpn/ip-addressing/vtep-ip-mlag.j2'
-      vtep_ip: 'designs/l3ls-evpn/ip-addressing/vtep-ip.j2'
+      router_id: 'ip_addressing/router-id.j2'
+      mlag_ip_primary: 'ip_addressing/mlag-ip-primary.j2'
+      mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
+      mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
+      mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
+      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
+      vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'ip_addressing/vtep-ip.j2'
 
     interface_descriptions:
-      underlay_ethernet_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay/ethernet-interfaces.j2'
-      underlay_port_channel_interfaces: 'designs/l3ls-evpn/interface-descriptions/underlay/port-channel-interfaces.j2'
-      connected_endpoints_ethernet_interfaces: 'designs/l3ls-evpn/interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
-      connected_endpoints_port_channel_interfaces: 'designs/l3ls-evpn/interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
-      overlay_loopback_interface: 'designs/l3ls-evpn/interface-descriptions/loopback-interfaces/overlay-loopback.j2'
-      vtep_loopback_interface: 'designs/l3ls-evpn/interface-descriptions/loopback-interfaces/vtep-loopback.j2'
+      underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface_descriptions/loopback_interfaces/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'

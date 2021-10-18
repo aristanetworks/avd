@@ -1,3 +1,4 @@
+switch:
 {% if type is arista.avd.defined(fail_action='error', var_name='type') and
       node_type_keys is arista.avd.defined(fail_action='error', var_name='node_type_keys') %}
 {%     set ns = namespace() %}
