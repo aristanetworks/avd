@@ -102,8 +102,8 @@ vtep_ip:
 All other templates can only leverage the input variables and variables set in switch facts template.
 
 For more information about the available contextual properties, see the following links:
-- [underlay_ethernet_interfaces facts](../templates/designs/l3ls-evpn/facts/topology/p2p-uplinks.j2)
-- [switch facts](../templates/designs/l3ls-evpn/facts/switch/switch.j2)
+- [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
+- [switch facts](../templates/facts/switch/switch.j2)
 
 ## Context for interface_descriptions templates
 
