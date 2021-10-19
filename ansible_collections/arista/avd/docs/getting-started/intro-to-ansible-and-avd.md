@@ -70,7 +70,7 @@ It matters that you’re building your network using the Arista Validated Design
 Ansible AVD covers e.g. 90% of what you need and the remaining 10% must be customized. You as a user can customize or extend Ansible AVD as you see fit. | Ansible AVD covers e.g. 10% of what you need and the remaining 90% must be customized. Customizing the AVD design to your planned topology would be more work than doing it by hand
 
 ## How does Ansible work
-Before we can tell Ansible to do anything, Ansible needs to know about the devices (or hosts as Ansible calls it) it handles. 
+Before we can tell Ansible to do anything, Ansible needs to know about the devices (or hosts as Ansible calls it) it handles.<br> 
 This is defined in the Ansible ***inventory***.
 
 ### Inventories
@@ -105,14 +105,14 @@ Note that this one is in YAML format. Also note that the IP addresses shown belo
                     DC1-LEAF2B:
                       ansible_host: 10.255.0.16
 ```
-The multi-colored figure below is just a visualization of the text file, showing the different grouping and parent/children relationships.
+The multi-colored figure below is just a visualization of the same text file, showing the different grouping and parent/children relationships.
 
 ![Figure 2: Ansible Inventory](../_media/getting-started/Inventory.png)
 
 Don’t confuse ***hosts*** with servers or similar. A ***host*** can be anything that can be accessed via SSH or an API, including Arista switches, which will be what we’re focusing on going forward.
 
 The inventory file is defined in a tree-like structure using what is called ***groups***, used to make it easier to apply common configuration to a group of devices.
-The ***all*** line at the top is a default ***group*** that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
 The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
 Key takeaway is that configuration defined at a higher (parent) level will be inherited by the children, but if needed, this can be overridden by specifying it again i.e. most specific wins. 
 More information about Ansible inventories here.
@@ -121,11 +121,11 @@ More information about Ansible inventories here.
 Now that the Ansible inventory is defined, we can tell Ansible what to do on the switches.
 This is defined in one or more ***playbooks*** as they’re called in Ansible-lingo.
 A ***playbook***, like an inventory file, is a text file written using YAML format and it contains one or more ***plays***, that group a set of instructions to be executed in an ordered list. 
-The terms ***playbook*** and ***play*** are sports analogies. Each play executes part of the overall goal of the playbook, running one or more tasks. Each task calls an Ansible role or module, such as “ansible.avd.eos_cli_config_gen”. 
-A playbook runs in order from top to bottom. Within each play, tasks also run in order from top to bottom. Playbooks with multiple “plays” can orchestrate multi-machine deployments, running one play on your Ansible development machine, another on your CV instance, and another on each EOS device you look to configure. 
-At a minimum, each play defines two things:
-the managed devices (***hosts***) to target, referenced from the inventory we defined earlier
-One or more tasks to execute on the targets defined
+The terms ***playbook*** and ***play*** are sports analogies. Each play executes part of the overall goal of the playbook, running one or more ***tasks***. Each ***task*** calls an Ansible ***role*** or ***module***, such as ***ansible.avd.eos_cli_config_gen***. 
+A ***playbook*** runs in order from top to bottom. Within each ***play***, ***tasks*** also run in order from top to bottom. ***Playbooks*** with multiple ***plays*** can orchestrate multi-machine deployments, running one ***play*** on your Ansible development machine, another on your CV instance, and another on each EOS device you look to configure. 
+At a minimum, each ***play*** defines two things:
+1. The managed devices (***hosts***) to target, referenced from the ***inventory*** we defined earlier
+2. One or more ***tasks*** to execute on the targets defined
 
 The ***hosts*** specified in a ***playbook*** references variables defined in the ***inventory***. From a ***playbook*** you can select large or small groups of the ***inventory***, right down to individual ***hosts*** to be as specific as possible with any configuration changes.
 
