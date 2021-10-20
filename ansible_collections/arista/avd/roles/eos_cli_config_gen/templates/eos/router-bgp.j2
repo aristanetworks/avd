@@ -217,8 +217,8 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.vpws is arista.avd.defined %}
 {%         for vpws_service in router_bgp.vpws | arista.avd.natural_sort %}
    !
-{%             if vpws_service.tenant is arista.avd.defined %}
-   vpws {{ vpws_service.tenant }}
+{%             if vpws_service.name is arista.avd.defined %}
+   vpws {{ vpws_service.name }}
 {%                 if vpws_service.rd is arista.avd.defined %}
       rd {{ vpws_service.rd }}
 {%                 endif %}

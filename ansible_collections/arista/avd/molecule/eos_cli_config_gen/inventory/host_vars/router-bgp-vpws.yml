@@ -8,7 +8,7 @@ router_bgp:
     - graceful-restart
     - maximum-paths 2 ecmp 2
   vpws:
-  - tenant: TENANT_A
+  - name: TENANT_A
     rd: 100.70.0.2:1000
     route_targets:
       import_export: 65000:1000
@@ -19,7 +19,7 @@ router_bgp:
     - name: TEN_A_site1_site3_pw
       id_local: 15
       id_remote: 35
-  - tenant: TENANT_B
+  - name: TENANT_B
     rd: 100.70.0.2:2000
     route_targets:
       import_export: 65000:2000

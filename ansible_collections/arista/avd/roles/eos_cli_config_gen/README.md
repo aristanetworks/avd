@@ -2208,7 +2208,7 @@ router_bgp:
         - < connected >
         - < learned >
   vpws:
-  - tenant: < tenant >
+  - name: < vpws instance name >
     rd: < route distinguisher >
     route_targets:
       import_export: < route target >
