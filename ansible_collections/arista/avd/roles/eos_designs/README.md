@@ -87,7 +87,7 @@ Feasible Layer 3 leaf & spine topologies leveraging VXLAN data-plane with an EVP
 
 Across all designs the following functionality is provided:
 
-- Flexible placement of EVPN RS or RR, including dedicated overlay controller
+- Flexible placement of EVPN Route Server (RS) or Route Reflector (RR), including dedicated overlay controller
 - EVPN service definition: Layer 2 and Layer 3 (Network Services)
 - L3 Edge port definition
 - L2 Edge ports definition (connected endpoints)
