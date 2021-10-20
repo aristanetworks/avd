@@ -7,7 +7,7 @@
 - The filtering model allows for granular deployment of network service to the fabric leveraging the tenant name and tags applied to the service definition.
   - This allows for the re-use of SVIs and VLANs across the fabric.
 
-**Variables and Options:**
+## Variables and Options
 
 ```yaml
 # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
@@ -38,8 +38,20 @@ evpn_rd_type:
 evpn_rt_type:
   admin_subfield: < "bgp_as" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
 
+# Internal vlan allocation order and range | Required
+internal_vlan_order:
+  allocation: < ascending or descending | default -> ascending >
+  range:
+    beginning: < vlan_id | default -> 1006 >
+    ending: < vlan_id | default -> 1199 >
+
+# MAC address-table aging time | Optional
+# Use to change the EOS default of 300
+mac_address_table:
+  aging_time: < time_in_seconds >
+
 # Optional profiles to apply on SVI interfaces
-# Each profile can support all or some of the following keys according your own needs.
+# Each profile can support all or some of the following keys according to your own needs.
 # Keys are the same used under SVI.
 svi_profiles:
   < profile_name >:
@@ -234,9 +246,10 @@ tenants:
             mtu: < mtu - should only be used for platforms supporting mtu per subinterface >
 
         # Dictionary of static routes | Optional.
-        # This will create static routes inside the tenant VRF, if none specified, all l3leafs that carry the VRF also get the static routes.
-        # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF. This automatic behaviour can be
-        # overridden non-selectively with the redistribute_static knob for the VRF.
+        # This will create static routes inside the tenant VRF.
+        # If nodes are not specified, all l3leafs that carry the VRF will also be applied the static routes.
+        # If a node has a static route in the VRF, redistribute static will be automatically enabled in that VRF.
+        # This automatic behavior can be overridden non-selectively with the redistribute_static knob for the VRF.
         static_routes:
           - destination_address_prefix: < IPv4_address/Mask >
             gateway: < IPv4_address >
@@ -277,11 +290,6 @@ tenants:
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
             weight: < 0-65535>
-
-        bgp:
-          # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
-          raw_eos_cli: |
-            < multiline eos cli >
 
         bgp:
           # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
@@ -373,7 +381,7 @@ tenants:
         tags: [ < tag_1 >, < tag_2 > ]
 ```
 
-**Example:**
+## Examples
 
 ```yaml
 # mlag_ibgp_peering_vrfs:

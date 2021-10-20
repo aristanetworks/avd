@@ -3,7 +3,7 @@
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
 <div style="text-align:center">
-  <img src="../../../../media/topology.gif" />
+  <img src="../../../../media/5-stage-topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -38,7 +38,7 @@ pod_name: < POD_Name >
 
 ## Supported designs
 
-`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](../extending-avd/node-types.html) to create your own node type
+`eos_designs` supports multiple flavors of L3LS-EVPN topology such as 3-stage CLOS and 5-stage CLOS. Sections below highlight these 2 topologies, but you can extend `eos_designs` to support your own topology by using [`node_type_keys`](node-types.html) to create your own node type
 
 ### 3-stage CLOS Topology Support (Leaf & Spine)
 
@@ -52,14 +52,9 @@ pod_name: < POD_Name >
 - The logic to deploy every leaf-spine POD fabric remains unchanged.
 - Super-spines can be deployed as a single plane (typically chassis switches) or multiple planes.
 
-!!! warning "5-stage CLOS limitations"
-    - Current AVD release supports single plane deployment only.
-    - Only eBGP underlay is supported for super-spine deployment.
-    - Spines in every POD must have unique AS per POD.
-
 ## Node Type Variables
 
-The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](../extending-avd/node-types.md)
+The following table provide information on the default node types that have been pre-defined in [`eos_designs/defaults/main/defaults-node-type-keys.yml`](https://github.com/aristanetworks/ansible-avd/tree/devel/ansible_collections/arista/avd/roles/eos_designs/defaults). To customize or create new node types, please refer to [node types definition](node-types.md)
 
 | Node Type Key      | Underlay Router | Uplink Type | Default EVPN Role  | L2 Network Services | L3 Network Services | VTEP | MLAG Support | Connected Endpoints |
 | ------------------ | --------------- | ------------ | ----------------- | ------------------- | ------------------- | ---- | ------------ | ------------------- |
