@@ -258,3 +258,14 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: false
+
+  Ethernet21:
+    description: 200MBit/s shape
+    shape:
+      rate: "200000 kbps"
+
+  Ethernet22:
+    description: 10% shape
+    shape:
+      rate: "10 percent"
+
