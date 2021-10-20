@@ -2279,6 +2279,8 @@ router_bgp:
       mpls: < true | false >
       next_hop_self:
         source_interface: < interface >
+    neighbor_default_encapsulation_mpls_next_hop_self: (old data model, also accepted)
+      source_interface: < interface >
   address_family_vpn_ipv6:
     domain_identifier: < string >
     peer_groups:
