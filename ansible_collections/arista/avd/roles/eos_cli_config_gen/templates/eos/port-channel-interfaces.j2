@@ -219,6 +219,9 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].service_profile is arista.avd.defined %}
    service-profile {{ port_channel_interfaces[port_channel_interface].service_profile }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].shape.rate is arista.avd.defined %}
+   shape rate {{ port_channel_interfaces[port_channel_interface].shape.rate }}{{ ' percent' if port_channel_interfaces[port_channel_interface].shape.rate | int < 100 }}
+{%     endif %}
 {%     for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}
 {%         if port_channel_interfaces[port_channel_interface].storm_control[section].unit is arista.avd.defined("pps") %}
    storm-control {{ section | replace("_", "-") }} level pps {{ port_channel_interfaces[port_channel_interface].storm_control[section].level }}
