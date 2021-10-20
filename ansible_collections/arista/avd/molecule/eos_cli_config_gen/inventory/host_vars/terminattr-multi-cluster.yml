@@ -1,9 +1,5 @@
 ### Daemon TerminAttr
 daemon_terminattr:
-  cvaddrs:
-      - 10.10.10.8:9910
-      - 10.10.10.9:9910
-      - 10.10.10.10:9910
   clusters:
       DC1:
           cvaddrs:
