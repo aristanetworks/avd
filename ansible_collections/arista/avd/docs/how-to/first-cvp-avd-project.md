@@ -43,7 +43,7 @@ This management IP addresses are used in a private virtual-network between Cloud
 
 ### Configure Python environment
 
-Please refer to [__installation page__](../installation/setup-environment.md) to configure AVD and CVP collection.
+Please refer to [__installation page__](../installation/collection-installation.md) to install AVD and CVP collections.
 
 ### Configure DHCP server on CloudVision
 

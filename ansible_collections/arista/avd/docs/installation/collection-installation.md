@@ -1,19 +1,26 @@
-# Collection installation via ansible-galaxy
+# Collection installation
+
+These instructions are for regular users to install via Ansible Galaxy. To setup a development environment use [these](../contribution/setup-environment.md) instructions.
+
+__arista.avd__ can also be consumed using the "AVD All-in-one" container.
 
 ## Install from Ansible Galaxy
 
 __arista.avd__ collection is available on [Ansible Galaxy](https://galaxy.ansible.com/arista/avd) server and can be automatically installed on your system.
+
+Make sure to install [Python requirements](requirements.md#additional-python-libraries-required) afterwards.
 
 ### Latest version
 
 ```shell
 $ ansible-galaxy collection install arista.avd
 ```
+!!! Warning: If you have an `ansible.cfg` file in the directory where you run `ansible-galaxy`, it may affect the directory under which the collection and dependencies will be installed.
 
 ### Install a specific version
 
 ```shell
-$ ansible-galaxy collection install arista.avd:==1.0.2
+$ ansible-galaxy collection install arista.avd:==3.0.0
 ```
 
 You can specify multiple range identifiers which are split by ,. You can use the following range identifiers:
@@ -25,6 +32,13 @@ You can specify multiple range identifiers which are split by ,. You can use the
 - `>`: Version is greater than the one specified.
 - `<=`: Version is less than or equal to the one specified.
 - `<`: Version is less than the one specified.
+
+### Install latest `devel` version from AVD GitHub
+
+```shell
+$ ansible-galaxy collection install git+https://github.com/aristanetworks/ansible-avd.git#/ansible_collections/arista/avd/,devel
+```
+> Note: Collection dependencies like `ansible-cvp` will be installed from ansible-galaxy unless installed first using similar github source.
 
 ### Install in a specific directory
 
@@ -41,16 +55,14 @@ collections_paths = ${PWD}/collections:~/.ansible/collections:/usr/share/ansible
 
 ### Upgrade installed AVD collection
 
-You can use `-f` to force installation of a new version for any installed collection:
+You can use `-U` to upgrade to a new version for any installed collection:
 
 ```shell
-$ ansible-galaxy collection install -f arista.avd
+$ ansible-galaxy collection install -U arista.avd
 Process install dependency map
 Starting collection install process
-Installing 'arista.avd:1.0.2' to '/root/.ansible/collections/ansible_collections/arista/avd'
+Installing 'arista.avd:3.0.0' to '/root/.ansible/collections/ansible_collections/arista/avd'
 ```
-
-> Note: Ansible community is discussing option to implement specific triggers to support upgrade under [issue #65699](https://github.com/ansible/ansible/issues/65699)
 
 ## Ansible resources
 
