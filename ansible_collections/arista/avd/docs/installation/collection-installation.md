@@ -15,7 +15,9 @@ Make sure to install [Python requirements](requirements.md#additional-python-lib
 ```shell
 $ ansible-galaxy collection install arista.avd
 ```
-!!! Warning: If you have an `ansible.cfg` file in the directory where you run `ansible-galaxy`, it may affect the directory under which the collection and dependencies will be installed.
+
+!!! warning
+    If you have an `ansible.cfg` file in the directory where you run `ansible-galaxy`, it may affect the directory under which the collection and dependencies will be installed.
 
 ### Install a specific version
 
@@ -38,7 +40,9 @@ You can specify multiple range identifiers which are split by ,. You can use the
 ```shell
 $ ansible-galaxy collection install git+https://github.com/aristanetworks/ansible-avd.git#/ansible_collections/arista/avd/,devel
 ```
-> Note: Collection dependencies like `ansible-cvp` will be installed from ansible-galaxy unless installed first using similar github source.
+
+!!! note
+    Collection dependencies like `ansible-cvp` will be installed from ansible-galaxy unless installed first using similar github source.
 
 ### Install in a specific directory
 
