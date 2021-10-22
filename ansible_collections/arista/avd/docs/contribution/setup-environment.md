@@ -15,7 +15,7 @@ In both scenario, this document will leverage git approach to create a local env
 
 ## Ansible runner requirements
 
-As described in [requirement page](../../docs/installation/requirements.md), your runner should run Python 3.6.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
+As described in [requirement page](../installation/requirements.md), your runner should run Python 3.8 or Docker engine with [`docker-compose`](https://docs.docker.com/compose/install/).
 
 Besides that, local runner will read your gitconfig file to let you manipulate files in container as if you were on your host. So if you have not yet configured git on your host, it is required to at least create a [basic git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) configuration file:
 

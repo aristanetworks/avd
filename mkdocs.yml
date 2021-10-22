@@ -104,11 +104,8 @@ nav:
       - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
+      - Collection Installation: docs/installation/collection-installation.md
       - Requirements: docs/installation/requirements.md
-      - Setup environment: docs/installation/setup-environment.md
-      - Ansible-galaxy installation: docs/installation/setup-galaxy.md
-      - Git installation: docs/installation/setup-git.md
-      - Development tips & tricks: docs/installation/development.md
   - How-To:
       - Build your first AVD project: docs/how-to/first-project.md
       - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
@@ -143,8 +140,11 @@ nav:
       - Cloudvision Module documentation: https://cvp.avd.sh/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
+      - Setup environment: docs/contribution/setup-environment.md
+      - Git installation: docs/contribution/setup-git.md
       - Getting Started: docs/contribution/getting-started.md
       - Code Style: docs/contribution/style-guide.md
+      - Development tips & tricks: docs/contribution/development.md
   - External resources:
       - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html
