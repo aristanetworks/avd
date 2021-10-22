@@ -1,0 +1,50 @@
+switch:
+{% if type is arista.avd.defined(fail_action='error', var_name='type') and
+      node_type_keys is arista.avd.defined(fail_action='error', var_name='node_type_keys') %}
+{%     set ns = namespace() %}
+{%     for node_type_key in node_type_keys %}
+{%         if node_type_keys[node_type_key].type is arista.avd.defined(type) %}
+{%             set ns.node_type_key_data = node_type_keys[node_type_key] %}
+{%             set ns.node_type_key = node_type_key %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if ns.node_type_key_data.type is arista.avd.defined(type, fail_action='error', var_name='node_type_keys.<key>.type') %}
+{# switch.type #}
+  type: {{ ns.node_type_key_data.type }}
+{%     endif %}
+
+{# switch.node_type_key #}
+  node_type_key: {{ ns.node_type_key }}
+
+{# switch.connected_endpoints #}
+  connected_endpoints: {{ ns.node_type_key_data.connected_endpoints | arista.avd.default(false) }}
+
+{# switch.default_evpn_role #}
+  default_evpn_role: {{ ns.node_type_key_data.default_evpn_role | arista.avd.default('none') }}
+
+{# switch.mlag_support #}
+  mlag_support: {{ ns.node_type_key_data.mlag_support | arista.avd.default(false) }}
+
+{# switch.network_services_l2 #}
+  network_services_l2: {{ ns.node_type_key_data.network_services.l2 | arista.avd.default(false) }}
+
+{# switch.network_services_l3 #}
+  network_services_l3: {{ ns.node_type_key_data.network_services.l3 | arista.avd.default(false) }}
+
+{# switch.underlay_router #}
+  underlay_router: {{ ns.node_type_key_data.underlay_router | arista.avd.default(true)}}
+
+{# switch.uplink_type #}
+  uplink_type: {{ ns.node_type_key_data.uplink_type | arista.avd.default('p2p') }}
+
+{# switch.vtep #}
+  vtep: {{ ns.node_type_key_data.vtep | arista.avd.default(false) }}
+
+{# switch.ip_addressing #}
+  ip_addressing: {{ templates.ip_addressing | combine(ns.node_type_key_data.ip_addressing | arista.avd.default({})) }}
+
+{# switch.interface_descriptions #}
+  interface_descriptions: {{ templates.interface_descriptions | combine(ns.node_type_key_data.interface_descriptions | arista.avd.default({})) }}
+
+{% endif %}

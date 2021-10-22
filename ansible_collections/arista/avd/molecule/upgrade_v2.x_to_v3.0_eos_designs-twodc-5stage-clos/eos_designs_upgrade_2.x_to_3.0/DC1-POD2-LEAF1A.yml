@@ -119,8 +119,8 @@ node_type_keys:
     type: spine
     default_evpn_role: server
     ip_addressing:
-      p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
+      p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
   l3leaf:
     type: l3leaf
     connected_endpoints: true

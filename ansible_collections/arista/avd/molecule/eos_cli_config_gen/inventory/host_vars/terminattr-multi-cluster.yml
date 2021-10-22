@@ -1,9 +1,5 @@
 ### Daemon TerminAttr
 daemon_terminattr:
-  cvaddrs:
-      - 10.10.10.8:9910
-      - 10.10.10.9:9910
-      - 10.10.10.10:9910
   clusters:
       DC1:
           cvaddrs:
@@ -19,9 +15,5 @@ daemon_terminattr:
               method: "token"
               token_file: "/tmp/tokenDC2"
           cvvrf: mgt
-  cvauth:
-      method: "key"
-      key: magickey
-  cvvrf: mgt
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"

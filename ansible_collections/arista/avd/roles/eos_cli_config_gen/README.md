@@ -80,6 +80,7 @@
       - [Management Console](#management-console)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
+      - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
       - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -181,12 +182,14 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 ```yaml
 access_lists:
   < access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
       < sequence_id_2 >:
         action: "< action as string >"
   < access_list_name_2 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -197,6 +200,7 @@ access_lists:
 ```yaml
 ipv6_standard_access_lists:
   < ipv6_access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -213,6 +217,7 @@ ipv6_standard_access_lists:
 ```yaml
 standard_access_lists:
   < access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -229,6 +234,7 @@ standard_access_lists:
 ```yaml
 ipv6_access_lists:
   < ipv6_access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -322,6 +328,7 @@ aaa_root:
   secret:
     sha512_password: "< sha_512_password >"
 ```
+
 #### AAA Server Groups
 
 ```yaml
@@ -877,6 +884,7 @@ interface_profiles:
       - < command_1 >
       - < command_2 >
 ```
+
 #### Loopback Interfaces
 
 ```yaml
@@ -990,7 +998,7 @@ port_channel_interfaces:
     description: < description >
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
-    ip_address:  < IP_address/mask >
+    ip_address: < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
     ipv6_address_link_local: < link_local_IPv6_address/mask >
@@ -1229,6 +1237,7 @@ interface_groups:
 ```
 
 #### Profiles and units
+
 ```yaml
 maintenance:
   default_interface_profile: < interface_profile_1 >
@@ -1253,12 +1262,13 @@ maintenance:
     < unit_name_1 >:
       quiesce: < true | false >
       profile: < unit_profile_1 >
-      bgp_groups:
-        - < bgp_group_1>
-        - < bgp_group_2>
-      interface_groups:
-        - < interface_group_1>
-        - < interface_group_2>
+      groups:
+        bgp_groups:
+          - < bgp_group_1>
+          - < bgp_group_2>
+        interface_groups:
+          - < interface_group_1>
+          - < interface_group_2>
 ```
 
 ### Management
@@ -1418,6 +1428,16 @@ management_ssh:
       enable: < true | false >
 ```
 
+#### IP SSH Client Source Interfaces
+
+```yaml
+ip_ssh_client_source_interfaces:
+    - name: < interface_name_1 >
+      vrf: < vrf_name_1 | default -> "default" >
+    - name: <interface_name_2>
+      vrf: < vrf_name_2 | default -> "default" >
+```
+
 #### NTP
 
 ```yaml
@@ -1428,7 +1448,7 @@ ntp:
   servers:
   - name: < IP | hostname >
     burst: < true | false >
-    iburst:  < true | false >
+    iburst: < true | false >
     key: < 1 - 65535 >
     local_interface: < source_interface >
     maxpoll: < 3 - 17 (logorithmic)>
@@ -1659,11 +1679,11 @@ logging:
         < syslog_server_1 >:
           protocol: < tcp | udp (default udp) >
           ports:
-            < custom_port_1 >
-            < custom_port_2 >
+            - < custom_port_1 >
+            - < custom_port_2 >
         < syslog_server_2 >:
           ports:
-            < custom_port_1 >
+            - < custom_port_1 >
   policy:
     match:
       match_lists:
@@ -1782,7 +1802,8 @@ snmp_server:
       enable: < true | false >
 ```
 
-###  System Control-Plane
+### System Control-Plane
+
 ```yaml
 system:
   control_plane:
@@ -2513,7 +2534,6 @@ terminal:
   width: < 0-32767 >
 ```
 
-
 ### Traffic Policies
 
 ```yaml
@@ -2644,6 +2664,7 @@ See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_desig
 ### Versioning
 
 To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+
 ```yaml
 avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ```
@@ -2651,6 +2672,7 @@ avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ### Example Playbooks
 
 Running upgrade only
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -2662,6 +2684,7 @@ Running upgrade only
 ```
 
 Running upgrade and the regular `eos_cli_config_gen` tasks
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -2673,6 +2696,7 @@ Running upgrade and the regular `eos_cli_config_gen` tasks
 ```
 
 Alternative with separate tasks:
+
 ```yaml
 ---
 - hosts: DC1_FABRIC

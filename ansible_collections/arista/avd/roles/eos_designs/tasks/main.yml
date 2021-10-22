@@ -75,7 +75,7 @@
       register: doc_stat_result
     - name: Generate fabric documentation in Markdown Format.
       template:
-        src: fabric-documentation.j2
+        src: documentation/fabric-documentation.j2
         dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
         mode: 0664
       changed_when: false
