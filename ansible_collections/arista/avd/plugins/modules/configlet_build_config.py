@@ -96,7 +96,7 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
         Dictionary of configlets found in source folder.
     """
     src_configlets = glob.glob(src_folder + '/*.' + extension)
-    configlets = dict()
+    configlets = {}
     for file in src_configlets:
         if prefix != 'none':
             name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]

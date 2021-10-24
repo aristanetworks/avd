@@ -213,7 +213,7 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter
         device_filter = ["all"]
 
     src_configlets = glob.glob(src_folder + '/*.' + extension)
-    configlets = dict()
+    configlets = {}
     for file in src_configlets:
         # Build structure only if configlet match device_filter.
         if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
@@ -316,7 +316,7 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     search_container : str, optional
         Container to look for, by default None
     devices : str, optional
-        List of found devices attached to container, by default list()
+        List of found devices attached to container, by default list []
     device_filter: list, optional
         List of filter to compare device name and to select only a subset of devices.
 
@@ -385,7 +385,7 @@ def get_containers(inventory_content, parent_container, module):
     container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
     container_json = {}
     for container in container_list:
-        data = dict()
+        data = {}
         if container != CVP_ROOT_CONTAINER:
             parent = tree_dc.parent(container)
             if container == parent_container:
@@ -394,7 +394,7 @@ def get_containers(inventory_content, parent_container, module):
                 if isLeaf(tree=tree_dc, nid=container):
                     devices = get_devices(dict_inventory=inventory_content,
                                           search_container=container,
-                                          devices=list(),
+                                          devices=[],
                                           device_filter=module.params['device_filter'])
                     data['devices'] = devices
                 data['parent_container'] = parent.tag
