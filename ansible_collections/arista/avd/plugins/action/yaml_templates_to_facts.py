@@ -17,7 +17,7 @@ ANSIBLE_METADATA = {'metadata_version': '1.0.0',
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
-            task_vars = dict()
+            task_vars = {}
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
@@ -44,7 +44,7 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
-        output = dict()
+        output = {}
 
         template_lookup_module = TemplateLookupModule(loader=self._loader, templar=self._templar)
 
