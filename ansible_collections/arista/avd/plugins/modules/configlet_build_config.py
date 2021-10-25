@@ -102,7 +102,7 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
             name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
         else:
             name = os.path.splitext(os.path.basename(file))[0]
-        with open(file, 'r') as file:
+        with open(file, 'r', encoding='utf8') as file:
             data = file.read()
         configlets[name] = data
     return configlets
@@ -132,7 +132,7 @@ def main():
 
     # Write vars to file if set by user
     if module.params['destination'] is not None:
-        with open(module.params['destination'], 'w') as file:
+        with open(module.params['destination'], 'w', encoding='utf8') as file:
             yaml.dump(result, file)
 
     module.exit_json(**result)
