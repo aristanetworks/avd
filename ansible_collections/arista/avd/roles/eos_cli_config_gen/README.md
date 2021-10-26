@@ -131,6 +131,8 @@
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
+    - [Versioning](#versioning)
+    - [Example Playbooks](#example-playbooks)
   - [License](#license)
 
 ## Overview
@@ -1963,6 +1965,9 @@ queue_monitor_length:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+  ip_access_group: < access_list_name >
+  ipv6_access_group: < ipv6_access_list_name >
+  max_connections: < 1-100 >
   vrf: < vrf_name >
 ```
 
