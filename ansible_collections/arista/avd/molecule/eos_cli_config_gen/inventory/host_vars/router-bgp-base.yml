@@ -51,16 +51,16 @@ router_bgp:
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
   neighbors:
-      192.0.3.1:
-        remote_as: 65432
-        send_community: all
-      192.0.3.2:
-        remote_as: 65433
-        send_community: extended
-        maximum_routes: 10000
-      192.0.3.3:
-        remote_as: 65434
-        send_community: standard
-      192.0.3.4:
-        remote_as: 65435
-        send_community: large
+    192.0.3.1:
+      remote_as: 65432
+      send_community: all
+    192.0.3.2:
+      remote_as: 65433
+      send_community: extended
+      maximum_routes: 10000
+    192.0.3.3:
+      remote_as: 65434
+      send_community: standard
+    192.0.3.4:
+      remote_as: 65435
+      send_community: large

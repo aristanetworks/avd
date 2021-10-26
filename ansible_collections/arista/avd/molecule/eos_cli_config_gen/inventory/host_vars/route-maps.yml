@@ -43,4 +43,4 @@ route_maps:
       10:
         type: permit
         set:
-        - ip next-hop 10.2.3.4
+          - ip next-hop 10.2.3.4

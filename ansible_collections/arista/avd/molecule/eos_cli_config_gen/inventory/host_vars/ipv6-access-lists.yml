@@ -44,4 +44,3 @@ ipv6_standard_access_lists:
         action: "deny 2001:db8:1000::/64"
       10:
         action: "permit 2001:db8::/32"
-

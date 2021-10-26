@@ -33,11 +33,9 @@ management_security:
   ssl_profiles:
     - name: SSL_PROFILE
       tls_versions: 1.1 1.2
-      certificate: 
+      certificate:
         file: SSL_CERT
         key: SSL_KEY
-
-
 
 ### L2 portchannel
 port_channel_interfaces:
