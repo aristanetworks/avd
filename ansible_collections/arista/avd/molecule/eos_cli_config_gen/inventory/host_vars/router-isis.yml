@@ -49,6 +49,24 @@ ethernet_interfaces:
     channel_group:
       id: 3
       mode: active
+  Ethernet4:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    channel_group:
+      id: 4
+      mode: active
+  Ethernet5:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet5
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet6:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet6
+    channel_group:
+      id: 6
+      mode: active
 
 ### Loopback Interfaces ###
 loopback_interfaces:
@@ -96,19 +114,19 @@ vlan_interfaces:
 
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
-  Port-Channel1:
+  Port-Channel4:
     type: routed
     ip_address: 10.9.2.3/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
-  Port-Channel2:
+  Port-Channel5:
     type: routed
     ip_address: 10.9.2.5/31
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_passive: true
-  Port-Channel3:
+  Port-Channel6:
     type: routed
     ip_address: 10.9.2.7/31
     isis_enable: EVPN_UNDERLAY
