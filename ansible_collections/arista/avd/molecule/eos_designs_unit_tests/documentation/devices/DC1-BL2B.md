@@ -688,13 +688,14 @@ router bgp 65107
 
 ## Router BFD
 
+
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !
