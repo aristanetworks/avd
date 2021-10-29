@@ -316,7 +316,7 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     search_container : str, optional
         Container to look for, by default None
     devices : str, optional
-        List of found devices attached to container, by default list []
+        List of found devices attached to container, by default empty list []
     device_filter: list, optional
         List of filter to compare device name and to select only a subset of devices.
 
