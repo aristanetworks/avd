@@ -156,7 +156,7 @@
 {%     set port_channel_interface_isis = namespace() %}
 {%     set port_channel_interface_isis.configured = false %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined(true) %}
+{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
 {%              set port_channel_interface_isis.configured = true %}
 {%          endif %}
 {%     endfor %}
@@ -168,8 +168,8 @@
 | --------- | ------------- | ----------- | ---- | ------------ |
 {%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
 {%             if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
-{%                 set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("*-") %}
-{%                 set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("*-") %}
+{%                 set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("-") %}
+{%                 set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("-") %}
 {%                 if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                     set type = "point-to-point" %}
 {%                 else %}

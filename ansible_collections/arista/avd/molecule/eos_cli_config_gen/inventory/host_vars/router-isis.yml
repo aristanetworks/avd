@@ -93,3 +93,25 @@ vlan_interfaces:
     shutdown: false
     vrf: TENANT_A_PROJECT01
     ip_address_virtual: 10.1.10.254/24
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+  Port-Channel1:
+    type: routed
+    ip_address: 10.9.2.3/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+  Port-Channel2:
+    type: routed
+    ip_address: 10.9.2.5/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_passive: true
+  Port-Channel3:
+    type: routed
+    ip_address: 10.9.2.7/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 100
+    isis_passive: false
+    isis_network_point_to_point: false
