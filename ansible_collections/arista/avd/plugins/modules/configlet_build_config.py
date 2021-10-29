@@ -77,14 +77,14 @@ except ImportError:
     YAML_IMP_ERR = traceback.format_exc()
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
+def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
     """
     Get available configlets to deploy to CVP.
 
     Parameters
     ----------
     src_folder : str, optional
-        Path where to find configlet, by default str()
+        Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional

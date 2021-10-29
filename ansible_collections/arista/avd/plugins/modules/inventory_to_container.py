@@ -188,14 +188,14 @@ def isLeaf(tree, nid):
         return False
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter=None):
+def get_configlet(src_folder="", prefix='AVD', extension='cfg', device_filter=None):
     """
     Get available configlets to deploy to CVP.
 
     Parameters
     ----------
     src_folder : str, optional
-        Path where to find configlet, by default str()
+        Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional
@@ -430,7 +430,7 @@ def main():
         inventory_file = module.params['inventory']
         parent_container = module.params['container_root']
         # Build containers & devices topology
-        inventory_content = str()
+        inventory_content = ""
         with open(inventory_file, 'r', encoding='utf8') as stream:
             try:
                 inventory_content = yaml.safe_load(stream)
