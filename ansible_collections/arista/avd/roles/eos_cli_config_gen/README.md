@@ -429,6 +429,9 @@ banners:
 
 ```yaml
 router_bfd:
+  interval: < rate in milliseconds >
+  min_rx: < rate in milliseconds >
+  multiplier: < 3-50 >
   multihop:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
