@@ -234,6 +234,18 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ port_channel_interfaces[port_channel_interface].service_policy.pbr.input }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined(true) %}
+   isis enable {{ port_channel_interfaces[port_channel_interface].isis_enable }}
+{%         if port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined(true) %}
+   isis passive
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].isis_metric is arista.avd.defined %}
+   isis metric {{ port_channel_interfaces[port_channel_interface].isis_metric }}
+{%         endif %}
+{%         if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+   isis network point-to-point
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].eos_cli is arista.avd.defined %}
    {{ port_channel_interfaces[port_channel_interface].eos_cli | indent(3, false) }}
 {%     endif %}
