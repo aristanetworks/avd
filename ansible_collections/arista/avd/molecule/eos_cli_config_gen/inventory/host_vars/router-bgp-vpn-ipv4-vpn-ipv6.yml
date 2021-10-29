@@ -1,6 +1,6 @@
 ### Routing - BGP vpn-ipv4 ###
 router_bgp:
-  as: 65102
+  as: 65103
   router_id: 192.168.255.3
   bgp_defaults:
     - no bgp default ipv4-unicast
