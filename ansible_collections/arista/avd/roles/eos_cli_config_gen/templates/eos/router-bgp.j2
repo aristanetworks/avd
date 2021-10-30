@@ -556,6 +556,12 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in is arista.avd.defined %}
       neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in }} in
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_in is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_out is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_out }} out
+{%             endif %}
 {%         endfor %}
 {%         for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}
 {%             set redistribute_cli = "redistribute " ~ redistribute_route %}
