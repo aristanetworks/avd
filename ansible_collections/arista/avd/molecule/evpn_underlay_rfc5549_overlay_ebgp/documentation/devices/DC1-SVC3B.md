@@ -1386,7 +1386,6 @@ router bgp 65103
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

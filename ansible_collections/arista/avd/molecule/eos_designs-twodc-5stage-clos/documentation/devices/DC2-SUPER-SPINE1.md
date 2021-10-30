@@ -456,7 +456,6 @@ router bgp 65200
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

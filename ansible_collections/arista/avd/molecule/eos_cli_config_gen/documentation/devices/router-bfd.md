@@ -95,7 +95,6 @@ interface Management1
 | -------- | ---------- | ---------- |
 | 900 | 900 | 50 |
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

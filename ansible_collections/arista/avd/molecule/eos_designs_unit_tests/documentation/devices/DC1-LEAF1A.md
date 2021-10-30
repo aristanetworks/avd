@@ -715,7 +715,6 @@ router bgp 65101
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

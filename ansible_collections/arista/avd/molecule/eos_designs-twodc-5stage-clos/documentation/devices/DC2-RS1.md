@@ -388,7 +388,6 @@ router bgp 65201
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

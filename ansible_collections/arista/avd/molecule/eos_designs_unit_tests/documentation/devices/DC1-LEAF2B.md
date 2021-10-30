@@ -1042,7 +1042,6 @@ router bgp 65102
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

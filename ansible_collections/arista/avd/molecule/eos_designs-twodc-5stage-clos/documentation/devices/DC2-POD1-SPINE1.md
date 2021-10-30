@@ -416,7 +416,6 @@ router bgp 65210
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |

@@ -578,7 +578,6 @@ router bgp 65211
 
 ## Router BFD
 
-
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
