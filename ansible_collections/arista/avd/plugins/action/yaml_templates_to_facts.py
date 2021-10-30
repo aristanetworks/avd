@@ -9,10 +9,6 @@ from ansible.plugins.filter.core import combine
 from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
