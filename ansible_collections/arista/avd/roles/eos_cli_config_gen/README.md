@@ -757,8 +757,9 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
-    lldp_transmit: < true | false >
-    lldp_receive: < true | false >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
     qos:
       trust: < dscp | cos >
