@@ -172,6 +172,7 @@ interface Port-Channel4
    isis enable EVPN_UNDERLAY
    isis metric 50
    isis network point-to-point
+   isis circuit-type level-2
 !
 interface Port-Channel5
    no switchport
@@ -185,6 +186,7 @@ interface Port-Channel6
    ip address 10.9.2.7/31
    isis enable EVPN_UNDERLAY
    isis metric 100
+   isis circuit-type level-1-2
 ```
 
 ## Loopback Interfaces
