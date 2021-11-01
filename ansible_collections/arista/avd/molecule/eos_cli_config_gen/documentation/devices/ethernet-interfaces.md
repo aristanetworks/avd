@@ -333,8 +333,8 @@ interface Ethernet17
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled | LDP-IGP Sync Configured |
-| --------- | --------------- | ----------- | ----------------------- |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
 | Ethernet9 | True | True | False |
 | Ethernet10 | False | False | False |
 

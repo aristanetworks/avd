@@ -3,8 +3,8 @@
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled | LDP-IGP Sync Configured |
-| --------- | --------------- | ----------- | ----------------------- |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%         if ethernet_interfaces[ethernet_interface].mpls is arista.avd.defined %}
 {%             set row_mpls_ip = ethernet_interfaces[ethernet_interface].mpls.ip | arista.avd.default('-') %}

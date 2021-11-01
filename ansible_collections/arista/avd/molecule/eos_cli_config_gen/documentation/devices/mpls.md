@@ -172,8 +172,8 @@ mpls ldp
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled | LDP-IGP Sync Configured |
-| --------- | --------------- | ----------- | ----------------------- |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
 | Ethernet1 | True | True | True |
 | Loopback0 | - | True | - |
 
