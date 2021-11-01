@@ -6,26 +6,26 @@
 
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
-{% for patch in patch_panel.patches | arista.avd.default([]) %}
-{%     if patch.name is arista.avd.defined %}
-{%         set patch_panel_patch = namespace() %}
-{%         set patch_panel_patch.enabled = patch.enabled | arista.avd.default(true) %}
-{%         for connector in patch.connectors | arista.avd.default([]) %}
-{%             if loop.first %}
-{%                 set patch_panel_patch.connector_A_type = connector.type | capitalize %}
-{%                 set patch_panel_patch.connector_A_endpoint = connector.endpoint %}
-{%             else %}
-{%                 set patch_panel_patch.connector_B_type = connector.type | capitalize %}
-{%                 set patch_panel_patch.connector_B_endpoint = connector.endpoint %}
-{%             endif %}
-{%         endfor %}
+{%     for patch in patch_panel.patches | arista.avd.default([]) %}
+{%         if patch.name is arista.avd.defined %}
+{%             set patch_panel_patch = namespace() %}
+{%             set patch_panel_patch.enabled = patch.enabled | arista.avd.default(true) %}
+{%             for connector in patch.connectors | arista.avd.default([]) %}
+{%                 if loop.first %}
+{%                     set patch_panel_patch.connector_A_type = connector.type | capitalize %}
+{%                     set patch_panel_patch.connector_A_endpoint = connector.endpoint %}
+{%                 else %}
+{%                     set patch_panel_patch.connector_B_type = connector.type | capitalize %}
+{%                     set patch_panel_patch.connector_B_endpoint = connector.endpoint %}
+{%                 endif %}
+{%             endfor %}
 | {{ patch.name }} | {{ patch_panel_patch.enabled }} | {{ patch_panel_patch.connector_A_type }} | {{ patch_panel_patch.connector_A_endpoint }} | {{ patch_panel_patch.connector_B_type }} | {{ patch_panel_patch.connector_B_endpoint }} |
-{%     endif %}
-{% endfor %}
+{%         endif %}
+{%     endfor %}
 
 ## Patch Panel Configuration
 
 ```eos
-{% include 'eos/patch-panel.j2' %}
+{%     include 'eos/patch-panel.j2' %}
 ```
 {% endif %}
