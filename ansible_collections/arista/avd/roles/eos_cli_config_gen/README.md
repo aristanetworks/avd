@@ -1819,7 +1819,7 @@ patch_panel:
     - name: < name >
       enabled: < true | false >
       connectors:
-        < there must be 2 connectors to a patch, atleast 1 of which must be an interface >
+        # Must have exactly two connectors to a patch of which at least one must be of type "interface"
       - id: < string or integer >
         type: < interface | pseudowire >
         endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
