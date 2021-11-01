@@ -341,10 +341,10 @@ interface Ethernet18
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Ethernet9 | True | True |
-| Ethernet10 | False | False |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Ethernet9 | True | True | - |
+| Ethernet10 | False | False | - |
 
 # Multicast
 

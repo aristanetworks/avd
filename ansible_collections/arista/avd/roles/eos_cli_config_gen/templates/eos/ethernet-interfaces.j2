@@ -275,6 +275,9 @@ interface {{ ethernet_interface }}
 {%         elif ethernet_interfaces[ethernet_interface].mpls.ldp.interface is arista.avd.defined(false) %}
    no mpls ldp interface
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interfaces[ethernet_interface].transceiver.media.override }}
