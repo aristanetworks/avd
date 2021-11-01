@@ -9,7 +9,7 @@
 {%         if ethernet_interfaces[ethernet_interface].mpls is arista.avd.defined %}
 {%             set row_mpls_ip = ethernet_interfaces[ethernet_interface].mpls.ip | arista.avd.default('-') %}
 {%             set row_ldp_interface = ethernet_interfaces[ethernet_interface].mpls.ldp.interface | arista.avd.default('-') %}
-{%             set row_ldp_igp_sync = ethernet_interfaces[ethernet_interface].mpls.ldp.igp_sync | arista.avd.default(false) %}
+{%             set row_ldp_igp_sync = ethernet_interfaces[ethernet_interface].mpls.ldp.igp_sync | arista.avd.default('-') %}
 | {{ ethernet_interface }} | {{ row_mpls_ip }} | {{ row_ldp_interface }} | {{ row_ldp_igp_sync }} |
 {%         endif %}
 {%     endfor %}

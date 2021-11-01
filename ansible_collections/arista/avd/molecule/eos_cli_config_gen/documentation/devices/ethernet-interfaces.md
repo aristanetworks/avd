@@ -335,8 +335,8 @@ interface Ethernet17
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
-| Ethernet9 | True | True | False |
-| Ethernet10 | False | False | False |
+| Ethernet9 | True | True | - |
+| Ethernet10 | False | False | - |
 
 # Multicast
 
