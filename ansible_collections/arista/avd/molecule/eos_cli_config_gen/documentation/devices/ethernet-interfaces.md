@@ -86,6 +86,7 @@ interface Management1
 | Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
+| Ethernet18 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -228,6 +229,8 @@ interface Ethernet7
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
    no switchport
+   no lldp transmit
+   no lldp receive
 !
 interface Ethernet8.101
    description to WAN-ISP-01 Ethernet2.101 - VRF-C1
@@ -306,6 +309,18 @@ interface Ethernet18
    no switchport
    ip address 192.0.2.1/31
    service-policy type pbr input MyLANServicePolicy
+   description Switched port with no LLDP rx/tx
+   switchport
+   switchport access vlan 110
+   switchport mode access
+   no lldp transmit
+   no lldp receive
+!
+interface Ethernet19
+   description Port patched through patch-panel to pseudowire
+   no switchport
+   no lldp transmit
+   no lldp receive
 ```
 
 # Routing
