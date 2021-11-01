@@ -25,8 +25,8 @@ class ActionModule(ActionBase):
                 n = self._task.args.get("root_key")
                 n = self._templar.template(n)
                 if not isidentifier(n):
-                    raise AnsibleActionFail("The argument 'root_key' value of '%s' is not valid. Keys must start with a letter or underscore character, "
-                                            "and contain only letters, numbers and underscores." % n)
+                    raise AnsibleActionFail(f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character, "
+                                            "and contain only letters, numbers and underscores.")
                 root_key = n
 
             if "templates" in self._task.args:
