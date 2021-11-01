@@ -396,7 +396,7 @@ router bgp 65201
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

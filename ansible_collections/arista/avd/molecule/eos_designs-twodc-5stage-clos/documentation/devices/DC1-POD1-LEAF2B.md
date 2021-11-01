@@ -901,7 +901,7 @@ router bgp 65112.100
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

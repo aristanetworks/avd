@@ -414,7 +414,7 @@ router bgp 65120
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !
