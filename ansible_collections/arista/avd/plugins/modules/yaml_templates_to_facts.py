@@ -15,7 +15,6 @@
 # limitations under the License.
 #
 
-
 DOCUMENTATION = r'''
 ---
 module: yaml_templates_to_facts
