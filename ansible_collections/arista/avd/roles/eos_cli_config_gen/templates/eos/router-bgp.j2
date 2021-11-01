@@ -459,10 +459,8 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor }} activate
 {%             endif %}
 {%         endfor %}
-{%         if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation.mpls is arista.avd.defined(true) %}
-{%             if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation.next_hop_self.source_interface is arista.avd.defined %}
-      neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation.next_hop_self.source_interface }}
-{%             endif %}
+{%         if router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
+      neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv4.neighbor_default_encapsulation_mpls_next_hop_self.source_interface }}
 {%         endif %}
 {%     endif %}
 {# address family vpn-ipv6 activation #}
@@ -486,10 +484,8 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ neighbor }} activate
 {%             endif %}
 {%         endfor %}
-{%         if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation.mpls is arista.avd.defined(true) %}
-{%             if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation.next_hop_self.source_interface is arista.avd.defined %}
-      neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation.next_hop_self.source_interface }}
-{%             endif %}
+{%         if router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface is arista.avd.defined %}
+      neighbor default encapsulation mpls next-hop-self source-interface {{ router_bgp.address_family_vpn_ipv6.neighbor_default_encapsulation_mpls_next_hop_self.source_interface }}
 {%         endif %}
 {%     endif %}
 {# address family vpn-ipv6 activation #}
