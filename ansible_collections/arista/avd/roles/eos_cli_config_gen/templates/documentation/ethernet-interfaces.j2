@@ -260,7 +260,7 @@
 {%                     else %}
 {%                         set mode = "*-" %}
 {%                     endif %}
-| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | {{ isis_circuit_type }} |
+| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
