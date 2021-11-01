@@ -231,3 +231,12 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
+
+  Ethernet18:
+    description: PBR Description
+    mtu: 1500
+    type: routed
+    ip_address: 192.0.2.1/31
+    service_policy:
+      pbr:
+        input: MyLANServicePolicy
