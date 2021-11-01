@@ -15,7 +15,7 @@ CVP_DEVICES:
   - fqdn: {{ device }}
 {%             for container_name, container in CVP_VARS.CVP_TOPOLOGY.items() | arista.avd.natural_sort %}
 {%                 if 'devices' in container %}
-{%                     for device_container in container['devices']%}
+{%                     for device_container in container['devices'] %}
 {%                         if device == device_container %}
     parentContainerName: {{ container_name }}
 {%                         endif %}
@@ -32,7 +32,7 @@ CVP_DEVICES:
 {%         endif %}
 {%     endif %}
 {% endfor %}
-{% if dev_cntr.value == 0%}
+{% if dev_cntr.value == 0 %}
   []
 {% endif %}
 CVP_CONTAINERS:
@@ -44,5 +44,5 @@ CVP_CONTAINERS:
 {%         for configlet in hostvars[groups[container_root][0]]['cv_configlets']['containers'][container_name] | arista.avd.natural_sort %}
       - {{ configlet }}
 {%         endfor %}
-{%      endif %}
+{%     endif %}
 {% endfor %}
