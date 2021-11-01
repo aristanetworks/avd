@@ -2275,21 +2275,15 @@ router_bgp:
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
-    neighbor_default_encapsulation:
-      mpls: < true | false >
-      next_hop_self:
-        source_interface: < interface >
-    neighbor_default_encapsulation_mpls_next_hop_self: (old data model, also accepted)
+    neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
   address_family_vpn_ipv6:
     domain_identifier: < string >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
-    neighbor_default_encapsulation:
-      mpls: < true | false >
-      next_hop_self:
-        source_interface: < interface >
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: < interface >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
