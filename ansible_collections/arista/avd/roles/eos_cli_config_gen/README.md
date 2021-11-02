@@ -58,7 +58,7 @@
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
       - [VxLAN Interface](#vxlan-interface)
-    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
@@ -1167,10 +1167,10 @@ vxlan_interface:
       < multiline eos cli >
 ```
 
-### Internal VLAN Allocation Policy
+### Internal VLAN Order
 
 ```yaml
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: < ascending | descending >
   range:
     beginning: < vlan_id >
