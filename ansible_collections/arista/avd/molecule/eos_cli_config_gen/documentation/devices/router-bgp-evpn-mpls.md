@@ -122,12 +122,12 @@ interface Management1
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
-#### EVPN Default Encapsulation
 
-| Default Neighbor Encapsulation | Next-hop-self Source Interface |
+#### EVPN Neighbor Default Encapsulation
+
+| Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
-| MPLS | Loopback0 |
-
+| mpls | Loopback0 |
 
 #### Router BGP EVPN MAC-VRFs
 

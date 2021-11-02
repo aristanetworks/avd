@@ -23,10 +23,9 @@ router_bgp:
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
   address_family_evpn:
-    neighbor_default_encapsulation:
-      mpls: true
-      next_hop_self:
-        source_interface: Loopback0
+    neighbor_default:
+      encapsulation: mpls
+      next_hop_self_source_interface: Loopback0
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
