@@ -10,7 +10,6 @@
 CVP_DEVICES:
 {% for device in groups[container_root] | arista.avd.natural_sort %}
 {%     if device | arista.avd.is_in_filter(local_var.device_filter) %}
-{%         set dev_cntr.value = dev_cntr.value + 1 %}
 {%         if hostvars[device]['is_deployed'] is arista.avd.defined(true) or hostvars[device]['is_deployed'] is not arista.avd.defined %}
   - fqdn: {{ device }}
 {%             set dev_cntr.value = dev_cntr.value + 1 %}
