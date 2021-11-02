@@ -48,4 +48,4 @@ overlay_controller:
       uplink_to_remote_switches: [ Ethernet1, Ethernet2 ]
       evpn_role: none
 
-evpn_prevent_readvertise_to_server : false
+evpn_prevent_readvertise_to_server: false

@@ -163,4 +163,3 @@ vlan_interfaces:
       55:
         hash_algorithm: md5
         key: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-

@@ -21,10 +21,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 DOCUMENTATION = r'''
 ---
 module: inventory_to_container
@@ -188,14 +184,14 @@ def isLeaf(tree, nid):
         return False
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter=None):
+def get_configlet(src_folder="", prefix='AVD', extension='cfg', device_filter=None):
     """
     Get available configlets to deploy to CVP.
 
     Parameters
     ----------
     src_folder : str, optional
-        Path where to find configlet, by default str()
+        Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional
@@ -213,7 +209,7 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter
         device_filter = ["all"]
 
     src_configlets = glob.glob(src_folder + '/*.' + extension)
-    configlets = dict()
+    configlets = {}
     for file in src_configlets:
         # Build structure only if configlet match device_filter.
         if is_in_filter(hostname=os.path.splitext(os.path.basename(file))[0], hostname_filter=device_filter):
@@ -221,7 +217,7 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg', device_filter
                 name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
             else:
                 name = os.path.splitext(os.path.basename(file))[0]
-            with open(file, 'r') as file:
+            with open(file, 'r', encoding='utf8') as file:
                 data = file.read()
             configlets[name] = data
     return configlets
@@ -316,7 +312,7 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     search_container : str, optional
         Container to look for, by default None
     devices : str, optional
-        List of found devices attached to container, by default list()
+        List of found devices attached to container, by default empty list []
     device_filter: list, optional
         List of filter to compare device name and to select only a subset of devices.
 
@@ -385,7 +381,7 @@ def get_containers(inventory_content, parent_container, module):
     container_list = [tree_dc[node].tag for node in tree_dc.expand_tree()]
     container_json = {}
     for container in container_list:
-        data = dict()
+        data = {}
         if container != CVP_ROOT_CONTAINER:
             parent = tree_dc.parent(container)
             if container == parent_container:
@@ -394,7 +390,7 @@ def get_containers(inventory_content, parent_container, module):
                 if isLeaf(tree=tree_dc, nid=container):
                     devices = get_devices(dict_inventory=inventory_content,
                                           search_container=container,
-                                          devices=list(),
+                                          devices=[],
                                           device_filter=module.params['device_filter'])
                     data['devices'] = devices
                 data['parent_container'] = parent.tag
@@ -430,8 +426,8 @@ def main():
         inventory_file = module.params['inventory']
         parent_container = module.params['container_root']
         # Build containers & devices topology
-        inventory_content = str()
-        with open(inventory_file, 'r') as stream:
+        inventory_content = ""
+        with open(inventory_file, 'r', encoding='utf8') as stream:
             try:
                 inventory_content = yaml.safe_load(stream)
             except yaml.YAMLError as exc:
@@ -448,7 +444,7 @@ def main():
 
     # Write vars to file if set by user
     if module.params['destination'] is not None:
-        with open(module.params['destination'], 'w') as file:
+        with open(module.params['destination'], 'w', encoding='utf8') as file:
             yaml.dump(result, file)
 
     module.exit_json(**result)

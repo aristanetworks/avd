@@ -250,4 +250,3 @@ ethernet_interfaces:
     channel_group:
       id: 103
       mode: active
-

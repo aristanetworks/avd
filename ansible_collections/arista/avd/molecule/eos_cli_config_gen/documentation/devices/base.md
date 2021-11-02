@@ -203,4 +203,5 @@ management security
 !
 interface Loopback1000
   description Interface created with eos_cli on device level
+
 ```

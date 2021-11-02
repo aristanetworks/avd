@@ -25,10 +25,10 @@ bgp_peer_groups:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
     name: "UNDERLAY_PEERS"
   EVPN_OVERLAY_PEERS:
-      password: "q+VNViP5i4rVjW1cxFv2wA=="
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
-      name: "MLAG_PEER"
-      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    name: "MLAG_PEER"
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches
 spine:

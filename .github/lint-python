@@ -14,20 +14,30 @@
 
 exec 1>&2
 
-echo "Validating PEP8 compliance..."
+echo "Validating PEP8 compliance on Plugins..."
 echo "------------------------------------------------------------------------------------------------------------"
-if [ -e ansible_collections/arista/avd/plugins/modules ]; then
-    echo "  - Modules validation"
-    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/modules/*.py
-    echo "------------------------------------------------------------------------------------------------------------"
-fi
-if [ -e ansible_collections/arista/avd/plugins/module_utils ]; then
-    echo "  - Module Utils validation"
-    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/module_utils/*.py
+if [ -e ansible_collections/arista/avd/plugins/action ]; then
+    echo "  - plugins/actions validation"
+    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/action/*.py
     echo "------------------------------------------------------------------------------------------------------------"
 fi
 if [ -e ansible_collections/arista/avd/plugins/filter ]; then
-    echo "  - Module Utils validation"
+    echo "  - plugins/filter validation"
     python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/filter/*.py
+    echo "------------------------------------------------------------------------------------------------------------"
+fi
+if [ -e ansible_collections/arista/avd/plugins/module_utils ]; then
+    echo "  - plugins/module_utils validation"
+    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/module_utils/*.py
+    echo "------------------------------------------------------------------------------------------------------------"
+fi
+if [ -e ansible_collections/arista/avd/plugins/modules ]; then
+    echo "  - plugins/modules validation"
+    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/modules/*.py
+    echo "------------------------------------------------------------------------------------------------------------"
+fi
+if [ -e ansible_collections/arista/avd/plugins/test ]; then
+    echo "  - plugins/test validation"
+    python -m pylint --jobs 0 --reports n --output-format=parseable --max-line-length 160 --ignore E402,E741,W503,W504 ansible_collections/arista/avd/plugins/test/*.py
     echo "------------------------------------------------------------------------------------------------------------"
 fi

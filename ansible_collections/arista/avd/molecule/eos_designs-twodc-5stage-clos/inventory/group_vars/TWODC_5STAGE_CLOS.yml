@@ -1,10 +1,9 @@
 ---
+
 fabric_name: TWODC_5STAGE_CLOS
 
 evpn_ebgp_multihop: 5
 evpn_overlay_bgp_rtc: true
-
-
 
 mgmt_gateway: 192.168.1.254
 mgmt_destination_networks:
