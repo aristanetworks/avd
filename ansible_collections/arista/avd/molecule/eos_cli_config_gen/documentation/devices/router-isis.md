@@ -96,9 +96,9 @@ interface Management1
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
 | Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 | Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | - |
-| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | - |
-| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | - |
+| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | **point-to-point | *level-2 |
+| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | **passive | **- |
+| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | **- | *level-1-2 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
