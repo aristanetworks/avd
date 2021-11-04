@@ -238,15 +238,15 @@
 {%     endif %}
 
 {%     if router_bgp.vpws is arista.avd.defined %}
-#### Router BGP VPWS Pseudowires
+#### Router BGP VPWS Instances
 
-| Tenant | Pseudowire | Route-Distinguisher | Both Route-Target | Local ID | Remote ID |
-| ------ | ---------- | ------------------- | ----------------- | -------- | --------- |
+| Instance | Route-Distinguisher | Both Route-Target| Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | -----------------| ---------- | -------- | --------- |
 {% for vpws_service in router_bgp.vpws %}
 {%     if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
 {%         for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort %}
 {%             if pseudowire.name is arista.avd.defined %}
-| {{ vpws_service.name }} | {{ pseudowire.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
+| {{ vpws_service.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ pseudowire.name }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
