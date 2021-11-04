@@ -294,6 +294,11 @@ interface {{ ethernet_interface }}
 {%     if ethernet_interfaces[ethernet_interface].transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interfaces[ethernet_interface].transceiver.media.override }}
 {%     endif %}
+{%     for link_tracking_group in ethernet_interfaces[ethernet_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined %}
+   link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction | arista.avd.default('upstream') }}
+{%         endif %}
+{%     endfor %}
 {%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
    {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
 {%     endif %}

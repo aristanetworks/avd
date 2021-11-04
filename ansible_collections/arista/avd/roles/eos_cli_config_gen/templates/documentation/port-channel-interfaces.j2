@@ -83,6 +83,28 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{# Link Tracking Groups #}
+{%     set trk_grps = namespace() %}
+{%     set trk_grps.ch_intfs = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%         if port_channel_interfaces[port_channel_interface].link_tracking_groups is arista.avd.defined %}
+{%             do trk_grps.ch_intfs.append(port_channel_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if trk_grps.ch_intfs | length > 0 %}
+
+#### Link Tracking Groups
+
+| Interface | Group Name | Direction |
+| --------- | ---------- | --------- |
+{%         for row_ch_intf in trk_grps.ch_intfs %}
+{%             for row_trk_grp in port_channel_interfaces[row_ch_intf].link_tracking_groups | arista.avd.natural_sort('name') %}
+{%                 if row_trk_grp.name is arista.avd.defined %}
+| {{ row_ch_intf }} | {{ row_trk_grp.name }} | {{ row_trk_grp.direction | arista.avd.default('downstream') }} |
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endif %}
 {# IPv4 #}
 {%   set port_channel_interface_ipv4 = namespace() %}
 {%   set port_channel_interface_ipv4.configured = false %}
