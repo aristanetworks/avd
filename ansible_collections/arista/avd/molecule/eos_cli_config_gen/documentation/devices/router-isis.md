@@ -95,10 +95,10 @@ interface Management1
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
 | Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | - |
-| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | - |
-| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 |
+| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | *level-2 |
+| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | *- |
+| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | *level-1-2 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -122,6 +122,7 @@ interface Ethernet2
    isis enable EVPN_UNDERLAY
    isis metric 50
    isis network point-to-point
+   isis circuit-type level-1-2
 !
 interface Ethernet3
    description MLAG_PEER_EAPI-LEAF1B_Ethernet3
@@ -156,11 +157,11 @@ interface Ethernet6
 
 #### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Type | ISIS Passive |
-| --------- | ------------- | ----------- | ---- | ------------ |
-| Port-Channel4 | EVPN_UNDERLAY | 50 | point-to-point | False |
-| Port-Channel5 | EVPN_UNDERLAY | 50 | - | True |
-| Port-Channel6 | EVPN_UNDERLAY | 100 | - | False |
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ----------- | ---- | ----------------- |
+| Port-Channel4 | EVPN_UNDERLAY | 50 | point-to-point | level-2 |
+| Port-Channel5 | EVPN_UNDERLAY | 50 | passive | - |
+| Port-Channel6 | EVPN_UNDERLAY | 100 | - | level-1-2 |
 
 ### Port-Channel Interfaces Device Configuration
 
