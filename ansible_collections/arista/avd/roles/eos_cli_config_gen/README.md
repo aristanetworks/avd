@@ -758,6 +758,9 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
     qos:
       trust: < dscp | cos >
@@ -976,6 +979,10 @@ port_channel_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
