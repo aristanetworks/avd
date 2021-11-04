@@ -1,0 +1,21 @@
+{% if lacp is arista.avd.defined %}
+
+# LACP
+
+## LACP Summary
+
+| Port-id range | Rate-limit default | System-priority |
+| ------------- | ------------------ | --------------- |
+{%     if lacp.port_id.range.begin is arista.avd.defined and lacp.port_id.range.end is arista.avd.defined %}
+{%         set row_range = lacp.port_id.range.begin ~ ' - ' ~ lacp.port_id.range.end %}
+{%     else %}
+{%         set row_range = '-' %}
+{%     endif %}
+| {{ row_range }} | {{ lacp.rate_limit.default | arista.avd.default('-') }} | {{ lacp.system_priority | arista.avd.default('-') }} |
+
+## LACP Device Configuration
+
+```eos
+{%     include 'eos/lacp.j2' %}
+```
+{% endif %}
