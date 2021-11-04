@@ -61,6 +61,7 @@
     - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
+    - [LACP](#lacp)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -1197,6 +1198,19 @@ ip_dhcp_relay:
 ```yaml
 ip_icmp_redirect: < true | false >
 ipv6_icmp_redirect: < true | false >
+```
+
+### LACP
+
+```yaml
+lacp:
+  port_id:
+    range:
+      begin: < min_port >
+      end: < max_port >
+  rate_limit:
+    default: < true | false >
+  system_priority: < 0-65535 >
 ```
 
 ### LLDP
