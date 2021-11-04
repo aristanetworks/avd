@@ -10,7 +10,8 @@ router_isis:
     local_convergence:
       protected_prefixes: true
       delay: 15000
-  advertise_passive_only: true
+  advertise:
+    passive_only: true
   no_passive_interfaces:
     - Ethernet1
     - Ethernet2

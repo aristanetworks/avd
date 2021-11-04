@@ -30,8 +30,8 @@
 {%     if router_isis.timers.local_convergence is arista.avd.defined %}
 | Local Convergence Delay (ms) | {{ router_isis.timers.local_convergence.delay | arista.avd.default(10000) }} |
 {%     endif %}
-{%     if router_isis.advertise_passive_only is arista.avd.defined(true) %}
-| Advertise Passive-only | {{ router_isis.advertise_passive_only }} |
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
+| Advertise Passive-only | {{ router_isis.advertise.passive_only }} |
 {%     endif %}
 {%     if router_isis.address_family is defined %}
 | Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|

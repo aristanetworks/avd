@@ -2624,7 +2624,8 @@ router_isis:
     local_convergence:
       protected_prefixes: < true | false >
       delay: < number of milliseconds (Optional, default is 10000) >
-  advertise_passive_only: < true | false >
+  advertise:
+    passive_only: < true | false >
   no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:

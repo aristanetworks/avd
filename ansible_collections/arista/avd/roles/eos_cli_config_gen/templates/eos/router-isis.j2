@@ -26,7 +26,7 @@ router isis {{ router_isis.instance }}
    timers local-convergence-delay protected-prefixes
 {%         endif %}
 {%     endif %}
-{%     if router_isis.advertise_passive_only is arista.avd.defined(true) %}
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
    advertise passive-only
 {%     endif %}
    !
