@@ -6,6 +6,7 @@ ip routing
 !
 no ip routing
 {% endif %}
+!
 {% for vrf in vrfs | arista.avd.natural_sort %}
 {%     if vrfs[vrf].ip_routing is arista.avd.defined(true) and vrf != 'default' %}
 ip routing vrf {{ vrf }}
