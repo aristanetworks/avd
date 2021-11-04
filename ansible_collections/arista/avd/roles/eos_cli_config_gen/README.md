@@ -58,7 +58,7 @@
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
       - [VxLAN Interface](#vxlan-interface)
-    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LLDP](#lldp)
@@ -66,7 +66,7 @@
     - [Maintenance Mode](#maintenance-mode)
       - [BGP Groups](#bgp-groups)
       - [Interface Groups](#interface-groups)
-      - [Maintenance profiles and units](#maintenance-profiles-and-units)
+      - [Profiles and units](#profiles-and-units)
     - [Management](#management)
       - [Clock Timezone](#clock-timezone)
       - [DNS Domain](#dns-domain)
@@ -80,7 +80,7 @@
       - [Management Console](#management-console)
       - [Management Security](#management-security)
       - [Management SSH](#management-ssh)
-      - [NTP Servers](#ntp-servers)
+      - [IP SSH Client Source Interfaces](#ip-ssh-client-source-interfaces)
       - [NTP](#ntp)
     - [MPLS](#mpls)
     - [Multi-Chassis LAG - MLAG](#multi-chassis-lag---mlag)
@@ -99,6 +99,7 @@
       - [SNMP Settings](#snmp-settings)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
+    - [Patch Panel](#patch-panel)
     - [PTP](#ptp)
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
@@ -130,6 +131,9 @@
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
+  - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
+    - [Versioning](#versioning)
+    - [Example Playbooks](#example-playbooks)
   - [License](#license)
 
 ## Overview
@@ -181,12 +185,14 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 ```yaml
 access_lists:
   < access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
       < sequence_id_2 >:
         action: "< action as string >"
   < access_list_name_2 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -197,6 +203,7 @@ access_lists:
 ```yaml
 ipv6_standard_access_lists:
   < ipv6_access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -213,6 +220,7 @@ ipv6_standard_access_lists:
 ```yaml
 standard_access_lists:
   < access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -229,6 +237,7 @@ standard_access_lists:
 ```yaml
 ipv6_access_lists:
   < ipv6_access_list_name_1 >:
+    counters_per_entry: < true | false >
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
@@ -284,11 +293,27 @@ aaa_authorization:
 ```yaml
 aaa_accounting:
   exec:
+    console:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
+    default:
+      type: < none | start-stop | stop-only >
+      group: < group_name >
+  system:
     default:
       type: < none | start-stop | stop-only >
       group: < group_name >
   commands:
-    commands_default:
+    console:
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+      - commands: < all | 0-15 >
+        type: < none | start-stop | stop-only >
+        group: < group_name >
+        logging: < true | false >
+    default:
       - commands: < all | 0-15 >
         type: < none | start-stop | stop-only >
         group: < group_name >
@@ -306,6 +331,7 @@ aaa_root:
   secret:
     sha512_password: "< sha_512_password >"
 ```
+
 #### AAA Server Groups
 
 ```yaml
@@ -406,6 +432,9 @@ banners:
 
 ```yaml
 router_bfd:
+  interval: < rate in milliseconds >
+  min_rx: < rate in milliseconds >
+  multiplier: < 3-50 >
   multihop:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
@@ -729,6 +758,9 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
     qos:
       trust: < dscp | cos >
@@ -738,10 +770,14 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     mpls:
       ip: < true | false >
       ldp:
         interface: < true | false >
+        igp_sync: < true | false >
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
@@ -861,6 +897,7 @@ interface_profiles:
       - < command_1 >
       - < command_2 >
 ```
+
 #### Loopback Interfaces
 
 ```yaml
@@ -920,6 +957,9 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -939,6 +979,10 @@ port_channel_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -974,7 +1018,7 @@ port_channel_interfaces:
     description: < description >
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
-    ip_address:  < IP_address/mask >
+    ip_address: < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
     ipv6_address_link_local: < link_local_IPv6_address/mask >
@@ -1018,8 +1062,13 @@ vlan_interfaces:
     ip_address_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
-    ip_virtual_router_address: < IPv4_address >
+    ip_virtual_router_addresses:
+      - < IPv4_address/Mask | IPv4_address >
+      - < IPv4_address/Mask | IPv4_address >
     ip_address_virtual: < IPv4_address/Mask >
+    ip_address_virtual_secondaries:
+      - < IPv4_address/Mask >
+      - < IPv4_address/Mask >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -1093,30 +1142,42 @@ vlan_interfaces:
 #### VxLAN Interface
 
 ```yaml
-vxlan_tunnel_interface:
+vxlan_interface:
   Vxlan1:
     description: < description >
-    source_interface: < source_interface_name >
-    virtual_router:
-      encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
-    vxlan_udp_port: < udp_port >
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: < source_interface_name >
+      udp_port: < udp_port >
+      virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          flood_vteps:
+            - < remote_vtep_1_ip_address >
+            - < remote_vtep_2_ip_address >
       vrfs:
-        < vrf_name >:
+        < vrf_name_1 >:
           vni: < vni_id_3 >
-        < vrf_name >:
+        < vrf_name_2 >:
           vni: < vni_id_4 >
+      flood_vteps:
+        - < remote_vtep_1_ip_address >
+        - < remote_vtep_2_ip_address >
+      flood_vtep_learned_data_plane: < true | false >
+    # EOS CLI rendered directly on the Vxlan interface in the final EOS configuration
+    eos_cli: |
+      < multiline eos cli >
 ```
 
-### Internal VLAN Allocation Policy
+### Internal VLAN Order
 
 ```yaml
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: < ascending | descending >
   range:
     beginning: < vlan_id >
@@ -1196,6 +1257,7 @@ interface_groups:
 ```
 
 #### Profiles and units
+
 ```yaml
 maintenance:
   default_interface_profile: < interface_profile_1 >
@@ -1220,12 +1282,13 @@ maintenance:
     < unit_name_1 >:
       quiesce: < true | false >
       profile: < unit_profile_1 >
-      bgp_groups:
-        - < bgp_group_1>
-        - < bgp_group_2>
-      interface_groups:
-        - < interface_group_1>
-        - < interface_group_2>
+      groups:
+        bgp_groups:
+          - < bgp_group_1>
+          - < bgp_group_2>
+        interface_groups:
+          - < interface_group_1>
+          - < interface_group_2>
 ```
 
 ### Management
@@ -1375,6 +1438,9 @@ management_ssh:
       - < algorithm1 >
       - < algorithm2 >
   enable: < true | false >
+  connection:
+    limit: < 1-100 SSH Connections >
+    per_host: < 1-20 max sessions from a host >
   vrfs:
     < vrf_name_1 >:
       enable: < true | false >
@@ -1382,27 +1448,39 @@ management_ssh:
       enable: < true | false >
 ```
 
-#### NTP Servers
+#### IP SSH Client Source Interfaces
 
 ```yaml
-ntp_server:
-  local_interface:
-    vrf: < vrf_name >
-    interface: < source_interface >
-  nodes:
-    - < ntp_server_1 >
-    - < ntp_server_2 >
+ip_ssh_client_source_interfaces:
+    - name: < interface_name_1 >
+      vrf: < vrf_name_1 | default -> "default" >
+    - name: <interface_name_2>
+      vrf: < vrf_name_2 | default -> "default" >
 ```
 
 #### NTP
 
 ```yaml
 ntp:
+  local_interface:
+    name: < source_interface >
+    vrf: < vrf_name >
+  servers:
+  - name: < IP | hostname >
+    burst: < true | false >
+    iburst: < true | false >
+    key: < 1 - 65535 >
+    local_interface: < source_interface >
+    maxpoll: < 3 - 17 (logorithmic)>
+    minpoll: < 3 - 17 (logorithmic)>
+    preferred: < true | false >
+    version: < 1 - 4 >
+    vrf: < vrf_name >
   authenticate: <true | false >
   authentication_keys:
-    <key_identifier | 1-65534>:
-      hash_algorithm: < md5 | sha1 >
-      key: "< type7_obfuscated_key >"
+  - id: <key_identifier | 1-65534>:
+    hash_algorithm: < md5 | sha1 >
+    key: "< type7_obfuscated_key >"
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
@@ -1482,20 +1560,80 @@ router_pim_sparse_mode:
 
 ```yaml
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-      - < IPv4_address >
-      - < IPv4_address >
-      - < IPv4_address >
-    port: < port_id >
-  ingestauth_key: < ingest_key >
-  ingestvrf: < vrf_name >
-  smashexcludes: "< list as string >"
-  ingestexclude: "< list as string >"
-  disable_aaa: < false | true >
+  # Address of the gRPC server on CloudVision
+  # TCP 9910 is used on on-prem
+  # TCP 443 is used on CV as a Service
+  cvaddrs: # For single cluster
+    - < ip/fqdn >:<port>
+    - < ip/fqdn >:<port>
+    - < ip/fqdn >:<port>
+  clusters: # For multiple cluster support
+    < cluster_name >:
+      cvaddrs:
+        - < ip/fqdn >:<port>
+        - < ip/fqdn >:<port>
+        - < ip/fqdn >:<port>
+      cvauth:
+        method: < "token" | "token-secure" | "key" >
+        key: < key >
+        token_file: < path | e.g. "/tmp/token" >
+      cvobscurekeyfile: < true | false >
+      cvproxy: < URL >
+      cvsourceip: < IP Address >
+      cvvrf: < vrf >
+  # Authentication scheme used to connect to CloudVision
+  cvauth:
+    method: < "token" | "token-secure" | "key" >
+    key: < key >
+    token_file: < path | e.g. "/tmp/token" >
+  # Compression scheme when streaming to CloudVision. The default is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
+  # This flag does not have to be set to take effect.
+  cvcompression: < gzip | none >
+  # Encrypt the private key used for authentication to CloudVision
+  cvobscurekeyfile: < true | false >
+  # Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
+  # The expected form is http://[user:password@]ip:port, e.g.: 'http://arista:arista@10.83.12.78:3128'
+  # Available as of TerminAttr v1.13.0
+  cvproxy: < URL >
+  # set source IP address in case of in-band managament
+  cvsourceip: < IP Address >
+  # Name of the VRF to use to connect to CloudVision
+  cvvrf: < vrf >
+  # Stream states from EOS GNMI servers (Openconfig) to CloudVision
+  # Available as of TerminAttr v1.13.1
+  cvgnmi: < true | false >
+  # Disable AAA authorization and accounting. When setting this flag, all commands pushed
+  # from CloudVision are applied directly to the CLI without authorization
+  disable_aaa: < true | false >
+  # Set the gRPC server address, the default is 127.0.0.1:6042
+  grpcaddr: < string | e.g. "MGMT/0.0.0.0:6042" >
+  # gNMI read-only mode – Disable gnmi.Set()
+  grpcreadonly: < true | false >
+  # Exclude paths from Sysdb on the ingest side
+  ingestexclude: < string | e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent" >
+  # Exclude paths from the shared memory table
+  smashexcludes: < string | e.g. "ale,flexCounter,hardware,kni,pulse,strata" >
+  # Enable log file collection; /var/log/messages is streamed by default if no path is set.
+  taillogs: < path | e.g. "/var/log/messages" >
+  # ECO DHCP Collector address or ECO DHCP Fingerprint listening addressin standalone mode (default "127.0.0.1:67")
+  ecodhcpaddr: < IPV4_address:port >
+  # Enable IPFIX provider (default true)
+  # This flag is enabled by default and does not have to be added to the daemon configuration.
+  ipfix: < true | false >
+  # ECO IPFIX Collector address to listen on to receive IPFIX packets (default "127.0.0.1:4739")
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  ipfixaddr: < IPV4_address:port >
+  # Enable sFlow provider (default true)
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  sflow: < true | false >
+  # ECO sFlow Collector address to listen on to receive sFlow packets (default "127.0.0.1:6343")
+  # This flag is enabled by default and does not have to be added to the daemon configuration
+  sflowaddr: < IPV4_address:port >
 ```
 
-You can either provide a list of IPs to target on-premise Cloudvision cluster or either use DNS name for your Cloudvision as a Service instance. If you have both on-prem and CVaaS defined, only on-prem is going to be configured.
+You can either provide a list of IPs/FQDNs to target on-premise Cloudvision cluster or use DNS name for your Cloudvision as a Service instance. Streaming to multiple clusters both on-prem and cloud service is supported.
+
+> Note For TerminAttr version recommendation and EOS compatibility matrix, please refer to the latest TerminAttr Release Notes which always contain the latest recommended versions and minimum required versions per EOS release.
 
 #### Custom Daemons
 
@@ -1547,6 +1685,8 @@ logging:
     size: < messages_nb (minimum of 10) >
     level: < severity_level >
   trap: < severity_level >
+  synchronous:
+    level: < severity_level | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
@@ -1556,8 +1696,14 @@ logging:
     < vrf_name >:
       source_interface: < source_interface_name >
       hosts:
-        - < syslog_server_1>
-        - < syslog_server_2>
+        < syslog_server_1 >:
+          protocol: < tcp | udp (default udp) >
+          ports:
+            - < custom_port_1 >
+            - < custom_port_2 >
+        < syslog_server_2 >:
+          ports:
+            - < custom_port_1 >
   policy:
     match:
       match_lists:
@@ -1656,16 +1802,17 @@ snmp_server:
   hosts:
     - host: < host IP address or name >
       vrf: < vrf_name >
+      version: < 1 | 2c | 3 >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
     - host: < host IP address or name >
       vrf: < vrf_name >
+      community: < community_name >
       users:
         - username: < username >
           authentication_level: < auth | noauth | priv >
-          version: < 1 | 2c | 3 >
   traps:
     enable: < true | false >
   vrfs:
@@ -1675,7 +1822,8 @@ snmp_server:
       enable: < true | false >
 ```
 
-###  System Control-Plane
+### System Control-Plane
+
 ```yaml
 system:
   control_plane:
@@ -1704,6 +1852,23 @@ vmtracer_sessions:
     url: < url >
     username: < username >
     password: "< encrypted_password >"
+```
+
+### Patch Panel
+
+```yaml
+patch_panel:
+  patches:
+    - name: < name >
+      enabled: < true | false >
+      connectors:
+        # Must have exactly two connectors to a patch of which at least one must be of type "interface"
+      - id: < string or integer >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
+      - id: < string or integer >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
 ```
 
 ### PTP
@@ -1835,6 +2000,9 @@ queue_monitor_length:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+  ip_access_group: < access_list_name >
+  ipv6_access_group: < ipv6_access_list_name >
+  max_connections: < 1-100 >
   vrf: < vrf_name >
 ```
 
@@ -1938,6 +2106,8 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      send_community: < all | extended | large | standard >
+      maximum_routes: < integer >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
@@ -2026,6 +2196,8 @@ router_bgp:
       enabled: < true | false >
       threshold: < integer >
       window: < integer >
+    route:
+      import_match_failure_action: < 'discard' >
   address_family_rtc:
     peer_groups:
       < peer_group_name >:
@@ -2142,6 +2314,8 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
+          prefix_list_in: < prefix_list_name >
+          prefix_list_out: < prefix_list_name >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
@@ -2402,7 +2576,6 @@ terminal:
   width: < 0-32767 >
 ```
 
-
 ### Traffic Policies
 
 ```yaml
@@ -2511,6 +2684,72 @@ vlans:
       primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
+```
+
+## Upgrade of eos_cli_config_gen data model
+
+The AVD **major** releases can contain breaking changes to the data models.
+Data model changes requires a change to the `group_vars` and `host_vars`. To help identify needed changes and provide a smoother transition, the AVD 3.0 `eos_cli_config_gen`
+role can provide automatic upgrade of the data model for AVD 2.x to 3.0 upgrades.
+
+To leverage this upgrade functionality, the playbook must include `tasks_from: upgrade` or `tasks_from: upgrade-and-run` for the `import_role` of `eos_cli_config_gen`. Using `upgrade` alone will output the upgraded data files as described below. `upgrade-and-run` will also
+run the regular `eos_cli_config_gen` tasks after upgrading the data model.
+
+The upgraded data will be saved in `{{ inventory_dir }}/eos_cli_config_gen_upgrade_2.x_to_3.0` directory.
+
+The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
+running the playbook. After all data has been upgraded, the `tasks_from: upgrade` can be removed again.
+
+This `eos_cli_config_gen` upgrade feature is not required when using `eos_designs`. Upgrade should be done on `eos_designs` instead.
+See [README](https://www.avd.sh/en/devel/roles/eos_designs/#upgrade-of-eos_designs-data-model) for details on the `eos_designs` upgrade feature.
+
+### Versioning
+
+To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+
+```yaml
+avd_eos_cli_config_gen_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
+```
+
+### Example Playbooks
+
+Running upgrade only
+
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_cli_config_gen
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_cli_config_gen
+```
+
+Running upgrade and the regular `eos_cli_config_gen` tasks
+
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Run AVD eos_cli_config_gen
+      import_role:
+        tasks_from: upgrade-and-run
+        name: arista.avd.eos_cli_config_gen
+```
+
+Alternative with separate tasks:
+
+```yaml
+---
+- hosts: DC1_FABRIC
+  tasks:
+    - name: Upgrade AVD eos_cli_config_gen data model
+      import_role:
+        tasks_from: upgrade
+        name: arista.avd.eos_cli_config_gen
+    - name: Run AVD eos_cli_config_gen
+      import_role:
+        name: arista.avd.eos_cli_config_gen
 ```
 
 ## License

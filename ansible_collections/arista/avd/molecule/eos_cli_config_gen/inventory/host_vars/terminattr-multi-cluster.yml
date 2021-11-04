@@ -1,0 +1,19 @@
+### Daemon TerminAttr
+daemon_terminattr:
+  clusters:
+    DC1:
+      cvaddrs:
+        - 10.20.20.1:9910
+      cvauth:
+        method: "key"
+        key: "arista"
+      cvvrf: mgt
+    DC2:
+      cvaddrs:
+        - 10.30.30.1:9910
+      cvauth:
+        method: "token"
+        token_file: "/tmp/tokenDC2"
+      cvvrf: mgt
+  smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
+  ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"

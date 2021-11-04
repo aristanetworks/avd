@@ -42,6 +42,12 @@ tenants:
               comment
               Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
               EOF
+          113:
+            name: SVI_with_no_vxlan
+            tags: [opzone]
+            enabled: True
+            ip_address_virtual: 10.10.13.1/24
+            vxlan: False
         raw_eos_cli: |
           interface Loopback1000
             description Loopback created from raw_eos_cli under VRF Common_VRF
@@ -64,3 +70,7 @@ tenants:
         vni_override: 2600
         name: web-l2-vlan-2
         tags: [web]
+      2601:
+        name: l2vlan_with_no_vxlan
+        tags: [web]
+        vxlan: False

@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65101
+  as: '65101'
   router_id: 192.168.255.9
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -31,36 +31,36 @@ router_bgp:
   neighbors:
     172.31.255.0:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet1
     172.31.255.2:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet1
     172.31.255.4:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet1
     172.31.255.6:
       peer_group: UNDERLAY-PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet1
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -102,7 +102,7 @@ router_bgp:
         - '12:12'
       redistribute_routes:
       - learned
-      vlan: 130-131
+      vlan: 130
     Tenant_A_WEB_Zone:
       rd: 192.168.255.9:11
       route_targets:
@@ -118,12 +118,12 @@ static_routes:
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -141,12 +141,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 snmp_server:
   contact: example@example.com
   location: DC1_FABRIC rackA DC1-LEAF1A
@@ -186,12 +180,14 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
+struct_cfg:
+  tags: no-monitor
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet1 no-monitor
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -201,7 +197,7 @@ ethernet_interfaces:
     peer: DC1-SPINE2
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE2_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE2_Ethernet1 no-monitor
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -211,7 +207,7 @@ ethernet_interfaces:
     peer: DC1-SPINE3
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE3_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE3_Ethernet1 no-monitor
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -221,7 +217,7 @@ ethernet_interfaces:
     peer: DC1-SPINE4
     peer_interface: Ethernet1
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE4_Ethernet1
+    description: CUSTOM_P2P_LINK_TO_DC1-SPINE4_Ethernet1 no-monitor
     speed: forced 100gfull
     mtu: 1500
     type: routed
@@ -231,7 +227,7 @@ ethernet_interfaces:
     peer: server02_SINGLE_NODE
     peer_interface: Eth1
     peer_type: server
-    description: server02_SINGLE_NODE_Eth1
+    description: CUSTOM_server02_SINGLE_NODE_Eth1
     type: switched
     shutdown: false
     mode: access
@@ -240,7 +236,7 @@ ethernet_interfaces:
     peer: server02_SINGLE_NODE_TRUNK
     peer_interface: Eth1
     peer_type: server
-    description: server02_SINGLE_NODE_TRUNK_Eth1
+    description: CUSTOM_server02_SINGLE_NODE_TRUNK_Eth1
     l2_mtu: 8000
     type: switched
     shutdown: false
@@ -264,20 +260,14 @@ ethernet_interfaces:
         unit: percent
 loopback_interfaces:
   Loopback0:
-    description: EVPN_Overlay_Peering
+    description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
     shutdown: false
     ip_address: 192.168.255.9/32
-  Loopback1:
-    description: VTEP_VXLAN_Tunnel_Source
-    shutdown: false
-    ip_address: 192.168.254.9/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
       10:
         action: permit 192.168.255.0/24 eq 32
-      20:
-        action: permit 192.168.254.0/24 eq 32
 route_maps:
   RM-CONN-2-BGP:
     sequence_numbers:
@@ -317,32 +307,7 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        120:
-          vni: 10120
-        121:
-          vni: 10121
-        122:
-          vni: 10122
-        123:
-          vni: 10123
-        124:
-          vni: 10124
-      vrfs:
-        Tenant_A_APP_Zone:
-          vni: 12
-        Tenant_A_WEB_Zone:
-          vni: 11
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
   Vlan130:
     tenant: Tenant_A
@@ -415,4 +380,28 @@ vlan_interfaces:
     ip_helpers:
       1.1.1.1:
         vrf: TEST
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: DC1-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback0
+      udp_port: 4789
+      vlans:
+        130:
+          vni: 10130
+        120:
+          vni: 10120
+        121:
+          vni: 10121
+        122:
+          vni: 10122
+        123:
+          vni: 10123
+        124:
+          vni: 10124
+      vrfs:
+        Tenant_A_APP_Zone:
+          vni: 12
+        Tenant_A_WEB_Zone:
+          vni: 11
+tags: no-monitor

@@ -55,7 +55,7 @@ tom@kube-tool:~$ docker exec -it awx_task bash
 
 $ sudo pip3 install virtualenv
 WARNING: Running pip install with root privileges is generally not a good idea. Try `pip3 install --user` instead.
-Requirement already satisfied: virtualenv in /usr/local/lib/python3.6/site-packages
+Requirement already satisfied: virtualenv in /usr/local/lib/python3.8/site-packages
 
 $ mkdir /opt/my-envs
 

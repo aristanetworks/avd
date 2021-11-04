@@ -1,16 +1,9 @@
 ---
+
 fabric_name: TWODC_5STAGE_CLOS
 
 evpn_ebgp_multihop: 5
 evpn_overlay_bgp_rtc: true
-
-bgp_peer_groups:
-  IPv4_UNDERLAY_PEERS:
-    password: "AQQvKeimxJu+uGQ/yYvv9w=="
-  EVPN_OVERLAY_PEERS:
-      password: "q+VNViP5i4rVjW1cxFv2wA=="
-  MLAG_IPv4_UNDERLAY_PEER:
-      password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 mgmt_gateway: 192.168.1.254
 mgmt_destination_networks:
@@ -70,7 +63,7 @@ l3_edge:
       include_in_underlay_protocol: true
     - nodes: [ DC1-POD1-LEAF2A, DC2-POD1-LEAF1A ]
       interfaces: [ Ethernet7, Ethernet6 ]
-      as: [ 65112, 65211 ]
+      as: [ "65112.100", 65211 ]
       ip: [ 100.100.100.101/24, 100.100.100.201/24 ]
       mtu: 1500
       include_in_underlay_protocol: true
@@ -107,8 +100,8 @@ node_type_keys:
     type: spine
     default_evpn_role: server
     ip_addressing:
-      p2p_uplinks_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-ip.j2'
-      p2p_uplinks_peer_ip: 'designs/l3ls-evpn/ip-addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
+      p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
   l3leaf:
     type: l3leaf
     connected_endpoints: true

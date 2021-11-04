@@ -148,6 +148,9 @@ ethernet_interfaces:
   Ethernet8:
     description: to WAN-ISP1-01 Ethernet2
     type: routed
+    lldp:
+      transmit: false
+      receive: false
   Ethernet8.101:
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     type: l3dot1q
@@ -231,3 +234,27 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
+
+  Ethernet18:
+    description: PBR Description
+    mtu: 1500
+    type: routed
+    ip_address: 192.0.2.1/31
+    service_policy:
+      pbr:
+        input: MyLANServicePolicy
+
+  Ethernet19:
+    description: Switched port with no LLDP rx/tx
+    mode: access
+    vlans: 110
+    lldp:
+      transmit: false
+      receive: false
+
+  Ethernet20:
+    description: Port patched through patch-panel to pseudowire
+    type: routed
+    lldp:
+      transmit: false
+      receive: false

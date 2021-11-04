@@ -107,7 +107,7 @@ interface Management1
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254  |  -  |  -  |  -  |
+| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |  -  |
 | Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
@@ -174,11 +174,14 @@ interface Vlan83
    description SVI Description
    no shutdown
    ip address virtual 10.10.83.1/24
+   ip address virtual 10.11.83.1/24 secondary
+   ip address virtual 10.11.84.1/24 secondary
 !
 interface Vlan84
    description SVI Description
    ip address 10.10.84.1/24
    ip virtual-router address 10.10.84.254
+   ip virtual-router address 10.11.84.254/24
 !
 interface Vlan85
    description SVI Description

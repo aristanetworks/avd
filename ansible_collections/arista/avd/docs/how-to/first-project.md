@@ -27,7 +27,7 @@ $ tree -L 3 -d
 
 ## Requirements
 
-- Ansible runner configured as descried in [this section](../installation/setup-environment.md)
+- Ansible runner configured as descried in [this section](../installation/collection-installation.md)
 - A set of devices configured with their respective management IP address and username.
 - Access to eAPI service for all devices.
 
@@ -155,9 +155,13 @@ name_servers:
   - 8.8.8.8
 
 # NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
-ntp_servers:
-  - uk.pool.ntp.org
-  - fr.pool.ntp.org
+ntp:
+  servers:
+  - name: uk.pool.ntp.org
+    preferred: true
+    vrf: MGMT
+  - name: fr.pool.ntp.org
+    vrf: MGMT
 ```
 
 #### Configure Fabric topology

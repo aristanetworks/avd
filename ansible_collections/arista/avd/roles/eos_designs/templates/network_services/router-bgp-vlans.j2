@@ -1,0 +1,40 @@
+{# tenant router bgp evpn configuration- MAC-VRF VLAN-Based #}
+  vlans:
+{% if vxlan_vlan_aware_bundles == false %}
+{%     for tenant in switch.tenants | arista.avd.natural_sort %}
+{%         for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%             for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%                 if tenants[tenant].vrfs[vrf].svis[svi].vxlan is arista.avd.defined(false) %}
+{%                     continue %}
+{%                 endif %}
+{%                 set svi_int = svi | int %}
+{%                 set vni = tenants[tenant].vrfs[vrf].svis[svi].vni_override | arista.avd.default(
+                             tenants[tenant].mac_vrf_vni_base + svi_int) %}
+    {{ svi }}:
+      tenant: {{ tenant }}
+      rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ vni }}"
+      route_targets:
+        both:
+          - "{{ tenants_data.evpn_rt_admin_subfield or vni }}:{{ vni }}"
+      redistribute_routes:
+        - learned
+{%             endfor %}
+{%         endfor %}
+{%         for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
+{%             if tenants[tenant].l2vlans[l2vlan].vxlan is arista.avd.defined(false) %}
+{%                 continue %}
+{%             endif %}
+{%             set l2vlan_int = l2vlan | int %}
+{%             set vni = tenants[tenant].l2vlans[l2vlan].vni_override | arista.avd.default(
+                         tenants[tenant].mac_vrf_vni_base + l2vlan_int) %}
+    {{ l2vlan }}:
+      tenant: {{ tenant }}
+      rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ vni }}"
+      route_targets:
+        both:
+          - "{{ tenants_data.evpn_rt_admin_subfield or vni }}:{{ vni }}"
+      redistribute_routes:
+        - learned
+{%         endfor %}
+{%     endfor %}
+{% endif %}

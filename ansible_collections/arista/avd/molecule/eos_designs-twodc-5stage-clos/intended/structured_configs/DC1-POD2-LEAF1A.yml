@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65121
+  as: '65121'
   router_id: 172.16.120.3
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -33,31 +33,33 @@ router_bgp:
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD2-SPINE1_Ethernet3
     172.17.120.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-RS2_Ethernet3
       bfd: true
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE1
-      remote_as: 65120
+      remote_as: '65120'
       route_map_out: RM-EVPN-FILTER-AS65120
     172.16.120.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE2
-      remote_as: 65120
+      remote_as: '65120'
       route_map_out: RM-EVPN-FILTER-AS65120
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    route:
+      import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -245,34 +247,21 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: SVI_with_no_vxlan
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  2601:
+    tenant: Tenant_A
+    name: l2vlan_with_no_vxlan
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
-      vrfs:
-        Common_VRF:
-          vni: 1025
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
   Vlan110:
     tenant: Tenant_A
@@ -307,9 +296,36 @@ vlan_interfaces:
       EOF
 
       '
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.10.13.1/24
 struct_cfg:
   domain_list:
   - structured-config.set.under.vrf.common-vrf
+vxlan_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+        2500:
+          vni: 2500
+        2600:
+          vni: 2600
+      vrfs:
+        Common_VRF:
+          vni: 1025
 domain_list:
 - structured-config.set.under.vrf.common-vrf

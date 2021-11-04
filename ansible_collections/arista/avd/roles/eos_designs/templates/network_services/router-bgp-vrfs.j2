@@ -1,0 +1,115 @@
+{# tenant router bgp evpn VRFs #}
+{% if switch.evpn_services_l2_only == false %}
+{% set bgp_vrf = namespace() %}
+  vrfs:
+{%     for tenant in switch.tenants | arista.avd.natural_sort %}
+{%         for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%             set bgp_vrf.address_family_ipv4_neighbors = [] %}
+{%             set bgp_vrf.address_family_ipv6_neighbors = [] %}
+{%             set leaf_evpn_rt = (tenants_data.evpn_rt_admin_subfield or tenants[tenant].vrfs[vrf].vrf_vni) ~ ':' ~ tenants[tenant].vrfs[vrf].vrf_vni %}
+{%             set route_targets = namespace(import={'evpn': [leaf_evpn_rt]}, export={'evpn': [leaf_evpn_rt]}) %}
+{%             for additional_route_target in tenants[tenant].vrfs[vrf].additional_route_targets | arista.avd.natural_sort %}
+{%                 if inventory_hostname in additional_route_target.nodes | arista.avd.default([inventory_hostname]) %}
+{%                     if additional_route_target.address_family is arista.avd.defined and additional_route_target.route_target is arista.avd.defined and additional_route_target.type is arista.avd.defined %}
+{%                         if additional_route_target.type in ['import', 'export'] %}
+{%                             if additional_route_target.address_family in route_targets[additional_route_target.type] %}
+{%                                 do route_targets[additional_route_target.type][additional_route_target.address_family].append(additional_route_target.route_target) %}
+{%                             else %}
+{%                                 do route_targets[additional_route_target.type].update({additional_route_target.address_family: [additional_route_target.route_target]}) %}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+    {{ vrf }}:
+      router_id: {{ switch.router_id }}
+      rd: "{{ tenants_data.evpn_rd_admin_subfield }}:{{ tenants[tenant].vrfs[vrf].vrf_vni }}"
+      route_targets:
+        import: {{ route_targets.import | to_json }}
+        export: {{ route_targets.export | to_json }}
+      neighbors:
+{%             if switch.mlag_l3 is arista.avd.defined(true) %}
+{%                 set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                     tenants[tenant].enable_mlag_ibgp_peering_vrfs,
+                                                     true) %}
+{%                 if configure_mlag_ibgp_peering %}
+        {{ switch.mlag_peer_l3_ip | arista.avd.default(switch.mlag_peer_ip) }}:
+          peer_group: {{ bgp_peer_groups.MLAG_IPv4_UNDERLAY_PEER.name | arista.avd.default("MLAG-IPv4-UNDERLAY-PEER") }}
+{%                 endif %}
+{%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp_peers is arista.avd.defined %}
+{%                 for bgp_peer in tenants[tenant].vrfs[vrf].bgp_peers %}
+{%                     if tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes is arista.avd.defined %}
+{%                         if inventory_hostname in tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer].nodes %}
+{%                             set neighbor_params = tenants[tenant].vrfs[vrf].bgp_peers[bgp_peer] %}
+{%                             if bgp_peer | ansible.netcommon.ipv4 %}
+{%                                 do bgp_vrf.address_family_ipv4_neighbors.append(bgp_peer) %}
+{%                             endif %}
+{%                             if bgp_peer | ansible.netcommon.ipv6 %}
+{%                                 do bgp_vrf.address_family_ipv6_neighbors.append(bgp_peer) %}
+{%                             endif %}
+{%                             if neighbor_params.set_ipv4_next_hop is arista.avd.defined or neighbor_params.set_ipv6_next_hop is arista.avd.defined %}
+{%                                 do neighbor_params.update({ 'route_map_out':'RM-' ~ vrf ~ '-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                 if neighbor_params.default_originate is arista.avd.defined %}
+{%                                     if neighbor_params.default_originate.route_map is not arista.avd.defined %}
+{%                                         do neighbor_params.default_originate.update({ 'route_map_out':'RM-' ~ vrf ~ '-' ~ bgp_peer ~ '-SET-NEXT-HOP-OUT' }) %}
+{%                                     endif %}
+{%                                 endif %}
+{%                                 if neighbor_params.set_ipv4_next_hop is arista.avd.defined %}
+{%                                     do neighbor_params.pop('set_ipv4_next_hop') %}
+{%                                 endif %}
+{%                                 if neighbor_params.set_ipv6_next_hop is arista.avd.defined %}
+{%                                     do neighbor_params.pop('set_ipv6_next_hop') %}
+{%                                 endif %}
+{%                             endif %}
+{%                             do neighbor_params.pop('nodes') %}
+        {{ bgp_peer }}:
+          {{ neighbor_params }}
+{%                         endif %}
+{%                     endif %}
+{%                 endfor %}
+{%             endif %}
+      redistribute_routes:
+        - connected
+{%             if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%                 if tenants[tenant].vrfs[vrf].redistribute_static is not arista.avd.defined %}
+{%                     for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                         if static_route.nodes is not arista.avd.defined %}
+        - static
+{%                             break %}
+{%                         elif inventory_hostname in static_route.nodes %}
+        - static
+{%                             break %}
+{%                         endif %}
+{%                     endfor %}
+{%                 elif tenants[tenant].vrfs[vrf].redistribute_static == true %}
+        - static
+{%                 endif %}
+{%             endif %}
+      address_families:
+{%             if bgp_vrf.address_family_ipv4_neighbors | length > 0 %}
+        ipv4:
+          neighbors:
+{%                 for ipv4_neighbor in bgp_vrf.address_family_ipv4_neighbors %}
+            {{ ipv4_neighbor }}:
+              activate: true
+{%                 endfor %}
+{%             endif %}
+{%             if bgp_vrf.address_family_ipv6_neighbors | length > 0 %}
+        ipv6:
+          neighbors:
+{%                 for ipv6_neighbor in bgp_vrf.address_family_ipv6_neighbors %}
+            {{ ipv6_neighbor }}:
+              activate: true
+{%                 endfor %}
+{%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp.raw_eos_cli is arista.avd.defined %}
+      eos_cli: |
+        {{ tenants[tenant].vrfs[vrf].bgp.raw_eos_cli | indent(8,false) }}
+{%             endif %}
+{%             if tenants[tenant].vrfs[vrf].bgp.structured_config is arista.avd.defined %}
+      struct_cfg: {{ tenants[tenant].vrfs[vrf].bgp.structured_config }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

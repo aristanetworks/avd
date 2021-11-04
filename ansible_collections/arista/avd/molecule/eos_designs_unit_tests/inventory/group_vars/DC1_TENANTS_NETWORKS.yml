@@ -64,6 +64,9 @@ tenants:
             tags: ['web', 'erp1']
             profile: WITH_DHCP_AND_SNOOPING
             ip_address_virtual: 10.1.20.1/24
+            ip_address_virtual_secondaries:
+              - 10.2.20.1/24
+              - 10.2.21.1/24
           121:
             name: Tenant_A_WEBZone_2
             tags: ['web']
@@ -81,6 +84,17 @@ tenants:
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
+          132:
+            name: Tenant_A_APP_Zone_3
+            tags: ['erp2']
+            enabled: True
+            nodes:
+              DC1-LEAF1A:
+                ip_address: 10.1.32.1/24
+            ip_virtual_router_addresses:
+              - 10.1.32.254
+              - 10.2.32.254/24
+              - 10.3.32.254/24
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -179,7 +193,7 @@ tenants:
         vrf_vni: 15
         l3_interfaces:
           - interfaces: [ Ethernet8, Ethernet9, Ethernet8, Ethernet9 ]
-            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24,]
+            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
             nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
             mtu: 9000
             enabled: True

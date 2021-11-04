@@ -125,6 +125,14 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
    neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
 {%         endif %}
+{%         if router_bgp.neighbors[neighbor].send_community is arista.avd.defined('all') %}
+   neighbor {{ neighbor }} send-community
+{%         elif router_bgp.neighbors[neighbor].send_community is arista.avd.defined %}
+   neighbor {{ neighbor }} send-community {{ router_bgp.neighbors[neighbor].send_community }}
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].maximum_routes is arista.avd.defined %}
+   neighbor {{ neighbor }} maximum-routes {{ router_bgp.neighbors[neighbor].maximum_routes }}
+{%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
 {%         set aggregate_address_cli = "aggregate-address " ~ aggregate_address %}
@@ -236,6 +244,9 @@ router bgp {{ router_bgp.as }}
       no neighbor {{ peer_group }} activate
 {%             endif %}
 {%         endfor %}
+{%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
+      route import match-failure action discard
+{%         endif %}
 {%     endif %}
 {# address family rt-membership activation #}
 {%     if router_bgp.address_family_rtc is arista.avd.defined %}
@@ -544,6 +555,12 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in is arista.avd.defined %}
       neighbor {{ neighbor }} route-map {{ router_bgp.vrfs[vrf].neighbors[neighbor].route_map_in }} in
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_in is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_in }} in
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_out is arista.avd.defined %}
+      neighbor {{ neighbor }} prefix-list {{ router_bgp.vrfs[vrf].neighbors[neighbor].prefix_list_out }} out
 {%             endif %}
 {%         endfor %}
 {%         for redistribute_route in router_bgp.vrfs[vrf].redistribute_routes | arista.avd.natural_sort %}

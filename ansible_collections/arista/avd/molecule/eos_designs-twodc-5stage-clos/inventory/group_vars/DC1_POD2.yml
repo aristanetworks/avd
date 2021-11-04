@@ -61,4 +61,3 @@ l3leaf:
           id: 1
           mgmt_ip: 192.168.1.15/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
-

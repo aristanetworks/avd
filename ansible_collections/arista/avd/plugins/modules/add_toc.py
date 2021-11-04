@@ -21,10 +21,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 DOCUMENTATION = r'''
 ---
 module: add_toc
@@ -98,14 +94,16 @@ def main():
         toc_levels = module.params['toc_levels'] or 2
         toc_marker = module.params['toc_marker'] or '<!-- toc -->'
 
-        hash_origin = hashlib.sha224(open(md_file, 'rb').read()).hexdigest()
+        with open(md_file, 'rb') as md_file_handle:
+            hash_origin = hashlib.sha224(md_file_handle.read()).hexdigest()
 
         toc = md_toc.build_toc(
             filename=md_file, keep_header_levels=toc_levels, skip_lines=skip_lines)
         md_toc.write_string_on_file_between_markers(
             filename=md_file, string=toc, marker=toc_marker)
 
-        hash_final = hashlib.sha224(open(md_file, 'rb').read()).hexdigest()
+        with open(md_file, 'rb') as md_file_handle:
+            hash_final = hashlib.sha224(md_file_handle.read()).hexdigest()
 
         result['checksum'] = hash_final
         if hash_final != hash_origin:

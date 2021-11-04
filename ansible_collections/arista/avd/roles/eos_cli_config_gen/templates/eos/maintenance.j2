@@ -37,6 +37,9 @@ maintenance
 {%         if maintenance.interface_profiles[interface_profile].rate_monitoring.threshold is arista.avd.defined %}
       rate-monitoring threshold {{ maintenance.interface_profiles[interface_profile].rate_monitoring.threshold }}
 {%         endif %}
+{%         if maintenance.interface_profiles[interface_profile].shutdown.max_delay is arista.avd.defined %}
+      shutdown max-delay {{ maintenance.interface_profiles[interface_profile].shutdown.max_delay }}
+{%         endif %}
 {%     endfor %}
 {%     for unit_profile in maintenance.unit_profiles | arista.avd.natural_sort %}
 {%         if not first_line.flag %}

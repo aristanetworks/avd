@@ -140,27 +140,7 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A | Disabled |
 
 ### SNMP Device Configuration
 
@@ -209,8 +189,10 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 112 | Tenant_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
+| 2601 | l2vlan_with_no_vxlan | - |
 
 ## VLANs Device Configuration
 
@@ -225,11 +207,17 @@ vlan 111
 vlan 112
    name Tenant_A_OP_Zone_3
 !
+vlan 113
+   name SVI_with_no_vxlan
+!
 vlan 2500
    name web-l2-vlan
 !
 vlan 2600
    name web-l2-vlan-2
+!
+vlan 2601
+   name l2vlan_with_no_vxlan
 ```
 
 # Interfaces
@@ -327,6 +315,7 @@ interface Loopback1
 | Vlan110 |  set from structured_config on svi (was Tenant_A_OP_Zone_1)  |  Common_VRF  |  -  |  false  |
 | Vlan111 |  Tenant_A_OP_Zone_2  |  Common_VRF  |  -  |  true  |
 | Vlan112 |  Tenant_A_OP_Zone_3  |  Common_VRF  |  -  |  false  |
+| Vlan113 |  SVI_with_no_vxlan  |  Common_VRF  |  -  |  false  |
 
 #### IPv4
 
@@ -335,6 +324,7 @@ interface Loopback1
 | Vlan110 |  Common_VRF  |  -  |  10.1.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan111 |  Common_VRF  |  -  |  10.1.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan112 |  Common_VRF  |  -  |  10.1.12.1/24  |  -  |  -  |  -  |  -  |
+| Vlan113 |  Common_VRF  |  -  |  10.10.13.1/24  |  -  |  -  |  -  |  -  |
 
 
 ### VLAN Interfaces Device Configuration
@@ -362,6 +352,12 @@ interface Vlan112
    Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
    EOF
 
+!
+interface Vlan113
+   description SVI_with_no_vxlan
+   no shutdown
+   vrf Common_VRF
+   ip address virtual 10.10.13.1/24
 ```
 
 ## VXLAN Interface
@@ -372,15 +368,15 @@ interface Vlan112
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI and Flood List Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 112 | 50112 |
-| 2500 | 2500 |
-| 2600 | 2600 |
+| VLAN | VNI | Flood List |
+| ---- | --- | ---------- |
+| 110 | 10110 | - |
+| 111 | 50111 | - |
+| 112 | 50112 | - |
+| 2500 | 2500 | - |
+| 2600 | 2600 | - |
 
 #### VRF to VNI Mappings
 
@@ -393,6 +389,7 @@ interface Vlan112
 ```eos
 !
 interface Vxlan1
+   description DC1-POD2-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
@@ -507,15 +504,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.16.120.1 | 65120 | default |
-| 172.16.120.2 | 65120 | default |
-| 172.17.10.13 | 65102 | default |
-| 172.17.120.0 | 65120 | default |
-| 172.17.120.2 | 65120 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.120.1 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.120.2 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.13 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.0 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.2 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
+
+- VPN import pruning is __enabled__
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -604,6 +603,7 @@ router bgp 65121
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
@@ -635,7 +635,7 @@ router bgp 65121
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

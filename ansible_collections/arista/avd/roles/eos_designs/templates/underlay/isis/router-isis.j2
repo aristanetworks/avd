@@ -1,0 +1,23 @@
+router_isis:
+  instance: EVPN_UNDERLAY
+  log_adjacency_changes: true
+  net: {{ switch.isis_net }}
+  router_id: {{ switch.router_id }}
+  no_passive_interfaces:
+{% for link_interface in underlay_data.links | arista.avd.natural_sort %}
+{%     set link = underlay_data.links[link_interface] %}
+{# L3 P2P interfaces #}
+{%     if link.type is arista.avd.defined('underlay_p2p') %}
+    - {{ link_interface }}
+{%     endif %}
+{% endfor %}
+{% if switch.mlag_l3 is arista.avd.defined(true) %}
+    - Vlan{{ switch.mlag_peer_l3_vlan }}
+{% endif %}
+{% if switch.vtep is arista.avd.defined(true) %}
+    - {{ switch.vtep_loopback }}
+{% endif %}
+  is_type: level-2
+  address_family: ['ipv4 unicast']
+  isis_af_defaults:
+    - maximum-paths {{ isis_maximum_paths }}

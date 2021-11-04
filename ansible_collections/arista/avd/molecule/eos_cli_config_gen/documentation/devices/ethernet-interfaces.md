@@ -86,6 +86,7 @@ interface Management1
 | Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
+| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -111,6 +112,7 @@ interface Management1
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 
 #### IPv6
 
@@ -227,6 +229,8 @@ interface Ethernet7
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
    no switchport
+   no lldp transmit
+   no lldp receive
 !
 interface Ethernet8.101
    description to WAN-ISP-01 Ethernet2.101 - VRF-C1
@@ -298,6 +302,27 @@ interface Ethernet17
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport trunk private-vlan secondary
+!
+interface Ethernet18
+   description PBR Description
+   mtu 1500
+   no switchport
+   ip address 192.0.2.1/31
+   service-policy type pbr input MyLANServicePolicy
+!
+interface Ethernet19
+   description Switched port with no LLDP rx/tx
+   switchport
+   switchport access vlan 110
+   switchport mode access
+   no lldp transmit
+   no lldp receive
+!
+interface Ethernet20
+   description Port patched through patch-panel to pseudowire
+   no switchport
+   no lldp transmit
+   no lldp receive
 ```
 
 # Routing
@@ -333,10 +358,10 @@ interface Ethernet17
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Ethernet9 | True | True |
-| Ethernet10 | False | False |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Ethernet9 | True | True | - |
+| Ethernet10 | False | False | - |
 
 # Multicast
 

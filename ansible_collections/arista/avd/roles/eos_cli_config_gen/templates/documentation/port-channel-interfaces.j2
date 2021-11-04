@@ -152,6 +152,38 @@
 {%        endfor %}
 {%    endif %}
 
+{# ISIS #}
+{%     set port_channel_interface_isis = namespace() %}
+{%     set port_channel_interface_isis.configured = false %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
+{%              set port_channel_interface_isis.configured = true %}
+{%          endif %}
+{%     endfor %}
+{%     if port_channel_interface_isis.configured == true %}
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Type | ISIS Passive |
+| --------- | ------------- | ----------- | ---- | ------------ |
+{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%             if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
+{%                 set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("-") %}
+{%                 set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("-") %}
+{%                 if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                     set type = "point-to-point" %}
+{%                 else %}
+{%                     set type = "-" %}
+{%                 endif %}
+{%                 if port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined(true) %}
+{%                     set passive = true %}
+{%                 else %}
+{%                     set passive = false %}
+{%                 endif %}
+| {{ port_channel_interface }} | {{ isis_instance }} | {{ isis_metric }} | {{ type }} | {{ passive }} |
+{%             endif %}
+{%         endfor %}
+
+{%     endif %}
 ### Port-Channel Interfaces Device Configuration
 
 ```eos

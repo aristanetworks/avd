@@ -6,4 +6,4 @@ interface_defaults:
   mtu: 9000
 
 switchport_default:
-    mode: routed
+  mode: routed

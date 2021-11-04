@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65112
+  as: '65112.100'
   router_id: 172.16.110.4
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -10,7 +10,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: 65112
+      remote_as: '65112.100'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -38,42 +38,42 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.19.110.3:
+    172.20.110.3:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2B
     172.17.110.8:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet4
     172.17.110.10:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet4
     172.17.110.12:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet7
     172.17.110.14:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet7
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: 65111
-      route_map_out: RM-EVPN-FILTER-AS65111
+      remote_as: '65111.100'
+      route_map_out: RM-EVPN-FILTER-AS65111.100
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: 65110
-      route_map_out: RM-EVPN-FILTER-AS65110
+      remote_as: '65110.100'
+      route_map_out: RM-EVPN-FILTER-AS65110.100
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
-      remote_as: 65101
+      remote_as: '65101'
       route_map_out: RM-EVPN-FILTER-AS65101
     100.100.100.201:
-      remote_as: 65211
+      remote_as: '65211'
       description: DC2-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
   redistribute_routes:
@@ -84,6 +84,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    route:
+      import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -167,7 +169,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: 4094
 local_users:
   admin:
     privilege: 15
@@ -192,11 +194,6 @@ struct_cfg:
   - structured-config.set.on.node
   - structured-config.set.under.vrf.common-vrf
 vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4094:
     tenant: system
     name: MLAG_PEER
@@ -211,21 +208,22 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: SVI_with_no_vxlan
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  2601:
+    tenant: Tenant_A
+    name: l2vlan_with_no_vxlan
   4085:
     tenant: system
     name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 172.19.110.2/31
-    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
@@ -265,12 +263,21 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.10.13.1/24
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: 1500
     ip_address: 172.21.110.2/24
-    ip_virtual_router_address: 172.21.110.1
+    ip_virtual_router_addresses:
+    - 172.21.110.1
     ip_attached_host_route_export:
       distance: 19
 port_channel_interfaces:
@@ -288,7 +295,7 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4085
+    vlans: 110-113,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 3
@@ -558,20 +565,20 @@ route_maps:
         - as 65101
       20:
         type: permit
-  RM-EVPN-FILTER-AS65110:
+  RM-EVPN-FILTER-AS65110.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65110
+        - as 65110.100
       20:
         type: permit
-  RM-EVPN-FILTER-AS65111:
+  RM-EVPN-FILTER-AS65111.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65111
+        - as 65111.100
       20:
         type: permit
 loopback_interfaces:
@@ -601,14 +608,14 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2A_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         110:
           vni: 10110
@@ -623,7 +630,6 @@ vxlan_tunnel_interface:
       vrfs:
         Common_VRF:
           vni: 1025
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf

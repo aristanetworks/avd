@@ -15,10 +15,6 @@
 # limitations under the License.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 DOCUMENTATION = r'''
 ---
 module: yaml_templates_to_facts
@@ -70,7 +66,7 @@ EXAMPLES = r'''
       - template: "designs/underlay/main.j2"
       - template: "designs/overlay/main.j2"
       - template: "l3_edge/main.j2"
-      - template: "designs/tenants/main.j2"
+      - template: "designs/network_services/main.j2"
       - template: "connected_endpoints/main.j2"
       - template: "custom-structured-configuration-from-var.j2"
         options:

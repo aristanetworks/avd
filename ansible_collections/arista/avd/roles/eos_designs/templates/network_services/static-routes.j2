@@ -1,0 +1,51 @@
+static_routes:
+{% for tenant in switch.tenants | arista.avd.natural_sort %}
+{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
+{%         if tenants[tenant].vrfs[vrf].static_routes is arista.avd.defined %}
+{%             for static_route in tenants[tenant].vrfs[vrf].static_routes %}
+{%                 if static_route.nodes is not arista.avd.defined or inventory_hostname in static_route.nodes %}
+  - destination_address_prefix: {{ static_route.destination_address_prefix }}
+    vrf: {{ vrf }}
+{%                     if static_route.gateway is arista.avd.defined %}
+    gateway: {{ static_route.gateway }}
+{%                     endif %}
+{%                     if static_route.distance is arista.avd.defined %}
+    distance: {{ static_route.distance }}
+{%                     endif %}
+{%                     if static_route.tag is arista.avd.defined %}
+    tag: {{ static_route.tag }}
+{%                     endif %}
+{%                     if static_route.name is arista.avd.defined %}
+    name: {{ static_route.name }}
+{%                     endif %}
+{%                     if static_route.metric is arista.avd.defined %}
+    metric: {{ static_route.metric }}
+{%                     endif %}
+{%                     if static_route.interface is arista.avd.defined %}
+    interface: {{ static_route.interface }}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
+{%             set svi_config = tenants[tenant].vrfs[vrf].svis[svi] %}
+{# Detect if a svi_profile exists #}
+{# If exists, create a shortpath to access profile data #}
+{%             if svi_config.profile is arista.avd.defined %}
+{%                 set svi_profile = svi_profiles[svi_config.profile] | arista.avd.default() %}
+{%             endif %}
+{%             set svi_varp = svi_config.ip_virtual_router_addresses | arista.avd.default(
+                              svi_profile.ip_virtual_router_addresses) %}
+{%             if svi_varp is arista.avd.defined %}
+{# Detect if VARP addresses with prefixes exist and loop through the ip_address/prefix #}
+{# If the VARP address with prefix doesn't exist then it will loop through empty_list [], so config is not generated in this scenario #}
+{%                 for dest_addr_prefix in svi_varp | ansible.netcommon.ipaddr(0) | ansible.netcommon.ipaddr('net') %}
+  - destination_address_prefix: {{ dest_addr_prefix }}
+    vrf: {{ vrf }}
+    name: "VARP"
+    interface: Vlan{{ svi | int }}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

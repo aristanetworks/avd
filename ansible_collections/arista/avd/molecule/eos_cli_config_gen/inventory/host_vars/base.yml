@@ -38,6 +38,8 @@ management_ssh:
     - name: ACL-SSH-VRF6
       vrf: mgt
   idle_timeout: 15
+  connection:
+    per_host: 12
   enable: true
   vrfs:
     mgt:

@@ -56,8 +56,6 @@
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
-{# ntp servers #}
-{% include 'eos/ntp-servers.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
 {# ptp #}
@@ -193,6 +191,8 @@
 {% include 'eos/router-isis.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
+{# Patch Panel #}
+{% include 'eos/patch-panel.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}
@@ -217,6 +217,8 @@
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+{# ip ssh client source interfaces #}
+{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

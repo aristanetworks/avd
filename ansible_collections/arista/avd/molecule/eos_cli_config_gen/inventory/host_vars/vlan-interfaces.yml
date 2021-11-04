@@ -19,11 +19,16 @@ vlan_interfaces:
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.83.1/24
+    ip_address_virtual_secondaries:
+      - 10.11.83.1/24
+      - 10.11.84.1/24
 
   Vlan84:
     description: SVI Description
     ip_address: 10.10.84.1/24
-    ip_virtual_router_address: 10.10.84.254
+    ip_virtual_router_addresses:
+      - 10.10.84.254
+      - 10.11.84.254/24
 
   Vlan85:
     description: SVI Description

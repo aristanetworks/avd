@@ -1,0 +1,10 @@
+aaa_accounting:
+  commands:
+    commands_default:
+    - {commands: all, group: TACACS, logging: true, type: start-stop}
+    - {commands: 0, logging: true, type: start-stop}
+    default:
+    - {commands: all, group: TACACS, logging: true, type: start-stop}
+    - {commands: 0, logging: true, type: start-stop}
+  exec:
+    default: {group: TACACS, type: start-stop}

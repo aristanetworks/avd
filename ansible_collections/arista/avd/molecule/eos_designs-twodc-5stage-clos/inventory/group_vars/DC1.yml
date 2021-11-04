@@ -1,6 +1,14 @@
 ---
 dc_name: DC1
 
+bgp_peer_groups:
+  IPv4_UNDERLAY_PEERS:
+    password: "AQQvKeimxJu+uGQ/yYvv9w=="
+  EVPN_OVERLAY_PEERS:
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
+  MLAG_IPv4_UNDERLAY_PEER:
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
+
 super_spine:
   defaults:
     platform: vEOS-LAB
@@ -56,4 +64,7 @@ overlay_controller:
       uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3']
       uplink_switches: ['DC1-SUPER-SPINE2', 'DC1-POD2-SPINE1', 'DC1-POD2-LEAF1A']
 
-evpn_prevent_readvertise_to_server : true
+evpn_prevent_readvertise_to_server: true
+
+# VPN import pruning
+evpn_import_pruning: true

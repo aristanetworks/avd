@@ -1,9 +1,10 @@
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-      - apiserver.corp.arista.io
-    port: 9910
-  ingestauth_key: magickey
-  ingestvrf: mgt
+  cvaddrs:
+    - apiserver.arista.io:443
+  cvauth:
+    method: "token-secure"
+    key: "arastra"
+    token_file: "/tmp/cv-onboarding-token"
+  cvvrf: mgt
   smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
   ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"

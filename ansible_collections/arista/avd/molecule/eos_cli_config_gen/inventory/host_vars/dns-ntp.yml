@@ -16,10 +16,13 @@ name_server:
 dns_domain: test.local
 
 ### NTP Servers ###
-ntp_server:
+ntp:
   local_interface:
+    name: Management0
     vrf: mgt
-    interface: Management0
-  nodes:
-    - 10.10.111.1
-    - 10.10.111.2
+  servers:
+    - name: 10.10.111.1
+      preferred: True
+      vrf: mgt
+    - name: 10.10.111.2
+      vrf: mgt

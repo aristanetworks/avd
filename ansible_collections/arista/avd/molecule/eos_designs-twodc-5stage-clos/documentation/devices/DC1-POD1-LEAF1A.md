@@ -99,27 +99,7 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 | Contact | Location | SNMP Traps |
 | ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-LEAF1A | Disabled |
 
 ### SNMP Device Configuration
 
@@ -326,17 +306,12 @@ interface Vlan4085
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
 ```
@@ -409,7 +384,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65111|  172.16.110.3 |
+| 65111.100|  172.16.110.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -443,19 +418,21 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.16.20.1 | 65201 | default |
-| 172.16.110.4 | 65112 | default |
-| 172.16.110.5 | 65112 | default |
-| 172.16.200.1 | 65200 | default |
-| 172.16.210.1 | 65210 | default |
-| 172.16.210.3 | 65211 | default |
-| 172.17.10.5 | 65101 | default |
-| 172.17.110.0 | 65110 | default |
-| 172.17.110.2 | 65110 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.20.1 | 65201 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.4 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.5 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.200.1 | 65200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.1 | 65210 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.3 | 65211 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.5 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.0 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.110.2 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
+
+- VPN import pruning is __enabled__
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -465,7 +442,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ```eos
 !
-router bgp 65111
+router bgp 65111.100
    router-id 172.16.110.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
@@ -489,10 +466,10 @@ router bgp 65111
    neighbor 172.16.20.1 description DC2-RS1
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
    neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.4 remote-as 65112
+   neighbor 172.16.110.4 remote-as 65112.100
    neighbor 172.16.110.4 description DC1-POD1-LEAF2A
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.5 remote-as 65112
+   neighbor 172.16.110.5 remote-as 65112.100
    neighbor 172.16.110.5 description DC1-POD1-LEAF2B
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
@@ -511,16 +488,17 @@ router bgp 65111
    neighbor 172.17.10.5 description DC1-RS1_Ethernet3
    neighbor 172.17.10.5 bfd
    neighbor 172.17.110.0 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.0 remote-as 65110
+   neighbor 172.17.110.0 remote-as 65110.100
    neighbor 172.17.110.0 description DC1-POD1-SPINE1_Ethernet3
    neighbor 172.17.110.2 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.17.110.2 remote-as 65110
+   neighbor 172.17.110.2 remote-as 65110.100
    neighbor 172.17.110.2 description DC1-POD1-SPINE2_Ethernet3
    redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
+      route import match-failure action discard
    !
    address-family rt-membership
       neighbor EVPN-OVERLAY-PEERS activate
@@ -541,7 +519,7 @@ router bgp 65111
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !
