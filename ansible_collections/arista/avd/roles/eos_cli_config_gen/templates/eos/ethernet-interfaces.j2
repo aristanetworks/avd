@@ -255,7 +255,7 @@ interface {{ ethernet_interface }}
    no lldp receive
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].shape.rate is arista.avd.defined %}
-   shape rate {{ ethernet_interfaces[ethernet_interface].shape.rate }}{{ ' percent' if ethernet_interfaces[ethernet_interface].shape.rate | int < 100 }}
+   shape rate {{ ethernet_interfaces[ethernet_interface].shape.rate }}
 {%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}

@@ -38,7 +38,7 @@ port_channel_interfaces:
     vlans: "2-4094"
     mode: trunk
     shape:
-      rate: 200000
+      rate: 200000 kbps
     trunk_groups:
       - LEAF_PEER_L3
       - MLAG
@@ -50,7 +50,7 @@ port_channel_interfaces:
     esi: 0000:0000:0404:0404:0303
     rt: 04:04:03:03:02:02
     shape:
-      rate: 50
+      rate: 50 percent
 
   Port-Channel50:
     description: SRV-POD03_PortChanne1

@@ -220,7 +220,7 @@ interface {{ port_channel_interface }}
    service-profile {{ port_channel_interfaces[port_channel_interface].service_profile }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].shape.rate is arista.avd.defined %}
-   shape rate {{ port_channel_interfaces[port_channel_interface].shape.rate }}{{ ' percent' if port_channel_interfaces[port_channel_interface].shape.rate | int < 100 }}
+   shape rate {{ port_channel_interfaces[port_channel_interface].shape.rate }}
 {%     endif %}
 {%     for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}
 {%         if port_channel_interfaces[port_channel_interface].storm_control[section].unit is arista.avd.defined("pps") %}

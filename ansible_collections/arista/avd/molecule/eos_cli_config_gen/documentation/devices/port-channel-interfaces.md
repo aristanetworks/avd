@@ -201,7 +201,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
-   shape rate 200000
+   shape rate 200000 kbps
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
@@ -367,3 +367,10 @@ interface Port-Channel103
 # ACL
 
 # Quality Of Service
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Port-Channel3 | - | - | - | 200000 kbps |
+| Port-Channel10 | - | - | - | 50 percent |
