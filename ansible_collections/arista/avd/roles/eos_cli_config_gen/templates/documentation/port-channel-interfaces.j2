@@ -154,7 +154,7 @@
 {# ISIS #}
 {%     set port_channel_interfaces_isis = [] %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined or 
+{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined or
                port_channel_interfaces[port_channel_interface].isis_metric is arista.avd.defined or
                port_channel_interfaces[port_channel_interface].isis_circuit_type is arista.avd.defined or
                port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined or
