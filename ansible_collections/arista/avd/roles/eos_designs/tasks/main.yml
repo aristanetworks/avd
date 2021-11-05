@@ -11,6 +11,15 @@
   delegate_to: localhost
   run_once: true
 
+- name: Check for limit and fact caching
+  delegate_to: localhost
+  when: ansible_limit is arista.avd.defined and structured_config is not arista.avd.defined
+  debug:
+    msg:
+      - "!!! Warning - The role 'arista.avd.eos_designs' only supports '--limit' flag in combination with fact caching"
+      - "!!! Warning - {{ inventory_hostname }} not found in cache"
+      - "!!! Warning - When adding new devices, the playbook must be run once without '--limit'"
+
 - name: Set AVD facts
   tags: [build, provision]
   yaml_templates_to_facts:
@@ -64,6 +73,7 @@
   run_once: true
   delegate_to: localhost
   check_mode: no
+  when: ansible_limit == None
   block:
     - name: Store checksum of existing fabric documentation
       ansible.builtin.stat:
@@ -95,6 +105,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
+  when: ansible_limit == None
 
 - name: Generate fabric topology in csv format.
   tags: [build, provision, documentation]
@@ -105,3 +116,4 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
+  when: ansible_limit == None
