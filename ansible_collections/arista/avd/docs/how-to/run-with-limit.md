@@ -33,7 +33,10 @@ Now it is possible to run the playbook again _with_ `--limit` flag set, and the 
 
 ## Limitations and recommendations
 
+
 1. Avoid using `--limit` if possible because of the pitfalls below.
+1. When using the `eos_config_deploy_cvp` role the `--limit` must also contain the CVP server hostname.
+1. Before pushing any configuration to any devices, make sure to verify that important configuration is not affected in case the "Fact Cache" was not updated.
 1. Fabric documentation and CSV files cannot be generated while using `--limit`. The tasks are skipped automatically.
 1. When adding new devices, the playbook _must_ be run at least once without `--limit`. This is to set ensure that uplinks and downlinks are configured correctly on other switches.
 1. A warning will be shown during the play, if we detect that facts have not been cached once. _This warning will only be shown on the first run for this device._
