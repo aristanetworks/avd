@@ -221,25 +221,31 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{% if port_channel_interface_ipv6.configured == true %} *Inherited from Port-Channel Interface {% endif %}
+{% if port_channel_interface_ipv6.configured == true %}
+ *Inherited from Port-Channel Interface
+{% endif %}
 {# ISIS #}
-{%     set ethernet_interface_isis = namespace() %}
-{%     set ethernet_interface_isis.configured = false %}
+{%     set ethernet_interfaces_isis = [] %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
-{%              set ethernet_interface_isis.configured = true %}
+{%          if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].isis_metric is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].isis_circuit_type is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined %}
+{%              do ethernet_interfaces_isis.append(ethernet_interface) %}
 {%          endif %}
 {%     endfor %}
-{%     set port_channel_interface_isis = namespace() %}
-{%     set port_channel_interface_isis.configured = false %}
-{%     if port_channel_interfaces is defined and port_channel_interfaces is not none %}
-{%         for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%              if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
-{%                  set port_channel_interface_isis.configured = true %}
-{%              endif %}
-{%         endfor %}
-{%     endif %}
-{%     if ethernet_interface_isis.configured == true or port_channel_interface_isis.configured == true %}
+{%     set port_channel_interfaces_isis = [] %}
+{%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
+{%          if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined or 
+               port_channel_interfaces[port_channel_interface].isis_metric is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].isis_circuit_type is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined %}
+{%              do port_channel_interfaces_isis.append(port_channel_interface) %}
+{%          endif %}
+{%     endfor %}
+{%     if ethernet_interfaces_isis | length > 0 or port_channel_interfaces_isis | length > 0 %}
 
 #### ISIS
 
@@ -248,7 +254,7 @@
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%                 if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
+{%                 if port_channel_interface in port_channel_interfaces_isis %}
 {%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("-") %}
 {%                     set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("-") %}
@@ -263,7 +269,7 @@
 | {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} |
 {%                 endif %}
 {%             else %}
-{%                 if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
+{%                 if ethernet_interface in ethernet_interfaces_isis %}
 {%                     set channel_group = ethernet_interfaces[ethernet_interface].channel_group.id | arista.avd.default("-") %}
 {%                     set isis_instance = ethernet_interfaces[ethernet_interface].isis_enable | arista.avd.default("-") %}
 {%                     set isis_metric = ethernet_interfaces[ethernet_interface].isis_metric | arista.avd.default("-") %}
@@ -280,7 +286,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if port_channel_interface_isis.configured == true %}
+{%     if port_channel_interfaces_isis | length > 0 %}
  *Inherited from Port-Channel Interface
 {%     endif %}
 
