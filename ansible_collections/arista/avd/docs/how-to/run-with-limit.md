@@ -8,12 +8,14 @@ The first stage is "Switch Facts" which sets facts on every switch, only concern
 The second stage is "Topology Facts" which sets facts per switch based on the "Switch Facts" from this _and_ upstream/peer switches.
 The third stage is "Structured Config" which parses "Topology Facts" for _all_ switches in the `fabric`, to look for peers connecting to this switch and generates the full config in a structured data model.
 
-This method is what allows the high flexibility of AVD, while maintaining a simpler topology data model e.g. you only define connectivity from child perspective. 
+This method is what allows the high flexibility of AVD, while maintaining a simpler topology data model e.g. you only define connectivity from child perspective.
 It is also what allows variables to be scoped to only the single devices as necessary e.g. `POD1` only needs to know about the topology of `POD1`, even though it may have a direct connection to `POD2`.
 
-If the playbook is executed with `--limit`, the facts are only computed for this switch, hence it will not be able to create "Topology Facts" nor "Structured Config" for anything outside of this switch. This means that ex. uplinks to spines will not be possible because we cannot look up the ASN of the spine.
+If the playbook is executed with `--limit`, the facts are only computed for this switch, hence it will not be able to create "Topology Facts" nor "Structured Config" for anything outside of this switch.
+This means that ex. uplinks to spines will not be possible because we cannot look up the ASN of the spine.
 
-To work around this, it is possible to combine `--limit` with "Fact Caching". "Fact Caching" allows ansible to store all computed facts between plays. The stored facts will be loaded on the next play, even if that play is limited to one or a few switches.
+To work around this, it is possible to combine `--limit` with "Fact Caching". "Fact Caching" allows ansible to store all computed facts between plays.
+The stored facts will be loaded on the next play, even if that play is limited to one or a few switches.
 
 "Fact Caching" can be enabled in multiple ways and with various plugins. See [Ansible Documentation](https://docs.ansible.com/ansible/latest/plugins/cache.html) for details.
 
