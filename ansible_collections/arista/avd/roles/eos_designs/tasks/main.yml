@@ -73,7 +73,7 @@
   run_once: true
   delegate_to: localhost
   check_mode: no
-  when: ansible_limit == None
+  when: ansible_limit is not arista.avd.defined
   block:
     - name: Store checksum of existing fabric documentation
       ansible.builtin.stat:
@@ -105,7 +105,7 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  when: ansible_limit == None
+  when: ansible_limit is not arista.avd.defined
 
 - name: Generate fabric topology in csv format.
   tags: [build, provision, documentation]
@@ -116,4 +116,4 @@
   delegate_to: localhost
   run_once: true
   check_mode: no
-  when: ansible_limit == None
+  when: ansible_limit is not arista.avd.defined
