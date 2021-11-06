@@ -285,3 +285,11 @@ qos profile test
    tx-queue 6
       bandwidth percent 20
 ```
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Ethernet1 | dscp | 48 | - | - |
+| Ethernet6 | cos | - | 2 | - |
+| Port-Channel3 | cos | - | 2 | - |

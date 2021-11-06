@@ -254,6 +254,9 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].lldp.receive is arista.avd.defined(false) %}
    no lldp receive
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].shape.rate is arista.avd.defined %}
+   shape rate {{ ethernet_interfaces[ethernet_interface].shape.rate }}
+{%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
 {%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined('pps') %}

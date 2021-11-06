@@ -762,6 +762,8 @@ ethernet_interfaces:
       transmit: < true | false >
       receive: < true | false >
     service_profile: < qos_profile >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
@@ -837,6 +839,8 @@ ethernet_interfaces:
       transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
     profile: < interface_profile >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -966,6 +970,8 @@ port_channel_interfaces:
       - from: < list of vlans as string (only one vlan if direction is "both") >
         to: < vlan_id >
         direction: < in | out | both | default -> both >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     storm_control:
       all:
         level: < Configure maximum storm-control level >

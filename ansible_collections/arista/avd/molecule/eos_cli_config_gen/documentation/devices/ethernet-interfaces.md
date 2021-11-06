@@ -87,6 +87,8 @@ interface Management1
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
 | Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
+| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
+| Ethernet22 |  10% shape | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -323,6 +325,16 @@ interface Ethernet20
    no switchport
    no lldp transmit
    no lldp receive
+!
+interface Ethernet21
+   description 200MBit/s shape
+   switchport
+   shape rate 200000 kbps
+!
+interface Ethernet22
+   description 10% shape
+   switchport
+   shape rate 10 percent
 ```
 
 # Routing
@@ -370,3 +382,11 @@ interface Ethernet20
 # ACL
 
 # Quality Of Service
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Ethernet7 | cos | - | 5 | - |
+| Ethernet21 | - | - | - | 200000 kbps |
+| Ethernet22 | - | - | - | 10 percent |

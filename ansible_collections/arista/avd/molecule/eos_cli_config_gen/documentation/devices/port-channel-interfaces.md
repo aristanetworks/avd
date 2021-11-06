@@ -201,6 +201,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   shape rate 200000 kbps
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
@@ -238,6 +239,7 @@ interface Port-Channel10
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
+   shape rate 50 percent
 !
 interface Port-Channel12
    description interface_in_mode_access_with_voice
@@ -365,3 +367,10 @@ interface Port-Channel103
 # ACL
 
 # Quality Of Service
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Port-Channel3 | - | - | - | 200000 kbps |
+| Port-Channel10 | - | - | - | 50 percent |
