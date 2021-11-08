@@ -188,9 +188,9 @@ interface Ethernet5
    ip ospf authentication-key 7 asfddja23452
    ip ospf message-digest-key 1 sha512 7 asfddja23452
    isis enable ISIS_TEST
+   isis circuit-type level-2
    isis metric 99
    isis network point-to-point
-   isis circuit-type level-2
    pim ipv4 sparse-mode
 !
 interface Ethernet6

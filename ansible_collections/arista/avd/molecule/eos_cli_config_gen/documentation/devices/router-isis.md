@@ -120,9 +120,9 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
-   isis circuit-type level-1-2
 !
 interface Ethernet3
    description MLAG_PEER_EAPI-LEAF1B_Ethernet3
@@ -171,23 +171,23 @@ interface Port-Channel4
    no switchport
    ip address 10.9.2.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
-   isis circuit-type level-2
 !
 interface Port-Channel5
    no switchport
    ip address 10.9.2.5/31
    isis enable EVPN_UNDERLAY
-   isis passive
    isis metric 50
+   isis passive
 !
 interface Port-Channel6
    no switchport
    ip address 10.9.2.7/31
    isis enable EVPN_UNDERLAY
-   isis metric 100
    isis circuit-type level-1-2
+   isis metric 100
 ```
 
 ## Loopback Interfaces
