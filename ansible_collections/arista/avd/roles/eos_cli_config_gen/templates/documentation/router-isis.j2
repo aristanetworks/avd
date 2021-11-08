@@ -34,7 +34,18 @@
 | Advertise Passive-only | {{ router_isis.advertise.passive_only }} |
 {%     endif %}
 {%     if router_isis.address_family is defined %}
-| Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|
+{%         set row_af = router_isis.address_family %}
+{%     else %}
+{%         set row_af = [] %}
+{%         if router_isis.address_family_ipv4 is arista.avd.defined %}
+{%             do row_af.append("ipv4") %}
+{%         endif %}
+{%         if router_isis.address_family_ipv6 is arista.avd.defined %}
+{%             do row_af.append("ipv6") %}
+{%         endif %}
+{%     endif %}
+{%     if row_af is arista.avd.defined %}
+| Address Family | {% for af in row_af %}{{ af }} {% endfor %}|
 {%     endif %}
 {%     if router_isis.segment_routing_mpls.enabled is arista.avd.defined %}
 | SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |

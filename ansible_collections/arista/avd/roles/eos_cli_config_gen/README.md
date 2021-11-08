@@ -2629,8 +2629,24 @@ router_isis:
   no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:
-    - maximum-paths < Integer 1-64 >
-    - fast-reroute ti-lfa mode link-protection < level-1 | level-2 (Optional, defaults to protect all levels) >
+    - maximum-paths < Integer 1-128 >
+  router_isis:
+  address_family_ipv4:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
+  address_family_ipv6:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 (Optional, default is to protect all levels) >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
