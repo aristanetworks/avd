@@ -75,6 +75,7 @@ interface Management1
 | Vlan41 |  SVI Description  |  default  |  -  |  false  |
 | Vlan42 |  SVI Description  |  default  |  -  |  false  |
 | Vlan75 |  SVI Description  |  default  |  -  |  false  |
+| Vlan81 |  IPv6 Virtual Address  |  Tenant_C  |  -  |  -  |
 | Vlan83 |  SVI Description  |  default  |  -  |  false  |
 | Vlan84 |  SVI Description  |  default  |  -  |  -  |
 | Vlan85 |  SVI Description  |  default  |  -  |  -  |
@@ -106,6 +107,7 @@ interface Management1
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
+| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
 | Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |  -  |
 | Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
@@ -125,14 +127,15 @@ interface Management1
 
 #### IPv6
 
-| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
-| Vlan24 |  default  |  1b11:3a00:22b0:6::15/64  |  1b11:3a00:22b0:6::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan75 |  default  |  1b11:3a00:22b0:1000::15/64  |  1b11:3a00:22b0:1000::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan89 |  default  |  1b11:3a00:22b0:5200::15/64  |  1b11:3a00:22b0:5200::3  |  -  |  -  |  true  |  -  |  -  |
-| Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
 
 ### VLAN Interfaces Device Configuration
@@ -169,6 +172,13 @@ interface Vlan75
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
+!
+interface Vlan81
+   description IPv6 Virtual Address
+   vrf Tenant_C
+   ip address virtual 10.10.81.1/24
+   ipv6 enable
+   ipv6 address virtual fc00:10:10:81::1/64
 !
 interface Vlan83
    description SVI Description

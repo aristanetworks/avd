@@ -15,6 +15,13 @@ vlan_interfaces:
     vrf: Tenant_B
     ip_address_virtual: 10.2.2.1/24
 
+  Vlan81:
+    description: IPv6 Virtual Address
+    vrf: Tenant_C
+    ip_address_virtual: 10.10.81.1/24
+    ipv6_enable: true
+    ipv6_address_virtual: fc00:10:10:81::1/64
+
   Vlan83:
     description: SVI Description
     shutdown: false
