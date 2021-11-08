@@ -77,7 +77,6 @@ interface Management1
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 <br> 192.168.1.1/32 secondary <br> 10.0.0.254/32 secondary |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 10.1.255.3/32 |
-| Loopback101 | ISIS-SR Node-SID | default | 10.1.255.3/32 |
 
 #### IPv6
 
@@ -87,14 +86,12 @@ interface Management1
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
 | Loopback99 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | 2002::CAFE/64 |
 | Loopback100 | TENANT_A_PROJECT02_VTEP_DIAGNOSTICS | TENANT_A_PROJECT02 | - |
-| Loopback101 | ISIS-SR Node-SID | default | - |
 
 #### ISIS
 
 | Interface | ISIS instance | ISIS metric | Interface mode |
 | -------- | -------- | -------- | -------- |
 | Loopback99 | ISIS_TEST |  100 |  point-to-point |
-| Loopback101 | ISIS_TEST |  50 |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -128,15 +125,6 @@ interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    vrf TENANT_A_PROJECT02
    ip address 10.1.255.3/32
-!
-interface Loopback101
-   description ISIS-SR Node-SID
-   ip address 10.1.255.3/32
-   isis enable ISIS_TEST
-   isis passive
-   isis metric 50
-   node-segment ipv4 index 10
-   node-segment ipv6 index 10
 ```
 
 # Routing

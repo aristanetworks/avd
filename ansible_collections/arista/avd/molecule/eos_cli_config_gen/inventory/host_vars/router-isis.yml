@@ -83,6 +83,16 @@ loopback_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
 
+  Loopback2:
+    description: ISIS-SR Node-SID
+    ip_address: 10.1.255.3/32
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+    isis_metric: 50
+    node_segment:
+      ipv4_index: 10
+      ipv6_index: 100
+
 ### Management Interfaces ###
 management_interfaces:
   Management1:
