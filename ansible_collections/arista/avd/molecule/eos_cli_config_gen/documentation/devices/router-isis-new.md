@@ -245,7 +245,6 @@ interface Vlan4094
 | MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
-| Address Family | ipv4 ipv6 |
 | SR MPLS Enabled | True |
 | SR MPLS Router-ID | 192.168.255.3 |
 
@@ -258,6 +257,24 @@ interface Vlan4094
 | Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
 | Loopback1 | EVPN_UNDERLAY |  - |  passive |
+
+### ISIS IPv4 Address Family Summary
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | link-protection |
+| TI-LFA Level | level-2 |
+| TI-LFA SRLG Enabled | True |
+| TI-LFA SRLG Strict Mode | True |
+
+### ISIS IPv6 Address Family Summary
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+| Maximum-paths | 4 |
+| TI-LFA Mode | node-protection |
+| TI-LFA SRLG Enabled | True |
 
 ### Router ISIS Device Configuration
 
