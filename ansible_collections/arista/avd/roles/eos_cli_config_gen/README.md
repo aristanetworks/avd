@@ -930,9 +930,8 @@ loopback_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     node_segment:
-      index: < integer >
-      ipv4: < true | false >
-      ipv6: < true | false >
+      ipv4_index: < integer >
+      ipv6_index: < integer >
 ```
 
 #### Port-Channel Interfaces

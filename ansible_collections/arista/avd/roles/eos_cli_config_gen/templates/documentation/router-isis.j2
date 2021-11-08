@@ -61,6 +61,25 @@
 {%              endif %}
 {%          endfor %}
 {%      endif %}
+{# ISIS Node-SID #}
+{%      for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%          if loopback_interfaces[loopback_interface].node_segment.ipv4_index is arista.avd.defined or loopback_interfaces[loopback_interface].node_segment.ipv6_index is arista.avd.defined %}
+{%          set node_sid_configured = true %}
+{%      endfor %}
+{%      if node_sid_configured is arista.avd.defined(true) %}
+
+### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+{%          for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%              if loopback_interfaces[loopback_interface].node_segment.ipv4_index is arista.avd.defined or loopback_interfaces[loopback_interface].node_segment.ipv6_index is arista.avd.defined %}
+{%                  set row_ipv4_index = loopback_interfaces[loopback_interface].node_segment.ipv4_index | arista.avd.default("-") %}
+{%                  set row_ipv6_index = loopback_interfaces[loopback_interface].node_segment.ipv6_index | arista.avd.default("-") %}
+| loopback_interface | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
+{%              endif %}
+{%          endfor %}
+{%      endif %}
 
 ### Router ISIS Device Configuration
 
