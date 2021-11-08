@@ -126,9 +126,9 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -190,6 +190,7 @@ interface Ethernet5
    ip ospf authentication-key 7 asfddja23452
    ip ospf message-digest-key 1 sha512 7 asfddja23452
    isis enable ISIS_TEST
+   isis circuit-type level-2
    isis metric 99
    isis network point-to-point
    pim ipv4 sparse-mode

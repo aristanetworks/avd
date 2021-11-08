@@ -92,13 +92,13 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | **point-to-point |
-| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | **passive |
-| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | **- |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 |
+| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | *level-2 |
+| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | *- |
+| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | *level-1-2 |
  *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -120,6 +120,7 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
 !
@@ -156,11 +157,11 @@ interface Ethernet6
 
 #### ISIS
 
-| Interface | ISIS Instance | ISIS Metric | Type | ISIS Passive |
-| --------- | ------------- | ----------- | ---- | ------------ |
-| Port-Channel4 | EVPN_UNDERLAY | 50 | point-to-point | False |
-| Port-Channel5 | EVPN_UNDERLAY | 50 | - | True |
-| Port-Channel6 | EVPN_UNDERLAY | 100 | - | False |
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ----------- | ---- | ----------------- |
+| Port-Channel4 | EVPN_UNDERLAY | 50 | point-to-point | level-2 |
+| Port-Channel5 | EVPN_UNDERLAY | 50 | passive | - |
+| Port-Channel6 | EVPN_UNDERLAY | 100 | - | level-1-2 |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -170,23 +171,23 @@ interface Port-Channel4
    no switchport
    ip address 10.9.2.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
    isis metric 50
    isis network point-to-point
-   isis circuit-type level-2
 !
 interface Port-Channel5
    no switchport
    ip address 10.9.2.5/31
    isis enable EVPN_UNDERLAY
-   isis passive
    isis metric 50
+   isis passive
 !
 interface Port-Channel6
    no switchport
    ip address 10.9.2.7/31
    isis enable EVPN_UNDERLAY
-   isis metric 100
    isis circuit-type level-1-2
+   isis metric 100
 ```
 
 ## Loopback Interfaces
