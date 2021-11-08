@@ -243,7 +243,7 @@ interface Loopback2
    isis passive
    isis metric 50
    node-segment ipv4 index 10
-   node-segment ipv6 index 100
+   node-segment ipv6 index 1000
 ```
 
 ## VLAN Interfaces
@@ -345,7 +345,7 @@ interface Vlan4094
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback2 | 10 | 100 |
+| Loopback2 | 10 | 1000 |
 
 ### Router ISIS Device Configuration
 

@@ -91,7 +91,7 @@ loopback_interfaces:
     isis_metric: 50
     node_segment:
       ipv4_index: 10
-      ipv6_index: 100
+      ipv6_index: 1000
 
 ### Management Interfaces ###
 management_interfaces:
