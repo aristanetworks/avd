@@ -65,6 +65,9 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ vlan_interfaces[vlan_interface].ipv6_address_link_local }} link-local
 {%     endif %}
+{%     if vlan_interfaces[vlan_interface].ipv6_address_virtual is arista.avd.defined %}
+   ipv6 address virtual {{ vlan_interfaces[vlan_interface].ipv6_address_virtual }}
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled
 {%     endif %}
