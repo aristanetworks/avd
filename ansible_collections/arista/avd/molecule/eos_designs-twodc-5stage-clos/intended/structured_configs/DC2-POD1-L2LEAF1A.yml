@@ -45,9 +45,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1011\n  description Loopback created from raw_eos_cli\
-  \ under l2leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1011\n  description Loopback created from raw_eos_cli under l2leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-POD1-LEAF1A

@@ -137,10 +137,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli\
-  \ under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
-  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+eos_cli: "interface Loopback1010\n  description Loopback created from raw_eos_cli under l3leaf defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
 struct_cfg:
   router_bgp:
     peer_groups:
