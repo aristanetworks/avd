@@ -81,7 +81,7 @@ The documentation how to leverage ansible-avd collection is located here:
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-$ pip3 install ansible-core>=2.11.3
+$ pip3 install ansible-core>=2.11.3,<2.12.0
 
 $ pip3 install -r ansible_collections/arista/avd/requirements.txt
 ```
