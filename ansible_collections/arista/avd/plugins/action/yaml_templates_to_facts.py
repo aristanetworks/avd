@@ -3,11 +3,10 @@ __metaclass__ = type
 
 import yaml
 from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleAction, AnsibleActionFail
+from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
 from ansible.plugins.loader import lookup_loader
-#from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 
 
@@ -43,8 +42,7 @@ class ActionModule(ActionBase):
 
         output = {}
 
-        template_lookup_module = lookup_loader.get('ansible.builtin.template',loader=self._loader, templar=self._templar)
-        #template_lookup_module = TemplateLookupModule(loader=self._loader, templar=self._templar)
+        template_lookup_module = lookup_loader.get('ansible.builtin.template', loader=self._loader, templar=self._templar)
 
         template_vars = task_vars
 
