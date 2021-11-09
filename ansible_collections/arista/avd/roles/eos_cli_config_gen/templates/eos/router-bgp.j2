@@ -215,7 +215,7 @@ router bgp {{ router_bgp.as }}
 {%     endfor %}
 {# bgp vpws services #}
 {%     if router_bgp.vpws is arista.avd.defined %}
-{%         for vpws_service in router_bgp.vpws | arista.avd.natural_sort %}
+{%         for vpws_service in router_bgp.vpws | arista.avd.natural_sort("name") %}
    !
 {%             if vpws_service.name is arista.avd.defined %}
    vpws {{ vpws_service.name }}

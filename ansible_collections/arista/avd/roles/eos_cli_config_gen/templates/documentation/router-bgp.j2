@@ -236,23 +236,23 @@
 | {{ vlan }} | {{ route_distinguisher }} | {{ both_route_target | join("<br>") }} | {{ import_route_target | join("<br>") }} | {{ export_route_target | join("<br>") }} | {{ redistribute | join("<br>") }} |
 {%         endfor %}
 {%     endif %}
-
 {%     if router_bgp.vpws is arista.avd.defined %}
+
 #### Router BGP VPWS Instances
 
 | Instance | Route-Distinguisher | Both Route-Target| Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | -----------------| ---------- | -------- | --------- |
-{% for vpws_service in router_bgp.vpws %}
-{%     if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
-{%         for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort %}
-{%             if pseudowire.name is arista.avd.defined %}
+{%         for vpws_service in router_bgp.vpws %}
+{%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
+{%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}
+{%                     if pseudowire.name is arista.avd.defined %}
 | {{ vpws_service.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ pseudowire.name }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
+{%                     endif %}
+{%                 endfor %}
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{% endfor %}
 
-{% endif %}
 #### Router BGP EVPN VRFs
 {%     if router_bgp.vrfs is defined and router_bgp.vrfs is not none %}
 

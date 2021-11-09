@@ -2208,14 +2208,14 @@ router_bgp:
         - < connected >
         - < learned >
   vpws:
-  - name: < vpws instance name >
-    rd: < route distinguisher >
-    route_targets:
-      import_export: < route target >
-    pseudowires:
-    - name: < pseudowire name >
-      id_local: < integer, must match id_remote on other pe >
-      id_remote: < integer, must match id_local on other pe >
+    - name: < vpws instance name >
+      rd: < route distinguisher >
+      route_targets:
+        import_export: < route target >
+      pseudowires:
+        - name: < pseudowire name >
+          id_local: < integer, must match id_remote on other pe >
+          id_remote: < integer, must match id_local on other pe >
   address_family_evpn:
     domain_identifier: < string >
     peer_groups:
