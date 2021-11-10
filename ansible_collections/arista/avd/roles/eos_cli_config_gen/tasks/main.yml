@@ -40,24 +40,7 @@
   tags: [build, provision, documentation]
   delegate_to: localhost
   when: generate_device_documentation | arista.avd.default(true)
-  block:
-    - name: Store checksum of existing device documentation
-      ansible.builtin.stat:
-        path: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-        checksum_algorithm: sha224
-        get_attributes: no
-        get_checksum: yes
-        get_mime: no
-      register: doc_stat_result
-    - name: Generate content of device documentation
-      template:
-        src: eos-device-documentation.j2
-        dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-        mode: 0664
-      changed_when: false
-    - name: Generate TOC for device documentation
-      add_toc:
-        md_file: "{{ devices_dir }}/{{ inventory_hostname }}.md"
-        skip_lines: 3
-      register: toc_result
-      changed_when: toc_result.checksum | default('1') != doc_stat_result.stat.checksum | default('0')
+  copy:
+    content: "{{ lookup('template','eos-device-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ devices_dir }}/{{ inventory_hostname }}.md"
+    mode: 0664
