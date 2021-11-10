@@ -39,7 +39,7 @@ body:
         - arista.avd.list_compress
         - arista.avd.markdown_rendering
         - arista.avd.natural_sort
-        - arista.avd.add_toc
+        - arista.avd.add_md_toc
         - arista.avd.configlet_build_config
         - arista.avd.inventory_to_container
         - arista.avd.yaml_templates_to_facts
