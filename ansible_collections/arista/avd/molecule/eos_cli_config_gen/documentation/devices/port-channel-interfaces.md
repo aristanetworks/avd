@@ -182,6 +182,13 @@ interface Ethernet50
 | --------- | --------------- | -----------| --------- |
 | Port-Channel102 | 111-112 | 110 | out
 
+#### Link Tracking Groups
+
+| Interface | Group Name | Direction |
+| --------- | ---------- | --------- |
+| Port-Channel5 | EVPN_MH_ES1 | downstream |
+| Port-Channel15 | EVPN_MH_ES2 | downstream |
+
 #### IPv4
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
@@ -212,6 +219,7 @@ interface Port-Channel5
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
+   link tracking group EVPN_MH_ES1 downstream
    comment
    Comment created from eos_cli under port_channel_interfaces.Port-Channel5
    EOF
@@ -254,6 +262,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 15
+   link tracking group EVPN_MH_ES2 downstream
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1

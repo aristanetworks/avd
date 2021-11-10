@@ -4,6 +4,9 @@ port_channel_interfaces:
   Port-Channel5:
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
+    link_tracking_groups:
+      - name: EVPN_MH_ES1
+        direction: downstream
     mode: trunk
     mlag: 5
     storm_control:
@@ -24,6 +27,8 @@ port_channel_interfaces:
   Port-Channel15:
     description: DC1_L2LEAF3_Po1
     vlans: 110,201
+    link_tracking_groups:
+      - name: EVPN_MH_ES2
     mode: trunk
     mlag: 15
 
