@@ -10,9 +10,7 @@ router_bgp:
     - maximum-paths 2 ecmp 2
   peer_groups:
     MPLS-IBGP-PEERS:
-      type:
-        - vpn-ipv4
-        - vpn-ipv6
+      type: "vpn-ipv4, vpn-ipv6"
       remote_as: 65000
       local_as: 65000
       password: "AQQvKeimxJu+uGQ/yYvv9w=="

@@ -34,12 +34,7 @@
 | Settings | Value |
 | -------- | ----- |
 {%             if router_bgp.peer_groups[peer_group].type is arista.avd.defined %}
-{%                 if router_bgp.peer_groups[peer_group].type is not string  %}
-{%                     set peer_group_type = router_bgp.peer_groups[peer_group].type | join(', ') %}
-{%                 else %}
-{%                     set peer_group_type = router_bgp.peer_groups[peer_group].type %}
-{%                 endif %}
-| Address Family | {{ peer_group_type }} |
+| Address Family | {{ router_bgp.peer_groups[peer_group].type }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].remote_as is arista.avd.defined %}
 | Remote AS | {{ router_bgp.peer_groups[peer_group].remote_as }} |
