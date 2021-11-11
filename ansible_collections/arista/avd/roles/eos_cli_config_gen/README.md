@@ -23,6 +23,7 @@
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
+      - [User Roles](#user-roles)
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
@@ -393,6 +394,22 @@ local_users:
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     ssh_key: "< ssh_key_string >"
+```
+
+#### User Roles
+
+```yaml
+user_roles:
+  < user_role_name_1 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action and command as string >"
+      < sequence_id_2 >:
+        action: "< action and command as string >"
+  < user_role_name_2 >:
+    sequence_numbers:
+      < sequence_id_1 >:
+        action: "< action and command as string >"
 ```
 
 #### Radius Servers
