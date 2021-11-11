@@ -11,7 +11,7 @@
       - [generate_esi filter](#generate_esi-filter)
       - [generate_lacp_id filter](#generate_lacp_id-filter)
       - [generate_route_target filter](#generate_route_target-filter)
-    - [Add Table Of Contents to MarkDown](#add-table-of-contents-to-markdown)
+    - [add_md_toc filter](#add_md_toc-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
     - [contains test](#contains-test)
@@ -104,7 +104,7 @@ The `arista.avd.generate_route_target` filter transforms short_esi: `0303:0202:0
 rt: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_route_target }}
 ```
 
-### Add Table Of Contents to MarkDown
+### add_md_toc filter
 
 The `arista.avd.add_md_toc` filter will parse the input MarkDown and add a TOC between the `toc_markers`.
 
