@@ -15,7 +15,7 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Supported Ansible Versions
 
-- ansible-core __2.11.3__ or later
+- ansible-core from __2.11.3__ to __2.12.x__
 
 ## Additional Python Libraries required
 
