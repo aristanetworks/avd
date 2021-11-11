@@ -132,6 +132,12 @@ tenants:
           # to each l3 leaf based on it's unique id. | Required (when vtep_diagnotics defined)
           loopback_ip_range: < IPv4_address/Mask >
 
+          # For inventories with multiple PODs a loopback range can be set per POD to avoid overlaps.
+          # This only takes effect when loopback_ip_range is not defined.
+          loopback_ip_pools:
+            - pod: < pod_name >
+              ipv4_pool: < IPv4_address/Mask >
+
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
         svis:

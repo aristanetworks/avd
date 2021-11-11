@@ -67,6 +67,15 @@ vlans:
   113:
     tenant: Tenant_A
     name: SVI_with_no_vxlan
+  1102:
+    tenant: Tenant_A
+    name: test_svi
+  1100:
+    tenant: Tenant_A
+    name: test_svi
+  1101:
+    tenant: Tenant_A
+    name: test_svi
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
@@ -100,7 +109,7 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po3
     type: switched
     shutdown: false
-    vlans: 110-113,2500,2600-2601,4085
+    vlans: 110-113,1100-1102,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 1
