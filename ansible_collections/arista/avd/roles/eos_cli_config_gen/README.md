@@ -399,17 +399,17 @@ local_users:
 #### User Roles
 
 ```yaml
-user_roles:
-  < user_role_name_1 >:
+roles:
+  - name: < role_name >
     sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action and command as string >"
-      < sequence_id_2 >:
-        action: "< action and command as string >"
-  < user_role_name_2 >:
-    sequence_numbers:
-      < sequence_id_1 >:
-        action: "< action and command as string >"
+      - sequence: < sequence_number_1 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
+      - sequence: < sequence_number_2 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
 ```
 
 #### Radius Servers

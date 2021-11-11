@@ -55,10 +55,11 @@ interface Management1
 
 #### network-limited
 
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit mode exec command ssh |
-| 20 | permit mode exec command traceroute |
+| Sequence | Action | Mode | Command |
+| -------- | ------ | ---- | ------- |
+| 10 | permit |  exec | ssh |
+| 20 | deny |  | telnet |
+| 30 | permit |  exec | traceroute |
 
 ### User Roles Device Configuration
 
@@ -66,7 +67,8 @@ interface Management1
 !
 role network-limited
    10 permit mode exec command ssh
-   20 permit mode exec command traceroute
+   20 deny command telnet
+   30 permit mode exec command traceroute
 ```
 
 # Monitoring
