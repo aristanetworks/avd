@@ -1,0 +1,22 @@
+{% if user_roles is arista.avd.defined %}
+
+## User Roles
+
+### User Roles Summary
+
+{%     for user_role in user_roles | arista.avd.natural_sort %}
+#### {{ user_role }}
+
+| Sequence | Action |
+| -------- | ------ |
+{%         for sequence in user_roles[user_role].sequence_numbers | arista.avd.natural_sort %}
+| {{ sequence }} | {{ user_roles[user_role].sequence_numbers[sequence].action }} |
+{%         endfor %}
+
+{%     endfor %}
+### User Roles Device Configuration
+
+```eos
+{% include 'eos/user-roles.j2' %}
+```
+{% endif %}

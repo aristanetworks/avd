@@ -1,0 +1,12 @@
+{# eos - user-roles #}
+{% if user_roles is arista.avd.defined %}
+!
+{%     for user_role in user_roles | arista.avd.natural_sort %}
+role {{ user_role }}
+{%         for sequence in user_roles[user_role].sequence_numbers | arista.avd.natural_sort %}
+{%             if user_roles[user_role].sequence_numbers[sequence].action is arista.avd.defined %}
+   {{ sequence }} {{ user_roles[user_role].sequence_numbers[sequence].action }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

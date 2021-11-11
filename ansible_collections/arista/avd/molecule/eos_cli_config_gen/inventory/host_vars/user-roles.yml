@@ -1,0 +1,8 @@
+### User Roles ###
+user_roles:
+  network-limited:
+    sequence_numbers:
+      10:
+        action: "permit mode exec command ssh"
+      20:
+        action: "permit mode exec command traceroute"
