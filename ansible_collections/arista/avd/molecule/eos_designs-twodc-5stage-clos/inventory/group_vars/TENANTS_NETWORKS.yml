@@ -70,7 +70,7 @@ tenants:
         svis:
           1100:
             name: test_svi
-            tags: [opzone,web]
+            tags: [opzone, web]
             enabled: True
             ip_address_virtual: 10.100.100.1/24
             vxlan: False
@@ -88,7 +88,7 @@ tenants:
         svis:
           1101:
             name: test_svi
-            tags: [opzone,web]
+            tags: [opzone, web]
             enabled: True
             ip_address_virtual: 10.101.100.1/24
             vxlan: False
@@ -102,7 +102,7 @@ tenants:
         svis:
           1102:
             name: test_svi
-            tags: [opzone,web]
+            tags: [opzone, web]
             enabled: True
             ip_address_virtual: 10.102.100.1/24
             vxlan: False
