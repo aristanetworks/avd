@@ -22,5 +22,5 @@
 {# By parsing the list of custom_structured_configurations to the combine filter,    #}
 {# it will apply them one at a time, so the first can be overridden by the next etc. #}
 {{
-    custom_structured_configuration_data | to_nice_yaml(indent=2, sort_keys=False)
+    custom_structured_configuration_data | to_nice_yaml(indent=2, sort_keys=False, width=2147483647)
 }}
