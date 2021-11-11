@@ -1,12 +1,27 @@
 {# eos - user-roles #}
-{% if user_roles is arista.avd.defined %}
+{% if roles is arista.avd.defined %}
 !
-{%     for user_role in user_roles | arista.avd.natural_sort %}
-role {{ user_role }}
-{%         for sequence in user_roles[user_role].sequence_numbers | arista.avd.natural_sort %}
-{%             if user_roles[user_role].sequence_numbers[sequence].action is arista.avd.defined %}
-   {{ sequence }} {{ user_roles[user_role].sequence_numbers[sequence].action }}
+{%     for role in roles %}
+{%         if role.name is arista.avd.defined %}
+role {{ role.name }}
+{%             if role.sequence_numbers is arista.avd.defined %}
+{%                 for sequence in role.sequence_numbers %}
+{%                     if sequence.sequence is arista.avd.defined %}
+{%                         set sequence_cli = sequence.sequence %}
+{%                         if sequence.action is arista.avd.defined %}
+{%                             set sequence_cli = sequence_cli ~ " " ~ sequence.action %}
+{%                         endif %}
+{%                         if sequence.mode is arista.avd.defined %}
+{%                             set sequence_cli = sequence_cli ~ " mode " ~ sequence.mode %}
+{%                         endif %}
+{%                         if sequence.command is arista.avd.defined %}
+{%                             set sequence_cli = sequence_cli ~ " command " ~ sequence.command %}
+{%                         endif %}
+   {{ sequence_cli }}
+{%                     endif %}
+{%                 endfor %}
 {%             endif %}
-{%         endfor %}
+{%         endif %}
 {%     endfor %}
 {% endif %}
+
