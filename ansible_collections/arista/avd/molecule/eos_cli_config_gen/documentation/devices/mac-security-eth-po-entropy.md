@@ -1,6 +1,5 @@
 # mac-security-eth-po-entropy
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -25,7 +24,6 @@
   - [MACsec Device Configuration](#macsec-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

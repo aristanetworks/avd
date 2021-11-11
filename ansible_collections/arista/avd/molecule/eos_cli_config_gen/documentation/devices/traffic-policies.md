@@ -1,6 +1,5 @@
 # traffic-policies
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
   - [Traffic Policies information](#traffic-policies-information)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

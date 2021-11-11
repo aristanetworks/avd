@@ -1,6 +1,5 @@
 # generate-default-config
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
 - [Authentication](#authentication)
@@ -16,7 +15,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 # Authentication

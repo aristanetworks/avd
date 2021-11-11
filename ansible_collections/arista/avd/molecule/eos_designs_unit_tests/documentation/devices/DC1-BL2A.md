@@ -1,6 +1,5 @@
 # DC1-BL2A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -51,7 +50,6 @@
   - [Platform Configuration](#platform-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

@@ -1,6 +1,5 @@
 # maintenance
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
 - [Maintenance Mode](#maintenance-mode)
   - [Maintenance](#maintenance)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

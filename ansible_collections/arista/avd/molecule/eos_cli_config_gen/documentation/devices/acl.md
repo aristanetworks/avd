@@ -1,6 +1,5 @@
 # acl
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
   - [Extended Access-lists](#extended-access-lists)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

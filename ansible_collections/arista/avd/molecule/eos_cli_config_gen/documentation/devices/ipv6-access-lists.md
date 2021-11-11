@@ -1,6 +1,5 @@
 # ipv6-access-lists
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
   - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

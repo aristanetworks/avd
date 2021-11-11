@@ -1,6 +1,5 @@
 # class-maps
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [Quality Of Service](#quality-of-service)
   - [QOS Class Maps](#qos-class-maps)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

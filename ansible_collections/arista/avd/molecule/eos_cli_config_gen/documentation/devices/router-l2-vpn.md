@@ -1,6 +1,5 @@
 # router-l2-vpn
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

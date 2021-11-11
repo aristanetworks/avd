@@ -1,6 +1,5 @@
 # vrf-instances
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
