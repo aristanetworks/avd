@@ -31,9 +31,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
-  \ under l2leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l2leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 vlans:
   4094:
     tenant: system
