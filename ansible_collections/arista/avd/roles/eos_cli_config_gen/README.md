@@ -23,7 +23,7 @@
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
-      - [User Roles](#user-roles)
+      - [Roles](#roles)
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
@@ -396,7 +396,7 @@ local_users:
     ssh_key: "< ssh_key_string >"
 ```
 
-#### User Roles
+#### Roles
 
 ```yaml
 roles:
