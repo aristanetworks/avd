@@ -1,22 +1,21 @@
 {% if roles is arista.avd.defined %}
 
-## User Roles
+## Roles
 
-### User Roles Summary
-
+### Roles Summary
 {%     for role in roles | arista.avd.natural_sort %}
-#### {{ role.name }}
+#### Role {{ role.name }}
 
 | Sequence | Action | Mode | Command |
 | -------- | ------ | ---- | ------- |
 {%         for sequence in role.sequence_numbers | arista.avd.natural_sort %}
-| {{ sequence.sequence }} | {{ sequence.action }} | {% if sequence.mode is arista.avd.defined %} {{ sequence.mode }}{% endif %} | {{ sequence.command }} |
+| {{ sequence.sequence | arista.avd.default('-') }} | {{ sequence.action }} | {{ sequence.mode | arista.avd.default('-') }} | {{ sequence.command }} |
 {%         endfor %}
-
 {%     endfor %}
-### User Roles Device Configuration
+
+### Roles Device Configuration
 
 ```eos
-{% include 'eos/user-roles.j2' %}
+{%     include 'eos/roles.j2' %}
 ```
 {% endif %}

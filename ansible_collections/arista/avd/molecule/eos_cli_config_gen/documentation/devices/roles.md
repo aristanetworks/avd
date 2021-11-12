@@ -1,11 +1,11 @@
-# user-roles
+# roles
 # Table of Contents
 <!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [User Roles](#user-roles)
+  - [Roles](#roles)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
@@ -49,19 +49,18 @@ interface Management1
 
 # Authentication
 
-## User Roles
+## Roles
 
-### User Roles Summary
-
-#### network-limited
+### Roles Summary
+#### Role network-limited
 
 | Sequence | Action | Mode | Command |
 | -------- | ------ | ---- | ------- |
-| 10 | permit |  exec | ssh |
-| 20 | deny |  | telnet |
-| 30 | permit |  exec | traceroute |
+| 10 | permit | exec | ssh |
+| 20 | deny | - | telnet |
+| 30 | permit | exec | traceroute |
 
-### User Roles Device Configuration
+### Roles Device Configuration
 
 ```eos
 !
