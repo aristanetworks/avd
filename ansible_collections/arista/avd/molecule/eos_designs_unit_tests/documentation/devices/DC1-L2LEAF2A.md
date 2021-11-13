@@ -181,9 +181,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackE DC1-L2LEAF2A | Disabled |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| example@example.com | DC1_FABRIC rackE DC1-L2LEAF2A | All | Disabled |
 
 ### SNMP Device Configuration
 

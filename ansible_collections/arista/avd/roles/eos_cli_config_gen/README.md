@@ -1836,7 +1836,13 @@ snmp_server:
         - username: < username >
           authentication_level: < auth | noauth | priv >
   traps:
-    enable: < true | false >
+    # Enable or disable all snmp-traps
+    enable: < true | false | default -> false >
+    # Enable or disable specific snmp-traps and their sub_traps
+    snmp_traps:
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
+        enabled: < true | false | default -> true >
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
   vrfs:
     - name: < vrf_name >
       enable: < true | false >
