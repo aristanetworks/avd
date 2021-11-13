@@ -110,7 +110,7 @@ interface Management1
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Ethernet1 | EVPN_MH_ES1 | upstream |
-| Ethernet3 | EVPN_MH_ES2 | upstream |
+| Ethernet3 | EVPN_MH_ES2 | downstream |
 
 #### IPv4
 
@@ -172,7 +172,7 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
-   link tracking group EVPN_MH_ES2 upstream
+   link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
    description Molecule IPv6

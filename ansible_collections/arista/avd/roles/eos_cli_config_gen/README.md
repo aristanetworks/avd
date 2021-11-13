@@ -709,7 +709,7 @@ ethernet_interfaces:
     vrf: < vrf_name >
     link_tracking_groups:
       - name: < group_name >
-        direction: < upstream | downstream | default -> upstream >
+        direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
@@ -818,7 +818,7 @@ ethernet_interfaces:
       encapsulation_dot1q_vlan: < vlan number >
     link_tracking_groups:
       - name: < group_name >
-        direction: < upstream | downstream | default -> upstream >
+        direction: < upstream | downstream >
     flowcontrol:
       received: < received | send | on >
     mac_security:
@@ -952,7 +952,7 @@ port_channel_interfaces:
     native_vlan: < native vlan number >
     link_tracking_groups:
       - name: < group_name >
-        direction: < upstream | downstream | default -> downstream >
+        direction: < upstream | downstream >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >

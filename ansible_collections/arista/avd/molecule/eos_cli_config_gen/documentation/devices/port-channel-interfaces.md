@@ -187,7 +187,7 @@ interface Ethernet50
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
 | Port-Channel5 | EVPN_MH_ES1 | downstream |
-| Port-Channel15 | EVPN_MH_ES2 | downstream |
+| Port-Channel15 | EVPN_MH_ES2 | upstream |
 
 #### IPv4
 
@@ -262,7 +262,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 15
-   link tracking group EVPN_MH_ES2 downstream
+   link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1

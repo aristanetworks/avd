@@ -29,6 +29,7 @@ port_channel_interfaces:
     vlans: 110,201
     link_tracking_groups:
       - name: EVPN_MH_ES2
+        direction: upstream
     mode: trunk
     mlag: 15
 
