@@ -234,6 +234,11 @@ interface {{ port_channel_interface }}
           port_channel_interfaces[port_channel_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ port_channel_interfaces[port_channel_interface].bfd.interval }} min-rx {{ port_channel_interfaces[port_channel_interface].bfd.min_rx }} multiplier {{ port_channel_interfaces[port_channel_interface].bfd.multiplier }}
 {%     endif %}
+{%     for link_tracking_group in port_channel_interfaces[port_channel_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
+   link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
+{%         endif %}
+{%     endfor %}
 {%     if port_channel_interfaces[port_channel_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ port_channel_interfaces[port_channel_interface].service_policy.pbr.input }}
 {%     endif %}
