@@ -3,13 +3,16 @@
 ## Roles
 
 ### Roles Summary
+
 {%     for role in roles | arista.avd.natural_sort %}
 #### Role {{ role.name }}
 
 | Sequence | Action | Mode | Command |
 | -------- | ------ | ---- | ------- |
-{%         for sequence in role.sequence_numbers | arista.avd.natural_sort %}
+{%         for sequence in role.sequence_numbers | arista.avd.default([]) %}
+{%             if sequence.action is arista.avd.defined and sequence.command is arista.avd.defined %}
 | {{ sequence.sequence | arista.avd.default('-') }} | {{ sequence.action }} | {{ sequence.mode | arista.avd.default('-') }} | {{ sequence.command }} |
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 
