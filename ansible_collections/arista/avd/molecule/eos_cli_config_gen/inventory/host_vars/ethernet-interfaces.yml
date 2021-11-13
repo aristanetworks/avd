@@ -269,4 +269,3 @@ ethernet_interfaces:
     description: 10% shape
     shape:
       rate: "10 percent"
-
