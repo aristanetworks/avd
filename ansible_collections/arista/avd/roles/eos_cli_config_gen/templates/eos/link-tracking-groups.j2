@@ -1,0 +1,14 @@
+{% if link_tracking_groups is arista.avd.defined %}
+!
+{%     for link_tracking_group in link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined %}
+link tracking group {{ link_tracking_group.name }}
+{%             if link_tracking_group.links_minimum is arista.avd.defined %}
+   links minimum {{ link_tracking_group.links_minimum }}
+{%             endif %}
+{%             if link_tracking_group.recovery_delay is arista.avd.defined %}
+   recovery delay {{ link_tracking_group.recovery_delay }}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
