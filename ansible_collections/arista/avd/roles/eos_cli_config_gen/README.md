@@ -813,12 +813,12 @@ ethernet_interfaces:
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
     flowcontrol:
-      received: < received | send | on >
+      received: < "received" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
       id: < Port-Channel_id >
-      mode: < on | active | passive >
+      mode: < "on" | "active" | "passive" >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
