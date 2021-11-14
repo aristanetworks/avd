@@ -62,6 +62,7 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
+    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -706,6 +707,9 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
@@ -809,13 +813,16 @@ ethernet_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     flowcontrol:
-      received: < received | send | on >
+      received: < "received" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
       id: < Port-Channel_id >
-      mode: < on | active | passive >
+      mode: < "on" | "active" | "passive" >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
@@ -943,6 +950,9 @@ port_channel_interfaces:
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -1219,6 +1229,14 @@ lacp:
   rate_limit:
     default: < true | false >
   system_priority: < 0-65535 >
+
+### Link Tracking Groups
+
+```yaml
+link_tracking_groups:
+  - name: < group_name >
+    links_minimum: < 1-100000 >
+    recovery_delay: < 0-3600 >
 ```
 
 ### LLDP
