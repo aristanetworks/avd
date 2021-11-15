@@ -4,16 +4,26 @@
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
 {%     set row_contact = snmp_server.contact | arista.avd.default('-') %}
 {%     set row_location = snmp_server.location | arista.avd.default('-') %}
-{%     if snmp_server.traps.enable | arista.avd.default(false) %}
-{%         set row_traps = 'Enabled' %}
+{%     if snmp_server.traps.enable is arista.avd.defined(true) %}
+{%         set row_state = 'Enabled' %}
 {%     else %}
-{%         set row_traps = 'Disabled' %}
+{%         set row_state = 'Disabled' %}
 {%     endif %}
-| {{ row_contact }} | {{ row_location }} | {{ row_traps }} |
+| {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
+{%     if snmp_server.traps.snmp_traps is arista.avd.defined %}
+{%         set row_traps_disabled = snmp_server.traps.snmp_traps | selectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
+{%         set row_traps_enabled = snmp_server.traps.snmp_traps | rejectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
+{%         if row_traps_enabled is arista.avd.defined %}
+| {{ row_contact }} | {{ row_location }} | {{ row_traps_enabled }} | Enabled |
+{%         endif %}
+{%         if row_traps_disabled is arista.avd.defined %}
+| {{ row_contact }} | {{ row_location }} | {{ row_traps_disabled }} | Disabled |
+{%         endif %}
+{%     endif %}
 {%     if snmp_server.ipv4_acls is arista.avd.defined %}
 
 ### SNMP ACLs

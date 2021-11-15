@@ -200,11 +200,14 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
    isis enable {{ ethernet_interfaces[ethernet_interface].isis_enable }}
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
-   isis passive
+{%         if ethernet_interfaces[ethernet_interface].isis_circuit_type is arista.avd.defined %}
+   isis circuit-type {{ ethernet_interfaces[ethernet_interface].isis_circuit_type }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].isis_metric is arista.avd.defined %}
    isis metric {{ ethernet_interfaces[ethernet_interface].isis_metric }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
+   isis passive
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point
@@ -248,6 +251,15 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].profile is arista.avd.defined %}
    profile {{ ethernet_interfaces[ethernet_interface].profile }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].lldp.transmit is arista.avd.defined(false) %}
+   no lldp transmit
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].lldp.receive is arista.avd.defined(false) %}
+   no lldp receive
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].shape.rate is arista.avd.defined %}
+   shape rate {{ ethernet_interfaces[ethernet_interface].shape.rate }}
+{%         endif %}
 {%         for section in ethernet_interfaces[ethernet_interface].storm_control | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].storm_control[section].level is arista.avd.defined %}
 {%                 if ethernet_interfaces[ethernet_interface].storm_control[section].unit is arista.avd.defined('pps') %}
@@ -262,6 +274,9 @@ interface {{ ethernet_interface }}
               ethernet_interfaces[ethernet_interface].bfd.multiplier is arista.avd.defined %}
    bfd interval {{ ethernet_interfaces[ethernet_interface].bfd.interval }} min-rx {{ ethernet_interfaces[ethernet_interface].bfd.min_rx }} multiplier {{ ethernet_interfaces[ethernet_interface].bfd.multiplier }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].service_policy.pbr.input is arista.avd.defined %}
+   service-policy type pbr input {{ ethernet_interfaces[ethernet_interface].service_policy.pbr.input }}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].mpls.ip is arista.avd.defined(true) %}
    mpls ip
 {%         elif ethernet_interfaces[ethernet_interface].mpls.ip is arista.avd.defined(false) %}
@@ -272,10 +287,18 @@ interface {{ ethernet_interface }}
 {%         elif ethernet_interfaces[ethernet_interface].mpls.ldp.interface is arista.avd.defined(false) %}
    no mpls ldp interface
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interfaces[ethernet_interface].transceiver.media.override is arista.avd.defined %}
    transceiver media override {{ ethernet_interfaces[ethernet_interface].transceiver.media.override }}
 {%     endif %}
+{%     for link_tracking_group in ethernet_interfaces[ethernet_interface].link_tracking_groups | arista.avd.natural_sort('name') %}
+{%         if link_tracking_group.name is arista.avd.defined and link_tracking_group.direction is arista.avd.defined %}
+   link tracking group {{ link_tracking_group.name }} {{ link_tracking_group.direction }}
+{%         endif %}
+{%     endfor %}
 {%     if ethernet_interfaces[ethernet_interface].eos_cli is arista.avd.defined %}
    {{ ethernet_interfaces[ethernet_interface].eos_cli | indent(3, false) }}
 {%     endif %}

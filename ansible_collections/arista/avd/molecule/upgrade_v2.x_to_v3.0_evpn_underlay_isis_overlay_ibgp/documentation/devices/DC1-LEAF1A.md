@@ -239,12 +239,12 @@ vlan internal order ascending range 1006 1199
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -533,7 +533,7 @@ router bgp 65000
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

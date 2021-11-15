@@ -150,7 +150,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_cli_config_gen','upgrade_eos_cli_config_gen']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -185,7 +185,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['dhcp_configuration', 'dhcp_provisionning']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
@@ -231,7 +231,7 @@ jobs:
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_isis_overlay_ibgp'
           - 'upgrade_v2.x_to_v3.0_eos_designs-twodc-5stage-clos'
           - 'upgrade_v2.x_to_v3.0_evpn_underlay_rfc5549_overlay_ebgp'
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
@@ -265,7 +265,7 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ['eos_config_deploy_cvp']
-        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3']
+        ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.cloudvision == 'true'
     steps:

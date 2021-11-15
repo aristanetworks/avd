@@ -17,7 +17,7 @@
 {# ip dhcp relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
 {# switchport default #}
-{% include 'eos/switchport-default.j2'%}
+{% include 'eos/switchport-default.j2' %}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
 {# ip igmp snooping #}
@@ -40,6 +40,8 @@
 {% include 'eos/queue-monitor-length.j2' %}
 {# lldp #}
 {% include 'eos/lldp.j2' %}
+{# lacp #}
+{% include 'eos/lacp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 {# match-list #}
@@ -102,6 +104,8 @@
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
 {% include 'eos/vrf-instances.j2' %}
+{# Link Tracking #}
+{% include 'eos/link-tracking-groups.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
 {# Ethernet Interfaces #}
@@ -191,6 +195,8 @@
 {% include 'eos/router-isis.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
+{# Patch Panel #}
+{% include 'eos/patch-panel.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}

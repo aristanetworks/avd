@@ -90,6 +90,7 @@ interface Management1
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
@@ -136,6 +137,10 @@ interface Ethernet16
    channel-group 16 mode active
    lacp timer normal
 !
+interface Ethernet17
+   description LAG Member
+   channel-group 17 mode active
+!
 interface Ethernet50
    description SRV-POD03_Eth1
    channel-group 5 mode active
@@ -177,12 +182,20 @@ interface Ethernet50
 | --------- | --------------- | -----------| --------- |
 | Port-Channel102 | 111-112 | 110 | out
 
+#### Link Tracking Groups
+
+| Interface | Group Name | Direction |
+| --------- | ---------- | --------- |
+| Port-Channel5 | EVPN_MH_ES1 | downstream |
+| Port-Channel15 | EVPN_MH_ES2 | upstream |
+
 #### IPv4
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -195,6 +208,7 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   shape rate 200000 kbps
 !
 interface Port-Channel5
    description DC1_L2LEAF1_Po1
@@ -205,6 +219,7 @@ interface Port-Channel5
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
+   link tracking group EVPN_MH_ES1 downstream
    comment
    Comment created from eos_cli under port_channel_interfaces.Port-Channel5
    EOF
@@ -232,6 +247,7 @@ interface Port-Channel10
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
+   shape rate 50 percent
 !
 interface Port-Channel12
    description interface_in_mode_access_with_voice
@@ -246,6 +262,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 15
+   link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
    description DC1_L2LEAF4_Po1
@@ -253,6 +270,12 @@ interface Port-Channel16
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 16
+!
+interface Port-Channel17
+   description PBR Description
+   no switchport
+   ip address 192.0.2.3/31
+   service-policy type pbr input MyPolicy
 !
 interface Port-Channel20
    description Po_in_mode_access_accepting_tagged_LACP_frames
@@ -353,3 +376,10 @@ interface Port-Channel103
 # ACL
 
 # Quality Of Service
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Port-Channel3 | - | - | - | 200000 kbps |
+| Port-Channel10 | - | - | - | 50 percent |

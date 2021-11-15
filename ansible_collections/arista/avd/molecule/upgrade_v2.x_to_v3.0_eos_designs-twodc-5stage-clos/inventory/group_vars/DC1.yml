@@ -49,4 +49,4 @@ overlay_controller:
       remote_switches: [ DC1-SUPER-SPINE2, DC1-POD2-SPINE1, DC1-POD2-LEAF1A ]
       uplink_to_remote_switches: [ Ethernet1, Ethernet2, Ethernet3 ]
 
-evpn_prevent_readvertise_to_server : true
+evpn_prevent_readvertise_to_server: true

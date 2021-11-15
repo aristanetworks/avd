@@ -15,10 +15,6 @@
 # limitations under the License.
 #
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 DOCUMENTATION = r'''
 ---
 module: yaml_templates_to_facts

@@ -16,7 +16,7 @@ class FilterModule(object):
 
     def natural_sort(self, iterable, sort_key=None):
         if isinstance(iterable, Undefined) or iterable is None:
-            return list()
+            return []
 
         def alphanum_key(key):
             if sort_key is not None and isinstance(key, dict):

@@ -73,46 +73,44 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         # Invalid value - return false
         if str(fail_action).lower() == 'warning':
             if var_name is not None:
-                Display().warning('%s was expected but not set. Output may be incorrect or incomplete!' % var_name)
+                Display().warning(f"{var_name} was expected but not set. Output may be incorrect or incomplete!")
             else:
-                Display().warning('A variable was expected but not set. Output may be incorrect or incomplete!')
+                Display().warning("A variable was expected but not set. Output may be incorrect or incomplete!")
         elif str(fail_action).lower() == 'error':
             if var_name is not None:
-                raise AnsibleError('%s was expected but not set!' % var_name)
+                raise AnsibleError(f"{var_name} was expected but not set!")
             else:
-                raise AnsibleError('A variable was expected but not set!')
+                raise AnsibleError("A variable was expected but not set!")
         return False
     elif test_value is not None and value != test_value:
         # Valid value but not matching the optional argument
         if str(fail_action).lower() == 'warning':
             if var_name is not None:
-                Display().warning('%s was set to %s but we expected %s. Output may be incorrect or incomplete!' % var_name, value, test_value)
+                Display().warning(f"{var_name} was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!")
             else:
-                Display().warning('A variable was set to %s but we expected %s. Output may be incorrect or incomplete!')
+                Display().warning(f"A variable was set to {value} but we expected {test_value}. Output may be incorrect or incomplete!")
         elif str(fail_action).lower() == 'error':
             if var_name is not None:
-                raise AnsibleError('%s was set to %s but we expected %s!' % var_name, value, test_value)
+                raise AnsibleError(f"{var_name} was set to {value} but we expected {test_value}!")
             else:
-                raise AnsibleError('A variable was set to %s but we expected %s!')
+                raise AnsibleError(f"A variable was set to {value} but we expected {test_value}!")
         return False
     elif str(var_type).lower() in ['float', 'int', 'str', 'list', 'dict', 'tuple'] and str(var_type).lower() != type(value).__name__:
         # Invalid class - return false
         if str(fail_action).lower() == 'warning':
             if var_name is not None:
                 Display().warning(
-                    '%s was a %s but we expected a %s. Output may be incorrect or incomplete!'
-                    % (var_name, type(value).__name__, str(var_type).lower())
+                    f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
                 )
             else:
                 Display().warning(
-                    'A variable was a %s but we expected a %s. Output may be incorrect or incomplete!'
-                    % (type(value).__name__, str(var_type).lower())
+                    f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}. Output may be incorrect or incomplete!"
                 )
         elif str(fail_action).lower() == 'error':
             if var_name is not None:
-                raise AnsibleError('%s was a %s but we expected a %s"!' % (var_name, type(value).__name__, str(var_type).lower()))
+                raise AnsibleError(f"{var_name} was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
             else:
-                raise AnsibleError('A variable was a %s but we expected a %s!' % (type(value).__name__, str(var_type).lower()))
+                raise AnsibleError(f"A variable was a {type(value).__name__} but we expected a {str(var_type).lower()}!")
         return False
     else:
         # Valid value and is matching optional argument if provided - return true

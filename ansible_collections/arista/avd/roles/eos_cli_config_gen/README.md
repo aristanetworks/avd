@@ -58,9 +58,11 @@
       - [Port-Channel Interfaces](#port-channel-interfaces)
       - [VLAN Interfaces](#vlan-interfaces)
       - [VxLAN Interface](#vxlan-interface)
-    - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
+    - [Internal VLAN Order](#internal-vlan-order)
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
+    - [LACP](#lacp)
+    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -99,6 +101,7 @@
       - [SNMP Settings](#snmp-settings)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
+    - [Patch Panel](#patch-panel)
     - [PTP](#ptp)
     - [Prompt](#prompt)
     - [Quality of Services](#quality-of-services)
@@ -131,6 +134,8 @@
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
+    - [Versioning](#versioning)
+    - [Example Playbooks](#example-playbooks)
   - [License](#license)
 
 ## Overview
@@ -429,6 +434,9 @@ banners:
 
 ```yaml
 router_bfd:
+  interval: < rate in milliseconds >
+  min_rx: < rate in milliseconds >
+  multiplier: < 3-50 >
   multihop:
     interval: < rate in milliseconds >
     min_rx: < rate in milliseconds >
@@ -699,6 +707,9 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
@@ -737,6 +748,7 @@ ethernet_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    isis_circuit_type: < level-1-2 | level-1 | level-2 >
     ptp:
       enable: < true | false >
       announce:
@@ -752,7 +764,12 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
@@ -761,10 +778,14 @@ ethernet_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     mpls:
       ip: < true | false >
       ldp:
         interface: < true | false >
+        igp_sync: < true | false >
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
@@ -795,13 +816,16 @@ ethernet_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     flowcontrol:
-      received: < received | send | on >
+      received: < "received" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
       id: < Port-Channel_id >
-      mode: < on | active | passive >
+      mode: < "on" | "active" | "passive" >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
@@ -824,6 +848,8 @@ ethernet_interfaces:
       transport: < ipv4 | ipv6 | layer2 >
     service_profile: < qos_profile >
     profile: < interface_profile >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -924,6 +950,9 @@ port_channel_interfaces:
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -944,12 +973,17 @@ port_channel_interfaces:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
       multiplier: < 3-50 >
+    service_policy:
+      pbr:
+        input: < policy-map name >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
       - from: < list of vlans as string (only one vlan if direction is "both") >
         to: < vlan_id >
         direction: < in | out | both | default -> both >
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     storm_control:
       all:
         level: < Configure maximum storm-control level >
@@ -963,6 +997,11 @@ port_channel_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    isis_enable: < ISIS Instance >
+    isis_passive: < boolean >
+    isis_metric: < integer >
+    isis_network_point_to_point: < boolean >
+    isis_circuit_type: < level-1-2 | level-1 | level-2 >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1154,10 +1193,10 @@ vxlan_interface:
       < multiline eos cli >
 ```
 
-### Internal VLAN Allocation Policy
+### Internal VLAN Order
 
 ```yaml
-vlan_internal_allocation_policy:
+vlan_internal_order:
   allocation: < ascending | descending >
   range:
     beginning: < vlan_id >
@@ -1177,6 +1216,27 @@ ip_dhcp_relay:
 ```yaml
 ip_icmp_redirect: < true | false >
 ipv6_icmp_redirect: < true | false >
+```
+
+### LACP
+
+```yaml
+lacp:
+  port_id:
+    range:
+      begin: < min_port >
+      end: < max_port >
+  rate_limit:
+    default: < true | false >
+  system_priority: < 0-65535 >
+
+### Link Tracking Groups
+
+```yaml
+link_tracking_groups:
+  - name: < group_name >
+    links_minimum: < 1-100000 >
+    recovery_delay: < 0-3600 >
 ```
 
 ### LLDP
@@ -1794,7 +1854,13 @@ snmp_server:
         - username: < username >
           authentication_level: < auth | noauth | priv >
   traps:
-    enable: < true | false >
+    # Enable or disable all snmp-traps
+    enable: < true | false | default -> false >
+    # Enable or disable specific snmp-traps and their sub_traps
+    snmp_traps:
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
+        enabled: < true | false | default -> true >
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
   vrfs:
     - name: < vrf_name >
       enable: < true | false >
@@ -1832,6 +1898,23 @@ vmtracer_sessions:
     url: < url >
     username: < username >
     password: "< encrypted_password >"
+```
+
+### Patch Panel
+
+```yaml
+patch_panel:
+  patches:
+    - name: < name >
+      enabled: < true | false >
+      connectors:
+        # Must have exactly two connectors to a patch of which at least one must be of type "interface"
+      - id: < string or integer >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
+      - id: < string or integer >
+        type: < interface | pseudowire >
+        endpoint: < interface_name | interface_name dot1q vlan 123 | bgp vpws TENANT_A pseudowire WPWS_PW_1 | ldp LDP_PW_1 >
 ```
 
 ### PTP
@@ -1963,6 +2046,9 @@ queue_monitor_length:
 ```yaml
 queue_monitor_streaming:
   enable: < true | false >
+  ip_access_group: < access_list_name >
+  ipv6_access_group: < ipv6_access_list_name >
+  max_connections: < 1-100 >
   vrf: < vrf_name >
 ```
 
@@ -2237,6 +2323,13 @@ router_bgp:
         activate: < true | false >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
+  address_family_vpn_ipv6:
+    domain_identifier: < string >
+    peer_groups:
+      < peer_group_name >:
+        activate: < true | false >
+    neighbor_default_encapsulation_mpls_next_hop_self:
+      source_interface: < interface >
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
@@ -2274,6 +2367,8 @@ router_bgp:
           update_source: < interface >
           route_map_out: < route-map name >
           route_map_in: < route-map name >
+          prefix_list_in: < prefix_list_name >
+          prefix_list_out: < prefix_list_name >
         < neighbor_ip_address >:
           remote_as: < asn >
           description: < description >
