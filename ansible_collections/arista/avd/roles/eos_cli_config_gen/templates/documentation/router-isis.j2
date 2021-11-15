@@ -38,9 +38,9 @@
 {%          if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
 {%              set row_isis_instance = ethernet_interfaces[ethernet_interface].isis_enable %}
 {%              set row_isis_metric = ethernet_interfaces[ethernet_interface].isis_metric | default('-') %}
-{%              if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined %}
+{%              if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "point-to-point" %}
-{%              elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined %}
+{%              elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "passive" %}
 {%              else %}
 {%                 set row_intf_mode = "-" %}
@@ -55,9 +55,9 @@
 {%          if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
 {%              set row_isis_instance = vlan_interfaces[vlan_interface].isis_enable %}
 {%              set row_isis_metric = vlan_interfaces[vlan_interface].isis_metric | default('-') %}
-{%              if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined %}
+{%              if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "point-to-point" %}
-{%              elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined %}
+{%              elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "passive" %}
 {%              else %}
 {%                 set row_intf_mode = "-" %}
@@ -72,9 +72,9 @@
 {%          if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
 {%              set row_isis_instance = loopback_interfaces[loopback_interface].isis_enable %}
 {%              set row_isis_metric = loopback_interfaces[loopback_interface].isis_metric | default('-') %}
-{%              if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined %}
+{%              if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "point-to-point" %}
-{%              elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined %}
+{%              elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined(true) %}
 {%                 set row_intf_mode = "passive" %}
 {%              else %}
 {%                 set row_intf_mode = "-" %}
