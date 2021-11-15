@@ -43,6 +43,9 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Virtual Source NAT](#virtual-source-nat)
+  - [Virtual Source NAT Summary](#virtual-source-nat-summary)
+  - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
@@ -298,6 +301,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.3/32 |
+| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
+| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.201.3/32 |
 
 #### IPv6
 
@@ -305,6 +310,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
+| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -320,6 +327,18 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 172.18.210.3/32
+!
+interface Loopback100
+   description vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf vrf_with_loopbacks_from_overlapping_pool
+   ip address 10.100.0.3/32
+!
+interface Loopback101
+   description vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf vrf_with_loopbacks_from_pod_pools
+   ip address 10.101.201.3/32
 ```
 
 ## VLAN Interfaces
@@ -363,6 +382,9 @@ interface Vlan4092
 | VLAN | VNI |
 | ---- | --- |
 | Common_VRF | 1025 |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 |
+| vrf_with_loopbacks_from_pod_pools | 1101 |
 
 ### VXLAN Interface Device Configuration
 
@@ -373,6 +395,9 @@ interface Vxlan1
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025
+   vxlan vrf vrf_with_loopbacks_dc1_pod1_only vni 1102
+   vxlan vrf vrf_with_loopbacks_from_overlapping_pool vni 1100
+   vxlan vrf vrf_with_loopbacks_from_pod_pools vni 1101
 ```
 
 # Routing
@@ -406,6 +431,9 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 | --- | --------------- |
 | default | true|| Common_VRF | true |
 | MGMT | false |
+| vrf_with_loopbacks_dc1_pod1_only | true |
+| vrf_with_loopbacks_from_overlapping_pool | true |
+| vrf_with_loopbacks_from_pod_pools | true |
 
 ### IP Routing Device Configuration
 
@@ -414,6 +442,9 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 ip routing
 ip routing vrf Common_VRF
 no ip routing vrf MGMT
+ip routing vrf vrf_with_loopbacks_dc1_pod1_only
+ip routing vrf vrf_with_loopbacks_from_overlapping_pool
+ip routing vrf vrf_with_loopbacks_from_pod_pools
 ```
 ## IPv6 Routing
 
@@ -423,6 +454,9 @@ no ip routing vrf MGMT
 | --- | --------------- |
 | default | false || Common_VRF | false |
 | MGMT | false |
+| vrf_with_loopbacks_dc1_pod1_only | false |
+| vrf_with_loopbacks_from_overlapping_pool | false |
+| vrf_with_loopbacks_from_pod_pools | false |
 
 
 ## Static Routes
@@ -500,6 +534,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Common_VRF | 172.16.210.3:1025 | connected |
+| vrf_with_loopbacks_dc1_pod1_only | 172.16.210.3:1102 | connected |
+| vrf_with_loopbacks_from_overlapping_pool | 172.16.210.3:1100 | connected |
+| vrf_with_loopbacks_from_pod_pools | 172.16.210.3:1101 | connected |
 
 ### Router BGP Device Configuration
 
@@ -572,6 +609,27 @@ router bgp 65211
       Comment created from raw_eos_cli under BGP for VRF Common_VRF
       EOF
 
+   !
+   vrf vrf_with_loopbacks_dc1_pod1_only
+      rd 172.16.210.3:1102
+      route-target import evpn 1102:1102
+      route-target export evpn 1102:1102
+      router-id 172.16.210.3
+      redistribute connected
+   !
+   vrf vrf_with_loopbacks_from_overlapping_pool
+      rd 172.16.210.3:1100
+      route-target import evpn 1100:1100
+      route-target export evpn 1100:1100
+      router-id 172.16.210.3
+      redistribute connected
+   !
+   vrf vrf_with_loopbacks_from_pod_pools
+      rd 172.16.210.3:1101
+      route-target import evpn 1101:1101
+      route-target export evpn 1101:1101
+      router-id 172.16.210.3
+      redistribute connected
 ```
 
 # BFD
@@ -669,6 +727,9 @@ route-map RM-CONN-2-BGP permit 20
 | -------- | ---------- |
 | Common_VRF | enabled |
 | MGMT | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | enabled |
+| vrf_with_loopbacks_from_overlapping_pool | enabled |
+| vrf_with_loopbacks_from_pod_pools | enabled |
 
 ## VRF Instances Device Configuration
 
@@ -677,6 +738,29 @@ route-map RM-CONN-2-BGP permit 20
 vrf instance Common_VRF
 !
 vrf instance MGMT
+!
+vrf instance vrf_with_loopbacks_dc1_pod1_only
+!
+vrf instance vrf_with_loopbacks_from_overlapping_pool
+!
+vrf instance vrf_with_loopbacks_from_pod_pools
+```
+
+# Virtual Source NAT
+
+## Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3 |
+| vrf_with_loopbacks_from_pod_pools | 10.101.201.3 |
+
+## Virtual Source NAT Configuration
+
+```eos
+!
+ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.3
+ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.201.3
 ```
 
 # Quality Of Service
