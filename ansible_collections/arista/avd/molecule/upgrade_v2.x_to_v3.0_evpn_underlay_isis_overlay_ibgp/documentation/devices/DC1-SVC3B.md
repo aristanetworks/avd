@@ -593,7 +593,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 

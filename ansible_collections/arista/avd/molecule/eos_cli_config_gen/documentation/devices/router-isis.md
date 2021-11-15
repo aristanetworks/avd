@@ -336,7 +336,7 @@ interface Vlan4094
 | --------- | ------------- | ----------- | -------------- |
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
 | Loopback2 | EVPN_UNDERLAY | 50 | passive |
