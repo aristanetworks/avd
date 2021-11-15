@@ -120,6 +120,8 @@
 {% include 'eos/vxlan-interface.j2' %}
 {# Hardware TCAM Profiles #}
 {% include 'eos/tcam-profile.j2' %}
+{# Connectivity monitor configuration #}
+{% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
@@ -132,7 +134,6 @@
 {% include 'eos/bgp-groups.j2' %}
 {# Interface Groups configuration #}
 {% include 'eos/interface-groups.j2' %}
-{# IPv6 Standard access-lists #}
 {# IPv6 Extended Access-lists #}
 {% include 'eos/ipv6-access-lists.j2' %}
 {# IPv6 Standard Access-lists #}
