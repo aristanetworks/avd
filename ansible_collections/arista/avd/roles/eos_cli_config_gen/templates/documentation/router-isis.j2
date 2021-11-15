@@ -16,7 +16,7 @@
 | Type | {{ router_isis.is_type }} |
 {%     endif %}
 {%     if router_isis.address_family is arista.avd.defined %}
-| Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|
+| Address Family | {{ router_isis.address_family | join(", ") }} |
 {%     endif %}
 {%     if router_isis.log_adjacency_changes is arista.avd.defined %}
 | Log Adjacency Changes | {{ router_isis.log_adjacency_changes }} |
