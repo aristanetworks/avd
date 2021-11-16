@@ -1,0 +1,12 @@
+# execution-environment.yml
+---
+version: 1
+dependencies:
+  galaxy: collections.yml
+  python: requirements.txt
+
+additional_build_steps:
+  prepend: |
+    RUN pip install --upgrade pip setuptools
+  append:
+    - RUN ls -la /etc
