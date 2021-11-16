@@ -22,4 +22,34 @@ lldp management-address vrf {{ lldp.vrf }}
 {%     if lldp.receive_packet_tagged_drop is arista.avd.defined(true) %}
 lldp receive packet tagged drop
 {%     endif %}
+{%     if lldp.tlv_transmit.link_aggregation is arista.avd.defined(false) %}
+no lldp tlv transmit link-aggregation
+{%     endif %}
+{%     if lldp.tlv_transmit.management_address is arista.avd.defined(false) %}
+no lldp tlv transmit management-address
+{%     endif %}
+{%     if lldp.tlv_transmit.max_frame_size is arista.avd.defined(false) %}
+no lldp tlv transmit max-frame-size
+{%     endif %}
+{%     if lldp.tlv_transmit.med_network_policy is arista.avd.defined(false) %}
+no lldp tlv transmit med network-policy
+{%     endif %}
+{%     if lldp.tlv_transmit.port_description is arista.avd.defined(false) %}
+no lldp tlv transmit port-description
+{%     endif %}
+{%     if lldp.tlv_transmit.port_vlan is arista.avd.defined(false) %}
+no lldp tlv transmit port-vlan
+{%     endif %}
+{%     if lldp.tlv_transmit.power_via_mdi is arista.avd.defined(false) %}
+no lldp tlv transmit power-via-mdi
+{%     endif %}
+{%     if lldp.tlv_transmit.system_capabilities is arista.avd.defined(false) %}
+no lldp tlv transmit system-capabilities
+{%     endif %}
+{%     if lldp.tlv_transmit.system_description is arista.avd.defined(false) %}
+no lldp tlv transmit system-description
+{%     endif %}
+{%     if lldp.tlv_transmit.system_name is arista.avd.defined(false) %}
+no lldp tlv transmit system-name
+{%     endif %}
 {% endif %}
