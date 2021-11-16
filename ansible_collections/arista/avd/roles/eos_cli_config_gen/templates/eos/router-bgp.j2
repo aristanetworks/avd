@@ -231,6 +231,13 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_evpn.domain_identifier }}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined("mpls") %}
+{%             set evpn_neighbor_default_encap_cli = "neighbor default encapsulation mpls" %}
+{%             if router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface is arista.avd.defined %}
+{%                 set evpn_neighbor_default_encap_cli = evpn_neighbor_default_encap_cli ~ " next-hop-self source-interface " ~ router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface %}
+{%             endif %}
+      {{ evpn_neighbor_default_encap_cli }}
+{%         endif %}
 {%         for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
 {%             if router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in is arista.avd.defined %}
       neighbor {{ peer_group }} route-map {{ router_bgp.address_family_evpn.peer_groups[peer_group].route_map_in }} in
