@@ -5,6 +5,9 @@ lldp:
   holdtime: 90
   management_address: 192.168.1.1/24
   vrf: Management
+  tlv_transmit:
+    system_capabilities: false
+    system_description: true
 
 ethernet_interfaces:
   Ethernet1:
@@ -21,3 +24,15 @@ ethernet_interfaces:
     lldp:
       transmit: false
       receive: true
+
+  Ethernet3:
+    description: No special LLDP settings
+    mode: access
+    vlans: 110
+
+  Ethernet4:
+    description: test
+    type: routed
+    lldp:
+      transmit: true
+      receive: false

@@ -60,11 +60,18 @@ interface Management1
 
 ### LLDP Global Settings
 
-| State | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
-| ----- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
-| Disabled | 192.168.1.1/24 | Management | 30 | 90 | 2 | Disabled |
+| Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
+| ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
+| False | 192.168.1.1/24 | Management | 30 | 90 | 2 | - |
 
-### LLDP Interface Configuration
+### LLDP Explicit TLV Transmit Settings
+
+| TLV | Transmit |
+| --- | -------- |
+| system_capabilities | False |
+| system_description | True |
+
+### LLDP Interface Settings
 
 LLDP is **disabled** globally. Local interface configs will not apply.
 
@@ -72,6 +79,7 @@ LLDP is **disabled** globally. Local interface configs will not apply.
 | --------- | -------- | ------- |
 | Ethernet1 | False | False |
 | Ethernet2 | False | True |
+| Ethernet4 | True | False |
 
 ## LLDP Device Configuration
 
@@ -82,6 +90,7 @@ lldp timer 30
 lldp hold-time 90
 lldp management-address 192.168.1.1/24
 lldp management-address vrf Management
+no lldp tlv transmit system-capabilities
 ```
 
 # Internal VLAN Allocation Policy
@@ -105,6 +114,7 @@ lldp management-address vrf Management
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet2 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
+| Ethernet3 |  No special LLDP settings | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -124,6 +134,17 @@ interface Ethernet2
    switchport access vlan 110
    switchport mode access
    no lldp transmit
+!
+interface Ethernet3
+   description No special LLDP settings
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet4
+   description test
+   no switchport
+   no lldp receive
 ```
 
 # Routing

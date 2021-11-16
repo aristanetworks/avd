@@ -764,6 +764,9 @@ ethernet_interfaces:
     logging:
       event:
         link_status: < true | false >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
@@ -1249,6 +1252,17 @@ lldp:
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
   receive_packet_tagged_drop: < true | false >
+  tlv_transmit:
+    link_aggregation: < true | false >
+    management_address: < true | false >
+    max_frame_size: < true | false >
+    med_network_policy: < true | false >
+    port_description: < true | false >
+    port_vlan: < true | false >
+    power_via_mdi: < true | false >
+    system_capabilities: < true | false >
+    system_description: < true | false >
+    system_name: < true | false >
   run: < true | false >
 ```
 
