@@ -59,17 +59,28 @@ interface Management1
 
 STP mode: **mstp**
 
+STP Root Super: **True**
+
 ### MSTP Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
 | 0 | 4096 |
 | 100-200 | 8192 |
+| 320-330 | - |
+| 331-340 | - |
+
+### MSTP Instance and Root
+
+| Instance(s) | Root |
+| ----------- | ---- |
+| 320-330 | primary |
+| 331-340 | secondary |
 
 ### MST Configuration
 
 | Variable | Value |
-| -------- | -------- |
+| -------- | ----- |
 | Name | test |
 | Revision | 5 |
 | Instance 2 | VLAN(s) 15,16,17,18 |
@@ -89,8 +100,11 @@ MST PSVT Border is enabled.
 spanning-tree edge-port bpduguard default
 spanning-tree mode mstp
 no spanning-tree vlan-id 105,202,505-506
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 spanning-tree mst 100-200 priority 8192
+spanning-tree mst 320-330 root primary
+spanning-tree mst 331-340 root secondary
 spanning-tree mst pvst border
 !
 spanning-tree mst configuration

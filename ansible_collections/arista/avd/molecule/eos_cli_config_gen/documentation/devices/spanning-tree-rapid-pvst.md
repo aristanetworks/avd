@@ -62,7 +62,7 @@ STP mode: **rapid-pvst**
 ### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
 | 1,2,3,4,5,10-15 | 4096 |
 | 3 | 8192 |
 | 100-500 | 16384 |

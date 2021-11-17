@@ -1,5 +1,6 @@
 ### Spanning-Tree (MST settings)
 spanning_tree:
+  root_super: true
   mst:
     configuration:
       name: test
@@ -21,3 +22,7 @@ spanning_tree:
       priority: 4096
     100-200:
       priority: 8192
+    320-330:
+      root: primary
+    331-340:
+      root: secondary
