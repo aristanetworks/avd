@@ -207,7 +207,7 @@ STP mode: **mstp**
 ### MSTP Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
 | 0 | 4096 |
 
 ### Global Spanning-Tree Settings

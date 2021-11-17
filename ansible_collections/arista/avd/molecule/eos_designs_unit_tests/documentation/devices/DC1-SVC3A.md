@@ -238,7 +238,7 @@ STP Root Super: **True**
 ### MSTP Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
 | 0 | 4096 |
 
 ### Global Spanning-Tree Settings
@@ -249,9 +249,9 @@ Spanning Tree disabled for VLANs: **4090,4092**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4090,4092
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 
