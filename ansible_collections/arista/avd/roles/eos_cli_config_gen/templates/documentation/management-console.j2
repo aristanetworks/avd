@@ -2,16 +2,16 @@
 {% if management_console is arista.avd.defined %}
 
 ## Management Console
-{%      if management_console.idle_timeout is arista.avd.defined %}
+{%     if management_console.idle_timeout is arista.avd.defined %}
 
 ### Management Console Timeout
 
 Management Console Timeout is set to **{{ management_console.idle_timeout }}** minutes.
-{%      endif %}
+{%     endif %}
 
 ### Management Console Configuration
 
 ```eos
-{%      include 'eos/management-console.j2' %}
+{%     include 'eos/management-console.j2' %}
 ```
 {% endif %}
