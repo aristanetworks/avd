@@ -4,19 +4,24 @@
 {%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
 spanning-tree edge-port bpduguard default
 {%     endif %}
-{%     if spanning_tree.root_super is arista.avd.defined(true) %}
-spanning-tree root super
-{%     endif %}
-{%     if spanning_tree.mode is arista.avd.defined() %}
+{%     if spanning_tree.mode is arista.avd.defined %}
 spanning-tree mode {{ spanning_tree.mode }}
 {%     endif %}
 {%     if spanning_tree.no_spanning_tree_vlan is arista.avd.defined %}
 no spanning-tree vlan-id {{ spanning_tree.no_spanning_tree_vlan }}
 {%     endif %}
+{%     if spanning_tree.root_super is arista.avd.defined(true) %}
+spanning-tree root super
+{%     endif %}
+{%     if spanning_tree.root is arista.avd.defined %}
+spanning-tree root {{ spanning_tree.root }}
+{%     endif %}
 {%     if spanning_tree.mode is arista.avd.defined('mstp') %}
 {%         for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
 {%             if spanning_tree.mst_instances[mst_instance].priority is arista.avd.defined %}
 spanning-tree mst {{ mst_instance }} priority {{ spanning_tree.mst_instances[mst_instance].priority }}
+{%             elif spanning_tree.mst_instances[mst_instance].root is arista.avd.defined %}
+spanning-tree mst {{ mst_instance }} root {{ spanning_tree.mst_instances[mst_instance].root }}
 {%             endif %}
 {%         endfor %}
 {%     elif spanning_tree.mode is arista.avd.defined('rapid-pvst') %}

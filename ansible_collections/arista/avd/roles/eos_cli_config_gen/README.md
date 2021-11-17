@@ -2596,6 +2596,7 @@ router_l2_vpn:
 
 ```yaml
 spanning_tree:
+  root: < primary | secondary >
   root_super: < true | false >
   edge_port:
     bpduguard_default: < true | false >
@@ -2612,10 +2613,13 @@ spanning_tree:
         "< instance_id >":
           vlans: "< vlan_id >, < vlan_id >-< vlan_id >"
   mst_instances:
-    "< instance_id >":
+    # Use '-' to specify range of instance ids, like 200-210
+    "< instance_id(s) >":
       priority: < priority >
-    "< instance_id >":
+      root: < primary | secondary >
+    "< instance_id(s) >":
       priority: < priority >
+      root: < primary | secondary >
   no_spanning_tree_vlan: "< vlan_id >, < vlan_id >-< vlan_id >"
   rapid_pvst_instances:
     "< vlan_id >":

@@ -10,22 +10,40 @@ STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
 
 STP Root Super: **{{ spanning_tree.root_super }}**
 {%     endif %}
+{%     if spanning_tree.root is arista.avd.defined %}
+
+STP Root: **{{ spanning_tree.root }}**
+{%     endif %}
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 
 ### MSTP Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
+{%         set root_instances = [] %}
 {%         for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort %}
 | {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].priority | arista.avd.default("-") }} |
+{%             if spanning_tree.mst_instances[mst_instance].root is arista.avd.defined %}
+{%                 do root_instances.append(mst_instance) %}
+{%             endif %}
 {%         endfor %}
+{%         if root_instances | length > 0 %}
+
+### MSTP Instance and Root
+
+| Instance(s) | Root |
+| ----------- | ---- |
+{%             for mst_instance in root_instances %}
+| {{ mst_instance }} | {{ spanning_tree.mst_instances[mst_instance].root }} |
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     if spanning_tree.mst.configuration is arista.avd.defined %}
 
 ### MST Configuration
 
 | Variable | Value |
-| -------- | -------- |
+| -------- | ----- |
 {%         if spanning_tree.mst.configuration.name is arista.avd.defined %}
 | Name | {{ spanning_tree.mst.configuration.name }} |
 {%         endif %}
@@ -43,7 +61,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 ### Rapid-PVST Instance and Priority
 
 | Instance(s) | Priority |
-| -------- | -------- |
+| ----------- | -------- |
 {%         if spanning_tree.rapid_pvst_instances is arista.avd.defined  %}
 {%             for vlan_id in spanning_tree.rapid_pvst_instances | arista.avd.natural_sort %}
 | {{ vlan_id }} | {{ spanning_tree.rapid_pvst_instances[vlan_id].priority | arista.avd.default("-") }} |
@@ -75,6 +93,6 @@ MST PSVT Border is enabled.
 ## Spanning Tree Device Configuration
 
 ```eos
-{% include 'eos/spanning-tree.j2' %}
+{%     include 'eos/spanning-tree.j2' %}
 ```
 {% endif %}
