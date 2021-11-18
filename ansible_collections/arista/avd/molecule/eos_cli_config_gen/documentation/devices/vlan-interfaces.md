@@ -179,6 +179,7 @@ interface Vlan83
 !
 interface Vlan84
    description SVI Description
+   arp gratuitous accept
    ip address 10.10.84.1/24
    ip virtual-router address 10.10.84.254
    ip virtual-router address 10.11.84.254/24

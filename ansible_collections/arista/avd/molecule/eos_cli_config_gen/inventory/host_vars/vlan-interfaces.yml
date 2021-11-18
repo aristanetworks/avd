@@ -29,6 +29,7 @@ vlan_interfaces:
     ip_virtual_router_addresses:
       - 10.10.84.254
       - 10.11.84.254/24
+    arp_gratuitous_accept: true
 
   Vlan85:
     description: SVI Description
