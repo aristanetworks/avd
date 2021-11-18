@@ -198,8 +198,13 @@ switch:
 {# switch.mlag_dual_primary_detection #}
   mlag_dual_primary_detection: {{ switch_data.combined.mlag_dual_primary_detection | arista.avd.default(false) }}
 
-{# switch.mlag_dual_primary_detection #}
+{# switch.mlag_interfaces #}
   mlag_interfaces: {{ switch_data.combined.mlag_interfaces | arista.avd.default() }}
+
+{# switch.mlag_interfaces_speed #}
+{%     if switch_data.combined.mlag_interfaces_speed is arista.avd.defined %}
+  mlag_interfaces_speed: {{ switch_data.combined.mlag_interfaces_speed }}
+{%     endif %}
 
 {# switch.mlag_l3 #}
 {# switch.mlag_peer_l3_vlan #}
