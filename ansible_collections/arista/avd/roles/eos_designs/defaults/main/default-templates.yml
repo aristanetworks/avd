@@ -11,7 +11,7 @@ default_templates:
       # Set design specific "topology.*" variables
       - template: "facts/topology/main.j2"
     structured_config:
-      # Render Strucured Configuration
+      # Render Structured Configuration
       # Base features
       - template: "base/main.j2"
       # MLAG feature
