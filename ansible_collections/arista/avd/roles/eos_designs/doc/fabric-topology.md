@@ -287,6 +287,10 @@ defaults <- node_group <- node_group.node <- node
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
+    # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
+    # Can be defined at multiple levels -> defaults or node_groups or nodes
+    mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
+
     # Underlay L3 peering SVI interface id
     # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
