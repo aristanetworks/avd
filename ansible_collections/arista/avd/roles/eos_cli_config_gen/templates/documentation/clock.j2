@@ -1,4 +1,4 @@
-{# Clock Timezone #}
+{# Clock #}
 {% if clock is arista.avd.defined %}
 
 ## Clock Settings
@@ -12,6 +12,6 @@ Clock Timezone is set to **{{ clock.timezone }}**.
 ### Clock Configuration
 
 ```eos
-{%     include 'eos/clock-timezone.j2' %}
+{%     include 'eos/clock.j2' %}
 ```
 {% endif %}

@@ -1333,7 +1333,7 @@ maintenance:
 
 ### Management
 
-#### Clock Timezone
+#### Clock
 
 ```yaml
 clock:
