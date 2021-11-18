@@ -60,7 +60,7 @@ interface Management1
 
 ## Management Security Summary
 
-Management Security entropy source is hardware
+Management Security entropy source is **hardware**
 
 Management Security password encryption is common.
 
