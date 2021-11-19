@@ -12,14 +12,14 @@
 {%     if router_isis.net is arista.avd.defined %}
 | Net-ID | {{ router_isis.net }} |
 {%     endif %}
+{%     if router_isis.is_type is arista.avd.defined %}
+| Type | {{ router_isis.is_type }} |
+{%     endif %}
 {%     if router_isis.address_family is arista.avd.defined %}
 | Address Family | {{ router_isis.address_family | join(", ") }} |
 {%     endif %}
 {%     if router_isis.router_id is arista.avd.defined %}
 | Router-ID | {{ router_isis.router_id }} |
-{%     endif %}
-{%     if router_isis.is_type is arista.avd.defined %}
-| Type | {{ router_isis.is_type }} |
 {%     endif %}
 {%     if router_isis.log_adjacency_changes is arista.avd.defined %}
 | Log Adjacency Changes | {{ router_isis.log_adjacency_changes }} |
@@ -32,9 +32,6 @@
 {%     endif %}
 {%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
 | Advertise Passive-only | {{ router_isis.advertise.passive_only }} |
-{%     endif %}
-{%     if router_isis.address_family is arista.avd.defined %}
-| Address Family | {% for af in router_isis.address_family %}{{ af }} {% endfor %}|
 {%     endif %}
 {%     if router_isis.segment_routing_mpls.enabled is arista.avd.defined %}
 | SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |
@@ -50,6 +47,9 @@
 {# ethernet interfaces #}
 {# ------- #}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%         if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = ethernet_interfaces[ethernet_interface].isis_enable %}
@@ -64,6 +64,7 @@
 | {{ ethernet_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
 {%         endif %}
 {%     endfor %}
+<<<<<<< HEAD
 {# ------- #}
 {# vlan interfaces #}
 {# ------- #}
@@ -125,26 +126,42 @@
 {%              endif %}
 {%          endfor %}
 {%      endif %}
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 {# ------- #}
 {# vlan interfaces #}
 {# ------- #}
-{%      if vlan_interfaces is arista.avd.defined %}
-{%          for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%              if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
-| {{ vlan_interface }} | {{ vlan_interfaces[vlan_interface].isis_enable }} |  {{ vlan_interfaces[vlan_interface].isis_metric | default('-') }} | {% if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined %} point-to-point {% elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined %} passive {% else %} - {% endif %}|
-{%              endif %}
-{%          endfor %}
-{%      endif %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
+{%         if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
+{%             set row_isis_instance = vlan_interfaces[vlan_interface].isis_enable %}
+{%             set row_isis_metric = vlan_interfaces[vlan_interface].isis_metric | arista.avd.default('-') %}
+{%             if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "point-to-point" %}
+{%             elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "passive" %}
+{%             else %}
+{%                 set row_intf_mode = "-" %}
+{%             endif %}
+| {{ vlan_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+{%         endif %}
+{%     endfor %}
 {# ------- #}
 {# loopback interfaces #}
 {# ------- #}
-{%      if loopback_interfaces is arista.avd.defined %}
-{%          for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%              if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
-| {{ loopback_interface }} | {{ loopback_interfaces[loopback_interface].isis_enable }} |  {{ loopback_interfaces[loopback_interface].isis_metric | default('-') }} | {% if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined %} point-to-point {% elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined %} passive {% else %} - {% endif %}|
-{%              endif %}
-{%          endfor %}
-{%      endif %}
+{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
+{%         if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
+{%             set row_isis_instance = loopback_interfaces[loopback_interface].isis_enable %}
+{%             set row_isis_metric = loopback_interfaces[loopback_interface].isis_metric | arista.avd.default('-') %}
+{%             if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "point-to-point" %}
+{%             elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined(true) %}
+{%                 set row_intf_mode = "passive" %}
+{%             else %}
+{%                 set row_intf_mode = "-" %}
+{%             endif %}
+| {{ loopback_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
+{%         endif %}
+{%     endfor %}
 {%      if router_isis.address_family_ipv4 is arista.avd.defined %}
 
 ### ISIS IPv4 Address Family Summary
