@@ -251,14 +251,15 @@ interface Vlan4094
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| --------- | ------------- | ----------- | -------------- |
+| Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
 
 ### ISIS IPv4 Address Family Summary
+
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
@@ -269,6 +270,7 @@ interface Vlan4094
 | TI-LFA SRLG Strict Mode | True |
 
 ### ISIS IPv6 Address Family Summary
+
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
