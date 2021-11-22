@@ -200,6 +200,7 @@ interface Port-Channel6
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
+| Loopback2 | ISIS-SR Node-SID | default | 10.1.255.3/32 |
 
 #### IPv6
 
@@ -207,6 +208,7 @@ interface Port-Channel6
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback2 | ISIS-SR Node-SID | default | - |
 
 #### ISIS
 
@@ -214,6 +216,7 @@ interface Port-Channel6
 | -------- | -------- | -------- | -------- |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
 | Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| Loopback2 | EVPN_UNDERLAY |  50 |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -230,6 +233,15 @@ interface Loopback1
    ip address 192.168.254.3/32
    isis enable EVPN_UNDERLAY
    isis passive
+!
+interface Loopback2
+   description ISIS-SR Node-SID
+   ip address 10.1.255.3/32
+   isis enable EVPN_UNDERLAY
+   isis passive
+   isis metric 50
+   node-segment ipv4 index 10
+   node-segment ipv6 index 1000
 ```
 
 ## VLAN Interfaces
@@ -319,12 +331,19 @@ interface Vlan4094
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| --------- | ------------- | ----------- | -------------- |
+| Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
+| Loopback2 | EVPN_UNDERLAY | 50 | passive |
+
+### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+| Loopback2 | 10 | 1000 |
 
 ### Router ISIS Device Configuration
 
