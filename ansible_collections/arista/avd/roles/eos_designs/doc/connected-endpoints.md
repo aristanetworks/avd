@@ -54,7 +54,7 @@ port_profiles:
     spanning_tree_bpdufilter: < true | false >
     spanning_tree_bpduguard: < true | false >
     flowcontrol:
-      received: < received | send | on >
+      received: < "received" | "send" | "on" >
     qos_profile: < qos_profile_name >
     ptp:
       enable: < true | false >
@@ -73,7 +73,7 @@ port_profiles:
         unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
     port_channel:
       description: < port_channel_description >
-      mode: < active | passive | on >
+      mode: < "active" | "passive" | "on" >
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
@@ -124,7 +124,7 @@ port_profiles:
 
         # Flow control | Optional
         flowcontrol:
-          received: < received | send | on >
+          received: < "received" | "send" | "on" >
 
         # QOS Profile | Optional
         qos_profile: < qos_profile_name >
@@ -173,7 +173,7 @@ port_profiles:
           description: < port_channel_description >
 
           # Port-Channel Mode.
-          mode: < active | passive | on >
+          mode: < "active" | "passive" | "on" >
 
           # LACP Fallback configuration | Optional
           lacp_fallback:

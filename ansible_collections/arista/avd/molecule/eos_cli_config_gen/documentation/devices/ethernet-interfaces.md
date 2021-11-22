@@ -105,6 +105,13 @@ interface Management1
 | --------- | --------------- | -----------| --------- |
 | Ethernet16 | 111-112 | 110 | out
 
+#### Link Tracking Groups
+
+| Interface | Group Name | Direction |
+| --------- | ---------- | --------- |
+| Ethernet1 | EVPN_MH_ES1 | upstream |
+| Ethernet3 | EVPN_MH_ES2 | downstream |
+
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -140,6 +147,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
+   link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
    EOF
@@ -164,6 +172,7 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
    description Molecule IPv6

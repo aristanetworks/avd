@@ -110,6 +110,42 @@ router_bgp:
         EOF
 
         '
+    vrf_with_loopbacks_dc1_pod1_only:
+      router_id: 172.16.110.4
+      rd: 172.16.110.4:1102
+      route_targets:
+        import:
+          evpn:
+          - 1102:1102
+        export:
+          evpn:
+          - 1102:1102
+      redistribute_routes:
+      - connected
+    vrf_with_loopbacks_from_overlapping_pool:
+      router_id: 172.16.110.4
+      rd: 172.16.110.4:1100
+      route_targets:
+        import:
+          evpn:
+          - 1100:1100
+        export:
+          evpn:
+          - 1100:1100
+      redistribute_routes:
+      - connected
+    vrf_with_loopbacks_from_pod_pools:
+      router_id: 172.16.110.4
+      rd: 172.16.110.4:1101
+      route_targets:
+        import:
+          evpn:
+          - 1101:1101
+        export:
+          evpn:
+          - 1101:1101
+      redistribute_routes:
+      - connected
   vlans:
     110:
       tenant: Tenant_A
@@ -181,6 +217,15 @@ vrfs:
   Common_VRF:
     tenant: Tenant_A
     ip_routing: true
+  vrf_with_loopbacks_dc1_pod1_only:
+    tenant: Tenant_A
+    ip_routing: true
+  vrf_with_loopbacks_from_overlapping_pool:
+    tenant: Tenant_A
+    ip_routing: true
+  vrf_with_loopbacks_from_pod_pools:
+    tenant: Tenant_A
+    ip_routing: true
 management_api_http:
   enable_vrfs:
     MGMT: {}
@@ -208,6 +253,15 @@ vlans:
   113:
     tenant: Tenant_A
     name: SVI_with_no_vxlan
+  1102:
+    tenant: Tenant_A
+    name: test_svi
+  1100:
+    tenant: Tenant_A
+    name: test_svi
+  1101:
+    tenant: Tenant_A
+    name: test_svi
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
@@ -268,6 +322,33 @@ vlan_interfaces:
     shutdown: false
     vrf: Common_VRF
     ip_address_virtual: 10.10.13.1/24
+  Vlan1102:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_dc1_pod1_only
+    ip_address_virtual: 10.102.100.1/24
+  Vlan1100:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_overlapping_pool
+    ip_address_virtual: 10.100.100.1/24
+  Vlan1101:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_pod_pools
+    ip_address_virtual: 10.101.100.1/24
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
@@ -292,7 +373,7 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-113,2500,2600-2601,4085
+    vlans: 110-113,1100-1102,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 3
@@ -586,6 +667,21 @@ loopback_interfaces:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 172.18.110.4/32
+  Loopback102:
+    description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_dc1_pod1_only
+    ip_address: 10.102.101.4/32
+  Loopback100:
+    description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_overlapping_pool
+    ip_address: 10.100.0.4/32
+  Loopback101:
+    description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_pod_pools
+    ip_address: 10.101.101.4/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -605,6 +701,13 @@ router_bfd:
 ip_igmp_snooping:
   globally_enabled: true
 ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_dc1_pod1_only:
+    ip_address: 10.102.101.4
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.4
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.101.4
 vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2A_VTEP
@@ -626,6 +729,12 @@ vxlan_interface:
       vrfs:
         Common_VRF:
           vni: 1025
+        vrf_with_loopbacks_dc1_pod1_only:
+          vni: 1102
+        vrf_with_loopbacks_from_overlapping_pool:
+          vni: 1100
+        vrf_with_loopbacks_from_pod_pools:
+          vni: 1101
 domain_list:
 - structured-config.set.on.node
 - structured-config.set.under.vrf.common-vrf

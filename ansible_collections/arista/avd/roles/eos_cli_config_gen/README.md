@@ -63,6 +63,7 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
+    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -70,7 +71,7 @@
       - [Interface Groups](#interface-groups)
       - [Profiles and units](#profiles-and-units)
     - [Management](#management)
-      - [Clock Timezone](#clock-timezone)
+      - [Clock](#clock)
       - [DNS Domain](#dns-domain)
       - [Domain Name Servers](#domain-name-servers)
       - [Domain Lookup](#domain-lookup)
@@ -723,6 +724,9 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
@@ -829,13 +833,16 @@ ethernet_interfaces:
       vlan: < 1-4094 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     flowcontrol:
-      received: < received | send | on >
+      received: < "received" | "send" | "on" >
     mac_security:
       profile: < profile >
     channel_group:
       id: < Port-Channel_id >
-      mode: < on | active | passive >
+      mode: < "on" | "active" | "passive" >
     qos:
       trust: < dscp | cos >
       dscp: < dscp-value >
@@ -939,6 +946,7 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -946,6 +954,9 @@ loopback_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    node_segment:
+      ipv4_index: < integer >
+      ipv6_index: < integer >
 ```
 
 #### Port-Channel Interfaces
@@ -960,6 +971,9 @@ port_channel_interfaces:
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
+    link_tracking_groups:
+      - name: < group_name >
+        direction: < upstream | downstream >
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
@@ -1236,6 +1250,14 @@ lacp:
   rate_limit:
     default: < true | false >
   system_priority: < 0-65535 >
+
+### Link Tracking Groups
+
+```yaml
+link_tracking_groups:
+  - name: < group_name >
+    links_minimum: < 1-100000 >
+    recovery_delay: < 0-3600 >
 ```
 
 ### LLDP
@@ -1332,7 +1354,7 @@ maintenance:
 
 ### Management
 
-#### Clock Timezone
+#### Clock
 
 ```yaml
 clock:
@@ -1439,6 +1461,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
+    minimum_length: < 1-32 >
     encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
@@ -1853,7 +1876,13 @@ snmp_server:
         - username: < username >
           authentication_level: < auth | noauth | priv >
   traps:
-    enable: < true | false >
+    # Enable or disable all snmp-traps
+    enable: < true | false | default -> false >
+    # Enable or disable specific snmp-traps and their sub_traps
+    snmp_traps:
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
+        enabled: < true | false | default -> true >
+      - name: < snmp_trap_type | snmp_trap_type snmp_sub_trap_type >
   vrfs:
     - name: < vrf_name >
       enable: < true | false >
@@ -2226,6 +2255,9 @@ router_bgp:
         - < learned >
   address_family_evpn:
     domain_identifier: < string >
+    neighbor_default:
+      encapsulation: < vxlan | mpls >
+      next_hop_self_source_interface: < source interface >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
