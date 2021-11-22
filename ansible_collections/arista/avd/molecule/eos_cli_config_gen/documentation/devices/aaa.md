@@ -146,6 +146,8 @@ AAA Authentication on-success log has been enabled
 
 Policy local allow-nopassword-remote-login has been enabled.
 
+Policy lockout has been enabled. After **3** failed login attempts within **900** minutes, you'll be locked out for **300** minutes.
+
 ### AAA Authentication Device Configuration
 
 ```eos
@@ -157,6 +159,7 @@ aaa authentication dot1x default DOT1X default group
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
+aaa authentication policy lockout failure 3 window 900 duration 300
 !
 ```
 

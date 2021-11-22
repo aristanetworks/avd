@@ -276,6 +276,10 @@ aaa_authentication:
     on_success_log: < true | false >
     local:
       allow_nopassword: < false | true >
+    lockout:
+      failure: < 1-255 >
+      duration: < 1-4294967295 >
+      window: < 1-4294967295 >
 ```
 
 #### AAA Authorization
