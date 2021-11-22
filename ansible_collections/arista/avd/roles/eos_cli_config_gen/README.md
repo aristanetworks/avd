@@ -1690,6 +1690,8 @@ daemons:
     enabled: "< true | false | default -> true >"
 ```
 
+This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
+
 #### Connectivity Monitor
 
 ```yaml
@@ -1722,8 +1724,6 @@ monitor_connectivity:
           local_interfaces: < interface_set_name >
           url: < url >
 ```
-
-This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
 
 #### Event Handler
 
