@@ -70,7 +70,7 @@
       - [Interface Groups](#interface-groups)
       - [Profiles and units](#profiles-and-units)
     - [Management](#management)
-      - [Clock Timezone](#clock-timezone)
+      - [Clock](#clock)
       - [DNS Domain](#dns-domain)
       - [Domain Name Servers](#domain-name-servers)
       - [Domain Lookup](#domain-lookup)
@@ -1347,7 +1347,7 @@ maintenance:
 
 ### Management
 
-#### Clock Timezone
+#### Clock
 
 ```yaml
 clock:
@@ -1454,6 +1454,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
+    minimum_length: < 1-32 >
     encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
