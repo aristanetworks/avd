@@ -17,8 +17,6 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Router ISIS](#router-isis)
-- [MPLS](#mpls)
-  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -364,14 +362,6 @@ router isis EVPN_UNDERLAY
       router-id 192.168.255.3
       no shutdown
 ```
-
-# MPLS
-
-## MPLS Interfaces
-
-| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
-| --------- | --------------- | ----------- | -------- |
-| Loopback2 | - | - | - |
 
 # Multicast
 
