@@ -932,6 +932,7 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -939,6 +940,9 @@ loopback_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    node_segment:
+      ipv4_index: < integer >
+      ipv6_index: < integer >
 ```
 
 #### Port-Channel Interfaces
