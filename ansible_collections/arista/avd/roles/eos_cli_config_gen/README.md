@@ -70,7 +70,7 @@
       - [Interface Groups](#interface-groups)
       - [Profiles and units](#profiles-and-units)
     - [Management](#management)
-      - [Clock Timezone](#clock-timezone)
+      - [Clock](#clock)
       - [DNS Domain](#dns-domain)
       - [Domain Name Servers](#domain-name-servers)
       - [Domain Lookup](#domain-lookup)
