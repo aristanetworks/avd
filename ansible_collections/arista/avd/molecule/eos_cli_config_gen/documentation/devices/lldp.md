@@ -68,8 +68,8 @@ interface Management1
 
 | TLV | Transmit |
 | --- | -------- |
-| system_capabilities | False |
-| system_description | True |
+| system-capabilities | False |
+| system-description | True |
 
 ### LLDP Interface Settings
 
@@ -91,6 +91,7 @@ lldp hold-time 90
 lldp management-address 192.168.1.1/24
 lldp management-address vrf Management
 no lldp tlv transmit system-capabilities
+lldp tlv transmit system-description
 ```
 
 # Internal VLAN Allocation Policy

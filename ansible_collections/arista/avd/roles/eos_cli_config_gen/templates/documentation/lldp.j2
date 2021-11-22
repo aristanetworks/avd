@@ -16,7 +16,7 @@
 | TLV | Transmit |
 | --- | -------- |
 {%         for tlv in lldp.tlv_transmit %}
-| {{ tlv }} | {{ lldp.tlv_transmit[tlv] }} |
+| {{ tlv.name | arista.avd.default('-') }} | {{ tlv.transmit | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 {%     if ethernet_interfaces is arista.avd.defined %}
