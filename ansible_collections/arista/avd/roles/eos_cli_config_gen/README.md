@@ -1256,7 +1256,7 @@ lldp:
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
   receive_packet_tagged_drop: < true | false >
-  tlv_transmit:
+  tlvs:
     - name: < tlv name 1 >
       transmit: < true | false >
     - name: < tlv name 2 >

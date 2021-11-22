@@ -22,8 +22,8 @@ lldp management-address vrf {{ lldp.vrf }}
 {%     if lldp.receive_packet_tagged_drop is arista.avd.defined(true) %}
 lldp receive packet tagged drop
 {%     endif %}
-{%     if lldp.tlv_transmit is arista.avd.defined %}
-{%         for tlv in lldp.tlv_transmit %}
+{%     if lldp.tlvs is arista.avd.defined %}
+{%         for tlv in lldp.tlvs %}
 {%             if tlv.name is arista.avd.defined and tlv.transmit is arista.avd.defined %}
 {%                 set lldp_tlv_transmit_cli = "lldp tlv transmit " ~ tlv.name %}
 {%                 if tlv.transmit is arista.avd.defined(false) %}

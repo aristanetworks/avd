@@ -9,13 +9,13 @@
 | Enabled | Management Address | Management VRF | Timer | Hold-Time | Re-initialization Timer | Drop Received Tagged Packets |
 | ------- | ------------------ | -------------- | ----- | --------- | ----------------------- | ---------------------------- |
 | {{ lldp.run | arista.avd.default(true) }} | {{ lldp.management_address | arista.avd.default('-') }} | {{ lldp.vrf | arista.avd.default('Default') }} | {{ lldp.timer | arista.avd.default('30') }} | {{ lldp.holdtime | arista.avd.default('120') }} | {{ lldp.timer_reinitialization | arista.avd.default('2') }} | {{ lldp.receive_packet_tagged_drop | arista.avd.default('-') }} |
-{%     if lldp.tlv_transmit is arista.avd.defined %}
+{%     if lldp.tlvs is arista.avd.defined %}
 
 ### LLDP Explicit TLV Transmit Settings
 
 | TLV | Transmit |
 | --- | -------- |
-{%         for tlv in lldp.tlv_transmit %}
+{%         for tlv in lldp.tlvs %}
 | {{ tlv.name | arista.avd.default('-') }} | {{ tlv.transmit | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}

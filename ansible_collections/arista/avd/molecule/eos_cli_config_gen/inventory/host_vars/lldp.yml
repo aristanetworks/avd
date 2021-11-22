@@ -5,7 +5,7 @@ lldp:
   holdtime: 90
   management_address: 192.168.1.1/24
   vrf: Management
-  tlv_transmit:
+  tlvs:
     - name: system-capabilities
       transmit: false
     - name: system-description
