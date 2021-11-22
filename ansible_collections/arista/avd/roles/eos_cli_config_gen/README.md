@@ -1444,6 +1444,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
+    minimum_length: < 1-32 >
     encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
