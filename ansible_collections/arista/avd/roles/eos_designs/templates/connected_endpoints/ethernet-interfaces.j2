@@ -1,7 +1,7 @@
 {# Leaf connected_endpoint interfaces #}
 ethernet_interfaces:
-{% for endpoint_key in connected_endpoints %}
-{%     for connected_endpoint in connected_endpoints[endpoint_key] %}
+{% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
 {%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
 {%             if adapter.profile is arista.avd.defined %}
 {%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
@@ -79,7 +79,7 @@ ethernet_interfaces:
       enable: {{ adapter_settings.ptp.enable }}
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter_settings.lacp_fallback_mode is arista.avd.defined('static') %}
+{%                     if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}
 {%                         if loop.first %}
     lacp_port_priority: 8192
 {%                         else %}
