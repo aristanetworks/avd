@@ -28,8 +28,9 @@ topology:
       peer_channel_description: {{ switch.group }}
 {%             endif %}
 {%             if switch.mlag_role is arista.avd.defined('secondary') %}
-      channel_group_id: {{ uplink_switch_facts.uplink_interfaces[0] | regex_findall("\d") | join }}
-      peer_channel_group_id: {{ uplink_switch_facts.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
+{%                 set mlag_peer_switch_facts = hostvars[switch.mlag_peer].switch %}
+      channel_group_id: {{ mlag_peer_switch_facts.uplink_interfaces[0] | regex_findall("\d") | join }}
+      peer_channel_group_id: {{ mlag_peer_switch_facts.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
 {%             else %}
       channel_group_id: {{ switch.uplink_interfaces[0] | regex_findall("\d") | join }}
       peer_channel_group_id: {{ switch.uplink_switch_interfaces[0] | regex_findall("\d") | join }}
