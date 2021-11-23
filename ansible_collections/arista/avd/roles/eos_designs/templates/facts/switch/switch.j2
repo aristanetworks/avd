@@ -1,5 +1,8 @@
 switch:
 
+{# switch.type #}
+  type: {{ type | arista.avd.default }}
+
 {# switch.group #}
   group: {{ switch_data.group | arista.avd.default() }}
 
