@@ -62,7 +62,9 @@ port_channel_interfaces:
 {%                                     endif %}
 {%                                 endif %}
 {%                             else %}
+{%                                if switch.mlag is arista.avd.defined(true) %}
     mlag: {{ channel_group_id }}
+{%                                endif %}
 {%                             endif %}
 {%                         endif %}
 {%                         if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}
