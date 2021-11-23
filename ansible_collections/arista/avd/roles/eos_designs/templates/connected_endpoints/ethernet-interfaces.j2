@@ -35,8 +35,8 @@ ethernet_interfaces:
 {%                     endif %}
     type: switched
     shutdown: false
-    mode: {{ adapter_settings.mode }}
-    vlans: {{ adapter_settings.vlans }}
+    mode: {{ adapter_settings.mode | arista.avd.default }}
+    vlans: {{ adapter_settings.vlans | arista.avd.default }}
 {%                     if adapter_settings.native_vlan is arista.avd.defined %}
     native_vlan: {{ adapter_settings.native_vlan }}
 {%                     endif %}
