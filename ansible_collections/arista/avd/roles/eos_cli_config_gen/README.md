@@ -887,6 +887,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -1265,9 +1268,16 @@ link_tracking_groups:
 ```yaml
 lldp:
   timer: < transmission_time >
+  timer_reinitialization: < re-init_time >
   holdtime: < hold_time_period >
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
+  receive_packet_tagged_drop: < true | false >
+  tlvs:
+    - name: < tlv name 1 >
+      transmit: < true | false >
+    - name: < tlv name 2 >
+      transmit: < true | false >
   run: < true | false >
 ```
 
