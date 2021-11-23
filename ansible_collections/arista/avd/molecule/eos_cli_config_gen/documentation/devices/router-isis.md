@@ -320,13 +320,13 @@ interface Vlan4094
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0001.00 |
-| Router-ID | 192.168.255.3 |
 | Type | level-2 |
+| Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
-| Address Family | ipv4 unicast |
 | SR MPLS Enabled | True |
 | SR MPLS Router-ID | 192.168.255.3 |
 
@@ -334,8 +334,13 @@ interface Vlan4094
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+<<<<<<< HEAD
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
@@ -346,6 +351,16 @@ interface Vlan4094
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
 | Loopback2 | 10 | 1000 |
+=======
+| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+=======
+>>>>>>> 55238f51 (refactoring documentation)
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
+| Loopback2 | EVPN_UNDERLAY | 50 | passive |
+>>>>>>> ef647c7b (fixed documentation and small stuff after review)
 
 ### Router ISIS Device Configuration
 

@@ -411,20 +411,34 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0001.00 |
-| Router-ID | 192.168.255.5 |
 | Type | level-2 |
-| Log Adjacency Changes | True |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.5 |
+| Log Adjacency Changes | True |
 
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
+<<<<<<< HEAD
 | Loopback0 | EVPN_UNDERLAY | - | passive |
+=======
+| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
+=======
+>>>>>>> 55238f51 (refactoring documentation)
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+>>>>>>> ef647c7b (fixed documentation and small stuff after review)
 
 ### Router ISIS Device Configuration
 

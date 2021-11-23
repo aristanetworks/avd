@@ -87,10 +87,10 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -239,8 +239,8 @@ interface Vlan4094
 | -------- | ----- |
 | Instance | EVPN_UNDERLAY |
 | Net-ID | 49.0001.0001.0001.0001.00 |
-| Router-ID | 192.168.255.3 |
 | Type | level-2 |
+| Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 15000 |
@@ -252,8 +252,21 @@ interface Vlan4094
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+<<<<<<< HEAD
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
+=======
+| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
+| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
+=======
+>>>>>>> 55238f51 (refactoring documentation)
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
@@ -277,6 +290,7 @@ interface Vlan4094
 | Maximum-paths | 4 |
 | TI-LFA Mode | node-protection |
 | TI-LFA SRLG Enabled | True |
+>>>>>>> ef647c7b (fixed documentation and small stuff after review)
 
 ### Router ISIS Device Configuration
 
