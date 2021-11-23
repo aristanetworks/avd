@@ -47,7 +47,7 @@ Nested jinja code block shall follow next rules:
 
 ```jinja
 {# Initial block indentation #}
-{% if my_variable is arista.avd.defined.%}
+{% if my_variable is arista.avd.defined %}
 
 {# Nested block indentation #}
 {% for ethernet_interface in ethernet_interfaces %}
