@@ -23,10 +23,11 @@ aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
 {%     endif %}
 {%     if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
-{%         set lockout_cli = "aaa authentication policy lockout failure " ~ aaa_authentication.policies.lockout.failure ~ " duration " ~ aaa_authentication.policies.lockout.duration %}
+{%         set lockout_cli = "aaa authentication policy lockout failure " ~ aaa_authentication.policies.lockout.failure %}
 {%         if aaa_authentication.policies.lockout.window is arista.avd.defined %}
-{%             set lockout_cli = "aaa authentication policy lockout failure " ~ aaa_authentication.policies.lockout.failure ~ " window " ~ aaa_authentication.policies.lockout.window ~ " duration " ~ aaa_authentication.policies.lockout.duration %}
+{%             set lockout_cli = lockout_cli ~ " window " ~ aaa_authentication.policies.lockout.window %}
 {%         endif %}
+{%         set lockout_cli = lockout_cli ~ " duration " ~ aaa_authentication.policies.lockout.duration %}
 {{ lockout_cli }}
 {%     endif %}
 {% endif %}
