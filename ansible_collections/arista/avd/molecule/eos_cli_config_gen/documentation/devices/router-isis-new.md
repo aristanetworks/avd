@@ -252,21 +252,8 @@ interface Vlan4094
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 55238f51 (refactoring documentation)
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
-<<<<<<< HEAD
-| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
-| Loopback0 | EVPN_UNDERLAY | - | passive |
-| Loopback1 | EVPN_UNDERLAY | - | passive |
-=======
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-=======
->>>>>>> 55238f51 (refactoring documentation)
 | Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
 | Loopback0 | EVPN_UNDERLAY | - | passive |
 | Loopback1 | EVPN_UNDERLAY | - | passive |
@@ -290,7 +277,6 @@ interface Vlan4094
 | Maximum-paths | 4 |
 | TI-LFA Mode | node-protection |
 | TI-LFA SRLG Enabled | True |
->>>>>>> ef647c7b (fixed documentation and small stuff after review)
 
 ### Router ISIS Device Configuration
 

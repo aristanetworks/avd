@@ -411,10 +411,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 55238f51 (refactoring documentation)
 | Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
@@ -422,20 +418,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Ethernet5 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet6 | EVPN_UNDERLAY | 50 | point-to-point |
 | Ethernet7 | EVPN_UNDERLAY | 50 | point-to-point |
-<<<<<<< HEAD
 | Loopback0 | EVPN_UNDERLAY | - | passive |
-=======
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet5 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet6 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet7 | EVPN_UNDERLAY |  50 |  point-to-point |
-=======
->>>>>>> 55238f51 (refactoring documentation)
-| Loopback0 | EVPN_UNDERLAY | - | passive |
->>>>>>> ef647c7b (fixed documentation and small stuff after review)
 
 ### Router ISIS Device Configuration
 
