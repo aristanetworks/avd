@@ -21,17 +21,17 @@ ethernet_interfaces:
 {%                     set peer_interface = endpoint_ports[loop.index0] %}
   {{ adapter.switch_ports[loop.index0] }}:
     peer: {{ peer }}
-    peer_interface: {{ endpoint_ports[loop.index0] }}
+    peer_interface: {{ peer_interface }}
     peer_type: {{ peer_type }}
     description: "{% include switch.interface_descriptions.connected_endpoints_ethernet_interfaces %}"
 {%                     if adapter_settings.speed is arista.avd.defined %}
-    speed: {{ adapter_speed }}
+    speed: {{ adapter_settings.speed }}
 {%                     endif %}
 {%                     if adapter_settings.mtu is arista.avd.defined %}
-    mtu: {{ adapter_mtu }}
+    mtu: {{ adapter_settings.mtu }}
 {%                     endif %}
 {%                     if adapter_settings.l2_mtu is arista.avd.defined %}
-    l2_mtu: {{ adapter_l2_mtu }}
+    l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                     endif %}
     type: switched
     shutdown: false
