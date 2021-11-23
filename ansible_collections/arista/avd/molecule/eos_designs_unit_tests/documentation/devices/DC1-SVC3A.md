@@ -480,11 +480,13 @@ interface Ethernet4
 interface Ethernet5
    description MLAG_PEER_DC1-SVC3B_Ethernet5
    no shutdown
+   speed 100g
    channel-group 5 mode active
 !
 interface Ethernet6
    description MLAG_PEER_DC1-SVC3B_Ethernet6
    no shutdown
+   speed 100g
    channel-group 5 mode active
 !
 interface Ethernet7

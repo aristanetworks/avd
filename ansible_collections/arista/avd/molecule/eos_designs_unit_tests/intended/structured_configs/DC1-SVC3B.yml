@@ -873,6 +873,7 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+    speed: 100g
   Ethernet6:
     peer: DC1-SVC3A
     peer_interface: Ethernet6
@@ -883,6 +884,7 @@ ethernet_interfaces:
     channel_group:
       id: 5
       mode: active
+    speed: 100g
   Ethernet1:
     peer: DC1-SPINE1
     peer_interface: Ethernet5
