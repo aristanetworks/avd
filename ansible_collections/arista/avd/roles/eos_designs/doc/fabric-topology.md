@@ -288,7 +288,6 @@ defaults <- node_group <- node_group.node <- node
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
     # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
-    # Can be defined at multiple levels -> defaults or node_groups or nodes
     mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
     # Underlay L3 peering SVI interface id
