@@ -46,10 +46,6 @@
 | --------- | ------------- | ----------- | -------------- |
 {# ethernet interfaces #}
 {# ------- #}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 55238f51 (refactoring documentation)
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%         if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
 {%             set row_isis_instance = ethernet_interfaces[ethernet_interface].isis_enable %}
@@ -64,7 +60,6 @@
 | {{ ethernet_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
 {%         endif %}
 {%     endfor %}
-<<<<<<< HEAD
 {# ------- #}
 {# vlan interfaces #}
 {# ------- #}
@@ -118,97 +113,52 @@
 | {{ loopback_interface }} | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
 {%         endfor %}
 {%     endif %}
-=======
-{%      if ethernet_interfaces is arista.avd.defined %}
-{%          for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%              if ethernet_interfaces[ethernet_interface].isis_enable is arista.avd.defined %}
-| {{  ethernet_interface }} | {{ ethernet_interfaces[ethernet_interface].isis_enable }} |  {{ ethernet_interfaces[ethernet_interface].isis_metric | default('-') }} | {% if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined %} point-to-point {% elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined %} passive {% else %} - {% endif %}|
-{%              endif %}
-{%          endfor %}
-{%      endif %}
-=======
->>>>>>> 55238f51 (refactoring documentation)
-{# ------- #}
-{# vlan interfaces #}
-{# ------- #}
-{%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%         if vlan_interfaces[vlan_interface].isis_enable is arista.avd.defined %}
-{%             set row_isis_instance = vlan_interfaces[vlan_interface].isis_enable %}
-{%             set row_isis_metric = vlan_interfaces[vlan_interface].isis_metric | arista.avd.default('-') %}
-{%             if vlan_interfaces[vlan_interface].isis_network_point_to_point is arista.avd.defined(true) %}
-{%                 set row_intf_mode = "point-to-point" %}
-{%             elif vlan_interfaces[vlan_interface].isis_passive is arista.avd.defined(true) %}
-{%                 set row_intf_mode = "passive" %}
-{%             else %}
-{%                 set row_intf_mode = "-" %}
-{%             endif %}
-| {{ vlan_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
-{%         endif %}
-{%     endfor %}
-{# ------- #}
-{# loopback interfaces #}
-{# ------- #}
-{%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%         if loopback_interfaces[loopback_interface].isis_enable is arista.avd.defined %}
-{%             set row_isis_instance = loopback_interfaces[loopback_interface].isis_enable %}
-{%             set row_isis_metric = loopback_interfaces[loopback_interface].isis_metric | arista.avd.default('-') %}
-{%             if loopback_interfaces[loopback_interface].isis_network_point_to_point is arista.avd.defined(true) %}
-{%                 set row_intf_mode = "point-to-point" %}
-{%             elif loopback_interfaces[loopback_interface].isis_passive is arista.avd.defined(true) %}
-{%                 set row_intf_mode = "passive" %}
-{%             else %}
-{%                 set row_intf_mode = "-" %}
-{%             endif %}
-| {{ loopback_interface }} | {{ row_isis_instance }} | {{ row_isis_metric }} | {{ row_intf_mode }} |
-{%         endif %}
-{%     endfor %}
-{%      if router_isis.address_family_ipv4 is arista.avd.defined %}
+{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
 
 ### ISIS IPv4 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv4 Address-family Enabled | True |
-{%          if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
+{%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
 | Maximum-paths | {{ router_isis.address_family_ipv4.maximum_paths }} |
-{%          endif %}
-{%          if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 | TI-LFA Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode }} |
-{%              if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
 | TI-LFA Level | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.level }} |
-{%              endif %}
-{%          endif %}
-{%          if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
 | TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable }} |
-{%              if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
 | TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict }} |
-{%              endif %}
-{%          endif %}
-{%      endif %}
-{%      if router_isis.address_family_ipv6 is arista.avd.defined %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
 
 ### ISIS IPv6 Address Family Summary
 
 | Settings | Value |
 | -------- | ----- |
 | IPv6 Address-family Enabled | True |
-{%          if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
+{%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
 | Maximum-paths | {{ router_isis.address_family_ipv6.maximum_paths }} |
-{%          endif %}
-{%          if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
 | TI-LFA Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode }} |
-{%              if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
 | TI-LFA Level | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.level }} |
-{%              endif %}
-{%          endif %}
-{%          if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
 | TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable }} |
-{%              if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
 | TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict }} |
-{%              endif %}
-{%          endif %}
-{%      endif %}
->>>>>>> ef647c7b (fixed documentation and small stuff after review)
+{%             endif %}
+{%         endif %}
+{%     endif %}
 
 ### Router ISIS Device Configuration
 
