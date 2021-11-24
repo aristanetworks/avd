@@ -468,10 +468,10 @@ interface Ethernet21
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
 | Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | switched | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
-| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | 10 | - |
-| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | 11 | - |
-| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | 12 | - |
-| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | 20 | - |
+| Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | switched | trunk | 210-211 | - | - | - | - | - | - |
+| Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | switched | access | 110 | - | - | - | - | - | - |
+| Port-Channel12 | CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1 | switched | access | - | - | - | - | - | - | - |
+| Port-Channel20 | CUSTOM_FIREWALL01_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -505,7 +505,6 @@ interface Port-Channel10
    switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
-   mlag 10
 !
 interface Port-Channel11
    description CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1
@@ -513,14 +512,12 @@ interface Port-Channel11
    mtu 1600
    switchport
    switchport access vlan 110
-   mlag 11
 !
 interface Port-Channel12
    description CUSTOM_server01_MTU_ADAPTOR_MLAG_PortChanne1
    no shutdown
    mtu 1601
    switchport
-   mlag 12
 !
 interface Port-Channel20
    description CUSTOM_FIREWALL01_PortChanne1
@@ -528,7 +525,6 @@ interface Port-Channel20
    switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
-   mlag 20
 ```
 
 ## Loopback Interfaces
