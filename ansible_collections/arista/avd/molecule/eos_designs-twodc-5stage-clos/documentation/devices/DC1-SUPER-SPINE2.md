@@ -1,6 +1,5 @@
 # DC1-SUPER-SPINE2
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -35,7 +34,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

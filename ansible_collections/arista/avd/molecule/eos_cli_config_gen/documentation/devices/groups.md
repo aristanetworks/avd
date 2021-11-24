@@ -1,6 +1,5 @@
 # groups
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
   - [BGP Groups](#bgp-groups)
   - [Interface Groups](#interface-groups)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

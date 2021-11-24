@@ -1,6 +1,5 @@
 # management-api-http
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
   - [Standard Access-lists](#standard-access-lists)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

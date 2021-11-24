@@ -1,7 +1,6 @@
 # DC1_FABRIC
 
 # Table of Contents
-<!-- toc -->
 
 - [Fabric Switches and Management IP](#fabric-switches-and-management-ip)
   - [Fabric Switches with inband Management IP](#fabric-switches-with-inband-management-ip)
@@ -14,7 +13,6 @@
   - [VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)](#vtep-loopback-vxlan-tunnel-source-interfaces-vteps-only)
   - [VTEP Loopback Node allocation](#vtep-loopback-node-allocation)
 
-<!-- toc -->
 # Fabric Switches and Management IP
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision |

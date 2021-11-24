@@ -1,6 +1,5 @@
 # DC1-POD1-LEAF2A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Domain-list](#domain-list)
@@ -51,7 +50,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Domain-list
