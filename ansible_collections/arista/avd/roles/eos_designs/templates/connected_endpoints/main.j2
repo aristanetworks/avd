@@ -1,4 +1,4 @@
-{% if connected_endpoints_keys is arista.avd.defined %}
+{% if switch.connected_endpoints is arista.avd.defined(true) and connected_endpoints_keys is arista.avd.defined %}
 {%     set connected_endpoints = dict() %}
 {%     include 'connected_endpoints/logic.j2' %}
 

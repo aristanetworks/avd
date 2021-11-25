@@ -1,6 +1,5 @@
 # DC1-L2LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -42,7 +41,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -339,11 +337,13 @@ interface Ethernet2
 interface Ethernet3
    description MLAG_PEER_DC1-L2LEAF1B_Ethernet3
    no shutdown
+   speed forced 40gfull
    channel-group 3 mode active
 !
 interface Ethernet4
    description MLAG_PEER_DC1-L2LEAF1B_Ethernet4
    no shutdown
+   speed forced 40gfull
    channel-group 3 mode active
 ```
 

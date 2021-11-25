@@ -1,6 +1,5 @@
 # DC1-POD1-LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
@@ -44,7 +43,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management API HTTP

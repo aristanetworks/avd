@@ -452,20 +452,17 @@ port_channel_interfaces:
     shutdown: false
     mode: trunk
     vlans: 110-111,210-211
-    mlag: 20
   Port-Channel10:
     description: server01_MLAG_PortChanne1
     type: switched
     shutdown: false
     mode: trunk
     vlans: 210-211
-    mlag: 10
   Port-Channel12:
     description: server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
     mtu: 1601
-    mlag: 12
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
@@ -473,7 +470,6 @@ port_channel_interfaces:
     mode: access
     mtu: 1600
     vlans: 110
-    mlag: 11
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

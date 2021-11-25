@@ -7,6 +7,9 @@ no lldp run
 {%     if lldp.timer is arista.avd.defined %}
 lldp timer {{ lldp.timer }}
 {%     endif %}
+{%     if lldp.timer_reinitialization is arista.avd.defined %}
+lldp timer reinitialization {{ lldp.timer_reinitialization }}
+{%     endif %}
 {%     if lldp.holdtime is arista.avd.defined %}
 lldp hold-time {{ lldp.holdtime }}
 {%     endif %}
@@ -15,5 +18,19 @@ lldp management-address {{ lldp.management_address }}
 {%     endif %}
 {%     if lldp.vrf is arista.avd.defined %}
 lldp management-address vrf {{ lldp.vrf }}
+{%     endif %}
+{%     if lldp.receive_packet_tagged_drop is arista.avd.defined(true) %}
+lldp receive packet tagged drop
+{%     endif %}
+{%     if lldp.tlvs is arista.avd.defined %}
+{%         for tlv in lldp.tlvs %}
+{%             if tlv.name is arista.avd.defined and tlv.transmit is arista.avd.defined %}
+{%                 set lldp_tlv_transmit_cli = "lldp tlv transmit " ~ tlv.name %}
+{%                 if tlv.transmit is arista.avd.defined(false) %}
+{%                     set lldp_tlv_transmit_cli = "no " ~ lldp_tlv_transmit_cli %}
+{%                 endif %}
+{{ lldp_tlv_transmit_cli }}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {% endif %}

@@ -23,6 +23,7 @@
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
+      - [Roles](#roles)
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
@@ -70,7 +71,7 @@
       - [Interface Groups](#interface-groups)
       - [Profiles and units](#profiles-and-units)
     - [Management](#management)
-      - [Clock Timezone](#clock-timezone)
+      - [Clock](#clock)
       - [DNS Domain](#dns-domain)
       - [Domain Name Servers](#domain-name-servers)
       - [Domain Lookup](#domain-lookup)
@@ -276,6 +277,10 @@ aaa_authentication:
     on_success_log: < true | false >
     local:
       allow_nopassword: < false | true >
+    lockout:
+      failure: < 1-255 >
+      duration: < 1-4294967295 >
+      window: < 1-4294967295 >
 ```
 
 #### AAA Authorization
@@ -394,6 +399,22 @@ local_users:
     sha512_password: "< sha_512_password >"
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     ssh_key: "< ssh_key_string >"
+```
+
+#### Roles
+
+```yaml
+roles:
+  - name: < role_name >
+    sequence_numbers:
+      - sequence: < sequence_number_1 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
+      - sequence: < sequence_number_2 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
 ```
 
 #### Radius Servers
@@ -870,6 +891,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -929,6 +953,7 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -936,6 +961,9 @@ loopback_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    node_segment:
+      ipv4_index: < integer >
+      ipv6_index: < integer >
 ```
 
 #### Port-Channel Interfaces
@@ -1247,9 +1275,16 @@ link_tracking_groups:
 ```yaml
 lldp:
   timer: < transmission_time >
+  timer_reinitialization: < re-init_time >
   holdtime: < hold_time_period >
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
+  receive_packet_tagged_drop: < true | false >
+  tlvs:
+    - name: < tlv name 1 >
+      transmit: < true | false >
+    - name: < tlv name 2 >
+      transmit: < true | false >
   run: < true | false >
 ```
 
@@ -1336,7 +1371,7 @@ maintenance:
 
 ### Management
 
-#### Clock Timezone
+#### Clock
 
 ```yaml
 clock:
@@ -1443,6 +1478,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
+    minimum_length: < 1-32 >
     encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
@@ -2234,6 +2270,15 @@ router_bgp:
       redistribute_routes:
         - < connected >
         - < learned >
+  vpws:
+    - name: < vpws instance name >
+      rd: < route distinguisher >
+      route_targets:
+        import_export: < route target >
+      pseudowires:
+        - name: < pseudowire name >
+          id_local: < integer, must match id_remote on other pe >
+          id_remote: < integer, must match id_local on other pe >
   address_family_evpn:
     domain_identifier: < string >
     neighbor_default:
