@@ -2,13 +2,13 @@
 {# #}
 {# Expand data for evpn_route_servers #}
 {% for route_server in switch.evpn_route_servers | arista.avd.natural_sort %}
-{%     if hostvars[route_server].switch is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ route_server ~ '].switch') %}
-{%         set route_server_vars = hostvars[route_server] %}
-{%         if route_server_vars.switch.evpn_role is arista.avd.defined('server') %}
+{%     set fabric_switch_switch_facts = hostvars[route_server].switch | arista.avd.default %}
+{%     if fabric_switch_switch_facts is arista.avd.defined(fail_action='warning',var_name='hostvars[' ~ route_server ~ '].switch') %}
+{%         if fabric_switch_switch_facts.evpn_role is arista.avd.defined('server') %}
 {# Found a matching server. Gathering information for this server #}
 {%             set server = namespace() %}
-{%             set server.bgp_as = route_server_vars.switch.bgp_as %}
-{%             set server.ip_address = route_server_vars.switch.router_id %}
+{%             set server.bgp_as = fabric_switch_switch_facts.bgp_as %}
+{%             set server.ip_address = fabric_switch_switch_facts.router_id %}
 {%             do overlay_data.evpn_route_servers.update({ route_server: server }) %}
 {%         endif %}
 {%     endif %}
