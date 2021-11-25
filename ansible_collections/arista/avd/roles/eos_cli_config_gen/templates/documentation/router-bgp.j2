@@ -225,6 +225,23 @@
 | {{ evpn_hostflap_detection_state }} | {{ evpn_hostflap_detection_window }} |  {{ evpn_hostflap_detection_threshold }} |
 {%         endif %}
 {%     endif %}
+{%     set evpn_l2_gw_config = namespace(peer_groups = []) %}
+{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
+{%         if router_bgp.address_family_evpn.peer_groups[peer_group].domain_remote is arista.avd.defined(true) %}
+{%             do evpn_l2_gw_config.peer_groups.append(peer_group) %}
+{%         endif %}
+{%     endfor %}
+{%     if evpn_l2_gw_config.peer_groups | length > 0 %}
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | {{ evpn_l2_gw_config.peer_groups | join(", ") }} |
+| MAC VRFs
+{%     endif %}
+
+#### Router BGP EVPN MAC-VRFs
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
 ### Router BGP VLAN Aware Bundles
