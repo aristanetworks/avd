@@ -97,6 +97,16 @@ Routing for IPv4 multicast is enabled.
 router multicast
    ipv4
       routing
+      multipath deterministic router-id
+      software-forwarding sfe
+      !
+      vrf MCAST_VRF1
+         ipv4
+           routing
+      !
+      vrf MCAST_VRF2
+         ipv4
+           routing
 ```
 
 
