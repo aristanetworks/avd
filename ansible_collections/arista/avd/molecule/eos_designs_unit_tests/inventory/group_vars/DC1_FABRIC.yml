@@ -67,6 +67,7 @@ l3leaf:
     mlag_interfaces_speed: 100g
     mlag_peer_l3_vlan: 4090
     mlag_peer_vlan: 4092
+    mlag_peer_link_allowed_vlans: "1-4094"
     spanning_tree_mode: mstp
     spanning_tree_root_super: true
     spanning_tree_priority: 4096
