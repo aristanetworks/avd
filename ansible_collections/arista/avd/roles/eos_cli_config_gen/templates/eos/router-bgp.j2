@@ -5,6 +5,26 @@ router bgp {{ router_bgp.as }}
 {%     if router_bgp.router_id is arista.avd.defined %}
    router-id {{ router_bgp.router_id }}
 {%     endif %}
+{%     if router_bgp.distance.external_routes is arista.avd.defined %}
+{%         set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}
+{%         if router_bgp.distance.internal_routes is arista.avd.defined and router_bgp.distance.local_routes is arista.avd.defined %}
+{%             set distance_cli = distance_cli ~ " " ~ router_bgp.distance.internal_routes ~ " " ~ router_bgp.distance.local_routes %}
+{%         endif %}
+   {{ distance_cli }}
+{%     endif %}
+{%     if router_bgp.maximum_paths.ec_paths is arista.avd.defined %}
+{%         set maximum_paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.ec_paths %}
+{%         if router_bgp.maximum_paths.ecmp_routes is arista.avd.defined %}
+{%             set maximum_paths_cli = maximum_paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp_routes %}
+{%         endif %}
+   {{ maximum_paths_cli }}
+{%     endif %}
+{%     if router_bgp.updates.wait_for_convergence is arista.avd.defined(true) %}
+   update wait-for-convergence
+{%     endif %}
+{%     if router_bgp.updates.wait_install is arista.avd.defined(true) %}
+   update wait-install
+{%     endif %}
 {%     if router_bgp.bgp_cluster_id is arista.avd.defined %}
    bgp cluster-id {{ router_bgp.bgp_cluster_id }}
 {%     endif %}
@@ -60,7 +80,24 @@ router bgp {{ router_bgp.as }}
    neighbor {{ peer_group }} send-community {{ router_bgp.peer_groups[peer_group].send_community }}
 {%         endif %}
 {%         if router_bgp.peer_groups[peer_group].maximum_routes is arista.avd.defined %}
-   neighbor {{ peer_group }} maximum-routes {{ router_bgp.peer_groups[peer_group].maximum_routes }}
+{%             set maximum_routes_cli = "neighbor " ~ peer_group ~ " maximum-routes " ~ router_bgp.peer_groups[peer_group].maximum_routes %}
+{%             if router_bgp.peer_groups[peer_group].maximum_routes_warning_limit is arista.avd.defined %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ router_bgp.peer_groups[peer_group].maximum_routes_warning_limit %}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " percent" %}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].maximum_routes_warning_only is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
+{%             endif %}
+   {{ maximum_routes_cli }}
+{%         endif %}
+{%         if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
+{%             set allowas_in_cli = "neighbor " ~ peer_group ~ " allowas-in" %}
+{%             if router_bgp.peer_groups[peer_group].allowas_in.allow_local_asn_n_times is arista.avd.defined %}
+{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.peer_groups[peer_group].allowas_in.allow_local_asn_n_times %}
+{%             endif %}
+   {{ allowas_in_cli }}
 {%         endif %}
 {%         if router_bgp.peer_groups[peer_group].weight is arista.avd.defined %}
    neighbor {{ peer_group }} weight {{ router_bgp.peer_groups[peer_group].weight }}
@@ -131,7 +168,24 @@ router bgp {{ router_bgp.as }}
    neighbor {{ neighbor }} send-community {{ router_bgp.neighbors[neighbor].send_community }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].maximum_routes is arista.avd.defined %}
-   neighbor {{ neighbor }} maximum-routes {{ router_bgp.neighbors[neighbor].maximum_routes }}
+{%             set maximum_routes_cli = "neighbor " ~ neighbor ~ " maximum-routes " ~ router_bgp.neighbors[neighbor].maximum_routes %}
+{%             if router_bgp.neighbors[neighbor].maximum_routes_warning_limit is arista.avd.defined %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ router_bgp.neighbors[neighbor].maximum_routes_warning_limit %}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " percent" %}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].maximum_routes_warning_only is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
+{%             endif %}
+   {{ maximum_routes_cli }}
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
+{%             set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
+{%             if router_bgp.neighbors[neighbor].allowas_in.allow_local_asn_n_times is arista.avd.defined %}
+{%                 set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.neighbors[neighbor].allowas_in.allow_local_asn_n_times %}
+{%             endif %}
+   {{ allowas_in_cli }}
 {%         endif %}
 {%     endfor %}
 {%     for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
@@ -185,6 +239,9 @@ router bgp {{ router_bgp.as }}
 {%         for redistribute_route in router_bgp.vlans[vlan].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
 {%         endfor %}
+{%         for no_redistribute_route in router_bgp.vlans[vlan].no_redistribute_routes | arista.avd.natural_sort %}
+      no redistribute {{ no_redistribute_route }}
+{%         endfor %}
 {%     endfor %}
 {# vxlan vlan aware bundles #}
 {%     for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort %}
@@ -210,6 +267,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         for redistribute_route in router_bgp.vlan_aware_bundles[vlan_aware_bundle].redistribute_routes | arista.avd.natural_sort %}
       redistribute {{ redistribute_route }}
+{%         endfor %}
+{%         for no_redistribute_route in router_bgp.vlan_aware_bundles[vlan_aware_bundle].no_redistribute_routes | arista.avd.natural_sort %}
+      no redistribute {{ no_redistribute_route }}
 {%         endfor %}
       vlan {{ router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan }}
 {%     endfor %}
@@ -589,7 +649,24 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor }} send-community {{ router_bgp.vrfs[vrf].neighbors[neighbor].send_community }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes is arista.avd.defined %}
-      neighbor {{ neighbor }} maximum-routes {{ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes }}
+{%             set maximum_routes_cli = "neighbor " ~ neighbor ~ " maximum-routes " ~ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit is arista.avd.defined %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit %}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " percent" %}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_only is arista.avd.defined(true) %}
+{%                 set maximum_routes_cli = maximum_routes_cli ~ " warning-only" %}
+{%             endif %}
+      {{ maximum_routes_cli }}
+{%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.enabled is arista.avd.defined(true) %}
+{%                 set allowas_in_cli = "neighbor " ~ neighbor ~ " allowas-in" %}
+{%                 if router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.allow_local_asn_n_times is arista.avd.defined %}
+{%                     set allowas_in_cli = allowas_in_cli ~ " " ~ router_bgp.vrfs[vrf].neighbors[neighbor].allowas_in.allow_local_asn_n_times %}
+{%                 endif %}
+      {{ allowas_in_cli }}
 {%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].default_originate is arista.avd.defined %}
 {%                 set neighbor_default_originate_cli = "neighbor " ~ neighbor ~ " default-originate" %}
