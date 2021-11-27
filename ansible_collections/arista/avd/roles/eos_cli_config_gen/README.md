@@ -63,7 +63,6 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
-    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -1609,6 +1608,12 @@ ip_igmp_snooping:
 router_multicast:
   ipv4:
     routing: < true | false >
+    multipath_deterministic: < color | router-id  >
+    software_forwarding: < kernel | sfe >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        routing: < true | false >
 ```
 
 #### Routing PIM Sparse Mode
