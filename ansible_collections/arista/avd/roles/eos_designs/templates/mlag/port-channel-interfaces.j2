@@ -4,7 +4,7 @@ port_channel_interfaces:
     description: MLAG_PEER_{{ switch.mlag_peer }}_Po{{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
     type: switched
     shutdown: false
-    vlans: "2-4094"
+    vlans: {{ switch.mlag_peer_link_allowed_vlans }}
     mode: trunk
 {% if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
