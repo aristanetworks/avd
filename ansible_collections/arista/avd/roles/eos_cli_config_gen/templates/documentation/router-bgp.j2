@@ -193,7 +193,7 @@
 
 | Peer Group | Activate |
 | ---------- | -------- |
-{%             for peer_group in router_bgp.address_family_evpn.peer_groups %}
+{%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
 | {{ peer_group }} | {{ router_bgp.address_family_evpn.peer_groups[peer_group].activate | arista.avd.default("false") }} |
 {%             endfor %}
 {%         endif %}
@@ -203,8 +203,8 @@
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
-{%         set row_default_encapsulation = router_bgp.address_family_evpn.neighbor_default.encapsulation | arista.avd.default("vxlan") %}
-{%         set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface | arista.avd.default('-') %}
+{%             set row_default_encapsulation = router_bgp.address_family_evpn.neighbor_default.encapsulation | arista.avd.default("vxlan") %}
+{%             set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface | arista.avd.default('-') %}
 | {{ row_default_encapsulation }} | {{ row_nhs_source_interface }} |
 {%         endif%}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
@@ -283,9 +283,9 @@
 {%             set redistribute = router_bgp.vrfs[vrf].redistribute_routes | arista.avd.default("-") %}
 {%             if router_bgp.vrfs[vrf].evpn_multicast is arista.avd.defined(true) %}
 {%                 set evpn_multicast = "enabled" %}
-{%              else %}
+{%             else %}
 {%                 set evpn_multicast = "disabled" %}
-{%               endif %}
+{%             endif %}
 | {{ vrf }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ evpn_multicast }} |
 {%         endfor %}
 {%     endif %}
