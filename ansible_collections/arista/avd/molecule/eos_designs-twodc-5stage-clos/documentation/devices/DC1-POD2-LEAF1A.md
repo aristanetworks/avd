@@ -421,24 +421,24 @@ interface Vlan1102
 
 #### UDP port: 4789
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 50111 | - |
-| 112 | 50112 | - |
-| 2500 | 2500 | - |
-| 2600 | 2600 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 50111 | - | - |
+| 112 | 50112 | - | - |
+| 2500 | 2500 | - | - |
+| 2600 | 2600 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-| vrf_with_loopbacks_dc1_pod1_only | 1102 |
-| vrf_with_loopbacks_from_overlapping_pool | 1100 |
-| vrf_with_loopbacks_from_pod_pools | 1101 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
+| vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
 ### VXLAN Interface Device Configuration
 

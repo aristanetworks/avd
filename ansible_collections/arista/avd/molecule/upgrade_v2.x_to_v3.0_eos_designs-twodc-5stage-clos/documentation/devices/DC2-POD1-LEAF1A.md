@@ -342,11 +342,11 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
 
 ### VXLAN Interface Device Configuration
 

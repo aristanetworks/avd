@@ -763,35 +763,35 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 50111 | - |
-| 120 | 10120 | - |
-| 121 | 10121 | - |
-| 130 | 10130 | - |
-| 131 | 10131 | - |
-| 140 | 10140 | - |
-| 141 | 10141 | - |
-| 160 | 10160 | - |
-| 161 | 10161 | - |
-| 210 | 20210 | - |
-| 211 | 20211 | - |
-| 310 | 30310 | - |
-| 311 | 30311 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 50111 | - | - |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 130 | 10130 | - | - |
+| 131 | 10131 | - | - |
+| 140 | 10140 | - | - |
+| 141 | 10141 | - | - |
+| 160 | 10160 | - | - |
+| 161 | 10161 | - | - |
+| 210 | 20210 | - | - |
+| 211 | 20211 | - | - |
+| 310 | 30310 | - | - |
+| 311 | 30311 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_APP_Zone | 12 |
-| Tenant_A_DB_Zone | 13 |
-| Tenant_A_OP_Zone | 10 |
-| Tenant_A_WEB_Zone | 11 |
-| Tenant_B_OP_Zone | 20 |
-| Tenant_C_OP_Zone | 30 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_DB_Zone | 13 | - |
+| Tenant_A_OP_Zone | 10 | - |
+| Tenant_A_WEB_Zone | 11 | - |
+| Tenant_B_OP_Zone | 20 | - |
+| Tenant_C_OP_Zone | 30 | - |
 
 ### VXLAN Interface Device Configuration
 

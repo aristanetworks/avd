@@ -71,19 +71,19 @@ interface Management1
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 10111 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 10111 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_OP_Zone | 10 |
-| Tenant_A_WEB_Zone | 11 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_OP_Zone | 10 | - |
+| Tenant_A_WEB_Zone | 11 | - |
 
 ### VXLAN Interface Device Configuration
 

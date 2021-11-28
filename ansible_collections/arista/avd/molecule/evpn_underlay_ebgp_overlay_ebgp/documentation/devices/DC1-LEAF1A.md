@@ -472,23 +472,23 @@ interface Vlan131
 
 #### UDP port: 4789
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 120 | 10120 | - |
-| 121 | 10121 | - |
-| 122 | 10122 | - |
-| 123 | 10123 | - |
-| 124 | 10124 | - |
-| 130 | 10130 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 122 | 10122 | - | - |
+| 123 | 10123 | - | - |
+| 124 | 10124 | - | - |
+| 130 | 10130 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_APP_Zone | 12 |
-| Tenant_A_WEB_Zone | 11 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_WEB_Zone | 11 | - |
 
 ### VXLAN Interface Device Configuration
 

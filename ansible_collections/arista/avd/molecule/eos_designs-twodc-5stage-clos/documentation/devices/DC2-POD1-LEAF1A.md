@@ -375,14 +375,14 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-| vrf_with_loopbacks_dc1_pod1_only | 1102 |
-| vrf_with_loopbacks_from_overlapping_pool | 1100 |
-| vrf_with_loopbacks_from_pod_pools | 1101 |
+| VLAN | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
+| vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
 ### VXLAN Interface Device Configuration
 
