@@ -63,7 +63,6 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
-    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -1194,24 +1193,29 @@ vxlan_interface:
     description: < description >
     vxlan:
       source_interface: < source_interface_name >
+      mlag_source_interface: < source_interface_name >
       udp_port: < udp_port >
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
       vrfs:
         < vrf_name_1 >:
           vni: < vni_id_3 >
+          multicast_group: < ip_multicast_group_address >
         < vrf_name_2 >:
           vni: < vni_id_4 >
+          multicast_group: < ip_multicast_group_address >
       flood_vteps:
         - < remote_vtep_1_ip_address >
         - < remote_vtep_2_ip_address >
