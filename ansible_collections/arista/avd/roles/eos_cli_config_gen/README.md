@@ -1608,7 +1608,8 @@ ip_igmp_snooping:
 router_multicast:
   ipv4:
     routing: < true | false >
-    multipath_deterministic: < color | router-id  >
+    multipath: < none | deterministic >
+    multipath_deterministic_pick:  < color | router-id  >
     software_forwarding: < kernel | sfe >
   vrfs:
     - name: < vrf_name >

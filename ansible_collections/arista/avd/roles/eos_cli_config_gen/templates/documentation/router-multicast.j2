@@ -1,11 +1,32 @@
-{% if router_multicast is defined and router_multicast is not none %}
+{% if router_multicast is arista.avd.defined %}
 
 ## Router Multicast
 
 ### IP Router Multicast Summary
 
-{%   if router_multicast.ipv4.routing is defined and router_multicast.ipv4.routing == true %}
-Routing for IPv4 multicast is enabled.
+{%     if router_multicast.ipv4.routing is arista.avd.defined(true) %}
+- Routing for IPv4 multicast is enabled.
+{%     endif %}
+{# Multipathing deterministically picking would take precedence based on order of commands #}
+{%     if router_multicast.ipv4.multipath_deterministic_pick is arista.avd.defined %}
+- Multipathing deterministically picking {{ router_multicast.ipv4.multipath_deterministic_pick }}.
+{%     elif router_multicast.ipv4.multipath is arista.avd.defined('none') %}
+- Multipathing disabled.
+{%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic') %}
+- Multipathing via ECMP.
+{%     endif %}
+{%     if router_multicast.ipv4.software_forwarding is arista.avd.defined('kernel') %}
+- Software forwarding by the Linux kernel
+{%     elif router_multicast.ipv4.software_forwarding is arista.avd.defined('sfe') %}
+- Software forwarding by the Software Forwarding Engine (SFE)
+{%     endif %}
+
+{%     if router_multicast.vrfs is arista.avd.defined %}
+| VRF Name | Multicast Routing |
+| -------- | ----------------- |
+{%         for vrf in router_multicast.vrfs| arista.avd.natural_sort('name') %}
+| {{ vrf.name }} |{% if vrf.ip_routing is arista.avd.defined(true) %} enabled {% else %} disabled {% endif %}|
+{%         endfor %}
 
 ### Router Multicast Device Configuration
 
@@ -13,5 +34,5 @@ Routing for IPv4 multicast is enabled.
 {% include 'eos/router-multicast.j2' %}
 ```
 
-{%   endif %}
+{%     endif %}
 {% endif %}
