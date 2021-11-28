@@ -20,15 +20,21 @@
 {%     elif router_multicast.ipv4.software_forwarding is arista.avd.defined('sfe') %}
 - Software forwarding by the Software Forwarding Engine (SFE)
 {%     endif %}
+{%     if router_multicast.vrfs is arista.avd.defined %}
 
 ### IP Router Multicast VRFs
 
-{%     if router_multicast.vrfs is arista.avd.defined %}
 | VRF Name | Multicast Routing |
 | -------- | ----------------- |
-{%         for vrf in router_multicast.vrfs| arista.avd.natural_sort('name') %}
-| {{ vrf.name }} |{% if vrf.ipv4.routing is arista.avd.defined(true) %} enabled {% else %} disabled {% endif %}|
+{%         for vrf in router_multicast.vrfs | arista.avd.natural_sort('name') %}
+{%             if vrf.ipv4.routing is arista.avd.defined(true) %}
+{%                 set multicast_routing = "enabled" %}
+{%             else %}
+{%                 set multicast_routing = "disabled" %}
+{%             endif %}
+| {{ vrf.name }} | {{ multicast_routing }} |
 {%         endfor %}
+{%     endif %}
 
 ### Router Multicast Device Configuration
 
@@ -36,5 +42,4 @@
 {% include 'eos/router-multicast.j2' %}
 ```
 
-{%     endif %}
 {% endif %}
