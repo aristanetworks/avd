@@ -21,11 +21,13 @@
 - Software forwarding by the Software Forwarding Engine (SFE)
 {%     endif %}
 
+### IP Router Multicast VRFs
+
 {%     if router_multicast.vrfs is arista.avd.defined %}
 | VRF Name | Multicast Routing |
 | -------- | ----------------- |
 {%         for vrf in router_multicast.vrfs| arista.avd.natural_sort('name') %}
-| {{ vrf.name }} |{% if vrf.ip_routing is arista.avd.defined(true) %} enabled {% else %} disabled {% endif %}|
+| {{ vrf.name }} |{% if vrf.ipv4.routing is arista.avd.defined(true) %} enabled {% else %} disabled {% endif %}|
 {%         endfor %}
 
 ### Router Multicast Device Configuration
