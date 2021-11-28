@@ -63,6 +63,7 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
+    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -1256,6 +1257,7 @@ lacp:
   rate_limit:
     default: < true | false >
   system_priority: < 0-65535 >
+```
 
 ### Link Tracking Groups
 
