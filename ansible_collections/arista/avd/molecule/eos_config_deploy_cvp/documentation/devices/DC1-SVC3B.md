@@ -1006,9 +1006,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN aware bundles
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -1022,19 +1026,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_C_OP_Zone | 192.168.255.9:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.9:31 | 31:31 | - | - | learned | 350 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | connected |
-| Tenant_A_DB_Zone | 192.168.255.9:13 | connected |
-| Tenant_A_OP_Zone | 192.168.255.9:10 | connected |
-| Tenant_A_WAN_Zone | 192.168.255.9:14 | connected |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected |
-| Tenant_B_OP_Zone | 192.168.255.9:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.9:21 | connected |
-| Tenant_C_OP_Zone | 192.168.255.9:30 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.9:31 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| Tenant_A_APP_Zone | 192.168.255.9:12 | connected | disabled |
+| Tenant_A_DB_Zone | 192.168.255.9:13 | connected | disabled |
+| Tenant_A_OP_Zone | 192.168.255.9:10 | connected | disabled |
+| Tenant_A_WAN_Zone | 192.168.255.9:14 | connected | disabled |
+| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected | disabled |
+| Tenant_B_OP_Zone | 192.168.255.9:20 | connected | disabled |
+| Tenant_B_WAN_Zone | 192.168.255.9:21 | connected | disabled |
+| Tenant_C_OP_Zone | 192.168.255.9:30 | connected | disabled |
+| Tenant_C_WAN_Zone | 192.168.255.9:31 | connected | disabled |
 
 ### Router BGP Device Configuration
 

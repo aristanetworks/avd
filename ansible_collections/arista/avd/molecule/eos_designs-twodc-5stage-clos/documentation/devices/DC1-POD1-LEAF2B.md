@@ -836,9 +836,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 - VPN import pruning is __enabled__
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN Based
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP MAC VRF for single VLAN Instances
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -848,14 +852,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 2500 | 172.16.110.5:2500 | 2500:2500 | - | - | learned |
 | 2600 | 172.16.110.5:2600 | 2600:2600 | - | - | learned |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Common_VRF | 172.16.110.5:1025 | connected |
-| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.5:1102 | connected |
-| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.5:1100 | connected |
-| vrf_with_loopbacks_from_pod_pools | 172.16.110.5:1101 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| Common_VRF | 172.16.110.5:1025 | connected | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.5:1102 | connected | disabled |
+| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.5:1100 | connected | disabled |
+| vrf_with_loopbacks_from_pod_pools | 172.16.110.5:1101 | connected | disabled |
 
 ### Router BGP Device Configuration
 

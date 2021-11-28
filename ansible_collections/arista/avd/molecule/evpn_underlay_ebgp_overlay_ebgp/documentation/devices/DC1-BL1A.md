@@ -627,30 +627,34 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_WAN_Zone | 192.168.255.14:14 | 14:14 | - | - | learned | 150 |
 | Tenant_B_WAN_Zone | 192.168.255.14:21 | 21:21 | - | - | learned | 250 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.14:14 | connected<br>static |
-| Tenant_B_OP_Zone | 192.168.255.14:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.14:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.14:31 | connected |
-| Tenant_L3_VRF_Zone | 192.168.255.14:15 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| Tenant_A_WAN_Zone | 192.168.255.14:14 | connected<br>static | disabled |
+| Tenant_B_OP_Zone | 192.168.255.14:20 | connected | disabled |
+| Tenant_B_WAN_Zone | 192.168.255.14:21 | connected | disabled |
+| Tenant_C_WAN_Zone | 192.168.255.14:31 | connected | disabled |
+| Tenant_L3_VRF_Zone | 192.168.255.14:15 | connected | disabled |
 
 ### Router BGP Device Configuration
 

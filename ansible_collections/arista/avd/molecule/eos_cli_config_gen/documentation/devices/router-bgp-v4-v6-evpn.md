@@ -164,9 +164,13 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN Based
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY | True |
+
+### Router BGP MAC VRF for single VLAN Instances
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -175,12 +179,12 @@ interface Management1
 | 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
 | 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A | 10.50.64.15:30001 | connected |
-| Tenant_B | 10.50.64.15:30002 | - |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| Tenant_A | 10.50.64.15:30001 | connected | disabled |
+| Tenant_B | 10.50.64.15:30002 | - | disabled |
 
 ### Router BGP Device Configuration
 

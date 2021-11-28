@@ -432,9 +432,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 - VPN import pruning is __enabled__
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 

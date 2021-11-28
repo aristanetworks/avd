@@ -646,9 +646,11 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 

@@ -133,28 +133,33 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+| MLAG-IPv4-UNDERLAY-PEER | False |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Enabled | 10 |  1 |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned<br>igmp | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | enabled |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | disabled |
 
 ### Router BGP Device Configuration
 
@@ -195,6 +200,7 @@ router bgp 65101
    vlan-aware-bundle TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target both 11:11
+      redistribute igmp
       redistribute learned
       vlan 110
    !
@@ -216,6 +222,7 @@ router bgp 65101
    !
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
+      evpn multicast
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3

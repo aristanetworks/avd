@@ -145,9 +145,14 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN aware bundles
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+| MLAG-IPv4-UNDERLAY-PEER | False |
+
+### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -155,12 +160,12 @@ interface Management1
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | disabled |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | disabled |
 
 ### Router BGP Device Configuration
 

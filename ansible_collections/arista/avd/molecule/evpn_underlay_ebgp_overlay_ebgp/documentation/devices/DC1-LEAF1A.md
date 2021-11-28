@@ -626,27 +626,31 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130 |
 | Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-124 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | connected |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected |
+| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
+| --- | ------------------- | ------------ | -------------- |
+| Tenant_A_APP_Zone | 192.168.255.9:12 | connected | disabled |
+| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected | disabled |
 
 ### Router BGP Device Configuration
 
