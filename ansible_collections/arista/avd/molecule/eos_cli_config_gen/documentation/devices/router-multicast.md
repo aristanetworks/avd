@@ -88,7 +88,16 @@ interface Management1
 
 ### IP Router Multicast Summary
 
-Routing for IPv4 multicast is enabled.
+- Routing for IPv4 multicast is enabled.
+- Multipathing deterministically picking router-id.
+- Software forwarding by the Software Forwarding Engine (SFE)
+
+### IP Router Multicast VRFs
+
+| VRF Name | Multicast Routing |
+| -------- | ----------------- |
+| MCAST_VRF1 | enabled |
+| MCAST_VRF2 | enabled |
 
 ### Router Multicast Device Configuration
 
@@ -97,16 +106,17 @@ Routing for IPv4 multicast is enabled.
 router multicast
    ipv4
       routing
+      multipath none
       multipath deterministic router-id
       software-forwarding sfe
       !
       vrf MCAST_VRF1
          ipv4
-           routing
+            routing
       !
       vrf MCAST_VRF2
          ipv4
-           routing
+            routing
 ```
 
 

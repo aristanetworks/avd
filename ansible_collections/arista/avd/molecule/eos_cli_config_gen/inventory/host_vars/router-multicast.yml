@@ -3,7 +3,8 @@
 router_multicast:
   ipv4:
     routing: true
-    multipath_deterministic: router-id
+    multipath: none
+    multipath_deterministic_pick: router-id
     software_forwarding: sfe
   vrfs:
     - name: MCAST_VRF1
