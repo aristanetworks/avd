@@ -63,7 +63,6 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
-    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -2431,6 +2430,7 @@ router_bgp:
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
+      evpn_multicast: < true | false >
       route_targets:
         import:
           < address_family >:
