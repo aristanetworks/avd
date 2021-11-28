@@ -56,6 +56,7 @@ router_bgp:
           - "11:11"
       redistribute_routes:
         - learned
+        - igmp
       vlan: 110
     TENANT_A_PROJECT02:
       rd: "192.168.255.3:12"
@@ -81,6 +82,7 @@ router_bgp:
     TENANT_A_PROJECT01:
       router_id: 192.168.255.3
       rd: "192.168.255.3:11"
+      evpn_multicast: true
       route_targets:
         import:
           evpn:
