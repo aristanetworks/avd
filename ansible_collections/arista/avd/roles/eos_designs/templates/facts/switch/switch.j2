@@ -198,6 +198,10 @@ switch:
 {%     set mlag_peer_vlan = switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) %}
   mlag_peer_vlan: {{ mlag_peer_vlan }}
 
+{# switch.mlag_peer_link_allowed_vlans #}
+{%     set mlag_peer_link_allowed_vlans = switch_data.combined.mlag_peer_link_allowed_vlans | arista.avd.default("2-4094") %}
+  mlag_peer_link_allowed_vlans: {{ mlag_peer_link_allowed_vlans }}
+
 {# switch.mlag_dual_primary_detection #}
   mlag_dual_primary_detection: {{ switch_data.combined.mlag_dual_primary_detection | arista.avd.default(false) }}
 
