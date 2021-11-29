@@ -22,14 +22,14 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].arp_aging_timeout is arista.avd.defined %}
    arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity is arista.avd.defined %}
-   arp cache dynamic capacity {{ vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity }}
-{%     endif %}
 {%     if vlan_interfaces[vlan_interface].arp_gratuitous_accept is arista.avd.defined(true) %}
    arp gratuitous accept
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].arp_monitor_mac_address is arista.avd.defined(true) %}
    arp monitor mac-address
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity is arista.avd.defined %}
+   arp cache dynamic capacity {{ vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
