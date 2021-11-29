@@ -1105,6 +1105,9 @@ vlan_interfaces:
     shutdown: < true | false >
     vrf: < vrf_name >
     arp_aging_timeout: < arp_timeout >
+    arp_cache_dynamic_capacity: < 0-4294967295 >
+    arp_gratuitous_accept: < true | false >
+    arp_monitor_mac_address: < true | false >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >

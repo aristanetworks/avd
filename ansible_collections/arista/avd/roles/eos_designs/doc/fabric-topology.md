@@ -301,6 +301,9 @@ defaults <- node_group <- node_group.node <- node
     # MLAG Peer Link (control link) SVI interface id
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
 
+    # MLAG Peer Link allowed VLANs
+    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
+
     # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >

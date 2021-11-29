@@ -88,7 +88,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101|  - |
 
 | BGP Tuning |
 | ---------- |
@@ -127,7 +127,6 @@ interface Management1
 ```eos
 !
 router bgp 65101
-   router-id 192.168.255.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300
