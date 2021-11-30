@@ -38,7 +38,7 @@
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 {%         for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort %}
 {%             set vrf_vni = vxlan_interface.Vxlan1.vxlan.vrfs[vrf].vni | arista.avd.default('-') %}
