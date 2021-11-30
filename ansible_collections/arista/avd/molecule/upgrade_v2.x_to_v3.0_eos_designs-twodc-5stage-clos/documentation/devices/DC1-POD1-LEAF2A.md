@@ -543,7 +543,7 @@ interface Vlan4094
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Common_VRF | 1025 | - |
 

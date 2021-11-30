@@ -697,7 +697,7 @@ interface Vlan311
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Tenant_A_APP_Zone | 12 | - |
 | Tenant_A_DB_Zone | 13 | - |

@@ -469,7 +469,7 @@ interface Vlan132
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Tenant_A_APP_Zone | 12 | - |
 | Tenant_A_WEB_Zone | 11 | - |

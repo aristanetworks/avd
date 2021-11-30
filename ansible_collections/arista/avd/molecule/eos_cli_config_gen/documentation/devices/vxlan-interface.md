@@ -82,7 +82,7 @@ interface Management1
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Tenant_A_OP_Zone | 10 | 232.0.0.10 |
 | Tenant_A_WEB_Zone | 11 | - |

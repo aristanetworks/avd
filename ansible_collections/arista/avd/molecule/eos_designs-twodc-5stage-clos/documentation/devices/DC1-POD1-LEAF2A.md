@@ -645,7 +645,7 @@ interface Vlan4094
 
 #### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI | Multicast Group |
+| VRF | VNI | Multicast Group |
 | ---- | --- | --------------- |
 | Common_VRF | 1025 | - |
 | vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
