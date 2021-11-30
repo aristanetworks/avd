@@ -88,25 +88,25 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  - |
+| 65101|  192.168.255.3 |
 
 | BGP Tuning |
 | ---------- |
 | no bgp default ipv4-unicast |
-| distance bgp 20 200 200 |
 | graceful-restart restart-time 300 |
 | graceful-restart |
-| maximum-paths 2 ecmp 2 |
 | bgp bestpath d-path |
+| distance bgp 20 200 200 |
+| maximum-paths 32 ecmp 32 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 192.0.3.1 | 65432 | default | all | - |
-| 192.0.3.2 | 65433 | default | extended | 10000 |
-| 192.0.3.3 | 65434 | default | standard | - |
-| 192.0.3.4 | 65435 | default | large | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Maximum-routes warning only |
+| -------- | --------- | --- | -------------- | -------------- | --------------------------- |
+| 192.0.3.1 | 65432 | default | all | - | - |
+| 192.0.3.2 | 65433 | default | extended | 10000 | - |
+| 192.0.3.3 | 65434 | default | standard | - | - |
+| 192.0.3.4 | 65435 | default | large | - | - |
 
 ### BGP Route Aggregation
 
@@ -127,11 +127,12 @@ interface Management1
 ```eos
 !
 router bgp 65101
-   no bgp default ipv4-unicast
+   router-id 192.168.255.3
    distance bgp 20 200 200
+   maximum-paths 32 ecmp 32
+   no bgp default ipv4-unicast
    graceful-restart restart-time 300
    graceful-restart
-   maximum-paths 2 ecmp 2
    bgp bestpath d-path
    neighbor 192.0.3.1 remote-as 65432
    neighbor 192.0.3.1 send-community

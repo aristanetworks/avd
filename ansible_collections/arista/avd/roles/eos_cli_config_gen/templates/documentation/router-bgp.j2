@@ -29,7 +29,7 @@
 {%         if router_bgp.bgp.updates.wait_install is arista.avd.defined(true) %}
 | update wait-install |
 {%         endif %}
-{%         if router_bgp.bgp.distance.external_routes is arista.avd.defined %}
+{%         if router_bgp.distance.external_routes is arista.avd.defined %}
 {%             set distance_cli = "distance bgp " ~ router_bgp.distance.external_routes %}
 {%             if router_bgp.distance.internal_routes is arista.avd.defined and router_bgp.distance.local_routes is arista.avd.defined %}
 {%                 set distance_cli = distance_cli ~ " " ~ router_bgp.distance.internal_routes ~ " " ~ router_bgp.distance.local_routes %}
@@ -130,13 +130,16 @@
 {%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].maximum_routes is arista.avd.defined %}
 {%                     set inherited.maximum_routes = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
 {%                 endif %}
+{%                 if router_bgp.peer_groups[router_bgp.neighbors[neighbor].peer_group].maximum_routes_warning_only is arista.avd.defined(true) %}
+{%                     set inherited.maximum_routes_warning_only = "Inherited from peer group " ~ router_bgp.neighbors[neighbor].peer_group %}
+{%                 endif %}
 {%             endif %}
 {%             set active_parameter = namespace() %}
 {%             set active_parameter.remote_as = router_bgp.neighbors[neighbor].remote_as | arista.avd.default(inherited.remote_as, '-') %}
 {%             set active_parameter.vrf = router_bgp.neighbors[neighbor].vrf | arista.avd.default(inherited.vrf, 'default') %}
 {%             set active_parameter.send_community = router_bgp.neighbors[neighbor].send_community | arista.avd.default(inherited.send_community, '-') %}
 {%             set active_parameter.maximum_routes = router_bgp.neighbors[neighbor].maximum_routes | arista.avd.default(inherited.maximum_routes, '-') %}
-{%             set active_parameter.maximum_routes_warning_only = router_bgp.neighbors[neighbor].maximum_routes_warning_only | arista.avd.default('-') %}
+{%             set active_parameter.maximum_routes_warning_only = router_bgp.neighbors[neighbor].maximum_routes_warning_only | arista.avd.default(inherited.maximum_routes_warning_only, '-') %}
 | {{ neighbor }} | {{ active_parameter.remote_as }} | {{ active_parameter.vrf }} | {{ active_parameter.send_community }} | {{ active_parameter.maximum_routes }} | {{ active_parameter.maximum_routes_warning_only }} |
 {%         endfor %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
@@ -153,13 +156,16 @@
 {%                         if router_bgp.peer_groups[router_bgp.vrfs[vrf].neighbors[neighbor].peer_group].maximum_routes is arista.avd.defined %}
 {%                             set inherited_vrf.maximum_routes = "Inherited from peer group " ~ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group %}
 {%                         endif %}
+{%                         if router_bgp.peer_groups[router_bgp.vrfs[vrf].neighbors[neighbor].peer_group].maximum_routes_warning_only is arista.avd.defined(true) %}
+{%                             set inherited_vrf.maximum_routes_warning_only = "Inherited from peer group " ~ router_bgp.vrfs[vrf].neighbors[neighbor].peer_group %}
+{%                         endif %}
 {%                     endif %}
 {%                     set active_parameter_vrf = namespace() %}
 {%                     set active_parameter_vrf.remote_as = router_bgp.vrfs[vrf].neighbors[neighbor].remote_as | arista.avd.default(inherited_vrf.remote_as, '-') %}
 {%                     set active_parameter_vrf.send_community = router_bgp.vrfs[vrf].neighbors[neighbor].send_community | arista.avd.default(inherited_vrf.send_community, '-') %}
 {%                     set active_parameter_vrf.maximum_routes = router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes | arista.avd.default(inherited_vrf.maximum_routes, '-') %}
-{%                     set active_parameter_vrf.maximum_routes_warning_only = router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_only | arista.avd.default('-') %}
-| {{ neighbor }} | {{ active_parameter_vrf.remote_as }} | {{ vrf }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter.maximum_routes_warning_only }} |
+{%                     set active_parameter_vrf.maximum_routes_warning_only = router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_only | arista.avd.default(inherited_vrf.maximum_routes_warning_only, '-') %}
+| {{ neighbor }} | {{ active_parameter_vrf.remote_as }} | {{ vrf }} | {{ active_parameter_vrf.send_community }} | {{ active_parameter_vrf.maximum_routes }} | {{ active_parameter_vrf.maximum_routes_warning_only }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
