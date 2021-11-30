@@ -1212,26 +1212,26 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 172.31.255.64 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.66 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.68 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.70 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Maximum-routes warning only |
+| -------- | --------- | --- | -------------- | -------------- | --------------------------- |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 172.31.255.64 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
+| 172.31.255.66 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
+| 172.31.255.68 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
+| 172.31.255.70 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
 
 ### Router BGP EVPN Address Family
 
@@ -1245,19 +1245,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ##### VLAN aware bundles
 
-| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
-| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 192.168.255.13:12 | 12:12 | - | - | learned | 130-131 |
-| Tenant_A_DB_Zone | 192.168.255.13:13 | 13:13 | - | - | learned | 140-141 |
-| Tenant_A_NFS | 192.168.255.13:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 192.168.255.13:10 | 10:10 | - | - | learned | 110-111 |
-| Tenant_A_VMOTION | 192.168.255.13:10160 | 10160:10160 | - | - | learned | 160 |
-| Tenant_A_WAN_Zone | 192.168.255.13:14 | 14:14 | - | - | learned | 150 |
-| Tenant_A_WEB_Zone | 192.168.255.13:11 | 11:11 | - | - | learned | 120-121 |
-| Tenant_B_OP_Zone | 192.168.255.13:20 | 20:20 | - | - | learned | 210-211 |
-| Tenant_B_WAN_Zone | 192.168.255.13:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_OP_Zone | 192.168.255.13:30 | 30:30 | - | - | learned | 310-311 |
-| Tenant_C_WAN_Zone | 192.168.255.13:31 | 31:31 | - | - | learned | 350 |
+| VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | No Redistribute | VLANs |
+| ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | --------------- | ----- |
+| Tenant_A_APP_Zone | 192.168.255.13:12 | 12:12 | - | - | learned | - | 130-131 |
+| Tenant_A_DB_Zone | 192.168.255.13:13 | 13:13 | - | - | learned | - | 140-141 |
+| Tenant_A_NFS | 192.168.255.13:10161 | 10161:10161 | - | - | learned | - | 161 |
+| Tenant_A_OP_Zone | 192.168.255.13:10 | 10:10 | - | - | learned | - | 110-111 |
+| Tenant_A_VMOTION | 192.168.255.13:10160 | 10160:10160 | - | - | learned | - | 160 |
+| Tenant_A_WAN_Zone | 192.168.255.13:14 | 14:14 | - | - | learned | - | 150 |
+| Tenant_A_WEB_Zone | 192.168.255.13:11 | 11:11 | - | - | learned | - | 120-121 |
+| Tenant_B_OP_Zone | 192.168.255.13:20 | 20:20 | - | - | learned | - | 210-211 |
+| Tenant_B_WAN_Zone | 192.168.255.13:21 | 21:21 | - | - | learned | - | 250 |
+| Tenant_C_OP_Zone | 192.168.255.13:30 | 30:30 | - | - | learned | - | 310-311 |
+| Tenant_C_WAN_Zone | 192.168.255.13:31 | 31:31 | - | - | learned | - | 350 |
 
 #### Router BGP EVPN VRFs
 
