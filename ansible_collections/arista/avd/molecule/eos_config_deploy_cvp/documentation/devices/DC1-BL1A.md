@@ -515,21 +515,21 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 150 | 10150 | - |
-| 250 | 20250 | - |
-| 350 | 30350 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 150 | 10150 | - | - |
+| 250 | 20250 | - | - |
+| 350 | 30350 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_WAN_Zone | 14 |
-| Tenant_B_WAN_Zone | 21 |
-| Tenant_C_WAN_Zone | 31 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_WAN_Zone | 14 | - |
+| Tenant_B_WAN_Zone | 21 | - |
+| Tenant_C_WAN_Zone | 31 | - |
 
 ### VXLAN Interface Device Configuration
 
