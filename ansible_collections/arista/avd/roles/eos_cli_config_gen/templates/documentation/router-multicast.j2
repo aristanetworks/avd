@@ -7,9 +7,10 @@
 {%     if router_multicast.ipv4.routing is arista.avd.defined(true) %}
 - Routing for IPv4 multicast is enabled.
 {%     endif %}
-{# Multipathing deterministically picking would take precedence based on order of commands #}
-{%     if router_multicast.ipv4.multipath_deterministic_pick is arista.avd.defined %}
-- Multipathing deterministically picking {{ router_multicast.ipv4.multipath_deterministic_pick }}.
+{%     if router_multicast.ipv4.multipath is arista.avd.defined('deterministic color') %}
+- Multipathing deterministically by selecting the same-colored upstream routers.
+{%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic router-id') %}
+- Multipathing deterministically by selecting the same upstream router.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('none') %}
 - Multipathing disabled.
 {%     elif router_multicast.ipv4.multipath is arista.avd.defined('deterministic') %}

@@ -10,9 +10,6 @@ router multicast
 {%         if router_multicast.ipv4.multipath is arista.avd.defined %}
       multipath {{ router_multicast.ipv4.multipath }}
 {%         endif %}
-{%         if router_multicast.ipv4.multipath_deterministic_pick is arista.avd.defined %}
-      multipath deterministic {{ router_multicast.ipv4.multipath_deterministic_pick }}
-{%         endif %}
 {%         if router_multicast.ipv4.software_forwarding is arista.avd.defined %}
       software-forwarding {{ router_multicast.ipv4.software_forwarding }}
 {%         endif %}
