@@ -94,6 +94,7 @@
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
       - [Custom Daemons](#custom-daemons)
+      - [Connectivity Monitor](#connectivity-monitor)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
@@ -1618,6 +1619,12 @@ ip_igmp_snooping:
 router_multicast:
   ipv4:
     routing: < true | false >
+    multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
+    software_forwarding: < kernel | sfe >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        routing: < true | false >
 ```
 
 #### Routing PIM Sparse Mode
@@ -1729,7 +1736,40 @@ daemons:
     enabled: "< true | false | default -> true >"
 ```
 
-This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
+This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
+
+#### Connectivity Monitor
+
+```yaml
+monitor_connectivity:
+  shutdown: < true | false >
+  interval: < probing_interval >
+  interface_sets:
+    - name: < interface_set >
+      # Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+      # Multiple interface ranges can be specified separated by ","
+      interfaces: < interface_or_interface_range(s) >
+  local_interfaces: < interface_set_name >
+  hosts:
+    - name: < host_name >
+      description: < description >
+      ip: < ipv4 >
+      local_interfaces: < interface_set_name >
+      url: < url >
+  vrfs:
+    - name: < vrf_name >
+      description: < description >
+      interface_sets:
+        - name: < interface_set >
+          interfaces: < interface_or_interface_range(s) >
+      local_interfaces: < interface_set_name >
+      hosts:
+        - name: < host_name >
+          description: < description >
+          ip: < ipv4 >
+          local_interfaces: < interface_set_name >
+          url: < url >
+```
 
 #### Event Handler
 
