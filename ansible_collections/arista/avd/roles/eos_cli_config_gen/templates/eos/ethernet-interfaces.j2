@@ -118,6 +118,8 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
    spanning-tree bpduguard enable
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(false) %}
+   spanning-tree bpduguard disable
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vrf is arista.avd.defined %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
