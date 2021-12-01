@@ -1619,6 +1619,12 @@ ip_igmp_snooping:
 router_multicast:
   ipv4:
     routing: < true | false >
+    multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
+    software_forwarding: < kernel | sfe >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        routing: < true | false >
 ```
 
 #### Routing PIM Sparse Mode
