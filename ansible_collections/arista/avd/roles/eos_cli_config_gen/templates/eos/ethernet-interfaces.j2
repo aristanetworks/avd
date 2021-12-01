@@ -45,6 +45,20 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].l2_mtu is arista.avd.defined %}
    l2 mtu {{ ethernet_interfaces[ethernet_interface].l2_mtu }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(false) %}
+   no error-correction encoding
+{%         else %}
+{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(true) %}
+   error-correction encoding fire-code
+{%             elif ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(false) %}
+   no error-correction encoding fire-code
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+   error-correction encoding reed-solomon
+{%             elif ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
+   no error-correction encoding reed-solomon
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
 {%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined() %}
