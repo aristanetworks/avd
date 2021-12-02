@@ -8,7 +8,7 @@
 {%     endif %}
 {{ prefix }}ntp:
   local_interface:
-    name: {{ mgmt_interface }}
+    name: {{ switch.platform_settings.management_interface | arista.avd.default('Management1') }}
     vrf: {{ mgmt_interface_vrf }}
   servers:
 {%     for ntp_server in ntp_servers %}

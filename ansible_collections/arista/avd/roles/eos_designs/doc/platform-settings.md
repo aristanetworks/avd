@@ -18,6 +18,7 @@ platform_settings:
     feature_support:
       queue_monitor_length_notify: < true | false | default -> true >
       interface_storm_control: < true | false | default -> true >
+    management_interface: < management interface name | default -> Management1 >
     reload_delay:
       mlag: < seconds >
       non_mlag: < seconds >
@@ -43,21 +44,32 @@ The reload delay values should be reviewed and tuned to the specific environment
 
 ```yaml
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [default]
     reload_delay:
       mlag: 300
       non_mlag: 330
     feature_support:
       # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
-      interface_storm_control: false
-  - platforms: [ 7280R, 7280R2, 7500R, 7500R2 ]
+  - platforms: [ 7280R, 7280R2 ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ 7280R3, 7500R3, 7800R3 ]
+  - platforms: [ 7280R3 ]
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ 7500R, 7500R2 ]
+    tcam_profile: vxlan-routing
+    lag_hardware_only: true
+    management_interface: Management0
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+  - platforms: [ 7500R3, 7800R3 ]
+    management_interface: Management0
     reload_delay:
       mlag: 900
       non_mlag: 1020
