@@ -572,13 +572,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Maximum-routes warning only |
-| -------- | --------- | --- | -------------- | -------------- | --------------------------- |
-| 172.16.120.1 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.120.2 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.17.10.13 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.120.0 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.120.2 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.16.120.1 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.120.2 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.13 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.0 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.120.2 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -588,13 +588,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ##### VLAN Based
 
-| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | No Redistribute |
-| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | --------------- |
-| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned | - |
-| 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned | - |
-| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned | - |
-| 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned | - |
-| 2600 | 172.16.120.3:2600 | 2600:2600 | - | - | learned | - |
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned |
+| 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned |
+| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned |
+| 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned |
+| 2600 | 172.16.120.3:2600 | 2600:2600 | - | - | learned |
 
 #### Router BGP EVPN VRFs
 

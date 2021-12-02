@@ -39,6 +39,14 @@ router_bgp:
         allow_local_asn_n_times: 5
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
+    192.168.255.3:
+      allowas_in:
+        enabled: true
+        allow_local_asn_n_times: 5
+      maximum_routes: 52000
+      maximum_routes_warning_limit: 2000
+      maximum_routes_warning_limit_percent: false
+      maximum_routes_warning_only: true
   redistribute_routes:
   address_family_evpn:
     domain_identifier: 65101:0
@@ -110,6 +118,9 @@ router_bgp:
       neighbors:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
+          maximum_routes: 15000
+          maximum_routes_warning_limit: 50
+          maximum_routes_warning_limit_percent: true
       redistribute_routes:
         - connected
     TENANT_A_PROJECT02:

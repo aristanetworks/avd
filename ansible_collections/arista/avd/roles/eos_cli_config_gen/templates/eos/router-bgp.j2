@@ -12,10 +12,10 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
    {{ distance_cli }}
 {%     endif %}
-{%     if router_bgp.maximum_paths.ec_paths is arista.avd.defined %}
-{%         set maximum_paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.ec_paths %}
-{%         if router_bgp.maximum_paths.ecmp_routes is arista.avd.defined %}
-{%             set maximum_paths_cli = maximum_paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp_routes %}
+{%     if router_bgp.maximum_paths.ec is arista.avd.defined %}
+{%         set maximum_paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.ec %}
+{%         if router_bgp.maximum_paths.ecmp is arista.avd.defined %}
+{%             set maximum_paths_cli = maximum_paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp %}
 {%         endif %}
    {{ maximum_paths_cli }}
 {%     endif %}

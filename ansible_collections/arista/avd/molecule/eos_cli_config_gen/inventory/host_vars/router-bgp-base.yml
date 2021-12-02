@@ -1,7 +1,7 @@
 router_bgp:
   as: 65101
   router_id: 192.168.255.3
-  update: 
+  updates: 
     wait_for_convergence: true
     wait_install: true
   distance:
@@ -9,8 +9,8 @@ router_bgp:
     internal_routes: 200
     local_routes: 200
   maximum_paths:
-    ec_paths: 32
-    ecmp_routes: 32
+    ec: 32
+    ecmp: 32
   bgp_defaults:
     - no bgp default ipv4-unicast
     - graceful-restart restart-time 300

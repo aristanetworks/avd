@@ -96,17 +96,19 @@ interface Management1
 | graceful-restart restart-time 300 |
 | graceful-restart |
 | bgp bestpath d-path |
+| update wait-for-convergence |
+| update wait-install |
 | distance bgp 20 200 200 |
 | maximum-paths 32 ecmp 32 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Maximum-routes warning only |
-| -------- | --------- | --- | -------------- | -------------- | --------------------------- |
-| 192.0.3.1 | 65432 | default | all | - | - |
-| 192.0.3.2 | 65433 | default | extended | 10000 | - |
-| 192.0.3.3 | 65434 | default | standard | - | - |
-| 192.0.3.4 | 65435 | default | large | - | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.0.3.1 | 65432 | default | all | - |
+| 192.0.3.2 | 65433 | default | extended | 10000 |
+| 192.0.3.3 | 65434 | default | standard | - |
+| 192.0.3.4 | 65435 | default | large | - |
 
 ### BGP Route Aggregation
 
@@ -130,6 +132,8 @@ router bgp 65101
    router-id 192.168.255.3
    distance bgp 20 200 200
    maximum-paths 32 ecmp 32
+   update wait-for-convergence
+   update wait-install
    no bgp default ipv4-unicast
    graceful-restart restart-time 300
    graceful-restart
