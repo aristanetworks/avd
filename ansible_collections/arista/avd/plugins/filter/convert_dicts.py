@@ -9,10 +9,8 @@ from jinja2.runtime import Undefined
 
 def convert_dicts(dictionary, primary_key="name"):
     """
-    convert_dicts will convert dictionary to list.
-
-    The `arista.avd.convert_dicts` filter will convert nested dictionaries to lists of dictionaries
-    and insert the outer dictionary keys into each list item using the primary_key `name`.
+    The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries
+    and insert the outer dictionary keys into each list item using the primary_key `name` (key name is configurable).
 
     This filter is intended for:
 
@@ -24,13 +22,16 @@ def convert_dicts(dictionary, primary_key="name"):
     To use this filter:
 
     ```jinja
-    {# convert list of dictionnary with default `name:` as the primary key #}
-    {% for example_list in example_lists | arista.avd.convert_dicts %}
-    {{ example_list }}
+    {# convert list of dictionary with default `name:` as the primary key #}
+    {% set example_list = example_dictionary | arista.avd.convert_dicts %}
+    {% for example_item in example_list %}
+    item primary key is {{ example_item.name }}
     {% endfor %}
-    {# convert list of dictionnary with `id:` set as the primary key #}
-    {% for example_list in example_lists | arista.avd.convert_dicts('id') %}
-    {{ example_list }}
+
+    {# convert list of dictionary with `id:` set as the primary key #}
+    {% set example_list = example_dictionary | arista.avd.convert_dicts('id') %}
+    {% for example_item in example_list %}
+    item primary key is {{ example_item.id }}
     {% endfor %}
     ```
 
