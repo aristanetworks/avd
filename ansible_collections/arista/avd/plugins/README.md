@@ -7,6 +7,7 @@
     - [list_compress filter](#list_compress-filter)
     - [natural_sort filter](#natural_sort-filter)
     - [default filter](#default-filter)
+    - [convert_dicts filter](#convert_dicts-filter)
     - [ethernet segment identifiers management filter](#ethernet-segment-identifiers-management-filter)
       - [generate_esi filter](#generate_esi-filter)
       - [generate_lacp_id filter](#generate_lacp_id-filter)
@@ -68,6 +69,33 @@ To use this filter:
 
 ```jinja
 {{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
+```
+
+### convert_dicts filter
+
+convert_dicts will convert dictionary to list.
+
+The `arista.avd.convert_dicts` filter will convert nested dictionaries to lists of dictionaries
+and insert the outer dictionary keys into each list item using the primary_key `name`.
+
+This filter is intended for:
+
+- Seemless data model migration from dictionaries to lists.
+- Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
+
+Note: If the variable is already a list, it will pass through untouched
+
+To use this filter:
+
+```jinja
+{# convert list of dictionnary with default `name:` as the primary key #}
+{% for example_list in example_lists | arista.avd.convert_dicts %}
+{{ example_list }}
+{% endfor %}
+{# convert list of dictionnary with `id:` set as the primary key #}
+{% for example_list in example_lists | arista.avd.convert_dicts('id') %}
+{{ example_list }}
+{% endfor %}
 ```
 
 ### ethernet segment identifiers management filter
