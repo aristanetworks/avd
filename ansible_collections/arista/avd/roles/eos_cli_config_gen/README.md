@@ -1165,6 +1165,7 @@ vlan_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
+    no_autostate: < true | false >
     vrrp:
       virtual_router: < virtual_router_id >
       priority: < instance_priority >

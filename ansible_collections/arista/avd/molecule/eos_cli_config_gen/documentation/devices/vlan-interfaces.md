@@ -271,6 +271,7 @@ interface Vlan2001
 !
 interface Vlan2002
    description SVI Description
+   no autostate
    vrf Tenant_B
    ip address virtual 10.2.2.1/24
 !
