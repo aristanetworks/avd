@@ -9,34 +9,34 @@ vxlan_interface:
 {% endif %}
       udp_port: 4789
       vlans:
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
-{%             if tenants[tenant].vrfs[vrf].svis[svi].vxlan is arista.avd.defined(false) %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for svi in vrf.svis %}
+{%             if svi.vxlan is arista.avd.defined(false) %}
 {%                 continue %}
 {%             endif %}
-{%             set svi_int = svi | int %}
+{%             set svi_int = svi.id | int %}
         {{ svi_int }}:
-          vni: {{ tenants[tenant].vrfs[vrf].svis[svi].vni_override | arista.avd.default(
-                  tenants[tenant].mac_vrf_vni_base + svi_int) }}
+          vni: {{ svi.vni_override | arista.avd.default(
+                  tenant.mac_vrf_vni_base + svi_int) }}
 {%         endfor %}
 {%     endfor %}
-{%     for l2vlan in switch.tenants[tenant].l2vlans | arista.avd.natural_sort %}
-{%         if tenants[tenant].l2vlans[l2vlan].vxlan is arista.avd.defined(false) %}
+{%     for l2vlan in tenant.l2vlans %}
+{%         if l2vlan.vxlan is arista.avd.defined(false) %}
 {%             continue %}
 {%         endif %}
-{%         set l2vlan_int = l2vlan | int %}
+{%         set l2vlan_int = l2vlan.id | int %}
         {{ l2vlan_int }}:
-          vni: {{ tenants[tenant].l2vlans[l2vlan].vni_override | arista.avd.default(
-                  tenants[tenant].mac_vrf_vni_base + l2vlan_int) }}
+          vni: {{ l2vlan.vni_override | arista.avd.default(
+                  tenant.mac_vrf_vni_base + l2vlan_int) }}
 {%     endfor %}
 {% endfor %}
 {% if switch.evpn_services_l2_only == false %}
       vrfs:
-{%     for tenant in switch.tenants | arista.avd.natural_sort %}
-{%         for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-        {{ vrf }}:
-          vni: {{ tenants[tenant].vrfs[vrf].vrf_vni }}
+{%     for tenant in network_services_data.tenants %}
+{%         for vrf in tenant.vrfs %}
+        {{ vrf.name }}:
+          vni: {{ vrf.vrf_vni }}
 {%         endfor %}
 {%     endfor %}
 {% endif %}
