@@ -1,44 +1,43 @@
 {# tenant vlan interfaces #}
 vlan_interfaces:
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         for svi in switch.tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
-{%             set svi_config = tenants[tenant].vrfs[vrf].svis[svi] %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for svi in vrf.svis %}
 {# Detect if a svi_profile exists #}
 {# If exists, create a shortpath to access profile data #}
-{%             if svi_config.profile is arista.avd.defined %}
-{%                 set svi_profile = svi_profiles[svi_config.profile] | arista.avd.default() %}
+{%             if svi.profile is arista.avd.defined %}
+{%                 set svi_profile = svi_profiles[svi.profile] | arista.avd.default() %}
 {%             endif %}
-{%             set svi_tags = svi_config.tags | arista.avd.default(
+{%             set svi_tags = svi.tags | arista.avd.default(
                               svi_profile.tags) %}
-{%             set svi_name = svi_config.name | arista.avd.default(
+{%             set svi_name = svi.name | arista.avd.default(
                               svi_profile.name) %}
-{%             set svi_description = svi_config.description | arista.avd.default(
+{%             set svi_description = svi.description | arista.avd.default(
                                      svi_profile.description,
                                      svi_name) %}
-{%             set svi_enabled = svi_config.enabled | arista.avd.default(
+{%             set svi_enabled = svi.enabled | arista.avd.default(
                                  svi_profile.enabled) %}
-{%             set svi_ip_virtual_router_addresses = svi_config.ip_virtual_router_addresses | arista.avd.default(
+{%             set svi_ip_virtual_router_addresses = svi.ip_virtual_router_addresses | arista.avd.default(
                                                      svi_profile.ip_virtual_router_addresses) %}
-{%             set svi_ip_address_virtual = svi_config.ip_address_virtual | arista.avd.default(
+{%             set svi_ip_address_virtual = svi.ip_address_virtual | arista.avd.default(
                                             svi_profile.ip_address_virtual) %}
-{%             set svi_ip_address_virtual_secondaries = svi_config.ip_address_virtual_secondaries | arista.avd.default(
+{%             set svi_ip_address_virtual_secondaries = svi.ip_address_virtual_secondaries | arista.avd.default(
                                                       svi_profile.ip_address_virtual_secondaries) %}
-{%             set svi_mtu = svi_config.mtu | arista.avd.default(
+{%             set svi_mtu = svi.mtu | arista.avd.default(
                              svi_profile.mtu) %}
-{%             set svi_ip_helpers = svi_config.ip_helpers | arista.avd.default(
+{%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(
                                     tenants[tenant].vrfs[vrf].ip_helpers,
                                     svi_profile.ip_helpers) %}
-{%             set svi_raw_eos_cli = svi_config.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
+{%             set svi_raw_eos_cli = svi.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi_profile.nodes[inventory_hostname].raw_eos_cli,
-                                     svi_config.raw_eos_cli,
+                                     svi.raw_eos_cli,
                                      svi_profile.raw_eos_cli) %}
-{%             set svi_structured_config = svi_config.nodes[inventory_hostname].structured_config | arista.avd.default(
+{%             set svi_structured_config = svi.nodes[inventory_hostname].structured_config | arista.avd.default(
                                            svi_profile.nodes[inventory_hostname].structured_config,
-                                           svi_config.structured_config,
+                                           svi.structured_config,
                                            svi_profile.structured_config) %}
-  Vlan{{ svi | int }}:
-    tenant: {{ tenant }}
+  Vlan{{ svi.id | int }}:
+    tenant: {{ tenant.name }}
     tags: {{ svi_tags }}
     description: {{ svi_description }}
 {%             if svi_enabled is arista.avd.defined(true) %}
@@ -46,10 +45,10 @@ vlan_interfaces:
 {%             else %}
     shutdown: true
 {%             endif %}
-    vrf: {{ vrf }}
+    vrf: {{ vrf.name }}
 {# IP address configuration #}
-{%             if tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address is arista.avd.defined %}
-    ip_address: {{ tenants[tenant].vrfs[vrf].svis[svi].nodes[inventory_hostname].ip_address }}
+{%             if svi.nodes[inventory_hostname].ip_address is arista.avd.defined %}
+    ip_address: {{ svi.nodes[inventory_hostname].ip_address }}
 {%             endif %}
 {# Virtual Router IP Address #}
 {%             if svi_ip_virtual_router_addresses is arista.avd.defined %}
@@ -86,16 +85,16 @@ vlan_interfaces:
 {%         endfor %}
 {# VLAN interface for iBGP peering in overlay VRFs #}
 {%         if switch.mlag_l3 is arista.avd.defined(true) %}
-{%             set configure_mlag_ibgp_peering = tenants[tenant].vrfs[vrf].enable_mlag_ibgp_peering_vrfs | arista.avd.default(
-                                                 tenants[tenant].enable_mlag_ibgp_peering_vrfs,
+{%             set configure_mlag_ibgp_peering = vrf.enable_mlag_ibgp_peering_vrfs | arista.avd.default(
+                                                 tenant.enable_mlag_ibgp_peering_vrfs,
                                                  true) %}
 {%             if configure_mlag_ibgp_peering %}
-  Vlan{{ tenants[tenant].vrfs[vrf].mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (tenants[tenant].vrfs[vrf].vrf_vni - 1)) }}:
-    tenant: {{ tenant }}
+  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (vrf.vrf_vni - 1)) }}:
+    tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false
-    description: "MLAG_PEER_L3_iBGP: vrf {{ vrf }}"
-    vrf: {{ vrf }}
+    description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
+    vrf: {{ vrf.name }}
     ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%             endif %}
