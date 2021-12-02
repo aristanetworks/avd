@@ -1,5 +1,5 @@
 #
-# def arista.avd.migrate_dicts
+# def arista.avd.convert_dicts
 #
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
@@ -7,23 +7,27 @@ __metaclass__ = type
 from jinja2.runtime import Undefined
 
 
-def migrate_dicts(dictionary, primary_key="name"):
+def convert_dicts(dictionary, primary_key="name"):
     """
-    migrate_dicts will convert dictionary to list.
+    convert_dicts will convert dictionary to list.
 
-    Arista.avd.migrate_dicts will convert nested dictionaries to list of dictionaries
+    The `arista.avd.convert_dicts` filter will convert nested dictionaries to lists of dictionaries
     and insert the outer dictionary keys into each list item using the primary_key name.
 
-    This filter is intended for seemless data model migration.
-    If variable is already converted to list, it will pass through untouched
+    This filter is intended for:
+
+    - Seemless data model migration from dictionaries to lists.
+    - Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
+
+    Note: If the variable is already a list, it will pass through untouched
 
     Example
     -------
     {# Migrate access_lists data model from dict to list #}
-    {% set access_lists = access_lists | arista.avd.migrate_dicts %}
+    {% set access_lists = access_lists | arista.avd.convert_dicts %}
     {% for access_list in access_lists %}
     {#     Migrate access-lists.sequence_numbers data model from dict to list #}
-    {%     do access_lists[loop.index0].update({'sequence_numbers': access_list.sequence_numbers | arista.avd.migrate_dicts('sequence')}) %}
+    {%     do access_lists[loop.index0].update({'sequence_numbers': access_list.sequence_numbers | arista.avd.convert_dicts('sequence')}) %}
     {% endfor %}
     access_lists: {{ access_lists }}
 
@@ -58,5 +62,5 @@ def migrate_dicts(dictionary, primary_key="name"):
 class FilterModule(object):
     def filters(self):
         return {
-            'migrate_dicts': migrate_dicts,
+            'convert_dicts': convert_dicts,
         }
