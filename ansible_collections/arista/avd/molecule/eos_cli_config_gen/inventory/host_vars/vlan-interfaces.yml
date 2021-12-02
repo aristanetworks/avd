@@ -14,6 +14,7 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.2.1/24
+    no_autostate: true
 
   Vlan83:
     description: SVI Description
