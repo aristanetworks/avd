@@ -44,7 +44,7 @@ The reload delay values should be reviewed and tuned to the specific environment
 
 ```yaml
 platform_settings:
-  - platforms: [default]
+  - platforms: [ default ]
     reload_delay:
       mlag: 300
       non_mlag: 330

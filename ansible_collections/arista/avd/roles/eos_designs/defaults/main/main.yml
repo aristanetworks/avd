@@ -81,7 +81,7 @@ mlag_ibgp_peering_vrfs:
 # Recommended default values for Jericho based platform, VEOS and all other platforms default tag.
 
 platform_settings:
-  - platforms: [default]
+  - platforms: [ default ]
     reload_delay:
       mlag: 300
       non_mlag: 330
