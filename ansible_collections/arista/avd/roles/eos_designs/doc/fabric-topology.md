@@ -341,3 +341,14 @@ defaults <- node_group <- node_group.node <- node
     # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     inband_management_vlan: < vlan-id | Default -> 4092 >
 ```
+
+### Ignore TCAM system profiles
+
+```yaml
+< node_type_key >:
+
+  defaults:
+    # Optional
+    ignore_tcam_system_profiles:
+      - < TCAM system profile >
+```
