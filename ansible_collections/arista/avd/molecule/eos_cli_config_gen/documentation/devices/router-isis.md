@@ -328,7 +328,6 @@ interface Vlan4094
 | Local Convergence Delay (ms) | 15000 |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
-| SR MPLS Router-ID | 192.168.255.3 |
 
 ### ISIS Interfaces Summary
 
@@ -364,7 +363,6 @@ router isis EVPN_UNDERLAY
       maximum-paths 2
    !
    segment-routing mpls
-      router-id 192.168.255.3
       no shutdown
 ```
 

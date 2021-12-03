@@ -33,7 +33,6 @@ router_isis:
         enable: true
   segment_routing_mpls:
     enabled: true
-    router_id: 192.168.255.3
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
