@@ -32,7 +32,13 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].lacp_timer.multiplier is arista.avd.defined %}
    lacp timer multiplier {{ ethernet_interfaces[ethernet_interface].lacp_timer.multiplier }}
 {%         endif %}
+{%         if port_channel_interfaces['Port-Channel' ~ ethernet_interfaces[ethernet_interface].channel_group.id].lacp_fallback_mode is arista.avd.defined("individual") %}
+{%             set print_ethernet = true %}
+{%         endif %}
 {%     else %}
+{%         set print_ethernet = true %}
+{%     endif %}
+{%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%         endif %}
