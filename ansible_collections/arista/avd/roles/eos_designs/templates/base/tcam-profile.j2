@@ -1,5 +1,5 @@
 {# tcam-profile #}
-{% if switch.platform_settings.tcam_profile is arista.avd.defined %}
+{% if switch.platform_settings.tcam_profile is arista.avd.defined and switch.platform_settings.tcam_profile is not in switch.ignore_tcam_system_profiles %}
 tcam_profile:
   system: {{ switch.platform_settings.tcam_profile }}
 {% endif %}

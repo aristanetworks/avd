@@ -23,6 +23,9 @@ switch:
   platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
+{# switch.ignore_tcam_system_profiles #}
+  ignore_tcam_system_profiles: {{ switch_data.combined.ignore_tcam_system_profiles | arista.avd.default([]) }}
+
 {# switch.underlay_routing_protocol #}
 {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
   underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
