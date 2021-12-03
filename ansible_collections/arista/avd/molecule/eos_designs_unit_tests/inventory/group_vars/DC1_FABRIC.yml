@@ -32,6 +32,8 @@ spine:
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE2:
       platform: 7500R
+      ignore_tcam_system_profiles:
+        - 'vxlan-routing'
       id: 2
       mgmt_ip: 192.168.200.102/24
       mac_address: '0c:1d:c0:1d:62:01'

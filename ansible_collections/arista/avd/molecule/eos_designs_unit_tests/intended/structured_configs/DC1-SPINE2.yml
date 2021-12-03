@@ -158,8 +158,6 @@ management_interfaces:
     ip_address: 192.168.200.102/24
     gateway: 192.168.200.5
     type: oob
-tcam_profile:
-  system: vxlan-routing
 platform:
   sand:
     lag:

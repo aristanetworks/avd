@@ -11,8 +11,6 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
-- [Hardware TCAM Profile](#hardware-tcam-profile)
-  - [Hardware TCAM configuration](#hardware-tcam-configuration)
 - [Spanning Tree](#spanning-tree)
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
@@ -191,18 +189,6 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-SPINE2
-```
-
-# Hardware TCAM Profile
-
-TCAM profile __`vxlan-routing`__ is active
-
-## Hardware TCAM configuration
-
-```eos
-!
-hardware tcam
-   system profile vxlan-routing
 ```
 
 # Spanning Tree
