@@ -60,6 +60,9 @@ aaa_authorization:
   serial_console: true
   commands:
     all_default: group aaaAuth
+    privilege:
+      level: "10,15"
+      group: "tacacs+ local"
 
 ## AAA Accounting
 aaa_accounting:

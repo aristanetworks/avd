@@ -180,6 +180,7 @@ Authorization for serial console is enabled.
 aaa authorization exec default group CUST local
 aaa authorization serial-console
 aaa authorization commands all default group aaaAuth
+aaa authorization commands 10,15 group tacacs+ local
 !
 ```
 
