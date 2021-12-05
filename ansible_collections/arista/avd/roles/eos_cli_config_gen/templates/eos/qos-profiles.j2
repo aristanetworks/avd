@@ -19,6 +19,7 @@ qos profile {{ profile }}
 {%         elif qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent is arista.avd.defined %}
       bandwidth guaranteed percent {{ qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent }}
 {%         endif %}
+{%         if qos_profiles[profile].tx_queues[tx_queue].priority is arista.avd.defined %}
       {{ qos_profiles[profile].tx_queues[tx_queue].priority }}
 {%         endif %}
 {%     endfor %}
