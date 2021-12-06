@@ -95,5 +95,6 @@
     loop_var: xcvrSlot
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: transceiver_inventory_results
+  when: "xcvrSlot.value.mfgName != 'Not Present'"
   tags:
     - hardware
