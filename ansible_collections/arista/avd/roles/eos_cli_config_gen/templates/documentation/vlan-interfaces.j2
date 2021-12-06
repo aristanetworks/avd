@@ -47,7 +47,7 @@
 {%     endfor %}
 {# IPv6 #}
 {%     set vlan_interfaces_ipv6 = [] %}
-{%     for vlan_interface in vlan_interfaces %}
+{%     for vlan_interface in vlan_interfaces | arista.avd.default([]) %}
 {%         if vlan_interfaces[vlan_interface].ipv6_address is arista.avd.defined or vlan_interfaces[vlan_interface].ipv6_address_virtual is arista.avd.defined %}
 {# add also a test against ipv6_address_virtual when supported #}
 {%             do vlan_interfaces_ipv6.append(vlan_interface) %}
