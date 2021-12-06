@@ -24,7 +24,7 @@ QOS Profile: **{{ profile }}**
 | -------- | --------- | -------- |
 {%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
 {%                  set queue = qos_profiles[profile].tx_queues[tx_queue] | arista.avd.default('-') %}
-{%                  set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_perfect | arista.avd.default(
+{%                  set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent | arista.avd.default(
                                      qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent,
                                      '-') %}
 {%                  set priority = qos_profiles[profile].tx_queues[tx_queue].priority | arista.avd.default('-') %}

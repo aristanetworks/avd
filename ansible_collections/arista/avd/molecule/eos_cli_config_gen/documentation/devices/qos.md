@@ -230,10 +230,10 @@ QOS Profile: **experiment**
 
 | Tx-queue | Bandwidth | Priority |
 | -------- | --------- | -------- |
-| 3 | - | no priority |
+| 3 | 30 | no priority |
 | 4 | 10 | - |
-| 5 | - | - |
-| 7 | - | - |
+| 5 | 40 | - |
+| 7 | 30 | - |
 
 QOS Profile: **test**
 
@@ -247,8 +247,8 @@ QOS Profile: **test**
 
 | Tx-queue | Bandwidth | Priority |
 | -------- | --------- | -------- |
-| 1 | - | no priority |
-| 2 | - | priority strict |
+| 1 | 50 | no priority |
+| 2 | 10 | priority strict |
 | 4 | 10 | - |
 
 ### QOS Profile Device Configuration
