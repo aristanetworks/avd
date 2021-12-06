@@ -146,7 +146,15 @@ interface Management1
 | ----- | ------ | --------- |
 | Enabled | 10 |  1 |
 
-### Router BGP VLAN Aware Bundles
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
+
+#### Router BGP EVPN MAC-VRFs
+
+##### VLAN aware bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -207,6 +215,8 @@ router bgp 65101
    vlan-aware-bundle TENANT_A_PROJECT02
       rd 192.168.255.3:12
       route-target both 12:12
+      route-target import evpn domain remote 2:12
+      route-target export evpn domain remote 2:12
       redistribute learned
       vlan 112
    !
@@ -215,6 +225,7 @@ router bgp 65101
       host-flap detection threshold 1
       domain identifier 3906060
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS domain remote
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
    !
    address-family ipv4
