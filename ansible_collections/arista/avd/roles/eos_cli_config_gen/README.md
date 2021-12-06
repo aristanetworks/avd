@@ -2286,9 +2286,9 @@ router_bgp:
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
-      domain_rds:
-        - domain: < all | remote >
-          rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
@@ -2339,9 +2339,9 @@ router_bgp:
   vlans:
     < vlan_id_1>:
       rd: "< route distinguisher >"
-      domain_rds:
-        - domain: < all | remote >
-          rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
