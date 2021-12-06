@@ -308,8 +308,10 @@ switch:
   vtep_ip: {% include switch.ip_addressing.vtep_ip %}
 {%     endif %}
 
-{# switch.evpn_services_l2_only #}
-  evpn_services_l2_only: {{ switch_data.combined.evpn_services_l2_only | arista.avd.default(false) }}
+{# switch.network_services_l3 override based on evpn_services_l2_only #}
+{%     if switch_data.combined.evpn_services_l2_only is arista.avd.defined(true) %}
+  network_services_l3: false
+{%     endif %}
 
 {% endif %}
 
