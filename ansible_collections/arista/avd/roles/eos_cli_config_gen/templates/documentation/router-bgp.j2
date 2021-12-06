@@ -241,6 +241,12 @@
 {%         if evpn_l2_gw_config.peer_groups | length > 0 %}
 | Remote Domain Peer Groups | {{ evpn_l2_gw_config.peer_groups | join(", ") }} |
 {%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
+| L3 Gateway Configured | True |
+{%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain is arista.avd.defined(true) %}
+| L3 Gateway Inter-domain | True |
+{%         endif %}
 {%     endif %}
 
 #### Router BGP EVPN MAC-VRFs

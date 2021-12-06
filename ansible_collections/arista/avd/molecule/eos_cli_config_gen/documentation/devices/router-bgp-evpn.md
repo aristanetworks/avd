@@ -151,6 +151,8 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 #### Router BGP EVPN MAC-VRFs
 
@@ -227,6 +229,7 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
