@@ -2298,6 +2298,16 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domain:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domain:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < learned >
       vlan: < vlan_range >
