@@ -156,10 +156,10 @@ interface Management1
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected | enabled |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected |
 
 ### Router BGP Device Configuration
 

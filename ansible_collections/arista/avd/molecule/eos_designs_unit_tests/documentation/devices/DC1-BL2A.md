@@ -594,12 +594,12 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_WAN_Zone | 192.168.255.16:14 | connected | disabled |
-| Tenant_B_OP_Zone | 192.168.255.16:20 | connected | disabled |
-| Tenant_B_WAN_Zone | 192.168.255.16:21 | connected | disabled |
-| Tenant_C_WAN_Zone | 192.168.255.16:31 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_WAN_Zone | 192.168.255.16:14 | connected |
+| Tenant_B_OP_Zone | 192.168.255.16:20 | connected |
+| Tenant_B_WAN_Zone | 192.168.255.16:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.16:31 | connected |
 
 ### Router BGP Device Configuration
 

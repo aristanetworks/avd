@@ -601,11 +601,11 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected<br>static | disabled |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected | disabled |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected<br>static |
+| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
 
 ### Router BGP Device Configuration
 

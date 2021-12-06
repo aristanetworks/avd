@@ -648,13 +648,13 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_WAN_Zone | 192.168.255.14:14 | connected<br>static | disabled |
-| Tenant_B_OP_Zone | 192.168.255.14:20 | connected | disabled |
-| Tenant_B_WAN_Zone | 192.168.255.14:21 | connected | disabled |
-| Tenant_C_WAN_Zone | 192.168.255.14:31 | connected | disabled |
-| Tenant_L3_VRF_Zone | 192.168.255.14:15 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_WAN_Zone | 192.168.255.14:14 | connected<br>static |
+| Tenant_B_OP_Zone | 192.168.255.14:20 | connected |
+| Tenant_B_WAN_Zone | 192.168.255.14:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.14:31 | connected |
+| Tenant_L3_VRF_Zone | 192.168.255.14:15 | connected |
 
 ### Router BGP Device Configuration
 

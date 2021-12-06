@@ -647,10 +647,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_APP_Zone | 192.168.255.9:12 | connected | disabled |
-| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_APP_Zone | 192.168.255.9:12 | connected |
+| Tenant_A_WEB_Zone | 192.168.255.9:11 | connected |
 
 ### Router BGP Device Configuration
 

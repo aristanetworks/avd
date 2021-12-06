@@ -100,8 +100,8 @@ interface Management1
 
 ### Router BGP VPWS Instances
 
-| Instance | Route-Distinguisher | Both Route-Target| Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | -----------------| ---------- | -------- | --------- |
+| Instance | Route-Distinguisher | Both Route-Target | Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | ----------------- | ---------- | -------- | --------- |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | TEN_A_site1_site3_pw | 15 | 35 |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | TEN_A_site2_site5_pw | 25 | 57 |
 | TENANT_B | 100.70.0.2:2000 | 65000:2000 | TEN_B_site2_site5_pw | 26 | 58 |

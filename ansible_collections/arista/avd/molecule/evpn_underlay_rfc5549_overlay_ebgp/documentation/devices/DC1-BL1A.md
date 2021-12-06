@@ -620,11 +620,11 @@ router general
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected<br>static | disabled |
-| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected | disabled |
-| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected<br>static |
+| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected |
+| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected |
 
 ### Router BGP Device Configuration
 

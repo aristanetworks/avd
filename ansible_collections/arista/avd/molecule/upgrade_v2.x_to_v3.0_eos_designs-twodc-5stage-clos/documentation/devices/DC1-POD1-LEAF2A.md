@@ -710,9 +710,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Common_VRF | 172.16.110.4:1025 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Common_VRF | 172.16.110.4:1025 | connected |
 
 ### Router BGP Device Configuration
 

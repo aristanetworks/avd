@@ -181,10 +181,10 @@ interface Management1
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A | 10.50.64.15:30001 | connected | disabled |
-| Tenant_B | 10.50.64.15:30002 | - | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A | 10.50.64.15:30001 | connected |
+| Tenant_B | 10.50.64.15:30002 | - |
 
 ### Router BGP Device Configuration
 

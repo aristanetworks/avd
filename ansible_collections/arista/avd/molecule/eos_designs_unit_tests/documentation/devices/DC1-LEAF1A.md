@@ -628,10 +628,10 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| Tenant_A_APP_Zone | 1.1.1.1:12 | connected | disabled |
-| Tenant_A_WEB_Zone | 1.1.1.1:11 | connected | disabled |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
+| Tenant_A_APP_Zone | 1.1.1.1:12 | connected |
+| Tenant_A_WEB_Zone | 1.1.1.1:11 | connected |
 
 ### Router BGP Device Configuration
 
