@@ -216,9 +216,9 @@ router bgp 65101
    !
    vlan-aware-bundle TENANT_A_PROJECT02
       rd 192.168.255.3:12
+      rd evpn domain remote 192.168.255.3:12
       route-target both 12:12
       route-target import evpn domain remote 2:12
-      route-target export evpn domain remote 2:12
       redistribute learned
       vlan 112
    !

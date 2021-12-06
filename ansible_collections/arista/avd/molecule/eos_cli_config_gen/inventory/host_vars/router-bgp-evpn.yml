@@ -65,16 +65,16 @@ router_bgp:
       vlan: 110
     TENANT_A_PROJECT02:
       rd: "192.168.255.3:12"
-      domain_rd:
-        - domain: remote
-          rd: "192.168.255.3:12"
+      rd_evpn_domain:
+        domain: remote
+        rd: "192.168.255.3:12"
       route_targets:
         both:
           - "12:12"
-        import_evpn_domain:
+        import_evpn_domains:
           - domain: remote
             route_target: "2:12"
-        export_evpn_domain:
+        export_evpn_domains:
           - domain: remote
             route_target: "2:12"
       redistribute_routes:

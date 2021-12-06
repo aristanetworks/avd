@@ -2298,12 +2298,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
-        import_evpn_domain:
+        import_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
             route_target: "< route_target >"
-        export_evpn_domain:
+        export_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
@@ -2322,12 +2322,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
-        import_evpn_domain:
+        import_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
             route_target: "< route_target >"
-        export_evpn_domain:
+        export_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
@@ -2351,12 +2351,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
-        import_evpn_domain:
+        import_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
             route_target: "< route_target >"
-        export_evpn_domain:
+        export_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
           - domain: < all | remote >
