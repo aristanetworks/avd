@@ -260,8 +260,8 @@
 
 ### Router BGP VPWS Instances
 
-| Instance | Route-Distinguisher | Both Route-Target| Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | -----------------| ---------- | -------- | --------- |
+| Instance | Route-Distinguisher | Both Route-Target | Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | ----------------- | ---------- | -------- | --------- |
 {%         for vpws_service in router_bgp.vpws %}
 {%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
 {%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}
@@ -276,17 +276,12 @@
 
 ### Router BGP VRF Instances
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
+| VRF | Route-Distinguisher | Redistribute |
+| --- | ------------------- | ------------ |
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort %}
 {%             set route_distinguisher = router_bgp.vrfs[vrf].rd | arista.avd.default("-") %}
 {%             set redistribute = router_bgp.vrfs[vrf].redistribute_routes | arista.avd.default("-") %}
-{%             if router_bgp.vrfs[vrf].evpn_multicast is arista.avd.defined(true) %}
-{%                 set evpn_multicast = "enabled" %}
-{%             else %}
-{%                 set evpn_multicast = "disabled" %}
-{%             endif %}
-| {{ vrf }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ evpn_multicast }} |
+| {{ vrf }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
 {%         endfor %}
 {%     endif %}
 
