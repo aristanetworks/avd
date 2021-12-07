@@ -108,6 +108,10 @@ port_profiles:
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
 
+        # Administrative state | optional - default is true
+        # setting to false will set port to 'shutdown' in intended configuration
+	enabled: < true | false >
+
         # Interface mode | required
         mode: < access | dot1q-tunnel | trunk >
 
