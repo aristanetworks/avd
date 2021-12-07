@@ -31,6 +31,7 @@
     - [Custom Templates](#custom-templates)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
+    - [Error Correction Encoding](#error-correction-encoding)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
@@ -514,6 +515,15 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
     interval: < seconds | default = 300 >
+```
+
+### Error Correction Encoding
+
+```yaml
+error_correction_encoding:
+  enabled: < true | false | default -> true >
+  fire_code: < true | false >
+  reed_solomon: < true | false >
 ```
 
 ### Filters
