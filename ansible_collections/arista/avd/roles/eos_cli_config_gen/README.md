@@ -654,10 +654,10 @@ generate_device_documentation: < true | false | default -> true >
 
 ### Generate Default Config
 
-The `generate_default_config` knob allows to ommit default EOS configuration.
+The `generate_default_config` knob allows to omit default EOS configuration.
 This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
 
-The following commands will be ommited when `generate_default_config` is set to `false`:
+The following commands will be omitted when `generate_default_config` is set to `false`:
 
 - RANCID Content Type
 - Hostname
@@ -2110,18 +2110,24 @@ qos_profiles:
     trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
     trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
