@@ -34,9 +34,10 @@ ethernet_interfaces:
     l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                     endif %}
     type: switched
+{%                     if adapter_settings.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                     else %}
     shutdown: false
-{%                     if adapter_settings.enabled is arista.avd.defined %}
-    shutdown: {{ not adapter_settings.enabled }}
 {%                     endif %}
     mode: {{ adapter_settings.mode | arista.avd.default }}
     vlans: {{ adapter_settings.vlans | arista.avd.default }}
