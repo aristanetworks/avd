@@ -110,7 +110,7 @@ port_profiles:
 
         # Administrative state | optional - default is true
         # setting to false will set port to 'shutdown' in intended configuration
-	enabled: < true | false >
+        enabled: < true | false >
 
         # Interface mode | required
         mode: < access | dot1q-tunnel | trunk >
