@@ -25,8 +25,8 @@ qos_profiles:
       2:
         bandwidth_percent: 10
         priority: 'priority strict'
-      6:
-        bandwidth_percent: 20
+      4:
+        bandwidth_guaranteed_percent: 10
   experiment:
     trust: cos
     cos: 2
@@ -36,6 +36,8 @@ qos_profiles:
         priority: 'no priority'
       5:
         bandwidth_percent: 40
+      4: 
+        bandwidth_guaranteed_percent: 10
       7:
         bandwidth_percent: 30
 
