@@ -190,8 +190,8 @@ router bgp {{ router_bgp.as }}
       route-target import evpn domain {{ route_target.domain }} {{ route_target.route_target }}
 {%             endfor %}
 {%         endif %}
-{%         if router_bgp.vlans[vlan].route_targets.export_evpn_domain is arista.avd.defined %}
-{%             for route_target in router_bgp.vlans[vlan].route_targets.export_evpn_domain %}
+{%         if router_bgp.vlans[vlan].route_targets.export_evpn_domains is arista.avd.defined %}
+{%             for route_target in router_bgp.vlans[vlan].route_targets.export_evpn_domains %}
       route-target export evpn domain {{ route_target.domain }} {{ route_target.route_target }}
 {%             endfor %}
 {%         endif %}
@@ -229,8 +229,8 @@ router bgp {{ router_bgp.as }}
       route-target import evpn domain {{ route_target.domain }} {{ route_target.route_target }}
 {%             endfor %}
 {%         endif %}
-{%         if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domain is arista.avd.defined %}
-{%             for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domain %}
+{%         if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domains is arista.avd.defined %}
+{%             for route_target in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domains %}
       route-target export evpn domain {{ route_target.domain }} {{ route_target.route_target }}
 {%             endfor %}
 {%         endif %}
