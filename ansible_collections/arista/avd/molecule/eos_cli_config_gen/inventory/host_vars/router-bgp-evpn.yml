@@ -59,6 +59,9 @@ router_bgp:
       route_targets:
         both:
           - "11:11"
+        import_export_evpn_domains:
+          - domain: remote
+            route_target: "2:11"
       redistribute_routes:
         - learned
         - igmp
