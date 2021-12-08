@@ -36,11 +36,10 @@ def strip_null_from_data(data):
     Any
         Cleaned data with no null.
     """
-    strip_values_tuple = (None,)
     if isinstance(data, dict):
-        return strip_empties_from_dict(data, strip_values_tuple)
+        return strip_empties_from_dict(data)
     elif isinstance(data, list):
-        return strip_empties_from_list(data, strip_values_tuple)
+        return strip_empties_from_list(data)
     return data
 
 
