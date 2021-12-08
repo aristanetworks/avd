@@ -27,7 +27,7 @@
 {%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
 | MPLS LDP Sync Default | {{ router_isis.mpls_ldp_sync_default }} |
 {%     endif %}
-{%     if router_isis.timers.local_convergence is arista.avd.defined %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
 | Local Convergence Delay (ms) | {{ router_isis.timers.local_convergence.delay | arista.avd.default(10000) }} |
 {%     endif %}
 {%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
