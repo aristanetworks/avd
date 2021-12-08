@@ -2301,11 +2301,7 @@ router_bgp:
         import_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
-          - domain: < all | remote >
-            route_target: "< route_target >"
         export_evpn_domains:
-          - domain: < all | remote >
-            route_target: "< route_target >"
           - domain: < all | remote >
             route_target: "< route_target >"
         import_export_evpn_domains:
@@ -2357,11 +2353,7 @@ router_bgp:
         import_evpn_domains:
           - domain: < all | remote >
             route_target: "< route_target >"
-          - domain: < all | remote >
-            route_target: "< route_target >"
         export_evpn_domains:
-          - domain: < all | remote >
-            route_target: "< route_target >"
           - domain: < all | remote >
             route_target: "< route_target >"
         import_export_evpn_domains:
