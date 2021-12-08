@@ -870,12 +870,26 @@ port_channel_interfaces:
     lacp_fallback_mode: static
     lacp_fallback_timeout: 10
   Port-Channel22:
-    description: server15_port_channel_disabled_interfaces_
+    description: server15_port_channel_with_disabled_phy_interfaces_
     type: switched
     shutdown: false
     mode: access
     vlans: 110
     mlag: 22
+  Port-Channel23:
+    description: server16_port_channel_with_disabled_port_channel_
+    type: switched
+    shutdown: true
+    mode: access
+    vlans: 110
+    mlag: 23
+  Port-Channel24:
+    description: server17_port_channel_with_disabled_phy+po_interfaces_
+    type: switched
+    shutdown: true
+    mode: access
+    vlans: 110
+    mlag: 24
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3B
@@ -1239,16 +1253,40 @@ ethernet_interfaces:
     mode: access
     vlans: 110
   Ethernet22:
-    peer: server15_port_channel_disabled_interfaces
+    peer: server15_port_channel_with_disabled_phy_interfaces
     peer_interface: Eth1
     peer_type: server
-    description: server15_port_channel_disabled_interfaces_Eth1
+    description: server15_port_channel_with_disabled_phy_interfaces_Eth1
     type: switched
     shutdown: true
     mode: access
     vlans: 110
     channel_group:
       id: 22
+      mode: active
+  Ethernet23:
+    peer: server16_port_channel_with_disabled_port_channel
+    peer_interface: Eth1
+    peer_type: server
+    description: server16_port_channel_with_disabled_port_channel_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 23
+      mode: active
+  Ethernet24:
+    peer: server17_port_channel_with_disabled_phy+po_interfaces
+    peer_interface: Eth1
+    peer_type: server
+    description: server17_port_channel_with_disabled_phy+po_interfaces_Eth1
+    type: switched
+    shutdown: true
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 24
       mode: active
 mlag_configuration:
   domain_id: DC1_SVC3

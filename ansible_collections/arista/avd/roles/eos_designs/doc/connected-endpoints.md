@@ -176,6 +176,10 @@ port_profiles:
           # Port-Channel Description.
           description: < port_channel_description >
 
+          # Port-Channel administrative state | optional - default is true
+          # setting to false will set port to 'shutdown' in intended configuration
+          enabled: < true | false >
+
           # Port-Channel Mode.
           mode: < "active" | "passive" | "on" >
 
