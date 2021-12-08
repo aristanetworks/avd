@@ -163,6 +163,13 @@ port_channel_interfaces:
     vlans: 110-112
     trunk_private_vlan_secondary: true
 
+  Port-Channel104:
+    description: LACP fallback individual
+    mode: trunk
+    vlans: 112
+    lacp_fallback_timeout: 300
+    lacp_fallback_mode: individual
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -260,3 +267,12 @@ ethernet_interfaces:
     channel_group:
       id: 103
       mode: active
+
+  Ethernet10/4:
+    description: LAG Member LACP fallback
+    channel_group:
+      id: 104
+      mode: active
+    mode: trunk
+    vlans: 100
+    spanning_tree_portfast: edge

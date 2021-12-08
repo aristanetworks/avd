@@ -31,6 +31,7 @@
     - [Custom Templates](#custom-templates)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
+    - [Error Correction Encoding](#error-correction-encoding)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
@@ -514,6 +515,15 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
     interval: < seconds | default = 300 >
+```
+
+### Error Correction Encoding
+
+```yaml
+error_correction_encoding:
+  enabled: < true | false | default -> true >
+  fire_code: < true | false >
+  reed_solomon: < true | false >
 ```
 
 ### Filters
@@ -1128,6 +1138,7 @@ vlan_interfaces:
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    ipv6_address_virtual: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >

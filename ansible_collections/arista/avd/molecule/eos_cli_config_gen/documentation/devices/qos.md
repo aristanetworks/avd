@@ -231,6 +231,7 @@ QOS Profile: **experiment**
 | Tx-queue | Bandwidth | Priority |
 | -------- | --------- | -------- |
 | 3 | 30 | no priority |
+| 4 | 10 | - |
 | 5 | 40 | - |
 | 7 | 30 | - |
 
@@ -248,7 +249,7 @@ QOS Profile: **test**
 | -------- | --------- | -------- |
 | 1 | 50 | no priority |
 | 2 | 10 | priority strict |
-| 6 | 20 | - |
+| 4 | 10 | - |
 
 ### QOS Profile Device Configuration
 
@@ -261,6 +262,9 @@ qos profile experiment
    tx-queue 3
       bandwidth percent 30
       no priority
+   !
+   tx-queue 4
+      bandwidth guaranteed percent 10
    !
    tx-queue 5
       bandwidth percent 40
@@ -280,8 +284,8 @@ qos profile test
       bandwidth percent 10
       priority strict
    !
-   tx-queue 6
-      bandwidth percent 20
+   tx-queue 4
+      bandwidth guaranteed percent 10
 ```
 
 ### QOS Interfaces

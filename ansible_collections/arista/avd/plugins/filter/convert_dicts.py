@@ -52,7 +52,7 @@ def convert_dicts(dictionary, primary_key="name"):
         return dictionary
     else:
         output = []
-        for key in dictionary.keys():
+        for key in dictionary:
             if not isinstance(dictionary[key], dict):
                 # Not a nested dictionary, return the original
                 return dictionary
