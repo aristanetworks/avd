@@ -163,6 +163,8 @@ interface Management1
 | B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned<br>igmp | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
 
 ### Router BGP VRFs
 
