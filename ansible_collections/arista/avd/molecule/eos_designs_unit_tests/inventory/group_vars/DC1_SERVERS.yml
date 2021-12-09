@@ -352,6 +352,7 @@ servers:
         profile: TENANT_A
         enabled: false
         port_channel:
+          description: server15_port_channel_with_disabled_phy_interfaces
           mode: active
           enabled: true
 
@@ -363,11 +364,11 @@ servers:
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
         port_channel:
+          description: server16_port_channel_with_disabled_port_channel
           mode: active
           enabled: false
 
-
-  server17_port_channel_with_disabled_phy+po_interfaces:
+  server17_port_channel_with_disabled_phy_and_po_interfaces:
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
@@ -376,6 +377,7 @@ servers:
         profile: TENANT_A
         enabled: false
         port_channel:
+          description: server17_port_channel_with_disabled_phy_and_po_interfaces
           mode: active
           enabled: false
 
