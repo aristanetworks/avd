@@ -126,15 +126,14 @@ management console
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| true | true |
+| ---- | ----- |
+| True | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
-
 
 ### Management API HTTP Configuration
 
