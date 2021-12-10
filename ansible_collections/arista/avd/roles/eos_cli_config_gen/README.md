@@ -296,8 +296,8 @@ aaa_authorization:
   commands:
     all_default: < group group_name | local | none > < group group_name | local | none >
     privilege:
-      level: < privilege level(s) as csv string >
-      group: < group_name(s) | tacacs+ local >
+      - level: < privilege level(s) 0-15 as string >
+        group: < group_name(s) | tacacs+ | radius | local | none >
 ```
 
 #### AAA Accounting

@@ -170,6 +170,11 @@ aaa authentication policy lockout failure 3 window 900 duration 300
 | Exec | group CUST local |
 
 Authorization for configuration commands is enabled.
+| Type | User Stores |
+| ---- | ----------- |
+| all  | group aaaAuth |
+| 10,15 | group tacacs+ local |
+| 5 | group RADIUS |
 
 Authorization for serial console is enabled.
 
@@ -181,6 +186,7 @@ aaa authorization exec default group CUST local
 aaa authorization serial-console
 aaa authorization commands all default group aaaAuth
 aaa authorization commands 10,15 default group tacacs+ local
+aaa authorization commands 5 default group RADIUS
 !
 ```
 

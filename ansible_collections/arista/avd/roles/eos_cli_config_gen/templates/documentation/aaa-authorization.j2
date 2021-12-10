@@ -12,6 +12,16 @@
 
 {%     if aaa_authorization.config_commands is defined and aaa_authorization.config_commands == true %}
 Authorization for configuration commands is enabled.
+| Type | User Stores |
+| ---- | ----------- |
+{%         if aaa_authorization.commands.all_default is defined %}
+| all  | {{ aaa_authorization.commands.all_default }} |
+{%         endif %}
+{%         if aaa_authorization.commands.privilege is defined %}
+{%             for command_level in aaa_authorization.commands.privilege %}
+| {{ command_level.level }} | group {{ command_level.group }} |
+{%             endfor %}
+{%         endif %}
 {%     else %}
 Authorization for configuration commands is disabled.
 {%     endif %}
