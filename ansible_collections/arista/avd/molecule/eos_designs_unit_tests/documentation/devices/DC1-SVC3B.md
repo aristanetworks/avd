@@ -426,6 +426,11 @@ vlan 4092
 | Ethernet17 | server10_no_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 17 |
 | Ethernet18 | server11_inherit_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 18 |
 | Ethernet19 | server12_inherit_nested_profile_port_channel_lacp_fallback_Eth2 | *trunk | *1-4094 | *- | *- | 19 |
+| Ethernet20 |  server13_disabled_interfaces_Eth2 | access | 110 | - | - | - |
+| Ethernet21 |  server14_explicitly_enabled_interfaces_Eth2 | access | 110 | - | - | - |
+| Ethernet22 | server15_port_channel_with_disabled_phy_interfaces_Eth2 | *access | *110 | *- | *- | 22 |
+| Ethernet23 | server16_port_channel_with_disabled_port_channel_Eth2 | *access | *110 | *- | *- | 23 |
+| Ethernet24 | server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2 | *access | *110 | *- | *- | 24 |
 
 *Inherited from Port-Channel Interface
 
@@ -578,6 +583,35 @@ interface Ethernet19
    no shutdown
    channel-group 19 mode active
    lacp port-priority 32768
+!
+interface Ethernet20
+   description server13_disabled_interfaces_Eth2
+   shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet21
+   description server14_explicitly_enabled_interfaces_Eth2
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet22
+   description server15_port_channel_with_disabled_phy_interfaces_Eth2
+   shutdown
+   channel-group 22 mode active
+!
+interface Ethernet23
+   description server16_port_channel_with_disabled_port_channel_Eth2
+   no shutdown
+   channel-group 23 mode active
+!
+interface Ethernet24
+   description server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
+   shutdown
+   channel-group 24 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -595,6 +629,9 @@ interface Ethernet19
 | Port-Channel17 | server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
 | Port-Channel18 | server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
 | Port-Channel19 | server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
+| Port-Channel22 | server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces | switched | access | 110 | - | - | - | - | 22 | - |
+| Port-Channel23 | server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel | switched | access | 110 | - | - | - | - | 23 | - |
+| Port-Channel24 | server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces | switched | access | 110 | - | - | - | - | 24 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -692,6 +729,27 @@ interface Port-Channel19
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+!
+interface Port-Channel22
+   description server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 22
+!
+interface Port-Channel23
+   description server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel
+   shutdown
+   switchport
+   switchport access vlan 110
+   mlag 23
+!
+interface Port-Channel24
+   description server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces
+   shutdown
+   switchport
+   switchport access vlan 110
+   mlag 24
 ```
 
 ## Loopback Interfaces

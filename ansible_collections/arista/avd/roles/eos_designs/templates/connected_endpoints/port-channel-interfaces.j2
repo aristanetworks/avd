@@ -21,7 +21,11 @@ port_channel_interfaces:
 {%                         set peer = connected_endpoint %}
     description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
     type: switched
+{%                         if adapter_settings.port_channel.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                         else %}
     shutdown: false
+{%                         endif %}
     mode: {{ adapter_settings.mode | arista.avd.default }}
 {%                         if adapter_settings.mtu is arista.avd.defined %}
     mtu: {{ adapter_settings.mtu }}
