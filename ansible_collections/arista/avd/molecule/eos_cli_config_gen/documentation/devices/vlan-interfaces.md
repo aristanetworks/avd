@@ -220,6 +220,7 @@ interface Vlan89
    description SVI Description
    no shutdown
    ip address virtual 10.10.144.3/20
+   ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
