@@ -18,14 +18,23 @@
 {%     if router_isis.address_family is arista.avd.defined %}
 | Address Family | {{ router_isis.address_family | join(", ") }} |
 {%     endif %}
+{%     if router_isis.router_id is arista.avd.defined %}
+| Router-ID | {{ router_isis.router_id }} |
+{%     endif %}
 {%     if router_isis.log_adjacency_changes is arista.avd.defined %}
 | Log Adjacency Changes | {{ router_isis.log_adjacency_changes }} |
 {%     endif %}
+{%     if router_isis.mpls_ldp_sync_default is arista.avd.defined(true) %}
+| MPLS LDP Sync Default | {{ router_isis.mpls_ldp_sync_default }} |
+{%     endif %}
+{%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
+| Local Convergence Delay (ms) | {{ router_isis.timers.local_convergence.delay | arista.avd.default(10000) }} |
+{%     endif %}
+{%     if router_isis.advertise.passive_only is arista.avd.defined(true) %}
+| Advertise Passive-only | {{ router_isis.advertise.passive_only }} |
+{%     endif %}
 {%     if router_isis.segment_routing_mpls.enabled is arista.avd.defined %}
 | SR MPLS Enabled | {{ router_isis.segment_routing_mpls.enabled }} |
-{%     endif %}
-{%     if router_isis.segment_routing_mpls.router_id is arista.avd.defined %}
-| SR MPLS Router-ID | {{ router_isis.segment_routing_mpls.router_id }} |
 {%     endif %}
 
 ### ISIS Interfaces Summary
@@ -100,6 +109,52 @@
 {%             set row_ipv6_index = loopback_interfaces[loopback_interface].node_segment.ipv6_index | arista.avd.default("-") %}
 | {{ loopback_interface }} | {{ row_ipv4_index }} | {{ row_ipv6_index }} |
 {%         endfor %}
+{%     endif %}
+{%     if router_isis.address_family_ipv4 is arista.avd.defined %}
+
+### ISIS IPv4 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv4 Address-family Enabled | True |
+{%         if router_isis.address_family_ipv4.maximum_paths is arista.avd.defined %}
+| Maximum-paths | {{ router_isis.address_family_ipv4.maximum_paths }} |
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+| TI-LFA Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode }} |
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.level is arista.avd.defined %}
+| TI-LFA Level | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.level }} |
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+| TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable }} |
+{%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+| TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict }} |
+{%             endif %}
+{%         endif %}
+{%     endif %}
+{%     if router_isis.address_family_ipv6 is arista.avd.defined %}
+
+### ISIS IPv6 Address Family Summary
+
+| Settings | Value |
+| -------- | ----- |
+| IPv6 Address-family Enabled | True |
+{%         if router_isis.address_family_ipv6.maximum_paths is arista.avd.defined %}
+| Maximum-paths | {{ router_isis.address_family_ipv6.maximum_paths }} |
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode is arista.avd.defined %}
+| TI-LFA Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode }} |
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.level is arista.avd.defined %}
+| TI-LFA Level | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.level }} |
+{%             endif %}
+{%         endif %}
+{%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
+| TI-LFA SRLG Enabled | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable }} |
+{%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
+| TI-LFA SRLG Strict Mode | {{ router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict }} |
+{%             endif %}
+{%         endif %}
 {%     endif %}
 
 ### Router ISIS Device Configuration
