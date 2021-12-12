@@ -113,6 +113,9 @@ l3leaf,DC1-SVC3A,Ethernet16,server,server09_override_profile_no_port_channel,Eth
 l3leaf,DC1-SVC3A,Ethernet17,server,server10_no_profile_port_channel_lacp_fallback,Eth1
 l3leaf,DC1-SVC3A,Ethernet18,server,server11_inherit_profile_port_channel_lacp_fallback,Eth1
 l3leaf,DC1-SVC3A,Ethernet19,server,server12_inherit_nested_profile_port_channel_lacp_fallback,Eth1
+l3leaf,DC1-SVC3A,Ethernet20,server,server13_disabled_interfaces,Eth1
+l3leaf,DC1-SVC3A,Ethernet21,server,server14_explicitly_enabled_interfaces,Eth1
+l3leaf,DC1-SVC3A,Ethernet22,server,server15_port_channel_disabled_interfaces,Eth1
 l3leaf,DC1-SVC3A,Ethernet41,spine,DC1-SPINE1,Ethernet4
 l3leaf,DC1-SVC3A,Ethernet42,spine,DC1-SPINE2,Ethernet4
 l3leaf,DC1-SVC3A,Ethernet43,spine,DC1-SPINE3,Ethernet4
@@ -131,6 +134,9 @@ l3leaf,DC1-SVC3B,Ethernet16,server,server09_override_profile_no_port_channel,Eth
 l3leaf,DC1-SVC3B,Ethernet17,server,server10_no_profile_port_channel_lacp_fallback,Eth2
 l3leaf,DC1-SVC3B,Ethernet18,server,server11_inherit_profile_port_channel_lacp_fallback,Eth2
 l3leaf,DC1-SVC3B,Ethernet19,server,server12_inherit_nested_profile_port_channel_lacp_fallback,Eth2
+l3leaf,DC1-SVC3B,Ethernet20,server,server13_disabled_interfaces,Eth2
+l3leaf,DC1-SVC3B,Ethernet21,server,server14_explicitly_enabled_interfaces,Eth2
+l3leaf,DC1-SVC3B,Ethernet22,server,server15_port_channel_disabled_interfaces,Eth2
 l3leaf,DC1-SVC3B,Ethernet41,spine,DC1-SPINE1,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet42,spine,DC1-SPINE2,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet43,spine,DC1-SPINE3,Ethernet5

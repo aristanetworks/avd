@@ -1130,6 +1130,7 @@ vlan_interfaces:
     ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
+    ip_igmp: < true | false >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -2649,12 +2650,35 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
-  log_adjacency_changes: < true | false >
-  no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
+  log_adjacency_changes: < true | false >
+  mpls_ldp_sync_default: < true | false >
+  timers:
+    local_convergence:
+      protected_prefixes: < true | false >
+      delay: < number of milliseconds (Optional, default is 10000) >
+  advertise:
+    passive_only: < true | false >
+  no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:
-    - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-128 >
+  address_family_ipv4:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
+  address_family_ipv6:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 (Optional, default is to protect all levels) >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
