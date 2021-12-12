@@ -96,9 +96,6 @@
 {%                     set value = value ~ " (" %}
 {%                     if router_bgp.peer_groups[peer_group].maximum_routes_warning_limit is arista.avd.defined %}
 {%                         set value = value ~ "warning-limit " ~ router_bgp.peer_groups[peer_group].maximum_routes_warning_limit %}
-{%                         if router_bgp.peer_groups[peer_group].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
-{%                             set value = value ~ "%" %}
-{%                         endif %}
 {%                         if router_bgp.peer_groups[peer_group].maximum_routes_warning_only is arista.avd.defined(true) %}
 {%                             set value = value ~ ", " %}
 {%                         else %}
@@ -159,9 +156,6 @@
 {%                     set value = value ~ " (" %}
 {%                     if router_bgp.neighbors[neighbor].maximum_routes_warning_limit is arista.avd.defined %}
 {%                         set value = value ~ "warning-limit " ~ router_bgp.neighbors[neighbor].maximum_routes_warning_limit %}
-{%                         if router_bgp.neighbors[neighbor].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
-{%                             set value = value ~ "%" %}
-{%                         endif %}
 {%                         if router_bgp.neighbors[neighbor].maximum_routes_warning_only is arista.avd.defined(true) %}
 {%                             set value = value ~ ", " %}
 {%                         else %}
@@ -204,9 +198,6 @@
 {%                             set value = value ~ " (" %}
 {%                             if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit is arista.avd.defined %}
 {%                                 set value = value ~ "warning-limit " ~ router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit %}
-{%                                 if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_limit_percent is arista.avd.defined(true) %}
-{%                                     set value = value ~ "%" %}
-{%                                 endif %}
 {%                                 if router_bgp.vrfs[vrf].neighbors[neighbor].maximum_routes_warning_only is arista.avd.defined(true) %}
 {%                                     set value = value ~ ", " %}
 {%                                 else %}

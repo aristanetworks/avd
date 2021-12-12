@@ -2237,12 +2237,11 @@ router_bgp:
       password: "< encrypted_password >"
       send_community: < standard | extended | large | all >
       maximum_routes: < integer >
-      maximum_routes_warning_limit: < integer >
-      maximum_routes_warning_limit_percent: < true | false >
+      maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
       allowas_in:
           enabled: < true | false >
-          allow_local_asn_n_times: < 1-10 >
+          times: < 1-10 >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >

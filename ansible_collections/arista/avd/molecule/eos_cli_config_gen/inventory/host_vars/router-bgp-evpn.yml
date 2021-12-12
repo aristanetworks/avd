@@ -25,8 +25,7 @@ router_bgp:
       next_hop_self: true
       password: "vnEaG8gMeQf3d3cN6PktXQ=="
       maximum_routes: 12000
-      maximum_routes_warning_limit: 80
-      maximum_routes_warning_limit_percent: true
+      maximum_routes_warning_limit: 80 percent
       maximum_routes_warning_only: true
       send_community: all
       route_map_in: RM-MLAG-PEER-IN
@@ -36,16 +35,15 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       allowas_in:
         enabled: true
-        allow_local_asn_n_times: 5
+        times: 5
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
     192.168.255.3:
       allowas_in:
         enabled: true
-        allow_local_asn_n_times: 5
+        times: 5
       maximum_routes: 52000
       maximum_routes_warning_limit: 2000
-      maximum_routes_warning_limit_percent: false
       maximum_routes_warning_only: true
   redistribute_routes:
   address_family_evpn:
@@ -119,8 +117,7 @@ router_bgp:
         10.255.251.1:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
           maximum_routes: 15000
-          maximum_routes_warning_limit: 50
-          maximum_routes_warning_limit_percent: true
+          maximum_routes_warning_limit: 50 percent
       redistribute_routes:
         - connected
     TENANT_A_PROJECT02:

@@ -120,7 +120,7 @@ interface Management1
 | Remote AS | 65101 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 (warning-limit 80%, warning-only) |
+| Maximum routes | 12000 (warning-limit 80 percent, warning-only) |
 
 ### BGP Neighbors
 
@@ -129,7 +129,7 @@ interface Management1
 | 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.3 | - | default | - | 52000 (warning-limit 2000, warning-only) |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50%) |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
 
 ### Router BGP EVPN Address Family
