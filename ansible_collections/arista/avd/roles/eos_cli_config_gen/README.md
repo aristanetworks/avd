@@ -806,6 +806,10 @@ ethernet_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
+    priority_flow_control: < on | off >
+    priority_flow_control_prioritites:
+      - priority: < 0-7 >
+        enable_pfc: < true | false >
     bfd:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >
@@ -914,6 +918,10 @@ ethernet_interfaces:
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
+    priority_flow_control: < on >
+    priority_flow_control_prioritites:
+      - priority: < 0-7 >
+        enable_pfc: < true | false >
 ```
 
 #### Interface Defaults

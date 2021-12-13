@@ -129,6 +129,18 @@ interface {{ ethernet_interface }}
    qos cos {{ ethernet_interfaces[ethernet_interface].qos.cos }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('edge') %}
+{%     if ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined("on") %}
+   priority-flow-control on
+{%     elif ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined("off")%}
+   no priority-flow-control
+{%     endif %}
+{%     if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities is arista.avd.defined %}
+{%         if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.enable_pfc is arista.avd.defined(true)  %}
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.priority }} no-drop
+{%         else %}
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.priority }} drop
+{%         endif %}
+{%     endif %}
    spanning-tree portfast
 {%         elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
