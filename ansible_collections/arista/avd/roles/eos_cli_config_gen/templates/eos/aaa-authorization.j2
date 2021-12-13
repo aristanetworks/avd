@@ -14,9 +14,9 @@ no aaa authorization config-commands
 aaa authorization commands all default {{ aaa_authorization.commands.all_default }}
 {%     endif %}
 {%     if aaa_authorization.commands.privilege is arista.avd.defined %}
-{%         for command_level in aaa_authorization.commands.privilege %}
-{%             set aaa_authorization_commands_privilege_cli = "aaa authorization commands " ~ command_level.level ~ " default group " ~ command_level.group %}
-{{aaa_authorization_commands_privilege_cli }}
+{%         for command_levels in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%             set aaa_authorization_commands_privilege_cli = "aaa authorization commands " ~ command_levels.level ~ " default group " ~ command_levels.group %}
+{{ aaa_authorization_commands_privilege_cli }}
 {%         endfor %}
 {%     endif %}
 {% endif %}

@@ -64,7 +64,7 @@ aaa_authorization:
       - level: "10,15"
         group: "tacacs+ local"
       - level: "5"
-        group: "RADIUS"
+        group: "radius"
 ## AAA Accounting
 aaa_accounting:
   exec:
