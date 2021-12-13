@@ -96,13 +96,13 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local endpoint port(s)
+        # Local endpoint port(s) | required
         endpoint_ports: [ < interface_name > ]
 
-        # List of port(s) connected to switches
+        # List of port(s) connected to switches | required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switche(s)
+        # List of switche(s) | required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.

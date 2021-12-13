@@ -35,6 +35,8 @@
 | DC1_FABRIC | spine | DC1-SPINE4 | 192.168.200.104/24 | 7280R3 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-SVC3A | 192.168.200.108/24 | 7050SX3 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
+| DC1_FABRIC | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
+| DC1_FABRIC | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -152,7 +154,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 13 | 5.08 % |
+| 192.168.255.0/24 | 256 | 15 | 5.86 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -171,12 +173,14 @@
 | DC1_FABRIC | DC1-SPINE4 | 192.168.255.4/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.255.12/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.13/32 |
+| DC1_FABRIC | evpn_services_l2_only_false | 192.168.255.109/32 |
+| DC1_FABRIC | evpn_services_l2_only_true | 192.168.255.109/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 9 | 3.52 % |
+| 192.168.254.0/24 | 256 | 11 | 4.3 % |
 
 ## VTEP Loopback Node allocation
 
@@ -191,3 +195,5 @@
 | DC1_FABRIC | DC1-LEAF2B | 192.168.254.11/32 |
 | DC1_FABRIC | DC1-SVC3A | 192.168.254.12/32 |
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.12/32 |
+| DC1_FABRIC | evpn_services_l2_only_false | 192.168.254.109/32 |
+| DC1_FABRIC | evpn_services_l2_only_true | 192.168.254.109/32 |

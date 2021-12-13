@@ -18,6 +18,8 @@ qos_profiles:
   test:
     trust: dscp
     dscp: 46
+    shape:
+      rate: 80 percent
     tx_queues:
       1:
         bandwidth_percent: 50
@@ -40,6 +42,8 @@ qos_profiles:
         bandwidth_guaranteed_percent: 10
       7:
         bandwidth_percent: 30
+        shape:
+          rate: 40 percent
 
 ### Port-Channel Interfaces ###
 ethernet_interfaces:

@@ -92,7 +92,12 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 # Markdown flavor to support non-text rendering
 # Only support default and github
 validate_state_markdown_flavor: "default"
+
+# Allow different manufacturers
+accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 ```
+
+Keep in mind that default accepted manufacturers are "Arastra, Inc." and "Arista Networks". If validation_role.xcvr_own_manufacturers is set, it takes precedence and overrides the defined default variables.
 
 ## Requirements
 
@@ -154,6 +159,11 @@ ansible_become: yes
 ansible_become_method: enable
 
 validation_mode_loose: true
+
+validation_role:
+  xcvr_own_manufacturers:
+    - Manufacturer 1
+    - Manufacturer 2
 ```
 
 ### inventory/intended/structured_configs/switch1.yml
