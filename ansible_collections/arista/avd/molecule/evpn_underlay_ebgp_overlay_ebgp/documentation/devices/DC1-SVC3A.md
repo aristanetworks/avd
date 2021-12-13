@@ -1281,7 +1281,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-### Router BGP Vlan Aware Bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |

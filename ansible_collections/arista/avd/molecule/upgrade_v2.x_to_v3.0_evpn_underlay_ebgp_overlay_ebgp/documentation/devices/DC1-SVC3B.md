@@ -1247,7 +1247,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-### Router BGP Vlan Aware Bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
