@@ -1,19 +1,34 @@
 {# eos - logging #}
 {% if logging is arista.avd.defined %}
 !
-{%     if logging.console is arista.avd.defined %}
+{%     if logging.console is arista.avd.defined('disabled') %}
+no logging console
+{%     elif logging.console is arista.avd.defined %}
 logging console {{ logging.console }}
 {%     endif %}
-{%     if logging.monitor is arista.avd.defined %}
+{%     if logging.monitor is arista.avd.defined('disabled') %}
+no logging monitor
+{%     elif logging.monitor is arista.avd.defined %}
 logging monitor {{ logging.monitor }}
 {%     endif %}
-{%     if logging.buffered.size is arista.avd.defined and logging.buffered.level is arista.avd.defined %}
-logging buffered {{ logging.buffered.size }} {{ logging.buffered.level }}
+{%     if logging.buffered.level is arista.avd.defined('disabled') %}
+no logging buffered
+{%     elif logging.buffered.level is arista.avd.defined %}
+{%         set logging_buffered_cli = "logging buffered "%}
+{%         if logging.buffered.size is arista.avd.defined %}
+{%             set logging_buffered_cli = logging_buffered_cli ~ logging.buffered.size ~ " " %}
+{%         endif %}
+{%         set logging_buffered_cli = logging_buffered_cli ~ logging.buffered.level %}
+{{ logging_buffered_cli }}
 {%     endif %}
-{%     if logging.trap is arista.avd.defined %}
+{%     if logging.trap is arista.avd.defined('disabled') %}
+no logging trap
+{%     elif logging.trap is arista.avd.defined %}
 logging trap {{ logging.trap }}
 {%     endif %}
-{%     if logging.synchronous is arista.avd.defined() %}
+{%     if logging.synchronous.level is arista.avd.defined('disabled') %}
+no logging synchronous
+{%     elif logging.synchronous is arista.avd.defined %}
 logging synchronous level {{ logging.synchronous.level | arista.avd.default("critical") }}
 {%     endif %}
 {%     if logging.format.timestamp is arista.avd.defined('high-resolution') %}
