@@ -222,34 +222,34 @@ QOS Profile: **experiment**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust |
-| ----------- | ------------ | ----- |
-| 2 | - | cos |
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| 2 | - | cos | - |
 
 **Tx-queues**
 
-| Tx-queue | Bandwidth | Priority |
-| -------- | --------- | -------- |
-| 3 | 30 | no priority |
-| 4 | 10 | - |
-| 5 | 40 | - |
-| 7 | 30 | - |
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+| 3 | 30 | no priority | - |
+| 4 | 10 | - | - |
+| 5 | 40 | - | - |
+| 7 | 30 | - | 40 percent |
 
 QOS Profile: **test**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust |
-| ----------- | ------------ | ----- |
-| - | 46 | dscp |
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| - | 46 | dscp | 80 percent |
 
 **Tx-queues**
 
-| Tx-queue | Bandwidth | Priority |
-| -------- | --------- | -------- |
-| 1 | 50 | no priority |
-| 2 | 10 | priority strict |
-| 4 | 10 | - |
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+| 1 | 50 | no priority | - |
+| 2 | 10 | priority strict | - |
+| 4 | 10 | - | - |
 
 ### QOS Profile Device Configuration
 
@@ -271,10 +271,12 @@ qos profile experiment
    !
    tx-queue 7
       bandwidth percent 30
+      shape rate 40 percent
 !
 qos profile test
    qos trust dscp
    qos dscp 46
+   shape rate 80 percent
    !
    tx-queue 1
       bandwidth percent 50
