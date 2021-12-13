@@ -2215,7 +2215,7 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
-  maximum_paths:
+  paths:
     ec: < 1-600 >
     ecmp: < 1-600 >
   updates:
@@ -2246,8 +2246,8 @@ router_bgp:
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
       allowas_in:
-          enabled: < true | false >
-          times: < 1-10 >
+        enabled: < true | false >
+        times: < 1-10 >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
@@ -2273,12 +2273,11 @@ router_bgp:
       route_map_out: < outbound route-map >
       send_community: < all | extended | large | standard >
       maximum_routes: < integer >
-      maximum_routes_warning_limit: < integer >
-      maximum_routes_warning_limit_percent: < true | false >
+      maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
       allowas_in:
         enabled: < true | false >
-        allow_local_asn_n_times: < 1-10 >
+        times: < 1-10 >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
@@ -2502,12 +2501,11 @@ router_bgp:
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
-          maximum_routes_warning_limit: < integer >
-          maximum_routes_warning_limit_percent: < true | false >
+          maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
           maximum_routes_warning_only: < true | false >
           allowas_in:
             enabled: < true | false >
-            allow_local_asn_n_times: < 1-10 >
+            times: < 1-10 >
           default_originate:
             always: < true | false >
             route_map: < route_map_name >

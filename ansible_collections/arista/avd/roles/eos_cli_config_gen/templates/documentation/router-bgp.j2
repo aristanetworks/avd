@@ -36,12 +36,12 @@
 {%             endif %}
 | {{ distance_cli }} |
 {%         endif %}
-{%         if router_bgp.maximum_paths.ec is arista.avd.defined %}
-{%             set maximum_paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.ec %}
-{%             if router_bgp.maximum_paths.ecmp is arista.avd.defined %}
-{%                 set maximum_paths_cli = maximum_paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp %}
+{%         if router_bgp.paths.ec is arista.avd.defined %}
+{%             set paths_cli = "maximum-paths " ~ router_bgp.paths.ec %}
+{%             if router_bgp.paths.ecmp is arista.avd.defined %}
+{%                 set paths_cli = paths_cli ~ " ecmp " ~ router_bgp.paths.ecmp %}
 {%             endif %}
-| {{ maximum_paths_cli }} |
+| {{ paths_cli }} |
 {%         endif %}
 {%     endif %}
 {%     if router_bgp.peer_groups is arista.avd.defined %}
