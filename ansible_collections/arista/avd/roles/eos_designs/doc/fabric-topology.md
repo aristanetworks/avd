@@ -349,6 +349,8 @@ defaults <- node_group <- node_group.node <- node
 
   defaults:
     # Optional
+    # !!! Warning, be careful with this knob as it will block applying all the hardware system TCAM profiles mentioned in this list to a respective < node_type >
+    # !!! Warning, this knob might affect the routing capabilities of the device(s)
     ignore_tcam_system_profiles:
       - < TCAM system profile >
 ```
