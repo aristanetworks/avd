@@ -229,18 +229,15 @@
 {%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
 {%         if router_bgp.address_family_evpn.peer_groups[peer_group].domain_remote is arista.avd.defined(true) %}
 {%             do evpn_l2_gw_config.peer_groups.append(peer_group) %}
-{%             set evpn_l2_gw_config.configured = true %}
 {%         endif %}
 {%     endfor %}
-{%     if evpn_l2_gw_config.configured is arista.avd.defined(true) %}
+{%     if evpn_l2_gw_config.peer_groups | length > 0 %}
 
 #### EVPN DCI Gateway Summary
 
 | Settings | Value |
 | -------- | ----- |
-{%         if evpn_l2_gw_config.peer_groups | length > 0 %}
 | Remote Domain Peer Groups | {{ evpn_l2_gw_config.peer_groups | join(", ") }} |
-{%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
 | L3 Gateway Configured | True |
 {%         endif %}
