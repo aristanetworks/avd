@@ -42,10 +42,12 @@ test_id,node,test_category,test_description,test,result,failure_reason
 {# Hardware results - transceivers manufacturers #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {%     if hostvars[node].transceiver_inventory_results is defined and hostvars[node].transceiver_inventory_results.results is defined %}
-{%         for result in hostvars[node].transceiver_inventory_results.results %}
-{%             set test_id.value = test_id.value + 1 %}
+{%         for result in hostvars[node].transceiver_inventory_results.results | arista.avd.natural_sort %}
+{%             if result.failed is arista.avd.defined() %}
+{%                 set test_id.value = test_id.value + 1 %}
 {{ test_id.value }},{{ node }},Hardware,transceivers manufacturers,port {{ result.xcvrSlot.key }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
+{%             endif %}
 {%         endfor %}
 {%    endif %}
 {% endfor %}
