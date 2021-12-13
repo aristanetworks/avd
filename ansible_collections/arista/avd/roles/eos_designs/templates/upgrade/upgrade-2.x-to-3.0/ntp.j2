@@ -8,7 +8,7 @@
 {%     endif %}
 {{ prefix }}ntp:
   local_interface:
-    name: {{ mgmt_interface | arista.avd.default('Management1') }}
+    name: {{ mgmt_interface }}
     vrf: {{ mgmt_interface_vrf }}
   servers:
 {%     for ntp_server in ntp_servers %}
