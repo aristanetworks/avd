@@ -86,7 +86,7 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors == true %}
+{%     if router_bgp.neighbors is arista.avd.defined or temp.bgp_vrf_neighbors is arista.avd.defined(true) %}
 
 ### BGP Neighbors
 
@@ -180,44 +180,54 @@
 | {{ prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.address_family_evpn is arista.avd.defined %}
 
 ### Router BGP EVPN Address Family
-{%     if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
+{%         if router_bgp.address_family_evpn.route.import_match_failure_action is arista.avd.defined('discard') %}
 
 - VPN import pruning is __enabled__
-{%     endif %}
-{%     if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
+{%         endif %}
+{%         if router_bgp.address_family_evpn.peer_groups is arista.avd.defined %}
+
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+{%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
+| {{ peer_group }} | {{ router_bgp.address_family_evpn.peer_groups[peer_group].activate | arista.avd.default("false") }} |
+{%             endfor %}
+{%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}
 
 #### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
-{%         set row_default_encapsulation = router_bgp.address_family_evpn.neighbor_default.encapsulation | arista.avd.default("vxlan") %}
-{%         set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface | arista.avd.default('-') %}
+{%             set row_default_encapsulation = router_bgp.address_family_evpn.neighbor_default.encapsulation | arista.avd.default("vxlan") %}
+{%             set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface | arista.avd.default('-') %}
 | {{ row_default_encapsulation }} | {{ row_nhs_source_interface }} |
-{%     endif%}
-{%     if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
+{%         endif%}
+{%         if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
-{%         if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled | arista.avd.default(true) == true %}
-{%             set evpn_hostflap_detection_state = "Enabled" %}
-{%             set evpn_hostflap_detection_window = router_bgp.address_family_evpn.evpn_hostflap_detection.window | arista.avd.default('-') %}
-{%             set evpn_hostflap_detection_threshold = router_bgp.address_family_evpn.evpn_hostflap_detection.threshold | arista.avd.default('-') %}
-{%         else %}
-{%             set evpn_hostflap_detection_state = "Disabled" %}
-{%             set evpn_hostflap_detection_window = '-' %}
-{%             set evpn_hostflap_detection_threshold = '-' %}
-{%         endif %}
+{%             if router_bgp.address_family_evpn.evpn_hostflap_detection.enabled | arista.avd.default(true) %}
+{%                 set evpn_hostflap_detection_state = "Enabled" %}
+{%                 set evpn_hostflap_detection_window = router_bgp.address_family_evpn.evpn_hostflap_detection.window | arista.avd.default('-') %}
+{%                 set evpn_hostflap_detection_threshold = router_bgp.address_family_evpn.evpn_hostflap_detection.threshold | arista.avd.default('-') %}
+{%             else %}
+{%                 set evpn_hostflap_detection_state = "Disabled" %}
+{%                 set evpn_hostflap_detection_window = '-' %}
+{%                 set evpn_hostflap_detection_threshold = '-' %}
+{%             endif %}
 | {{ evpn_hostflap_detection_state }} | {{ evpn_hostflap_detection_window }} |  {{ evpn_hostflap_detection_threshold }} |
+{%         endif %}
 {%     endif %}
-
-#### Router BGP EVPN MAC-VRFs
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -231,9 +241,9 @@
 | {{ vlan_aware_bundle }} | {{ route_distinguisher }} | {{ both_route_target | join("<br>") }} | {{ import_route_target | join("<br>") }} | {{ export_route_target | join("<br>") }} | {{ redistribute_route | join("<br>") }} | {{ vlans }} |
 {%         endfor %}
 {%     endif %}
-{%     if router_bgp.vlans is defined and router_bgp.vlans is not none %}
+{%     if router_bgp.vlans is arista.avd.defined %}
 
-##### VLAN Based
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -248,10 +258,10 @@
 {%     endif %}
 {%     if router_bgp.vpws is arista.avd.defined %}
 
-#### Router BGP VPWS Instances
+### Router BGP VPWS Instances
 
-| Instance | Route-Distinguisher | Both Route-Target| Pseudowire | Local ID | Remote ID |
-| -------- | ------------------- | -----------------| ---------- | -------- | --------- |
+| Instance | Route-Distinguisher | Both Route-Target | Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | ----------------- | ---------- | -------- | --------- |
 {%         for vpws_service in router_bgp.vpws %}
 {%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
 {%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}
@@ -262,9 +272,9 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if router_bgp.vrfs is arista.avd.defined %}
 
-#### Router BGP EVPN VRFs
-{%     if router_bgp.vrfs is defined and router_bgp.vrfs is not none %}
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
