@@ -178,6 +178,7 @@ the host and group variables are also stored in YAML files in dedicated folders 
 Group variables are defined in YAML files inside the group_vars folder:
 
 ![Figure: Ansible Group Variables](../_media/getting-started/Group-vars-folder-structure.png)
+<br>
 Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
 <br>
 The naming is not important.
