@@ -227,7 +227,7 @@
 {%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -243,7 +243,7 @@
 {%     endif %}
 {%     if router_bgp.vlans is arista.avd.defined %}
 
-### Router BGP MAC VRF for single VLAN Instances
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -274,7 +274,7 @@
 {%     endif %}
 {%     if router_bgp.vrfs is arista.avd.defined %}
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
