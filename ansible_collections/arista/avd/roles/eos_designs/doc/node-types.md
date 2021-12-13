@@ -53,7 +53,7 @@ node_type_keys:
 
     # Optional | Override interface_descriptions templates
     # If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks
-    interface descriptions:
+    interface_descriptions:
       underlay_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces >
       underlay_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces >
       connected_endpoints_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces >

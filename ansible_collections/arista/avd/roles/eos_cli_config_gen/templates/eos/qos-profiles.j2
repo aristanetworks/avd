@@ -11,6 +11,9 @@ qos profile {{ profile }}
 {%     if qos_profiles[profile].dscp is arista.avd.defined %}
    qos dscp {{ qos_profiles[profile].dscp }}
 {%     endif %}
+{%     if qos_profiles[profile].shape.rate is arista.avd.defined %}
+   shape rate {{ qos_profiles[profile].shape.rate }}
+{%     endif %}
 {%     for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
    !
    tx-queue {{ tx_queue }}
@@ -21,6 +24,9 @@ qos profile {{ profile }}
 {%         endif %}
 {%         if qos_profiles[profile].tx_queues[tx_queue].priority is arista.avd.defined %}
       {{ qos_profiles[profile].tx_queues[tx_queue].priority }}
+{%         endif %}
+{%         if qos_profiles[profile].tx_queues[tx_queue].shape.rate is arista.avd.defined %}
+      shape rate {{ qos_profiles[profile].tx_queues[tx_queue].shape.rate }}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
