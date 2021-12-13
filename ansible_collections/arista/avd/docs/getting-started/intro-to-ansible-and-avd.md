@@ -114,6 +114,11 @@ located in a folder that is also called inventory:
 
 ![Figure: Ansible Inventory Folder Structure](../_media/getting-started/Inventory-folder-structure.png)
 
+Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
+<br>
+The naming is not important.
+
+
 ### Inventories
 An example of an what's inside the inventory.yml file could be what is shown below (subset of an actual file for clarity).
 As stated earlier this file is in [YAML](https://yaml.org) format. Also note that the IP addresses shown below are only an example of
@@ -174,6 +179,9 @@ the host and group variables are also stored in YAML files in dedicated folders 
 Group variables are defined in YAML files inside the group_vars folder:
 
 ![Figure: Ansible Group Variables](../_media/getting-started/Group-vars-folder-structure.png)
+Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
+<br>
+The naming is not important.
 
 As shown in the example above, each file contains the definitions for one group, e.g. DC1.yml:
 
@@ -346,9 +354,9 @@ It's all done automatically based on the configuration built and applied to the 
 
 Below you will find a number of examples of documentation automatically created by Ansible AVD:
 
-- [5 stage CLOS fabric across two Data Centers](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
+- [5 stage CLOS fabric across two Data Centers](../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
 <br>
-- [A single leaf inside the fabric above](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
+- [A single leaf inside the fabric above](../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
 
 
 ## How do I use Ansible AVD:
