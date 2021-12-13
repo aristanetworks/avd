@@ -151,7 +151,7 @@ vrfs:
   MGMT:
     ip_routing: false
 management_interfaces:
-  Management0:
+  Management1:
     description: oob_management
     shutdown: false
     vrf: MGMT
