@@ -1,6 +1,6 @@
 {# tenant router bgp evpn VRFs #}
-{% if switch.evpn_services_l2_only == false %}
-{% set bgp_vrf = namespace() %}
+{% if switch.network_services_l3 is arista.avd.defined(true) %}
+{%     set bgp_vrf = namespace() %}
   vrfs:
 {%     for tenant in network_services_data.tenants %}
 {%         for vrf in tenant.vrfs %}
