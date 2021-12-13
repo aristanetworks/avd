@@ -113,11 +113,10 @@ This is defined in the Ansible ***inventory*** or actually inventory.yml, which 
 located in a folder that is also called inventory:
 
 ![Figure: Ansible Inventory Folder Structure](../_media/getting-started/Inventory-folder-structure.png)
-
+<br>
 Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
 <br>
 The naming is not important.
-
 
 ### Inventories
 An example of an what's inside the inventory.yml file could be what is shown below (subset of an actual file for clarity).
