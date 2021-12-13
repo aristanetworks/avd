@@ -153,7 +153,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

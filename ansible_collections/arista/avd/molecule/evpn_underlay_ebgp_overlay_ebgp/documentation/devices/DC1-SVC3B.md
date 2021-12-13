@@ -1281,7 +1281,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -1297,7 +1297,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Tenant_B_WAN_Zone | 192.168.255.13:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.13:30030 | 30030:30030 | - | - | learned | 310-311 |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

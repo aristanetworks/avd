@@ -619,14 +619,14 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 1.1.1.1:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_WEB_Zone | 1.1.1.1:11 | 11:11 | - | - | learned | 120-121 |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

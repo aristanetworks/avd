@@ -606,14 +606,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----- | ------ | --------- |
 | Enabled | 20 |  30 |
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.5:12 | 12:12 | - | - | learned | 130-131 |
 | Tenant_A_WEB_Zone | 192.168.255.5:11 | 11:11 | - | - | learned | 120-121 |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

@@ -170,7 +170,7 @@ interface Management1
 | ---------- | -------- |
 | EVPN-OVERLAY | True |
 
-### Router BGP MAC VRF for single VLAN Instances
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -179,7 +179,7 @@ interface Management1
 | 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
 | 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

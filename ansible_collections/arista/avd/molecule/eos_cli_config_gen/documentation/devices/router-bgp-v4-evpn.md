@@ -197,7 +197,7 @@ interface Management1
 | IPv4-UNDERLAY-PEERS | False |
 | MLAG-IPv4-UNDERLAY-PEER | False |
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -205,7 +205,7 @@ interface Management1
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

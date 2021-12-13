@@ -868,7 +868,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
-### Router BGP MAC VRF for multiple VLANs (Vlan Aware Bundles) Instances
+### Router BGP Vlan Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -881,7 +881,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_B_OP_Zone | 65001:20 | 20:20 | - | - | learned | 210-211 |
 | Tenant_C_OP_Zone | 65001:30 | 30:30 | - | - | learned | 310-311 |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

@@ -531,7 +531,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | ---------- | -------- |
 | EVPN-OVERLAY-PEERS | True |
 
-### Router BGP VRF Instances
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
