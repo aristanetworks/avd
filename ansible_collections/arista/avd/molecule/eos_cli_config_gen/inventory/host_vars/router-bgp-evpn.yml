@@ -70,9 +70,9 @@ router_bgp:
           - "11:11"
       redistribute_routes:
         - learned
+        - igmp
       no_redistribute_routes:
         - connected
-        - igmp
       vlan: 110
     TENANT_A_PROJECT02:
       rd: "192.168.255.3:12"
