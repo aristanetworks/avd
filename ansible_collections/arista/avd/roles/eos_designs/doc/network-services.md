@@ -138,6 +138,21 @@ tenants:
             - pod: < pod_name >
               ipv4_pool: < IPv4_address/Mask >
 
+        # Dictionary for router OSPF configuration | Optional.
+        # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be created on all leafs where
+        # the vrf is deployed. This will also cause automatic ospf redistribution into bgp vrf unless explicitly turned off with "redistribute_ospf: false".
+        ospf:
+          enabled: < true | false >
+          router_id: < router-id, Default -> switch router_id >
+          max_lsa: < int >
+          bfd: < true | false, Default -> false >
+          nodes:
+            - < hostname1 >
+            - < hostname2 >
+
+        # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
+        redistribute_ospf: < true | false >
+
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
         svis:

@@ -75,8 +75,17 @@
 {%                             break %}
 {%                         endif %}
 {%                     endfor %}
-{%                 elif vrf.redistribute_static == true %}
+{%                 elif vrf.redistribute_static is arista.avd.defined(true)  %}
         - static
+{%                 endif %}
+{%             endif %}
+{%             if vrf.ospf is arista.avd.defined %}
+{%                 if vrf.redistribute_ospf is not arista.avd.defined %}
+{%                     if inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
+        - ospf
+{%                     endif %}
+{%                 elif vrf.redistribute_ospf is arista.avd.defined(true) %}
+        - ospf
 {%                 endif %}
 {%             endif %}
       address_families:
