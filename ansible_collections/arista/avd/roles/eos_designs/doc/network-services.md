@@ -139,8 +139,9 @@ tenants:
               ipv4_pool: < IPv4_address/Mask >
 
         # Dictionary for router OSPF configuration | Optional.
-        # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be created on all leafs where
-        # the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless explicitly turned off with "redistribute_ospf: false".
+        # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be
+        # created on all leafs where the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless
+        # explicitly turned off with "redistribute_ospf: false".
         ospf:
           enabled: < true | false >
           process_id: < int, Default -> vrf_vni
