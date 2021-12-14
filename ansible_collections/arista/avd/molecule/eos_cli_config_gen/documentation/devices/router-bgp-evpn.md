@@ -154,8 +154,6 @@ interface Management1
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |
 
-#### Router BGP EVPN MAC-VRFs
-
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |

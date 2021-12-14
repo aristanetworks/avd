@@ -117,8 +117,6 @@ interface Management1
 | 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
 | 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
 
-#### Router BGP EVPN MAC-VRFs
-
 ### Router BGP Device Configuration
 
 ```eos

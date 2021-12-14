@@ -133,8 +133,6 @@ interface Management1
 | ------------------------------ | ------------------------------ |
 | mpls | Loopback0 |
 
-#### Router BGP EVPN MAC-VRFs
-
 ### Router BGP Device Configuration
 
 ```eos

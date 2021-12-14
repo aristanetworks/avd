@@ -116,8 +116,6 @@ interface Management1
 | 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
 | 2.2.1.0/24 | False | False | - | - | False |
 
-#### Router BGP EVPN MAC-VRFs
-
 ### Router BGP Device Configuration
 
 ```eos
