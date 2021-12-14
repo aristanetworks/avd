@@ -358,27 +358,45 @@ Below you will find a number of examples of documentation automatically created 
 <br>
 - [A single leaf inside the fabric above](../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
 
-
 ## How do I use Ansible AVD:
 
-Links to rest of documentation
-- With eos_design
-- With eos_cli_config_gen
-- With tower
+Below are a number of links to additional documentation about Ansible AVD and Ansible in general:
+- With [eos_design](../../roles/eos_cli_config_gen)
+- With [eos_cli_config_gen](../../roles/eos_cli_config_gen)
+- With [Ansible Tower](https://docs.ansible.com/ansible/2.3/tower.html)
 - With CI/CD
-- With eos_config_deploy_cvp / eos_config_deploy_eapi
+- With [eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
 
-As stated above, Ansible AVD comes with pre-built templates that you can either decide to re-use as-is or adapt to your liking.
-<much more description on how and which variables/templates should be used to define the fabric inserted here>
-<br>
-<br>
+Ansible AVD comes with pre-built templates that you can either decide to re-use as-is or adapt to your liking.
+
 Once the templates reflect your desired network configuration, you deploy the configuration either directly to the Arista EOS devices or via Arista Cloudvision using its internal change management system, where the changes can be reviewed, approved and executed in accordance with existing company requirements.
 The deployment is executed typically using CLI commands or via the GUI available with Ansible Tower. 
-Here, we will be showing examples using CLI commands:
-ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags build will run the playbook playbooks/dc1-fabric-deploy-cvp.yml with the tag build. 
 
-Once the configuration has been deployed, an automated validation of the designed configuration versus the running configuration can be executed using the included validation playbook, to ensure that e.g. all links are operational and cabled as desired, BGP adjacencies are operational etc. This quickly identifies any issues that could otherwise be overlooked and a redundant link could sit non-operational for months unless cumbersome manual testing is executed again per-device throughout the fabric.
+For example, running the CLI command: 
+```
+ansible-playbook playbooks/dc1-fabric-deploy-cvp.yml --tags build
+```
+...will execute the playbook `playbooks/dc1-fabric-deploy-cvp.yml` with the tag `build`. 
+
+Once the configuration has been deployed, an automated validation of the designed configuration versus the running configuration can be executed using the included `validation` playbook, to ensure that:
+
+- all links are operational and cabled as desired
+- BGP adjacencies are operational
+- and more...
+
+This quickly identifies any issues that could otherwise be overlooked and a redundant link could sit non-operational for months unless cumbersome manual testing is executed again per-device throughout the fabric.
 
 ## Day 2 Operations
-The term “Day 2 Operations” describes most if not all network configuration changes that occur after the initial day 1 configuration. The really time consuming day-to-day tasks such as adding/removing new leaf switches, VLANs, creating/modifying/deleting port profiles, configuring/modifying ports towards end systems etc. no longer have to be performed on a device-by-device basis across the entire fabric.<br>
-A configuration change can easily be applied to the Ansible YAML files and the scope for a given change can be specified. E.g. should the new VLAN 100 be added to all or a subset of leaf switches. Once your changes are complete, you re-deploy the configuration changes to the relevant network devices, again either directly or via Cloudvision Portal.
+The term “Day 2 Operations” describes most, if not all network configuration changes that occur after the initial day 1 configuration.
+
+The really time consuming day-to-day tasks such as:
+- adding/removing new leaf switches
+- adding/removing new VLANs
+- creating/modifying/deleting port profiles
+- configuring/modifying ports towards end systems
+
+no longer have to be performed on a device-by-device basis across the entire fabric.
+
+A configuration change can easily be applied to the Ansible YAML files and the scope for a given change can be specified.
+E.g. should the new VLAN 100 be added to all or a subset of leaf switches. Once your changes are complete, 
+you re-deploy the configuration changes to the relevant network devices, again either directly or via Cloudvision Portal.
