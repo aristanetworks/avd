@@ -156,14 +156,12 @@ interface Management1
 
 #### Router BGP EVPN MAC-VRFs
 
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned<br>igmp | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned | 110 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
 
 ### Router BGP VRFs
@@ -212,8 +210,8 @@ router bgp 65101
    vlan-aware-bundle TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target both 11:11
-      redistribute igmp
       route-target import export evpn domain remote 2:11
+      redistribute igmp
       redistribute learned
       vlan 110
    !
