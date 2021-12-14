@@ -1,0 +1,10 @@
+- name: without extension
+  configlet_build_config:
+    configlet_dir: '{{ role_path }}/{{ configlet_path }}'
+    configlet_prefix: 'New'
+  register: result
+- assert:
+    that:
+      - result is success
+      - result.changed == false
+      - result.CVP_CONFIGLETS != {}
