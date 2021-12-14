@@ -134,15 +134,20 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+| MLAG-IPv4-UNDERLAY-PEER | False |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Enabled | 10 |  1 |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -157,6 +162,11 @@ interface Management1
 | 2488 | 145.245.21.0:1 | 145.245.21.0:1 | - | - | no learned |
 
 #### Router BGP EVPN VRFs
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned<br>igmp | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
+
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -212,6 +222,7 @@ router bgp 65101
    vlan-aware-bundle TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target both 11:11
+      redistribute igmp
       redistribute learned
       no redistribute connected
       vlan 110
@@ -234,6 +245,7 @@ router bgp 65101
    !
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
+      evpn multicast
       route-target import evpn 11:11
       route-target export evpn 11:11
       router-id 192.168.255.3

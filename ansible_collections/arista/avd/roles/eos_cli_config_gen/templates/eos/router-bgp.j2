@@ -578,6 +578,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.vrfs[vrf].rd is arista.avd.defined %}
       rd {{ router_bgp.vrfs[vrf].rd }}
 {%         endif %}
+{%         if router_bgp.vrfs[vrf].evpn_multicast is arista.avd.defined(true) %}
+      evpn multicast
+{%         endif %}
 {%         if router_bgp.vrfs[vrf].route_targets.import is arista.avd.defined %}
 {%             for address_family in router_bgp.vrfs[vrf].route_targets.import %}
 {%                 for route_target in router_bgp.vrfs[vrf].route_targets.import[address_family] %}
