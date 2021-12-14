@@ -449,12 +449,6 @@ router isis EVPN_UNDERLAY
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
 
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
-
 ### Router BGP Device Configuration
 
 ```eos

@@ -121,15 +121,17 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
 #### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |
 | ------------------------------ | ------------------------------ |
 | mpls | Loopback0 |
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
 
 ### Router BGP Device Configuration
 
