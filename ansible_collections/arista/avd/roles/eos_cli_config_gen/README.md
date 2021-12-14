@@ -1823,7 +1823,7 @@ logging:
     level: < "<severity_level>" | "disabled" >
   trap: < "<severity_level>" | "disabled" >
   synchronous:
-    level: < "<severity_level>" | default --> critical | "disabled" >
+    level: < "<severity_level>" | "disabled" | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
