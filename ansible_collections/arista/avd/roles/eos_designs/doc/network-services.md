@@ -140,12 +140,16 @@ tenants:
 
         # Dictionary for router OSPF configuration | Optional.
         # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be created on all leafs where
-        # the vrf is deployed. This will also cause automatic ospf redistribution into bgp vrf unless explicitly turned off with "redistribute_ospf: false".
+        # the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless explicitly turned off with "redistribute_ospf: false".
         ospf:
           enabled: < true | false >
+          process_id: < int, Default -> vrf_vni
           router_id: < router-id, Default -> switch router_id >
           max_lsa: < int >
           bfd: < true | false, Default -> false >
+          redistribute_bgp:
+            enabled: < true | false >
+            route_map: < route-map name >
           nodes:
             - < hostname1 >
             - < hostname2 >
@@ -229,6 +233,19 @@ tenants:
             # Defined interface MTU
             mtu: < mtu >
 
+            # OSPF interface configuration
+            ospf:
+              enabled: < true | false >
+              point_to_point: < true | false, Default -> false >
+              area: < ospf area id, Default -> 0 >
+              cost: < ospf link cost >
+              authentication: < simple | message-digest >
+              simple_auth_key: < password used with simple authentication >
+              message_digest_keys:
+                - id: < int >
+                  hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
+                  key: < key password >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -256,6 +273,17 @@ tenants:
               < multiline eos cli >
             # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
             structured_config: < dictionary >
+            ospf:
+              enabled: < true | false >
+              point_to_point: < true | false, Default -> true >
+              area: < ospf area id, Default -> 0 >
+              cost: < ospf link cost >
+              authentication: < simple | message-digest >
+              simple_auth_key: < password used with simple authentication >
+              message_digest_keys:
+                - id: < int >
+                  hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
+                  key: < key password >
 
           # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]

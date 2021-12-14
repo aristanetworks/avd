@@ -362,6 +362,7 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
+router_ospf: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-LEAF1A_VTEP

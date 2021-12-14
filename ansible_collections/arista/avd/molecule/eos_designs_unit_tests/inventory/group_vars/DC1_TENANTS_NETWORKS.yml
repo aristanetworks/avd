@@ -110,6 +110,14 @@ tenants:
             ip_address_virtual: 10.1.41.1/24
       Tenant_A_WAN_Zone:
         vrf_vni: 14
+        ospf:
+          enabled: true
+          max_lsa: 15000
+          redistribute_bgp:
+            enabled: true
+          nodes:
+            - DC1-BL1A
+            - DC1-BL1B
         l3_interfaces:
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.10.10/24]
@@ -117,6 +125,18 @@ tenants:
             mtu: 9000
             enabled: True
             description: "test"
+            ospf:
+              enabled: true
+              area: 0
+              cost: 100
+              authentication: message-digest
+              point_to_point: true
+              message_digest_keys:
+                - id: 1
+                  hash_algorithm: sha1
+                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
+                - id: 2
+                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
             nodes: [DC1-BL1B]
@@ -172,6 +192,12 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.1.40.1/24
+            ospf:
+              enabled: true
+              area: 1
+              cost: 100
+              authentication: simple
+              simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
         additional_route_targets:
           - type: import
             address_family: vpn-ipv4

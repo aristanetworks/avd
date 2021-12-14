@@ -600,6 +600,11 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    ospf_area: 1
+    ospf_network_point_to_point: false
+    ospf_cost: 100
+    ospf_authentication: simple
+    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
@@ -1341,6 +1346,7 @@ ip_igmp_snooping:
     120:
       enabled: false
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+router_ospf: {}
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.12

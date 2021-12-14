@@ -119,6 +119,7 @@ router_bgp:
       redistribute_routes:
       - connected
       - static
+      - ospf
       address_families:
         ipv4:
           neighbors:
@@ -435,6 +436,11 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    ospf_area: 1
+    ospf_network_point_to_point: false
+    ospf_cost: 100
+    ospf_authentication: simple
+    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan250:
     tenant: Tenant_B
     tags:
@@ -451,6 +457,18 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+router_ospf:
+  process_ids:
+    14:
+      vrf: Tenant_A_WAN_Zone
+      passive_interface_default: true
+      router_id: 192.168.255.15
+      no_passive_interfaces:
+      - Vlan150
+      max_lsa: 15000
+      redistribute:
+        bgp:
+          enabled: true
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1B_VTEP

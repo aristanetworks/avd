@@ -664,6 +664,7 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_OP_Zone
     ip_address_virtual: 10.3.11.1/24
+router_ospf: {}
 virtual_source_nat_vrfs:
   Tenant_A_OP_Zone:
     ip_address: 10.255.1.11
