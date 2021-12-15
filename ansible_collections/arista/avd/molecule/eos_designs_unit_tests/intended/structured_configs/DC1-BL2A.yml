@@ -331,7 +331,6 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
-router_ospf: {}
 vxlan_interface:
   Vxlan1:
     description: DC1-BL2A_VTEP
