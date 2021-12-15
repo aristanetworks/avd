@@ -55,7 +55,7 @@ running on the customer’s preferred hypervisor. This Ansible server then commu
 Arista network devices or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
 Controlling what Ansible does is typically done using a SSH terminal session to the Ansible server from the Operator’s computer.
 Using Ansible to control an Arista network infrastructure is agentless,
-i.e. it requires nothing additional to be installed on the Arista network devices or on Arista CloudVision Portal.
+i.e. it requires nothing additional to be installed on the Arista network devices or on Arista CloudVision Portal and only uses the existing APIs to remotely configure the network.
 
 ![Figure: Ansible and CVP](../_media/getting-started/Ansible-and-CVP-httpapi.png)
 
@@ -78,18 +78,18 @@ Ansible AVD is an opinionated collection, meaning that field experiences and bes
 With Ansible AVD, users get up and running quickly without having to invent every part of the network configuration from scratch.
 This means only the most basic information must be provided by the user to get a new fabric up and running.
  
-Examples could be:
+Parameters which need to be defined by the user include:
 - Username/password for network devices and Cloudvision
 - OOB management IP range
 - IP scope for link addresses
 - IP scope for loopback interfaces
 - VLAN and VNI ranges
 - Device hostnames
-- And so on
+- Which devices are acting in each role, such as spine or leaf.
 
 All are details that must be decided upon in any fabric design. 
 
-In a standard spine-leaf topology, Ansible AVD takes care of all the work past the theoretical design.
+In a standard spine-leaf topology, Ansible AVD takes care of all the work generating the full EOS configurations past this high level description of names and numbering for the network.
 
 ## When to use Ansible AVD and when not to
 It’s important to mention when to, and perhaps more importantly, when not to use Ansible AVD.
@@ -98,7 +98,7 @@ Automating provisioning of a network infrastructure makes most sense when the ne
 repeatable patterns. It makes less sense when a network infrastructure is using a non-uniform design.
 Although you can use Ansible AVD to provision a non-uniform network while harvesting some benefits,
 you’re creating a lot of manual work and customization of Ansible AVD to achieve what you need,
-essentially making it much harder to maintain going forward.
+which may ultimately be more work than manually managing the network when every device is its own special case.
 
 ## Change your mindset and culture
 Many network engineers prefer to use the CLI for all things networking, be it troubleshooting, ad-hoc operational configuration changes
@@ -120,9 +120,9 @@ located in a folder that is also called inventory:
 
 ![Figure: Ansible Inventory Folder Structure](../_media/getting-started/Inventory-folder-structure.png)
 
-Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
+Please note that the example above is taken from the [ansible-avd-cloudvision-demo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo) repository. 
 
-The naming is not important.
+The exact name of the inventory file is not important, but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
 
 ### Inventories
 An example of an what's inside the inventory.yml file is shown below (subset of an actual file for clarity).
@@ -162,7 +162,7 @@ all:
                       ansible_host: 10.255.0.16
 ```
 
-Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API,
+Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
 including Arista switches, which will be what we’re focusing on going forward.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using what is called ***groups***,
@@ -194,9 +194,8 @@ Group variables are defined in YAML files inside the group_vars folder:
 
 Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
 
-The naming is not important.
-
-As shown in the example above, each file contains the definitions for one group, 
+Each file in the `group_vars` folder controls the variables for one of the groups defined in the `inventory.yml` file,
+so settings for the whole network can be specified in `DC1.yml`, and later overridden in `DC1_SPINES.yml` for just the hosts inside that group.
 
 A subset of DC1.yml is shown below:
 
@@ -235,11 +234,6 @@ ntp_servers:
   - 0.<local country>.pool.ntp.org
   - 1.<local country>.pool.ntp.org
 ```
-
-All the definitions in DC1.yml will be applied to all devices that are children of the "DC1" definition in the inventory.yml we covered earlier.
-
-More specific definitions can be applied e.g. to the DC1_FABRIC group using the DC1_FABRIC.yml file.
-If there are duplicate settings in both DC1.yml and DC1_FABRIC.yml, the ones defined in DC1_FABRIC.yml will take effect, since they are more specific.
 
 Below is a subset of the DC1_FABRIC file:
 
@@ -397,7 +391,6 @@ It's all done automatically based on the configuration built and applied to the 
 Below you will find two examples of documentation automatically created by Ansible AVD:
 
 - [5 stage CLOS fabric across two Data Centers](../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
-<br>
 - [A single leaf inside the fabric above](../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
 
 ## How do I use Ansible AVD
