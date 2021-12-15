@@ -1,7 +1,7 @@
 {# Leaf mlag peer-link #}
 port_channel_interfaces:
   Port-Channel{{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}:
-    description: MLAG_PEER_{{ switch.mlag_peer }}_Po{{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
+    description: "{% include switch.interface_descriptions.underlay_port_channel_mlag_interfaces %}"
     type: switched
     shutdown: false
     vlans: "2-4094"
