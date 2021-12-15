@@ -56,6 +56,8 @@ node_type_keys:
     interface descriptions:
       underlay_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_interfaces >
       underlay_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_interfaces >
+      underlay_ethernet_mlag_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_ethernet_mlag_interfaces >
+      underlay_port_channel_mlag_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.underlay_port_channel_mlag_interfaces >
       connected_endpoints_ethernet_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_ethernet_interfaces >
       connected_endpoints_port_channel_interfaces: <path to J2 template - default inherited from templates.interface_descriptions.connected_endpoints_port_channel_interfaces >
       overlay_loopback_interface: <path to J2 template - default inherited from templates.interface_descriptions.overlay_loopback_interface >
@@ -119,6 +121,14 @@ underlay_port_channel_interfaces:
 - `{{ link.channel_group_id }}`
 - `{{ link.peer_channel_group_id }}`
 
+underlay_ethernet_mlag_interfaces:
+- `{{ mlag_interface }}`
+- `{{ mlag_peer }}`
+
+underlay_port_channel_mlag_interfaces:
+- `{{ mlag_interfaces }}`
+- `{{ mlag_peer }}`
+
 connected_endpoints_ethernet_interfaces:
 - `{{ peer }}`
 - `{{ peer_interface }}`
@@ -132,6 +142,8 @@ All templates can leverage the switch facts (switch.*) to customize the interfac
 For more information about the available contextual properties, see the following links:
 - [underlay_ethernet_interfaces facts](../templates/facts/topology/p2p-uplinks.j2)
 - [underlay_port_channel_interfaces facts](../templates/facts/topology/port-channel-uplinks.j2)
+- [underlay_ethernet_mlag_interfaces facts](../templates/mlag/ethernet-interfaces.j2)
+- [underlay_port_channel_mlag_interfaces facts](../templates/mlag/port-channel-interfaces.j2)
 - [connected_endpoints_ethernet_interfaces facts](../templates/connected_endpoints/ethernet-interfaces.j2)
 - [connected_endpoints_port_channel_interfaces facts](../templates/connected_endpoints/port-channel-interfaces.j2)
 
