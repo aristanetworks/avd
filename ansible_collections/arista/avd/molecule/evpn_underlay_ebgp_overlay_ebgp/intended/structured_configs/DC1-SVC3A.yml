@@ -766,7 +766,7 @@ vlan_interfaces:
     mtu: 1500
 port_channel_interfaces:
   Port-Channel5:
-    description: MLAG_PEER_DC1-SVC3B_Po5
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -919,7 +919,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3B_Ethernet5
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5
     type: switched
     shutdown: false
     channel_group:
@@ -929,7 +929,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3B_Ethernet6
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6
     type: switched
     shutdown: false
     channel_group:
