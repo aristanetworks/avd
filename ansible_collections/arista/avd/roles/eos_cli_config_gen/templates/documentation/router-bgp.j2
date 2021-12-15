@@ -36,10 +36,10 @@
 {%             endif %}
 | {{ distance_cli }} |
 {%         endif %}
-{%         if router_bgp.paths.ec is arista.avd.defined %}
-{%             set paths_cli = "maximum-paths " ~ router_bgp.paths.ec %}
-{%             if router_bgp.paths.ecmp is arista.avd.defined %}
-{%                 set paths_cli = paths_cli ~ " ecmp " ~ router_bgp.paths.ecmp %}
+{%         if router_bgp.maximum_paths.paths is arista.avd.defined %}
+{%             set paths_cli = "maximum-paths " ~ router_bgp.maximum_paths.paths %}
+{%             if router_bgp.maximum_paths.ecmp is arista.avd.defined %}
+{%                 set paths_cli = paths_cli ~ " ecmp " ~ router_bgp.maximum_paths.ecmp %}
 {%             endif %}
 | {{ paths_cli }} |
 {%         endif %}

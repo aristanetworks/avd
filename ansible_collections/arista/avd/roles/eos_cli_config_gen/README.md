@@ -2214,8 +2214,8 @@ router_bgp:
     external_routes: < 1-255 >
     internal_routes: < 1-255 >
     local_routes: < 1-255 >
-  paths:
-    ec: < 1-600 >
+  maximum_paths:
+    paths: < 1-600 >
     ecmp: < 1-600 >
   updates:
     wait_for_convergence: < true | false >
