@@ -805,10 +805,10 @@ ethernet_interfaces:
       trust: < dscp | cos >
       dscp: < dscp-value >
       cos: < cos-value >
-    priority_flow_control: < on | off >
+    priority_flow_control: < true | false >
     priority_flow_control_prioritites:
       - priority: < 0-7 >
-        enable_pfc: < true | false >
+        no_drop: < true | false >
     bfd:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >

@@ -20,10 +20,10 @@ ethernet_interfaces:
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
       EOF
-    priority_flow_control: on
+    priority_flow_control: true
     priority_flow_control_priorities:
       priority: 5
-      enable_pfc: false # drop
+      no_drop: false # drop
 
   Ethernet2:
     peer: SRV-POD03
@@ -41,10 +41,10 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
-    priority_flow_control: on
+    priority_flow_control: true
     priority_flow_control_priorities:
       priority: 5
-      enable_pfc: true # no-drop
+      no_drop: true # no-drop
     
 
   Ethernet3:
@@ -72,7 +72,7 @@ ethernet_interfaces:
       2345:ABCD:3FE0::3/96:
         valid_lifetime: 100000
         no_autoconfig_flag: true
-    priority_flow_control: off
+    priority_flow_control: false
 
   Ethernet4:
     description: Molecule IPv6
