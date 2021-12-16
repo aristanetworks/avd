@@ -33,17 +33,17 @@ ethernet_interfaces:
 {%                         if l3_interface.description is arista.avd.defined %}
     description: {{ l3_interface.description }}
 {%                         endif %}
-{%                         if l3_interface.ospf.enabled is arista.avd.defined(true) %}
+{%                         if l3_interface.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
     ospf_area: {{ l3_interface.ospf.area | arista.avd.default(0) }}
     ospf_network_point_to_point: {{ l3_interface.ospf.point_to_point | arista.avd.default(true) }}
 {%                         endif %}
-{%                         if l3_interface.ospf.cost is arista.avd.defined() %}
+{%                         if l3_interface.ospf.cost is arista.avd.defined %}
     ospf_cost: {{ l3_interface.ospf.cost }}
 {%                         endif %}
-{%                         if l3_interface.ospf.authentication is arista.avd.defined("simple") and l3_interface.ospf.simple_auth_key is arista.avd.defined() %}
+{%                         if l3_interface.ospf.authentication is arista.avd.defined("simple") and l3_interface.ospf.simple_auth_key is arista.avd.defined %}
     ospf_authentication: "simple"
     ospf_authentication_key: {{ l3_interface.ospf.simple_auth_key }}
-{%                         elif l3_interface.ospf.authentication is arista.avd.defined("message-digest") and l3_interface.ospf.message_digest_keys is arista.avd.defined() %}
+{%                         elif l3_interface.ospf.authentication is arista.avd.defined("message-digest") and l3_interface.ospf.message_digest_keys is arista.avd.defined %}
     ospf_authentication: "message-digest"
     ospf_message_digest_keys:
 {%                             for key in l3_interface.ospf.message_digest_keys | arista.avd.natural_sort %}

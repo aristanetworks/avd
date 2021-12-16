@@ -274,6 +274,7 @@ tenants:
               < multiline eos cli >
             # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
             structured_config: < dictionary >
+
             ospf:
               enabled: < true | false >
               point_to_point: < true | false, Default -> true >
