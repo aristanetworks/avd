@@ -301,6 +301,35 @@
 | {{ evpn_hostflap_detection_state }} | {{ evpn_hostflap_detection_window }} |  {{ evpn_hostflap_detection_threshold }} |
 {%         endif %}
 {%     endif %}
+{%     set evpn_gw_config = namespace(peer_groups = [], configured = false) %}
+{%     for peer_group in router_bgp.peer_groups | arista.avd.natural_sort %}
+{%         if router_bgp.address_family_evpn.peer_groups[peer_group].domain_remote is arista.avd.defined(true) %}
+{%             do evpn_gw_config.peer_groups.append(peer_group) %}
+{%             set evpn_gw_config.configured = true %}
+{%         endif %}
+{%     endfor %}
+{%     if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
+{%         set evpn_gw_config.configured = true %}
+{%     endif %}
+{%     if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain is arista.avd.defined(true) %}
+{%         set evpn_gw_config.configured = true %}
+{%     endif %}
+{%     if evpn_gw_config.configured is arista.avd.defined(true) %}
+
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%         if evpn_gw_config.peer_groups | length > 0 %}
+| Remote Domain Peer Groups | {{ evpn_gw_config.peer_groups | join(", ") }} |
+{%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
+| L3 Gateway Configured | True |
+{%         endif %}
+{%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain is arista.avd.defined(true) %}
+| L3 Gateway Inter-domain | True |
+{%         endif %}
+{%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
 
 ### Router BGP VLAN Aware Bundles
@@ -310,13 +339,28 @@
 {%         for vlan_aware_bundle in router_bgp.vlan_aware_bundles | arista.avd.natural_sort %}
 {%             set route_distinguisher = router_bgp.vlan_aware_bundles[vlan_aware_bundle].rd | arista.avd.default("-") %}
 {%             set vlans = router_bgp.vlan_aware_bundles[vlan_aware_bundle].vlan | arista.avd.default("-") %}
-{%             set both_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both | arista.avd.default("-") %}
-{%             set import_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import | arista.avd.default("-")  %}
-{%             set export_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export | arista.avd.default("-") %}
+{%             if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both is arista.avd.defined or router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import_export_evpn_domains is arista.avd.defined %}
+{%                 set both_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.both | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
+{%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
+{%             if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import is arista.avd.defined or router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import_evpn_domains is arista.avd.defined %}
+{%                 set import_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.import_evpn_domains | arista.avd.natural_sort %}
+{%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
+{%             if router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export is arista.avd.defined or router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domains is arista.avd.defined %}
+{%                 set export_route_target = router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlan_aware_bundles[vlan_aware_bundle].route_targets.export_evpn_domains | arista.avd.natural_sort  %}
+{%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
 {%             set redistribute_route = router_bgp.vlan_aware_bundles[vlan_aware_bundle].redistribute_routes | arista.avd.default("") | list %}
 {%             set no_redistribute_route = router_bgp.vlan_aware_bundles[vlan_aware_bundle].no_redistribute_routes | arista.avd.default("") | map("replace","","no ",1) | list %}
 {%             set redistribution = redistribute_route + no_redistribute_route %}
-| {{ vlan_aware_bundle }} | {{ route_distinguisher }} | {{ both_route_target | join("<br>") }} | {{ import_route_target | join("<br>") }} | {{ export_route_target | join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} | {{ vlans }} |
+| {{ vlan_aware_bundle }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} | {{ vlans }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.vlans is arista.avd.defined %}
@@ -326,14 +370,29 @@
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
 {%         for vlan in router_bgp.vlans | arista.avd.natural_sort %}
-{%             set route_distinguisher = router_bgp.vlans[vlan].rd | arista.avd.default("-")  %}
-{%             set both_route_target = router_bgp.vlans[vlan].route_targets.both | arista.avd.default("-")  %}
-{%             set import_route_target = router_bgp.vlans[vlan].route_targets.import | arista.avd.default("-") %}
-{%             set export_route_target = router_bgp.vlans[vlan].route_targets.export | arista.avd.default("-") %}
+{%             set route_distinguisher = router_bgp.vlans[vlan].rd | arista.avd.default("-") %}
+{%             if router_bgp.vlans[vlan].route_targets.both is arista.avd.defined or router_bgp.vlans[vlan].route_targets.import_export_evpn_domains is arista.avd.defined %}
+{%                 set both_route_target = router_bgp.vlans[vlan].route_targets.both | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlans[vlan].route_targets.import_export_evpn_domains | arista.avd.natural_sort %}
+{%                     do both_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
+{%             if router_bgp.vlans[vlan].route_targets.import is arista.avd.defined or router_bgp.vlans[vlan].route_targets.import_evpn_domains is arista.avd.defined %}
+{%                 set import_route_target = router_bgp.vlans[vlan].route_targets.import | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlans[vlan].route_targets.import_evpn_domains | arista.avd.natural_sort %}
+{%                     do import_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
+{%             if router_bgp.vlans[vlan].route_targets.export is arista.avd.defined or router_bgp.vlans[vlan].route_targets.export_evpn_domains is arista.avd.defined %}
+{%                 set export_route_target = router_bgp.vlans[vlan].route_targets.export | arista.avd.default([]) %}
+{%                 for rt in router_bgp.vlans[vlan].route_targets.export_evpn_domains | arista.avd.natural_sort  %}
+{%                     do export_route_target.append(rt.domain ~ " " ~ rt.route_target) %}
+{%                 endfor %}
+{%             endif %}
 {%             set redistribute_route = router_bgp.vlans[vlan].redistribute_routes | arista.avd.default("") | list %}
 {%             set no_redistribute_route = router_bgp.vlans[vlan].no_redistribute_routes | arista.avd.default("") | map("replace","","no ",1) | list %}
 {%             set redistribution = redistribute_route + no_redistribute_route %}
-| {{ vlan }} | {{ route_distinguisher }} | {{ both_route_target | join("<br>") }} | {{ import_route_target | join("<br>") }} | {{ export_route_target | join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} |
+| {{ vlan }} | {{ route_distinguisher }} | {{ both_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ import_route_target | arista.avd.default(["-"]) | join("<br>") }} | {{ export_route_target | arista.avd.default(["-"]) |  join("<br>") }} | {{ redistribution | join("<br>") | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
 {%     if router_bgp.vpws is arista.avd.defined %}

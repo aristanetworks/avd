@@ -47,10 +47,15 @@ router_bgp:
       maximum_routes_warning_only: true
   redistribute_routes:
   address_family_evpn:
-    domain_identifier: 65101:0
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    domain_identifier: "65101:0"
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+        domain_remote: true
       MLAG-IPv4-UNDERLAY-PEER:
         activate: false
     evpn_hostflap_detection:
@@ -68,6 +73,9 @@ router_bgp:
       route_targets:
         both:
           - "11:11"
+        import_export_evpn_domains:
+          - domain: remote
+            route_target: "2:11"
       redistribute_routes:
         - learned
         - igmp
@@ -76,9 +84,18 @@ router_bgp:
       vlan: 110
     TENANT_A_PROJECT02:
       rd: "192.168.255.3:12"
+      rd_evpn_domain:
+        domain: remote
+        rd: "192.168.255.3:12"
       route_targets:
         both:
           - "12:12"
+        import_evpn_domains:
+          - domain: remote
+            route_target: "2:12"
+        export_evpn_domains:
+          - domain: remote
+            route_target: "2:12"
       redistribute_routes:
         - learned
       vlan: 112
