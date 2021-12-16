@@ -346,6 +346,7 @@ interface Ethernet20
 interface Ethernet21
    description 200MBit/s shape
    switchport
+   no qos trust
    shape rate 200000 kbps
 !
 interface Ethernet22
@@ -416,5 +417,5 @@ interface Ethernet24
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Ethernet7 | cos | - | 5 | - |
-| Ethernet21 | - | - | - | 200000 kbps |
+| Ethernet21 | disabled | - | - | 200000 kbps |
 | Ethernet22 | - | - | - | 10 percent |

@@ -235,6 +235,14 @@ QOS Profile: **experiment**
 | 5 | 40 | - | - |
 | 7 | 30 | - | 40 percent |
 
+QOS Profile: **no_qos_trust**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| 3 | 4 | disabled | - |
+
 QOS Profile: **test**
 
 **Settings**
@@ -272,6 +280,11 @@ qos profile experiment
    tx-queue 7
       bandwidth percent 30
       shape rate 40 percent
+!
+qos profile no_qos_trust
+   no qos trust
+   qos cos 3
+   qos dscp 4
 !
 qos profile test
    qos trust dscp
