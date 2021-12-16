@@ -64,7 +64,6 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
-    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -654,10 +653,10 @@ generate_device_documentation: < true | false | default -> true >
 
 ### Generate Default Config
 
-The `generate_default_config` knob allows to ommit default EOS configuration.
+The `generate_default_config` knob allows to omit default EOS configuration.
 This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
 
-The following commands will be ommited when `generate_default_config` is set to `false`:
+The following commands will be omitted when `generate_default_config` is set to `false`:
 
 - RANCID Content Type
 - Hostname
@@ -1138,6 +1137,7 @@ vlan_interfaces:
     ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
+    ip_igmp: < true | false >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -2118,18 +2118,24 @@ qos_profiles:
     trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
     trust: < dscp | cos >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
@@ -2288,6 +2294,9 @@ router_bgp:
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
@@ -2297,6 +2306,15 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < learned >
       vlan: < vlan_range >
@@ -2311,6 +2329,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2318,9 +2342,27 @@ router_bgp:
   vlans:
     < vlan_id_1>:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2350,11 +2392,15 @@ router_bgp:
     neighbor_default:
       encapsulation: < vxlan | mpls >
       next_hop_self_source_interface: < source interface >
+      next_hop_self_received_evpn_routes:
+        enable: < true | false >
+        inter_domain: < true | false >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        domain_remote: < true | false >
     evpn_hostflap_detection:
       enabled: < true | false >
       threshold: < integer >
@@ -2450,6 +2496,7 @@ router_bgp:
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
+      evpn_multicast: < true | false >
       route_targets:
         import:
           < address_family >:
@@ -2625,12 +2672,35 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
-  log_adjacency_changes: < true | false >
-  no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
+  log_adjacency_changes: < true | false >
+  mpls_ldp_sync_default: < true | false >
+  timers:
+    local_convergence:
+      protected_prefixes: < true | false >
+      delay: < number of milliseconds (Optional, default is 10000) >
+  advertise:
+    passive_only: < true | false >
+  no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:
-    - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-128 >
+  address_family_ipv4:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
+  address_family_ipv6:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 (Optional, default is to protect all levels) >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >

@@ -328,12 +328,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 172.17.210.3 | 65211 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 | 200.200.200.101 | 65112 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
-
 ### Router BGP Device Configuration
 
 ```eos

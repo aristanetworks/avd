@@ -31,7 +31,7 @@ vxlan_interface:
                   tenant.mac_vrf_vni_base + l2vlan_int) }}
 {%     endfor %}
 {% endfor %}
-{% if switch.evpn_services_l2_only == false %}
+{% if switch.network_services_l3 is arista.avd.defined(true) %}
       vrfs:
 {%     for tenant in network_services_data.tenants %}
 {%         for vrf in tenant.vrfs %}

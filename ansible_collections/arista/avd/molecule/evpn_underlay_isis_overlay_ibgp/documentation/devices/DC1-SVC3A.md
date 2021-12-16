@@ -581,6 +581,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Net-ID | 49.0001.0001.0001.0004.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.8 |
 | Log Adjacency Changes | True |
 
 ### ISIS Interfaces Summary
@@ -646,9 +647,11 @@ router isis EVPN_UNDERLAY
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 

@@ -625,22 +625,26 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_WAN_Zone | 192.168.255.15:14 | 14:14 | - | - | learned | 150 |
 | Tenant_B_WAN_Zone | 192.168.255.15:21 | 21:21 | - | - | learned | 250 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

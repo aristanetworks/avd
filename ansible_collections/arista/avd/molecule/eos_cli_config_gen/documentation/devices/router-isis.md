@@ -322,9 +322,12 @@ interface Vlan4094
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
+| MPLS LDP Sync Default | True |
+| Local Convergence Delay (ms) | 15000 |
+| Advertise Passive-only | True |
 | SR MPLS Enabled | True |
-| SR MPLS Router-ID | 192.168.255.3 |
 
 ### ISIS Interfaces Summary
 
@@ -352,12 +355,14 @@ router isis EVPN_UNDERLAY
    is-type level-2
    router-id ipv4 192.168.255.3
    log-adjacency-changes
+   mpls ldp sync default
+   timers local-convergence-delay 15000 protected-prefixes
+   advertise passive-only
    !
    address-family ipv4 unicast
       maximum-paths 2
    !
    segment-routing mpls
-      router-id 192.168.255.3
       no shutdown
 ```
 

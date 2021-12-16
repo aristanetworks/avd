@@ -254,7 +254,7 @@ defaults <- node_group <- node_group.node <- node
 
   defaults:
     # Possibility to prevent configuration of Tenant VRFs and SVIs
-    # Override role definition from node_type_keys
+    # Override node definition "network_services_l3" from node_type_keys
     # This allows support for centralized routing.
     evpn_services_l2_only: < false | true >
 

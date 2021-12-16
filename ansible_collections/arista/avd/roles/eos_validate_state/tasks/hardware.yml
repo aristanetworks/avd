@@ -87,7 +87,7 @@
 - name: Validate transceivers manufacturers
   assert:
     that:
-      - "xcvrSlot.value.mfgName in ['Not Present', 'Arastra, Inc.', 'Arista Networks']"
+      - "xcvrSlot.value.mfgName in {{ accepted_xcvr_manufacturers }}"
     fail_msg: transceivers manufacturers is "{{ xcvrSlot.value.mfgName }}"
     quiet: true
   loop: "{{ inventory.stdout_lines.0.xcvrSlots | dict2items }}"
@@ -95,5 +95,6 @@
     loop_var: xcvrSlot
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   register: transceiver_inventory_results
+  when: "xcvrSlot.value.mfgName != 'Not Present'"
   tags:
     - hardware
