@@ -146,13 +146,21 @@ interface Management1
 | ----- | ------ | --------- |
 | Enabled | 10 |  1 |
 
+#### EVPN DCI Gateway Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
+
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11 | - | - | learned<br>igmp | 110 |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | - | - | learned | 112 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp | 110 |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
 
 ### Router BGP VRFs
 
@@ -200,22 +208,28 @@ router bgp 65101
    vlan-aware-bundle TENANT_A_PROJECT01
       rd 192.168.255.3:11
       route-target both 11:11
+      route-target import export evpn domain remote 2:11
       redistribute igmp
       redistribute learned
       vlan 110
    !
    vlan-aware-bundle TENANT_A_PROJECT02
       rd 192.168.255.3:12
+      rd evpn domain remote 192.168.255.3:12
       route-target both 12:12
+      route-target import evpn domain remote 2:12
+      route-target export evpn domain remote 2:12
       redistribute learned
       vlan 112
    !
    address-family evpn
       host-flap detection window 10
       host-flap detection threshold 1
-      domain identifier 3906060
+      domain identifier 65101:0
       neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS domain remote
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

@@ -2286,6 +2286,9 @@ router_bgp:
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
@@ -2295,6 +2298,15 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < learned >
       vlan: < vlan_range >
@@ -2309,6 +2321,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2316,9 +2334,27 @@ router_bgp:
   vlans:
     < vlan_id_1>:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2348,11 +2384,15 @@ router_bgp:
     neighbor_default:
       encapsulation: < vxlan | mpls >
       next_hop_self_source_interface: < source interface >
+      next_hop_self_received_evpn_routes:
+        enable: < true | false >
+        inter_domain: < true | false >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        domain_remote: < true | false >
     evpn_hostflap_detection:
       enabled: < true | false >
       threshold: < integer >
