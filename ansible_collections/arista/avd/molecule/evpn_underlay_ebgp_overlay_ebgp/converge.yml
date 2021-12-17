@@ -8,4 +8,4 @@
     - name: generate intented variables
       delegate_to: 127.0.0.1
       import_role:
-         name: arista.avd.eos_designs
+        name: arista.avd.eos_designs
