@@ -51,8 +51,8 @@ interface Management1
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| false | true |
+| ---- | ----- |
+| False | True |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -62,7 +62,6 @@ Management HTTPS is using the SSL profile SSL_PROFILE
 | -------- | -------- | -------- |
 | default | ACL-API | - |
 | MGMT | ACL-API | - |
-
 
 ### Management API HTTP Configuration
 
