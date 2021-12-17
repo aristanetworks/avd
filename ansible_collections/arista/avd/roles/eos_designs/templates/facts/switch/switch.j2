@@ -15,6 +15,9 @@ switch:
 {# switch.mgmt_ip #}
   mgmt_ip: {{ switch_data.node.mgmt_ip | arista.avd.default() }}
 
+{# switch.mgmt_interface#}
+  mgmt_interface: {{ platform_settings.management_interface | arista.avd.default('Management1') }}
+
 {# switch.platform #}
 {% set switch_platform = switch_data.combined.platform | arista.avd.default() %}
   platform: {{ switch_platform }}
