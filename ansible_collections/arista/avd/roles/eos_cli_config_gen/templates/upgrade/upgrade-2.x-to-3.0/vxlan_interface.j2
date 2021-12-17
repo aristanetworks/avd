@@ -17,10 +17,10 @@ vxlan_interface:
 {%     endif %}
 {%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans is arista.avd.defined %}
       vlans:
-        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | to_nice_yaml(indent=2) | indent(8, false) }}
+        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | to_nice_yaml(indent=2) | indent(8, false) -}}
 {%     endif %}
 {%     if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is arista.avd.defined %}
       vrfs:
-        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | to_nice_yaml(indent=2) | indent(8, false) }}
+        {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | to_nice_yaml(indent=2) | indent(8, false) -}}
 {%     endif %}
 {% endif %}
