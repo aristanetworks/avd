@@ -13,4 +13,3 @@ roles:
         action: permit
         mode: exec
         command: traceroute
-

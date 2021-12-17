@@ -6,9 +6,9 @@ service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
   cvaddrs:
-    - 192.168.200.11:9910
+  - 192.168.200.11:9910
   cvauth:
-    method: "key"
+    method: key
     key: telarista
   cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
@@ -25,12 +25,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: mstp
   mst_instances:

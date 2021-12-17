@@ -29,7 +29,6 @@ spine:
     DC2-POD1-SPINE2:
 # Change from spine.nodes.DC2-POD1-SPINE2.super_spine_interfaces to spine.nodes.DC2-POD1-SPINE2.uplink_switch_interfaces
       uplink_switch_interfaces: ['Ethernet2', 'Ethernet2']
-
 l3leaf:
   defaults:
 # Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
@@ -66,7 +65,6 @@ l3leaf:
         DC2-POD1-LEAF1A:
 # Change from l3leaf.node_groups.RACK1_SINGLE.nodes.DC2-POD1-LEAF1A.spine_interfaces to l3leaf.node_groups.RACK1_SINGLE.nodes.DC2-POD1-LEAF1A.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3']
-
 l2leaf:
   defaults:
 # Change from l2leaf_inband_management_subnet to l2leaf.defaults.inband_management_subnet
@@ -83,7 +81,6 @@ l2leaf:
         DC2-POD1-L2LEAF1A:
 # Change from l2leaf.node_groups.RACK1_SINGLE.nodes.DC2-POD1-L2LEAF1A.l3leaf_interfaces to l2leaf.node_groups.RACK1_SINGLE.nodes.DC2-POD1-L2LEAF1A.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet3']
-
 super_spine:
   defaults:
 # Change from super_spine.platform to super_spine.defaults.platform
@@ -94,7 +91,6 @@ super_spine:
     loopback_ipv4_pool: 172.16.200.0/24
 # Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
     bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
-
 overlay_controller:
   defaults:
 # Change from overlay_controller.platform to overlay_controller.defaults.platform
@@ -127,7 +123,6 @@ overlay_controller:
       uplink_switch_interfaces: ['Ethernet5', 'Ethernet7']
 # Change from overlay_controller.nodes.DC2-RS2.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
-
 # Node type definitions
 node_type_keys:
   spine:

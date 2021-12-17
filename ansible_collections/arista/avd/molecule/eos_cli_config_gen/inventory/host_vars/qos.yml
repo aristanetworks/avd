@@ -38,7 +38,7 @@ qos_profiles:
         priority: 'no priority'
       5:
         bandwidth_percent: 40
-      4: 
+      4:
         bandwidth_guaranteed_percent: 10
       7:
         bandwidth_percent: 30
