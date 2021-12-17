@@ -1822,14 +1822,14 @@ load_interval:
 
 ```yaml
 logging:
-  console: < severity_level >
-  monitor: < severity_level >
+  console: < "<severity_level>" | "disabled" >
+  monitor: < "<severity_level>" | "disabled" >
   buffered:
     size: < messages_nb (minimum of 10) >
-    level: < severity_level >
-  trap: < severity_level >
+    level: < "<severity_level>" | "disabled" >
+  trap: < "<severity_level>" | "disabled" >
   synchronous:
-    level: < severity_level | default --> critical >
+    level: < "<severity_level>" | "disabled" | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
