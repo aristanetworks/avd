@@ -802,7 +802,7 @@ ethernet_interfaces:
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
@@ -858,7 +858,7 @@ ethernet_interfaces:
       id: < Port-Channel_id >
       mode: < "on" | "active" | "passive" >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     spanning_tree_bpdufilter: < true | false >
@@ -1004,7 +1004,7 @@ port_channel_interfaces:
     lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
     lacp_fallback_mode: < individual | static >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
@@ -2113,7 +2113,7 @@ policy_maps:
 ```yaml
 qos_profiles:
   < profile-1 >:
-    trust: < dscp | cos >
+    trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
     shape:
@@ -2130,7 +2130,7 @@ qos_profiles:
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
-    trust: < dscp | cos >
+    trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
     tx_queues:
