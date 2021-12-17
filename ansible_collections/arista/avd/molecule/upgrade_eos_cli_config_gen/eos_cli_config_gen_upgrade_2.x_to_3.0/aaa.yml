@@ -9,4 +9,3 @@ aaa_accounting:
       - commands: 0
         logging: true
         type: start-stop
-
