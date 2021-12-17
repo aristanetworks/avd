@@ -1,6 +1,5 @@
 # router-bgp-vpn-ipv4-vpn-ipv6
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -118,12 +116,6 @@ interface Management1
 | -------- | --------- | --- | -------------- | -------------- |
 | 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
 | 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
 
 ### Router BGP Device Configuration
 

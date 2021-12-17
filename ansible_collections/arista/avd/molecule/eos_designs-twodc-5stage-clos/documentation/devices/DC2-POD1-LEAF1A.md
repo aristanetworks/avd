@@ -1,6 +1,5 @@
 # DC2-POD1-LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -49,7 +48,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -97,15 +95,14 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -377,14 +374,14 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-| vrf_with_loopbacks_dc1_pod1_only | 1102 |
-| vrf_with_loopbacks_from_overlapping_pool | 1100 |
-| vrf_with_loopbacks_from_pod_pools | 1101 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
+| vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -527,9 +524,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

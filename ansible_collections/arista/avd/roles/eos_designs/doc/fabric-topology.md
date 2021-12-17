@@ -254,7 +254,7 @@ defaults <- node_group <- node_group.node <- node
 
   defaults:
     # Possibility to prevent configuration of Tenant VRFs and SVIs
-    # Override role definition from node_type_keys
+    # Override node definition "network_services_l3" from node_type_keys
     # This allows support for centralized routing.
     evpn_services_l2_only: < false | true >
 
@@ -287,6 +287,9 @@ defaults <- node_group <- node_group.node <- node
     # MLAG interfaces (list) | Required when MLAG leafs present in topology.
     mlag_interfaces: [ < ethernet_interface_3 >, < ethernet_interface_4 > ]
 
+    # MLAG interfaces speed | Optional and depends on mlag_interfaces to be defined
+    mlag_interfaces_speed: < interface_speed | forced interface_speed | auto interface_speed >
+
     # Underlay L3 peering SVI interface id
     # If set to false or the same vlan as mlag_peer_vlan the mlag_peer_vlan will be used for L3 peering.
     mlag_peer_l3_vlan: < 0-4094 | false | default -> 4093 >
@@ -297,6 +300,9 @@ defaults <- node_group <- node_group.node <- node
 
     # MLAG Peer Link (control link) SVI interface id
     mlag_peer_vlan: < 0-4094 | default -> 4094 >
+
+    # MLAG Peer Link allowed VLANs
+    mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
 
     # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
     # IP is derived from the node id.

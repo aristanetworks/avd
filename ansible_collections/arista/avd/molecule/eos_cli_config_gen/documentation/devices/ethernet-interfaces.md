@@ -1,6 +1,5 @@
 # ethernet-interfaces
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -22,7 +21,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -89,6 +87,8 @@ interface Management1
 | Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
 | Ethernet21 |  200MBit/s shape | access | - | - | - | - |
 | Ethernet22 |  10% shape | access | - | - | - | - |
+| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
+| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -136,6 +136,13 @@ interface Management1
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
 | Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 |
+
+#### Error Correction Encoding Interfaces
+
+| Interface | Enabled |
+| --------- | ------- |
+| Ethernet23 | fire-code<br>reed-solomon |
+| Ethernet24 | Disabled |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -339,12 +346,24 @@ interface Ethernet20
 interface Ethernet21
    description 200MBit/s shape
    switchport
+   no qos trust
    shape rate 200000 kbps
 !
 interface Ethernet22
    description 10% shape
    switchport
    shape rate 10 percent
+!
+interface Ethernet23
+   description Error-correction encoding
+   error-correction encoding fire-code
+   error-correction encoding reed-solomon
+   switchport
+!
+interface Ethernet24
+   description Disable error-correction encoding
+   no error-correction encoding
+   switchport
 ```
 
 # Routing
@@ -398,5 +417,5 @@ interface Ethernet22
 | Interface | Trust | Default DSCP | Default COS | Shape rate |
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Ethernet7 | cos | - | 5 | - |
-| Ethernet21 | - | - | - | 200000 kbps |
+| Ethernet21 | disabled | - | - | 200000 kbps |
 | Ethernet22 | - | - | - | 10 percent |

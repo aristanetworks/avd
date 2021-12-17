@@ -1,6 +1,5 @@
 # vxlan-interface
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -67,25 +65,27 @@ interface Management1
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
+#### Source Interface: Loopback0
+
+#### MLAG Source Interface: Loopback1
 
 #### UDP port: 4789
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | 239.9.1.4 |
+| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_OP_Zone | 10 |
-| Tenant_A_WEB_Zone | 11 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_OP_Zone | 10 | 232.0.0.10 |
+| Tenant_A_WEB_Zone | 11 | - |
 
 #### Default Flood List
 
@@ -101,7 +101,7 @@ interface Management1
 !
 interface Vxlan1
    description DC1-LEAF2A_VTEP
-   vxlan source-interface Loopback1
+   vxlan source-interface Loopback0
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
    vxlan flood vtep learned data-plane
@@ -110,7 +110,10 @@ interface Vxlan1
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
    vxlan vrf Tenant_A_OP_Zone vni 10
    vxlan vrf Tenant_A_WEB_Zone vni 11
+   vxlan mlag source-interface Loopback1
    vxlan flood vtep 10.1.0.10 10.1.0.11
+   vxlan vlan 110 multicast group 239.9.1.4
+   vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
    vxlan encapsulation ipv4
 
 ```

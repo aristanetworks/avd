@@ -17,7 +17,6 @@ spine:
     DC1-SPINE2:
     DC1-SPINE3:
     DC1-SPINE4:
-
 l3leaf:
   defaults:
 # Change from overlay_loopback_network_summary to l3leaf.defaults.loopback_ipv4_pool
@@ -74,7 +73,6 @@ l3leaf:
         DC1-BL1B:
 # Change from l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.spine_interfaces to l3leaf.node_groups.DC1_BL1.nodes.DC1-BL1B.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet7', 'Ethernet7', 'Ethernet7', 'Ethernet7']
-
 l2leaf:
   defaults:
 # Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
@@ -99,7 +97,6 @@ l2leaf:
         DC1-L2LEAF2B:
 # Change from l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.l3leaf_interfaces to l2leaf.node_groups.DC1_L2LEAF2.nodes.DC1-L2LEAF2B.uplink_switch_interfaces
           uplink_switch_interfaces: ['Ethernet8', 'Ethernet8']
-
 my_dci_ntp:
   local_interface:
     name: Management1

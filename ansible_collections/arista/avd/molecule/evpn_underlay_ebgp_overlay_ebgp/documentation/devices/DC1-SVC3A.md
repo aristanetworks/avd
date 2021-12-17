@@ -1,6 +1,5 @@
 # DC1-SVC3A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -53,7 +52,6 @@
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -128,15 +126,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -426,8 +423,8 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
+| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 5 |
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
@@ -440,6 +437,9 @@ vlan 4092
 | Ethernet17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 17 |
 | Ethernet18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 18 |
 | Ethernet19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_Eth1 | *trunk | *1-4094 | *- | *- | 19 |
+| Ethernet20 |  CUSTOM_server13_disabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet21 |  CUSTOM_server14_explicitly_enabled_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet22 | CUSTOM_server15_port_channel_disabled_interfaces_Eth1 | *access | *110 | *- | *- | 22 |
 
 *Inherited from Port-Channel Interface
 
@@ -457,12 +457,12 @@ vlan 4092
 ```eos
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-SVC3B_Ethernet5
+   description CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-SVC3B_Ethernet6
+   description CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -564,6 +564,25 @@ interface Ethernet19
    channel-group 19 mode active
    lacp port-priority 8192
 !
+interface Ethernet20
+   description CUSTOM_server13_disabled_interfaces_Eth1
+   shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet21
+   description CUSTOM_server14_explicitly_enabled_interfaces_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet22
+   description CUSTOM_server15_port_channel_disabled_interfaces_Eth1
+   shutdown
+   channel-group 22 mode active
+!
 interface Ethernet41
    description CUSTOM_P2P_LINK_TO_DC1-SPINE1_Ethernet4
    no shutdown
@@ -605,7 +624,7 @@ interface Ethernet44
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
+| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | switched | trunk | 2-4094 | - | ['LEAF_PEER_L3', 'MLAG'] | - | - | - | - |
 | Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | switched | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | switched | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | - | - | 14 | - |
@@ -613,13 +632,14 @@ interface Ethernet44
 | Port-Channel17 | CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback | switched | trunk | 1-4094 | - | - | 90 | static | 17 | - |
 | Port-Channel18 | CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 18 | - |
 | Port-Channel19 | CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL | switched | trunk | 1-4094 | - | - | 10 | static | 19 | - |
+| Port-Channel22 | CUSTOM_server15_port_channel_disabled_interfaces_ | switched | access | 110 | - | - | - | - | 22 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-SVC3B_Po5
+   description CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
    no shutdown
    switchport
    switchport trunk allowed vlan 2-4094
@@ -721,6 +741,13 @@ interface Port-Channel19
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+!
+interface Port-Channel22
+   description CUSTOM_server15_port_channel_disabled_interfaces_
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 22
 ```
 
 ## Loopback Interfaces
@@ -1033,43 +1060,43 @@ interface Vlan4092
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 50111 | - |
-| 120 | 10120 | - |
-| 121 | 10121 | - |
-| 122 | 10122 | - |
-| 123 | 10123 | - |
-| 124 | 10124 | - |
-| 130 | 10130 | - |
-| 140 | 10140 | - |
-| 141 | 10141 | - |
-| 150 | 10150 | - |
-| 160 | 10160 | - |
-| 161 | 10161 | - |
-| 162 | 10162 | - |
-| 210 | 20210 | - |
-| 211 | 20211 | - |
-| 250 | 20250 | - |
-| 310 | 30310 | - |
-| 311 | 30311 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 50111 | - | - |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 122 | 10122 | - | - |
+| 123 | 10123 | - | - |
+| 124 | 10124 | - | - |
+| 130 | 10130 | - | - |
+| 140 | 10140 | - | - |
+| 141 | 10141 | - | - |
+| 150 | 10150 | - | - |
+| 160 | 10160 | - | - |
+| 161 | 10161 | - | - |
+| 162 | 10162 | - | - |
+| 210 | 20210 | - | - |
+| 211 | 20211 | - | - |
+| 250 | 20250 | - | - |
+| 310 | 30310 | - | - |
+| 311 | 30311 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_APP_Zone | 12 |
-| Tenant_A_DB_Zone | 13 |
-| Tenant_A_OP_Zone | 10 |
-| Tenant_A_WAN_Zone | 14 |
-| Tenant_A_WEB_Zone | 11 |
-| Tenant_B_OP_Zone | 20 |
-| Tenant_B_WAN_Zone | 21 |
-| Tenant_C_OP_Zone | 30 |
-| Tenant_C_WAN_Zone | 31 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_DB_Zone | 13 | - |
+| Tenant_A_OP_Zone | 10 | - |
+| Tenant_A_WAN_Zone | 14 | - |
+| Tenant_A_WEB_Zone | 11 | - |
+| Tenant_B_OP_Zone | 20 | - |
+| Tenant_B_WAN_Zone | 21 | - |
+| Tenant_C_OP_Zone | 30 | - |
+| Tenant_C_WAN_Zone | 31 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -1271,15 +1298,19 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### Router BGP EVPN Address Family
 
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
 #### EVPN Host Flapping Settings
 
 | State | Window | Threshold |
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -1295,7 +1326,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | Tenant_B_WAN_Zone | 192.168.255.12:21 | 21:21 | - | - | learned | 250 |
 | Tenant_C_OP_Zone | 192.168.255.12:30030 | 30030:30030 | - | - | learned | 310-311 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

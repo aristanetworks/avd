@@ -23,6 +23,7 @@
       - [IP RADIUS Source Interfaces](#ip-radius-source-interfaces)
       - [IP TACACS+ Source Interfaces](#ip-tacacs-source-interfaces)
       - [Local Users](#local-users)
+      - [Roles](#roles)
       - [Radius Servers](#radius-servers)
       - [Tacacs+ Servers](#tacacs-servers)
     - [Banners](#banners)
@@ -30,6 +31,7 @@
     - [Custom Templates](#custom-templates)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
+    - [Error Correction Encoding](#error-correction-encoding)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
@@ -62,7 +64,6 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
-    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -70,7 +71,7 @@
       - [Interface Groups](#interface-groups)
       - [Profiles and units](#profiles-and-units)
     - [Management](#management)
-      - [Clock Timezone](#clock-timezone)
+      - [Clock](#clock)
       - [DNS Domain](#dns-domain)
       - [Domain Name Servers](#domain-name-servers)
       - [Domain Lookup](#domain-lookup)
@@ -93,6 +94,7 @@
     - [Monitoring](#monitoring)
       - [Daemon TerminAttr](#daemon-terminattr)
       - [Custom Daemons](#custom-daemons)
+      - [Connectivity Monitor](#connectivity-monitor)
       - [Event Handler](#event-handler)
       - [Event Monitor](#event-monitor)
       - [Load Interval](#load-interval)
@@ -276,6 +278,10 @@ aaa_authentication:
     on_success_log: < true | false >
     local:
       allow_nopassword: < false | true >
+    lockout:
+      failure: < 1-255 >
+      duration: < 1-4294967295 >
+      window: < 1-4294967295 >
 ```
 
 #### AAA Authorization
@@ -396,6 +402,22 @@ local_users:
     ssh_key: "< ssh_key_string >"
 ```
 
+#### Roles
+
+```yaml
+roles:
+  - name: < role_name >
+    sequence_numbers:
+      - sequence: < sequence_number_1 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
+      - sequence: < sequence_number_2 >
+        action: < permit | deny >
+        mode: < "config" | "config-all" | "exec" | "<mode>" >
+        command: < command as string >
+```
+
 #### Radius Servers
 
 ```yaml
@@ -492,6 +514,15 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
     interval: < seconds | default = 300 >
+```
+
+### Error Correction Encoding
+
+```yaml
+error_correction_encoding:
+  enabled: < true | false | default -> true >
+  fire_code: < true | false >
+  reed_solomon: < true | false >
 ```
 
 ### Filters
@@ -622,10 +653,10 @@ generate_device_documentation: < true | false | default -> true >
 
 ### Generate Default Config
 
-The `generate_default_config` knob allows to ommit default EOS configuration.
+The `generate_default_config` knob allows to omit default EOS configuration.
 This can be useful when leveraging `eos_cli_config_gen` to generate configlets with CloudVision.
 
-The following commands will be ommited when `generate_default_config` is set to `false`:
+The following commands will be omitted when `generate_default_config` is set to `false`:
 
 - RANCID Content Type
 - Hostname
@@ -771,7 +802,7 @@ ethernet_interfaces:
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
@@ -827,7 +858,7 @@ ethernet_interfaces:
       id: < Port-Channel_id >
       mode: < "on" | "active" | "passive" >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     spanning_tree_bpdufilter: < true | false >
@@ -870,6 +901,9 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    lldp:
+      transmit: < true | false >
+      receive: < true | false >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -929,6 +963,7 @@ loopback_interfaces:
     mpls:
       ldp:
         interface: < true | false >
+
   < Loopback_interface_2 >:
     description: < description >
     ip_address: < IPv4_address/Mask >
@@ -936,6 +971,9 @@ loopback_interfaces:
     isis_passive: < boolean >
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
+    node_segment:
+      ipv4_index: < integer >
+      ipv6_index: < integer >
 ```
 
 #### Port-Channel Interfaces
@@ -966,7 +1004,7 @@ port_channel_interfaces:
     lacp_fallback_timeout: <timeout in seconds, 0-300 (default 90) >
     lacp_fallback_mode: < individual | static >
     qos:
-      trust: < dscp | cos >
+      trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
     bfd:
@@ -1077,6 +1115,9 @@ vlan_interfaces:
     shutdown: < true | false >
     vrf: < vrf_name >
     arp_aging_timeout: < arp_timeout >
+    arp_cache_dynamic_capacity: < 0-4294967295 >
+    arp_gratuitous_accept: < true | false >
+    arp_monitor_mac_address: < true | false >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -1088,6 +1129,7 @@ vlan_interfaces:
     ip_address_virtual_secondaries:
       - < IPv4_address/Mask >
       - < IPv4_address/Mask >
+    ip_igmp: < true | false >
     ip_helpers:
       < ip_helper_address_1 >:
         source_interface: < source_interface_name >
@@ -1096,6 +1138,7 @@ vlan_interfaces:
         source_interface: < source_interface_name >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    ipv6_address_virtual: < IPv6_address/Mask >
     ipv6_address_link_local: < link_local_IPv6_address/Mask >
     ipv6_nd_ra_disabled: < true | false >
     ipv6_nd_managed_config_flag: < true | false >
@@ -1133,6 +1176,7 @@ vlan_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     mtu: < mtu >
+    no_autostate: < true | false >
     vrrp:
       virtual_router: < virtual_router_id >
       priority: < instance_priority >
@@ -1166,24 +1210,29 @@ vxlan_interface:
     description: < description >
     vxlan:
       source_interface: < source_interface_name >
+      mlag_source_interface: < source_interface_name >
       udp_port: < udp_port >
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
+          multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
         < vlan_id_2 >:
           vni: < vni_id_2 >
+          multicast_group: < ip_multicast_group_address >
           flood_vteps:
             - < remote_vtep_1_ip_address >
             - < remote_vtep_2_ip_address >
       vrfs:
         < vrf_name_1 >:
           vni: < vni_id_3 >
+          multicast_group: < ip_multicast_group_address >
         < vrf_name_2 >:
           vni: < vni_id_4 >
+          multicast_group: < ip_multicast_group_address >
       flood_vteps:
         - < remote_vtep_1_ip_address >
         - < remote_vtep_2_ip_address >
@@ -1229,6 +1278,7 @@ lacp:
   rate_limit:
     default: < true | false >
   system_priority: < 0-65535 >
+```
 
 ### Link Tracking Groups
 
@@ -1244,9 +1294,16 @@ link_tracking_groups:
 ```yaml
 lldp:
   timer: < transmission_time >
+  timer_reinitialization: < re-init_time >
   holdtime: < hold_time_period >
   management_address: < all | ethernetN | loopbackN | managementN | port-channelN | vlanN >
   vrf: < vrf_name >
+  receive_packet_tagged_drop: < true | false >
+  tlvs:
+    - name: < tlv name 1 >
+      transmit: < true | false >
+    - name: < tlv name 2 >
+      transmit: < true | false >
   run: < true | false >
 ```
 
@@ -1333,7 +1390,7 @@ maintenance:
 
 ### Management
 
-#### Clock Timezone
+#### Clock
 
 ```yaml
 clock:
@@ -1403,6 +1460,12 @@ management_api_http:
       access_group: < Standard IPv4 ACL name >
       ipv6_access_group: < Standard IPv6 ACL name >
     < vrf_name_2 >:
+      access_group: < Standard IPv4 ACL name >
+      ipv6_access_group: < Standard IPv6 ACL name >
+  protocol_https_certificate:
+    # Both < certificate > and < private_key > must be defined for this feature to work
+    certificate: < Certificate >
+    private_key: < Private Key >
 ```
 
 #### IP HTTP Client Source Interfaces
@@ -1440,6 +1503,7 @@ management_console:
 management_security:
   entropy_source: < entropy_source >
   password:
+    minimum_length: < 1-32 >
     encryption_key_common: < true | false >
   ssl_profiles:
     - name: <ssl_profile_1>
@@ -1573,6 +1637,12 @@ ip_igmp_snooping:
 router_multicast:
   ipv4:
     routing: < true | false >
+    multipath: < none | deterministic | "deterministic color" | "deterministic router-id" >
+    software_forwarding: < kernel | sfe >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        routing: < true | false >
 ```
 
 #### Routing PIM Sparse Mode
@@ -1684,7 +1754,40 @@ daemons:
     enabled: "< true | false | default -> true >"
 ```
 
-This will add a dameon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
+This will add a daemon to the eos configuration that is most useful when trying to run OpenConfig clients like ocprometheus
+
+#### Connectivity Monitor
+
+```yaml
+monitor_connectivity:
+  shutdown: < true | false >
+  interval: < probing_interval >
+  interface_sets:
+    - name: < interface_set >
+      # Interface range(s) should be of same type, Ethernet, Loopback, Management etc.
+      # Multiple interface ranges can be specified separated by ","
+      interfaces: < interface_or_interface_range(s) >
+  local_interfaces: < interface_set_name >
+  hosts:
+    - name: < host_name >
+      description: < description >
+      ip: < ipv4 >
+      local_interfaces: < interface_set_name >
+      url: < url >
+  vrfs:
+    - name: < vrf_name >
+      description: < description >
+      interface_sets:
+        - name: < interface_set >
+          interfaces: < interface_or_interface_range(s) >
+      local_interfaces: < interface_set_name >
+      hosts:
+        - name: < host_name >
+          description: < description >
+          ip: < ipv4 >
+          local_interfaces: < interface_set_name >
+          url: < url >
+```
 
 #### Event Handler
 
@@ -1719,14 +1822,14 @@ load_interval:
 
 ```yaml
 logging:
-  console: < severity_level >
-  monitor: < severity_level >
+  console: < "<severity_level>" | "disabled" >
+  monitor: < "<severity_level>" | "disabled" >
   buffered:
     size: < messages_nb (minimum of 10) >
-    level: < severity_level >
-  trap: < severity_level >
+    level: < "<severity_level>" | "disabled" >
+  trap: < "<severity_level>" | "disabled" >
   synchronous:
-    level: < severity_level | default --> critical >
+    level: < "<severity_level>" | "disabled" | default --> critical >
   format:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
@@ -2010,21 +2113,27 @@ policy_maps:
 ```yaml
 qos_profiles:
   < profile-1 >:
-    trust: < dscp | cos >
+    trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    shape:
+      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
+        shape:
+          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
   < profile-2 >:
-    trust: < dscp | cos >
+    trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
-    tx-queues:
+    tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
         priority: < string >
@@ -2183,6 +2292,9 @@ router_bgp:
   vlan_aware_bundles:
     < vlan_aware_bundle_name_1 >:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
@@ -2192,6 +2304,15 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < learned >
       vlan: < vlan_range >
@@ -2206,6 +2327,12 @@ router_bgp:
         export:
           - "< route_target >"
           - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2213,9 +2340,27 @@ router_bgp:
   vlans:
     < vlan_id_1>:
       rd: "< route distinguisher >"
+      rd_evpn_domain:
+        domain: < all | remote >
+        rd: "< route distinguisher >"
       route_targets:
         both:
           - "< route_target >"
+        import:
+          - "< route_target >"
+          - "< route_target >"
+        export:
+          - "< route_target >"
+          - "< route_target >"
+        import_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
+        import_export_evpn_domains:
+          - domain: < all | remote >
+            route_target: "< route_target >"
       redistribute_routes:
         - < connected >
         - < learned >
@@ -2231,13 +2376,29 @@ router_bgp:
       redistribute_routes:
         - < connected >
         - < learned >
+  vpws:
+    - name: < vpws instance name >
+      rd: < route distinguisher >
+      route_targets:
+        import_export: < route target >
+      pseudowires:
+        - name: < pseudowire name >
+          id_local: < integer, must match id_remote on other pe >
+          id_remote: < integer, must match id_local on other pe >
   address_family_evpn:
     domain_identifier: < string >
+    neighbor_default:
+      encapsulation: < vxlan | mpls >
+      next_hop_self_source_interface: < source interface >
+      next_hop_self_received_evpn_routes:
+        enable: < true | false >
+        inter_domain: < true | false >
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
+        domain_remote: < true | false >
     evpn_hostflap_detection:
       enabled: < true | false >
       threshold: < integer >
@@ -2333,6 +2494,7 @@ router_bgp:
   vrfs:
     < vrf_name_1 >:
       rd: "< route distinguisher >"
+      evpn_multicast: < true | false >
       route_targets:
         import:
           < address_family >:
@@ -2508,12 +2670,35 @@ router_isis:
   instance: <ISIS Instance Name>
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
-  log_adjacency_changes: < true | false >
-  no_passive_interfaces: < List no-passive-interface >
   is_type: < level-1 | level-1-2 | level-2 >
+  log_adjacency_changes: < true | false >
+  mpls_ldp_sync_default: < true | false >
+  timers:
+    local_convergence:
+      protected_prefixes: < true | false >
+      delay: < number of milliseconds (Optional, default is 10000) >
+  advertise:
+    passive_only: < true | false >
+  no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:
-    - maximum-paths < Integer 1-64 >
+    - maximum-paths < Integer 1-128 >
+  address_family_ipv4:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
+  address_family_ipv6:
+    maximum_paths: < Integer 1-128 >
+    fast_reroute_ti_lfa:
+      mode: < link-protection | node-protection >
+      level: < level-1 | level-2 (Optional, default is to protect all levels) >
+      srlg:
+        enable: < true | false >
+        strict: < true | false >
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >

@@ -310,10 +310,37 @@
 {%     if port_channel_interfaces_isis | length > 0 %}
  *Inherited from Port-Channel Interface
 {%     endif %}
+{%     set err_cor_enc_intfs = [] %}
+{%     for ethernet_interface in ethernet_interfaces %}
+{%         if ethernet_interfaces[ethernet_interface].error_correction_encoding is arista.avd.defined %}
+{%             do err_cor_enc_intfs.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if err_cor_enc_intfs | length > 0 %}
+
+#### Error Correction Encoding Interfaces
+
+| Interface | Enabled |
+| --------- | ------- |
+{%         for ethernet_interface in err_cor_enc_intfs | arista.avd.natural_sort %}
+{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(false) %}
+{%                 set enabled = ['Disabled'] %}
+{%             else %}
+{%                 set enabled = [] %}
+{%                 if ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(true) %}
+{%                     do enabled.append('fire-code') %}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+{%                     do enabled.append('reed-solomon') %}
+{%                 endif %}
+{%             endif %}
+| {{ ethernet_interface }} | {{ enabled | join('<br>') }} |
+{%         endfor %}
+{%     endif %}
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
-{% include 'eos/ethernet-interfaces.j2' %}
+{%     include 'eos/ethernet-interfaces.j2' %}
 ```
 {% endif %}

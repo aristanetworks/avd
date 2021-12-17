@@ -7,17 +7,18 @@
     - [list_compress filter](#list_compress-filter)
     - [natural_sort filter](#natural_sort-filter)
     - [default filter](#default-filter)
+    - [convert_dicts filter](#convert_dicts-filter)
     - [ethernet segment identifiers management filter](#ethernet-segment-identifiers-management-filter)
       - [generate_esi filter](#generate_esi-filter)
       - [generate_lacp_id filter](#generate_lacp_id-filter)
       - [generate_route_target filter](#generate_route_target-filter)
+    - [add_md_toc filter](#add_md_toc-filter)
   - [Plugin Tests](#plugin-tests)
     - [defined test](#defined-test)
     - [contains test](#contains-test)
   - [Modules](#modules)
     - [Inventory to CloudVision Containers](#inventory-to-cloudvision-containers)
     - [Build Configuration to publish configlets to CloudVision](#build-configuration-to-publish-configlets-to-cloudvision)
-    - [Add Table Of Contents to an existing MarkDown file](#add-table-of-contents-to-an-existing-markdown-file)
     - [YAML Templates to Facts](#yaml-templates-to-facts)
 
 ## Plugin Filters
@@ -70,6 +71,34 @@ To use this filter:
 {{ variable | arista.avd.default( default_value_1 , default_value_2 ... ) }}
 ```
 
+### convert_dicts filter
+
+The `arista.avd.convert_dicts` filter will convert a dictionary containing nested dictionaries to a list of dictionaries
+and insert the outer dictionary keys into each list item using the primary_key `name` (key name is configurable).
+
+This filter is intended for:
+
+- Seemless data model migration from dictionaries to lists.
+- Improve Ansible's processing performance when dealing with large dictionaries by converting them to lists of dictionaries.
+
+Note: If the variable is already a list, it will pass through untouched
+
+To use this filter:
+
+```jinja
+{# convert list of dictionary with default `name:` as the primary key #}
+{% set example_list = example_dictionary | arista.avd.convert_dicts %}
+{% for example_item in example_list %}
+item primary key is {{ example_item.name }}
+{% endfor %}
+
+{# convert list of dictionary with `id:` set as the primary key #}
+{% set example_list = example_dictionary | arista.avd.convert_dicts('id') %}
+{% for example_item in example_list %}
+item primary key is {{ example_item.id }}
+{% endfor %}
+```
+
 ### ethernet segment identifiers management filter
 
 To help provide consistency when configuring EVPN A/A ESI values, the `esi_management` filter plugin provides an abstraction in the form of a `short_esi` key. `short_esi` is an abbreviated 3 octets value to encode Ethernet Segment ID, LACP ID and route target. Transformation from abstraction to network values is managed the following jinja2 filters:
@@ -102,6 +131,41 @@ The `arista.avd.generate_route_target` filter transforms short_esi: `0303:0202:0
 
 ```jinja
 rt: {{ l2leaf.node_groups[l2leaf_node_group].short_esi | arista.avd.generate_route_target }}
+```
+
+### add_md_toc filter
+
+The `arista.avd.add_md_toc` filter will parse the input MarkDown and add a TOC between the `toc_markers`.
+
+The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
+The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
+
+To use this filter:
+```jinja2
+{{ markdown string | arista.avd.add_md_toc(skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->') }}
+```
+
+| Argument | description | type | optional | default value |
+| -------- | ----------- | ---- | -------- | ------------- |
+| skip_lines | Skip first x lines when parsing MD file | Integer | True | 0 |
+| toc_levels | How many levels of headings will be included in the TOC | Integer | True | 2 |
+| toc_marker | TOC will be inserted or updated between two of these markers in the MD file | String | True | `"<!-- toc -->"`
+
+**example:**
+
+To use this module:
+
+```yaml
+tasks:
+- name: Generate fabric documentation
+  tags: [build, provision, documentation]
+  run_once: true
+  delegate_to: localhost
+  check_mode: no
+  copy:
+    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    mode: 0664
 ```
 
 ## Plugin Tests
@@ -345,34 +409,6 @@ The `arista.avd.configlet_build_config` module provides the following capabiliti
     configlet_dir: "/path/to/configlets/folder/"
     configlet_prefix: "AVD_"
     configlet_extension: "cfg"
-```
-
-### Add Table Of Contents to an existing MarkDown file
-
-The `arista.avd.add_toc` module provides following capabilities:
-
-- Wrapper of md-toc python library
-- Produce Table of Contents and add to MD file between markers
-
-The module is used in `eos_designs` to create Table Of Contents for Fabric Documentation.
-The module is used in `eos_cli_config_gen` to create Table Of Contents for Device Documentation.
-
-**example:**
-
-To use this module:
-
-```yaml
-tasks:
-- name: Generate TOC for fabric documentation
-  add_toc:
-    md_file: "{{ root_dir }}/documentation/fabric/{{ fabric_name }}-documentation.md"
-    skip_lines: 3 #Default is 0
-    #toc_levels: 2
-    #toc_marker: '<!-- toc -->'
-  delegate_to: localhost
-  run_once: true
-  check_mode: no
-  tags: [build, provision]
 ```
 
 ### YAML Templates to Facts

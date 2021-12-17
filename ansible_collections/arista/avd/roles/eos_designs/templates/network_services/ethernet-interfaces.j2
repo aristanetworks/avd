@@ -1,9 +1,9 @@
 {# Tenant l3 interfaces #}
 {% set l3_interface_subif_parents = [] %}
 ethernet_interfaces:
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.default([]) %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         for l3_interface in vrf.l3_interfaces | arista.avd.default([]) %}
 {%             if l3_interface.nodes is arista.avd.defined and inventory_hostname in l3_interface.nodes and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined %}
 {%                 for node in l3_interface.nodes %}
 {%                     if node == inventory_hostname %}
@@ -20,7 +20,7 @@ ethernet_interfaces:
     type: routed
 {%                         endif %}
     peer_type: l3_interface
-    vrf: {{ vrf }}
+    vrf: {{ vrf.name }}
     ip_address: {{ l3_interface.ip_addresses[loop.index0] }}
 {%                         if l3_interface.mtu is arista.avd.defined %}
     mtu: {{ l3_interface.mtu }}

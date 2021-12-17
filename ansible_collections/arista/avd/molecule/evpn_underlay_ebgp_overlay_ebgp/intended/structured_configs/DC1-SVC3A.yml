@@ -766,7 +766,7 @@ vlan_interfaces:
     mtu: 1500
 port_channel_interfaces:
   Port-Channel5:
-    description: MLAG_PEER_DC1-SVC3B_Po5
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
     type: switched
     shutdown: false
     vlans: 2-4094
@@ -914,12 +914,19 @@ port_channel_interfaces:
     mlag: 19
     lacp_fallback_mode: static
     lacp_fallback_timeout: 10
+  Port-Channel22:
+    description: CUSTOM_server15_port_channel_disabled_interfaces_
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 22
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3B
     peer_interface: Ethernet5
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3B_Ethernet5
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5
     type: switched
     shutdown: false
     channel_group:
@@ -929,7 +936,7 @@ ethernet_interfaces:
     peer: DC1-SVC3B
     peer_interface: Ethernet6
     peer_type: mlag_peer
-    description: MLAG_PEER_DC1-SVC3B_Ethernet6
+    description: CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6
     type: switched
     shutdown: false
     channel_group:
@@ -1256,6 +1263,36 @@ ethernet_interfaces:
       id: 19
       mode: active
     lacp_port_priority: 8192
+  Ethernet20:
+    peer: server13_disabled_interfaces
+    peer_interface: Eth1
+    peer_type: server
+    description: CUSTOM_server13_disabled_interfaces_Eth1
+    type: switched
+    shutdown: true
+    mode: access
+    vlans: 110
+  Ethernet21:
+    peer: server14_explicitly_enabled_interfaces
+    peer_interface: Eth1
+    peer_type: server
+    description: CUSTOM_server14_explicitly_enabled_interfaces_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet22:
+    peer: server15_port_channel_disabled_interfaces
+    peer_interface: Eth1
+    peer_type: server
+    description: CUSTOM_server15_port_channel_disabled_interfaces_Eth1
+    type: switched
+    shutdown: true
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 22
+      mode: active
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092

@@ -277,7 +277,7 @@ servers:
           'unknown-unicast':
             level: 2
             unit: percent
-        port_channel: {}   #Setting to empty dict, to override port-channel inherited from profile
+        port_channel: null   #Setting to null, to override port-channel inherited from profile
 
   server10_no_profile_port_channel_lacp_fallback:
     rack: RackC
@@ -324,6 +324,35 @@ servers:
         switch_ports: [ Ethernet19, Ethernet19 ]
         switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: NESTED_PORT_PROFILE
+
+  server13_disabled_interfaces:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet20, Ethernet20 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: false
+
+  server14_explicitly_enabled_interfaces:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet21, Ethernet21 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: true
+
+  server15_port_channel_disabled_interfaces:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet22, Ethernet22 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: false
+        port_channel:
+          mode: active
 
 firewalls:
   FIREWALL01:

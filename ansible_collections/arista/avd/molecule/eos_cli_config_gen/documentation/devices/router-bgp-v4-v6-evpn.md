@@ -1,6 +1,5 @@
 # router-bgp-v4-v6-evpn
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -166,9 +164,13 @@ interface Management1
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN Based
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY | True |
+
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -177,7 +179,7 @@ interface Management1
 | 42 | 10.50.64.15:10042 | 1:10042 | - | - | learned |
 | 65 | 10.50.64.15:10065 | 1:10065 | - | - | learned |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

@@ -1,6 +1,5 @@
 # router-bgp-base
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -90,7 +88,7 @@ interface Management1
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65101|  192.168.255.3 |
+| 65101|  - |
 
 | BGP Tuning |
 | ---------- |
@@ -118,18 +116,11 @@ interface Management1
 | 1.12.1.0/24 | True | True | RM-ATTRIBUTE | RM-MATCH | True |
 | 2.2.1.0/24 | False | False | - | - | False |
 
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
-
 ### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65101
-   router-id 192.168.255.3
    no bgp default ipv4-unicast
    distance bgp 20 200 200
    graceful-restart restart-time 300

@@ -11,7 +11,7 @@
 
 ```yaml
 # On mlag leafs, an SVI interface is defined per vrf, to establish iBGP peering. | Required (when mlag leafs in topology)
-# The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + vrf_vni
+# The SVI id will be derived from the base vlan defined: mlag_ibgp_peering_vrfs.base_vlan + vrf_vni - 1
 # The SVI ip address derived from mlag_l3_peer_ipv4_pool is re-used across all iBGP peerings.
 mlag_ibgp_peering_vrfs:
   base_vlan: < 1-4000 | default -> 3000 >
@@ -70,7 +70,7 @@ svi_profiles:
         source_interface: < interface-name >
         source_vrf: < VRF to originate DHCP relay packets to DHCP server >
 
-# Dictionary of tenants, to define network services: L3 VRFs and L2 VLNAS.
+# Dictionary of tenants, to define network services: L3 VRFs and L2 VLANS.
 
 tenants:
 
@@ -118,7 +118,7 @@ tenants:
         enable_mlag_ibgp_peering_vrfs: < true | false >
 
         # Manually define the VLAN used on the MLAG pair for the iBGP session. | Optional
-        # By default this parameter is calculated using the following formula: <base_vlan> + <vrf_vni>
+        # By default this parameter is calculated using the following formula: <base_vlan> + <vrf_vni> - 1
         mlag_ibgp_peering_vlan: <1-4096>
 
         # Enable VTEP Network diagnostics | Optional.

@@ -1,6 +1,5 @@
 # port-channel-interfaces
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -21,7 +20,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -80,6 +78,7 @@ interface Management1
 | Ethernet10/1 | LAG Member | *access | *110 | *- | *- | 101 |
 | Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
 | Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
+| Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
@@ -126,6 +125,14 @@ interface Ethernet10/3
    description LAG Member
    channel-group 103 mode active
 !
+interface Ethernet10/4
+   description LAG Member LACP fallback
+   channel-group 104 mode active
+   switchport
+   switchport trunk allowed vlan 100
+   switchport mode trunk
+   spanning-tree portfast
+!
 interface Ethernet15
    description DC1-AGG03_Ethernet1
    channel-group 15 mode active
@@ -168,6 +175,7 @@ interface Ethernet50
 | Port-Channel101 | PVLAN Promiscuous Access - only one secondary | switched | access | 110 | - | - | - | - | - | - |
 | Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
+| Port-Channel104 | LACP fallback individual | switched | trunk | 112 | - | - | 300 | individual | - | - |
 
 #### Private VLAN
 
@@ -324,6 +332,7 @@ interface Port-Channel101
    switchport
    switchport access vlan 110
    switchport pvlan mapping 111
+   no qos trust
 !
 interface Port-Channel102
    description PVLAN Promiscuous Trunk - vlan translation out
@@ -338,6 +347,14 @@ interface Port-Channel103
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport trunk private-vlan secondary
+!
+interface Port-Channel104
+   description LACP fallback individual
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   port-channel lacp fallback timeout 300
+   port-channel lacp fallback individual
 ```
 
 # Routing
@@ -383,3 +400,4 @@ interface Port-Channel103
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Port-Channel3 | - | - | - | 200000 kbps |
 | Port-Channel10 | - | - | - | 50 percent |
+| Port-Channel101 | disabled | - | - | - |

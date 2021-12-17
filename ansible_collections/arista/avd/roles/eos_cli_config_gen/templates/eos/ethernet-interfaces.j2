@@ -32,12 +32,32 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].lacp_timer.multiplier is arista.avd.defined %}
    lacp timer multiplier {{ ethernet_interfaces[ethernet_interface].lacp_timer.multiplier }}
 {%         endif %}
+{%         if port_channel_interfaces['Port-Channel' ~ ethernet_interfaces[ethernet_interface].channel_group.id].lacp_fallback_mode is arista.avd.defined("individual") %}
+{%             set print_ethernet = true %}
+{%         endif %}
 {%     else %}
+{%         set print_ethernet = true %}
+{%     endif %}
+{%     if print_ethernet is arista.avd.defined(true) %}
 {%         if ethernet_interfaces[ethernet_interface].mtu is arista.avd.defined %}
    mtu {{ ethernet_interfaces[ethernet_interface].mtu }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].l2_mtu is arista.avd.defined %}
    l2 mtu {{ ethernet_interfaces[ethernet_interface].l2_mtu }}
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].error_correction_encoding.enabled is arista.avd.defined(false) %}
+   no error-correction encoding
+{%         else %}
+{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(true) %}
+   error-correction encoding fire-code
+{%             elif ethernet_interfaces[ethernet_interface].error_correction_encoding.fire_code is arista.avd.defined(false) %}
+   no error-correction encoding fire-code
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(true) %}
+   error-correction encoding reed-solomon
+{%             elif ethernet_interfaces[ethernet_interface].error_correction_encoding.reed_solomon is arista.avd.defined(false) %}
+   no error-correction encoding reed-solomon
+{%             endif %}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
@@ -100,7 +120,11 @@ interface {{ ethernet_interface }}
    l2-protocol encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation_dot1q_vlan }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].qos.trust is arista.avd.defined %}
+{%             if ethernet_interfaces[ethernet_interface].qos.trust == 'disabled' %}
+   no qos trust
+{%             else %}
    qos trust {{ ethernet_interfaces[ethernet_interface].qos.trust }}
+{%             endif %}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].qos.dscp is arista.avd.defined %}
    qos dscp {{ ethernet_interfaces[ethernet_interface].qos.dscp }}

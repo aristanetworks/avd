@@ -268,6 +268,8 @@ ethernet_interfaces:
 
   Ethernet21:
     description: 200MBit/s shape
+    qos:
+      trust: disabled
     shape:
       rate: "200000 kbps"
 
@@ -275,3 +277,14 @@ ethernet_interfaces:
     description: 10% shape
     shape:
       rate: "10 percent"
+
+  Ethernet23:
+    description: Error-correction encoding
+    error_correction_encoding:
+      fire_code: true
+      reed_solomon: true
+
+  Ethernet24:
+    description: Disable error-correction encoding
+    error_correction_encoding:
+      enabled: false

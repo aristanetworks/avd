@@ -8,4 +8,4 @@
     - name: generate device intended config and documention
       delegate_to: 127.0.0.1
       import_role:
-         name: arista.avd.eos_cli_config_gen
+        name: arista.avd.eos_cli_config_gen

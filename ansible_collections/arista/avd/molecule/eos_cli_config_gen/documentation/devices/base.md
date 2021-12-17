@@ -1,10 +1,10 @@
 # base
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
   - [Management SSH](#management-ssh)
+  - [Management Console](#management-console)
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
 - [Management Security](#management-security)
@@ -23,7 +23,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -108,20 +107,33 @@ management ssh
       no shutdown
 ```
 
+## Management Console
+
+### Management Console Timeout
+
+Management Console Timeout is set to **300** minutes.
+
+### Management Console Configuration
+
+```eos
+!
+management console
+   idle-timeout 300
+```
+
 ## Management API HTTP
 
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| true | true |
+| ---- | ----- |
+| True | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | mgt | ACL-API | - |
-
 
 ### Management API HTTP Configuration
 

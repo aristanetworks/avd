@@ -1,6 +1,5 @@
 # DC1-POD1-LEAF2A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Domain-list](#domain-list)
@@ -51,7 +50,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Domain-list
@@ -74,15 +72,14 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -635,24 +632,24 @@ interface Vlan4094
 
 #### EVPN MLAG Shared Router MAC : mlag-system-id
 
-#### VLAN to VNI and Flood List Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List |
-| ---- | --- | ---------- |
-| 110 | 10110 | - |
-| 111 | 50111 | - |
-| 112 | 50112 | - |
-| 2500 | 2500 | - |
-| 2600 | 2600 | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 50111 | - | - |
+| 112 | 50112 | - | - |
+| 2500 | 2500 | - | - |
+| 2600 | 2600 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
-| vrf_with_loopbacks_dc1_pod1_only | 1102 |
-| vrf_with_loopbacks_from_overlapping_pool | 1100 |
-| vrf_with_loopbacks_from_pod_pools | 1101 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
+| vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
 ### VXLAN Interface Device Configuration
 
@@ -813,9 +810,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 - VPN import pruning is __enabled__
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-##### VLAN Based
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP VLANs
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
@@ -825,7 +826,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | 2500 | 172.16.110.4:2500 | 2500:2500 | - | - | learned |
 | 2600 | 172.16.110.4:2600 | 2600:2600 | - | - | learned |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |

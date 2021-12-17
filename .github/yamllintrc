@@ -1,5 +1,11 @@
 ---
 extends: default
+
+yaml-files:
+  - '*.yaml'
+  - '*.yml'
+  - '.yamllint'
+
 rules:
   braces:
     level: warning
@@ -26,3 +32,7 @@ rules:
     level: warning
     allow-non-breakable-inline-mappings: true
   truthy: disable
+
+ignore: |
+  ansible_collections/arista/avd/molecule/Makefile
+  ansible_collections/arista/avd/molecule/README.md

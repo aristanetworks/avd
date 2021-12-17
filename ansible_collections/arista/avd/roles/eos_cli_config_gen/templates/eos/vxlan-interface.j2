@@ -28,9 +28,18 @@ interface Vxlan1
    vxlan vrf {{ vrf }} vni {{ vxlan_interface.Vxlan1.vxlan.vrfs[vrf].vni }}
 {%         endif %}
 {%     endfor %}
+{%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
+   vxlan mlag source-interface {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }}
+{%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
    vxlan flood vtep {{ vxlan_interface.Vxlan1.vxlan.flood_vteps | join(' ') }}
 {%     endif %}
+{%     for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort if vxlan_interface.Vxlan1.vxlan.vlans[vlan].multicast_group is arista.avd.defined %}
+   vxlan vlan {{ vlan }} multicast group {{ vxlan_interface.Vxlan1.vxlan.vlans[vlan].multicast_group }}
+{%     endfor %}
+{%     for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort if vxlan_interface.Vxlan1.vxlan.vrfs[vrf].multicast_group is arista.avd.defined %}
+   vxlan vrf {{ vrf }} multicast group {{ vxlan_interface.Vxlan1.vxlan.vrfs[vrf].multicast_group }}
+{%     endfor %}
 {%     if  vxlan_interface.Vxlan1.eos_cli is arista.avd.defined %}
    {{ vxlan_interface.Vxlan1.eos_cli | indent(3, false) }}
 {%     endif %}

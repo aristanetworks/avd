@@ -96,17 +96,21 @@ port_profiles:
         # Adapter speed - if not specified will be auto.
       - speed: < interface_speed | forced interface_speed | auto interface_speed >
 
-        # Local endpoint port(s)
+        # Local endpoint port(s) | required
         endpoint_ports: [ < interface_name > ]
 
-        # List of port(s) connected to switches
+        # List of port(s) connected to switches | required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switche(s)
+        # List of switche(s) | required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.
         profile: < port_profile_name >
+
+        # Administrative state | optional - default is true
+        # setting to false will set port to 'shutdown' in intended configuration
+        enabled: < true | false >
 
         # Interface mode | required
         mode: < access | dot1q-tunnel | trunk >
@@ -171,6 +175,10 @@ port_profiles:
 
           # Port-Channel Description.
           description: < port_channel_description >
+
+          # Port-Channel administrative state | optional - default is true
+          # setting to false will set port to 'shutdown' in intended configuration
+          enabled: < true | false >
 
           # Port-Channel Mode.
           mode: < "active" | "passive" | "on" >

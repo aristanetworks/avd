@@ -48,4 +48,10 @@ interface {{ loopback_interface }}
 {%     elif loopback_interfaces[loopback_interface].mpls.ldp.interface is arista.avd.defined(false) %}
    no mpls ldp interface
 {%     endif %}
+{%     if loopback_interfaces[loopback_interface].node_segment.ipv4_index is arista.avd.defined %}
+   node-segment ipv4 index {{ loopback_interfaces[loopback_interface].node_segment.ipv4_index }}
+{%     endif %}
+{%     if loopback_interfaces[loopback_interface].node_segment.ipv6_index is arista.avd.defined %}
+   node-segment ipv6 index {{ loopback_interfaces[loopback_interface].node_segment.ipv6_index }}
+{%     endif %}
 {% endfor %}

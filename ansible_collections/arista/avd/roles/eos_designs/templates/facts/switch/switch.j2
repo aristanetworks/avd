@@ -1,5 +1,8 @@
 switch:
 
+{# switch.type #}
+  type: {{ type | arista.avd.default }}
+
 {# switch.group #}
   group: {{ switch_data.group | arista.avd.default() }}
 
@@ -11,6 +14,9 @@ switch:
 
 {# switch.mgmt_ip #}
   mgmt_ip: {{ switch_data.node.mgmt_ip | arista.avd.default() }}
+
+{# switch.mgmt_interface#}
+  mgmt_interface: {{ platform_settings.management_interface | arista.avd.default('Management1') }}
 
 {# switch.platform #}
 {% set switch_platform = switch_data.combined.platform | arista.avd.default() %}
@@ -195,11 +201,20 @@ switch:
 {%     set mlag_peer_vlan = switch_data.combined.mlag_peer_vlan | arista.avd.default(4094) %}
   mlag_peer_vlan: {{ mlag_peer_vlan }}
 
+{# switch.mlag_peer_link_allowed_vlans #}
+{%     set mlag_peer_link_allowed_vlans = switch_data.combined.mlag_peer_link_allowed_vlans | arista.avd.default("2-4094") %}
+  mlag_peer_link_allowed_vlans: {{ mlag_peer_link_allowed_vlans }}
+
 {# switch.mlag_dual_primary_detection #}
   mlag_dual_primary_detection: {{ switch_data.combined.mlag_dual_primary_detection | arista.avd.default(false) }}
 
-{# switch.mlag_dual_primary_detection #}
+{# switch.mlag_interfaces #}
   mlag_interfaces: {{ switch_data.combined.mlag_interfaces | arista.avd.default() }}
+
+{# switch.mlag_interfaces_speed #}
+{%     if switch_data.combined.mlag_interfaces_speed is arista.avd.defined %}
+  mlag_interfaces_speed: {{ switch_data.combined.mlag_interfaces_speed }}
+{%     endif %}
 
 {# switch.mlag_l3 #}
 {# switch.mlag_peer_l3_vlan #}
@@ -296,8 +311,10 @@ switch:
   vtep_ip: {% include switch.ip_addressing.vtep_ip %}
 {%     endif %}
 
-{# switch.evpn_services_l2_only #}
-  evpn_services_l2_only: {{ switch_data.combined.evpn_services_l2_only | arista.avd.default(false) }}
+{# switch.network_services_l3 override based on evpn_services_l2_only #}
+{%     if switch_data.combined.evpn_services_l2_only is arista.avd.defined(true) %}
+  network_services_l3: false
+{%     endif %}
 
 {% endif %}
 
@@ -336,7 +353,7 @@ switch:
 {%             set add_svis = [] %}
 {%             for svi in tenants[tenant].vrfs[vrf].svis | arista.avd.natural_sort %}
 {%                 for svi_tag in tenants[tenant].vrfs[vrf].svis[svi].tags | arista.avd.natural_sort %}
-{%                     if svi_tag in switch_filter_tags or svi_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                     if svi_tag in switch_filter_tags or switch_data.group is arista.avd.defined(svi_tag) or "all" in switch_filter_tags %}
 {%                         do add_svis.append(svi) %}
 {%                         do leaf.vlans.append(svi | int) %}
 {%                         break %}
@@ -361,7 +378,7 @@ switch:
 {%         set add_l2vlans = [] %}
 {%         for l2vlan in tenants[tenant].l2vlans | arista.avd.natural_sort %}
 {%             for vlan_tag in tenants[tenant].l2vlans[l2vlan].tags | arista.avd.natural_sort %}
-{%                 if vlan_tag in switch_filter_tags or vlan_tag == switch_data.group or "all" in switch_filter_tags %}
+{%                 if vlan_tag in switch_filter_tags or switch_data.group is arista.avd.defined(vlan_tag) or "all" in switch_filter_tags %}
 {%                     do add_l2vlans.append(l2vlan) %}
 {%                     do leaf.vlans.append(l2vlan | int) %}
 {%                     break %}

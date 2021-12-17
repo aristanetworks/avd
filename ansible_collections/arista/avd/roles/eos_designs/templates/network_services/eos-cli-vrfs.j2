@@ -3,10 +3,10 @@
 {% if structured_config.eos_cli is arista.avd.defined %}
 {%     do tmp_eos_clis.append(structured_config.eos_cli) %}
 {% endif %}
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-{%         if tenants[tenant].vrfs[vrf].raw_eos_cli is arista.avd.defined %}
-{%             do tmp_eos_clis.append(tenants[tenant].vrfs[vrf].raw_eos_cli) %}
+{% for tenant in network_services_data.tenants %}
+{%     for vrf in tenant.vrfs %}
+{%         if vrf.raw_eos_cli is arista.avd.defined %}
+{%             do tmp_eos_clis.append(vrf.raw_eos_cli) %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}

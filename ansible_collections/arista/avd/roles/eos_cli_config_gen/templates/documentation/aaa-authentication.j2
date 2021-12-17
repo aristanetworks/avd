@@ -27,6 +27,10 @@ AAA Authentication on-success log has been enabled
 Policy local allow-nopassword-remote-login has been enabled.
 {%             endif %}
 {%         endif %}
+{%         if aaa_authentication.policies.lockout.failure is arista.avd.defined and aaa_authentication.policies.lockout.duration is arista.avd.defined %}
+
+Policy lockout has been enabled. After **{{ aaa_authentication.policies.lockout.failure }}** failed login attempts within **{{ aaa_authentication.policies.lockout.window | arista.avd.default('1440') }}** minutes, you'll be locked out for **{{ aaa_authentication.policies.lockout.duration }}** minutes.
+{%         endif %}
 {%     endif %}
 
 ### AAA Authentication Device Configuration
