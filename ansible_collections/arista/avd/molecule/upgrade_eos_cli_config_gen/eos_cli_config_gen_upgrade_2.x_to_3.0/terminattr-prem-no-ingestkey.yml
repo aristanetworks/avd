@@ -1,4 +1,3 @@
-
 # Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
 daemon_terminattr:
   cvaddrs:

@@ -1,4 +1,3 @@
-
 # Change from aaa_accounting.commands.commands_default to aaa_accounting.commands.default
 aaa_accounting:
   commands:
