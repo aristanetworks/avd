@@ -1,3 +1,4 @@
+
 # Change from ntp_server to ntp data model
 ntp:
   local_interface:

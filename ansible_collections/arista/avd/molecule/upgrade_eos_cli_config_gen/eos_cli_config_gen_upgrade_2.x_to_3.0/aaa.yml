@@ -1,3 +1,4 @@
+
 # Change from aaa_accounting.commands.commands_default to aaa_accounting.commands.default
 aaa_accounting:
   commands:
@@ -9,3 +10,4 @@ aaa_accounting:
       - commands: 0
         logging: true
         type: start-stop
+
