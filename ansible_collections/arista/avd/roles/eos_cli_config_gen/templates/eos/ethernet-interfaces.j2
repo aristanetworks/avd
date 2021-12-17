@@ -128,16 +128,16 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].qos.cos is arista.avd.defined %}
    qos cos {{ ethernet_interfaces[ethernet_interface].qos.cos }}
 {%         endif %}
-{%     if ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined(true) %}
+{%     if ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined and ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(true) %}
    priority-flow-control on
-{%     elif ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined(false)%}
+{%     elif ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined and ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(false)%}
    no priority-flow-control
 {%     endif %}
-{%     if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities is arista.avd.defined %}
-{%         if ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.no_drop is arista.avd.defined(true)  %}
-   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.priority }} no-drop
+{%     if ethernet_interfaces[ethernet_interface].priority_flow_control.priorities is arista.avd.defined %}
+{%         if ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.no_drop is arista.avd.defined(true)  %}
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.priority }} no-drop
 {%         else %}
-   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control_priorities.priority }} drop
+   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.priority }} drop
 {%         endif %}
 {%     endif %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('edge') %}
