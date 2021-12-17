@@ -24,7 +24,7 @@ daemon_terminattr:
 # Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
   cvauth:
     method: "key"
-    key: {{ key }}
+    key: "{{ key }}"
 {%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
 # Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
   cvvrf: {{ daemon_terminattr.ingestvrf }}
