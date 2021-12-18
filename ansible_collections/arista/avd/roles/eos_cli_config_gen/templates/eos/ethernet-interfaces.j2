@@ -217,6 +217,12 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].ipv6_access_group_out is arista.avd.defined %}
    ipv6 access-group {{ ethernet_interfaces[ethernet_interface].ipv6_access_group_out }} out
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mac_access_group_in is arista.avd.defined %}
+   mac access-group {{ ethernet_interfaces[ethernet_interface].mac_access_group_in }} in
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].mac_access_group_out is arista.avd.defined %}
+   mac access-group {{ ethernet_interfaces[ethernet_interface].mac_access_group_out }} out
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].ospf_network_point_to_point is arista.avd.defined(true) %}
    ip ospf network point-to-point
 {%         endif %}
