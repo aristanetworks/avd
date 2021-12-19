@@ -9,5 +9,5 @@
     - name: create local output folders
       delegate_to: 127.0.0.1
       import_role:
-         name: arista.avd.build_output_folders
+        name: arista.avd.build_output_folders
       run_once: true

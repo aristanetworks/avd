@@ -332,6 +332,7 @@ interface Port-Channel101
    switchport
    switchport access vlan 110
    switchport pvlan mapping 111
+   no qos trust
 !
 interface Port-Channel102
    description PVLAN Promiscuous Trunk - vlan translation out
@@ -399,3 +400,4 @@ interface Port-Channel104
 | --------- | ----- | ------------ | ----------- | ---------- |
 | Port-Channel3 | - | - | - | 200000 kbps |
 | Port-Channel10 | - | - | - | 50 percent |
+| Port-Channel101 | disabled | - | - | - |

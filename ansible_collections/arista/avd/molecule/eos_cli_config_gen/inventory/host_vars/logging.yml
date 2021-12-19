@@ -1,12 +1,12 @@
 ### Logging ###
 logging:
-  console: debugging
+  console: error
   buffered:
     size: 1000000
-    level: informational
-  trap: informational
+    level: warnings
+  trap: disabled
   synchronous:
-    level: error
+    level:
   source_interface:
   vrfs:
     mgt:

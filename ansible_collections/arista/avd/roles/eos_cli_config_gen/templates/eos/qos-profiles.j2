@@ -3,7 +3,11 @@
 !
 qos profile {{ profile }}
 {%     if qos_profiles[profile].trust is arista.avd.defined %}
+{%         if qos_profiles[profile].trust == 'disabled' %}
+   no qos trust
+{%         else %}
    qos trust {{ qos_profiles[profile].trust }}
+{%         endif %}
 {%     endif %}
 {%     if qos_profiles[profile].cos is arista.avd.defined %}
    qos cos {{ qos_profiles[profile].cos }}

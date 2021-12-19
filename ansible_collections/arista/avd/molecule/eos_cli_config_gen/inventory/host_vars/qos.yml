@@ -38,12 +38,16 @@ qos_profiles:
         priority: 'no priority'
       5:
         bandwidth_percent: 40
-      4: 
+      4:
         bandwidth_guaranteed_percent: 10
       7:
         bandwidth_percent: 30
         shape:
           rate: 40 percent
+  no_qos_trust:
+    trust: disabled
+    cos: 3
+    dscp: 4
 
 ### Port-Channel Interfaces ###
 ethernet_interfaces:

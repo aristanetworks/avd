@@ -12,7 +12,6 @@
 {%         endif %}
 {%     endfor %}
 {%     if cvp_on_prem.ips | length > 0 %}
-
 # Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
 daemon_terminattr:
   cvaddrs:
@@ -25,13 +24,12 @@ daemon_terminattr:
 # Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
   cvauth:
     method: "key"
-    key: {{ key }}
+    key: "{{ key }}"
 {%         if daemon_terminattr.ingestvrf is arista.avd.defined %}
 # Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
   cvvrf: {{ daemon_terminattr.ingestvrf }}
 {%         endif %}
 {%     elif cvaas.ips | length > 0 %}
-
 # Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
 daemon_terminattr:
   cvaddrs:
