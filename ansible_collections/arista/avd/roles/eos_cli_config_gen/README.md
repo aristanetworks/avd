@@ -2362,6 +2362,8 @@ class_maps:
       cos: < CoS value(s) or range(s) of CoS values >
       ip:
         access_group: < Standard access-list name >
+      ipv6:
+        access_group: < Standard IPv6 access-list name >
 ```
 
 #### QOS Policy-map
@@ -2396,6 +2398,7 @@ qos_profiles:
     dscp: < dscp-value >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    policy_map: < qos-policy-map name >
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
