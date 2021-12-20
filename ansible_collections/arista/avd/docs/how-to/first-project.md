@@ -35,7 +35,7 @@ $ tree -L 3 -d
 
 Here is a high-level overview of the topology
 
-![](../_media/avd-eos-lab-topology-overview.gif)
+![AVD eos lab topology overview](../_media/avd-eos-lab-topology-overview.gif)
 
 ## Configure Variables
 
@@ -94,27 +94,27 @@ AVD:
         AVD_L2LEAFS:
 ```
 
-In this file, you can also define management address of all devices. Because in this lab we use Jumphost, we will configure this address in the next section, but at least we configured on which port we will connect to eAPI using `ansible_port` variable.
+The management address of all devices can be defined in this file. Because a Jump-host will be used in this lab, we will configure the `ansible_port` variable to set the port number for eAPI connection, and the management address configuration is addressed in next section.
 
-Output below is an example of how to configure EOS eAPI authentication
+An example of ansible connection parameters to establish an eAPI connection:
 
 ```yaml
 ---
 AVD:
-    vars:
-        ansible_host: < your cvp server >
-        ansible_user: < your username >
-        ansible_ssh_pass: < password >
-        ansible_connection: httpapi
-        ansible_network_os: eos
-        # Configure privilege escalation
-        ansible_become: true
-        ansible_become_method: enable
-        # HTTPAPI configuration
-        ansible_httpapi_port: 443
-        ansible_httpapi_host: '{{ ansible_host }}'
-        ansible_httpapi_use_ssl: true
-        ansible_httpapi_validate_certs: false
+  vars:
+    ansible_host: < your cvp server >
+    ansible_user: < your username >
+    ansible_ssh_pass: < password >
+    ansible_connection: httpapi
+    ansible_network_os: eos
+    # Configure privilege escalation
+    ansible_become: true
+    ansible_become_method: enable
+    # HTTPAPI configuration
+    ansible_httpapi_port: 443
+    ansible_httpapi_host: '{{ ansible_host }}'
+    ansible_httpapi_use_ssl: true
+    ansible_httpapi_validate_certs: false
 ```
 
 ### AVD Variables
@@ -143,6 +143,7 @@ local_users:
     sha512_password: "< Provide SHA512 HASH for password >"
 
 # OOB Management network default gateway.
+mgmt_interface: Management1
 mgmt_gateway: 10.73.254.253
 mgmt_destination_networks:
   - 10.255.2.0/24
@@ -154,7 +155,7 @@ name_servers:
   - 1.1.1.1
   - 8.8.8.8
 
-# NTP Servers IP or DNS name, first NTP server will be prefered, and sourced from Managment VRF
+# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
 ntp:
   servers:
   - name: uk.pool.ntp.org
@@ -170,34 +171,6 @@ Fabric topology is configured under `inventories/eapi-example/group_vars/AVD_FAB
 
 You can also refer to [__Arista Validated Design__ documentation](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md#fabric-topology-variables) to get a description of every single option available.
 
-- Subnet to use for underlay, loopback and vtep:
-
-```yaml
-# Point to Point Network Summary range, assigned as /31 for each
-# uplink interfaces
-# Assign range larger then total [spines * total potential leafs * 2]
-underlay_p2p_network_summary: 172.31.255.0/24
-
-# IP address range for evpn loopback for all switches in fabric,
-# assigned as /32s
-# Assign range larger then total spines + total leafs switches
-overlay_loopback_network_summary: 192.168.255.0/24
-
-# VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
-# Assign range larger then total leaf switches
-vtep_loopback_network_summary: 192.168.254.0/24
-```
-
-- MLAG IP information
-
-```yaml
-# mlag pair IP assignment - assign blocks - Assign range larger then
-# total spines + total leafs switches
-mlag_ips:
-  leaf_peer_l3: 10.255.251.0/24
-  mlag_peer: 10.255.252.0/24
-```
-
 Then, you have to describe devices for each role. Don't forget to set management IP here.
 
 - Spine devices
@@ -205,15 +178,26 @@ Then, you have to describe devices for each role. Don't forget to set management
 ```yaml
 # Spine Switches
 spine:
-  platform: vEOS-LAB
-  bgp_as: 65001
-  nodes:
-    AVD-SPINE1:
-      id: 1
-      mgmt_ip: 10.73.254.1/24
-    AVD-SPINE2:
-      id: 2
-      mgmt_ip: 10.73.254.2/24
+  defaults:
+    platform: VEOS-LAB
+    bgp_as: 65001
+    # Overlay loopback IP and same pool can be assigned to both spine and l3leaf switches
+    # If same loopback pool is defined for both spine and l3leaf,
+    # < loopback_ipv4_offset > must be set in either one of the node_types
+    loopback_ipv4_pool: 192.168.255.0/24
+    # Recommended for vEOS
+    bgp_defaults:
+      - 'no bgp default ipv4-unicast'
+      - 'distance bgp 20 200 200'
+      - 'graceful-restart restart-time 300'
+      - 'graceful-restart'
+    nodes:
+      AVD-SPINE1:
+        id: 1
+        mgmt_ip: 10.255.0.11/24
+      AVD-SPINE2:
+        id: 2
+        mgmt_ip: 10.255.0.12/24
 ```
 
 - VTEP or L3LEAF devices
@@ -221,12 +205,25 @@ spine:
 ```yaml
 l3leaf:
   defaults:
+    platform: VEOS-LAB
     virtual_router_mac_address: 00:1c:73:00:dc:01
-    platform: vEOS-LAB
-    bgp_as: 65100
-    spines: [AVD-SPINE1, AVD-SPINE2]
-    uplink_to_spine_interfaces: [Ethernet1, Ethernet2]
+    # VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
+    # Assign range larger then total leaf switches
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    # Offset must be >= number of spines
+    loopback_ipv4_offset: 2
+    # Point to Point Network Summary range, assigned as /31 for each
+    # uplink interfaces
+    # Assign range larger then total [spines * total potential leafs * 2]
+    uplink_ipv4_pool: 172.31.255.0/24
+    uplink_switches: [AVD-SPINE1, AVD-SPINE2]
+    uplink_interfaces: [Ethernet1, Ethernet2]
     mlag_interfaces: [Ethernet3, Ethernet4]
+    # mlag pair IP assignment - assign blocks - Assign range larger than
+    # total spines + total leafs switches
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
 [... output truncated ...]
   node_groups:
     AVD_LEAF1:
@@ -234,14 +231,14 @@ l3leaf:
       nodes:
         AVD-LEAF1A:
           id: 1
-          mgmt_ip: 10.73.254.11/24
+          mgmt_ip: 10.255.0.13/24
           # Interface configured on SPINES to connect to this leaf
-          spine_interfaces: [Ethernet1, Ethernet1]
+          uplink_switch_interfaces: [Ethernet1, Ethernet1]
         AVD-LEAF1B:
           id: 2
-          mgmt_ip: 10.73.254.12/24
+          mgmt_ip: 10.255.0.14/24
           # Interface configured on SPINES to connect to this leaf
-          spine_interfaces: [Ethernet2, Ethernet2]
+          uplink_switch_interfaces: [Ethernet2, Ethernet2]
 [... output truncated ...]
 ```
 
@@ -253,15 +250,15 @@ In each variable file related to a type of devices, we have to instruct AVD what
 
 ```yaml
 ---
-type: spine     # Must be either spine|l3leaf|l2leaf
+type: spine     # Must be either spine | l3leaf | l2leaf
 ```
 
-### Configure VNI/VLAN across the Fabric.
+### Configure VNI/VLAN across the Fabric
 
-AVD supports mechanism to create VLANs and VNIs and enable traffic forwarding in your overlay. In current version (`v1.0.2`), only following design listed below are supported:
+AVD supports mechanism to create VLANs and VNIs and enable traffic forwarding in your overlay. In current version (`v3.1.0`), only following design listed below are supported:
 
 - L2 VLANs
-- Symetric IRB model
+- Symmetric IRB model
 
 Model defines a set of tenants (user's defined) where you can configure VRF or `l2vlans` or a mix of them. Let's take a look at how we configure such services.
 
@@ -313,9 +310,9 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
 [... output truncated ...]
 ```
 
-#### Symetric IRB model
+#### Symmetric IRB model
 
-Configure IRB symetric model, use following structure:
+Configure IRB symmetric model, use following structure:
 
 ```yaml
 tenants:
@@ -367,7 +364,7 @@ In case you deployed this VRF on a MLAG VTEP, an additional vlan is created to a
 
 In addition to that, each EOS devices will allocate a dynamic VLAN per VRF to support __L3 VNI__
 
-```
+```eos
 AVD-LEAF1A#show vlan
 VLAN  Name                             Status    Ports
 ----- -------------------------------- --------- -------------------------------
@@ -427,12 +424,12 @@ If server is connected to only one leaf to the fabric, following template can be
 
 ```yaml
 servers:
-  A-PR01-DMZ-POD01:     # Server name
-    rack: POD01         # Informational RACK
+  A-PR01-DMZ-POD01:                 # Server name
+    rack: POD01                     # Informational RACK
     adapters:
       - type: nic
-        server_ports: [Eth0]        # Server port to connect
-        switch_ports: [Ethernet3]   # Switch port to connect server
+        endpoint_ports: [Eth0]      # Port on server/endpoint
+        switch_ports: [Ethernet3]   # Port on switch connected to the endpoint port
         switches: [DC1-AGG01]       # Switch to connect server
         profile: A-PR01-DMZ         # Port profile to apply
 ```
@@ -452,7 +449,7 @@ servers:
   DCI_RTR01:
     rack: DCI
     adapters:
-      - server_ports: [Eth1, Eth2]
+      - endpoint_ports: [Eth1, Eth2]
         switch_ports: [Ethernet5, Ethernet5 ]
         switches: [SITE01-BL01A, SITE01-BL01B]
         profile: A-PR01-DMZ
@@ -475,10 +472,10 @@ tasks:
       import_role:
         name: arista.avd.build_output_folders
       vars:
-        fabric_dir_name: '{{fabric_name}}'
+        fabric_dir_name: '{{ fabric_name }}'
 ```
 
-### Transform EVPN datamodel to device data model
+### Transform EVPN data model to device data model
 
 AVD provides role [__`eos_designs`__](https://github.com/aristanetworks/ansible-avd/blob/devel/ansible_collections/arista/avd/roles/eos_designs/README.md) role to generate intend YAML device configuration:
 
@@ -496,7 +493,7 @@ After device data have been generated, AVD can build EOS configuration as well a
 
 ```yaml
   tasks:
-    - name: generate device intended config and documention
+    - name: generate device intended config and documentation
       tags: [build]
       import_role:
         name: eos_cli_config_gen
@@ -520,18 +517,14 @@ Once your configuration files have been generated, you can use [`arista.avd.eos_
 
 ### Complete AVD eAPI playbook
 
-The overall playbook is given for inforamtion below and you can update it to create your own workflow
+The overall playbook is given for information below and you can update it to create your own workflow
 
 ```yaml
 ---
 - name: Build Switch configuration
   hosts: all
   tasks:
-    - name: build local folders
-      tags: [build]
-      import_role:
-        name: arista.avd.build_output_folders
-    - name: generate intented variables
+    - name: generate intended variables
       tags: [build]
       import_role:
         name: arista.avd.eos_designs
