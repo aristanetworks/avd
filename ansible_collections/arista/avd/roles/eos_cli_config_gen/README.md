@@ -808,7 +808,7 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: < true | false >
       prioritites:
-        - priority: < 0-7 >
+          priority: < 0-7 >
           no_drop: < true | false >
     bfd:
       interval: < rate in milliseconds >
