@@ -3,7 +3,7 @@
 The fabric topology variables define the connectivity between the various node types, as well as override the default switch properties.
 
 <div style="text-align:center">
-  <img src="../../../../media/5-stage-topology.gif" />
+  <img src="../../../media/5-stage-topology.gif" />
 </div>
 
 As per the diagram above, the topology hierarchy is the following:
@@ -223,6 +223,8 @@ defaults <- node_group <- node_group.node <- node
     vtep_loopback_ipv4_pool: < IPv4_address/Mask  >
 
     # Offset all assigned loopback IP addresses.
+    # Required when the < loopback_ipv4_pool > is same for 2 different node_types (like spine and l3leaf) to avoid over-lapping IPs.
+    # For example, set the minimum offset l3leaf.defaults.loopback_ipv4_offset: < total # spine switches > or vice versa.
     loopback_ipv4_offset: 2
 
     # Set VXLAN source interface. Loopback1 is default

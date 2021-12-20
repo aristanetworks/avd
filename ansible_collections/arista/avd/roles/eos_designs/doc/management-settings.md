@@ -64,8 +64,8 @@ mgmt_destination_networks:
 
 # list of DNS servers | Optional
 name_servers:
- - < IPv4_address_1 >
- - < IPv4_address_2 >
+  - < IPv4_address_1 >
+  - < IPv4_address_2 >
 
 # Set SNMP settings | Optional
 snmp_settings:
@@ -81,14 +81,13 @@ Gives ability to monitor and react to Syslog messages provides a powerful and fl
 
 ```yaml
 event_handlers:
-  evpn-blacklist-recovery:    # Name of the event-handler
+  < event_handler_name >:
     action_type: < bash, increment >
     action: < Command to run when handler is triggered >
     delay: < int / delay in sec between 2 triggers >
     trigger: < on-logging >
     regex:  < string to trigger handler >
     asynchronous: < true, false >
-
 ```
 
 ### Example for EVPN blacklist recovery
