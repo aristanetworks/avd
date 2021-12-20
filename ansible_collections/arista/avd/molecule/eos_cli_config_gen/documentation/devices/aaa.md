@@ -168,10 +168,7 @@ aaa authentication policy lockout failure 3 window 900 duration 300
 | Type | User Stores |
 | ---- | ----------- |
 | Exec | group CUST local |
-
-
 Authorization for configuration commands is enabled.
-
 
 ### AAA Authorization Privilege Levels Summary
 
@@ -180,9 +177,7 @@ Authorization for configuration commands is enabled.
 | all | group aaaAuth |
 | 5 | radius |
 | 10,15 | tacacs+ local |
-
 Authorization for serial console is enabled.
-
 
 ### AAA Authorization Device Configuration
 

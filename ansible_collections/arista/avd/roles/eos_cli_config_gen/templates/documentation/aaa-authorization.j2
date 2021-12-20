@@ -9,15 +9,11 @@
 {%     if aaa_authorization.exec.default is arista.avd.defined %}
 | Exec | {{ aaa_authorization.exec.default }} |
 {%     endif %}
-
 {%     if aaa_authorization.config_commands is arista.avd.defined(true) %}
-
 Authorization for configuration commands is enabled.
 {%     else %}
-
 Authorization for configuration commands is disabled.
 {%     endif %}
-
 {%     if aaa_authorization.commands.privilege is arista.avd.defined or aaa_authorization.commands.all_default is arista.avd.defined %}
 
 ### AAA Authorization Privilege Levels Summary
@@ -34,9 +30,7 @@ Authorization for configuration commands is disabled.
 {%         endif %}
 {%     endif %}
 {%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
-
 Authorization for serial console is enabled.
-
 {%     endif %}
 
 ### AAA Authorization Device Configuration
