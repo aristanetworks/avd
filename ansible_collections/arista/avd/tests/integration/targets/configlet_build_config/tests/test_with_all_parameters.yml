@@ -10,4 +10,3 @@
       - result is success
       - result.changed == false
       - result.CVP_CONFIGLETS != {}
-       
