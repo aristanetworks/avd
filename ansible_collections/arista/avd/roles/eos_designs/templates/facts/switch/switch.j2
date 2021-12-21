@@ -27,7 +27,7 @@ switch:
                         platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
 
 {# switch.underlay_routing_protocol #}
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
   underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
 {% else %}
   underlay_routing_protocol: 'ebgp'
