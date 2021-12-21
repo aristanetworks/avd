@@ -1,0 +1,4 @@
+---
+testcase: '*'
+configlet_path: "/../../../../../../../../inventory/intended/configs"
+inventory_path: "/../../../../../../../../inventory/inventory.yml"
