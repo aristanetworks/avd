@@ -66,6 +66,14 @@ router_bgp:
       peer_group: UNDERLAY-PEERS
       remote_as: '65107'
       description: DC1-BL2B_Ethernet1
+    172.31.255.193:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65108'
+      description: DC1-BL3A_Ethernet1
+    172.31.255.209:
+      peer_group: UNDERLAY-PEERS
+      remote_as: '65109'
+      description: DC1-BL3B_Ethernet1
     192.168.255.14:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
@@ -82,6 +90,14 @@ router_bgp:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL2B
       remote_as: '65107'
+    192.168.255.21:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL3A
+      remote_as: '65108'
+    192.168.255.22:
+      peer_group: EVPN-OVERLAY-PEERS
+      description: DC1-BL3B
+      remote_as: '65109'
     192.168.255.9:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-LEAF1A
@@ -253,6 +269,26 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     ip_address: 172.31.255.128/31
+  Ethernet10:
+    peer: DC1-BL3A
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL3A_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.192/31
+  Ethernet11:
+    peer: DC1-BL3B
+    peer_interface: Ethernet1
+    peer_type: l3leaf
+    description: P2P_LINK_TO_DC1-BL3B_Ethernet1
+    speed: forced 100gfull
+    mtu: 1500
+    type: routed
+    shutdown: false
+    ip_address: 172.31.255.208/31
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

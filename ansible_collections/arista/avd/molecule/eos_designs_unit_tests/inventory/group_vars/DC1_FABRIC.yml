@@ -161,6 +161,27 @@ l3leaf:
           mgmt_ip: 192.168.200.118/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
+    DC1_BL3:
+      mlag: false
+      filter:
+        tenants: [ all ]
+        tags: [ wan ]
+        always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+      nodes:
+        DC1-BL3A:
+          platform: CEOS
+          id: 13
+          bgp_as: 65108
+          mgmt_ip: 192.168.200.119/24
+          mac_address: '0c:1d:c0:1d:62:02'
+          uplink_switch_interfaces: [ Ethernet10, Ethernet10, Ethernet10, Ethernet10 ]
+        DC1-BL3B:
+          mgmt_interface: my_own_mgmt_interface
+          id: 14
+          bgp_as: 65109
+          mgmt_ip: 192.168.200.120/24
+          mac_address: '0c:1d:c0:1d:62:02'
+          uplink_switch_interfaces: [ Ethernet11, Ethernet11, Ethernet11, Ethernet11 ]
 
 l2leaf:
   defaults:
