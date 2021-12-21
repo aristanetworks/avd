@@ -404,7 +404,7 @@ def main():
         inventory=dict(type='str', required=True),
         container_root=dict(type='str', required=True),
         configlet_dir=dict(type='str', required=False),
-        configlet_prefix=dict(type='str', required=False),
+        configlet_prefix=dict(type='str', required=False, default="AVD"),
         destination=dict(type='str', required=False),
         device_filter=dict(type="list", elements='str', default="all")
     )

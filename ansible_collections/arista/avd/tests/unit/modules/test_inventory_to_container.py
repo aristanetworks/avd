@@ -17,7 +17,7 @@ IS_ITERABLE_INVALID = [
 ]
 
 INVENTORY_FILE = os.path.dirname(
-    os.path.realpath(__file__)) + "/../../inventory/inventory.yml"
+    os.path.realpath(__file__)) + "../../inventory/inventory.yml"
 
 
 @pytest.fixture
