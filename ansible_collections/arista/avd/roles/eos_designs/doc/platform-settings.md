@@ -80,4 +80,12 @@ platform_settings:
     feature_support:
       queue_monitor_length_notify: false
       interface_storm_control: false
+  - platforms: ["CEOS"]
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
 ```
