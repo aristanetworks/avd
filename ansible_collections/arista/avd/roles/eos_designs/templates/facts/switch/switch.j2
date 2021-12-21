@@ -18,7 +18,7 @@ switch:
 {# switch.mgmt_interface #}
 {% set switch_platform = switch_data.combined.platform | arista.avd.default() %}
 {% set platform_mgmt_int = (platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first).management_interface %}
-  mgmt_interface: {{ switch_data.node.mgmt_interface | arista.avd.default(platform_mgmt_int,mgmt_interface) }}
+  mgmt_interface: {{ switch_data.combined.mgmt_interface | arista.avd.default(platform_mgmt_int, mgmt_interface) }}
 
 {# switch.platform #}
   platform: {{ switch_platform }}
