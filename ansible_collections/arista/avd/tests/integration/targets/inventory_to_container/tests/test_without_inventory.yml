@@ -1,15 +1,14 @@
-   - name: test without inventory
-     register: CVP_VARS
-     ignore_errors: yes
-     inventory_to_container:
+- name: test without inventory
+  register: CVP_VARS
+  ignore_errors: yes
+  inventory_to_container:
         container_root: 'DC1_FABRIC'
         configlet_dir: '{{ role_path }}/{{ configlet_path }}'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
         destination: '{{ inventory_hostname }}.yml'
-   - assert:
+- assert:
         that:
            - CVP_VARS is failed
            - "'missing required arguments:' in CVP_VARS.msg"
            - CVP_VARS.changed == false
-
