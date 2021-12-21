@@ -133,13 +133,13 @@ interface {{ ethernet_interface }}
 {%     elif ethernet_interfaces[ethernet_interface].priority_flow_control is arista.avd.defined and ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(false)%}
    no priority-flow-control
 {%     endif %}
-{%     if ethernet_interfaces[ethernet_interface].priority_flow_control.priorities is arista.avd.defined %}
-{%         if ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.no_drop is arista.avd.defined(true)  %}
-   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.priority }} no-drop
+{%     for priority_block in ethernet_interfaces[ethernet_interface].priority_flow_control.priorities | arista.avd.natural_sort %}
+{%         if priority_block.no_drop is arista.avd.defined(true)  %}
+   priority-flow-control priority {{ priority_block.priority }} no-drop
 {%         else %}
-   priority-flow-control priority {{ ethernet_interfaces[ethernet_interface].priority_flow_control.priorities.priority }} drop
+   priority-flow-control priority {{ priority_block.priority }} drop
 {%         endif %}
-{%     endif %}
+{%     endfor %}
 {%         if ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('edge') %}
    spanning-tree portfast
 {%         elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('network') %}

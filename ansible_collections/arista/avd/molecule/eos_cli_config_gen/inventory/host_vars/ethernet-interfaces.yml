@@ -23,8 +23,8 @@ ethernet_interfaces:
     priority_flow_control: 
       enabled: true
       priorities:
-        priority: 5
-        no_drop: false # drop
+        - priority: 5
+          no_drop: false # drop
 
   Ethernet2:
     peer: SRV-POD03
@@ -44,9 +44,10 @@ ethernet_interfaces:
         unit: percent
     priority_flow_control: 
       enabled: true
-      priorities:
-        priority: 5
-        no_drop: true # no-drop
+      priorities: 
+        - priority: 5
+          no_drop: true # no-drop
+
     
 
   Ethernet3:

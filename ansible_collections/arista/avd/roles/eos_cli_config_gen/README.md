@@ -806,8 +806,8 @@ ethernet_interfaces:
       dscp: < dscp-value >
       cos: < cos-value >
     priority_flow_control:
-      enabled: < true | false >
-      prioritites:
+      - enabled: < true | false >
+      - prioritites:
           priority: < 0-7 >
           no_drop: < true | false >
     bfd:
