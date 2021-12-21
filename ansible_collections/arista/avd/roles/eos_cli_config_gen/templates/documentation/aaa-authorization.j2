@@ -10,8 +10,10 @@
 | Exec | {{ aaa_authorization.exec.default }} |
 {%     endif %}
 {%     if aaa_authorization.config_commands is arista.avd.defined(true) %}
+
 Authorization for configuration commands is enabled.
 {%     else %}
+
 Authorization for configuration commands is disabled.
 {%     endif %}
 {%     if aaa_authorization.commands.privilege is arista.avd.defined or aaa_authorization.commands.all_default is arista.avd.defined %}
@@ -23,13 +25,14 @@ Authorization for configuration commands is disabled.
 {%         if aaa_authorization.commands.all_default is arista.avd.defined %}
 | all | {{ aaa_authorization.commands.all_default }} |
 {%         endif %}
-{%         if aaa_authorization.commands.privilege is arista.avd.defined %}
-{%             for command_levels in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
-| {{ command_levels.level }} | {{ command_levels.group }} |
-{%             endfor %}
-{%         endif %}
+ {%        for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%             if command_level.level is arista.avd.defined and command_level.group is arista.avd.defined %}
+| {{ command_level.level }} | {{ command_level.group }} |
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
+
 Authorization for serial console is enabled.
 {%     endif %}
 

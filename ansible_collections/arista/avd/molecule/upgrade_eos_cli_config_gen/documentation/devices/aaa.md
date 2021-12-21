@@ -165,6 +165,7 @@ aaa authentication policy local allow-nopassword-remote-login
 | Type | User Stores |
 | ---- | ----------- |
 | Exec | group CUST local |
+
 Authorization for configuration commands is enabled.
 
 ### AAA Authorization Privilege Levels Summary
@@ -172,6 +173,7 @@ Authorization for configuration commands is enabled.
 | Privilege Level | Group |
 | --------------  | ----- |
 | all | group aaaAuth |
+ 
 Authorization for serial console is enabled.
 
 ### AAA Authorization Device Configuration
