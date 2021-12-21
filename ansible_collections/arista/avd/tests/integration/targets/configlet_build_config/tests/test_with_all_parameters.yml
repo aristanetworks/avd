@@ -9,5 +9,4 @@
     that:
       - result is success
       - result.changed == false
-      - result.CVP_CONFIGLETS != {}
-       
+      - result.CVP_CONFIGLETS != {}       
