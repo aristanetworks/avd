@@ -109,7 +109,7 @@ tenants:
             enabled: True
             ip_address_virtual: 10.1.41.1/24
       Tenant_A_WAN_Zone:
-        vrf_vni: 14
+        vrf_id: 14
         ospf:
           enabled: true
           max_lsa: 15000

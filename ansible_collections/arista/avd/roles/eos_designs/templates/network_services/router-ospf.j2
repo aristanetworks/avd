@@ -13,11 +13,11 @@ router_ospf:
 {%         for vrf in tenant.vrfs %}
 {%             if vrf.ospf.enabled is arista.avd.defined(true) and inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
 {%                 set vrf_ospf_interfaces = [] %}
-{%                 set ospf_process_id = vrf.ospf.process_id | arista.avd.default(vrf.vrf_vni, vrf.vrf_id) %}
+{%                 set ospf_process_id = vrf.ospf.process_id | arista.avd.default(vrf.vrf_id) %}
 {%                 set ospf_router_id = vrf.ospf.router_id | arista.avd.default(switch.router_id) %}
 {%                 for l3_interface in vrf.l3_interfaces | arista.avd.natural_sort %}
-{%                     if l3_interface.nodes is arista.avd.defined and inventory_hostname in l3_interface.nodes and l3_interface.interfaces is arista.avd.defined %}
-{%                         for node in l3_interface.nodes %}
+{%                     if inventory_hostname in l3_interface.nodes | arista.avd.default([inventory_hostname]) and l3_interface.interfaces is arista.avd.defined %}
+{%                         for node in l3_interface.nodes | arista.avd.natural_sort %}
 {%                             if node == inventory_hostname and l3_interface.ospf.enabled is arista.avd.defined(true) %}
 {%                                 do vrf_ospf_interfaces.append(l3_interface.interfaces[loop.index0]) %}
 {%                             endif %}

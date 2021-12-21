@@ -106,6 +106,11 @@ tenants:
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
         vrf_vni: < 1-1024 >
 
+        # VRF ID | Required.
+        # Replacement variable for vrf_vni, required for tenant OSPF configuration. Acts like and can be used instead of vrf_vni in all cases.
+        # vrf_vni is still supported for backward compatibility.
+        vrf_id: < 1-1024 >
+
         # IP Helper for DHCP relay
         ip_helpers:
           < IPv4 dhcp server IP >:
@@ -144,7 +149,7 @@ tenants:
         # explicitly turned off with "redistribute_ospf: false".
         ospf:
           enabled: < true | false >
-          process_id: < int, Default -> vrf_vni
+          process_id: < int, Default -> vrf_id >
           router_id: < router-id, Default -> switch router_id >
           max_lsa: < int >
           bfd: < true | false, Default -> false >
@@ -365,6 +370,7 @@ tenants:
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
+        vrf_id: < 1-1024 >
         svis:
           < 1-4096 >:
             name: < description >
