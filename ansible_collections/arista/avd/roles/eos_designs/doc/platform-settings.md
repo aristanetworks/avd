@@ -3,6 +3,7 @@
 - Set platform specific settings, TCAM profile and reload delay.
 - The reload delay values should be reviewed and tuned to the specific environment.
 - If the platform is not defined, it will load parameters from the platform tagged `default`.
+- Management interface is modified for specific platforms: Modular platforms with dual supervisor support and container EOS.
 
 ## Variables and Options
 

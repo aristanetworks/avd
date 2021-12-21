@@ -26,7 +26,7 @@ design:
 
 mgmt_vrf_routing: false
 
-mgmt_interface: Management1_default_file
+mgmt_interface: Management1
 mgmt_interface_vrf: MGMT
 
 # eAPI
