@@ -80,7 +80,7 @@ platform_settings:
     feature_support:
       queue_monitor_length_notify: false
       interface_storm_control: false
-  - platforms: ["CEOS"]
+  - platforms: ["CEOS","cEOS","ceos"]
     management_interface: Management0
     reload_delay:
       mlag: 300
