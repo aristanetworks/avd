@@ -6,7 +6,7 @@
         configlet_dir: '{{ role_path }}/{{ configlet_path }}'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
-        destination: '{{ inventory_hostname }}.yml'
+        destination: "{{ role_path }}/{{ output_path }}/output.yml"
 - assert:
         that:
            - CVP_VARS is failed

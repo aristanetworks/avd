@@ -5,7 +5,7 @@
         container_root: 'DC1_FABRIC'
         configlet_dir: '{{ role_path }}/{{ configlet_path }}'
         device_filter: ['DC1-LE']
-        destination: '{{ inventory_hostname }}.yml'
+        destination: "{{ role_path }}/{{ output_path }}/output.yml"
 - assert:
         that:
            - CVP_VARS is success
