@@ -146,7 +146,7 @@ defaults <- node_group <- node_group.node <- node
     platform: < Arista Platform Family >
 
     # Management interface configuration
-    mgmt_interface: < mgmt_interface | default -> platform_management_interface -> Management1 >
+    mgmt_interface: < mgmt_interface | default -> platform_management_interface -> mgmt_interface -> Management1 >
 
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
