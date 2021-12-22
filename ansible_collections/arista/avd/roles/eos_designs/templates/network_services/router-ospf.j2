@@ -16,15 +16,15 @@ router_ospf:
 {%                 set ospf_process_id = vrf.ospf.process_id | arista.avd.default(vrf.vrf_id) %}
 {%                 set ospf_router_id = vrf.ospf.router_id | arista.avd.default(switch.router_id) %}
 {%                 for l3_interface in vrf.l3_interfaces | arista.avd.natural_sort %}
-{%                     if inventory_hostname in l3_interface.nodes | arista.avd.default([inventory_hostname]) and l3_interface.interfaces is arista.avd.defined %}
+{%                     if inventory_hostname in l3_interface.nodes | arista.avd.default([inventory_hostname]) and l3_interface.interfaces is arista.avd.defined and l3_interface.ospf.enabled is arista.avd.defined(true) %}
 {%                         for node in l3_interface.nodes | arista.avd.natural_sort %}
-{%                             if node == inventory_hostname and l3_interface.ospf.enabled is arista.avd.defined(true) %}
+{%                             if node == inventory_hostname %}
 {%                                 do vrf_ospf_interfaces.append(l3_interface.interfaces[loop.index0]) %}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
 {%                 endfor %}
-{%                 for svi in vrf.svis | arista.avd.natural_sort %}
+{%                 for svi in vrf.svis %}
 {%                     if svi.ospf.enabled is arista.avd.defined(true) %}
 {%                         do vrf_ospf_interfaces.append("Vlan" ~ svi.id) %}
 {%                     endif %}
@@ -33,10 +33,7 @@ router_ospf:
       vrf: {{ vrf.name }}
       passive_interface_default: true
       router_id: {{ ospf_router_id }}
-      no_passive_interfaces:
-{%                 for interface in vrf_ospf_interfaces | arista.avd.natural_sort %}
-        - {{ interface }}
-{%                 endfor %}
+      no_passive_interfaces: {{ vrf_ospf_interfaces | arista.avd.natural_sort }}
 {%                 if vrf.ospf.bfd is arista.avd.defined(true) %}
       bfd_enable: true
 {%                 endif %}

@@ -99,7 +99,7 @@ tenants:
       # VRF name | Required
       < tenant_a_vrf_1 >:
 
-        # VRF VNI | Required.
+        # VRF VNI | Optional (required if "vrf_id" is not set).
         # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
         # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
