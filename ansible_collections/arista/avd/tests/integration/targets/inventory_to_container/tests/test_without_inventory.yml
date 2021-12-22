@@ -3,10 +3,9 @@
   ignore_errors: yes
   inventory_to_container:
         container_root: 'DC1_FABRIC'
-        configlet_dir: '{{ role_path }}/{{ configlet_path }}'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
-        destination: "{{ role_path }}/{{ output_path }}/output.yml"
+        destination: "{{ actual_output }}"
 - assert:
         that:
            - CVP_VARS is failed

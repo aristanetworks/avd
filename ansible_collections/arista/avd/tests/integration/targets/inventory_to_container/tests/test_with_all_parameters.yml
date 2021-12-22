@@ -1,12 +1,16 @@
 - name: test with all parameters
   register: CVP_VARS
   inventory_to_container:
-        inventory: '{{ role_path }}/{{ inventory_path }}'
+        inventory: '{{ role_path }}/{{ inventory_path }}/inventory.yml'
         container_root: 'DC1_FABRIC'
-        configlet_dir: '{{ role_path }}/{{ configlet_path }}'
+        configlet_dir: '{{ role_path }}/{{ inventory_path }}/intended/configs'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
-        destination: "{{ role_path }}/{{ output_path }}/output.yml"
+        destination: "{{ actual_output }}"
+
+- local_action: shell diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
+  failed_when: "diff_output.rc > 1"
+  register: diff_output
 
 - assert:
         that:
@@ -14,3 +18,4 @@
            - CVP_VARS.CVP_TOPOLOGY != {}
            - CVP_VARS.CVP_CONFIGLETS != {}
            - CVP_VARS.changed == false
+           - diff_output.stdout == ""
