@@ -79,6 +79,7 @@ l3leaf:
       filter:
         tenants: [ all ]
         tags: [ web, app ]
+      vtep_loopback: Loopback0
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -94,10 +95,12 @@ l3leaf:
           id: 2
           mgmt_ip: 192.168.200.106/24
           uplink_switch_interfaces: ['Ethernet2', 'Ethernet2', 'Ethernet2', 'Ethernet2']
+          vtep_loopback: Loopback10
         DC1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: ['Ethernet3', 'Ethernet3', 'Ethernet3', 'Ethernet3']
+          vtep_loopback: Loopback10
     DC1_SVC3:
       bgp_as: 65103
       filter:

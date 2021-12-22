@@ -4,6 +4,51 @@
 
 fabric_name: DC1_FABRIC
 
+# Node type definitions
+node_type_keys:
+  spine:
+    type: spine
+    default_evpn_role: server
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+  l3leaf:
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      mlag_ethernet_interfaces: 'templates/interface-descriptions/mlag/ethernet-interfaces.j2'
+      mlag_port_channel_interfaces: 'templates/interface-descriptions/mlag/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface-descriptions/loopbacks/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface-descriptions/loopbacks/vtep-loopback.j2'
+  l2leaf:
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    interface_descriptions:
+      # Override interface description templates with our custom templates
+      underlay_ethernet_interfaces: 'interface-descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface-descriptions/underlay/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface-descriptions/connected-endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface-descriptions/connected-endpoints/port-channel-interfaces.j2'
+
 # mlag pair IP assignment - assign blocks - Assign range larger then total spines + total leafs switches
 # mlag_ips:
 #   leaf_peer_l3: 10.255.251.0/24
@@ -26,10 +71,10 @@ bgp_peer_groups:
     name: UNDERLAY-PEERS
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   EVPN_OVERLAY_PEERS:
-      password: "q+VNViP5i4rVjW1cxFv2wA=="
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
-      name: MLAG-PEERS
-      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    name: MLAG-PEERS
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches
 spine:
@@ -98,6 +143,9 @@ l3leaf:
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
+          vtep_loopback: Loopback0
+          structured_config:
+            tags: no-monitor
     DC1_LEAF2:
       bgp_as: 65102
       rack: "rackD"
@@ -109,14 +157,17 @@ l3leaf:
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
+          vtep_loopback: Loopback10
         DC1-LEAF2B:
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [ Ethernet3, Ethernet3, Ethernet3, Ethernet3 ]
+          vtep_loopback: Loopback10
     DC1_SVC3:
       platform: 7050SX3
       bgp_as: 65103
       uplink_interfaces: [ Ethernet41, Ethernet42, Ethernet43, Ethernet44 ]
+      mlag_peer_l3_vlan: false #False means using mlag_peer_vlan (4094) for both mlag peer and l3 peerings.
       filter:
         tenants: [ Tenant_A, Tenant_B, Tenant_C ]
         tags: [ opzone, web, app, db, vmotion, nfs, wan ]

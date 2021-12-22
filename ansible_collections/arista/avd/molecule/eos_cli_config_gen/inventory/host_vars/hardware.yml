@@ -5,4 +5,3 @@ hardware:
       serdes: 10g
     2:
       serdes: 25g
-      

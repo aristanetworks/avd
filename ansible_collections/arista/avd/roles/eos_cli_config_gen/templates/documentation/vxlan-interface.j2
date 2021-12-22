@@ -1,32 +1,63 @@
-{% if vxlan_tunnel_interface is defined %}
+{% if vxlan_interface.Vxlan1 is arista.avd.defined %}
 
 ## VXLAN Interface
 
 ### VXLAN Interface Summary
+{%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
 
-#### Source Interface: {{ vxlan_tunnel_interface.Vxlan1.source_interface }}
+#### Source Interface: {{ vxlan_interface.Vxlan1.vxlan.source_interface }}
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
 
-#### UDP port: {{ vxlan_tunnel_interface.Vxlan1.vxlan_udp_port }}
+#### MLAG Source Interface: {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }}
+{%     endif %}
 
-#### VLAN to VNI Mappings
+#### UDP port: {{ vxlan_interface.Vxlan1.vxlan.udp_port | arista.avd.default('4789') }}
+{%     if vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
 
-| VLAN | VNI |
-| ---- | --- |
-{%     for vlan in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans | arista.avd.natural_sort %}
-| {{ vlan }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vlans[vlan].vni }} |
-{%     else %}
-| N/A | N/A |
-{%     endfor %}
-{% if vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is defined and vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs is not none %}
+#### EVPN MLAG Shared Router MAC : {{ vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }}
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
-#### VRF to VNI Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-{%     for vrf in vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs | arista.avd.natural_sort %}
-| {{ vrf }} | {{ vxlan_tunnel_interface.Vxlan1.vxlan_vni_mappings.vrfs[vrf].vni }} |
-{%     endfor %}
-{% endif %}
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+{%         for vlan in vxlan_interface.Vxlan1.vxlan.vlans | arista.avd.natural_sort %}
+{%             set vlan_vni = vxlan_interface.Vxlan1.vxlan.vlans[vlan].vni | arista.avd.default('-') %}
+{%             set multicast_group = vxlan_interface.Vxlan1.vxlan.vlans[vlan].multicast_group | arista.avd.default('-') %}
+{%             if vxlan_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps is arista.avd.defined %}
+{%                 set flood_list = vxlan_interface.Vxlan1.vxlan.vlans[vlan].flood_vteps | join('<br/>')  %}
+{%             else %}
+{%                 set flood_list = '-' %}
+{%             endif %}
+| {{ vlan }} | {{ vlan_vni }} | {{  flood_list }} | {{ multicast_group }} |
+{%         endfor %}
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.vrfs is arista.avd.defined %}
+
+#### VRF to VNI and Multicast Group Mappings
+
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+{%         for vrf in vxlan_interface.Vxlan1.vxlan.vrfs | arista.avd.natural_sort %}
+{%             set vrf_vni = vxlan_interface.Vxlan1.vxlan.vrfs[vrf].vni | arista.avd.default('-') %}
+{%             set multicast_group = vxlan_interface.Vxlan1.vxlan.vrfs[vrf].multicast_group | arista.avd.default('-') %}
+| {{ vrf }} | {{ vrf_vni }} | {{ multicast_group }} |
+{%         endfor %}
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.flood_vteps is arista.avd.defined %}
+
+#### Default Flood List
+
+| Default Flood List |
+| ---------- |
+| {{ vxlan_interface.Vxlan1.vxlan.flood_vteps | join('<br/>') }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(true) %}
+
+#### VXLAN flood-lists learning from data-plane: Enabled
+{%     endif %}
 
 ### VXLAN Interface Device Configuration
 

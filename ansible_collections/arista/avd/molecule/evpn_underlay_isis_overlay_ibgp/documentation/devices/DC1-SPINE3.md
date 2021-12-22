@@ -1,6 +1,5 @@
 # DC1-SPINE3
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -35,7 +34,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -85,13 +83,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -106,15 +108,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -153,16 +154,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | True |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -disableaaa -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -224,15 +225,15 @@ vlan internal order ascending range 1006 1199
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -402,20 +403,21 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Net-ID | 49.0001.0001.0000.0003.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet5 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet6 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet7 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
+| --------- | ------------- | ----------- | -------------- |
+| Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet5 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet6 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet7 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
 
 ### Router ISIS Device Configuration
 
@@ -445,12 +447,6 @@ router isis EVPN_UNDERLAY
 | no bgp default ipv4-unicast |
 | distance bgp 20 200 200 |
 | maximum-paths 4 ecmp 4 |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
 
 ### Router BGP Device Configuration
 

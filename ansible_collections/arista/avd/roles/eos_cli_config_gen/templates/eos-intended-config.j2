@@ -17,7 +17,7 @@
 {# ip dhcp relay #}
 {% include 'eos/ip-dhcp-relay.j2' %}
 {# switchport default #}
-{% include 'eos/switchport-default.j2'%}
+{% include 'eos/switchport-default.j2' %}
 {# internal vlan allocation policy #}
 {% include 'eos/vlan-internal-order.j2' %}
 {# ip igmp snooping #}
@@ -40,6 +40,8 @@
 {% include 'eos/queue-monitor-length.j2' %}
 {# lldp #}
 {% include 'eos/lldp.j2' %}
+{# lacp #}
+{% include 'eos/lacp.j2' %}
 {# logging #}
 {% include 'eos/logging.j2' %}
 {# match-list #}
@@ -56,8 +58,6 @@
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
-{# ntp servers #}
-{% include 'eos/ntp-servers.j2' %}
 {# ntp #}
 {% include 'eos/ntp.j2' %}
 {# ptp #}
@@ -98,12 +98,16 @@
 {% include 'eos/enable-password.j2' %}
 {# users #}
 {% include 'eos/local-users.j2' %}
-{# clock timezone #}
-{% include 'eos/clock-timezone.j2' %}
+{# roles #}
+{% include 'eos/roles.j2' %}
+{# clock #}
+{% include 'eos/clock.j2' %}
 {# VLANs #}
 {% include 'eos/vlans.j2' %}
 {# VRF Instances #}
 {% include 'eos/vrf-instances.j2' %}
+{# Link Tracking #}
+{% include 'eos/link-tracking-groups.j2' %}
 {# Port-Channel Interfaces #}
 {% include 'eos/port-channel-interfaces.j2' %}
 {# Ethernet Interfaces #}
@@ -118,6 +122,8 @@
 {% include 'eos/vxlan-interface.j2' %}
 {# Hardware TCAM Profiles #}
 {% include 'eos/tcam-profile.j2' %}
+{# Connectivity monitor configuration #}
+{% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table#}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
@@ -130,7 +136,6 @@
 {% include 'eos/bgp-groups.j2' %}
 {# Interface Groups configuration #}
 {% include 'eos/interface-groups.j2' %}
-{# IPv6 Standard access-lists #}
 {# IPv6 Extended Access-lists #}
 {% include 'eos/ipv6-access-lists.j2' %}
 {# IPv6 Standard Access-lists #}
@@ -193,6 +198,8 @@
 {% include 'eos/router-isis.j2' %}
 {# MPLS #}
 {% include 'eos/mpls.j2' %}
+{# Patch Panel #}
+{% include 'eos/patch-panel.j2' %}
 {# queue monitor streaming #}
 {% include 'eos/queue-monitor-streaming.j2' %}
 {# ip tacacs+ source interfaces #}
@@ -217,6 +224,8 @@
 {% include 'eos/management-security.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
+{# ip ssh client source interfaces #}
+{% include 'eos/ip-ssh-client-source-interfaces.j2' %}
 {# EOS CLI #}
 {% include 'eos/eos-cli.j2' %}
 {# custom templates #}

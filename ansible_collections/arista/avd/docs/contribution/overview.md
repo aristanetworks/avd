@@ -129,22 +129,41 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
 * A PR can be opened before all the work is complete. In this situation, PR state should be set to __draft__. All PR marked as ready for review (i.e. not in draft) will be reviewed by the maintainer team.
 
-* To automate release-notes creation and make filtering process easier, it is strongly recommended to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) syntax at least for PR title. Scope should be module or role updated. As a reminder, the list below provides all supported commit types:
+* To automate release-notes creation and make filtering process easier, it is strongly recommended to use [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/#summary) syntax at least for PR title. Scope should be module or role updated. As a reminder, the list below provides all supported commit types and scopes:
 
-  * `Feat`: Create a capability e.g. feature, test, dependency.
-  * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
-  * `Cut`: Remove a capability e.g. feature, test, dependency.
-  * `Doc`: Refactor of documentation, e.g. help files.
-  * `Start`: Begin doing something; e.g. create a feature flag.
-  * `Stop`: End doing something; e.g. remove a feature flag.
-  * `Bump`: Increase the version of something e.g. dependency.
-  * `Test`: Add or refector anything regard test, e.g add a new testCases.
-  * `Make`: Change the build process, or tooling, or infra.
-  * `Refactor`: A code change that MUST be just a refactoring.
-  * `Reformat`: Refactor of formatting, e.g. omit whitespace.
-  * `Optimize`: Refactor of performance, e.g. speed up code.
-  * `License`: Edits regarding licensing; no production code change.
-  * `Revert`: Change back to the previous commit
+  * __Types__:
+
+    * `Feat`: Create a capability e.g. feature, test, dependency.
+    * `Fix`: Fix an issue e.g. bug, typo, accident, misstatement.
+    * `Cut`: Remove a capability e.g. feature, test, dependency.
+    * `Doc`: Refactor of documentation, e.g. help files.
+    * `CI`: Update CI components, e.g. molecule files or Github Actions.
+    * `Start`: Begin doing something; e.g. create a feature flag.
+    * `Stop`: End doing something; e.g. remove a feature flag.
+    * `Bump`: Increase the version of something e.g. dependency.
+    * `Test`: Add or refector anything regard test, e.g add a new testCases.
+    * `Make`: Change the build process, or tooling, or infra.
+    * `Refactor`: A code change that MUST be just a refactoring.
+    * `Reformat`: Refactor of formatting, e.g. omit whitespace.
+    * `Optimize`: Refactor of performance, e.g. speed up code.
+    * `License`: Edits regarding licensing; no production code change.
+    * `Revert`: Change back to the previous commit
+
+  * __Scopes__:
+
+    * `{{ role name }}`: AVD role impacting by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `plugins`: To use when AVD plugin is impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `requirements`: To use when using `Bump` type and when any AVD requirement is updated
+    * `mkdoc`: represents generic documentation published on www.avd.sh
+    * `contribution`: documentation related to contribution
+    * `how-to`: documentation in the How to section of avd
+    * `actions`: represents Github Actions update
+    * `molecule`: represents Molecule CI update
+    * `ansible`: For any ansible information update like galaxy.yml or ansible requirements
+    * `github`: For any content related to Github processes
+
+!!! info "Scopes"
+    Scope is an optional field and can be ignore safely if your PR covers an undefined scope.
 
 ## Project Structure
 

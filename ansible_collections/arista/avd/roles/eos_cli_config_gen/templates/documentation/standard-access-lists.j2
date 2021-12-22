@@ -6,6 +6,10 @@
 
 {%     for standard_access_list in standard_access_lists | arista.avd.natural_sort %}
 #### {{ standard_access_list }}
+{%       if standard_access_lists[standard_access_list].counters_per_entry is arista.avd.defined(true) %}
+
+ACL has counting mode `counters per-entry` enabled!
+{%       endif %}
 
 | Sequence | Action |
 | -------- | ------ |

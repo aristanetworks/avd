@@ -1,0 +1,10 @@
+{# Add one blank line after each included template #}
+{% if switch.tenants | arista.avd.default([]) | length > 0 %}
+router_bgp:
+{%     include 'network_services/router-bgp-vrfs.j2' %}
+
+{%     include 'network_services/router-bgp-vlans.j2' %}
+
+{%     include 'network_services/router-bgp-vlan-aware-bundles.j2' %}
+
+{% endif %}

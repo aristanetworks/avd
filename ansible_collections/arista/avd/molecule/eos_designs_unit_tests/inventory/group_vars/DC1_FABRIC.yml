@@ -13,10 +13,10 @@ bgp_peer_groups:
     name: UNDERLAY-PEERS
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   EVPN_OVERLAY_PEERS:
-      password: "q+VNViP5i4rVjW1cxFv2wA=="
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
-      name: MLAG-PEERS
-      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    name: MLAG-PEERS
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 # Spine Switches
 spine:
@@ -31,14 +31,17 @@ spine:
       mgmt_ip: 192.168.200.101/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE2:
+      platform: 7500R
       id: 2
       mgmt_ip: 192.168.200.102/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE3:
+      platform: 7800R3
       id: 3
       mgmt_ip: 192.168.200.103/24
       mac_address: '0c:1d:c0:1d:62:01'
     DC1-SPINE4:
+      platform: 7280R3
       id: 4
       mgmt_ip: 192.168.200.104/24
       mac_address: '0c:1d:c0:1d:62:01'
@@ -61,8 +64,10 @@ l3leaf:
     platform: 7280R
     bgp_as: 65101
     mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces_speed: 100g
     mlag_peer_l3_vlan: 4090
     mlag_peer_vlan: 4092
+    mlag_peer_link_allowed_vlans: "1-4094"
     spanning_tree_mode: mstp
     spanning_tree_root_super: true
     spanning_tree_priority: 4096
@@ -77,7 +82,7 @@ l3leaf:
       platform: 7050SX3
       filter:
         tenants: [ all ]
-        tags: [ web, app ]
+        tags: [ web, app, erp2 ]
       nodes:
         DC1-LEAF1A:
           id: 1
@@ -135,6 +140,27 @@ l3leaf:
           mgmt_ip: 192.168.200.111/24
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7, Ethernet7, Ethernet7 ]
+    DC1_BL2:
+      mlag: false
+      filter:
+        tenants: [ all ]
+        tags: [ wan ]
+        always_include_vrfs_in_tenants: [ 'Tenant_B' ]
+      nodes:
+        DC1-BL2A:
+          platform: 7280R2
+          id: 8
+          bgp_as: 65106
+          mgmt_ip: 192.168.200.117/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet8, Ethernet8, Ethernet8, Ethernet8 ]
+        DC1-BL2B:
+          platform: 7280R3
+          id: 9
+          bgp_as: 65107
+          mgmt_ip: 192.168.200.118/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet9, Ethernet9, Ethernet9, Ethernet9 ]
 
 l2leaf:
   defaults:
@@ -151,6 +177,7 @@ l2leaf:
     mlag_peer_ipv4_pool: 10.255.252.0/24
   node_groups:
     DC1_L2LEAF1:
+      mlag_interfaces_speed: forced 40gfull
       uplink_switches: [ DC1-LEAF2A, DC1-LEAF2B ]
       short_esi: 0808:0707:0606
       filter:

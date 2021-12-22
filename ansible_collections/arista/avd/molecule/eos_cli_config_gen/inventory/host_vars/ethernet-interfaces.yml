@@ -9,6 +9,9 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.1/31
+    link_tracking_groups:
+      - name: EVPN_MH_ES1
+        direction: upstream
     bfd:
       interval: 500
       min_rx: 500
@@ -43,6 +46,9 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.128.1/31
+    link_tracking_groups:
+      - name: EVPN_MH_ES2
+        direction: downstream
     ipv6_enable: true
     ipv6_address: 2002:ABDC::1/64
     ipv6_nd_prefixes:
@@ -91,6 +97,7 @@ ethernet_interfaces:
     isis_passive: false
     isis_metric: 99
     isis_network_point_to_point: true
+    isis_circuit_type: level-2
 
   Ethernet6:
     logging:
@@ -148,6 +155,9 @@ ethernet_interfaces:
   Ethernet8:
     description: to WAN-ISP1-01 Ethernet2
     type: routed
+    lldp:
+      transmit: false
+      receive: false
   Ethernet8.101:
     description: to WAN-ISP-01 Ethernet2.101 - VRF-C1
     type: l3dot1q
@@ -231,3 +241,50 @@ ethernet_interfaces:
     mode: trunk
     vlans: 110-112
     trunk_private_vlan_secondary: true
+
+  Ethernet18:
+    description: PBR Description
+    mtu: 1500
+    type: routed
+    ip_address: 192.0.2.1/31
+    service_policy:
+      pbr:
+        input: MyLANServicePolicy
+
+  Ethernet19:
+    description: Switched port with no LLDP rx/tx
+    mode: access
+    vlans: 110
+    lldp:
+      transmit: false
+      receive: false
+
+  Ethernet20:
+    description: Port patched through patch-panel to pseudowire
+    type: routed
+    lldp:
+      transmit: false
+      receive: false
+
+  Ethernet21:
+    description: 200MBit/s shape
+    qos:
+      trust: disabled
+    shape:
+      rate: "200000 kbps"
+
+  Ethernet22:
+    description: 10% shape
+    shape:
+      rate: "10 percent"
+
+  Ethernet23:
+    description: Error-correction encoding
+    error_correction_encoding:
+      fire_code: true
+      reed_solomon: true
+
+  Ethernet24:
+    description: Disable error-correction encoding
+    error_correction_encoding:
+      enabled: false

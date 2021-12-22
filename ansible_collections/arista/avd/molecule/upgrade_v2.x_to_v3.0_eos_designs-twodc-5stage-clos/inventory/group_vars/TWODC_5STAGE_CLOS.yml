@@ -8,9 +8,9 @@ bgp_peer_groups:
   IPv4_UNDERLAY_PEERS:
     password: "AQQvKeimxJu+uGQ/yYvv9w=="
   EVPN_OVERLAY_PEERS:
-      password: "q+VNViP5i4rVjW1cxFv2wA=="
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
   MLAG_IPv4_UNDERLAY_PEER:
-      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+    password: "vnEaG8gMeQf3d3cN6PktXQ=="
 
 mgmt_gateway: 192.168.1.254
 mgmt_destination_networks:
@@ -27,8 +27,6 @@ local_users:
     role: network-admin
     no_password: true
     sha512_password: $6$eJ5TvI8oru5i9e8G$R1X/SbtGTk9xoEHEBQASc7SC2nHYmi.crVgp2pXuCXwxsXEA81e4E0cXgQ6kX08fIeQzauqhv2kS.RGJFCon5/
-
-
 
 l3_edge:
   p2p_links_ip_pools:

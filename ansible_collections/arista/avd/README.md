@@ -6,7 +6,7 @@
 
 - [Ansible Collection For Arista Validated Designs](#ansible-collection-for-arista-validated-designs)
   - [About](#about)
-  - [Validated Designs](#validated-designs)
+  - [Reference Designs](#reference-designs)
   - [Roles Overview](#roles-overview)
   - [Custom Plugins & Modules](#custom-plugins--modules)
   - [Installation](#installation)
@@ -26,7 +26,7 @@ Full documentation for the collection is available on read-the-docs:
 - [Latest stable version](https://www.avd.sh/en/latest/)
 - [Collection development version](https://www.avd.sh/en/devel/)
 
-## Validated Designs
+## Reference Designs
 
 The arista.avd collection provides abstracted data models and framework to build, document, deploy and validate the following designs:
 
@@ -34,15 +34,15 @@ The arista.avd collection provides abstracted data models and framework to build
 
 | Underlay | Overlay | Topology |
 | -------- | ------- | ---------- |
-| eBGP | eBGP | [ 3 stage, 5 stage ] + L2 Leafs |
-| ISIS | eBGP | [ 3 stage ] + L2 Leafs |
-| ISIS | iBGP | [ 3 stage ] + L2 Leafs |
-| OSPF | eBGP | [ 3 stage ] + L2 Leafs |
-| OSPF | iBGP | [ 3 stage ] + L2 Leafs |
-| RFC5549(eBGP) | eBGP | [ 3 stage ] + L2 Leafs |
+| eBGP | eBGP | Multi-Stage + L2 Leafs |
+| ISIS | eBGP | Multi-Stage + L2 Leafs  |
+| ISIS | iBGP | Multi-Stage + L2 Leafs  |
+| OSPF | eBGP | Multi-Stage + L2 Leafs |
+| OSPF | iBGP | Multi-Stage + L2 Leafs  |
+| RFC5549(eBGP) | eBGP | Multi-Stage + L2 Leafs |
 
 <div style="text-align:center">
-  <img src="media/topology.gif" />
+  <img src="media/5-stage-topology.gif" />
 </div>
 
 ## Roles Overview
@@ -77,11 +77,11 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 
 **Python:**
 
-- Python 3.6.8 or later
+- Python 3.8 or later
 
 **Supported Ansible Versions:**
 
-- ansible 2.10.7 or later
+- ansible-core from __2.11.3__ to __2.12.x__
 
 **Additional Python Libraries required:**
 
@@ -98,7 +98,7 @@ This repository provides custom plugins for Ansible's collection __arista.avd__ 
 **Ansible + Additional Python Libraries Installation:**
 
 ```shell
-$ pip3 install ansible==2.10.7
+$ pip3 install ansible-core>=2.11.3,<2.13.0
 
 $ pip3 install -r requirements.txt
 ```

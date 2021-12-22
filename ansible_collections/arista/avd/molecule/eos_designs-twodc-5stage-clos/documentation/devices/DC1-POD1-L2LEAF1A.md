@@ -1,6 +1,5 @@
 # DC1-POD1-L2LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -36,7 +35,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -70,15 +68,14 @@ interface Vlan4085
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -115,29 +112,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 

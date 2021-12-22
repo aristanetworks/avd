@@ -1,6 +1,5 @@
 # DC1-LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -46,7 +45,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -96,13 +94,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -117,15 +119,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -164,16 +165,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -181,29 +182,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC rackA DC1-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| example@example.com | DC1_FABRIC rackA DC1-LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -458,27 +439,28 @@ interface Vlan131
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 130 | 10130 | - | - |
+| 131 | 10131 | - | - |
 
-#### VRF to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_APP_Zone | 12 |
-| Tenant_A_WEB_Zone | 11 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_WEB_Zone | 11 | - |
 
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 120 vni 10120
@@ -578,6 +560,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -589,23 +572,30 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.31.255.0 | 65001 | default |
-| 172.31.255.2 | 65001 | default |
-| 172.31.255.4 | 65001 | default |
-| 172.31.255.6 | 65001 | default |
-| 192.168.255.1 | 65001 | default |
-| 192.168.255.2 | 65001 | default |
-| 192.168.255.3 | 65001 | default |
-| 192.168.255.4 | 65001 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.31.255.0 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.2 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.4 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.6 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
+
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
 
 #### EVPN Host Flapping Settings
 
@@ -613,16 +603,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.9:12 | 12:12 | - | - | learned | 130-131 |
 | Tenant_A_WEB_Zone | 192.168.255.9:11 | 11:11 | - | - | learned | 120-121 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -639,6 +627,7 @@ router bgp 65101
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
@@ -646,6 +635,7 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor UNDERLAY-PEERS peer group
+   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
@@ -720,7 +710,7 @@ router bgp 65101
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

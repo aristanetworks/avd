@@ -1,6 +1,5 @@
 # DC1-SVC3B
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -53,7 +52,6 @@
   - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -103,13 +101,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -124,15 +126,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -171,16 +172,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -188,29 +189,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC DC1-SVC3B |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| example@example.com | DC1_FABRIC DC1-SVC3B | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -1017,47 +998,50 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
-| VLAN | VNI |
-| ---- | --- |
-| 110 | 10110 |
-| 111 | 50111 |
-| 120 | 10120 |
-| 121 | 10121 |
-| 130 | 10130 |
-| 131 | 10131 |
-| 140 | 10140 |
-| 141 | 10141 |
-| 150 | 10150 |
-| 160 | 10160 |
-| 161 | 10161 |
-| 210 | 20210 |
-| 211 | 20211 |
-| 250 | 20250 |
-| 310 | 30310 |
-| 311 | 30311 |
-| 350 | 30350 |
+#### VLAN to VNI, Flood List and Multicast Group Mappings
 
-#### VRF to VNI Mappings
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | - |
+| 111 | 50111 | - | - |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 130 | 10130 | - | - |
+| 131 | 10131 | - | - |
+| 140 | 10140 | - | - |
+| 141 | 10141 | - | - |
+| 150 | 10150 | - | - |
+| 160 | 10160 | - | - |
+| 161 | 10161 | - | - |
+| 210 | 20210 | - | - |
+| 211 | 20211 | - | - |
+| 250 | 20250 | - | - |
+| 310 | 30310 | - | - |
+| 311 | 30311 | - | - |
+| 350 | 30350 | - | - |
 
-| VLAN | VNI |
-| ---- | --- |
-| Tenant_A_APP_Zone | 12 |
-| Tenant_A_DB_Zone | 13 |
-| Tenant_A_OP_Zone | 10 |
-| Tenant_A_WAN_Zone | 14 |
-| Tenant_A_WEB_Zone | 11 |
-| Tenant_B_OP_Zone | 20 |
-| Tenant_B_WAN_Zone | 21 |
-| Tenant_C_OP_Zone | 30 |
-| Tenant_C_WAN_Zone | 31 |
+#### VRF to VNI and Multicast Group Mappings
+
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Tenant_A_APP_Zone | 12 | - |
+| Tenant_A_DB_Zone | 13 | - |
+| Tenant_A_OP_Zone | 10 | - |
+| Tenant_A_WAN_Zone | 14 | - |
+| Tenant_A_WEB_Zone | 11 | - |
+| Tenant_B_OP_Zone | 20 | - |
+| Tenant_B_WAN_Zone | 21 | - |
+| Tenant_C_OP_Zone | 30 | - |
+| Tenant_C_WAN_Zone | 31 | - |
 
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-SVC3B_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -1199,6 +1183,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Ebgp multihop | 3 |
@@ -1220,33 +1205,40 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Remote AS | 65001 |
 | Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | default |
-| 172.31.255.64 | 65001 | default |
-| 172.31.255.66 | 65001 | default |
-| 172.31.255.68 | 65001 | default |
-| 172.31.255.70 | 65001 | default |
-| 192.168.255.1 | 65001 | default |
-| 192.168.255.2 | 65001 | default |
-| 192.168.255.3 | 65001 | default |
-| 192.168.255.4 | 65001 | default |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone |
-| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 172.31.255.64 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.66 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.68 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.70 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| 10.255.251.6 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
 
 ### Router BGP EVPN Address Family
+
+#### EVPN Peer Groups
+
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
 
 #### EVPN Host Flapping Settings
 
@@ -1254,9 +1246,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----- | ------ | --------- |
 | Disabled | - |  - |
 
-#### Router BGP EVPN MAC-VRFs
-
-##### VLAN aware bundles
+### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
@@ -1272,7 +1262,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_C_OP_Zone | 192.168.255.13:30 | 30:30 | - | - | learned | 310-311 |
 | Tenant_C_WAN_Zone | 192.168.255.13:31 | 31:31 | - | - | learned | 350 |
 
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -1296,6 +1286,7 @@ router bgp 65103
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65001
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
@@ -1310,6 +1301,7 @@ router bgp 65103
    neighbor MLAG-PEERS maximum-routes 12000
    neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY-PEERS peer group
+   neighbor UNDERLAY-PEERS remote-as 65001
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
@@ -1501,7 +1493,7 @@ router bgp 65103
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

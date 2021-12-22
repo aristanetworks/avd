@@ -4,8 +4,8 @@ ztp:
     registration: http://192.168.200.11/ztp/bootstrap
     gateway: 192.168.200.5
     nameservers:
-      - 192.168.200.5
       - 8.8.8.8
+      - 192.168.200.5
     use_system_mac: true
   general:
     subnets:
@@ -13,27 +13,20 @@ ztp:
         netmask: 255.255.0.0
         gateway: 192.168.200.5
         nameservers:
-          - 192.168.200.5
           - 8.8.8.8
+          - 192.168.200.5
         start: 172.17.255.200
         end: 172.17.255.210
         lease_time: 300
   clients:
-    # SUPER SPINE
-    # SPINE
-    - name: DC1-SPINE1
+    # l2leaf
+    - name: DC1-L2LEAF1A
       mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.101
-    - name: DC1-SPINE2
+      ip4: 192.168.200.112
+    - name: DC1-L2LEAF2B
       mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.102
-    - name: DC1-SPINE3
-      mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.103
-    - name: DC1-SPINE4
-      mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.104
-    # L3LEAF
+      ip4: 192.168.200.114
+    # l3leaf
     - name: DC1-BL1A
       mac: '0c:1d:c0:1d:62:01'
       ip4: 192.168.200.110
@@ -52,10 +45,16 @@ ztp:
     - name: DC1-SVC3B
       mac: '0c:1d:c0:1d:62:01'
       ip4: 192.168.200.109
-    # L2LEAF
-    - name: DC1-L2LEAF1A
+    # spine
+    - name: DC1-SPINE1
       mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.112
-    - name: DC1-L2LEAF2B
+      ip4: 192.168.200.101
+    - name: DC1-SPINE2
       mac: '0c:1d:c0:1d:62:01'
-      ip4: 192.168.200.114
+      ip4: 192.168.200.102
+    - name: DC1-SPINE3
+      mac: '0c:1d:c0:1d:62:01'
+      ip4: 192.168.200.103
+    - name: DC1-SPINE4
+      mac: '0c:1d:c0:1d:62:01'
+      ip4: 192.168.200.104

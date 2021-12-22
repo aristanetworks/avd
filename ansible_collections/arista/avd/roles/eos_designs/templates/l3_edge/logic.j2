@@ -76,8 +76,8 @@
 {%                 set p2p_bgp_neighbor.peer_group = bgp_peer_groups.IPv4_UNDERLAY_PEERS.name | arista.avd.default("IPv4-UNDERLAY-PEERS") %}
 {%                 set p2p_bgp_neighbor.bfd = p2p_link.bfd | arista.avd.default(
                                               p2p_profile.bfd) %}
-{%                 if switch.bgp_as is arista.avd.defined and as[node_index] != switch.bgp_as %}
-{%                     set p2p_bgp_neighbor.local_as = as[node_index] %}
+{%                 if switch.bgp_as is arista.avd.defined and as[node_index] | string != switch.bgp_as %}
+{%                     set p2p_bgp_neighbor.local_as = as[node_index] | string %}
 {%                 endif %}
 {%                 do l3_edge_data.bgp_neighbors.update({ p2p_interface.peer_ip: p2p_bgp_neighbor }) %}
 {%             elif switch.underlay_routing_protocol == "ospf" %}

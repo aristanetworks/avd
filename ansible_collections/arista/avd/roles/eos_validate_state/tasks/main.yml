@@ -67,6 +67,7 @@
   include_tasks: "hardware.yml"
   when:
     - eos_version.stdout_lines.0.modelName != 'vEOS'
+    - eos_version.stdout_lines.0.modelName != 'vEOS-lab'
     - eos_version.stdout_lines.0.modelName != 'cEOSLab'
   tags:
     - hardware

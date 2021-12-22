@@ -1,0 +1,12 @@
+daemon_terminattr:
+  cvaddrs: ['10.10.10.10:9910']
+  cvauth: {key: key, method: key}
+  cvcompression: gzip
+  cvvrf: default
+  ingestauth_key: key
+  ingestexclude: test
+  ingestgrpcurl:
+    ips: [10.10.10.10]
+    port: 9910
+  ingestvrf: default
+  smashexcludes: test

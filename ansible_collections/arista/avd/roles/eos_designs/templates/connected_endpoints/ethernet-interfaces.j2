@@ -2,144 +2,100 @@
 ethernet_interfaces:
 {% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
 {%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
-{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters | arista.avd.natural_sort %}
-{%             for switch in adapter.switches | arista.avd.default([]) %}
-{%                 if switch == inventory_hostname %}
-{%                     if adapter.profile is arista.avd.defined %}
-{%                         set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
-{%                     else %}
-{%                         set adapter_profile = dict() %}
-{%                     endif %}
-{%                     if adapter_profile.parent_profile is arista.avd.defined %}
-{%                         set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
-{%                     endif %}
-{%                     set adapter_speed = adapter.speed | arista.avd.default(
-                                           adapter_profile.speed,
-                                           parent_profile.speed) %}
-{%                     set adapter_mode = adapter.mode | arista.avd.default(
-                                          adapter_profile.mode,
-                                          parent_profile.mode) %}
-{%                     set adapter_l2_mtu = adapter.l2_mtu | arista.avd.default(
-                                            adapter_profile.l2_mtu,
-                                            parent_profile.l2_mtu) %}
-{%                     set adapter_vlans = adapter.vlans | arista.avd.default(
-                                           adapter_profile.vlans,
-                                           parent_profile.vlans) %}
-{%                     set adapter_native_vlan = adapter.native_vlan | arista.avd.default(
-                                                 adapter_profile.native_vlan,
-                                                 parent_profile.native_vlan) %}
-{%                     set adapter_spanning_tree_portfast = adapter.spanning_tree_portfast | arista.avd.default(
-                                                            adapter_profile.spanning_tree_portfast,
-                                                            parent_profile.spanning_tree_portfast) %}
-{%                     set adapter_spanning_tree_bpdufilter = adapter.spanning_tree_bpdufilter | arista.avd.default(
-                                                              adapter_profile.spanning_tree_bpdufilter,
-                                                              parent_profile.spanning_tree_bpdufilter) %}
-{%                     set adapter_spanning_tree_bpduguard = adapter.spanning_tree_bpduguard | arista.avd.default(
-                                                             adapter_profile.spanning_tree_bpduguard,
-                                                             parent_profile.spanning_tree_bpduguard) %}
-{%                     set adapter_storm_control = adapter.storm_control | arista.avd.default(
-                                                   adapter_profile.storm_control,
-                                                   parent_profile.storm_control) %}
-{%                     set adapter_port_channel = adapter.port_channel | arista.avd.default(
-                                                  adapter_profile.port_channel,
-                                                  parent_profile.port_channel) %}
-{%                     set adapter_flowcontrol = adapter.flowcontrol | arista.avd.default(
-                                                 adapter_profile.flowcontrol,
-                                                 parent_profile.flowcontrol) %}
-{%                     set adapter_qos_profile = adapter.qos_profile | arista.avd.default(
-                                                 adapter_profile.qos_profile,
-                                                 parent_profile.qos_profile) %}
-{%                     set adapter_ptp = adapter.ptp | arista.avd.default(
-                                         adapter_profile.ptp,
-                                         parent_profile.ptp) %}
-{%                     set adapter_mtu = adapter.mtu | arista.avd.default(
-                                         adapter_profile.mtu,
-                                         parent_profile.mtu) %}
-{%                     set adapter_lacp_fallback_mode = adapter.port_channel.lacp_fallback.mode | arista.avd.default(
-                                                        adapter_profile.port_channel.lacp_fallback.mode,
-                                                        parent_profile.port_channel.lacp_fallback.mode) %}
-{%                     set adapter_raw_eos_cli = adapter.raw_eos_cli | arista.avd.default(
-                                                 adapter_profile.raw_eos_cli,
-                                                 parent_profile.raw_eos_cli) %}
-{%                     set adapter_structured_config = adapter.structured_config | arista.avd.default(
-                                                       adapter_profile.structured_config,
-                                                       parent_profile.structured_config) %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
+{%             if adapter.profile is arista.avd.defined %}
+{%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
+{%                 if adapter_profile.parent_profile is arista.avd.defined %}
+{%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
+{%                 endif %}
+{%             endif %}
+{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+                                                   adapter_profile | arista.avd.default({}),
+                                                   adapter, recursive=true, list_merge='replace') %}
+{%             set endpoint_ports = adapter.endpoint_ports | arista.avd.default(adapter.server_ports) %}
+{%             set peer_type = connected_endpoints_keys[endpoint_key].type %}
+{%             set peer = connected_endpoint %}
+{%             for adapter_switch in adapter.switches %}
+{%                 if adapter_switch == inventory_hostname %}
 {%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
-{%                     set endpoint_ports = adapter.server_ports | arista.avd.default(adapter.endpoint_ports) %}
-{%                     set peer_type = connected_endpoints_keys[endpoint_key].type %}
+{%                     set peer_interface = endpoint_ports[loop.index0] %}
   {{ adapter.switch_ports[loop.index0] }}:
-    peer: {{ connected_endpoint }}
-    peer_interface: {{ endpoint_ports[loop.index0] }}
+    peer: {{ peer }}
+    peer_interface: {{ peer_interface }}
     peer_type: {{ peer_type }}
-    description: {{ connected_endpoint }}_{{ endpoint_ports[loop.index0] }}
-{%                     if adapter_speed is arista.avd.defined %}
-    speed: {{ adapter_speed }}
+    description: "{% include switch.interface_descriptions.connected_endpoints_ethernet_interfaces %}"
+{%                     if adapter_settings.speed is arista.avd.defined %}
+    speed: {{ adapter_settings.speed }}
 {%                     endif %}
-{%                     if adapter_mtu is arista.avd.defined %}
-    mtu: {{ adapter_mtu }}
+{%                     if adapter_settings.mtu is arista.avd.defined %}
+    mtu: {{ adapter_settings.mtu }}
 {%                     endif %}
-{%                     if adapter_l2_mtu is arista.avd.defined %}
-    l2_mtu: {{ adapter_l2_mtu }}
+{%                     if adapter_settings.l2_mtu is arista.avd.defined %}
+    l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                     endif %}
     type: switched
+{%                     if adapter_settings.enabled is arista.avd.defined(false) %}
+    shutdown: true
+{%                     else %}
     shutdown: false
-    mode: {{ adapter_mode }}
-    vlans: {{ adapter_vlans }}
-{%                     if adapter_native_vlan is arista.avd.defined %}
-    native_vlan: {{ adapter_native_vlan }}
 {%                     endif %}
-{%                     if adapter_spanning_tree_portfast is arista.avd.defined %}
-    spanning_tree_portfast: {{ adapter_spanning_tree_portfast }}
+    mode: {{ adapter_settings.mode | arista.avd.default }}
+    vlans: {{ adapter_settings.vlans | arista.avd.default }}
+{%                     if adapter_settings.native_vlan is arista.avd.defined %}
+    native_vlan: {{ adapter_settings.native_vlan }}
 {%                     endif %}
-{%                     if adapter_spanning_tree_bpdufilter is arista.avd.defined %}
-    spanning_tree_bpdufilter: {{ adapter_spanning_tree_bpdufilter }}
+{%                     if adapter_settings.spanning_tree_portfast is arista.avd.defined %}
+    spanning_tree_portfast: {{ adapter_settings.spanning_tree_portfast }}
 {%                     endif %}
-{%                     if adapter_spanning_tree_bpduguard is arista.avd.defined %}
-    spanning_tree_bpduguard: {{ adapter_spanning_tree_bpduguard }}
+{%                     if adapter_settings.spanning_tree_bpdufilter is arista.avd.defined %}
+    spanning_tree_bpdufilter: {{ adapter_settings.spanning_tree_bpdufilter }}
 {%                     endif %}
-{%                     if adapter_storm_control is arista.avd.defined %}
+{%                     if adapter_settings.spanning_tree_bpduguard is arista.avd.defined %}
+    spanning_tree_bpduguard: {{ adapter_settings.spanning_tree_bpduguard }}
+{%                     endif %}
+{%                     if adapter_settings.storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
     storm_control:
-{%                         for section in adapter_storm_control %}
+{%                         for section in adapter_settings.storm_control %}
       {{ section }}:
-        level: {{ adapter_storm_control[section].level }}
-{%                             if adapter_storm_control[section].unit is arista.avd.defined %}
-        unit: {{ adapter_storm_control[section].unit }}
+        level: {{ adapter_settings.storm_control[section].level }}
+{%                             if adapter_settings.storm_control[section].unit is arista.avd.defined %}
+        unit: {{ adapter_settings.storm_control[section].unit }}
 {%                             endif %}
 {%                         endfor %}
 {%                     endif %}
-{%                     if adapter_port_channel is arista.avd.defined and adapter_port_channel.mode is arista.avd.defined %}
+{%                     if adapter_settings.port_channel is arista.avd.defined and adapter_settings.port_channel.mode is arista.avd.defined %}
     channel_group:
       id: {{ channel_group_id }}
-      mode: "{{ adapter_port_channel.mode }}"
+      mode: "{{ adapter_settings.port_channel.mode }}"
 {%                     endif %}
-{%                     if adapter_flowcontrol is arista.avd.defined %}
+{%                     if adapter_settings.flowcontrol is arista.avd.defined %}
     flowcontrol:
-{%                         if adapter_flowcontrol.received is arista.avd.defined %}
-      received: {{ adapter_flowcontrol.received }}
+{%                         if adapter_settings.flowcontrol.received is arista.avd.defined %}
+      received: {{ adapter_settings.flowcontrol.received }}
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter_qos_profile is arista.avd.defined %}
-    service_profile: {{ adapter_qos_profile }}
+{%                     if adapter_settings.qos_profile is arista.avd.defined %}
+    service_profile: {{ adapter_settings.qos_profile }}
 {%                     endif %}
-{%                     if adapter_ptp is arista.avd.defined %}
+{%                     if adapter_settings.ptp is arista.avd.defined %}
     ptp:
-{%                         if adapter_ptp.enable is arista.avd.defined %}
-      enable: {{ adapter_ptp.enable }}
+{%                         if adapter_settings.ptp.enable is arista.avd.defined %}
+      enable: {{ adapter_settings.ptp.enable }}
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter_lacp_fallback_mode is arista.avd.defined('static') %}
+{%                     if adapter_settings.port_channel.lacp_fallback.mode is arista.avd.defined('static') %}
 {%                         if loop.first %}
     lacp_port_priority: 8192
 {%                         else %}
     lacp_port_priority: 32768
 {%                         endif %}
 {%                     endif %}
-{%                     if adapter_raw_eos_cli is arista.avd.defined %}
+{%                     if adapter_settings.raw_eos_cli is arista.avd.defined %}
     eos_cli: |
-      {{ adapter_raw_eos_cli | indent(6,false) }}
+      {{ adapter_settings.raw_eos_cli | indent(6,false) }}
 {%                     endif %}
-{%                     if adapter_structured_config is arista.avd.defined %}
-    struct_cfg: {{ adapter_structured_config }}
+{%                     if adapter_settings.structured_config is arista.avd.defined %}
+    struct_cfg: {{ adapter_settings.structured_config }}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}

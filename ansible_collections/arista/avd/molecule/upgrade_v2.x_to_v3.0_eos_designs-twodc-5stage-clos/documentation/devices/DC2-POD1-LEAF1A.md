@@ -1,6 +1,5 @@
 # DC2-POD1-LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -45,7 +44,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -80,15 +78,14 @@ interface Management1
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -125,29 +122,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -364,23 +341,18 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
-#### VRF to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
 
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC2-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025
@@ -474,6 +446,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Remote AS | 65210 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
 | Bfd | true |
@@ -486,27 +459,32 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Remote AS | 65210 |
 | Send community | all |
 | Maximum routes | 12000 |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.0.38 | 65120 | default |
-| 100.100.100.101 | 65112 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.10.2 | 65102 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.210.0 | 65210 | default |
-| 172.17.210.2 | 65210 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.0.38 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 100.100.100.101 | 65112 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.10.2 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.1 | 65110 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.210.0 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.210.2 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
@@ -524,6 +502,7 @@ router bgp 65211
    graceful-restart
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65210
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -532,6 +511,7 @@ router bgp 65211
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
+   neighbor IPv4-UNDERLAY-PEERS remote-as 65210
    neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -597,7 +577,7 @@ router bgp 65211
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

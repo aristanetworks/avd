@@ -47,7 +47,7 @@ Nested jinja code block shall follow next rules:
 
 ```jinja
 {# Initial block indentation #}
-{% if my_variable is arista.avd.defined.%}
+{% if my_variable is arista.avd.defined %}
 
 {# Nested block indentation #}
 {% for ethernet_interface in ethernet_interfaces %}
@@ -230,7 +230,7 @@ Test also does a deep test and does not require to do test at upper level.
 
 ```jinja
 {# Simple test #}
-{% if ethernet_interfaces is arita.avd.defined %}
+{% if ethernet_interfaces is arista.avd.defined %}
 
 {# Deep test #}
 {% if router_bgp.vrfs[vrf].rd is arista.avd.defined %}
@@ -245,7 +245,7 @@ To test if a variable is defined and has a specific value, test __`arista.avd.de
 - _Example_
 
 ```jinja
-{% if vlan.name is arita.avd.defined('test') %}
+{% if vlan.name is arista.avd.defined('test') %}
 ```
 
 ### PLUGIN-3 - Default value

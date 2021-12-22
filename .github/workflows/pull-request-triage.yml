@@ -1,0 +1,112 @@
+name: "Pull Request Triage"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - synchronize
+      - ready_for_review
+
+jobs:
+  ###################################################
+  # Basic Triage
+  ###################################################
+  pr_triage:
+    name: "PR Labeller"
+    # https://github.com/actions/labeler
+    runs-on: ubuntu-latest
+    steps:
+      # V3 is not used as we hit following issue: https://github.com/actions/labeler/issues/107
+      - uses: actions/labeler@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: '.github/labeler.yml'
+          sync-labels: true
+  assign_author:
+    name: "Assign Author to PR"
+    # https://github.com/marketplace/actions/auto-author-assign
+    runs-on: ubuntu-latest
+    steps:
+      - uses: toshimaru/auto-author-assign@v1.2.0
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+  pr_reviewvers:
+    name: "Assign PR reviewer"
+    # https://github.com/shufo/auto-assign-reviewer-by-files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Request review based on files changes and/or groups the author belongs to
+        uses: shufo/auto-assign-reviewer-by-files@v1.1.1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config: .github/reviewers.yml
+  ###################################################
+  # Check Conventional Commit Syntax
+  ###################################################
+  Check_PR_semantic:
+    runs-on: ubuntu-latest
+    steps:
+      # Please look up the latest version from
+      # https://github.com/amannn/action-semantic-pull-request/releases
+      - uses: amannn/action-semantic-pull-request@v3.4.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Configure which types are allowed.
+          # Default: https://github.com/commitizen/conventional-commit-types
+          types: |
+            Feat
+            Fix
+            Cut
+            Doc
+            CI
+            Start
+            Stop
+            Bump
+            Test
+            Make
+            Refactor
+            Reformat
+            Optimize
+            License
+            Revert
+          # Configure which scopes are allowed.
+          scopes: |
+            build_output_folders
+            cvp_configlet_upload
+            dhcp_provisioner
+            eos_cli_config_gen
+            eos_config_deploy_cvp
+            eos_config_deploy_eapi
+            eos_designs
+            eos_designs_to_containerlab
+            eos_l3ls_evpn
+            eos_snapshot
+            eos_validate_state
+            plugins
+            mkdoc
+            contribution
+            how-to
+            actions
+            molecule
+            ansible
+            github
+            requirements
+          # Configure that a scope must always be provided.
+          requireScope: false
+          # Configure additional validation for the subject based on a regex.
+          # This example ensures the subject doesn't start with an uppercase character.
+          # subjectPattern: ^(?![A-Z]).+$
+          # If `subjectPattern` is configured, you can use this property to override
+          # the default error message that is shown when the pattern doesn't match.
+          # The variables `subject` and `title` can be used within the message.
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            doesn't start with an uppercase character.
+          # When using "Squash and merge" on a PR with only one commit, GitHub
+          # will suggest using that commit message instead of the PR title for the
+          # merge commit, and it's easy to commit this by mistake. Enable this option
+          # to also validate the commit message for one commit PRs.
+          validateSingleCommit: true

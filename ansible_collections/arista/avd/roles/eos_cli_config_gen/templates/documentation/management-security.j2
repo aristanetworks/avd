@@ -5,11 +5,15 @@
 ## Management Security Summary
 
 {%     if management_security.entropy_source is arista.avd.defined %}
-Management Security entropy source is {{ management_security.entropy_source }}
+Management Security entropy source is **{{ management_security.entropy_source }}**
 
 {%     endif %}
 {%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
 Management Security password encryption is common.
+
+{%     endif %}
+{%     if management_security.password.minimum_length is arista.avd.defined %}
+Management Security password minimum lenght is **{{ management_security.password.minimum_length }}** characters.
 
 {%     endif %}
 {%     if management_security.ssl_profiles is arista.avd.defined %}

@@ -42,6 +42,12 @@ tenants:
               comment
               Comment created from raw_eos_cli under SVI 112 in VRF Common_VRF
               EOF
+          113:
+            name: SVI_with_no_vxlan
+            tags: [opzone]
+            enabled: True
+            ip_address_virtual: 10.10.13.1/24
+            vxlan: False
         raw_eos_cli: |
           interface Loopback1000
             description Loopback created from raw_eos_cli under VRF Common_VRF
@@ -53,6 +59,53 @@ tenants:
             comment
             Comment created from raw_eos_cli under BGP for VRF Common_VRF
             EOF
+      vrf_with_loopbacks_from_overlapping_pool:
+        vrf_vni: 1100
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.100.0.0/24
+          loopback_ip_pools: # This data should not be used since "loopback_ip_range takes precedence"
+            - pod: DC1_POD1
+              ipv4_pool: 10.101.101.0/24
+        svis:
+          1100:
+            name: test_svi
+            tags: [opzone, web]
+            enabled: True
+            ip_address_virtual: 10.100.100.1/24
+            vxlan: False
+      vrf_with_loopbacks_from_pod_pools:
+        vrf_vni: 1101
+        vtep_diagnostic:
+          loopback: 101
+          loopback_ip_pools:
+            - pod: DC1_POD1
+              ipv4_pool: 10.101.101.0/24
+            - pod: DC1_POD2
+              ipv4_pool: 10.101.102.0/24
+            - pod: DC2_POD1
+              ipv4_pool: 10.101.201.0/24
+        svis:
+          1101:
+            name: test_svi
+            tags: [opzone, web]
+            enabled: True
+            ip_address_virtual: 10.101.100.1/24
+            vxlan: False
+      vrf_with_loopbacks_dc1_pod1_only:
+        vrf_vni: 1102
+        vtep_diagnostic:
+          loopback: 102
+          loopback_ip_pools:
+            - pod: DC1_POD1
+              ipv4_pool: 10.102.101.0/24
+        svis:
+          1102:
+            name: test_svi
+            tags: [opzone, web]
+            enabled: True
+            ip_address_virtual: 10.102.100.1/24
+            vxlan: False
 
     # These are pure L2 vlans - so no SVI on l3leafs
     l2vlans:
@@ -64,3 +117,7 @@ tenants:
         vni_override: 2600
         name: web-l2-vlan-2
         tags: [web]
+      2601:
+        name: l2vlan_with_no_vxlan
+        tags: [web]
+        vxlan: False

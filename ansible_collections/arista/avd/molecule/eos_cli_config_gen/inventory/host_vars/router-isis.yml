@@ -3,19 +3,25 @@ router_isis:
   instance: EVPN_UNDERLAY
   net: 49.0001.0001.0001.0001.00
   router_id: 192.168.255.3
+  is_type: level-2
+  log_adjacency_changes: true
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      protected_prefixes: true
+      delay: 15000
+  advertise:
+    passive_only: true
   no_passive_interfaces:
     - Ethernet1
     - Ethernet2
     - Vlan4093
     - Loopback1
-  is_type: level-2
   address_family: ['ipv4 unicast']
   isis_af_defaults:
     - maximum-paths 2
-  log_adjacency_changes: true
   segment_routing_mpls:
     enabled: true
-    router_id: 192.168.255.3
 
 ### Ethernet Interfaces ###
 ethernet_interfaces:
@@ -41,6 +47,7 @@ ethernet_interfaces:
     isis_enable: EVPN_UNDERLAY
     isis_metric: 50
     isis_network_point_to_point: true
+    isis_circuit_type: level-1-2
   Ethernet3:
     peer: EAPI-LEAF1B
     peer_interface: Ethernet3
@@ -48,6 +55,24 @@ ethernet_interfaces:
     description: MLAG_PEER_EAPI-LEAF1B_Ethernet3
     channel_group:
       id: 3
+      mode: active
+  Ethernet4:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet4
+    channel_group:
+      id: 4
+      mode: active
+  Ethernet5:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet5
+    channel_group:
+      id: 5
+      mode: active
+  Ethernet6:
+    peer: DC1-LEAF1B
+    peer_interface: Ethernet6
+    channel_group:
+      id: 6
       mode: active
 
 ### Loopback Interfaces ###
@@ -63,6 +88,16 @@ loopback_interfaces:
     ip_address: 192.168.254.3/32
     isis_enable: EVPN_UNDERLAY
     isis_passive: true
+
+  Loopback2:
+    description: ISIS-SR Node-SID
+    ip_address: 10.1.255.3/32
+    isis_enable: EVPN_UNDERLAY
+    isis_passive: true
+    isis_metric: 50
+    node_segment:
+      ipv4_index: 10
+      ipv6_index: 1000
 
 ### Management Interfaces ###
 management_interfaces:
@@ -93,3 +128,27 @@ vlan_interfaces:
     shutdown: false
     vrf: TENANT_A_PROJECT01
     ip_address_virtual: 10.1.10.254/24
+
+### Port-Channel Interfaces ###
+port_channel_interfaces:
+  Port-Channel4:
+    type: routed
+    ip_address: 10.9.2.3/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_network_point_to_point: true
+    isis_circuit_type: level-2
+  Port-Channel5:
+    type: routed
+    ip_address: 10.9.2.5/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 50
+    isis_passive: true
+  Port-Channel6:
+    type: routed
+    ip_address: 10.9.2.7/31
+    isis_enable: EVPN_UNDERLAY
+    isis_metric: 100
+    isis_passive: false
+    isis_network_point_to_point: false
+    isis_circuit_type: level-1-2

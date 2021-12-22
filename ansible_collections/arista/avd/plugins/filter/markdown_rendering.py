@@ -4,7 +4,7 @@ __metaclass__ = type
 
 class FilterModule(object):
     # STATIC EMOJI CODE
-    GH_CODE = dict()
+    GH_CODE = {}
     # Github MD code for Emoji checked box
     GH_CODE['PASS'] = ':white_check_mark:'
     # GH MD code for Emoji Fail

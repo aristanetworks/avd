@@ -1,0 +1,28 @@
+{% if super_spine is arista.avd.defined %}
+{####### super-spine #######}
+super_spine:
+  defaults:
+{%     for var in ['platform','bgp_as'] %}
+{%         if super_spine[var] is arista.avd.defined %}
+# Change from super_spine.{{ var }} to super_spine.defaults.{{ var }}
+    {{ var }}: {{ super_spine[var] }}
+{%         endif %}
+{%     endfor %}
+{%     if super_spine_loopback_network_summary is arista.avd.defined %}
+# Change from super_spine_loopback_network_summary to super_spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: {{ super_spine_loopback_network_summary }}
+{%     endif %}
+{%     if super_spine_bgp_defaults is arista.avd.defined %}
+# Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
+    bgp_defaults: {{ super_spine_bgp_defaults }}
+{%     elif super_spine.defaults.bgp_defaults is not arista.avd.defined %}
+# Change from old default value of super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
+    bgp_defaults:
+      - update wait-for-convergence
+      - update wait-install
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+{%     endif %}
+{% endif %}

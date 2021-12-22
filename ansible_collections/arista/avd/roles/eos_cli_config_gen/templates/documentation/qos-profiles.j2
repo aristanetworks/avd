@@ -1,4 +1,4 @@
-{% if qos_profiles is defined %}
+{% if qos_profiles is arista.avd.defined %}
 
 ## QOS Profiles
 
@@ -10,23 +10,27 @@ QOS Profile: **{{ profile }}**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust |
-| ----------- | ------------ | ----- |
-{%         set cos = qos_profiles[profile].cos | default('-') %}
-{%         set dscp = qos_profiles[profile].dscp | default('-') %}
-{%         set trust = qos_profiles[profile].trust | default('-') %}
-| {{ cos }} | {{ dscp }} | {{ trust }} |
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+{%         set cos = qos_profiles[profile].cos | arista.avd.default('-') %}
+{%         set dscp = qos_profiles[profile].dscp | arista.avd.default('-') %}
+{%         set trust = qos_profiles[profile].trust | arista.avd.default('-') %}
+{%         set shape_rate = qos_profiles[profile].shape.rate | arista.avd.default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} |
+{%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
 
 **Tx-queues**
 
-{%         if qos_profiles[profile].tx_queues is defined and qos_profiles[profile].tx_queues is not none %}
-| Tx-queue | Bandwidth | Priority |
-| -------- | --------- | -------- |
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
 {%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
-{%                 set queue = qos_profiles[profile].tx_queues[tx_queue] | default('-') %}
-{%                 set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent | default('-') %}
-{%                 set priority = qos_profiles[profile].tx_queues[tx_queue].priority | default('-') %}
-| {{ tx_queue }} | {{ bw_percent }} | {{ priority }} |
+{%                 set queue = qos_profiles[profile].tx_queues[tx_queue] | arista.avd.default('-') %}
+{%                 set bw_percent = qos_profiles[profile].tx_queues[tx_queue].bandwidth_percent | arista.avd.default(
+                                    qos_profiles[profile].tx_queues[tx_queue].bandwidth_guaranteed_percent,
+                                    '-') %}
+{%                 set priority = qos_profiles[profile].tx_queues[tx_queue].priority | arista.avd.default('-') %}
+{%                 set shape_rate = qos_profiles[profile].tx_queues[tx_queue].shape.rate | arista.avd.default('-') %}
+| {{ tx_queue }} | {{ bw_percent }} | {{ priority }} | {{ shape_rate }} |
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
@@ -34,6 +38,6 @@ QOS Profile: **{{ profile }}**
 ### QOS Profile Device Configuration
 
 ```eos
-{% include 'eos/qos-profiles.j2' %}
+{%     include 'eos/qos-profiles.j2' %}
 ```
 {% endif %}

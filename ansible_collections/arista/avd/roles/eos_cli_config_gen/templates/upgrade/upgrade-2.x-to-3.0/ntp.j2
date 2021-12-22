@@ -1,0 +1,25 @@
+{% if ntp_server is arista.avd.defined %}
+# Change from ntp_server to ntp data model
+ntp:
+{%     if ntp_server.local_interface is arista.avd.defined %}
+  local_interface:
+{%         if ntp_server.local_interface.interface is arista.avd.defined %}
+    name: {{ ntp_server.local_interface.interface }}
+{%         endif %}
+{%         if ntp_server.local_interface.vrf is arista.avd.defined %}
+    vrf: {{ ntp_server.local_interface.vrf }}
+{%         endif %}
+{%     endif %}
+{%     if ntp_server.nodes is arista.avd.defined %}
+  servers:
+{%         for node in ntp_server.nodes %}
+  - name: {{ node }}
+{%             if loop.first %}
+    preferred: True
+{%             endif %}
+{%             if ntp_server.local_interface.vrf %}
+    vrf: {{ ntp_server.local_interface.vrf }}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{% endif %}

@@ -44,7 +44,7 @@ def strip_null_from_data(data):
     return data
 
 
-def strip_empties_from_list(data, strip_values_tuple=(None, str(), list(), dict(),)):
+def strip_empties_from_list(data, strip_values_tuple=(None, "", [], {},)):
     """
     strip_empties_from_list Remove entries with null value from a list
 
@@ -53,7 +53,7 @@ def strip_empties_from_list(data, strip_values_tuple=(None, str(), list(), dict(
     data : Any
         data to filter
     strip_values_tuple : tuple, optional
-        Value to remove from data, by default (None, str(), list(), dict(),)
+        Value to remove from data, by default (None, "", [], {},)
 
     Returns
     -------
@@ -71,7 +71,7 @@ def strip_empties_from_list(data, strip_values_tuple=(None, str(), list(), dict(
     return new_data
 
 
-def strip_empties_from_dict(data, strip_values_tuple=(None, str(), list(), dict(),)):
+def strip_empties_from_dict(data, strip_values_tuple=(None, "", [], {},)):
     """
     strip_empties_from_dict Remove entries with null value from a dict
 
@@ -80,7 +80,7 @@ def strip_empties_from_dict(data, strip_values_tuple=(None, str(), list(), dict(
     data : Any
         data to filter
     strip_values_tuple : tuple, optional
-        Value to remove from data, by default (None, str(), list(), dict(),)
+        Value to remove from data, by default (None, "", [], {},)
 
     Returns
     -------

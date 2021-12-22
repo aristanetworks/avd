@@ -1,0 +1,20 @@
+{% if ntp_servers is arista.avd.defined %}
+{# Migrate from ntp_server to ntp with expanded data model - set using custom_structured_configuration since this is no longer handled by eos_designs #}
+{%     if custom_structured_configuration_prefix is arista.avd.defined(var_type='list') %}
+{%         set prefix = custom_structured_configuration_prefix | first %}
+{%     else %}
+{%         set prefix = custom_structured_configuration_prefix | arista.avd.default('custom_structured_configuration_') %}
+{%     endif %}
+{{ prefix }}ntp:
+  local_interface:
+    name: {{ mgmt_interface | arista.avd.default('Management1') }}
+    vrf: {{ mgmt_interface_vrf }}
+  servers:
+{%     for ntp_server in ntp_servers %}
+  - name: {{ ntp_server }}
+{%         if loop.first %}
+    preferred: true
+{%         endif %}
+    vrf: {{ mgmt_interface_vrf }}
+{%     endfor %}
+{% endif %}

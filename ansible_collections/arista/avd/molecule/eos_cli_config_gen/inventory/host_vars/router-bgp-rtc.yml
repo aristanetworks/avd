@@ -26,6 +26,15 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
+    MLAG-IPv4-UNDERLAY-PEER:
+      type: ipv4
+      remote_as: 65101
+      next_hop_self: true
+      password: "vnEaG8gMeQf3d3cN6PktXQ=="
+      maximum_routes: 12000
+      send_community: all
+      route_map_in: RM-MLAG-PEER-IN
+      route_map_out: RM-MLAG-PEER-OUT
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

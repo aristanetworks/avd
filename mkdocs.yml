@@ -34,12 +34,12 @@ theme:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/weather-sunny
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       toggle:
-        icon: material/toggle-switch
+        icon: material/weather-night
         name: Switch to light mode
 
 extra_css:
@@ -56,8 +56,10 @@ plugins:
       lang: en
   - git-revision-date-localized:
       type: date
-  - minify:
-      minify_html: true
+  # Deactivated due to https://github.com/tikitu/jsmin/issues/33
+  # Issue in progress: https://github.com/byrnereese/mkdocs-minify-plugin/issues/15
+  # - minify:
+  #     minify_html: true
   #     minify_js: true
 
 markdown_extensions:
@@ -102,11 +104,8 @@ nav:
       - 1.0.x: docs/release-notes/1.0.x.md
   - Getting Started: docs/getting-started.md
   - Installation:
+      - Collection Installation: docs/installation/collection-installation.md
       - Requirements: docs/installation/requirements.md
-      - Setup environment: docs/installation/setup-environment.md
-      - Ansible-galaxy installation: docs/installation/setup-galaxy.md
-      - Git installation: docs/installation/setup-git.md
-      - Development tips & tricks: docs/installation/development.md
   - How-To:
       - Build your first AVD project: docs/how-to/first-project.md
       - Build your first AVD & CVP project: docs/how-to/first-cvp-avd-project.md
@@ -117,17 +116,15 @@ nav:
   - Roles documentation:
       - eos_designs:
           - Overview: roles/eos_designs/README.md
-          - Generic:
-            - Connected Endpoints: roles/eos_designs/doc/common/connected-endpoints.md
-            - DCI & L3 Edge: roles/eos_designs/doc/common/l3-edge.md
-          - Extending eos_designs:
-            - Node types: roles/eos_designs/doc/extending-avd/node-types.md
-          - l3ls-evpn:
-            - Overview: roles/eos_designs/doc/l3ls-evpn.md
-            - Common Settings: roles/eos_designs/doc/l3ls-evpn/common-settings.md
-            - Fabric Topology: roles/eos_designs/doc/l3ls-evpn/fabric-topology.md
-            - Fabric Variables: roles/eos_designs/doc/l3ls-evpn/fabric-variables.md
-            - Network Services: roles/eos_designs/doc/l3ls-evpn/network-services.md
+          - Connected Endpoints: roles/eos_designs/doc/connected-endpoints.md
+          - DCI & L3 Edge: roles/eos_designs/doc/l3-edge.md
+          - Fabric Topology: roles/eos_designs/doc/fabric-topology.md
+          - Fabric Variables: roles/eos_designs/doc/fabric-variables.md
+          - Management Settings: roles/eos_designs/doc/management-settings.md
+          - Network Services: roles/eos_designs/doc/network-services.md
+          - Node types: roles/eos_designs/doc/node-types.md
+          - Platform Settings: roles/eos_designs/doc/platform-settings.md
+          - Custom Structured Configuration: roles/eos_designs/doc/custom-structured-configuration.md
       - eos_cli_config_gen: roles/eos_cli_config_gen/README.md
       - cvp_configlet_upload: roles/cvp_configlet_upload/README.md
       - eos_config_deploy_cvp: roles/eos_config_deploy_cvp/README.md
@@ -136,7 +133,6 @@ nav:
       - eos_snapshot: roles/eos_snapshot/README.md
       - dhcp_provisioner: roles/dhcp_provisioner/README.md
       - build_output_folders: roles/build_output_folders/README.md
-      - upgrade_tools: roles/upgrade_tools/README.md
   - Modules documentation:
       - Module Inventory to containers: docs/modules/inventory_to_container.rst.md
       - Module Configlet Build configuration: docs/modules/configlet_build_config.rst.md
@@ -144,8 +140,11 @@ nav:
       - Cloudvision Module documentation: https://cvp.avd.sh/
   - Contributing to AVD:
       - Overview: docs/contribution/overview.md
+      - Setup environment: docs/contribution/setup-environment.md
+      - Git installation: docs/contribution/setup-git.md
       - Getting Started: docs/contribution/getting-started.md
       - Code Style: docs/contribution/style-guide.md
+      - Development tips & tricks: docs/contribution/development.md
   - External resources:
       - Ansible collection user guide: https://docs.ansible.com/ansible/latest/user_guide/collections_using.html
       - Ansible User guide: https://docs.ansible.com/ansible/latest/user_guide/index.html

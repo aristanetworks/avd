@@ -1,6 +1,5 @@
 # management-api-http
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
   - [Standard Access-lists](#standard-access-lists)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -53,8 +51,8 @@ interface Management1
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| false | true |
+| ---- | ----- |
+| False | True |
 
 Management HTTPS is using the SSL profile SSL_PROFILE
 
@@ -64,7 +62,6 @@ Management HTTPS is using the SSL profile SSL_PROFILE
 | -------- | -------- | -------- |
 | default | ACL-API | - |
 | MGMT | ACL-API | - |
-
 
 ### Management API HTTP Configuration
 

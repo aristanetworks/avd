@@ -1,6 +1,5 @@
 # DC2-POD1-LEAF1A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -43,10 +42,12 @@
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
+- [Virtual Source NAT](#virtual-source-nat)
+  - [Virtual Source NAT Summary](#virtual-source-nat-summary)
+  - [Virtual Source NAT Configuration](#virtual-source-nat-configuration)
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -94,15 +95,14 @@ ip domain-list structured-config.set.under.vrf.common-vrf
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -139,29 +139,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC2 DC2_POD1 DC2-POD1-LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -318,6 +298,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 172.18.210.3/32 |
+| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
+| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.201.3/32 |
 
 #### IPv6
 
@@ -325,6 +307,8 @@ interface Port-Channel3
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
+| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
 
 
 ### Loopback Interfaces Device Configuration
@@ -340,6 +324,18 @@ interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
    ip address 172.18.210.3/32
+!
+interface Loopback100
+   description vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf vrf_with_loopbacks_from_overlapping_pool
+   ip address 10.100.0.3/32
+!
+interface Loopback101
+   description vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf vrf_with_loopbacks_from_pod_pools
+   ip address 10.101.201.3/32
 ```
 
 ## VLAN Interfaces
@@ -378,26 +374,27 @@ interface Vlan4092
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
+#### VRF to VNI and Multicast Group Mappings
 
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
-
-#### VRF to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| Common_VRF | 1025 |
+| VRF | VNI | Multicast Group |
+| ---- | --- | --------------- |
+| Common_VRF | 1025 | - |
+| vrf_with_loopbacks_dc1_pod1_only | 1102 | - |
+| vrf_with_loopbacks_from_overlapping_pool | 1100 | - |
+| vrf_with_loopbacks_from_pod_pools | 1101 | - |
 
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC2-POD1-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vrf Common_VRF vni 1025
+   vxlan vrf vrf_with_loopbacks_dc1_pod1_only vni 1102
+   vxlan vrf vrf_with_loopbacks_from_overlapping_pool vni 1100
+   vxlan vrf vrf_with_loopbacks_from_pod_pools vni 1101
 ```
 
 # Routing
@@ -431,6 +428,9 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 | --- | --------------- |
 | default | true|| Common_VRF | true |
 | MGMT | false |
+| vrf_with_loopbacks_dc1_pod1_only | true |
+| vrf_with_loopbacks_from_overlapping_pool | true |
+| vrf_with_loopbacks_from_pod_pools | true |
 
 ### IP Routing Device Configuration
 
@@ -439,6 +439,9 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 ip routing
 ip routing vrf Common_VRF
 no ip routing vrf MGMT
+ip routing vrf vrf_with_loopbacks_dc1_pod1_only
+ip routing vrf vrf_with_loopbacks_from_overlapping_pool
+ip routing vrf vrf_with_loopbacks_from_pod_pools
 ```
 ## IPv6 Routing
 
@@ -448,6 +451,9 @@ no ip routing vrf MGMT
 | --- | --------------- |
 | default | false || Common_VRF | false |
 | MGMT | false |
+| vrf_with_loopbacks_dc1_pod1_only | false |
+| vrf_with_loopbacks_from_overlapping_pool | false |
+| vrf_with_loopbacks_from_pod_pools | false |
 
 
 ## Static Routes
@@ -505,26 +511,33 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.0.38 | 65120 | default |
-| 100.100.100.101 | 65112 | default |
-| 172.16.10.1 | 65101 | default |
-| 172.16.10.2 | 65102 | default |
-| 172.16.110.1 | 65110 | default |
-| 172.16.110.3 | 65111 | default |
-| 172.17.210.0 | 65210 | default |
-| 172.17.210.2 | 65210 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.0.38 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 100.100.100.101 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.10.1 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.10.2 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.1 | 65110.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.3 | 65111.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.210.0 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.210.2 | 65210 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
+
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | Common_VRF | 172.16.210.3:1025 | connected |
+| vrf_with_loopbacks_dc1_pod1_only | 172.16.210.3:1102 | connected |
+| vrf_with_loopbacks_from_overlapping_pool | 172.16.210.3:1100 | connected |
+| vrf_with_loopbacks_from_pod_pools | 172.16.210.3:1101 | connected |
 
 ### Router BGP Device Configuration
 
@@ -542,11 +555,9 @@ router bgp 65211
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
    neighbor EVPN-OVERLAY-PEERS ebgp-multihop 5
-   neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 11.1.0.38 peer group IPv4-UNDERLAY-PEERS
@@ -554,7 +565,7 @@ router bgp 65211
    neighbor 11.1.0.38 description DC1-POD1-LEAF2B
    neighbor 11.1.0.38 bfd
    neighbor 100.100.100.101 peer group IPv4-UNDERLAY-PEERS
-   neighbor 100.100.100.101 remote-as 65112
+   neighbor 100.100.100.101 remote-as 65112.100
    neighbor 100.100.100.101 description DC1-POD1-LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
@@ -563,10 +574,10 @@ router bgp 65211
    neighbor 172.16.10.2 remote-as 65102
    neighbor 172.16.10.2 description DC1-RS2
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.1 remote-as 65110
+   neighbor 172.16.110.1 remote-as 65110.100
    neighbor 172.16.110.1 description DC1-POD1-SPINE1
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
-   neighbor 172.16.110.3 remote-as 65111
+   neighbor 172.16.110.3 remote-as 65111.100
    neighbor 172.16.110.3 description DC1-POD1-LEAF1A
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
@@ -599,6 +610,27 @@ router bgp 65211
       Comment created from raw_eos_cli under BGP for VRF Common_VRF
       EOF
 
+   !
+   vrf vrf_with_loopbacks_dc1_pod1_only
+      rd 172.16.210.3:1102
+      route-target import evpn 1102:1102
+      route-target export evpn 1102:1102
+      router-id 172.16.210.3
+      redistribute connected
+   !
+   vrf vrf_with_loopbacks_from_overlapping_pool
+      rd 172.16.210.3:1100
+      route-target import evpn 1100:1100
+      route-target export evpn 1100:1100
+      router-id 172.16.210.3
+      redistribute connected
+   !
+   vrf vrf_with_loopbacks_from_pod_pools
+      rd 172.16.210.3:1101
+      route-target import evpn 1101:1101
+      route-target export evpn 1101:1101
+      router-id 172.16.210.3
+      redistribute connected
 ```
 
 # BFD
@@ -611,7 +643,7 @@ router bgp 65211
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !
@@ -696,6 +728,9 @@ route-map RM-CONN-2-BGP permit 20
 | -------- | ---------- |
 | Common_VRF | enabled |
 | MGMT | disabled |
+| vrf_with_loopbacks_dc1_pod1_only | enabled |
+| vrf_with_loopbacks_from_overlapping_pool | enabled |
+| vrf_with_loopbacks_from_pod_pools | enabled |
 
 ## VRF Instances Device Configuration
 
@@ -704,6 +739,29 @@ route-map RM-CONN-2-BGP permit 20
 vrf instance Common_VRF
 !
 vrf instance MGMT
+!
+vrf instance vrf_with_loopbacks_dc1_pod1_only
+!
+vrf instance vrf_with_loopbacks_from_overlapping_pool
+!
+vrf instance vrf_with_loopbacks_from_pod_pools
+```
+
+# Virtual Source NAT
+
+## Virtual Source NAT Summary
+
+| Source NAT VRF | Source NAT IP Address |
+| -------------- | --------------------- |
+| vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3 |
+| vrf_with_loopbacks_from_pod_pools | 10.101.201.3 |
+
+## Virtual Source NAT Configuration
+
+```eos
+!
+ip address virtual source-nat vrf vrf_with_loopbacks_from_overlapping_pool address 10.100.0.3
+ip address virtual source-nat vrf vrf_with_loopbacks_from_pod_pools address 10.101.201.3
 ```
 
 # Quality Of Service

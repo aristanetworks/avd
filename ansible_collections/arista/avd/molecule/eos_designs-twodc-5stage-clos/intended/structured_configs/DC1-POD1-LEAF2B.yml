@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65112
+  as: '65112.100'
   router_id: 172.16.110.5
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -10,7 +10,7 @@ router_bgp:
   peer_groups:
     MLAG-IPv4-UNDERLAY-PEER:
       type: ipv4
-      remote_as: 65112
+      remote_as: '65112.100'
       next_hop_self: true
       password: vnEaG8gMeQf3d3cN6PktXQ==
       maximum_routes: 12000
@@ -38,46 +38,46 @@ router_bgp:
       EVPN-OVERLAY-PEERS:
         activate: false
   neighbors:
-    172.19.110.2:
+    172.20.110.2:
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: DC1-POD1-LEAF2A
     172.17.110.16:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet5
     172.17.110.18:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet5
     172.17.110.20:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE1_Ethernet8
     172.17.110.22:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65110
+      remote_as: '65110.100'
       description: DC1-POD1-SPINE2_Ethernet8
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: 65111
-      route_map_out: RM-EVPN-FILTER-AS65111
+      remote_as: '65111.100'
+      route_map_out: RM-EVPN-FILTER-AS65111.100
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: 65110
-      route_map_out: RM-EVPN-FILTER-AS65110
+      remote_as: '65110.100'
+      route_map_out: RM-EVPN-FILTER-AS65110.100
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
-      remote_as: 65101
+      remote_as: '65101'
       route_map_out: RM-EVPN-FILTER-AS65101
     11.1.0.39:
-      remote_as: 65211
+      remote_as: '65211'
       description: DC2-POD1-LEAF1A
       peer_group: IPv4-UNDERLAY-PEERS
       bfd: true
-      local_as: 65120
+      local_as: '65120'
   redistribute_routes:
     connected:
       route_map: RM-CONN-2-BGP
@@ -86,6 +86,8 @@ router_bgp:
     peer_groups:
       EVPN-OVERLAY-PEERS:
         activate: true
+    route:
+      import_match_failure_action: discard
   address_family_rtc:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -110,6 +112,42 @@ router_bgp:
         EOF
 
         '
+    vrf_with_loopbacks_dc1_pod1_only:
+      router_id: 172.16.110.5
+      rd: 172.16.110.5:1102
+      route_targets:
+        import:
+          evpn:
+          - 1102:1102
+        export:
+          evpn:
+          - 1102:1102
+      redistribute_routes:
+      - connected
+    vrf_with_loopbacks_from_overlapping_pool:
+      router_id: 172.16.110.5
+      rd: 172.16.110.5:1100
+      route_targets:
+        import:
+          evpn:
+          - 1100:1100
+        export:
+          evpn:
+          - 1100:1100
+      redistribute_routes:
+      - connected
+    vrf_with_loopbacks_from_pod_pools:
+      router_id: 172.16.110.5
+      rd: 172.16.110.5:1101
+      route_targets:
+        import:
+          evpn:
+          - 1101:1101
+        export:
+          evpn:
+          - 1101:1101
+      redistribute_routes:
+      - connected
   vlans:
     110:
       tenant: Tenant_A
@@ -169,7 +207,7 @@ spanning_tree:
   mst_instances:
     '0':
       priority: 4096
-  no_spanning_tree_vlan: 4093-4094
+  no_spanning_tree_vlan: 4094
 local_users:
   admin:
     privilege: 15
@@ -179,6 +217,15 @@ vrfs:
   MGMT:
     ip_routing: false
   Common_VRF:
+    tenant: Tenant_A
+    ip_routing: true
+  vrf_with_loopbacks_dc1_pod1_only:
+    tenant: Tenant_A
+    ip_routing: true
+  vrf_with_loopbacks_from_overlapping_pool:
+    tenant: Tenant_A
+    ip_routing: true
+  vrf_with_loopbacks_from_pod_pools:
     tenant: Tenant_A
     ip_routing: true
 management_interfaces:
@@ -193,16 +240,8 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli\
-  \ under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n\
-  \  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+eos_cli: "interface Loopback1002\n  description Loopback created from raw_eos_cli under l3leaf node-group RACK2_MLAG\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
 vlans:
-  4093:
-    tenant: system
-    name: LEAF_PEER_L3
-    trunk_groups:
-    - LEAF_PEER_L3
   4094:
     tenant: system
     name: MLAG_PEER
@@ -217,21 +256,31 @@ vlans:
   112:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_3
+  113:
+    tenant: Tenant_A
+    name: SVI_with_no_vxlan
+  1102:
+    tenant: Tenant_A
+    name: test_svi
+  1100:
+    tenant: Tenant_A
+    name: test_svi
+  1101:
+    tenant: Tenant_A
+    name: test_svi
   2500:
     tenant: Tenant_A
     name: web-l2-vlan
   2600:
     tenant: Tenant_A
     name: web-l2-vlan-2
+  2601:
+    tenant: Tenant_A
+    name: l2vlan_with_no_vxlan
   4085:
     tenant: system
     name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
-  Vlan4093:
-    description: MLAG_PEER_L3_PEERING
-    shutdown: false
-    ip_address: 172.19.110.3/31
-    mtu: 1500
   Vlan4094:
     description: MLAG_PEER
     shutdown: false
@@ -271,12 +320,48 @@ vlan_interfaces:
       EOF
 
       '
+  Vlan113:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    description: SVI_with_no_vxlan
+    shutdown: false
+    vrf: Common_VRF
+    ip_address_virtual: 10.10.13.1/24
+  Vlan1102:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_dc1_pod1_only
+    ip_address_virtual: 10.102.100.1/24
+  Vlan1100:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_overlapping_pool
+    ip_address_virtual: 10.100.100.1/24
+  Vlan1101:
+    tenant: Tenant_A
+    tags:
+    - opzone
+    - web
+    description: test_svi
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_pod_pools
+    ip_address_virtual: 10.101.100.1/24
   Vlan4085:
     description: L2LEAF_INBAND_MGMT
     shutdown: false
     mtu: 1500
     ip_address: 172.21.110.3/24
-    ip_virtual_router_address: 172.21.110.1
+    ip_virtual_router_addresses:
+    - 172.21.110.1
     ip_attached_host_route_export:
       distance: 19
 port_channel_interfaces:
@@ -294,7 +379,7 @@ port_channel_interfaces:
     description: RACK2_MLAG_Po1
     type: switched
     shutdown: false
-    vlans: 110-112,2500,2600,4085
+    vlans: 110-113,1100-1102,2500,2600-2601,4085
     mode: trunk
     service_profile: QOS-PROFILE
     mlag: 3
@@ -542,8 +627,7 @@ route_maps:
         type: permit
         set:
         - origin incomplete
-        description: Make routes learned over MLAG Peer-link less preferred on spines
-          to ensure optimal routing
+        description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
   RM-CONN-2-BGP:
     sequence_numbers:
       10:
@@ -562,20 +646,20 @@ route_maps:
         - as 65101
       20:
         type: permit
-  RM-EVPN-FILTER-AS65110:
+  RM-EVPN-FILTER-AS65110.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65110
+        - as 65110.100
       20:
         type: permit
-  RM-EVPN-FILTER-AS65111:
+  RM-EVPN-FILTER-AS65111.100:
     sequence_numbers:
       10:
         type: deny
         match:
-        - as 65111
+        - as 65111.100
       20:
         type: permit
 loopback_interfaces:
@@ -587,6 +671,21 @@ loopback_interfaces:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
     ip_address: 172.18.110.4/32
+  Loopback102:
+    description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_dc1_pod1_only
+    ip_address: 10.102.101.5/32
+  Loopback100:
+    description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_overlapping_pool
+    ip_address: 10.100.0.5/32
+  Loopback101:
+    description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+    shutdown: false
+    vrf: vrf_with_loopbacks_from_pod_pools
+    ip_address: 10.101.101.5/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -605,14 +704,24 @@ router_bfd:
     multiplier: 3
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+struct_cfg:
+  domain_list:
+  - structured-config.set.under.vrf.common-vrf
+virtual_source_nat_vrfs:
+  vrf_with_loopbacks_dc1_pod1_only:
+    ip_address: 10.102.101.5
+  vrf_with_loopbacks_from_overlapping_pool:
+    ip_address: 10.100.0.5
+  vrf_with_loopbacks_from_pod_pools:
+    ip_address: 10.101.101.5
+vxlan_interface:
   Vxlan1:
     description: DC1-POD1-LEAF2B_VTEP
-    source_interface: Loopback1
-    virtual_router:
-      encapsulation_mac_address: mlag-system-id
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
+    vxlan:
+      source_interface: Loopback1
+      virtual_router_encapsulation_mac_address: mlag-system-id
+      udp_port: 4789
       vlans:
         110:
           vni: 10110
@@ -627,9 +736,11 @@ vxlan_tunnel_interface:
       vrfs:
         Common_VRF:
           vni: 1025
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
-struct_cfg:
-  domain_list:
-  - structured-config.set.under.vrf.common-vrf
+        vrf_with_loopbacks_dc1_pod1_only:
+          vni: 1102
+        vrf_with_loopbacks_from_overlapping_pool:
+          vni: 1100
+        vrf_with_loopbacks_from_pod_pools:
+          vni: 1101
 domain_list:
 - structured-config.set.under.vrf.common-vrf

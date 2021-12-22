@@ -17,7 +17,7 @@ driver:
   name: delegated
 platforms:
   - name: ethernet_interfaces
-    image: avdteam/base:3.6
+    image: avdteam/base:3.8-v2.0
     pre_build_image: true
     managed: false
     groups:
@@ -49,4 +49,3 @@ verifier:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-

@@ -1,6 +1,5 @@
 # ip-dhcp-relay
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
   - [IP DHCP Relay Configuration](#ip-dhcp-relay-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces

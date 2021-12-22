@@ -12,15 +12,18 @@ def convert(text):
     return int(text) if text.isdigit() else text.lower()
 
 
-def alphanum_key(key):
-    return [convert(c) for c in re.split('([0-9]+)', str(key))]
-
-
 class FilterModule(object):
 
-    def natural_sort(self, iterable):
+    def natural_sort(self, iterable, sort_key=None):
         if isinstance(iterable, Undefined) or iterable is None:
-            return list()
+            return []
+
+        def alphanum_key(key):
+            if sort_key is not None and isinstance(key, dict):
+                return [convert(c) for c in re.split('([0-9]+)', str(key.get(sort_key, key)))]
+            else:
+                return [convert(c) for c in re.split('([0-9]+)', str(key))]
+
         return sorted(iterable, key=alphanum_key)
 
     def filters(self):

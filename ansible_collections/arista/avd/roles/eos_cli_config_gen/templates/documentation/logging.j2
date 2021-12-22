@@ -1,4 +1,4 @@
-{% if logging is defined and logging is not none %}
+{% if logging is arista.avd.defined %}
 
 ## Logging
 
@@ -6,57 +6,60 @@
 
 | Type | Level |
 | -----| ----- |
-{%     if logging.console is defined and logging.console is not none %}
+{%     if logging.console is arista.avd.defined %}
 | Console | {{ logging.console }} |
 {%     endif %}
-{%     if logging.monitor is defined and logging.monitor is not none %}
+{%     if logging.monitor is arista.avd.defined %}
 | Monitor | {{ logging.monitor }} |
 {%     endif %}
-{%     if logging.buffered is defined and logging.buffered is not none %}
-| Buffer |{% if logging.buffered.level is defined and logging.buffered.level is not none %} {{ logging.buffered.level }} {% else %} - {% endif %} |
+{%     if logging.buffered is arista.avd.defined %}
+| Buffer | {{ logging.buffered.level | arista.avd.default('-') }} |
 {%     endif %}
-{%     if logging.trap is defined and logging.trap is not none %}
+{%     if logging.trap is arista.avd.defined %}
 | Trap | {{ logging.trap }} |
 {%     endif %}
-{%     if logging.format is defined and logging.format is not none %}
+{%     if logging.synchronous is arista.avd.defined() %}
+| Synchronous | {{ logging.synchronous.level | arista.avd.default("critical") }} |
+{%     endif %}
+{%     if logging.format is arista.avd.defined %}
 
 | Format Type | Setting |
 | ----------- | ------- |
-{%        if logging.format.timestamp is defined and logging.format.timestamp == 'high-resolution' %}
+{%        if logging.format.timestamp is arista.avd.defined and logging.format.timestamp == 'high-resolution' %}
 | Timestamp | high-resolution |
 {%        else %}
 | Timestamp | traditional |
 {%        endif %}
-{%        if logging.format.hostname is defined and logging.format.hostname is not none %}
+{%        if logging.format.hostname is arista.avd.defined %}
 | Hostname | {{ logging.format.hostname }} |
 {%        else %}
 | Hostname | hostname |
 {%        endif %}
-{%        if logging.format.sequence_numbers is defined and logging.format.sequence_numbers == true %}
+{%        if logging.format.sequence_numbers is arista.avd.defined(true) %}
 | Sequence-numbers | true |
 {%        else %}
 | Sequence-numbers | false |
 {%        endif %}
 {%     endif %}
-{%     if logging.vrfs is defined and logging.vrfs is not none %}
+{%     if logging.vrfs is arista.avd.defined %}
 
 | VRF | Source Interface |
 | --- | ---------------- |
-{%         if logging.source_interface is defined and logging.source_interface is not none %}
+{%         if logging.source_interface is arista.avd.defined %}
 | - | {{ logging.source_interface }} |
 {%         endif %}
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
-{%              if logging.vrfs[vrf].source_interface is defined and logging.vrfs[vrf].source_interface is not none %}
+{%              if logging.vrfs[vrf].source_interface is arista.avd.defined %}
 | {{ vrf }} | {{ logging.vrfs[vrf].source_interface }} |
 {%              endif %}
 {%          endfor %}
 
-| VRF | Hosts |
-| --- | ---------------- |
+| VRF | Hosts | Ports | Protocol |
+| --- | ----- | ----- | -------- |
 {%          for vrf in logging.vrfs | arista.avd.natural_sort %}
-{%              if logging.vrfs[vrf].hosts is defined and logging.vrfs[vrf].hosts is not none %}
+{%              if logging.vrfs[vrf].hosts is arista.avd.defined %}
 {%                  for host in logging.vrfs[vrf].hosts | arista.avd.natural_sort %}
-| {{ vrf }} | {{ host }} |
+| {{ vrf }} | {{ host }} | {{ logging.vrfs[vrf].hosts[host].ports | arista.avd.default(['Default']) | join(', ') }} | {{ logging.vrfs[vrf].hosts[host].protocol | arista.avd.default('UDP') | upper }} |
 {%                  endfor %}
 {%              endif %}
 {%          endfor %}

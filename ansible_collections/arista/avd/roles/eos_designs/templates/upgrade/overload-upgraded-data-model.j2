@@ -1,0 +1,10 @@
+{% set tmp_hostvars = {} %}
+{% set switch_hostvars = hostvars[inventory_hostname] %}
+{% set upgraded_data_model = eos_designs_upgraded_data_model | arista.avd.default({}) %}
+{% for key in upgraded_data_model.keys() %}
+{%     if switch_hostvars[key] is arista.avd.defined %}
+{%         do tmp_hostvars.update({key: switch_hostvars[key]}) %}
+{%     endif %}
+{% endfor %}
+{% set merged_data_model = tmp_hostvars | combine(upgraded_data_model, recursive=true) %}
+{{ merged_data_model | to_yaml }}

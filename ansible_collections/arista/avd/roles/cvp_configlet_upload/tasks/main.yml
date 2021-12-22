@@ -1,6 +1,6 @@
 ---
 # tasks file for cvp_configlet_upload
-- name: generate intented variables
+- name: generate intended variables
   tags: [build, provision, apply]
   arista.avd.configlet_build_config:
     configlet_dir: "{{ configlet_directory }}"

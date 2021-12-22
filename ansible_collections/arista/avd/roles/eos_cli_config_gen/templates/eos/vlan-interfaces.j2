@@ -22,6 +22,15 @@ interface {{ vlan_interface }}
 {%     if vlan_interfaces[vlan_interface].arp_aging_timeout is arista.avd.defined %}
    arp aging timeout {{ vlan_interfaces[vlan_interface].arp_aging_timeout }}
 {%     endif %}
+{%     if vlan_interfaces[vlan_interface].arp_gratuitous_accept is arista.avd.defined(true) %}
+   arp gratuitous accept
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].arp_monitor_mac_address is arista.avd.defined(true) %}
+   arp monitor mac-address
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity is arista.avd.defined %}
+   arp cache dynamic capacity {{ vlan_interfaces[vlan_interface].arp_cache_dynamic_capacity }}
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_proxy_arp is arista.avd.defined(true) %}
    ip proxy-arp
 {%     endif %}
@@ -33,11 +42,18 @@ interface {{ vlan_interface }}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if vlan_interfaces[vlan_interface].ip_virtual_router_address is arista.avd.defined %}
-   ip virtual-router address {{ vlan_interfaces[vlan_interface].ip_virtual_router_address }}
+{%     if vlan_interfaces[vlan_interface].ip_virtual_router_addresses is arista.avd.defined %}
+{%         for ip_virtual_router_address in vlan_interfaces[vlan_interface].ip_virtual_router_addresses %}
+   ip virtual-router address {{ ip_virtual_router_address }}
+{%         endfor %}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ip_address_virtual is arista.avd.defined %}
    ip address virtual {{ vlan_interfaces[vlan_interface].ip_address_virtual }}
+{%         if vlan_interfaces[vlan_interface].ip_address_virtual_secondaries is arista.avd.defined %}
+{%             for ip_address_virtual_secondary in vlan_interfaces[vlan_interface].ip_address_virtual_secondaries %}
+   ip address virtual {{ ip_address_virtual_secondary }} secondary
+{%             endfor %}
+{%         endif %}
 {%     endif %}
 {%     for ip_helper in vlan_interfaces[vlan_interface].ip_helpers | arista.avd.natural_sort %}
 {%         set ip_helper_cli = "ip helper-address " ~ ip_helper %}
@@ -49,6 +65,9 @@ interface {{ vlan_interface }}
 {%         endif %}
    {{ ip_helper_cli }}
 {%     endfor %}
+{%     if vlan_interfaces[vlan_interface].ip_igmp is arista.avd.defined(true) %}
+   ip igmp
+{%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_enable is arista.avd.defined(true) %}
    ipv6 enable
 {%     endif %}
@@ -57,6 +76,9 @@ interface {{ vlan_interface }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_address_link_local is arista.avd.defined %}
    ipv6 address {{ vlan_interfaces[vlan_interface].ipv6_address_link_local }} link-local
+{%     endif %}
+{%     if vlan_interfaces[vlan_interface].ipv6_address_virtual is arista.avd.defined %}
+   ipv6 address virtual {{ vlan_interfaces[vlan_interface].ipv6_address_virtual }}
 {%     endif %}
 {%     if vlan_interfaces[vlan_interface].ipv6_nd_ra_disabled is arista.avd.defined(true) %}
    ipv6 nd ra disabled

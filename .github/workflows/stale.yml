@@ -1,4 +1,4 @@
-name: "Close stale issues"
+name: "Issue and PR stale management"
 on:
   schedule:
   - cron: "0 0 * * *"
@@ -7,17 +7,25 @@ jobs:
   stale:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/stale@v3
+      # Issue stale management
+    - uses: actions/stale@v4
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         days-before-stale: 90
         days-before-close: 15
-        # only-labels: 'awaiting-feedback,awaiting-answers'
-        # Issue stale management
         stale-issue-message: 'This issue is stale because it has been open 90 days with no activity. Remove stale label or comment or this will be closed in 15 days'
         stale-issue-label: 'state: stale'
         exempt-issue-labels: 'state: accepted, state: in-progress'
-        # PR Stale Management
-        # stale-pr-message: 'This PR is stale because it has been open 90 days with no activity. Remove stale label or comment or this will be closed in 15 days'
-        # stale-pr-label: 'state: stale'
-        # exempt-pr-labels: 'state: accepted, state: in-progress'
+        stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
+        stale-pr-label: 'state: stale'
+        exempt-pr-labels: 'state: accepted, state: in-progress'
+
+    #   # PR Stale Management
+    # - uses: actions/stale@v4
+    #   with:
+    #     repo-token: ${{ secrets.GITHUB_TOKEN }}
+    #     days-before-stale: 30
+    #     days-before-close: 15
+    #     stale-pr-message: 'This PR is stale because it has been open 30 days with no activity. Remove stale label or comment or this will be closed in 15 days'
+    #     stale-pr-label: 'state: stale'
+    #     exempt-pr-labels: 'state: accepted, state: in-progress'

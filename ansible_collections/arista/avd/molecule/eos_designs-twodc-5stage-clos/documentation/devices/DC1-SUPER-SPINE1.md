@@ -1,6 +1,5 @@
 # DC1-SUPER-SPINE1
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management API HTTP](#management-api-http)
@@ -34,7 +33,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management API HTTP
@@ -42,15 +40,14 @@
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -87,29 +84,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1-SUPER-SPINE1 |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC1 DC1-SUPER-SPINE1 | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -335,20 +312,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 11.1.2.1 | 65200 | default |
-| 172.16.11.1 | 65110 | default |
-| 172.16.11.3 | 65110 | default |
-| 172.16.12.1 | 65120 | default |
-| 172.16.12.3 | 65120 | default |
-| 172.17.10.1 | 65101 | default |
-
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 11.1.2.1 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.11.1 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.11.3 | 65110.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.12.1 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.16.12.3 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| 172.17.10.1 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
 
 ### Router BGP Device Configuration
 
@@ -369,10 +340,10 @@ router bgp 65100
    neighbor 11.1.2.1 remote-as 65200
    neighbor 11.1.2.1 description DC2-SUPER-SPINE1
    neighbor 172.16.11.1 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.1 remote-as 65110
+   neighbor 172.16.11.1 remote-as 65110.100
    neighbor 172.16.11.1 description DC1-POD1-SPINE1_Ethernet1
    neighbor 172.16.11.3 peer group IPv4-UNDERLAY-PEERS
-   neighbor 172.16.11.3 remote-as 65110
+   neighbor 172.16.11.3 remote-as 65110.100
    neighbor 172.16.11.3 description DC1-POD1-SPINE2_Ethernet1
    neighbor 172.16.12.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.16.12.1 remote-as 65120

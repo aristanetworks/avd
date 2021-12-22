@@ -11,31 +11,13 @@ If you leverage [Cloudvision](https://www.arista.com/en/products/eos/eos-cloudvi
 
 ## Python
 
-- Python __3.6.8__ or later
+- Python __3.8__ or later
 
 ## Supported Ansible Versions
 
-- ansible __2.10.0__ or later
+- ansible-core from __2.11.3__ to __2.12.x__
 
 ## Additional Python Libraries required
-
-- netaddr
-- Jinja2
-- treelib
-- cvprac
-- paramiko
-- jsonschema
-- requests
-- PyYAML
-- md-toc
-
-### Python requirements installation
-
-In a shell, run the following command:
-
-```shell
-$ pip3 install -r ansible_collections/arista/avd/requirements.txt
-```
 
 ```pip
 --8<--
@@ -43,19 +25,20 @@ requirements.txt
 --8<--
 ```
 
-!!! warning
-    Depending of your operating system settings, `pip3` might be replaced by `pip`.
+### Python requirements installation
 
-## Ansible runner requirements
-
-A optional docker container is available with all the requirements already installed. To use this container, Docker must be installed on your ansible runner.
-
-To install Docker on your system, you can refer to the following page: [Docker installation step by step](https://docs.docker.com/engine/installation/)
-
-Or if you prefer you can run this oneLiner installation script:
+In a shell, run the following commands after installing the collection from ansible-galaxy:
 
 ```shell
-$ curl -fsSL get.docker.com | sh
+export ARISTA_AVD_DIR=$(ansible-galaxy collection list arista.avd --format yaml | head -1 | cut -d: -f1)
+pip3 install -r ${ARISTA_AVD_DIR}/arista/avd/requirements.txt
 ```
 
-In addition, docker-compose should be considered to run a stack of containers: https://docs.docker.com/compose/install/
+If the collection is cloned from GitHub, the requirements file can be referenced directly:
+
+```shell
+pip3 install -r ansible-avd/ansible_collections/arista/avd/requirements.txt
+```
+
+!!! warning
+    Depending of your operating system settings, `pip3` might be replaced by `pip`.

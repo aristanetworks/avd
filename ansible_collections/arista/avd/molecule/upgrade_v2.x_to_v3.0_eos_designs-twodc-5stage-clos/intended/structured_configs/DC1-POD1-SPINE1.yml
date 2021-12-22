@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65110
+  as: '65110'
   router_id: 172.16.110.1
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -34,57 +34,57 @@ router_bgp:
   neighbors:
     172.16.11.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65100
+      remote_as: '65100'
       description: DC1-SUPER-SPINE1_Ethernet1
     172.16.11.64:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65100
+      remote_as: '65100'
       description: DC1-SUPER-SPINE2_Ethernet1
     172.17.110.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65111
+      remote_as: '65111'
       description: DC1-POD1-LEAF1A_Ethernet1
     172.17.110.5:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65112
+      remote_as: '65112'
       description: DC1-POD1-LEAF2A_Ethernet1
     172.17.110.9:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65112
+      remote_as: '65112'
       description: DC1-POD1-LEAF2B_Ethernet1
     172.17.10.3:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65101
+      remote_as: '65101'
       description: DC1-RS1_Ethernet2
       bfd: true
     172.16.210.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-LEAF1A
-      remote_as: 65211
+      remote_as: '65211'
       route_map_out: RM-EVPN-FILTER-AS65211
     172.16.210.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-POD1-SPINE1
-      remote_as: 65210
+      remote_as: '65210'
       route_map_out: RM-EVPN-FILTER-AS65210
     172.16.20.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-RS1
-      remote_as: 65201
+      remote_as: '65201'
       route_map_out: RM-EVPN-FILTER-AS65201
     172.16.200.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC2-SUPER-SPINE1
-      remote_as: 65200
+      remote_as: '65200'
       route_map_out: RM-EVPN-FILTER-AS65200
     172.16.110.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2A
-      remote_as: 65112
+      remote_as: '65112'
     172.16.110.5:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF2B
-      remote_as: 65112
+      remote_as: '65112'
   address_family_evpn:
     peer_groups:
       EVPN-OVERLAY-PEERS:
@@ -122,8 +122,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
-  \ under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SUPER-SPINE1

@@ -4,6 +4,9 @@ port_channel_interfaces:
   Port-Channel5:
     description: DC1_L2LEAF1_Po1
     vlans: 110,201
+    link_tracking_groups:
+      - name: EVPN_MH_ES1
+        direction: downstream
     mode: trunk
     mlag: 5
     storm_control:
@@ -24,6 +27,9 @@ port_channel_interfaces:
   Port-Channel15:
     description: DC1_L2LEAF3_Po1
     vlans: 110,201
+    link_tracking_groups:
+      - name: EVPN_MH_ES2
+        direction: upstream
     mode: trunk
     mlag: 15
 
@@ -37,6 +43,8 @@ port_channel_interfaces:
     description: MLAG_PEER_DC1-LEAF1B_Po3
     vlans: "2-4094"
     mode: trunk
+    shape:
+      rate: 200000 kbps
     trunk_groups:
       - LEAF_PEER_L3
       - MLAG
@@ -47,6 +55,8 @@ port_channel_interfaces:
     mode: trunk
     esi: 0000:0000:0404:0404:0303
     rt: 04:04:03:03:02:02
+    shape:
+      rate: 50 percent
 
   Port-Channel50:
     description: SRV-POD03_PortChanne1
@@ -124,12 +134,21 @@ port_channel_interfaces:
       trunk: untagged
       vlan: 70
 
+  Port-Channel17:
+    description: PBR Description
+    type: routed
+    ip_address: 192.0.2.3/31
+    service_policy:
+      pbr:
+        input: MyPolicy
 
   Port-Channel101:
     description: PVLAN Promiscuous Access - only one secondary
     mode: access
     vlans: 110
     pvlan_mapping: 111
+    qos:
+      trust: disabled
 
   Port-Channel102:
     description: PVLAN Promiscuous Trunk - vlan translation out
@@ -146,6 +165,12 @@ port_channel_interfaces:
     vlans: 110-112
     trunk_private_vlan_secondary: true
 
+  Port-Channel104:
+    description: LACP fallback individual
+    mode: trunk
+    vlans: 112
+    lacp_fallback_timeout: 300
+    lacp_fallback_mode: individual
 
 # Children interfaces
 ethernet_interfaces:
@@ -198,7 +223,6 @@ ethernet_interfaces:
       id: 8
       mode: active
 
-
   Ethernet15:
     peer: DC1-AGG03
     peer_interface: Ethernet1
@@ -222,6 +246,12 @@ ethernet_interfaces:
     lacp_timer:
       mode: normal
 
+  Ethernet17:
+    description: LAG Member
+    channel_group:
+      id: 17
+      mode: active
+
   Ethernet10/1:
     description: LAG Member
     channel_group:
@@ -239,3 +269,12 @@ ethernet_interfaces:
     channel_group:
       id: 103
       mode: active
+
+  Ethernet10/4:
+    description: LAG Member LACP fallback
+    channel_group:
+      id: 104
+      mode: active
+    mode: trunk
+    vlans: 100
+    spanning_tree_portfast: edge

@@ -1,6 +1,0 @@
-{% if overlay_routing_protocol is arista.avd.defined and overlay_routing_protocol | lower in ['ibgp']  %}
-  overlay_routing_protocol: {{ overlay_routing_protocol | lower }}
-{% else %}
-  overlay_routing_protocol: 'ebgp'
-{% endif %}
-

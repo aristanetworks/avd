@@ -1,0 +1,53 @@
+{% if l2leaf is arista.avd.defined %}
+{####### l2leaf #######}
+l2leaf:
+  defaults:
+{%     if l2leaf.defaults.parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.defaults.parent_l3leafs to l2leaf.defaults.uplink_switches
+    uplink_switches: {{ l2leaf.defaults.parent_l3leafs }}
+{%     endif %}
+{%     if l2leaf_inband_management_subnet is arista.avd.defined %}
+# Change from l2leaf_inband_management_subnet to l2leaf.defaults.inband_management_subnet
+    inband_management_subnet: {{ l2leaf_inband_management_subnet }}
+{%     endif %}
+{%     if l2leaf_inband_management_vlan is arista.avd.defined %}
+# Change from l2leaf_inband_management_vlan to l2leaf.defaults.inband_management_vlan
+    inband_management_vlan: {{ l2leaf_inband_management_vlan }}
+{%     endif %}
+{%     if l2leaf.defaults.p2p_link_interface_speed is arista.avd.defined %}
+# Change from l2leaf.defaults.p2p_link_interface_speed to l2leaf.defaults.uplink_interface_speed
+    uplink_interface_speed: {{ l2leaf.defaults.p2p_link_interface_speed }}
+{%     endif %}
+{%     if mlag_ips.mlag_peer is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer to l2leaf.defaults.mlag_peer_ipv4_pool
+    mlag_peer_ipv4_pool: {{ mlag_ips.mlag_peer }}
+{%     endif %}
+{%     if mlag_ips.leaf_peer_l3 is arista.avd.defined %}
+# Change from mlag_ips.mlag_peer_l3_ipv4_pool to l2leaf.defaults.mlag_peer_l3_ipv4_pool
+    mlag_peer_l3_ipv4_pool: {{ mlag_ips.leaf_peer_l3 }}
+{%     endif %}
+  node_groups:
+{%     for node_group in l2leaf.node_groups | arista.avd.default([]) %}
+    {{ node_group }}:
+{%         if l2leaf.node_groups[node_group].parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.uplink_switches
+      uplink_switches: {{ l2leaf.node_groups[node_group].parent_l3leafs }}
+{%         endif %}
+{%         if l2leaf.node_groups[node_group].p2p_link_interface_speed is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.p2p_link_interface_speed to l2leaf.node_groups.{{ node_group }}.uplink_interface_speed
+      uplink_interface_speed: {{ l2leaf.node_groups[node_group].p2p_link_interface_speed }}
+{%         endif %}
+      nodes:
+{%         for node in l2leaf.node_groups[node_group].nodes | arista.avd.default([]) %}
+        {{ node }}:
+{%             if l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.l3leaf_interfaces to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switch_interfaces
+          uplink_switch_interfaces: {{ l2leaf.node_groups[node_group].nodes[node].l3leaf_interfaces }}
+{%             endif %}
+{%             if l2leaf.node_groups[node_group].nodes[node].parent_l3leafs is arista.avd.defined %}
+# Change from l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.parent_l3leafs to l2leaf.node_groups.{{ node_group }}.nodes.{{ node }}.uplink_switches
+          uplink_switches: {{ l2leaf.node_groups[node_group].nodes[node].parent_l3leafs }}
+{%             endif %}
+{%         endfor %}
+{%     endfor %}
+{% endif %}

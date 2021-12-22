@@ -1,5 +1,5 @@
 vlans:
-{% if switch.mlag_l3 is arista.avd.defined(true) %}
+{% if switch.mlag_peer_l3_vlan is arista.avd.defined %}
   {{ switch.mlag_peer_l3_vlan }}:
     tenant: system
     name: LEAF_PEER_L3

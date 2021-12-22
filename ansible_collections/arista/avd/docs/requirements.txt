@@ -7,4 +7,3 @@ pymdown-extensions
 mdx_truly_sane_lists
 mkdocs-git-revision-date-localized-plugin
 mkdocs-git-revision-date-plugin
-mkdocs-minify-plugin

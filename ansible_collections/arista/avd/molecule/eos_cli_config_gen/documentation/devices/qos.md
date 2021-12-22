@@ -1,6 +1,5 @@
 # qos
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -21,7 +20,6 @@
   - [QOS](#qos)
   - [QOS Profiles](#qos-profiles)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -224,33 +222,42 @@ QOS Profile: **experiment**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust |
-| ----------- | ------------ | ----- |
-| 2 | - | cos |
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| 2 | - | cos | - |
 
 **Tx-queues**
 
-| Tx-queue | Bandwidth | Priority |
-| -------- | --------- | -------- |
-| 3 | 30 | no priority |
-| 5 | 40 | - |
-| 7 | 30 | - |
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+| 3 | 30 | no priority | - |
+| 4 | 10 | - | - |
+| 5 | 40 | - | - |
+| 7 | 30 | - | 40 percent |
+
+QOS Profile: **no_qos_trust**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| 3 | 4 | disabled | - |
 
 QOS Profile: **test**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust |
-| ----------- | ------------ | ----- |
-| - | 46 | dscp |
+| Default COS | Default DSCP | Trust | Shape Rate |
+| ----------- | ------------ | ----- | ---------- |
+| - | 46 | dscp | 80 percent |
 
 **Tx-queues**
 
-| Tx-queue | Bandwidth | Priority |
-| -------- | --------- | -------- |
-| 1 | 50 | no priority |
-| 2 | 10 | priority strict |
-| 6 | 20 | - |
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+| 1 | 50 | no priority | - |
+| 2 | 10 | priority strict | - |
+| 4 | 10 | - | - |
 
 ### QOS Profile Device Configuration
 
@@ -264,15 +271,25 @@ qos profile experiment
       bandwidth percent 30
       no priority
    !
+   tx-queue 4
+      bandwidth guaranteed percent 10
+   !
    tx-queue 5
       bandwidth percent 40
    !
    tx-queue 7
       bandwidth percent 30
+      shape rate 40 percent
+!
+qos profile no_qos_trust
+   no qos trust
+   qos cos 3
+   qos dscp 4
 !
 qos profile test
    qos trust dscp
    qos dscp 46
+   shape rate 80 percent
    !
    tx-queue 1
       bandwidth percent 50
@@ -282,6 +299,14 @@ qos profile test
       bandwidth percent 10
       priority strict
    !
-   tx-queue 6
-      bandwidth percent 20
+   tx-queue 4
+      bandwidth guaranteed percent 10
 ```
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Ethernet1 | dscp | 48 | - | - |
+| Ethernet6 | cos | - | 2 | - |
+| Port-Channel3 | cos | - | 2 | - |

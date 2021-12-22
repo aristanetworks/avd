@@ -14,6 +14,7 @@ ethernet_interfaces:
       ip: true
       ldp:
         interface: true
+        igp_sync: true
 
 loopback_interfaces:
   Loopback0:

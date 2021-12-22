@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65200
+  as: '65200'
   router_id: 172.16.200.1
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -10,7 +10,6 @@ router_bgp:
   peer_groups:
     IPv4-UNDERLAY-PEERS:
       type: ipv4
-      password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
     EVPN-OVERLAY-PEERS:
@@ -18,7 +17,6 @@ router_bgp:
       update_source: Loopback0
       bfd: true
       ebgp_multihop: '5'
-      password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
       next_hop_unchanged: true
@@ -34,46 +32,46 @@ router_bgp:
   neighbors:
     172.16.21.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65210
+      remote_as: '65210'
       description: DC2-POD1-SPINE1_Ethernet1
     172.16.21.3:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65210
+      remote_as: '65210'
       description: DC2-POD1-SPINE2_Ethernet1
     172.17.20.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65201
+      remote_as: '65201'
       description: DC2-RS1_Ethernet1
     172.17.20.9:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65201
+      remote_as: '65201'
       description: DC2-RS2_Ethernet1
     172.17.20.3:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65201
+      remote_as: '65201'
       description: DC2-RS1_Ethernet2
     172.17.20.11:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65201
+      remote_as: '65201'
       description: DC2-RS2_Ethernet2
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: 65111
+      remote_as: '65111.100'
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: 65110
+      remote_as: '65110.100'
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
-      remote_as: 65101
+      remote_as: '65101'
     172.16.10.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS2
-      remote_as: 65102
+      remote_as: '65102'
     11.1.2.0:
-      remote_as: 65100
+      remote_as: '65100'
       description: DC1-SUPER-SPINE1
       peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:
@@ -121,8 +119,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
-  \ under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-POD1-SPINE1

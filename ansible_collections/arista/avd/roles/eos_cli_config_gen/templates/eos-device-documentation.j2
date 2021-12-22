@@ -1,5 +1,6 @@
 # {{ inventory_hostname }}
 # Table of Contents
+
 <!-- toc -->
 <!-- toc -->
 # Management
@@ -13,6 +14,8 @@
 {% include 'documentation/name-servers.j2' %}
 {## Domain Lookup #}
 {% include 'documentation/domain-lookup.j2' %}
+{## Clock #}
+{% include 'documentation/clock.j2' %}
 {## NTP #}
 {% include 'documentation/ntp.j2' %}
 {## PTP #}
@@ -21,8 +24,12 @@
 {% include 'documentation/system-control-plane.j2' %}
 {## Management SSH #}
 {% include 'documentation/management-ssh.j2' %}
+{## IP SSH Client Source Interfaces #}
+{% include 'documentation/ip-ssh-client-source-interfaces.j2' %}
 {## Management API GNMI #}
 {% include 'documentation/management-api-gnmi.j2' %}
+{# management Console #}
+{% include 'documentation/management-console.j2' %}
 {## Management API HTTP #}
 {% include 'documentation/management-api-http.j2' %}
 {## IP HTTP Client Source Interfaces #}
@@ -31,6 +38,8 @@
 # Authentication
 {## Local Users #}
 {% include 'documentation/local-users.j2' %}
+{## Roles #}
+{% include 'documentation/roles.j2' %}
 {## Enable Password #}
 {% include 'documentation/enable-password.j2' %}
 {## TACACS Servers #}
@@ -73,10 +82,18 @@
 {% include 'documentation/vmtracer-sessions.j2' %}
 {## Event Handler #}
 {% include 'documentation/event-handler.j2' %}
+{# Monitor Connectivity #}
+{% include 'documentation/monitor-connectivity.j2' %}
 {# Hardware TCAM Profile #}
 {% include 'documentation/tcam-profile.j2' %}
+{# Link Tracking Groups #}
+{% include 'documentation/link-tracking-groups.j2' %}
 {# MLAG #}
 {% include 'documentation/mlag-configuration.j2' %}
+{# LLDP #}
+{% include 'documentation/lldp.j2' %}
+{# LACP #}
+{% include 'documentation/lacp-configuration.j2' %}
 {# Spanning Tree #}
 {% include 'documentation/spanning-tree.j2' %}
 {# Internal VLAN Allocation Policy #}
@@ -131,6 +148,8 @@
 {% include 'documentation/bfd.j2' %}
 {# MPLS #}
 {% include 'documentation/mpls.j2' %}
+{# Patch Panel #}
+{% include 'documentation/patch-panel.j2' %}
 
 # Multicast
 {## IP IGMP Snooping #}
@@ -195,6 +214,8 @@
 {% include 'documentation/policy-maps-qos.j2' %}
 {## QOS Profiles #}
 {% include 'documentation/qos-profiles.j2' %}
+{## QOS Interfaces #}
+{% include 'documentation/qos-interfaces.j2' %}
 {# Maintenance Mode #}
 {% include 'documentation/maintenance-mode.j2' %}
 {# EOS CLI #}

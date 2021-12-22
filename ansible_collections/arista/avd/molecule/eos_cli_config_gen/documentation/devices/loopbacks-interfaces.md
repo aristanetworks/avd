@@ -1,6 +1,5 @@
 # loopbacks-interfaces
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -152,9 +150,9 @@ interface Loopback100
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Loopback99 | - | True |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Loopback99 | - | True | - |
 
 # Multicast
 

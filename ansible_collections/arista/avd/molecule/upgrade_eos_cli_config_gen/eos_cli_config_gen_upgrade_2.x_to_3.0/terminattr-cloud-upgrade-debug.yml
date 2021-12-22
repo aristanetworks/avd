@@ -1,0 +1,12 @@
+daemon_terminattr:
+  cvaddrs: ['apiserver.arista.io:443']
+  cvauth: {method: token-secure, token_file: /tmp/cv-onboarding-token}
+  cvcompression: gzip
+  cvvrf: mgt
+  ingestauth_key: magickey
+  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
+  ingestgrpcurl:
+    ips: [apiserver.arista.io]
+    port: 9910
+  ingestvrf: mgt
+  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata

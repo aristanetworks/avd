@@ -21,10 +21,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
-
 DOCUMENTATION = r'''
 ---
 module: configlet_build_config
@@ -77,14 +73,14 @@ except ImportError:
     YAML_IMP_ERR = traceback.format_exc()
 
 
-def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
+def get_configlet(src_folder="", prefix='AVD', extension='cfg'):
     """
     Get available configlets to deploy to CVP.
 
     Parameters
     ----------
     src_folder : str, optional
-        Path where to find configlet, by default str()
+        Path where to find configlet, by default ""
     prefix : str, optional
         Prefix to append to configlet name, by default 'AVD'
     extension : str, optional
@@ -96,13 +92,13 @@ def get_configlet(src_folder=str(), prefix='AVD', extension='cfg'):
         Dictionary of configlets found in source folder.
     """
     src_configlets = glob.glob(src_folder + '/*.' + extension)
-    configlets = dict()
+    configlets = {}
     for file in src_configlets:
         if prefix != 'none':
             name = prefix + '_' + os.path.splitext(os.path.basename(file))[0]
         else:
             name = os.path.splitext(os.path.basename(file))[0]
-        with open(file, 'r') as file:
+        with open(file, 'r', encoding='utf8') as file:
             data = file.read()
         configlets[name] = data
     return configlets
@@ -132,7 +128,7 @@ def main():
 
     # Write vars to file if set by user
     if module.params['destination'] is not None:
-        with open(module.params['destination'], 'w') as file:
+        with open(module.params['destination'], 'w', encoding='utf8') as file:
             yaml.dump(result, file)
 
     module.exit_json(**result)

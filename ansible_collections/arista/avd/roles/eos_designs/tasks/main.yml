@@ -64,27 +64,10 @@
   run_once: true
   delegate_to: localhost
   check_mode: no
-  block:
-    - name: Store checksum of existing fabric documentation
-      ansible.builtin.stat:
-        path: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-        checksum_algorithm: sha224
-        get_attributes: no
-        get_checksum: yes
-        get_mime: no
-      register: doc_stat_result
-    - name: Generate fabric documentation in Markdown Format.
-      template:
-        src: fabric-documentation.j2
-        dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-        mode: 0664
-      changed_when: false
-    - name: Generate TOC for fabric documentation
-      add_toc:
-        md_file: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
-        skip_lines: 3
-      register: toc_result
-      changed_when: toc_result.checksum | default('1') != doc_stat_result.stat.checksum | default('0')
+  copy:
+    content: "{{ lookup('template','documentation/fabric-documentation.j2') | arista.avd.add_md_toc(skip_lines=3) }}"
+    dest: "{{ fabric_dir }}/{{ fabric_name }}-documentation.md"
+    mode: 0664
 
 - name: Generate fabric point-to-point links summary in csv format.
   tags: [build, provision, documentation]

@@ -1,2 +1,6 @@
+# collection requirements leveraged by molecule
 collections:
   - arista.cvp
+  - arista.eos
+  - ansible.netcommon
+  - community.general

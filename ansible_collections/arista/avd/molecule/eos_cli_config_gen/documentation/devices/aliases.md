@@ -1,6 +1,5 @@
 # aliases
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -54,6 +52,7 @@ interface Management1
 ```eos
 alias wr copy running-config startup-config
 alias siib show ip interface brief
+
 !
 ```
 

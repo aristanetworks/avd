@@ -1,6 +1,5 @@
 # DC1-SPINE3
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -39,7 +38,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -89,13 +87,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -110,15 +112,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -157,16 +158,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | False |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | False |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -174,29 +175,9 @@ daemon TerminAttr
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| example@example.com | DC1_FABRIC DC1-SPINE3 |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| example@example.com | DC1_FABRIC DC1-SPINE3 | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -254,20 +235,20 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | 172.31.255.4/31 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | 172.31.255.20/31 | default | 1500 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | 172.31.255.36/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet43 | routed | - | 172.31.255.52/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet43 | routed | - | 172.31.255.68/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet43 | routed | - | 172.31.255.84/31 | default | 1500 | false | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet47 | routed | - | 172.31.255.100/31 | default | 1500 | false | - | - |
+| Ethernet1 | CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet3 | routed | - | 172.31.255.4/31 | default | 1500 | false | - | - |
+| Ethernet2 | CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet3 | routed | - | 172.31.255.20/31 | default | 1500 | false | - | - |
+| Ethernet3 | CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet3 | routed | - | 172.31.255.36/31 | default | 1500 | false | - | - |
+| Ethernet4 | CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet43 | routed | - | 172.31.255.52/31 | default | 1500 | false | - | - |
+| Ethernet5 | CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet43 | routed | - | 172.31.255.68/31 | default | 1500 | false | - | - |
+| Ethernet6 | CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet43 | routed | - | 172.31.255.84/31 | default | 1500 | false | - | - |
+| Ethernet7 | CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet47 | routed | - | 172.31.255.100/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF1A_Ethernet3
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF1A_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -275,7 +256,7 @@ interface Ethernet1
    ip address 172.31.255.4/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF2A_Ethernet3
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF2A_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -283,7 +264,7 @@ interface Ethernet2
    ip address 172.31.255.20/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-LEAF2B_Ethernet3
+   description CUSTOM_P2P_LINK_TO_DC1-LEAF2B_Ethernet3
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -291,7 +272,7 @@ interface Ethernet3
    ip address 172.31.255.36/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SVC3A_Ethernet43
+   description CUSTOM_P2P_LINK_TO_DC1-SVC3A_Ethernet43
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -299,7 +280,7 @@ interface Ethernet4
    ip address 172.31.255.52/31
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-SVC3B_Ethernet43
+   description CUSTOM_P2P_LINK_TO_DC1-SVC3B_Ethernet43
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -307,7 +288,7 @@ interface Ethernet5
    ip address 172.31.255.68/31
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-BL1A_Ethernet43
+   description CUSTOM_P2P_LINK_TO_DC1-BL1A_Ethernet43
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -315,7 +296,7 @@ interface Ethernet6
    ip address 172.31.255.84/31
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-BL1B_Ethernet47
+   description CUSTOM_P2P_LINK_TO_DC1-BL1B_Ethernet47
    no shutdown
    speed forced 100gfull
    mtu 1500
@@ -437,28 +418,30 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 172.31.255.5 | 65101 | default |
-| 172.31.255.21 | 65102 | default |
-| 172.31.255.37 | 65102 | default |
-| 172.31.255.53 | 65103 | default |
-| 172.31.255.69 | 65103 | default |
-| 172.31.255.85 | 65104 | default |
-| 172.31.255.101 | 65105 | default |
-| 192.168.255.9 | 65101 | default |
-| 192.168.255.10 | 65102 | default |
-| 192.168.255.11 | 65102 | default |
-| 192.168.255.12 | 65103 | default |
-| 192.168.255.13 | 65103 | default |
-| 192.168.255.14 | 65104 | default |
-| 192.168.255.15 | 65105 | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 172.31.255.5 | 65101 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.21 | 65102 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.37 | 65102 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.53 | 65103 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.69 | 65103 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.85 | 65104 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 172.31.255.101 | 65105 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
+| 192.168.255.9 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.10 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.11 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.12 | 65103 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.13 | 65103 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.14 | 65104 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.15 | 65105 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| EVPN-OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 
@@ -543,7 +526,7 @@ router bgp 65001
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

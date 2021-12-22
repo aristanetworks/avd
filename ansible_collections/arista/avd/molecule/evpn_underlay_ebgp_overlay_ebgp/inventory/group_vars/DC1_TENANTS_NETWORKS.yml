@@ -38,10 +38,12 @@ tenants:
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
+          loopback_description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
         svis:
           # SVI as string
           '110':
             name: Tenant_A_OP_Zone_1
+            description: SVI 110 CUSTOM DESCRIPTION
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.10.1/24
@@ -49,6 +51,7 @@ tenants:
           111:
             vni_override: 50111
             name: Tenant_A_OP_Zone_2
+            description: SVI 111 CUSTOM DESCRIPTION
             tags: ['opzone']
             enabled: True
             ip_address_virtual: 10.1.11.1/24
@@ -108,6 +111,7 @@ tenants:
             tags: ['app']
             enabled: True
             ip_address_virtual: 10.1.31.1/24
+            vxlan: false
       Tenant_A_DB_Zone:
         vrf_vni: 13
         svis:
@@ -219,7 +223,7 @@ tenants:
         vrf_vni: 15
         l3_interfaces:
           - interfaces: [ Ethernet8, Ethernet9, Ethernet8, Ethernet9 ]
-            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24,]
+            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
             nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
             mtu: 9000
             enabled: True
@@ -304,3 +308,4 @@ tenants:
             tags: ['wan']
             enabled: True
             ip_address_virtual: 10.3.50.1/24
+            vxlan: False

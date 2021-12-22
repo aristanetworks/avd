@@ -1,5 +1,0 @@
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
-  underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
-{% else %}
-  underlay_routing_protocol: 'ebgp'
-{% endif %}

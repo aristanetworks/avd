@@ -6,10 +6,10 @@
 ## Spanning Tree Summary
 
 STP mode: **{{ spanning_tree.mode | arista.avd.default("mstp") }}**
-{% if spanning_tree.root_super is arista.avd.defined %}
+{%     if spanning_tree.root_super is arista.avd.defined %}
 
 STP Root Super: **{{ spanning_tree.root_super }}**
-{% endif %}
+{%     endif %}
 {%     if spanning_tree.mst_instances is arista.avd.defined %}
 
 ### MSTP Instance and Priority
@@ -38,7 +38,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-{%     if spanning_tree.mode == "rapid-pvst" %}
+{%     if spanning_tree.mode is arista.avd.defined("rapid-pvst") %}
 
 ### Rapid-PVST Instance and Priority
 
@@ -53,7 +53,7 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 
 ### Global Spanning-Tree Settings
 
-{%     if spanning_tree.mode == "rstp" %}
+{%     if spanning_tree.mode is arista.avd.defined("rstp") %}
 {%         if spanning_tree.rstp_priority is arista.avd.defined %}
 Global RSTP priority: {{ spanning_tree.rstp_priority }}
 {%         endif %}
@@ -64,7 +64,7 @@ Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
 {%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
 Global BPDU Guard for Edge ports is enabled.
 {%     endif %}
-{%     if spanning_tree.mode == "mstp" %}
+{%     if spanning_tree.mode is arista.avd.defined("mstp") %}
 {%         if spanning_tree.mst is arista.avd.defined %}
 {%             if spanning_tree.mst.pvst_border is arista.avd.defined(true) %}
 MST PSVT Border is enabled.

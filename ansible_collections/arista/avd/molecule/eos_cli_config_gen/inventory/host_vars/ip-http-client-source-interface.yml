@@ -1,9 +1,9 @@
 ### IP HTTP Client Source Interface ###
 
 ip_http_client_source_interfaces:
-  - vrf : default
+  - vrf: default
     name: Loopback0
-  - vrf : MGMT
+  - vrf: MGMT
     name: Management0
-  - vrf : 
+  - vrf:
     name: Ethernet10

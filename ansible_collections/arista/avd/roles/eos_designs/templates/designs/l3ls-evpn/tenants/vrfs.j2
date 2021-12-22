@@ -1,9 +1,0 @@
-{# tenant vrfs #}
-vrfs:
-{% for tenant in switch.tenants | arista.avd.natural_sort %}
-{%     for vrf in switch.tenants[tenant].vrfs | arista.avd.natural_sort %}
-  {{ vrf }}:
-    tenant: {{ tenant }}
-    ip_routing: true
-{%     endfor %}
-{% endfor %}

@@ -1,6 +1,5 @@
 # router-isis
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -10,6 +9,7 @@
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
@@ -21,7 +21,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -84,13 +83,21 @@ interface Management1
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_EAPI-SPINE1_Ethernet1 | routed | - | 172.31.255.1/31 | default | 1500 | - | - | - |
 | Ethernet2 | P2P_LINK_TO_EAPI-SPINE2_Ethernet1 | routed | - | 172.31.255.3/31 | default | 1500 | - | - | - |
+| Ethernet4 | - | *routed | 4 | *10.9.2.3/31 | **default | **- | **- | **- | **- |
+| Ethernet5 | - | *routed | 5 | *10.9.2.5/31 | **default | **- | **- | **- | **- |
+| Ethernet6 | - | *routed | 6 | *10.9.2.7/31 | **default | **- | **- | **- | **- |
+*Inherited from Port-Channel Interface
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | level-1-2 |
+| Ethernet4 | 4 | *EVPN_UNDERLAY | *50 | *point-to-point | *level-2 |
+| Ethernet5 | 5 | *EVPN_UNDERLAY | *50 | *passive | *- |
+| Ethernet6 | 6 | *EVPN_UNDERLAY | *100 | *- | *level-1-2 |
+ *Inherited from Port-Channel Interface
 
 ### Ethernet Interfaces Device Configuration
 
@@ -111,12 +118,74 @@ interface Ethernet2
    no switchport
    ip address 172.31.255.3/31
    isis enable EVPN_UNDERLAY
+   isis circuit-type level-1-2
    isis metric 50
    isis network point-to-point
 !
 interface Ethernet3
    description MLAG_PEER_EAPI-LEAF1B_Ethernet3
    channel-group 3 mode active
+!
+interface Ethernet4
+   channel-group 4 mode active
+!
+interface Ethernet5
+   channel-group 5 mode active
+!
+interface Ethernet6
+   channel-group 6 mode active
+```
+
+## Port-Channel Interfaces
+
+### Port-Channel Interfaces Summary
+
+#### L2
+
+| Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+#### IPv4
+
+| Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel4 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
+| Port-Channel5 | - | routed | - | 10.9.2.5/31 | default | - | - | - | - |
+| Port-Channel6 | - | routed | - | 10.9.2.7/31 | default | - | - | - | - |
+
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ----------- | ---- | ----------------- |
+| Port-Channel4 | EVPN_UNDERLAY | 50 | point-to-point | level-2 |
+| Port-Channel5 | EVPN_UNDERLAY | 50 | passive | - |
+| Port-Channel6 | EVPN_UNDERLAY | 100 | - | level-1-2 |
+
+### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel4
+   no switchport
+   ip address 10.9.2.3/31
+   isis enable EVPN_UNDERLAY
+   isis circuit-type level-2
+   isis metric 50
+   isis network point-to-point
+!
+interface Port-Channel5
+   no switchport
+   ip address 10.9.2.5/31
+   isis enable EVPN_UNDERLAY
+   isis metric 50
+   isis passive
+!
+interface Port-Channel6
+   no switchport
+   ip address 10.9.2.7/31
+   isis enable EVPN_UNDERLAY
+   isis circuit-type level-1-2
+   isis metric 100
 ```
 
 ## Loopback Interfaces
@@ -129,6 +198,7 @@ interface Ethernet3
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.3/32 |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.3/32 |
+| Loopback2 | ISIS-SR Node-SID | default | 10.1.255.3/32 |
 
 #### IPv6
 
@@ -136,6 +206,7 @@ interface Ethernet3
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | EVPN_Overlay_Peering | default | - |
 | Loopback1 | VTEP_VXLAN_Tunnel_Source | default | - |
+| Loopback2 | ISIS-SR Node-SID | default | - |
 
 #### ISIS
 
@@ -143,6 +214,7 @@ interface Ethernet3
 | -------- | -------- | -------- | -------- |
 | Loopback0 | EVPN_UNDERLAY |  - |  passive |
 | Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| Loopback2 | EVPN_UNDERLAY |  50 |  passive |
 
 ### Loopback Interfaces Device Configuration
 
@@ -159,6 +231,15 @@ interface Loopback1
    ip address 192.168.254.3/32
    isis enable EVPN_UNDERLAY
    isis passive
+!
+interface Loopback2
+   description ISIS-SR Node-SID
+   ip address 10.1.255.3/32
+   isis enable EVPN_UNDERLAY
+   isis passive
+   isis metric 50
+   node-segment ipv4 index 10
+   node-segment ipv6 index 1000
 ```
 
 ## VLAN Interfaces
@@ -241,19 +322,29 @@ interface Vlan4094
 | Net-ID | 49.0001.0001.0001.0001.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
+| MPLS LDP Sync Default | True |
+| Local Convergence Delay (ms) | 15000 |
+| Advertise Passive-only | True |
 | SR MPLS Enabled | True |
-| SR MPLS Router-ID | 192.168.255.3 |
 
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| --------- | ------------- | ----------- | -------------- |
+| Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
+| Loopback2 | EVPN_UNDERLAY | 50 | passive |
+
+### ISIS Segment-routing Node-SID
+
+| Loopback | IPv4 Index | IPv6 Index |
+| -------- | ---------- | ---------- |
+| Loopback2 | 10 | 1000 |
 
 ### Router ISIS Device Configuration
 
@@ -264,12 +355,14 @@ router isis EVPN_UNDERLAY
    is-type level-2
    router-id ipv4 192.168.255.3
    log-adjacency-changes
+   mpls ldp sync default
+   timers local-convergence-delay 15000 protected-prefixes
+   advertise passive-only
    !
    address-family ipv4 unicast
       maximum-paths 2
    !
    segment-routing mpls
-      router-id 192.168.255.3
       no shutdown
 ```
 

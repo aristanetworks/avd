@@ -1,22 +1,38 @@
-{% if aaa_accounting is defined and aaa_accounting is not none %}
+{% if aaa_accounting is arista.avd.defined %}
 
 ## AAA Accounting
 
 ### AAA Accounting Summary
 
-| Type | Sub-type | Record | Accounting Stores | Logging |
-| ---- | -------- | ------ |------------------ | ------- |
-{%     if aaa_accounting.exec.default is defined and aaa_accounting.exec.default is not none %}
-{%        if aaa_accounting.exec.default.group is defined and aaa_accounting.exec.default.group is not none %}
-| Exec | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | - |
-{%        endif %}
+| Type | Commands | Record type | Group | Logging |
+| ---- | -------- | ----------- | ----- | ------- |
+{%     if aaa_accounting.exec.console.type is arista.avd.defined and aaa_accounting.exec.console.group is arista.avd.defined %}
+| Exec - Console | - | {{ aaa_accounting.exec.console.type }} | {{ aaa_accounting.exec.console.group }} | - |
 {%     endif %}
-{%     if aaa_accounting.commands is defined and aaa_accounting.commands is not none %}
-{%        if aaa_accounting.commands.commands_default is defined and aaa_accounting.commands.commands_default is not none %}
-{%            for command_default in aaa_accounting.commands.commands_default %}
-| Commands | {{ command_default.commands }} | {{ command_default.type }} | {% if command_default.group is defined and command_default.group is not none %}{{ command_default.group }} {% else %} - {% endif %} | {% if command_default.logging is defined and command_default.logging == true %}{{ true }} {% else %} false {% endif %} |
-{%            endfor %}
-{%        endif %}
+{%     if aaa_accounting.commands.console is arista.avd.defined %}
+{%         for command_console in aaa_accounting.commands.console %}
+{%             if command_console.commands is arista.avd.defined and command_console.type is arista.avd.defined %}
+{%                 set group = command_console.group | arista.avd.default(" - ") %}
+{%                 set logging = command_console.logging | arista.avd.default("False") %}
+| Commands - Console | {{ command_console.commands }} | {{ command_console.type }} | {{group}} | {{logging}} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if aaa_accounting.exec.default.type is arista.avd.defined and aaa_accounting.exec.default.group is arista.avd.defined %}
+| Exec - Default | - | {{ aaa_accounting.exec.default.type }} | {{ aaa_accounting.exec.default.group }} | - |
+{%     endif %}
+{%     if aaa_accounting.system.default.type is arista.avd.defined and aaa_accounting.system.default.group is arista.avd.defined  %}
+| System - Default | - | {{ aaa_accounting.system.default.type }} | {{ aaa_accounting.system.default.group }} | - |
+{%     endif %}
+{%     if aaa_accounting.commands.default is arista.avd.defined %}
+{%         for command_default in aaa_accounting.commands.default %}
+{%             if command_default.logging is arista.avd.defined(true) %}
+{%                 set logging = 'True' %}
+{%             else %}
+{%                 set logging = 'False' %}
+{%             endif %}
+| Commands - Default | {{ command_default.commands }} | {{ command_default.type }} | {{ command_default.group | arista.avd.default('-') }} | {{ logging }} |
+{%         endfor %}
 {%     endif %}
 
 ### AAA Accounting Device Configuration

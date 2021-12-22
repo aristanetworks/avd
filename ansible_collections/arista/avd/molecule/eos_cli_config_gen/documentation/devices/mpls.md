@@ -1,6 +1,5 @@
 # mpls
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -22,7 +21,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -93,6 +91,7 @@ interface Ethernet1
    ip address 192.168.100.1/31
    mpls ip
    mpls ldp interface
+   mpls ldp igp sync
 ```
 
 ## Loopback Interfaces
@@ -171,10 +170,10 @@ mpls ldp
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Ethernet1 | True | True |
-| Loopback0 | - | True |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Ethernet1 | True | True | True |
+| Loopback0 | - | True | - |
 
 # Multicast
 

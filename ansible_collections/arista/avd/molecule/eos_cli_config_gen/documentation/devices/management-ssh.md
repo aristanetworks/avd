@@ -1,6 +1,5 @@
 # management-ssh
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -62,6 +60,12 @@ interface Management1
 | ------------ | -------------- |
 | 15 |  Enabled  |
 
+### Max number of SSH sessions limit and per-host limit
+
+| Connection Limit | Max from a single Host |
+| ---------------- | ---------------------- |
+| 50 | 10 |
+
 ### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
@@ -82,6 +86,8 @@ management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
    idle-timeout 15
+   connection limit 50
+   connection per-host 10
    no shutdown
    vrf mgt
       no shutdown

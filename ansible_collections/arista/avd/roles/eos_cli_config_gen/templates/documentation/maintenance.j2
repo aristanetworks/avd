@@ -18,12 +18,13 @@ Default maintenance unit profile: **{{ maintenance.default_unit_profile | arista
 | {{ bgp_profile }} | {{ maintenance.bgp_profiles[bgp_profile].initiator.route_map_inout | arista.avd.default('SystemGenerated') }} |
 {%     endfor %}
 
-| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) |
-|-------------------|-----------------------------------|-----------------------------------------|
+| Interface profile | Rate monitoring load interval (s) | Rate monitoring threshold in/out (kbps) | Shutdown Max Delay |
+|-------------------|-----------------------------------|-----------------------------------------|--------------------|
 {%     for interface_profile in maintenance.interface_profiles | arista.avd.natural_sort %}
 {%         set row_load_interval = maintenance.interface_profiles[interface_profile].rate_monitoring.load_interval | arista.avd.default(60) %}
 {%         set row_threshold = maintenance.interface_profiles[interface_profile].rate_monitoring.threshold | arista.avd.default(100) %}
-| {{ interface_profile }} | {{ row_load_interval }} | {{ row_threshold }} |
+{%         set row_shutdown = maintenance.interface_profiles[interface_profile].shutdown.max_delay | arista.avd.default('disabled') %}
+| {{ interface_profile }} | {{ row_load_interval }} | {{ row_threshold }} | {{ row_shutdown }} |
 {%     endfor %}
 
 | Unit profile | on-boot duration (s) |

@@ -1,6 +1,5 @@
 # management-ssh-custom-cipher
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -62,6 +60,12 @@ interface Management1
 | ------------ | -------------- |
 | 15 |  Enabled  |
 
+### Max number of SSH sessions limit and per-host limit
+
+| Connection Limit | Max from a single Host |
+| ---------------- | ---------------------- |
+| 55 | - |
+
 ### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |
@@ -82,6 +86,7 @@ management ssh
    ip access-group ACL-SSH in
    ip access-group ACL-SSH-VRF vrf mgt in
    idle-timeout 15
+   connection limit 55
    cipher aes256-cbc aes256-ctr aes256-gcm@openssh.com
    key-exchange ecdh-sha2-nistp521
    mac hmac-sha2-512 hmac-sha2-512-etm@openssh.com

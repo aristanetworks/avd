@@ -1,6 +1,5 @@
 # router-bfd
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -19,7 +18,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -89,17 +87,24 @@ interface Management1
 
 ## Router BFD
 
+### Router BFD Singlehop Summary
+
+| Interval | Minimum RX | Multiplier |
+| -------- | ---------- | ---------- |
+| 900 | 900 | 50 |
+
 ### Router BFD Multihop Summary
 
 | Interval | Minimum RX | Multiplier |
 | -------- | ---------- | ---------- |
 | 300 | 300 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !
 router bfd
+   interval 900 min-rx 900 multiplier 50 default
    multihop interval 300 min-rx 300 multiplier 3
 ```
 

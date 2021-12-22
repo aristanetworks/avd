@@ -6,11 +6,14 @@ ethernet_interfaces:
     peer: {{ switch.mlag_peer }}
     peer_interface: {{ mlag_interface }}
     peer_type: mlag_peer
-    description: MLAG_PEER_{{ switch.mlag_peer }}_{{ mlag_interface }}
+    description: "{% include switch.interface_descriptions.mlag_ethernet_interfaces %}"
     type: switched
     shutdown: false
     channel_group:
       id: {{ switch.mlag_interfaces[0] | regex_findall("\d") | join }}
       mode: active
+{%         if switch.mlag_interfaces_speed is arista.avd.defined %}
+    speed: {{ switch.mlag_interfaces_speed }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

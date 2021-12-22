@@ -1,0 +1,51 @@
+---
+scenario:
+  converge_sequence:
+    - syntax
+    - create
+    - converge
+  test_sequence:
+    - syntax
+    - create
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: aaa
+    image: avdteam/base:3.6
+    pre_build_image: true
+    managed: false
+    groups:
+      - all
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+
+  inventory:
+    links:
+      hosts: 'inventory/hosts.ini'
+      host_vars: 'inventory/host_vars/'
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --inventory=inventory/hosts.ini
+verifier:
+  name: ansible
+  inventory:
+    links:
+      hosts: 'inventory/hosts.ini'
+      host_vars: 'inventory/host_vars/'
+      group_vars: 'inventory/group_vars/'
+  ansible_args:
+    - --inventory=inventory/hosts.ini
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit

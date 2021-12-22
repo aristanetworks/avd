@@ -1,6 +1,5 @@
 # vlan-interfaces
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -20,7 +19,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -75,6 +73,7 @@ interface Management1
 | Vlan41 |  SVI Description  |  default  |  -  |  false  |
 | Vlan42 |  SVI Description  |  default  |  -  |  false  |
 | Vlan75 |  SVI Description  |  default  |  -  |  false  |
+| Vlan81 |  IPv6 Virtual Address  |  Tenant_C  |  -  |  -  |
 | Vlan83 |  SVI Description  |  default  |  -  |  false  |
 | Vlan84 |  SVI Description  |  default  |  -  |  -  |
 | Vlan85 |  SVI Description  |  default  |  -  |  -  |
@@ -106,8 +105,9 @@ interface Management1
 | Vlan41 |  default  |  -  |  10.10.41.1/24  |  -  |  -  |  -  |  -  |
 | Vlan42 |  default  |  -  |  10.10.42.1/24  |  -  |  -  |  -  |  -  |
 | Vlan75 |  default  |  -  |  10.10.75.1/24  |  -  |  -  |  -  |  -  |
+| Vlan81 |  Tenant_C  |  -  |  10.10.81.1/24  |  -  |  -  |  -  |  -  |
 | Vlan83 |  default  |  -  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |
-| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254  |  -  |  -  |  -  |
+| Vlan84 |  default  |  10.10.84.1/24  |  -  |  10.10.84.254, 10.11.84.254/24  |  -  |  -  |  -  |
 | Vlan85 |  default  |  10.10.84.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan86 |  default  |  10.10.83.1/24  |  -  |  -  |  -  |  -  |  -  |
 | Vlan87 |  default  |  10.10.87.1/24  |  -  |  -  |  -  |  ACL_IN  |  ACL_OUT  |
@@ -125,14 +125,15 @@ interface Management1
 
 #### IPv6
 
-| Interface | VRF | IPv6 Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | --- | ------------ | ----------------------- | --- | -------------- | ----------- | --------- | ----------- | ------------ |
-| Vlan24 |  default  |  1b11:3a00:22b0:6::15/64  |  1b11:3a00:22b0:6::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan75 |  default  |  1b11:3a00:22b0:1000::15/64  |  1b11:3a00:22b0:1000::1  |  -  |  -  |  true  |  -  |  -  |
-| Vlan89 |  default  |  1b11:3a00:22b0:5200::15/64  |  1b11:3a00:22b0:5200::3  |  -  |  -  |  true  |  -  |  -  |
-| Vlan501 |  default  |  1b11:3a00:22b0:0088::207/127  |  -  |  -  |  true  |  -  |  -  |  -  |
-| Vlan1001 |  Tenant_A  |  a1::1/64  |  -  |  -  |  -  |  true  |  -  |  -  |
-| Vlan1002 |  Tenant_A  |  a2::1/64  |  -  |  -  |  true  |  true  |  -  |  -  |
+| Interface | VRF | IPv6 Address | IPv6 Virtual Address | Virtual Router Address | VRRP | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
+| --------- | --- | ------------ | -------------------- | ---------------------- | ---- | -------------- | ------------------- | ----------- | ------------ |
+| Vlan24 | default | 1b11:3a00:22b0:6::15/64 | - | 1b11:3a00:22b0:6::1 | - | - | true | - | - |
+| Vlan75 | default | 1b11:3a00:22b0:1000::15/64 | - | 1b11:3a00:22b0:1000::1 | - | - | true | - | - |
+| Vlan81 | Tenant_C | - | fc00:10:10:81::1/64 | - | - | - | - | - | - |
+| Vlan89 | default | 1b11:3a00:22b0:5200::15/64 | - | 1b11:3a00:22b0:5200::3 | - | - | true | - | - |
+| Vlan501 | default | 1b11:3a00:22b0:0088::207/127 | - | - | - | true | - | - | - |
+| Vlan1001 | Tenant_A | a1::1/64 | - | - | - | - | true | - | - |
+| Vlan1002 | Tenant_A | a2::1/64 | - | - | - | true | true | - | - |
 
 
 ### VLAN Interfaces Device Configuration
@@ -170,18 +171,31 @@ interface Vlan75
    ipv6 nd prefix 1b11:3a00:22b0:1000::/64 infinite infinite no-autoconfig
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
 !
+interface Vlan81
+   description IPv6 Virtual Address
+   vrf Tenant_C
+   ip address virtual 10.10.81.1/24
+   ipv6 enable
+   ipv6 address virtual fc00:10:10:81::1/64
+!
 interface Vlan83
    description SVI Description
    no shutdown
    ip address virtual 10.10.83.1/24
+   ip address virtual 10.11.83.1/24 secondary
+   ip address virtual 10.11.84.1/24 secondary
 !
 interface Vlan84
    description SVI Description
+   arp gratuitous accept
+   arp monitor mac-address
    ip address 10.10.84.1/24
    ip virtual-router address 10.10.84.254
+   ip virtual-router address 10.11.84.254/24
 !
 interface Vlan85
    description SVI Description
+   arp cache dynamic capacity 50000
    ip address 10.10.84.1/24
    bfd interval 500 min-rx 500 multiplier 5
 !
@@ -206,6 +220,7 @@ interface Vlan89
    description SVI Description
    no shutdown
    ip address virtual 10.10.144.3/20
+   ip igmp
    ipv6 address 1b11:3a00:22b0:5200::15/64
    ipv6 nd managed-config-flag
    ipv6 nd prefix 1b11:3a00:22b0:5200::/64 infinite infinite no-autoconfig
@@ -267,6 +282,7 @@ interface Vlan2001
 !
 interface Vlan2002
    description SVI Description
+   no autostate
    vrf Tenant_B
    ip address virtual 10.2.2.1/24
 !

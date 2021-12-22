@@ -1,6 +1,5 @@
 # router-bgp-vrf-lite
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -21,7 +20,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -148,21 +146,19 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 |
-| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 |
-| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - |
+| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - |
+| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - |
 
-### Router BGP EVPN Address Family
-
-#### Router BGP EVPN MAC-VRFs
-
-#### Router BGP EVPN VRFs
+### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
 | BLUE-C1 | 1.0.1.1:101 | static |
+| RED-C1 | 1.0.1.1:102 | - |
 
 ### Router BGP Device Configuration
 
@@ -208,6 +204,12 @@ router bgp 65001
       Comment created from eos_cli under router_bgp.vrfs.BLUE-C1
       EOF
 
+   !
+   vrf RED-C1
+      rd 1.0.1.1:102
+      neighbor 10.1.1.0 peer group OBS_WAN
+      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-IN-C1 in
+      neighbor 10.1.1.0 prefix-list PL-BGP-DEFAULT-RED-OUT-C1 out
 ```
 
 # Multicast
@@ -224,12 +226,30 @@ router bgp 65001
 | -------- | ------ |
 | 10 | permit 0.0.0.0/0 le 1 |
 
+#### PL-BGP-DEFAULT-RED-IN-C1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 0.0.0.0/0 |
+
+#### PL-BGP-DEFAULT-RED-OUT-C1
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.0.0.0/8 |
+
 ### Prefix-lists Device Configuration
 
 ```eos
 !
 ip prefix-list PL-BGP-DEFAULT-BLUE-C1
    seq 10 permit 0.0.0.0/0 le 1
+!
+ip prefix-list PL-BGP-DEFAULT-RED-IN-C1
+   seq 10 permit 0.0.0.0/0
+!
+ip prefix-list PL-BGP-DEFAULT-RED-OUT-C1
+   seq 10 permit 10.0.0.0/8
 ```
 
 ## Route-maps

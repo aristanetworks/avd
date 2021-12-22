@@ -1,6 +1,5 @@
 # DC1-SVC3A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -50,7 +49,6 @@
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -100,13 +98,17 @@ ip name-server vrf MGMT 192.168.200.5
 
 ### NTP Summary
 
-- Local Interface: Management1
+#### NTP Local Interface
 
-- VRF: MGMT
+| Interface | VRF |
+| --------- | --- |
+| Management1 | MGMT |
 
-| Node | Primary |
-| ---- | ------- |
-| 192.168.200.5 | true |
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 192.168.200.5 | MGMT | True | - | - | - | - | - | - | - |
 
 ### NTP Device Configuration
 
@@ -121,15 +123,14 @@ ntp server vrf MGMT 192.168.200.5 prefer
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -168,16 +169,16 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 
 ### TerminAttr Daemon Summary
 
-| CV Compression | Ingest gRPC URL | Ingest Authentication Key | Smash Excludes | Ingest Exclude | Ingest VRF |  NTP VRF | AAA Disabled |
-| -------------- | --------------- | ------------------------- | -------------- | -------------- | ---------- | -------- | ------ |
-| gzip | 192.168.200.11:9910 | telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | MGMT | MGMT | True |
+| CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
+| -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
+| gzip | 192.168.200.11:9910 | MGMT | key,telarista | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
 
 ### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -ingestgrpcurl=192.168.200.11:9910 -cvcompression=gzip -ingestauth=key,telarista -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -ingestvrf=MGMT -disableaaa -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.200.11:9910 -cvauth=key,telarista -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -294,12 +295,12 @@ vlan 4094
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -494,17 +495,14 @@ interface Vlan4094
 
 #### UDP port: 4789
 
-#### VLAN to VNI Mappings
-
-| VLAN | VNI |
-| ---- | --- |
-| N/A | N/A |
+#### EVPN MLAG Shared Router MAC : mlag-system-id
 
 ### VXLAN Interface Device Configuration
 
 ```eos
 !
 interface Vxlan1
+   description DC1-SVC3A_VTEP
    vxlan source-interface Loopback1
    vxlan virtual-router encapsulation mac-address mlag-system-id
    vxlan udp-port 4789
@@ -582,19 +580,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Net-ID | 49.0001.0001.0001.0004.00 |
 | Type | level-2 |
 | Address Family | ipv4 unicast |
+| Router-ID | 192.168.255.8 |
 | Log Adjacency Changes | True |
 
 ### ISIS Interfaces Summary
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
-| -------- | -------- | -------- | -------- |
-| Ethernet1 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet2 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet3 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Ethernet4 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Vlan4093 | EVPN_UNDERLAY |  50 |  point-to-point |
-| Loopback0 | EVPN_UNDERLAY |  - |  passive |
-| Loopback1 | EVPN_UNDERLAY |  - |  passive |
+| --------- | ------------- | ----------- | -------------- |
+| Ethernet1 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet2 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet3 | EVPN_UNDERLAY | 50 | point-to-point |
+| Ethernet4 | EVPN_UNDERLAY | 50 | point-to-point |
+| Vlan4093 | EVPN_UNDERLAY | 50 | point-to-point |
+| Loopback0 | EVPN_UNDERLAY | - | passive |
+| Loopback1 | EVPN_UNDERLAY | - | passive |
 
 ### Router ISIS Device Configuration
 
@@ -632,7 +631,7 @@ router isis EVPN_UNDERLAY
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
-| Remote AS | 65000 |
+| Remote AS | 65001 |
 | Source | Loopback0 |
 | Bfd | true |
 | Send community | all |
@@ -640,16 +639,18 @@ router isis EVPN_UNDERLAY
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
-#### Router BGP EVPN MAC-VRFs
+#### EVPN Peer Groups
 
-#### Router BGP EVPN VRFs
+| Peer Group | Activate |
+| ---------- | -------- |
+| OVERLAY-PEERS | True |
 
 ### Router BGP Device Configuration
 
@@ -661,7 +662,7 @@ router bgp 65000
    distance bgp 20 200 200
    maximum-paths 4 ecmp 4
    neighbor OVERLAY-PEERS peer group
-   neighbor OVERLAY-PEERS remote-as 65000
+   neighbor OVERLAY-PEERS remote-as 65001
    neighbor OVERLAY-PEERS update-source Loopback0
    neighbor OVERLAY-PEERS bfd
    neighbor OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
@@ -691,7 +692,7 @@ router bgp 65000
 | -------- | ---------- | ---------- |
 | 1200 | 1200 | 3 |
 
-### Router BFD Multihop Device Configuration
+### Router BFD Device Configuration
 
 ```eos
 !

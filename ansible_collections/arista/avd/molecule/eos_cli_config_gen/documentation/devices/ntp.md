@@ -1,6 +1,5 @@
 # ntp
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -51,20 +49,30 @@ interface Management1
 
 ### NTP Summary
 
-- Local Interface: lo1
+#### NTP Local Interface
 
-- VRF: default
+| Interface | VRF |
+| --------- | --- |
+| lo1 | default |
+
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 1.2.3.4 | - | - | - | - | - | - | - | lo0 | - |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.1 | - | - | - | - | - | - | - | - | - |
+| 10.1.1.2 | - | True | - | - | - | - | - | - | - |
+| 20.20.20.1 | - | - | - | - | - | - | - | - | 2 |
+| ie.pool.ntp.org | - | - | False | True | - | - | - | - | 1 |
+
+#### NTP Authentication
 
 - Authentication enabled
 
 - Trusted Keys: 1-2
 
-| Node | Primary |
-| ---- | ------- |
-| 10.1.1.1 | true |
-| 10.1.1.2 | - |
-
-### NTP Authentication Keys
+#### NTP Authentication Keys
 
 | ID | Algoritm |
 | -- | -------- |
@@ -75,13 +83,17 @@ interface Management1
 
 ```eos
 !
-ntp local-interface lo1
-ntp server 10.1.1.1 prefer
-ntp server 10.1.1.2
-ntp authenticate
 ntp authentication-key 1 md5 044F0E151B
 ntp authentication-key 2 sha1 15060E1F10
 ntp trusted-key 1-2
+ntp authenticate
+ntp local-interface lo1
+ntp server 1.2.3.4 local-interface lo0
+ntp server 2.2.2.55
+ntp server 10.1.1.1
+ntp server 10.1.1.2 prefer
+ntp server 20.20.20.1 key 2
+ntp server ie.pool.ntp.org iburst key 1
 ```
 
 # Authentication

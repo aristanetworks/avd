@@ -1,0 +1,80 @@
+name: Bug Report
+description: Report a bug impacting AVD collection
+title: "Bug Report Title"
+labels: ['type: bug', triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+
+  - type: textarea
+    id: issue-summary
+    attributes:
+      label: Issue Summary
+      description: Also tell us, what did you expect to happen?
+      placeholder: Tell us what you see!
+      value: "please detail your issue"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Which component(s) of AVD impacted
+      multiple: true
+      options:
+        - eos_designs
+        - eos_cli_config_gen
+        - cvp_configlet_upload
+        - dhcp_provisioner
+        - eos_config_deploy_cvp
+        - eos_config_deploy_eapi
+        - eos_snapshot
+        - eos_validate_state
+        - yaml_template_to_facts
+        - arista.avd.default
+        - arista.avd.esi_management
+        - arista.avd.is_in_filter
+        - arista.avd.list_compress
+        - arista.avd.markdown_rendering
+        - arista.avd.natural_sort
+        - arista.avd.add_md_toc
+        - arista.avd.configlet_build_config
+        - arista.avd.inventory_to_container
+        - arista.avd.yaml_templates_to_facts
+        - new components
+        - others
+
+  - type: dropdown
+    id: runner
+    attributes:
+      label: How do you run AVD ?
+      multiple: false
+      options:
+        - Ansible CLI (with virtual-env or native python)
+        - Ansible CLI with AVD Runner
+        - Ansible AWX
+
+  - type: textarea
+    id: step-to-reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Please copy and paste any relevant inputs to reproduce your issue.
+      render: shell
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output. This will be automatically formatted into code.
+      render: shell
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Contributing Guide
+      description: By submitting this issue, you agree to follow our [Contributing Guide](https://avd.sh/en/latest/docs/contribution/overview.html)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true

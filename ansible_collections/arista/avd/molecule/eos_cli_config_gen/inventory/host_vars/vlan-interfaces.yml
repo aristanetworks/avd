@@ -14,24 +14,41 @@ vlan_interfaces:
     description: SVI Description
     vrf: Tenant_B
     ip_address_virtual: 10.2.2.1/24
+    no_autostate: true
+
+  Vlan81:
+    description: IPv6 Virtual Address
+    vrf: Tenant_C
+    ip_address_virtual: 10.10.81.1/24
+    ipv6_enable: true
+    ipv6_address_virtual: fc00:10:10:81::1/64
 
   Vlan83:
     description: SVI Description
     shutdown: false
     ip_address_virtual: 10.10.83.1/24
+    ip_address_virtual_secondaries:
+      - 10.11.83.1/24
+      - 10.11.84.1/24
 
   Vlan84:
     description: SVI Description
     ip_address: 10.10.84.1/24
-    ip_virtual_router_address: 10.10.84.254
+    ip_virtual_router_addresses:
+      - 10.10.84.254
+      - 10.11.84.254/24
+    arp_gratuitous_accept: true
+    arp_monitor_mac_address: true
 
   Vlan85:
     description: SVI Description
     ip_address: 10.10.84.1/24
+    arp_cache_dynamic_capacity: 50000
     bfd:
       interval: 500
       min_rx: 500
       multiplier: 5
+
   Vlan86:
     description: SVI Description
     ip_address: 10.10.83.1/24
@@ -168,6 +185,7 @@ vlan_interfaces:
   Vlan89:
     description: SVI Description
     shutdown: false
+    ip_igmp: true
     ip_address_virtual: 10.10.144.3/20
     ipv6_address: 1b11:3a00:22b0:5200::15/64
     ipv6_nd_managed_config_flag: true

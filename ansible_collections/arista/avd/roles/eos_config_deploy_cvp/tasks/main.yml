@@ -1,5 +1,6 @@
 ---
 - name: Create required output directories if not present
+  tags: [always]
   file:
     path: "{{ item }}"
     state: directory

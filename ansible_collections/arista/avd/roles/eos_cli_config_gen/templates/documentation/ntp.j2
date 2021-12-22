@@ -1,53 +1,72 @@
 {# ntp and ntp_server is merged into a single documentation file since these data models will merge soon #}
-{% if ntp_server is arista.avd.defined or ntp is arista.avd.defined %}
+{% if ntp is arista.avd.defined %}
 
 ## NTP
 
 ### NTP Summary
-{%   if ntp_server.local_interface.interface is arista.avd.defined %}
+{%     if ntp.local_interface.name is arista.avd.defined %}
 
-- Local Interface: {{ ntp_server.local_interface.interface }}
-{%   endif %}
-{%   if ntp_server.local_interface.vrf is arista.avd.defined %}
+#### NTP Local Interface
 
-- VRF: {{ ntp_server.local_interface.vrf }}
-{%   endif %}
-{%   if ntp.authenticate is arista.avd.defined(true) %}
+| Interface | VRF |
+| --------- | --- |
+| {{ ntp.local_interface.name }} | {{ ntp.local_interface.vrf | arista.avd.default('-') }} |
+{%     endif %}
+{%     if ntp.servers is arista.avd.defined %}
+
+#### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+{%         for server in ntp.servers | arista.avd.natural_sort('name') %}
+{%             if server.name is arista.avd.defined %}
+{%                 set r = namespace() %}
+{%                 set r.s = server.name %}
+{%                 set r.v = server.vrf | arista.avd.default('-') %}
+{%                 set r.p = server.preferred | arista.avd.default('-') %}
+{%                 set r.b = server.burst | arista.avd.default('-') %}
+{%                 set r.i = server.iburst | arista.avd.default('-') %}
+{%                 set r.vv = server.version | arista.avd.default('-') %}
+{%                 set r.mi = server.minpoll | arista.avd.default('-') %}
+{%                 set r.ma = server.maxpoll | arista.avd.default('-') %}
+{%                 set r.l = server.local_interface | arista.avd.default('-') %}
+{%                 set r.k = server.key | arista.avd.default('-') %}
+| {{ r.s }} | {{ r.v }} | {{ r.p }} | {{ r.b }} | {{ r.i }} | {{ r.vv }} | {{ r.mi }} | {{ r.ma }} | {{ r.l }} | {{ r.k }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if ntp.authenticate is arista.avd.defined
+          or ntp.trusted_keys is arista.avd.defined
+          or ntp.authentication_keys is arista.avd.defined %}
+
+#### NTP Authentication
+{%         if ntp.authenticate is arista.avd.defined(true) %}
 
 - Authentication enabled
-{%   endif %}
-{%   if ntp.trusted_keys is arista.avd.defined %}
+{%         endif %}
+{%         if ntp.trusted_keys is arista.avd.defined %}
 
 - Trusted Keys: {{ ntp.trusted_keys }}
-{%   endif %}
-
-| Node | Primary |
-| ---- | ------- |
-{%     for node in ntp_server.nodes | arista.avd.default([]) %}
-{%         if loop.first %}
-| {{ node }} | true |
-{%         else %}
-| {{ node }} | - |
 {%         endif %}
-{%     endfor %}
-{%   if ntp.authentication_keys is arista.avd.defined %}
+{%     endif %}
+{%     if ntp.authentication_keys is arista.avd.defined %}
 
-### NTP Authentication Keys
+#### NTP Authentication Keys
 
 | ID | Algoritm |
 | -- | -------- |
-{%       for authentication_key in ntp.authentication_keys | arista.avd.natural_sort %}
-{%           if ntp.authentication_keys[authentication_key].hash_algorithm is arista.avd.defined %}
-{%               set ntp_hash_algorithm = ntp.authentication_keys[authentication_key].hash_algorithm %}
-| {{ authentication_key }} | {{ ntp_hash_algorithm }} |
-{%           endif %}
-{%       endfor%}
-{%   endif %}
+{%         for authentication_key in ntp.authentication_keys | arista.avd.natural_sort('id') %}
+{%             if authentication_key.id is arista.avd.defined and
+                  authentication_key.key is arista.avd.defined and
+                  authentication_key.hash_algorithm is arista.avd.defined %}
+| {{ authentication_key.id }} | {{ authentication_key.hash_algorithm }} |
+{%             endif %}
+{%         endfor%}
+{%     endif %}
 
 ### NTP Device Configuration
 
 ```eos
-{%     include 'eos/ntp-servers.j2' %}
 {%     include 'eos/ntp.j2' %}
 ```
 {% endif %}

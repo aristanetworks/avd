@@ -1,0 +1,73 @@
+super_spine:
+  defaults:
+# Change from super_spine.platform to super_spine.defaults.platform
+    platform: vEOS-LAB
+# Change from super_spine.bgp_as to super_spine.defaults.bgp_as
+    bgp_as: 65100
+# Change from super_spine_loopback_network_summary to super_spine.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 172.16.100.0/24
+# Change from super_spine_bgp_defaults to super_spine.defaults.bgp_defaults
+    bgp_defaults: ['no bgp default ipv4-unicast', 'distance bgp 20 200 200', 'graceful-restart restart-time 300', 'graceful-restart']
+overlay_controller:
+  defaults:
+# Change from overlay_controller.platform to overlay_controller.defaults.platform
+    platform: vEOS-LAB
+# Change from overlay_controller_loopback_network_summary to overlay_controller.defaults.loopback_ipv4_pool
+    loopback_ipv4_pool: 172.16.10.0/24
+# Change from overlay_controller_p2p_bfd to overlay_controller.defaults.uplink_bfd
+    uplink_bfd: True
+# Change from max_overlay_controller_to_switch_links (default=2) to overlay_controller.defaults.max_uplink_switches
+# (old algorithm expected max_overlay_controller_to_switch_links to be the sum of links to all uplink switches)
+    max_uplink_switches: 4
+# Change from overlay_controller_p2p_network_summary to overlay_controller.defaults.uplink_ipv4_pool
+    uplink_ipv4_pool: 172.17.10.0/24
+# Change from old default value of overlay_controller_bgp_defaults to overlay_controller.defaults.bgp_defaults
+    bgp_defaults:
+      - no bgp default ipv4-unicast
+      - distance bgp 20 200 200
+      - graceful-restart restart-time 300
+      - graceful-restart
+  nodes:
+    DC1-RS1:
+# Change from overlay_controller.nodes.DC1-RS1.remote_switches_interfaces to overlay_controller.nodes.DC1-RS1.uplink_switch_interfaces
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet6', 'Ethernet4']
+# Change from overlay_controller.nodes.DC1-RS1.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+      uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3']
+# Change from overlay_controller.nodes.DC1-RS1.remote_switches to overlay_controller.defaults.uplink_switches
+      uplink_switches: ['DC1-SUPER-SPINE1', 'DC1-POD1-SPINE1', 'DC1-POD1-LEAF1A']
+    DC1-RS2:
+# Change from overlay_controller.nodes.DC1-RS2.remote_switches_interfaces to overlay_controller.nodes.DC1-RS2.uplink_switch_interfaces
+      uplink_switch_interfaces: ['Ethernet5', 'Ethernet4', 'Ethernet3']
+# Change from overlay_controller.nodes.DC1-RS2.uplink_to_remote_switches to overlay_controller.defaults.uplink_interfaces
+      uplink_interfaces: ['Ethernet1', 'Ethernet2', 'Ethernet3']
+# Change from overlay_controller.nodes.DC1-RS2.remote_switches to overlay_controller.defaults.uplink_switches
+      uplink_switches: ['DC1-SUPER-SPINE2', 'DC1-POD2-SPINE1', 'DC1-POD2-LEAF1A']
+# Node type definitions
+node_type_keys:
+  spine:
+    type: spine
+    default_evpn_role: server
+    ip_addressing:
+      p2p_uplinks_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/avd-v2-spine-p2p-uplinks-peer-ip.j2'
+  l3leaf:
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+  l2leaf:
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+  super_spine:
+    type: super-spine
+  overlay_controller:
+    type: overlay-controller

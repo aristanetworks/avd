@@ -1,109 +1,154 @@
-{% if snmp_server is defined and snmp_server is not none %}
+{% if snmp_server is arista.avd.defined %}
 
 ## SNMP
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| {{ snmp_server.contact | default('-') }} | {{ snmp_server.location | default('-') }} | {% if snmp_server.traps.enable is defined and snmp_server.traps.enable is not none %}{% if snmp_server.traps.enable %} Enabled {% else %} Disabled {% endif %}{% else %} Disabled {% endif %} |
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+{%     set row_contact = snmp_server.contact | arista.avd.default('-') %}
+{%     set row_location = snmp_server.location | arista.avd.default('-') %}
+{%     if snmp_server.traps.enable is arista.avd.defined(true) %}
+{%         set row_state = 'Enabled' %}
+{%     else %}
+{%         set row_state = 'Disabled' %}
+{%     endif %}
+| {{ row_contact }} | {{ row_location }} | All | {{ row_state }} |
+{%     if snmp_server.traps.snmp_traps is arista.avd.defined %}
+{%         set row_traps_disabled = snmp_server.traps.snmp_traps | selectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
+{%         set row_traps_enabled = snmp_server.traps.snmp_traps | rejectattr('enabled','false') | map(attribute = 'name') | arista.avd.natural_sort | join(', ') %}
+{%         if row_traps_enabled is arista.avd.defined %}
+| {{ row_contact }} | {{ row_location }} | {{ row_traps_enabled }} | Enabled |
+{%         endif %}
+{%         if row_traps_disabled is arista.avd.defined %}
+| {{ row_contact }} | {{ row_location }} | {{ row_traps_disabled }} | Disabled |
+{%         endif %}
+{%     endif %}
+{%     if snmp_server.ipv4_acls is arista.avd.defined %}
 
 ### SNMP ACLs
 | IP | ACL | VRF |
 | -- | --- | --- |
-{%     if snmp_server.ipv4_acls is defined and snmp_server.ipv4_acls is not none %}
 {%         for acl in snmp_server.ipv4_acls %}
-| IPv4 | {{ acl.name | default('-') }} | {{ acl.vrf | default('default') }} |
+| IPv4 | {{ acl.name | arista.avd.default('-') }} | {{ acl.vrf | arista.avd.default('default') }} |
 {%         endfor %}
 {%     endif %}
-{%     if snmp_server.ipv6_acls is defined and snmp_server.ipv6_acls is not none %}
+{%     if snmp_server.ipv6_acls is arista.avd.defined %}
 {%         for acl in snmp_server.ipv6_acls %}
-| IPv6 | {{ acl.name | default('-') }} | {{ acl.vrf | default('default') }} |
+| IPv6 | {{ acl.name | arista.avd.default('-') }} | {{ acl.vrf | arista.avd.default('default') }} |
 {%         endfor %}
 {%     endif %}
-
+{%     if snmp_server.local_interfaces is arista.avd.defined %}
 
 ### SNMP Local Interfaces
 
 | Local Interface | VRF |
 | --------------- | --- |
-{% if snmp_server.local_interfaces is defined and snmp_server.local_interfaces is not none %}
-{%      for interface in snmp_server.local_interfaces %}
-| {{ interface }} | {{ snmp_server.local_interfaces[interface]['vrf'] | default('default') }} |
-{%      endfor %}
-{% endif %}
+{%         for interface in snmp_server.local_interfaces %}
+| {{ interface }} | {{ snmp_server.local_interfaces[interface]['vrf'] | arista.avd.default('default') }} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.vrfs is arista.avd.defined %}
 
 ### SNMP VRF Status
 
 | VRF | Status |
 | --- | ------ |
-{% if snmp_server.vrfs is defined and snmp_server.vrfs is not none %}
-{%      for vrf in snmp_server.vrfs %}
-| {{ vrf.name }} | {% if vrf.enable %} Enabled {% else %} Disabled {% endif %} |
-{%      endfor %}
-{% endif %}
+{%         for vrf in snmp_server.vrfs %}
+| {{ vrf.name }} | {% if vrf.enable | arista.avd.default(false) %} Enabled {% else %} Disabled {% endif %} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.hosts is arista.avd.defined %}
 
-{%  if snmp_server.hosts is defined and snmp_server.hosts is not none %}
 ### SNMP Hosts Configuration
 
-| Host | VRF | Username | Authentication level | SNMP Version |
-| ---- |---- | -------- | -------------------- | ------------ |
-{%      for host in snmp_server.hosts %}
-{%          if host.users is defined and host.users is not none %}{% for user in host.users %}| {{ host.host }} | {{ host.vrf | default('default') }} | {{ user.username }} | {{ user.authentication_level }} | {{ user.version }} |
-{% endfor %}
-{%          else %}| {{ host.host }} | {{ host.vrf | default('default') }} | - | - | - |
-{%         endif %}
-{%      endfor %}
-{%  endif %}
+| Host | VRF | Community | Username | Authentication level | SNMP Version |
+| ---- |---- | --------- | -------- | -------------------- | ------------ |
+{%         for host in snmp_server.hosts %}
+{%             if host.host is arista.avd.defined %}
+{%                 set row_host = host.host %}
+{%                 set row_vrf = host.vrf | arista.avd.default('-') %}
+{%                 if host.users is arista.avd.defined
+                      and host.version | arista.avd.default('3') | string == '3' %}
+{%                     for user in host.users %}
+{%                         if user.username is arista.avd.defined
+                              and user.authentication_level is arista.avd.defined %}
+| {{ row_host }} | {{ row_vrf }} | - | {{ user.username }} | {{ user.authentication_level }} | {{ host.version | arista.avd.default('3') }} |
+{%                         endif %}
+{%                     endfor %}
+{%                 elif host.community is arista.avd.defined
+                        and host.version | arista.avd.default('2c') | string in ['1', '2c'] %}
+| {{ row_host }} | {{ row_vrf }} | {{ host.community }} | - | - | {{ host.version | arista.avd.default('2c') }} |
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.views is arista.avd.defined %}
 
-{%  if snmp_server.views is defined and snmp_server.views is not none %}
 ### SNMP Views Configuration
 
 | View | MIB Family Name | Status |
 | ---- | --------------- | ------ |
-{%      for view in snmp_server.views %}
-| {{ view.name | default('default') }} | {{ view.MIB_family_name | default('-') }} | {% if view.included %} Included {% else %} Excluded {% endif %}
-{%      endfor %}
-{%  endif %}
-{%  if snmp_server.communities is arista.avd.defined %}
+{%         for view in snmp_server.views %}
+{%             set row_view = view.name | arista.avd.default('default') %}
+{%             set row_mib_family_name = view.MIB_family_name | arista.avd.default('-') %}
+{%             if view.included | arista.avd.default(false) %}
+{%                 set row_status = 'Included' %}
+{%             else %}
+{%                 set row_status = 'Excluded' %}
+{%             endif %}
+| {{ row_view }} | {{ row_mib_family_name }} | {{ row_status }} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.communities is arista.avd.defined %}
 
 ### SNMP Communities
 
 | Community | Access | Access List IPv4 | Access List IPv6 | View |
 | --------- | ------ | ---------------- | ---------------- | ---- |
-{%      for community in snmp_server.communities | arista.avd.natural_sort %}
-{%          set access = snmp_server.communities[community].access | arista.avd.default("ro") %}
-{%          set access_list_ipv4 = snmp_server.communities[community].access_list_ipv4.name | arista.avd.default("-") %}
-{%          set access_list_ipv6 = snmp_server.communities[community].access_list_ipv6.name | arista.avd.default("-") %}
-{%          set view = snmp_server.communities[community].view | arista.avd.default("-") %}
+{%          for community in snmp_server.communities | arista.avd.natural_sort %}
+{%              set access = snmp_server.communities[community].access | arista.avd.default("ro") %}
+{%              set access_list_ipv4 = snmp_server.communities[community].access_list_ipv4.name | arista.avd.default("-") %}
+{%              set access_list_ipv6 = snmp_server.communities[community].access_list_ipv6.name | arista.avd.default("-") %}
+{%             set view = snmp_server.communities[community].view | arista.avd.default("-") %}
 | {{ community }} | {{ access }} | {{ access_list_ipv4 }} | {{ access_list_ipv6 }} | {{ view }} |
-{%     endfor %}
-{%  endif %}
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.groups is arista.avd.defined %}
 
-{%  if snmp_server.groups is defined and snmp_server.groups is not none %}
 ### SNMP Groups Configuration
 
 | Group | SNMP Version | Authentication | Read | Write | Notify |
 | ----- | ------------ | -------------- | ---- | ----- | ------ |
-{%      for group in snmp_server.groups %}
-| {{ group.name | default('default') }} | {{ group.version | default('-') }} | {{ group.authentication | default('-') }} | {{ group.read | default('-') }} | {{ group.write | default('-') }} | {{ group.notify | default('-') }} |
-{%      endfor %}
-{%  endif %}
+{%         for group in snmp_server.groups %}
+{%             set row_group = group.name | arista.avd.default('default') %}
+{%             set row_version = group.version | arista.avd.default('-') %}
+{%             set row_auth = group.authentication | arista.avd.default('-') %}
+{%             set row_read = group.read | arista.avd.default('-') %}
+{%             set row_write = group.write | arista.avd.default('-') %}
+{%             set row_notify = group.notify | arista.avd.default('-') %}
+| {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_read }} | {{ row_write }} | {{ row_notify }} |
+{%         endfor %}
+{%     endif %}
+{%     if snmp_server.users is arista.avd.defined %}
 
-{%  if snmp_server.users is defined and snmp_server.users is not none %}
 ### SNMP Users Configuration
 
 | User | Group | Version | Authentication | Privacy |
 | ---- | ----- | ------- | -------------- | ------- |
-{%      for user in snmp_server.users %}
-| {{ user.name | default('default') }} | {{ user.group | default('-') }} | {{ user.version | default('-') }} | {{ user.auth | default('-') }} | {{ user.priv | default('-') }} |
-{%      endfor %}
-{%  endif %}
-
+{%         for user in snmp_server.users %}
+{%             set row_user = user.name | arista.avd.default('default') %}
+{%             set row_group = user.group | arista.avd.default('-') %}
+{%             set row_version = user.version | arista.avd.default('-') %}
+{%             set row_auth = user.auth | arista.avd.default('-') %}
+{%             set row_policy = user.priv | arista.avd.default('-') %}
+| {{ row_user }} | {{ row_group }} | {{ row_version }} | {{ row_auth }} | {{ row_policy }} |
+{%         endfor %}
+{%     endif %}
 
 ### SNMP Device Configuration
 
 ```eos
-{% include 'eos/snmp-settings.j2' %}
+{%     include 'eos/snmp-settings.j2' %}
 ```
 {% endif %}

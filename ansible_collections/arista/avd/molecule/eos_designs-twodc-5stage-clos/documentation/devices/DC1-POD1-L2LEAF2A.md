@@ -1,6 +1,5 @@
 # DC1-POD1-L2LEAF2A
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -40,7 +39,6 @@
 - [Quality Of Service](#quality-of-service)
 - [EOS CLI](#eos-cli)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -74,15 +72,14 @@ interface Vlan4085
 ### Management API HTTP Summary
 
 | HTTP | HTTPS |
-| ---------- | ---------- |
-| default | true |
+| ---- | ----- |
+| False | True |
 
 ### Management API VRF Access
 
 | VRF Name | IPv4 ACL | IPv6 ACL |
 | -------- | -------- | -------- |
 | MGMT | - | - |
-
 
 ### Management API HTTP Configuration
 
@@ -119,29 +116,9 @@ username admin privilege 15 role network-admin secret sha512 $6$eJ5TvI8oru5i9e8G
 
 ### SNMP Configuration Summary
 
-| Contact | Location | SNMP Traps |
-| ------- | -------- | ---------- |
-| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2A |  Disabled  |
-
-### SNMP ACLs
-| IP | ACL | VRF |
-| -- | --- | --- |
-
-
-### SNMP Local Interfaces
-
-| Local Interface | VRF |
-| --------------- | --- |
-
-### SNMP VRF Status
-
-| VRF | Status |
-| --- | ------ |
-
-
-
-
-
+| Contact | Location | SNMP Traps | State |
+| ------- | -------- | ---------- | ----- |
+| - | TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-L2LEAF2A | All | Disabled |
 
 ### SNMP Device Configuration
 
@@ -222,8 +199,13 @@ vlan internal order ascending range 1006 1199
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 112 | Tenant_A_OP_Zone_3 | - |
+| 113 | SVI_with_no_vxlan | - |
+| 1100 | test_svi | - |
+| 1101 | test_svi | - |
+| 1102 | test_svi | - |
 | 2500 | web-l2-vlan | - |
 | 2600 | web-l2-vlan-2 | - |
+| 2601 | l2vlan_with_no_vxlan | - |
 | 4085 | L2LEAF_INBAND_MGMT | - |
 | 4094 | MLAG_PEER | MLAG |
 
@@ -240,11 +222,26 @@ vlan 111
 vlan 112
    name Tenant_A_OP_Zone_3
 !
+vlan 113
+   name SVI_with_no_vxlan
+!
+vlan 1100
+   name test_svi
+!
+vlan 1101
+   name test_svi
+!
+vlan 1102
+   name test_svi
+!
 vlan 2500
    name web-l2-vlan
 !
 vlan 2600
    name web-l2-vlan-2
+!
+vlan 2601
+   name l2vlan_with_no_vxlan
 !
 vlan 4085
    name L2LEAF_INBAND_MGMT
@@ -264,8 +261,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-POD1-LEAF2A_Ethernet3 | *trunk | *110-112,2500,2600,4085 | *- | *- | 1 |
-| Ethernet2 | DC1-POD1-LEAF2B_Ethernet3 | *trunk | *110-112,2500,2600,4085 | *- | *- | 1 |
+| Ethernet1 | DC1-POD1-LEAF2A_Ethernet3 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
+| Ethernet2 | DC1-POD1-LEAF2B_Ethernet3 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 1 |
 | Ethernet3 | MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet3 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-POD1-L2LEAF2B_Ethernet4 | *trunk | *2-4094 | *- | *['MLAG'] | 3 |
 
@@ -304,7 +301,7 @@ interface Ethernet4
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | RACK2_MLAG_Po3 | switched | trunk | 110-112,2500,2600,4085 | - | - | - | - | 1 | - |
+| Port-Channel1 | RACK2_MLAG_Po3 | switched | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_PEER_DC1-POD1-L2LEAF2B_Po3 | switched | trunk | 2-4094 | - | ['MLAG'] | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
@@ -315,7 +312,7 @@ interface Port-Channel1
    description RACK2_MLAG_Po3
    no shutdown
    switchport
-   switchport trunk allowed vlan 110-112,2500,2600,4085
+   switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
    mlag 1
    service-profile QOS-PROFILE

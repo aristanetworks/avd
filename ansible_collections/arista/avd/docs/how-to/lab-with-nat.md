@@ -16,7 +16,7 @@ Below is a standard lab we use for development. And of course our laptop are not
 - A Linux server connected on both out of band management network and ansible-runner network.
   - This lab will be based on [Ubuntu 20.04](https://ubuntu.com/download/server)
   - SSH access to server enable.
-- An [AVD setup](../installation/setup-environment.md) already configured on your ansible-runner.
+- An [AVD setup](../installation/collection-installation.md) already configured on your ansible-runner.
 
 All devices must have a basic network configuration to allow access to eAPI. Below is a very basic example of how to activate eAPI over HTTPS
 

@@ -1,6 +1,5 @@
 # router-bgp-vpn-ipv4
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -18,7 +17,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -114,10 +112,10 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF |
-| -------- | --------- | --- |
-| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default |
-| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
+| -------- | --------- | --- | -------------- | -------------- |
+| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
+| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
 
 ### Router BGP EVPN Address Family
 

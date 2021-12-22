@@ -8,6 +8,9 @@ management security
 {%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
    password encryption-key common
 {%     endif %}
+{%     if management_security.password.minimum_length is arista.avd.defined %}
+   password minimum length {{ management_security.password.minimum_length }}
+{%     endif %}
 {%     for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
    ssl profile {{ ssl_profile.name }}
 {%         if ssl_profile.tls_versions is arista.avd.defined %}

@@ -1,4 +1,5 @@
 ---
+
 scenario:
   create_sequence:
     - dependency
@@ -30,7 +31,7 @@ driver:
   name: docker
 platforms:
   - name: DC1-LEAF1A
-    image: avdteam/base:3.6
+    image: avdteam/base:3.8-v2.0
     pre_build_image: true
     managed: false
     groups:
@@ -42,11 +43,11 @@ provisioner:
   name: ansible
   # env:
   #   ANSIBLE_COLLECTIONS_PATHS: '../../../../../'
-  # config_options:
-  #   defaults:
-  #     jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
-  #     gathering: explicit
-  #     command_warnings: False
+  config_options:
+    defaults:
+      jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
+      gathering: explicit
+      command_warnings: False
   inventory:
     links:
       hosts: 'inventory/hosts.yml'
@@ -67,4 +68,3 @@ verifier:
     defaults:
       jinja2_extensions: 'jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n'
       gathering: explicit
-

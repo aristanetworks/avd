@@ -3,21 +3,17 @@ __metaclass__ = type
 
 import yaml
 from ansible.plugins.action import ActionBase
-from ansible.errors import AnsibleAction, AnsibleActionFail
+from ansible.errors import AnsibleActionFail
 from ansible.utils.vars import isidentifier
 from ansible.plugins.filter.core import combine
-from ansible.plugins.lookup.template import LookupModule as TemplateLookupModule
+from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
-
-ANSIBLE_METADATA = {'metadata_version': '1.0.0',
-                    'status': ['preview'],
-                    'supported_by': 'community'}
 
 
 class ActionModule(ActionBase):
     def run(self, tmp=None, task_vars=None):
         if task_vars is None:
-            task_vars = dict()
+            task_vars = {}
 
         result = super().run(tmp, task_vars)
         del tmp  # tmp no longer has any effect
@@ -29,8 +25,8 @@ class ActionModule(ActionBase):
                 n = self._task.args.get("root_key")
                 n = self._templar.template(n)
                 if not isidentifier(n):
-                    raise AnsibleActionFail("The argument 'root_key' value of '%s' is not valid. Keys must start with a letter or underscore character, "
-                                            "and contain only letters, numbers and underscores." % n)
+                    raise AnsibleActionFail(f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character, "
+                                            "and contain only letters, numbers and underscores.")
                 root_key = n
 
             if "templates" in self._task.args:
@@ -44,9 +40,9 @@ class ActionModule(ActionBase):
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
 
-        output = dict()
+        output = {}
 
-        template_lookup_module = TemplateLookupModule(loader=self._loader, templar=self._templar)
+        template_lookup_module = lookup_loader.get('ansible.builtin.template', loader=self._loader, templar=self._templar)
 
         template_vars = task_vars
 

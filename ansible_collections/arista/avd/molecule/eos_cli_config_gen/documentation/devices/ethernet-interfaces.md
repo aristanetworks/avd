@@ -1,6 +1,5 @@
 # ethernet-interfaces
 # Table of Contents
-<!-- toc -->
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
@@ -22,7 +21,6 @@
 - [ACL](#acl)
 - [Quality Of Service](#quality-of-service)
 
-<!-- toc -->
 # Management
 
 ## Management Interfaces
@@ -86,6 +84,11 @@ interface Management1
 | Ethernet15 |  PVLAN Promiscuous Access - only one secondary | access | 110 | - | - | - |
 | Ethernet16 |  PVLAN Promiscuous Trunk - vlan translation out | trunk | 110-112 | - | - | - |
 | Ethernet17 |  PVLAN Secondary Trunk | trunk | 110-112 | - | - | - |
+| Ethernet19 |  Switched port with no LLDP rx/tx | access | 110 | - | - | - |
+| Ethernet21 |  200MBit/s shape | access | - | - | - | - |
+| Ethernet22 |  10% shape | access | - | - | - | - |
+| Ethernet23 |  Error-correction encoding | access | - | - | - | - |
+| Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -102,6 +105,13 @@ interface Management1
 | --------- | --------------- | -----------| --------- |
 | Ethernet16 | 111-112 | 110 | out
 
+#### Link Tracking Groups
+
+| Interface | Group Name | Direction |
+| --------- | ---------- | --------- |
+| Ethernet1 | EVPN_MH_ES1 | upstream |
+| Ethernet3 | EVPN_MH_ES2 | downstream |
+
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -111,6 +121,7 @@ interface Management1
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
 | Ethernet10 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
+| Ethernet18 | PBR Description | routed | - | 192.0.2.1/31 | default | 1500 | - | - | - |
 
 #### IPv6
 
@@ -122,9 +133,16 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode |
-| --------- | ------------- | ------------- | ----------- | ---- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 |
+
+#### Error Correction Encoding Interfaces
+
+| Interface | Enabled |
+| --------- | ------- |
+| Ethernet23 | fire-code<br>reed-solomon |
+| Ethernet24 | Disabled |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -136,6 +154,7 @@ interface Ethernet1
    no switchport
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
+   link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
    EOF
@@ -160,6 +179,7 @@ interface Ethernet3
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
    ipv6 nd prefix 2345:ABCD:3FE0::2/96 50 infinite
    ipv6 nd prefix 2345:ABCD:3FE0::3/96 100000 no-autoconfig
+   link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
    description Molecule IPv6
@@ -186,6 +206,7 @@ interface Ethernet5
    ip ospf authentication-key 7 asfddja23452
    ip ospf message-digest-key 1 sha512 7 asfddja23452
    isis enable ISIS_TEST
+   isis circuit-type level-2
    isis metric 99
    isis network point-to-point
    pim ipv4 sparse-mode
@@ -227,6 +248,8 @@ interface Ethernet7
 interface Ethernet8
    description to WAN-ISP1-01 Ethernet2
    no switchport
+   no lldp transmit
+   no lldp receive
 !
 interface Ethernet8.101
    description to WAN-ISP-01 Ethernet2.101 - VRF-C1
@@ -298,6 +321,49 @@ interface Ethernet17
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport trunk private-vlan secondary
+!
+interface Ethernet18
+   description PBR Description
+   mtu 1500
+   no switchport
+   ip address 192.0.2.1/31
+   service-policy type pbr input MyLANServicePolicy
+!
+interface Ethernet19
+   description Switched port with no LLDP rx/tx
+   switchport
+   switchport access vlan 110
+   switchport mode access
+   no lldp transmit
+   no lldp receive
+!
+interface Ethernet20
+   description Port patched through patch-panel to pseudowire
+   no switchport
+   no lldp transmit
+   no lldp receive
+!
+interface Ethernet21
+   description 200MBit/s shape
+   switchport
+   no qos trust
+   shape rate 200000 kbps
+!
+interface Ethernet22
+   description 10% shape
+   switchport
+   shape rate 10 percent
+!
+interface Ethernet23
+   description Error-correction encoding
+   error-correction encoding fire-code
+   error-correction encoding reed-solomon
+   switchport
+!
+interface Ethernet24
+   description Disable error-correction encoding
+   no error-correction encoding
+   switchport
 ```
 
 # Routing
@@ -333,10 +399,10 @@ interface Ethernet17
 
 ## MPLS Interfaces
 
-| Interface | MPLS IP Enabled | LDP Enabled |
-| --------- | --------------- | ----------- |
-| Ethernet9 | True | True |
-| Ethernet10 | False | False |
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Ethernet9 | True | True | - |
+| Ethernet10 | False | False | - |
 
 # Multicast
 
@@ -345,3 +411,11 @@ interface Ethernet17
 # ACL
 
 # Quality Of Service
+
+### QOS Interfaces
+
+| Interface | Trust | Default DSCP | Default COS | Shape rate |
+| --------- | ----- | ------------ | ----------- | ---------- |
+| Ethernet7 | cos | - | 5 | - |
+| Ethernet21 | disabled | - | - | 200000 kbps |
+| Ethernet22 | - | - | - | 10 percent |

@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65210
+  as: '65210'
   router_id: 172.16.210.1
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -34,34 +34,34 @@ router_bgp:
   neighbors:
     172.16.21.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65200
+      remote_as: '65200'
       description: DC2-SUPER-SPINE1_Ethernet1
     172.16.21.64:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65200
+      remote_as: '65200'
       description: DC2-SUPER-SPINE2_Ethernet1
     172.17.210.1:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65211
+      remote_as: '65211'
       description: DC2-POD1-LEAF1A_Ethernet1
     172.16.110.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-LEAF1A
-      remote_as: 65111
+      remote_as: '65111'
     172.16.110.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD1-SPINE1
-      remote_as: 65110
+      remote_as: '65110'
     172.16.10.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS1
-      remote_as: 65101
+      remote_as: '65101'
     172.16.10.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-RS2
-      remote_as: 65102
+      remote_as: '65102'
     11.1.1.18:
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD2-SPINE1
       peer_group: IPv4-UNDERLAY-PEERS
   address_family_evpn:
@@ -109,9 +109,7 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1009\n  description Loopback created from raw_eos_cli\
-  \ under spine defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback\
-  \ created from raw_eos_cli under platform_settings vEOS-LAB\n"
+eos_cli: "interface Loopback1009\n  description Loopback created from raw_eos_cli under spine defaults in DC2 POD1\n\ninterface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n"
 ethernet_interfaces:
   Ethernet1:
     peer: DC2-SUPER-SPINE1

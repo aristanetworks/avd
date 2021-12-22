@@ -33,6 +33,12 @@
 | ------------ | -------------- |
 | {{ management_ssh.idle_timeout | arista.avd.default('default') }} | {% if ssh.enable %} Enabled {% else %} Disabled {% endif %} |
 
+### Max number of SSH sessions limit and per-host limit
+
+| Connection Limit | Max from a single Host |
+| ---------------- | ---------------------- |
+| {{ management_ssh.connection.limit | arista.avd.default('-') }} | {{ management_ssh.connection.per_host | arista.avd.default('-') }} |
+
 ### Ciphers and algorithms
 
 | Ciphers | Key-exchange methods | MAC algorithms | Hostkey server algorithms |

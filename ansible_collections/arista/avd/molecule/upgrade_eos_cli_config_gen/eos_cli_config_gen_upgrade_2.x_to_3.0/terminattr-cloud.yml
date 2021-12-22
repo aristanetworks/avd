@@ -1,0 +1,12 @@
+# Change from daemon_terminattr.ingestgrpcurl to daemon_terminattr.cvaddrs
+daemon_terminattr:
+  cvaddrs:
+  - apiserver.arista.io:443
+# New key cvcompression
+  cvcompression: "gzip"
+# Change from daemon_terminattr.ingestauth_key to daemon_terminattr.cvauth
+  cvauth:
+    method: "token-secure"
+    token_file: "/tmp/cv-onboarding-token"
+# Change from daemon_terminattr.ingestvrf to daemon_terminattr.cvvrf
+  cvvrf: mgt

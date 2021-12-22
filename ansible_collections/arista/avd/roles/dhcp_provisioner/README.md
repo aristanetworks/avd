@@ -22,7 +22,7 @@
 !!! tip - The role supports 2 modes: `offline` and `online`:
 
  - `Offline` mode let you generate a configuration you can apply on your DHCP server after carefully reviewing it.
- - `Online` mode lets you generate and push configuration to RHEL or Ubuntu based linux system. This mode shall be limited for testing and lab purposes only.
+ - `Online` mode lets you generate and push configuration to Cloudvision, RHEL or Ubuntu based linux systems.
 
 ## Role requirements
 

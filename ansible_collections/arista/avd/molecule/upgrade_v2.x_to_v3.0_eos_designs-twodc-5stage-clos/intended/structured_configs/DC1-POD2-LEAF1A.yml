@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65121
+  as: '65121'
   router_id: 172.16.120.3
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -13,6 +13,7 @@ router_bgp:
       password: AQQvKeimxJu+uGQ/yYvv9w==
       maximum_routes: 12000
       send_community: all
+      remote_as: 65120
     EVPN-OVERLAY-PEERS:
       type: evpn
       update_source: Loopback0
@@ -21,6 +22,7 @@ router_bgp:
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      remote_as: 65120
   address_family_ipv4:
     peer_groups:
       IPv4-UNDERLAY-PEERS:
@@ -33,26 +35,26 @@ router_bgp:
   neighbors:
     172.17.120.0:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD2-SPINE1_Ethernet3
     172.17.120.2:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65120
+      remote_as: '65120'
       description: DC1-POD2-SPINE2_Ethernet3
     172.17.10.13:
       peer_group: IPv4-UNDERLAY-PEERS
-      remote_as: 65102
+      remote_as: '65102'
       description: DC1-RS2_Ethernet3
       bfd: true
     172.16.120.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE1
-      remote_as: 65120
+      remote_as: '65120'
       route_map_out: RM-EVPN-FILTER-AS65120
     172.16.120.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-POD2-SPINE2
-      remote_as: 65120
+      remote_as: '65120'
       route_map_out: RM-EVPN-FILTER-AS65120
   address_family_evpn:
     peer_groups:
@@ -161,9 +163,14 @@ management_api_http:
   enable_vrfs:
     MGMT: {}
   enable_https: true
-eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli\
-  \ under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback\
-  \ created from raw_eos_cli under VRF Common_VRF\n"
+eos_cli: "interface Loopback1111\n  description Loopback created from raw_eos_cli under platform_settings vEOS-LAB\n\ninterface Loopback1000\n  description Loopback created from raw_eos_cli under VRF Common_VRF\n"
+struct_cfg:
+  router_bgp:
+    peer_groups:
+      EVPN-OVERLAY-PEERS:
+        remote_as: 65120
+      IPv4-UNDERLAY-PEERS:
+        remote_as: 65120
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-POD2-SPINE1
@@ -253,26 +260,7 @@ vlans:
     name: web-l2-vlan-2
 ip_igmp_snooping:
   globally_enabled: true
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-POD2-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        110:
-          vni: 10110
-        111:
-          vni: 50111
-        112:
-          vni: 50112
-        2500:
-          vni: 2500
-        2600:
-          vni: 2600
-      vrfs:
-        Common_VRF:
-          vni: 1025
+ip_virtual_router_mac_address: 00:1c:73:00:dc:01
 vlan_interfaces:
   Vlan110:
     tenant: Tenant_A
@@ -305,4 +293,23 @@ vlan_interfaces:
       EOF
 
       '
-ip_virtual_router_mac_address: 00:1c:73:00:dc:01
+vxlan_interface:
+  Vxlan1:
+    description: DC1-POD2-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        110:
+          vni: 10110
+        111:
+          vni: 50111
+        112:
+          vni: 50112
+        2500:
+          vni: 2500
+        2600:
+          vni: 2600
+      vrfs:
+        Common_VRF:
+          vni: 1025

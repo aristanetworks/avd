@@ -1,5 +1,5 @@
 router_bgp:
-  as: 65101
+  as: '65101'
   router_id: 192.168.255.5
   bgp_defaults:
   - no bgp default ipv4-unicast
@@ -33,19 +33,19 @@ router_bgp:
   neighbor_interfaces:
     Ethernet1:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE1_Ethernet1
     Ethernet2:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE2_Ethernet1
     Ethernet3:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE3_Ethernet1
     Ethernet4:
       peer_group: UNDERLAY_PEERS
-      remote_as: 65001
+      remote_as: '65001'
       description: DC1-SPINE4_Ethernet1
   address_family_evpn:
     peer_groups:
@@ -59,19 +59,19 @@ router_bgp:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.2:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE2
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.3:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE3
-      remote_as: 65001
+      remote_as: '65001'
     192.168.255.4:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE4
-      remote_as: 65001
+      remote_as: '65001'
   vrfs:
     Tenant_A_APP_Zone:
       router_id: 192.168.255.5
@@ -123,12 +123,12 @@ ip_routing: true
 ipv6_unicast_routing: true
 ip_routing_ipv6_interfaces: true
 daemon_terminattr:
-  ingestgrpcurl:
-    ips:
-    - 192.168.200.11
-    port: 9910
-  ingestauth_key: telarista
-  ingestvrf: MGMT
+  cvaddrs:
+  - 192.168.200.11:9910
+  cvauth:
+    method: key
+    key: telarista
+  cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   disable_aaa: false
@@ -143,12 +143,6 @@ name_server:
   nodes:
   - 192.168.200.5
   - 8.8.8.8
-ntp_server:
-  local_interface:
-    vrf: MGMT
-    interface: Management1
-  nodes:
-  - 192.168.200.5
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -307,26 +301,7 @@ ip_igmp_snooping:
   vlans:
     120:
       enabled: false
-vxlan_tunnel_interface:
-  Vxlan1:
-    description: DC1-LEAF1A_VTEP
-    source_interface: Loopback1
-    vxlan_udp_port: 4789
-    vxlan_vni_mappings:
-      vlans:
-        130:
-          vni: 10130
-        131:
-          vni: 10131
-        120:
-          vni: 10120
-        121:
-          vni: 10121
-      vrfs:
-        Tenant_A_APP_Zone:
-          vni: 12
-        Tenant_A_WEB_Zone:
-          vni: 11
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 vlan_interfaces:
   Vlan130:
     tenant: Tenant_A
@@ -367,4 +342,23 @@ vlan_interfaces:
     vrf: Tenant_A_WEB_Zone
     ip_address_virtual: 10.1.10.254/24
     mtu: 1560
-ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+vxlan_interface:
+  Vxlan1:
+    description: DC1-LEAF1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+        130:
+          vni: 10130
+        131:
+          vni: 10131
+        120:
+          vni: 10120
+        121:
+          vni: 10121
+      vrfs:
+        Tenant_A_APP_Zone:
+          vni: 12
+        Tenant_A_WEB_Zone:
+          vni: 11
