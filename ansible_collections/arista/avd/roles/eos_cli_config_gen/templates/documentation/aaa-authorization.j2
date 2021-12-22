@@ -29,13 +29,12 @@ Authorization for serial console is enabled.
 {%         if aaa_authorization.commands.all_default is arista.avd.defined %}
 | all | {{ aaa_authorization.commands.all_default }} |
 {%         endif %}
- {%        for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
+{%        for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
 {%             if command_level.level is arista.avd.defined and command_level.group is arista.avd.defined %}
 | {{ command_level.level }} | {{ command_level.group }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-
 
 ### AAA Authorization Device Configuration
 
