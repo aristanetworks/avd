@@ -104,11 +104,10 @@ tenants:
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
         # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
-        vrf_vni: < 1-1024 >
+        vrf_vni: < 1-1024 | default -> vrf_id >
 
-        # VRF ID | Required.
-        # Replacement variable for vrf_vni, required for tenant OSPF configuration. Acts like and can be used instead of vrf_vni in all cases.
-        # vrf_vni is still supported for backward compatibility.
+        # VRF ID | Optional (required if "vrf_vni" is not set)
+        # vrf_id is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
         vrf_id: < 1-1024 >
 
         # IP Helper for DHCP relay
