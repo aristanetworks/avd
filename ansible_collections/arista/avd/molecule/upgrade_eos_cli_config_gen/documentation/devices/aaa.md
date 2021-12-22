@@ -168,13 +168,14 @@ aaa authentication policy local allow-nopassword-remote-login
 
 Authorization for configuration commands is enabled.
 
+Authorization for serial console is enabled.
+
 ### AAA Authorization Privilege Levels Summary
 
 | Privilege Level | Group |
 | --------------  | ----- |
 | all | group aaaAuth |
  
-Authorization for serial console is enabled.
 
 ### AAA Authorization Device Configuration
 

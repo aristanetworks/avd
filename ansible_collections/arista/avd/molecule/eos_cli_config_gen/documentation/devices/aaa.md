@@ -171,6 +171,8 @@ aaa authentication policy lockout failure 3 window 900 duration 300
 
 Authorization for configuration commands is enabled.
 
+Authorization for serial console is enabled.
+
 ### AAA Authorization Privilege Levels Summary
 
 | Privilege Level | Group |
@@ -179,7 +181,6 @@ Authorization for configuration commands is enabled.
  | 5 | radius |
 | 10,15 | tacacs+ local |
 
-Authorization for serial console is enabled.
 
 ### AAA Authorization Device Configuration
 

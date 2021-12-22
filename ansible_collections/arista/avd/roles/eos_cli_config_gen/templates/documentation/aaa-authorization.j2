@@ -16,6 +16,10 @@ Authorization for configuration commands is enabled.
 
 Authorization for configuration commands is disabled.
 {%     endif %}
+{%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
+
+Authorization for serial console is enabled.
+{%     endif %}
 {%     if aaa_authorization.commands.privilege is arista.avd.defined or aaa_authorization.commands.all_default is arista.avd.defined %}
 
 ### AAA Authorization Privilege Levels Summary
@@ -31,10 +35,7 @@ Authorization for configuration commands is disabled.
 {%             endif %}
 {%         endfor %}
 {%     endif %}
-{%     if aaa_authorization.serial_console is arista.avd.defined(true) %}
 
-Authorization for serial console is enabled.
-{%     endif %}
 
 ### AAA Authorization Device Configuration
 
