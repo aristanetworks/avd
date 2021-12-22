@@ -21,8 +21,6 @@
 | DC1_FABRIC | l3leaf | DC1-BL1B | 192.168.200.111/24 | 7280R | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2A | 192.168.200.117/24 | 7280R2 | Provisioned |
 | DC1_FABRIC | l3leaf | DC1-BL2B | 192.168.200.118/24 | 7280R3 | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL3A | 192.168.200.119/24 | CEOS | Provisioned |
-| DC1_FABRIC | l3leaf | DC1-BL3B | 192.168.200.120/24 | 7280R | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1A | 192.168.200.112/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF1B | 192.168.200.115/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l2leaf | DC1-L2LEAF2A | 192.168.200.113/24 | vEOS-LAB | Provisioned |
@@ -39,6 +37,10 @@
 | DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
 | DC1_FABRIC | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
 | DC1_FABRIC | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -66,14 +68,6 @@
 | l3leaf | DC1-BL2B | Ethernet2 | spine | DC1-SPINE2 | Ethernet9 |
 | l3leaf | DC1-BL2B | Ethernet3 | spine | DC1-SPINE3 | Ethernet9 |
 | l3leaf | DC1-BL2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet9 |
-| l3leaf | DC1-BL3A | Ethernet1 | spine | DC1-SPINE1 | Ethernet10 |
-| l3leaf | DC1-BL3A | Ethernet2 | spine | DC1-SPINE2 | Ethernet10 |
-| l3leaf | DC1-BL3A | Ethernet3 | spine | DC1-SPINE3 | Ethernet10 |
-| l3leaf | DC1-BL3A | Ethernet4 | spine | DC1-SPINE4 | Ethernet10 |
-| l3leaf | DC1-BL3B | Ethernet1 | spine | DC1-SPINE1 | Ethernet11 |
-| l3leaf | DC1-BL3B | Ethernet2 | spine | DC1-SPINE2 | Ethernet11 |
-| l3leaf | DC1-BL3B | Ethernet3 | spine | DC1-SPINE3 | Ethernet11 |
-| l3leaf | DC1-BL3B | Ethernet4 | spine | DC1-SPINE4 | Ethernet11 |
 | l2leaf | DC1-L2LEAF1A | Ethernet1 | l3leaf | DC1-LEAF2A | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet2 | l3leaf | DC1-LEAF2B | Ethernet7 |
 | l2leaf | DC1-L2LEAF1A | Ethernet3 | mlag_peer | DC1-L2LEAF1B | Ethernet3 |
@@ -117,7 +111,7 @@
 
 | Uplink IPv4 Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ---------------- | ------------------- | ------------------ | ------------------ |
-| 172.31.255.0/24 | 256 | 88 | 34.38 % |
+| 172.31.255.0/24 | 256 | 72 | 28.13 % |
 
 ## Point-To-Point Links Node Allocation
 
@@ -139,14 +133,6 @@
 | DC1-BL2B | Ethernet2 | 172.31.255.131/31 | DC1-SPINE2 | Ethernet9 | 172.31.255.130/31 |
 | DC1-BL2B | Ethernet3 | 172.31.255.133/31 | DC1-SPINE3 | Ethernet9 | 172.31.255.132/31 |
 | DC1-BL2B | Ethernet4 | 172.31.255.135/31 | DC1-SPINE4 | Ethernet9 | 172.31.255.134/31 |
-| DC1-BL3A | Ethernet1 | 172.31.255.193/31 | DC1-SPINE1 | Ethernet10 | 172.31.255.192/31 |
-| DC1-BL3A | Ethernet2 | 172.31.255.195/31 | DC1-SPINE2 | Ethernet10 | 172.31.255.194/31 |
-| DC1-BL3A | Ethernet3 | 172.31.255.197/31 | DC1-SPINE3 | Ethernet10 | 172.31.255.196/31 |
-| DC1-BL3A | Ethernet4 | 172.31.255.199/31 | DC1-SPINE4 | Ethernet10 | 172.31.255.198/31 |
-| DC1-BL3B | Ethernet1 | 172.31.255.209/31 | DC1-SPINE1 | Ethernet11 | 172.31.255.208/31 |
-| DC1-BL3B | Ethernet2 | 172.31.255.211/31 | DC1-SPINE2 | Ethernet11 | 172.31.255.210/31 |
-| DC1-BL3B | Ethernet3 | 172.31.255.213/31 | DC1-SPINE3 | Ethernet11 | 172.31.255.212/31 |
-| DC1-BL3B | Ethernet4 | 172.31.255.215/31 | DC1-SPINE4 | Ethernet11 | 172.31.255.214/31 |
 | DC1-LEAF1A | Ethernet1 | 172.31.255.1/31 | DC1-SPINE1 | Ethernet1 | 172.31.255.0/31 |
 | DC1-LEAF1A | Ethernet2 | 172.31.255.3/31 | DC1-SPINE2 | Ethernet1 | 172.31.255.2/31 |
 | DC1-LEAF1A | Ethernet3 | 172.31.255.5/31 | DC1-SPINE3 | Ethernet1 | 172.31.255.4/31 |
@@ -172,7 +158,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.255.0/24 | 256 | 17 | 6.65 % |
+| 192.168.255.0/24 | 256 | 15 | 5.86 % |
 
 ## Loopback0 Interfaces Node Allocation
 
@@ -182,8 +168,6 @@
 | DC1_FABRIC | DC1-BL1B | 192.168.255.15/32 |
 | DC1_FABRIC | DC1-BL2A | 192.168.255.16/32 |
 | DC1_FABRIC | DC1-BL2B | 192.168.255.17/32 |
-| DC1_FABRIC | DC1-BL3A | 192.168.255.21/32 |
-| DC1_FABRIC | DC1-BL3B | 192.168.255.22/32 |
 | DC1_FABRIC | DC1-LEAF1A | 192.168.255.9/32 |
 | DC1_FABRIC | DC1-LEAF2A | 192.168.255.10/32 |
 | DC1_FABRIC | DC1-LEAF2B | 192.168.255.11/32 |
@@ -200,7 +184,7 @@
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | --------------------- | ------------------- | ------------------ | ------------------ |
-| 192.168.254.0/24 | 256 | 13 | 5.08 % |
+| 192.168.254.0/24 | 256 | 11 | 4.3 % |
 
 ## VTEP Loopback Node allocation
 
@@ -210,8 +194,6 @@
 | DC1_FABRIC | DC1-BL1B | 192.168.254.15/32 |
 | DC1_FABRIC | DC1-BL2A | 192.168.254.16/32 |
 | DC1_FABRIC | DC1-BL2B | 192.168.254.17/32 |
-| DC1_FABRIC | DC1-BL3A | 192.168.254.21/32 |
-| DC1_FABRIC | DC1-BL3B | 192.168.254.22/32 |
 | DC1_FABRIC | DC1-LEAF1A | 192.168.254.9/32 |
 | DC1_FABRIC | DC1-LEAF2A | 192.168.254.10/32 |
 | DC1_FABRIC | DC1-LEAF2B | 192.168.254.11/32 |

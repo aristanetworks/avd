@@ -244,8 +244,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet1 | routed | - | 172.31.255.96/31 | default | 1500 | false | - | - |
 | Ethernet8 | P2P_LINK_TO_DC1-BL2A_Ethernet1 | routed | - | 172.31.255.112/31 | default | 1500 | false | - | - |
 | Ethernet9 | P2P_LINK_TO_DC1-BL2B_Ethernet1 | routed | - | 172.31.255.128/31 | default | 1500 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_DC1-BL3A_Ethernet1 | routed | - | 172.31.255.192/31 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-BL3B_Ethernet1 | routed | - | 172.31.255.208/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -322,22 +320,6 @@ interface Ethernet9
    mtu 1500
    no switchport
    ip address 172.31.255.128/31
-!
-interface Ethernet10
-   description P2P_LINK_TO_DC1-BL3A_Ethernet1
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.192/31
-!
-interface Ethernet11
-   description P2P_LINK_TO_DC1-BL3B_Ethernet1
-   no shutdown
-   speed forced 100gfull
-   mtu 1500
-   no switchport
-   ip address 172.31.255.208/31
 ```
 
 ## Loopback Interfaces
@@ -465,8 +447,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 172.31.255.97 | 65105 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
 | 172.31.255.113 | 65106 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
 | 172.31.255.129 | 65107 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.193 | 65108 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.209 | 65109 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
 | 192.168.255.9 | 65101 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.10 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.11 | 65102 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
@@ -476,8 +456,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | 192.168.255.15 | 65105 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.16 | 65106 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.17 | 65107 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.21 | 65108 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.22 | 65109 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -535,12 +513,6 @@ router bgp 65001
    neighbor 172.31.255.129 peer group UNDERLAY-PEERS
    neighbor 172.31.255.129 remote-as 65107
    neighbor 172.31.255.129 description DC1-BL2B_Ethernet1
-   neighbor 172.31.255.193 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.193 remote-as 65108
-   neighbor 172.31.255.193 description DC1-BL3A_Ethernet1
-   neighbor 172.31.255.209 peer group UNDERLAY-PEERS
-   neighbor 172.31.255.209 remote-as 65109
-   neighbor 172.31.255.209 description DC1-BL3B_Ethernet1
    neighbor 192.168.255.9 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.9 remote-as 65101
    neighbor 192.168.255.9 description DC1-LEAF1A
@@ -568,12 +540,6 @@ router bgp 65001
    neighbor 192.168.255.17 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.17 remote-as 65107
    neighbor 192.168.255.17 description DC1-BL2B
-   neighbor 192.168.255.21 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.21 remote-as 65108
-   neighbor 192.168.255.21 description DC1-BL3A
-   neighbor 192.168.255.22 peer group EVPN-OVERLAY-PEERS
-   neighbor 192.168.255.22 remote-as 65109
-   neighbor 192.168.255.22 description DC1-BL3B
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
