@@ -39,6 +39,8 @@ tenants:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
           loopback_description: CUSTOM_VTEP_DIAGNOSTICS_LOOPBACK_DESC
+        ip_helpers: # IP Helper set on VRF level should inherit only to vlan 110.
+          1.2.3.4:
         svis:
           # SVI as string
           '110':
