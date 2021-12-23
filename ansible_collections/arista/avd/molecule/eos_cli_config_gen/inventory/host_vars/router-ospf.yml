@@ -8,6 +8,11 @@ router_ospf:
         - Ethernet1
         - Ethernet2
         - Vlan4093
+      network_prefixes:
+        198.51.100.0/24:
+          area: 0.0.0.1
+        203.0.113.0/24:
+          area: 0.0.0.2
       bfd_enable: true
       max_lsa: 12000
       default_information_originate:
