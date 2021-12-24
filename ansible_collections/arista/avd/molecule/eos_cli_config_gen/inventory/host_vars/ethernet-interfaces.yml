@@ -89,6 +89,8 @@ ethernet_interfaces:
     ipv6_nd_managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
+    priority_flow_control: 
+      enabled: true
 
   Ethernet5:
     description: Molecule Routing
