@@ -23,8 +23,9 @@ local_users:
     role: < Specify a role for the user >
     sha512_password: "< SHA512 ENCRYPTED password >"
 
-# Management eAPI | Required
+# Management eAPI | Optional
 # Default is https management eAPI enabled
+# The vrf is set to < mgmt_interface_vrf >
 management_eapi:
   enable_http: < boolean | default -> false >
   enable_https: < boolean | default -> true >

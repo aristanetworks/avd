@@ -24,11 +24,11 @@ daemon_terminattr:
   cvaddrs:
 {% if cvp_on_prem.ips | length > 0 %}
 {%    for cvp_instance_ip in cvp_on_prem.ips %}
-      - {{ cvp_instance_ip }}:{{ terminattr_ingestgrpcurl_port }}
+    - {{ cvp_instance_ip }}:{{ terminattr_ingestgrpcurl_port }}
 {%    endfor %}
 {% elif cvaas.ips | length > 0 %}
 {%    for cvp_instance_ip in cvaas.ips %}
-      - {{ cvp_instance_ip }}:443
+    - {{ cvp_instance_ip }}:443
 {%    endfor %}
 {% endif %}
   cvauth:

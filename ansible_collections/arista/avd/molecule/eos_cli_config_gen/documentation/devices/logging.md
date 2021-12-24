@@ -55,10 +55,10 @@ interface Management1
 
 | Type | Level |
 | -----| ----- |
-| Console | debugging |
-| Buffer | informational |
-| Trap | informational |
-| Synchronous | error |
+| Console | error |
+| Buffer | warnings |
+| Trap | disabled |
+| Synchronous | critical |
 
 | VRF | Source Interface |
 | --- | ---------------- |
@@ -78,10 +78,10 @@ interface Management1
 
 ```eos
 !
-logging console debugging
-logging buffered 1000000 informational
-logging trap informational
-logging synchronous level error
+logging console error
+logging buffered 1000000 warnings
+no logging trap
+logging synchronous level critical
 logging source-interface Loopback0
 logging host 20.20.20.7
 logging host 50.50.50.7 100 200 protocol tcp

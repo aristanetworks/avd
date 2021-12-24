@@ -17,10 +17,10 @@ QOS Profile: **{{ profile }}**
 {%         set trust = qos_profiles[profile].trust | arista.avd.default('-') %}
 {%         set shape_rate = qos_profiles[profile].shape.rate | arista.avd.default('-') %}
 | {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} |
+{%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
 
 **Tx-queues**
 
-{%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
 | Tx-queue | Bandwidth | Priority | Shape Rate |
 | -------- | --------- | -------- | ---------- |
 {%             for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}

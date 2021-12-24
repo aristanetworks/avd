@@ -20,8 +20,12 @@ switch:
   platform: {{ switch_platform }}
 
 {# switch.platform_settings #}
-  platform_settings: {{ platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
-                        platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) | to_json() }}
+{% set switch_platform_settings = platform_settings | selectattr("platforms", "arista.avd.contains", switch_platform) | first | arista.avd.default(
+                                  platform_settings | selectattr("platforms", "arista.avd.contains", "default") | first) %}
+  platform_settings: {{ switch_platform_settings | to_json() }}
+
+{# switch.mgmt_interface #}
+  mgmt_interface: {{ switch_data.combined.mgmt_interface | arista.avd.default(switch_platform_settings.management_interface, mgmt_interface) }}
 
 {# switch.underlay_routing_protocol #}
 {% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}

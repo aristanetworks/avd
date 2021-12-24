@@ -147,6 +147,8 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     pvlan_mapping: 111
+    qos:
+      trust: disabled
 
   Port-Channel102:
     description: PVLAN Promiscuous Trunk - vlan translation out
