@@ -153,6 +153,7 @@ interface Management1
 | Ethernet4 | True | - | - |
 
 ### Ethernet Interfaces Device Configuration
+
 ```eos
 !
 interface Ethernet1
