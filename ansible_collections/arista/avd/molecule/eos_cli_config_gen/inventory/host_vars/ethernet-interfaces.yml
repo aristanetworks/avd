@@ -48,8 +48,6 @@ ethernet_interfaces:
         - priority: 5
           no_drop: true # no-drop
 
-    
-
   Ethernet3:
     peer: DC1-SPINE2
     peer_interface: Ethernet2
