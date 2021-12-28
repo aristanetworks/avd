@@ -1,0 +1,22 @@
+{# eos - extended access-lists - improved data model #}
+{% if ip_access_lists is arista.avd.defined %}
+{# START ACL CYCLE: walk over the list of defined ACLs #}
+{%     for acl in ip_access_lists %}
+ip access-list {{ acl.name }}
+{%         if acl.counters_per_entry is arista.avd.defined(true) %}
+   counters per-entry
+{%         endif %}
+{#     START ACL_ENTRY CYCLE: walk over the list of ACL entries #}
+{%     for entry in acl.entries %}
+{#     if sequence number defined - add space, otherwise set empty string #}
+{%         sequence_number = entry.sequence | arista.avd.default('') %}
+{%         if sequence_number is not '' %}
+{%             sequence_number = sequence_number + '' %}
+{%         endif %}
+{#     build ACL entry #}
+   {{ sequence_number }}
+{#     END ACL_ENTRY CYCLE: walk over the list of ACL entries #}
+{%     endfor %}
+{# END ACL CYCLE: end walk over the list of defined ACLs #}
+{%     endfor %}
+{% endif %}

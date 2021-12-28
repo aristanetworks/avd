@@ -1,0 +1,6 @@
+# eos - extended access-lists - improved data model, ip-access-lists.j2
+ip_access_lists:
+  - name: ACL_TEST
+    counters_per_entry: true
+    entries:
+      - sequence: 10
