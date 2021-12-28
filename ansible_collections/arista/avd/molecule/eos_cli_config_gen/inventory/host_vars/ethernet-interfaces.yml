@@ -310,3 +310,8 @@ ethernet_interfaces:
     description: Disable error-correction encoding
     error_correction_encoding:
       enabled: false
+
+  Ethernet25:
+    description: Molecule MAC
+    mac_access_group_in: MAC_ACL_IN
+    mac_access_group_out: MAC_ACL_OUT

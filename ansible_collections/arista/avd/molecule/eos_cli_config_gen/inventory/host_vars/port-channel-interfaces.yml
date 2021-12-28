@@ -192,6 +192,18 @@ port_channel_interfaces:
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
 
+  Port-Channel109:
+    description: Molecule ACLs
+    mode: access
+    vlans: 110
+    access_group_in: IPV4_ACL_IN
+    access_group_out: IPV4_ACL_OUT
+    ipv6_access_group_in: IPV6_ACL_IN
+    ipv6_access_group_out: IPV6_ACL_OUT
+    mac_access_group_in: MAC_ACL_IN
+    mac_access_group_out: MAC_ACL_OUT
+
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -298,3 +310,9 @@ ethernet_interfaces:
     mode: trunk
     vlans: 100
     spanning_tree_portfast: edge
+
+  Ethernet18:
+    description: LAG Member
+    channel_group:
+      id: 105
+      mode: active
