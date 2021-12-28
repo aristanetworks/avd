@@ -26,7 +26,7 @@ vlan_interfaces:
 {%             set svi_mtu = svi.mtu | arista.avd.default(
                              svi_profile.mtu) %}
 {%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(
-                                    tenants[tenant].vrfs[vrf].ip_helpers,
+                                    vrf.ip_helpers,
                                     svi_profile.ip_helpers) %}
 {%             set svi_raw_eos_cli = svi.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi_profile.nodes[inventory_hostname].raw_eos_cli,

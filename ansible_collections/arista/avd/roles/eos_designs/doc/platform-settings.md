@@ -3,6 +3,7 @@
 - Set platform specific settings, TCAM profile and reload delay.
 - The reload delay values should be reviewed and tuned to the specific environment.
 - If the platform is not defined, it will load parameters from the platform tagged `default`.
+- Management interface is modified for specific platforms: Modular platforms with dual supervisor support and container EOS.
 
 ## Variables and Options
 
@@ -44,36 +45,44 @@ The reload delay values should be reviewed and tuned to the specific environment
 
 ```yaml
 platform_settings:
-  - platforms: [ default ]
+  - platforms: [ 'default' ]
     reload_delay:
       mlag: 300
       non_mlag: 330
     feature_support:
       # "queue-monitor length notify" is only valid for R-Series so should be disabled on default platform.
       queue_monitor_length_notify: false
-  - platforms: [ 7280R, 7280R2 ]
+  - platforms: [ '7280R', '7280R2' ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ 7280R3 ]
+  - platforms: [ '7280R3' ]
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ 7500R, 7500R2 ]
+  - platforms: [ '7500R', '7500R2' ]
     tcam_profile: vxlan-routing
     lag_hardware_only: true
     management_interface: Management0
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: [ 7500R3, 7800R3 ]
+  - platforms: [ '7500R3', '7800R3' ]
     management_interface: Management0
     reload_delay:
       mlag: 900
       non_mlag: 1020
-  - platforms: ["VEOS", "VEOS-LAB"]
+  - platforms: [ 'VEOS', 'VEOS-LAB', 'vEOS', 'vEOS-lab' ]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    feature_support:
+      queue_monitor_length_notify: false
+      interface_storm_control: false
+  - platforms: [ 'CEOS', 'cEOS', 'ceos', 'cEOSLab' ]
+    management_interface: Management0
     reload_delay:
       mlag: 300
       non_mlag: 330

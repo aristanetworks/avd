@@ -37,6 +37,10 @@
 | DC1_FABRIC | l3leaf | DC1-SVC3B | 192.168.200.109/24 | 7050SX3 | Provisioned |
 | DC1_FABRIC | l3leaf | evpn_services_l2_only_false | - | - | Provisioned |
 | DC1_FABRIC | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
