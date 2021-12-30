@@ -1,2 +1,32 @@
----
-- name: j2lint
+
+name: J2LINT
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push only for the main branch
+  push:
+    branches: [ main ]
+    #paths: "**.j2"
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  J2LINT:
+    #runs-on: ubuntu-20.04
+    runs-on: self-hosted
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - run: |
+         . ~/ansible2/bin/activate
+         j2lint ansible_collections/arista/avd/roles/eos_designs/templates/
+         
+         #git clone https://@gitlab.aristanetworks.com/ansible-team/jinja2-linter
+         #python3 -m venv myenv
+         #source myenv/bin/activate
+         #sudo apt-get install python3-pip
+         #pip3 install jinja2
+         #python setup.py install
+         #cd jinja2-linter
+         
