@@ -64,6 +64,7 @@
     - [IP DHCP Relay](#ip-dhcp-relay)
     - [IP ICMP Redirect](#ip-icmp-redirect)
     - [LACP](#lacp)
+    - [Link Tracking Groups](#link-tracking-groups)
     - [LLDP](#lldp)
     - [MACsec](#macsec)
     - [Maintenance Mode](#maintenance-mode)
@@ -186,6 +187,16 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 #### IP Extended Access-Lists
 
+AVD currently supports 2 different data models for extended ACLs:
+
+- Legacy (for compatibility with existing designs, to avoid breaking changes)
+- Improved extended IP ACL data model
+
+Both data models can coexists without conflicts, as differet keys are used: `access_lists` vs `ip_access_lists`.
+Access list names must be unique.
+
+Legacy data model is supports simplified ACL definition with `sequence_number` -> `action_string`:
+
 ```yaml
 access_lists:
   < access_list_name_1 >:
@@ -200,6 +211,44 @@ access_lists:
     sequence_numbers:
       < sequence_id_1 >:
         action: "< action as string >"
+```
+
+Improved data model has a more sophisticated design documented below:
+
+```yaml
+ip_access_lists:
+  - name: "< access list name as string >"
+    counters_per_entry: < true | false >
+    entries:
+      # remark entry
+      - sequence: < acl entry sequence number >  # optional
+        # NOTE: if remark is defined, other keys in acl entry will be ignored
+        remark: "< Comment, up to 100 characters >"
+      # normal entry
+      - sequence: < acl entry sequence number >  # optional
+        action: "< permit | deny >"  # required
+        protocol: "< ip | tcp | udp | icmp | other protocol name or number >"  # required
+        # NOTE: A.B.C.D without a mask means host
+        source: "< any | A.B.C.D/E | A.B.C.D >"  # required
+        source_ports_match: "< eq | gt | lt | neq | range >"  # eq is default
+        source_ports: ["< tcp/udp port name or number >",]  # optional
+        # NOTE: A.B.C.D without a mask means host
+        destination: "< any | A.B.C.D/E | A.B.C.D >"  # required
+        destination_ports_match: "< eq | gt | lt | neq | range >"  # eq is default
+        destination_ports: ["< tcp/udp port name or number >",]  # optional
+        tcp_flags: ["< tcp flag name >",]  # optional
+        fragments: < true | false >  # optional, match non-head fragment packets
+        log: < true | false >  # optional, log matches against this rule
+        ttl: < <0-254> TTL value >  # optional
+        ttl_match: "< eq | gt | lt | neq >"  # optional
+        icmp_type: "< Message type name/number for ICMP packets >"  # optional
+        icmp_code: "< Message code for ICMP packets >"  # optional
+        nexthop_group: "< nexthop-group name >"  # optional
+        tracked: < true | false > # optional, match packets in existing ICMP/UDP/TCP connections
+        dscp: "< DSCP value or name >"  # optional
+        vlan_number: < vlan number >  # optional
+        vlan_inner: < true | false >  # optional, default - false
+        vlan_mask: "< 0x000-0xFFF  Vlan mask >"  # optional
 ```
 
 #### IPv6 Standard Access-Lists
