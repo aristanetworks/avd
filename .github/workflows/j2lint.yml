@@ -12,7 +12,7 @@ on:
 jobs:
   J2LINT:
     #runs-on: ubuntu-20.04
-    runs-on: shivani_mac
+    runs-on: self-hosted
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
