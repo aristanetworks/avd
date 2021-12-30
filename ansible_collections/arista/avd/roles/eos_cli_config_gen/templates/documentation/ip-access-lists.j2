@@ -1,0 +1,8 @@
+{% if ip_access_lists is arista.avd.defined %}
+
+## Extended Access-lists Device Configuration (Improved Data Model)
+
+```eos
+{% include 'eos/ip-access-lists.j2' %}
+```
+{% endif %}
