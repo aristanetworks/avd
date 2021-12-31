@@ -25,6 +25,7 @@ jobs:
           pip3 install jinja2
           cd j2lint
           python setup.py install
+          pwd
           j2lint ansible_collections/arista/avd/roles/eos_designs/templates/documentation/
          
    
