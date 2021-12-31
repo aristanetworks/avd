@@ -24,7 +24,7 @@ jobs:
           pip3 install jinja2      
           
       - name: Run J2lint
-        continue-on-error: true
+        #continue-on-error: true
         run: |
           source myenv/bin/activate
           cd j2lint
