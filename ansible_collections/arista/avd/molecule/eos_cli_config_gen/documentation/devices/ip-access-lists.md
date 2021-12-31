@@ -90,6 +90,8 @@ interface Management1
 
 ## Extended Access-lists Device Configuration (Improved Data Model)
 
+> The maximum number of ACL entries allowed to be provisioned per switch: 10000
+
 ```eos
 ip access-list ACL_SEQUENCE_AND_COUNTERS
    counters per-entry

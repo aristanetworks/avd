@@ -251,6 +251,14 @@ ip_access_lists:
         vlan_mask: "< 0x000-0xFFF  Vlan mask >"  # optional
 ```
 
+The improved data model allows to define the maximum number of ACL entries that AVD is allowed to generate.
+If the number is above the limit, the playbook will fail. That provides a simplified control over hardware utilisation.
+The numbers must be based on the hardware tests and AVD does not provide any guidance.
+
+```yaml
+ip_access_lists_max_acle: <maximum number of ACL entries allowed per switch>  # default is 10000
+```
+
 #### IPv6 Standard Access-Lists
 
 ```yaml
