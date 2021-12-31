@@ -21,14 +21,14 @@ jobs:
           python3 -m venv myenv
           source myenv/bin/activate
           sudo apt-get install python3-pip
-          pip3 install jinja2
-          cd j2lint
-          python setup.py install
+          pip3 install jinja2      
           
       - name: Run J2lint
         continue-on-error: true
         run: |
+          source myenv/bin/activate
           cd j2lint
+          python setup.py install
           j2lint ../ansible_collections/arista/avd/roles/eos_designs/templates/documentation/
       
       - name: Status
