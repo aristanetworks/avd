@@ -15,8 +15,7 @@ jobs:
     #runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
-      - name: J2Lint
-        continue-on-error: true
+      - name: Setup J2Lint
         run: |
           git clone https://github.com/aristanetworks/j2lint.git
           python3 -m venv myenv
@@ -25,7 +24,13 @@ jobs:
           pip3 install jinja2
           cd j2lint
           python setup.py install
-          pwd
-          j2lint ansible_collections/arista/avd/roles/eos_designs/templates/documentation/
-         
+          
+      - name: Run J2lint
+        continue-on-error: true
+        run: |
+          cd j2lint
+          j2lint ../ansible_collections/arista/avd/roles/eos_designs/templates/documentation/
+      
+      - name: Status
+        run: echo "J2lint completed"
    
