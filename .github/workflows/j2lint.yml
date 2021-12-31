@@ -30,7 +30,4 @@ jobs:
           cd j2lint
           python setup.py install
           j2lint ../ansible_collections/arista/avd/roles/eos_designs/templates/documentation/
-      
-      - name: Status
-        run: echo "J2lint completed"
    
