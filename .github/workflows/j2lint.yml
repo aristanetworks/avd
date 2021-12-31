@@ -11,13 +11,19 @@ on:
 
 jobs:
   J2LINT:
-    #runs-on: ubuntu-20.04
-    runs-on: self-hosted
+    runs-on: ubuntu-20.04
+    #runs-on: self-hosted
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       - run: |
-         . ~/ansible2/bin/activate
+         git clone https://github.com/aristanetworks/j2lint.git
+         python3 -m venv myenv
+         source myenv/bin/activate
+         sudo apt-get install python3-pip
+         pip3 install jinja2
+         cd j2lint
+         python setup.py install
          j2lint ansible_collections/arista/avd/roles/eos_designs/templates/
          
    
