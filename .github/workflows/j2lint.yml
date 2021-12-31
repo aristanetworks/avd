@@ -12,7 +12,6 @@ on:
 jobs:
   J2LINT:
     runs-on: ubuntu-20.04
-    #runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - name: Setup J2Lint
@@ -29,5 +28,5 @@ jobs:
           source myenv/bin/activate
           cd j2lint
           python setup.py install
-          j2lint ../
+          j2lint $GITHUB_WORKSPACE
    
