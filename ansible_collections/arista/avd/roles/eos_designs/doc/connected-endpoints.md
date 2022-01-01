@@ -46,7 +46,9 @@ port_profiles:
   < port_profile_1 >:
     parent_profile: < port_profile_name >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
+    enabled: < true | false >
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < L3 MTU >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     native_vlan: <native vlan number>
     vlans: < vlans as string >
@@ -71,12 +73,18 @@ port_profiles:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+    raw_eos_cli: |
+      < multiline eos cli >
+    structured_config: < dictionary >
     port_channel:
       description: < port_channel_description >
       mode: < "active" | "passive" | "on" >
       lacp_fallback:
         mode: < static > | Currently only static mode is supported
         timeout: < timeout in seconds > | Optional - default is 90 seconds
+      raw_eos_cli: |
+        < multiline eos cli >
+      structured_config: < dictionary >
 
 # Dictionary key of connected endpoint as defined in connected_endpoints_keys
 # This should be applied to group_vars or host_vars where endpoints are connecting.
@@ -121,10 +129,25 @@ port_profiles:
         # Interface vlans | required
         vlans: < vlans as string >
 
-        # Spanning Tree
+        # Spanning Tree | optional
         spanning_tree_portfast: < edge | network >
         spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
         spanning_tree_bpduguard: < "enabled" | true | "disabled" >
+
+        # Storm control per each different category of BUM traffic | optional
+        storm_control:
+          all:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          broadcast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          multicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
+          unknown_unicast:
+            level: < Configure maximum storm-control level >
+            unit: < percent | pps > | Optional var and is hardware dependant - default is percent)
 
         # Flow control | Optional
         flowcontrol:
