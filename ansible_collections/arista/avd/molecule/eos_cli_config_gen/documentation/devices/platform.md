@@ -99,6 +99,7 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | forwarding_table_partition | 2 |
+
 ### Platform Sand Summary
 
 | Settings | Value |
