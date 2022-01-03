@@ -5,8 +5,9 @@ on:
   push:
     branches: [ github-actions ]
     #paths: "**.j2"
-
-  
+  pull_request:
+    branches: [ github-actions ]
+     
   workflow_dispatch:
 
 jobs:
