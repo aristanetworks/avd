@@ -43,3 +43,4 @@ custom_structured_configuration_ntp:
     vrf: MGMT
   - name: 1.fr.pool.ntp.org
     vrf: MGMT
+  
