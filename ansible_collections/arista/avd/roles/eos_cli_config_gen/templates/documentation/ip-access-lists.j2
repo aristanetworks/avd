@@ -2,7 +2,7 @@
 
 ## Extended Access-lists Device Configuration (Improved Data Model)
 
-> The maximum number of ACL entries allowed to be provisioned per switch: {{ ip_access_lists_max_acle }}
+> The maximum number of ACL entries allowed to be provisioned per switch: {{ ip_access_lists_max_acle | arista.avd.default(10000) }}
 
 ```eos
 {% include 'eos/ip-access-lists.j2' %}
