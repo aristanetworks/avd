@@ -2611,6 +2611,11 @@ router_ospf:
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
       log_adjacency_changes_detail: < true | false >
+      network_prefixes:
+        < IPv4 subnet / netmask >:
+          area: < area >
+        < IPv4 subnet / netmask >:
+          area: < area >
       bfd_enable: < true | false >
       no_passive_interfaces:
         - < interface_1 >
