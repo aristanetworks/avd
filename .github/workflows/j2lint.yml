@@ -6,7 +6,7 @@ on:
     branches: [ github-actions ]
     #paths: "**.j2"
 
-  # Allows you to run this workflow manually from the Actions tab
+  
   workflow_dispatch:
 
 jobs:
