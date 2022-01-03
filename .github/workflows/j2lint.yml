@@ -29,5 +29,4 @@ jobs:
           source myenv/bin/activate
           cd j2lint
           python setup.py install
-          j2lint $GITHUB_WORKSPACE
-   
+          j2lint $GITHUB_WORKSPACE 
