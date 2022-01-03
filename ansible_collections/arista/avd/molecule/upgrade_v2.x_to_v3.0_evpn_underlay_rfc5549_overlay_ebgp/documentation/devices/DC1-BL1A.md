@@ -858,6 +858,12 @@ vrf instance Tenant_C_WAN_Zone
 
 ## Platform Summary
 
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag_hardware_only | True |
+
 ## Platform Configuration
 
 ```eos

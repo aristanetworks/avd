@@ -799,6 +799,12 @@ vrf instance Tenant_A_WEB_Zone
 
 ## Platform Summary
 
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag_hardware_only | True |
+
 ## Platform Configuration
 
 ```eos
