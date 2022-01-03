@@ -100,6 +100,7 @@
       - [Load Interval](#load-interval)
       - [Logging](#logging)
       - [Sflow](#sflow)
+      - [Monitor Sessions](#monitor-sessions)
       - [SNMP Settings](#snmp-settings)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
@@ -1876,6 +1877,15 @@ sflow:
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
   run: < true | false >
+```
+
+#### Monitor Sessions
+
+```yaml
+monitor_sessions:
+  < session_name_1 >:
+    source: < Ethernet | Port-Channel | Cpu | Tunnel >
+    destination: < Ethernet | Port-Channel | Cpu | Tunnel >
 ```
 
 #### SNMP Settings
