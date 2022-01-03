@@ -2325,36 +2325,19 @@ policy_maps:
 
 ```yaml
 qos_profiles:
-  < profile-1 >:
+  < profile-name >:
     trust: < dscp | cos | disabled >
     cos: < cos-value >
     dscp: < dscp-value >
     shape:
-      rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+      rate: < "< rate > kbps" | "< 1-100 > percent" | "< rate > pps" , supported options are platform dependent >
     tx_queues:
       < tx-queue-id >:
-        bandwidth_percent: < value >
-        # The below knob is platform dependent
-        bandwidth_guaranteed_percent: < value >
-        priority: < string >
+        bandwidth_percent: < 1-100 >
+        bandwidth_guaranteed_percent: < value, feature is platform depedent>
+        priority: < "priority strict" | "no priority" >
         shape:
-          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-        shape:
-          rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
-  < profile-2 >:
-    trust: < dscp | cos | disabled >
-    cos: < cos-value >
-    dscp: < dscp-value >
-    tx_queues:
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
-      < tx-queue-id >:
-        bandwidth_percent: < value >
-        priority: < string >
+          rate: < "< rate > kbps" | "< 1-100 > percent" | "< rate > pps" , supported options are platform dependent >
 ```
 
 #### Queue Monitor Length
