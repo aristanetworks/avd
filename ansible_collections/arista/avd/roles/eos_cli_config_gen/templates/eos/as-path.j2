@@ -1,0 +1,22 @@
+{# eos - AS Paths #}
+{% if as_path is arista.avd.defined %}
+!
+{%     if as_path.regex_mode is arista.avd.defined %}
+ip as-path regex-mode {{ as_path.regex_mode }}
+{%     endif %}
+{%     if as_path.access_lists is arista.avd.defined %}
+{%         for as_path_access_list in as_path.access_lists %}
+{%             set as_path_access_list_cli = "ip as-path access-list " ~ as_path_access_list %}
+{%             if as_path.access_lists[as_path_access_list].type is arista.avd.defined %}
+{%                 set as_path_access_list_cli = as_path_access_list_cli ~ " " ~ as_path.access_lists[as_path_access_list].type %}
+{%             endif %}
+{%             if as_path.access_lists[as_path_access_list].match is arista.avd.defined %}
+{%                 set as_path_access_list_cli = as_path_access_list_cli ~ " " ~ as_path.access_lists[as_path_access_list].match %}
+{%             endif %}
+{%             if as_path.access_lists[as_path_access_list].origin is arista.avd.defined %}
+{%                 set as_path_access_list_cli = as_path_access_list_cli ~ " " ~ as_path.access_lists[as_path_access_list].origin %}
+{%             endif %}
+{{ as_path_access_list_cli }}
+{%         endfor %}
+{%     endif %}
+{% endif %}
