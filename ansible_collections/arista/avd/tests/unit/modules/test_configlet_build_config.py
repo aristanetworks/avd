@@ -4,7 +4,7 @@ import logging
 import pytest
 
 CONFIGLETS_DIR = os.path.dirname(os.path.realpath(
-    __file__)) + "/inventory/intended/configs"
+    __file__)) + "../../inventory/intended/configs"
 
 CONFIGLETS_DATA = {
     "valid_source": {"src_folder": CONFIGLETS_DIR, "prefix": "AVD"},

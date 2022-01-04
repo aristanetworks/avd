@@ -17,7 +17,7 @@ IS_ITERABLE_INVALID = [
 ]
 
 INVENTORY_FILE = os.path.dirname(
-    os.path.realpath(__file__)) + "/inventory/inventory.yml"
+    os.path.realpath(__file__)) + "../../inventory/inventory.yml"
 
 
 @pytest.fixture
@@ -34,37 +34,37 @@ def inventory():
 class TestInventoryToContainer:
     def test_is_in_filter_default_filter(self):
         output = is_in_filter(hostname="aristanetworks.com")
-        assert output == True
+        assert output
 
     def test_is_in_filter_valid_hostname(self):
         output = is_in_filter(hostname_filter=[
                               "arista", "aristanetworks"], hostname="test1.aristanetworks.com")
-        assert output == True
+        assert output
 
     def test_is_in_filter_invalid_hostname(self):
         output = is_in_filter(
             hostname_filter=["arista", "aristanetworks"], hostname="test1.bsn.com")
-        assert output == False
+        assert output is False
 
     # TODO: Check if this is a valid testcase. Add a type check?
     def test_is_in_filter_invalid_filter(self):
         output = is_in_filter(hostname_filter="aristanetworks",
                               hostname="test1.aristanetworks.com")
-        assert output == True
+        assert output
 
     def test_isIterable_default_iterable(self):
         output = isIterable()
-        assert output == False
+        assert output is False
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_VALID)
     def test_isIterable_valid_iterable(self, DATA):
         output = isIterable(DATA)
-        assert output == True
+        assert output
 
     @pytest.mark.parametrize("DATA", IS_ITERABLE_INVALID)
     def test_isIterable_invalid_iterable(self, DATA):
         output = isIterable(DATA)
-        assert output == False
+        assert output is False
 
     def test_isLeaf_valid_leaf(self, inventory):
         logging.info(inventory)
