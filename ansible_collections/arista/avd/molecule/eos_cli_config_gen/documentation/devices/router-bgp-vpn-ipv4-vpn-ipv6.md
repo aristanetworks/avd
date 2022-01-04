@@ -112,10 +112,10 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
-| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
+| -------- | --------- | --- | -------------- | -------------- | ---------- |
+| 192.168.255.1 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - |
+| 192.168.255.2 | Inherited from peer group MPLS-IBGP-PEERS | default | Inherited from peer group MPLS-IBGP-PEERS | Inherited from peer group MPLS-IBGP-PEERS | - |
 
 ### Router BGP Device Configuration
 

@@ -2226,6 +2226,16 @@ router_general:
 router_bgp:
   as: < bgp_as >
   router_id: < IPv4_address >
+  distance:
+    external_routes: < 1-255 >
+    internal_routes: < 1-255 >
+    local_routes: < 1-255 >
+  maximum_paths:
+    paths: < 1-600 >
+    ecmp: < 1-600 >
+  updates:
+    wait_for_convergence: < true | false >
+    wait_install: < true | false >
   bgp_defaults:
     - "< bgp command as string >"
     - "< bgp command as string >"
@@ -2248,6 +2258,11 @@ router_bgp:
       password: "< encrypted_password >"
       send_community: < standard | extended | large | all >
       maximum_routes: < integer >
+      maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
+      maximum_routes_warning_only: < true | false >
+      allowas_in:
+        enabled: < true | false >
+        times: < 1-10 >
       weight: < weight_value >
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
@@ -2273,6 +2288,11 @@ router_bgp:
       route_map_out: < outbound route-map >
       send_community: < all | extended | large | standard >
       maximum_routes: < integer >
+      maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
+      maximum_routes_warning_only: < true | false >
+      allowas_in:
+        enabled: < true | false >
+        times: < 1-10 >
     < IPv4_address_2 >:
       remote_as: < bgp_as >
       next_hop_self: < true | false >
@@ -2325,6 +2345,8 @@ router_bgp:
             route_target: "< route_target >"
       redistribute_routes:
         - < learned >
+      no_redistribute_routes:
+        - < host-route >
       vlan: < vlan_range >
     < vlan_aware_bundle_name_2 >:
       rd: "< route distinguisher >"
@@ -2374,6 +2396,8 @@ router_bgp:
       redistribute_routes:
         - < connected >
         - < learned >
+      no_redistribute_routes:
+        - < host-route >
     <vlan_id_2 >:
       rd: "< route distinguisher >"
       route_targets:
@@ -2533,6 +2557,11 @@ router_bgp:
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
+          maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
+          maximum_routes_warning_only: < true | false >
+          allowas_in:
+            enabled: < true | false >
+            times: < 1-10 >
           default_originate:
             always: < true | false >
             route_map: < route_map_name >
