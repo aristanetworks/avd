@@ -1,5 +1,5 @@
 # eos - extended access-lists - improved data model, ip-access-lists.j2
-ip_access_lists_max_acle: 10000
+ip_access_lists_max_entries: 10000
 ip_access_lists:
   - name: ACL_SEQUENCE_AND_COUNTERS
     counters_per_entry: true

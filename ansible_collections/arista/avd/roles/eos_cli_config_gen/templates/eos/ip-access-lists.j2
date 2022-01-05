@@ -3,7 +3,6 @@
 {# set maximum number of ACL entries allowed, the playbook will fail if number is over the limit #}
 {%     set counter = namespace() %}
 {%     set counter.acle_number = 0 %}
-{%     set counter.acle_max = ip_access_lists_max_acle | arista.avd.default(10000) %}
 {# START ACL CYCLE: walk over the list of defined ACLs #}
 {%     for acl in ip_access_lists %}
 ip access-list {{ acl.name }}
@@ -113,8 +112,10 @@ ip access-list {{ acl.name }}
    {{ acl_entry.string }}
 {#     check if the number of ACL entries is below the limit #}
 {%     set counter.acle_number = counter.acle_number + 1 %}
-{%     if counter.acle_number > counter.acle_max %}
-   {{ ('OK' if false) | mandatory('The number of ACL entries is above defined maximum!') }}
+{%     if ip_access_lists_max_entries is arista.avd.defined %}
+{%         if counter.acle_number > ip_access_lists_max_entries %}
+   {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
+{%         endif %}
 {%     endif %}
 {#     END ACL_ENTRY CYCLE: walk over the list of ACL entries #}
 {%     endfor %}

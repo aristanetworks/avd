@@ -256,7 +256,7 @@ If the number is above the limit, the playbook will fail. That provides a simpli
 The numbers must be based on the hardware tests and AVD does not provide any guidance.
 
 ```yaml
-ip_access_lists_max_acle: <maximum number of ACL entries allowed per switch>  # default is 10000
+ip_access_lists_max_entries: <maximum number of ACL entries allowed per switch>  # optional
 ```
 
 #### IPv6 Standard Access-Lists
