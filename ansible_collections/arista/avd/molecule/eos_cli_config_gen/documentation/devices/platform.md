@@ -104,9 +104,9 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
-| lag_hardware_only | True |
-| lag_mode | 512x32 |
-| multicast_replication_default | ingress |
+| lag.hardware_only | True |
+| lag.mode | 512x32 |
+| multicast_replication.default | ingress |
 | forwarding_mode | arad |
 
 ## Platform Configuration

@@ -23,12 +23,12 @@
 {%             for sandsetting in platform.sand %}
 {%                 if sandsetting == 'lag' %}
 {%                     for lag_sandsetting in platform.sand.lag %}
-{%                         set lag_sandsettingmod = "lag_" ~ lag_sandsetting %}
+{%                         set lag_sandsettingmod = "lag." ~ lag_sandsetting %}
 | {{ lag_sandsettingmod }} | {{ platform.sand.lag[lag_sandsetting] }} |
 {%                     endfor %}
 {%                 elif sandsetting == 'multicast_replication' %}
 {%                     for multicast_replication_sandsetting in platform.sand.multicast_replication %}
-{%                         set multicast_replication_sandsettingmod = "multicast_replication_" ~ multicast_replication_sandsetting %}
+{%                         set multicast_replication_sandsettingmod = "multicast_replication." ~ multicast_replication_sandsetting %}
 | {{ multicast_replication_sandsettingmod }} | {{ platform.sand.multicast_replication[multicast_replication_sandsetting] }} |
 {%                     endfor %}
 {%                 else %}
