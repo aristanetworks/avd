@@ -858,7 +858,7 @@ vrf instance Tenant_C_WAN_Zone
 
 | Settings | Value |
 | -------- | ----- |
-| lag_hardware_only | True |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 
