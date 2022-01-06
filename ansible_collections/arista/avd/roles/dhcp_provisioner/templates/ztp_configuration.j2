@@ -1,4 +1,10 @@
 {# HEADER -- LOGIC implementation #}
+{% set cvp_instance_ip = UNSET %}
+{% if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
+{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
+{% elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
+{%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ip'] %}
+{% endif %}
 {% set node_types = dict() %}
 {% set node_type_keys = hostvars[groups[fabric_group][0]]['node_type_keys'] |
         arista.avd.default(['spine', 'l3leaf', 'l2leaf', 'super_spine', 'overlay_controller']) %}
@@ -15,11 +21,7 @@
 ---
 ztp:
   default:
-{% if hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
-    registration: http://{{ hostvars[groups[fabric_group][0]]['cvp_instance_ip'] }}/ztp/bootstrap
-{% elif hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
-    registration: http://{{ hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] }}/ztp/bootstrap
-{% endif %}
+    registration: http://{{ cvp_instance_ip }}/ztp/bootstrap
 {% if hostvars[groups[fabric_group][0]]['mgmt_gateway'] is arista.avd.defined %}
     gateway: {{ hostvars[groups[fabric_group][0]]['mgmt_gateway'] }}
 {% endif %}
@@ -56,6 +58,8 @@ ztp:
         end: {{ ztp_pool_end }}
 {% endif %}
 {% if ztp_lease_time is arista.avd.defined %}
+        lease_time: {{ ztp_lease_time }}
+{% else %}
         lease_time: 300
 {% endif %}
   clients:
