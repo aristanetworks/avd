@@ -2,11 +2,6 @@
 name: "Collection code testing"
 
 on:
-  # push:
-  #   branches-ignore:
-  #     - devel
-  #     - releases/**
-  #     - ci/**
   # For a pull_request event, only branches and tags on the base are evaluated.
   pull_request:
     branches-ignore:
@@ -320,7 +315,9 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
-        run: make install-requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'ansible-test linting'
         run: |
           cd ansible_collections/arista/avd/
@@ -342,7 +339,9 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: install requirements
-        run: make install-requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'build ansible package'
         run: make collection-build
       - name: 'run ansible-importer checks'
