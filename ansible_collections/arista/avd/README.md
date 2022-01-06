@@ -58,7 +58,7 @@ This repository provides roles for Ansible's collection __arista.avd__ with the 
 - [__arista.avd.eos_snapshot__](roles/eos_snapshot/README.md) - Collect commands on EOS devices and generate reports.
 - [__arista.avd.dhcp_provisioner__](roles/dhcp_provisioner/README.md) - Configure an ISC-DHCP server to provide ZTP services and Cloudvision registration.
 
-![Arista AVD Overview](media/example-playbook-deploy-cvp.gif)
+![Arista AVD Overview](media/example-playbook-deploy-cvp.png)
 
 ## Custom Plugins & Modules
 
