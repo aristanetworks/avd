@@ -178,8 +178,8 @@ Authorization for serial console is enabled.
 | Privilege Level | Group |
 | --------------- | ----- |
 | all | group aaaAuth |
-| 5 | radius |
-| 10,15 | tacacs+ local |
+| 5 | group radius |
+| 10,15 | group tacacs+ local |
 
 ### AAA Authorization Device Configuration
 

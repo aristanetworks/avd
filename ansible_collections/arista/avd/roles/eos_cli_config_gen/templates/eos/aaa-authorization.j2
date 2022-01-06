@@ -15,7 +15,7 @@ aaa authorization commands all default {{ aaa_authorization.commands.all_default
 {%     endif %}
 {%     for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
 {%         if command_level.level is arista.avd.defined and command_level.group is arista.avd.defined %}
-{%             set commands_privilege_cli = "aaa authorization commands " ~ command_level.level ~ " default group " ~ command_level.group %}
+{%             set commands_privilege_cli = "aaa authorization commands " ~ command_level.level ~ " default " ~ command_level.group %}
 {{ commands_privilege_cli }}
 {%         endif %}
 {%     endfor %}
