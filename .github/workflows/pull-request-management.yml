@@ -87,7 +87,17 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v2
-      - uses: pre-commit/action@v2.0.2
+          with:
+            fetch-depth: 0
+      - name: Install requirements
+        run: |
+          pip install -r ansible_collections/arista/cvp/requirements-dev.txt
+          pip install -r ansible_collections/arista/cvp/requirements.txt
+      - name: Run pre-commit
+        run: |
+          git branch -a
+          pre-commit run --all-files
+
   # ----------------------------------- #
   # Check Links  offline for dead target
   # ----------------------------------- #
@@ -149,7 +159,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_cli_config_gen','upgrade_eos_cli_config_gen']
+        avd_scenario: ['eos_cli_config_gen', 'upgrade_eos_cli_config_gen']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
@@ -316,7 +326,7 @@ jobs:
       - name: 'ansible-test linting'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity  -v --requirements --docker --skip-test yamllint --exclude docs/
+          ansible-test sanity  -v --requirements --docker
 
   galaxy_importer:
     name: Test galaxy-importer

@@ -18,4 +18,3 @@ yamllint --strict -c .github/yamllintrc \
     ansible_collections/arista/avd/molecule/*
 
 echo "------------------------------------------------------------------------------------------------------------"
-
