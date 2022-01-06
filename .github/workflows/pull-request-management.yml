@@ -87,12 +87,10 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v2
-          with:
-            fetch-depth: 0
       - name: Install requirements
         run: |
-          pip install -r ansible_collections/arista/cvp/requirements-dev.txt
-          pip install -r ansible_collections/arista/cvp/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
       - name: Run pre-commit
         run: |
           git branch -a

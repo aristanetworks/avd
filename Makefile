@@ -40,12 +40,12 @@ sanity-info: ## Show information about ansible-test
 .PHONY: sanity-lint
 sanity-lint: ## Run ansible-test sanity for code sanity
 	cd ansible_collections/arista/avd/ ; \
-	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import --skip-test yamllint --exclude docs/
+	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --skip-test import
 
 .PHONY: sanity-import
 sanity-import: ## Run ansible-test sanity for code import
 	cd ansible_collections/arista/avd/ ; \
-	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import --exclude docs/
+	ansible-test sanity --requirements --$(ANSIBLE_TEST_MODE) --test import
 
 .PHONY: galaxy-importer
 galaxy-importer:  ## Run galaxy importer tests
