@@ -81,7 +81,7 @@ vlan_interfaces:
 
 {%                 if svi.ospf.cost is arista.avd.defined %}
     ospf_cost: {{ svi.ospf.cost }}
-{%                  endif %}
+{%                 endif %}
 {%                 if svi.ospf.authentication is arista.avd.defined("simple") and svi.ospf.simple_auth_key is arista.avd.defined %}
     ospf_authentication: "simple"
     ospf_authentication_key: {{ svi.ospf.simple_auth_key }}
