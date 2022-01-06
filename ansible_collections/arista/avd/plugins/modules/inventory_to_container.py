@@ -178,7 +178,7 @@ def isLeaf(tree, nid):
     boolean
         True if node is a leaf, false in other situation
     """
-    if len(tree.is_branch(nid)) == 0:
+    if nid and len(tree.is_branch(nid)) == 0:
         return True
     else:
         return False
@@ -358,7 +358,7 @@ def get_devices(dict_inventory, search_container=None, devices=None, device_filt
     return devices
 
 
-def get_containers(inventory_content, parent_container, module):
+def get_containers(inventory_content, parent_container, device_filter):
     """
     get_containers - Build Container topology to build on CoudVision.
 
@@ -368,8 +368,8 @@ def get_containers(inventory_content, parent_container, module):
         Inventory loaded using a YAML input.
     parent_container : string
         Root of tree lookup
-    module : AnsibleModule
-        Ansible Module
+    device_filter : list, optional
+        List of filter to compare device name and to select only a subset of devices.
 
     Returns
     -------
@@ -391,7 +391,7 @@ def get_containers(inventory_content, parent_container, module):
                     devices = get_devices(dict_inventory=inventory_content,
                                           search_container=container,
                                           devices=[],
-                                          device_filter=module.params['device_filter'])
+                                          device_filter=device_filter)
                     data['devices'] = devices
                 data['parent_container'] = parent.tag
             container_json[container] = data
@@ -434,7 +434,7 @@ def main():
                 module.debug(exc)
         result['CVP_TOPOLOGY'] = get_containers(inventory_content=inventory_content,
                                                 parent_container=parent_container,
-                                                module=module)
+                                                device_filter=module.params['device_filter'])
 
     # If set, build configlet topology
     if module.params['configlet_dir'] is not None:
