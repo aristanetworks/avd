@@ -172,8 +172,8 @@ Authorization for serial console is enabled.
 
 ### AAA Authorization Privilege Levels Summary
 
-| Privilege Level | Group |
-| --------------- | ----- |
+| Privilege Level | User Stores |
+| --------------- | ----------- |
 | all | group aaaAuth |
 
 ### AAA Authorization Device Configuration

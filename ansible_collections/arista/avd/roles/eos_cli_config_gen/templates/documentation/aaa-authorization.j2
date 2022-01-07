@@ -24,14 +24,14 @@ Authorization for serial console is enabled.
 
 ### AAA Authorization Privilege Levels Summary
 
-| Privilege Level | Group |
-| --------------- | ----- |
+| Privilege Level | User Stores |
+| --------------- | ----------- |
 {%         if aaa_authorization.commands.all_default is arista.avd.defined %}
 | all | {{ aaa_authorization.commands.all_default }} |
 {%         endif %}
 {%         for command_level in aaa_authorization.commands.privilege | arista.avd.natural_sort %}
-{%             if command_level.level is arista.avd.defined and command_level.group is arista.avd.defined %}
-| {{ command_level.level }} | {{ command_level.group }} |
+{%             if command_level.level is arista.avd.defined and command_level.default is arista.avd.defined %}
+| {{ command_level.level }} | {{ command_level.default }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

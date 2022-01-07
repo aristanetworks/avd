@@ -297,7 +297,7 @@ aaa_authorization:
     all_default: < group group_name | local | none > < group group_name | local | none >
     privilege:
       - level: < privilege level(s) 0-15 >
-        group: < group group_name | local | none > < group group_name | local | none >
+        default: < group group_name | local | none > < group group_name | local | none >
 ```
 
 #### AAA Accounting

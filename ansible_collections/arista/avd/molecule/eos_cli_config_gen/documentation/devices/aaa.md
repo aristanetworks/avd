@@ -175,8 +175,8 @@ Authorization for serial console is enabled.
 
 ### AAA Authorization Privilege Levels Summary
 
-| Privilege Level | Group |
-| --------------- | ----- |
+| Privilege Level | User Stores |
+| --------------- | ----------- |
 | all | group aaaAuth |
 | 5 | group radius |
 | 10,15 | group tacacs+ local |

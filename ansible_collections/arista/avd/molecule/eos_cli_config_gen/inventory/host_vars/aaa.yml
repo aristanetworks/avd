@@ -62,9 +62,9 @@ aaa_authorization:
     all_default: group aaaAuth
     privilege:
       - level: "10,15"
-        group: "group tacacs+ local"
+        default: "group tacacs+ local"
       - level: "5"
-        group: "group radius"
+        default: "group radius"
 
 ## AAA Accounting
 aaa_accounting:
