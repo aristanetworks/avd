@@ -13,7 +13,7 @@ AS Path Regex Mode is **{{ as_path.regex_mode }}**.
 {%     for as_path_access_list in as_path.access_lists %}
 {%         if as_path_access_list.name is arista.avd.defined and as_path_access_list.entries is arista.avd.defined %}
 {%             for as_path_access_list_entry in as_path_access_list.entries %}
-| {{ as_path_access_list.name }} | {{ as_path_access_list_entry.type }} | ```{{ as_path_access_list_entry.match }}``` | {{ as_path_access_list_entry.origin | arista.avd.default('any') }} |
+| {{ as_path_access_list.name }} | {{ as_path_access_list_entry.type }} | {{ as_path_access_list_entry.match | replace('|', '\|') }} | {{ as_path_access_list_entry.origin | arista.avd.default('any') }} |
 {%             endfor %}
 {%         endif %}
 {%     endfor %}
