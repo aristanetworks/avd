@@ -7,7 +7,7 @@ from jinja2.runtime import Undefined
 
 
 DIR_PATH = os.path.dirname(os.path.realpath(
-    __file__))
+    __file__))+'/toc_files'
 MD_INPUTS = [None, DIR_PATH+'/valid_file.md']
 MD_INPUT_INVALID = DIR_PATH+'/invalid_file.md'
 EXPECTED_TOC = DIR_PATH+'/expected_toc.md'
@@ -56,7 +56,12 @@ class TestAddMdTocFilter():
         assert resp.strip() != expected_toc.strip()
 
 
+    def test_add_md_toc_btw_specific_markers(self):
+        with open(DIR_PATH+'/markers_at_bottom.md', "r") as input_file:
+            resp = add_md_toc(input_file.read(), skip_lines=0, toc_levels=2, toc_marker=TOC_MARKER)
 
+        with open(DIR_PATH + '/expected_output_toc_at_bottom.md', "r") as expected_output:
+            assert resp == expected_output.read()
 
 
 

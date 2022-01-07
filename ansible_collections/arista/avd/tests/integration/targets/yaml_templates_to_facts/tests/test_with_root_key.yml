@@ -7,7 +7,7 @@
   yaml_templates_to_facts:
     root_key: structured_config
     templates:
-      - template: "template.j2"
+      - template: "templates/template.j2"
 
 - assert:
       that:

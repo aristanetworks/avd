@@ -6,8 +6,8 @@
     hours: 84
   yaml_templates_to_facts:
     templates:
-      - template: "template.j2"
-      - template: "template1.j2"
+      - template: "templates/template.j2"
+      - template: "templates/template1.j2"
         options:
           strip_empty_keys: false
           list_merge: "prepend"
