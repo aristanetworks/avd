@@ -113,8 +113,8 @@ ip access-list {{ acl.name }}
 {%                     set acl_entry.string = acl_entry.string ~ 'log' %}
 {%                 endif %}
 {#                 check if the number of ACL entries is below the limit #}
-{%                 set counter.acle_number = counter.acle_number + 1 %}
 {%                 if ip_access_lists_max_entries is arista.avd.defined %}
+{%                     set counter.acle_number = counter.acle_number + 1 %}
 {%                     if counter.acle_number > ip_access_lists_max_entries %}
    {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
 {%                     endif %}
