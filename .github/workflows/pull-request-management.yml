@@ -88,8 +88,7 @@ jobs:
           pip install -r ansible_collections/arista/avd/requirements.txt
       - name: Run pre-commit
         run: |
-          git branch -a
-          pre-commit run --all-files
+          pre-commit run --all-files --color always
 
   # ----------------------------------- #
   # Check Links  offline for dead target
