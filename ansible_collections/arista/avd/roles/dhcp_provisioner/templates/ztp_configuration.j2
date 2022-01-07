@@ -1,5 +1,5 @@
 {# HEADER -- LOGIC implementation #}
-{% set cvp_instance_ip = UNSET %}
+{% set cvp_instance_ip = 'cvp_instance_ip is unset - please set' %}
 {% if hostvars[groups[fabric_group][0]]['cvp_instance_ips'] is arista.avd.defined %}
 {%     set cvp_instance_ip = hostvars[groups[fabric_group][0]]['cvp_instance_ips'][0] %}
 {% elif hostvars[groups[fabric_group][0]]['cvp_instance_ip'] is arista.avd.defined %}
