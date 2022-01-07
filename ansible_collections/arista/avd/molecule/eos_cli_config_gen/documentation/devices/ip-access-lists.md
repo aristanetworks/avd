@@ -14,7 +14,7 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
-  - [Extended Access-lists Device Configuration (Improved Data Model)](#extended-access-lists-device-configuration-improved-data-model)
+  - [IP Access-lists](#ip-access-lists)
 - [Quality Of Service](#quality-of-service)
 
 # Management
@@ -88,9 +88,13 @@ interface Management1
 
 # ACL
 
-## Extended Access-lists Device Configuration (Improved Data Model)
+## IP Access-lists
+
+### IP Access-lists Summary
 
 > The maximum number of ACL entries allowed to be provisioned per switch: 10000
+
+### IP Access-lists Configuration
 
 ```eos
 ip access-list ACL_SEQUENCE_AND_COUNTERS
