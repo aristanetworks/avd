@@ -646,16 +646,17 @@ match_list_input:
           match_regex: < match string >
 ```
 
-#### AS Paths
+#### AS Path
 
 ```yaml
 as_path:
   regex_mode: < asn | string >
   access_lists:
-    < access_list_name_1 >:
-      type: < permit | deny >
-      match: "< regex to match as paths >"
-      origin: < any | egp | igp | incomplete >
+    - name: < access_list_name_1 >
+      entries:
+        - type: < permit | deny >
+          match: "< regex to match >"
+          origin: < "any" | "egp" | "igp" | "incomplete" | default -> "any" >
 ```
 
 ### Generate Device Documentation

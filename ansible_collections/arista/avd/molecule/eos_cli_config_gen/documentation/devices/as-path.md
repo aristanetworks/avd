@@ -92,16 +92,20 @@ interface Management1
 
 AS Path Regex Mode is **asn**.
 
-| List Name | Type | AS Path Match | Origin |
-| --------- | ---- | ------------- | ------ |
-| MYLIST | permit | ```^(64512|645115)``` | any |
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+| mylist1 | permit | ```^(64512|645115)``` | egp |
+| mylist1 | deny | ```(64513|64515)$``` | any |
+| mylist2 | deny | ```_64517$``` | igp |
 
 ### AS Path Lists configuration
 
 ```eos
 !
 ip as-path regex-mode asn
-ip as-path access-list MYLIST permit ^(64512|645115) any
+ip as-path access-list mylist1 permit ^(64512|645115) egp
+ip as-path access-list mylist1 deny (64513|64515)$ any
+ip as-path access-list mylist2 deny _64517$ igp
 ```
 
 # ACL

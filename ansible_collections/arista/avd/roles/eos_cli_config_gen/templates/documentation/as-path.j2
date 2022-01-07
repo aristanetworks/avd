@@ -8,10 +8,14 @@
 AS Path Regex Mode is **{{ as_path.regex_mode }}**.
 {%     endif %}
 
-| List Name | Type | AS Path Match | Origin |
-| --------- | ---- | ------------- | ------ |
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
 {%     for as_path_access_list in as_path.access_lists %}
-| {{ as_path_access_list }} | {{ as_path.access_lists[as_path_access_list].type }} | ```{{ as_path.access_lists[as_path_access_list].match }}``` | {{ as_path.access_lists[as_path_access_list].origin | arista.avd.default('any') }} |
+{%         if as_path_access_list.name is arista.avd.defined and as_path_access_list.entries is arista.avd.defined %}
+{%             for as_path_access_list_entry in as_path_access_list.entries %}
+| {{ as_path_access_list.name }} | {{ as_path_access_list_entry.type }} | ```{{ as_path_access_list_entry.match }}``` | {{ as_path_access_list_entry.origin | arista.avd.default('any') }} |
+{%             endfor %}
+{%         endif %}
 {%     endfor %}
 
 ### AS Path Lists configuration
