@@ -30,7 +30,16 @@ PARENT_CONTAINER = {
 INVENTORY_FILE = os.path.dirname(
     os.path.realpath(__file__)) + "/../../inventory/inventory.yml"
 
-ROOT_CONTAINER = 'Tenant'
+ROOT_CONTAINER = "Tenant"
+NON_DEFAULT_PARENT_CONTAINER = "DC2"
+SEARCH_CONTAINER = "DC1_SPINES"
+GET_DEVICES = ['DC1-SPINE1', 'DC1-SPINE2']
+GET_DEVICE_FILTER = "SPINE2"
+
+HOSTNAME_VALID = "test1.aristanetworks.com"
+HOSTNAME_INVALID = "test1.bsn.com"
+HOSTNAME_FILTER_VALID = ["arista", "aristanetworks"]
+HOSTNAME_FILTER_INVALID = "aristanetworks"
 
 TREELIB = treelib.tree.Tree()
 TREELIB.create_node("Tenant", "Tenant")
@@ -38,6 +47,8 @@ TREELIB.create_node("CVP", "CVP", parent="Tenant")
 TREELIB.create_node("DC1", "DC1", parent="Tenant")
 TREELIB.create_node("Leaf1", "Leaf1", parent="DC1")
 TREELIB.create_node("Leaf2", "Leaf2", parent="DC1")
+TREELIB_VALID_LEAF = "Leaf1"
+TREELIB_INVALID_LEAF = "DC1"
 
 
 @pytest.fixture(scope="session")
@@ -53,23 +64,23 @@ def inventory():
 
 class TestInventoryToContainer:
     def test_is_in_filter_default_filter(self):
-        output = is_in_filter(hostname="aristanetworks.com")
+        output = is_in_filter(hostname=HOSTNAME_VALID)
         assert output
 
     def test_is_in_filter_valid_hostname(self):
-        output = is_in_filter(hostname_filter=[
-                              "arista", "aristanetworks"], hostname="test1.aristanetworks.com")
+        output = is_in_filter(
+            hostname_filter=HOSTNAME_FILTER_VALID, hostname=HOSTNAME_VALID)
         assert output
 
     def test_is_in_filter_invalid_hostname(self):
         output = is_in_filter(
-            hostname_filter=["arista", "aristanetworks"], hostname="test1.bsn.com")
+            hostname_filter=HOSTNAME_FILTER_VALID, hostname=HOSTNAME_INVALID)
         assert output is False
 
     # TODO: Check if this is a valid testcase. Add a type check?
     def test_is_in_filter_invalid_filter(self):
-        output = is_in_filter(hostname_filter="aristanetworks",
-                              hostname="test1.aristanetworks.com")
+        output = is_in_filter(hostname_filter=HOSTNAME_FILTER_INVALID,
+                              hostname=HOSTNAME_VALID)
         assert output
 
     def test_isIterable_default_iterable(self):
@@ -87,11 +98,11 @@ class TestInventoryToContainer:
         assert output is False
 
     def test_isLeaf_valid_leaf(self):
-        output = isLeaf(TREELIB, "Leaf1")
+        output = isLeaf(TREELIB, TREELIB_VALID_LEAF)
         assert output
 
     def test_isLeaf_invalid_leaf(self):
-        output = isLeaf(TREELIB, "DC1")
+        output = isLeaf(TREELIB, TREELIB_INVALID_LEAF)
         assert output is False
 
     def test_isLeaf_none_leaf(self):
@@ -136,23 +147,20 @@ class TestInventoryToContainer:
         assert output == None
 
     def test_get_devices_non_default_search_container(self, inventory):
-        expected_output = ['DC1-SPINE1', 'DC1-SPINE2']
         output = get_devices(
-            inventory, search_container="DC1_SPINES", devices=[])
-        assert output == expected_output
+            inventory, search_container=SEARCH_CONTAINER, devices=[])
+        assert output == GET_DEVICES
 
     def test_get_devices_preexisting_devices(self, inventory):
         devices = ["TEST_DEVICE"]
-        expected_output = ['DC1-SPINE1', 'DC1-SPINE2']
         output = get_devices(
-            inventory, search_container="DC1_SPINES", devices=devices)
-        assert output == ["TEST_DEVICE"] + expected_output
+            inventory, search_container=SEARCH_CONTAINER, devices=devices)
+        assert output == ["TEST_DEVICE"] + GET_DEVICES
 
     def test_get_devices_preexisting_devices(self, inventory):
-        expected_output = ['DC1-SPINE2']
         output = get_devices(
-            inventory, search_container="DC1_SPINES", devices=[], device_filter=["SPINE2"])
-        assert output == expected_output
+            inventory, search_container=SEARCH_CONTAINER, devices=[], device_filter=[GET_DEVICE_FILTER])
+        assert [GET_DEVICE_FILTER in item for item in output]
 
     @pytest.mark.parametrize("DATA", [None])
     def test_serialize_empty_inventory(self, DATA):
@@ -181,11 +189,12 @@ class TestInventoryToContainer:
 
     def test_serialize_non_default_parent_container_with_tree_topology(self, inventory):
         tree = treelib.tree.Tree()
-        tree.create_node("DC2", "DC2")
+        tree.create_node(NON_DEFAULT_PARENT_CONTAINER,
+                         NON_DEFAULT_PARENT_CONTAINER)
         output = serialize(
-            inventory, parent_container="DC2", tree_topology=tree)
+            inventory, parent_container=NON_DEFAULT_PARENT_CONTAINER, tree_topology=tree)
         tree_dict = json.loads(output.to_json())
-        assert (list(tree_dict.keys()))[0] == "DC2"
+        assert (list(tree_dict.keys()))[0] == NON_DEFAULT_PARENT_CONTAINER
 
     @pytest.mark.parametrize("DATA", PARENT_CONTAINER.values(), ids=PARENT_CONTAINER.keys())
     def test_get_containers(self, DATA, inventory):
