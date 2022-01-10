@@ -12,17 +12,18 @@
     - [Group Variables](#group-variables)
     - [Playbooks](#playbooks)
   - [Source of Truth](#source-of-truth)
-  - [How do I use Ansible AVD](#how-do-i-use-ansible-avd)
+  - [How do I use Ansible AVD?](#how-do-i-use-ansible-avd)
   - [Day 2 Operations](#day-2-operations)
+  - [References](#references)
 
 # Ansible and AVD Overview
 ## Day 1 operation i.e. provisioning a network from scratch
-Imagine being tasked with installing and configuring a leaf-spine network with 2 spine switches and 4 leaf switches from scratch:
+Imagine, being assigned a task to install and configure a leaf-spine network with 2 spine switches and 4 leaf switches from scratch:
 
 ![Figure: Arista Leaf Spine topology](../_media/getting-started/LS-Topology.png)
 
 Traditionally, one would grab a laptop, a console cable and perhaps a USB key containing the Arista EOS image of choice.
-This would mean a tedious device by device process of performing a software upgrade and typing configuration commands manually.
+This would mean a tedious task to manually configure and upgrade the software on every device.
 Alternatively by using pre-developed config snippets based on reading the relevant
 Arista design guides and/or previous experience *(did anyone think of copy/paste from existing devices!?)*.
 The configurations would be manually adapted per device, which is time consuming.
@@ -30,9 +31,9 @@ The operator could easily become burned out, leading to user error, impacting th
 
 Using Ansible collection for Arista Validated Designs (AVD), such a task is automated, greatly simplified and many times faster,
 where all the “basic” network configuration is guaranteed to be identical across the entire fabric from day one.
-No longer do you have to manually inspect each and every device for errors and this also applies when updating the
+No longer, you have to manually inspect each and every device for errors and this also applies when updating the
 configuration in day 2 operations. In addition, you do not have to spend any time integrating the Arista Design and Deployment Guides,
-since Ansible AVD is built on those as a foundation. Ansible AVD also fully integrates with Arista Cloudvision,
+since Ansible AVD is built on those as principles. Ansible AVD also fully integrates with Arista Cloudvision,
 which adds a full change control workflow, continuous compliance checks,
 network topology overview as well as real time streaming telemetry including flow based data and more.
 
@@ -44,13 +45,12 @@ It means that repeating a task will not change or overwrite anything - it will a
 
 Tasks in Ansible are executed based on structured data, written in a format called [YAML](https://yaml.org).
 
-YAML will be covered later in the section “How does Ansible Work”.
+YAML will be addressed later, in the section, “How does Ansible Work”.
 
-Ansible can be used to automate many things. In this document, we’re only focusing on the use of Ansible to help us
-automate the provisioning of Arista network devices either directly from Ansible or via Arista CloudVision.
+Ansible can be used to automate many things. In this document, we’re only focusing on the Ansible automation to provision the Arista EOS devices either by leveraging Arista Cloudvision or only Ansible.
 
 ## What is required to run Ansible
-Ansible can run on almost anything, but in production scenarios, we typically see Ansible deployed on a virtual Linux server,
+Ansible can run on almost anything, but in production scenarios, we typically see Ansible being deployed on a virtual Linux server,
 running on the customer’s preferred hypervisor. This Ansible server then communicates either directly with the
 Arista network devices or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
 Controlling what Ansible does is typically done using a SSH terminal session to the Ansible server from the Operator’s computer.
@@ -78,7 +78,7 @@ Ansible AVD is an opinionated collection, meaning that field experiences and bes
 With Ansible AVD, users get up and running quickly without having to invent every part of the network configuration from scratch.
 This means only the most basic information must be provided by the user to get a new fabric up and running.
  
-Parameters which need to be defined by the user include:
+Parameters which need to be defined by the user include (but are not limited to):
 - Username/password for network devices and Cloudvision
 - OOB management IP range
 - IP scope for link addresses
@@ -115,8 +115,7 @@ followed by proper configuration cleanup later.
 ## How does Ansible work
 Before we can tell Ansible to do anything, Ansible needs to know about the devices (or hosts as Ansible calls it) it handles.
 
-This is defined in the Ansible ***inventory*** or actually inventory.yml, which is another text file in YAML format,
-located in a folder that is also called inventory:
+This is defined in the Ansible ***inventory***. Per the official Ansible documentation the [inventory](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#inventory-basics-formats-hosts-and-groups) is a file in either INI or YAML format. In Ansible AVD we use YAML format by default, hence  the file is called inventory.yml, located in a folder that is also called inventory:
 
 ![Figure: Ansible Inventory Folder Structure](../_media/getting-started/Inventory-folder-structure.png)
 
@@ -125,7 +124,7 @@ Please note that the example above is taken from the [ansible-avd-cloudvision-de
 The exact name of the inventory file is not important, but is provided to Ansible in the `ansible.cfg` file for the project or as `ansible-playbook -i ./inventory.yml` when later running Ansible.
 
 ### Inventories
-An example of an what's inside the inventory.yml file is shown below (subset of an actual file for clarity).
+An example of what's inside the inventory.yml file is shown below (subset of an actual file for clarity).
 
 As stated earlier this file is in [YAML](https://yaml.org) format.
 
@@ -176,7 +175,7 @@ The multi-colored figure below is just a visualization of the same text file, sh
 
 ![Figure: Ansible Inventory](../_media/getting-started/Inventory.png)
 
-Key takeaway is that configuration defined at a higher (parent) level will be inherited by the children,
+The key takeaway is that configuration defined at a higher (parent) level will be inherited by the children,
 but if needed, this can be overridden by specifying it again, i.e. most specific wins.
 
 More information about Ansible inventories [here](https://docs.ansible.com/ansible/latest/user_guide/intro_inventory.html#).
@@ -192,7 +191,7 @@ Group variables are defined in YAML files inside the group_vars folder:
 
 ![Figure: Ansible Group Variables](../_media/getting-started/Group-vars-folder-structure.png)
 
-Please note that the example above is taken from the ansible-avd-cloudvision-demo repository. 
+Please note that the example above is taken from the [ansible-avd-cloudvision-demo](https://github.com/arista-netdevops-community/ansible-avd-cloudvision-demo) repository. 
 
 Each file in the `group_vars` folder controls the variables for one of the groups defined in the `inventory.yml` file,
 so settings for the whole network can be specified in `DC1.yml`, and later overridden in `DC1_SPINES.yml` for just the hosts inside that group.
@@ -283,8 +282,7 @@ The above defines a number of defaults that applies to all children of DC1_FABRI
 for the DC1_LEAF1 group and even more specific configuration for the DC1-LEAF1A and DC1-LEAF1B switches.
 
 Group variables can be overridden by specifying host variables for specific devices.
-By default, Ansible overwrites variables including the ones defined for a group and/or host
-(see [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
+(See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order/precedence is (from lowest to highest):
 
 * all group (because it is the ‘parent’ of all other groups)
@@ -393,14 +391,7 @@ Below you will find two examples of documentation automatically created by Ansib
 - [5 stage CLOS fabric across two Data Centers](../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
 - [A single leaf inside the fabric above](../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
 
-## How do I use Ansible AVD
-
-Below are a number of links to additional documentation about Ansible AVD and Ansible in general:
-- With [eos_design](../../roles/eos_cli_config_gen)
-- With [eos_cli_config_gen](../../roles/eos_cli_config_gen)
-- With [Ansible Tower](https://docs.ansible.com/ansible/2.3/tower.html)
-- With CI/CD
-- With [eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
+## How do I use Ansible AVD?
 
 Ansible AVD comes with pre-built templates that you can either decide to re-use as-is or adapt to your liking.
 
@@ -435,4 +426,13 @@ no longer have to be performed on a device-by-device basis across the entire fab
 A configuration change can easily be applied to the Ansible YAML files and the scope for a given change can be specified, e.g. should the new VLAN 100 be added to all or a subset of leaf switches. 
 
 Once your changes are complete, 
-you re-deploy the configuration changes to the relevant network devices, again either via CloudVision Portal or directly via eapi.
+you re-deploy the configuration changes to the relevant network devices, again either via CloudVision Portal or directly via EOS eAPI.
+
+## References
+
+Below are a number of links to additional documentation about Ansible AVD and Ansible in general:
+- With [eos_design](../../roles/eos_cli_config_gen)
+- With [eos_cli_config_gen](../../roles/eos_cli_config_gen)
+- With [Ansible Tower](https://docs.ansible.com/ansible/2.3/tower.html)
+- With CI/CD
+- With [eos_config_deploy_cvp](../../roles/eos_config_deploy_cvp) / [eos_config_deploy_eapi](../../roles/eos_config_deploy_eapi)
