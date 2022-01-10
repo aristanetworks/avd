@@ -107,16 +107,16 @@ This module also use `cvp_instance_ip` / `cvp_instance_ips` knob to set correct 
 
 ```yaml
 cvp_instance_ips:
-  - 10.83.31.63
-  - 10.83.31.64
-  - 10.83.31.65
-cvp_ingestauth_key: blah
+  - < cvp instance 01 >
+  - < cvp instance 02 >
+  - < cvp instance 03 >
+cvp_ingestauth_key: < Fake ingest key overwritten by custom_structured_configuration >
 
 # Cloud Vision server information
 custom_structured_configuration_daemon_terminattr:
   cvauth:
     method: "token"
-    token_file: "/tmp/token"
+    token_file: "< path to the token file >"
 ```
 
 #### Outputs
