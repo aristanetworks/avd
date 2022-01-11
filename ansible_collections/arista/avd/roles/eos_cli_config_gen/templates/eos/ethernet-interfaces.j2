@@ -134,7 +134,7 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(true) %}
    priority-flow-control on
-{%         elif ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(false)%}
+{%         elif ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined(false) %}
    no priority-flow-control
 {%         endif %}
 {%         for priority_block in ethernet_interfaces[ethernet_interface].priority_flow_control.priorities | arista.avd.natural_sort %}
