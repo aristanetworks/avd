@@ -173,6 +173,14 @@ Authorization for configuration commands is enabled.
 
 Authorization for serial console is enabled.
 
+### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group aaaAuth |
+| 5 | group radius |
+| 10,15 | group tacacs+ local |
+
 ### AAA Authorization Device Configuration
 
 ```eos
@@ -180,6 +188,8 @@ Authorization for serial console is enabled.
 aaa authorization exec default group CUST local
 aaa authorization serial-console
 aaa authorization commands all default group aaaAuth
+aaa authorization commands 5 default group radius
+aaa authorization commands 10,15 default group tacacs+ local
 !
 ```
 

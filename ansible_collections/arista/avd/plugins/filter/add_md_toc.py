@@ -14,6 +14,7 @@ try:
 except ImportError:
     HAS_MD_TOC = False
 
+
 def add_md_toc(md_input, skip_lines=0, toc_levels=2, toc_marker='<!-- toc -->'):
     """
     add_md_toc will parse the input MarkDown and add a TOC between the toc_markers

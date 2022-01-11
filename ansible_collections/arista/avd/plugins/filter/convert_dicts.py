@@ -4,8 +4,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from jinja2.runtime import Undefined
-
 
 def convert_dicts(dictionary, primary_key="name"):
     """
