@@ -20,7 +20,7 @@ ethernet_interfaces:
       comment
       Comment created from eos_cli under ethernet_interfaces.Ethernet1
       EOF
-    priority_flow_control: 
+    priority_flow_control:
       enabled: true
       priorities:
         - priority: 5
@@ -42,9 +42,9 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
-    priority_flow_control: 
+    priority_flow_control:
       enabled: true
-      priorities: 
+      priorities:
         - priority: 5
           no_drop: true # no-drop
 
@@ -73,7 +73,7 @@ ethernet_interfaces:
       2345:ABCD:3FE0::3/96:
         valid_lifetime: 100000
         no_autoconfig_flag: true
-    priority_flow_control: 
+    priority_flow_control:
       enabled: false
 
   Ethernet4:
@@ -87,7 +87,7 @@ ethernet_interfaces:
     ipv6_nd_managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
-    priority_flow_control: 
+    priority_flow_control:
       enabled: true
 
   Ethernet5:
