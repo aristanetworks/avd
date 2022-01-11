@@ -116,9 +116,9 @@ router_bgp:
       rd: 145.245.21.0:1
       route_targets:
         both:
-        - 145.245.21.0:1
+          - 145.245.21.0:1
       no_redistribute_routes:
-      - learned
+        - learned
   vrfs:
 ## Tenant_A ##
     TENANT_A_PROJECT01:
