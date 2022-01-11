@@ -1,7 +1,7 @@
 - name: Test with all parameters
   configlet_build_config:
     configlet_dir: '{{ configlet_path }}'
-    configlet_prefix: 'New'
+    configlet_prefix: 'Prefix'
     configlet_extension: 'cfg'
     destination: "{{ actual_output }}"
   register: result
@@ -18,5 +18,5 @@
       - result.CVP_CONFIGLETS != {}
       - diff_output.stdout == ""
       - item is defined
-      - "'New' in item[0:3]"
+      - "'Prefix' in item[0:6]"
   with_items: "{{ result.CVP_CONFIGLETS }}"

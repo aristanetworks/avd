@@ -1,6 +1,6 @@
 CVP_CONFIGLETS:
-  New_new: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n   exec /usr/bin/TerminAttr\
-    \ -cvaddr=10.255.0.1:9910 -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
+  Prefix_default_extension: "!RANCID-CONTENT-TYPE: arista\n!\ndaemon TerminAttr\n\
+    \   exec /usr/bin/TerminAttr -cvaddr=10.255.0.1:9910 -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata\
     \ -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs\n   no shutdown\n\
     !\nvlan internal order ascending range 1006 1199\n!\ntransceiver qsfp default-mode\
     \ 4x10G\n!\nservice routing protocols model multi-agent\n!\nhostname DC1-L2LEAF1A\n\

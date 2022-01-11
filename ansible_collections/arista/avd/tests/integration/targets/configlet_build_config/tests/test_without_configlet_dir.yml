@@ -1,7 +1,7 @@
 - name: Test without configlet_dir
   ignore_errors: yes
   configlet_build_config:
-    configlet_prefix: 'New'
+    configlet_prefix: 'Prefix'
     configlet_extension: 'cfg'
     destination: "{{ actual_output }}"
   register: result

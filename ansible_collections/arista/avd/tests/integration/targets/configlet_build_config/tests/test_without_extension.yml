@@ -1,7 +1,7 @@
 - name: Test without extension
   configlet_build_config:
     configlet_dir: '{{ configlet_path }}'
-    configlet_prefix: 'New'
+    configlet_prefix: 'Prefix'
     destination: "{{ actual_output }}"
   register: result
 
@@ -16,6 +16,6 @@
        - result.changed == false
        - result.CVP_CONFIGLETS != {}
        - item is defined
-       - "'New' in item[0:3]"
+       - "'Prefix' in item[0:6]"
        - diff_output.stdout == ""
   with_items: "{{ result.CVP_CONFIGLETS }}"
