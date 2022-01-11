@@ -14,6 +14,7 @@
   - [Source of Truth](#source-of-truth)
   - [How do I use Ansible AVD?](#how-do-i-use-ansible-avd)
   - [Day 2 Operations](#day-2-operations)
+    - [Day 2 Operations Example](#day-2-operations-example)
   - [References](#references)
 
 # Ansible and AVD Overview
@@ -423,10 +424,103 @@ The really time consuming day-to-day tasks such as:
 
 no longer have to be performed on a device-by-device basis across the entire fabric.
 
-A configuration change can easily be applied to the Ansible YAML files and the scope for a given change can be specified, e.g. should the new VLAN 100 be added to all or a subset of leaf switches. 
+A configuration change can easily be applied to the Ansible YAML files and the scope for a given change can be specified, e.g. should the new VLAN 100 be added to all or a subset of leaf switches.
 
 Once your changes are complete, 
 you re-deploy the configuration changes to the relevant network devices, again either via CloudVision Portal or directly via EOS eAPI.
+
+### Day 2 Operations Example
+
+Let's imagine that you want to create a new tenant in your existing fabric.
+This would require at least the following configuration:
+- VRF(s)
+- VLAN(s)
+- SVI(s)
+
+You could create a YAML file, in this example called DC1_TENANTS_NETWORKS.yml, describing the fabric-wide generic configuration for the tenant:
+
+```
+# DC1 Tenants Networks
+# Documentation of Tenant specific information - Vlans/VRFs
+tenants:
+  # Tenant A Specific Information - VRFs / VLANs
+  Tenant_A:
+    mac_vrf_vni_base: 10000
+    vrfs:
+      Tenant_A_OP_Zone:
+        vrf_vni: 10
+        vtep_diagnostic:
+          loopback: 100
+          loopback_ip_range: 10.255.1.0/24
+        svis:
+          110:
+            name: Tenant_A_OP_Zone_1
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+          111:
+            vni_override: 50111
+            name: Tenant_A_OP_Zone_2
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.11.1/24
+          112:
+            vni_override: 50112
+            name: Tenant_A_OP_Zone_3
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.12.254/24
+```
+
+You would then describe the scope for where this new tenant should exist in the inventory.yml file, as described in earlier chapters.
+For sake of simplicity, let's say you defined just one pair of leaf switches that would serve this tenant.
+
+After running the relevant playbook, their tenant-related configuration would end up looking like this:
+```
+vlan 110
+   name Tenant_A_OP_Zone_1
+!
+vlan 111
+   name Tenant_A_OP_Zone_2
+!
+vlan 112
+   name Tenant_A_OP_Zone_3
+!
+vrf instance Tenant_A_OP_Zone
+!
+interface Loopback100
+   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address 10.255.1.3/32
+!
+interface Vlan110
+   description Tenant_A_OP_Zone_1
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.10.1/24
+!
+interface Vlan111
+   description Tenant_A_OP_Zone_2
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.11.1/24
+!
+interface Vlan112
+   description Tenant_A_OP_Zone_3
+   no shutdown
+   vrf Tenant_A_OP_Zone
+   ip address virtual 10.1.12.254/24
+!
+interface Vxlan1
+   vxlan vlan 110 vni 10110
+   vxlan vlan 111 vni 50111
+   vxlan vlan 112 vni 50112
+   vxlan vrf Tenant_A_OP_Zone vni 10
+```
+
+As you can tell, by simply expanding the scope of the devices where Tenant_A exists, would result in similar configuration being generated for those devices as well.
+All without any manual intervention and with very little room for error.
 
 ## References
 
