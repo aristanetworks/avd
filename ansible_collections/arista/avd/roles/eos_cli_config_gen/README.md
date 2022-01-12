@@ -1711,7 +1711,7 @@ daemon_terminattr:
     method: < "token" | "token-secure" | "key" >
     key: < key >
     token_file: < path | e.g. "/tmp/token" >
-  # Compression scheme when streaming to CloudVision. The default is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
+  # The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0. There is no need to change the compression scheme.
   # Encrypt the private key used for authentication to CloudVision
   cvobscurekeyfile: < true | false >
   # Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
