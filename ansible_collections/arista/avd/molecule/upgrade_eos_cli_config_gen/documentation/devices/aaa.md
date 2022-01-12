@@ -170,6 +170,12 @@ Authorization for configuration commands is enabled.
 
 Authorization for serial console is enabled.
 
+### AAA Authorization Privilege Levels Summary
+
+| Privilege Level | User Stores |
+| --------------- | ----------- |
+| all | group aaaAuth |
+
 ### AAA Authorization Device Configuration
 
 ```eos
