@@ -104,10 +104,10 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
+| forwarding_mode | arad |
 | lag.hardware_only | True |
 | lag.mode | 512x32 |
 | multicast_replication.default | ingress |
-| forwarding_mode | arad |
 
 ## Platform Configuration
 
