@@ -78,7 +78,6 @@ vlan_interfaces:
 {%             if svi.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
     ospf_area: {{ svi.ospf.area | arista.avd.default(0) }}
     ospf_network_point_to_point: {{ svi.ospf.point_to_point | arista.avd.default(false) }}
-
 {%                 if svi.ospf.cost is arista.avd.defined %}
     ospf_cost: {{ svi.ospf.cost }}
 {%                 endif %}
