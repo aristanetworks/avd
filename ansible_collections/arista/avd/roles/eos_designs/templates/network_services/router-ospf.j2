@@ -1,8 +1,9 @@
 {# Rendering tenant OSPF #}
 {% for tenant in network_services_data.tenants %}
 {%     for vrf in tenant.vrfs %}
-{%         if vrf.ospf is arista.avd.defined and inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
+{%         if vrf.ospf.enabled is arista.avd.defined(true) and inventory_hostname in vrf.ospf.nodes | arista.avd.default([inventory_hostname]) %}
 {%             set network_services_data.ospf_configured = true %}
+{%             break %}
 {%         endif %}
 {%     endfor %}
 {% endfor %}
@@ -41,7 +42,7 @@ router_ospf:
       max_lsa: {{ vrf.ospf.max_lsa }}
 {%                 endif %}
       redistribute:
-{%                 if vrf.ospf.redistribute_bgp.enabled | arista.avd.default(true) == true %}
+{%                 if vrf.ospf.redistribute_bgp.enabled | arista.avd.default(true) %}
         bgp:
           enabled: true
 {%                     if vrf.ospf.redistribute_bgp.route_map is arista.avd.defined %}

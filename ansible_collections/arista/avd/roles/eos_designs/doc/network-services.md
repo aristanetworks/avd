@@ -153,14 +153,14 @@ tenants:
           max_lsa: < int >
           bfd: < true | false, Default -> false >
           redistribute_bgp:
-            enabled: < true | false >
+            enabled: < true | false, Default -> true >
             route_map: < route-map name >
           nodes:
             - < hostname1 >
             - < hostname2 >
 
         # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
-        redistribute_ospf: < true | false >
+        redistribute_ospf: < true | false, Default -> true >
 
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
