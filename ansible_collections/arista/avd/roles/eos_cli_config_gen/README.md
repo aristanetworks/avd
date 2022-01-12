@@ -101,6 +101,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+      - [Monitor Sessions](#monitor-sessions)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -1972,6 +1973,26 @@ snmp_server:
       enable: < true | false >
     - name: < vrf_name >
       enable: < true | false >
+```
+
+#### Monitor Sessions
+
+```yaml
+monitor_session:
+  - name: < session_name_1 >
+    source:
+      - < source_port_1 >
+      - < source_port_2 >
+    destination:
+      - < dest_port_1 >
+      - < dest_port_2 >
+    encapsulation_gre_metadata_tx: < true | false >
+    header_remove_size: < 1-90 >
+    ip_access_group: < acl_name >
+    ipv6_access_group: < acl_name >
+    mac_access_group: < acl_name >
+    sample: < 1-4294967294 >
+    truncate_size: < 128 | 192 >
 ```
 
 ### System Control-Plane
