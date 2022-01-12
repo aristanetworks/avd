@@ -14,10 +14,10 @@
 - name: Validate output
   assert:
         that:
-           - CVP_VARS is success
-           - CVP_VARS.CVP_TOPOLOGY != {}
-           - CVP_VARS.changed == false
-           - diff_output.stdout == ""
-           - item is defined
-           - item == "Tenant"
+              - CVP_VARS is success
+              - CVP_VARS.CVP_TOPOLOGY != {}
+              - CVP_VARS.changed == false
+              - diff_output.stdout == ""
+              - item is defined
+              - item == "Tenant"
   with_items: "{{ CVP_VARS.CVP_TOPOLOGY.DC1_FABRIC.parent_container }}"

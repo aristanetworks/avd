@@ -1,4 +1,4 @@
-from ansible_collections.arista.avd.plugins.filter.add_md_toc import *
+from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
 import pytest
 import md_toc
 import re
@@ -16,8 +16,6 @@ SKIP_LINES_LIST = [0, 1, 2]
 TOC_LEVELS = [1, 2, 3]
 INVALID_TOC_LEVEL = 0
 
-f = FilterModule()
-
 
 class TestAddMdTocFilter():
     @pytest.mark.parametrize("MD_INPUT", MD_INPUTS)
@@ -30,12 +28,15 @@ class TestAddMdTocFilter():
         else:
             # Extract the TOC from the response
             with open(MD_INPUT, "r") as input_file:
-                resp = add_md_toc(input_file.read(), skip_lines=SKIP_LINES, toc_levels=TOC_LEVEL, toc_marker=TOC_MARKER)
-            m = re.compile(r'(<avd_unit_test_tag_start>)([\S\s]*?)(<avd_unit_test_tag_end>)')
+                resp = add_md_toc(input_file.read(
+                ), skip_lines=SKIP_LINES, toc_levels=TOC_LEVEL, toc_marker=TOC_MARKER)
+            m = re.compile(
+                r'(<avd_unit_test_tag_start>)([\S\s]*?)(<avd_unit_test_tag_end>)')
             toc_output = m.search(resp).group(2)
 
             # Generate TOC for input file
-            toc_input = md_toc.build_toc(MD_INPUT, list_marker='-', keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
+            toc_input = md_toc.build_toc(
+                MD_INPUT, list_marker='-', keep_header_levels=TOC_LEVEL, skip_lines=SKIP_LINES)
 
             assert toc_output.strip() == toc_input.strip()
 
@@ -44,7 +45,8 @@ class TestAddMdTocFilter():
         if(MD_INPUT is not None):
             with open(MD_INPUT, "r") as input_file:
                 with pytest.raises(ValueError):
-                    resp = add_md_toc(input_file.read(), toc_levels=INVALID_TOC_LEVEL)
+                    resp = add_md_toc(input_file.read(),
+                                      toc_levels=INVALID_TOC_LEVEL)
 
     def test_add_md_toc_invalid(self):
         md_input_toc_invalid = open(MD_INPUT_INVALID, "r")
@@ -55,19 +57,10 @@ class TestAddMdTocFilter():
 
         assert resp.strip() != expected_toc.strip()
 
-
     def test_add_md_toc_btw_specific_markers(self):
         with open(DIR_PATH+'/markers_at_bottom.md', "r") as input_file:
-            resp = add_md_toc(input_file.read(), skip_lines=0, toc_levels=2, toc_marker=TOC_MARKER)
+            resp = add_md_toc(input_file.read(), skip_lines=0,
+                              toc_levels=2, toc_marker=TOC_MARKER)
 
         with open(DIR_PATH + '/expected_output_toc_at_bottom.md', "r") as expected_output:
             assert resp == expected_output.read()
-
-
-
-
-
-
-
-
-

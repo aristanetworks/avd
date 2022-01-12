@@ -11,6 +11,6 @@
 - name: Validate output
   assert:
         that:
-           - CVP_VARS is failed
-           - "'missing required arguments:' in CVP_VARS.msg"
-           - CVP_VARS.changed == false
+              - CVP_VARS is failed
+              - "'missing required arguments:' in CVP_VARS.msg"
+              - CVP_VARS.changed == false

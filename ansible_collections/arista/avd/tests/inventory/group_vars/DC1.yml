@@ -38,9 +38,8 @@ custom_structured_configuration_ntp:
     name: Management1
     vrf: MGMT
   servers:
-  - name: 0.fr.pool.ntp.org
-    preferred: true
-    vrf: MGMT
-  - name: 1.fr.pool.ntp.org
-    vrf: MGMT
-
+    - name: 0.fr.pool.ntp.org
+      preferred: true
+      vrf: MGMT
+    - name: 1.fr.pool.ntp.org
+      vrf: MGMT

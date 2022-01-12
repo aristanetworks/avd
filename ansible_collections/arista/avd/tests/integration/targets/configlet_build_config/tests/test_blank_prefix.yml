@@ -12,11 +12,11 @@
 
 - name: Validate output
   assert:
-     that:
-       - result is success
-       - result.changed == false
-       - result.CVP_CONFIGLETS != {}
-       - item is defined
-       - "'_' in item[0]"
-       - diff_output.stdout == ""
+    that:
+      - result is success
+      - result.changed == false
+      - result.CVP_CONFIGLETS != {}
+      - item is defined
+      - "'_' in item[0]"
+      - diff_output.stdout == ""
   with_items: "{{ result.CVP_CONFIGLETS }}"

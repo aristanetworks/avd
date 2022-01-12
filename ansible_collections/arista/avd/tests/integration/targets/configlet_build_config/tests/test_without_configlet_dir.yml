@@ -8,7 +8,7 @@
 
 - name: Validate output
   assert:
-     that:
-       - result is failed
-       - result.changed == false
-       - "'missing required arguments:' in result.msg"
+    that:
+      - result is failed
+      - result.changed == false
+      - "'missing required arguments:' in result.msg"

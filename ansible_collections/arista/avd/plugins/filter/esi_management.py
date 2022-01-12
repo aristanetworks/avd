@@ -26,7 +26,7 @@ class FilterModule(object):
         str
             String based on route-target format like 03:03:02:02:01:01
         """
-        if esi_short == None:
+        if esi_short is None:
             return None
         delimiter = ':'
         esi = esi_short.replace(delimiter, "")

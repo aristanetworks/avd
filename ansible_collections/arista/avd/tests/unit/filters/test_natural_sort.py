@@ -1,4 +1,4 @@
-from ansible_collections.arista.avd.plugins.filter.natural_sort import *
+from ansible_collections.arista.avd.plugins.filter.natural_sort import FilterModule, convert
 import pytest
 from jinja2.runtime import Undefined
 from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natural_sort
@@ -6,7 +6,8 @@ from ansible_collections.arista.avd.tests.unit.filters.filter_utils import natur
 f = FilterModule()
 
 STRINGS_VALID = ["100", "200", "ABC"]
-ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {'a1': 123, 'a2': 2, 'a10': 333, 'a11': 4456}]
+ITEMS_TO_NATURAL_SORT = [None, [], {}, "", ["1,2,3,4", "11,2,3,4", "5.6.7.8"], {
+    'a1': 123, 'a2': 2, 'a10': 333, 'a11': 4456}]
 
 
 class TestNaturalSortFilter():

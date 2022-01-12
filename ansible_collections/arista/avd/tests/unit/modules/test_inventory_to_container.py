@@ -122,29 +122,29 @@ class TestInventoryToContainer:
         output = get_device_option_value(
             device_data_dict=data,
             option_name='is_deployed')
-        assert output == None
+        assert output is None
 
     def test_get_device_option_value_none(self, inventory):
         data = inventory['all']['children']['CVP']['hosts']
         output = get_device_option_value(
             device_data_dict=data,
             option_name=None)
-        assert output == None
+        assert output is None
 
     def test_get_device_option_value_empty_data(self, inventory):
         data = inventory['all']['children']['CVP']['hosts']
         output = get_device_option_value(
             device_data_dict=None,
             option_name='cv_server')
-        assert output == None
+        assert output is None
 
     def test_get_devices_empty_inventory(self):
         output = get_devices(None)
-        assert output == None
+        assert output is None
 
     def test_get_devices_default_search_container(self, inventory):
         output = get_devices(inventory)
-        assert output == None
+        assert output is None
 
     def test_get_devices_non_default_search_container(self, inventory):
         output = get_devices(
@@ -165,7 +165,7 @@ class TestInventoryToContainer:
     @pytest.mark.parametrize("DATA", [None])
     def test_serialize_empty_inventory(self, DATA):
         output = serialize(DATA)
-        assert output == None
+        assert output is None
 
     def test_serialize_valid_inventory(self, inventory):
         output = serialize(inventory)

@@ -1,4 +1,4 @@
-from ansible_collections.arista.avd.plugins.filter.markdown_rendering import *
+from ansible_collections.arista.avd.plugins.filter.markdown_rendering import FilterModule
 import pytest
 
 STATE_STRINGS = ['PASS', 'FAIL']
@@ -12,6 +12,7 @@ GH_CODE['PASS'] = ':white_check_mark:'
 GH_CODE['FAIL'] = ':x:'
 
 f = FilterModule()
+
 
 class TestMarkdownRenderingFilter():
     @pytest.mark.parametrize("STATE_STRING", STATE_STRINGS)
@@ -28,4 +29,3 @@ class TestMarkdownRenderingFilter():
         resp = f.filters()
         assert isinstance(resp, dict)
         assert 'status_render' in resp.keys()
-
