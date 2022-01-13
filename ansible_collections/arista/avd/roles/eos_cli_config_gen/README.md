@@ -195,7 +195,7 @@ AVD currently supports 2 different data models for extended ACLs:
 Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
 Access list names must be unique.
 
-Legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
+The legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
 
 ```yaml
 access_lists:
