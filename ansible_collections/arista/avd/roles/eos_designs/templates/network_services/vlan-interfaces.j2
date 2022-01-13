@@ -75,6 +75,27 @@ vlan_interfaces:
         vrf: {{ svi_ip_helpers[helper_ip].source_vrf | arista.avd.default }}
 {%                 endfor %}
 {%             endif %}
+{%             if svi.ospf.enabled is arista.avd.defined(true) and vrf.ospf.enabled is arista.avd.defined(true) %}
+    ospf_area: {{ svi.ospf.area | arista.avd.default(0) }}
+    ospf_network_point_to_point: {{ svi.ospf.point_to_point | arista.avd.default(false) }}
+{%                 if svi.ospf.cost is arista.avd.defined %}
+    ospf_cost: {{ svi.ospf.cost }}
+{%                 endif %}
+{%                 if svi.ospf.authentication is arista.avd.defined("simple") and svi.ospf.simple_auth_key is arista.avd.defined %}
+    ospf_authentication: "simple"
+    ospf_authentication_key: {{ svi.ospf.simple_auth_key }}
+{%                 elif svi.ospf.authentication is arista.avd.defined("message-digest") and svi.ospf.message_digest_keys is arista.avd.defined %}
+    ospf_authentication: "message-digest"
+    ospf_message_digest_keys:
+{%                     for key in svi.ospf.message_digest_keys | arista.avd.natural_sort %}
+{%                         if key.id is arista.avd.defined and key.key is arista.avd.defined %}
+      {{ key.id }}:
+        hash_algorithm: {{ key.hash_algorithm | arista.avd.default("sha512") }}
+        key: {{ key.key }}
+{%                         endif %}
+{%                     endfor %}
+{%                 endif %}
+{%             endif %}
 {%             if svi_raw_eos_cli is arista.avd.defined %}
     eos_cli: |
       {{ svi_raw_eos_cli | indent(6,false) }}
@@ -89,7 +110,8 @@ vlan_interfaces:
                                                  tenant.enable_mlag_ibgp_peering_vrfs,
                                                  true) %}
 {%             if configure_mlag_ibgp_peering %}
-  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (vrf.vrf_vni - 1)) }}:
+{%                 set bgp_vrf_vni = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) %}
+  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (bgp_vrf_vni - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false

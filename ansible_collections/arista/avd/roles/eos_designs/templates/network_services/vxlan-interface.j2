@@ -36,7 +36,7 @@ vxlan_interface:
 {%     for tenant in network_services_data.tenants %}
 {%         for vrf in tenant.vrfs %}
         {{ vrf.name }}:
-          vni: {{ vrf.vrf_vni }}
+          vni: {{ vrf.vrf_vni | arista.avd.default(vrf.vrf_id) }}
 {%         endfor %}
 {%     endfor %}
 {% endif %}
