@@ -31,7 +31,6 @@
     - [Custom Templates](#custom-templates)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
-    - [Error Correction Encoding](#error-correction-encoding)
     - [Filters](#filters)
       - [Prefix Lists](#prefix-lists)
       - [IPv6 Prefix Lists](#ipv6-prefix-lists)
@@ -133,6 +132,7 @@
     - [Spanning Tree](#spanning-tree)
     - [Terminal Settings](#terminal-settings)
     - [Traffic Policies](#traffic-policies)
+    - [Transceiver Settings](#transceiver-settings)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
@@ -177,7 +177,7 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 ## Input Variables
 
-- The input variables are documented inline within yaml formated output with: "< >"
+- The input variables are documented inline within yaml formatted output with: "< >"
 - Variables are organized in order of how they appear in the CLI syntax.
 - Available features  and variables may vary by platforms, refer to documentation on arista.com for specifics.
 - All values are optional.
@@ -372,10 +372,10 @@ enable_password:
 
 ```yaml
 ip_radius_source_interfaces:
-    - name: <interface_name_1 >
-      vrf: < vrf_name_1 >
-    - name: <interface_name_2 >
-      vrf: < vrf_name_2 >
+  - name: < interface_name_1 >
+    vrf: < vrf_name_1 >
+  - name: < interface_name_2 >
+    vrf: < vrf_name_2 >
 ```
 
 #### IP TACACS+ Source Interfaces
@@ -427,7 +427,7 @@ roles:
 radius_servers:
   - host: < host IP address or name >
     vrf: < vrf_name >
-    key: < encypted_key >
+    key: < encrypted_key >
 ```
 
 #### Tacacs+ Servers
@@ -437,10 +437,10 @@ tacacs_servers:
   hosts:
     - host: < host1_ip_address >
       vrf: < vrf_name >
-      key: < encypted_key >
+      key: < encrypted_key >
       single_connection: < true | false >
     - host: < host2_ip_address >
-      key: < encypted_key >
+      key: < encrypted_key >
       timeout: < timeout in seconds >
   policy_unknown_mandatory_attribute_ignore: < true | false >
 ```
@@ -498,6 +498,7 @@ errdisable:
       - xcvr-misconfigured
       - xcvr-overheat
       - xcvr-power-unsupported
+      - xcvr-unsupported
   recovery:
     causes:
       - arp-inspection
@@ -517,15 +518,6 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
     interval: < seconds | default = 300 >
-```
-
-### Error Correction Encoding
-
-```yaml
-error_correction_encoding:
-  enabled: < true | false | default -> true >
-  fire_code: < true | false >
-  reed_solomon: < true | false >
 ```
 
 ### Filters
@@ -710,7 +702,7 @@ platform:
 #### Redundancy
 
 ```yaml
-Redundancy:
+redundancy:
   protocol: < redundancy_protocol >
 ```
 
@@ -720,9 +712,9 @@ Redundancy:
 hardware:
   speed_groups:
     1:
-      serdes: <10g | 25g>
+      serdes: < 10g | 25g >
     2:
-      serdes: <10g | 25g>
+      serdes: < 10g | 25g >
     ...
 ```
 
@@ -742,6 +734,10 @@ ethernet_interfaces:
     mtu: < mtu >
     type: < routed | switched | l3dot1q >
     vrf: < vrf_name >
+    error_correction_encoding:
+      enabled: < true | false | default -> true >
+      fire_code: < true | false >
+      reed_solomon: < true | false >
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
@@ -800,8 +796,8 @@ ethernet_interfaces:
       event:
         link_status: < true | false >
     lldp:
-      transmit: < true | false >
-      receive: < true | false >
+      transmit: < true | false >
+      receive: < true | false >
     service_profile: < qos_profile >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
@@ -832,6 +828,7 @@ ethernet_interfaces:
     transceiver:
       media:
         override: < transceiver_type >
+    ip_proxy_arp: < true | false >
     # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -854,8 +851,15 @@ ethernet_interfaces:
     phone:
       trunk: < tagged | untagged >
       vlan: < 1-4094 >
+    trunk_groups:
+      - < trunk_group_name_1 >
+      - < trunk_group_name_2 >
     l2_protocol:
       encapsulation_dot1q_vlan: < vlan number >
+    error_correction_encoding:
+      enabled: < true | false | default -> true >
+      fire_code: < true | false >
+      reed_solomon: < true | false >
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
@@ -910,9 +914,10 @@ ethernet_interfaces:
     lacp_timer:
       mode: < fast | normal >
       multiplier: < 3 - 3000 >
+    lacp_port_priority: < 0-65535 >
     lldp:
-      transmit: < true | false >
-      receive: < true | false >
+      transmit: < true | false >
+      receive: < true | false >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -968,6 +973,7 @@ loopback_interfaces:
       - < IPv4_address/Mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/Mask >
+    ip_proxy_arp: < true | false >
     ospf_area: < ospf_area >
     mpls:
       ldp:
@@ -991,6 +997,9 @@ loopback_interfaces:
 port_channel_interfaces:
   < Port-Channel_interface_1 >:
     description: < description >
+    logging:
+      event:
+        link_status: < true | false >
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
@@ -1044,6 +1053,7 @@ port_channel_interfaces:
       unknown_unicast:
         level: < Configure maximum storm-control level >
         unit: < percent* | pps (optional and is hardware dependant - default is percent)>
+    ip_proxy_arp: < true | false >
     isis_enable: < ISIS Instance >
     isis_passive: < boolean >
     isis_metric: < integer >
@@ -1127,6 +1137,7 @@ vlan_interfaces:
     arp_cache_dynamic_capacity: < 0-4294967295 >
     arp_gratuitous_accept: < true | false >
     arp_monitor_mac_address: < true | false >
+    ip_proxy_arp: < true | false >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -1331,6 +1342,10 @@ mac_security:
         "< connection_key >":
           encrypted_key: "< encrypted_key >"
           fallback: < true | false -> default >
+      mka:
+        session:
+          rekey_period: < 30-100000 in seconds >
+      sci: < true | false >
 ```
 
 ### Maintenance Mode
@@ -1565,10 +1580,10 @@ management_ssh:
 
 ```yaml
 ip_ssh_client_source_interfaces:
-    - name: < interface_name_1 >
-      vrf: < vrf_name_1 | default -> "default" >
-    - name: <interface_name_2>
-      vrf: < vrf_name_2 | default -> "default" >
+  - name: < interface_name_1 >
+    vrf: < vrf_name_1 | default -> "default" >
+  - name: < interface_name_2 >
+    vrf: < vrf_name_2 | default -> "default" >
 ```
 
 #### NTP
@@ -1579,21 +1594,21 @@ ntp:
     name: < source_interface >
     vrf: < vrf_name >
   servers:
-  - name: < IP | hostname >
-    burst: < true | false >
-    iburst: < true | false >
-    key: < 1 - 65535 >
-    local_interface: < source_interface >
-    maxpoll: < 3 - 17 (logorithmic)>
-    minpoll: < 3 - 17 (logorithmic)>
-    preferred: < true | false >
-    version: < 1 - 4 >
-    vrf: < vrf_name >
+    - name: < IP | hostname >
+      burst: < true | false >
+      iburst: < true | false >
+      key: < 1 - 65535 >
+      local_interface: < source_interface >
+      maxpoll: < 3 - 17 (Logarithmic) >
+      minpoll: < 3 - 17 (Logarithmic) >
+      preferred: < true | false >
+      version: < 1 - 4 >
+      vrf: < vrf_name >
   authenticate: <true | false >
   authentication_keys:
-  - id: <key_identifier | 1-65534>:
-    hash_algorithm: < md5 | sha1 >
-    key: "< type7_obfuscated_key >"
+    - id: < key_identifier | 1-65534 >
+      hash_algorithm: < md5 | sha1 >
+      key: "< type7_obfuscated_key >"
   trusted_keys: "< list of trusted-keys as string ex. 10-12,15 >"
 ```
 
@@ -1632,7 +1647,7 @@ mlag_configuration:
 
 ```yaml
 ip_igmp_snooping:
-  globally_enabled: < true | false (default is true) >
+  globally_enabled: < true | false | default -> true >
   vlans:
     < vlan_id >:
       enabled: < true | false >
@@ -1705,9 +1720,7 @@ daemon_terminattr:
     method: < "token" | "token-secure" | "key" >
     key: < key >
     token_file: < path | e.g. "/tmp/token" >
-  # Compression scheme when streaming to CloudVision. The default is gzip since TerminAttr 1.6.1 and CVP 2019.1.0.
-  # This flag does not have to be set to take effect.
-  cvcompression: < gzip | none >
+  # The default compression scheme when streaming to CloudVision is gzip since TerminAttr 1.6.1 and CVP 2019.1.0. There is no need to change the compression scheme.
   # Encrypt the private key used for authentication to CloudVision
   cvobscurekeyfile: < true | false >
   # Proxy server through which CloudVision is reachable. Useful when the CloudVision server is hosted in the cloud.
@@ -1803,8 +1816,8 @@ monitor_connectivity:
 ```yaml
 ### Event Handler ###
 event_handlers:
-  evpn-blacklist-recovery:
-    action_type: < Type of action. [bash, increment, log]>
+  < event_handler_name >:
+    action_type: < Type of action. [bash, increment, log] >
     action: < Command to execute >
     delay: < Event-handler delay in seconds >
     trigger: < Configure event trigger condition. Only supports on-logging >
@@ -1824,7 +1837,6 @@ event_monitor:
 ```yaml
 load_interval:
   default: < seconds >
-
 ```
 
 #### Logging
@@ -1882,6 +1894,7 @@ sflow:
       source_interface: < source_interface >
   destinations:
     < sflow_destination_ip_1 >:
+      port: < port_number >
     < sflow_destination_ip_2 >:
   source_interface: < source_interface >
   run: < true | false >
@@ -2130,6 +2143,8 @@ qos_profiles:
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
+        # The below knob is platform dependent
+        bandwidth_guaranteed_percent: < value >
         priority: < string >
         shape:
           rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
@@ -2235,6 +2250,7 @@ router_bgp:
   updates:
     wait_for_convergence: < true | false >
     wait_install: < true | false >
+  bgp_cluster_id: < IPv4_address >
   bgp_defaults:
     - "< bgp command as string >"
     - "< bgp command as string >"
@@ -2251,11 +2267,12 @@ router_bgp:
       peer_filter: < peer_filter >
       next_hop_unchanged: < true | false >
       update_source: < interface >
+      route_reflector_client: < true | false >
       bfd: < true | false >
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-      send_community: < standard | extended | large | all >
+      send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
@@ -2397,7 +2414,7 @@ router_bgp:
         - < learned >
       no_redistribute_routes:
         - < host-route >
-    <vlan_id_2 >:
+    < vlan_id_2 >:
       rd: "< route distinguisher >"
       route_targets:
         import:
@@ -2478,13 +2495,19 @@ router_bgp:
   address_family_ipv4_multicast:
     peer_groups:
       < peer_group_name >:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
         activate: < true | false >
       < peer_group_name >:
         activate: < true | false >
     neighbors:
-      < neighbor_ip_address>:
+      < neighbor_ip_address >:
+        route_map_in: < route_map_name >
+        route_map_out: < route_map_name >
+        activate: < true | false >
     redistribute_routes:
       < route_type >:
+        route_map: < route_map_name >
   address_family_ipv6:
     networks:
       < prefix_ipv6 >:
@@ -2499,7 +2522,7 @@ router_bgp:
       < peer_group_name >:
         activate: true
     neighbors:
-      < neighbor_ip_address>:
+      < neighbor_ip_address >:
         route_map_in: < route_map_name >
         route_map_out: < route_map_name >
         prefix_list_in: < prefix_list_name >
@@ -2515,12 +2538,18 @@ router_bgp:
     peer_groups:
       < peer_group_name >:
         activate: < true | false >
+    neighbors:
+      < neighbor_ip_address >:
+        activate: < true | false >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
   address_family_vpn_ipv6:
     domain_identifier: < string >
     peer_groups:
       < peer_group_name >:
+        activate: < true | false >
+    neighbors:
+      < neighbor_ip_address >:
         activate: < true | false >
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: < interface >
@@ -2540,6 +2569,7 @@ router_bgp:
           < address_family >:
             - "< route_target >"
             - "< route_target >"
+      router_id: < IPv4_address >
       timers: < keepalive_hold_timer_values >
       networks:
         < prefix_ipv4 >:
@@ -2549,12 +2579,13 @@ router_bgp:
           remote_as: < asn >
           peer_group: < peer_group_name >
           password: "< encrypted_password >"
+          weight: < weight_value >
           local_as: < asn >
           description: < description >
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < standard | extended | large | all >
+          send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
           maximum_routes_warning_only: < true | false >
@@ -2574,7 +2605,7 @@ router_bgp:
           description: < description >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < standard | extended | large | all >
+          send_community: < standard | extended | large | all >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
@@ -2710,7 +2741,7 @@ router_ospf:
 ```yaml
 
 router_isis:
-  instance: <ISIS Instance Name>
+  instance: < ISIS Instance Name >
   net: < CLNS Address to run ISIS | format 49.0001.0001.0000.0001.00 >
   router_id: < IPv4_address >
   is_type: < level-1 | level-1-2 | level-2 >
@@ -2722,7 +2753,6 @@ router_isis:
       delay: < number of milliseconds (Optional, default is 10000) >
   advertise:
     passive_only: < true | false >
-  no_passive_interfaces: < List no-passive-interface >
   address_family: < List of Address Families >
   isis_af_defaults:
     - maximum-paths < Integer 1-128 >
@@ -2882,6 +2912,13 @@ traffic_policies:
         < TRAFFIC POLICY ITEM >:
           type: < ipv4 | ipv6 >
           source:
+            prefixes:
+              - < prefix 01 >
+              - < prefix 02 >
+            prefix_lists:
+              - < Field Set List 01 >
+              - < Field Set List 02 >
+          destination:
             prefixes:
               - < prefix 01 >
               - < prefix 02 >
