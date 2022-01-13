@@ -189,10 +189,10 @@ Requirements are located here: [avd-requirements](../../README.md#Requirements)
 
 AVD currently supports 2 different data models for extended ACLs:
 
-- Legacy (for compatibility with existing designs, to avoid breaking changes)
-- Improved extended IP ACL data model
+- The legacy access_lists data model, for compatibility with existing deployments
+- The improved ip_access_lists data model, for access to more EOS features
 
-Both data models can coexists without conflicts, as differet keys are used: `access_lists` vs `ip_access_lists`.
+Both data models can coexists without conflicts, as different keys are used: `access_lists` vs `ip_access_lists`.
 Access list names must be unique.
 
 Legacy data model supports simplified ACL definition with `sequence_number` to `action_string` mapping:
@@ -213,7 +213,7 @@ access_lists:
         action: "< action as string >"
 ```
 
-Improved data model has a more sophisticated design documented below:
+The improved data model has a more sophisticated design documented below:
 
 ```yaml
 ip_access_lists:
