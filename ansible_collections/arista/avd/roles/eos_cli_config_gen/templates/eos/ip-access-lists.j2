@@ -5,8 +5,8 @@
 {%     set counter.acle_number = 0 %}
 {#     START ACL CYCLE: walk over the list of defined ACLs #}
 {%     for acl in ip_access_lists %}
-{%         if not (acl.name is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].name')) or
-              not (acl.entries is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].entries')) %}
+{%         if not (acl.name is arista.avd.defined) or
+              not (acl.entries is arista.avd.defined) %}
 {#             break cycle if mandatory keys are not defined #}
 {%             continue %}
 {%         endif %}
@@ -29,10 +29,10 @@ ip access-list {{ acl.name }}
 {%                 set acl_entry.string = acl_entry.string ~ 'remark ' ~ acle.remark %}
 {#             if no remark defined, build normal rule #}
 {#             only build the rule if mandatory keys are defined #}
-{%             elif (acle.action is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].entries[*].action')) and
-                    (acle.protocol is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].entries[*].protocol')) and
-                    (acle.source is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].entries[*].source')) and
-                    (acle.destination is arista.avd.defined(fail_action='warning', var_name='ip_access_lists[*].entries[*].destination')) %}
+{%             elif (acle.action is arista.avd.defined) and
+                    (acle.protocol is arista.avd.defined) and
+                    (acle.source is arista.avd.defined) and
+                    (acle.destination is arista.avd.defined) %}
 {#                 * add action #}
 {%                 set acl_entry.string = acl_entry.string ~ acle.action %}
 {#                 * add vlan #}
