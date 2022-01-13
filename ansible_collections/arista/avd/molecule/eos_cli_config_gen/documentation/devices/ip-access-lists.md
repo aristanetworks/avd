@@ -92,7 +92,7 @@ interface Management1
 
 ### IP Access-lists Summary
 
-> The maximum number of ACL entries allowed to be provisioned per switch: 10000
+- The maximum number of ACL entries allowed to be provisioned per switch: 10000
 
 ### IP Access-lists Configuration
 
