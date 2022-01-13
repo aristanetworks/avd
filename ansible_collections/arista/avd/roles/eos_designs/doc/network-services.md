@@ -99,12 +99,16 @@ tenants:
       # VRF name | Required
       < tenant_a_vrf_1 >:
 
-        # VRF VNI | Required.
+        # VRF VNI | Optional (required if "vrf_id" is not set).
         # The VRF VNI range is not limited, but it is recommended to keep vrf_vni <= 1024
         # It is necessary to keep [ vrf_vni + MLAG IBGP base_vlan ] < 4094 to support MLAG IBGP peering in VRF.
         # If vrf_vni > 1094 make sure to change mlag_ibgp_peering_vrfs: { base_vlan: < > } to a lower value (default 3000).
         # If vrf_vni > 10000 make sure to adjust mac_vrf_vni_base accordingly to avoid overlap.
-        vrf_vni: < 1-1024 >
+        vrf_vni: < 1-1024 | default -> vrf_id >
+
+        # VRF ID | Optional (required if "vrf_vni" is not set)
+        # vrf_id is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
+        vrf_id: < 1-1024 >
 
         # IP Helper for DHCP relay
         ip_helpers:
@@ -137,6 +141,26 @@ tenants:
           loopback_ip_pools:
             - pod: < pod_name >
               ipv4_pool: < IPv4_address/Mask >
+
+        # Dictionary for router OSPF configuration | Optional.
+        # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be
+        # created on all leafs where the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless
+        # explicitly turned off with "redistribute_ospf: false".
+        ospf:
+          enabled: < true | false >
+          process_id: < int, Default -> vrf_id >
+          router_id: < router-id, Default -> switch router_id >
+          max_lsa: < int >
+          bfd: < true | false, Default -> false >
+          redistribute_bgp:
+            enabled: < true | false, Default -> true >
+            route_map: < route-map name >
+          nodes:
+            - < hostname1 >
+            - < hostname2 >
+
+        # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
+        redistribute_ospf: < true | false, Default -> true >
 
         # Dictionary of SVIs | Required.
         # This will create both the L3 SVI and L2 VLAN based on filters applied to l3leaf and l2leaf.
@@ -214,6 +238,19 @@ tenants:
             # Defined interface MTU
             mtu: < mtu >
 
+            # OSPF interface configuration
+            ospf:
+              enabled: < true | false >
+              point_to_point: < true | false, Default -> false >
+              area: < ospf area id, Default -> 0 >
+              cost: < ospf link cost >
+              authentication: < simple | message-digest >
+              simple_auth_key: < password used with simple authentication >
+              message_digest_keys:
+                - id: < int >
+                  hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
+                  key: < key password >
+
             # EOS CLI rendered directly on the VLAN interface in the final EOS configuration
             raw_eos_cli: |
               < multiline eos cli >
@@ -241,6 +278,18 @@ tenants:
               < multiline eos cli >
             # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
             structured_config: < dictionary >
+
+            ospf:
+              enabled: < true | false >
+              point_to_point: < true | false, Default -> true >
+              area: < ospf area id, Default -> 0 >
+              cost: < ospf link cost >
+              authentication: < simple | message-digest >
+              simple_auth_key: < password used with simple authentication >
+              message_digest_keys:
+                - id: < int >
+                  hash_algorithm: < md5 | sha1 | sha256 | sha384 | sha512, Default -> sha512 >
+                  key: < key password >
 
           # For sub-interfaces the dot1q vlan is derived from the interface name by default, but can also be specified.
           - interfaces: [ <interface_name1.sub-if-id>, <interface_name2.sub-if-id> ]
@@ -320,6 +369,7 @@ tenants:
 
       < tenant_a_vrf_2 >:
         vrf_vni: < 1-1024 >
+        vrf_id: < 1-1024 >
         svis:
           < 1-4096 >:
             name: < description >
