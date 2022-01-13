@@ -103,16 +103,23 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].qos.cos is arista.avd.defined %}
    qos cos {{ port_channel_interfaces[port_channel_interface].qos.cos }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].shape.rate is arista.avd.defined %}
+   shape rate {{ port_channel_interfaces[port_channel_interface].shape.rate }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].spanning_tree_portfast is arista.avd.defined("edge") %}
    spanning-tree portfast
 {%     elif port_channel_interfaces[port_channel_interface].spanning_tree_portfast is arista.avd.defined("network") %}
    spanning-tree portfast network
 {%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined(true) %}
-   spanning-tree bpdufilter enable
-{%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
+{%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is arista.avd.defined(true) or port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is arista.avd.defined("enabled") %}
    spanning-tree bpduguard enable
+{%     elif port_channel_interfaces[port_channel_interface].spanning_tree_bpduguard is arista.avd.defined("disabled") %}
+   spanning-tree bpduguard disable
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined(true) or port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+   spanning-tree bpdufilter enable
+{%     elif port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
+   spanning-tree bpdufilter disable
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].vrf is arista.avd.defined %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
@@ -222,9 +229,6 @@ interface {{ port_channel_interface }}
 {%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].service_profile is arista.avd.defined %}
    service-profile {{ port_channel_interfaces[port_channel_interface].service_profile }}
-{%     endif %}
-{%     if port_channel_interfaces[port_channel_interface].shape.rate is arista.avd.defined %}
-   shape rate {{ port_channel_interfaces[port_channel_interface].shape.rate }}
 {%     endif %}
 {%     for section in port_channel_interfaces[port_channel_interface].storm_control | arista.avd.natural_sort %}
 {%         if port_channel_interfaces[port_channel_interface].storm_control[section].unit is arista.avd.defined("pps") %}

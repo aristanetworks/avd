@@ -151,11 +151,15 @@ interface {{ ethernet_interface }}
 {%         elif ethernet_interfaces[ethernet_interface].spanning_tree_portfast is arista.avd.defined('network') %}
    spanning-tree portfast network
 {%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined(true) %}
-   spanning-tree bpdufilter enable
-{%         endif %}
-{%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(true) %}
+{%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined(true) or ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined("enabled") %}
    spanning-tree bpduguard enable
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_bpduguard is arista.avd.defined("disabled") %}
+   spanning-tree bpduguard disable
+{%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined(true) or ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined("enabled") %}
+   spanning-tree bpdufilter enable
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
+   spanning-tree bpdufilter disable
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vrf is arista.avd.defined %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}

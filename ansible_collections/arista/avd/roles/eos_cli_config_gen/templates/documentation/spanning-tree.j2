@@ -50,31 +50,42 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 {%             endfor %}
 {%         endif %}
 {%     endif %}
-
-### Global Spanning-Tree Settings
-
+{%     set global_settings = [] %}
 {%     if spanning_tree.mode is arista.avd.defined("rstp") %}
 {%         if spanning_tree.rstp_priority is arista.avd.defined %}
-Global RSTP priority: {{ spanning_tree.rstp_priority }}
+{%             do global_settings.append("- Global RSTP priority: " ~ spanning_tree.rstp_priority) %}
 {%         endif %}
 {%     endif %}
 {%     if spanning_tree.no_spanning_tree_vlan is arista.avd.defined %}
-Spanning Tree disabled for VLANs: **{{ spanning_tree.no_spanning_tree_vlan }}**
+{%         do global_settings.append("- Spanning Tree disabled for VLANs: " ~ "**" ~ spanning_tree.no_spanning_tree_vlan ~ "**") %}
 {%     endif %}
 {%     if spanning_tree.edge_port.bpduguard_default is arista.avd.defined(true) %}
-Global BPDU Guard for Edge ports is enabled.
+{%         do global_settings.append("- Global BPDU Guard for Edge ports is enabled.") %}
+{%     elif spanning_tree.edge_port.bpduguard_default is arista.avd.defined(false) %}
+{%         do global_settings.append("- Global BPDU Guard for Edge ports is disabled.") %}
+{%     endif %}
+{%     if spanning_tree.edge_port.bpdufilter_default is arista.avd.defined(true) %}
+{%         do global_settings.append("- Global BPDU Filter for Edge ports is enabled.") %}
+{%     elif spanning_tree.edge_port.bpdufilter_default is arista.avd.defined(false) %}
+{%         do global_settings.append("- Global BPDU Filter for Edge ports is disabled.") %}
 {%     endif %}
 {%     if spanning_tree.mode is arista.avd.defined("mstp") %}
 {%         if spanning_tree.mst is arista.avd.defined %}
 {%             if spanning_tree.mst.pvst_border is arista.avd.defined(true) %}
-MST PSVT Border is enabled.
+{%                 do global_settings.append("- MST PSVT Border is enabled.") %}
 {%             endif %}
 {%         endif %}
+{%     endif %}
+{%     if global_settings | length > 0 %}
+
+### Global Spanning-Tree Settings
+
+{{ global_settings | join("\n") }}
 {%     endif %}
 
 ## Spanning Tree Device Configuration
 
 ```eos
-{% include 'eos/spanning-tree.j2' %}
+{%     include 'eos/spanning-tree.j2' %}
 ```
 {% endif %}

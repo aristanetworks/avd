@@ -870,8 +870,10 @@ ethernet_interfaces:
       trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    # Use either enabled or true to enable the below knobs.
+    # !!! Warning, to avoid some breaking changes false is not provided as an option
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -1064,8 +1066,10 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    # Use either enabled or true to enable the below knobs.
+    # !!! Warning, to avoid some breaking changes false is not provided as an option
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -2255,7 +2259,7 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
-      send_community: < standard | extended | large | all >
+      send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
       maximum_routes_warning_only: < true | false >
@@ -2554,7 +2558,7 @@ router_bgp:
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
-          send_community: < standard | extended | large | all >
+          send_community: < standard | extended | large | all >
           maximum_routes: < integer >
           maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
           maximum_routes_warning_only: < true | false >
@@ -2823,6 +2827,7 @@ router_l2_vpn:
 spanning_tree:
   root_super: < true | false >
   edge_port:
+    bpdufilter_default: < true | false >
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
   rstp_priority: < priority >
