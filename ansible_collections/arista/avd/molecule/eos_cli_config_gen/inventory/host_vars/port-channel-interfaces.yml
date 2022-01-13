@@ -172,6 +172,11 @@ port_channel_interfaces:
     lacp_fallback_timeout: 300
     lacp_fallback_mode: individual
 
+  Port-Channel105:
+    description: bpdu disable
+    spanning_tree_bpduguard: disabled
+    spanning_tree_bpdufilter: disabled
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:

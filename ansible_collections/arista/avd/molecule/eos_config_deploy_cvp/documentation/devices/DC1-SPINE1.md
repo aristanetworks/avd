@@ -176,9 +176,6 @@ daemon TerminAttr
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos

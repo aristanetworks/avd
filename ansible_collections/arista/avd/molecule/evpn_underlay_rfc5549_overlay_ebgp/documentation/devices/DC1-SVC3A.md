@@ -238,7 +238,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+- Spanning Tree disabled for VLANs: **4093-4094**
 
 ## Spanning Tree Device Configuration
 
@@ -496,6 +496,7 @@ interface Ethernet11
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -509,6 +510,7 @@ interface Ethernet12
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -523,6 +525,7 @@ interface Ethernet13
    switchport mode access
    spanning-tree portfast network
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
@@ -546,6 +549,7 @@ interface Ethernet16
    switchport mode access
    spanning-tree portfast network
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
@@ -603,6 +607,7 @@ interface Port-Channel14
    switchport mode trunk
    mlag 14
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -617,6 +622,7 @@ interface Port-Channel15
    switchport mode trunk
    mlag 15
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100

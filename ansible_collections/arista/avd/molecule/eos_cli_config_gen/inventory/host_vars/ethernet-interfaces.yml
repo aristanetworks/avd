@@ -190,6 +190,8 @@ ethernet_interfaces:
       ip: true
       ldp:
         interface: true
+    spanning_tree_bpduguard: disabled
+    spanning_tree_bpdufilter: disabled
 
   Ethernet10:
     description: interface_with_mpls_disabled

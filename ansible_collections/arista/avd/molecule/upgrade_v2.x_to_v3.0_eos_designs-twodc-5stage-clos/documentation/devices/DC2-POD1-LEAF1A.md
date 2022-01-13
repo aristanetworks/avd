@@ -141,7 +141,7 @@ STP mode: **rstp**
 
 ### Global Spanning-Tree Settings
 
-Global RSTP priority: 4096
+- Global RSTP priority: 4096
 
 ## Spanning Tree Device Configuration
 

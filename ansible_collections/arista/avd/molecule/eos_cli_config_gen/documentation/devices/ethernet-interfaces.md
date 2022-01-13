@@ -240,8 +240,8 @@ interface Ethernet7
    qos trust cos
    qos cos 5
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
    vmtracer vmware-esx
    ptp enable
    ptp announce interval 10
@@ -275,6 +275,8 @@ interface Ethernet8.101
 interface Ethernet9
    description interface_with_mpls_enabled
    no switchport
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
    ip address 172.31.128.9/31
    mpls ip
    mpls ldp interface

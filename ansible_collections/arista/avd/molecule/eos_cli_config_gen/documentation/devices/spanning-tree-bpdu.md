@@ -1,4 +1,4 @@
-# spanning-tree-rapid-pvst
+# spanning-tree-bpdu
 # Table of Contents
 
 - [Management](#management)
@@ -55,24 +55,19 @@ interface Management1
 
 ## Spanning Tree Summary
 
-STP mode: **rapid-pvst**
+STP mode: **mstp**
 
-### Rapid-PVST Instance and Priority
+### Global Spanning-Tree Settings
 
-| Instance(s) | Priority |
-| -------- | -------- |
-| 1,2,3,4,5,10-15 | 4096 |
-| 3 | 8192 |
-| 100-500 | 16384 |
+- Global BPDU Guard for Edge ports is disabled.
+- Global BPDU Filter for Edge ports is disabled.
 
 ## Spanning Tree Device Configuration
 
 ```eos
 !
-spanning-tree mode rapid-pvst
-spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
-spanning-tree vlan-id 3 priority 8192
-spanning-tree vlan-id 100-500 priority 16384
+no spanning-tree edge-port bpduguard default
+no spanning-tree edge-port bpdufilter default
 ```
 
 # Internal VLAN Allocation Policy
