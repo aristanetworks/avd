@@ -716,6 +716,7 @@ platform:
     lag:
       hardware_only: < true | false >
       mode: < mode | default -> 1024x16 >
+    forwarding_mode: < petraA | arad >
     multicast_replication:
       default: ingress
 ```
