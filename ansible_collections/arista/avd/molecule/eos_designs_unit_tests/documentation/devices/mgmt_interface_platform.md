@@ -392,6 +392,12 @@ vrf instance MGMT
 
 ## Platform Summary
 
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
+
 ## Platform Configuration
 
 ```eos

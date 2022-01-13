@@ -7,3 +7,4 @@ platform:
       mode: "512x32"
     multicast_replication:
       default: ingress
+    forwarding_mode: arad

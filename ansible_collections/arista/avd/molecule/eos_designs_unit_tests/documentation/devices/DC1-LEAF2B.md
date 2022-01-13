@@ -1168,6 +1168,12 @@ ip address virtual source-nat vrf Tenant_A_OP_Zone address 10.255.1.11
 
 ## Platform Summary
 
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
+
 ## Platform Configuration
 
 ```eos
