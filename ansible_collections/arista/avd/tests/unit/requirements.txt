@@ -1,3 +1,6 @@
-cryptography
 pytest
 pyyaml
+jinja2
+treelib
+md_toc
+natsort

@@ -49,10 +49,10 @@ class TestStripEmpties():
 
     @pytest.mark.parametrize("DATA", STRIP_EMPTIES_LIST.values(), ids=STRIP_EMPTIES_LIST.keys())
     def test_strip_empties_list(self, DATA):
-        output = strip_null_from_data(DATA)
+        output = strip_null_from_data(DATA, strip_values_tuple=(None, "", [], {},))
         self.strip_empties_checks(output)
 
     @pytest.mark.parametrize("DATA", STRIP_EMPTIES_DICT.values(), ids=STRIP_EMPTIES_DICT.keys())
     def test_strip_empties_dict(self, DATA):
-        output = strip_null_from_data(DATA)
+        output = strip_null_from_data(DATA, strip_values_tuple=(None, "", [], {},))
         self.strip_empties_checks(output.values())
