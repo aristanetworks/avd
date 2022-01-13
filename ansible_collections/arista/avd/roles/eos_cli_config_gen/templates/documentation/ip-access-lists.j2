@@ -1,15 +1,9 @@
 {% if ip_access_lists is arista.avd.defined %}
 
 ## IP Access-lists
-
-### IP Access-lists Summary
 {%     if ip_access_lists_max_entries is arista.avd.defined %}
 
 > The maximum number of ACL entries allowed to be provisioned per switch: {{ ip_access_lists_max_entries }}
-{%     else %}
-
-> The maximum number of ACL entries allowed to be provisioned per switch is not limited.
-> Set `ip_access_lists_max_entries` to configure a guard if required.
 {%     endif %}
 
 ### IP Access-lists Configuration
