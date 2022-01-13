@@ -809,6 +809,11 @@ ethernet_interfaces:
       trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
+    priority_flow_control:
+      enabled: < true | false >
+      priorities:
+        - priority: < 0-7 >
+          no_drop: < true | false >
     bfd:
       interval: < rate in milliseconds >
       min_rx: < rate in milliseconds >

@@ -12,6 +12,12 @@ ethernet_interfaces:
     link_tracking_groups:
       - name: EVPN_MH_ES1
         direction: upstream
+    priority_flow_control:
+      enabled: true
+      priorities:
+        - priority: 5
+          # drop
+          no_drop: false
     bfd:
       interval: 500
       min_rx: 500
@@ -37,6 +43,12 @@ ethernet_interfaces:
       unknown_unicast:
         level: 1
         unit: percent
+    priority_flow_control:
+      enabled: true
+      priorities:
+        - priority: 5
+          # no-drop
+          no_drop: true
 
   Ethernet3:
     peer: DC1-SPINE2
@@ -63,6 +75,8 @@ ethernet_interfaces:
       2345:ABCD:3FE0::3/96:
         valid_lifetime: 100000
         no_autoconfig_flag: true
+    priority_flow_control:
+      enabled: false
 
   Ethernet4:
     description: Molecule IPv6
@@ -75,6 +89,8 @@ ethernet_interfaces:
     ipv6_nd_managed_config_flag: true
     ipv6_access_group_in: IPv6_ACL_IN
     ipv6_access_group_out: IPv6_ACL_OUT
+    priority_flow_control:
+      enabled: true
 
   Ethernet5:
     description: Molecule Routing
