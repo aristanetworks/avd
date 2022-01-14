@@ -193,9 +193,6 @@ snmp-server location DC1_FABRIC DC1-SPINE1
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos

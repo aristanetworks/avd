@@ -874,8 +874,8 @@ ethernet_interfaces:
       trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -1074,8 +1074,8 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -2853,6 +2853,7 @@ router_l2_vpn:
 spanning_tree:
   root_super: < true | false >
   edge_port:
+    bpdufilter_default: < true | false >
     bpduguard_default: < true | false >
   mode: < mstp | rstp | rapid-pvst | none >
   rstp_priority: < priority >

@@ -129,9 +129,6 @@ snmp-server location TWODC_5STAGE_CLOS DC2 DC2-SUPER-SPINE2
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
