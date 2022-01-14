@@ -179,7 +179,7 @@ interface Ethernet50
 | Port-Channel105 | bpdu disabled | switched | access | - | - | - | - | - | - | - |
 | Port-Channel106 | bpdu enabled | switched | access | - | - | - | - | - | - | - |
 | Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
-| Port-Channel108 | bpdu true | switched | access | - | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
 
 #### Private VLAN
 
@@ -379,7 +379,7 @@ interface Port-Channel107
    spanning-tree bpdufilter enable
 !
 interface Port-Channel108
-   description bpdu true
+   description bpdu false
    switchport
 ```
 
