@@ -870,8 +870,6 @@ ethernet_interfaces:
       trust: < dscp | cos | disabled >
       dscp: < dscp-value >
       cos: < cos-value >
-    # Use either enabled or true to enable the below knobs.
-    # !!! Warning, to avoid some breaking changes false is not provided as an option
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
@@ -1066,8 +1064,6 @@ port_channel_interfaces:
     vlans: "< list of vlans as string >"
     type: < routed | switched | l3dot1q >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
-    # Use either enabled or true to enable the below knobs.
-    # !!! Warning, to avoid some breaking changes false is not provided as an option
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     spanning_tree_portfast: < edge | network >
