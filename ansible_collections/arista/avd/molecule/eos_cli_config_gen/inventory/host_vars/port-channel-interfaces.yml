@@ -188,7 +188,7 @@ port_channel_interfaces:
     spanning_tree_bpdufilter: true
 
   Port-Channel108:
-    description: bpdu true
+    description: bpdu false
     spanning_tree_bpduguard: false # No config should be rendered for this case
     spanning_tree_bpdufilter: false # No config should be rendered for this case
 
