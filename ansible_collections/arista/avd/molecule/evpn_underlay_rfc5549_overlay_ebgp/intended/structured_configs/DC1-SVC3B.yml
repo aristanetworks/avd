@@ -930,7 +930,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
     storm_control:
       all:
@@ -1011,7 +1011,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpdufilter: false
     spanning_tree_bpduguard: true
     storm_control:
       all:

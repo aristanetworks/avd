@@ -199,7 +199,7 @@ servers:
         profile: ALL_WITH_SECURITY
         mode: access
         vlans: "210"
-        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpdufilter: false
         spanning_tree_bpduguard: true
         spanning_tree_portfast: network
         storm_control:
@@ -261,7 +261,7 @@ servers:
         profile: ALL_WITH_SECURITY_PORT_CHANNEL
         mode: access
         vlans: "210"
-        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpdufilter: false
         spanning_tree_bpduguard: true
         spanning_tree_portfast: network
         storm_control:
