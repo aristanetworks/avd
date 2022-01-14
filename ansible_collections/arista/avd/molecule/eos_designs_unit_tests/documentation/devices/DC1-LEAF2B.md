@@ -478,6 +478,8 @@ interface Port-Channel10
    switchport
    switchport trunk allowed vlan 210-211
    switchport mode trunk
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
 !
 interface Port-Channel11
    description server01_MTU_PROFILE_MLAG_PortChanne1
@@ -485,12 +487,16 @@ interface Port-Channel11
    mtu 1600
    switchport
    switchport access vlan 110
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel12
    description server01_MTU_ADAPTOR_MLAG_PortChanne1
    no shutdown
    mtu 1601
    switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel20
    description FIREWALL01_PortChanne1

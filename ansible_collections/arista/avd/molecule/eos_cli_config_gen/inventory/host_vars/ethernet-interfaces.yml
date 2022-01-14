@@ -49,6 +49,8 @@ ethernet_interfaces:
         - priority: 5
           # no-drop
           no_drop: true
+    spanning_tree_bpduguard: disabled
+    spanning_tree_bpdufilter: disabled
 
   Ethernet3:
     peer: DC1-SPINE2
@@ -125,6 +127,8 @@ ethernet_interfaces:
     description: SRV-POD02_Eth1
     mode: trunk
     vlans: 110-111,210-211
+    spanning_tree_bpduguard: enabled
+    spanning_tree_bpdufilter: enabled
 
   Ethernet7:
     description: Molecule L2
@@ -190,8 +194,6 @@ ethernet_interfaces:
       ip: true
       ldp:
         interface: true
-    spanning_tree_bpduguard: disabled
-    spanning_tree_bpdufilter: disabled
 
   Ethernet10:
     description: interface_with_mpls_disabled
@@ -209,6 +211,8 @@ ethernet_interfaces:
     vlans: 200
     l2_protocol:
       encapsulation_dot1q_vlan: 200
+    spanning_tree_bpduguard: false # No config should be rendered for this case
+    spanning_tree_bpdufilter: false # No config should be rendered for this case
 
   Ethernet12:
     description: interface_with_dot1q_tunnel

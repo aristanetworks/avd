@@ -20,7 +20,7 @@ port_profiles:
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
+    spanning_tree_bpduguard: false
     spanning_tree_portfast: edge
     storm_control:
       all:
@@ -40,7 +40,7 @@ port_profiles:
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
+    spanning_tree_bpduguard: false
     spanning_tree_portfast: edge
     storm_control:
       all:
@@ -138,7 +138,7 @@ servers:
         mode: trunk
         vlans: "1-4094"
         spanning_tree_bpdufilter: true
-        spanning_tree_bpduguard: disabled
+        spanning_tree_bpduguard: false
         spanning_tree_portfast: edge
         storm_control:
           all:
@@ -197,7 +197,7 @@ servers:
         mode: trunk
         vlans: "1-4094"
         spanning_tree_bpdufilter: true
-        spanning_tree_bpduguard: disabled
+        spanning_tree_bpduguard: false
         spanning_tree_portfast: edge
         storm_control:
           all:

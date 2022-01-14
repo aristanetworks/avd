@@ -20,7 +20,7 @@ port_profiles:
     parent_profile: NON_EXISTING_PROFILE #Test that pointing to a nonexisting profile won't break templates.
     mode: trunk
     vlans: "1-4094"
-    spanning_tree_bpdufilter: true
+    spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: disabled
     spanning_tree_portfast: edge
     l2_mtu: 8000
@@ -41,8 +41,8 @@ port_profiles:
   ALL_WITH_SECURITY_PORT_CHANNEL:
     mode: trunk
     vlans: "1-4094"
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     spanning_tree_portfast: edge
     l2_mtu: 8000
     storm_control:
@@ -66,7 +66,7 @@ port_profiles:
     mode: trunk
     vlans: "1-4094"
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: disabled
+    spanning_tree_bpduguard: true
     spanning_tree_portfast: edge
     l2_mtu: 8000
     storm_control:
@@ -106,6 +106,8 @@ servers:
         port_channel:
           description: PortChanne1
           mode: active
+        spanning_tree_bpdufilter: disabled
+        spanning_tree_bpduguard: disabled
 
   server01_MTU_PROFILE_MLAG:
     rack: RackB
@@ -117,6 +119,8 @@ servers:
         port_channel:
           description: PortChanne1
           mode: active
+        spanning_tree_bpdufilter: enabled
+        spanning_tree_bpduguard: enabled
 
   server01_MTU_ADAPTOR_MLAG:
     rack: RackB
@@ -128,6 +132,8 @@ servers:
         port_channel:
           description: PortChanne1
           mode: active
+        spanning_tree_bpdufilter: true
+        spanning_tree_bpduguard: true
 
   server02_SINGLE_NODE_TRUNK:
     rack: RackB
@@ -136,6 +142,8 @@ servers:
         switch_ports: [ Ethernet6 ]
         switches: [ DC1-LEAF1A ]
         profile: ALL_WITH_SECURITY
+        spanning_tree_bpdufilter: false
+        spanning_tree_bpduguard: false
 
   server02_SINGLE_NODE:
     rack: RackB

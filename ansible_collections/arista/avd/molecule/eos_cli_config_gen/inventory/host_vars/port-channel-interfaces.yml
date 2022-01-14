@@ -173,9 +173,24 @@ port_channel_interfaces:
     lacp_fallback_mode: individual
 
   Port-Channel105:
-    description: bpdu disable
+    description: bpdu disabled
     spanning_tree_bpduguard: disabled
     spanning_tree_bpdufilter: disabled
+
+  Port-Channel106:
+    description: bpdu enabled
+    spanning_tree_bpduguard: enabled
+    spanning_tree_bpdufilter: enabled
+
+  Port-Channel107:
+    description: bpdu true
+    spanning_tree_bpduguard: true
+    spanning_tree_bpdufilter: true
+
+  Port-Channel108:
+    description: bpdu true
+    spanning_tree_bpduguard: false # No config should be rendered for this case
+    spanning_tree_bpdufilter: false # No config should be rendered for this case
 
 # Children interfaces
 ethernet_interfaces:
