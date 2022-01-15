@@ -40,6 +40,7 @@
       - [Peer Filters](#peer-filters)
       - [Route Maps](#route-maps)
       - [Match Lists](#match-lists)
+      - [AS Path](#as-path)
     - [Generate Device Documentation](#generate-device-documentation)
     - [Generate Default Config](#generate-default-config)
     - [Hardware](#hardware)
@@ -638,6 +639,19 @@ match_list_input:
       sequence_numbers:
         < sequence_id 1 >:
           match_regex: < match string >
+```
+
+#### AS Path
+
+```yaml
+as_path:
+  regex_mode: < asn | string >
+  access_lists:
+    - name: < access_list_name_1 >
+      entries:
+        - type: < permit | deny >
+          match: "< regex to match >"
+          origin: < "any" | "egp" | "igp" | "incomplete" | default -> "any" >
 ```
 
 ### Generate Device Documentation
