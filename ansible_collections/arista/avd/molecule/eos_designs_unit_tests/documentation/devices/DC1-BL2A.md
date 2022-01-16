@@ -226,9 +226,6 @@ STP Root Super: **True**
 | -------- | -------- |
 | 0 | 4096 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -398,6 +395,10 @@ interface Vlan150
    no shutdown
    vrf Tenant_A_WAN_Zone
    ip address virtual 10.1.40.1/24
+   ip ospf area 1
+   ip ospf cost 100
+   ip ospf authentication
+   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
@@ -807,6 +808,12 @@ vrf instance Tenant_C_WAN_Zone
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

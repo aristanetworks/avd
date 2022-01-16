@@ -206,9 +206,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 4096 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -834,6 +831,12 @@ vrf instance Tenant_C_WAN_Zone
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

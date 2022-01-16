@@ -178,9 +178,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 16384 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos

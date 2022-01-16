@@ -32,6 +32,7 @@
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
+  - [Router OSPF](#router-ospf)
   - [Router BGP](#router-bgp)
 - [BFD](#bfd)
   - [Router BFD](#router-bfd)
@@ -200,9 +201,6 @@ STP Root Super: **True**
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -408,6 +406,10 @@ interface Vlan150
    no shutdown
    vrf Tenant_A_WAN_Zone
    ip address virtual 10.1.40.1/24
+   ip ospf area 1
+   ip ospf cost 100
+   ip ospf authentication
+   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
@@ -545,6 +547,38 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 ```
 
+## Router OSPF
+
+### Router OSPF Summary
+
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
+| 14 | 192.168.255.15 | enabled | Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - |
+
+### Router OSPF Router Redistribution
+
+| Process ID | Source Protocol | Route Map |
+| ---------- | --------------- | --------- |
+| 14 | bgp | - |
+
+### OSPF Interfaces
+
+| Interface | Area | Cost | Point To Point |
+| -------- | -------- | -------- | -------- |
+| Vlan150 | 1 | 100 | False |
+
+### Router OSPF Device Configuration
+
+```eos
+!
+router ospf 14 vrf Tenant_A_WAN_Zone
+   router-id 192.168.255.15
+   passive-interface default
+   no passive-interface Vlan150
+   max-lsa 15000
+   redistribute bgp
+```
+
 ## Router BGP
 
 ### Router BGP Summary
@@ -617,7 +651,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.254.15:14 | connected<br>static |
+| Tenant_A_WAN_Zone | 192.168.254.15:14 | connected<br>static<br>ospf |
 | Tenant_B_OP_Zone | 192.168.254.15:20 | connected |
 | Tenant_B_WAN_Zone | 192.168.254.15:21 | connected |
 | Tenant_C_WAN_Zone | 192.168.254.15:31 | connected |
@@ -730,6 +764,7 @@ router bgp 65105
       neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
       neighbor fd5a:fe45:8831:06c5::b remote-as 12345
       redistribute connected
+      redistribute ospf
       redistribute static
       !
       address-family ipv4
@@ -894,6 +929,12 @@ vrf instance Tenant_L3_VRF_Zone
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

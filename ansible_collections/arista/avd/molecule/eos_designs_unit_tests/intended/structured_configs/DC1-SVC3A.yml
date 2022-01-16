@@ -601,6 +601,11 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    ospf_area: 1
+    ospf_network_point_to_point: false
+    ospf_cost: 100
+    ospf_authentication: simple
+    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan3013:
     tenant: Tenant_A
     type: underlay_peering
@@ -754,8 +759,8 @@ port_channel_interfaces:
     l2_mtu: 8000
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     storm_control:
       all:
         level: 10
@@ -778,7 +783,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -801,7 +806,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -827,7 +832,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -853,7 +858,7 @@ port_channel_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -997,8 +1002,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1023,7 +1028,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1048,7 +1053,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: false
+    spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
     storm_control:
       all:
@@ -1074,8 +1079,8 @@ ethernet_interfaces:
     mode: trunk
     vlans: 1-4094
     spanning_tree_portfast: edge
-    spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     storm_control:
       all:
         level: 10
@@ -1103,7 +1108,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1131,7 +1136,7 @@ ethernet_interfaces:
     mode: access
     vlans: 210
     spanning_tree_portfast: network
-    spanning_tree_bpdufilter: false
+    spanning_tree_bpdufilter: disabled
     spanning_tree_bpduguard: true
     storm_control:
       all:
@@ -1157,7 +1162,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: disabled
     storm_control:
       all:
         level: 10
@@ -1187,7 +1192,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10
@@ -1217,7 +1222,7 @@ ethernet_interfaces:
     vlans: 1-4094
     spanning_tree_portfast: edge
     spanning_tree_bpdufilter: true
-    spanning_tree_bpduguard: false
+    spanning_tree_bpduguard: true
     storm_control:
       all:
         level: 10

@@ -240,7 +240,7 @@ STP Root Super: **True**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4090,4092**
+- Spanning Tree disabled for VLANs: **4090,4092**
 
 ## Spanning Tree Device Configuration
 

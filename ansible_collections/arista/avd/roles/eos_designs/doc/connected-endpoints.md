@@ -51,8 +51,8 @@ port_profiles:
     native_vlan: <native vlan number>
     vlans: < vlans as string >
     spanning_tree_portfast: < edge | network >
-    spanning_tree_bpdufilter: < true | false >
-    spanning_tree_bpduguard: < true | false >
+    spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+    spanning_tree_bpduguard: < "enabled" | true | "disabled" >
     flowcontrol:
       received: < "received" | "send" | "on" >
     qos_profile: < qos_profile_name >
@@ -123,8 +123,8 @@ port_profiles:
 
         # Spanning Tree
         spanning_tree_portfast: < edge | network >
-        spanning_tree_bpdufilter: < true | false >
-        spanning_tree_bpduguard: < true | false >
+        spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
+        spanning_tree_bpduguard: < "enabled" | true | "disabled" >
 
         # Flow control | Optional
         flowcontrol:

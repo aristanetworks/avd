@@ -65,9 +65,6 @@ STP mode: **rapid-pvst**
 | 3 | 8192 |
 | 100-500 | 16384 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos

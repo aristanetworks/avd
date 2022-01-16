@@ -14,7 +14,7 @@
 {%                 if svi_int_list | length == 0 %}
 {%                     continue %}
 {%                 endif %}
-{%                 set vrf_vni_int = vrf.vrf_vni | int %}
+{%                 set vrf_vni_int = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) | int %}
 {%                 set bundle_number =  vrf_vni_int + tenant.vlan_aware_bundle_number_base | arista.avd.default(0) %}
     {{ vrf.name }}:
       rd: "{{ network_services_data.evpn_rd_admin_subfield }}:{{ bundle_number }}"

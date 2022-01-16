@@ -190,7 +190,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4094**
+- Spanning Tree disabled for VLANs: **4094**
 
 ## Spanning Tree Device Configuration
 

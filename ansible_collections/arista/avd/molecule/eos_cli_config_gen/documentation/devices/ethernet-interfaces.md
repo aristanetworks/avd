@@ -144,6 +144,14 @@ interface Management1
 | Ethernet23 | fire-code<br>reed-solomon |
 | Ethernet24 | Disabled |
 
+### Priority Flow Control
+
+| Interface | PFC | Priority | Drop/No_drop |
+| Ethernet1 | True | 5 | False |
+| Ethernet2 | True | 5 | True |
+| Ethernet3 | False | - | - |
+| Ethernet4 | True | - | - |
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -152,6 +160,8 @@ interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
    no switchport
+   priority-flow-control on
+   priority-flow-control priority 5 drop
    ip address 172.31.255.1/31
    bfd interval 500 min-rx 500 multiplier 5
    link tracking group EVPN_MH_ES1 upstream
@@ -165,6 +175,10 @@ interface Ethernet2
    switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   priority-flow-control on
+   priority-flow-control priority 5 no-drop
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
    storm-control all level 10
    storm-control broadcast level pps 500
    storm-control unknown-unicast level 1
@@ -173,6 +187,7 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    no switchport
+   no priority-flow-control
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
@@ -186,6 +201,7 @@ interface Ethernet4
    shutdown
    mtu 9100
    switchport
+   priority-flow-control on
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -217,6 +233,8 @@ interface Ethernet6
    switchport
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
 !
 interface Ethernet7
    description Molecule L2
@@ -226,8 +244,8 @@ interface Ethernet7
    qos trust cos
    qos cos 5
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
    vmtracer vmware-esx
    ptp enable
    ptp announce interval 10

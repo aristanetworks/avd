@@ -209,9 +209,6 @@ STP Root Super: **True**
 | -------- | -------- |
 | 0 | 4096 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -336,7 +333,6 @@ interface Ethernet6
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
