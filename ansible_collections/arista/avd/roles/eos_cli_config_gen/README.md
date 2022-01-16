@@ -2011,21 +2011,30 @@ snmp_server:
 #### Monitor Sessions
 
 ```yaml
-monitor_session:
+monitor_sessions:
   - name: < session_name_1 >
-    source:
-      - < source_port_1 >
-      - < source_port_2 >
-    destination:
-      - < dest_port_1 >
-      - < dest_port_2 >
+    sources:
+      - name: < interface_name or range >
+        direction: < rx | tx | both >
+        ip_access_group: < acl_name >
+        ip_access_group_priority: < priority >
+        ipv6_access_group: < acl_name >
+        ipv6_access_group_priority: < priority >
+        mac_access_group: < acl_name >
+        mac_access_group_priority: < priority >
+    destinations:
+      - < interface(s) | cpu >
     encapsulation_gre_metadata_tx: < true | false >
-    header_remove_size: < 1-90 >
+    header_remove_size: < bytes >
     ip_access_group: < acl_name >
     ipv6_access_group: < acl_name >
     mac_access_group: < acl_name >
-    sample: < 1-4294967294 >
-    truncate_size: < 128 | 192 >
+    rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+    rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+    sample: < int >
+    truncate:
+      enabled: < true | false >
+      size: < bytes >
 ```
 
 ### System Control-Plane

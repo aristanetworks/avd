@@ -1,0 +1,31 @@
+---
+monitor_sessions:
+  - name: myMonitoringSession1
+    sources:
+      - name: Ethernet5
+        direction: both
+        ip_access_group: ipv4ACL
+        ip_access_group_priority: 10
+      - name: Ethernet0
+        ipv6_access_group: ipv6ACL
+        ipv6_access_group_priority: 100
+    destinations:
+      - Ethernet48
+    encapsulation_gre_metadata_tx: true
+    header_remove_size: 32
+    truncate:
+      enabled: true
+  - name: myMonitoringSession2
+    sources:
+      - name: Ethernet12
+        direction: rx
+      - name: Ethernet18
+        mac_access_group: ipv6ACL
+        mac_access_group_priority: 100
+        direction: tx
+    destinations:
+      - Cpu
+      - Ethernet50
+    encapsulation_gre_metadata_tx: true
+    ip_access_group: ipv4ACL
+    sample: 50
