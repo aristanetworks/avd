@@ -240,7 +240,7 @@ ip_access_lists:
         fragments: < true | false >  # optional, match non-head fragment packets
         log: < true | false >  # optional, log matches against this rule
         ttl: < <0-254> TTL value >  # optional
-        ttl_match: "< eq | gt | lt | neq >"  # optional
+        ttl_match: "< eq | gt | lt | neq >"  # optional, eq is default
         icmp_type: "< Message type name/number for ICMP packets >"  # optional
         icmp_code: "< Message code for ICMP packets >"  # optional
         nexthop_group: "< nexthop-group name >"  # optional
