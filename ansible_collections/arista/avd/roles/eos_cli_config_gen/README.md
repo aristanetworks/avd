@@ -230,24 +230,24 @@ ip_access_lists:
         protocol: "< ip | tcp | udp | icmp | other protocol name or number >"  # required
         # NOTE: A.B.C.D without a mask means host
         source: "< any | A.B.C.D/E | A.B.C.D >"  # required
-        source_ports_match: "< eq | gt | lt | neq | range >"  # eq is default
+        source_ports_match: "< eq | gt | lt | neq | range | default -> eq >"
         source_ports: ["< tcp/udp port name or number >",]  # optional
         # NOTE: A.B.C.D without a mask means host
         destination: "< any | A.B.C.D/E | A.B.C.D >"  # required
-        destination_ports_match: "< eq | gt | lt | neq | range >"  # eq is default
+        destination_ports_match: "< eq | gt | lt | neq | range| default -> eq >"
         destination_ports: ["< tcp/udp port name or number >",]  # optional
         tcp_flags: ["< tcp flag name >",]  # optional
         fragments: < true | false >  # optional, match non-head fragment packets
         log: < true | false >  # optional, log matches against this rule
         ttl: < <0-254> TTL value >  # optional
-        ttl_match: "< eq | gt | lt | neq >"  # optional, eq is default
+        ttl_match: "< eq | gt | lt | neq| default -> eq >"  # optional
         icmp_type: "< Message type name/number for ICMP packets >"  # optional
         icmp_code: "< Message code for ICMP packets >"  # optional
         nexthop_group: "< nexthop-group name >"  # optional
         tracked: < true | false > # optional, match packets in existing ICMP/UDP/TCP connections
         dscp: "< DSCP value or name >"  # optional
         vlan_number: < vlan number >  # optional
-        vlan_inner: < true | false >  # optional, default - false
+        vlan_inner: < true | false| default -> false >  # optional
         vlan_mask: "< 0x000-0xFFF  Vlan mask >"  # optional
 ```
 
