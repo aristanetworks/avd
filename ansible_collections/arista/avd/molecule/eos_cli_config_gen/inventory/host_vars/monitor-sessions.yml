@@ -4,11 +4,16 @@ monitor_sessions:
     sources:
       - name: Ethernet5
         direction: both
-        ip_access_group: ipv4ACL
+        access_group:
+          type: ip
+          name: ipv4ACL
+          priority: 10
         ip_access_group_priority: 10
       - name: Ethernet0
-        ipv6_access_group: ipv6ACL
-        ipv6_access_group_priority: 100
+        access_group:
+          type: ipv6
+          name: ipv6ACL
+          priority: 100
     destinations:
       - Ethernet48
     encapsulation_gre_metadata_tx: true
@@ -20,12 +25,16 @@ monitor_sessions:
       - name: Ethernet12
         direction: rx
       - name: Ethernet18
-        mac_access_group: ipv6ACL
-        mac_access_group_priority: 100
+        access_group: 
+          type: mac
+          name: macACL
+          priority: 100
         direction: tx
     destinations:
       - Cpu
       - Ethernet50
     encapsulation_gre_metadata_tx: true
-    ip_access_group: ipv4ACL
+    access_group:
+      type: ip
+      name: ipv4ACL
     sample: 50

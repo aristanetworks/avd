@@ -7,22 +7,10 @@
 {%                 if source.direction is arista.avd.defined %}
 {%                     set source_cli = source_cli ~ " " ~ source.direction %}
 {%                 endif %}
-{%                 if source.ip_access_group is arista.avd.defined %}
-{%                     set source_cli = source_cli ~ " ip access-group " ~ source.ip_access_group %}
-{%                     if source.ip_access_group_priority is arista.avd.defined %}
-{%                         set source_cli = source_cli ~ " priority " ~ source.ip_access_group_priority %}
-{%                     endif %}
-{%                 endif %}
-{%                 if source.ipv6_access_group is arista.avd.defined %}
-{%                     set source_cli = source_cli ~ " ipv6 access-group " ~ source.ipv6_access_group %}
-{%                     if source.ipv6_access_group_priority is arista.avd.defined %}
-{%                         set source_cli = source_cli ~ " priority " ~ source.ipv6_access_group_priority %}
-{%                     endif %}
-{%                 endif %}
-{%                 if source.mac_access_group is arista.avd.defined %}
-{%                     set source_cli = source_cli ~ " mac access-group " ~ source.mac_access_group %}
-{%                     if source.mac_access_group_priority is arista.avd.defined %}
-{%                         set source_cli = source_cli ~ " priority " ~ source.mac_access_group_priority %}
+{%                 if source.access_group.type is arista.avd.defined and source.access_group.name is arista.avd.defined %}
+{%                     set source_cli = source_cli ~ " " ~ source.access_group.type ~ " access-group " ~ source.access_group.name %}
+{%                     if source.access_group.priority is arista.avd.defined %}
+{%                         set source_cli = source_cli ~ " priority " ~ source.access_group.priority %}
 {%                     endif %}
 {%                 endif %}
 {{ source_cli }}
@@ -36,14 +24,8 @@ monitor session {{ monitor_session.name }} encapsulation gre metadata tx
 {%             if monitor_session.header_remove_size is arista.avd.defined %}
 monitor session {{ monitor_session.name }} header remove size {{ monitor_session.header_remove_size }}
 {%             endif %}
-{%             if monitor_session.ip_access_group is arista.avd.defined %}
-monitor session {{ monitor_session.name }} ip access-group {{ monitor_session.ip_access_group }}
-{%             endif %}
-{%             if monitor_session.ipv6_access_group is arista.avd.defined %}
-monitor session {{ monitor_session.name }} ipv6 access-group {{ monitor_session.ipv6_access_group }}
-{%             endif %}
-{%             if monitor_session.mac_access_group is arista.avd.defined %}
-monitor session {{ monitor_session.name }} mac access-group {{ monitor_session.mac_access_group }}
+{%             if monitor_session.access_group.type is arista.avd.defined and monitor_session.access_group.name is arista.avd.defined %}
+monitor session {{ monitor_session.name }} {{ monitor_session.access_group.type }} access-group {{ monitor_session.access_group.name }}
 {%             endif %}
 {%             if monitor_session.rate_limit_per_ingress_chip is arista.avd.defined %}
 monitor session {{ monitor_session.name }} rate-limit per-ingress-chip {{ monitor_session.rate_limit_per_ingress_chip }}

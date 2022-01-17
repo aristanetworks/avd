@@ -2016,19 +2016,17 @@ monitor_sessions:
     sources:
       - name: < interface_name or range >
         direction: < rx | tx | both >
-        ip_access_group: < acl_name >
-        ip_access_group_priority: < priority >
-        ipv6_access_group: < acl_name >
-        ipv6_access_group_priority: < priority >
-        mac_access_group: < acl_name >
-        mac_access_group_priority: < priority >
+        access_group: 
+          type: < ip | ipv6 | mac >
+          name: < acl_name >
+          priority: < priority >
     destinations:
       - < interface(s) | cpu >
     encapsulation_gre_metadata_tx: < true | false >
     header_remove_size: < bytes >
-    ip_access_group: < acl_name >
-    ipv6_access_group: < acl_name >
-    mac_access_group: < acl_name >
+    access_group: 
+      type: < ip | ipv6 | mac >
+      name: < acl_name >
     rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
     rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
     sample: < int >
