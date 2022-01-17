@@ -47,6 +47,26 @@
 {%         set mpls_ldp_sync_default = router_ospf.process_ids[process_id].mpls_ldp_sync_default | arista.avd.default('-') %}
 | {{ process_id }} | {{ router_id }} | {{ passive_interface_default }} |{{ no_passive_interfaces.list }} | {{ bgp_enable }} | {{ max_lsa }} | {{ default_information_originate }} | {{ log_adjacency_changes_detail }} | {{ auto_cost_reference_bandwidth }} | {{ maximum_paths }} | {{ mpls_ldp_sync_default }} |
 {%     endfor %}
+{# OSPF Distance #}
+{%     set ospf_distance_process_ids = [] %}
+{%     for process_id in router_ospf.process_ids %}
+{%         if router_ospf.process_ids[process_id].distance is arista.avd.defined %}
+{%             do ospf_distance_process_ids.append(process_id) %}
+{%         endif %}
+{%     endfor %}
+{%     if ospf_distance_process_ids | length > 0 %}
+
+### Router OSPF Distance
+
+| Process ID | Intra Area | Inter Area | External |
+| ---------- | ---------- | ---------- | -------- |
+{%         for process_id in ospf_distance_process_ids %}
+{%             set distance_intra_area = router_ospf.process_ids[process_id].distance.intra_area | arista.avd.default('-') %}
+{%             set distance_inter_area = router_ospf.process_ids[process_id].distance.inter_area | arista.avd.default('-') %}
+{%             set distance_external = router_ospf.process_ids[process_id].distance.external | arista.avd.default('-') %}
+| {{ process_id }} | {{ distance_intra_area }} | {{ distance_inter_area }} | {{ distance_external }} |
+{%         endfor %}
+{%     endif %}
 {# Router Redistribution #}
 {%     set has = namespace() %}
 {%     set has.found = false %}

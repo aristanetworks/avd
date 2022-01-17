@@ -23,6 +23,10 @@ router_ospf:
       auto_cost_reference_bandwidth: 100
       maximum_paths: 10
       mpls_ldp_sync_default: true
+      distance:
+        intra_area: 50
+        external: 60
+        inter_area: 70
     101:
       vrf: CUSTOMER01
       passive_interface_default: true

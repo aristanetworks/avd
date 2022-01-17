@@ -2683,6 +2683,10 @@ router_ospf:
       vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
+      distance:
+        external: < 1-255 >
+        inter_area: < 1-255 >
+        intra_area: < 1-255 >
       log_adjacency_changes_detail: < true | false >
       network_prefixes:
         < IPv4 subnet / netmask >:
