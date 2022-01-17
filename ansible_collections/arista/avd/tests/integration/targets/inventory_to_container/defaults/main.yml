@@ -1,5 +1,5 @@
 ---
 testcase: '*'
-inventory_path: "/../../../../../../../../inventory/"
+inventory_path: "../../../../../../../../inventory/"
 expected_output: "{{ role_path }}/{{ inventory_path }}/inventory_to_container/expected_output/"
-actual_output: "{{ role_path }}/{{ inventory_path }}/inventory_to_container/actual_output/actual_output.yml"
+actual_output: "{{ role_path }}/{{ inventory_path }}/../output/actual_output.yml"

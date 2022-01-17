@@ -1,6 +1,6 @@
 ---
 testcase: '*'
-inventory_path: "/../../../../../../../../inventory/"
+inventory_path: "../../../../../../../../inventory/"
 configlet_path: "{{ role_path }}/{{ inventory_path }}/intended/configs"
 expected_output: "{{ role_path }}/{{ inventory_path }}/configlet_build_config/expected_output"
-actual_output: "{{ role_path }}/{{ inventory_path }}/configlet_build_config/actual_output/actual_output.yml"
+actual_output: "{{ role_path }}/{{ inventory_path }}/../output/actual_output.yml"
