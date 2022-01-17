@@ -29,6 +29,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
+    - [DHCP Relay](#dhcp-delay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -475,6 +476,15 @@ router_bfd:
 custom_templates:
   - < template 1 relative path below playbook directory >
   - < template 2 relative path below playbook directory >
+```
+
+### DHCP Relay
+
+```yaml
+dhcp_relay:
+  servers:
+    - < server_ip_or_hostname >
+  tunnel_requests_disabled: < true | false >
 ```
 
 ### EOS CLI
