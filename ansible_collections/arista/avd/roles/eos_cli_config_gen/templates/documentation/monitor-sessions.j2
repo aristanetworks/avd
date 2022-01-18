@@ -1,0 +1,30 @@
+{% if monitor_sessions is arista.avd.defined %}
+
+## Monitor Sessions
+
+### Monitor Sessions Summary
+
+{%     for monitor_session in monitor_sessions | arista.avd.natural_sort('name') if monitor_session.name is arista.avd.defined %}
+{%         if monitor_session.sources is arista.avd.defined and monitor_session.destinations is arista.avd.defined %}
+#### {{ monitor_session.name }}
+
+| Sources | Direction | Access Group (Type, Name, Priority) |
+| ------- | --------- | ----------------------------------- |
+{%             for source in monitor_session.sources | arista.avd.natural_sort('name') if source.name is arista.avd.defined %}
+{%                 if source.access_group.type is arista.avd.defined and source.access_group.name is arista.avd.defined %}
+{%                     set access_group_output = source.access_group.type ~ ", " ~ source.access_group.name %}
+{%                     if source.access_group.priority is arista.avd.defined %}
+{%                         set access_group_output = access_group_output ~ ", " ~ source.access_group.priority %}
+{%                     endif %}
+{%                 endif %}
+{{ source.name }} | {{ source.direction | arista.avd.default('both') } | access_group_output } |
+{%             endfor %}
+{%         endif %}
+!
+{%     endfor %}
+### Monitor Sessions Configuration
+
+```eos
+{%     include 'eos/logging.j2' %}
+```
+{% endif %}
