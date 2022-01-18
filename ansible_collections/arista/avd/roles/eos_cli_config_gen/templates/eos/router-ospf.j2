@@ -81,6 +81,9 @@ router ospf {{ process_id }}
    area {{ area }} filter prefix-list {{ router_ospf.process_ids[process_id].areas[area].filter.prefix_list }}
 {%         endif %}
 {%     endfor %}
+{%     if router_ospf.process_ids[process_id].distribute_list_in.route_map is arista.avd.defined %}
+   distribute-list route-map {{ router_ospf.process_ids[process_id].distribute_list_in.route_map }} in
+{%     endif %}
 {%     if router_ospf.process_ids[process_id].max_lsa is arista.avd.defined %}
    max-lsa {{ router_ospf.process_ids[process_id].max_lsa }}
 {%     endif %}

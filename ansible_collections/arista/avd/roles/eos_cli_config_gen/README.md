@@ -2765,6 +2765,8 @@ router_ospf:
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
+      distribute_list_in:
+        route_map: < route_map >
       max_lsa: < integer >
       timers:
         lsa:

@@ -551,9 +551,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 14 | 192.168.255.15 | enabled | Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - |
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 14 | 192.168.255.15 | enabled | Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - | - |
 
 ### Router OSPF Router Redistribution
 
