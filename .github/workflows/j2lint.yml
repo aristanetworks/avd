@@ -3,7 +3,7 @@ name: J2LINT
 on:
   push:
     branches: [ devel ]
-    paths: "**.j2"
+#    paths: "**.j2"
   pull_request:
     branches: [ devel ]
      
@@ -16,15 +16,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Setup J2Lint
         run: |
-          git clone https://github.com/aristanetworks/j2lint.git
-          python3 -m venv myenv
-          source myenv/bin/activate
-          sudo apt-get install python3-pip
-          pip3 install jinja2      
-          
+          pip install git+https://github.com/aristanetworks/j2lint.git
+
       - name: Run J2lint
         run: |
-          source myenv/bin/activate
-          cd j2lint
-          python setup.py install
-          j2lint $GITHUB_WORKSPACE 
+          j2lint $GITHUB_WORKSPACE --ignore S7 S6 V1 

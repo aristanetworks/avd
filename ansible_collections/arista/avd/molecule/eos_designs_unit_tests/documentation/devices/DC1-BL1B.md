@@ -497,7 +497,7 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true || MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -560,6 +560,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | Process ID | Source Protocol | Route Map |
 | ---------- | --------------- | --------- |
 | 14 | bgp | - |
+
 
 ### OSPF Interfaces
 

@@ -307,7 +307,7 @@
 {%             set row_default_encapsulation = router_bgp.address_family_evpn.neighbor_default.encapsulation | arista.avd.default("vxlan") %}
 {%             set row_nhs_source_interface = router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface | arista.avd.default('-') %}
 | {{ row_default_encapsulation }} | {{ row_nhs_source_interface }} |
-{%         endif%}
+{%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_hostflap_detection is arista.avd.defined %}
 
 #### EVPN Host Flapping Settings
@@ -349,10 +349,10 @@
 | Remote Domain Peer Groups | {{ evpn_gw_config.peer_groups | join(", ") }} |
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.enable is arista.avd.defined(true) %}
-| L3 Gateway Configured | True |
+| L3 Gateway Configured | True |
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain is arista.avd.defined(true) %}
-| L3 Gateway Inter-domain | True |
+| L3 Gateway Inter-domain | True |
 {%         endif %}
 {%     endif %}
 {%     if router_bgp.vlan_aware_bundles is arista.avd.defined %}
@@ -430,7 +430,7 @@
 {%             if vpws_service.name is arista.avd.defined and vpws_service.rd is arista.avd.defined and vpws_service.route_targets.import_export is arista.avd.defined %}
 {%                 for pseudowire in vpws_service.pseudowires | arista.avd.natural_sort("name") %}
 {%                     if pseudowire.name is arista.avd.defined %}
-| {{ vpws_service.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ pseudowire.name }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
+| {{ vpws_service.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ pseudowire.name }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
@@ -452,6 +452,6 @@
 ### Router BGP Device Configuration
 
 ```eos
-{% include 'eos/router-bgp.j2' %}
+{%     include 'eos/router-bgp.j2' %}
 ```
 {% endif %}

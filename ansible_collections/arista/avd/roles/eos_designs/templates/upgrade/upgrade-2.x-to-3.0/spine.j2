@@ -49,7 +49,7 @@ spine:
       - graceful-restart restart-time 300
       - graceful-restart
 {%     endif %}
-{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol| lower is arista.avd.defined('isis') %}
+{%     if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower is arista.avd.defined('isis') %}
 # Change from isis_site_id.0000 to spine.defaults.isis_system_id_prefix
     isis_system_id_prefix: '{{ isis_site_id | arista.avd.default("0001") ~ ".0000" }}'
 {%         set switch_max_spines = max_spines | arista.avd.default(spine.nodes | arista.avd.default([]) | length) %}

@@ -339,7 +339,7 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true || MGMT | false |
 
 ### IP Routing Device Configuration
 

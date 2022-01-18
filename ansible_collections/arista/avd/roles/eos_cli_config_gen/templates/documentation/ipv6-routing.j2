@@ -10,7 +10,7 @@
 {% if vrfs is defined and vrfs is not none %}
 {%     for vrf in vrfs | arista.avd.natural_sort %}
 {%         if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}
-{% set ipv6_configured_in_vrf = true %}
+{%             set ipv6_configured_in_vrf = true %}
 | {{ vrf }} | true |
 {%         else %}
 | {{ vrf }} | false |
@@ -22,6 +22,6 @@
 ### IPv6 Routing Device Configuration
 
 ```eos
-{% include 'eos/ipv6-routing.j2' %}
+{%     include 'eos/ipv6-routing.j2' %}
 ```
 {% endif %}

@@ -69,7 +69,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
 ### IP Routing Device Configuration
 
 ```eos
@@ -153,8 +153,8 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
-| L3 Gateway Configured | True |
-| L3 Gateway Inter-domain | True |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 ### Router BGP VLAN Aware Bundles
 

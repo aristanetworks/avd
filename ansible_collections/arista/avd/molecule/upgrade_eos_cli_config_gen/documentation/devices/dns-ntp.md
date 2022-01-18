@@ -141,7 +141,7 @@ ntp server vrf mgt 10.10.111.2
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
 ### IP Routing Device Configuration
 
 ```eos

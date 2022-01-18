@@ -76,7 +76,7 @@ prompt %H__%D{%H:%M:%S}%v%P
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
 ### IP Routing Device Configuration
 
 ```eos

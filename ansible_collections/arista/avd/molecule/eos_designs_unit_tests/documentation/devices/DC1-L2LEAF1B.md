@@ -422,7 +422,7 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true || MGMT | false |
 
 ### IP Routing Device Configuration
 

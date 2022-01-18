@@ -171,7 +171,7 @@ interface Vlan24
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
 ### IP Routing Device Configuration
 
 ```eos
@@ -208,6 +208,7 @@ interface Vlan24
 | 200 | connected | rm-ospf-connected |
 | 200 | static | rm-ospf-static |
 | 200 | bgp | rm-ospf-bgp |
+
 
 ### Router OSPF Router Max-Metric
 

@@ -95,7 +95,7 @@ router ospf {{ process_id }}
    {{ timer_ospf_spf_delay }}
 {%     endif %}
 {%     if router_ospf.process_ids[process_id].default_information_originate is defined %}
-{%         set default_information_originate_cli = "default-information originate"%}
+{%         set default_information_originate_cli = "default-information originate" %}
 {%         if router_ospf.process_ids[process_id].default_information_originate.always is arista.avd.defined(true) %}
 {%             set default_information_originate_cli = default_information_originate_cli ~ " always" %}
 {%         endif %}

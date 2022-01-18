@@ -21,7 +21,7 @@ router isis {{ router_isis.instance }}
 {%     endif %}
 {%     if router_isis.timers.local_convergence.protected_prefixes is arista.avd.defined(true) %}
 {%         if router_isis.timers.local_convergence.delay is arista.avd.defined %}
-   timers local-convergence-delay {{router_isis.timers.local_convergence.delay}} protected-prefixes
+   timers local-convergence-delay {{ router_isis.timers.local_convergence.delay }} protected-prefixes
 {%         else %}
    timers local-convergence-delay protected-prefixes
 {%         endif %}
@@ -54,7 +54,7 @@ router isis {{ router_isis.instance }}
       {{ ti_lfa_cli }}
 {%         endif %}
 {%         if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
-{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg"%}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
 {%             if router_isis.address_family_ipv4.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
 {%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
 {%             endif %}
@@ -75,7 +75,7 @@ router isis {{ router_isis.instance }}
       {{ ti_lfa_cli }}
 {%         endif %}
 {%         if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.enable is arista.avd.defined(true) %}
-{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg"%}
+{%             set ti_lfa_srlg_cli = "fast-reroute ti-lfa srlg" %}
 {%             if router_isis.address_family_ipv6.fast_reroute_ti_lfa.srlg.strict is arista.avd.defined(true) %}
 {%                 set ti_lfa_srlg_cli = ti_lfa_srlg_cli ~ " strict" %}
 {%             endif %}

@@ -16,7 +16,7 @@
 {%         set validate_state_report.total_tests_failed = validate_state_report.total_tests_failed + 1 %}
 {%     endif %}
 {%     if loop.last %}
-{%        set validate_state_report.total_tests = loop.length %}
+{%         set validate_state_report.total_tests = loop.length %}
 {%     endif %}
 {% endfor %}
 {% set validate_state_report.duts = validate_state_report.duts | unique  %}

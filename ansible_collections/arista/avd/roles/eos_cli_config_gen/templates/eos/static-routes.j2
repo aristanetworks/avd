@@ -2,7 +2,7 @@
 {% if static_routes is arista.avd.defined %}
 !
 {%     for static_route in static_routes %}
-{%         set static_route_cli = "ip route"%}
+{%         set static_route_cli = "ip route" %}
 {%         if static_route.vrf is arista.avd.defined and static_route.vrf != 'default' %}
 {%             set static_route_cli = static_route_cli ~ " vrf " ~ static_route.vrf %}
 {%         endif %}
@@ -28,5 +28,5 @@
 {%             set static_route_cli = static_route_cli ~ " metric " ~ static_route.metric %}
 {%         endif %}
 {{ static_route_cli }}
-{%          endfor %}
+{%     endfor %}
 {% endif %}

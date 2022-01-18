@@ -71,7 +71,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|| default | true |
+| default | false || default | true |
 | TEST1 | true |
 | TEST2 | false |
 
