@@ -81,7 +81,7 @@ interface Management1
 | Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
-| Ethernet18 | LAG Member | *access | *- | *- | *- | 105 |
+| Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 |
 | Ethernet50 | SRV-POD03_Eth1 | *trunk | *110,201 | *- | *- | 5 |
 
 *Inherited from Port-Channel Interface
@@ -151,7 +151,7 @@ interface Ethernet17
 !
 interface Ethernet18
    description LAG Member
-   channel-group 105 mode active
+   channel-group 109 mode active
 !
 interface Ethernet50
    description SRV-POD03_Eth1

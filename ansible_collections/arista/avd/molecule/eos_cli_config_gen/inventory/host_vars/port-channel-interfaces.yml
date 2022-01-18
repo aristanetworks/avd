@@ -314,5 +314,5 @@ ethernet_interfaces:
   Ethernet18:
     description: LAG Member
     channel_group:
-      id: 105
+      id: 109
       mode: active

@@ -101,7 +101,7 @@ interface Management1
 
 #### TEST2
 
-ACL has counting mode `counters per-entry` enabled!
+- ACL has counting mode `counters per-entry` enabled!
 
 | Sequence | Action |
 | -------- | ------ |
