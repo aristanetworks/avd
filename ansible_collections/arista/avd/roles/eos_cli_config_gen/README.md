@@ -2016,7 +2016,7 @@ monitor_sessions:
     sources:
       - name: < interface_name or range >
         direction: < rx | tx | both >
-        access_group: 
+        access_group:
           type: < ip | ipv6 | mac >
           name: < acl_name >
           priority: < priority >
@@ -2024,7 +2024,7 @@ monitor_sessions:
       - < interface(s) | cpu >
     encapsulation_gre_metadata_tx: < true | false >
     header_remove_size: < bytes >
-    access_group: 
+    access_group:
       type: < ip | ipv6 | mac >
       name: < acl_name >
     rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
