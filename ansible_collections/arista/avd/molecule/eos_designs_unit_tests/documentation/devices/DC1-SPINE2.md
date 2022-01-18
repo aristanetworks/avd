@@ -155,6 +155,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -209,9 +210,6 @@ hardware tcam
 ## Spanning Tree Summary
 
 STP mode: **none**
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -645,6 +643,12 @@ vrf instance MGMT
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

@@ -1,0 +1,28 @@
+{% if as_path.access_lists is arista.avd.defined %}
+
+## AS Path Lists
+
+### AS Path Lists Summary
+{%     if as_path.regex_mode is arista.avd.defined %}
+
+AS Path Regex Mode is **{{ as_path.regex_mode }}**.
+{%     endif %}
+
+| List Name | Type | Match | Origin |
+| --------- | ---- | ----- | ------ |
+{%     for as_path_access_list in as_path.access_lists | arista.avd.natural_sort('name') %}
+{%         if as_path_access_list.name is arista.avd.defined and as_path_access_list.entries is arista.avd.defined %}
+{%             for as_path_access_list_entry in as_path_access_list.entries %}
+{%                 if as_path_access_list_entry.type is arista.avd.defined and as_path_access_list_entry.match is arista.avd.defined %}
+| {{ as_path_access_list.name }} | {{ as_path_access_list_entry.type }} | {{ as_path_access_list_entry.match | replace('|', '\|') }} | {{ as_path_access_list_entry.origin | arista.avd.default('any') }} |
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%     endfor %}
+
+### AS Path Lists configuration
+
+```eos
+{%     include 'eos/as-path.j2' %}
+```
+{% endif %}

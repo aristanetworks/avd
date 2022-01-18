@@ -7,7 +7,7 @@ repos:
       - id: trailing-whitespace
         exclude: ansible_collections/arista/avd/molecule
       - id: end-of-file-fixer
-        exclude_types: [jinja, text]
+        #exclude_types: [jinja, text]
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
         exclude: ansible_collections/arista/avd/molecule
@@ -44,5 +44,4 @@ repos:
         entry: yamllint
         language: python
         types: [file, yaml]
-        exclude: ansible_collections/arista/avd/molecule
-        args: [-c=.github/yamllintrc]
+        args: [--strict, -c=.github/yamllintrc]

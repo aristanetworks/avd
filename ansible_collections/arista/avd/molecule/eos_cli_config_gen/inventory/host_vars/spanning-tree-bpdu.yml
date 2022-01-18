@@ -1,0 +1,5 @@
+### Spanning-Tree (Test bpduguard and bpdufilter disable)
+spanning_tree:
+  edge_port:
+    bpduguard_default: false
+    bpdufilter_default: false

@@ -46,6 +46,8 @@
 {% include 'eos/logging.j2' %}
 {# match-list #}
 {% include 'eos/match-lists.j2' %}
+{# as-paths #}
+{% include 'eos/as-path.j2' %}
 {# macsec #}
 {% include 'eos/mac-security.j2' %}
 {# hostname #}
@@ -142,6 +144,8 @@
 {% include 'eos/ipv6-standard-access-lists.j2' %}
 {# Extended Access-lists #}
 {% include 'eos/access-lists.j2' %}
+{# Extended Access-lists, improved data model #}
+{% include 'eos/ip-access-lists.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# IP Routing #}

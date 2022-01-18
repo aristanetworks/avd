@@ -260,6 +260,7 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -400,6 +401,8 @@ ethernet_interfaces:
     shutdown: false
     mode: trunk
     vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
     channel_group:
       id: 10
       mode: active
@@ -411,6 +414,8 @@ ethernet_interfaces:
     mtu: 1601
     type: switched
     shutdown: false
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
     channel_group:
       id: 12
       mode: active
@@ -424,6 +429,8 @@ ethernet_interfaces:
     shutdown: false
     mode: access
     vlans: 110
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
     channel_group:
       id: 11
       mode: active
@@ -458,11 +465,15 @@ port_channel_interfaces:
     shutdown: false
     mode: trunk
     vlans: 210-211
+    spanning_tree_bpdufilter: disabled
+    spanning_tree_bpduguard: disabled
   Port-Channel12:
     description: server01_MTU_ADAPTOR_MLAG_PortChanne1
     type: switched
     shutdown: false
     mtu: 1601
+    spanning_tree_bpdufilter: true
+    spanning_tree_bpduguard: true
   Port-Channel11:
     description: server01_MTU_PROFILE_MLAG_PortChanne1
     type: switched
@@ -470,6 +481,8 @@ port_channel_interfaces:
     mode: access
     mtu: 1600
     vlans: 110
+    spanning_tree_bpdufilter: enabled
+    spanning_tree_bpduguard: enabled
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering

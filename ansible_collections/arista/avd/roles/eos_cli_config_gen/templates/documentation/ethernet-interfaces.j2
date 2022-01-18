@@ -337,6 +337,29 @@
 | {{ ethernet_interface }} | {{ enabled | join('<br>') }} |
 {%         endfor %}
 {%     endif %}
+{%     set priority_intfs = [] %}
+{%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
+{%         if ethernet_interfaces[ethernet_interface].priority_flow_control.enabled is arista.avd.defined %}
+{%             do priority_intfs.append(ethernet_interface) %}
+{%         endif %}
+{%     endfor %}
+{%     if priority_intfs | length > 0 %}
+
+### Priority Flow Control
+
+| Interface | PFC | Priority | Drop/No_drop |
+{%         for priority_intf in priority_intfs %}
+{%             if ethernet_interfaces[priority_intf].priority_flow_control.priorities is arista.avd.defined %}
+{%                 for priority_block in ethernet_interfaces[priority_intf].priority_flow_control.priorities | arista.avd.natural_sort %}
+{%                     set priority = priority_block.priority | arista.avd.default("-") %}
+{%                     set drop_no_drop = priority_block.no_drop | arista.avd.default("-") %}
+| {{ priority_intf }} | {{ ethernet_interfaces[priority_intf].priority_flow_control.enabled }} | {{ priority }} | {{ drop_no_drop }} |
+{%                 endfor %}
+{%             else %}
+| {{ priority_intf }} | {{ ethernet_interfaces[priority_intf].priority_flow_control.enabled }} | - | - |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 ### Ethernet Interfaces Device Configuration
 

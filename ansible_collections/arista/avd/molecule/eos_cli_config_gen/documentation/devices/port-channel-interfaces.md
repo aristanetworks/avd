@@ -176,6 +176,10 @@ interface Ethernet50
 | Port-Channel102 | PVLAN Promiscuous Trunk - vlan translation out | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel103 | PVLAN Secondary Trunk | switched | trunk | 110-112 | - | - | - | - | - | - |
 | Port-Channel104 | LACP fallback individual | switched | trunk | 112 | - | - | 300 | individual | - | - |
+| Port-Channel105 | bpdu disabled | switched | access | - | - | - | - | - | - | - |
+| Port-Channel106 | bpdu enabled | switched | access | - | - | - | - | - | - | - |
+| Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
+| Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
 
 #### Private VLAN
 
@@ -355,6 +359,28 @@ interface Port-Channel104
    switchport mode trunk
    port-channel lacp fallback timeout 300
    port-channel lacp fallback individual
+!
+interface Port-Channel105
+   description bpdu disabled
+   switchport
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
+!
+interface Port-Channel106
+   description bpdu enabled
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel107
+   description bpdu true
+   switchport
+   spanning-tree bpduguard enable
+   spanning-tree bpdufilter enable
+!
+interface Port-Channel108
+   description bpdu false
+   switchport
 ```
 
 # Routing

@@ -157,6 +157,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -207,9 +208,6 @@ STP Root Super: **True**
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -335,7 +333,6 @@ interface Ethernet6
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1

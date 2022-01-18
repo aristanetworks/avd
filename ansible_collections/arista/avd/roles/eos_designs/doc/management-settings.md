@@ -17,6 +17,7 @@ local_users:
     role: < Specify a role for the user >
     no_password: < true | do not configure a password for given username. sha512_password MUST not be defined for this user. >
     sha512_password: "< SHA512 ENCRYPTED password >"
+    ssh_key: "< ssh_key_string >"
 
   < username_2 >:
     privilege: < (1-15) Initial privilege level with local EXEC authorization >
