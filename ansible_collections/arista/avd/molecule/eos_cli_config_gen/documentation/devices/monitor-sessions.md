@@ -5,6 +5,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
+  - [Monitor Sessions](#monitor-sessions)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
 - [Interfaces](#interfaces)
@@ -47,6 +48,43 @@ interface Management1
 # Authentication
 
 # Monitoring
+
+## Monitor Sessions
+
+### Monitor Sessions Summary
+
+#### myMonitoringSession1
+
+| Sources | Direction | Access Group (Type, Name, Priority) | Destinations |
+| ------- | --------- | ----------------------------------- | ------------ |
+| Ethernet0 | both | ipv6, ipv6ACL, Not defined | Ethernet48 |
+| Ethernet5 | both | ip, ipv4ACL, 10 | Ethernet48 |
+
+#### myMonitoringSession2
+
+| Sources | Direction | Access Group (Type, Name, Priority) | Destinations |
+| ------- | --------- | ----------------------------------- | ------------ |
+| Ethernet12 | rx | Not defined | Cpu, Ethernet50 |
+| Ethernet18 | tx | mac, macACL, 100 | Cpu, Ethernet50 |
+
+### Monitor Sessions Configuration
+
+```eos
+!
+monitor session myMonitoringSession1 source Ethernet0 ipv6 access-group ipv6ACL
+monitor session myMonitoringSession1 source Ethernet5 both ip access-group ipv4ACL priority 10
+monitor session myMonitoringSession1 destination Ethernet48
+monitor session myMonitoringSession1 encapsulation gre metadata tx
+monitor session myMonitoringSession1 header remove size 32
+monitor session myMonitoringSession1 truncate
+monitor session myMonitoringSession2 source Ethernet12 rx
+monitor session myMonitoringSession2 source Ethernet18 tx mac access-group macACL priority 100
+monitor session myMonitoringSession2 destination Cpu
+monitor session myMonitoringSession2 destination Ethernet50
+monitor session myMonitoringSession2 encapsulation gre metadata tx
+monitor session myMonitoringSession2 ip access-group ipv4ACL
+monitor session myMonitoringSession2 sample 50
+```
 
 # Internal VLAN Allocation Policy
 

@@ -8,12 +8,10 @@ monitor_sessions:
           type: ip
           name: ipv4ACL
           priority: 10
-        ip_access_group_priority: 10
       - name: Ethernet0
         access_group:
           type: ipv6
           name: ipv6ACL
-          priority: 100
     destinations:
       - Ethernet48
     encapsulation_gre_metadata_tx: true
