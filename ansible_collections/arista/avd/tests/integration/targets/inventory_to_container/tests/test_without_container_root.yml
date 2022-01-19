@@ -2,8 +2,8 @@
   register: CVP_VARS
   ignore_errors: yes
   inventory_to_container:
-        inventory: '{{ role_path }}/{{ inventory_path }}/inventory.yml'
-        configlet_dir: '{{ role_path }}/{{ inventory_path }}/intended/configs'
+        inventory: '{{ inventory_path }}/inventory.yml'
+        configlet_dir: '{{ configlet_path }}'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
         destination: "{{ actual_output }}"

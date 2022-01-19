@@ -1,6 +1,6 @@
 ---
 testcase: '*'
-inventory_path: "../../../../../../../../inventory/"
-configlet_path: "{{ role_path }}/{{ inventory_path }}/intended/configs"
-expected_output: "{{ role_path }}/{{ inventory_path }}/configlet_build_config/expected_output"
-actual_output: "{{ role_path }}/{{ inventory_path }}/../output/actual_output.yml"
+collection_path: "{{ lookup('env', 'ANSIBLE_COLLECTIONS_PATH') }}/ansible_collections/arista/avd/tests"
+configlet_path: "{{ collection_path }}/inventory/intended/configs"
+expected_output: "{{ collection_path }}/inventory/configlet_build_config/expected_output"
+actual_output: "{{ collection_path }}/output/actual_output.yml"

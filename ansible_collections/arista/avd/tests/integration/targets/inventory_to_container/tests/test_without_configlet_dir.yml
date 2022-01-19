@@ -1,7 +1,7 @@
 - name: Test without configlet_dir
   register: CVP_VARS
   inventory_to_container:
-        inventory: '{{ role_path }}/{{ inventory_path }}/inventory.yml'
+        inventory: '{{ inventory_path }}/inventory.yml'
         container_root: 'DC1_FABRIC'
         configlet_prefix: 'AVD'
         device_filter: ['DC1-LE']
