@@ -28,7 +28,7 @@ switch:
   mgmt_interface: {{ switch_data.combined.mgmt_interface | arista.avd.default(switch_platform_settings.management_interface, mgmt_interface) }}
 
 {# switch.underlay_routing_protocol #}
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
   underlay_routing_protocol: {{ underlay_routing_protocol | lower }}
 {% else %}
   underlay_routing_protocol: 'ebgp'

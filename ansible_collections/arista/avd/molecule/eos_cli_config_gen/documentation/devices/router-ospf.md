@@ -209,7 +209,6 @@ interface Vlan24
 | 200 | static | rm-ospf-static |
 | 200 | bgp | rm-ospf-bgp |
 
-
 ### Router OSPF Router Max-Metric
 
 | Process ID | Router-LSA | External-LSA (metric) | Include Stub | On Startup Delay | Summary-LSA (metric) |
