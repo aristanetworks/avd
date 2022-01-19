@@ -55,17 +55,36 @@ interface Management1
 
 #### myMonitoringSession1
 
-| Sources | Direction | Access Group (Type, Name, Priority) | Destinations |
-| ------- | --------- | ----------------------------------- | ------------ |
-| Ethernet0 | both | ipv6, ipv6ACL, Not defined | Ethernet48 |
-| Ethernet5 | both | ip, ipv4ACL, 10 | Ethernet48 |
+##### myMonitoringSession1 Sources
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet0 | both | ipv6 | ipv6ACL | - |
+| Ethernet5 | both | ip | ipv4ACL | 10 |
+
+##### myMonitoringSession1 Destinations and Session Settings
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Ethernet48 |
+| Encapsulation Gre Metadata Tx | True |
+| Header Remove Size | 32 |
+| Truncate Enabled | True |
 
 #### myMonitoringSession2
 
-| Sources | Direction | Access Group (Type, Name, Priority) | Destinations |
-| ------- | --------- | ----------------------------------- | ------------ |
-| Ethernet12 | rx | Not defined | Cpu, Ethernet50 |
-| Ethernet18 | tx | mac, macACL, 100 | Cpu, Ethernet50 |
+##### myMonitoringSession2 Sources
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet12 | rx | - | - | - |
+| Ethernet18 | tx | mac | macACL | 100 |
+
+##### myMonitoringSession2 Destinations and Session Settings
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Cpu, Ethernet50 |
+| Encapsulation Gre Metadata Tx | True |
+| Access Group Type | ip |
+| Access Group Name | ipv4ACL |
+| Sample | 50 |
 
 ### Monitor Sessions Configuration
 
