@@ -291,6 +291,15 @@ router bgp {{ router_bgp.as }}
 {%                 if vpws_service.route_targets.import_export is arista.avd.defined %}
       route-target import export evpn {{ vpws_service.route_targets.import_export }}
 {%                 endif %}
+{%                 if vpws_service.mpls_control_word is arista.avd.defined(true) %}
+      mpls control-word
+{%                 endif %}
+{%                 if vpws_service.label_flow is arista.avd.defined(true) %}
+      label flow
+{%                 endif %}
+{%                 if vpws_service.mtu is arista.avd.defined %}
+      mtu {{ vpws_service.mtu }}
+{%                 endif %}
 {%                 for pw in vpws_service.pseudowires | arista.avd.natural_sort %}
 {%                     if pw.name is arista.avd.defined and pw.id_local is arista.avd.defined and pw.id_remote is arista.avd.defined %}
       !
