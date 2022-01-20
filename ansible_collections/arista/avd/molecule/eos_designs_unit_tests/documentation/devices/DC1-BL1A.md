@@ -638,7 +638,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 | 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | - |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | - |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | True |
 | fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | all | - | - | - |
 | fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - |
 
@@ -764,6 +764,7 @@ router bgp 65104
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3
+      neighbor 123.1.1.11 bfd
       neighbor 123.1.1.11 send-community standard extended
       neighbor 123.1.1.11 maximum-routes 0
       neighbor 123.1.1.11 default-originate
