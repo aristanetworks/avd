@@ -12,8 +12,8 @@
 {%     endif %}
 {%     if dhcp_relay.servers is arista.avd.defined %}
 
-| Server |
-| ------ |
+| DHCP Relay Servers |
+| ------------------ |
 {%         for server in dhcp_relay.servers | arista.avd.natural_sort %}
 | {{ server }} |
 {%         endfor %}
