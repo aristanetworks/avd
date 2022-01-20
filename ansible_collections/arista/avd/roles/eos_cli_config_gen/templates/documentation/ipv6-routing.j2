@@ -5,9 +5,7 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-{% if 'default' not in vrfs | arista.avd.default([]) %}
-| default | {{ ipv6_unicast_routing | arista.avd.default('false') | lower }} |
-{% endif %}
+| default | {{ ipv6_unicast_routing | arista.avd.default(false) | lower }} |
 {% set ipv6_configured_in_vrf = false %}
 {% for vrf in vrfs | arista.avd.natural_sort %}
 {%     if vrfs[vrf].ipv6_routing is defined and vrfs[vrf].ipv6_routing == true %}

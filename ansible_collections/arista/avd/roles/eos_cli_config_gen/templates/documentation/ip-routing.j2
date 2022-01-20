@@ -5,9 +5,7 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-{% if 'default' not in vrfs | arista.avd.default([]) %}
 | default | {{ ip_routing | arista.avd.default(false) | lower }} |
-{% endif %}
 {% for vrf in vrfs | arista.avd.natural_sort %}
 {%     if vrfs[vrf].ip_routing is arista.avd.defined(true) %}
 | {{ vrf }} | true |

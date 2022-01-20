@@ -71,6 +71,7 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
+| default | false |
 | default | true |
 | TEST1 | true |
 | TEST2 | false |
@@ -90,6 +91,7 @@ no ip icmp redirect
 
 | VRF | Routing Enabled |
 | --- | --------------- |
+| default | true |
 | default | true |
 | TEST1 | true |
 | TEST2 | false |
