@@ -142,6 +142,7 @@ ntp server vrf mgt 10.10.111.2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -153,6 +154,7 @@ ntp server vrf mgt 10.10.111.2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

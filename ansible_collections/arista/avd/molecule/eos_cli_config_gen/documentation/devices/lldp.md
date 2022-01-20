@@ -155,6 +155,7 @@ interface Ethernet4
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -166,6 +167,7 @@ interface Ethernet4
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

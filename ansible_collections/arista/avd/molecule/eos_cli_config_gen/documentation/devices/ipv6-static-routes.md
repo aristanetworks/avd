@@ -70,6 +70,7 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -81,6 +82,7 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ## IPv6 Static Routes
 
 ### IPv6 Static Routes Summary

@@ -79,6 +79,7 @@ alias siib show ip interface brief
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -90,6 +91,7 @@ alias siib show ip interface brief
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

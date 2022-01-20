@@ -107,6 +107,7 @@ management api http-commands
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -118,6 +119,7 @@ management api http-commands
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

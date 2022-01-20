@@ -100,6 +100,7 @@ vlan 3010
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -111,6 +112,7 @@ vlan 3010
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 ## IP IGMP Snooping

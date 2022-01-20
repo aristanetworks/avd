@@ -96,6 +96,7 @@ vmtracer session session_2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -107,6 +108,7 @@ vmtracer session session_2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

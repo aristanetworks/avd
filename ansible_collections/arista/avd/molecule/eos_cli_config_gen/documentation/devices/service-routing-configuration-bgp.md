@@ -79,6 +79,7 @@ service routing configuration bgp no-equals-default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -90,6 +91,7 @@ service routing configuration bgp no-equals-default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

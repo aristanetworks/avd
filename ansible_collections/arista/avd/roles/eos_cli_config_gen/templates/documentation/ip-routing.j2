@@ -5,16 +5,16 @@
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default |{% if ip_routing is defined and ip_routing is not none and ip_routing == true %} true |{% else %} false |{% endif %}
-{% if vrfs is defined and vrfs is not none %}
-{%     for vrf in vrfs | arista.avd.natural_sort %}
-{%         if vrfs[vrf].ip_routing == true %}
-| {{ vrf }} | true |
-{%         elif vrfs[vrf].ip_routing == false %}
-| {{ vrf }} | false |
-{%         endif %}
-{%     endfor %}
+{% if 'default' not in vrfs | arista.avd.default([]) %}
+| default | {{ ip_routing | arista.avd.default(false) | lower }} |
 {% endif %}
+{% for vrf in vrfs | arista.avd.natural_sort %}
+{%     if vrfs[vrf].ip_routing is arista.avd.defined(true) %}
+| {{ vrf }} | true |
+{%     elif vrfs[vrf].ip_routing is arista.avd.defined(false) %}
+| {{ vrf }} | false |
+{%     endif %}
+{% endfor %}
 
 ### IP Routing Device Configuration
 

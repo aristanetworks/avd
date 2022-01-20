@@ -88,6 +88,7 @@ logging policy match match-list molecule discard
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -99,6 +100,7 @@ logging policy match match-list molecule discard
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

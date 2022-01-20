@@ -174,6 +174,7 @@ snmp-server vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -185,6 +186,7 @@ snmp-server vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

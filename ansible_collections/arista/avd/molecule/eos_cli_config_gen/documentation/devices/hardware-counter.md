@@ -89,6 +89,7 @@ hardware counter feature gre out
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -100,6 +101,7 @@ hardware counter feature gre out
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

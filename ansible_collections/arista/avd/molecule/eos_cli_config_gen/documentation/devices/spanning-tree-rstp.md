@@ -90,6 +90,7 @@ spanning-tree priority 8192
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -101,6 +102,7 @@ spanning-tree priority 8192
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

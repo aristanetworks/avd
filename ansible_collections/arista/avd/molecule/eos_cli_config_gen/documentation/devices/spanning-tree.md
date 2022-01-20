@@ -120,6 +120,7 @@ spanning-tree mst configuration
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -131,6 +132,7 @@ spanning-tree mst configuration
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

@@ -91,6 +91,7 @@ no spanning-tree edge-port bpdufilter default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -102,6 +103,7 @@ no spanning-tree edge-port bpdufilter default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

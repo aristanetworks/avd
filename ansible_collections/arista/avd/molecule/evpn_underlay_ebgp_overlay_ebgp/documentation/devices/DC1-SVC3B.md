@@ -1167,7 +1167,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true || MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_DB_Zone | true |
 | Tenant_A_OP_Zone | true |
@@ -1200,7 +1201,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_DB_Zone | false |
 | Tenant_A_OP_Zone | false |
@@ -1210,7 +1212,6 @@ ip routing vrf Tenant_C_WAN_Zone
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_OP_Zone | false |
 | Tenant_C_WAN_Zone | false |
-
 
 ## Static Routes
 

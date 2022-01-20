@@ -109,6 +109,7 @@ ntp server 10.1.1.2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

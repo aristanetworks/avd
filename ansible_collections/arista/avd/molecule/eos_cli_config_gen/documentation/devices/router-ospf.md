@@ -172,6 +172,7 @@ interface Vlan24
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -183,6 +184,7 @@ interface Vlan24
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ## Router OSPF
 
 ### Router OSPF Summary

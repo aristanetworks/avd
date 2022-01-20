@@ -91,6 +91,7 @@ ip tacacs source-interface loopback10
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -102,6 +103,7 @@ ip tacacs source-interface loopback10
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

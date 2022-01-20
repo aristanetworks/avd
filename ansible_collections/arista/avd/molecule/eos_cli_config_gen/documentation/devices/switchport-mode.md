@@ -90,6 +90,7 @@ switchport default phone vlan 69
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -101,6 +102,7 @@ switchport default phone vlan 69
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

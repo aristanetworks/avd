@@ -113,6 +113,7 @@ logging vrf mgt host 40.40.40.7 300 400
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -124,6 +125,7 @@ logging vrf mgt host 40.40.40.7 300 400
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # Multicast
 
 # Filters

@@ -300,6 +300,7 @@ interface Vlan4094
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -311,6 +312,7 @@ interface Vlan4094
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ## Router ISIS
 
 ### Router ISIS Summary

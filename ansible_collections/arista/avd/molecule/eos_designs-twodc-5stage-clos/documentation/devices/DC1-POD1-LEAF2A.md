@@ -700,7 +700,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true || Common_VRF | true |
+| default | true |
+| Common_VRF | true |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | true |
 | vrf_with_loopbacks_from_overlapping_pool | true |
@@ -723,12 +724,12 @@ ip routing vrf vrf_with_loopbacks_from_pod_pools
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Common_VRF | false |
+| default | false |
+| Common_VRF | false |
 | MGMT | false |
 | vrf_with_loopbacks_dc1_pod1_only | false |
 | vrf_with_loopbacks_from_overlapping_pool | false |
 | vrf_with_loopbacks_from_pod_pools | false |
-
 
 ## Static Routes
 

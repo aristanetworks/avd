@@ -392,6 +392,7 @@ interface Port-Channel108
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -403,6 +404,7 @@ interface Port-Channel108
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # BFD
 
 ## BFD Interfaces

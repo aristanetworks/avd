@@ -134,6 +134,7 @@ interface Loopback100
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -145,6 +146,7 @@ interface Loopback100
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # MPLS
 
 ## MPLS Interfaces

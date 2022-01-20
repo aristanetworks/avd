@@ -393,6 +393,7 @@ interface Ethernet24
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -404,6 +405,7 @@ interface Ethernet24
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
+
 # BFD
 
 ## BFD Interfaces
