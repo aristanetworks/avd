@@ -2666,6 +2666,7 @@ router_bgp:
           description: < description >
           ebgp_multihop: < integer >
           next_hop_self: < true | false >
+          bfd: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
           maximum_routes: < integer >
