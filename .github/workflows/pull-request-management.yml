@@ -360,4 +360,4 @@ jobs:
           pip install git+https://github.com/aristanetworks/j2lint.git
       - name: Run J2lint
         run: |
-          j2lint $GITHUB_WORKSPACE --ignore S7 S6 V1 
+          j2lint $GITHUB_WORKSPACE --ignore S7 S6 V1
