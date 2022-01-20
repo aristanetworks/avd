@@ -10,12 +10,14 @@
 
 - DHCP Relay is enabled for tunnelled requests
 {%     endif %}
+{%     if dhcp_relay.servers is arista.avd.defined %}
 
 | Server |
 | ------ |
-{%     for server in dhcp_relay.servers | arista.avd.natural_sort %}
+{%         for server in dhcp_relay.servers | arista.avd.natural_sort %}
 | {{ server }} |
-{%     endfor %}
+{%         endfor %}
+{%     endif %}
 
 ## DHCP Relay Configuration
 
