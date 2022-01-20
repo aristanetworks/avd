@@ -198,7 +198,6 @@ interface Port-Channel5
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -100,7 +100,6 @@ hardware counter feature gre out
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

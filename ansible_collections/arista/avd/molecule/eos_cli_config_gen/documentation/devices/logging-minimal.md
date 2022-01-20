@@ -98,7 +98,6 @@ logging monitor debugging
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -138,7 +138,6 @@ interface Vxlan1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

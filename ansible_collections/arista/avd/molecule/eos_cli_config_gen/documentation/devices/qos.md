@@ -161,7 +161,6 @@ interface Port-Channel3
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -102,7 +102,6 @@ ip http client local-interface Ethernet10
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

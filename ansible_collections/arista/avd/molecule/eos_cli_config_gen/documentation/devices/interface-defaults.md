@@ -113,7 +113,6 @@ interface defaults
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

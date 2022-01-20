@@ -118,7 +118,6 @@ snmp-server vrf MGMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

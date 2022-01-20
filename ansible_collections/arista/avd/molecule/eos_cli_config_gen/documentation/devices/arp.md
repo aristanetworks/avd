@@ -81,7 +81,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 ## ARP
 
 Global ARP timeout: 300

@@ -93,7 +93,6 @@ no ip icmp redirect
 | default | true | | default | true |
 | TEST1 | true |
 | TEST2 | false |
-
 ### IPv6 Routing Device Configuration
 
 ```eos

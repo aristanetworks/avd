@@ -90,7 +90,6 @@ service routing configuration bgp no-equals-default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

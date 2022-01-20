@@ -115,7 +115,6 @@ system control-plane
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

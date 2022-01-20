@@ -102,7 +102,6 @@ ip tacacs source-interface loopback10
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

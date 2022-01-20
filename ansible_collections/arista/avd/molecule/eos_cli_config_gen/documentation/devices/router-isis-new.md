@@ -228,7 +228,6 @@ interface Vlan4094
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 ## Router ISIS
 
 ### Router ISIS Summary

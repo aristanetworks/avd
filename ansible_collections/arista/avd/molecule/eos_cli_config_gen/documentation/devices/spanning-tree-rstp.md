@@ -101,7 +101,6 @@ spanning-tree priority 8192
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

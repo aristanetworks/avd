@@ -107,7 +107,6 @@ vmtracer session session_2
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

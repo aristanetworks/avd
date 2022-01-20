@@ -403,7 +403,6 @@ interface Port-Channel108
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # BFD
 
 ## BFD Interfaces

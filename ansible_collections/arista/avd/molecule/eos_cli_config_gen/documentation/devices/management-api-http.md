@@ -118,7 +118,6 @@ management api http-commands
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

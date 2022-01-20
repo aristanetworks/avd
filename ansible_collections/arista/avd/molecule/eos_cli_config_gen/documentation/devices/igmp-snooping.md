@@ -111,7 +111,6 @@ vlan 3010
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 ## IP IGMP Snooping

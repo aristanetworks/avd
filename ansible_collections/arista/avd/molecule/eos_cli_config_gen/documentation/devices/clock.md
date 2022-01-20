@@ -94,7 +94,6 @@ clock timezone GMT
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

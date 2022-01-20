@@ -314,7 +314,6 @@ interface Vlan4094
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # BFD
 
 ## BFD Interfaces

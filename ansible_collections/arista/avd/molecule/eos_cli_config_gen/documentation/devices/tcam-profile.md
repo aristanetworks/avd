@@ -210,7 +210,6 @@ hardware tcam
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

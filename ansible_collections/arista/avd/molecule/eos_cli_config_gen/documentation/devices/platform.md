@@ -83,7 +83,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -132,7 +132,6 @@ ntp server ie.pool.ntp.org iburst key 1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

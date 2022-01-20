@@ -81,7 +81,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 ## Router BGP
 
 ### Router BGP Summary

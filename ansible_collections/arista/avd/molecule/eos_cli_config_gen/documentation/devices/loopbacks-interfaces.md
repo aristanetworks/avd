@@ -145,7 +145,6 @@ interface Loopback100
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # MPLS
 
 ## MPLS Interfaces

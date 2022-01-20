@@ -90,7 +90,6 @@ alias siib show ip interface brief
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

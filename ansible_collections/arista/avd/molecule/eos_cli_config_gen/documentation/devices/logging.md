@@ -124,7 +124,6 @@ logging vrf mgt host 40.40.40.7 300 400
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

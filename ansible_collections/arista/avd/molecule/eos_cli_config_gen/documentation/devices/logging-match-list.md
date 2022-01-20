@@ -99,7 +99,6 @@ logging policy match match-list molecule discard
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

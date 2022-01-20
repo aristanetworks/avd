@@ -92,7 +92,6 @@ ip routing vrf TENANT_A_PROJECT02
 | TENANT_A_PROJECT01 | false |
 | TENANT_A_PROJECT02 | false |
 
-
 # Multicast
 
 # Filters

@@ -140,7 +140,6 @@ interface Loopback0
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # MPLS
 
 ## MPLS and LDP

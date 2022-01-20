@@ -98,7 +98,6 @@ daemon TerminAttr
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

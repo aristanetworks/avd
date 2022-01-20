@@ -107,7 +107,6 @@ spanning-tree vlan-id 100-500 priority 16384
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -83,7 +83,6 @@ interface Management1
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Patch Panel
 
 ## Patch Panel Summary

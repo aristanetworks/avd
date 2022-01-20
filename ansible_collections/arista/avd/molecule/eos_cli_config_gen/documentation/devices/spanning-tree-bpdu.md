@@ -102,7 +102,6 @@ no spanning-tree edge-port bpdufilter default
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

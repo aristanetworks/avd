@@ -101,7 +101,6 @@ switchport default phone vlan 69
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

@@ -404,7 +404,6 @@ interface Ethernet24
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # BFD
 
 ## BFD Interfaces

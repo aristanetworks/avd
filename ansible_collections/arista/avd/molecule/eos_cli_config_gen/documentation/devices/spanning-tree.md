@@ -131,7 +131,6 @@ spanning-tree mst configuration
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

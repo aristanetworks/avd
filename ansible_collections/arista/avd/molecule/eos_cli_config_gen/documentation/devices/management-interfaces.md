@@ -86,7 +86,6 @@ interface Vlan123
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

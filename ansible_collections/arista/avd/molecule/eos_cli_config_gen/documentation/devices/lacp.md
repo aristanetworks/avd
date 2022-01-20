@@ -100,7 +100,6 @@ lacp system-priority 0
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters

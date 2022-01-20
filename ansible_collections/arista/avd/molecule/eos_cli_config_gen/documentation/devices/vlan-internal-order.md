@@ -86,7 +86,6 @@ vlan internal order ascending range 10 40
 | VRF | Routing Enabled |
 | --- | --------------- |
 | default | false |
-
 # Multicast
 
 # Filters
