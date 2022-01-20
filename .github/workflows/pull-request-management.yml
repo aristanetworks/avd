@@ -349,7 +349,8 @@ jobs:
         with:
           name: importer-logs
           path: ./importer_result.json
-  J2LINT:
+  j2lint:
+    name: Validate j2 files
     runs-on: ubuntu-20.04
     if: always()
     steps:
