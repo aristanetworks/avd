@@ -55,8 +55,8 @@ interface Management1
 
 - DHCP Relay is disabled for tunnelled requests
 
-| Server |
-| ------ |
+| DHCP Relay Servers |
+| ------------------ |
 | dhcp-relay-server1 |
 | dhcp-relay-server2 |
 
