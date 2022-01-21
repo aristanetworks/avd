@@ -81,7 +81,7 @@
 | Source | {{ router_bgp.peer_groups[peer_group].update_source }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
-| Bfd | true |
+| BFD | true |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].ebgp_multihop is arista.avd.defined %}
 | Ebgp multihop | {{ router_bgp.peer_groups[peer_group].ebgp_multihop }} |
@@ -127,7 +127,7 @@
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | Bfd |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
 | -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
 {%         for neighbor in router_bgp.neighbors | arista.avd.natural_sort %}
 {%             if router_bgp.neighbors[neighbor].peer_group is arista.avd.defined %}
