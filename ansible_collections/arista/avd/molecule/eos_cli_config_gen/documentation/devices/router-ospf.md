@@ -272,7 +272,7 @@ interface Vlan24
 router ospf 100
    router-id 192.168.255.3
    distance ospf intra-area 50
-​   distance ospf external 60
+   distance ospf external 60
    distance ospf inter-area 70
    passive-interface default
    no passive-interface Ethernet1
