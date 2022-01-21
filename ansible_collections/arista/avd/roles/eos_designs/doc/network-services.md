@@ -345,6 +345,7 @@ tenants:
             route_map_in: < route-map name >
             local_as: < local BGP ASN >
             weight: < 0-65535>
+            bfd: < true | false >
 
         bgp:
           # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration

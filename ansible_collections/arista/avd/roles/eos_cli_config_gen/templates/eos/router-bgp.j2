@@ -659,6 +659,11 @@ router bgp {{ router_bgp.as }}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].next_hop_self is arista.avd.defined(true) %}
       neighbor {{ neighbor }} next-hop-self
 {%             endif %}
+{%             if router_bgp.vrfs[vrf].neighbors[neighbor].bfd is arista.avd.defined(true) %}
+      neighbor {{ neighbor }} bfd
+{%             elif router_bgp.vrfs[vrf].neighbors[neighbor].bfd is arista.avd.defined(false) %}
+      no neighbor {{ neighbor }} bfd
+{%             endif %}
 {%             if router_bgp.vrfs[vrf].neighbors[neighbor].timers is arista.avd.defined %}
       neighbor {{ neighbor }} timers {{ router_bgp.vrfs[vrf].neighbors[neighbor].timers }}
 {%             endif %}
