@@ -351,7 +351,7 @@ jobs:
           path: ./importer_result.json
   j2lint:
     name: Validate j2 files
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     if: always()
     steps:
       - uses: actions/checkout@v2
