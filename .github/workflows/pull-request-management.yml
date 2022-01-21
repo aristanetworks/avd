@@ -358,9 +358,7 @@ jobs:
         timeout-minutes: 2
       - name: Setup J2Lint
         timeout-minutes: 2
-        run: |
-          pip install git+https://github.com/aristanetworks/j2lint.git
+        run: pip install git+https://github.com/aristanetworks/j2lint.git
       - name: Run J2lint
         timeout-minutes: 2
-        run: |
-          j2lint $GITHUB_WORKSPACE -v -d --ignore S7 S6 V1
+        run: j2lint $GITHUB_WORKSPACE -v -d --ignore S7 S6 V1
