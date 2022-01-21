@@ -18,6 +18,6 @@ management security
 {%         endif  %}
 {%         if ssl_profile.certificate is arista.avd.defined %}
       certificate {{ ssl_profile.certificate.file }} key {{ ssl_profile.certificate.key }}
-{%          endif  %}
+{%         endif  %}
 {%     endfor %}
 {% endif %}

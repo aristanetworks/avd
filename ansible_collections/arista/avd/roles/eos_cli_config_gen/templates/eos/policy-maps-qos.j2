@@ -27,7 +27,7 @@ policy-map type pbr {{ policy_map }}
 {%                 set nexthop_cli = nexthop_cli ~ ' recursive' %}
 {%             endif %}
 {%             set nexthop_cli = nexthop_cli ~ ' ' ~ policy_maps.pbr[policy_map].classes[class].set.nexthop.ip_address %}
-      {{ nexthop_cli  }}
+      {{ nexthop_cli }}
 {%         endif %}
    !
 {%     endfor %}

@@ -8,19 +8,19 @@
 
 | Feature | Flow Direction |
 | ------- | -------------- |
-{% if hardware_counters is defined and hardware_counters is not none %}
-{%     if hardware_counters.features is defined and hardware_counters.features is not none %}
-{%         for feature in hardware_counters.features %}
-{%             for feature, direction in feature.items() %}
+{%     if hardware_counters is defined and hardware_counters is not none %}
+{%         if hardware_counters.features is defined and hardware_counters.features is not none %}
+{%             for feature in hardware_counters.features %}
+{%                 for feature, direction in feature.items() %}
 | {{ feature }} | {{ direction }} |
+{%                 endfor %}
 {%             endfor %}
-{%         endfor %}
+{%         endif %}
 {%     endif %}
-{% endif %}
 
 ### Hardware Counters Configuration
 
 ```eos
-{% include 'eos/hardware-counters.j2' %}
+{%     include 'eos/hardware-counters.j2' %}
 ```
 {% endif %}

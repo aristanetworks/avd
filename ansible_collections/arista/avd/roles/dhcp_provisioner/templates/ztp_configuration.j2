@@ -68,7 +68,7 @@ ztp:
     - name: {{ node }}
       mac: '{{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mac_address }}'
       ip4: {{ node_types[node_type]['node_groups'][node_group]['nodes'][node].mgmt_ip | ansible.netcommon.ipaddr('address') }}
-{%                 endif %}
+{%             endif %}
 {%         endfor %}
 {%     endfor %}
 {# For NODES List #}

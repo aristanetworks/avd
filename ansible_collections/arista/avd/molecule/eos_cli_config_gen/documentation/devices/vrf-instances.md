@@ -71,7 +71,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|| MGMT | false |
+| default | false |
+| MGMT | false |
 | TENANT_A_PROJECT01 | true |
 | TENANT_A_PROJECT02 | true |
 
@@ -88,10 +89,10 @@ ip routing vrf TENANT_A_PROJECT02
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | TENANT_A_PROJECT01 | false |
 | TENANT_A_PROJECT02 | false |
-
 
 # Multicast
 

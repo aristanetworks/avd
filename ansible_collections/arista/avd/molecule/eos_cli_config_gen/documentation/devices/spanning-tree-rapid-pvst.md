@@ -95,7 +95,8 @@ spanning-tree vlan-id 100-500 priority 16384
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

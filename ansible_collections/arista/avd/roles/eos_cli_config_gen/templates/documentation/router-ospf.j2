@@ -90,13 +90,13 @@
 {%             if router_ospf.process_ids[process_id].redistribute is arista.avd.defined %}
 {%                 set source_protocols = [] %}
 {%                 if router_ospf.process_ids[process_id].redistribute.connected is defined %}
-{%                   do source_protocols.append(('connected', router_ospf.process_ids[process_id].redistribute.connected.route_map | arista.avd.default('-'))) %}
+{%                     do source_protocols.append(('connected', router_ospf.process_ids[process_id].redistribute.connected.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
 {%                 if router_ospf.process_ids[process_id].redistribute.static is defined %}
-{%                   do source_protocols.append(('static', router_ospf.process_ids[process_id].redistribute.static.route_map | arista.avd.default('-'))) %}
+{%                     do source_protocols.append(('static', router_ospf.process_ids[process_id].redistribute.static.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
 {%                 if router_ospf.process_ids[process_id].redistribute.bgp is defined %}
-{%                   do source_protocols.append(('bgp', router_ospf.process_ids[process_id].redistribute.bgp.route_map | arista.avd.default('-'))) %}
+{%                     do source_protocols.append(('bgp', router_ospf.process_ids[process_id].redistribute.bgp.route_map | arista.avd.default('-'))) %}
 {%                 endif %}
 {%                 for source_protocol in source_protocols %}
 | {{ process_id }} | {{ source_protocol[0] }} | {{ source_protocol[1] }} |
@@ -257,24 +257,24 @@
 {%     set vlan_interface_ospf = namespace(configured=false) %}
 {%     set loopback_interface_ospf = namespace(configured=false) %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%          if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
-{%              set vlan_interface_ospf.configured = true %}
-{%          endif %}
+{%         if vlan_interfaces[vlan_interface].ospf_area is arista.avd.defined %}
+{%             set vlan_interface_ospf.configured = true %}
+{%         endif %}
 {%     endfor %}
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
-{%          if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
-{%              set ethernet_interface_ospf.configured = true %}
-{%          endif %}
+{%         if ethernet_interfaces[ethernet_interface].ospf_area is arista.avd.defined %}
+{%             set ethernet_interface_ospf.configured = true %}
+{%         endif %}
 {%     endfor %}
 {%     for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%          if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
-{%              set port_channel_interface_ospf.configured = true %}
-{%          endif %}
+{%         if port_channel_interfaces[port_channel_interface].ospf_area is arista.avd.defined %}
+{%             set port_channel_interface_ospf.configured = true %}
+{%         endif %}
 {%     endfor %}
 {%     for loopback_interface in loopback_interfaces | arista.avd.natural_sort %}
-{%          if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
-{%              set loopback_interface_ospf.configured = true %}
-{%          endif %}
+{%         if loopback_interfaces[loopback_interface].ospf_area is arista.avd.defined %}
+{%             set loopback_interface_ospf.configured = true %}
+{%         endif %}
 {%     endfor %}
 {%     if vlan_interface_ospf.configured or ethernet_interface_ospf.configured or port_channel_interface_ospf.configured or loopback_interface_ospf.configured %}
 

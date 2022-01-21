@@ -467,7 +467,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_WAN_Zone | true |
 | Tenant_C_WAN_Zone | true |
@@ -488,7 +489,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true | | MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
