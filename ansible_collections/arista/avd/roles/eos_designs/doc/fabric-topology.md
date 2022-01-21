@@ -307,7 +307,7 @@ defaults <- node_group <- node_group.node <- node
     # MLAG Peer Link allowed VLANs
     mlag_peer_link_allowed_vlans: < vlans as string | default -> "2-4094" >
 
-    # IP address pool used for MLAG Peer Link (control link)| *Required when MLAG leafs present in topology.
+    # IP address pool used for MLAG Peer Link (control link) | *Required when MLAG leafs present in topology.
     # IP is derived from the node id.
     mlag_peer_ipv4_pool: < IPv4_network/Mask >
 
@@ -343,4 +343,32 @@ defaults <- node_group <- node_group.node <- node
 
     # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     inband_management_vlan: < vlan-id | Default -> 4092 >
+```
+
+### EVPN Multihoming
+
+```yaml
+< node_type_key >:
+
+  defaults:
+    # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+    link_tracking:
+      enabled: < true | false | default -> false >
+      # Link Tracking Groups | Optional
+      # By default a single group named "LT_GROUP1" is defined with default values. Any groups defined under "groups" will replace the default.
+      groups:
+        - name: < tracking_group_name >
+          recovery_delay: < 0-3600 | default -> 500 >
+          # Optional
+          links_minimum: < 1-100000 >
+    # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+    # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+    # It is recommended to use this knob if there are any downlink lag interfaces on a VTEP in a Mutihomed network.
+    lacp_port_id_range:
+      enabled: < true | false | default -> false >
+      # Recommended size > = number of ports in the switch.
+      size: < 1-65535 | default -> 128 >
+      # Offset is used to avoid overlapping port-id ranges of different switches | Optional
+      # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+      offset: < offset_for_lacp_port_id_range | default -> 0 >
 ```

@@ -67,6 +67,11 @@ ethernet_interfaces:
     channel_group:
       id: {{ channel_group_id }}
       mode: "{{ adapter_settings.port_channel.mode }}"
+{%                     elif adapter_settings.link_tracking.enabled is arista.avd.defined(true) and switch.link_tracking_groups is arista.avd.defined %}
+{#  Add Ethernet interfaces as downstream for link tracking if Port-Channel inerfaces are not defined #}
+    link_tracking_groups:
+      - name: {{ adapter_settings.link_tracking.name | arista.avd.default(switch.link_tracking_groups[0].name) }}
+        direction: downstream
 {%                     endif %}
 {%                     if adapter_settings.flowcontrol is arista.avd.defined %}
     flowcontrol:
