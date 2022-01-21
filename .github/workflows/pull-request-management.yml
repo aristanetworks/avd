@@ -349,15 +349,18 @@ jobs:
         with:
           name: importer-logs
           path: ./importer_result.json
+
   j2lint:
     name: Validate j2 files
     runs-on: ubuntu-20.04
-    if: always()
     steps:
       - uses: actions/checkout@v2
+        timeout-minutes: 2
       - name: Setup J2Lint
+        timeout-minutes: 2
         run: |
           pip install git+https://github.com/aristanetworks/j2lint.git
       - name: Run J2lint
+        timeout-minutes: 2
         run: |
           j2lint $GITHUB_WORKSPACE --ignore S7 S6 V1
