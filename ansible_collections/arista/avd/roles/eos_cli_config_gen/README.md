@@ -29,6 +29,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
+    - [DHCP Relay](#dhcp-delay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -533,6 +534,15 @@ router_bfd:
 custom_templates:
   - < template 1 relative path below playbook directory >
   - < template 2 relative path below playbook directory >
+```
+
+### DHCP Relay
+
+```yaml
+dhcp_relay:
+  servers:
+    - < server_ip_or_hostname >
+  tunnel_requests_disabled: < true | false >
 ```
 
 ### EOS CLI
@@ -2741,6 +2751,10 @@ router_ospf:
       vrf: < vrf_name_for_process_id >
       passive_interface_default: < true | false >
       router_id: < IPv4_address >
+      distance:
+        external: < 1-255 >
+        inter_area: < 1-255 >
+        intra_area: < 1-255 >
       log_adjacency_changes_detail: < true | false >
       network_prefixes:
         < IPv4 subnet / netmask >:
@@ -2751,6 +2765,8 @@ router_ospf:
       no_passive_interfaces:
         - < interface_1 >
         - < interface_2 >
+      distribute_list_in:
+        route_map: < route_map >
       max_lsa: < integer >
       timers:
         lsa:
