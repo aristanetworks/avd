@@ -198,6 +198,12 @@ interface Vlan24
 | 500 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 | 600 | - | disabled |- | disabled | default | disabled | disabled | - | - | - |
 
+### Router OSPF Distance
+
+| Process ID | Intra Area | Inter Area | External |
+| ---------- | ---------- | ---------- | -------- |
+| 100 | 50 | 70 | 60 |
+
 ### Router OSPF Router Redistribution
 
 | Process ID | Source Protocol | Route Map |
@@ -264,6 +270,9 @@ interface Vlan24
 !
 router ospf 100
    router-id 192.168.255.3
+   distance ospf intra-area 50
+​   distance ospf external 60
+   distance ospf inter-area 70
    passive-interface default
    no passive-interface Ethernet1
    no passive-interface Ethernet2
