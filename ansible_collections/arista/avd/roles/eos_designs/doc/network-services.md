@@ -142,7 +142,7 @@ tenants:
             - pod: < pod_name >
               ipv4_pool: < IPv4_address/Mask >
 
-        # Dictionary for router OSPF configuration | Optional.
+        # Dictionary for router OSPF configuration | Optional.
         # This will create an ospf routing instance in the tenant VRF. If there is no nodes definition, the ospf instance will be
         # created on all leafs where the vrf is deployed. This will also cause automatic ospf redistribution into bgp unless
         # explicitly turned off with "redistribute_ospf: false".
@@ -159,7 +159,7 @@ tenants:
             - < hostname1 >
             - < hostname2 >
 
-        # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
+        # Non-selectively enabling or disabling redistribute ospf inside the VRF | Optional.
         redistribute_ospf: < true | false, Default -> true >
 
         # Dictionary of SVIs | Required.
@@ -315,10 +315,10 @@ tenants:
             interface: < interface >
             nodes: [ < node_1 >, < node_2 >]
 
-        # Non-selectively enabling or disabling redistribute static inside the VRF | Optional.
+        # Non-selectively enabling or disabling redistribute static inside the VRF | Optional.
         redistribute_static: < true | false >
 
-        # Dictionary of BGP peer definitions | Optional.
+        # Dictionary of BGP peer definitions | Optional.
         # This will configure BGP neighbors inside the tenant VRF for peering with external devices.
         # The configured peer will automatically be activated for ipv4 or ipv6 address family based on the ip address.
         # Note, only ipv4 and ipv6 address families are currently supported in eos_designs.
@@ -328,7 +328,7 @@ tenants:
             remote_as: < remote ASN >
             description: < description >
             password: < encrypted password >
-            send_community: < standard | extended | large | all >
+            send_community: < standard | extended | large | all >
             next_hop_self: < true | false >
             maximum_routes: < 0-4294967294 >
             default_originate:
