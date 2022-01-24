@@ -203,6 +203,18 @@ port_channel_interfaces:
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
 
+  Port-Channel110:
+    description: isis_interface_knobs
+    type: routed
+    isis_enable: ISIS_TEST
+    isis_passive: false
+    isis_metric: 99
+    isis_network_point_to_point: true
+    isis_circuit_type: level-2
+    isis_hello_padding: true
+    isis_authentication_mode: text
+    isis_authentication_key: "asfddja23452"
+
   Port-Channel111:
     description: Flexencap Port-Channel
     type: routed
@@ -377,8 +389,13 @@ ethernet_interfaces:
       id: 109
       mode: active
 
+  Ethernet10/10:
+    description: isis_port_channel_member
+    channel_group:
+      id: 110
+      mode: active
+
   Ethernet11/1:
     description: LAG Member
     channel_group:
       id: 111
-      mode: active

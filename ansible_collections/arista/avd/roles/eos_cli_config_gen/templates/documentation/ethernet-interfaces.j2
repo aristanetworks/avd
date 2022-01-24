@@ -299,7 +299,9 @@
                ethernet_interfaces[ethernet_interface].isis_metric is arista.avd.defined or
                ethernet_interfaces[ethernet_interface].isis_circuit_type is arista.avd.defined or
                ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined or
-               ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined %}
+               ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined or
+               ethernet_interfaces[ethernet_interface].isis_hello_padding is arista.avd.defined or
+               pethernet_interfaces[ethernet_interface].isis_authentication_mode is arista.avd.defined %}
 {%             do ethernet_interfaces_isis.append(ethernet_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -309,7 +311,9 @@
                port_channel_interfaces[port_channel_interface].isis_metric is arista.avd.defined or
                port_channel_interfaces[port_channel_interface].isis_circuit_type is arista.avd.defined or
                port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined or
-               port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined %}
+               port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].isis_hello_padding is arista.avd.defined or
+               port_channel_interfaces[port_channel_interface].isis_authentication_mode is arista.avd.defined %}
 {%             do port_channel_interfaces_isis.append(port_channel_interface) %}
 {%         endif %}
 {%     endfor %}
@@ -317,8 +321,8 @@
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 {%         for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%             if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%                 set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
@@ -327,6 +331,8 @@
 {%                     set isis_instance = port_channel_interfaces[port_channel_interface].isis_enable | arista.avd.default("-") %}
 {%                     set isis_metric = port_channel_interfaces[port_channel_interface].isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = port_channel_interfaces[port_channel_interface].isis_circuit_type | arista.avd.default("-") %}
+{%                     set isis_hello_padding = port_channel_interfaces[port_channel_interface].isis_hello_padding | arista.avd.default("-") %}
+{%                     set isis_authentication_mode = port_channel_interfaces[port_channel_interface].isis_authentication_mode | arista.avd.default("-") %}
 {%                     if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
 {%                     elif port_channel_interfaces[port_channel_interface].isis_passive is arista.avd.defined(true) %}
@@ -334,7 +340,7 @@
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} |
+| {{ ethernet_interface }} | {{ channel_group }} | *{{ isis_instance }} | *{{ isis_metric }} | *{{ mode }} | *{{ isis_circuit_type }} | *{{ isis_hello_padding }} | *{{ isis_authentication_mode }} |
 {%                 endif %}
 {%             else %}
 {%                 if ethernet_interface in ethernet_interfaces_isis %}
@@ -342,14 +348,15 @@
 {%                     set isis_instance = ethernet_interfaces[ethernet_interface].isis_enable | arista.avd.default("-") %}
 {%                     set isis_metric = ethernet_interfaces[ethernet_interface].isis_metric | arista.avd.default("-") %}
 {%                     set isis_circuit_type = ethernet_interfaces[ethernet_interface].isis_circuit_type | arista.avd.default("-") %}
-{%                     if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
+{%                     set isis_hello_padding = ethernet_interfaces[ethernet_interface].isis_hello_padding | arista.avd.default("-") %}
+{%                     set isis_authentication_mode = ethernet_interfaces[ethernet_interface].isis_authentication_mode | arista.avd.default("-") %}{%                     if ethernet_interfaces[ethernet_interface].isis_network_point_to_point is arista.avd.defined(true) %}
 {%                         set mode = "point-to-point" %}
 {%                     elif ethernet_interfaces[ethernet_interface].isis_passive is arista.avd.defined(true) %}
 {%                         set mode = "passive" %}
 {%                     else %}
 {%                         set mode = "-" %}
 {%                     endif %}
-| {{ ethernet_interface }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} |
+| {{ ethernet_interface }} | {{ channel_group }} | {{ isis_instance }} | {{ isis_metric }} | {{ mode }} | {{ isis_circuit_type }} | {{ isis_hello_padding }} | {{ isis_authentication_mode }} |
 {%                 endif %}
 {%             endif %}
 {%         endfor %}

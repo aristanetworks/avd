@@ -151,9 +151,9 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 | False | md5 |
 
 #### Error Correction Encoding Interfaces
 
@@ -243,6 +243,9 @@ interface Ethernet5
    isis circuit-type level-2
    isis metric 99
    isis network point-to-point
+   no isis hello padding
+   isis authentication mode md5
+   isis authentication key 7 asfddja23452
    pim ipv4 sparse-mode
 !
 interface Ethernet6

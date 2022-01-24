@@ -93,6 +93,13 @@ interface Management1
 | Ethernet17 | LAG Member | *routed | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
 *Inherited from Port-Channel Interface
 
+#### ISIS
+
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet10/10 | 110 | *ISIS_TEST | *99 | *point-to-point | *level-2 | *True | *text |
+ *Inherited from Port-Channel Interface
+
 ### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -134,9 +141,13 @@ interface Ethernet10/4
    switchport mode trunk
    spanning-tree portfast
 !
+interface Ethernet10/10
+   description isis_port_channel_member
+   channel-group 110 mode active
+!
 interface Ethernet11/1
    description LAG Member
-   channel-group 111 mode active
+   switchport
 !
 interface Ethernet15
    description DC1-AGG03_Ethernet1
@@ -235,6 +246,12 @@ interface Ethernet50
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 | Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
+
+#### ISIS
+
+| Interface | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Port-Channel110 | ISIS_TEST | 99 | point-to-point | level-2 | True | text |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -419,6 +436,17 @@ interface Port-Channel109
    ipv6 access-group IPV6_ACL_OUT out
    mac access-group MAC_ACL_IN in
    mac access-group MAC_ACL_OUT out
+!
+interface Port-Channel110
+   description isis_interface_knobs
+   no switchport
+   isis enable ISIS_TEST
+   isis circuit-type level-2
+   isis metric 99
+   isis network point-to-point
+   isis hello padding
+   isis authentication mode text
+   isis authentication key 7 asfddja23452
 !
 interface Port-Channel111
    description Flexencap Port-Channel
