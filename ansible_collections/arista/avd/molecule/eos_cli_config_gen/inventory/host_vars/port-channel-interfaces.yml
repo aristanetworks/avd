@@ -399,3 +399,4 @@ ethernet_interfaces:
     description: LAG Member
     channel_group:
       id: 111
+      mode: active
