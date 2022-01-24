@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
 {# MLAG iBGP peering #}
 {% if switch.mlag_l3 is arista.avd.defined(true) and switch.underlay_routing_protocol == "ebgp" %}
 router_bgp:
