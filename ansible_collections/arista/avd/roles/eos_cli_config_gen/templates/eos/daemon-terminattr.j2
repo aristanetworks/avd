@@ -13,19 +13,19 @@ daemon TerminAttr
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".auth=token," ~ cluster.cvauth.token_file %}
 {%         elif cluster.cvauth.method is arista.avd.defined('token-secure') and cluster.cvauth.token_file is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".auth=token-secure," ~ cluster.cvauth.token_file %}
-{%         endif%}
+{%         endif %}
 {%         if cluster.cvvrf is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".vrf=" ~ cluster.cvvrf %}
-{%         endif%}
+{%         endif %}
 {%         if cluster.cvsourceip is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".sourceip=" ~ cluster.cvsourceip %}
-{%         endif%}
+{%         endif %}
 {%         if cluster.cvproxy is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".proxy=" ~ cluster.cvproxy %}
-{%         endif%}
+{%         endif %}
 {%         if cluster.cvobscurekeyfile is arista.avd.defined %}
 {%             set cvp_config.cli = cvp_config.cli ~ " -cvopt " ~ cluster_name ~ ".obscurekeyfile=" ~ cluster.cvobscurekeyfile %}
-{%         endif%}
+{%         endif %}
 {%     endfor %}
 {%     if daemon_terminattr.cvaddrs is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvaddr=" ~ daemon_terminattr.cvaddrs | join(',') %}
@@ -39,28 +39,28 @@ daemon TerminAttr
 {%     endif %}
 {%     if daemon_terminattr.cvvrf is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvvrf=" ~ daemon_terminattr.cvvrf %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.cvsourceip is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvsourceip=" ~ daemon_terminattr.cvsourceip %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.cvgnmi is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvgnmi" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.cvobscurekeyfile is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvobscurekeyfile" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.disable_aaa is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -disableaaa" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.cvproxy is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvproxy=" ~ daemon_terminattr.cvproxy %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.grpcaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -grpcaddr=" ~ daemon_terminattr.grpcaddr %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.grpcreadonly is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -grpcreadonly" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.smashexcludes is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -smashexcludes=" ~ daemon_terminattr.smashexcludes %}
 {%     endif %}
@@ -71,26 +71,26 @@ daemon TerminAttr
 {%         set cvp_config.cli = cvp_config.cli ~ " -taillogs=" ~ daemon_terminattr.taillogs %}
 {%     else %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -taillogs" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.ecodhcpaddr is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ecodhcpaddr=" ~ daemon_terminattr.ecodhcpaddr %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.ipfix is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfix" %}
 {%     elif daemon_terminattr.ipfix is false %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfix=false" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.ipfixaddr is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfixaddr=" ~ daemon_terminattr.ipfixaddr %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.sflow is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflow" %}
 {%     elif daemon_terminattr.sflow is false %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflow=false" %}
-{%     endif%}
+{%     endif %}
 {%     if daemon_terminattr.sflowaddr is true %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflowaddr=" ~ daemon_terminattr.sflowaddr %}
-{%     endif%}
+{%     endif %}
    {{ cvp_config.cli }}
    no shutdown
-{% endif%}
+{% endif %}

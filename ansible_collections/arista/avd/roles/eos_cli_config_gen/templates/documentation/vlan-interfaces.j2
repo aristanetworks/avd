@@ -68,9 +68,9 @@
 {%     set vlan_interface_isis = namespace() %}
 {%     set vlan_interface_isis.configured = false %}
 {%     for vlan_interface in vlan_interfaces | arista.avd.natural_sort %}
-{%          if vlan_interfaces[vlan_interface].isis_enable is defined %}
-{%              set vlan_interface_isis.configured = true %}
-{%          endif %}
+{%         if vlan_interfaces[vlan_interface].isis_enable is defined %}
+{%             set vlan_interface_isis.configured = true %}
+{%         endif %}
 {%     endfor %}
 {%     if vlan_interface_isis.configured == true %}
 
@@ -88,6 +88,6 @@
 ### VLAN Interfaces Device Configuration
 
 ```eos
-{% include 'eos/vlan-interfaces.j2' %}
+{%     include 'eos/vlan-interfaces.j2' %}
 ```
 {% endif %}

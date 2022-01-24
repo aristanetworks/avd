@@ -206,9 +206,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 4096 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -469,7 +466,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_WAN_Zone | true |
 | Tenant_C_WAN_Zone | true |
@@ -490,7 +488,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true | | MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
@@ -542,7 +541,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -557,15 +556,15 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | None | - | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | - |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | None | - | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - |
 
 ### BGP Neighbor Interfaces
 

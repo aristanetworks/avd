@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
 {# tenant router bgp evpn VRFs #}
 {% if switch.network_services_l3 is arista.avd.defined(true) %}
 {%     set bgp_vrf = namespace() %}

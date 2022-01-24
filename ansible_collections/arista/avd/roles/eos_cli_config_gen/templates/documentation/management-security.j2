@@ -19,14 +19,14 @@ Management Security password minimum lenght is **{{ management_security.password
 {%     if management_security.ssl_profiles is arista.avd.defined %}
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
 | ------------ | --------------------- | -------------------- | ------------ |
-{%       for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
+{%         for ssl_profile in management_security.ssl_profiles | arista.avd.natural_sort %}
 | {{ ssl_profile.name }} | {{ ssl_profile.tls_versions | arista.avd.default('-') }} | {{ ssl_profile.certificate.file | arista.avd.default('-') }} | {{ ssl_profile.certificate.key | arista.avd.default('-') }} |
-{%       endfor %}
+{%         endfor %}
 {%     endif %}
 
 ## Management Security Configuration
 
 ```eos
-{% include 'eos/management-security.j2' %}
+{%     include 'eos/management-security.j2' %}
 ```
 {% endif %}

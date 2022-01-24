@@ -242,7 +242,8 @@ aaa accounting commands 0 default start-stop logging
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

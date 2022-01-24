@@ -181,9 +181,6 @@ STP mode: **mstp**
 | -------- | -------- |
 | 0 | 16384 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -319,7 +316,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -334,7 +332,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true | | MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IPv6 Routing Device Configuration
 

@@ -209,9 +209,6 @@ STP Root Super: **True**
 | -------- | -------- |
 | 0 | 4096 |
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -336,7 +333,6 @@ interface Ethernet6
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
-   spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
@@ -520,7 +516,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_WEB_Zone | true |
 
@@ -539,10 +536,10 @@ ip routing vrf Tenant_A_WEB_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_WEB_Zone | false |
-
 
 ## Static Routes
 
@@ -585,7 +582,7 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -600,16 +597,16 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 172.31.255.0 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.2 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.4 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.6 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 172.31.255.0 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.2 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.4 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.6 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

@@ -129,9 +129,6 @@ snmp-server location TWODC_5STAGE_CLOS DC2 DC2-RS2
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -238,7 +235,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -253,8 +251,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -299,10 +297,10 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 172.17.20.8 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.20.10 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 172.17.20.8 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.20.10 | 65200 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
 ### Router BGP Device Configuration
 

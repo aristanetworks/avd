@@ -103,9 +103,6 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-SPINE1
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -273,7 +270,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -288,8 +286,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -331,7 +329,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Address Family | evpn |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -346,22 +344,22 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 172.16.11.0 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.16.11.64 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.16.20.1 | 65201 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.110.4 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.110.5 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.200.1 | 65200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.210.1 | 65210 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.16.210.3 | 65211 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 172.17.10.3 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.110.1 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.110.9 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.110.13 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.110.17 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
-| 172.17.110.21 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 172.16.11.0 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.11.64 | 65100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.16.20.1 | 65201 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.4 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.110.5 | 65112.100 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.200.1 | 65200 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.1 | 65210 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.210.3 | 65211 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.3 | 65101 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True |
+| 172.17.110.1 | 65111.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.9 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.13 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.17 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.110.21 | 65112.100 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 

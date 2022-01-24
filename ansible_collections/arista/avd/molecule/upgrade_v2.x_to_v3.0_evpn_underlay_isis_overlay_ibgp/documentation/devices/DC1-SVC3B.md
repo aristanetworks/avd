@@ -219,7 +219,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+- Spanning Tree disabled for VLANs: **4093-4094**
 
 ## Spanning Tree Device Configuration
 
@@ -537,7 +537,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -552,8 +553,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -633,16 +634,16 @@ router isis EVPN_UNDERLAY
 | Address Family | evpn |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

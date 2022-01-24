@@ -64,6 +64,8 @@
 {% include 'documentation/prompt.j2' %}
 {# Aliases #}
 {% include 'documentation/aliases.j2' %}
+{# DHCP Relay #}
+{% include 'documentation/dhcp-relay.j2' %}
 
 # Monitoring
 {## TerminAttr Daemon #}
@@ -178,12 +180,16 @@
 {% include 'documentation/ip-extended-community-lists-regexp.j2' %}
 {## Match-Lists #}
 {% include 'documentation/match-lists.j2' %}
+{# as-paths #}
+{% include 'documentation/as-path.j2' %}
 
 # ACL
 {## Standard Access-lists #}
 {% include 'documentation/standard-access-lists.j2' %}
 {## Extended Access-lists #}
 {% include 'documentation/access-lists.j2' %}
+{## Extended Access-lists, improved data model #}
+{% include 'documentation/ip-access-lists.j2' %}
 {## IPv6 Standard Access-lists #}
 {% include 'documentation/ipv6-standard-access-lists.j2' %}
 {## IPv6 Extended Access-lists #}
