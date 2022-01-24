@@ -12,6 +12,7 @@
       - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
       - [IP Standard Access-Lists](#ip-standard-access-lists)
       - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
+      - [MAC Access-Lists](#mac-access-lists)
     - [Aliases](#aliases)
     - [Authentication](#authentication)
       - [AAA Authentication](#aaa-authentication)
@@ -310,6 +311,23 @@ ipv6_access_lists:
   < ipv6_access_list_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+#### MAC Access-Lists
+
+```yaml
+mac_access_lists:
+  - name: < mac_access_list_name_1 >
+    counters_per_entry: < true | false >
+    entries:
+      - sequence: < sequence_id_1 >
+        action: "< action as string >"
+      - sequence: < sequence_id_2 >
+        action: "< action as string >"
+  - name: < mac_access_list_name_2 >
+    entries:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
@@ -843,6 +861,8 @@ ethernet_interfaces:
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
     ipv6_access_group_out: < ipv6_access_list_name >
+    mac_access_group_in: < mac_access_list_name >
+    mac_access_group_out: < mac_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >
@@ -1192,6 +1212,8 @@ port_channel_interfaces:
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
     ipv6_access_group_out: < ipv6_access_list_name >
+    mac_access_group_in: < mac_access_list_name >
+    mac_access_group_out: < mac_access_list_name >
     pim:
       ipv4:
         sparse_mode: < true | false >

@@ -1,0 +1,18 @@
+{# eos - MAC access-lists #}
+{% for mac_access_list in mac_access_lists | arista.avd.natural_sort('name') %}
+{%     if mac_access_list.name is arista.avd.defined and mac_access_list.entries is arista.avd.defined %}
+!
+mac access-list {{ mac_access_list.name }}
+{%         if mac_access_list.counters_per_entry is arista.avd.defined(true) %}
+   counters per-entry
+{%         endif %}
+{%         for acl_entry in mac_access_list.entries %}
+{%             set acl_string = '' %}
+{%             if acl_entry.sequence is arista.avd.defined %}
+{%                 set acl_string = acl_string ~ acl_entry.sequence ~ ' ' %}
+{%             endif %}
+{%             set acl_string = acl_string ~ acl_entry.action %}
+   {{ acl_string }}
+{%         endfor %}
+{%     endif %}
+{% endfor %}

@@ -89,6 +89,7 @@ interface Management1
 | Ethernet22 |  10% shape | access | - | - | - | - |
 | Ethernet23 |  Error-correction encoding | access | - | - | - | - |
 | Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
+| Ethernet25 |  Molecule MAC | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -382,6 +383,12 @@ interface Ethernet24
    description Disable error-correction encoding
    no error-correction encoding
    switchport
+!
+interface Ethernet25
+   description Molecule MAC
+   switchport
+   mac access-group MAC_ACL_IN in
+   mac access-group MAC_ACL_OUT out
 ```
 
 # Routing
