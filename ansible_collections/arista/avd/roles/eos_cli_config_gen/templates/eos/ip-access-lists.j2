@@ -119,6 +119,7 @@ ip access-list {{ acl.name }}
 {%                 if ip_access_lists_max_entries is arista.avd.defined %}
 {%                     set counter.acle_number = counter.acle_number + 1 %}
 {%                     if counter.acle_number > ip_access_lists_max_entries %}
+{#                     j2lint: disable=V1 #}
    {{ a_non_existing_var | mandatory('The number of ACL entries is above defined maximum!') }}
 {%                     endif %}
 {%                 endif %}
