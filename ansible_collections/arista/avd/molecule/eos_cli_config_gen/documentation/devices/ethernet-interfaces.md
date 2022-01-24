@@ -93,6 +93,23 @@ interface Management1
 
 *Inherited from Port-Channel Interface
 
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 101 |
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 500 | 50 | True | - | - | - |
+
 #### Private VLAN
 
 | Interface | PVLAN Mapping | Secondary Trunk |
@@ -389,6 +406,39 @@ interface Ethernet25
    switchport
    mac access-group MAC_ACL_IN in
    mac access-group MAC_ACL_OUT out
+!
+interface Ethernet26
+   no switchport
+!
+interface Ethernet26.1
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client unmatched
+!
+interface Ethernet26.100
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client dot1q 100 network client
+!
+interface Ethernet26.200
+   description TENANT_A pseudowire 2 interface
+   encapsulation vlan
+      client dot1q 200
+!
+interface Ethernet26.300
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
+!
+interface Ethernet26.400
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+!
+interface Ethernet26.500
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 500 inner 50
 ```
 
 # Routing

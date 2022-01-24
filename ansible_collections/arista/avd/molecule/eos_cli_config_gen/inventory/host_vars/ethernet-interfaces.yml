@@ -315,3 +315,60 @@ ethernet_interfaces:
     description: Molecule MAC
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
+
+  Ethernet26:
+    type: routed
+  Ethernet26.1:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        unmatched: true
+  Ethernet26.100:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 100
+      network:
+        client: true
+  Ethernet26.200:
+    type: l2dot1q
+    description: TENANT_A pseudowire 2 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 200
+  Ethernet26.300:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 300
+      network:
+        dot1q:
+          vlan: 400
+  Ethernet26.400:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 400
+          inner: 20
+      network:
+        dot1q:
+          outer: 401
+          inner: 21
+  Ethernet26.500:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 500
+          inner: 50
+      network:
+        client: true

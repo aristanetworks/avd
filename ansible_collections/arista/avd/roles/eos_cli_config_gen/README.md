@@ -832,7 +832,9 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
-    type: < routed | switched | l3dot1q >
+    # l3dot1q and l2dot1q are used for sub-interfaces.
+    # The parent interface should be defined as routed.
+    type: < routed | switched | l3dot1q | l2dot1q >
     vrf: < vrf_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
@@ -842,6 +844,21 @@ ethernet_interfaces:
       - name: < group_name >
         direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: < Client VLAN ID >
+        outer: < Client Outer VLAN ID >
+        inner: < Client Inner VLAN ID >
+        unmatched: < true | false >
+      # network encapsulation is all optional, and skipped if using client unmatched.
+      network:
+        dot1q:
+          vlan: < Network VLAN ID >
+        outer: < Network Outer VLAN ID >
+        inner: < Network Inner VLAN ID >
+        client: < true | false >
+    vlan_id: < 1-4094 >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -1104,8 +1121,25 @@ port_channel_interfaces:
         link_status: < true | false >
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
-    type: < routed | switched | l3dot1q >
+    # l3dot1q and l2dot1q are used for sub-interfaces.
+    # The parent interface should be defined as routed.
+    type: < routed | switched | l3dot1q | l2dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: < Client VLAN ID >
+        outer: < Client Outer VLAN ID >
+        inner: < Client Inner VLAN ID >
+        unmatched: < true | false >
+      # network encapsulation is all optional, and skipped if using client unmatched.
+      network:
+        dot1q:
+          vlan: < Network VLAN ID >
+        outer: < Network Outer VLAN ID >
+        inner: < Network Inner VLAN ID >
+        client: < true | false >
+    vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
     link_tracking_groups:
@@ -1174,7 +1208,7 @@ port_channel_interfaces:
   < Port-Channel_interface_3 >:
     description: < description >
     vlans: "< list of vlans as string >"
-    type: < routed | switched | l3dot1q >
+    type: < routed | switched | l3dot1q | l2dot1q >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
@@ -1195,7 +1229,7 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
-    type: < routed | switched | l3dot1q >
+    type: < routed | switched | l3dot1q | l2dot1q >
     ip_address: < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >

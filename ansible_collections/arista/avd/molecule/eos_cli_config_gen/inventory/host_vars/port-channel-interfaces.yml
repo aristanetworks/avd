@@ -203,6 +203,66 @@ port_channel_interfaces:
     mac_access_group_in: MAC_ACL_IN
     mac_access_group_out: MAC_ACL_OUT
 
+  Port-Channel111:
+    description: Flexencap Port-Channel
+    type: routed
+  Port-Channel111.1:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        unmatched: true
+  Port-Channel111.100:
+    type: l2dot1q
+    description: TENANT_A pseudowire 2 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 100
+      network:
+        client: true
+  Port-Channel111.200:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 200
+  Port-Channel111.300:
+    type: l2dot1q
+    description: TENANT_A pseudowire 4 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 300
+      network:
+        dot1q:
+          vlan: 400
+  Port-Channel111.400:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 400
+          inner: 20
+      network:
+        dot1q:
+          outer: 401
+          inner: 21
+  Port-Channel111.1000:
+    type: l2dot1q
+    description: L2 Subinterface
+    vlan_id: 1000
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 100
+      network:
+        client: true
+    esi: 0000:0000:0303:0202:0101
+    rt: 03:03:02:02:01:01
+    lacp_id: 0303.0202.0101
 
 # Children interfaces
 ethernet_interfaces:
@@ -315,4 +375,10 @@ ethernet_interfaces:
     description: LAG Member
     channel_group:
       id: 109
+      mode: active
+
+  Ethernet11/1:
+    description: LAG Member
+    channel_group:
+      id: 111
       mode: active
