@@ -61,8 +61,34 @@ interface {{ ethernet_interface }}
 {%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].type is arista.avd.defined('routed') %}
    no switchport
-{%         elif ethernet_interfaces[ethernet_interface].type is arista.avd.defined('l3dot1q') and ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined() %}
+{%         elif ethernet_interfaces[ethernet_interface].type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
+{%             if ethernet_interfaces[ethernet_interface].vlan_id is arista.avd.defined and
+                  ethernet_interfaces[ethernet_interface].type == 'l2dot1q' %}
+   vlan id {{ ethernet_interfaces[ethernet_interface].vlan_id }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined %}
    encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan }}
+{%             elif ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.vlan is arista.avd.defined() %}
+{%                 set encapsulation_cli = "client dot1q " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.vlan %}
+{%                 if ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.vlan is arista.avd.defined() %}
+{%                     set encapsulation_cli = encapsulation_cli ~ " network dot1q " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.vlan %}
+{%                 elif ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.client is arista.avd.defined(true) %}
+{%                     set encapsulation_cli = encapsulation_cli ~ " network client" %}
+{%                 endif %}
+{%             elif ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.inner is arista.avd.defined and ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.outer is arista.avd.defined %}
+{%                 set encapsulation_cli = "client dot1q outer " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.outer ~ " inner " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.inner %}
+{%                 if ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.inner is arista.avd.defined and ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.outer is arista.avd.defined %}
+{%                     set encapsulation_cli = encapsulation_cli ~ " network dot1q outer " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.inner ~ " inner " ~ ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.outer %}
+{%                 elif ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.client is arista.avd.defined(true) %}
+{%                     set encapsulation_cli = encapsulation_cli ~ " network client" %}
+{%                 endif %}
+{%             elif ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.unmatched is arista.avd.defined(true) %}
+{%                 set encapsulation_cli = "client unmatched" %}
+{%             endif %}
+{%             if encapsulation_cli is arista.avd.defined %}
+   encapsulation vlan
+      {{ encapsulation_cli }}
+{%             endif %}
 {%         else %}
    switchport
 {%         endif %}

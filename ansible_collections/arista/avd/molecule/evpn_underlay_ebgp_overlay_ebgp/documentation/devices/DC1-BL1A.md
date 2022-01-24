@@ -263,6 +263,13 @@ vlan 350
 
 *Inherited from Port-Channel Interface
 
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Ethernet10.100 | subinterface test | l3dot1q | - | 100 |
+| Ethernet10.200 | subinterface test with vlan override | l3dot1q | - | 121 |
+
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |

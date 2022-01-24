@@ -134,6 +134,10 @@ interface Ethernet10/4
    switchport mode trunk
    spanning-tree portfast
 !
+interface Ethernet11/1
+   description LAG Member
+   channel-group 111 mode active
+!
 interface Ethernet15
    description DC1-AGG03_Ethernet1
    channel-group 15 mode active
@@ -186,6 +190,23 @@ interface Ethernet50
 | Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
 | Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
 | Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
+
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | l3dot1q | - | 101 |
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | l2dot1q | 1000 | False | 100 | - | - | True | - | - | - |
 
 #### Private VLAN
 
@@ -398,6 +419,45 @@ interface Port-Channel109
    ipv6 access-group IPV6_ACL_OUT out
    mac access-group MAC_ACL_IN in
    mac access-group MAC_ACL_OUT out
+!
+interface Port-Channel111
+   description Flexencap Port-Channel
+   no switchport
+!
+interface Port-Channel111.1
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client unmatched
+!
+interface Port-Channel111.100
+   description TENANT_A pseudowire 2 interface
+   encapsulation vlan
+      client dot1q 100 network client
+!
+interface Port-Channel111.200
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 200
+!
+interface Port-Channel111.300
+   description TENANT_A pseudowire 4 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
+!
+interface Port-Channel111.400
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+!
+interface Port-Channel111.1000
+   description L2 Subinterface
+   vlan id 1000
+   encapsulation vlan
+      client dot1q 100 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
 ```
 
 # Routing

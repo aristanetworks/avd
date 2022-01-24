@@ -11,7 +11,7 @@
 {%     for ethernet_interface in ethernet_interfaces | arista.avd.natural_sort %}
 {%         if ethernet_interfaces[ethernet_interface].channel_group.id is arista.avd.defined %}
 {%             set port_channel_interface = 'Port-Channel' + ethernet_interfaces[ethernet_interface].channel_group.id | string %}
-{%             if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q'] %}
+{%             if port_channel_interfaces[port_channel_interface].type is not defined or port_channel_interfaces[port_channel_interface].type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
 {%                 set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
 {%                 set mode = port_channel_interfaces[port_channel_interface].mode | default("access") %}
 {%                 set vlans = port_channel_interfaces[port_channel_interface].vlans | default ('-') %}
@@ -29,7 +29,7 @@
 {%                 endif %}
 | {{ ethernet_interface }} | {{ description }} | *{{ mode }} | *{{ vlans }} | *{{ native_vlan }} | *{{ l2.trunk_groups }} | {{ channel_group }} |
 {%             endif %}
-{%         elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type not in ['routed', 'l3dot1q'] %}
+{%         elif ethernet_interfaces[ethernet_interface].type is not defined or ethernet_interfaces[ethernet_interface].type not in ['routed', 'l3dot1q', 'l2dot1q'] %}
 {%             set description = ethernet_interfaces[ethernet_interface].description | default("-") %}
 {%             set mode = ethernet_interfaces[ethernet_interface].mode | default("access") %}
 {%             set vlans = ethernet_interfaces[ethernet_interface].vlans | default ('-') %}
@@ -49,6 +49,53 @@
 {%     endfor %}
 
 *Inherited from Port-Channel Interface
+{# Encapsulation #}
+{%     set encapsulation_dot1q_interfaces = [] %}
+{%     set flexencap_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces %}
+{%         if ethernet_interfaces[ethernet_interface].type | arista.avd.default in ['l3dot1q', 'l2dot1q'] %}
+{%             if ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan is arista.avd.defined %}
+{%                 do encapsulation_dot1q_interfaces.append(ethernet_interface) %}
+{%             elif ethernet_interfaces[ethernet_interface].encapsulation_vlan is arista.avd.defined %}
+{%                 do flexencap_interfaces.append(ethernet_interface) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{%     if encapsulation_dot1q_interfaces | length > 0 %}
+
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+{%         for ethernet_interface in encapsulation_dot1q_interfaces | arista.avd.natural_sort %}
+{%             set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default('-') %}
+{%             set type = ethernet_interfaces[ethernet_interface].type %}
+{%             set vlan_id = ethernet_interfaces[ethernet_interface].vlan_id | arista.avd.default('-') %}
+{%             set encapsulation_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_dot1q_vlan | arista.avd.default('-') %}
+| {{ ethernet_interface }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ encapsulation_dot1q_vlan }} |
+{%         endfor %}
+{%     endif %}
+{%     if flexencap_interfaces | length > 0 %}
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+{%         for ethernet_interface in flexencap_interfaces | arista.avd.natural_sort %}
+{%             set description = ethernet_interfaces[ethernet_interface].description | arista.avd.default("-") %}
+{%             set type = ethernet_interfaces[ethernet_interface].type %}
+{%             set vlan_id = ethernet_interfaces[ethernet_interface].vlan_id | arista.avd.default('-') %}
+{%             set client_unmatched = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.unmatched | arista.avd.default(false) %}
+{%             set client_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.vlan | arista.avd.default("-") %}
+{%             set client_dot1q_outer = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.outer | arista.avd.default("-") %}
+{%             set client_dot1q_inner = ethernet_interfaces[ethernet_interface].encapsulation_vlan.client.dot1q.inner | arista.avd.default("-") %}
+{%             set network_client = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.client | arista.avd.default(false) %}
+{%             set network_dot1q_vlan = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.vlan | arista.avd.default("-") %}
+{%             set network_dot1q_outer = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.outer | arista.avd.default("-") %}
+{%             set network_dot1q_inner = ethernet_interfaces[ethernet_interface].encapsulation_vlan.network.dot1q.inner | arista.avd.default("-") %}
+| {{ ethernet_interface }} | {{ description }} | {{ type }} | {{ vlan_id }} | {{ client_unmatched }} | {{ client_dot1q_vlan }} | {{ client_dot1q_outer }} | {{ client_dot1q_inner }} | {{ network_client }} | {{ network_dot1q_vlan }} | {{ network_dot1q_outer }} | {{ network_dot1q_inner }} |
+{%         endfor %}
+{%     endif %}
 {# PVLAN #}
 {%     set ethernet_interface_pvlan = namespace() %}
 {%     set ethernet_interface_pvlan.configured = false %}
