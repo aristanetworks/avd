@@ -505,7 +505,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -530,13 +531,13 @@ ip routing vrf Tenant_L3_VRF_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_OP_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
 | Tenant_L3_VRF_Zone | false |
-
 
 ## Static Routes
 
@@ -559,9 +560,9 @@ ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 
 ### Router OSPF Summary
 
-| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default |
-| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- |
-| 14 | 192.168.255.14 | enabled | Ethernet7 <br> Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - |
+| Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
+| ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
+| 14 | 192.168.255.14 | enabled | Ethernet7 <br> Vlan150 <br> | disabled | 15000 | disabled | disabled | - | - | - | - |
 
 ### Router OSPF Router Redistribution
 
@@ -611,7 +612,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -626,20 +627,20 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 172.31.255.80 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.82 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.84 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.86 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - |
-| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - |
-| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | all | - | - |
-| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 172.31.255.80 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.82 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.84 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.86 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 123.1.1.10 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | - |
+| 123.1.1.11 | 1234 | Tenant_A_WAN_Zone | standard extended | 0 (no limit) | - | True |
+| fd5a:fe45:8831:06c5::a | 12345 | Tenant_A_WAN_Zone | all | - | - | - |
+| fd5a:fe45:8831:06c5::b | 12345 | Tenant_A_WAN_Zone | - | - | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -763,6 +764,7 @@ router bgp 65104
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3
+      neighbor 123.1.1.11 bfd
       neighbor 123.1.1.11 send-community standard extended
       neighbor 123.1.1.11 maximum-routes 0
       neighbor 123.1.1.11 default-originate

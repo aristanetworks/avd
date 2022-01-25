@@ -78,7 +78,8 @@ service routing configuration bgp no-equals-default
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

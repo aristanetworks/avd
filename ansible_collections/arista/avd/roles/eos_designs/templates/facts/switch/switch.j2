@@ -258,9 +258,9 @@ switch:
 
 {%         endif %}
 
-{%     elif switch_data.node_group.nodes.keys()| list | last == inventory_hostname %}
+{%     elif switch_data.node_group.nodes.keys() | list | last == inventory_hostname %}
 {%         set mlag_secondary_id = switch_id %}
-{%         set mlag_peer_hostname = switch_data.node_group.nodes.keys()| list | first %}
+{%         set mlag_peer_hostname = switch_data.node_group.nodes.keys() | list | first %}
 {%         set mlag_primary_id = switch_data.node_group.nodes[mlag_peer_hostname].id %}
 
 {# switch.mlag_role #}
@@ -363,15 +363,15 @@ switch:
 {%             endfor %}
 {# Append VRF if we found SVIs #}
 {%             if add_svis | length > 0 %}
-{%                 do add_vrfs.update({ vrf: {"svis": add_svis}}) %}
+{%                 do add_vrfs.update({ vrf: {"svis": add_svis} }) %}
 {# Or Append VRF for tenants set in "always_include_vrfs_in_tenants" is set #}
 {%             elif switch_always_include_vrfs_in_tenants is arista.avd.contains([tenant, 'all']) %}
-{%                 do add_vrfs.update({ vrf: {}}) %}
+{%                 do add_vrfs.update({ vrf: {} }) %}
 {%             else %}
 {# Or Append VRF if there is a BGP neighbor defined under tenants for this switch #}
 {%                 for l3_interface in tenants[tenant].vrfs[vrf].l3_interfaces | arista.avd.natural_sort %}
 {%                     if l3_interface.nodes is arista.avd.defined and l3_interface.ip_addresses is arista.avd.defined and l3_interface.interfaces is arista.avd.defined and inventory_hostname in l3_interface.nodes %}
-{%                         do add_vrfs.update({ vrf: {}}) %}
+{%                         do add_vrfs.update({ vrf: {} }) %}
 {%                     endif %}
 {%                 endfor %}
 {%             endif %}
@@ -387,7 +387,7 @@ switch:
 {%             endfor %}
 {%         endfor %}
 {%         if add_vrfs | length > 0 or add_l2vlans | length > 0 %}
-{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans}}) %}
+{%             do leaf.tenants.update({ tenant: {"vrfs": add_vrfs, "l2vlans": add_l2vlans} }) %}
 {%         endif %}
 {%     endfor %}
 

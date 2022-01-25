@@ -14,7 +14,7 @@
 {%             if command_console.commands is arista.avd.defined and command_console.type is arista.avd.defined %}
 {%                 set group = command_console.group | arista.avd.default(" - ") %}
 {%                 set logging = command_console.logging | arista.avd.default("False") %}
-| Commands - Console | {{ command_console.commands }} | {{ command_console.type }} | {{group}} | {{logging}} |
+| Commands - Console | {{ command_console.commands }} | {{ command_console.type }} | {{ group }} | {{ logging }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}
@@ -38,6 +38,6 @@
 ### AAA Accounting Device Configuration
 
 ```eos
-{% include 'eos/aaa-accounting.j2' %}
+{%     include 'eos/aaa-accounting.j2' %}
 ```
 {% endif %}

@@ -359,7 +359,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -374,8 +375,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -461,21 +462,21 @@ router isis EVPN_UNDERLAY
 | Remote AS | 65000 |
 | Route Reflector Client | Yes |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.8 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.9 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.10 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
-| 192.168.255.11 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.8 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.9 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.10 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.11 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 

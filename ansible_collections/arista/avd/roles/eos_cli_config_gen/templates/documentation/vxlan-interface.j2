@@ -1,3 +1,4 @@
+{# j2lint: disable=V1 #}
 {% if vxlan_interface.Vxlan1 is arista.avd.defined %}
 
 ## VXLAN Interface
@@ -31,7 +32,7 @@
 {%             else %}
 {%                 set flood_list = '-' %}
 {%             endif %}
-| {{ vlan }} | {{ vlan_vni }} | {{  flood_list }} | {{ multicast_group }} |
+| {{ vlan }} | {{ vlan_vni }} | {{ flood_list }} | {{ multicast_group }} |
 {%         endfor %}
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vrfs is arista.avd.defined %}
@@ -62,6 +63,6 @@
 ### VXLAN Interface Device Configuration
 
 ```eos
-{% include 'eos/vxlan-interface.j2' %}
+{%     include 'eos/vxlan-interface.j2' %}
 ```
 {% endif %}

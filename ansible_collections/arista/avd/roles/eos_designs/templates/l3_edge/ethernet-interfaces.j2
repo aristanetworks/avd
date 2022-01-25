@@ -22,8 +22,8 @@ ethernet_interfaces:
 {%         if p2p_interface.macsec_profile is arista.avd.defined %}
     mac_security:
         profile: {{ p2p_interface.macsec_profile }}
-{%     endif %}
-{%     if p2p_interface.ptp_enable is arista.avd.defined(true) %}
+{%         endif %}
+{%         if p2p_interface.ptp_enable is arista.avd.defined(true) %}
     ptp:
         enable: true
 {%         endif %}

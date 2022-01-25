@@ -20,12 +20,12 @@ IGMP snooping is globally enabled.
 | {{ vlan }} | enabled |
 {%                 endif %}
 {%             endfor %}
-{%           endif %}
+{%         endif %}
 {%     endif %}
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
-{% include 'eos/ip-igmp-snooping.j2' %}
+{%     include 'eos/ip-igmp-snooping.j2' %}
 ```
 {% endif %}

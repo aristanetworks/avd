@@ -106,7 +106,8 @@ snmp-server vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

@@ -1167,7 +1167,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_DB_Zone | true |
 | Tenant_A_OP_Zone | true |
@@ -1200,7 +1201,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_DB_Zone | false |
 | Tenant_A_OP_Zone | false |
@@ -1210,7 +1212,6 @@ ip routing vrf Tenant_C_WAN_Zone
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_OP_Zone | false |
 | Tenant_C_WAN_Zone | false |
-
 
 ## Static Routes
 
@@ -1251,7 +1252,7 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | true |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -1276,26 +1277,26 @@ ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in |
-| -------- | --------- | --- | -------------- | -------------- | ---------- |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 172.31.255.48 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.50 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.52 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 172.31.255.54 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
-| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 172.31.255.48 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.50 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.52 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.54 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.252.7 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
