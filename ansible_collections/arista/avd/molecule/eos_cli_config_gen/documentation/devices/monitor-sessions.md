@@ -56,12 +56,14 @@ interface Management1
 #### myMonitoringSession1
 
 ##### myMonitoringSession1 Sources
+
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 | Ethernet0 | both | ipv6 | ipv6ACL | - |
 | Ethernet5 | both | ip | ipv4ACL | 10 |
 
 ##### myMonitoringSession1 Destinations and Session Settings
+
 | Settings | Values |
 | -------- | ------ |
 | Destinations | Ethernet48 |
@@ -72,12 +74,14 @@ interface Management1
 #### myMonitoringSession2
 
 ##### myMonitoringSession2 Sources
+
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 | Ethernet12 | rx | - | - | - |
 | Ethernet18 | tx | mac | macACL | 100 |
 
 ##### myMonitoringSession2 Destinations and Session Settings
+
 | Settings | Values |
 | -------- | ------ |
 | Destinations | Cpu, Ethernet50 |
@@ -125,7 +129,8 @@ monitor session myMonitoringSession2 sample 50
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

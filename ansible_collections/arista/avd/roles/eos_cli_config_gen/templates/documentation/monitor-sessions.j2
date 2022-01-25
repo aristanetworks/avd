@@ -3,12 +3,13 @@
 ## Monitor Sessions
 
 ### Monitor Sessions Summary
-
 {%     for monitor_session in monitor_sessions | arista.avd.natural_sort('name') if monitor_session.name is arista.avd.defined %}
 {%         if monitor_session.sources is arista.avd.defined and monitor_session.destinations is arista.avd.defined %}
+
 #### {{ monitor_session.name }}
 
 ##### {{ monitor_session.name }} Sources
+
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 {%             for source in monitor_session.sources | arista.avd.natural_sort('name') if source.name is arista.avd.defined %}
@@ -16,6 +17,7 @@
 {%             endfor %}
 
 ##### {{ monitor_session.name }} Destinations and Session Settings
+
 | Settings | Values |
 | -------- | ------ |
 | Destinations | {{ monitor_session.destinations | join(', ') }} |
@@ -45,8 +47,8 @@
 | Truncate Enabled | {{ monitor_session.truncate.enabled }} |
 {%             endif %}
 {%         endif %}
-
 {%     endfor %}
+
 ### Monitor Sessions Configuration
 
 ```eos
