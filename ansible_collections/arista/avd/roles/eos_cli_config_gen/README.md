@@ -2082,7 +2082,7 @@ snmp_server:
 monitor_sessions:
   - name: < session_name_1 >
     sources:
-      - name: < interface_name or range >
+      - name: < interface_name, range or comma separated list >
         direction: < rx | tx | both >
         access_group:
           type: < ip | ipv6 | mac >

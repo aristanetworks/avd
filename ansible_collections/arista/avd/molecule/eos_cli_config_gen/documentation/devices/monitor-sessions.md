@@ -77,6 +77,8 @@ interface Management1
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet3, Ethernet5 | rx | - | - | - |
+| Ethernet10-15 | rx | - | - | - |
 | Ethernet12 | rx | - | - | - |
 | Ethernet18 | tx | mac | macACL | 100 |
 
@@ -100,6 +102,8 @@ monitor session myMonitoringSession1 destination Ethernet48
 monitor session myMonitoringSession1 encapsulation gre metadata tx
 monitor session myMonitoringSession1 header remove size 32
 monitor session myMonitoringSession1 truncate
+monitor session myMonitoringSession2 source Ethernet3, Ethernet5 rx
+monitor session myMonitoringSession2 source Ethernet10-15 rx
 monitor session myMonitoringSession2 source Ethernet12 rx
 monitor session myMonitoringSession2 source Ethernet18 tx mac access-group macACL priority 100
 monitor session myMonitoringSession2 destination Cpu

@@ -22,6 +22,10 @@ monitor_sessions:
     sources:
       - name: Ethernet12
         direction: rx
+      - name: Ethernet10-15
+        direction: rx
+      - name: Ethernet3, Ethernet5
+        direction: rx
       - name: Ethernet18
         access_group:
           type: mac
