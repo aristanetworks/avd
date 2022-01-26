@@ -40,7 +40,7 @@
 {%             if monitor_session.sample is arista.avd.defined %}
 | Sample | {{ monitor_session.sample }} |
 {%             endif %}
-{%            if monitor_session.truncate.enabled is arista.avd.defined(true) %}
+{%             if monitor_session.truncate.enabled is arista.avd.defined(true) %}
 | Truncate Enabled | {{ monitor_session.truncate.enabled }} |
 {%                 if monitor_session.truncate.size is arista.avd.defined %}
 | Truncate Size | {{ monitor_session.truncate.size }} |
