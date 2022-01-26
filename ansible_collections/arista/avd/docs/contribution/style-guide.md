@@ -38,10 +38,10 @@ When variables are used in combination with a filter, `|` shall be enclosed by s
 
 Nested jinja code block shall follow next rules:
 
-* All J2 statements must be enclosed by 1 space
-* All J2 statements must be indented by 4 more spaces within jinja delimiter
-* To close a control, end tag must have same indentation level
-* Indentation are 4 spaces and NOT tabulation
+- All J2 statements must be enclosed by 1 space
+- All J2 statements must be indented by 4 more spaces within jinja delimiter
+- To close a control, end tag must have same indentation level
+- Indentation should be 4 spaces and NOT tabulation
 
 - _Example_
 
@@ -79,7 +79,7 @@ To test if a variable is part of a list, `in` operator should be used as much as
 __Example__
 
 ```jinja
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol in ['isis', 'ospf'] %}
 ```
 
 ### SYNTAX-6 - Render long CLI
@@ -162,9 +162,8 @@ Tilde `~` symbol should be used for string concatenation as it automatically con
 __Example__
 
 ```jinja
-{% set ip_helper_cli = " source-interface " ~ vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface %}
+{% set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ vlan_interfaces[vlan_interface].ip_helpers[ip_helper].source_interface %}
 ```
-
 
 ### VAR-6 - Variable type comparison
 
@@ -191,10 +190,10 @@ To test content of a variable, it is recommended to use `==`/`!=` keywords
 __Example__
 
 ```jinja
-{# Test if variable is string #}
+{# Test if variable is equal to 'Ethernet1' #}
 {% if ethernet_interface == 'Ethernet1' %}
 
-{# Test if variable is not a string #}
+{# Test if variable is not equal to 'Ethernet1' #}
 {% if ethernet_interface != 'Ethernet1' %}
 ```
 
@@ -210,7 +209,7 @@ All strings should be compared based on lowercase format.
 __Example__
 
 ```jinja
-{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['ibgp', 'isis', 'ospf'] %}
+{% if underlay_routing_protocol is arista.avd.defined and underlay_routing_protocol | lower in ['isis', 'ospf'] %}
 ```
 
 ---
@@ -258,9 +257,9 @@ Plugin can be used to fallback to different value until one of them is defined a
 - _Example_
 
 ```jinja
-{# Simple default value with fix value #}
-{{ vlan.name | arista.avd.default('test') }}
+{# Simple default test with one default value #}
+{{ vlan.name | arista.avd.default('test_vlan') }}
 
-{# Default value with list of options #}
-{{ vlan.name | arista.avd.default(default.vlan.name, 'test') }}
+{# Default test with a list of default options #}
+{{ vlan.name | arista.avd.default(default.vlan.name, 'test_vlan') }}
 ```

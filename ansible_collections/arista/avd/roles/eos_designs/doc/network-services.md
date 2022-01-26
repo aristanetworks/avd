@@ -36,7 +36,7 @@ evpn_rd_type:
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rt_type:
-  admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <vni_id> >
+  admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <vni> >
 
 # Internal vlan allocation order and range | Required
 internal_vlan_order:
