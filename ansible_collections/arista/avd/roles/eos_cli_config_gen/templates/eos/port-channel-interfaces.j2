@@ -297,6 +297,18 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].isis_network_point_to_point is arista.avd.defined(true) %}
    isis network point-to-point
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].isis_hello_padding is arista.avd.defined(false) %}
+   no isis hello padding
+{%     elif port_channel_interfaces[port_channel_interface].isis_hello_padding is arista.avd.defined(true) %}
+   isis hello padding
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].isis_authentication_mode is arista.avd.defined and
+          port_channel_interfaces[port_channel_interface].isis_authentication_mode in ["text", "md5"] %}
+   isis authentication mode {{ port_channel_interfaces[port_channel_interface].isis_authentication_mode }}
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].isis_authentication_key is arista.avd.defined %}
+   isis authentication key 7 {{ port_channel_interfaces[port_channel_interface].isis_authentication_key }}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].eos_cli is arista.avd.defined %}
    {{ port_channel_interfaces[port_channel_interface].eos_cli | indent(3, false) }}
 {%     endif %}

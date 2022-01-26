@@ -899,6 +899,9 @@ ethernet_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     isis_circuit_type: < level-1-2 | level-1 | level-2 >
+    isis_hello_padding: < true | false >
+    isis_authentication_mode: < text | md5 >
+    isis_authentication_key: < type-7 encrypted password >
     ptp:
       enable: < true | false >
       announce:
@@ -1195,6 +1198,9 @@ port_channel_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     isis_circuit_type: < level-1-2 | level-1 | level-2 >
+    isis_hello_padding: < true | false >
+    isis_authentication_mode: < text | md5 >
+    isis_authentication_key: < type-7 encrypted password >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
