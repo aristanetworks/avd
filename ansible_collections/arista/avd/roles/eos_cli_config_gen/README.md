@@ -30,7 +30,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
-    - [DHCP Relay](#dhcp-delay)
+    - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -137,7 +137,6 @@
     - [Spanning Tree](#spanning-tree)
     - [Terminal Settings](#terminal-settings)
     - [Traffic Policies](#traffic-policies)
-    - [Transceiver Settings](#transceiver-settings)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
@@ -1056,6 +1055,7 @@ ethernet_interfaces:
     lldp:
       transmit: < true | false >
       receive: < true | false >
+      ztp_vlan: < ztp vlan number >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
