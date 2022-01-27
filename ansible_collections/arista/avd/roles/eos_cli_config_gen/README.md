@@ -1014,6 +1014,7 @@ ethernet_interfaces:
       cos: < cos-value >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
+    spanning_tree_guard: < loop | root | none >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:

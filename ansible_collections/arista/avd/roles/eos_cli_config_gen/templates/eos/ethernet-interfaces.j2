@@ -228,6 +228,13 @@ interface {{ ethernet_interface }}
 {%         elif ethernet_interfaces[ethernet_interface].spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].spanning_tree_guard is arista.avd.defined('loop') %}
+   spanning-tree guard loop
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_guard is arista.avd.defined('root') %}
+   spanning-tree guard root
+{%         elif ethernet_interfaces[ethernet_interface].spanning_tree_guard is arista.avd.defined('none') %}
+   spanning-tree guard none
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].vrf is arista.avd.defined %}
    vrf {{ ethernet_interfaces[ethernet_interface].vrf }}
 {%         endif %}

@@ -79,6 +79,7 @@ ethernet_interfaces:
         no_autoconfig_flag: true
     priority_flow_control:
       enabled: false
+    spanning_tree_guard: root
 
   Ethernet4:
     description: Molecule IPv6
