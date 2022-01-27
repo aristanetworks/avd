@@ -375,3 +375,25 @@ ethernet_interfaces:
           inner: 50
       network:
         client: true
+
+  Ethernet27:
+    description: EVPN-Vxlan single-active redundancy
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0304"
+      route_target: "00:00:01:02:03:04"
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+        dont_preempt: true
+        hold_time: 10
+        candidate_reachability_required: true
+
+  Ethernet28:
+    description: EVPN-MPLS multihoming
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0305"
+      route_target: "00:00:01:02:03:05"
+      mpls:
+        shared_index: 100
+        tunnel_flood_filter_time: 100

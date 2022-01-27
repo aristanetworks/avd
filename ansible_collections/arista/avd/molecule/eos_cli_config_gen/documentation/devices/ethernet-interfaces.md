@@ -90,6 +90,8 @@ interface Management1
 | Ethernet23 |  Error-correction encoding | access | - | - | - | - |
 | Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
 | Ethernet25 |  Molecule MAC | access | - | - | - | - |
+| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
+| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -154,6 +156,27 @@ interface Management1
 | Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
 | --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
 | Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 | False | md5 |
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Ethernet27 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
+| Ethernet28 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Ethernet27 | preference | 100 | True | 10 | - | True |
+
+##### EVPN-MPLS summary
+
+| Interface | Shared Index | Tunnel Flood Filter Time |
+| --------- | ------------ | ------------------------ |
+| Ethernet28 | 100 | 100 |
 
 #### Error Correction Encoding Interfaces
 
@@ -442,6 +465,26 @@ interface Ethernet26.500
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
       client dot1q outer 500 inner 50
+!
+interface Ethernet27
+   description EVPN-Vxlan single-active redundancy
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0304
+      redundancy single-active
+      designated-forwarder election algorithm preference 100 dont-preempt
+      designated-forwarder election hold-time 10
+      designated-forwarder election candidate reachability required
+      route-target import 00:00:01:02:03:04
+!
+interface Ethernet28
+   description EVPN-MPLS multihoming
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0305
+      mpls tunnel flood filter time 100
+      mpls shared index 100
+      route-target import 00:00:01:02:03:05
 ```
 
 # Routing

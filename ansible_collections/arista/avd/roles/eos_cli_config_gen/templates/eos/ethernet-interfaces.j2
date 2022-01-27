@@ -145,6 +145,47 @@ interface {{ ethernet_interface }}
 {%         if ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation_dot1q_vlan is arista.avd.defined %}
    l2-protocol encapsulation dot1q vlan {{ ethernet_interfaces[ethernet_interface].l2_protocol.encapsulation_dot1q_vlan }}
 {%         endif %}
+{%         if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment is arista.avd.defined %}
+   evpn ethernet-segment
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.identifier is arista.avd.defined %}
+      identifier {{ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.identifier }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.redundancy is arista.avd.defined %}
+      redundancy {{ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.redundancy }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
+{%                 if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.algorithm is arista.avd.defined("modulus") %}
+      designated-forwarder election algorithm modulus
+{%                 elif ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.algorithm is arista.avd.defined("preference") and ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.preference_value is arista.avd.defined %}
+{%                     set dfe_algo_cli = "designated-forwarder election algorithm preference " ~ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.preference_value %}
+{%                     if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.dont_preempt is arista.avd.defined(true) %}
+{%                         set dfe_algo_cli = dfe_algo_cli ~ " dont-preempt" %}
+{%                     endif %}
+      {{ dfe_algo_cli }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.hold_time is arista.avd.defined %}
+{%                     set dfe_hold_time_cli = "designated-forwarder election hold-time " ~ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.hold_time %}
+{%                     if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.subsequent_hold_time is arista.avd.defined %}
+{%                         set dfe_hold_time_cli = dfe_hold_time_cli ~ " subsequent-hold-time " ~ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.subsequent_hold_time %}
+{%                     endif %}
+      {{ dfe_hold_time_cli }}
+{%                 endif %}
+{%                 if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.candidate_reachability_required is arista.avd.defined(true) %}
+      designated-forwarder election candidate reachability required
+{%                 elif ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election.candidate_reachability_required is arista.avd.defined(false) %}
+      no designated-forwarder election candidate reachability required
+{%                 endif %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls.tunnel_flood_filter_time is arista.avd.defined %}
+      mpls tunnel flood filter time {{ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls.tunnel_flood_filter_time }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls.shared_index is arista.avd.defined %}
+      mpls shared index {{ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls.shared_index }}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.route_target is arista.avd.defined %}
+      route-target import {{ ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.route_target }}
+{%             endif %}
+{%         endif %}
 {%         if ethernet_interfaces[ethernet_interface].qos.trust is arista.avd.defined %}
 {%             if ethernet_interfaces[ethernet_interface].qos.trust == 'disabled' %}
    no qos trust

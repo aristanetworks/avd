@@ -365,6 +365,65 @@
 {%     if port_channel_interfaces_isis | length > 0 %}
  *Inherited from Port-Channel Interface
 {%     endif %}
+{# EVPN Multihoming #}
+{%     set evpn_es_ethernet_interfaces = [] %}
+{%     set evpn_dfe_ethernet_interfaces = [] %}
+{%     set evpn_mpls_ethernet_interfaces = [] %}
+{%     for ethernet_interface in ethernet_interfaces %}
+{%         if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment is arista.avd.defined %}
+{%             do evpn_es_ethernet_interfaces.append(ethernet_interface) %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.designated_forwarder_election is arista.avd.defined %}
+{%                 do evpn_dfe_ethernet_interfaces.append(ethernet_interface) %}
+{%             endif %}
+{%             if ethernet_interfaces[ethernet_interface].evpn_ethernet_segment.mpls is arista.avd.defined %}
+{%                 do evpn_mpls_ethernet_interfaces.append(ethernet_interface) %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{%     if evpn_es_ethernet_interfaces | length > 0 %}
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+{%         for evpn_es_ethernet_interface in evpn_es_ethernet_interfaces | arista.avd.natural_sort %}
+{%             set esi = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.identifier | arista.avd.default("-") %}
+{%             set redundancy = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.redundancy | arista.avd.default("all-active") %}
+{%             set rt = ethernet_interfaces[evpn_es_ethernet_interface].evpn_ethernet_segment.route_target | arista.avd.default("-") %}
+| {{ evpn_es_ethernet_interface }} | {{ esi }} | {{ redundancy }} | {{ rt }} |
+{%         endfor %}
+{%         if evpn_dfe_ethernet_interfaces | length > 0 %}
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+{%             for evpn_dfe_ethernet_interface in evpn_dfe_ethernet_interfaces | arista.avd.natural_sort %}
+{%                 set df_eth_settings = ethernet_interfaces[evpn_dfe_ethernet_interface].evpn_ethernet_segment.designated_forwarder_election %}
+{%                 set algorithm = df_eth_settings.algorithm | arista.avd.default("modulus") %}
+{%                 set pref_value = df_eth_settings.preference_value | arista.avd.default("-") %}
+{%                 set dont_preempt = df_eth_settings.dont_preempt | arista.avd.default(false) %}
+{%                 set hold_time = df_eth_settings.hold_time | arista.avd.default("-") %}
+{%                 set subsequent_hold_time = df_eth_settings.subsequent_hold_time | arista.avd.default("-") %}
+{%                 set candidate_reachability = df_eth_settings.candidate_reachability_required | arista.avd.default(false) %}
+| {{ evpn_dfe_ethernet_interface }} | {{ algorithm }} | {{ pref_value }} | {{ dont_preempt }} | {{ hold_time }} | {{ subsequent_hold_time }} | {{ candidate_reachability }} |
+{%             endfor %}
+{%         endif %}
+{%         if evpn_mpls_ethernet_interfaces | length > 0 %}
+
+##### EVPN-MPLS summary
+
+| Interface | Shared Index | Tunnel Flood Filter Time |
+| --------- | ------------ | ------------------------ |
+{%             for evpn_mpls_ethernet_interface in evpn_mpls_ethernet_interfaces | arista.avd.natural_sort %}
+{%                 set shared_index = ethernet_interfaces[evpn_mpls_ethernet_interface].evpn_ethernet_segment.mpls.shared_index | arista.avd.default("-") %}
+{%                 set tff_time = ethernet_interfaces[evpn_mpls_ethernet_interface].evpn_ethernet_segment.mpls.tunnel_flood_filter_time | arista.avd.default("-") %}
+| {{ evpn_mpls_ethernet_interface }} | {{ shared_index }} | {{ tff_time }} |
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 {%     set err_cor_enc_intfs = [] %}
 {%     for ethernet_interface in ethernet_interfaces %}
 {%         if ethernet_interfaces[ethernet_interface].error_correction_encoding is arista.avd.defined %}
