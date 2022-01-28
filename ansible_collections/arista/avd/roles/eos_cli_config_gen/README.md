@@ -1401,6 +1401,11 @@ vxlan_interface:
       mlag_source_interface: < source_interface_name >
       udp_port: < udp_port >
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
+      qos:
+        # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in “DSCP Trust” mode.
+        dscp_propagation_encapsulation: < true | false >
+        map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >

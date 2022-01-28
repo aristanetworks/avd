@@ -4,19 +4,27 @@
 ## VXLAN Interface
 
 ### VXLAN Interface Summary
-{%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
 
-#### Source Interface: {{ vxlan_interface.Vxlan1.vxlan.source_interface }}
+| Settings | Values |
+| -------- | ------ |
+{%     if vxlan_interface.Vxlan1.vxlan.source_interface is arista.avd.defined %}
+| Source Interface | {{ vxlan_interface.Vxlan1.vxlan.source_interface }} |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.mlag_source_interface is arista.avd.defined %}
-
-#### MLAG Source Interface: {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }}
+| MLAG Source Interface | {{ vxlan_interface.Vxlan1.vxlan.mlag_source_interface }} |
 {%     endif %}
-
-#### UDP port: {{ vxlan_interface.Vxlan1.vxlan.udp_port | arista.avd.default('4789') }}
+| UDP port | {{ vxlan_interface.Vxlan1.vxlan.udp_port | arista.avd.default('4789') }} |
 {%     if vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
-
-#### EVPN MLAG Shared Router MAC : {{ vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }}
+| EVPN MLAG Shared Router MAC | {{ vxlan_interface.Vxlan1.vxlan.virtual_router_encapsulation_mac_address }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(var_type='bool') %}
+| VXLAN flood-lists learning from data-plane | {{ vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane | ternary('Enabled', 'Disabled') }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(var_type='bool') %}
+| Qos dscp propagation encapsulation | {{ vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation | ternary('Enabled', 'Disabled') }} |
+{%     endif %}
+{%     if vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(var_type='bool') %}
+| Qos map dscp to traffic-class decapsulation | {{ vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation | ternary('Enabled', 'Disabled') }} |
 {%     endif %}
 {%     if vxlan_interface.Vxlan1.vxlan.vlans is arista.avd.defined %}
 
@@ -52,12 +60,8 @@
 #### Default Flood List
 
 | Default Flood List |
-| ---------- |
+| ------------------ |
 | {{ vxlan_interface.Vxlan1.vxlan.flood_vteps | join('<br/>') }} |
-{%     endif %}
-{%     if vxlan_interface.Vxlan1.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(true) %}
-
-#### VXLAN flood-lists learning from data-plane: Enabled
 {%     endif %}
 
 ### VXLAN Interface Device Configuration

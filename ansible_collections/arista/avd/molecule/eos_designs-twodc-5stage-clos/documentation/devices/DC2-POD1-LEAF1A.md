@@ -370,9 +370,10 @@ interface Vlan4092
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Settings | Values |
+| -------- | ------ |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VRF to VNI and Multicast Group Mappings
 

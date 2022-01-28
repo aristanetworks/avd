@@ -323,9 +323,10 @@ interface Loopback0
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback0
-
-#### UDP port: 4789
+| Settings | Values |
+| -------- | ------ |
+| Source Interface | Loopback0 |
+| UDP port | 4789 |
 
 ### VXLAN Interface Device Configuration
 

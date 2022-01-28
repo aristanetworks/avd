@@ -8,6 +8,9 @@ vxlan_interface:
       mlag_source_interface: Loopback1
       udp_port: 4789
       virtual_router_encapsulation_mac_address: mlag-system-id
+      qos:
+        dscp_propagation_encapsulation: true
+        map_dscp_to_traffic_class_decapsulation: true
       vlans:
         110:
           vni: 10110
