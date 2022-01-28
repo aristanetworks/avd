@@ -116,6 +116,9 @@ ethernet_interfaces:
     isis_metric: 99
     isis_network_point_to_point: true
     isis_circuit_type: level-2
+    isis_hello_padding: false
+    isis_authentication_mode: md5
+    isis_authentication_key: "asfddja23452"
 
   Ethernet6:
     logging:
@@ -310,3 +313,87 @@ ethernet_interfaces:
     description: Disable error-correction encoding
     error_correction_encoding:
       enabled: false
+
+  Ethernet25:
+    description: Molecule MAC
+    mac_access_group_in: MAC_ACL_IN
+    mac_access_group_out: MAC_ACL_OUT
+
+  Ethernet26:
+    type: routed
+  Ethernet26.1:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        unmatched: true
+  Ethernet26.100:
+    type: l2dot1q
+    description: TENANT_A pseudowire 1 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 100
+      network:
+        client: true
+  Ethernet26.200:
+    type: l2dot1q
+    description: TENANT_A pseudowire 2 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 200
+  Ethernet26.300:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: 300
+      network:
+        dot1q:
+          vlan: 400
+  Ethernet26.400:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 400
+          inner: 20
+      network:
+        dot1q:
+          outer: 401
+          inner: 21
+  Ethernet26.500:
+    type: l2dot1q
+    description: TENANT_A pseudowire 3 interface
+    encapsulation_vlan:
+      client:
+        dot1q:
+          outer: 500
+          inner: 50
+      network:
+        client: true
+
+  Ethernet27:
+    description: EVPN-Vxlan single-active redundancy
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0304"
+      route_target: "00:00:01:02:03:04"
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+        dont_preempt: true
+        hold_time: 10
+        candidate_reachability_required: true
+
+  Ethernet28:
+    description: EVPN-MPLS multihoming
+    evpn_ethernet_segment:
+      identifier: "0000:0000:0000:0102:0305"
+      route_target: "00:00:01:02:03:05"
+      mpls:
+        shared_index: 100
+        tunnel_flood_filter_time: 100

@@ -89,8 +89,28 @@ interface Management1
 | Ethernet22 |  10% shape | access | - | - | - | - |
 | Ethernet23 |  Error-correction encoding | access | - | - | - | - |
 | Ethernet24 |  Disable error-correction encoding | access | - | - | - | - |
+| Ethernet25 |  Molecule MAC | access | - | - | - | - |
+| Ethernet27 |  EVPN-Vxlan single-active redundancy | access | - | - | - | - |
+| Ethernet28 |  EVPN-MPLS multihoming | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
+
+#### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Type | Vlan ID | Dot1q VLAN Tag |
+| --------- | ----------- | -----| ------- | -------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | l3dot1q | - | 101 |
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | l2dot1q | - | True | - | - | - | False | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | l2dot1q | - | False | 100 | - | - | True | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | l2dot1q | - | False | 200 | - | - | False | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | 300 | - | - | False | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 400 | 20 | False | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | l2dot1q | - | False | - | 500 | 50 | True | - | - | - |
 
 #### Private VLAN
 
@@ -133,9 +153,30 @@ interface Management1
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet5 | - | ISIS_TEST | 99 | point-to-point | level-2 | False | md5 |
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Ethernet27 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
+| Ethernet28 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Ethernet27 | preference | 100 | True | 10 | - | True |
+
+##### EVPN-MPLS summary
+
+| Interface | Shared Index | Tunnel Flood Filter Time |
+| --------- | ------------ | ------------------------ |
+| Ethernet28 | 100 | 100 |
 
 #### Error Correction Encoding Interfaces
 
@@ -225,6 +266,9 @@ interface Ethernet5
    isis circuit-type level-2
    isis metric 99
    isis network point-to-point
+   no isis hello padding
+   isis authentication mode md5
+   isis authentication key 7 asfddja23452
    pim ipv4 sparse-mode
 !
 interface Ethernet6
@@ -382,6 +426,65 @@ interface Ethernet24
    description Disable error-correction encoding
    no error-correction encoding
    switchport
+!
+interface Ethernet25
+   description Molecule MAC
+   switchport
+   mac access-group MAC_ACL_IN in
+   mac access-group MAC_ACL_OUT out
+!
+interface Ethernet26
+   no switchport
+!
+interface Ethernet26.1
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client unmatched
+!
+interface Ethernet26.100
+   description TENANT_A pseudowire 1 interface
+   encapsulation vlan
+      client dot1q 100 network client
+!
+interface Ethernet26.200
+   description TENANT_A pseudowire 2 interface
+   encapsulation vlan
+      client dot1q 200
+!
+interface Ethernet26.300
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q 300 network dot1q 400
+!
+interface Ethernet26.400
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+!
+interface Ethernet26.500
+   description TENANT_A pseudowire 3 interface
+   encapsulation vlan
+      client dot1q outer 500 inner 50
+!
+interface Ethernet27
+   description EVPN-Vxlan single-active redundancy
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0304
+      redundancy single-active
+      designated-forwarder election algorithm preference 100 dont-preempt
+      designated-forwarder election hold-time 10
+      designated-forwarder election candidate reachability required
+      route-target import 00:00:01:02:03:04
+!
+interface Ethernet28
+   description EVPN-MPLS multihoming
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0305
+      mpls tunnel flood filter time 100
+      mpls shared index 100
+      route-target import 00:00:01:02:03:05
 ```
 
 # Routing
