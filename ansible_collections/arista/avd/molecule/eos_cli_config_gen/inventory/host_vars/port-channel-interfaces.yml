@@ -276,6 +276,13 @@ port_channel_interfaces:
     rt: 03:03:02:02:01:01
     lacp_id: 0303.0202.0101
 
+  Port-Channel112:
+    description: LACP fallback individual
+    mode: trunk
+    vlans: 112
+    lacp_fallback_timeout: 5
+    lacp_fallback_mode: individual
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
@@ -400,3 +407,14 @@ ethernet_interfaces:
     channel_group:
       id: 111
       mode: active
+
+  Ethernet11/2:
+    description: LAG Member LACP fallback LLDP ZTP VLAN
+    channel_group:
+      id: 112
+      mode: active
+    mode: trunk
+    vlans: 112
+    spanning_tree_portfast: edge
+    lldp:
+      ztp_vlan: 112

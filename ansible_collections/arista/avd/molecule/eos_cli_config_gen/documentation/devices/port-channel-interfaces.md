@@ -79,6 +79,7 @@ interface Management1
 | Ethernet10/2 | LAG Member | *trunk | *110-112 | *- | *- | 102 |
 | Ethernet10/3 | LAG Member | *trunk | *110-112 | *- | *- | 103 |
 | Ethernet10/4 | LAG Member LACP fallback | *trunk | *112 | *- | *- | 104 |
+| Ethernet11/2 | LAG Member LACP fallback LLDP ZTP VLAN | *trunk | *112 | *- | *- | 112 |
 | Ethernet15 | DC1-AGG03_Ethernet1 | *trunk | *110,201 | *- | *- | 15 |
 | Ethernet16 | DC1-AGG04_Ethernet1 | *trunk | *110,201 | *- | *- | 16 |
 | Ethernet18 | LAG Member | *access | *110 | *- | *- | 109 |
@@ -149,6 +150,15 @@ interface Ethernet11/1
    description LAG Member
    channel-group 111 mode active
 !
+interface Ethernet11/2
+   description LAG Member LACP fallback LLDP ZTP VLAN
+   channel-group 112 mode active
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   spanning-tree portfast
+   lldp tlv transmit ztp vlan 112
+!
 interface Ethernet15
    description DC1-AGG03_Ethernet1
    channel-group 15 mode active
@@ -201,6 +211,7 @@ interface Ethernet50
 | Port-Channel107 | bpdu true | switched | access | - | - | - | - | - | - | - |
 | Port-Channel108 | bpdu false | switched | access | - | - | - | - | - | - | - |
 | Port-Channel109 | Molecule ACLs | switched | access | 110 | - | - | - | - | - | - |
+| Port-Channel112 | LACP fallback individual | switched | trunk | 112 | - | - | 5 | individual | - | - |
 
 #### Encapsulation Dot1q Interfaces
 
@@ -486,6 +497,14 @@ interface Port-Channel111.1000
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
    lacp system-id 0303.0202.0101
+!
+interface Port-Channel112
+   description LACP fallback individual
+   switchport
+   switchport trunk allowed vlan 112
+   switchport mode trunk
+   port-channel lacp fallback timeout 5
+   port-channel lacp fallback individual
 ```
 
 # Routing
