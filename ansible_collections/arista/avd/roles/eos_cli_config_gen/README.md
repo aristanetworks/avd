@@ -1838,9 +1838,38 @@ mlag_configuration:
 ```yaml
 ip_igmp_snooping:
   globally_enabled: < true | false | default -> true >
+  robustness_variable: < 1-3 >
+  restart_query_interval: < int >
+  interface_restart_query: < int >
+  fast_leave: < true | false >
   vlans:
     < vlan_id >:
       enabled: < true | false >
+      querier:
+        enabled: < true | false >
+        address: < IP_address >
+        query_interval: < int >
+        max_response_time: < 1-25 >
+        last_member_query_interval: < 1-25 >
+        last_member_query_count: < 1-3 >
+        startup_query_interval: < int >
+        startup_query_count: < 1-3 >
+        version: < 1-3 >
+      max_groups: < 0-65534 >
+      fast_leave: < true | false >
+      # Global proxy settings should be enabled before enabling per-vlan
+      proxy: < true | false >
+  querier:
+    enabled: < true | false >
+    address: < IP_address >
+    query_interval: < int >
+    max_response_time: < 1-25 >
+    last_member_query_interval: < 1-25 >
+    last_member_query_count: < 1-3 >
+    startup_query_interval: < int >
+    startup_query_count: < 1-3 >
+    version: < 1-3 >
+  proxy: < true | false >
 ```
 
 `globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
