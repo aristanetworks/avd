@@ -84,10 +84,13 @@
 | Source | {{ router_bgp.peer_groups[peer_group].update_source }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
-| BFD | true |
+| BFD | True |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].ebgp_multihop is arista.avd.defined %}
 | Ebgp multihop | {{ router_bgp.peer_groups[peer_group].ebgp_multihop }} |
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].default_originate is arista.avd.defined %}
+| Default originate | True |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].send_community is arista.avd.defined %}
 | Send community | {{ router_bgp.peer_groups[peer_group].send_community }} |

@@ -74,6 +74,16 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.peer_groups[peer_group].password is arista.avd.defined %}
    neighbor {{ peer_group }} password 7 {{ router_bgp.peer_groups[peer_group].password }}
 {%         endif %}
+{%         if router_bgp.peer_groups[peer_group].default_originate is arista.avd.defined %}
+{%             set default_originate_cli = "neighbor " ~ peer_group ~ " default-originate" %}
+{%             if router_bgp.peer_groups[peer_group].default_originate.route_map is arista.avd.defined %}
+{%                 set default_originate_cli = default_originate_cli ~ " route-map " ~ router_bgp.peer_groups[peer_group].default_originate.route_map %}
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].default_originate.always is arista.avd.defined(true) %}
+{%                 set default_originate_cli = default_originate_cli ~ " always" %}
+{%             endif %}
+   {{ default_originate_cli }}
+{%         endif %}
 {%         if router_bgp.peer_groups[peer_group].send_community is arista.avd.defined('all') %}
    neighbor {{ peer_group }} send-community
 {%         elif router_bgp.peer_groups[peer_group].send_community is arista.avd.defined %}
@@ -158,6 +168,16 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].route_map_out is arista.avd.defined %}
    neighbor {{ neighbor }} route-map {{ router_bgp.neighbors[neighbor].route_map_out }} out
+{%         endif %}
+{%         if router_bgp.neighbors[neighbor].default_originate is arista.avd.defined %}
+{%             set default_originate_cli = "neighbor " ~ neighbor ~ " default-originate" %}
+{%             if router_bgp.neighbors[neighbor].default_originate.route_map is arista.avd.defined %}
+{%                 set default_originate_cli = default_originate_cli ~ " route-map " ~ router_bgp.neighbors[neighbor].default_originate.route_map %}
+{%             endif %}
+{%             if router_bgp.neighbors[neighbor].default_originate.always is arista.avd.defined(true) %}
+{%                 set default_originate_cli = default_originate_cli ~ " always" %}
+{%             endif %}
+   {{ default_originate_cli }}
 {%         endif %}
 {%         if router_bgp.neighbors[neighbor].send_community is arista.avd.defined('all') %}
    neighbor {{ neighbor }} send-community
