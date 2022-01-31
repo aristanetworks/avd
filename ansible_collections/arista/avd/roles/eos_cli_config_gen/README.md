@@ -12,6 +12,7 @@
       - [IPv6 Standard Access-Lists](#ipv6-standard-access-lists)
       - [IP Standard Access-Lists](#ip-standard-access-lists)
       - [IPv6 Extended Access-Lists](#ipv6-extended-access-lists)
+      - [MAC Access-Lists](#mac-access-lists)
     - [Aliases](#aliases)
     - [Authentication](#authentication)
       - [AAA Authentication](#aaa-authentication)
@@ -29,7 +30,7 @@
     - [Banners](#banners)
     - [Router BFD](#router-bfd)
     - [Custom Templates](#custom-templates)
-    - [DHCP Relay](#dhcp-delay)
+    - [DHCP Relay](#dhcp-relay)
     - [EOS CLI](#eos-cli)
     - [Errdisable](#errdisable)
     - [Filters](#filters)
@@ -103,6 +104,7 @@
       - [Logging](#logging)
       - [Sflow](#sflow)
       - [SNMP Settings](#snmp-settings)
+      - [Monitor Sessions](#monitor-sessions)
     - [System Control-Plane](#system-control-plane)
       - [VM Tracer Sessions](#vm-tracer-sessions)
     - [Patch Panel](#patch-panel)
@@ -135,7 +137,6 @@
     - [Spanning Tree](#spanning-tree)
     - [Terminal Settings](#terminal-settings)
     - [Traffic Policies](#traffic-policies)
-    - [Transceiver Settings](#transceiver-settings)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
@@ -310,6 +311,23 @@ ipv6_access_lists:
   < ipv6_access_list_name_2 >:
     sequence_numbers:
       < sequence_id_1 >:
+        action: "< action as string >"
+```
+
+#### MAC Access-Lists
+
+```yaml
+mac_access_lists:
+  - name: < mac_access_list_name_1 >
+    counters_per_entry: < true | false >
+    entries:
+      - sequence: < sequence_id_1 >
+        action: "< action as string >"
+      - sequence: < sequence_id_2 >
+        action: "< action as string >"
+  - name: < mac_access_list_name_2 >
+    entries:
+      - sequence: < sequence_id_1 >
         action: "< action as string >"
 ```
 
@@ -498,6 +516,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encrypted_key >
+      key_type: < 0 | 7 | 8a | default -> 7 >
       single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encrypted_key >
@@ -814,7 +833,9 @@ ethernet_interfaces:
     shutdown: < true | false >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
     mtu: < mtu >
-    type: < routed | switched | l3dot1q >
+    # l3dot1q and l2dot1q are used for sub-interfaces.
+    # The parent interface should be defined as routed.
+    type: < routed | switched | l3dot1q | l2dot1q >
     vrf: < vrf_name >
     error_correction_encoding:
       enabled: < true | false | default -> true >
@@ -824,6 +845,21 @@ ethernet_interfaces:
       - name: < group_name >
         direction: < upstream | downstream >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: < Client VLAN ID >
+        outer: < Client Outer VLAN ID >
+        inner: < Client Inner VLAN ID >
+        unmatched: < true | false >
+      # network encapsulation is all optional, and skipped if using client unmatched.
+      network:
+        dot1q:
+          vlan: < Network VLAN ID >
+        outer: < Network Outer VLAN ID >
+        inner: < Network Inner VLAN ID >
+        client: < true | false >
+    vlan_id: < 1-4094 >
     ip_address: < IPv4_address/Mask >
     ip_address_secondaries:
       - < IPv4_address/Mask >
@@ -843,6 +879,8 @@ ethernet_interfaces:
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
     ipv6_access_group_out: < ipv6_access_list_name >
+    mac_access_group_in: < mac_access_list_name >
+    mac_access_group_out: < mac_access_list_name >
     ospf_network_point_to_point: < true | false >
     ospf_area: < ospf_area >
     ospf_cost: < ospf_cost >
@@ -862,6 +900,9 @@ ethernet_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     isis_circuit_type: < level-1-2 | level-1 | level-2 >
+    isis_hello_padding: < true | false >
+    isis_authentication_mode: < text | md5 >
+    isis_authentication_key: < type-7 encrypted password >
     ptp:
       enable: < true | false >
       announce:
@@ -945,6 +986,21 @@ ethernet_interfaces:
     link_tracking_groups:
       - name: < group_name >
         direction: < upstream | downstream >
+    evpn_ethernet_segment:
+      identifier: < EVPN Ethernet Segment Identifier (Type 1 format) >
+      redundancy: < all-active | single-active >
+      designated_forwarder_election:
+        algorithm: < modulus | preference >
+        # preference_value and dont_preempt are set for preference algorithm and are optional
+        preference_value: < 0-65535 >
+        dont_preempt: < true | false | default -> false >
+        hold_time: < 1-1800 Seconds >
+        subsequent_hold_time: < 10-10000 milliseconds >
+        candidate_reachability_required: < true | false >
+      mpls:
+        shared_index: < 1-1024 >
+        tunnel_flood_filter_time: < 10-10000 milliseconds >
+      route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     flowcontrol:
       received: < "received" | "send" | "on" >
     mac_security:
@@ -1000,6 +1056,7 @@ ethernet_interfaces:
     lldp:
       transmit: < true | false >
       receive: < true | false >
+      ztp_vlan: < ztp vlan number >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:
@@ -1084,8 +1141,25 @@ port_channel_interfaces:
         link_status: < true | false >
     shutdown: < true | false >
     vlans: "< list of vlans as string >"
-    type: < routed | switched | l3dot1q >
+    # l3dot1q and l2dot1q are used for sub-interfaces.
+    # The parent interface should be defined as routed.
+    type: < routed | switched | l3dot1q | l2dot1q >
     encapsulation_dot1q_vlan: < vlan tag to configure on sub-interface >
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: < Client VLAN ID >
+        outer: < Client Outer VLAN ID >
+        inner: < Client Inner VLAN ID >
+        unmatched: < true | false >
+      # network encapsulation is all optional, and skipped if using client unmatched.
+      network:
+        dot1q:
+          vlan: < Network VLAN ID >
+        outer: < Network Outer VLAN ID >
+        inner: < Network Inner VLAN ID >
+        client: < true | false >
+    vlan_id: < 1-4094 >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     native_vlan: < native vlan number >
     link_tracking_groups:
@@ -1141,6 +1215,9 @@ port_channel_interfaces:
     isis_metric: < integer >
     isis_network_point_to_point: < boolean >
     isis_circuit_type: < level-1-2 | level-1 | level-2 >
+    isis_hello_padding: < true | false >
+    isis_authentication_mode: < text | md5 >
+    isis_authentication_key: < type-7 encrypted password >
     # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
     eos_cli: |
       < multiline eos cli >
@@ -1154,7 +1231,7 @@ port_channel_interfaces:
   < Port-Channel_interface_3 >:
     description: < description >
     vlans: "< list of vlans as string >"
-    type: < routed | switched | l3dot1q >
+    type: < routed | switched | l3dot1q | l2dot1q >
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
@@ -1175,7 +1252,7 @@ port_channel_interfaces:
   < Port-Channel_interface_4 >:
     description: < description >
     mtu: < mtu >
-    type: < routed | switched | l3dot1q >
+    type: < routed | switched | l3dot1q | l2dot1q >
     ip_address: < IP_address/mask >
     ipv6_enable: < true | false >
     ipv6_address: < IPv6_address/mask >
@@ -1192,6 +1269,8 @@ port_channel_interfaces:
     access_group_out: < access_list_name >
     ipv6_access_group_in: < ipv6_access_list_name >
     ipv6_access_group_out: < ipv6_access_list_name >
+    mac_access_group_in: < mac_access_list_name >
+    mac_access_group_out: < mac_access_list_name >
     pim:
       ipv4:
         sparse_mode: < true | false >
@@ -2075,6 +2154,33 @@ snmp_server:
       enable: < true | false >
 ```
 
+#### Monitor Sessions
+
+```yaml
+monitor_sessions:
+  - name: < session_name_1 >
+    sources:
+      - name: < interface_name, range or comma separated list >
+        direction: < rx | tx | both >
+        access_group:
+          type: < ip | ipv6 | mac >
+          name: < acl_name >
+          priority: < priority >
+    destinations:
+      - < interface(s) | cpu >
+    encapsulation_gre_metadata_tx: < true | false >
+    header_remove_size: < bytes >
+    access_group:
+      type: < ip | ipv6 | mac >
+      name: < acl_name >
+    rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+    rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
+    sample: < int >
+    truncate:
+      enabled: < true | false >
+      size: < bytes >
+```
+
 ### System Control-Plane
 
 ```yaml
@@ -2709,9 +2815,9 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
+          networks:
+            < prefix_address >:
+              route_map: < route_map_name >
       # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
       eos_cli: |
         < multiline eos cli >

@@ -1,7 +1,6 @@
 ---
 ansible_collections/arista/avd/roles/build_output_folders/**/*:
   - carlbuchmann
-  - titom73
   - aphillipps
 ansible_collections/arista/avd/roles/eos_designs/**/*:
   - carlbuchmann
@@ -13,38 +12,28 @@ ansible_collections/arista/avd/roles/eos_config_deploy_eapi/**/*:
   - ClausHolbechArista
 ansible_collections/arista/avd/roles/eos_cli_config_gen/**/*:
   - onurgashi
-  - titom73
   - aphillipps
 ansible_collections/arista/avd/roles/eos_validate_state/**/*:
   - ksator
   - carlbuchmann
-  - titom73
 ansible_collections/arista/avd/roles/eos_config_deploy_cvp/**/*:
   - guillaumeVilar
-  - titom73
   - noredistribution
 ansible_collections/arista/avd/roles/cvp_configlet_upload/**/*:
   - guillaumeVilar
-  - titom73
   - noredistribution
 ansible_collections/arista/avd/roles/dhcp_provisioner/**/*:
   - guillaumeVilar
-  - titom73
   - noredistribution
 ansible_collections/arista/avd/plugins/filter/**/*:
   - carlbuchmann
-  - titom73
   - ClausHolbechArista
 ansible_collections/arista/avd/plugins/modules/**/*:
   - guillaumeVilar
-  - titom73
   - noredistribution
 ansible_collections/arista/avd/molecule/**/*:
   - carlbuchmann
-  - titom73
 ansible_collections/arista/avd/docs/**/*:
   - carlbuchmann
-  - titom73
 .github/**:
   - carlbuchmann
-  - titom73
