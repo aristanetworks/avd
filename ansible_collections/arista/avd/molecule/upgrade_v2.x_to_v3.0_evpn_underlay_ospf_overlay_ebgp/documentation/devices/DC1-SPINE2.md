@@ -430,7 +430,7 @@ router ospf 101
 | Address Family | evpn |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

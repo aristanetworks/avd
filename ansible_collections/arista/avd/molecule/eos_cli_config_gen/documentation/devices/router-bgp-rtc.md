@@ -108,7 +108,7 @@ interface Management1
 | Address Family | evpn |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -120,7 +120,7 @@ interface Management1
 | Address Family | evpn |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

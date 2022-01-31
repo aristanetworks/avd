@@ -134,8 +134,10 @@ router bgp 65101
    graceful-restart
    bgp bestpath d-path
    neighbor 192.0.3.1 remote-as 65432
+   neighbor 192.0.3.1 default-originate route-map RM-FOO-MATCH2 always
    neighbor 192.0.3.1 send-community
    neighbor 192.0.3.2 remote-as 65433
+   neighbor 192.0.3.2 default-originate route-map RM-FOO-MATCH3
    neighbor 192.0.3.2 send-community extended
    neighbor 192.0.3.2 maximum-routes 10000
    neighbor 192.0.3.3 remote-as 65434

@@ -614,7 +614,7 @@ router isis EVPN_UNDERLAY
 | Address Family | evpn |
 | Remote AS | 65000 |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 

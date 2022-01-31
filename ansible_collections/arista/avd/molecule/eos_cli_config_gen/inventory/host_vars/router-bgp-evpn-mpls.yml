@@ -17,6 +17,9 @@ router_bgp:
       password: "q+VNViP5i4rVjW1cxFv2wA=="
       send_community: all
       maximum_routes: 0
+      default_originate:
+        route_map: RM-FOO
+        always: true
   neighbors:
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS

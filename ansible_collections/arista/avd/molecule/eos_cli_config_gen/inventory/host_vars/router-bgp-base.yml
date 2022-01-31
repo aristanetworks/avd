@@ -65,10 +65,16 @@ router_bgp:
     192.0.3.1:
       remote_as: 65432
       send_community: all
+      default_originate:
+        route_map: RM-FOO-MATCH2
+        always: true
     192.0.3.2:
       remote_as: 65433
       send_community: extended
       maximum_routes: 10000
+      default_originate:
+        route_map: RM-FOO-MATCH3
+        always: false
     192.0.3.3:
       remote_as: 65434
       send_community: standard
