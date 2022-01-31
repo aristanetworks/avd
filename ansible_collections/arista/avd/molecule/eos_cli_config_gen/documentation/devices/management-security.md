@@ -67,6 +67,7 @@ Management Security password minimum lenght is **17** characters.
 management security
    entropy source hardware
    password encryption-key common
+   password encryption reversible aes-256-gcm
    password minimum length 17
 ```
 
