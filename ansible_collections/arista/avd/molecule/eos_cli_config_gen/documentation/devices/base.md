@@ -155,8 +155,9 @@ management api http-commands
 
 ## Management Security Summary
 
-Management Security password encryption is common.
-
+| Settings | Value |
+| -------- | ----- |
+| Common password encryption key | True |
 
 ## Management Security Configuration
 

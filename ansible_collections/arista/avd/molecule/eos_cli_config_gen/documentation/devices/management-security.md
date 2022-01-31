@@ -53,12 +53,12 @@ interface Management1
 
 ## Management Security Summary
 
-Management Security entropy source is **hardware**
-
-Management Security password encryption is common.
-
-Management Security password minimum lenght is **17** characters.
-
+| Settings | Value |
+| -------- | ----- |
+| Entropy source | hardware |
+| Common password encryption key | True |
+| Reversible password encryption | aes-256-gcm |
+| Minimum password length | 17 |
 
 ## Management Security Configuration
 
