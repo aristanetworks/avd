@@ -8,8 +8,8 @@
 {%     if cvp_instance_ip is arista.avd.defined %}
 {%         if "arista.io" not in cvp_instance_ip %}
 {%             do cvp_on_prem.ips.append(cvp_instance_ip) %}
-{%         elif "arista.io" in cvp_ip %}
-{%             do cvaas.ips.append(cvp_ip) %}
+{%         elif "arista.io" in cvp_instance_ip%}
+{%             do cvaas.ips.append(cvp_instance_ip) %}
 {%         endif %}
 {%     elif cvp_instance_ips is arista.avd.defined %}
 {%         for cvp_ip in cvp_instance_ips %}
