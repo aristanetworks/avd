@@ -10,7 +10,7 @@ __Demo repository:__ [arista-netdevops-community/ansible-avd-cloudvision-demo](h
 
 #### Components
 
-- A cloudVision server running version `>= 2018.2.5`
+- A CloudVision Portal instance running a minimum version `2018.2.5` or CloudVision as a Service (CVaaS)
 - A network topology:
   - Demo is based on a 2 spines / 4 leafs running on GNS3 but should also be configured on EVE-NG platform.
   - Any physical or virtual topology with oob connected to CVP should work.

@@ -208,14 +208,14 @@ l3leaf:
     platform: VEOS-LAB
     virtual_router_mac_address: 00:1c:73:00:dc:01
     # VTEP VXLAN Tunnel source loopback IP for leaf switches, assigned in /32s
-    # Assign range larger then total leaf switches
+    # Assign range larger than total leaf switches
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     loopback_ipv4_pool: 192.168.255.0/24
     # Offset must be >= number of spines
     loopback_ipv4_offset: 2
     # Point to Point Network Summary range, assigned as /31 for each
     # uplink interfaces
-    # Assign range larger then total [spines * total potential leafs * 2]
+    # Assign range larger than total [spines * total potential leafs * 2]
     uplink_ipv4_pool: 172.31.255.0/24
     uplink_switches: [AVD-SPINE1, AVD-SPINE2]
     uplink_interfaces: [Ethernet1, Ethernet2]
@@ -255,7 +255,7 @@ type: spine     # Must be either spine | l3leaf | l2leaf
 
 ### Configure VNI/VLAN across the Fabric
 
-AVD supports mechanism to create VLANs and VNIs and enable traffic forwarding in your overlay. In current version (`v3.1.0`), only following design listed below are supported:
+AVD supports mechanism to create VLANs and VNIs and enable traffic forwarding in your overlay. In the current version, only following design listed below are supported:
 
 - L2 VLANs
 - Symmetric IRB model
@@ -429,8 +429,8 @@ servers:
     adapters:
       - type: nic
         endpoint_ports: [Eth0]      # Port on server/endpoint
-        switch_ports: [Ethernet3]   # Port on switch connected to the endpoint port
-        switches: [DC1-AGG01]       # Switch to connect server
+        switch_ports: [Ethernet3]   # Port on switch connected to the server/endpoint port
+        switches: [DC1-AGG01]       # Switch connected to the server/endpoint
         profile: A-PR01-DMZ         # Port profile to apply
 ```
 
@@ -450,7 +450,7 @@ servers:
     rack: DCI
     adapters:
       - endpoint_ports: [Eth1, Eth2]
-        switch_ports: [Ethernet5, Ethernet5 ]
+        switch_ports: [Ethernet5, Ethernet5]
         switches: [SITE01-BL01A, SITE01-BL01B]
         profile: A-PR01-DMZ
         port_channel:
