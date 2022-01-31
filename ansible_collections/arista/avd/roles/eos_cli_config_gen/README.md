@@ -2814,9 +2814,9 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
+          networks:
+            < prefix_address >:
+              route_map: < route_map_name >
       # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
       eos_cli: |
         < multiline eos cli >
