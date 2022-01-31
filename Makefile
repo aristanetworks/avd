@@ -43,6 +43,24 @@ galaxy-importer:  ## Run galaxy importer tests
 	ansible-galaxy collection build --force ansible_collections/arista/avd && \
 	python -m galaxy_importer.main *.tar.gz
 
+#############################################
+# Run unit test cases using ansible-test    #
+#############################################
+
+.PHONY: unit-tests
+unit-tests: ## Run unit test cases using ansible-test
+	cd ansible_collections/arista/avd/ ; \
+	ansible-test units --requirements --$(ANSIBLE_TEST_MODE) -vv
+
+###################################################
+# Run integration test cases using ansible-test   #
+###################################################
+
+.PHONY: integration-tests
+integration-tests: ## Run integration test cases using ansible-test
+	cd ansible_collections/arista/avd/ ; \
+	ansible-test integration --requirements --$(ANSIBLE_TEST_MODE)
+
 #########################################
 # Documentation actions					#
 #########################################

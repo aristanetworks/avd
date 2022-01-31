@@ -1,0 +1,14 @@
+- name: Test without prefix
+  ignore_errors: yes
+  configlet_build_config:
+    configlet_dir: '{{ configlet_path }}'
+    configlet_extension: 'cfg'
+    destination: "{{ actual_output }}"
+  register: result
+
+- name: Validate output
+  assert:
+    that:
+      - result is failed
+      - result.changed == false
+      - "'missing required arguments:' in result.msg"

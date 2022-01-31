@@ -1,2 +1,2 @@
 ---
-ansible_python_interpreter: $(which python)
+ansible_python_interpreter: $(which python3)

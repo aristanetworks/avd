@@ -1,0 +1,18 @@
+- name: Test with list_merge invalid option
+  ignore_errors: yes
+  register: result
+  vars:
+    timezone: "test"
+    hours: 84
+  yaml_templates_to_facts:
+    templates:
+      - template: "templates/template.j2"
+      - template: "templates/template1.j2"
+        options:
+          strip_empty_keys: false
+          list_merge: "append12"
+
+- assert:
+    that:
+      - result.failed == True
+      - result.msg == {{ lookup('file', './error.txt') }}

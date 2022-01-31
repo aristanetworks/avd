@@ -22,7 +22,7 @@ from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
 
-def strip_null_from_data(data):
+def strip_null_from_data(data, strip_values_tuple=(None,)):
     """
     strip_null_from_data Generic function to strip null entries regardless type of variable.
 
@@ -36,7 +36,6 @@ def strip_null_from_data(data):
     Any
         Cleaned data with no null.
     """
-    strip_values_tuple = (None,)
     if isinstance(data, dict):
         return strip_empties_from_dict(data, strip_values_tuple)
     elif isinstance(data, list):
