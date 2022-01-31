@@ -1692,6 +1692,7 @@ management_security:
   password:
     minimum_length: < 1-32 >
     encryption_key_common: < true | false >
+    encryption_reversible: < aes-256-gcm >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
