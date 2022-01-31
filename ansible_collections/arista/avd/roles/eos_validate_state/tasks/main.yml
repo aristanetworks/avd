@@ -125,10 +125,10 @@
   tags:
     - routing_table
 
-- name: Validate loopback0 reachability
-  include_tasks: "loopback0_reachability.yml"
+- name: Validate loopback reachability
+  include_tasks: "loopback_reachability.yml"
   tags:
-    - loopback0_reachability
+    - loopback_reachability
 
 - name: Remove generated vars for testing
   file:

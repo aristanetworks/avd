@@ -1,31 +1,30 @@
 ---
 
-- name: run show ip route lo1
+- name: run show ip route VTEP IP
   eos_command:
-    commands: "show ip route {{ loopback1_address }}"
-  loop: "{{ loopback1_reachability.loopback1_range }}"
+    commands: "show ip route {{ vtep_ip }}"
+  loop: "{{ vtep_reachability.vtep_ip_reachability }}"
   loop_control:
-    loop_var: loopback1_address
+    loop_var: vtep_ip
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
   when: |
-    (loopback1_reachability.loopback1_range is defined and loopback1_reachability.loopback1_range is not none) and
-    (type is defined and type == 'l3leaf')
-  register: routing_table_loopback1_state
+    (vtep_reachability.vtep_ip_reachability is arista.avd.defined)
+  register: routing_table_vtep_state
   tags:
     - routing_table_check
 
-- name: Validate lo1 is in routing table
+- name: Validate VTEP IP is in routing table
   assert:
     that:
-      - loopback1_reachability_test['stdout'][0] | regex_search(loopback1_reachability_test.loopback1_address)
-    fail_msg: "Lo1 {{ loopback1_reachability_test.loopback1_address }} is not in the routing table"
+      - vtep_reachability_test['stdout'][0] | regex_search(vtep_reachability_test.vtep_ip)
+    fail_msg: "VTEP {{ vtep_reachability_test.vtep_ip }} is not in the routing table"
     quiet: true
-  loop: "{{ routing_table_loopback1_state.results }}"
+  loop: "{{ routing_table_vtep_state.results }}"
   loop_control:
-    loop_var: loopback1_reachability_test
+    loop_var: vtep_reachability_test
   ignore_errors: "{{ eos_validate_state_validation_mode_loose }}"
-  when: (loopback1_reachability_test.skipped is not defined)
-  register: routing_table_loopback1_results
+  when: (vtep_reachability_test.skipped is not defined)
+  register: routing_table_vtep_results
   tags:
     - routing_table_check
 
