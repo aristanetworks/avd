@@ -94,6 +94,7 @@ ethernet_interfaces:
     ipv6_access_group_out: IPv6_ACL_OUT
     priority_flow_control:
       enabled: true
+    spanning_tree_guard: disabled
 
   Ethernet5:
     description: Molecule Routing
@@ -120,6 +121,7 @@ ethernet_interfaces:
     isis_hello_padding: false
     isis_authentication_mode: md5
     isis_authentication_key: "asfddja23452"
+    spanning_tree_guard: loop
 
   Ethernet6:
     logging:
