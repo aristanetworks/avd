@@ -485,19 +485,19 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 #### IP IGMP Snooping Vlan 160 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Enabled |
+| IGMP snooping | Enabled |
 
 #### IP IGMP Snooping Vlan 161 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

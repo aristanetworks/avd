@@ -55,14 +55,14 @@ ip igmp snooping vlan {{ vlan }} querier last-member-query-count {{ igmp_vlan_se
 ip igmp snooping vlan {{ vlan }} querier startup-query-interval {{ igmp_vlan_settings.querier.startup_query_interval }}
 {%                     endif %}
 {%                     if igmp_vlan_settings.querier.startup_query_count is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} querier startup_query_count {{ igmp_vlan_settings.querier.startup_query_count }}
+ip igmp snooping vlan {{ vlan }} querier startup-query-count {{ igmp_vlan_settings.querier.startup_query_count }}
 {%                     endif %}
 {%                     if igmp_vlan_settings.querier.version is arista.avd.defined %}
 ip igmp snooping vlan {{ vlan }} querier version {{ igmp_vlan_settings.querier.version }}
 {%                     endif %}
 {%                 endif %}
 {%                 if igmp_vlan_settings.max_groups is arista.avd.defined %}
-ip igmp snooping vlan {{ vlan }} max groups {{ igmp_vlan_settings.max_groups }}
+ip igmp snooping vlan {{ vlan }} max-groups {{ igmp_vlan_settings.max_groups }}
 {%                 endif %}
 {%                 if igmp_vlan_settings.fast_leave is arista.avd.defined(true) %}
 ip igmp snooping vlan {{ vlan }} fast-leave
@@ -101,7 +101,7 @@ ip igmp snooping querier last-member-query-count {{ ip_igmp_snooping.querier.las
 ip igmp snooping querier startup-query-interval {{ ip_igmp_snooping.querier.startup_query_interval }}
 {%             endif %}
 {%             if ip_igmp_snooping.querier.startup_query_count is arista.avd.defined %}
-ip igmp snooping querier startup_query_count {{ ip_igmp_snooping.querier.startup_query_count }}
+ip igmp snooping querier startup-query-count {{ ip_igmp_snooping.querier.startup_query_count }}
 {%             endif %}
 {%             if ip_igmp_snooping.querier.version is arista.avd.defined %}
 ip igmp snooping querier version {{ ip_igmp_snooping.querier.version }}

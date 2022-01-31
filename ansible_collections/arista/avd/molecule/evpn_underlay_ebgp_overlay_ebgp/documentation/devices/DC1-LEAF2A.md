@@ -1136,19 +1136,19 @@ router bfd
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 #### IP IGMP Snooping Vlan 160 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Enabled |
+| IGMP snooping | Enabled |
 
 #### IP IGMP Snooping Vlan 161 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

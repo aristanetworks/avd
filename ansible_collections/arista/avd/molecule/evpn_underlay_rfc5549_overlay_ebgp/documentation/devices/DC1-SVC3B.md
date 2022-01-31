@@ -1419,7 +1419,7 @@ router bfd
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

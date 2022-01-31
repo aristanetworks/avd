@@ -507,7 +507,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

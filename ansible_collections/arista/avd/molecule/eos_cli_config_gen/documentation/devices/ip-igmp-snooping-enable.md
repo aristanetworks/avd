@@ -93,49 +93,49 @@ interface Management1
 | --------------- | ------ |
 | IGMP snooping | Enabled |
 | Fast-leave | True |
-| Interface Restart Query | 500 |
+| Interface restart query | 500 |
 | Proxy | True |
-| Restart Query Interval | 30 |
-| Robustness Variable | 2 |
+| Restart query interval | 30 |
+| Robustness variable | 2 |
 
 | Global Querier Settings | Values |
 | ----------------------- | ------ |
 | Address | 10.10.10.1 |
 | Enabled | True |
-| Last Member Query Count | 2 |
-| Last Member Query Interval | 5 |
-| Max Response Time | 10 |
-| Query Interval | 40 |
-| Startup Query Count | 2 |
-| Startup Query Interval | 20 |
+| Last member query count | 2 |
+| Last member query interval | 5 |
+| Max response time | 10 |
+| Query interval | 40 |
+| Startup query count | 2 |
+| Startup query interval | 20 |
 | Version | 3 |
 
 #### IP IGMP Snooping Vlan 23 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Enabled |
+| IGMP snooping | Enabled |
 | Fast-leave | True |
-| Max Groups | 20 |
+| Max groups | 20 |
 | Proxy | True |
 
 | Vlan Querier Settings | Values |
 | --------------------- | ------ |
 | Address | 10.10.23.1 |
 | Enabled | True |
-| Last Member Query Count | 2 |
-| Last Member Query Interval | 5 |
-| Max Response Time | 10 |
-| Query Interval | 40 |
-| Startup Query Count | 2 |
-| Startup Query Interval | 20 |
+| Last member query count | 2 |
+| Last member query interval | 5 |
+| Max response time | 10 |
+| Query interval | 40 |
+| Startup query count | 2 |
+| Startup query interval | 20 |
 | Version | 3 |
 
 #### IP IGMP Snooping Vlan 24 Settings Summary
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Enabled |
+| IGMP snooping | Enabled |
 | Fast-leave | False |
 | Proxy | False |
 
@@ -143,7 +143,7 @@ interface Management1
 
 | Settings | Values |
 | -------- | ------ |
-| IGMP Snooping | Disabled |
+| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 
@@ -162,9 +162,9 @@ ip igmp snooping vlan 23 querier max-response-time 10
 ip igmp snooping vlan 23 querier last-member-query-interval 5
 ip igmp snooping vlan 23 querier last-member-query-count 2
 ip igmp snooping vlan 23 querier startup-query-interval 20
-ip igmp snooping vlan 23 querier startup_query_count 2
+ip igmp snooping vlan 23 querier startup-query-count 2
 ip igmp snooping vlan 23 querier version 3
-ip igmp snooping vlan 23 max groups 20
+ip igmp snooping vlan 23 max-groups 20
 ip igmp snooping vlan 23 fast-leave
 ip igmp snooping vlan 24
 no ip igmp snooping vlan 24 fast-leave
@@ -176,7 +176,7 @@ ip igmp snooping querier max-response-time 10
 ip igmp snooping querier last-member-query-interval 5
 ip igmp snooping querier last-member-query-count 2
 ip igmp snooping querier startup-query-interval 20
-ip igmp snooping querier startup_query_count 2
+ip igmp snooping querier startup-query-count 2
 ip igmp snooping querier version 3
 !
 ip igmp snooping vlan 23 proxy

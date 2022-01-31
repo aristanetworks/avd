@@ -12,21 +12,21 @@
 | IGMP snooping | Enabled |
 | Fast-leave | {{ ip_igmp_snooping.fast_leave | arista.avd.default(true) }} |
 {%         if ip_igmp_snooping.interface_restart_query is arista.avd.defined %}
-| Interface Restart Query | {{ ip_igmp_snooping.interface_restart_query }} |
+| Interface restart query | {{ ip_igmp_snooping.interface_restart_query }} |
 {%         endif %}
 | Proxy | {{ ip_igmp_snooping.proxy | arista.avd.default(false) }} |
 {%         if ip_igmp_snooping.restart_query_interval is arista.avd.defined %}
-| Restart Query Interval | {{ ip_igmp_snooping.restart_query_interval }} |
+| Restart query interval | {{ ip_igmp_snooping.restart_query_interval }} |
 {%         endif %}
 {%         if ip_igmp_snooping.robustness_variable is arista.avd.defined %}
-| Robustness Variable | {{ ip_igmp_snooping.robustness_variable }} |
+| Robustness variable | {{ ip_igmp_snooping.robustness_variable }} |
 {%         endif %}
 {%         if ip_igmp_snooping.querier is arista.avd.defined %}
 
 | Global Querier Settings | Values |
 | ----------------------- | ------ |
 {%             for querier_setting in ip_igmp_snooping.querier | arista.avd.natural_sort if ip_igmp_snooping.querier[querier_setting] is arista.avd.defined %}
-| {{ querier_setting | replace("_", " ") | title }} | {{ ip_igmp_snooping.querier[querier_setting] }} |
+| {{ querier_setting | replace("_", " ") | capitalize }} | {{ ip_igmp_snooping.querier[querier_setting] }} |
 {%             endfor %}
 {%         endif %}
 {%         for vlan in ip_igmp_snooping.vlans | arista.avd.natural_sort %}
@@ -35,16 +35,14 @@
 
 | Settings | Values |
 | -------- | ------ |
-{%             if ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(false) %}
-| IGMP Snooping | Disabled |
-{%             elif ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(true) %}
-| IGMP Snooping | Enabled |
+{%             if ip_igmp_snooping.vlans[vlan].enabled is arista.avd.defined(var_type='bool') %}
+| IGMP snooping | {{ ip_igmp_snooping.vlans[vlan].enabled | ternary('Enabled','Disabled') }} |
 {%             endif %}
 {%             if ip_igmp_snooping.vlans[vlan].fast_leave is arista.avd.defined %}
 | Fast-leave | {{ ip_igmp_snooping.vlans[vlan].fast_leave }} |
 {%             endif %}
 {%             if ip_igmp_snooping.vlans[vlan].max_groups is arista.avd.defined %}
-| Max Groups | {{ ip_igmp_snooping.vlans[vlan].max_groups }} |
+| Max groups | {{ ip_igmp_snooping.vlans[vlan].max_groups }} |
 {%             endif %}
 {%             if ip_igmp_snooping.vlans[vlan].proxy is arista.avd.defined %}
 | Proxy | {{ ip_igmp_snooping.vlans[vlan].proxy }} |
@@ -53,8 +51,8 @@
 
 | Vlan Querier Settings | Values |
 | --------------------- | ------ |
-{%                 for querier_setting in ip_igmp_snooping.vlans[vlan].querier  | arista.avd.natural_sort if ip_igmp_snooping.vlans[vlan].querier[querier_setting] is arista.avd.defined %}
-| {{ querier_setting | replace("_", " ") | title }} | {{ ip_igmp_snooping.vlans[vlan].querier[querier_setting] }} |
+{%                 for querier_setting in ip_igmp_snooping.vlans[vlan].querier | arista.avd.natural_sort if ip_igmp_snooping.vlans[vlan].querier[querier_setting] is arista.avd.defined %}
+| {{ querier_setting | replace("_", " ") | capitalize }} | {{ ip_igmp_snooping.vlans[vlan].querier[querier_setting] }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
