@@ -11,6 +11,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+  - [Monitor Sessions](#monitor-sessions)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -200,6 +201,32 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-SVC3A
+```
+
+## Monitor Sessions
+
+### Monitor Sessions Summary
+
+#### MyMonitoringSession_server18
+
+##### MyMonitoringSession_server18 Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet25 | both | - | - | - |
+
+##### MyMonitoringSession_server18 Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Ethernet26 |
+
+### Monitor Sessions Configuration
+
+```eos
+!
+monitor session MyMonitoringSession_server18 source Ethernet25 both
+monitor session MyMonitoringSession_server18 destination Ethernet26
 ```
 
 # MLAG
@@ -432,6 +459,8 @@ vlan 4092
 | Ethernet22 | server15_port_channel_with_disabled_phy_interfaces_Eth1 | *access | *110 | *- | *- | 22 |
 | Ethernet23 | server16_port_channel_with_disabled_port_channel_Eth1 | *access | *110 | *- | *- | 23 |
 | Ethernet24 | server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1 | *access | *110 | *- | *- | 24 |
+| Ethernet25 |  server18_monitoring_session_source_Eth1 | access | 110 | - | - | - |
+| Ethernet26 |  server19_monitoring_session_destination_Eth1 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -622,6 +651,18 @@ interface Ethernet24
    description server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1
    shutdown
    channel-group 24 mode active
+!
+interface Ethernet25
+   description server18_monitoring_session_source_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet26
+   description server19_monitoring_session_destination_Eth1
+   no shutdown
+   switchport
 ```
 
 ## Port-Channel Interfaces

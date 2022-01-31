@@ -1,0 +1,39 @@
+{# Leaf connected_endpoint monitor-sessions #}
+monitor_sessions:
+{% for endpoint_key in connected_endpoints | arista.avd.natural_sort %}
+{%     for connected_endpoint in connected_endpoints[endpoint_key] | arista.avd.natural_sort %}
+{%         for adapter in connected_endpoints[endpoint_key][connected_endpoint].adapters %}
+{%             if adapter.profile is arista.avd.defined %}
+{%                 set adapter_profile = port_profiles[adapter.profile] | arista.avd.default({}) %}
+{%                 if adapter_profile.parent_profile is arista.avd.defined %}
+{%                     set parent_profile = port_profiles[adapter_profile.parent_profile] | arista.avd.default({}) %}
+{%                 endif %}
+{%             endif %}
+{%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
+                                                   adapter_profile | arista.avd.default({}),
+                                                   adapter, recursive=true, list_merge='replace') %}
+{%             for adapter_switch in adapter.switches | arista.avd.natural_sort %}
+{%                 if adapter_switch == inventory_hostname %}
+{%                     if adapter_settings.monitor_sessions.name is arista.avd.defined %}
+{%                         if adapter_settings.monitor_sessions.role is arista.avd.defined('source') %}
+  - name: {{ adapter_settings.monitor_sessions.name }}
+{%                             if adapter.switch_ports[loop.index0] is arista.avd.defined %}
+    sources:
+      - name: {{ adapter.switch_ports[loop.index0] }}
+{%                                 if adapter_settings.monitor_sessions.source_settings.direction is arista.avd.defined %}
+        direction: {{ adapter_settings.monitor_sessions.source_settings.direction }}
+{%                                 endif %}
+{%                             endif %}
+{%                         endif %}
+{%                         if adapter_settings.monitor_sessions.role is arista.avd.defined('destination') %}
+{%                             if adapter.switch_ports[loop.index0] is arista.avd.defined %}
+    destinations:
+      - {{ adapter.switch_ports[loop.index0] }}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endfor %}
+{%         endfor %}
+{%     endfor %}
+{% endfor %}

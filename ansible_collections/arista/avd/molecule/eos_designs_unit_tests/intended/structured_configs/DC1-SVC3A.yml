@@ -1294,6 +1294,22 @@ ethernet_interfaces:
     channel_group:
       id: 24
       mode: active
+  Ethernet25:
+    peer: server18_monitoring_session_source
+    peer_interface: Eth1
+    peer_type: server
+    description: server18_monitoring_session_source_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+  Ethernet26:
+    peer: server19_monitoring_session_destination
+    peer_interface: Eth1
+    peer_type: server
+    description: server19_monitoring_session_destination_Eth1
+    type: switched
+    shutdown: false
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
@@ -1411,3 +1427,10 @@ vxlan_interface:
           vni: 30
         Tenant_C_WAN_Zone:
           vni: 31
+monitor_sessions:
+- name: MyMonitoringSession_server18
+  sources:
+  - name: Ethernet25
+    direction: both
+  destinations:
+  - Ethernet26
