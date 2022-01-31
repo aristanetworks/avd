@@ -143,7 +143,7 @@ class ActionModule(ActionBase):
 
             # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
-            if (dest.split('.')[-1] or '') in ["yml", "yaml"] :
+            if dest.split('.')[-1] in ["yml", "yaml"] :
                 write_file_result = self.write_file(yaml.dump(output, indent=2, sort_keys=False, width=130), task_vars)
             else:
                 write_file_result = self.write_file(output, task_vars)
