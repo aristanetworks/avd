@@ -153,6 +153,8 @@ ip igmp snooping
 ip igmp snooping robustness-variable 2
 ip igmp snooping restart query-interval 30
 ip igmp snooping interface-restart-query 500
+ip igmp snooping fast-leave
+ip igmp snooping vlan 23
 ip igmp snooping vlan 23 querier
 ip igmp snooping vlan 23 querier address 10.10.23.1
 ip igmp snooping vlan 23 querier query-interval 40
@@ -164,6 +166,7 @@ ip igmp snooping vlan 23 querier startup_query_count 2
 ip igmp snooping vlan 23 querier version 3
 ip igmp snooping vlan 23 max groups 20
 ip igmp snooping vlan 23 fast-leave
+ip igmp snooping vlan 24
 no ip igmp snooping vlan 24 fast-leave
 no ip igmp snooping vlan 25
 ip igmp snooping querier

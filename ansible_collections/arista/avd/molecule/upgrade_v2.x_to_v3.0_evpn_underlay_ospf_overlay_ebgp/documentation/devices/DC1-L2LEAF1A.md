@@ -308,12 +308,17 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| Global Settings | Values |
+| --------------- | ------ |
+| IGMP snooping | Enabled |
+| Fast-leave | True |
+| Proxy | False |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
+!
+ip igmp snooping
 ```
 
 # Filters

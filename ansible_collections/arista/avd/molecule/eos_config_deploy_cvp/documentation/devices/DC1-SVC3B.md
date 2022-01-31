@@ -1254,17 +1254,23 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| Global Settings | Values |
+| --------------- | ------ |
+| IGMP snooping | Enabled |
+| Fast-leave | True |
+| Proxy | False |
 
+#### IP IGMP Snooping Vlan 120 Settings Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 120 | disabled |
+| Settings | Values |
+| -------- | ------ |
+| IGMP Snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
+ip igmp snooping
 no ip igmp snooping vlan 120
 ```
 
