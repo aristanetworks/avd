@@ -538,7 +538,7 @@ router bgp {{ router_bgp.as }}
 {%         for redistribute_route in router_bgp.address_family_ipv6.redistribute_routes | arista.avd.natural_sort %}
 {%             set redistribute_route_cli = "redistribute " ~ redistribute_route %}
 {%             if router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map is arista.avd.defined %}
-{%                 set redistribute_route_cli = redistribute_route_cl ~ " route-map " ~ router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map %}
+{%                 set redistribute_route_cli = redistribute_route_cli ~ " route-map " ~ router_bgp.address_family_ipv6.redistribute_routes[redistribute_route].route_map %}
 {%             endif %}
       {{ redistribute_route_cli }}
 {%         endfor %}
