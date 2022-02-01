@@ -35,7 +35,7 @@ daemon_terminattr:
 {%         endfor %}
   cvauth:
     method: "token-secure"
-    key: "{{ cvp_ingestauth_key | arista.avd.default('/tmp/cv-onboarding-token') }}"
+    token_file: "{{ cvp_token_file | arista.avd.default('/tmp/cv-onboarding-token') }}"
 {%     endif %}
   cvvrf: {{ mgmt_interface_vrf }}
   smashexcludes: "{{ terminattr_smashexcludes }}"
