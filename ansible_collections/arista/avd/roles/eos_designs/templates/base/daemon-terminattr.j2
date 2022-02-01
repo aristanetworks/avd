@@ -26,14 +26,17 @@ daemon_terminattr:
 {%         for cvp_instance_ip in cvp_on_prem.ips %}
     - {{ cvp_instance_ip }}:{{ terminattr_ingestgrpcurl_port }}
 {%         endfor %}
+  cvauth:
+    method: "key"
+    key: "{{ cvp_ingestauth_key }}"
 {%     elif cvaas.ips | length > 0 %}
 {%         for cvp_instance_ip in cvaas.ips %}
     - {{ cvp_instance_ip }}:443
 {%         endfor %}
-{%     endif %}
   cvauth:
-    method: "key"
-    key: "{{ cvp_ingestauth_key }}"
+    method: "token-secure"
+    key: "{{ cvp_ingestauth_key | arista.avd.default('/tmp/cv-onboarding-token') }}"
+{%     endif %}
   cvvrf: {{ mgmt_interface_vrf }}
   smashexcludes: "{{ terminattr_smashexcludes }}"
   ingestexclude: "{{ terminattr_ingestexclude }}"
