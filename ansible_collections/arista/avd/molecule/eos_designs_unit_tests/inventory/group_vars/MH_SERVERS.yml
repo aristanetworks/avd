@@ -1,0 +1,42 @@
+---
+port_profiles:
+  Tenant_X:
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+
+  Tenant_X_LT:
+    mode: access
+    vlans: "310"
+    link_tracking:
+      enabled: true
+      name: ES1-LAG-router
+
+servers:
+  # Connected to MH_LEAF1
+  server01_ES1:
+    rack: RackA
+    adapters:
+      - endpoint_ports: [ Eth2, Eth3 ]
+        switch_ports: [ Ethernet10, Ethernet10 ]
+        switches: [ MHGRP1_LEAF1, MHGRP1_LEAF2 ]
+        profile: Tenant_X
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: 0001:1010:1010
+
+routers:
+  # Connected to MH_LEAF2
+  ROUTER01:
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ Eth0 ]
+        switch_ports: [ Ethernet12 ]
+        switches: [ MHGRP2_LEAF1 ]
+        profile: Tenant_X_LT
+        port_channel:
+          description: PortChanne1
+          mode: active
+          short_esi: 0001:1010:1011
