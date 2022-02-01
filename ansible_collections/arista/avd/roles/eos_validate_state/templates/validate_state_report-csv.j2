@@ -180,13 +180,13 @@ test_id,node,test_category,test_description,test,result,failure_reason
 
 {%     endif %}
 {% endfor %}
-{# Routing table check: loopback1 Results #}
+{# Routing table check: VTEP Results #}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
-{%     if hostvars[node].routing_table_loopback1_results is defined and hostvars[node].routing_table_loopback1_results.results is defined %}
-{%         for result in hostvars[node].routing_table_loopback1_results.results %}
+{%     if hostvars[node].routing_table_vtep_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].routing_table_vtep_results.results %}
 {%             if result.skipped is not defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-{{ test_id.value }},{{ node }},Routing Table,Remote Lo1 address,{{ result.loopback1_reachability_test.loopback1_address }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
+{{ test_id.value }},{{ node }},Routing Table,Remote VTEP address,{{ result.vtep_reachability_test.vtep_ip }},{% if result.failed == false %}PASS{% else %}FAIL,{{ result.msg }}{% endif %}
 
 {%             endif %}
 {%         endfor %}

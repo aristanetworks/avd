@@ -516,6 +516,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encrypted_key >
+      key_type: < 0 | 7 | 8a | default -> 7 >
       single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encrypted_key >
@@ -2815,9 +2816,9 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
+          networks:
+            < prefix_address >:
+              route_map: < route_map_name >
       # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
       eos_cli: |
         < multiline eos cli >
