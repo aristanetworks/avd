@@ -2804,6 +2804,7 @@ router_bgp:
           next_hop_self: < true | false >
           timers: < keepalive_hold_timer_values >
           send_community: < standard | extended | large | all >
+          shutdown: < true | false >
       redistribute_routes:
         < route_type >:
           route_map: < route_map_name >
