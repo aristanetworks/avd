@@ -1236,6 +1236,7 @@ port_channel_interfaces:
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
+    spanning_tree_guard: < loop | root | disabled >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:

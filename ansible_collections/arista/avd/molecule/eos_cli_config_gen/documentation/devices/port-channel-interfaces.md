@@ -303,6 +303,7 @@ interface Port-Channel8.101
 !
 interface Port-Channel9
    no switchport
+   spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
 !
@@ -329,6 +330,7 @@ interface Port-Channel15
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 15
+   spanning-tree guard loop
    link tracking group EVPN_MH_ES2 upstream
 !
 interface Port-Channel16
@@ -337,6 +339,7 @@ interface Port-Channel16
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    mlag 16
+   spanning-tree guard none
 !
 interface Port-Channel17
    description PBR Description

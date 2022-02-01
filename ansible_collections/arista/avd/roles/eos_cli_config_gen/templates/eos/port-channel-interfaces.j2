@@ -147,6 +147,13 @@ interface {{ port_channel_interface }}
 {%     elif port_channel_interfaces[port_channel_interface].spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].spanning_tree_guard is arista.avd.defined %}
+{%         if port_channel_interfaces[port_channel_interface].spanning_tree_guard == 'disabled' %}
+   spanning-tree guard none
+{%         else %}
+   spanning-tree guard {{ port_channel_interfaces[port_channel_interface].spanning_tree_guard }}
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].vrf is arista.avd.defined %}
    vrf {{ port_channel_interfaces[port_channel_interface].vrf }}
 {%     endif %}

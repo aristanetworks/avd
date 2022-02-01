@@ -32,12 +32,14 @@ port_channel_interfaces:
         direction: upstream
     mode: trunk
     mlag: 15
+    spanning_tree_guard: loop
 
   Port-Channel16:
     description: DC1_L2LEAF4_Po1
     vlans: 110,201
     mode: trunk
     mlag: 16
+    spanning_tree_guard: disabled
 
   Port-Channel3:
     description: MLAG_PEER_DC1-LEAF1B_Po3
@@ -116,6 +118,7 @@ port_channel_interfaces:
       interval: 500
       min_rx: 500
       multiplier: 5
+    spanning_tree_guard: root
 
   Port-Channel20:
     description: Po_in_mode_access_accepting_tagged_LACP_frames
