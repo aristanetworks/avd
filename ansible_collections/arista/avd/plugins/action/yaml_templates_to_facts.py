@@ -155,6 +155,10 @@ class ActionModule(ActionBase):
                 debug_item['timestamps']['done'] = datetime.now()
                 avd_yaml_templates_to_facts_debug.append(debug_item)
 
+        # If 'dest' is not set, hardcode 'changed' to true, since we don't know if something changed and later tasks may depend on this.
+        else:
+            result['changed'] = True
+
         if debug:
             output['avd_yaml_templates_to_facts_debug'] = avd_yaml_templates_to_facts_debug
 
