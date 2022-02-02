@@ -275,20 +275,11 @@ mgmt_gateway: <IP of default gateway>
 name_servers:
   - <IP of name server #1>
   - <IP of name server #2>
-
-# NTP Servers IP or DNS name, first NTP server will be preferred, and sourced from Management VRF
-ntp_servers:
-  - 0.<local country>.pool.ntp.org
-  - 1.<local country>.pool.ntp.org
 ```
 
 Below is a subset of the DC1_FABRIC file:
 
 ```yaml
-# Leaf switch groups
-# A maximum of two nodes can form a leaf group
-# When two nodes are in a leaf group this will automatically form mlag pair
-
 l3leaf:
   defaults:
     # virtual router mac for VNIs assigned to Leaf switches
