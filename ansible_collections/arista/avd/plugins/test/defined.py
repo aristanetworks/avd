@@ -57,7 +57,7 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
         Value to test from ansible
     test_value : any, optional
         Value to test in addition of defined and not none, by default None
-    var_type : ['float', 'int', 'str', 'list', 'dict', 'tuple'], optional
+    var_type : ['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool'], optional
         Type or Class to test for
     fail_action : ['warning', 'error'], optional
         Optional action if test fails to emit a Warning or Error
@@ -95,7 +95,7 @@ def defined(value, test_value=None, var_type=None, fail_action=None, var_name=No
             else:
                 raise AnsibleError(f"A variable was set to {value} but we expected {test_value}!")
         return False
-    elif str(var_type).lower() in ['float', 'int', 'str', 'list', 'dict', 'tuple'] and str(var_type).lower() != type(value).__name__:
+    elif str(var_type).lower() in ['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool'] and str(var_type).lower() != type(value).__name__:
         # Invalid class - return false
         if str(fail_action).lower() == 'warning':
             if var_name is not None:

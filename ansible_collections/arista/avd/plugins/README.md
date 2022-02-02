@@ -186,7 +186,7 @@ Syntax:
 
 ```jinja
 {% <value> is arista.avd.defined(test_value=<test_value>,
-                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple'],
+                                 var_type=['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool'],
                                  fail_action=['warning','error'],
                                  var_name=<string representing name of value>) %}
 ```
