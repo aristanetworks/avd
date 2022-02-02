@@ -429,8 +429,8 @@ every time you execute the playbooks.
 
 Below you will find two examples of documentation automatically created by Ansible AVD:
 
-- [5 stage CLOS fabric across two Data Centers](../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
-- [A single leaf inside the fabric above](../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
+- [5 stage CLOS fabric across two Data Centers](../../molecule/eos_designs-twodc-5stage-clos/documentation/fabric/TWODC_5STAGE_CLOS-documentation.md)
+- [A single leaf inside the fabric above](../../molecule/eos_designs-twodc-5stage-clos/documentation/devices/DC1-POD1-L2LEAF1A.md)
 
 ## How do I use AVD?
 
