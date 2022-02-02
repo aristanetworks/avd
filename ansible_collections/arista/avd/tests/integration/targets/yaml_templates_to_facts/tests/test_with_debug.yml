@@ -26,4 +26,3 @@
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.strip_empty_keys is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.combine_data is defined
       - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.done is defined
-      - result.ansible_facts.avd_yaml_templates_to_facts_debug[-1].timestamps.run_template is defined
