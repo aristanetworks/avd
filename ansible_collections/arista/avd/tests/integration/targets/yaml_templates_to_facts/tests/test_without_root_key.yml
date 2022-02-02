@@ -11,8 +11,7 @@
 - assert:
     that:
       - result is success
-      - result.changed == false
-      - result.ansible_facts is defined
+      - result.changed == true
       - result.ansible_facts is defined
       - result.ansible_facts.clock is defined
       - result.ansible_facts.clock.timezone is defined

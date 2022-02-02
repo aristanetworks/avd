@@ -1,0 +1,21 @@
+- name: Test with template_output false
+  ignore_errors: no
+  register: result
+  yaml_templates_to_facts:
+    template_output: false
+    templates:
+      - template: "templates/inline_jinja.j2"
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.key_1 is defined
+      - result.ansible_facts.key_1 == "value_1"
+      - result.ansible_facts.key_2 is defined
+      - result.ansible_facts.key_2[0] == '{'
+      - result.ansible_facts.key_2[1] == '{'
+      - result.ansible_facts.key_2[2:9] == ' key_1 '
+      - result.ansible_facts.key_2[9] == '}'
+      - result.ansible_facts.key_2[10] == '}'
