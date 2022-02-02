@@ -229,6 +229,7 @@ interface Ethernet3
    mtu 1500
    no switchport
    no priority-flow-control
+   spanning-tree guard root
    ip address 172.31.128.1/31
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
@@ -243,6 +244,7 @@ interface Ethernet4
    mtu 9100
    switchport
    priority-flow-control on
+   spanning-tree guard none
    ipv6 enable
    ipv6 address 2020::2020/64
    ipv6 address FE80:FEA::AB65/64 link-local
@@ -256,6 +258,7 @@ interface Ethernet5
    no shutdown
    mtu 9100
    no switchport
+   spanning-tree guard loop
    ip ospf network point-to-point
    ip ospf area 100
    ip ospf cost 99

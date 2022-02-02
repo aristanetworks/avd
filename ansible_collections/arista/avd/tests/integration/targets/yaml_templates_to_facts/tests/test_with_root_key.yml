@@ -12,7 +12,7 @@
 - assert:
     that:
       - result is success
-      - result.changed == false
+      - result.changed == true
       - result.ansible_facts is defined
       - result.ansible_facts.structured_config is defined
       - result.ansible_facts.structured_config.clock is defined

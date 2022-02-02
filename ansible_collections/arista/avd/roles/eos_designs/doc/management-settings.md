@@ -43,7 +43,10 @@ cvp_instance_ips:
   - < IPv4 address >
   - < IPv4 address >
   - < CV as a Service hostname >
+# cvp_ingestauth_key is required for on-prem CVP
 cvp_ingestauth_key: < CloudVision Ingest Authentication key >
+# cvp_token_file is only applicable to CV as a Service
+cvp_token_file: < 'path_to_token_file_on_switch' | default -> '/tmp/cv-onboarding-token' >
 terminattr_ingestgrpcurl_port: < port_number | default -> 9910 >
 terminattr_smashexcludes: "< smash excludes | default -> ale,flexCounter,hardware,kni,pulse,strata >"
 terminattr_ingestexclude: "< ingest excludes | default -> /Sysdb/cell/1/agent,/Sysdb/cell/2/agent >"

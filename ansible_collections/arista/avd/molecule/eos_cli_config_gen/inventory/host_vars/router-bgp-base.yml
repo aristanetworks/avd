@@ -58,6 +58,9 @@ router_bgp:
       2001:db8::1:
         prefix_list_in: PL-FOO-v6-IN
         prefix_list_out: PL-FOO-v6-OUT
+    redistribute_routes:
+      static:
+        route_map: RM-IPV6-STATIC-TO-BGP
   neighbors:
     192.0.3.1:
       remote_as: 65432

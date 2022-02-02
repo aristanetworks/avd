@@ -6,6 +6,7 @@
 - [Authentication](#authentication)
 - [Management Security](#management-security)
   - [Management Security Summary](#management-security-summary)
+  - [Management Security SSL Profiles](#management-security-ssl-profiles)
   - [Management Security Configuration](#management-security-configuration)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -58,12 +59,15 @@ interface Management1
 
 ## Management Security Summary
 
-Management Security entropy source is **hardware**
+| Settings | Value |
+| -------- | ----- |
+| Entropy source | hardware |
+| Common password encryption key | True |
 
-Management Security password encryption is common.
+## Management Security SSL Profiles
 
 | SSL Profile Name | TLS protocol accepted | Certificate filename | Key filename |
-| ------------ | --------------------- | -------------------- | ------------ |
+| ---------------- | --------------------- | -------------------- | ------------ |
 | SSL_PROFILE | 1.1 1.2 | SSL_CERT | SSL_KEY |
 
 ## Management Security Configuration

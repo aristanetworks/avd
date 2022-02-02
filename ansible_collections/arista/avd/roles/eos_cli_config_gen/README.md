@@ -516,6 +516,7 @@ tacacs_servers:
     - host: < host1_ip_address >
       vrf: < vrf_name >
       key: < encrypted_key >
+      key_type: < 0 | 7 | 8a | default -> 7 >
       single_connection: < true | false >
     - host: < host2_ip_address >
       key: < encrypted_key >
@@ -1013,6 +1014,7 @@ ethernet_interfaces:
       cos: < cos-value >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
+    spanning_tree_guard: < loop | root | disabled >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -1234,6 +1236,7 @@ port_channel_interfaces:
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
     spanning_tree_bpdufilter: < "enabled" | true | "disabled" >
     spanning_tree_bpduguard: < "enabled" | true | "disabled" >
+    spanning_tree_guard: < loop | root | disabled >
     spanning_tree_portfast: < edge | network >
     vmtracer: < true | false >
     ptp:
@@ -1689,6 +1692,7 @@ management_security:
   password:
     minimum_length: < 1-32 >
     encryption_key_common: < true | false >
+    encryption_reversible: < aes-256-gcm >
   ssl_profiles:
     - name: <ssl_profile_1>
       tls_versions: < list of allowed tls versions as string >
@@ -2814,9 +2818,9 @@ router_bgp:
           neighbors:
             < neighbor_ip_address >:
               activate: < true | false >
-        networks:
-          < prefix_address >:
-            route_map: < route_map_name >
+          networks:
+            < prefix_address >:
+              route_map: < route_map_name >
       # EOS CLI rendered directly on the Router BGP, VRF definition in the final EOS configuration
       eos_cli: |
         < multiline eos cli >
