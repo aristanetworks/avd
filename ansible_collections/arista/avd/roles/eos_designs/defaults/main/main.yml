@@ -149,3 +149,5 @@ custom_structured_configuration_list_merge: 'replace'
 node_type_keys: "{{ default_node_type_keys[design.type] }}"
 
 templates: "{{ default_templates[design.type] }}"
+
+avd_structured_config_file_format: "yml"

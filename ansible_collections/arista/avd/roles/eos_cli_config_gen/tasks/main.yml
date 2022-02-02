@@ -13,19 +13,13 @@
   delegate_to: localhost
   run_once: true
 
-- name: Check if structure configuration file exists
-  tags: [build, provision]
-  stat:
-    path: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
-  register: stat_result
-  delegate_to: localhost
-  when: structured_config is not defined
-
 - name: Include device intended structure configuration variables
   tags: [build, provision]
-  include_vars: "{{ structured_dir }}/{{ inventory_hostname }}.yml"
+  include_vars: "{{ filename }}"
   delegate_to: localhost
-  when: structured_config is not defined and stat_result.stat.exists
+  when: structured_config is not defined and lookup('first_found', filename, skip=True)
+  vars:
+    filename: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
 
 - name: Generate eos intended configuration
   tags: [build, provision]
