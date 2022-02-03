@@ -225,7 +225,7 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 ```eos
 !
-monitor session MyMonitoringSession_server18 source Ethernet25 both
+monitor session MyMonitoringSession_server18 source Ethernet25
 monitor session MyMonitoringSession_server18 destination Ethernet26
 ```
 

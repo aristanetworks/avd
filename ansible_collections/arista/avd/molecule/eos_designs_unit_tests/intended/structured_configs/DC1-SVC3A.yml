@@ -1431,6 +1431,5 @@ monitor_sessions:
 - name: MyMonitoringSession_server18
   sources:
   - name: Ethernet25
-    direction: both
   destinations:
   - Ethernet26
