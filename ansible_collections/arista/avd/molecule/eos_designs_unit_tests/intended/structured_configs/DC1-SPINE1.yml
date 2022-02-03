@@ -69,15 +69,15 @@ router_bgp:
     10.10.101.1:
       peer_group: UNDERLAY-PEERS
       remote_as: '65151'
-      description: MHGRP1_LEAF1_Ethernet1
+      description: MH-LEAF1A_Ethernet1
     10.10.101.3:
       peer_group: UNDERLAY-PEERS
       remote_as: '65152'
-      description: MHGRP1_LEAF2_Ethernet1
+      description: MH-LEAF1B_Ethernet1
     10.10.101.5:
       peer_group: UNDERLAY-PEERS
       remote_as: '65153'
-      description: MHGRP2_LEAF1_Ethernet1
+      description: MH-LEAF2A_Ethernet1
     192.168.255.14:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-BL1A
@@ -116,15 +116,15 @@ router_bgp:
       remote_as: '65103'
     192.168.255.33:
       peer_group: EVPN-OVERLAY-PEERS
-      description: MHGRP1_LEAF1
+      description: MH-LEAF1A
       remote_as: '65151'
     192.168.255.34:
       peer_group: EVPN-OVERLAY-PEERS
-      description: MHGRP1_LEAF2
+      description: MH-LEAF1B
       remote_as: '65152'
     192.168.255.35:
       peer_group: EVPN-OVERLAY-PEERS
-      description: MHGRP2_LEAF1
+      description: MH-LEAF2A
       remote_as: '65153'
   address_family_evpn:
     peer_groups:
@@ -279,28 +279,28 @@ ethernet_interfaces:
     shutdown: false
     ip_address: 172.31.255.128/31
   Ethernet10:
-    peer: MHGRP1_LEAF1
+    peer: MH-LEAF1A
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_MHGRP1_LEAF1_Ethernet1
+    description: P2P_LINK_TO_MH-LEAF1A_Ethernet1
     mtu: 1500
     type: routed
     shutdown: false
     ip_address: 10.10.101.0/31
   Ethernet11:
-    peer: MHGRP1_LEAF2
+    peer: MH-LEAF1B
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_MHGRP1_LEAF2_Ethernet1
+    description: P2P_LINK_TO_MH-LEAF1B_Ethernet1
     mtu: 1500
     type: routed
     shutdown: false
     ip_address: 10.10.101.2/31
   Ethernet12:
-    peer: MHGRP2_LEAF1
+    peer: MH-LEAF2A
     peer_interface: Ethernet1
     peer_type: l3leaf
-    description: P2P_LINK_TO_MHGRP2_LEAF1_Ethernet1
+    description: P2P_LINK_TO_MH-LEAF2A_Ethernet1
     mtu: 1500
     type: routed
     shutdown: false

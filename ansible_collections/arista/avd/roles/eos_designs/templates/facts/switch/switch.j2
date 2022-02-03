@@ -398,7 +398,6 @@ switch:
   vlans: {{ leaf.vlans | unique }}
 {% endif %}
 
-{# EVPN multihoming configuration on VTEPs #}
 {# switch.link_tracking #}
 {% if switch_data.combined.link_tracking.enabled is arista.avd.defined(true) %}
 {%     if switch_data.combined.link_tracking.groups is arista.avd.defined %}
@@ -407,7 +406,7 @@ switch:
 {%         for lt_group in switch_data.combined.link_tracking.groups %}
 {%             if lt_group.name is arista.avd.defined %}
     - name: {{ lt_group.name }}
-      recovery_delay: {{ lt_group.recovery_delay | arista.avd.default(500) }}
+      recovery_delay: {{ lt_group.recovery_delay | arista.avd.default(switch_platform_settings.reload_delay.mlag, 300) }}
 {%                 if lt_group.links_minimum is arista.avd.defined %}
       links_minimum: {{ lt_group.links_minimum }}
 {%                 endif %}
@@ -416,18 +415,16 @@ switch:
 {%     else %}
   link_tracking_groups:
     - name: LT_GROUP1
-      recovery_delay: 500
+      recovery_delay: {{ switch_platform_settings.reload_delay.mlag | arista.avd.default(300) }}
 {%     endif %}
 {% endif %}
 
-{% if switch.vtep is arista.avd.defined(true) %}
-{#     switch.lacp_port_id #}
-{%     if switch_data.combined.lacp_port_id_range.enabled is arista.avd.defined(true) %}
-{%         set group_length = switch_data.node_group.nodes | arista.avd.default([inventory_hostname]) | length %}
-{%         set port_range = switch_data.combined.lacp_port_id_range.size | arista.avd.default(128) %}
-{%         set port_offset = switch_data.combined.lacp_port_id_range.offset | arista.avd.default(0) %}
+{# switch.lacp_port_id #}
+{% if switch_data.combined.lacp_port_id_range.enabled is arista.avd.defined(true) %}
+{%     set group_length = switch_data.node_group.nodes | arista.avd.default([inventory_hostname]) | length %}
+{%     set port_range = switch_data.combined.lacp_port_id_range.size | arista.avd.default(128) %}
+{%     set port_offset = switch_data.combined.lacp_port_id_range.offset | arista.avd.default(0) %}
   lacp_port_id:
     begin: {{ 1 + (((switch_id - 1) % group_length) * port_range) + port_offset }}
     end: {{ (((switch_id - 1) % group_length + 1) * port_range) + port_offset }}
-{%     endif %}
 {% endif %}

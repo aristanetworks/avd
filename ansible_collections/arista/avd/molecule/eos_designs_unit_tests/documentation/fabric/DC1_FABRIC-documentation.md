@@ -41,9 +41,10 @@
 | DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
-| DC1_FABRIC | l3leaf | MHGRP1_LEAF1 | 192.168.201.104/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | MHGRP1_LEAF2 | 192.168.201.105/24 | vEOS-LAB | Provisioned |
-| DC1_FABRIC | l3leaf | MHGRP2_LEAF1 | 192.168.201.106/24 | vEOS-LAB | Provisioned |
+| DC1_FABRIC | l2leaf | MH-L2LEAF1A | 192.168.201.201/24 | vEOS-LAB | Provisioned |
+| DC1_FABRIC | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
+| DC1_FABRIC | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
+| DC1_FABRIC | l3leaf | MH-LEAF2A | 192.168.201.106/24 | vEOS-LAB | Provisioned |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -99,9 +100,9 @@
 | l3leaf | DC1-LEAF2B | Ethernet4 | spine | DC1-SPINE4 | Ethernet3 |
 | spine | DC1-SPINE1 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet1 |
 | spine | DC1-SPINE1 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet10 | l3leaf | MHGRP1_LEAF1 | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet11 | l3leaf | MHGRP1_LEAF2 | Ethernet1 |
-| spine | DC1-SPINE1 | Ethernet12 | l3leaf | MHGRP2_LEAF1 | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet10 | l3leaf | MH-LEAF1A | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet11 | l3leaf | MH-LEAF1B | Ethernet1 |
+| spine | DC1-SPINE1 | Ethernet12 | l3leaf | MH-LEAF2A | Ethernet1 |
 | spine | DC1-SPINE2 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet2 |
 | spine | DC1-SPINE2 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet2 |
 | spine | DC1-SPINE3 | Ethernet4 | l3leaf | DC1-SVC3A | Ethernet3 |
@@ -110,6 +111,7 @@
 | spine | DC1-SPINE4 | Ethernet5 | l3leaf | DC1-SVC3B | Ethernet4 |
 | l3leaf | DC1-SVC3A | Ethernet5 | mlag_peer | DC1-SVC3B | Ethernet5 |
 | l3leaf | DC1-SVC3A | Ethernet6 | mlag_peer | DC1-SVC3B | Ethernet6 |
+| l2leaf | MH-L2LEAF1A | Ethernet1 | l3leaf | MH-LEAF2A | Ethernet2 |
 
 # Fabric IP Allocation
 
@@ -154,9 +156,9 @@
 | DC1-LEAF2B | Ethernet4 | 172.31.255.39/31 | DC1-SPINE4 | Ethernet3 | 172.31.255.38/31 |
 | DC1-SPINE1 | Ethernet4 | 172.31.255.48/31 | DC1-SVC3A | Ethernet1 | 172.31.255.49/31 |
 | DC1-SPINE1 | Ethernet5 | 172.31.255.64/31 | DC1-SVC3B | Ethernet1 | 172.31.255.65/31 |
-| DC1-SPINE1 | Ethernet10 | 10.10.101.0/31 | MHGRP1_LEAF1 | Ethernet1 | 10.10.101.1/31 |
-| DC1-SPINE1 | Ethernet11 | 10.10.101.2/31 | MHGRP1_LEAF2 | Ethernet1 | 10.10.101.3/31 |
-| DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MHGRP2_LEAF1 | Ethernet1 | 10.10.101.5/31 |
+| DC1-SPINE1 | Ethernet10 | 10.10.101.0/31 | MH-LEAF1A | Ethernet1 | 10.10.101.1/31 |
+| DC1-SPINE1 | Ethernet11 | 10.10.101.2/31 | MH-LEAF1B | Ethernet1 | 10.10.101.3/31 |
+| DC1-SPINE1 | Ethernet12 | 10.10.101.4/31 | MH-LEAF2A | Ethernet1 | 10.10.101.5/31 |
 | DC1-SPINE2 | Ethernet4 | 172.31.255.50/31 | DC1-SVC3A | Ethernet2 | 172.31.255.51/31 |
 | DC1-SPINE2 | Ethernet5 | 172.31.255.66/31 | DC1-SVC3B | Ethernet2 | 172.31.255.67/31 |
 | DC1-SPINE3 | Ethernet4 | 172.31.255.52/31 | DC1-SVC3A | Ethernet3 | 172.31.255.53/31 |
@@ -189,9 +191,9 @@
 | DC1_FABRIC | DC1-SVC3B | 192.168.255.13/32 |
 | DC1_FABRIC | evpn_services_l2_only_false | 192.168.255.109/32 |
 | DC1_FABRIC | evpn_services_l2_only_true | 192.168.255.109/32 |
-| DC1_FABRIC | MHGRP1_LEAF1 | 192.168.255.33/32 |
-| DC1_FABRIC | MHGRP1_LEAF2 | 192.168.255.34/32 |
-| DC1_FABRIC | MHGRP2_LEAF1 | 192.168.255.35/32 |
+| DC1_FABRIC | MH-LEAF1A | 192.168.255.33/32 |
+| DC1_FABRIC | MH-LEAF1B | 192.168.255.34/32 |
+| DC1_FABRIC | MH-LEAF2A | 192.168.255.35/32 |
 
 ## VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
@@ -214,6 +216,6 @@
 | DC1_FABRIC | DC1-SVC3B | 192.168.254.12/32 |
 | DC1_FABRIC | evpn_services_l2_only_false | 192.168.254.109/32 |
 | DC1_FABRIC | evpn_services_l2_only_true | 192.168.254.109/32 |
-| DC1_FABRIC | MHGRP1_LEAF1 | 192.168.254.33/32 |
-| DC1_FABRIC | MHGRP1_LEAF2 | 192.168.254.34/32 |
-| DC1_FABRIC | MHGRP2_LEAF1 | 192.168.254.35/32 |
+| DC1_FABRIC | MH-LEAF1A | 192.168.254.33/32 |
+| DC1_FABRIC | MH-LEAF1B | 192.168.254.34/32 |
+| DC1_FABRIC | MH-LEAF2A | 192.168.254.35/32 |

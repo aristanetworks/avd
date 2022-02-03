@@ -1,6 +1,6 @@
 router_bgp:
-  as: '65153'
-  router_id: 192.168.255.35
+  as: '65152'
+  router_id: 192.168.255.34
   bgp_defaults:
   - maximum-paths 4 ecmp 4
   peer_groups:
@@ -27,10 +27,10 @@ router_bgp:
     connected:
       route_map: RM-CONN-2-BGP
   neighbors:
-    10.10.101.4:
+    10.10.101.2:
       peer_group: UNDERLAY-PEERS
       remote_as: '65001'
-      description: DC1-SPINE1_Ethernet12
+      description: DC1-SPINE1_Ethernet11
     192.168.255.1:
       peer_group: EVPN-OVERLAY-PEERS
       description: DC1-SPINE1
@@ -41,8 +41,8 @@ router_bgp:
         activate: true
   vrfs:
     Tenant_X_OP_Zone:
-      router_id: 192.168.255.35
-      rd: '192.168.255.35:'
+      router_id: 192.168.255.34
+      rd: '192.168.255.34:'
       route_targets:
         import:
           evpn:
@@ -54,7 +54,7 @@ router_bgp:
       - connected
   vlan_aware_bundles:
     Tenant_X_OP_Zone:
-      rd: 192.168.255.35:0
+      rd: 192.168.255.34:0
       route_targets:
         both:
         - 0:0
@@ -90,7 +90,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC MHGRP2_LEAF1
+  location: DC1_FABRIC MH-LEAF1B
 local_users:
   admin:
     privilege: 15
@@ -112,7 +112,7 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: MGMT
-    ip_address: 192.168.201.106/24
+    ip_address: 192.168.201.105/24
     gateway: 192.168.200.5
     type: oob
 management_api_http:
@@ -120,52 +120,52 @@ management_api_http:
     MGMT: {}
   enable_https: true
 link_tracking_groups:
-- name: ES1-LAG-router
-  recovery_delay: 520
+- name: LT_GROUP1
+  recovery_delay: 300
 lacp:
   port_id:
     range:
-      begin: 257
-      end: 768
+      begin: 129
+      end: 256
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
-    peer_interface: Ethernet12
+    peer_interface: Ethernet11
     peer_type: spine
-    description: P2P_LINK_TO_DC1-SPINE1_Ethernet12
+    description: P2P_LINK_TO_DC1-SPINE1_Ethernet11
     mtu: 1500
     type: routed
     shutdown: false
-    ip_address: 10.10.101.5/31
+    ip_address: 10.10.101.3/31
     link_tracking_groups:
-    - name: ES1-LAG-router
+    - name: LT_GROUP1
       direction: upstream
-  Ethernet12:
-    peer: ROUTER01
-    peer_interface: Eth0
-    peer_type: router
-    description: ROUTER01_Eth0
+  Ethernet10:
+    peer: server01_ES1
+    peer_interface: Eth2
+    peer_type: server
+    description: server01_ES1_Eth2
     type: switched
     shutdown: false
     mode: access
     vlans: 310
     channel_group:
-      id: 12
+      id: 10
       mode: active
 loopback_interfaces:
   Loopback0:
     description: EVPN_Overlay_Peering
     shutdown: false
-    ip_address: 192.168.255.35/32
+    ip_address: 192.168.255.34/32
   Loopback1:
     description: VTEP_VXLAN_Tunnel_Source
     shutdown: false
-    ip_address: 192.168.254.35/32
+    ip_address: 192.168.254.34/32
   Loopback100:
     description: Tenant_X_OP_Zone_VTEP_DIAGNOSTICS
     shutdown: false
     vrf: Tenant_X_OP_Zone
-    ip_address: 10.255.1.35/32
+    ip_address: 10.255.1.34/32
 prefix_lists:
   PL-LOOPBACKS-EVPN-OVERLAY:
     sequence_numbers:
@@ -203,10 +203,10 @@ vlan_interfaces:
     ip_address_virtual: 10.1.10.1/24
 virtual_source_nat_vrfs:
   Tenant_X_OP_Zone:
-    ip_address: 10.255.1.35
+    ip_address: 10.255.1.34
 vxlan_interface:
   Vxlan1:
-    description: MHGRP2_LEAF1_VTEP
+    description: MH-LEAF1B_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
@@ -216,12 +216,15 @@ vxlan_interface:
       vrfs:
         Tenant_X_OP_Zone: {}
 port_channel_interfaces:
-  Port-Channel12:
-    description: ROUTER01_PortChanne1
+  Port-Channel10:
+    description: server01_ES1_PortChanne1
     type: switched
     shutdown: false
     mode: access
     vlans: 310
+    esi: 0000:0000:0001:1010:1010
+    rt: 00:01:10:10:10:10
+    lacp_id: 0001.1010.1010
     link_tracking_groups:
-    - name: ES1-LAG-router
+    - name: LT_GROUP1
       direction: downstream

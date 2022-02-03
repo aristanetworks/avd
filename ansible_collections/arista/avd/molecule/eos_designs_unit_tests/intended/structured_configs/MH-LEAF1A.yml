@@ -90,7 +90,7 @@ name_server:
   - 8.8.8.8
 snmp_server:
   contact: example@example.com
-  location: DC1_FABRIC MHGRP1_LEAF1
+  location: DC1_FABRIC MH-LEAF1A
 local_users:
   admin:
     privilege: 15
@@ -121,7 +121,7 @@ management_api_http:
   enable_https: true
 link_tracking_groups:
 - name: LT_GROUP1
-  recovery_delay: 500
+  recovery_delay: 300
 lacp:
   port_id:
     range:
@@ -142,9 +142,9 @@ ethernet_interfaces:
       direction: upstream
   Ethernet10:
     peer: server01_ES1
-    peer_interface: Eth2
+    peer_interface: Eth1
     peer_type: server
-    description: server01_ES1_Eth2
+    description: server01_ES1_Eth1
     type: switched
     shutdown: false
     mode: access
@@ -206,7 +206,7 @@ virtual_source_nat_vrfs:
     ip_address: 10.255.1.33
 vxlan_interface:
   Vxlan1:
-    description: MHGRP1_LEAF1_VTEP
+    description: MH-LEAF1A_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

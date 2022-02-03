@@ -62,6 +62,9 @@ ethernet_interfaces:
 {%             if p2p_uplinks_qos_profile is arista.avd.defined %}
     service_profile: {{ p2p_uplinks_qos_profile }}
 {%             endif %}
+{%             if link.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups: {{ link.link_tracking_groups }}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endfor %}

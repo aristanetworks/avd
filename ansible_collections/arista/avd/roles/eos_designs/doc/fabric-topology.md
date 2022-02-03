@@ -151,6 +151,28 @@ defaults <- node_group <- node_group.node <- node
     # Rack that the switch is located in (only used in snmp_settings location) | Optional
     rack: < rack_name >
 
+    # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
+    # Useful in EVPN multhoming designs.
+    link_tracking:
+      enabled: < true | false | default -> false >
+      # Link Tracking Groups | Optional
+      # By default a single group named "LT_GROUP1" is defined with default values. Any groups defined under "groups" will replace the default.
+      groups:
+        - name: < tracking_group_name >
+          recovery_delay: < 0-3600 | default -> platform_settings_mlag_reload_delay -> 300 >
+          # Optional
+          links_minimum: < 1-100000 >
+
+    # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
+    # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
+    lacp_port_id_range:
+      enabled: < true | false | default -> false >
+      # Recommended size > = number of ports in the switch.
+      size: < 1-65535 | default -> 128 >
+      # Offset is used to avoid overlapping port-id ranges of different switches | Optional
+      # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
+      offset: < offset_for_lacp_port_id_range | default -> 0 >
+
     # EOS CLI rendered directly on the root level of the final EOS configuration | Optional
     raw_eos_cli: |
       < multiline eos cli >
@@ -343,32 +365,4 @@ defaults <- node_group <- node_group.node <- node
 
     # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     inband_management_vlan: < vlan-id | Default -> 4092 >
-```
-
-### EVPN Multihoming
-
-```yaml
-< node_type_key >:
-
-  defaults:
-    # This configures the Link Tracking Group on a switch as well as adds the p2p-uplinks of the switch as the upstream interfaces.
-    link_tracking:
-      enabled: < true | false | default -> false >
-      # Link Tracking Groups | Optional
-      # By default a single group named "LT_GROUP1" is defined with default values. Any groups defined under "groups" will replace the default.
-      groups:
-        - name: < tracking_group_name >
-          recovery_delay: < 0-3600 | default -> 500 >
-          # Optional
-          links_minimum: < 1-100000 >
-    # Unique LACP port-id ranges are recommended for EVPN Multihoming designs.
-    # This will generate the "lacp port-id range", "begin" and "end" values based on node "id" and the number of nodes in the "node_group".
-    # It is recommended to use this knob if there are any downlink lag interfaces on a VTEP in a Mutihomed network.
-    lacp_port_id_range:
-      enabled: < true | false | default -> false >
-      # Recommended size > = number of ports in the switch.
-      size: < 1-65535 | default -> 128 >
-      # Offset is used to avoid overlapping port-id ranges of different switches | Optional
-      # Useful when a "connected-endpoint" is connected to switches in different "node_groups".
-      offset: < offset_for_lacp_port_id_range | default -> 0 >
 ```

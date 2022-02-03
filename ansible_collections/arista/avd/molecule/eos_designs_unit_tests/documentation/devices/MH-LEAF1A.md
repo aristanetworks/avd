@@ -1,4 +1,4 @@
-# MHGRP2_LEAF1
+# MH-LEAF1A
 # Table of Contents
 
 - [Management](#management)
@@ -60,7 +60,7 @@
 
 | Management Interface | description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.201.106/24 | 192.168.200.5 |
+| Management1 | oob_management | oob | MGMT | 192.168.201.104/24 | 192.168.200.5 |
 
 #### IPv6
 
@@ -76,7 +76,7 @@ interface Management1
    description oob_management
    no shutdown
    vrf MGMT
-   ip address 192.168.201.106/24
+   ip address 192.168.201.104/24
 ```
 
 ## Name Servers
@@ -190,14 +190,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC MHGRP2_LEAF1 | All | Disabled |
+| example@example.com | DC1_FABRIC MH-LEAF1A | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC MHGRP2_LEAF1
+snmp-server location DC1_FABRIC MH-LEAF1A
 ```
 
 ## Link Tracking
@@ -206,14 +206,14 @@ snmp-server location DC1_FABRIC MHGRP2_LEAF1
 
 | Group Name | Minimum Links | Recovery Delay |
 | ---------- | ------------- | -------------- |
-| ES1-LAG-router | - | 520 |
+| LT_GROUP1 | - | 300 |
 
 ### Link Tracking Groups Configuration
 
 ```eos
 !
-link tracking group ES1-LAG-router
-   recovery delay 520
+link tracking group LT_GROUP1
+   recovery delay 300
 ```
 
 # LACP
@@ -222,13 +222,13 @@ link tracking group ES1-LAG-router
 
 | Port-id range | Rate-limit default | System-priority |
 | ------------- | ------------------ | --------------- |
-| 257 - 768 | - | - |
+| 1 - 128 | - | - |
 
 ## LACP Device Configuration
 
 ```eos
 !
-lacp port-id range 257 768
+lacp port-id range 1 128
 ```
 
 # Internal VLAN Allocation Policy
@@ -272,7 +272,7 @@ vlan 310
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet12 | ROUTER01_Eth0 | *access | *310 | *- | *- | 12 |
+| Ethernet10 | server01_ES1_Eth1 | *access | *310 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
 
@@ -280,30 +280,30 @@ vlan 310
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
-| Ethernet1 | ES1-LAG-router | upstream |
+| Ethernet1 | LT_GROUP1 | upstream |
 
 #### IPv4
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet12 | routed | - | 10.10.101.5/31 | default | 1500 | false | - | - |
+| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet10 | routed | - | 10.10.101.1/31 | default | 1500 | false | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet12
+   description P2P_LINK_TO_DC1-SPINE1_Ethernet10
    no shutdown
    mtu 1500
    no switchport
-   ip address 10.10.101.5/31
-   link tracking group ES1-LAG-router upstream
+   ip address 10.10.101.1/31
+   link tracking group LT_GROUP1 upstream
 !
-interface Ethernet12
-   description ROUTER01_Eth0
+interface Ethernet10
+   description server01_ES1_Eth1
    no shutdown
-   channel-group 12 mode active
+   channel-group 10 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -314,24 +314,28 @@ interface Ethernet12
 
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel12 | ROUTER01_PortChanne1 | switched | access | 310 | - | - | - | - | - | - |
+| Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
 
 #### Link Tracking Groups
 
 | Interface | Group Name | Direction |
 | --------- | ---------- | --------- |
-| Port-Channel12 | ES1-LAG-router | downstream |
+| Port-Channel10 | LT_GROUP1 | downstream |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
-interface Port-Channel12
-   description ROUTER01_PortChanne1
+interface Port-Channel10
+   description server01_ES1_PortChanne1
    no shutdown
    switchport
    switchport access vlan 310
-   link tracking group ES1-LAG-router downstream
+   evpn ethernet-segment
+      identifier 0000:0000:0001:1010:1010
+      route-target import 00:01:10:10:10:10
+   lacp system-id 0001.1010.1010
+   link tracking group LT_GROUP1 downstream
 ```
 
 ## Loopback Interfaces
@@ -342,9 +346,9 @@ interface Port-Channel12
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.35/32 |
-| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.35/32 |
-| Loopback100 | Tenant_X_OP_Zone_VTEP_DIAGNOSTICS | Tenant_X_OP_Zone | 10.255.1.35/32 |
+| Loopback0 | EVPN_Overlay_Peering | default | 192.168.255.33/32 |
+| Loopback1 | VTEP_VXLAN_Tunnel_Source | default | 192.168.254.33/32 |
+| Loopback100 | Tenant_X_OP_Zone_VTEP_DIAGNOSTICS | Tenant_X_OP_Zone | 10.255.1.33/32 |
 
 #### IPv6
 
@@ -362,18 +366,18 @@ interface Port-Channel12
 interface Loopback0
    description EVPN_Overlay_Peering
    no shutdown
-   ip address 192.168.255.35/32
+   ip address 192.168.255.33/32
 !
 interface Loopback1
    description VTEP_VXLAN_Tunnel_Source
    no shutdown
-   ip address 192.168.254.35/32
+   ip address 192.168.254.33/32
 !
 interface Loopback100
    description Tenant_X_OP_Zone_VTEP_DIAGNOSTICS
    no shutdown
    vrf Tenant_X_OP_Zone
-   ip address 10.255.1.35/32
+   ip address 10.255.1.33/32
 ```
 
 ## VLAN Interfaces
@@ -427,7 +431,7 @@ interface Vlan310
 ```eos
 !
 interface Vxlan1
-   description MHGRP2_LEAF1_VTEP
+   description MH-LEAF1A_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 310 vni 11310
@@ -505,7 +509,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65153|  192.168.255.35 |
+| 65151|  192.168.255.33 |
 
 | BGP Tuning |
 | ---------- |
@@ -536,7 +540,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
 | -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
-| 10.10.101.4 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 10.10.101.0 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
 | 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
@@ -551,20 +555,20 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_X_OP_Zone | 192.168.255.35:0 | 0:0 | - | - | learned | 310 |
+| Tenant_X_OP_Zone | 192.168.255.33:0 | 0:0 | - | - | learned | 310 |
 
 ### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_X_OP_Zone | 192.168.255.35: | connected |
+| Tenant_X_OP_Zone | 192.168.255.33: | connected |
 
 ### Router BGP Device Configuration
 
 ```eos
 !
-router bgp 65153
-   router-id 192.168.255.35
+router bgp 65151
+   router-id 192.168.255.33
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -577,16 +581,16 @@ router bgp 65153
    neighbor UNDERLAY-PEERS password 7 AQQvKeimxJu+uGQ/yYvv9w==
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
-   neighbor 10.10.101.4 peer group UNDERLAY-PEERS
-   neighbor 10.10.101.4 remote-as 65001
-   neighbor 10.10.101.4 description DC1-SPINE1_Ethernet12
+   neighbor 10.10.101.0 peer group UNDERLAY-PEERS
+   neighbor 10.10.101.0 remote-as 65001
+   neighbor 10.10.101.0 description DC1-SPINE1_Ethernet10
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
    neighbor 192.168.255.1 description DC1-SPINE1
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_X_OP_Zone
-      rd 192.168.255.35:0
+      rd 192.168.255.33:0
       route-target both 0:0
       redistribute learned
       vlan 310
@@ -599,10 +603,10 @@ router bgp 65153
       neighbor UNDERLAY-PEERS activate
    !
    vrf Tenant_X_OP_Zone
-      rd 192.168.255.35:
+      rd 192.168.255.33:
       route-target import evpn None:None
       route-target export evpn None:None
-      router-id 192.168.255.35
+      router-id 192.168.255.33
       redistribute connected
 ```
 
@@ -704,13 +708,13 @@ vrf instance Tenant_X_OP_Zone
 
 | Source NAT VRF | Source NAT IP Address |
 | -------------- | --------------------- |
-| Tenant_X_OP_Zone | 10.255.1.35 |
+| Tenant_X_OP_Zone | 10.255.1.33 |
 
 ## Virtual Source NAT Configuration
 
 ```eos
 !
-ip address virtual source-nat vrf Tenant_X_OP_Zone address 10.255.1.35
+ip address virtual source-nat vrf Tenant_X_OP_Zone address 10.255.1.33
 ```
 
 # Quality Of Service

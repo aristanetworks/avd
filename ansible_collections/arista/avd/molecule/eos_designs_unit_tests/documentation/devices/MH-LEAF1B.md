@@ -1,4 +1,4 @@
-# MHGRP1_LEAF2
+# MH-LEAF1B
 # Table of Contents
 
 - [Management](#management)
@@ -190,14 +190,14 @@ daemon TerminAttr
 
 | Contact | Location | SNMP Traps | State |
 | ------- | -------- | ---------- | ----- |
-| example@example.com | DC1_FABRIC MHGRP1_LEAF2 | All | Disabled |
+| example@example.com | DC1_FABRIC MH-LEAF1B | All | Disabled |
 
 ### SNMP Device Configuration
 
 ```eos
 !
 snmp-server contact example@example.com
-snmp-server location DC1_FABRIC MHGRP1_LEAF2
+snmp-server location DC1_FABRIC MH-LEAF1B
 ```
 
 ## Link Tracking
@@ -206,14 +206,14 @@ snmp-server location DC1_FABRIC MHGRP1_LEAF2
 
 | Group Name | Minimum Links | Recovery Delay |
 | ---------- | ------------- | -------------- |
-| LT_GROUP1 | - | 500 |
+| LT_GROUP1 | - | 300 |
 
 ### Link Tracking Groups Configuration
 
 ```eos
 !
 link tracking group LT_GROUP1
-   recovery delay 500
+   recovery delay 300
 ```
 
 # LACP
@@ -272,7 +272,7 @@ vlan 310
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet10 | server01_ES1_Eth3 | *access | *310 | *- | *- | 10 |
+| Ethernet10 | server01_ES1_Eth2 | *access | *310 | *- | *- | 10 |
 
 *Inherited from Port-Channel Interface
 
@@ -301,7 +301,7 @@ interface Ethernet1
    link tracking group LT_GROUP1 upstream
 !
 interface Ethernet10
-   description server01_ES1_Eth3
+   description server01_ES1_Eth2
    no shutdown
    channel-group 10 mode active
 ```
@@ -431,7 +431,7 @@ interface Vlan310
 ```eos
 !
 interface Vxlan1
-   description MHGRP1_LEAF2_VTEP
+   description MH-LEAF1B_VTEP
    vxlan source-interface Loopback1
    vxlan udp-port 4789
    vxlan vlan 310 vni 11310
