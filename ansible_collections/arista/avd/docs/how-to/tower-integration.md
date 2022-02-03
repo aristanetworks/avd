@@ -99,7 +99,7 @@ $ curl -X PATCH 'http://admin:password@<IP-of-AWX-INSTANCE>/api/v2/settings/syst
 }
 ```
 
-### Provision virtual environment
+### Provision virtual-environment
 
 Before running playbook in a virtual-env, we have to install required libraries:
 

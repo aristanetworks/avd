@@ -185,10 +185,11 @@ defaults <- node_group <- node_group.node <- node
     uplink_interface_speed: < interface_speed | forced interface_speed | auto interface_speed >
 
   # When nodes are part of node group
-  < node-group-name >:
-    nodes:
-      # Uplink switches interfaces (list), interface located on uplink switch. | Required.
-      uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
+  node_groups:
+    < node-group-name >:
+      nodes:
+        # Uplink switches interfaces (list), interface located on uplink switch. | Required.
+        uplink_switch_interfaces: [ < ethernet_interface_1 >, < ethernet_interface_2 > ]
 
   # When nodes are not in node_group
   nodes:
