@@ -25,7 +25,7 @@ mlag_ibgp_peering_vrfs:
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rd_type:
-  admin_subfield: < "overlay_loopback" | "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> "overlay_loopback" >
+  admin_subfield: < "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
@@ -36,7 +36,7 @@ evpn_rd_type:
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
 evpn_rt_type:
-  admin_subfield: < "bgp_as" | "vni" | <0-65535> | <0-4294967295> | default -> "vni" >
+  admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <vni> >
 
 # Internal vlan allocation order and range | Required
 internal_vlan_order:
@@ -330,6 +330,7 @@ tenants:
             password: < encrypted password >
             send_community: < standard | extended | large | all >
             next_hop_self: < true | false >
+            timers: < keepalive_hold_timer_values >
             maximum_routes: < 0-4294967294 >
             default_originate:
               always: < true | false >
@@ -343,6 +344,8 @@ tenants:
             set_ipv6_next_hop: < IPv6_address >
             route_map_out: < route-map name >
             route_map_in: < route-map name >
+            prefix_list_in: < prefix_list_name >
+            prefix_list_out: < prefix_list_name >
             local_as: < local BGP ASN >
             weight: < 0-65535>
             bfd: < true | false >
