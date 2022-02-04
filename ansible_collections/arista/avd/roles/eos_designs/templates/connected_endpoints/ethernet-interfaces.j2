@@ -12,7 +12,7 @@ ethernet_interfaces:
 {%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
-{%             set endpoint_ports = adapter.endpoint_ports | arista.avd.default(adapter.server_ports) %}
+{%             set endpoint_ports = adapter_settings.endpoint_ports | arista.avd.default(adapter_settings.server_ports) %}
 {%             set peer_type = connected_endpoints_keys[endpoint_key].type %}
 {%             set peer = connected_endpoint %}
 {%             for adapter_switch in adapter.switches %}
