@@ -43,13 +43,13 @@ daemon TerminAttr
 {%     if daemon_terminattr.cvsourceip is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvsourceip=" ~ daemon_terminattr.cvsourceip %}
 {%     endif %}
-{%     if daemon_terminattr.cvgnmi is arista.avd.defined %}
+{%     if daemon_terminattr.cvgnmi is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvgnmi" %}
 {%     endif %}
-{%     if daemon_terminattr.cvobscurekeyfile is true %}
+{%     if daemon_terminattr.cvobscurekeyfile is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -cvobscurekeyfile" %}
 {%     endif %}
-{%     if daemon_terminattr.disable_aaa is true %}
+{%     if daemon_terminattr.disable_aaa is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -disableaaa" %}
 {%     endif %}
 {%     if daemon_terminattr.cvproxy is arista.avd.defined %}
@@ -58,7 +58,7 @@ daemon TerminAttr
 {%     if daemon_terminattr.grpcaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -grpcaddr=" ~ daemon_terminattr.grpcaddr %}
 {%     endif %}
-{%     if daemon_terminattr.grpcreadonly is true %}
+{%     if daemon_terminattr.grpcreadonly is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -grpcreadonly" %}
 {%     endif %}
 {%     if daemon_terminattr.smashexcludes is arista.avd.defined %}
@@ -67,28 +67,28 @@ daemon TerminAttr
 {%     if daemon_terminattr.ingestexclude is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ingestexclude=" ~ daemon_terminattr.ingestexclude %}
 {%     endif %}
-{%     if daemon_terminattr.taillogs is arista.avd.defined  %}
+{%     if daemon_terminattr.taillogs is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -taillogs=" ~ daemon_terminattr.taillogs %}
 {%     else %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -taillogs" %}
 {%     endif %}
-{%     if daemon_terminattr.ecodhcpaddr is true %}
+{%     if daemon_terminattr.ecodhcpaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ecodhcpaddr=" ~ daemon_terminattr.ecodhcpaddr %}
 {%     endif %}
-{%     if daemon_terminattr.ipfix is true %}
+{%     if daemon_terminattr.ipfix is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfix" %}
-{%     elif daemon_terminattr.ipfix is false %}
+{%     elif daemon_terminattr.ipfix is arista.avd.defined(false) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfix=false" %}
 {%     endif %}
-{%     if daemon_terminattr.ipfixaddr is true %}
+{%     if daemon_terminattr.ipfixaddr is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfixaddr=" ~ daemon_terminattr.ipfixaddr %}
 {%     endif %}
-{%     if daemon_terminattr.sflow is true %}
+{%     if daemon_terminattr.sflow is arista.avd.defined(true) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflow" %}
-{%     elif daemon_terminattr.sflow is false %}
+{%     elif daemon_terminattr.sflow is arista.avd.defined(false) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflow=false" %}
 {%     endif %}
-{%     if daemon_terminattr.sflowaddr is true %}
+{%     if daemon_terminattr.sflowaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -sflowaddr=" ~ daemon_terminattr.sflowaddr %}
 {%     endif %}
    {{ cvp_config.cli }}
