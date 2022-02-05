@@ -48,8 +48,14 @@ l3_edge:
       # Enable BFD (only considered for BGP) | Optional
       bfd: < true | false | default -> false >
 
+      # Enable PTP | Optional
+      ptp_enable: < true | false | default -> false >
+
       # QOS Service Profile | Optional
       qos_profile: < qos_profile_name >
+
+      # MAC Security Profile | Optional
+      macsec_profile: < macsec_profile_name >
 
       # Profile defined under p2p_profiles | Optional
       profile: < p2p_profile_name >

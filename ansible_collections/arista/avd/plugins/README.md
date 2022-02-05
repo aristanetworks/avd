@@ -450,19 +450,22 @@ The module arguments are:
 
 ```yaml
 - name: Set AVD facts
+  tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
+  delegate_to: localhost
   check_mode: no
   changed_when: False
-  tags: [build, provision]
 
 - name: Generate device configuration in structured format
-  yaml_templates_to_facts:
-    root_key: structured_config
-    templates: "{{ templates.structured_config }}"
-  check_mode: no
-  changed_when: False
   tags: [build, provision]
+  yaml_templates_to_facts:
+    templates: "{{ templates.structured_config }}"
+    dest: "{{ structured_dir }}/{{ inventory_hostname }}.{{ avd_structured_config_file_format }}"
+    template_output: True
+  delegate_to: localhost
+  check_mode: no
+  register: structured_config
 ```
 
 Role default variables applied to this example:
