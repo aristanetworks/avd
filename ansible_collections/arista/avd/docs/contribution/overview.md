@@ -19,7 +19,6 @@ The following individuals are on the Arista Validated Design (AVD) Core Team:
 
 We welcome many forms of contributions to Arista Validated Design (AVD).  While we understand most contributions will commonly come from ansible power-users, we encourage others to contribute in the form of docs, tutorials, and user guides.  If you have other ideas for contributing, don't hesitate to open an issue or have a discussion in one of the forums below.
 
-
 ### Communication
 
 Communication among the contributors should always occur via public channels.
@@ -64,7 +63,6 @@ If you follow these steps, there **will** be a GitHub Issue opened prior to subm
 
 Should this happen and if you followed the project guidelines, have sample tests, code quality, you will first be acknowledged for your work.  So, thank you in advance! After that, the PR will be quickly reviewed to ensure that it makes sense as a contribution to the project, and to gauge the work effort or issues with merging into _devel_.  If the effort required by the core team isn't trivial, it'll likely still be a few weeks before it gets thoroughly reviewed and merged. It will just depend on the current backlog.
 
-
 ### Contributing to Arista Validated Design (AVD)
 
 #### Reporting Bugs
@@ -76,11 +74,11 @@ Should this happen and if you followed the project guidelines, have sample tests
 * When submitting an issue, please be as descriptive as possible. Be sure to
 provide all information request in the issue template, including:
 
-    * The environment in which Arista Validated Design (AVD) is running
-    * The exact steps that can be taken to reproduce the issue
-    * Expected and observed behavior
-    * Any error messages generated
-    * Screenshots (if applicable)
+  * The environment in which Arista Validated Design (AVD) is running
+  * The exact steps that can be taken to reproduce the issue
+  * Expected and observed behavior
+  * Any error messages generated
+  * Screenshots (if applicable)
 
 * Please avoid prepending any sort of tag (e.g. "[Bug]") to the issue title. The issue will be reviewed by a maintainer after submission and the appropriate labels will be applied for categorization.
 
@@ -96,11 +94,11 @@ provide all information request in the issue template, including:
 
 * When submitting a feature request on GitHub, be sure to include all information requested by the issue template, including:
 
-    * A detailed description of the proposed functionality
-    * A use case for the feature; who would use it and what value it would add to Arista Validated Design (AVD)
-    * A rough description of changes necessary to the database schema (if applicable)
-    * Any third-party libraries or other resources which would be involved
-    * Please avoid prepending any sort of tag (e.g. "[Feature]") to the issue title.
+  * A detailed description of the proposed functionality
+  * A use case for the feature; who would use it and what value it would add to Arista Validated Design (AVD)
+  * A rough description of changes necessary to the database schema (if applicable)
+  * Any third-party libraries or other resources which would be involved
+  * Please avoid prepending any sort of tag (e.g. "[Feature]") to the issue title.
 
 The issue will be reviewed by a moderator after submission and the appropriate labels will be applied for categorization.
 
@@ -141,7 +139,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
     * `Start`: Begin doing something; e.g. create a feature flag.
     * `Stop`: End doing something; e.g. remove a feature flag.
     * `Bump`: Increase the version of something e.g. dependency.
-    * `Test`: Add or refector anything regard test, e.g add a new testCases.
+    * `Test`: Add or refactor anything regarding test, e.g add a new testCases.
     * `Make`: Change the build process, or tooling, or infra.
     * `Refactor`: A code change that MUST be just a refactoring.
     * `Reformat`: Refactor of formatting, e.g. omit whitespace.
@@ -151,7 +149,7 @@ The issue will be reviewed by a moderator after submission and the appropriate l
 
   * __Scopes__:
 
-    * `{{ role name }}`: AVD role impacting by PR. __Required__ for `Feat`, `Cut` and `Fix` types
+    * `{{ role_name }}`: AVD role impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
     * `plugins`: To use when AVD plugin is impacted by PR. __Required__ for `Feat`, `Cut` and `Fix` types
     * `requirements`: To use when using `Bump` type and when any AVD requirement is updated
     * `mkdoc`: represents generic documentation published on www.avd.sh

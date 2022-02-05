@@ -46,7 +46,9 @@ port_profiles:
   < port_profile_1 >:
     parent_profile: < port_profile_name >
     speed: < interface_speed | forced interface_speed | auto interface_speed >
+    enabled: < true | false >
     mode: < access | dot1q-tunnel | trunk >
+    mtu: < mtu >
     l2_mtu: < l2_mtu - if defined this profile should only be used for platforms supporting the "l2 mtu" CLI >
     native_vlan: <native vlan number>
     vlans: < vlans as string >
@@ -102,7 +104,7 @@ port_profiles:
         # List of port(s) connected to switches | required
         switch_ports: [ < switchport_interface > ]
 
-        # List of switche(s) | required
+        # List of switch(es) | required
         switches: [ < device > ]
 
         # Port-profile name, to inherit configuration.
@@ -143,10 +145,6 @@ port_profiles:
 
         # Custom structured config added under ethernet_interfaces.<interface> for eos_cli_config_gen
         structured_config: < dictionary >
-
-      < port_profile_2 >:
-        mode: < access | dot1q-tunnel | trunk >
-        vlans: < vlans as string >
 
         # Storm control settings applied on port toward the endpoint | Optional
         storm_control:

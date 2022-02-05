@@ -49,7 +49,7 @@ $ make start
 
 Or you can use a one-liner script available in ansible-avd repository to create this structure for you. This script does following actions:
 
-- Create local folder for development
+- Create a local folder for development
 - Instantiate a local git repository (no remote)
 - Clone AVD and CVP collections
 - Deploy Makefile
@@ -73,13 +73,13 @@ $ sh -c "$(curl -fsSL https://get.avd.sh/dev/)"
 ```
 
 !!! warning
-    As devel branch is always moving on, datamodel might change and demo content could be broken. It should be used for development only.
+    As the devel branch always includes the latest features and updates, the data models might change without notice and demo content could be broken. It should be used for development only.
 
 ## Use docker as AVD shell
 
 In this approach Docker container will be leveraged to provides all the AVD requirements and playbooks and collection will be shared from your localhost to the container.
 
-This approach make the run process easier as all libraries are pre-configured in container and you can continue to use your preferred text editor to edit and build your content.
+This approach will make the run process easier as all libraries are pre-configured in the container and you can continue to use your preferred text editor to edit and build your content.
 
 Considering you have deployed [Makefile](https://github.com/aristanetworks/ansible-avd/blob/devel/development/Makefile) described in previous section, all the outputs will provide native docker command and the Make command.
 
@@ -147,7 +147,7 @@ Collecting ansible==2.10
 
 ### Run AVD shell
 
-We are going to start a [new container](https://hub.docker.com/repository/docker/avdteam/base) running ansible with all the python requirements and mount local folder under `/projects`. if image is missing, docker will pull out image for you automatically.
+We are going to start a [new container](https://hub.docker.com/repository/docker/avdteam/base) running ansible with all the python requirements and mount local folder under `/projects`. If the image is missing, docker will pull it automatically.
 
 ```shell
 $ docker run --rm -it -v ${pwd}/:/projects avdteam/base:3.6
@@ -170,7 +170,7 @@ Agent pid 45
 ➜  /projects
 ```
 
-You can use a Make command to run exact same set of actions:
+You can use the Make command to run the exact same set of actions:
 
 ```shell
 $ make run
@@ -203,7 +203,7 @@ drwxr-xr-x 24 root root  768 Sep  4 15:47 ansible-avd-cloudvision-demo
 drwxr-xr-x 24 root root  768 Sep  4 15:47 Makefile
 ```
 
-You can validate everything is set up correctly:
+You can validate if everything is set up correctly:
 
 ```shell
 ➜  /projects python --version
@@ -227,7 +227,7 @@ $
 
 ### Get latest image of AVD container
 
-Time to time, AVD container is updated to reflect some changes in either python requirements or ansible version. Because your docker engine won't automatically get latest version, it might be important to update manually this container:
+The AVD container is updated frequently, to reflect some changes in either python requirements or ansible version. Because your docker engine won't get the latest version automatically, it is important to manually update this container:
 
 ```shell
 $ docker pull avdteam/base:3.6
@@ -244,11 +244,11 @@ Your environment is now ready and you can start to build your own project levera
 
 ## Using Python 3 Virtual Environment feature
 
-This section describes how to configure python to run ansible and AVD.
+This section describes how to configure python to run the ansible-AVD.
 
 As a requirement, we consider python3 as the default python interpreter and pip3 as package manager for python3. Some differences can be spotted depending on your own operating system and how they package python.
 
-__Disclaimer__: Not preferred method. If you are not an experienced user, please use docker approach.
+__Disclaimer__: Not a preferred method. If you are not an experienced user, please use docker approach.
 
 In a shell, install `virtualenv` package:
 
@@ -257,7 +257,7 @@ In a shell, install `virtualenv` package:
 $ sudo pip3 install virtualenv
 ```
 
-Create a dedicated virtual-environment where AVD will install all required Python pakages:
+Create a dedicated virtual environment where AVD will install all required Python packages:
 
 ```shell
 $ pwd

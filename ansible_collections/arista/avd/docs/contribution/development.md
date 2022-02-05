@@ -80,7 +80,6 @@ Removing development_ansible_1 ... done
 Removing development_webdoc_1  ... done
 ```
 
-
 ## Development tools
 
 ### Pre-commit hook
