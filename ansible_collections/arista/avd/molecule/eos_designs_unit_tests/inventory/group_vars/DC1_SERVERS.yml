@@ -392,29 +392,67 @@ servers:
   server18_monitoring_session_source:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1 ]
-        switch_ports: [ Ethernet25 ]
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet25, Ethernet26 ]
         switches: [ DC1-SVC3A ]
         profile: TENANT_A
         monitor_sessions:
-          name: MyMonitoringSession_server18
-          role: source
-          source_settings:
-            direction: both
-            access_group:
-              type: ip
-              name: MyIpACL
-              priority: 5
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: rx
+              access_group:
+                type: ip
+                name: MyIpACL
+                priority: 5
+          - name: MonitoringSessionServer18WithoutDest
+            role: source
+            source_settings:
+              direction: tx
 
   server19_monitoring_session_destination:
     rack: RackC
     adapters:
-      - server_ports: [ Eth1 ]
-        switch_ports: [ Ethernet26 ]
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet27, Ethernet28 ]
         switches: [ DC1-SVC3A ]
         monitor_sessions:
-          name: MyMonitoringSession_server18
-          role: destination
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+            session_settings:
+              encapsulation_gre_metadata_tx: true
+              header_remove_size: 20
+              access_group:
+                type: ip
+                name: ip_acl
+              rate_limit_per_ingress_chip: 30 bps
+              rate_limit_per_egress_chip: 30 bps
+              sample: 10
+              truncate:
+                enabled: true
+                size: 20
+
+  server20_monitoring_session_destination:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1 ]
+        switch_ports: [ Ethernet40, Ethernet41 ]
+        switches: [ DC1-SVC3A ]
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+            session_settings:
+              encapsulation_gre_metadata_tx: false
+              header_remove_size: 200
+              access_group:
+                type: mac
+                name: mac_acl
+              rate_limit_per_ingress_chip: 30 bps
+              rate_limit_per_egress_chip: 30 bps
+              sample: 10
+              truncate:
+                enabled: true
+                size: 20
 
 firewalls:
   FIREWALL01:

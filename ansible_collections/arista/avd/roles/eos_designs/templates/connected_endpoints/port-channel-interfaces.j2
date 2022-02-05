@@ -18,8 +18,10 @@ port_channel_interfaces:
 {%                 for adapter_switch in adapter.switches | arista.avd.natural_sort %}
 {%                     if adapter_switch == inventory_hostname %}
 {%                         if adapter_settings.monitor_sessions is arista.avd.defined %}
-{%                             do adapter_settings.monitor_sessions.update({'interface': adapter.switch_ports[loop.index0]}) %}
-{%                             do monitor_sessions_data.append(adapter_settings.monitor_sessions) %}
+{%                             for monitor_session in adapter_settings.monitor_sessions %}
+{%                                 do monitor_session.update({'interfaces': adapter.switch_ports}) %}
+{%                                 do monitor_sessions_data.append(monitor_session) %}
+{%                             endfor %}
 {%                         endif %}
   Port-Channel{{ channel_group_id }}:
 {%                         set peer = connected_endpoint %}
@@ -34,7 +36,7 @@ port_channel_interfaces:
 {%                         if adapter_settings.mtu is arista.avd.defined %}
     mtu: {{ adapter_settings.mtu }}
 {%                         endif %}
-{%                         if adapter_settings.l2_mtu is arista.avd.defined  %}
+{%                         if adapter_settings.l2_mtu is arista.avd.defined %}
     l2_mtu: {{ adapter_settings.l2_mtu }}
 {%                         endif %}
     vlans: {{ adapter_settings.vlans | arista.avd.default }}

@@ -207,26 +207,43 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 ### Monitor Sessions Summary
 
-#### MyMonitoringSession_server18
+#### MyMonitoringSession_server18a
 
-##### MyMonitoringSession_server18 Sources
+##### MyMonitoringSession_server18a Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
-| Ethernet25 | both | - | - | - |
+| Ethernet25, Ethernet26 | rx | ip | MyIpACL | 5 |
 
-##### MyMonitoringSession_server18 Destinations and Session Settings
+##### MyMonitoringSession_server18a Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
-| Destinations | Ethernet26 |
+| Destinations | Ethernet27, Ethernet28, Ethernet40, Ethernet41 |
+| Header Remove Size | 200 |
+| Access Group Type | mac |
+| Access Group Name | mac_acl |
+| Rate Limit per Ingress Chip | 30 bps |
+| Rate Limit per Egress Chip | 30 bps |
+| Sample | 10 |
+| Truncate Enabled | True |
+| Truncate Size | 20 |
 
 ### Monitor Sessions Configuration
 
 ```eos
 !
-monitor session MyMonitoringSession_server18 source Ethernet25
-monitor session MyMonitoringSession_server18 destination Ethernet26
+monitor session MyMonitoringSession_server18a source Ethernet25, Ethernet26 rx ip access-group MyIpACL priority 5
+monitor session MyMonitoringSession_server18a destination Ethernet27
+monitor session MyMonitoringSession_server18a destination Ethernet28
+monitor session MyMonitoringSession_server18a destination Ethernet40
+monitor session MyMonitoringSession_server18a destination Ethernet41
+monitor session MyMonitoringSession_server18a header remove size 200
+monitor session MyMonitoringSession_server18a mac access-group mac_acl
+monitor session MyMonitoringSession_server18a rate-limit per-ingress-chip 30 bps
+monitor session MyMonitoringSession_server18a rate-limit per-egress-chip 30 bps
+monitor session MyMonitoringSession_server18a sample 10
+monitor session MyMonitoringSession_server18a truncate size 20
 ```
 
 # MLAG
@@ -460,7 +477,8 @@ vlan 4092
 | Ethernet23 | server16_port_channel_with_disabled_port_channel_Eth1 | *access | *110 | *- | *- | 23 |
 | Ethernet24 | server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1 | *access | *110 | *- | *- | 24 |
 | Ethernet25 |  server18_monitoring_session_source_Eth1 | access | 110 | - | - | - |
-| Ethernet26 |  server19_monitoring_session_destination_Eth1 | access | - | - | - | - |
+| Ethernet27 |  server19_monitoring_session_destination_Eth1 | access | - | - | - | - |
+| Ethernet40 |  server20_monitoring_session_destination_Eth1 | access | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -659,8 +677,13 @@ interface Ethernet25
    switchport access vlan 110
    switchport mode access
 !
-interface Ethernet26
+interface Ethernet27
    description server19_monitoring_session_destination_Eth1
+   no shutdown
+   switchport
+!
+interface Ethernet40
+   description server20_monitoring_session_destination_Eth1
    no shutdown
    switchport
 ```
