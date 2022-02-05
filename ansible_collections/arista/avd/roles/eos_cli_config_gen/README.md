@@ -1905,6 +1905,15 @@ router_pim_sparse_mode:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        rp_addresses:
+          < rp_address_1 >:
+            groups:
+              < group_prefix_1/mask >:
+              < group_prefix_2/mask >:
+          < rp_address_2 >:
 ```
 
 ### Monitoring

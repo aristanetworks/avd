@@ -1,11 +1,11 @@
 {# IP PIM Sparse Mode Summary #}
-{% if router_pim_sparse_mode is defined and router_pim_sparse_mode is not none %}
+{% if router_pim_sparse_mode is arista.avd.defined %}
 
 ## Router PIM Sparse Mode
 
 ### IP Sparse Mode Information
-{%     if router_pim_sparse_mode.ipv4 is defined and router_pim_sparse_mode.ipv4 is not none %}
-{%         if router_pim_sparse_mode.ipv4.rp_addresses is defined and router_pim_sparse_mode.ipv4.rp_addresses is not none %}
+{%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
+{%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
 ### IP Rendez-vous Information
 
@@ -17,9 +17,9 @@
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
-{%         if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
+{%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 {%         endif %}
-{%         if router_pim_sparse_mode.ipv4.anycast_rps is defined and router_pim_sparse_mode.ipv4.anycast_rps is not none %}
+{%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
 ### IP Anycast Information
 
@@ -27,15 +27,32 @@
 | ------------------ | ------------------------------- | -------------- |
 {%             for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
 {%                 for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
-| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is defined and router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is not none %} {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} | {% else %} - {% endif %}|
+| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is arista.avd.defined %} {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} | {% else %} - {% endif %}|
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
+{%     endif %}
+
+{%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
+
+### IP Sparse Mode VRFs
+
+| VRF Name | Rendez-vous Point Address | Group Address |
+| -------- | ------------------------- | ------------- |
+{%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
+{%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
+{%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort %}
+{%                     for group in vrf.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
+| {{ vrf.name }} | {{ rp_address }} | {{ group }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 ### Router Multicast Device Configuration
 
 ```eos
 {%         include 'eos/router-pim-sparse-mode.j2' %}
 ```
-{%     endif %}
 {% endif %}

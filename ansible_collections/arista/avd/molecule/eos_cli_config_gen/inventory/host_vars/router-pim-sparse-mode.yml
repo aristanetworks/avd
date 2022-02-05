@@ -17,3 +17,20 @@ router_pim_sparse_mode:
           10.50.64.16:
             register_count: 15
     ssm_range: standard
+  vrfs:
+    - name: MCAST_VRF1
+      ipv4:
+        rp_addresses:
+          10.238.2.161:
+            groups:
+              239.12.22.12/32:
+              239.12.22.13/32:
+              239.12.22.14/32:
+    - name: MCAST_VRF2
+      ipv4:
+        rp_addresses:
+          10.238.3.161:
+            groups:
+              239.12.22.16/32:
+              239.12.22.20/32:
+              239.12.22.21/32:

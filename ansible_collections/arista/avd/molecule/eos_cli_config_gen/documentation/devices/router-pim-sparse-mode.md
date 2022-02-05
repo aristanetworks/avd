@@ -106,6 +106,18 @@ interface Management1
 | ------------------ | ------------------------------- | -------------- |
 | 10.38.1.161 | 10.50.64.16 |  15 | |
 
+
+### IP Sparse Mode VRFs
+
+| VRF Name | Rendez-vous Point Address | Group Address |
+| -------- | ------------------------- | ------------- |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32 |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.13/32 |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.14/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.16/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.20/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.21/32 |
+
 ### Router Multicast Device Configuration
 
 ```eos
@@ -120,6 +132,18 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.21/32
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
       ssm range standard
+      !
+    vrf MCAST_VRF1
+      ipv4
+        rp address 10.238.2.161 239.12.22.12/32
+        rp address 10.238.2.161 239.12.22.13/32
+        rp address 10.238.2.161 239.12.22.14/32
+      !
+    vrf MCAST_VRF2
+      ipv4
+        rp address 10.238.3.161 239.12.22.16/32
+        rp address 10.238.3.161 239.12.22.20/32
+        rp address 10.238.3.161 239.12.22.21/32
 ```
 
 # Filters
