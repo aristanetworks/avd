@@ -1436,7 +1436,7 @@ vxlan_interface:
         Tenant_C_WAN_Zone:
           vni: 31
 monitor_sessions:
-- name: MyMonitoringSession_server18a
+- name: MonitoringSessionServer18WithDest
   sources:
   - name: Ethernet25, Ethernet26
     direction: rx

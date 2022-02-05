@@ -207,15 +207,15 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 ### Monitor Sessions Summary
 
-#### MyMonitoringSession_server18a
+#### MonitoringSessionServer18WithDest
 
-##### MyMonitoringSession_server18a Sources
+##### MonitoringSessionServer18WithDest Sources
 
 | Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
 | ------- | --------- | ----------------- | ----------------- | --------------------- |
 | Ethernet25, Ethernet26 | rx | ip | MyIpACL | 5 |
 
-##### MyMonitoringSession_server18a Destinations and Session Settings
+##### MonitoringSessionServer18WithDest Destinations and Session Settings
 
 | Settings | Values |
 | -------- | ------ |
@@ -233,17 +233,17 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 ```eos
 !
-monitor session MyMonitoringSession_server18a source Ethernet25, Ethernet26 rx ip access-group MyIpACL priority 5
-monitor session MyMonitoringSession_server18a destination Ethernet27
-monitor session MyMonitoringSession_server18a destination Ethernet28
-monitor session MyMonitoringSession_server18a destination Ethernet40
-monitor session MyMonitoringSession_server18a destination Ethernet41
-monitor session MyMonitoringSession_server18a header remove size 200
-monitor session MyMonitoringSession_server18a mac access-group mac_acl
-monitor session MyMonitoringSession_server18a rate-limit per-ingress-chip 30 bps
-monitor session MyMonitoringSession_server18a rate-limit per-egress-chip 30 bps
-monitor session MyMonitoringSession_server18a sample 10
-monitor session MyMonitoringSession_server18a truncate size 20
+monitor session MonitoringSessionServer18WithDest source Ethernet25, Ethernet26 rx ip access-group MyIpACL priority 5
+monitor session MonitoringSessionServer18WithDest destination Ethernet27
+monitor session MonitoringSessionServer18WithDest destination Ethernet28
+monitor session MonitoringSessionServer18WithDest destination Ethernet40
+monitor session MonitoringSessionServer18WithDest destination Ethernet41
+monitor session MonitoringSessionServer18WithDest header remove size 200
+monitor session MonitoringSessionServer18WithDest mac access-group mac_acl
+monitor session MonitoringSessionServer18WithDest rate-limit per-ingress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest rate-limit per-egress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest sample 10
+monitor session MonitoringSessionServer18WithDest truncate size 20
 ```
 
 # MLAG
