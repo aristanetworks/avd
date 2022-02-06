@@ -1909,11 +1909,11 @@ router_pim_sparse_mode:
     - name: < vrf_name >
       ipv4:
         rp_addresses:
-          < rp_address_1 >:
+          - address: < rp_address_1 >
             groups:
-              < group_prefix_1/mask >:
-              < group_prefix_2/mask >:
-          < rp_address_2 >:
+              - < group_prefix_1/mask >
+              - < group_prefix_2/mask >
+          - address: < rp_address_2 >
 ```
 
 ### Monitoring

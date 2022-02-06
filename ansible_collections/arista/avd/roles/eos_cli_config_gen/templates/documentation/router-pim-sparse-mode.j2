@@ -18,8 +18,6 @@
 {%             endfor %}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
-{%         endif %}
-{%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
 ### IP Anycast Information
 
@@ -41,9 +39,9 @@
 | -------- | ------------------------- | ------------- |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
-{%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort %}
-{%                     for group in vrf.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
-| {{ vrf.name }} | {{ rp_address }} | {{ group }} |
+{%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
+{%                     for group in rp_address.groups | arista.avd.default([]) | arista.avd.natural_sort %}
+| {{ vrf.name }} | {{ rp_address.address }} | {{ group }} |
 {%                     endfor %}
 {%                 endfor %}
 {%             endif %}
