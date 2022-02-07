@@ -2,6 +2,17 @@
 
 # Validation reports
 
+- name: Write Test Results in File
+  template:
+    src: validate_state_report-csv.j2
+    dest: "{{ eos_validate_state_report_path }}"
+    mode: 0664
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
 - name: Create Validation report - CSV
   template:
     src: validate_state_report-csv.j2
