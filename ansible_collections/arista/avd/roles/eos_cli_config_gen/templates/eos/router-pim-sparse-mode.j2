@@ -28,7 +28,7 @@ router pim sparse-mode
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
 {%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
-{%                 for group in rp_address.groups | arista.avd.default([]) | arista.avd.natural_sort %}
+{%                 for group in rp_address.groups | arista.avd.natural_sort %}
         rp address {{ rp_address.address }} {{ group }}
 {%                 endfor %}
 {%             endfor %}
