@@ -65,8 +65,8 @@ interface Management1
 
 ### VXLAN Interface Summary
 
-| Settings | Values |
-| -------- | ------ |
+| Setting | Value |
+| ------- | ----- |
 | Source Interface | Loopback0 |
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |

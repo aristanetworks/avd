@@ -712,8 +712,8 @@ interface Vlan311
 
 ### VXLAN Interface Summary
 
-| Settings | Values |
-| -------- | ------ |
+| Setting | Value |
+| ------- | ----- |
 | Source Interface | Loopback10 |
 | UDP port | 4789 |
 

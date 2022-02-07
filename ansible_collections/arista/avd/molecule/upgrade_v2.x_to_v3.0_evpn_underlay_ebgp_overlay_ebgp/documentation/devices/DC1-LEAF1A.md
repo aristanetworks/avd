@@ -432,8 +432,8 @@ interface Vlan131
 
 ### VXLAN Interface Summary
 
-| Settings | Values |
-| -------- | ------ |
+| Setting | Value |
+| ------- | ----- |
 | Source Interface | Loopback1 |
 | UDP port | 4789 |
 
