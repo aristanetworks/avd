@@ -80,7 +80,7 @@ daemon TerminAttr
 {%     elif daemon_terminattr.ipfix is arista.avd.defined(false) %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfix=false" %}
 {%     endif %}
-{%     if daemon_terminattr.ipfixaddr is arista.avd.defined(true) %}
+{%     if daemon_terminattr.ipfixaddr is arista.avd.defined %}
 {%         set cvp_config.cli = cvp_config.cli ~ " -ipfixaddr=" ~ daemon_terminattr.ipfixaddr %}
 {%     endif %}
 {%     if daemon_terminattr.sflow is arista.avd.defined(true) %}
