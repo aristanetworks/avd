@@ -9,56 +9,56 @@ monitor_sessions:
 {%             for session in group | selectattr('role', 'equalto', 'source') %}
 {%                 if session.interfaces is arista.avd.defined %}
       - name: {{ session.interfaces | join(", ") }}
-{%                 endif %}
-{%                 if session.source_settings is arista.avd.defined %}
-{%                     if session.source_settings.direction is arista.avd.defined %}
+{%                     if session.source_settings is arista.avd.defined %}
+{%                         if session.source_settings.direction is arista.avd.defined %}
         direction: {{ session.source_settings.direction }}
-{%                     endif %}
-{%                     if session.source_settings.access_group is arista.avd.defined %}
+{%                         endif %}
+{%                         if session.source_settings.access_group is arista.avd.defined %}
         access_group:
-{%                         if session.source_settings.access_group.type is arista.avd.defined %}
+{%                             if session.source_settings.access_group.type is arista.avd.defined %}
           type: {{ session.source_settings.access_group.type }}
-{%                         endif %}
-{%                         if session.source_settings.access_group.name is arista.avd.defined %}
+{%                             endif %}
+{%                             if session.source_settings.access_group.name is arista.avd.defined %}
           name: {{ session.source_settings.access_group.name }}
-{%                         endif %}
-{%                         if session.source_settings.access_group.priority is arista.avd.defined %}
+{%                             endif %}
+{%                             if session.source_settings.access_group.priority is arista.avd.defined %}
           priority: {{ session.source_settings.access_group.priority }}
+{%                             endif %}
 {%                         endif %}
 {%                     endif %}
 {%                 endif %}
 {%             endfor %}
     destinations:
-{%             set merged_destinations = group | selectattr('role', 'equalto', 'destination') | combine(list_merge='append') %}
-{%             if merged_destinations.interfaces is arista.avd.defined %}
-      {{ merged_destinations.interfaces }}
+{%             set merged_settings = group | selectattr('role', 'equalto', 'destination') | combine(list_merge='append') %}
+{%             if merged_settings.interfaces is arista.avd.defined %}
+      {{ merged_settings.interfaces }}
 {%             endif %}
-{%             if merged_destinations.session_settings is arista.avd.defined %}
-{%                 if merged_destinations.session_settings.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
-    encapsulation_gre_metadata_tx: {{ merged_destinations.session_settings.encapsulation_gre_metadata_tx }}
+{%             if merged_settings.session_settings is arista.avd.defined %}
+{%                 if merged_settings.session_settings.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
+    encapsulation_gre_metadata_tx: {{ merged_settings.session_settings.encapsulation_gre_metadata_tx }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.header_remove_size is arista.avd.defined %}
-    header_remove_size: {{ merged_destinations.session_settings.header_remove_size }}
+{%                 if merged_settings.session_settings.header_remove_size is arista.avd.defined %}
+    header_remove_size: {{ merged_settings.session_settings.header_remove_size }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.access_group.type is arista.avd.defined and merged_destinations.session_settings.access_group.name is arista.avd.defined %}
+{%                 if merged_settings.session_settings.access_group.type is arista.avd.defined and merged_settings.session_settings.access_group.name is arista.avd.defined %}
     access_group:
-      type: {{ merged_destinations.session_settings.access_group.type }}
-      name: {{ merged_destinations.session_settings.access_group.name }}
+      type: {{ merged_settings.session_settings.access_group.type }}
+      name: {{ merged_settings.session_settings.access_group.name }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.rate_limit_per_ingress_chip is arista.avd.defined %}
-    rate_limit_per_ingress_chip: {{ merged_destinations.session_settings.rate_limit_per_ingress_chip }}
+{%                 if merged_settings.session_settings.rate_limit_per_ingress_chip is arista.avd.defined %}
+    rate_limit_per_ingress_chip: {{ merged_settings.session_settings.rate_limit_per_ingress_chip }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.rate_limit_per_egress_chip is arista.avd.defined %}
-    rate_limit_per_egress_chip: {{ merged_destinations.session_settings.rate_limit_per_egress_chip }}
+{%                 if merged_settings.session_settings.rate_limit_per_egress_chip is arista.avd.defined %}
+    rate_limit_per_egress_chip: {{ merged_settings.session_settings.rate_limit_per_egress_chip }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.sample is arista.avd.defined %}
-    sample: {{ merged_destinations.session_settings.sample }}
+{%                 if merged_settings.session_settings.sample is arista.avd.defined %}
+    sample: {{ merged_settings.session_settings.sample }}
 {%                 endif %}
-{%                 if merged_destinations.session_settings.truncate.enabled is arista.avd.defined(true) %}
+{%                 if merged_settings.session_settings.truncate.enabled is arista.avd.defined(true) %}
     truncate:
-      enabled: {{ merged_destinations.session_settings.truncate.enabled }}
-{%                     if merged_destinations.session_settings.truncate.size is arista.avd.defined %}
-      size: {{ merged_destinations.session_settings.truncate.size }}
+      enabled: {{ merged_settings.session_settings.truncate.enabled }}
+{%                     if merged_settings.session_settings.truncate.size is arista.avd.defined %}
+      size: {{ merged_settings.session_settings.truncate.size }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

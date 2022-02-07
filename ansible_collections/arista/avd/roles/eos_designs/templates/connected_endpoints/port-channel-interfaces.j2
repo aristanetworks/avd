@@ -19,7 +19,7 @@ port_channel_interfaces:
 {%                     if adapter_switch == inventory_hostname %}
 {%                         if adapter_settings.monitor_sessions is arista.avd.defined %}
 {%                             for monitor_session in adapter_settings.monitor_sessions %}
-{%                                 do monitor_session.update({'interfaces': adapter.switch_ports}) %}
+{%                                 do monitor_session.update({'interfaces': [ 'Port-Channel' + channel_group_id ] }) %}
 {%                                 do monitor_sessions_data.append(monitor_session) %}
 {%                             endfor %}
 {%                         endif %}

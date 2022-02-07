@@ -897,6 +897,12 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     mlag: 24
+  Port-Channel42:
+    description: server21_port_channel_monitoring_session_destination_server21_port_channel_monitoring_session_destination
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3B
@@ -1318,6 +1324,18 @@ ethernet_interfaces:
     description: server20_monitoring_session_destination_Eth1
     type: switched
     shutdown: false
+  Ethernet42:
+    peer: server21_port_channel_monitoring_session_destination
+    peer_interface: Eth1
+    peer_type: server
+    description: server21_port_channel_monitoring_session_destination_Eth1
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 42
+      mode: active
 mlag_configuration:
   domain_id: DC1_SVC3
   local_interface: Vlan4092
@@ -1449,6 +1467,7 @@ monitor_sessions:
   - Ethernet28
   - Ethernet40
   - Ethernet41
+  - Port-Channel42
   header_remove_size: 200
   access_group:
     type: mac

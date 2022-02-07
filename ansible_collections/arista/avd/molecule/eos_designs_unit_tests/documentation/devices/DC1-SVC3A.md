@@ -219,7 +219,7 @@ snmp-server location DC1_FABRIC DC1-SVC3A
 
 | Settings | Values |
 | -------- | ------ |
-| Destinations | Ethernet27, Ethernet28, Ethernet40, Ethernet41 |
+| Destinations | Ethernet27, Ethernet28, Ethernet40, Ethernet41, Port-Channel42 |
 | Header Remove Size | 200 |
 | Access Group Type | mac |
 | Access Group Name | mac_acl |
@@ -238,6 +238,7 @@ monitor session MonitoringSessionServer18WithDest destination Ethernet27
 monitor session MonitoringSessionServer18WithDest destination Ethernet28
 monitor session MonitoringSessionServer18WithDest destination Ethernet40
 monitor session MonitoringSessionServer18WithDest destination Ethernet41
+monitor session MonitoringSessionServer18WithDest destination Port-Channel42
 monitor session MonitoringSessionServer18WithDest header remove size 200
 monitor session MonitoringSessionServer18WithDest mac access-group mac_acl
 monitor session MonitoringSessionServer18WithDest rate-limit per-ingress-chip 30 bps
@@ -479,6 +480,7 @@ vlan 4092
 | Ethernet25 |  server18_monitoring_session_source_Eth1 | access | 110 | - | - | - |
 | Ethernet27 |  server19_monitoring_session_destination_Eth1 | access | - | - | - | - |
 | Ethernet40 |  server20_monitoring_session_destination_Eth1 | access | - | - | - | - |
+| Ethernet42 | server21_port_channel_monitoring_session_destination_Eth1 | *access | *110 | *- | *- | 42 |
 
 *Inherited from Port-Channel Interface
 
@@ -686,6 +688,11 @@ interface Ethernet40
    description server20_monitoring_session_destination_Eth1
    no shutdown
    switchport
+!
+interface Ethernet42
+   description server21_port_channel_monitoring_session_destination_Eth1
+   no shutdown
+   channel-group 42 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -707,6 +714,7 @@ interface Ethernet40
 | Port-Channel22 | server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces | switched | access | 110 | - | - | - | - | 22 | - |
 | Port-Channel23 | server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel | switched | access | 110 | - | - | - | - | 23 | - |
 | Port-Channel24 | server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces | switched | access | 110 | - | - | - | - | 24 | - |
+| Port-Channel42 | server21_port_channel_monitoring_session_destination_server21_port_channel_monitoring_session_destination | switched | access | 110 | - | - | - | - | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -838,6 +846,12 @@ interface Port-Channel24
    switchport
    switchport access vlan 110
    mlag 24
+!
+interface Port-Channel42
+   description server21_port_channel_monitoring_session_destination_server21_port_channel_monitoring_session_destination
+   no shutdown
+   switchport
+   switchport access vlan 110
 ```
 
 ## Loopback Interfaces

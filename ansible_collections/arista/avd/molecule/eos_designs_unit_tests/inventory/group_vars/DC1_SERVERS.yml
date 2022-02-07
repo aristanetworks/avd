@@ -454,6 +454,22 @@ servers:
                 enabled: true
                 size: 20
 
+  server21_port_channel_monitoring_session_destination:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet42, Ethernet43 ]
+        switches: [ DC1-SVC3A ]
+        profile: TENANT_A
+        enabled: true
+        port_channel:
+          description: server21_port_channel_monitoring_session_destination
+          mode: active
+          enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: destination
+
 firewalls:
   FIREWALL01:
     rack: RackB
