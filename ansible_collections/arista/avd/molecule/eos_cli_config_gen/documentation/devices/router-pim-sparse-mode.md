@@ -104,7 +104,7 @@ interface Management1
 
 | IP Anycast Address | Other Rendez-vous Point Address | Register Count |
 | ------------------ | ------------------------------- | -------------- |
-| 10.38.1.161 | 10.50.64.16 | 15
+| 10.38.1.161 | 10.50.64.16 | 15 |
 
 ### IP Sparse Mode VRFs
 

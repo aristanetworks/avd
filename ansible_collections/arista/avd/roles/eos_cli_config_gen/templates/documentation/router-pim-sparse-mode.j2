@@ -26,7 +26,7 @@
 {%             for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
 {%                 for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
 {%                     set register_count = router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count | arista.avd.default('-') %}
-| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {{ register_count }}
+| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {{ register_count }} |
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
