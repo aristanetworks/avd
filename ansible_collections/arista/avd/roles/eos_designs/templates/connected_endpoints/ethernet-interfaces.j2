@@ -12,14 +12,14 @@ ethernet_interfaces:
 {%             set adapter_settings = {} | combine(parent_profile | arista.avd.default({}),
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
-{%             set endpoint_ports = adapter.endpoint_ports | arista.avd.default(adapter.server_ports) %}
+{%             set endpoint_ports = adapter_settings.endpoint_ports | arista.avd.default(adapter_settings.server_ports) %}
 {%             set peer_type = connected_endpoints_keys[endpoint_key].type %}
 {%             set peer = connected_endpoint %}
-{%             for adapter_switch in adapter.switches %}
+{%             for adapter_switch in adapter_settings.switches %}
 {%                 if adapter_switch == inventory_hostname %}
-{%                     set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
+{%                     set channel_group_id = (adapter_settings.switch_ports[0] | regex_findall("\d") | join) %}
 {%                     set peer_interface = endpoint_ports[loop.index0] %}
-  {{ adapter.switch_ports[loop.index0] }}:
+  {{ adapter_settings.switch_ports[loop.index0] }}:
     peer: {{ peer }}
     peer_interface: {{ peer_interface }}
     peer_type: {{ peer_type }}
