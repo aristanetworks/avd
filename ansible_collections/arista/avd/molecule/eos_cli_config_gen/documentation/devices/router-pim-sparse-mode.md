@@ -106,7 +106,6 @@ interface Management1
 | ------------------ | ------------------------------- | -------------- |
 | 10.38.1.161 | 10.50.64.16 | 15
 
-
 ### IP Sparse Mode VRFs
 
 | VRF Name | Rendez-vous Point Address | Group Address |
