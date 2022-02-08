@@ -18,25 +18,27 @@ mlag_ibgp_peering_vrfs:
 
 # Specify RD type | Optional
 # Route Distinguisher (RD) for L2 / L3 services is set to <overlay_loopback>:<vni> per default.
-# By configuring evpn_rd_type the Administrator subfield (first part of RD) can be set to other values.
+# By configuring overlay_rd_type the Administrator subfield (first part of RD) can be set to other values.
 #
 # Note:
 # RD is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For loopback or 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-evpn_rd_type:
+# Old variable name "evpn_rd_type", supported for backward-compatibility.
+overlay_rd_type:
   admin_subfield: < "vtep_loopback" | "bgp_as" | < IPv4 Address > | <0-65535> | <0-4294967295> | default -> <overlay_loopback_ip> >
 
 # Specify RT type | Optional
 # Route Target (RT) for L2 / L3 services is set to <vni>:<vni> per default
-# By configuring evpn_rt_type the Administrator subfield (first part of RT) can be set to other values.
+# By configuring overlay_rt_type the Administrator subfield (first part of RT) can be set to other values.
 #
 # Note:
 # RT is a 48-bit value which is split into <16-bit>:<32-bit> or <32-bit>:<16-bit>.
 # For 32-bit ASN/number the VNI can only be a 16-bit number.
 # For 16-bit ASN/number the VNI can be a 32-bit number.
-evpn_rt_type:
-  admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <vni> >
+# Old variable name "evpn_rt_type", supported for backward-compatibility.
+overlay_rt_type:
+  admin_subfield: < "bgp_as" | <0-65535> | <0-4294967295> | default -> <mac_vrf_id> >
 
 # Internal vlan allocation order and range | Required
 internal_vlan_order:
@@ -79,10 +81,15 @@ tenants:
   # Networks services can be filtered by tenant name.
   < tenant_a >:
 
-    # VXLAN Network Identifier for MAC VRF | Required.
+    # Base number for MAC VRF VXLAN Network Identifier | Required with VXLAN
     # VXLAN VNI is derived from the base number with simple addition.
     # e.g. mac_vrf_vni_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
     mac_vrf_vni_base: < 10000-16770000 >
+
+    # Base number for MAC VRF RD/RT ID | Required unless mac_vrf_vni_based is set.
+    # ID is derived from the base number with simple addition.
+    # e.g. mac_vrf_id_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
+    mac_vrf_id_base: < 10000-16770000 | default -> <mac_vrf_vni_base> >
 
     # Base number for vlan_aware_bundle | Optional.
     # The "Assigned Number" part of RD/RT is derived from vrf_vni + vlan_aware_bundle_number_base.
@@ -108,6 +115,7 @@ tenants:
 
         # VRF ID | Optional (required if "vrf_vni" is not set)
         # vrf_id is used as default value for "vrf_vni" and "ospf.process_id" unless those are set.
+        # vrf_id is also preferred for VRF RD/RT ID before vrf_vni
         vrf_id: < 1-1024 >
 
         # IP Helper for DHCP relay
@@ -169,9 +177,13 @@ tenants:
           # SVI interface id and VLAN id. | Required
           < 1-4096 >:
 
-            # By default the vni will be derived from "mac_vrf_vni_base:"
+            # By default the vni will be derived from "mac_vrf_vni_base"
             # The vni_override allows us to override this value and statically define it. | Optional
             vni_override: < 1-16777215 >
+
+            # By default the MAC VRF RD/RT ID will be derived from "mac_vrf_id_base"
+            # The rt_override allows us to override this value and statically define it. | Optional
+            rt_override: < 1-16777215 | default -> vni_override >
 
             # SVI profile to apply
             # If variables are configured in profile AND SVI, SVI information will overwrite profile.
@@ -394,6 +406,10 @@ tenants:
         # By default the vni will be derived from "mac_vrf_vni_base:"
         # The vni_override, allows to override this value and statically define it.
         vni_override: < 1-16777215 >
+
+        # By default the MAC VRF RD/RT ID will be derived from "mac_vrf_id_base"
+        # The rt_override allows us to override this value and statically define it. | Optional
+        rt_override: < 1-16777215 | default -> vni_override >
 
         # VLAN name.
         name: < description >
