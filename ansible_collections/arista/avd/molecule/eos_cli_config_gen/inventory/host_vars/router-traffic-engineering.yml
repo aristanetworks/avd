@@ -1,0 +1,51 @@
+### Routing - Traffic Engineering ###
+router_traffic_engineering:
+  router_id:
+    ipv4: 10.0.0.1
+    ipv6: 2001:beef:cafe::1
+  segment_routing:
+    colored_tunnel_rib: true
+    policy_endpoint:
+      1.2.3.4:
+        color:
+          70810:
+            binding_sid: 970810
+            description: "SRTE POLICY FOR 1.2.3.4 COLOR 70810"
+            name: "SRTE-1.2.3.4-70810"
+            path_group:
+              - preference: 180
+                explicit_null_ipv4: true
+                explicit_null_ipv6: true
+                segment_list:
+                  - label_stack: "900002 900003 900005 900006"
+                    index: 200
+          80810:
+            description: "SRTE POLICY FOR 1.2.3.4 COLOR 80810"
+            name: "SRTE-1.2.3.4-80810"
+            path_group:
+              - preference: 100
+                segment_list:
+                  - label_stack: "900002 900008 900007 900006"
+                    index: 100
+                    weight: 20
+      5.6.7.8:
+        color:
+          20320:
+            binding_sid: 978320
+            path_group:
+              - preference: 80
+                explicit_null_ipv4: true
+                explicit_null_ipv6: false
+                segment_list:
+                  - label_stack: "900002 900003 900005 900006"
+                    index: 300
+                    weight: 120
+                  - label_stack: "900002 900004 900007 900006"
+                    index: 400
+                    weight: 220
+
+              - preference: 120
+                explicit_null_ipv6: true
+                segment_list:
+                  - label_stack: "900002 900008 900009 900006"
+                  - label_stack: "900002 900010 900011 900012"

@@ -1,0 +1,60 @@
+{# eos - Router Traffic Engineering #}
+{% if router_traffic_engineering is arista.avd.defined %}
+!
+router traffic-engineering
+{%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
+   segment-routing
+{%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
+      rib system-colored-tunnel-rib
+{%         endif %}
+{%         if router_traffic_engineering.segment_routing.policy_endpoint is arista.avd.defined %}
+{%              for endpoint in router_traffic_engineering.segment_routing.policy_endpoint | arista.avd.natural_sort %}
+{%                  for color in router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color | arista.avd.natural_sort %}
+      !
+      policy endpoint {{ endpoint }} color {{ color }}
+{%                      if router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].binding_sid is arista.avd.defined %}
+         binding-sid {{ router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].binding_sid }}
+{%                      endif %}
+{%                      if router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].name is arista.avd.defined %}
+         name {{ router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].name }}
+{%                      endif %}
+{%                      if router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].description is arista.avd.defined %}
+         description {{ router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].description }}
+{%                      endif %}
+{%                      for pathgroup in router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].path_group | arista.avd.natural_sort %}
+         !
+         path-group preference {{ pathgroup['preference'] }}
+{%                          if pathgroup['explicit_null_ipv4'] is arista.avd.defined(true) %}
+{%                              set expnull = "ipv4" %}
+{%                          endif %}
+{%                          if pathgroup['explicit_null_ipv6'] is arista.avd.defined(true) %}
+{%                              set expnull = "ipv6" %}
+{%                          endif %}
+{%                          if pathgroup['explicit_null_ipv4'] is arista.avd.defined(true) and pathgroup['explicit_null_ipv6'] is arista.avd.defined(true) %}
+{%                              set expnull = "ipv4 ipv6" %}
+{%                          endif %}
+{%                          if expnull is arista.avd.defined %}
+            explicit-null {{ expnull }}
+{%                          endif %}
+{%                          for labelstack in pathgroup['segment_list'] | arista.avd.natural_sort %}
+{%                              set stack = labelstack['label_stack'] %}
+{%                              if labelstack['weight'] is arista.avd.defined %}
+{%                                  set stack = stack ~ " weight " ~ labelstack['weight'] %}
+{%                              endif %}
+{%                              if labelstack['index'] is arista.avd.defined %}
+{%                                  set stack = stack ~ " index " ~ labelstack['index'] %}
+{%                              endif %}
+            segment-list label-stack {{ stack }}
+{%                          endfor %}
+{%                      endfor %}
+{%                  endfor %}
+{%              endfor %}
+{%         endif %}
+{%     endif %}
+{%         if router_traffic_engineering.router_id.ipv4 is arista.avd.defined %}
+   router-id ipv4 {{ router_traffic_engineering.router_id.ipv4 }}
+{%         endif %}
+{%         if router_traffic_engineering.router_id.ipv6 is arista.avd.defined %}
+   router-id ipv6 {{ router_traffic_engineering.router_id.ipv6 }}
+{%         endif %}
+{% endif %}

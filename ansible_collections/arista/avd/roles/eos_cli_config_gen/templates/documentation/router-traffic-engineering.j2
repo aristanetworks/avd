@@ -1,0 +1,72 @@
+{% if router_traffic_engineering is arista.avd.defined %}
+
+## Router Traffic-Engineering
+
+{%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
+### Segment Routing Summary
+
+- SRTE is enabled.
+
+{%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
+- system-colored-tunnel-rib is enabled
+{%         endif %}
+
+### SRTE Policies
+
+| Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
+| -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
+{%         if router_traffic_engineering.segment_routing.policy_endpoint is arista.avd.defined %}
+{%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoint | arista.avd.natural_sort %}
+{%                 for color in router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color | arista.avd.natural_sort %}
+{%                     if router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].name is arista.avd.defined %}
+{%                         set name = router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].name %}
+{%                     else %}
+{%                         set name = "Not set" %}
+{%                     endif %}
+{%                     if router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].description is arista.avd.defined %}
+{%                         set description = router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].description %}
+{%                     else %}
+{%                         set description = "Not set" %}
+{%                     endif %}
+{%                     for pathgroup in router_traffic_engineering.segment_routing.policy_endpoint[endpoint].color[color].path_group | arista.avd.natural_sort %}
+{%                         if pathgroup['preference'] is arista.avd.defined %}
+{%                             set pathgroup_preference = pathgroup['preference'] %}
+{%                         endif %}
+{%                         if pathgroup['explicit_null_ipv4'] is arista.avd.defined(true) %}
+{%                             set expnull = "ipv4" %}
+{%                         endif %}
+{%                         if pathgroup['explicit_null_ipv6'] is arista.avd.defined(true) %}
+{%                             set expnull = "ipv6" %}
+{%                         endif %}
+{%                         if pathgroup['explicit_null_ipv4'] is arista.avd.defined(true) and pathgroup['explicit_null_ipv6'] is arista.avd.defined(true) %}
+{%                             set expnull = "ipv4 ipv6" %}
+{%                         endif %}
+{%                         if expnull is not arista.avd.defined %}
+{%                             set expnull = "Not set" %}
+{%                         endif %}
+{%                         for labelstack in pathgroup['segment_list'] | arista.avd.natural_sort %}
+{%                             set stack = labelstack['label_stack'] %}
+{%                             if labelstack['index'] is arista.avd.defined %}
+{%                                 set index = labelstack['index'] %}
+{%                             else %}
+{%                                 set index = "Not set" %}
+{%                             endif %}
+{%                             if labelstack['weight'] is arista.avd.defined %}
+{%                                 set weight = labelstack['weight'] %}
+{%                             else %}
+{%                                 set weight = "Not set" %}
+{%                             endif %}
+| {{ endpoint }} | {{ color }} | {{ pathgroup_preference }} | {{ name }} | {{ description }} | {{ stack }} | {{ index }} | {{ weight }} | {{ expnull }} |
+{%                         endfor %}
+{%                     endfor %}
+{%                  endfor %}
+{%              endfor %}
+{%         endif %}
+
+### Segment Routing Traffic Engineering Device Configuration
+
+```eos
+{%     include 'eos/router-traffic-engineering.j2' %}
+```
+{%     endif %}
+{% endif %}
