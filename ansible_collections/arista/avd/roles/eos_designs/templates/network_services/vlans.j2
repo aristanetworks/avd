@@ -16,8 +16,8 @@ vlans:
                                                  tenant.enable_mlag_ibgp_peering_vrfs,
                                                  true) %}
 {%             if configure_mlag_ibgp_peering %}
-{%                 set bgp_vrf_vni = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) %}
-  {{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (bgp_vrf_vni - 1)) }}:
+{%                 set vrf_id_int = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) | int  %}
+  {{ vrf.mlag_ibgp_peering_vlan | arista.avd.default(mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     name: MLAG_iBGP_{{ vrf.name }}
     trunk_groups:
