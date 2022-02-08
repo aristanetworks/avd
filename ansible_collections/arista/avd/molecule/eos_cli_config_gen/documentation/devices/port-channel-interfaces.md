@@ -15,6 +15,8 @@
   - [IPv6 Routing](#ipv6-routing)
 - [BFD](#bfd)
   - [BFD Interfaces](#bfd-interfaces)
+- [MPLS](#mpls)
+  - [MPLS Interfaces](#mpls-interfaces)
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
@@ -257,6 +259,8 @@ interface Ethernet50
 | Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | routed | - | 10.1.2.3/31 | default | - | - | - | - |
 | Port-Channel9 | - | routed | - | 10.9.2.3/31 | default | - | - | - | - |
 | Port-Channel17 | PBR Description | routed | - | 192.0.2.3/31 | default | - | - | - | - |
+| Port-Channel113 | interface_with_mpls_enabled | routed | - | 172.31.128.9/31 | default | - | - | - | - |
+| Port-Channel114 | interface_with_mpls_disabled | routed | - | 172.31.128.10/31 | default | - | - | - | - |
 
 #### ISIS
 
@@ -508,6 +512,21 @@ interface Port-Channel112
    switchport mode trunk
    port-channel lacp fallback timeout 5
    port-channel lacp fallback individual
+!
+interface Port-Channel113
+   description interface_with_mpls_enabled
+   no switchport
+   ip address 172.31.128.9/31
+   mpls ip
+   mpls ldp interface
+   mpls ldp igp sync
+!
+interface Port-Channel114
+   description interface_with_mpls_disabled
+   no switchport
+   ip address 172.31.128.10/31
+   no mpls ip
+   no mpls ldp interface
 ```
 
 # Routing
@@ -539,6 +558,15 @@ interface Port-Channel112
 | Interface | Interval | Minimum RX | Multiplier |
 | --------- | -------- | ---------- | ---------- |
 | Port-Channel9 | 500 | 500 | 5 |
+
+# MPLS
+
+## MPLS Interfaces
+
+| Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
+| --------- | --------------- | ----------- | -------- |
+| Port-Channel113 | True | True | True |
+| Port-Channel114 | False | False | - |
 
 # Multicast
 

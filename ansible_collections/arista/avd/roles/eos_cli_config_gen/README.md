@@ -1189,6 +1189,11 @@ port_channel_interfaces:
     service_policy:
       pbr:
         input: < policy-map name >
+    mpls:
+      ip: < true | false >
+      ldp:
+        interface: < true | false >
+        igp_sync: < true | false >
     trunk_private_vlan_secondary: < true | false >
     pvlan_mapping: "< list of vlans as string >"
     vlan_translations:

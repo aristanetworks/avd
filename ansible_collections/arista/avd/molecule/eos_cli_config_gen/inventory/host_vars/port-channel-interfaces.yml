@@ -286,6 +286,25 @@ port_channel_interfaces:
     lacp_fallback_timeout: 5
     lacp_fallback_mode: individual
 
+  Port-Channel113:
+    description: interface_with_mpls_enabled
+    type: routed
+    ip_address: 172.31.128.9/31
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+        igp_sync: true
+
+  Port-Channel114:
+    description: interface_with_mpls_disabled
+    type: routed
+    ip_address: 172.31.128.10/31
+    mpls:
+      ip: false
+      ldp:
+        interface: false
+
 # Children interfaces
 ethernet_interfaces:
   Ethernet5:
