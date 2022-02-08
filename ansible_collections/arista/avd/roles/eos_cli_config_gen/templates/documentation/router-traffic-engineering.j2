@@ -59,14 +59,14 @@
 | {{ endpoint }} | {{ color }} | {{ pathgroup_preference }} | {{ name }} | {{ description }} | {{ stack }} | {{ index }} | {{ weight }} | {{ expnull }} |
 {%                         endfor %}
 {%                     endfor %}
-{%                  endfor %}
-{%              endfor %}
+{%                 endfor %}
+{%             endfor %}
 {%         endif %}
 
 ### Segment Routing Traffic Engineering Device Configuration
 
 ```eos
-{%     include 'eos/router-traffic-engineering.j2' %}
+{%         include 'eos/router-traffic-engineering.j2' %}
 ```
 {%     endif %}
 {% endif %}
