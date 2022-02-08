@@ -1913,7 +1913,6 @@ router_pim_sparse_mode:
             groups:
               - < group_prefix_1/mask >
               - < group_prefix_2/mask >
-          - address: < rp_address_2 >
 ```
 
 ### Monitoring

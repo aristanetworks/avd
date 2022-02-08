@@ -25,7 +25,8 @@
 | ------------------ | ------------------------------- | -------------- |
 {%             for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
 {%                 for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
-| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {% if router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count is arista.avd.defined %} {{ router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count }} | {% else %} - {% endif %}|
+{%                     set register_count = router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses[other_anycast_rp_address].register_count | arista.avd.default('-') %}
+| {{ anycast_rp }} | {{ other_anycast_rp_address }} | {{ register_count }}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
@@ -41,7 +42,7 @@
 {%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
 {%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%                     for group in rp_address.groups | arista.avd.natural_sort %}
-| {{ vrf.name }} | {{ rp_address.address }} | {{ group }} |
+| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_address.groups | join(', ') }} |
 {%                     endfor %}
 {%                 endfor %}
 {%             endif %}
