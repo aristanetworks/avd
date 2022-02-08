@@ -58,6 +58,8 @@ interface Management1
 | Console | informational |
 | Monitor | debugging |
 
+**Syslog facility value:** syslog
+
 ### Logging Servers and Features Device Configuration
 
 ```eos
