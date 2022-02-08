@@ -72,13 +72,13 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '14:14'
+          - '65105:14'
           - 65000:456
           vpn-ipv4:
           - 65000:123
         export:
           evpn:
-          - '14:14'
+          - '65105:14'
           - 65000:789
           vpn-ipv4:
           - 65000:123
@@ -140,10 +140,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '15:15'
+          - '65105:15'
         export:
           evpn:
-          - '15:15'
+          - '65105:15'
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -152,10 +152,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '20:20'
+          - '65105:20'
         export:
           evpn:
-          - '20:20'
+          - '65105:20'
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -164,10 +164,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '21:21'
+          - '65105:21'
         export:
           evpn:
-          - '21:21'
+          - '65105:21'
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -176,10 +176,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '31:31'
+          - '65105:31'
         export:
           evpn:
-          - '31:31'
+          - '65105:31'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -187,7 +187,7 @@ router_bgp:
       rd: 192.168.254.15:14
       route_targets:
         both:
-        - '14:14'
+        - '65105:14'
       redistribute_routes:
       - learned
       vlan: 150
@@ -195,7 +195,7 @@ router_bgp:
       rd: 192.168.254.15:21
       route_targets:
         both:
-        - '21:21'
+        - '65105:21'
       redistribute_routes:
       - learned
       vlan: 250
@@ -203,7 +203,7 @@ router_bgp:
       rd: 192.168.254.15:31
       route_targets:
         both:
-        - '31:31'
+        - '65105:31'
       redistribute_routes:
       - learned
       vlan: 350

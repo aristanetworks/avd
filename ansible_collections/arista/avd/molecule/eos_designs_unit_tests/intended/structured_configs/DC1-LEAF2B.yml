@@ -72,10 +72,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '12:12'
+          - '100000:12'
         export:
           evpn:
-          - '12:12'
+          - '100000:12'
       redistribute_routes:
       - connected
     Tenant_A_DB_Zone:
@@ -84,10 +84,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '13:13'
+          - '100000:13'
         export:
           evpn:
-          - '13:13'
+          - '100000:13'
       redistribute_routes:
       - connected
     Tenant_A_OP_Zone:
@@ -96,10 +96,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '10:10'
+          - '100000:10'
         export:
           evpn:
-          - '10:10'
+          - '100000:10'
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -108,10 +108,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '11:11'
+          - '100000:11'
         export:
           evpn:
-          - '11:11'
+          - '100000:11'
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -120,10 +120,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '20:20'
+          - '100000:20'
         export:
           evpn:
-          - '20:20'
+          - '100000:20'
       redistribute_routes:
       - connected
     Tenant_C_OP_Zone:
@@ -132,10 +132,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '30:30'
+          - '100000:30'
         export:
           evpn:
-          - '30:30'
+          - '100000:30'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -143,7 +143,7 @@ router_bgp:
       rd: '65001:12'
       route_targets:
         both:
-        - '12:12'
+        - '100000:12'
       redistribute_routes:
       - learned
       vlan: 130-131
@@ -151,7 +151,7 @@ router_bgp:
       rd: '65001:13'
       route_targets:
         both:
-        - '13:13'
+        - '100000:13'
       redistribute_routes:
       - learned
       vlan: 140-141
@@ -159,7 +159,7 @@ router_bgp:
       rd: '65001:10'
       route_targets:
         both:
-        - '10:10'
+        - '100000:10'
       redistribute_routes:
       - learned
       vlan: 110-111
@@ -167,7 +167,7 @@ router_bgp:
       rd: '65001:11'
       route_targets:
         both:
-        - '11:11'
+        - '100000:11'
       redistribute_routes:
       - learned
       vlan: 120-121
@@ -176,7 +176,7 @@ router_bgp:
       rd: 65001:10160
       route_targets:
         both:
-        - 10160:10160
+        - 100000:10160
       redistribute_routes:
       - learned
       vlan: 160
@@ -185,7 +185,7 @@ router_bgp:
       rd: 65001:10161
       route_targets:
         both:
-        - 10161:10161
+        - 100000:10161
       redistribute_routes:
       - learned
       vlan: 161
@@ -193,7 +193,7 @@ router_bgp:
       rd: '65001:20'
       route_targets:
         both:
-        - '20:20'
+        - '100000:20'
       redistribute_routes:
       - learned
       vlan: 210-211
@@ -201,7 +201,7 @@ router_bgp:
       rd: '65001:30'
       route_targets:
         both:
-        - '30:30'
+        - '100000:30'
       redistribute_routes:
       - learned
       vlan: 310-311
