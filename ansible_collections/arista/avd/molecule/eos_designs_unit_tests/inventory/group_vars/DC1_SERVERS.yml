@@ -389,12 +389,12 @@ servers:
           mode: active
           enabled: false
 
-  server18_monitoring_session_source:
+  server18_monitoring_session_source_phys_interfaces:
     rack: RackC
     adapters:
-      - endpoint_ports: [ Eth1 ]
-        switch_ports: [ Ethernet25, Ethernet26 ]
-        switches: [ DC1-SVC3A ]
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet25, Ethernet25 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
@@ -410,12 +410,52 @@ servers:
             source_settings:
               direction: tx
 
-  server19_monitoring_session_destination:
+  server18_monitoring_session_source_po:
     rack: RackC
     adapters:
-      - endpoint_ports: [ Eth1 ]
-        switch_ports: [ Ethernet27, Ethernet28 ]
+      - server_ports: [ Eth3, Eth4 ]
+        switch_ports: [ Ethernet27, Ethernet27 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
+        profile: TENANT_A
+        enabled: true
+        port_channel:
+          description: server18_monitoring_session_source_po
+          mode: active
+          enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: mac
+                name: MyMacACL
+                priority: 5
+
+  server18_monitoring_session_source_phys_interface:
+    rack: RackC
+    adapters:
+      - server_ports: [ Eth5 ]
+        switch_ports: [ Ethernet28 ]
         switches: [ DC1-SVC3A ]
+        profile: TENANT_A
+        enabled: true
+        monitor_sessions:
+          - name: MonitoringSessionServer18WithDest
+            role: source
+            source_settings:
+              direction: tx
+              access_group:
+                type: mac
+                name: MyMacACL
+                priority: 5
+
+  server19_monitoring_session_destination_phys:
+    rack: RackC
+    adapters:
+      - endpoint_ports: [ Eth1, Eth2 ]
+        switch_ports: [ Ethernet26, Ethernet26 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
             role: destination
@@ -432,11 +472,11 @@ servers:
                 enabled: true
                 size: 20
 
-  server20_monitoring_session_destination:
+  server20_monitoring_session_destination_phys:
     rack: RackC
     adapters:
       - endpoint_ports: [ Eth1 ]
-        switch_ports: [ Ethernet40, Ethernet41 ]
+        switch_ports: [ Ethernet40 ]
         switches: [ DC1-SVC3A ]
         monitor_sessions:
           - name: MonitoringSessionServer18WithDest
@@ -454,16 +494,16 @@ servers:
                 enabled: true
                 size: 20
 
-  server21_port_channel_monitoring_session_destination:
+  server21_monitoring_session_destination_po:
     rack: RackC
     adapters:
       - server_ports: [ Eth1, Eth2 ]
-        switch_ports: [ Ethernet42, Ethernet43 ]
-        switches: [ DC1-SVC3A ]
+        switch_ports: [ Ethernet42, Ethernet42 ]
+        switches: [ DC1-SVC3A, DC1-SVC3B ]
         profile: TENANT_A
         enabled: true
         port_channel:
-          description: server21_port_channel_monitoring_session_destination
+          description: server21_monitoring_session_destination_po
           mode: active
           enabled: true
         monitor_sessions:

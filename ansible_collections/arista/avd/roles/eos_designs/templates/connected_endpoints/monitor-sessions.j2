@@ -7,8 +7,8 @@ monitor_sessions:
   - name: {{ sname }}
     sources:
 {%             for session in group | selectattr('role', 'equalto', 'source') %}
-{%                 if session.interfaces is arista.avd.defined %}
-      - name: {{ session.interfaces | join(", ") }}
+{%                 if session.interface is arista.avd.defined %}
+      - name: {{ session.interface }}
 {%                     if session.source_settings is arista.avd.defined %}
 {%                         if session.source_settings.direction is arista.avd.defined %}
         direction: {{ session.source_settings.direction }}
@@ -29,36 +29,40 @@ monitor_sessions:
 {%                 endif %}
 {%             endfor %}
     destinations:
-{%             set merged_settings = group | selectattr('role', 'equalto', 'destination') | combine(list_merge='append') %}
-{%             if merged_settings.interfaces is arista.avd.defined %}
-      {{ merged_settings.interfaces }}
-{%             endif %}
-{%             if merged_settings.session_settings is arista.avd.defined %}
-{%                 if merged_settings.session_settings.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
-    encapsulation_gre_metadata_tx: {{ merged_settings.session_settings.encapsulation_gre_metadata_tx }}
+{%             set ns = namespace() %}
+{%             for session in group | selectattr('role', 'equalto', 'destination') %}
+{%                 if session.interface is arista.avd.defined %}
+      - {{session.interface}}
 {%                 endif %}
-{%                 if merged_settings.session_settings.header_remove_size is arista.avd.defined %}
-    header_remove_size: {{ merged_settings.session_settings.header_remove_size }}
+{%                 set ns.merged_settings = {} | combine(ns.merged_settings | arista.avd.default({}),
+                                                         session, recursive=true, list_merge='append') %}
+{%             endfor %}
+{%             if ns.merged_settings.session_settings is arista.avd.defined %}
+{%                 if ns.merged_settings.session_settings.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
+    encapsulation_gre_metadata_tx: {{ ns.merged_settings.session_settings.encapsulation_gre_metadata_tx }}
 {%                 endif %}
-{%                 if merged_settings.session_settings.access_group.type is arista.avd.defined and merged_settings.session_settings.access_group.name is arista.avd.defined %}
+{%                 if ns.merged_settings.session_settings.header_remove_size is arista.avd.defined %}
+    header_remove_size: {{ ns.merged_settings.session_settings.header_remove_size }}
+{%                 endif %}
+{%                 if ns.merged_settings.session_settings.access_group.type is arista.avd.defined and ns.merged_settings.session_settings.access_group.name is arista.avd.defined %}
     access_group:
-      type: {{ merged_settings.session_settings.access_group.type }}
-      name: {{ merged_settings.session_settings.access_group.name }}
+      type: {{ ns.merged_settings.session_settings.access_group.type }}
+      name: {{ ns.merged_settings.session_settings.access_group.name }}
 {%                 endif %}
-{%                 if merged_settings.session_settings.rate_limit_per_ingress_chip is arista.avd.defined %}
-    rate_limit_per_ingress_chip: {{ merged_settings.session_settings.rate_limit_per_ingress_chip }}
+{%                 if ns.merged_settings.session_settings.rate_limit_per_ingress_chip is arista.avd.defined %}
+    rate_limit_per_ingress_chip: {{ ns.merged_settings.session_settings.rate_limit_per_ingress_chip }}
 {%                 endif %}
-{%                 if merged_settings.session_settings.rate_limit_per_egress_chip is arista.avd.defined %}
-    rate_limit_per_egress_chip: {{ merged_settings.session_settings.rate_limit_per_egress_chip }}
+{%                 if ns.merged_settings.session_settings.rate_limit_per_egress_chip is arista.avd.defined %}
+    rate_limit_per_egress_chip: {{ ns.merged_settings.session_settings.rate_limit_per_egress_chip }}
 {%                 endif %}
-{%                 if merged_settings.session_settings.sample is arista.avd.defined %}
-    sample: {{ merged_settings.session_settings.sample }}
+{%                 if ns.merged_settings.session_settings.sample is arista.avd.defined %}
+    sample: {{ ns.merged_settings.session_settings.sample }}
 {%                 endif %}
-{%                 if merged_settings.session_settings.truncate.enabled is arista.avd.defined(true) %}
+{%                 if ns.merged_settings.session_settings.truncate.enabled is arista.avd.defined(true) %}
     truncate:
-      enabled: {{ merged_settings.session_settings.truncate.enabled }}
-{%                     if merged_settings.session_settings.truncate.size is arista.avd.defined %}
-      size: {{ merged_settings.session_settings.truncate.size }}
+      enabled: {{ ns.merged_settings.session_settings.truncate.enabled }}
+{%                     if ns.merged_settings.session_settings.truncate.size is arista.avd.defined %}
+      size: {{ ns.merged_settings.session_settings.truncate.size }}
 {%                     endif %}
 {%                 endif %}
 {%             endif %}

@@ -897,12 +897,20 @@ port_channel_interfaces:
     mode: access
     vlans: 110
     mlag: 24
-  Port-Channel42:
-    description: server21_port_channel_monitoring_session_destination_server21_port_channel_monitoring_session_destination
+  Port-Channel27:
+    description: server18_monitoring_session_source_po_server18_monitoring_session_source_po
     type: switched
     shutdown: false
     mode: access
     vlans: 110
+    mlag: 27
+  Port-Channel42:
+    description: server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    mlag: 42
 ethernet_interfaces:
   Ethernet5:
     peer: DC1-SVC3B
@@ -1301,34 +1309,55 @@ ethernet_interfaces:
     channel_group:
       id: 24
       mode: active
+  Ethernet28:
+    peer: server18_monitoring_session_source_phys_interface
+    peer_interface: Eth5
+    peer_type: server
+    description: server18_monitoring_session_source_phys_interface_Eth5
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
   Ethernet25:
-    peer: server18_monitoring_session_source
+    peer: server18_monitoring_session_source_phys_interfaces
     peer_interface: Eth1
     peer_type: server
-    description: server18_monitoring_session_source_Eth1
+    description: server18_monitoring_session_source_phys_interfaces_Eth1
     type: switched
     shutdown: false
     mode: access
     vlans: 110
   Ethernet27:
-    peer: server19_monitoring_session_destination
+    peer: server18_monitoring_session_source_po
+    peer_interface: Eth3
+    peer_type: server
+    description: server18_monitoring_session_source_po_Eth3
+    type: switched
+    shutdown: false
+    mode: access
+    vlans: 110
+    channel_group:
+      id: 27
+      mode: active
+  Ethernet26:
+    peer: server19_monitoring_session_destination_phys
     peer_interface: Eth1
     peer_type: server
-    description: server19_monitoring_session_destination_Eth1
+    description: server19_monitoring_session_destination_phys_Eth1
     type: switched
     shutdown: false
   Ethernet40:
-    peer: server20_monitoring_session_destination
+    peer: server20_monitoring_session_destination_phys
     peer_interface: Eth1
     peer_type: server
-    description: server20_monitoring_session_destination_Eth1
+    description: server20_monitoring_session_destination_phys_Eth1
     type: switched
     shutdown: false
   Ethernet42:
-    peer: server21_port_channel_monitoring_session_destination
+    peer: server21_monitoring_session_destination_po
     peer_interface: Eth1
     peer_type: server
-    description: server21_port_channel_monitoring_session_destination_Eth1
+    description: server21_monitoring_session_destination_po_Eth1
     type: switched
     shutdown: false
     mode: access
@@ -1456,17 +1485,27 @@ vxlan_interface:
 monitor_sessions:
 - name: MonitoringSessionServer18WithDest
   sources:
-  - name: Ethernet25, Ethernet26
+  - name: Ethernet28
+    direction: tx
+    access_group:
+      type: mac
+      name: MyMacACL
+      priority: 5
+  - name: Ethernet25
     direction: rx
     access_group:
       type: ip
       name: MyIpACL
       priority: 5
+  - name: Port-Channel27
+    direction: tx
+    access_group:
+      type: mac
+      name: MyMacACL
+      priority: 5
   destinations:
-  - Ethernet27
-  - Ethernet28
+  - Ethernet26
   - Ethernet40
-  - Ethernet41
   - Port-Channel42
   header_remove_size: 200
   access_group:

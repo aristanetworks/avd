@@ -130,10 +130,12 @@ l3leaf,DC1-SVC3A,Ethernet21,server,server14_explicitly_enabled_interfaces,Eth1
 l3leaf,DC1-SVC3A,Ethernet22,server,server15_port_channel_with_disabled_phy_interfaces,Eth1
 l3leaf,DC1-SVC3A,Ethernet23,server,server16_port_channel_with_disabled_port_channel,Eth1
 l3leaf,DC1-SVC3A,Ethernet24,server,server17_port_channel_with_disabled_phy_and_po_interfaces,Eth1
-l3leaf,DC1-SVC3A,Ethernet25,server,server18_monitoring_session_source,Eth1
-l3leaf,DC1-SVC3A,Ethernet27,server,server19_monitoring_session_destination,Eth1
-l3leaf,DC1-SVC3A,Ethernet40,server,server20_monitoring_session_destination,Eth1
-l3leaf,DC1-SVC3A,Ethernet42,server,server21_port_channel_monitoring_session_destination,Eth1
+l3leaf,DC1-SVC3A,Ethernet25,server,server18_monitoring_session_source_phys_interfaces,Eth1
+l3leaf,DC1-SVC3A,Ethernet26,server,server19_monitoring_session_destination_phys,Eth1
+l3leaf,DC1-SVC3A,Ethernet27,server,server18_monitoring_session_source_po,Eth3
+l3leaf,DC1-SVC3A,Ethernet28,server,server18_monitoring_session_source_phys_interface,Eth5
+l3leaf,DC1-SVC3A,Ethernet40,server,server20_monitoring_session_destination_phys,Eth1
+l3leaf,DC1-SVC3A,Ethernet42,server,server21_monitoring_session_destination_po,Eth1
 l3leaf,DC1-SVC3B,Ethernet1,spine,DC1-SPINE1,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet2,spine,DC1-SPINE2,Ethernet5
 l3leaf,DC1-SVC3B,Ethernet3,spine,DC1-SPINE3,Ethernet5
@@ -156,3 +158,7 @@ l3leaf,DC1-SVC3B,Ethernet21,server,server14_explicitly_enabled_interfaces,Eth2
 l3leaf,DC1-SVC3B,Ethernet22,server,server15_port_channel_with_disabled_phy_interfaces,Eth2
 l3leaf,DC1-SVC3B,Ethernet23,server,server16_port_channel_with_disabled_port_channel,Eth2
 l3leaf,DC1-SVC3B,Ethernet24,server,server17_port_channel_with_disabled_phy_and_po_interfaces,Eth2
+l3leaf,DC1-SVC3B,Ethernet25,server,server18_monitoring_session_source_phys_interfaces,Eth2
+l3leaf,DC1-SVC3B,Ethernet26,server,server19_monitoring_session_destination_phys,Eth2
+l3leaf,DC1-SVC3B,Ethernet27,server,server18_monitoring_session_source_po,Eth4
+l3leaf,DC1-SVC3B,Ethernet42,server,server21_monitoring_session_destination_po,Eth2

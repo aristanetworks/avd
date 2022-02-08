@@ -17,9 +17,10 @@ ethernet_interfaces:
 {%             set peer = connected_endpoint %}
 {%             for adapter_switch in adapter.switches %}
 {%                 if adapter_switch == inventory_hostname %}
-{%                     if adapter_settings.monitor_sessions is arista.avd.defined %}
+{%                     if adapter_settings.monitor_sessions is arista.avd.defined and adapter_settings.port_channel.mode is not arista.avd.defined %}
+{%                         set switch_port = adapter_settings.switch_ports[loop.index0] %}
 {%                         for monitor_session in adapter_settings.monitor_sessions %}
-{%                             do monitor_session.update({'interfaces': adapter.switch_ports}) %}
+{%                             do monitor_session.update({'interface': switch_port}) %}
 {%                             do monitor_sessions_data.append(monitor_session) %}
 {%                         endfor %}
 {%                     endif %}

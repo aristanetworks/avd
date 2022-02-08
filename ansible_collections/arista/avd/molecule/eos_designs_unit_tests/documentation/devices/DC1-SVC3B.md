@@ -11,6 +11,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+  - [Monitor Sessions](#monitor-sessions)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -200,6 +201,51 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-SVC3B
+```
+
+## Monitor Sessions
+
+### Monitor Sessions Summary
+
+#### MonitoringSessionServer18WithDest
+
+##### MonitoringSessionServer18WithDest Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet25 | rx | ip | MyIpACL | 5 |
+| Port-Channel27 | tx | mac | MyMacACL | 5 |
+
+##### MonitoringSessionServer18WithDest Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Ethernet26, Port-Channel42 |
+| Encapsulation Gre Metadata Tx | True |
+| Header Remove Size | 20 |
+| Access Group Type | ip |
+| Access Group Name | ip_acl |
+| Rate Limit per Ingress Chip | 30 bps |
+| Rate Limit per Egress Chip | 30 bps |
+| Sample | 10 |
+| Truncate Enabled | True |
+| Truncate Size | 20 |
+
+### Monitor Sessions Configuration
+
+```eos
+!
+monitor session MonitoringSessionServer18WithDest source Ethernet25 rx ip access-group MyIpACL priority 5
+monitor session MonitoringSessionServer18WithDest source Port-Channel27 tx mac access-group MyMacACL priority 5
+monitor session MonitoringSessionServer18WithDest destination Ethernet26
+monitor session MonitoringSessionServer18WithDest destination Port-Channel42
+monitor session MonitoringSessionServer18WithDest encapsulation gre metadata tx
+monitor session MonitoringSessionServer18WithDest header remove size 20
+monitor session MonitoringSessionServer18WithDest ip access-group ip_acl
+monitor session MonitoringSessionServer18WithDest rate-limit per-ingress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest rate-limit per-egress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest sample 10
+monitor session MonitoringSessionServer18WithDest truncate size 20
 ```
 
 # MLAG
@@ -431,6 +477,10 @@ vlan 4092
 | Ethernet22 | server15_port_channel_with_disabled_phy_interfaces_Eth2 | *access | *110 | *- | *- | 22 |
 | Ethernet23 | server16_port_channel_with_disabled_port_channel_Eth2 | *access | *110 | *- | *- | 23 |
 | Ethernet24 | server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2 | *access | *110 | *- | *- | 24 |
+| Ethernet25 |  server18_monitoring_session_source_phys_interfaces_Eth2 | access | 110 | - | - | - |
+| Ethernet26 |  server19_monitoring_session_destination_phys_Eth2 | access | - | - | - | - |
+| Ethernet27 | server18_monitoring_session_source_po_Eth4 | *access | *110 | *- | *- | 27 |
+| Ethernet42 | server21_monitoring_session_destination_po_Eth2 | *access | *110 | *- | *- | 42 |
 
 *Inherited from Port-Channel Interface
 
@@ -616,6 +666,28 @@ interface Ethernet24
    description server17_port_channel_with_disabled_phy_and_po_interfaces_Eth2
    shutdown
    channel-group 24 mode active
+!
+interface Ethernet25
+   description server18_monitoring_session_source_phys_interfaces_Eth2
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet26
+   description server19_monitoring_session_destination_phys_Eth2
+   no shutdown
+   switchport
+!
+interface Ethernet27
+   description server18_monitoring_session_source_po_Eth4
+   no shutdown
+   channel-group 27 mode active
+!
+interface Ethernet42
+   description server21_monitoring_session_destination_po_Eth2
+   no shutdown
+   channel-group 42 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -636,6 +708,8 @@ interface Ethernet24
 | Port-Channel22 | server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces | switched | access | 110 | - | - | - | - | 22 | - |
 | Port-Channel23 | server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel | switched | access | 110 | - | - | - | - | 23 | - |
 | Port-Channel24 | server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces | switched | access | 110 | - | - | - | - | 24 | - |
+| Port-Channel27 | server18_monitoring_session_source_po_server18_monitoring_session_source_po | switched | access | 110 | - | - | - | - | 27 | - |
+| Port-Channel42 | server21_monitoring_session_destination_po_server21_monitoring_session_destination_po | switched | access | 110 | - | - | - | - | 42 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -759,6 +833,20 @@ interface Port-Channel24
    switchport
    switchport access vlan 110
    mlag 24
+!
+interface Port-Channel27
+   description server18_monitoring_session_source_po_server18_monitoring_session_source_po
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 27
+!
+interface Port-Channel42
+   description server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 42
 ```
 
 ## Loopback Interfaces
