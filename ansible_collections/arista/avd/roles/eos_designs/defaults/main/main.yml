@@ -65,7 +65,7 @@ isis_maximum_paths: 4
 bgp_maximum_paths: 4
 bgp_ecmp: 4
 
-vxlan_vlan_aware_bundles: false
+evpn_vlan_aware_bundles: false
 
 default_igmp_snooping_enabled: true
 

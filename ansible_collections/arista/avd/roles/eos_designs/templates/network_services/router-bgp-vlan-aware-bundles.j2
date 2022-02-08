@@ -1,6 +1,7 @@
 {# tenant router bgp evpn configuration - MAC-VRF VLAN Aware bundles #}
   vlan_aware_bundles:
-{% if vxlan_vlan_aware_bundles is arista.avd.defined(true) %}
+{% set evpn_vlan_aware_bundles = vxlan_vlan_aware_bundles | arista.avd.default(evpn_vlan_aware_bundles, false) %}
+{% if evpn_vlan_aware_bundles == true %}
 {%     for tenant in network_services_data.tenants %}
 {%         for vrf in tenant.vrfs %}
 {%             if vrf.svis | length > 0 %}
