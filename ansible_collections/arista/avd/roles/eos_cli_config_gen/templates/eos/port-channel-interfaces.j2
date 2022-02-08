@@ -289,6 +289,19 @@ interface {{ port_channel_interface }}
 {%     if port_channel_interfaces[port_channel_interface].service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ port_channel_interfaces[port_channel_interface].service_policy.pbr.input }}
 {%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].mpls.ip is arista.avd.defined(true) %}
+   mpls ip
+{%     elif port_channel_interfaces[port_channel_interface].mpls.ip is arista.avd.defined(false) %}
+   no mpls ip
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].mpls.ldp.interface is arista.avd.defined(true) %}
+   mpls ldp interface
+{%     elif port_channel_interfaces[port_channel_interface].mpls.ldp.interface is arista.avd.defined(false) %}
+   no mpls ldp interface
+{%     endif %}
+{%     if port_channel_interfaces[port_channel_interface].mpls.ldp.igp_sync is arista.avd.defined(true) %}
+   mpls ldp igp sync
+{%     endif %}
 {%     if port_channel_interfaces[port_channel_interface].isis_enable is arista.avd.defined %}
    isis enable {{ port_channel_interfaces[port_channel_interface].isis_enable }}
 {%     endif %}
