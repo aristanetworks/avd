@@ -89,61 +89,52 @@ interface Management1
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Enabled |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 | Fast-leave | True |
-| Interface restart query | 500 |
+| Interface Restart Query | 500 |
 | Proxy | True |
-| Restart query interval | 30 |
-| Robustness variable | 2 |
+| Restart Query Interval | 30 |
+| Robustness Variable | 2 |
 
-| Global Querier Settings | Values |
-| ----------------------- | ------ |
+| Querier Setting | Value |
+| --------------- | ----- |
 | Address | 10.10.10.1 |
 | Enabled | True |
-| Last member query count | 2 |
-| Last member query interval | 5 |
-| Max response time | 10 |
-| Query interval | 40 |
-| Startup query count | 2 |
-| Startup query interval | 20 |
+| Last Member Query Count | 2 |
+| Last Member Query Interval | 5 |
+| Max Response Time | 10 |
+| Query Interval | 40 |
+| Startup Query Count | 2 |
+| Startup Query Interval | 20 |
 | Version | 3 |
 
-#### IP IGMP Snooping Vlan 23 Settings Summary
+| Vlan | IGMP Snooping |
+| ---- | ------------- |
+| 23 | Enabled |
+| 24 | Enabled |
+| 25 | Disabled |
 
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Enabled |
+#### IP IGMP Snooping Vlan 23 Summary
+
+| Setting | Value |
+| ------- | ----- |
 | Fast-leave | True |
-| Max groups | 20 |
+| Max Groups | 20 |
 | Proxy | True |
 
-| Vlan Querier Settings | Values |
-| --------------------- | ------ |
+| Querier Setting | Value |
+| --------------- | ----- |
 | Address | 10.10.23.1 |
 | Enabled | True |
-| Last member query count | 2 |
-| Last member query interval | 5 |
-| Max response time | 10 |
-| Query interval | 40 |
-| Startup query count | 2 |
-| Startup query interval | 20 |
+| Last Member Query Count | 2 |
+| Last Member Query Interval | 5 |
+| Max Response Time | 10 |
+| Query Interval | 40 |
+| Startup Query Count | 2 |
+| Startup Query Interval | 20 |
 | Version | 3 |
-
-#### IP IGMP Snooping Vlan 24 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Enabled |
-| Fast-leave | False |
-| Proxy | False |
-
-#### IP IGMP Snooping Vlan 25 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 
@@ -167,8 +158,8 @@ ip igmp snooping vlan 23 querier version 3
 ip igmp snooping vlan 23 max-groups 20
 ip igmp snooping vlan 23 fast-leave
 ip igmp snooping vlan 24
-no ip igmp snooping vlan 24 fast-leave
 no ip igmp snooping vlan 25
+no ip igmp snooping vlan 25 fast-leave
 ip igmp snooping querier
 ip igmp snooping querier address 10.10.10.1
 ip igmp snooping querier query-interval 40
@@ -179,9 +170,9 @@ ip igmp snooping querier startup-query-interval 20
 ip igmp snooping querier startup-query-count 2
 ip igmp snooping querier version 3
 !
-ip igmp snooping vlan 23 proxy
-no ip igmp snooping vlan 24 proxy
 ip igmp snooping proxy
+ip igmp snooping vlan 23 proxy
+no ip igmp snooping vlan 25 proxy
 ```
 
 # Filters

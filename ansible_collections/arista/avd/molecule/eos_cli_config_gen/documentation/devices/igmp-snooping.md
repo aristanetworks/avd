@@ -119,9 +119,9 @@ vlan 3010
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Disabled |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

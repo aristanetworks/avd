@@ -459,17 +459,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Enabled |
-| Fast-leave | True |
-| Proxy | False |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 
-#### IP IGMP Snooping Vlan 120 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Disabled |
+| Vlan | IGMP Snooping |
+| ---- | ------------- |
+| 120 | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

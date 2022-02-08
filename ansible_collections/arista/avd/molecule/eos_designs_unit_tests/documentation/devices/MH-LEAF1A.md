@@ -635,12 +635,15 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
+!
+ip igmp snooping
 ```
 
 # Filters

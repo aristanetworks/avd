@@ -392,11 +392,9 @@ ip route 0.0.0.0/0 172.21.110.1
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Enabled |
-| Fast-leave | True |
-| Proxy | False |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 
 ### IP IGMP Snooping Device Configuration
 

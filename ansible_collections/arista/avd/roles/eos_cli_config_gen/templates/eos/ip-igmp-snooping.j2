@@ -8,6 +8,9 @@ no ip igmp snooping
 ip igmp snooping
 {%         endif %}
 {%         set proxy_cli = [] %}
+{%         if ip_igmp_snooping.proxy is arista.avd.defined(true) %}
+{%             do proxy_cli.append("ip igmp snooping proxy") %}
+{%         endif %}
 {%         if ip_igmp_snooping.robustness_variable is arista.avd.defined %}
 ip igmp snooping robustness-variable {{ ip_igmp_snooping.robustness_variable }}
 {%         endif %}
@@ -106,9 +109,6 @@ ip igmp snooping querier startup-query-count {{ ip_igmp_snooping.querier.startup
 {%             if ip_igmp_snooping.querier.version is arista.avd.defined %}
 ip igmp snooping querier version {{ ip_igmp_snooping.querier.version }}
 {%             endif %}
-{%         endif %}
-{%         if ip_igmp_snooping.proxy is arista.avd.defined(true) %}
-{%             do proxy_cli.append("ip igmp snooping proxy") %}
 {%         endif %}
 {%         if proxy_cli | length > 0 %}
 !

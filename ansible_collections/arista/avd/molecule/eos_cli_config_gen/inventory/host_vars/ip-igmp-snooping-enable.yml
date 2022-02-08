@@ -6,6 +6,17 @@ ip_igmp_snooping:
   restart_query_interval: 30
   interface_restart_query: 500
   fast_leave: true
+  querier:
+    enabled: true
+    address: 10.10.10.1
+    query_interval: 40
+    max_response_time: 10
+    last_member_query_interval: 5
+    last_member_query_count: 2
+    startup_query_interval: 20
+    startup_query_count: 2
+    version: 3
+  proxy: true
   vlans:
     23:
       enabled: true
@@ -24,18 +35,8 @@ ip_igmp_snooping:
       proxy: true
     24:
       enabled: true
-      fast_leave: false
-      proxy: false
     25:
       enabled: false
-  querier:
-    enabled: true
-    address: 10.10.10.1
-    query_interval: 40
-    max_response_time: 10
-    last_member_query_interval: 5
-    last_member_query_count: 2
-    startup_query_interval: 20
-    startup_query_count: 2
-    version: 3
-  proxy: true
+      # Settings not documented if not enabled
+      fast_leave: false
+      proxy: false

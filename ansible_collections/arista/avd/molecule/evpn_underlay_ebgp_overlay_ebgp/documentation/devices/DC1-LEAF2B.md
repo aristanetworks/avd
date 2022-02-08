@@ -1126,29 +1126,15 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Enabled |
-| Fast-leave | True |
-| Proxy | False |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 
-#### IP IGMP Snooping Vlan 120 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Disabled |
-
-#### IP IGMP Snooping Vlan 160 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Enabled |
-
-#### IP IGMP Snooping Vlan 161 Settings Summary
-
-| Settings | Values |
-| -------- | ------ |
-| IGMP snooping | Disabled |
+| Vlan | IGMP Snooping |
+| ---- | ------------- |
+| 120 | Disabled |
+| 160 | Enabled |
+| 161 | Disabled |
 
 ### IP IGMP Snooping Device Configuration
 

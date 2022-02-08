@@ -620,11 +620,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-| Global Settings | Values |
-| --------------- | ------ |
-| IGMP snooping | Enabled |
-| Fast-leave | True |
-| Proxy | False |
+| Setting | Value |
+| ------- | ----- |
+| IGMP Snooping | Enabled |
 
 ### IP IGMP Snooping Device Configuration
 
