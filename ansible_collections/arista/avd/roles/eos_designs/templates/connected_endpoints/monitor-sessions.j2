@@ -32,7 +32,7 @@ monitor_sessions:
 {%             set ns = namespace() %}
 {%             for session in group | selectattr('role', 'equalto', 'destination') %}
 {%                 if session.interface is arista.avd.defined %}
-      - {{session.interface}}
+      - {{ session.interface }}
 {%                 endif %}
 {%                 set ns.merged_settings = {} | combine(ns.merged_settings | arista.avd.default({}),
                                                          session, recursive=true, list_merge='append') %}
