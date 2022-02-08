@@ -8,7 +8,7 @@
 {%             set bgp_vrf.address_family_ipv4_neighbors = [] %}
 {%             set bgp_vrf.address_family_ipv6_neighbors = [] %}
 {%             set bgp_vrf_vni = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) %}
-{%             set leaf_evpn_rt = (network_services_data.evpn_rt_admin_subfield or bgp_vrf_vni) ~ ':' ~ bgp_vrf_vni %}
+{%             set leaf_evpn_rt = (network_services_data.rt_admin_subfield or bgp_vrf_vni) ~ ':' ~ bgp_vrf_vni %}
 {%             set route_targets = namespace(import={'evpn': [leaf_evpn_rt]}, export={'evpn': [leaf_evpn_rt]}) %}
 {%             for additional_route_target in vrf.additional_route_targets | arista.avd.natural_sort %}
 {%                 if inventory_hostname in additional_route_target.nodes | arista.avd.default([inventory_hostname]) %}
@@ -25,7 +25,7 @@
 {%             endfor %}
     {{ vrf.name }}:
       router_id: {{ switch.router_id }}
-      rd: "{{ network_services_data.evpn_rd_admin_subfield }}:{{ bgp_vrf_vni }}"
+      rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_vni }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
