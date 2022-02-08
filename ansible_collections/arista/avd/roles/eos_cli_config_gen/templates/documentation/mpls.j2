@@ -11,7 +11,7 @@
 {%     endif %}
 {% endfor %}
 {% for port_channel_interface in port_channel_interfaces | arista.avd.natural_sort %}
-{%     if port_channel_interface[port_channel_interfaces].mpls is arista.avd.defined %}
+{%     if port_channel_interfaces[port_channel_interface].mpls is arista.avd.defined %}
 {%         set mpls_configured.port_channel_interfaces = true %}
 {%     endif %}
 {% endfor %}
