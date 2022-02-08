@@ -1,4 +1,4 @@
-{# Setting evpn_rd_admin_subfield #}
+{# Setting rd_admin_subfield #}
 {% set network_services_data.rd_admin_subfield = switch.router_id %}
 {% set tmp_admin_subfield = evpn_rd_type.admin_subfield | arista.avd.default(overlay_rd_type.admin_subfield) %}
 {% if tmp_admin_subfield is arista.avd.defined %}
@@ -14,7 +14,7 @@
 {%         set network_services_data.rd_admin_subfield = tmp_admin_subfield %}
 {%     endif %}
 {% endif %}
-{# Setting evpn_rt_admin_subfield #}
+{# Setting rt_admin_subfield #}
 {% set network_services_data.rt_admin_subfield = false %}
 {% set tmp_admin_subfield = evpn_rt_type.admin_subfield | arista.avd.default(overlay_rt_type.admin_subfield) %}
 {% if tmp_admin_subfield is arista.avd.defined %}
