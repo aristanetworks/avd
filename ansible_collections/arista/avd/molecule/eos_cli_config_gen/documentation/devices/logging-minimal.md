@@ -64,6 +64,7 @@ interface Management1
 !
 logging console informational
 logging monitor debugging
+logging facility syslog
 ```
 
 # Internal VLAN Allocation Policy
