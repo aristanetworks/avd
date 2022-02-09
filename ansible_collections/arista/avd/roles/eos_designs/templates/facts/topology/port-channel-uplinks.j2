@@ -45,6 +45,14 @@ topology:
 {%             if switch.short_esi is arista.avd.defined %}
       peer_short_esi: {{ switch.short_esi }}
 {%             endif %}
+{%             if switch.link_tracking_groups is arista.avd.defined %}
+{#    topology.link_tracking_group #}
+      link_tracking_groups:
+{%                 for lt_group in switch.link_tracking_groups %}
+        - name: {{ lt_group.name }}
+          direction: upstream
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endfor %}

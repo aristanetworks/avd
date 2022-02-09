@@ -13,9 +13,9 @@ port_channel_interfaces:
                                                    adapter_profile | arista.avd.default({}),
                                                    adapter, recursive=true, list_merge='replace') %}
 {%             if adapter_settings.port_channel.mode is arista.avd.defined %}
-{%                 set channel_group_id = (adapter.switch_ports[0] | regex_findall("\d") | join) %}
+{%                 set channel_group_id = (adapter_settings.switch_ports[0] | regex_findall("\d") | join) %}
 {%                 set adapter_port_channel_description = adapter_settings.port_channel.description | arista.avd.default('') %}
-{%                 for adapter_switch in adapter.switches | arista.avd.natural_sort %}
+{%                 for adapter_switch in adapter_settings.switches | arista.avd.natural_sort %}
 {%                     if adapter_switch == inventory_hostname %}
   Port-Channel{{ channel_group_id }}:
 {%                         set peer = connected_endpoint %}
@@ -56,7 +56,7 @@ port_channel_interfaces:
 {%                                 endif %}
 {%                             endfor %}
 {%                         endif %}
-{%                         if adapter.switches | unique | list | length > 1 %}
+{%                         if adapter_settings.switches | unique | list | length > 1 %}
 {%                             if adapter.port_channel.short_esi is arista.avd.defined %}
 {%                                 if adapter.port_channel.short_esi.split(':') | length == 3 %}
     esi: {{ adapter.port_channel.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
@@ -75,6 +75,11 @@ port_channel_interfaces:
 {%                         endif %}
 {%                         if adapter_settings.qos_profile is arista.avd.defined %}
     service_profile: {{ adapter_settings.qos_profile }}
+{%                         endif %}
+{%                         if adapter_settings.link_tracking.enabled is arista.avd.defined(true) and switch.link_tracking_groups is arista.avd.defined %}
+    link_tracking_groups:
+      - name: {{ adapter_settings.link_tracking.name | arista.avd.default(switch.link_tracking_groups[0].name) }}
+        direction: downstream
 {%                         endif %}
 {%                         if adapter_settings.port_channel.raw_eos_cli is arista.avd.defined %}
     eos_cli: |
