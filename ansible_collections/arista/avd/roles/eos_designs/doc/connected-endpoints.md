@@ -139,6 +139,15 @@ port_profiles:
         ptp:
           enable: < true | false >
 
+        # Configure the downstream interfaces of a respective Link Tracking Group | Optional
+        # If port_channel is defined in an adapter then port-channel interface is configured to be the downstream
+        # else all the ethernet-interfaces will be configured as downstream -> to configure single-active EVPN multihomed networks
+        link_tracking:
+          enabled: < true | false >
+          # The default group name is taken from fabric variable of the switch, link_tracking.groups[0].name with default value being "LT_GROUP1".
+          # Optional if default link_tracking settings are configured on the node.
+          name: < tracking_group_name >
+
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration
         raw_eos_cli: |
           < multiline eos cli >

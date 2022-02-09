@@ -1,4 +1,4 @@
-Node Type,Node,Node Interface,Peer Type,Peer,Peer Interface
+Node Type,Node,Node Interface,Peer Type,Peer Node,Peer Interface
 l3leaf,DC1-BL1A,Ethernet1,spine,DC1-SPINE1,Ethernet6
 l3leaf,DC1-BL1A,Ethernet2,spine,DC1-SPINE2,Ethernet6
 l3leaf,DC1-BL1A,Ethernet3,spine,DC1-SPINE3,Ethernet6
@@ -80,6 +80,9 @@ spine,DC1-SPINE1,Ethernet6,l3leaf,DC1-BL1A,Ethernet1
 spine,DC1-SPINE1,Ethernet7,l3leaf,DC1-BL1B,Ethernet1
 spine,DC1-SPINE1,Ethernet8,l3leaf,DC1-BL2A,Ethernet1
 spine,DC1-SPINE1,Ethernet9,l3leaf,DC1-BL2B,Ethernet1
+spine,DC1-SPINE1,Ethernet10,l3leaf,MH-LEAF1A,Ethernet1
+spine,DC1-SPINE1,Ethernet11,l3leaf,MH-LEAF1B,Ethernet1
+spine,DC1-SPINE1,Ethernet12,l3leaf,MH-LEAF2A,Ethernet1
 spine,DC1-SPINE2,Ethernet1,l3leaf,DC1-LEAF1A,Ethernet2
 spine,DC1-SPINE2,Ethernet2,l3leaf,DC1-LEAF2A,Ethernet2
 spine,DC1-SPINE2,Ethernet3,l3leaf,DC1-LEAF2B,Ethernet2
@@ -162,3 +165,12 @@ l3leaf,DC1-SVC3B,Ethernet25,server,server18_monitoring_session_source_phys_inter
 l3leaf,DC1-SVC3B,Ethernet26,server,server19_monitoring_session_destination_phys,Eth2
 l3leaf,DC1-SVC3B,Ethernet27,server,server18_monitoring_session_source_po,Eth4
 l3leaf,DC1-SVC3B,Ethernet42,server,server21_monitoring_session_destination_po,Eth2
+l2leaf,MH-L2LEAF1A,Ethernet1,l3leaf,MH-LEAF2A,Ethernet2
+l2leaf,MH-L2LEAF1A,Ethernet10,server,server02,Eth1
+l3leaf,MH-LEAF1A,Ethernet1,spine,DC1-SPINE1,Ethernet10
+l3leaf,MH-LEAF1A,Ethernet10,server,server01_ES1,Eth1
+l3leaf,MH-LEAF1B,Ethernet1,spine,DC1-SPINE1,Ethernet11
+l3leaf,MH-LEAF1B,Ethernet10,server,server01_ES1,Eth2
+l3leaf,MH-LEAF2A,Ethernet1,spine,DC1-SPINE1,Ethernet12
+l3leaf,MH-LEAF2A,Ethernet2,l2leaf,MH-L2LEAF1A,Ethernet1
+l3leaf,MH-LEAF2A,Ethernet10,router,ROUTER01,Eth1
