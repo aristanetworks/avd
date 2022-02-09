@@ -879,7 +879,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_APP_Zone | 65001:12 | 100000:12 | - | - | learned | 130-131 |
 | Tenant_A_DB_Zone | 65001:13 | 100000:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 65001:10161 | 100000:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 65001:10 | 100000:10 | - | - | learned | 110-111 |
+| Tenant_A_OP_Zone | 65001:9 | 100000:9 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 65001:10160 | 100000:10160 | - | - | learned | 160 |
 | Tenant_A_WEB_Zone | 65001:11 | 100000:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 65001:20 | 100000:20 | - | - | learned | 210-211 |
@@ -891,7 +891,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 65001:12 | connected |
 | Tenant_A_DB_Zone | 65001:13 | connected |
-| Tenant_A_OP_Zone | 65001:10 | connected |
+| Tenant_A_OP_Zone | 65001:9 | connected |
 | Tenant_A_WEB_Zone | 65001:11 | connected |
 | Tenant_B_OP_Zone | 65001:20 | connected |
 | Tenant_C_OP_Zone | 65001:30 | connected |
@@ -961,8 +961,8 @@ router bgp 65102
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 65001:10
-      route-target both 100000:10
+      rd 65001:9
+      route-target both 100000:9
       redistribute learned
       vlan 110-111
    !
@@ -1012,9 +1012,9 @@ router bgp 65102
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
-      rd 65001:10
-      route-target import evpn 100000:10
-      route-target export evpn 100000:10
+      rd 65001:9
+      route-target import evpn 100000:9
+      route-target export evpn 100000:9
       router-id 192.168.255.11
       redistribute connected
    !

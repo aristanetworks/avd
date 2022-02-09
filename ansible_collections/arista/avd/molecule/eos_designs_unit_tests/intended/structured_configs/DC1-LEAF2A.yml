@@ -92,14 +92,14 @@ router_bgp:
       - connected
     Tenant_A_OP_Zone:
       router_id: 192.168.255.10
-      rd: '65001:10'
+      rd: '65001:9'
       route_targets:
         import:
           evpn:
-          - '100000:10'
+          - '100000:9'
         export:
           evpn:
-          - '100000:10'
+          - '100000:9'
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -156,10 +156,10 @@ router_bgp:
       - learned
       vlan: 140-141
     Tenant_A_OP_Zone:
-      rd: '65001:10'
+      rd: '65001:9'
       route_targets:
         both:
-        - '100000:10'
+        - '100000:9'
       redistribute_routes:
       - learned
       vlan: 110-111

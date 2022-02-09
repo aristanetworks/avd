@@ -292,7 +292,7 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
+| 3008 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
 | 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
 | 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
@@ -362,7 +362,7 @@ vlan 311
 vlan 350
    name Tenant_C_WAN_Zone_1
 !
-vlan 3009
+vlan 3008
    name MLAG_iBGP_Tenant_A_OP_Zone
    trunk group LEAF_PEER_L3
 !
@@ -840,7 +840,7 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone_1  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan311 |  Tenant_C_OP_Zone_2  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
-| Vlan3009 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  1500  |  false  |
+| Vlan3008 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  1500  |  false  |
 | Vlan3010 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone  |  Tenant_A_WEB_Zone  |  1500  |  false  |
 | Vlan3011 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone  |  Tenant_A_APP_Zone  |  1500  |  false  |
 | Vlan3012 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone  |  Tenant_A_DB_Zone  |  1500  |  false  |
@@ -871,7 +871,7 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan3008 |  Tenant_A_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3010 |  Tenant_A_WEB_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3011 |  Tenant_A_APP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3012 |  Tenant_A_DB_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
@@ -993,7 +993,7 @@ interface Vlan350
    vrf Tenant_C_WAN_Zone
    ip address virtual 10.3.50.1/24
 !
-interface Vlan3009
+interface Vlan3008
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
    no shutdown
    mtu 1500
@@ -1319,7 +1319,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Tenant_A_APP_Zone | 65103:12 | 12:12 | - | - | learned | 130-131 |
 | Tenant_A_DB_Zone | 65103:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 65103:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 65103:10 | 10:10 | - | - | learned | 110-111 |
+| Tenant_A_OP_Zone | 65103:9 | 9:9 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 65103:10160 | 10160:10160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 65103:14 | 14:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 65103:11 | 11:11 | - | - | learned | 120-121 |
@@ -1334,7 +1334,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 65103:12 | connected |
 | Tenant_A_DB_Zone | 65103:13 | connected |
-| Tenant_A_OP_Zone | 65103:10 | connected |
+| Tenant_A_OP_Zone | 65103:9 | connected |
 | Tenant_A_WAN_Zone | 65103:14 | connected |
 | Tenant_A_WEB_Zone | 65103:11 | connected |
 | Tenant_B_OP_Zone | 65103:20 | connected |
@@ -1416,8 +1416,8 @@ router bgp 65103
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 65103:10
-      route-target both 10:10
+      rd 65103:9
+      route-target both 9:9
       redistribute learned
       vlan 110-111
    !
@@ -1488,9 +1488,9 @@ router bgp 65103
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
-      rd 65103:10
-      route-target import evpn 10:10
-      route-target export evpn 10:10
+      rd 65103:9
+      route-target import evpn 9:9
+      route-target export evpn 9:9
       router-id 192.168.255.12
       neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected

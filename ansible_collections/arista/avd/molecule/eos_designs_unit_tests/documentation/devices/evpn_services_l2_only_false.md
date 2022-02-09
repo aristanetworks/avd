@@ -690,7 +690,7 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | Tenant_A_APP_Zone | 192.168.255.109:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_DB_Zone | 192.168.255.109:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 192.168.255.109:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 192.168.255.109:10 | 10:10 | - | - | learned | 110-111 |
+| Tenant_A_OP_Zone | 192.168.255.109:9 | 9:9 | - | - | learned | 110-111 |
 | Tenant_A_VMOTION | 192.168.255.109:10160 | 10160:10160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 192.168.255.109:11 | 11:11 | - | - | learned | 120-121 |
@@ -705,7 +705,7 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 192.168.255.109:12 | connected |
 | Tenant_A_DB_Zone | 192.168.255.109:13 | connected |
-| Tenant_A_OP_Zone | 192.168.255.109:10 | connected |
+| Tenant_A_OP_Zone | 192.168.255.109:9 | connected |
 | Tenant_A_WAN_Zone | 192.168.255.109:14 | connected |
 | Tenant_A_WEB_Zone | 192.168.255.109:11 | connected |
 | Tenant_B_OP_Zone | 192.168.255.109:20 | connected |
@@ -752,8 +752,8 @@ router bgp 101
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 192.168.255.109:10
-      route-target both 10:10
+      rd 192.168.255.109:9
+      route-target both 9:9
       redistribute learned
       vlan 110-111
    !
@@ -821,9 +821,9 @@ router bgp 101
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
-      rd 192.168.255.109:10
-      route-target import evpn 10:10
-      route-target export evpn 10:10
+      rd 192.168.255.109:9
+      route-target import evpn 9:9
+      route-target export evpn 9:9
       router-id 192.168.255.109
       redistribute connected
    !

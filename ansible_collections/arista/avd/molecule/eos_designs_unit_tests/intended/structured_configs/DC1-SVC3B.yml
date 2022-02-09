@@ -111,14 +111,14 @@ router_bgp:
       - connected
     Tenant_A_OP_Zone:
       router_id: 192.168.255.13
-      rd: '65103:10'
+      rd: '65103:9'
       route_targets:
         import:
           evpn:
-          - '10:10'
+          - '9:9'
         export:
           evpn:
-          - '10:10'
+          - '9:9'
       neighbors:
         10.255.251.6:
           peer_group: MLAG-PEERS
@@ -234,10 +234,10 @@ router_bgp:
       - learned
       vlan: 140-141
     Tenant_A_OP_Zone:
-      rd: '65103:10'
+      rd: '65103:9'
       route_targets:
         both:
-        - '10:10'
+        - '9:9'
       redistribute_routes:
       - learned
       vlan: 110-111
@@ -436,7 +436,7 @@ vlans:
   111:
     tenant: Tenant_A
     name: Tenant_A_OP_Zone_2
-  3009:
+  3008:
     tenant: Tenant_A
     name: MLAG_iBGP_Tenant_A_OP_Zone
     trunk_groups:
@@ -586,7 +586,7 @@ vlan_interfaces:
       1.1.1.1:
         source_interface: lo100
         vrf: MGMT
-  Vlan3009:
+  Vlan3008:
     tenant: Tenant_A
     type: underlay_peering
     shutdown: false

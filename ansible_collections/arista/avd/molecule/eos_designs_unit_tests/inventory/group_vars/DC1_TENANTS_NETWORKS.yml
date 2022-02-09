@@ -35,6 +35,7 @@ tenants:
     vrfs:
       Tenant_A_OP_Zone:
         vrf_vni: 10
+        vrf_id: 9 # Check that RD and RT will use this number for this VRF. VNI should still respect vrf_vni
         vtep_diagnostic:
           loopback: 100
           loopback_ip_range: 10.255.1.0/24
