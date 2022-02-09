@@ -37,6 +37,6 @@ ip_igmp_snooping:
       enabled: true
     25:
       enabled: false
-      # Settings not documented if not enabled
+      # Settings documented even if not enabled
       fast_leave: false
       proxy: false
