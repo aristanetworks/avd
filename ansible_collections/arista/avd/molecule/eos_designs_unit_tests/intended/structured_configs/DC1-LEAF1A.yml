@@ -72,10 +72,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '12:12'
+          - '1234:12'
         export:
           evpn:
-          - '12:12'
+          - '1234:12'
       redistribute_routes:
       - connected
     Tenant_A_WEB_Zone:
@@ -84,10 +84,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '11:11'
+          - '1234:11'
         export:
           evpn:
-          - '11:11'
+          - '1234:11'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -95,7 +95,7 @@ router_bgp:
       rd: 1.1.1.1:12
       route_targets:
         both:
-        - '12:12'
+        - '1234:12'
       redistribute_routes:
       - learned
       vlan: 130-132
@@ -103,7 +103,7 @@ router_bgp:
       rd: 1.1.1.1:11
       route_targets:
         both:
-        - '11:11'
+        - '1234:11'
       redistribute_routes:
       - learned
       vlan: 120-121

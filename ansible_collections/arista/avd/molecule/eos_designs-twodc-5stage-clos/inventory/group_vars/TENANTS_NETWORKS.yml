@@ -5,6 +5,7 @@ tenants:
   # Tenant A Specific Information - VRFs / VLANs
   Tenant_A:
     mac_vrf_vni_base: 10000
+    mac_vrf_id_base: 20000
     enable_mlag_ibgp_peering_vrfs: false
     vrfs:
       Common_VRF:
@@ -14,6 +15,7 @@ tenants:
             name: Tenant_A_OP_Zone_1
             tags: [opzone]
             enabled: true
+            rt_override: 99110 # RT would have been 20000 + 110.
             ip_address_virtual: 10.1.10.1/24
             structured_config:
               description: set from structured_config on svi (was Tenant_A_OP_Zone_1)
@@ -27,7 +29,6 @@ tenants:
             tags: [opzone]
             ip_address_virtual: 10.1.11.1/24
           "112":
-            vni_override: 50112
             name: Tenant_A_OP_Zone_3
             tags: [opzone]
             enabled: true
@@ -114,7 +115,7 @@ tenants:
         name: web-l2-vlan
         tags: [web]
       "2600":
-        vni_override: 2600
+        rt_override: 32600
         name: web-l2-vlan-2
         tags: [web]
       2601:

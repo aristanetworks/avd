@@ -455,9 +455,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 192.168.255.109:12 | 12:12 | - | - | learned | 130-132 |
 | Tenant_A_DB_Zone | 192.168.255.109:13 | 13:13 | - | - | learned | 140-141 |
-| Tenant_A_NFS | 192.168.255.109:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 192.168.255.109:10 | 10:10 | - | - | learned | 110-111 |
-| Tenant_A_VMOTION | 192.168.255.109:10160 | 10160:10160 | - | - | learned | 160 |
+| Tenant_A_NFS | 192.168.255.109:20161 | 20161:20161 | - | - | learned | 161 |
+| Tenant_A_OP_Zone | 192.168.255.109:9 | 9:9 | - | - | learned | 110-111 |
+| Tenant_A_VMOTION | 192.168.255.109:20160 | 20160:20160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 192.168.255.109:14 | 14:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 192.168.255.109:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 192.168.255.109:20 | 20:20 | - | - | learned | 210-211 |
@@ -498,20 +498,20 @@ router bgp 101
       vlan 140-141
    !
    vlan-aware-bundle Tenant_A_NFS
-      rd 192.168.255.109:10161
-      route-target both 10161:10161
+      rd 192.168.255.109:20161
+      route-target both 20161:20161
       redistribute learned
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 192.168.255.109:10
-      route-target both 10:10
+      rd 192.168.255.109:9
+      route-target both 9:9
       redistribute learned
       vlan 110-111
    !
    vlan-aware-bundle Tenant_A_VMOTION
-      rd 192.168.255.109:10160
-      route-target both 10160:10160
+      rd 192.168.255.109:20160
+      route-target both 20160:20160
       redistribute learned
       vlan 160
    !

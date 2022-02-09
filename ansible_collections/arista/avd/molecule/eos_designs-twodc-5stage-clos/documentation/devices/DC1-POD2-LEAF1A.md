@@ -423,9 +423,9 @@ interface Vlan1102
 | ---- | --- | ---------- | --------------- |
 | 110 | 10110 | - | - |
 | 111 | 50111 | - | - |
-| 112 | 50112 | - | - |
+| 112 | 10112 | - | - |
 | 2500 | 2500 | - | - |
-| 2600 | 2600 | - | - |
+| 2600 | 12600 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
@@ -446,9 +446,9 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 50111
-   vxlan vlan 112 vni 50112
+   vxlan vlan 112 vni 10112
    vxlan vlan 2500 vni 2500
-   vxlan vlan 2600 vni 2600
+   vxlan vlan 2600 vni 12600
    vxlan vrf Common_VRF vni 1025
    vxlan vrf vrf_with_loopbacks_dc1_pod1_only vni 1102
    vxlan vrf vrf_with_loopbacks_from_overlapping_pool vni 1100
@@ -591,11 +591,11 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 | VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
 | ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
-| 110 | 172.16.120.3:10110 | 10110:10110 | - | - | learned |
+| 110 | 172.16.120.3:99110 | 99110:99110 | - | - | learned |
 | 111 | 172.16.120.3:50111 | 50111:50111 | - | - | learned |
-| 112 | 172.16.120.3:50112 | 50112:50112 | - | - | learned |
+| 112 | 172.16.120.3:20112 | 20112:20112 | - | - | learned |
 | 2500 | 172.16.120.3:2500 | 2500:2500 | - | - | learned |
-| 2600 | 172.16.120.3:2600 | 2600:2600 | - | - | learned |
+| 2600 | 172.16.120.3:32600 | 32600:32600 | - | - | learned |
 
 ### Router BGP VRFs
 
@@ -649,8 +649,8 @@ router bgp 65121
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 110
-      rd 172.16.120.3:10110
-      route-target both 10110:10110
+      rd 172.16.120.3:99110
+      route-target both 99110:99110
       redistribute learned
    !
    vlan 111
@@ -659,8 +659,8 @@ router bgp 65121
       redistribute learned
    !
    vlan 112
-      rd 172.16.120.3:50112
-      route-target both 50112:50112
+      rd 172.16.120.3:20112
+      route-target both 20112:20112
       redistribute learned
    !
    vlan 2500
@@ -669,8 +669,8 @@ router bgp 65121
       redistribute learned
    !
    vlan 2600
-      rd 172.16.120.3:2600
-      route-target both 2600:2600
+      rd 172.16.120.3:32600
+      route-target both 32600:32600
       redistribute learned
    !
    address-family evpn

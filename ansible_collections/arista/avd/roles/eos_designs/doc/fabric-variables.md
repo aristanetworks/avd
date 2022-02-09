@@ -68,7 +68,8 @@ bgp_peer_groups:
       password: "< encrypted password >"
 
 # Enable vlan aware bundles for EVPN MAC-VRF | Required.
-vxlan_vlan_aware_bundles: < boolean | default -> false >
+# Old variable name vxlan_vlan_aware_bundles, supported for backward-compatibility.
+evpn_vlan_aware_bundles: < boolean | default -> false >
 
 # Disable IGMP snooping at fabric level.
 # If set, it overrides per vlan settings

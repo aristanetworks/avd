@@ -654,9 +654,9 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_WAN_Zone | 192.168.254.14:14 | 14:14 | - | - | learned | 150 |
-| Tenant_B_WAN_Zone | 192.168.254.14:21 | 21:21 | - | - | learned | 250 |
-| Tenant_C_WAN_Zone | 192.168.254.14:31 | 31:31 | - | - | learned | 350 |
+| Tenant_A_WAN_Zone | 192.168.254.14:14 | 65104:14 | - | - | learned | 150 |
+| Tenant_B_WAN_Zone | 192.168.254.14:21 | 65104:21 | - | - | learned | 250 |
+| Tenant_C_WAN_Zone | 192.168.254.14:31 | 65104:31 | - | - | learned | 350 |
 
 ### Router BGP VRFs
 
@@ -716,19 +716,19 @@ router bgp 65104
    !
    vlan-aware-bundle Tenant_A_WAN_Zone
       rd 192.168.254.14:14
-      route-target both 14:14
+      route-target both 65104:14
       redistribute learned
       vlan 150
    !
    vlan-aware-bundle Tenant_B_WAN_Zone
       rd 192.168.254.14:21
-      route-target both 21:21
+      route-target both 65104:21
       redistribute learned
       vlan 250
    !
    vlan-aware-bundle Tenant_C_WAN_Zone
       rd 192.168.254.14:31
-      route-target both 31:31
+      route-target both 65104:31
       redistribute learned
       vlan 350
    !
@@ -741,10 +741,10 @@ router bgp 65104
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.254.14:14
-      route-target import evpn 14:14
+      route-target import evpn 65104:14
       route-target import evpn 65000:456
       route-target import vpn-ipv4 65000:123
-      route-target export evpn 14:14
+      route-target export evpn 65104:14
       route-target export evpn 65000:789
       route-target export vpn-ipv4 65000:123
       router-id 192.168.255.14
@@ -789,29 +789,29 @@ router bgp 65104
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.254.14:20
-      route-target import evpn 20:20
-      route-target export evpn 20:20
+      route-target import evpn 65104:20
+      route-target export evpn 65104:20
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.254.14:21
-      route-target import evpn 21:21
-      route-target export evpn 21:21
+      route-target import evpn 65104:21
+      route-target export evpn 65104:21
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.254.14:31
-      route-target import evpn 31:31
-      route-target export evpn 31:31
+      route-target import evpn 65104:31
+      route-target export evpn 65104:31
       router-id 192.168.255.14
       redistribute connected
    !
    vrf Tenant_L3_VRF_Zone
       rd 192.168.254.14:15
-      route-target import evpn 15:15
-      route-target export evpn 15:15
+      route-target import evpn 65104:15
+      route-target export evpn 65104:15
       router-id 192.168.255.14
       redistribute connected
 ```
