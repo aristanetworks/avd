@@ -3,7 +3,7 @@
 {% set evpn_vlan_aware_bundles = vxlan_vlan_aware_bundles | arista.avd.default(evpn_vlan_aware_bundles, false) %}
 {% if evpn_vlan_aware_bundles == false %}
 {%     for tenant in network_services_data.tenants %}
-{%         set tenant_mac_vrf_id_base = tenant.mac_vrf_rt_base | arista.avd.default(tenant.mac_vrf_vni_base) %}
+{%         set tenant_mac_vrf_id_base = tenant.mac_vrf_id_base | arista.avd.default(tenant.mac_vrf_vni_base) %}
 {%         for vrf in tenant.vrfs %}
 {%             for svi in vrf.svis %}
 {%                 if svi.vxlan is arista.avd.defined(false) %}

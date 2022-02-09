@@ -89,7 +89,7 @@ tenants:
 
     # Base number for MAC VRF RD/RT ID | Required unless mac_vrf_vni_based is set.
     # ID is derived from the base number with simple addition.
-    # e.g. mac_vrf_id_base = 10000, svi 100 = VNI 10100, svi 300 = VNI 10300.
+    # e.g. mac_vrf_id_base = 10000, svi 100 = RD/RT 10100, svi 300 = RD/RT 10300.
     mac_vrf_id_base: < 10000-16770000 | default -> <mac_vrf_vni_base> >
 
     # Base number for vlan_aware_bundle | Optional.

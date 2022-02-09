@@ -878,9 +878,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 65001:12 | 100000:12 | - | - | learned | 130-131 |
 | Tenant_A_DB_Zone | 65001:13 | 100000:13 | - | - | learned | 140-141 |
-| Tenant_A_NFS | 65001:10161 | 100000:10161 | - | - | learned | 161 |
+| Tenant_A_NFS | 65001:20161 | 100000:20161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 65001:9 | 100000:9 | - | - | learned | 110-111 |
-| Tenant_A_VMOTION | 65001:10160 | 100000:10160 | - | - | learned | 160 |
+| Tenant_A_VMOTION | 65001:20160 | 100000:20160 | - | - | learned | 160 |
 | Tenant_A_WEB_Zone | 65001:11 | 100000:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 65001:20 | 100000:20 | - | - | learned | 210-211 |
 | Tenant_C_OP_Zone | 65001:30 | 100000:30 | - | - | learned | 310-311 |
@@ -955,8 +955,8 @@ router bgp 65102
       vlan 140-141
    !
    vlan-aware-bundle Tenant_A_NFS
-      rd 65001:10161
-      route-target both 100000:10161
+      rd 65001:20161
+      route-target both 100000:20161
       redistribute learned
       vlan 161
    !
@@ -967,8 +967,8 @@ router bgp 65102
       vlan 110-111
    !
    vlan-aware-bundle Tenant_A_VMOTION
-      rd 65001:10160
-      route-target both 100000:10160
+      rd 65001:20160
+      route-target both 100000:20160
       redistribute learned
       vlan 160
    !
