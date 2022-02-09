@@ -2,16 +2,52 @@
 
 # Validation reports
 
-- name: Write Test Results in File
-  template:
-    src: validate_state_report-csv.j2
-    dest: "{{ eos_validate_state_report_path }}"
-    mode: 0664
+- name: "Create directory for test results {{ eos_validate_state_dir }}/test_results/"
+  file:
+    path: "{{ eos_validate_state_dir }}/test_results/"
+    state: directory
+    mode: 0775
   delegate_to: localhost
   run_once: true
   tags:
     - always
     - report
+
+- name: Generate Results (Set eos_validate_state_report)
+  yaml_templates_to_facts:
+    root_key: eos_validate_state_report
+    templates:
+      - template: generate_state_report_results.j2
+  delegate_to: localhost
+  run_once: true
+  tags:
+    - always
+    - report
+
+# That should be for debug
+- name: Write upgraded Result To file
+  template:
+    src: "generate_state_report_results.j2"
+    dest: "{{ root_dir }}/reports/test_results/{{ inventory_hostname }}.yml"
+    mode: 0664
+  delegate_to: localhost
+  check_mode: no
+  # when: eos_validate_state_report
+  tags:
+    - always
+    - report
+
+# - name: Write Test Results in File
+#   template:
+#     src: generate_state_report_results.j2
+#     dest: "{{ eos_validate_state_report_path }}"
+#     mode: 0664
+#   delegate_to: localhost
+#   check_mode: no
+#   when: eos_validate_state_report
+#   tags:
+#     - always
+#     - report
 
 - name: Create Validation report - CSV
   template:
@@ -24,24 +60,24 @@
     - always
     - report
 
-- name: Read CSV report
-  read_csv:
-    path: "{{ eos_validate_state_csv_report_path }}"
-    key: "test_id"
-  register: validation_report_csv
-  delegate_to: localhost
-  run_once: true
-  tags:
-    - always
-    - report
+# - name: Read CSV report
+#   read_csv:
+#     path: "{{ eos_validate_state_csv_report_path }}"
+#     key: "test_id"
+#   register: validation_report_csv
+#   delegate_to: localhost
+#   run_once: true
+#   tags:
+#     - always
+#     - report
 
-- name: Create Validation report - Markdown
-  template:
-    src: validate_state_report-md.j2
-    dest: "{{ eos_validate_state_md_report_path }}"
-    mode: 0664
-  delegate_to: localhost
-  run_once: true
-  tags:
-    - always
-    - report
+# - name: Create Validation report - Markdown
+#   template:
+#     src: validate_state_report-md.j2
+#     dest: "{{ eos_validate_state_md_report_path }}"
+#     mode: 0664
+#   delegate_to: localhost
+#   run_once: true
+#   tags:
+#     - always
+#     - report
