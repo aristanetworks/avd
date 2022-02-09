@@ -1254,19 +1254,20 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-| Setting | Value |
-| ------- | ----- |
-| IGMP Snooping | Enabled |
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
-| Vlan | IGMP Snooping |
-| ---- | ------------- |
-| 120 | Disabled |
+#### IP IGMP Snooping Vlan Summary
+
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 120 | False | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
-ip igmp snooping
 no ip igmp snooping vlan 120
 ```
 

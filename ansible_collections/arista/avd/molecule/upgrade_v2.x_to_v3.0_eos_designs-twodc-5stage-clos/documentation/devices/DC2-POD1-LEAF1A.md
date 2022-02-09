@@ -593,15 +593,13 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-| Setting | Value |
-| ------- | ----- |
-| IGMP Snooping | Enabled |
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
-!
-ip igmp snooping
 ```
 
 # Filters

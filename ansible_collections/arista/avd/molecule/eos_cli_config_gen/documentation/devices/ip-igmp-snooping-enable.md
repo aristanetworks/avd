@@ -89,58 +89,30 @@ interface Management1
 
 ### IP IGMP Snooping Summary
 
-| Setting | Value |
-| ------- | ----- |
-| IGMP Snooping | Enabled |
-| Fast-leave | True |
-| Interface Restart Query | 500 |
-| Proxy | True |
-| Restart Query Interval | 30 |
-| Robustness Variable | 2 |
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | True | 500 | True | 30 | 2 |
 
-| Querier Setting | Value |
-| --------------- | ----- |
-| Address | 10.10.10.1 |
-| Enabled | True |
-| Last Member Query Count | 2 |
-| Last Member Query Interval | 5 |
-| Max Response Time | 10 |
-| Query Interval | 40 |
-| Startup Query Count | 2 |
-| Startup Query Interval | 20 |
-| Version | 3 |
+| Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
+| --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
+| True | 10.10.10.1 | 40 | 10 | 5 | 2 | 20 | 2 | 3 |
 
-| Vlan | IGMP Snooping |
-| ---- | ------------- |
-| 23 | Enabled |
-| 24 | Enabled |
-| 25 | Disabled |
+#### IP IGMP Snooping Vlan Summary
 
-#### IP IGMP Snooping Vlan 23 Summary
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 23 | True | True | 20 | True |
+| 24 | True | - | - | - |
+| 25 | False | False | - | False |
 
-| Setting | Value |
-| ------- | ----- |
-| Fast-leave | True |
-| Max Groups | 20 |
-| Proxy | True |
-
-| Querier Setting | Value |
-| --------------- | ----- |
-| Address | 10.10.23.1 |
-| Enabled | True |
-| Last Member Query Count | 2 |
-| Last Member Query Interval | 5 |
-| Max Response Time | 10 |
-| Query Interval | 40 |
-| Startup Query Count | 2 |
-| Startup Query Interval | 20 |
-| Version | 3 |
+| Vlan | Querier Enabled | IP Address | Query Interval | Max Response Time | Last Member Query Interval | Last Member Query Count | Startup Query Interval | Startup Query Count | Version |
+| ---- | --------------- | ---------- | -------------- | ----------------- | -------------------------- | ----------------------- | ---------------------- | ------------------- | ------- |
+| 23 | True | 10.10.23.1 | 40 | 10 | 5 | 2 | 20 | 2 | 3 |
 
 ### IP IGMP Snooping Device Configuration
 
 ```eos
 !
-ip igmp snooping
 ip igmp snooping robustness-variable 2
 ip igmp snooping restart query-interval 30
 ip igmp snooping interface-restart-query 500
