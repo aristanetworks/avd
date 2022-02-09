@@ -468,8 +468,8 @@ router isis EVPN_UNDERLAY
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD | Shutdown |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- | -------- |
 | 192.168.255.5 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
 | 192.168.255.6 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
 | 192.168.255.7 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |

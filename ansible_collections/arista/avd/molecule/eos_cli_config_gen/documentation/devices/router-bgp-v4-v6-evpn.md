@@ -148,8 +148,8 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD | Shutdown |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- | -------- |
 | 1.1.1.1 | 1 | default | - | - | - | - |
 | 1b11:3a00:22b0:0088::1 | Inherited from peer group IPV6-UNDERLAY | default | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - |
 | 1b11:3a00:22b0:0088::3 | Inherited from peer group IPV6-UNDERLAY | default | Inherited from peer group IPV6-UNDERLAY | Inherited from peer group IPV6-UNDERLAY | - | - |

@@ -550,8 +550,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD | Shutdown |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- | -------- |
 | 172.31.255.128 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
 | 172.31.255.130 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
 | 172.31.255.132 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |

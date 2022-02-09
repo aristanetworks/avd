@@ -147,12 +147,14 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - |
-| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - |
-| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - |
-| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD | Shutdown |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- | -------- |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | BLUE-C1 | - | - | - | - | - |
+| 10.255.1.1 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | - |
+| 101.0.3.1 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | - |
+| 101.0.3.2 | Inherited from peer group SEDI | BLUE-C1 | - | - | - | - | True |
+| 101.0.3.3 | - | BLUE-C1 | - | - | - | - | - |
+| 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | - |
 
 ### Router BGP VRFs
 
@@ -188,6 +190,8 @@ router bgp 65001
       neighbor OBS_WAN activate
       neighbor SEDI route-map RM-BGP-EXPORT-DEFAULT-BLUE-C1 out
       neighbor SEDI activate
+      neighbor SEDI-shut route-map RM-BGP-EXPORT-DEFAULT-BLUE-C1 out
+      neighbor SEDI-shut activate
       neighbor WELCOME_ROUTERS activate
    !
    vrf BLUE-C1
@@ -197,6 +201,9 @@ router bgp 65001
       neighbor 10.255.1.1 weight 65535
       neighbor 101.0.3.1 peer group SEDI
       neighbor 101.0.3.1 weight 100
+      neighbor 101.0.3.2 peer group SEDI
+      neighbor 101.0.3.2 shutdown
+      neighbor 101.0.3.3 peer group SEDI-shut
       redistribute static
       aggregate-address 0.0.0.0/0 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET
       aggregate-address 193.1.0.0/16 as-set summary-only attribute-map RM-BGP-AGG-APPLY-SET

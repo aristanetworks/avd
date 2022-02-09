@@ -104,8 +104,8 @@ interface Management1
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD |
-| -------- | --------- | --- | -------------- | -------------- | ---------- | --- |
+| Neighbor | Remote AS | VRF | Send-community | Maximum-routes | Allowas-in | BFD | Shutdown |
+| -------- | --------- | --- | -------------- | -------------- | ---------- | --- | -------- |
 | 192.0.3.1 | 65432 | default | all | - | - | - |
 | 192.0.3.2 | 65433 | default | extended | 10000 | - | - |
 | 192.0.3.3 | 65434 | default | standard | - | - | - |
