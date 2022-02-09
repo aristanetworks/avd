@@ -49,7 +49,7 @@ tenants:
             ip_address_virtual: 10.1.10.1/24
           # SVI as integer
           111:
-            vni_override: 50111
+            vni_override: 50111 #10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
             tags: ['opzone']
             enabled: True
