@@ -42,6 +42,9 @@ logging format hostname ipv4
 {%     if logging.format.sequence_numbers is arista.avd.defined(true) %}
 logging format sequence-numbers
 {%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+logging facility {{ logging.facility }}
+{%     endif %}
 {%     if logging.source_interface is arista.avd.defined %}
 logging source-interface {{ logging.source_interface }}
 {%     endif %}
