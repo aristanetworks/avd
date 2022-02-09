@@ -2024,7 +2024,7 @@ logging:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
     sequence_numbers: < true | false >
-  facility: < syslog facility value >
+  facility: < syslog_facility_value >
   source_interface: < source_interface_name >
   vrfs:
     < vrf_name >:
