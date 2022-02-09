@@ -17,6 +17,9 @@ validate_state_markdown_flavor: "default"
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
+# Print only FAILED tests
+only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
+
 # AVD configurations output
 # Main output directory
 output_dir_name: 'intended'
