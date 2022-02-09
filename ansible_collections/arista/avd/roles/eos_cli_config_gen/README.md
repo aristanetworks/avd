@@ -1677,6 +1677,9 @@ management_api_gnmi:
   octa:
 ```
 
+!!! info "gNMI provider"
+    Octa activates `eos-native` provider and it is the only provider currently supported by EOS.
+
 #### Management Console
 
 ```yaml
