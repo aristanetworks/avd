@@ -1,5 +1,6 @@
 {# j2lint: disable=V1 #}
 {# AVD State Validation Report #}
+eos_validate_state_report:
 {% set test_id = namespace(value=0) %}
 {% set copy_hostvars = namespace(hostvars) %}
 {% for node in groups[fabric_name] | arista.avd.natural_sort %}
@@ -7,7 +8,7 @@
 {%     if copy_hostvars[node].power_supplies_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Hardware
   test_description: Power supply status
@@ -26,7 +27,7 @@
 {%     if copy_hostvars[node].fan_power_supplies_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Hardware
   test_description: Fan status (power supplies)
@@ -45,7 +46,7 @@
 {%     if copy_hostvars[node].fan_tray_status_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Hardware
   test_description: Fan status (fan tray)
@@ -63,7 +64,7 @@
 {# Hardware results - temperature #}
 {%     if copy_hostvars[node].environment_temperature_results is arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Hardware
   test_description: Temperature
@@ -82,7 +83,7 @@
 {%         for result in copy_hostvars[node].transceiver_inventory_results.results %}
 {%             if result.failed is arista.avd.defined() %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Hardware
   test_description: Transceivers manufacturers
@@ -99,7 +100,7 @@
 {# NTP Status Results #}
 {%     if copy_hostvars[node].ntp_status_results is arista.avd.defined and copy_hostvars[node].ntp_status_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: NTP
   test_description: Synchronised with NTP server
@@ -117,7 +118,7 @@
 {%     if copy_hostvars[node].ethernet_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].ethernet_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Interface State
   test_description: Ethernet Interface Status & Line Protocol == "up"
@@ -134,7 +135,7 @@
 {%     if copy_hostvars[node].port_channel_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].port_channel_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Interface State
   test_description: Port-Channel Interface Status & Line Protocol == "up"
@@ -153,7 +154,7 @@
 {%     if copy_hostvars[node].vlan_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].vlan_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Interface State
   test_description: Vlan Interface Status & Line Protocol == "up"
@@ -169,7 +170,7 @@
 {# Vxlan Interface State Results #}
 {%     if copy_hostvars[node].vxlan_interface_state_results is arista.avd.defined and copy_hostvars[node].vxlan_interface_state_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Interface State
   test_description: Vxlan Interface Status & Line Protocol == "up"
@@ -187,7 +188,7 @@
 {%     if copy_hostvars[node].loopback_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].loopback_interface_state_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Interface State
   test_description: Loopback Interface Status & Line Protocol == "up"
@@ -207,7 +208,7 @@
 {%         for result in copy_hostvars[node].lldp_topology_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: LLDP Topology
   test_description: LLDP topology - validate peer and interface
@@ -226,7 +227,7 @@
 {# mlag_state_results Results #}
 {%     if copy_hostvars[node].mlag_state_results is arista.avd.defined and copy_hostvars[node].mlag_state_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: MLAG
   test_description: MLAG State active & Status connected
@@ -245,7 +246,7 @@
 {%         for result in copy_hostvars[node].ip_reachability_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: IP Reachability
   test_description: ip reachability test p2p links
@@ -264,7 +265,7 @@
 {# AirBGP #}
 {%     if copy_hostvars[node].arbgp_state_results is arista.avd.defined and copy_hostvars[node].arbgp_state_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: BGP
   test_description: ArBGP is configured and operating
@@ -283,7 +284,7 @@
 {%         for result in copy_hostvars[node].ip_bgp_peer_state_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: BGP
   test_description: ip bgp peer state established (ipv4)
@@ -304,7 +305,7 @@
 {%         for result in copy_hostvars[node].bgp_evpn_peer_state_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: BGP
   test_description: bgp evpn peer state established (evpn)
@@ -322,12 +323,12 @@
 {# Reload Cause Results #}
 {%     if copy_hostvars[node].reload_cause_results is arista.avd.defined and copy_hostvars[node].reload_cause_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Reload Cause
   test_description: Reload Cause - Reload requested by the user
   test: Reload Cause
-{%         if copy_hostvars[node].reload_cause_results.failed %}
+{%         if copy_hostvars[node].reload_cause_results.failed == false %}
   result: PASS
 {%         else %}
   result: FAIL
@@ -341,7 +342,7 @@
 {%         for result in copy_hostvars[node].routing_table_vtep_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Routing Table
   test_description: Remote VTEP address
@@ -362,7 +363,7 @@
 {%         for result in copy_hostvars[node].routing_table_loopback0_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Routing Table
   test_description: Remote Lo0 address
@@ -383,7 +384,7 @@
 {%         for result in copy_hostvars[node].loopback0_reachability_results.results %}
 {%             if result.skipped is not arista.avd.defined %}
 {%                 set test_id.value = test_id.value + 1 %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Loopback0 Reachability
   test_description: Loopback0 Reachability
@@ -404,7 +405,7 @@
 {%         for result in copy_hostvars[node].inb_mgmt_loopback0_reachability_results.results %}
 {%             set test_id.value = test_id.value + 1 %}
 {%             if result.skipped is not arista.avd.defined %}
-- {{ test_id.value }}:
+- id: {{ test_id.value }}
   device: {{ node }}
   test_category: Loopback0 Reachability
   test_description: Inband Mgmt Reachability
