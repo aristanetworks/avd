@@ -32,22 +32,10 @@
     mode: 0664
   delegate_to: localhost
   check_mode: no
-  # when: eos_validate_state_report
+  when: eos_validate_state_report
   tags:
     - always
     - report
-
-# - name: Write Test Results in File
-#   template:
-#     src: generate_state_report_results.j2
-#     dest: "{{ eos_validate_state_report_path }}"
-#     mode: 0664
-#   delegate_to: localhost
-#   check_mode: no
-#   when: eos_validate_state_report
-#   tags:
-#     - always
-#     - report
 
 - name: Create Validation report - CSV
   template:

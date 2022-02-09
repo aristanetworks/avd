@@ -1,8 +1,8 @@
 {# j2lint: disable=V1 #}
 {# AVD State Validation Report #}
 {% set test_id = namespace(value=0) %}
-{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {% set copy_hostvars = namespace(hostvars) %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - power supplies status #}
 {%     if copy_hostvars[node].power_supplies_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
@@ -20,6 +20,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - fan status (power supplies) #}
 {%     if copy_hostvars[node].fan_power_supplies_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
@@ -37,6 +39,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - fan status (fan tray) #}
 {%     if copy_hostvars[node].fan_tray_status_results.results is arista.avd.defined and copy_hostvars[node].power_supplies_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].power_supplies_results.results %}
@@ -54,6 +58,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - temperature #}
 {%     if copy_hostvars[node].environment_temperature_results is arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
@@ -69,6 +75,8 @@
   failure_reason: {{ copy_hostvars[node].environment_temperature_results.msg }}
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Hardware results - transceivers manufacturers #}
 {%     if copy_hostvars[node].transceiver_inventory_results.results is arista.avd.defined and copy_hostvars[node].transceiver_inventory_results.skipped is not arista.avd.defined %}
 {%         for result in copy_hostvars[node].transceiver_inventory_results.results %}
@@ -103,6 +111,8 @@
   failure_reason: {{ copy_hostvars[node].ntp_status_results.msg }}
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Ethernet Interface State Results #}
 {%     if copy_hostvars[node].ethernet_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].ethernet_interface_state_results.results %}
@@ -137,6 +147,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Vlan Interface State Results #}
 {%     if copy_hostvars[node].vlan_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].vlan_interface_state_results.results %}
@@ -169,6 +181,8 @@
   failure_reason: "{{ copy_hostvars[node].vxlan_interface_state_results.msg }}"
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Loopback Interface State Results #}
 {%     if copy_hostvars[node].loopback_interface_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].loopback_interface_state_results.results %}
@@ -186,6 +200,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# LLDP Topology Results #}
 {%     if copy_hostvars[node].lldp_topology_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].lldp_topology_results.results %}
@@ -205,6 +221,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# mlag_state_results Results #}
 {%     if copy_hostvars[node].mlag_state_results is arista.avd.defined and copy_hostvars[node].mlag_state_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
@@ -220,6 +238,8 @@
   failure_reason: "{{ copy_hostvars[node].mlag_state_results.msg }}"
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# IP Reachability test - point-to-point links Results #}
 {%     if copy_hostvars[node].ip_reachability_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].ip_reachability_results.results %}
@@ -239,6 +259,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# AirBGP #}
 {%     if copy_hostvars[node].arbgp_state_results is arista.avd.defined and copy_hostvars[node].arbgp_state_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
@@ -254,6 +276,8 @@
   failure_reason: "{{ copy_hostvars[node].arbgp_state_results.msg }}"
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# ip bgp neighbors peer state type: "ipv4" Results #}
 {%     if copy_hostvars[node].ip_bgp_peer_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].ip_bgp_peer_state_results.results %}
@@ -273,6 +297,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# bgp evpn neighbors peer state type: "evpn" Results #}
 {%     if copy_hostvars[node].bgp_evpn_peer_state_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].bgp_evpn_peer_state_results.results %}
@@ -291,6 +317,8 @@
 {%                 endif %}{%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Reload Cause Results #}
 {%     if copy_hostvars[node].reload_cause_results is arista.avd.defined and copy_hostvars[node].reload_cause_results.skipped is not arista.avd.defined %}
 {%         set test_id.value = test_id.value + 1 %}
@@ -306,6 +334,8 @@
   failure_reason: "{{ copy_hostvars[node].reload_cause_results.msg }}"
 {%         endif %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Routing table check: VTEP Results #}
 {%     if copy_hostvars[node].routing_table_vtep_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].routing_table_vtep_results.results %}
@@ -325,6 +355,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Routing table check: loopback0 Results #}
 {%     if copy_hostvars[node].routing_table_loopback0_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].routing_table_loopback0_results.results %}
@@ -344,6 +376,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# loopback0 reachability Results #}
 {%     if copy_hostvars[node].loopback0_reachability_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].loopback0_reachability_results.results %}
@@ -363,6 +397,8 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{% endfor %}
+{% for node in groups[fabric_name] | arista.avd.natural_sort %}
 {# Inb management to loopback 0 reachability Results #}
 {%     if copy_hostvars[node].inb_mgmt_loopback0_reachability_results.results is arista.avd.defined %}
 {%         for result in copy_hostvars[node].inb_mgmt_loopback0_reachability_results.results %}
