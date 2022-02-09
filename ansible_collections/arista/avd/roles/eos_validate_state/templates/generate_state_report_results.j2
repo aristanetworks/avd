@@ -212,12 +212,7 @@
   test_category: IP Reachability
   test_description: ip reachability test p2p links
   test: "Source: {{ node }}_{{ result.ip_reachability_test.ethernet_interface.key }} - Destination: {{ result.ip_reachability_test.ethernet_interface.value.peer }}_{{ result.ip_reachability_test.ethernet_interface.value.peer_interface }}"
-{%             if result.failed == false %}
-  passed: true
-{%             else %}
-  passed: false
-  failure_reason: "{{ result.msg }}"
-{%             endif %}
+{# test missing - not working? #}
 {%         endfor %}
 {%     endif %}
 {# AirBGP #}
@@ -234,5 +229,122 @@
   passed: false
   failure_reason: "{{ hostvars[node].arbgp_state_results.msg }}"
 {%         endif %}
+{%     endif %}
+{# ip bgp neighbors peer state type: "ipv4" Results #}
+{%     if hostvars[node].ip_bgp_peer_state_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].ip_bgp_peer_state_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: BGP
+  test_description: ip bgp peer state established (ipv4)
+  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+{# test missing - not working? #}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# bgp evpn neighbors peer state type: "evpn" Results #}
+{%     if hostvars[node].bgp_evpn_peer_state_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].bgp_evpn_peer_state_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: BGP
+  test_description: bgp evpn peer state established (evpn)
+  test: "bgp_neighbor: {{ result.bgp_neighbor.key }}"
+{# test missing - not working? #}
+{%         endfor %}
+{%     endif %}
+{# Reload Cause Results #}
+{%     if hostvars[node].reload_cause_results is arista.avd.defined and hostvars[node].reload_cause_results.skipped is not arista.avd.defined %}
+{%         set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: Reload Cause
+  test_description: Reload Cause - Reload requested by the user
+  test: Reload Cause
+{%         if hostvars[node].reload_cause_results.failed %}
+  passed: true
+{%         else %}
+  passed: false
+  failure_reason: "{{ hostvars[node].reload_cause_results.msg }}"
+{%         endif %}
+{%     endif %}
+{# Routing table check: VTEP Results #}
+{%     if hostvars[node].routing_table_vtep_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].routing_table_vtep_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: Routing Table
+  test_description: Remote VTEP address
+  test: {{ result.vtep_reachability_test.vtep_ip }}
+{%                 if result.failed == false %}
+  passed: true
+{%                 else %}
+  passed: false
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# Routing table check: loopback0 Results #}
+{%     if hostvars[node].routing_table_loopback0_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].routing_table_loopback0_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: Routing Table
+  test_description: Remote Lo0 address
+  test: {{ result.routing_table_loopback0_test.loopback0_address }}
+{%                 if result.failed == false %}
+  passed: true
+{%                 else %}
+  passed: false
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# loopback0 reachability Results #}
+{%     if hostvars[node].loopback0_reachability_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].loopback0_reachability_results.results %}
+{%             if result.skipped is not arista.avd.defined %}
+{%                 set test_id.value = test_id.value + 1 %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: Loopback0 Reachability
+  test_description: Loopback0 Reachability
+  test: "Source: {{ node }} - {{ hostvars[node].loopback_interfaces.Loopback0.ip_address | ansible.netcommon.ipaddr('address') }} Destination: {{ result.loopback0_reachability_test.loopback0_address }}"
+{%                 if result.failed == false %}
+  passed: true
+{%                 else %}
+  passed: false
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+{# Inb management to loopback 0 reachability Results #}
+{%     if hostvars[node].inb_mgmt_loopback0_reachability_results.results is arista.avd.defined %}
+{%         for result in hostvars[node].inb_mgmt_loopback0_reachability_results.results %}
+{%             set test_id.value = test_id.value + 1 %}
+{%             if result.skipped is not arista.avd.defined %}
+- {{ test_id.value }}:
+  device: {{ node }}
+  test_category: Loopback0 Reachability
+  test_description: Inband Mgmt Reachability
+  test: "Source: {{ node }} - {{ result.inb_mgmt_loopback0_reachability_test.invocation.module_args.commands[0].split(" ") | last }} Destination: {{ result.inb_mgmt_loopback0_reachability_test.loopback0_address }}"
+{%                 if result.failed == false %}
+  passed: true
+{%                 else %}
+  passed: false
+  failure_reason: "{{ result.msg }}"
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {% endfor %}
