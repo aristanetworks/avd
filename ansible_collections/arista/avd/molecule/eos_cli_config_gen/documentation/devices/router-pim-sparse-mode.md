@@ -89,9 +89,9 @@ interface Management1
 
 ### IP Sparse Mode Information
 
-### IP Rendez-vous Information
+#### IP Rendez-vous Information
 
-| Rendez-vous Point Address | Group Address |
+| Rendezvous Point Address | Group Address |
 | ------------------------- | ------------- |
 | 10.238.1.161 | 239.12.12.12/32 |
 | 10.238.1.161 | 239.12.12.13/32 |
@@ -100,15 +100,15 @@ interface Management1
 | 10.238.1.161 | 239.12.12.20/32 |
 | 10.238.1.161 | 239.12.12.21/32 |
 
-### IP Anycast Information
+#### IP Anycast Information
 
-| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
+| IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------- | -------------- |
 | 10.38.1.161 | 10.50.64.16 | 15 |
 
-### IP Sparse Mode VRFs
+#### IP Sparse Mode VRFs
 
-| VRF Name | Rendez-vous Point Address | Group Address |
+| VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------- | ------------- |
 | MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
 | MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
