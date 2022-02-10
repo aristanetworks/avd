@@ -93,6 +93,9 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 # Only support default and github
 validate_state_markdown_flavor: "default"
 
+# Fabric Name. Required to run the validation role
+fabric_name: "{{ fabric_name | arista.avd.default(all) }}"
+
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
@@ -105,6 +108,7 @@ validation_report_md: "{{ validation_role.validation_report_md | arista.avd.defa
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 ```
+The variable fabric_name is required to generate the report. This variable is automatically set on eos_designs. If this role is not used, the user can select its own name. If it is not defined, it is set to all, so it will accept all variables.
 
 Keep in mind that default accepted manufacturers are "Arastra, Inc." and "Arista Networks". If validation_role.xcvr_own_manufacturers is set, it takes precedence and overrides the defined default variables.
 
