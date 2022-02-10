@@ -96,13 +96,21 @@ validate_state_markdown_flavor: "default"
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
 
+# Generate CSV results file
+validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+
+# Generate MD results file
+validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 ```
 
 Keep in mind that default accepted manufacturers are "Arastra, Inc." and "Arista Networks". If validation_role.xcvr_own_manufacturers is set, it takes precedence and overrides the defined default variables.
 
-The variable validation_role.only_failed_tests is used to limit the amount of tests shown in the MD report. When set, this report will only show failed tests.
+There are two user-defined variables that control the generation of CSV and MD reports. These are validation_role.validation_report_csv and validation_role.validation_report_md respectively.
+
+The variable validation_role.only_failed_tests is used to limit the amount of tests shown in the reports. When set, all reports will only show failed tests.
 
 ## Requirements
 
