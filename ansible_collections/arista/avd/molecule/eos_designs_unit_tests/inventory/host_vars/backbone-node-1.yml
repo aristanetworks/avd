@@ -1,1 +1,1 @@
-underlay_routing_protocol: ospf-ldp
+underlay_routing_protocol: isis-sr-ldp
