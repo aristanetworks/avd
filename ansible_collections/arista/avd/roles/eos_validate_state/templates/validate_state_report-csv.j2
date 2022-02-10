@@ -3,10 +3,26 @@
 test_id,node,test_category,test_description,test,result,failure_reason
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
 {%     if only_failed_tests is arista.avd.defined(false) %}
-{{report_entry.id | arista.avd.default}},{{report_entry.device | arista.avd.default}},{{report_entry.test_category | arista.avd.default}},{{report_entry.test_description | arista.avd.default}},{{report_entry.test | arista.avd.default}},{{report_entry.result | arista.avd.default}},{{report_entry.failure_reason | arista.avd.default}}
+{%         set csv_line = [] %}
+{%         do csv_line.append(report_entry.id) %}
+{%         do csv_line.append(report_entry.device) %}
+{%         do csv_line.append(report_entry.test_category) %}
+{%         do csv_line.append(report_entry.test_description) %}
+{%         do csv_line.append(report_entry.test) %}
+{%         do csv_line.append(report_entry.result) %}
+{%         do csv_line.append(report_entry.failure_reason | arista.avd.default("-")) %}
+{{ csv_line | join(",") }}
 {%     else %}
 {%         if report_entry.result is arista.avd.defined("FAIL") %}
-{{report_entry.id | arista.avd.default}},{{report_entry.device | arista.avd.default}},{{report_entry.test_category | arista.avd.default}},{{report_entry.test_description | arista.avd.default}},{{report_entry.test | arista.avd.default}},{{report_entry.result | arista.avd.default}},{{report_entry.failure_reason | arista.avd.default}}
+{%             set csv_line = [] %}
+{%             do csv_line.append(report_entry.id) %}
+{%             do csv_line.append(report_entry.device) %}
+{%             do csv_line.append(report_entry.test_category) %}
+{%             do csv_line.append(report_entry.test_description) %}
+{%             do csv_line.append(report_entry.test) %}
+{%             do csv_line.append(report_entry.result) %}
+{%             do csv_line.append(report_entry.failure_reason | arista.avd.default("-")) %}
+{{ csv_line | join(",") }}
 {%         endif %}
 {%     endif %}
 {% endfor %}
