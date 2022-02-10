@@ -1,0 +1,222 @@
+# Templates used by AVD eos_designs role
+default_templates:
+  # Templates defined per design
+  l3ls-evpn:
+    facts:
+      # Set "switch.*" variables based on node type
+      - template: "facts/node_type/main.j2"
+      # Set general "switch.*" variables
+      - template: "facts/switch/main.j2"
+    topology_facts:
+      # Set design specific "topology.*" variables
+      - template: "facts/topology/main.j2"
+    structured_config:
+      # Render Structured Configuration
+      # Base features
+      - template: "base/main.j2"
+      # MLAG feature
+      - template: "mlag/main.j2"
+      # Underlay feature
+      - template: "underlay/main.j2"
+      # Backbone feature
+      - template: "backbone_interfaces/main.j2"
+      # Overlay feature
+      - template: "overlay/main.j2"
+      # L3 Edge feature
+      - template: "l3_edge/main.j2"
+      # Tenants feature
+      - template: "network_services/main.j2"
+      # Connected Endpoints feature
+      - template: "connected_endpoints/main.j2"
+      # Inband Management feature
+      - template: "inband_management/main.j2"
+      # Merge custom_structured_configuration last
+      - template: "custom_structured_configuration/main.j2"
+        options:
+          list_merge: "{{ custom_structured_configuration_list_merge }}"
+          strip_empty_keys: false
+    ip_addressing:
+      router_id: 'ip_addressing/router-id.j2'
+      mlag_ip_primary: 'ip_addressing/mlag-ip-primary.j2'
+      mlag_ip_secondary: 'ip_addressing/mlag-ip-secondary.j2'
+      mlag_l3_ip_primary: 'ip_addressing/mlag-l3-ip-primary.j2'
+      mlag_l3_ip_secondary: 'ip_addressing/mlag-l3-ip-secondary.j2'
+      p2p_uplinks_ip: 'ip_addressing/p2p-uplinks-ip.j2'
+      p2p_uplinks_peer_ip: 'ip_addressing/p2p-uplinks-peer-ip.j2'
+      vtep_ip_mlag: 'ip_addressing/vtep-ip-mlag.j2'
+      vtep_ip: 'ip_addressing/vtep-ip.j2'
+
+    interface_descriptions:
+      underlay_ethernet_interfaces: 'interface_descriptions/underlay/ethernet-interfaces.j2'
+      underlay_port_channel_interfaces: 'interface_descriptions/underlay/port-channel-interfaces.j2'
+      mlag_ethernet_interfaces: 'interface_descriptions/mlag/ethernet-interfaces.j2'
+      mlag_port_channel_interfaces: 'interface_descriptions/mlag/port-channel-interfaces.j2'
+      connected_endpoints_ethernet_interfaces: 'interface_descriptions/connected_endpoints/ethernet-interfaces.j2'
+      connected_endpoints_port_channel_interfaces: 'interface_descriptions/connected_endpoints/port-channel-interfaces.j2'
+      overlay_loopback_interface: 'interface_descriptions/loopback_interfaces/overlay-loopback.j2'
+      vtep_loopback_interface: 'interface_descriptions/loopback_interfaces/vtep-loopback.j2'
+
+# Fabric node types
+default_node_type_keys:
+  "l3ls-evpn":
+    backbone_router:
+      type: backbone_router
+      default_evpn_role: none
+      mpls_lsr: true
+
+mgmt_gateway: 192.168.0.1
+
+# Fabric name
+fabric_name: BACKBONE_UNIT_TESTS
+
+overlay_routing_protocol: ibgp
+bgp_as: 65000
+
+# Update p2p mtu
+p2p_uplinks_mtu: 1600
+
+underlay_ipv6: true
+
+# ISIS params
+isis_ti_lfa:
+  enabled: true
+  protection: link
+  local_convergence_delay: 15000
+
+isis_default_is_type: level-2
+isis_default_circuit_type: level-2
+isis_default_metric: 50
+isis_advertise_passive_only: true
+
+# OSPF Params
+underlay_ospf_area: 0.0.0.0
+underlay_ospf_process_id: 101
+underlay_ospf_max_lsa: 12000
+underlay_ospf_bfd_enable: true
+
+# Nodes
+type: backbone_router
+backbone_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+    node_sid_base: 200
+    isis_system_id_prefix: "0000.0001"
+    backbone_interface_speed: "forced 100gfull"
+  nodes:
+    backbone-node-1:
+      id: 1
+    backbone-node-2:
+      id: 2
+
+backbone_interfaces:
+  p2p_links_ip_pools:
+    underlay_pool: 100.64.48.0/24
+    some_other_pool: 100.123.123.0/24
+  p2p_links_profiles:
+    default_bb_profile:
+      speed: "forced 1000full"
+      mtu: 1500
+      isis_hello_padding: false
+      isis_metric: 60
+      ip_pool: underlay_pool
+      isis_circuit_type: level-2
+      ipv6_enable: true
+      isis_authentication_mode: md5
+      isis_authentication_key: $1c$sTNAlR6rKSw=
+
+  p2p_links:
+#     # Should try:
+#     # * Unnumbered
+#     # * turn off mpls
+#     # * turn off ldp
+#     # * try qos profile
+#     # * get speed from node default, profile and link specific override.
+#     # * hello padding on/off
+
+    # Unnumbered link
+    # - nodes: [ backbone-node-1, backbone-node-2 ]
+    #   id: 1
+    #   interfaces: [ Ethernet1, Ethernet1 ]
+    #   profile: default_bb_profile
+    #   ip: ["unnumbered loopback0", "unnumbered loopback0"]
+
+#     # Link w/o bb profile
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 2
+#       interfaces: [ Ethernet2, Ethernet2 ]
+#       ip_pool: some_other_pool
+#       speed: 100full
+#       mtu: 1601
+#       isis_hello_padding: true
+#       isis_circuit_type: level-1
+#       isis_metric: 60
+#       qos_profile: test_qos_profile
+
+#     # Normal link with profile
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 3
+#       interfaces: [ Ethernet3, Ethernet3 ]
+#       profile: default_bb_profile
+
+#     # Profile link with no mpls_ip
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 4
+#       interfaces: [ Ethernet4, Ethernet4 ]
+#       profile: default_bb_profile
+#       mpls_ip: false
+
+#     # Profile link with no mpls_ldp
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 5
+#       interfaces: [ Ethernet5, Ethernet5 ]
+#       profile: default_bb_profile
+#       mpls_ldp: false
+
+#     # Profile link with overrides
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 6
+#       interfaces: [ Ethernet6, Ethernet6 ]
+#       profile: default_bb_profile
+#       ip: ["unnumbered loopback0", "unnumbered loopback0"]
+#       speed: 100full
+#       mtu: 1602
+#       isis_hello_padding: true
+#       isis_circuit_type: level-1-2
+#       isis_metric: 70
+#       qos_profile: test_qos_profile
+
+    - nodes: [ backbone-node-1, backbone-node-2 ]
+      id: 7
+      interfaces: [ Ethernet7, Ethernet7 ]
+      profile: default_bb_profile
+
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 8
+#       interfaces: [ Ethernet8, Ethernet8 ]
+#       profile: default_bb_profile
+
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 9
+#       interfaces: [ Ethernet9, Ethernet9 ]
+#       profile: default_bb_profile
+
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 10
+#       interfaces: [ Ethernet10, Ethernet10 ]
+#       ip: ["unnumbered loopback0", "unnumbered loopback0"]
+
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 11
+#       interfaces: [ Ethernet11, Ethernet11 ]
+#       profile: default_bb_profile
+
+#     - nodes: [ backbone-node-1, backbone-node-2 ]
+#       id: 12
+#       port_channel:
+#         mode: active
+#         nodes_child_interfaces:
+#           backbone-node-1: [ Ethernet12, Ethernet13 ]
+#           backbone-node-2: [ Ethernet12, Ethernet13 ]
+#       profile: default_bb_profile
+
