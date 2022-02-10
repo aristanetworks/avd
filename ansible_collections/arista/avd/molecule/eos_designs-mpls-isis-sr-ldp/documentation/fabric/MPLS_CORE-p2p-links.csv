@@ -1,4 +1,4 @@
-Type, Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
+Type,Node,Node Interface,Leaf IP Address,Peer Type,Peer Node,Peer Interface,Peer IP Address
 pe,SITE1-LER1,Ethernet1,100.64.48.0/31,p,SITE1-LSR1,Ethernet1,100.64.48.1/31
 pe,SITE1-LER1,Ethernet2,100.64.48.4/31,pe,SITE1-LER2,Ethernet2,100.64.48.5/31
 pe,SITE1-LER2,Ethernet1,100.64.48.2/31,p,SITE1-LSR2,Ethernet1,100.64.48.3/31

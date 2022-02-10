@@ -1,7 +1,7 @@
 ---
 tenants:
   TENANT_A:
-    mac_vrf_rt_base: 10000
+    mac_vrf_id_base: 10000
     pseudowire_rt_base: 1000
     point_to_point_services:
       # Port-based vpws service
@@ -29,7 +29,7 @@ tenants:
           - site5
   TENANT_B:
     pseudowire_rt_base: 2000
-    mac_vrf_rt_base: 20000
+    mac_vrf_id_base: 20000
     point_to_point_services:
       - name: TEN_B_site3_site5_eline_vlan_based
         type: vpws-pseudowire
