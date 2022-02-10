@@ -12,7 +12,7 @@
 {%     do validate_state_report.test_categories.append(report_entry.test_category | arista.avd.default("-")) %}
 {%     if report_entry.result is arista.avd.defined("PASS") %}
 {%         set validate_state_report.total_tests_passed = validate_state_report.total_tests_passed + 1 %}
-{%     elif report_entry.result is airsta.avd.defined("FAIL") %}
+{%     elif report_entry.result is arista.avd.defined("FAIL") %}
 {%         set validate_state_report.total_tests_failed = validate_state_report.total_tests_failed + 1 %}
 {%     endif %}
 {%     if loop.last %}
