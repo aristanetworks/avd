@@ -2,5 +2,11 @@
 {# AVD State Validation Report - CSV #}
 test_id,node,test_category,test_description,test,result,failure_reason
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+{%     if only_failed_tests is arista.avd.defined(false) %}
 {{report_entry.id | arista.avd.default}},{{report_entry.device | arista.avd.default}},{{report_entry.test_category | arista.avd.default}},{{report_entry.test_description | arista.avd.default}},{{report_entry.test | arista.avd.default}},{{report_entry.result | arista.avd.default}},{{report_entry.failure_reason | arista.avd.default}}
+{%     else %}
+{%         if report_entry.result is arista.avd.defined("FAIL") %}
+{{report_entry.id | arista.avd.default}},{{report_entry.device | arista.avd.default}},{{report_entry.test_category | arista.avd.default}},{{report_entry.test_description | arista.avd.default}},{{report_entry.test | arista.avd.default}},{{report_entry.result | arista.avd.default}},{{report_entry.failure_reason | arista.avd.default}}
+{%         endif %}
+{%     endif %}
 {% endfor %}
