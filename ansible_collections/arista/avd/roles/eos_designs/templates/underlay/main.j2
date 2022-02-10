@@ -17,11 +17,23 @@
 
 {%         include 'underlay/ebgp/route-maps.j2' %}
 
-{%     elif switch.underlay_routing_protocol == "isis" %}
+{%     elif switch.underlay_routing_protocol in  ["isis", "isis-ldp"] %}
 {%         include 'underlay/isis/router-isis.j2' %}
 
-{%     elif switch.underlay_routing_protocol == "ospf" %}
+{%     elif switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
 {%         include 'underlay/ospf/router-ospf.j2' %}
 
+{%     elif switch.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] %}
+{%         include 'underlay/isis-sr/router-isis.j2' %}
+
 {%     endif %}
+{%     if switch.mpls_lsr is arista.avd.defined(true) or switch.mpls_ip is arista.avd.defined(true) %}
+{%         include 'underlay/mpls/mpls-ip.j2' %}
+
+{%     endif %}
+{%     if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
+{%         include 'underlay/mpls/mpls-ldp.j2' %}
+
+{%     endif %}
+
 {% endif %}

@@ -173,9 +173,26 @@ switch:
   evpn_route_servers: {{ switch_data.combined.evpn_route_servers | arista.avd.default() }}
 {%     endif %}
 
+{# switch isis parameters #}
+{%     if switch_underlay_routing_protocol in ['isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp'] %}
 {# switch.isis_net #}
-{%     if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
+{%         if switch_data.combined.isis_system_id_prefix is arista.avd.defined %}
   isis_net: {{ isis_area_id }}.{{ switch_data.combined.isis_system_id_prefix }}.{{ '%04d' | format(switch_id) }}.00
+{%         endif %}
+{# switch.is_type #}
+{%         if switch_data.combined.is_type is arista.avd.defined and switch_data.combined.is_type in ["level-1", "level-2", "level-1-2"] %}
+{%             set switch_is_type = switch_data.combined.is_type %}
+{%         elif isis_default_is_type is arista.avd.defined and isis_default_is_type in ["level-1", "level-2", "level-1-2"] %}
+{%             set switch_is_type = isis_default_is_type %}
+{%         else %}
+{%             set switch_is_type = "level-2" %}
+{%         endif %}
+  is_type: {{ switch_is_type }}
+
+{# switch.node_sid #}
+{%         if switch_underlay_routing_protocol in ['isis-sr', 'isis-sr-ldp'] %}
+  node_sid: {{ switch_id + (switch_data.combined.node_sid_base | arista.avd.default(0)) | int }}
+{%         endif %}
 {%     endif %}
 {% endif %}
 

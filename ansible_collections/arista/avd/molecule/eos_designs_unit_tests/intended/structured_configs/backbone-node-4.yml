@@ -28,6 +28,25 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 10.0.0.4/32
+    ospf_area: 0.0.0.0
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+router_ospf:
+  process_ids:
+    101:
+      passive_interface_default: true
+      router_id: 10.0.0.4
+      bfd_enable: true
+      max_lsa: 12000
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    router_id: 10.0.0.4
+    shutdown: false
+    transport_address_interface: Loopback0
 ethernet_interfaces:
   Ethernet10:
     peer: backbone-node-3

@@ -28,6 +28,44 @@ loopback_interfaces:
     description: EVPN_Overlay_Peering
     shutdown: false
     ip_address: 10.0.0.2/32
+    mpls:
+      ip: true
+      ldp:
+        interface: true
+    isis_enable: MPLS_UNDERLAY
+    isis_passive: true
+    node_segment:
+      ipv4_index: 202
+      ipv6_index: 202
+router_isis:
+  instance: MPLS_UNDERLAY
+  log_adjacency_changes: true
+  net: 49.0001.0000.0001.0002.00
+  router_id: 10.0.0.2
+  is_type: level-2
+  advertise:
+    passive_only: true
+  mpls_ldp_sync_default: true
+  timers:
+    local_convergence:
+      delay: 15000
+      protected_prefixes: true
+  address_family:
+  - ipv4 unicast
+  - ipv6 unicast
+  isis_af_defaults:
+  - maximum-paths 4
+  - fast-reroute ti-lfa mode link-protection
+  segment_routing_mpls:
+    router_id: 10.0.0.2
+    enabled: true
+mpls:
+  ip: true
+  ldp:
+    interface_disabled_default: true
+    router_id: 10.0.0.2
+    shutdown: false
+    transport_address_interface: Loopback0
 ethernet_interfaces:
   Ethernet1:
     peer: backbone-node-1
