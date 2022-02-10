@@ -93,7 +93,7 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 # Only support default and github
 validate_state_markdown_flavor: "default"
 
-# Fabric Name. Required to run the validation role
+# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
 fabric_name: "{{ fabric_name | arista.avd.default(all) }}"
 
 # Allow different manufacturers

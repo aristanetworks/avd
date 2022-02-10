@@ -8,8 +8,8 @@
 {% set validate_state_report.test_categories_failed = [] %}
 {% set validate_state_report.duts = [] %}
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
-{%     do validate_state_report.duts.append(report_entry.device | arista.avd.default("")) %}
-{%     do validate_state_report.test_categories.append(report_entry.test_category | arista.avd.default("")) %}
+{%     do validate_state_report.duts.append(report_entry.device | arista.avd.default("-")) %}
+{%     do validate_state_report.test_categories.append(report_entry.test_category | arista.avd.default("-")) %}
 {%     if report_entry.result is arista.avd.defined("PASS") %}
 {%         set validate_state_report.total_tests_passed = validate_state_report.total_tests_passed + 1 %}
 {%     elif report_entry.result is airsta.avd.defined("FAIL") %}
@@ -85,7 +85,7 @@
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
 {% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
 {%     if report_entry.result is arista.avd.defined("FAIL") %}
-| {{ report_entry.id | arista.avd.default("") }} | {{ report_entry.device | arista.avd.default("") }} | {{ report_entry.test_category | arista.avd.default("") }} | {{ report_entry.test_description | arista.avd.default("") }} | {{ report_entry.test | arista.avd.default("") }} | {{ report_entry.result | arista.avd.default("") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("") }} |
+| {{ report_entry.id | arista.avd.default("-") }} | {{ report_entry.device | arista.avd.default("-") }} | {{ report_entry.test_category | arista.avd.default("-") }} | {{ report_entry.test_description | arista.avd.default("-") }} | {{ report_entry.test | arista.avd.default("-") }} | {{ report_entry.result | arista.avd.default("-") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("-") }} |
 {%     endif %}
 {% endfor %}
 
@@ -95,6 +95,6 @@
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
 {%     for report_entry in eos_validate_state_report | arista.avd.default([]) %}
-| {{ report_entry.id | arista.avd.default("") }} | {{ report_entry.device | arista.avd.default("") }} | {{ report_entry.test_category | arista.avd.default("") }} | {{ report_entry.test_description | arista.avd.default("") }} | {{ report_entry.test | arista.avd.default("") }} | {{ report_entry.result | arista.avd.default("") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("") }} |
+| {{ report_entry.id | arista.avd.default("-") }} | {{ report_entry.device | arista.avd.default("-") }} | {{ report_entry.test_category | arista.avd.default("-") }} | {{ report_entry.test_description | arista.avd.default("-") }} | {{ report_entry.test | arista.avd.default("-") }} | {{ report_entry.result | arista.avd.default("-") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("-") }} |
 {%     endfor %}
 {% endif %}
