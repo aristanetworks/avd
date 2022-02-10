@@ -94,7 +94,7 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 validate_state_markdown_flavor: "default"
 
 # Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
-fabric_name: "{{ fabric_name | arista.avd.default(all) }}"
+fabric_name: "{{ fabric_name | arista.avd.default('all') }}"
 
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"

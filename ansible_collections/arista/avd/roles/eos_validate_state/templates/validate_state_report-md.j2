@@ -45,10 +45,10 @@
 | --- | ----------- | ------------ | ------------ | ----------------- |
 {% for dut in validate_state_report.duts %}
 {%     for report_entry in eos_validate_state_report | arista.avd.default([]) %}
-{%         if report_entry.device == dut %}
-{%             if report_entry.result == "PASS" %}
+{%         if report_entry.device is arista.avd.defined(dut) %}
+{%             if report_entry.result is arista.avd.defined("PASS") %}
 {%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
-{%             elif report_entry.result == "FAIL" %}
+{%             elif report_entry.result is arista.avd.defined("FAIL")  %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
 {%                 do validate_state_report.test_categories_failed.append(report_entry.test_category) %}
 {%             endif %}
