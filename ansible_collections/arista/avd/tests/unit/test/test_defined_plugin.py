@@ -18,16 +18,17 @@ class TestDefinedPlugin():
     def defined_function(self, value, test_value=None, var_type=None, fail_action=None, var_name=None, err_msg=None, warn_msg=None):
         if str(fail_action).lower() == 'warning':
             resp, warning = defined(value, test_value=test_value, var_type=var_type, fail_action=fail_action,
-                           var_name=var_name, run_tests=True)
+                                    var_name=var_name, run_tests=True)
             if warn_msg:
                 assert warning is not None
-                warn = str(list(warning.keys())[0]).replace('[WARNING]: ', '').strip().replace('\n', ' ')
+                warn = str(list(warning.keys())[0]).replace(
+                    '[WARNING]: ', '').strip().replace('\n', ' ')
                 assert warn == warn_msg
                 assert resp is False
         elif str(fail_action).lower() == 'error':
             with pytest.raises(AnsibleError) as e:
                 resp, warning = defined(value, test_value=test_value, var_type=var_type, fail_action=fail_action,
-                               var_name=var_name, run_tests=True)
+                                        var_name=var_name, run_tests=True)
             assert str(e.value) == err_msg
 
     @pytest.mark.parametrize("VALUE", VALUE_LIST)
@@ -41,14 +42,16 @@ class TestDefinedPlugin():
                 else:
                     warn_msg = "A variable was expected but not set. Output may be incorrect or incomplete!"
 
-                self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, warn_msg=warn_msg)
+                self.defined_function(
+                    VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, warn_msg=warn_msg)
             elif str(FAIL_ACTION).lower() == 'error':
                 if VAR_NAME is not None:
                     err_msg = f"{VAR_NAME} was expected but not set!"
                 else:
                     err_msg = "A variable was expected but not set!"
 
-                self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, err_msg=err_msg)
+                self.defined_function(
+                    VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, err_msg=err_msg)
 
     @pytest.mark.parametrize("VALUE", VALUE_LIST)
     def test_defined_plugin_value_not_none_and_define(self, VALUE):
@@ -67,13 +70,15 @@ class TestDefinedPlugin():
                     warn_msg = f"{VAR_NAME} was set to {VALUE} but we expected {TEST_VALUE}. Output may be incorrect or incomplete!"
                 else:
                     warn_msg = f"A variable was set to {VALUE} but we expected {TEST_VALUE}. Output may be incorrect or incomplete!"
-                self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, test_value=TEST_VALUE, warn_msg=warn_msg)
+                self.defined_function(VALUE, fail_action=FAIL_ACTION,
+                                      var_name=VAR_NAME, test_value=TEST_VALUE, warn_msg=warn_msg)
             elif str(FAIL_ACTION).lower() == 'error':
                 if VAR_NAME is not None:
                     err_msg = f"{VAR_NAME} was set to {VALUE} but we expected {TEST_VALUE}!"
                 else:
                     err_msg = f"A variable was set to {VALUE} but we expected {TEST_VALUE}!"
-                self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, test_value=TEST_VALUE, err_msg=err_msg)
+                self.defined_function(VALUE, fail_action=FAIL_ACTION,
+                                      var_name=VAR_NAME, test_value=TEST_VALUE, err_msg=err_msg)
 
     @pytest.mark.parametrize("VALUE", VALUE_LIST)
     @pytest.mark.parametrize("FAIL_ACTION", FAIL_ACTION_LIST)
@@ -88,13 +93,15 @@ class TestDefinedPlugin():
                         warn_msg = f"{VAR_NAME} was a {type(VALUE).__name__} but we expected a {str(VAR_TYPE).lower()}. Output may be incorrect or incomplete!"
                     else:
                         warn_msg = f"A variable was a {type(VALUE).__name__} but we expected a {str(VAR_TYPE).lower()}. Output may be incorrect or incomplete!"
-                    self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, var_type=VAR_TYPE, warn_msg=warn_msg)
+                    self.defined_function(
+                        VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, var_type=VAR_TYPE, warn_msg=warn_msg)
                 elif str(FAIL_ACTION).lower() == 'error':
                     if VAR_NAME is not None:
                         err_msg = f"{VAR_NAME} was a {type(VALUE).__name__} but we expected a {str(VAR_TYPE).lower()}!"
                     else:
                         err_msg = f"A variable was a {type(VALUE).__name__} but we expected a {str(VAR_TYPE).lower()}!"
-                    self.defined_function(VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, var_type=VAR_TYPE, err_msg=err_msg)
+                    self.defined_function(
+                        VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, var_type=VAR_TYPE, err_msg=err_msg)
 
     @pytest.mark.parametrize("VALUE", VALUE_LIST)
     @pytest.mark.parametrize("INVALID_FAIL_ACTION", INVALID_FAIL_ACTION_LIST)
