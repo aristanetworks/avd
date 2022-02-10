@@ -319,7 +319,8 @@ eos_validate_state_report:
 {%                 else %}
   result: "FAIL"
   failure_reason: {{ result.msg }}
-{%                 endif %}{%             endif %}
+{%                 endif %}
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 {% endfor %}
