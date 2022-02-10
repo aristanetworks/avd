@@ -111,7 +111,7 @@ port_channel_interfaces:
     encapsulation_vlan:
       client:
         dot1q:
-          vlan: {{ subinterface.client_dot1q | arista.avd.default(subinterface.number) }}
+          vlan: {{ subinterface.encapsulation_vlan.client_dot1q | arista.avd.default(subinterface.number) }}
       network:
         client: true
 {%                             endif %}
