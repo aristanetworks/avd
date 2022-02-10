@@ -7,9 +7,9 @@
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
 {%         if router_pim_sparse_mode.ipv4.rp_addresses is arista.avd.defined %}
 
-### IP Rendez-vous Information
+#### IP Rendez-vous Information
 
-| Rendez-vous Point Address | Group Address |
+| Rendezvous Point Address | Group Address |
 | ------------------------- | ------------- |
 {%             for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort %}
 {%                 for group in router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
@@ -19,9 +19,9 @@
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
 
-### IP Anycast Information
+#### IP Anycast Information
 
-| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
+| IP Anycast Address | Other Rendezvous Point Address | Register Count |
 | ------------------ | ------------------------------- | -------------- |
 {%             for anycast_rp in router_pim_sparse_mode.ipv4.anycast_rps | arista.avd.natural_sort %}
 {%                 for other_anycast_rp_address in router_pim_sparse_mode.ipv4.anycast_rps[anycast_rp].other_anycast_rp_addresses | arista.avd.natural_sort %}
@@ -33,9 +33,9 @@
 {%     endif %}
 {%     if router_pim_sparse_mode.vrfs is arista.avd.defined %}
 
-### IP Sparse Mode VRFs
+#### IP Sparse Mode VRFs
 
-| VRF Name | Rendez-vous Point Address | Group Address |
+| VRF Name | Rendezvous Point Address | Group Address |
 | -------- | ------------------------- | ------------- |
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
