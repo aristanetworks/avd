@@ -1,18 +1,17 @@
 {% if router_general is arista.avd.defined %}
 
 ## Router General
-
 {%     if router_general.router_id.ipv4 is arista.avd.defined %}
-- Global IPv4 Router ID: {{ router_general.router_id.ipv4 }}
 
+- Global IPv4 Router ID: {{ router_general.router_id.ipv4 }}
 {%     endif %}
 {%     if router_general.router_id.ipv6 is arista.avd.defined %}
-- Global IPv6 Router ID: {{ router_general.router_id.ipv6 }}
 
+- Global IPv6 Router ID: {{ router_general.router_id.ipv6 }}
 {%     endif %}
 {%     if router_general.nexthop_fast_failover is arista.avd.defined(true) %}
-- Nexthop fast fail-over is enabled.
 
+- Nexthop fast fail-over is enabled.
 {%     endif %}
 {%     set has = namespace() %}
 {%     set has.found = false %}
@@ -24,6 +23,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if has.found is arista.avd.defined(true) %}
+
 ### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
@@ -35,8 +35,8 @@
 {%                 endif %}
 {%             endfor %}
 {%         endfor %}
-
 {%     endif %}
+
 ### Router General configuration
 
 ```eos
