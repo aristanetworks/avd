@@ -23,13 +23,13 @@ router pim sparse-mode
 {%         endif %}
 {%     endif %}
 {%     for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
-      !
-    vrf {{ vrf.name }}
+   !
+   vrf {{ vrf.name }}
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
 {%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
 {%                 for group in rp_address.groups | arista.avd.natural_sort %}
-        rp address {{ rp_address.address }} {{ group }}
+         rp address {{ rp_address.address }} {{ group }}
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
