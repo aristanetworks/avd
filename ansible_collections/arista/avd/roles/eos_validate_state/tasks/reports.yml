@@ -19,7 +19,7 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
-  when: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+  when: "validation_role.validation_report_csv | arista.avd.default(true)"
   tags:
     - always
     - report
@@ -31,7 +31,7 @@
     mode: 0664
   delegate_to: localhost
   run_once: true
-  when: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+  when: "validation_role.validation_report_md | arista.avd.default(true)"
   tags:
     - always
     - report
