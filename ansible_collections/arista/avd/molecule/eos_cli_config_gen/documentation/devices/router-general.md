@@ -85,11 +85,21 @@ interface Management1
 
 ## Router General
 
+- Global IPv4 Router ID: 10.1.2.3
+
+- Global IPv6 Router ID: 2001:beef:cafe::1
+
+- Nexthop fast fail-over is enabled.
+
 ### Router General configuration
 
 ```eos
 !
 router general
+   router-id ipv4 10.1.2.3
+   router-id ipv6 2001:beef:cafe::1
+   hardware next-hop fast-failover
+   !
    vrf BLUE-C2
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
