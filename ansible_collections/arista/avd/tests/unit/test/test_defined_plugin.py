@@ -104,10 +104,14 @@ class TestDefinedPlugin():
                         VALUE, fail_action=FAIL_ACTION, var_name=VAR_NAME, var_type=VAR_TYPE, err_msg=err_msg)
 
     @pytest.mark.parametrize("VALUE", VALUE_LIST)
+    @pytest.mark.parametrize("TEST_VALUE", TEST_VALUE_LIST)
     @pytest.mark.parametrize("INVALID_FAIL_ACTION", INVALID_FAIL_ACTION_LIST)
-    def test_defined_plugin_fail_action_None(self, VALUE, INVALID_FAIL_ACTION):
-        resp = defined(VALUE, fail_action=INVALID_FAIL_ACTION)
+    def test_defined_plugin_fail_action_None(self, VALUE, TEST_VALUE, INVALID_FAIL_ACTION):
+        resp = defined(VALUE, test_value=TEST_VALUE, fail_action=INVALID_FAIL_ACTION)
         if not isinstance(VALUE, Undefined) and VALUE is not None:
-            assert resp is True
+            if TEST_VALUE is not None and VALUE != TEST_VALUE:
+                assert resp is False
+            else:
+                assert resp is True
         else:
             assert resp is False
