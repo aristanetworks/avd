@@ -14,16 +14,10 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 validate_state_markdown_flavor: "default"
 
 # Fabric Name. Required to run the validation role
-fabric_name: "{{ fabric_name | arista.avd.default('all') }}"
+fabric_name: "all"
 
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
-
-# Generate CSV results file
-validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
-
-# Generate MD results file
-validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
 
 # Print only FAILED tests
 only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
