@@ -100,7 +100,6 @@ port_channel_interfaces:
 {%                             if subinterface.number is arista.avd.defined %}
   Port-Channel{{ channel_group_id }}.{{ subinterface.number }}:
     type: l2dot1q
-    mode: flexencap
 {%                                 if subinterface.short_esi is arista.avd.defined %}
 {%                                     if subinterface.short_esi.split(':') | length == 3 %}
     esi: {{ subinterface.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
