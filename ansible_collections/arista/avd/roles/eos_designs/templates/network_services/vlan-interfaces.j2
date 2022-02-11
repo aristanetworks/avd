@@ -45,7 +45,14 @@ vlan_interfaces:
 {%             else %}
     shutdown: true
 {%             endif %}
+{%             if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
+{%             else %}
+{%                 set svi_subnet = svi.nodes[inventory_hostname].ip_address | arista.avd.default(svi_ip_address_virtual) | ansible.netcommon.ipaddr('subnet') %}
+{%                 if svi_subnet is arista.avd.defined %}
+{%                     do default_vrf.svi_subnets.append(svi_subnet) %}
+{%                 endif %}
+{%             endif %}
 {# IP address configuration #}
 {%             if svi.nodes[inventory_hostname].ip_address is arista.avd.defined %}
     ip_address: {{ svi.nodes[inventory_hostname].ip_address }}
@@ -116,7 +123,9 @@ vlan_interfaces:
     type: underlay_peering
     shutdown: false
     description: "MLAG_PEER_L3_iBGP: vrf {{ vrf.name }}"
+{%                 if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
+{%                 endif %}
     ip_address: {{ switch.mlag_l3_ip | arista.avd.default(switch.mlag_ip) }}/31
     mtu: {{ p2p_uplinks_mtu }}
 {%             endif %}

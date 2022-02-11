@@ -20,7 +20,9 @@ ethernet_interfaces:
     type: routed
 {%                         endif %}
     peer_type: l3_interface
+{%                         if vrf.name != 'default' %}
     vrf: {{ vrf.name }}
+{%                         endif %}
     ip_address: {{ l3_interface.ip_addresses[loop.index0] }}
 {%                         if l3_interface.mtu is arista.avd.defined %}
     mtu: {{ l3_interface.mtu }}

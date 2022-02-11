@@ -1,0 +1,17 @@
+{# router_bgp.prefix_lists #}
+prefix_lists:
+  TENANT-NETWORK-DEFAULT-VRF:
+    sequence_numbers:
+{% for svi_subnet in default_vrf.svi_subnets %}
+      {{ 10*loop.index }}:
+        action: "permit {{ svi_subnet }}"
+{% endfor %}
+
+{# router_bgp.route_maps #}
+route_maps:
+  RM-TENANT-NETWORK-DEFAULT-VRF:
+    sequence_numbers:
+      10:
+        type: permit
+        match:
+        - ip address prefix-list TENANT-NETWORK-DEFAULT-VRF
