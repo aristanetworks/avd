@@ -52,6 +52,7 @@ routers:
         switch_ports: [ Ethernet11, Ethernet11 ]
         switches: [ MH-LEAF1A, MH-LEAF1B ]
         port_channel:
+          description: Testing L2 subinterfaces
           mode: active
           # Port-Channel L2 Subinterfaces
           # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
