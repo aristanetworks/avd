@@ -233,7 +233,6 @@ port_channel_interfaces:
     shutdown: false
   Port-Channel11.101:
     type: l2dot1q
-    mode: flexencap
     esi: 0000:0000:0000:0000:0101
     rt: 00:00:00:00:01:01
     vlan_id: 101
@@ -245,7 +244,6 @@ port_channel_interfaces:
         client: true
   Port-Channel11.102:
     type: l2dot1q
-    mode: flexencap
     esi: 0000:0000:0000:0000:0102
     rt: 00:00:00:00:01:02
     vlan_id: 1102
