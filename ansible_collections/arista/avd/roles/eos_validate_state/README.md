@@ -175,6 +175,8 @@ ansible_network_os: eos
 ansible_become: yes
 ansible_become_method: enable
 
+fabric_name: "DC1"
+
 validation_mode_loose: true
 
 validation_role:
