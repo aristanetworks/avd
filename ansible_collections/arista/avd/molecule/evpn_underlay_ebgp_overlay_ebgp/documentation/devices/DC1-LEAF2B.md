@@ -712,9 +712,10 @@ interface Vlan311
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback10
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback10 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
