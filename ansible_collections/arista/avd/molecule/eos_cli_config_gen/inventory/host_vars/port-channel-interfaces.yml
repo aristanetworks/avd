@@ -137,6 +137,28 @@ port_channel_interfaces:
       trunk: untagged
       vlan: 70
 
+  Port-Channel13:
+    description: EVPN-Vxlan single-active redundancy
+    esi: "0000:0000:0000:0102:0304"
+    rt: "00:00:01:02:03:04"
+    evpn_ethernet_segment:
+      redundancy: single-active
+      designated_forwarder_election:
+        algorithm: preference
+        preference_value: 100
+        dont_preempt: true
+        hold_time: 10
+        candidate_reachability_required: true
+
+  Port-Channel14:
+    description: EVPN-MPLS multihoming
+    esi: "0000:0000:0000:0102:0305"
+    rt: "00:00:01:02:03:05"
+    evpn_ethernet_segment:
+      mpls:
+        shared_index: 100
+        tunnel_flood_filter_time: 100
+
   Port-Channel17:
     description: PBR Description
     type: routed

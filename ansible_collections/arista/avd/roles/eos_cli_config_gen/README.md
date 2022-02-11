@@ -994,12 +994,12 @@ ethernet_interfaces:
         # preference_value and dont_preempt are set for preference algorithm and are optional
         preference_value: < 0-65535 >
         dont_preempt: < true | false | default -> false >
-        hold_time: < 1-1800 Seconds >
-        subsequent_hold_time: < 10-10000 milliseconds >
+        hold_time: < integer >
+        subsequent_hold_time: < integer >
         candidate_reachability_required: < true | false >
       mpls:
         shared_index: < 1-1024 >
-        tunnel_flood_filter_time: < 10-10000 milliseconds >
+        tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     flowcontrol:
       received: < "received" | "send" | "on" >
@@ -1231,6 +1231,19 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    evpn_ethernet_segment:
+      redundancy: < all-active | single-active >
+      designated_forwarder_election:
+        algorithm: < modulus | preference >
+        # preference_value and dont_preempt are set for preference algorithm and are optional
+        preference_value: < 0-65535 >
+        dont_preempt: < true | false | default -> false >
+        hold_time: < integer >
+        subsequent_hold_time: < integer >
+        candidate_reachability_required: < true | false >
+      mpls:
+        shared_index: < 1-1024 >
+        tunnel_flood_filter_time: < integer >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -2192,7 +2205,7 @@ monitor_sessions:
       name: < acl_name >
     rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
     rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
-    sample: < int >
+    sample: < integer >
     truncate:
       enabled: < true | false >
       size: < bytes >

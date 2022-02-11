@@ -197,6 +197,8 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | switched | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | switched | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | switched | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
+| Port-Channel14 | EVPN-MPLS multihoming | switched | access | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | switched | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | switched | trunk | 110,201 | - | - | - | - | 16 | - |
 | Port-Channel20 | Po_in_mode_access_accepting_tagged_LACP_frames | switched | access | 200 | - | - | - | - | - | - |
@@ -244,6 +246,27 @@ interface Ethernet50
 | Interface | From VLAN ID(s) | To VLAN ID | Direction |
 | --------- | --------------- | -----------| --------- |
 | Port-Channel102 | 111-112 | 110 | out
+
+#### EVPN Multihoming
+
+##### EVPN Multihoming Summary
+
+| Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
+| --------- | --------------------------- | --------------------------- | ------------ |
+| Port-Channel13 | 0000:0000:0000:0102:0304 | single-active | 00:00:01:02:03:04 |
+| Port-Channel14 | 0000:0000:0000:0102:0305 | all-active | 00:00:01:02:03:05 |
+
+##### Designated Forwarder Election Summary
+
+| Interface | Algorithm | Preference Value | Dont Preempt | Hold time | Subsequent Hold Time | Candidate Reachability Required |
+| --------- | --------- | ---------------- | ------------ | --------- | -------------------- | ------------------------------- |
+| Port-Channel13 | preference | 100 | True | 10 | - | True |
+
+##### EVPN-MPLS summary
+
+| Interface | Shared Index | Tunnel Flood Filter Time |
+| --------- | ------------ | ------------------------ |
+| Port-Channel14 | 100 | 100 |
 
 #### Link Tracking Groups
 
@@ -327,6 +350,26 @@ interface Port-Channel12
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
+!
+interface Port-Channel13
+   description EVPN-Vxlan single-active redundancy
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0304
+      redundancy single-active
+      designated-forwarder election algorithm preference 100 dont-preempt
+      designated-forwarder election hold-time 10
+      designated-forwarder election candidate reachability required
+      route-target import 00:00:01:02:03:04
+!
+interface Port-Channel14
+   description EVPN-MPLS multihoming
+   switchport
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0102:0305
+      mpls tunnel flood filter time 100
+      mpls shared index 100
+      route-target import 00:00:01:02:03:05
 !
 interface Port-Channel15
    description DC1_L2LEAF3_Po1
