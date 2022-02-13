@@ -1,13 +1,13 @@
 {% if router_traffic_engineering is arista.avd.defined %}
 
 ## Router Traffic-Engineering
-
 {%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
+
 ### Segment Routing Summary
 
 - SRTE is enabled.
-
 {%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
+
 - system-colored-tunnel-rib is enabled
 {%         endif %}
 
@@ -22,13 +22,13 @@
 {%                     set description = color.description | arista.avd.default('-') %}
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort %}
 {%                         set pathgroup_preference = pathgroup.preference | arista.avd.default('-') %}
-{%                         if pathgroup.explicit_null_ipv4 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined('ipv4') %}
 {%                             set expnull = "ipv4" %}
 {%                         endif %}
-{%                         if pathgroup.explicit_null_ipv6 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined('ipv6') %}
 {%                             set expnull = "ipv6" %}
 {%                         endif %}
-{%                         if pathgroup.explicit_null_ipv4 is arista.avd.defined(true) and pathgroup.explicit_null_ipv6 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined('ipv4 ipv6') %}
 {%                             set expnull = "ipv4 ipv6" %}
 {%                         endif %}
 {%                         set expnull = expnull | arista.avd.default('-') %}
@@ -42,11 +42,11 @@
 {%                 endfor %}
 {%             endfor %}
 {%         endif %}
+{%     endif %}
 
-### Segment Routing Traffic Engineering Device Configuration
+### Router Traffic Engineering Device Configuration
 
 ```eos
-{%         include 'eos/router-traffic-engineering.j2' %}
+{%     include 'eos/router-traffic-engineering.j2' %}
 ```
-{%     endif %}
 {% endif %}

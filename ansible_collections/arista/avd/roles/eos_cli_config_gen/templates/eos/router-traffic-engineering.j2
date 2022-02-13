@@ -3,14 +3,19 @@
 !
 router traffic-engineering
 {%     if router_traffic_engineering.segment_routing is arista.avd.defined %}
+{%         set ns = namespace(delimiter=false) %}
    segment-routing
 {%         if router_traffic_engineering.segment_routing.colored_tunnel_rib is arista.avd.defined(true) %}
+{%             set ns.delimiter = true %}
       rib system-colored-tunnel-rib
 {%         endif %}
 {%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
 {%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort %}
 {%                 for color in endpoint.colors | arista.avd.natural_sort %}
+{%                     if ns.delimiter is arista.avd.defined(true) %}
       !
+{%                     endif %}
+{%                     set ns.delimiter = true %}
       policy endpoint {{ endpoint.address }} color {{ color.value }}
 {%                     if color.binding_sid is arista.avd.defined %}
          binding-sid {{ color.binding_sid }}
@@ -24,13 +29,13 @@ router traffic-engineering
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort %}
          !
          path-group preference {{ pathgroup.preference }}
-{%                         if pathgroup.explicit_null_ipv4 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined("ipv4") %}
 {%                             set expnull = "ipv4" %}
 {%                         endif %}
-{%                         if pathgroup.explicit_null_ipv6 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined("ipv6") %}
 {%                             set expnull = "ipv6" %}
 {%                         endif %}
-{%                         if pathgroup.explicit_null_ipv4 is arista.avd.defined(true) and pathgroup.explicit_null_ipv6 is arista.avd.defined(true) %}
+{%                         if pathgroup.explicit_null is arista.avd.defined("ipv4 ipv6") %}
 {%                             set expnull = "ipv4 ipv6" %}
 {%                         endif %}
 {%                         if expnull is arista.avd.defined %}

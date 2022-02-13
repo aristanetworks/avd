@@ -102,7 +102,7 @@ interface Management1
 | 5.6.7.8 | 20320 | 120 | - | - | 900002 900008 900009 900006 | - | - | ipv6 |
 | 5.6.7.8 | 20320 | 120 | - | - | 900002 900010 900011 900012 | - | - | ipv6 |
 
-### Segment Routing Traffic Engineering Device Configuration
+### Router Traffic Engineering Device Configuration
 
 ```eos
 !
