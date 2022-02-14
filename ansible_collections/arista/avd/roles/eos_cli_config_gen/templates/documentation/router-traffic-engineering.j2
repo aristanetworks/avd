@@ -10,12 +10,12 @@
 
 - system-colored-tunnel-rib is enabled
 {%         endif %}
+{%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
 
 #### SRTE Policies
 
 | Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
-{%         if router_traffic_engineering.segment_routing.policy_endpoints is arista.avd.defined %}
 {%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort %}
 {%                 for color in endpoint.colors | arista.avd.natural_sort %}
 {%                     set name = color.name | arista.avd.default('-') %}
