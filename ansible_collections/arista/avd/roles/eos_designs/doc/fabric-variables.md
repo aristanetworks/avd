@@ -31,6 +31,17 @@ underlay_ospf_bfd_enable: < true | false | default -> false >
 
 # Underlay ISIS | Required when < underlay_routing_protocol > == ISIS
 isis_area_id: < isis area | default -> "49.0001" >
+isis_default_is_type: < level-1-2, | level-1 | level-2 | Default -> level-2 >
+# ISIS Parameters applied to backbone interfaces
+isis_default_circuit_type: < level-1-2, | level-1 | level-2 | Default -> level-2 >
+isis_default_metric: < metric | Default -> 50 >
+isis_advertise_passive_only: < true | false | Default -> false >
+
+# ISIS TI-LFA parameters
+isis_ti_lfa:
+  enabled: < true | false | Default -> false >
+  protection: < link | node >
+  microloop_protection_delay: < microloop protection delay in ms | Default -> 10000 >
 
 # AS number to use to configure overlay when < overlay_routing_protocol > == IBGP
 bgp_as: < AS number >

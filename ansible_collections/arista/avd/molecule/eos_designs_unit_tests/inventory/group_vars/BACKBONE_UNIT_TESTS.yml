@@ -229,4 +229,3 @@ backbone_interfaces:
           backbone-node-1: [ Ethernet12, Ethernet13 ]
           backbone-node-2: [ Ethernet12, Ethernet13 ]
       profile: isis_bb_profile
-
