@@ -29,17 +29,8 @@ router traffic-engineering
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort %}
          !
          path-group preference {{ pathgroup.preference }}
-{%                         if pathgroup.explicit_null is arista.avd.defined("ipv4") %}
-{%                             set expnull = "ipv4" %}
-{%                         endif %}
-{%                         if pathgroup.explicit_null is arista.avd.defined("ipv6") %}
-{%                             set expnull = "ipv6" %}
-{%                         endif %}
-{%                         if pathgroup.explicit_null is arista.avd.defined("ipv4 ipv6") %}
-{%                             set expnull = "ipv4 ipv6" %}
-{%                         endif %}
-{%                         if expnull is arista.avd.defined %}
-            explicit-null {{ expnull }}
+{%                         if pathgroup.explicit_null is arista.avd.defined %}
+            explicit-null {{ pathgroup.explicit_null }}
 {%                         endif %}
 {%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort %}
 {%                             set stack = labelstack.label_stack %}

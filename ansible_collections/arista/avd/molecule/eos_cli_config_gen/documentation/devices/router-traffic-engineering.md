@@ -91,12 +91,12 @@ interface Management1
 
 - system-colored-tunnel-rib is enabled
 
-### SRTE Policies
+#### SRTE Policies
 
 | Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
 | 1.2.3.4 | 70810 | 180 | SRTE-1.2.3.4-70810 | SRTE POLICY FOR 1.2.3.4 COLOR 70810 | 900002 900003 900005 900006 | 200 | - | ipv4 ipv6 |
-| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | 900002 900008 900007 900006 | 100 | 20 | - |
+| 1.2.3.4 | 80810 | 100 | SRTE-1.2.3.4-80810 | SRTE POLICY FOR 1.2.3.4 COLOR 80810 | 900002 900008 900007 900006 | 100 | 20 | none |
 | 5.6.7.8 | 20320 | 80 | - | - | 900002 900003 900005 900006 | 300 | 120 | ipv4 |
 | 5.6.7.8 | 20320 | 80 | - | - | 900002 900004 900007 900006 | 400 | 220 | ipv4 |
 | 5.6.7.8 | 20320 | 120 | - | - | 900002 900008 900009 900006 | - | - | ipv6 |
@@ -124,6 +124,7 @@ router traffic-engineering
          description SRTE POLICY FOR 1.2.3.4 COLOR 80810
          !
          path-group preference 100
+            explicit-null none
             segment-list label-stack 900002 900008 900007 900006 weight 20 index 100
       !
       policy endpoint 5.6.7.8 color 20320

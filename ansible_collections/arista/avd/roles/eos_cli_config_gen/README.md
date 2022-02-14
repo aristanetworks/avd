@@ -2993,28 +2993,28 @@ router_traffic_engineering:
     policy_endpoints:
       - address: < IPv4_address | IPv6_address >
         colors:
-          - value: < Integer 0-4294967295 >
-            binding_sid: < Integer 16-1048575 >
+          - value: < integer >
+            binding_sid: < integer >
             description: < description >
             name: < name >
             path_group:
-              - preference: < 0-4294967295 >
+              - preference: < integer >
                 explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
                 segment_list:
-                  - label_stack: < 0-1048575 > < 0-1048575 > < 0-1048575 >
-                    weight: < Integer 1-4294967295 >
-                    index: < Integer 1-18446744073709551615 >
-          - value: < Integer 0-4294967295 >
-            binding_sid: < Integer 16-1048575 >
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
+          - value: < integer >
+            binding_sid: < integer >
             description: < description >
             name: < name >
             path_group:
-              - preference: < 0-4294967295 >
+              - preference: < integer >
                 explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
                 segment_list:
-                  - label_stack: < 0-1048575 > < 0-1048575 > < 0-1048575 >
-                    weight: < Integer 1-4294967295 >
-                    index: < Integer 1-18446744073709551615 >
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
 ```
 
 #### Service Routing Configuration BGP

@@ -11,7 +11,7 @@
 - system-colored-tunnel-rib is enabled
 {%         endif %}
 
-### SRTE Policies
+#### SRTE Policies
 
 | Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
@@ -22,16 +22,7 @@
 {%                     set description = color.description | arista.avd.default('-') %}
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort %}
 {%                         set pathgroup_preference = pathgroup.preference | arista.avd.default('-') %}
-{%                         if pathgroup.explicit_null is arista.avd.defined('ipv4') %}
-{%                             set expnull = "ipv4" %}
-{%                         endif %}
-{%                         if pathgroup.explicit_null is arista.avd.defined('ipv6') %}
-{%                             set expnull = "ipv6" %}
-{%                         endif %}
-{%                         if pathgroup.explicit_null is arista.avd.defined('ipv4 ipv6') %}
-{%                             set expnull = "ipv4 ipv6" %}
-{%                         endif %}
-{%                         set expnull = expnull | arista.avd.default('-') %}
+{%                         set expnull = pathgroup.explicit_null | arista.avd.default('-') %}
 {%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort %}
 {%                             set stack = labelstack.label_stack %}
 {%                             set index = labelstack.index | arista.avd.default('-') %}
