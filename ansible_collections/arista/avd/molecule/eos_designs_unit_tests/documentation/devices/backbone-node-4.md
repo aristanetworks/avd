@@ -122,6 +122,8 @@ interface Ethernet10
    mtu 1500
    no switchport
    ip address 100.64.48.19/31
+   ip ospf network point-to-point
+   ip ospf area 0.0.0.0
    mpls ip
    mpls ldp interface
    mpls ldp igp sync
@@ -218,6 +220,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
+| Ethernet10 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 
 ### Router OSPF Device Configuration

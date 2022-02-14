@@ -30,7 +30,7 @@ ethernet_interfaces:
     ptp:
         enable: true
 {%         endif %}
-{%         if switch.underlay_routing_protocol == "ospf" %}
+{%         if switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
     ospf_network_point_to_point: true
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}

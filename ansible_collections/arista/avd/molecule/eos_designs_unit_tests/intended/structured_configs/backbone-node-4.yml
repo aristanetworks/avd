@@ -58,6 +58,8 @@ ethernet_interfaces:
     mtu: 1500
     ip_address: 100.64.48.19/31
     speed: forced 1000full
+    ospf_network_point_to_point: true
+    ospf_area: 0.0.0.0
     mpls:
       ip: true
       ldp:
