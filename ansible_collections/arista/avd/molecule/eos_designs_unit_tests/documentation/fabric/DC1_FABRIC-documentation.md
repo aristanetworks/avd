@@ -39,8 +39,8 @@
 | DC1_FABRIC | l3leaf | evpn_services_l2_only_true | - | - | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_default | 1.1.1.2 | - | Provisioned |
 | DC1_FABRIC | l2leaf | mgmt_interface_fabric | 1.1.1.2 | - | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | - | Provisioned |
-| DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | - | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_host | 1.1.1.2 | 7500R2 | Provisioned |
+| DC1_FABRIC | l2leaf | mgmt_interface_platform | 1.1.1.2 | 7500R2 | Provisioned |
 | DC1_FABRIC | l2leaf | MH-L2LEAF1A | 192.168.201.201/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | MH-LEAF1A | 192.168.201.104/24 | vEOS-LAB | Provisioned |
 | DC1_FABRIC | l3leaf | MH-LEAF1B | 192.168.201.105/24 | vEOS-LAB | Provisioned |
