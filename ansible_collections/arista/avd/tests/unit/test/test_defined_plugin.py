@@ -3,11 +3,11 @@ from jinja2.runtime import Undefined
 from ansible.errors import AnsibleError
 import pytest
 
-VALUE_LIST = ['ab', None, 1, True]
+VALUE_LIST = ['ab', None, 1, True, {"key": "value"}]
 TEST_VALUE_LIST = [None, 'ab', True, 1, True]
 FAIL_ACTION_LIST = ['warning', 'error']
 VAR_NAME_LIST = ['ab', None, 1]
-VAR_TYPE_LIST = ['int', 'str', 'integer', 'aaa', None]
+VAR_TYPE_LIST = ['int', 'str', 'integer', 'aaa', None, dict]
 INVALID_FAIL_ACTION_LIST = [None, 'aaaa']
 
 f = TestModule()
@@ -115,3 +115,14 @@ class TestDefinedPlugin():
                 assert resp is True
         else:
             assert resp is False
+
+    @pytest.mark.parametrize("VALUE", VALUE_LIST)
+    @pytest.mark.parametrize("VAR_TYPE", VAR_TYPE_LIST)
+    def test_defined_plugin_var_type_fail_action_None(self, VALUE, VAR_TYPE):
+        type_list = ['float', 'int', 'str', 'list', 'dict', 'tuple', 'bool']
+        if not isinstance(VALUE, Undefined) and VALUE is not None:
+            resp = defined(VALUE, var_type=VAR_TYPE)
+            if str(VAR_TYPE).lower() in type_list and type(VALUE).__name__ != str(VAR_TYPE).lower():
+                assert resp is False
+            else:
+                assert resp is True
