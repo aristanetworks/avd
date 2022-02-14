@@ -1,4 +1,4 @@
-{# Parse l3_edge data model #}
+{# Parse backbone_interfaces data model #}
 {% set backbone_interfaces_data.p2p_interfaces = {} %}
 {% set backbone_interfaces_data.p2p_port_channels = {} %}
 {% set backbone_interfaces_data.bgp_neighbors = {} %}
@@ -14,7 +14,7 @@
                        p2p_profile.nodes,
                        []) %}
 {%     if inventory_hostname in nodes %}
-{# Found this device in l3edge. Build interface data #}
+{# Found this device in backbone_interfaces. Build interface data #}
 {%         set node_index = nodes.index(inventory_hostname) %}
 {%         set peer_index = 1 - node_index %}
 {%         set ip_pool_name = p2p_link.ip_pool | arista.avd.default(

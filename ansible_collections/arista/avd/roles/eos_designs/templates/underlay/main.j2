@@ -27,7 +27,7 @@
 {%         include 'underlay/isis-sr/router-isis.j2' %}
 
 {%     endif %}
-{%     if switch.mpls_lsr is arista.avd.defined(true) or switch.mpls_ip is arista.avd.defined(true) %}
+{%     if switch.mpls_lsr is arista.avd.defined(true) is arista.avd.defined(true) %}
 {%         include 'underlay/mpls/mpls-ip.j2' %}
 
 {%     endif %}
