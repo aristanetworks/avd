@@ -66,7 +66,6 @@ router_bgp:
       remote_as: 65432
       send_community: all
       default_originate:
-        route_map: RM-FOO-MATCH2
         always: true
     192.0.3.2:
       remote_as: 65433
