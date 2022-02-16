@@ -18,6 +18,9 @@ qos profile {{ profile }}
 {%     if qos_profiles[profile].shape.rate is arista.avd.defined %}
    shape rate {{ qos_profiles[profile].shape.rate }}
 {%     endif %}
+{%     if qos_profiles[profile].service_policy.type.qos_input is arista.avd.defined %}
+   service-policy type qos input {{ qos_profiles[profile].service_policy.type.qos_input }}
+{%     endif %}
 {%     for tx_queue in qos_profiles[profile].tx_queues | arista.avd.natural_sort %}
    !
    tx-queue {{ tx_queue }}

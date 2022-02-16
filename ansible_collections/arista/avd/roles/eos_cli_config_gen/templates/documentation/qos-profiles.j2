@@ -10,13 +10,14 @@ QOS Profile: **{{ profile }}**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate |
-| ----------- | ------------ | ----- | ---------- |
+| Default COS | Default DSCP | Trust | Shape Rate | Qos Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
 {%         set cos = qos_profiles[profile].cos | arista.avd.default('-') %}
 {%         set dscp = qos_profiles[profile].dscp | arista.avd.default('-') %}
 {%         set trust = qos_profiles[profile].trust | arista.avd.default('-') %}
 {%         set shape_rate = qos_profiles[profile].shape.rate | arista.avd.default('-') %}
-| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} |
+{%         set qos_sp = qos_profiles[profile].service_policy.type.qos_input | arista.avd.default('-') %}
+| {{ cos }} | {{ dscp }} | {{ trust }} | {{ shape_rate }} | {{ qos_sp }} |
 {%         if qos_profiles[profile].tx_queues is arista.avd.defined %}
 
 **Tx-queues**
