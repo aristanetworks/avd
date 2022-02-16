@@ -25,12 +25,13 @@
 {%             endfor %}
     {{ vrf.name }}:
 {%             if vrf.name == 'default' %}
-{%                 set default_vrf.enabled = true %}
-{%                 do route_targets.export.evpn.append('route-map RM-TENANT-NETWORK-DEFAULT-VRF') %}
+{%                 if default_vrf.svi_subnets %}
+{%                     do route_targets.export.evpn.append('route-map RM-TENANT-CONN-DEFAULT-VRF') %}
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
       route_targets:
         import: {{ route_targets.import | to_json }}
         export: {{ route_targets.export | to_json }}
+{%                 endif %}
 {%             else %}
       router_id: {{ switch.router_id }}
       rd: "{{ network_services_data.rd_admin_subfield }}:{{ bgp_vrf_id }}"
