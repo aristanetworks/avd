@@ -32,7 +32,7 @@ router traffic-engineering
 {%                         if pathgroup.explicit_null is arista.avd.defined %}
             explicit-null {{ pathgroup.explicit_null }}
 {%                         endif %}
-{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('index') %}
+{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('label_stack') %}
 {%                             set stack = labelstack.label_stack %}
 {%                             if labelstack.weight is arista.avd.defined %}
 {%                                 set stack = stack ~ " weight " ~ labelstack.weight %}

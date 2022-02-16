@@ -23,7 +23,7 @@
 {%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
 {%                         set pathgroup_preference = pathgroup.preference | arista.avd.default('-') %}
 {%                         set expnull = pathgroup.explicit_null | arista.avd.default('-') %}
-{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('index') %}
+{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('label_stack') %}
 {%                             set stack = labelstack.label_stack %}
 {%                             set index = labelstack.index | arista.avd.default('-') %}
 {%                             set weight = labelstack.weight | arista.avd.default('-') %}

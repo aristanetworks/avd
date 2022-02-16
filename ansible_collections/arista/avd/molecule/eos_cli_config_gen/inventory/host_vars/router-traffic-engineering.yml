@@ -42,7 +42,6 @@ router_traffic_engineering:
                   - label_stack: "900002 900004 900007 900006"
                     index: 400
                     weight: 220
-
               - preference: 120
                 explicit_null: "ipv6"
                 segment_list:
