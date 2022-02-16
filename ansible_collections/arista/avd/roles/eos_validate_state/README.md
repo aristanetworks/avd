@@ -93,11 +93,28 @@ eos_validate_state_csv_report_path: '{{ eos_validate_state_dir }}/{{ fabric_name
 # Only support default and github
 validate_state_markdown_flavor: "default"
 
+# Fabric Name, required to match Ansible Group name covering all devices in the Fabric | Required and **must** be an inventory group name.
+fabric_name: "all"
+
 # Allow different manufacturers
 accepted_xcvr_manufacturers: "{{ validation_role.xcvr_own_manufacturers | arista.avd.default(['Arastra, Inc.', 'Arista Networks']) }}"
+
+# Generate CSV results file
+validation_report_csv: "{{ validation_role.validation_report_csv | arista.avd.default(true) }}"
+
+# Generate MD results file
+validation_report_md: "{{ validation_role.validation_report_md | arista.avd.default(true) }}"
+
+# Print only FAILED tests
+only_failed_tests: "{{ validation_role.only_failed_tests | arista.avd.default(false) }}"
 ```
+The variable fabric_name is required to generate the report. This variable is automatically set on eos_designs. If this role is not used, the user can select its own name. If it is not defined, it is set to all, so it will accept all variables.
 
 Keep in mind that default accepted manufacturers are "Arastra, Inc." and "Arista Networks". If validation_role.xcvr_own_manufacturers is set, it takes precedence and overrides the defined default variables.
+
+There are two user-defined variables that control the generation of CSV and MD reports. These are validation_role.validation_report_csv and validation_role.validation_report_md respectively.
+
+The variable validation_role.only_failed_tests is used to limit the amount of tests shown in the reports. When set, all reports will only show failed tests.
 
 ## Requirements
 
@@ -157,6 +174,8 @@ ansible_password: 'arista'
 ansible_network_os: eos
 ansible_become: yes
 ansible_become_method: enable
+
+fabric_name: "DC1"
 
 validation_mode_loose: true
 
