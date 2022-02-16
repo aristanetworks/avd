@@ -143,6 +143,7 @@ ip route vrf BLUE-C1 193.1.2.0/24 Null0
 | Settings | Value |
 | -------- | ----- |
 | Address Family | ipv4 |
+| Shutdown | True |
 
 #### WELCOME_ROUTERS
 

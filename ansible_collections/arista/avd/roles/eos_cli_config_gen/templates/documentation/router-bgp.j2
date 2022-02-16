@@ -56,6 +56,9 @@
 {%             if router_bgp.peer_groups[peer_group].type is arista.avd.defined %}
 | Address Family | {{ router_bgp.peer_groups[peer_group].type }} |
 {%             endif %}
+{%             if router_bgp.peer_groups[peer_group].shutdown is arista.avd.defined(true) %}
+| Shutdown | {{ router_bgp.peer_groups[peer_group].shutdown }} |
+{%             endif %}
 {%             if router_bgp.peer_groups[peer_group].allowas_in.enabled is arista.avd.defined(true) %}
 | Allowas-in | Allowed, allowed {{ router_bgp.peer_groups[peer_group].allowas_in.times | arista.avd.default("3 (default)") }} times |
 {%             endif %}
