@@ -199,70 +199,21 @@ ethernet_interfaces:
       ldp:
         interface: true
         igp_sync: true
-  Ethernet7:
-    peer: backbone-1-isis-sr-ldp
-    peer_interface: Ethernet7
+  Ethernet10:
+    peer: backbone-2-ospf-ldp
+    peer_interface: Ethernet10
     peer_type: backbone_router
-    description: P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet7
+    description: P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet10
     type: routed
     shutdown: false
     mtu: 1500
     ip_address: 100.64.48.12/31
     speed: forced 1000full
-    ipv6_enable: true
     isis_enable: MPLS_UNDERLAY
-    isis_metric: 60
+    isis_metric: 50
     isis_network_point_to_point: true
-    isis_hello_padding: false
+    isis_hello_padding: true
     isis_circuit_type: level-2
-    isis_authentication_mode: md5
-    isis_authentication_key: $1c$sTNAlR6rKSw=
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
-  Ethernet8:
-    peer: backbone-2-ospf-ldp
-    peer_interface: Ethernet8
-    peer_type: backbone_router
-    description: P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet8
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.14/31
-    speed: forced 1000full
-    ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
-    isis_metric: 60
-    isis_network_point_to_point: true
-    isis_hello_padding: false
-    isis_circuit_type: level-2
-    isis_authentication_mode: md5
-    isis_authentication_key: $1c$sTNAlR6rKSw=
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
-  Ethernet9:
-    peer: backbone-2-ospf-ldp
-    peer_interface: Ethernet9
-    peer_type: backbone_router
-    description: P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet9
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.16/31
-    speed: forced 1000full
-    ipv6_enable: true
-    isis_enable: MPLS_UNDERLAY
-    isis_metric: 60
-    isis_network_point_to_point: true
-    isis_hello_padding: false
-    isis_circuit_type: level-2
-    isis_authentication_mode: md5
-    isis_authentication_key: $1c$sTNAlR6rKSw=
     mpls:
       ip: true
       ldp:
@@ -276,7 +227,7 @@ ethernet_interfaces:
     type: routed
     shutdown: false
     mtu: 1500
-    ip_address: 100.64.48.20/31
+    ip_address: 100.64.48.14/31
     speed: forced 1000full
     ipv6_enable: true
     isis_enable: MPLS_UNDERLAY
@@ -314,7 +265,7 @@ port_channel_interfaces:
     type: routed
     shutdown: false
     mtu: 1500
-    ip_address: 100.64.48.22/31
+    ip_address: 100.64.48.16/31
     speed: forced 1000full
     ipv6_enable: true
     isis_enable: MPLS_UNDERLAY

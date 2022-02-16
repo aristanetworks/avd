@@ -8,7 +8,7 @@ node_type_keys:
 mgmt_gateway: 192.168.0.1
 
 # Fabric name
-fabric_name: BACKBONE_UNIT_TESTS
+fabric_name: all
 
 overlay_routing_protocol: ibgp
 bgp_as: 65000
@@ -132,33 +132,18 @@ backbone_interfaces:
       isis_metric: 70
       qos_profile: test_qos_profile
 
-    - nodes: [ backbone-1-isis-sr-ldp, backbone-1-isis-sr-ldp ]
+    - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
       id: 7
-      interfaces: [ Ethernet7, Ethernet7 ]
-      profile: isis_bb_profile
-
-    - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
-      id: 8
-      interfaces: [ Ethernet8, Ethernet8 ]
-      profile: isis_bb_profile
-
-    - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
-      id: 9
-      interfaces: [ Ethernet9, Ethernet9 ]
-      profile: isis_bb_profile
-
-    - nodes: [ backbone-node-3, backbone-node-4 ]
-      id: 10
       interfaces: [ Ethernet10, Ethernet10 ]
       profile: ospf_bb_profile
 
     - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
-      id: 11
+      id: 8
       interfaces: [ Ethernet11, Ethernet11 ]
       profile: isis_bb_profile
 
     - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
-      id: 12
+      id: 9
       port_channel:
         mode: active
         nodes_child_interfaces:
