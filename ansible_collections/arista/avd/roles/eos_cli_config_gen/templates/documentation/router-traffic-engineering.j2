@@ -16,14 +16,14 @@
 
 | Endpoint | Color | Preference | Name | Description | Label Stack | Index  | Weight | Explicit Null |
 | -------- | ----- | ---------- | ---- | ----------- | ----------- | ------ | ------ | ------------- |
-{%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort %}
-{%                 for color in endpoint.colors | arista.avd.natural_sort %}
+{%             for endpoint in router_traffic_engineering.segment_routing.policy_endpoints | arista.avd.natural_sort('address') %}
+{%                 for color in endpoint.colors | arista.avd.natural_sort('value') %}
 {%                     set name = color.name | arista.avd.default('-') %}
 {%                     set description = color.description | arista.avd.default('-') %}
-{%                     for pathgroup in color.path_group | arista.avd.natural_sort %}
+{%                     for pathgroup in color.path_group | arista.avd.natural_sort('preference') %}
 {%                         set pathgroup_preference = pathgroup.preference | arista.avd.default('-') %}
 {%                         set expnull = pathgroup.explicit_null | arista.avd.default('-') %}
-{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort %}
+{%                         for labelstack in pathgroup.segment_list | arista.avd.natural_sort('index') %}
 {%                             set stack = labelstack.label_stack %}
 {%                             set index = labelstack.index | arista.avd.default('-') %}
 {%                             set weight = labelstack.weight | arista.avd.default('-') %}
