@@ -110,8 +110,8 @@ vlan_interfaces:
                                                  tenant.enable_mlag_ibgp_peering_vrfs,
                                                  true) %}
 {%             if configure_mlag_ibgp_peering %}
-{%                 set bgp_vrf_vni = vrf.vrf_vni | arista.avd.default(vrf.vrf_id) %}
-  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (bgp_vrf_vni - 1)) }}:
+{%                 set vrf_id_int = vrf.vrf_id | arista.avd.default(vrf.vrf_vni) | int %}
+  Vlan{{ vrf.mlag_ibgp_peering_vlan | arista.avd.default (mlag_ibgp_peering_vrfs.base_vlan + (vrf_id_int - 1)) }}:
     tenant: {{ tenant.name }}
     type: underlay_peering
     shutdown: false

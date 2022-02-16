@@ -449,9 +449,10 @@ interface Vlan132
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -620,8 +621,8 @@ ip route vrf Tenant_A_APP_Zone 10.3.32.0/24 Vlan132 name VARP
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| Tenant_A_APP_Zone | 1.1.1.1:12 | 12:12 | - | - | learned | 130-132 |
-| Tenant_A_WEB_Zone | 1.1.1.1:11 | 11:11 | - | - | learned | 120-121 |
+| Tenant_A_APP_Zone | 1.1.1.1:12 | 1234:12 | - | - | learned | 130-132 |
+| Tenant_A_WEB_Zone | 1.1.1.1:11 | 1234:11 | - | - | learned | 120-121 |
 
 ### Router BGP VRFs
 
@@ -678,13 +679,13 @@ router bgp 65101
    !
    vlan-aware-bundle Tenant_A_APP_Zone
       rd 1.1.1.1:12
-      route-target both 12:12
+      route-target both 1234:12
       redistribute learned
       vlan 130-132
    !
    vlan-aware-bundle Tenant_A_WEB_Zone
       rd 1.1.1.1:11
-      route-target both 11:11
+      route-target both 1234:11
       redistribute learned
       vlan 120-121
    !
@@ -697,15 +698,15 @@ router bgp 65101
    !
    vrf Tenant_A_APP_Zone
       rd 1.1.1.1:12
-      route-target import evpn 12:12
-      route-target export evpn 12:12
+      route-target import evpn 1234:12
+      route-target export evpn 1234:12
       router-id 192.168.255.9
       redistribute connected
    !
    vrf Tenant_A_WEB_Zone
       rd 1.1.1.1:11
-      route-target import evpn 11:11
-      route-target export evpn 11:11
+      route-target import evpn 1234:11
+      route-target export evpn 1234:11
       router-id 192.168.255.9
       redistribute connected
 ```
@@ -734,12 +735,15 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
+#### IP IGMP Snooping Vlan Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 120 | disabled |
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 120 | False | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

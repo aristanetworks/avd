@@ -26,41 +26,48 @@ port_channel_interfaces:
   Port-Channel{{ channel_group_id }}:
 {%                         set peer = connected_endpoint %}
     description: "{% include switch.interface_descriptions.connected_endpoints_port_channel_interfaces %}"
-    type: switched
+{%                         if adapter_settings.port_channel.subinterfaces is arista.avd.defined %}
+{%                             set po_type = "routed" %}
+{%                         else %}
+{%                             set po_type = "switched" %}
+{%                         endif %}
+    type: {{ po_type }}
 {%                         if adapter_settings.port_channel.enabled is arista.avd.defined(false) %}
     shutdown: true
 {%                         else %}
     shutdown: false
 {%                         endif %}
+{%                         if po_type == "switched" %}
     mode: {{ adapter_settings.mode | arista.avd.default }}
-{%                         if adapter_settings.mtu is arista.avd.defined %}
-    mtu: {{ adapter_settings.mtu }}
-{%                         endif %}
-{%                         if adapter_settings.l2_mtu is arista.avd.defined %}
+{%                             if adapter_settings.l2_mtu is arista.avd.defined  %}
     l2_mtu: {{ adapter_settings.l2_mtu }}
-{%                         endif %}
+{%                             endif %}
     vlans: {{ adapter_settings.vlans | arista.avd.default }}
-{%                         if adapter_settings.native_vlan is arista.avd.defined %}
+{%                             if adapter_settings.native_vlan is arista.avd.defined %}
     native_vlan: {{ adapter_settings.native_vlan }}
-{%                         endif %}
-{%                         if adapter_settings.spanning_tree_portfast is arista.avd.defined %}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_portfast is arista.avd.defined %}
     spanning_tree_portfast: {{ adapter_settings.spanning_tree_portfast }}
-{%                         endif %}
-{%                         if adapter_settings.spanning_tree_bpdufilter is arista.avd.defined %}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_bpdufilter is arista.avd.defined %}
     spanning_tree_bpdufilter: {{ adapter_settings.spanning_tree_bpdufilter }}
-{%                         endif %}
-{%                         if adapter_settings.spanning_tree_bpduguard is arista.avd.defined %}
+{%                             endif %}
+{%                             if adapter_settings.spanning_tree_bpduguard is arista.avd.defined %}
     spanning_tree_bpduguard: {{ adapter_settings.spanning_tree_bpduguard }}
-{%                         endif %}
-{%                         if adapter_settings.storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
+{%                             endif %}
+{%                             if adapter_settings.storm_control is arista.avd.defined and switch.platform_settings.feature_support.interface_storm_control is not arista.avd.defined(false) %}
     storm_control:
-{%                             for section in adapter_settings.storm_control %}
+{%                                 for section in adapter_settings.storm_control %}
       {{ section }}:
         level: {{ adapter_settings.storm_control[section].level }}
-{%                                 if adapter_settings.storm_control[section].unit is arista.avd.defined %}
+{%                                     if adapter_settings.storm_control[section].unit is arista.avd.defined %}
         unit: {{ adapter_settings.storm_control[section].unit }}
-{%                                 endif %}
-{%                             endfor %}
+{%                                     endif %}
+{%                                 endfor %}
+{%                             endif %}
+{%                         endif %}
+{%                         if adapter_settings.mtu is arista.avd.defined %}
+    mtu: {{ adapter_settings.mtu }}
 {%                         endif %}
 {%                         if adapter_settings.switches | unique | list | length > 1 %}
 {%                             if adapter.port_channel.short_esi is arista.avd.defined %}
@@ -94,6 +101,26 @@ port_channel_interfaces:
 {%                         if adapter_settings.port_channel.structured_config is arista.avd.defined %}
     struct_cfg: {{ adapter_settings.port_channel.structured_config }}
 {%                         endif %}
+{# Render Port-Channel subinterfaces #}
+{%                         for subinterface in adapter_settings.port_channel.subinterfaces | arista.avd.natural_sort %}
+{%                             if subinterface.number is arista.avd.defined %}
+  Port-Channel{{ channel_group_id }}.{{ subinterface.number }}:
+    type: l2dot1q
+{%                                 if subinterface.short_esi is arista.avd.defined %}
+{%                                     if subinterface.short_esi.split(':') | length == 3 %}
+    esi: {{ subinterface.short_esi | arista.avd.generate_esi(evpn_short_esi_prefix) }}
+    rt: {{ subinterface.short_esi | arista.avd.generate_route_target }}
+{%                                     endif %}
+{%                                 endif %}
+    vlan_id: {{ subinterface.vlan_id | arista.avd.default(subinterface.number) }}
+    encapsulation_vlan:
+      client:
+        dot1q:
+          vlan: {{ subinterface.encapsulation_vlan.client_dot1q | arista.avd.default(subinterface.number) }}
+      network:
+        client: true
+{%                             endif %}
+{%                         endfor %}
 {%                         break %}
 {%                     endif %}
 {%                 endfor %}

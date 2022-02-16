@@ -130,6 +130,7 @@
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
+      - [Router Traffic Engineering](#router-traffic-engineering)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
       - [VRF Instances](#vrf-instances)
@@ -994,12 +995,12 @@ ethernet_interfaces:
         # preference_value and dont_preempt are set for preference algorithm and are optional
         preference_value: < 0-65535 >
         dont_preempt: < true | false | default -> false >
-        hold_time: < 1-1800 Seconds >
-        subsequent_hold_time: < 10-10000 milliseconds >
+        hold_time: < integer >
+        subsequent_hold_time: < integer >
         candidate_reachability_required: < true | false >
       mpls:
         shared_index: < 1-1024 >
-        tunnel_flood_filter_time: < 10-10000 milliseconds >
+        tunnel_flood_filter_time: < integer >
       route_target: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     flowcontrol:
       received: < "received" | "send" | "on" >
@@ -1231,6 +1232,19 @@ port_channel_interfaces:
     description: < description >
     vlans: "< list of vlans as string >"
     mode: < access | dot1q-tunnel | trunk | "trunk phone" >
+    evpn_ethernet_segment:
+      redundancy: < all-active | single-active >
+      designated_forwarder_election:
+        algorithm: < modulus | preference >
+        # preference_value and dont_preempt are set for preference algorithm and are optional
+        preference_value: < 0-65535 >
+        dont_preempt: < true | false | default -> false >
+        hold_time: < integer >
+        subsequent_hold_time: < integer >
+        candidate_reachability_required: < true | false >
+      mpls:
+        shared_index: < 1-1024 >
+        tunnel_flood_filter_time: < integer >
     esi: < EVPN Ethernet Segment Identifier (Type 1 format) >
     rt: < EVPN Route Target for ESI with format xx:xx:xx:xx:xx:xx >
     lacp_id: < LACP ID with format xxxx.xxxx.xxxx >
@@ -1401,6 +1415,11 @@ vxlan_interface:
       mlag_source_interface: < source_interface_name >
       udp_port: < udp_port >
       virtual_router_encapsulation_mac_address: < mlag-system-id | ethernet_address (H.H.H) >
+      qos:
+        # !!!Warning, only few hardware types with software version >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+        # For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the core ports must be in “DSCP Trust” mode.
+        dscp_propagation_encapsulation: < true | false >
+        map_dscp_to_traffic_class_decapsulation: < true | false >
       vlans:
         < vlan_id_1 >:
           vni: < vni_id_1 >
@@ -1682,6 +1701,9 @@ management_api_gnmi:
   octa:
 ```
 
+!!! info "gNMI provider"
+    Octa activates `eos-native` provider and it is the only provider currently supported by EOS.
+
 #### Management Console
 
 ```yaml
@@ -1817,9 +1839,38 @@ mlag_configuration:
 ```yaml
 ip_igmp_snooping:
   globally_enabled: < true | false | default -> true >
+  robustness_variable: < 1-3 >
+  restart_query_interval: < int >
+  interface_restart_query: < int >
+  fast_leave: < true | false >
+  querier:
+    enabled: < true | false >
+    address: < IP_address >
+    query_interval: < int >
+    max_response_time: < 1-25 >
+    last_member_query_interval: < 1-25 >
+    last_member_query_count: < 1-3 >
+    startup_query_interval: < int >
+    startup_query_count: < 1-3 >
+    version: < 1-3 >
+  proxy: < true | false >
   vlans:
     < vlan_id >:
       enabled: < true | false >
+      querier:
+        enabled: < true | false >
+        address: < IP_address >
+        query_interval: < int >
+        max_response_time: < 1-25 >
+        last_member_query_interval: < 1-25 >
+        last_member_query_count: < 1-3 >
+        startup_query_interval: < int >
+        startup_query_count: < 1-3 >
+        version: < 1-3 >
+      max_groups: < 0-65534 >
+      fast_leave: < true | false >
+      # Global proxy settings should be enabled before enabling per-vlan
+      proxy: < true | false >
 ```
 
 `globally_enabled` allows to activate or deactivate IGMP snooping for all vlans where `vlans` allows user to activate / deactivate IGMP snooping per vlan.
@@ -1855,6 +1906,14 @@ router_pim_sparse_mode:
         other_anycast_rp_addresses:
           < ip_address_other_anycast_rp_1 >:
             register_count: < register_count_nb >
+  vrfs:
+    - name: < vrf_name >
+      ipv4:
+        rp_addresses:
+          - address: < rp_address_1 >
+            groups:
+              - < group_prefix_1/mask >
+              - < group_prefix_2/mask >
 ```
 
 ### Monitoring
@@ -2024,6 +2083,7 @@ logging:
     timestamp: < high-resolution | traditional >
     hostname: < fqdn | ipv4 >
     sequence_numbers: < true | false >
+  facility: < syslog_facility_value >
   source_interface: < source_interface_name >
   vrfs:
     < vrf_name >:
@@ -2183,7 +2243,7 @@ monitor_sessions:
       name: < acl_name >
     rate_limit_per_ingress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
     rate_limit_per_egress_chip: < "<int> bps" | "<int> kbps" | "<int> mbps" >
-    sample: < int >
+    sample: < integer >
     truncate:
       enabled: < true | false >
       size: < bytes >
@@ -2978,6 +3038,42 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+```
+
+#### Router Traffic Engineering
+
+```yaml
+router_traffic_engineering:
+  router_id:
+    ipv4: < IPv4_address >
+    ipv6: < IPv6_address >
+  segment_routing:
+    colored_tunnel_rib: true
+    policy_endpoints:
+      - address: < IPv4_address | IPv6_address >
+        colors:
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
 ```
 
 #### Service Routing Configuration BGP

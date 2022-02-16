@@ -64,6 +64,10 @@
 {%             endif %}
 {%         endfor %}
 {%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+
+**Syslog facility value:** {{ logging.facility }}
+{%     endif %}
 
 ### Logging Servers and Features Device Configuration
 

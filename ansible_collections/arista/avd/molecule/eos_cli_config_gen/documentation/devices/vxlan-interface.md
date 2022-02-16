@@ -65,13 +65,15 @@ interface Management1
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback0
-
-#### MLAG Source Interface: Loopback1
-
-#### UDP port: 4789
-
-#### EVPN MLAG Shared Router MAC : mlag-system-id
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback0 |
+| MLAG Source Interface | Loopback1 |
+| UDP port | 4789 |
+| EVPN MLAG Shared Router MAC | mlag-system-id |
+| VXLAN flood-lists learning from data-plane | Enabled |
+| Qos dscp propagation encapsulation | Enabled |
+| Qos map dscp to traffic-class decapsulation | Enabled |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -90,10 +92,8 @@ interface Management1
 #### Default Flood List
 
 | Default Flood List |
-| ---------- |
+| ------------------ |
 | 10.1.0.10<br/>10.1.0.11 |
-
-#### VXLAN flood-lists learning from data-plane: Enabled
 
 ### VXLAN Interface Device Configuration
 
@@ -112,6 +112,8 @@ interface Vxlan1
    vxlan vrf Tenant_A_WEB_Zone vni 11
    vxlan mlag source-interface Loopback1
    vxlan flood vtep 10.1.0.10 10.1.0.11
+   vxlan qos dscp propagation encapsulation
+   vxlan qos map dscp to traffic-class decapsulation
    vxlan vlan 110 multicast group 239.9.1.4
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
    vxlan encapsulation ipv4

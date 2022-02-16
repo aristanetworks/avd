@@ -169,8 +169,10 @@ l2leaf,MH-L2LEAF1A,Ethernet1,l3leaf,MH-LEAF2A,Ethernet2
 l2leaf,MH-L2LEAF1A,Ethernet10,server,server02,Eth1
 l3leaf,MH-LEAF1A,Ethernet1,spine,DC1-SPINE1,Ethernet10
 l3leaf,MH-LEAF1A,Ethernet10,server,server01_ES1,Eth1
+l3leaf,MH-LEAF1A,Ethernet11,router,ROUTER02_WITH_SUBIF,Eth1
 l3leaf,MH-LEAF1B,Ethernet1,spine,DC1-SPINE1,Ethernet11
 l3leaf,MH-LEAF1B,Ethernet10,server,server01_ES1,Eth2
+l3leaf,MH-LEAF1B,Ethernet11,router,ROUTER02_WITH_SUBIF,Eth2
 l3leaf,MH-LEAF2A,Ethernet1,spine,DC1-SPINE1,Ethernet12
 l3leaf,MH-LEAF2A,Ethernet2,l2leaf,MH-L2LEAF1A,Ethernet1
 l3leaf,MH-LEAF2A,Ethernet10,router,ROUTER01,Eth1

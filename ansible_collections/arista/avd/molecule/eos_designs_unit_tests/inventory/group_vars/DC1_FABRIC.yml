@@ -5,7 +5,7 @@
 fabric_name: DC1_FABRIC
 
 # Enable vlan aware bundles
-vxlan_vlan_aware_bundles: true
+evpn_vlan_aware_bundles: true
 
 # bgp peer groups passwords
 bgp_peer_groups:
