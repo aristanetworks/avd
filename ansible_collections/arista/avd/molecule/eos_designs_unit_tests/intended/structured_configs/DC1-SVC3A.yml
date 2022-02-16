@@ -1517,3 +1517,7 @@ monitor_sessions:
   truncate:
     enabled: true
     size: 20
+- name: MonitoringSessionServer18WithoutDest
+  sources:
+  - name: Ethernet25
+    direction: tx
