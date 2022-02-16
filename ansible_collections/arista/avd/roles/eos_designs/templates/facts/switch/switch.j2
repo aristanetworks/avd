@@ -29,7 +29,7 @@ switch:
 
 {# switch.underlay_routing_protocol #}
 {% set switch_underlay_routing_protocol = underlay_routing_protocol | arista.avd.default(switch.default_underlay_routing_protocol) | lower %}
-{% if switch_underlay_routing_protocol not in ['isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp', 'ospf', 'ospf-ldp'] %}
+{% if switch_underlay_routing_protocol not in ['ebgp', 'isis', 'isis-ldp', 'isis-sr', 'isis-sr-ldp', 'ospf', 'ospf-ldp'] %}
 {%     set switch_underlay_routing_protocol = switch.default_underlay_routing_protocol %}
 {% endif %}
   underlay_routing_protocol: {{ switch_underlay_routing_protocol }}

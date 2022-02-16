@@ -375,34 +375,3 @@ defaults <- node_group <- node_group.node <- node
     # VLAN number assigned to Inband Management SVI on l2leafs in default VRF.
     inband_management_vlan: < vlan-id | Default -> 4092 >
 ```
-
-### Backbone Interfaces
-
-```yaml
-backbone_interfaces:
-  p2p_links_ip_pools:
-    < pool name >: < IPv4_address/Mask >
-  p2p_links_profiles:
-    < backbone profile name >:
-      speed: < speed >
-      mtu: < mtu >
-      isis_hello_padding: < true | false >
-      isis_metric: < metric >
-      isis_authentication_mode: < text | md5 >
-      isis_authentication_key: < isis password >
-      ip_pool: < pool name >
-      isis_circuit_type: < isis circuit type >
-      ipv6_enable: < true | false >
-  p2p_links:
-    - id: < Link ID, used for selecting a subnet from the provided pool >
-      nodes: ['< node1 inventory_hostname >', '< node2 inventory_hostname >']
-      interfaces: ['< node1 interface >', '< node2 interface >']
-      profile: < backbone profile name >
-    - id: < Link ID >
-      nodes: ['< node1 inventory_hostname >', '< node2 inventory_hostname >']
-      port_channel:
-        mode: active
-        nodes_child_interfaces:
-          < node1 >: [ '< node1 interface1 >', '< node1 interface2 >' ]
-          < node2 >: [ '< node2 interface1 >', '< node2 interface2 >' ]
-```
