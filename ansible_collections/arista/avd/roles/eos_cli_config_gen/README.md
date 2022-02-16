@@ -130,6 +130,7 @@
       - [Router ISIS Configuration](#router-isis-configuration)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
+      - [Router Traffic Engineering](#router-traffic-engineering)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
       - [VRF Instances](#vrf-instances)
@@ -3037,6 +3038,42 @@ router_isis:
   segment_routing_mpls:
     enabled: < true | false >
     router_id: < router_id >
+```
+
+#### Router Traffic Engineering
+
+```yaml
+router_traffic_engineering:
+  router_id:
+    ipv4: < IPv4_address >
+    ipv6: < IPv6_address >
+  segment_routing:
+    colored_tunnel_rib: true
+    policy_endpoints:
+      - address: < IPv4_address | IPv6_address >
+        colors:
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
+          - value: < integer >
+            binding_sid: < integer >
+            description: < description >
+            name: < name >
+            path_group:
+              - preference: < integer >
+                explicit_null: < "ipv4" | "ipv6" | "ipv4 ipv6" | "none" >
+                segment_list:
+                  - label_stack: < integer > < integer > < integer >
+                    weight: < integer >
+                    index: < integer >
 ```
 
 #### Service Routing Configuration BGP
