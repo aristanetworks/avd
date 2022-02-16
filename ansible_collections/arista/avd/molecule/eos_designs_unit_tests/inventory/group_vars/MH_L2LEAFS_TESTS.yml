@@ -12,6 +12,8 @@ l2leaf:
       groups:
         - name: l2leaf-server02
           recovery_delay: 300
+    filter:
+      tags: [opzone]
   nodes:
     MH-L2LEAF1A:
       id: 1
