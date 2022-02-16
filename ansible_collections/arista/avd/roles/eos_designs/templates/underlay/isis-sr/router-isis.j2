@@ -17,7 +17,7 @@ router_isis:
 {% if switch.vtep is arista.avd.defined(true) %}
     - {{ switch.vtep_loopback }}
 {% endif %}
-  is_type: {{ switch.is_type | arista.avd.default("level-2") }}
+  is_type: {{ switch.is_type }}
   advertise:
     passive_only: {{ isis_advertise_passive_only | arista.avd.default(false) }}
 {% if switch.mpls_lsr is arista.avd.defined(true) %}
