@@ -34,7 +34,7 @@ qos_profiles:
     cos: 2
     service_policy:
       type:
-        qos_input: test_qos_policy
+        qos_input: test_qos_policy_v1
     tx_queues:
       3:
         bandwidth_percent: 30

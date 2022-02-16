@@ -8,7 +8,7 @@
 **{{ policy_map }}**
 
 | class | Set | Value |
-| ---- | ----- | ----- |
+| ----- | --- | ----- |
 {%         for class in policy_maps.qos[policy_map].classes | arista.avd.natural_sort %}
 {%             for set in policy_maps.qos[policy_map].classes[class].set | arista.avd.natural_sort %}
 | {{ class }} | {{ set }} | {{ policy_maps.qos[policy_map].classes[class].set[set] }} |
