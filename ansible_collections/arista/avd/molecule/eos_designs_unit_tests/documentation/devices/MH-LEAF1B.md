@@ -304,6 +304,11 @@ interface Ethernet10
    description server01_ES1_Eth2
    no shutdown
    channel-group 10 mode active
+!
+interface Ethernet11
+   description ROUTER02_WITH_SUBIF_Eth2
+   no shutdown
+   channel-group 11 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -315,6 +320,13 @@ interface Ethernet10
 | Interface | Description | Type | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel10 | server01_ES1_PortChanne1 | switched | access | 310 | - | - | - | - | - | 0000:0000:0001:1010:1010 |
+
+#### Flexible Encapsulation Interfaces
+
+| Interface | Description | Type | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
+| --------- | ----------- | ---- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
+| Port-Channel11.101 | - | l2dot1q | 101 | False | 101 | - | - | True | - | - | - |
+| Port-Channel11.102 | - | l2dot1q | 1102 | False | 2102 | - | - | True | - | - | - |
 
 #### Link Tracking Groups
 
@@ -336,6 +348,27 @@ interface Port-Channel10
       route-target import 00:01:10:10:10:10
    lacp system-id 0001.1010.1010
    link tracking group LT_GROUP1 downstream
+!
+interface Port-Channel11
+   description ROUTER02_WITH_SUBIF_Testing L2 subinterfaces
+   no shutdown
+   no switchport
+!
+interface Port-Channel11.101
+   vlan id 101
+   encapsulation vlan
+      client dot1q 101 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0101
+      route-target import 00:00:00:00:01:01
+!
+interface Port-Channel11.102
+   vlan id 1102
+   encapsulation vlan
+      client dot1q 2102 network client
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0102
+      route-target import 00:00:00:00:01:02
 ```
 
 ## Loopback Interfaces

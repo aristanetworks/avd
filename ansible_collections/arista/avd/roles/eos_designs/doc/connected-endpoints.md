@@ -195,6 +195,16 @@ port_profiles:
             mode: < static > Currently only static mode is supported
             timeout: < timeout in seconds > | Optional - default is 90 seconds
 
+          # Port-Channel L2 Subinterfaces
+          # Subinterfaces are only supported on routed port-channels, which means they cannot be configured on MLAG port-channels.
+          subinterfaces:
+          - number: < subinterface number >
+            short_esi: < 0000:0000:0000 > Required for multihomed port-channels with subinterfaces
+            vlan_id: < VLAN ID to bridge > | Optional - default is subinterface number
+            # Flexible encapsulation parameters
+            encapsulation_vlan:
+              client_dot1q: < client vlan id encapsulation > | Optional - default is subinterface number
+
           # EOS CLI rendered directly on the port-channel interface in the final EOS configuration
           raw_eos_cli: |
             < multiline eos cli >

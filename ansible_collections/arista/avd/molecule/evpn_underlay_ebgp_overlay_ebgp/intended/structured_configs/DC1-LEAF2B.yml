@@ -496,8 +496,8 @@ port_channel_interfaces:
     type: switched
     shutdown: false
     mode: access
-    mtu: 1600
     vlans: 110
+    mtu: 1600
 loopback_interfaces:
   Loopback0:
     description: CUSTOM_EVPN_Overlay_Peering_L3LEAF
