@@ -72,13 +72,6 @@ backbone_interfaces:
       ip_pool: underlay_pool
 
   p2p_links:
-#     # Should try:
-#     # * Unnumbered
-#     # * turn off mpls
-#     # * turn off ldp
-#     # * try qos profile
-#     # * get speed from node default, profile and link specific override.
-#     # * hello padding on/off
 
     # Unnumbered link
     - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
@@ -132,16 +125,13 @@ backbone_interfaces:
       isis_metric: 70
       qos_profile: test_qos_profile
 
+    # Different link profile
     - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
       id: 7
       interfaces: [ Ethernet10, Ethernet10 ]
       profile: ospf_bb_profile
 
-    - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
-      id: 8
-      interfaces: [ Ethernet11, Ethernet11 ]
-      profile: isis_bb_profile
-
+    # Backbone Port-Channel
     - nodes: [ backbone-1-isis-sr-ldp, backbone-2-ospf-ldp ]
       id: 9
       port_channel:

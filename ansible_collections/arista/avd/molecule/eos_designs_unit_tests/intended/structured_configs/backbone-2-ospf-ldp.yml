@@ -48,7 +48,6 @@ router_ospf:
       - Ethernet5
       - Ethernet6
       - Ethernet10
-      - Ethernet11
       - Port-Channel12
 mpls:
   ip: true
@@ -140,9 +139,6 @@ ethernet_interfaces:
     ospf_area: 0.0.0.0
     mpls:
       ip: true
-      ldp:
-        interface: true
-        igp_sync: true
   Ethernet6:
     peer: backbone-1-isis-sr-ldp
     peer_interface: Ethernet6
@@ -172,24 +168,6 @@ ethernet_interfaces:
     mtu: 1500
     ip_address: 100.64.48.13/31
     speed: forced 1000full
-    ospf_network_point_to_point: true
-    ospf_area: 0.0.0.0
-    mpls:
-      ip: true
-      ldp:
-        interface: true
-        igp_sync: true
-  Ethernet11:
-    peer: backbone-1-isis-sr-ldp
-    peer_interface: Ethernet11
-    peer_type: backbone_router
-    description: P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet11
-    type: routed
-    shutdown: false
-    mtu: 1500
-    ip_address: 100.64.48.15/31
-    speed: forced 1000full
-    ipv6_enable: true
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.0
     mpls:

@@ -117,7 +117,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet5 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet5 | routed | - | 100.64.48.8/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
 | Ethernet10 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet10 | routed | - | 100.64.48.12/31 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet11 | routed | - | 100.64.48.14/31 | default | 1500 | false | - | - |
 | Ethernet12 | P2P_LINK_TO_backbone-2-ospf-ldp_Port-Channel12 | *routed | 12 | *100.64.48.16/31 | **default | *1500 | *false | **- | **- |
 | Ethernet13 | P2P_LINK_TO_backbone-2-ospf-ldp_Port-Channel12 | *routed | 12 | *100.64.48.16/31 | **default | *1500 | *false | **- | **- |
 *Inherited from Port-Channel Interface
@@ -131,7 +130,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
 | Ethernet5 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
 | Ethernet6 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
-| Ethernet11 | P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet11 | routed | - | - | default | 1500 | false | - | *- | - | - |
 
 #### ISIS
 
@@ -144,7 +142,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet5 | - | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet6 | - | MPLS_UNDERLAY | 70 | point-to-point | level-1-2 | True | md5 |
 | Ethernet10 | - | MPLS_UNDERLAY | 50 | point-to-point | level-2 | True | - |
-| Ethernet11 | - | MPLS_UNDERLAY | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet12 | 12 | *MPLS_UNDERLAY | *60 | *point-to-point | *level-2 | *False | *md5 |
 | Ethernet13 | 12 | *MPLS_UNDERLAY | *60 | *point-to-point | *level-2 | *False | *md5 |
  *Inherited from Port-Channel Interface
@@ -240,8 +237,6 @@ interface Ethernet5
    isis authentication mode md5
    isis authentication key 7 $1c$sTNAlR6rKSw=
    mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet6
    description P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet6
@@ -275,25 +270,6 @@ interface Ethernet10
    isis metric 50
    isis network point-to-point
    isis hello padding
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
-!
-interface Ethernet11
-   description P2P_LINK_TO_backbone-2-ospf-ldp_Ethernet11
-   no shutdown
-   speed forced 1000full
-   mtu 1500
-   no switchport
-   ip address 100.64.48.14/31
-   ipv6 enable
-   isis enable MPLS_UNDERLAY
-   isis circuit-type level-2
-   isis metric 60
-   isis network point-to-point
-   no isis hello padding
-   isis authentication mode md5
-   isis authentication key 7 $1c$sTNAlR6rKSw=
    mpls ip
    mpls ldp interface
    mpls ldp igp sync
@@ -468,7 +444,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 | Ethernet5 | MPLS_UNDERLAY | 60 | point-to-point |
 | Ethernet6 | MPLS_UNDERLAY | 70 | point-to-point |
 | Ethernet10 | MPLS_UNDERLAY | 50 | point-to-point |
-| Ethernet11 | MPLS_UNDERLAY | 60 | point-to-point |
 | Loopback0 | MPLS_UNDERLAY | - | passive |
 
 ### ISIS Segment-routing Node-SID
@@ -556,10 +531,9 @@ mpls ldp
 | Ethernet1 | True | True | True |
 | Ethernet2 | True | True | True |
 | Ethernet3 | True | True | True |
-| Ethernet5 | True | True | True |
+| Ethernet5 | True | - | - |
 | Ethernet6 | True | True | True |
 | Ethernet10 | True | True | True |
-| Ethernet11 | True | True | True |
 | Loopback0 | - | True | - |
 | Port-Channel12 | True | True | True |
 

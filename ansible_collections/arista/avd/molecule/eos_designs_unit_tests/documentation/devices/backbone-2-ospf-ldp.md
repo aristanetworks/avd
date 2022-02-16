@@ -117,7 +117,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet5 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet5 | routed | - | 100.64.48.9/31 | default | 1500 | false | - | - |
 | Ethernet6 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
 | Ethernet10 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet10 | routed | - | 100.64.48.13/31 | default | 1500 | false | - | - |
-| Ethernet11 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet11 | routed | - | 100.64.48.15/31 | default | 1500 | false | - | - |
 | Ethernet12 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
 | Ethernet13 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
 *Inherited from Port-Channel Interface
@@ -131,7 +130,6 @@ vlan internal order ascending range 1006 1199
 | Ethernet4 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
 | Ethernet5 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
 | Ethernet6 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
-| Ethernet11 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet11 | routed | - | - | default | 1500 | false | - | *- | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -201,8 +199,6 @@ interface Ethernet5
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
    mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
 !
 interface Ethernet6
    description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6
@@ -226,20 +222,6 @@ interface Ethernet10
    mtu 1500
    no switchport
    ip address 100.64.48.13/31
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.0
-   mpls ip
-   mpls ldp interface
-   mpls ldp igp sync
-!
-interface Ethernet11
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet11
-   no shutdown
-   speed forced 1000full
-   mtu 1500
-   no switchport
-   ip address 100.64.48.15/31
-   ipv6 enable
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
    mpls ip
@@ -375,7 +357,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Ethernet11 <br> Port-Channel12 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
+| 101 | 10.0.0.2 | enabled | Ethernet1 <br> Ethernet2 <br> Ethernet3 <br> Ethernet4 <br> Ethernet5 <br> Ethernet6 <br> Ethernet10 <br> Port-Channel12 <br> | enabled | 12000 | disabled | disabled | - | - | - | - |
 
 ### OSPF Interfaces
 
@@ -388,7 +370,6 @@ ip route vrf MGMT 0.0.0.0/0 192.168.0.1
 | Ethernet5 | 0.0.0.0 | - | True |
 | Ethernet6 | 0.0.0.0 | - | True |
 | Ethernet10 | 0.0.0.0 | - | True |
-| Ethernet11 | 0.0.0.0 | - | True |
 | Port-Channel12 | 0.0.0.0 | - | True |
 | Loopback0 | 0.0.0.0 | - | - |
 
@@ -406,7 +387,6 @@ router ospf 101
    no passive-interface Ethernet5
    no passive-interface Ethernet6
    no passive-interface Ethernet10
-   no passive-interface Ethernet11
    no passive-interface Port-Channel12
    bfd default
    max-lsa 12000
@@ -467,10 +447,9 @@ mpls ldp
 | Ethernet1 | True | True | True |
 | Ethernet2 | True | True | True |
 | Ethernet3 | True | True | True |
-| Ethernet5 | True | True | True |
+| Ethernet5 | True | - | - |
 | Ethernet6 | True | True | True |
 | Ethernet10 | True | True | True |
-| Ethernet11 | True | True | True |
 | Loopback0 | - | True | - |
 | Port-Channel12 | True | True | True |
 
