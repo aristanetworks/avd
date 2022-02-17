@@ -451,7 +451,7 @@
 {%                     if pseudowire.name is arista.avd.defined %}
 {%                         set row_mpls_control_word = vpws_service.mpls_control_word | arista.avd.default(false) %}
 {%                         set row_label_flow = vpws_service.label_flow | arista.avd.default(false) %}
-{%                         set row_mtu = vpws_service.mtu | arista.avd.default("ignore") %}
+{%                         set row_mtu = vpws_service.mtu | arista.avd.default("-") %}
 | {{ vpws_service.name }} | {{ vpws_service.rd }} | {{ vpws_service.route_targets.import_export }} | {{ row_mpls_control_word }} | {{ row_label_flow }} | {{ row_mtu }} | {{ pseudowire.name }} | {{ pseudowire.id_local }} | {{ pseudowire.id_remote }} |
 {%                     endif %}
 {%                 endfor %}
