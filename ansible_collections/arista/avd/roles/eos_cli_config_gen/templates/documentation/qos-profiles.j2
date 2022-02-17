@@ -10,7 +10,7 @@ QOS Profile: **{{ profile }}**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate | Qos Service Policy |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 {%         set cos = qos_profiles[profile].cos | arista.avd.default('-') %}
 {%         set dscp = qos_profiles[profile].dscp | arista.avd.default('-') %}

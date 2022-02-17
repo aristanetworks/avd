@@ -223,7 +223,7 @@ QOS Profile: **experiment**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate | Qos Service Policy |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 2 | - | cos | - | test_qos_policy_v1 |
 
@@ -240,7 +240,7 @@ QOS Profile: **no_qos_trust**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate | Qos Service Policy |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
 
@@ -248,7 +248,7 @@ QOS Profile: **test**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate | Qos Service Policy |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | - | 46 | dscp | 80 percent | - |
 
