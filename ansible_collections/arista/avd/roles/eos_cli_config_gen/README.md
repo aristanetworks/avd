@@ -2699,6 +2699,9 @@ router_bgp:
       rd: < route distinguisher >
       route_targets:
         import_export: < route target >
+      mpls_control_word: < true | false, Default -> false >
+      label_flow: < true | false, Default -> false >
+      mtu: < mtu >
       pseudowires:
         - name: < pseudowire name >
           id_local: < integer, must match id_remote on other pe >
