@@ -18,7 +18,6 @@
   tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
-#    dest: "{{ switch_facts_dir }}/{{ inventory_hostname }}.json"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -27,7 +26,6 @@
   tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.topology_facts }}"
-#    dest: "{{ topology_facts_dir }}/{{ inventory_hostname }}.json"
   delegate_to: localhost
   check_mode: no
   changed_when: False
