@@ -105,7 +105,7 @@ interface Management1
 | -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | True | True | 1601 | TEN_A_site1_site3_pw | 15 | 35 |
 | TENANT_A | 100.70.0.2:1000 | 65000:1000 | True | True | 1601 | TEN_A_site2_site5_pw | 25 | 57 |
-| TENANT_B | 100.70.0.2:2000 | 65000:2000 | False | False | ignore | TEN_B_site2_site5_pw | 26 | 58 |
+| TENANT_B | 100.70.0.2:2000 | 65000:2000 | False | False | - | TEN_B_site2_site5_pw | 26 | 58 |
 
 ### Router BGP Device Configuration
 
