@@ -48,8 +48,38 @@ qos_profiles:
     trust: disabled
     cos: 3
     dscp: 4
+  qprof_testwithpolicy:
+    policy_map: pmap_test1
+    tx_queues:
+      5:
+        priority: no priority
+        bandwidth_percent: 19
+      1:
+        bandwidth_percent: 80
+      0:
+        bandwidth_percent: 1
 
-### Port-Channel Interfaces ###
+policy_maps:
+  qos:
+    pmap_test1:
+      classes:
+        cmap_tc0_v4:
+          set:
+            traffic_class: 0
+        cmap_tc5_v4:
+          set:
+            traffic_class: 5
+        cmap_tc5_v6:
+          set:
+            traffic_class: 5
+        cmap_tc0_v6:
+          set:
+            traffic_class: 0
+        class-default:
+          set:
+            traffic_class: 1
+
+### Ethernet Interfaces ###
 ethernet_interfaces:
   Ethernet1:
     peer: DC1-SPINE1
@@ -94,6 +124,15 @@ ethernet_interfaces:
       id: 3
       mode: active
 
+  Ethernet7:
+    peer: SRV-POD03
+    peer_interface: Eth1
+    peer_type: server
+    description: Test-with-policymap
+    mode: trunk
+    vlans: 110-111,210-211
+    service_profile: qprof_testwithpolicy
+
 ### Port-Channel Interfaces ###
 port_channel_interfaces:
   Port-Channel3:
@@ -107,3 +146,39 @@ port_channel_interfaces:
     qos:
       trust: cos
       cos: 2
+
+### ACLs and Class Maps ###
+access_lists:
+  acl_qos_tc0_v4:
+    sequence_numbers:
+      10:
+        action: "permit ip any 192.0.2.0/29"
+  acl_qos_tc5_v4:
+    sequence_numbers:
+      10:
+        action: "permit ip any any dscp ef"
+
+ipv6_access_lists:
+  acl_qos_tc0_v6:
+    sequence_numbers:
+      10:
+        action: "permit ipv6 any any dscp cs1"
+  acl_qos_tc5_v6:
+    sequence_numbers:
+      10:
+        action: "permit ipv6 any 2001:db8::/48"
+
+class_maps:
+  qos:
+    cmap_tc5_v4:
+      ip:
+        access_group: acl_qos_tc5_v4
+    cmap_tc0_v6:
+      ipv6:
+        access_group: acl_qos_tc0_v6
+    cmap_tc0_v4:
+      ip:
+        access_group: acl_qos_tc0_v4
+    cmap_tc5_v6:
+      ipv6:
+        access_group: acl_qos_tc5_v6
