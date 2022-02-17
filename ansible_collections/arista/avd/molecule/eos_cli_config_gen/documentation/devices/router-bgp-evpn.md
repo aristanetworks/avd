@@ -109,7 +109,7 @@ interface Management1
 | Allowas-in | Allowed, allowed 3 (default) times |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

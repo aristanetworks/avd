@@ -2532,6 +2532,10 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
@@ -2562,6 +2566,10 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < all | extended | large | standard >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >

@@ -462,7 +462,7 @@ router isis EVPN_UNDERLAY
 | Remote AS | 65000 |
 | Route Reflector Client | Yes |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 

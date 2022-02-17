@@ -84,10 +84,13 @@
 | Source | {{ router_bgp.peer_groups[peer_group].update_source }} |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].bfd is arista.avd.defined(true) %}
-| BFD | true |
+| BFD | True |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].ebgp_multihop is arista.avd.defined %}
 | Ebgp multihop | {{ router_bgp.peer_groups[peer_group].ebgp_multihop }} |
+{%             endif %}
+{%             if router_bgp.peer_groups[peer_group].default_originate.enabled is arista.avd.defined(true) %}
+| Default originate | True |
 {%             endif %}
 {%             if router_bgp.peer_groups[peer_group].send_community is arista.avd.defined %}
 | Send community | {{ router_bgp.peer_groups[peer_group].send_community }} |
@@ -281,21 +284,21 @@
 {%         for aggregate_address in router_bgp.aggregate_addresses | arista.avd.natural_sort %}
 {%             set prefix = aggregate_address  %}
 {%             if router_bgp.aggregate_addresses[aggregate_address].as_set is arista.avd.defined(true) %}
-{%                 set as_set = "True" %}
+{%                 set as_set = true %}
 {%             else %}
-{%                 set as_set = "False" %}
+{%                 set as_set = false %}
 {%             endif %}
 {%             if router_bgp.aggregate_addresses[aggregate_address].summary_only is arista.avd.defined(true) %}
-{%                 set summary_only = "True" %}
+{%                 set summary_only = true %}
 {%             else %}
-{%                 set summary_only = "False" %}
+{%                 set summary_only = false %}
 {%             endif %}
 {%             set attribute_map = router_bgp.aggregate_addresses[aggregate_address].attribute_map | arista.avd.default("-") %}
 {%             set match_map = router_bgp.aggregate_addresses[aggregate_address].match_map | arista.avd.default("-") %}
 {%             if router_bgp.aggregate_addresses[aggregate_address].advertise_only is arista.avd.defined(true) %}
-{%                 set advertise_only = "True" %}
+{%                 set advertise_only = true %}
 {%             else %}
-{%                 set advertise_only = "False" %}
+{%                 set advertise_only = false %}
 {%             endif %}
 | {{ prefix }} | {{ as_set }} | {{ summary_only }} | {{ attribute_map }} | {{ match_map }} | {{ advertise_only }} |
 {%         endfor %}
@@ -314,7 +317,7 @@
 | Peer Group | Activate |
 | ---------- | -------- |
 {%             for peer_group in router_bgp.address_family_evpn.peer_groups | arista.avd.natural_sort %}
-| {{ peer_group }} | {{ router_bgp.address_family_evpn.peer_groups[peer_group].activate | arista.avd.default("false") }} |
+| {{ peer_group }} | {{ router_bgp.address_family_evpn.peer_groups[peer_group].activate | arista.avd.default(false) }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_bgp.address_family_evpn.neighbor_default.encapsulation is arista.avd.defined %}

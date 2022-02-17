@@ -529,7 +529,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

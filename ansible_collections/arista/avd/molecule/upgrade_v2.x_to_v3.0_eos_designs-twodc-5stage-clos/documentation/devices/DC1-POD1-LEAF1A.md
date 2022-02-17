@@ -400,7 +400,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Remote AS | 65110 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
