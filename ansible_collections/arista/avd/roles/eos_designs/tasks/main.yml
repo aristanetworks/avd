@@ -8,8 +8,6 @@
   loop:
     - "{{ structured_dir }}"
     - "{{ fabric_dir }}"
-    - "{{ switch_facts_dir }}"
-    - "{{ topology_facts_dir }}"
     - "{{ topology_peers_facts_dir }}"
     - "{{ overlay_peers_facts_dir }}"
   delegate_to: localhost
@@ -81,8 +79,6 @@
     path: "{{ item }}"
     state: absent
   loop:
-    - "{{ switch_facts_dir }}"
-    - "{{ topology_facts_dir }}"
     - "{{ topology_peers_facts_dir }}"
     - "{{ overlay_peers_facts_dir }}"
     - "{{ facts_dir }}"

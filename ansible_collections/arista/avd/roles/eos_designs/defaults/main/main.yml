@@ -23,8 +23,6 @@ structured_dir: '{{ output_dir }}/{{ structured_dir_name }}'
 # Output for Internal Facts files:
 facts_dir_name: 'avd_facts'
 facts_dir: '{{ root_dir }}/{{ facts_dir_name }}'
-switch_facts_dir: '{{ facts_dir }}/switch'
-topology_facts_dir: '{{ facts_dir }}/topology'
 topology_peers_facts_dir: '{{ facts_dir }}/topology_peers'
 overlay_peers_facts_dir: '{{ facts_dir }}/overlay_peers'
 
