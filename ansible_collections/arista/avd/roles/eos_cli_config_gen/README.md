@@ -2361,7 +2361,9 @@ class_maps:
       vlan: < VLAN value(s) or range(s) of VLAN values >
       cos: < CoS value(s) or range(s) of CoS values >
       ip:
-        access_group: < Standard access-list name >
+        access_group: < IPv4 access-list name >
+      ipv6:
+        access_group: < IPv6 access-list name >
 ```
 
 #### QOS Policy-map
