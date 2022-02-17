@@ -14,7 +14,7 @@ router_bgp:
         import_export: 65000:1000
       mpls_control_word: true
       label_flow: true
-      mtu: 1601
+      mtu: 1600
       pseudowires:
         - name: TEN_A_site2_site5_pw
           id_local: 25
