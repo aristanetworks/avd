@@ -4,18 +4,18 @@
 {# Add inband management variables defined on other devices pointing to this device #}
 
 {# List of fact files created by peers pointing to this device #}
-{% set topology_peers_facts_files = query('ansible.builtin.fileglob', topology_peers_facts_dir ~ '/' ~ inventory_hostname ~ '_*') %}
+{% set topology_peers_hints = query('ansible.builtin.fileglob', topology_peers_facts_dir ~ '/' ~ inventory_hostname ~ '_*') %}
 
-{# Run through list and parse topology facts for inband_management parents #}
-{% for topology_peers_facts_file in topology_peers_facts_files %}
-{%     set peer_hostname = topology_peers_facts_file.split('_') | last %}
+{# Run through list and parse switch facts for inband_management parents #}
+{% for topology_peers_hint in topology_peers_hints %}
+{%     set peer_hostname = topology_peers_hint.split('_') | last %}
 {%     set peer_facts = hostvars[peer_hostname] %}
-{%     if peer_facts.topology is arista.avd.defined(fail_action='warning',var_name='Topoology Facts for ' ~ peer_hostname) %}
-{%         if inventory_hostname in peer_facts.topology.inband_management_parents | arista.avd.default([]) %}
+{%     if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ peer_hostname) %}
+{%         if inventory_hostname in peer_facts.switch.inband_management_parents | arista.avd.default([]) %}
 {%             set inband_management_data.role = 'parent' %}
-{%             if peer_facts.topology.inband_management_subnet not in inband_management_data.subnets %}
-{%                 do inband_management_data.vlans.append(peer_facts.topology.inband_management_vlan) %}
-{%                 do inband_management_data.subnets.append(peer_facts.topology.inband_management_subnet) %}
+{%             if peer_facts.switch.inband_management_subnet not in inband_management_data.subnets %}
+{%                 do inband_management_data.vlans.append(peer_facts.switch.inband_management_vlan) %}
+{%                 do inband_management_data.subnets.append(peer_facts.switch.inband_management_subnet) %}
 {%             endif %}
 {%         endif %}
 {%     endif %}

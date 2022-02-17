@@ -4,11 +4,11 @@
 {# Look for switches pointing to us as evpn_route_server #}
 
 {# List of fact files created by peers pointing to this device #}
-{%     set overlay_peers_facts_files = query('ansible.builtin.fileglob', overlay_peers_facts_dir ~ '/' ~ inventory_hostname ~ '_*') %}
+{%     set overlay_peers_hints = query('ansible.builtin.fileglob', overlay_peers_facts_dir ~ '/' ~ inventory_hostname ~ '_*') %}
 
 {# Run through list and parse the switch facts for that device for bgp details #}
-{%     for overlay_peers_facts_file in overlay_peers_facts_files %}
-{%         set peer_hostname = overlay_peers_facts_file.split('_') | last %}
+{%     for overlay_peers_hint in overlay_peers_hints %}
+{%         set peer_hostname = overlay_peers_hint.split('_') | last %}
 {%         set peer_facts = hostvars[peer_hostname] %}
 {%         if peer_facts.switch is arista.avd.defined(fail_action='warning',var_name='Switch Facts for ' ~ peer_hostname) %}
 {%             if inventory_hostname in peer_facts.switch.evpn_route_servers | arista.avd.default([]) and
