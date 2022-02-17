@@ -8,13 +8,19 @@
   loop:
     - "{{ structured_dir }}"
     - "{{ fabric_dir }}"
+    - "{{ switch_facts_dir }}"
+    - "{{ topology_facts_dir }}"
+    - "{{ topology_peers_facts_dir }}"
+    - "{{ overlay_peers_facts_dir }}"
   delegate_to: localhost
   run_once: true
+  changed_when: False
 
 - name: Set AVD facts
   tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.facts }}"
+#    dest: "{{ switch_facts_dir }}/{{ inventory_hostname }}.json"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -23,6 +29,29 @@
   tags: [build, provision]
   yaml_templates_to_facts:
     templates: "{{ templates.topology_facts }}"
+#    dest: "{{ topology_facts_dir }}/{{ inventory_hostname }}.json"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+
+- name: Write topology_peers info to filesystem
+  tags: [build, provision]
+  ansible.builtin.file:
+    dest: "{{ topology_peers_facts_dir }}/{{ item }}_{{ inventory_hostname }}"
+    state: touch
+    mode: 0664
+  loop: "{{ topology.peers | arista.avd.default([]) }}"
+  delegate_to: localhost
+  check_mode: no
+  changed_when: False
+
+- name: Write overlay_peers info to filesystem
+  tags: [build, provision]
+  ansible.builtin.file:
+    dest: "{{ overlay_peers_facts_dir }}/{{ item }}_{{ inventory_hostname }}"
+    state: touch
+    mode: 0664
+  loop: "{{ switch.evpn_route_servers | arista.avd.default([]) }}"
   delegate_to: localhost
   check_mode: no
   changed_when: False
@@ -45,6 +74,21 @@
   delegate_to: localhost
   check_mode: no
   register: structured_config
+
+- name: "Cleanup AVD facts files"
+  tags: [build, provision, cleanup_facts]
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "{{ switch_facts_dir }}"
+    - "{{ topology_facts_dir }}"
+    - "{{ topology_peers_facts_dir }}"
+    - "{{ overlay_peers_facts_dir }}"
+    - "{{ facts_dir }}"
+  delegate_to: localhost
+  run_once: True
+  changed_when: False
 
 - name: Generate fabric documentation
   tags: [build, provision, documentation]
