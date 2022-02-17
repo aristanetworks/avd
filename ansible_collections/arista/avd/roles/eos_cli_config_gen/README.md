@@ -2381,6 +2381,7 @@ policy_maps:
       classes:
         < class name >:
           set:
+            cos: < cos_value >
             dscp: < dscp-code >
             traffic_class: < traffic-class ID >
             drop_precedence: < drop-precedence value >
@@ -2396,6 +2397,9 @@ qos_profiles:
     dscp: < dscp-value >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    service_policy:
+      type:
+        qos_input: < policy_map_name >
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >

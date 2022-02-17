@@ -223,9 +223,9 @@ QOS Profile: **experiment**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate |
-| ----------- | ------------ | ----- | ---------- |
-| 2 | - | cos | - |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| 2 | - | cos | - | test_qos_policy_v1 |
 
 **Tx-queues**
 
@@ -240,17 +240,17 @@ QOS Profile: **no_qos_trust**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate |
-| ----------- | ------------ | ----- | ---------- |
-| 3 | 4 | disabled | - |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| 3 | 4 | disabled | - | - |
 
 QOS Profile: **test**
 
 **Settings**
 
-| Default COS | Default DSCP | Trust | Shape Rate |
-| ----------- | ------------ | ----- | ---------- |
-| - | 46 | dscp | 80 percent |
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | 46 | dscp | 80 percent | - |
 
 **Tx-queues**
 
@@ -267,6 +267,7 @@ QOS Profile: **test**
 qos profile experiment
    qos trust cos
    qos cos 2
+   service-policy type qos input test_qos_policy_v1
    !
    tx-queue 3
       bandwidth percent 30
