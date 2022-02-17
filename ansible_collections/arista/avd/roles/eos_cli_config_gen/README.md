@@ -1746,7 +1746,7 @@ management_ssh:
   cipher:
     - < cipher1 >
     - < cipher2 >
-  key-exchange:
+  key_exchange:
     - < method1 >
     - < method2 >
   mac:
