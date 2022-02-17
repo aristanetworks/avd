@@ -1,5 +1,5 @@
 router_isis:
-  instance: {{ underlay_data.isis_instance_name }}
+  instance: {{ switch.isis_instance_name }}
   log_adjacency_changes: true
   net: {{ switch.isis_net }}
   router_id: {{ switch.router_id }}

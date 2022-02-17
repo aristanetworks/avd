@@ -1,8 +1,8 @@
-{% if backbone_interfaces_data.bgp_neighbors | length > 0 %}
+{% if core_interfaces_data.bgp_neighbors | length > 0 %}
 router_bgp:
   neighbors:
-{%     for bgp_neighbor_key in backbone_interfaces_data.bgp_neighbors | arista.avd.natural_sort %}
-{%         set bgp_neighbor = backbone_interfaces_data.bgp_neighbors[bgp_neighbor_key] %}
+{%     for bgp_neighbor_key in core_interfaces_data.bgp_neighbors | arista.avd.natural_sort %}
+{%         set bgp_neighbor = core_interfaces_data.bgp_neighbors[bgp_neighbor_key] %}
     {{ bgp_neighbor_key }}:
       remote_as: "{{ bgp_neighbor.remote_as }}"
       description: {{ bgp_neighbor.description }}

@@ -33,7 +33,7 @@ ethernet_interfaces:
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}
 {%         if switch.underlay_routing_protocol == "isis" %}
-    isis_enable: {{ underlay_data.isis_instance_name }}
+    isis_enable: {{ switch.isis_instance_name }}
     isis_metric: 50
     isis_network_point_to_point: true
 {%         endif %}

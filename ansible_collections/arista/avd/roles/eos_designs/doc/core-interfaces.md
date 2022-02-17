@@ -1,6 +1,6 @@
-# Backbone Interfaces
+# Core Interfaces
 
-The `backbone_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
+The `core_interfaces` data model can be used to configure L3 P2P links anywhere in the fabric. It can be between two switches that are already part of the fabric inventory, or it can be towards another device, where only one end of the link is on a switch in the fabric.
 
 The data model supports using IP pools, Subnet per link or specifying the IP addresses manually.
 For BGP peerings the AS number must be specified. If the AS number is different than the AS number configured for the node, the local-as will be replaced on this BGP peering (`neighbor <ip> local-as <as> no-prepend replace-as`).
@@ -8,7 +8,7 @@ For BGP peerings the AS number must be specified. If the AS number is different 
 Make sure to configure the variables in a group_vars file covering all devices mentioned in the data model.
 
 ```yaml
-backbone_interfaces:
+core_interfaces:
   p2p_links_ip_pools:
     < p2p_pool_name_1 >: < IPv4_address/Mask >
   p2p_links_profiles:
@@ -83,7 +83,7 @@ backbone_interfaces:
 
 # Fabric Level Variables
 
-These fabric level parameters can be used with backbone isis interfaces, and may be overridden on link profile or link level:
+These fabric level parameters can be used with core_interfaces running ISIS, and may be overridden on link profile or link level:
 
 ```yaml
 isis_default_circuit_type: < level-1-2, | level-1 | level-2 | Default -> level-2 >

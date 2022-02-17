@@ -16,7 +16,7 @@
   - To view IP address allocation and consumption, a summary is provided in the auto-generated fabric documentation in Markdown and CSV format.
 - The variables should be applied to all devices in the fabric.
 
-*Only supported with backbone_interfaces data model.
+*Only supported with core_interfaces data model.
 
 **Variables and Options:**
 

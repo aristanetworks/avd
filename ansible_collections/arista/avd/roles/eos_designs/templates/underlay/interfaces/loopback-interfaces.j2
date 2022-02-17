@@ -11,7 +11,7 @@ loopback_interfaces:
 {%     if switch.underlay_routing_protocol in ["ospf", "ospf-ldp"] %}
     ospf_area: {{ underlay_ospf_area }}
 {%     endif %}
-{%     if switch.mpls_lsr is arista.avd.defined(true) is arista.avd.defined(true) %}
+{%     if switch.mpls_lsr is arista.avd.defined(true) %}
     mpls:
       ip: true
 {%         if switch.underlay_routing_protocol in ["isis-ldp", "isis-sr-ldp", "ospf-ldp"] %}
@@ -20,7 +20,7 @@ loopback_interfaces:
 {%         endif %}
 {%     endif %}
 {%     if switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
-    isis_enable: {{ underlay_data.isis_instance_name }}
+    isis_enable: {{ switch.isis_instance_name }}
     isis_passive: true
 {%         if switch.underlay_routing_protocol in ["isis-sr", "isis-sr-ldp"] %}
     node_segment:
@@ -44,7 +44,7 @@ loopback_interfaces:
     ospf_area: {{ underlay_ospf_area }}
 {%     endif %}
 {%     if switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
-    isis_enable: {{ underlay_data.isis_instance_name }}
+    isis_enable: {{ switch.isis_instance_name }}
     isis_passive: true
 {%     endif %}
 {% endif %}

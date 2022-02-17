@@ -1,7 +1,7 @@
-{% if backbone_interfaces_data.p2p_port_channels | arista.avd.default([]) | length > 0 %}
-port_channel_interfaces:
-{%     for p2p_interface_key in backbone_interfaces_data.p2p_port_channels | arista.avd.natural_sort %}
-{%         set p2p_interface = backbone_interfaces_data.p2p_port_channels[p2p_interface_key] %}
+{% if core_interfaces_data.p2p_interfaces | length > 0 or core_interfaces_data.p2p_port_channels | length > 0 %}
+ethernet_interfaces:
+{%     for p2p_interface_key in core_interfaces_data.p2p_interfaces | arista.avd.natural_sort %}
+{%         set p2p_interface = core_interfaces_data.p2p_interfaces[p2p_interface_key] %}
   {{ p2p_interface_key }}:
     peer: {{ p2p_interface.peer }}
     peer_interface: {{ p2p_interface.peer_interface }}
@@ -35,7 +35,7 @@ port_channel_interfaces:
     ospf_area: {{ underlay_ospf_area }}
 {%         endif %}
 {%         if switch.mpls_lsr is arista.avd.defined(true) and switch.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"] %}
-    isis_enable: MPLS_UNDERLAY
+    isis_enable: {{ switch.isis_instance_name }}
     isis_metric: {{ p2p_interface.isis_metric }}
 {%             if p2p_interface.isis_network_type == "point-to-point" %}
     isis_network_point_to_point: true
@@ -49,14 +49,26 @@ port_channel_interfaces:
     isis_authentication_key: {{ p2p_interface.isis_authentication_key }}
 {%             endif %}
 {%         endif %}
-{%         if switch.mpls_lsr is arista.avd.defined(true) or p2p_interface.mpls_ip is arista.avd.defined(true) %}
+{%         if switch.mpls_lsr is arista.avd.defined(true) and p2p_interface.mpls_ip is arista.avd.defined(true) %}
     mpls:
       ip: true
-{%             if switch.underlay_routing_protocol in ["isis-sr-ldp", "isis-ldp", "ospf-ldp"] or p2p_interface.mpls_ldp_interface is arista.avd.defined(true) %}
+{%             if switch.underlay_routing_protocol in ["isis-sr-ldp", "isis-ldp", "ospf-ldp"] and p2p_interface.mpls_ldp_interface is arista.avd.defined(true) %}
       ldp:
         interface: true
         igp_sync: true
 {%             endif %}
 {%         endif %}
+{%     endfor %}
+{%     for p2p_interface_key in core_interfaces_data.p2p_port_channels | arista.avd.natural_sort %}
+{%         set p2p_interface = core_interfaces_data.p2p_port_channels[p2p_interface_key] %}
+{%         for interface in p2p_interface.port_channel.nodes_child_interfaces[inventory_hostname] %}
+  {{ interface }}:
+    type: routed
+    description: {{ p2p_interface.description }}
+    shutdown: false
+    channel_group:
+      id: {{ p2p_interface.channel_group_id }}
+      mode: {{ p2p_interface.port_channel.mode | arista.avd.default("active") }}
+{%         endfor %}
 {%     endfor %}
 {% endif %}

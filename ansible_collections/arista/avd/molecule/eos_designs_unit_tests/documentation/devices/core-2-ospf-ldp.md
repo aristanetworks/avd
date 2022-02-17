@@ -1,4 +1,4 @@
-# backbone-2-ospf-ldp
+# core-2-ospf-ldp
 # Table of Contents
 
 - [Management](#management)
@@ -110,33 +110,33 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet1 | routed | - | unnumbered loopback0 | default | 1500 | false | - | - |
-| Ethernet2 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet2 | routed | - | 100.123.123.3/31 | default | 1601 | false | - | - |
-| Ethernet3 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet3 | routed | - | 100.64.48.5/31 | default | 1500 | false | - | - |
-| Ethernet4 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet4 | routed | - | 100.64.48.7/31 | default | 1500 | false | - | - |
-| Ethernet5 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet5 | routed | - | 100.64.48.9/31 | default | 1500 | false | - | - |
-| Ethernet6 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
-| Ethernet10 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet10 | routed | - | 100.64.48.13/31 | default | 1500 | false | - | - |
-| Ethernet12 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
-| Ethernet13 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
+| Ethernet1 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1 | routed | - | unnumbered loopback0 | default | 1500 | false | - | - |
+| Ethernet2 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet2 | routed | - | 100.123.123.3/31 | default | 1601 | false | - | - |
+| Ethernet3 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3 | routed | - | 100.64.48.5/31 | default | 1500 | false | - | - |
+| Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | 100.64.48.7/31 | default | 1500 | false | - | - |
+| Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | 100.64.48.9/31 | default | 1500 | false | - | - |
+| Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | unnumbered loopback0 | default | 1602 | false | - | - |
+| Ethernet10 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10 | routed | - | 100.64.48.13/31 | default | 1500 | false | - | - |
+| Ethernet12 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
+| Ethernet13 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | *routed | 12 | *100.64.48.17/31 | **default | *1500 | *false | **- | **- |
 *Inherited from Port-Channel Interface
 
 #### IPv6
 
 | Interface | Description | Type | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | ---- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet3 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet4 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet5 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
-| Ethernet6 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
+| Ethernet1 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet3 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet4 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet5 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5 | routed | - | - | default | 1500 | false | - | *- | - | - |
+| Ethernet6 | P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6 | routed | - | - | default | 1602 | false | - | *- | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet1
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet1
    no shutdown
    speed forced 1000full
    mtu 1500
@@ -150,7 +150,7 @@ interface Ethernet1
    mpls ldp igp sync
 !
 interface Ethernet2
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet2
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet2
    no shutdown
    speed 100full
    mtu 1601
@@ -164,7 +164,7 @@ interface Ethernet2
    mpls ldp igp sync
 !
 interface Ethernet3
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet3
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet3
    no shutdown
    speed forced 1000full
    mtu 1500
@@ -178,7 +178,7 @@ interface Ethernet3
    mpls ldp igp sync
 !
 interface Ethernet4
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet4
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet4
    no shutdown
    speed forced 1000full
    mtu 1500
@@ -189,7 +189,7 @@ interface Ethernet4
    ip ospf area 0.0.0.0
 !
 interface Ethernet5
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet5
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet5
    no shutdown
    speed forced 1000full
    mtu 1500
@@ -201,7 +201,7 @@ interface Ethernet5
    mpls ip
 !
 interface Ethernet6
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet6
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet6
    no shutdown
    speed 100full
    mtu 1602
@@ -216,7 +216,7 @@ interface Ethernet6
    mpls ldp igp sync
 !
 interface Ethernet10
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Ethernet10
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Ethernet10
    no shutdown
    speed forced 1000full
    mtu 1500
@@ -229,12 +229,12 @@ interface Ethernet10
    mpls ldp igp sync
 !
 interface Ethernet12
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
    no shutdown
    channel-group 12 mode active
 !
 interface Ethernet13
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
    no shutdown
    channel-group 12 mode active
 ```
@@ -252,14 +252,14 @@ interface Ethernet13
 
 | Interface | Description | Type | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ---- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel12 | P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12 | routed | - | 100.64.48.17/31 | default | 1500 | false | - | - |
+| Port-Channel12 | P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12 | routed | - | 100.64.48.17/31 | default | 1500 | false | - | - |
 
 ### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel12
-   description P2P_LINK_TO_backbone-1-isis-sr-ldp_Port-Channel12
+   description P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12
    no shutdown
    mtu 1500
    no switchport

@@ -186,6 +186,14 @@ switch:
 {%         endif %}
   is_type: {{ switch_is_type }}
 
+{# switch.isis_instance_name #}
+{%         if switch.mpls_lsr is arista.avd.defined(true) %}
+{%             set switch_isis_instance_name = "CORE" %}
+{%         else %}
+{%             set switch_isis_instance_name = "EVPN_UNDERLAY" %}
+{%         endif %}
+  isis_instance_name: {{ switch_isis_instance_name }}
+
 {# switch.node_sid #}
 {%         if switch_underlay_routing_protocol in ['isis-sr', 'isis-sr-ldp'] %}
   node_sid: {{ switch_id + (switch_data.combined.node_sid_base | arista.avd.default(0)) | int }}
