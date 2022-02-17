@@ -2529,6 +2529,7 @@ router_bgp:
       next_hop_self: < true | false >
       password: "< encrypted_password >"
       default_originate:
+        enabled: < true | false >
         always: < true | false >
         route_map: < route_map_name >
       send_community: < standard | extended | large | all >
@@ -2562,6 +2563,7 @@ router_bgp:
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
       default_originate:
+        enabled: < true | false >
         always: < true | false >
         route_map: < route_map_name >
       send_community: < all | extended | large | standard >
