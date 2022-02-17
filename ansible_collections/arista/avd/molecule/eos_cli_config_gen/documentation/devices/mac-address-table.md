@@ -3,6 +3,7 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+  - [MAC Address Table Summary](#mac-address-table-summary)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -42,6 +43,27 @@ interface Management1
    description oob_management
    vrf MGMT
    ip address 10.73.255.122/24
+```
+
+## MAC Address Table Summary
+
+- MAC address table entry maximum age: 100 seconds
+
+- Logging MAC address interface flapping is Enabled
+
+- 2 MAC moves are considered as one flap
+
+- Size of the flap detection time window: 10 seconds
+
+### MAC Address Table Device Configuration
+
+```eos
+!
+mac address-table aging-time 100
+!
+mac address-table notification host-flap logging
+mac address-table notification host-flap detection window 10
+mac address-table notification host-flap detection moves 2
 ```
 
 # Authentication

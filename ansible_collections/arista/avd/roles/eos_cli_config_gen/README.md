@@ -2462,6 +2462,11 @@ arp:
 ```yaml
 mac_address_table:
   aging_time: < aging_time_in_seconds >
+  notification_host_flap:
+    logging: < true | false >
+    detection:
+      window: < 2-300 >
+      moves: < 2-10 >
 ```
 
 #### Router Virtual MAC Address

@@ -128,7 +128,7 @@
 {% include 'eos/tcam-profile.j2' %}
 {# Connectivity monitor configuration #}
 {% include 'eos/monitor-connectivity.j2' %}
-{# MAC address-table#}
+{# MAC address-table aging #}
 {% include 'eos/mac-address-table.j2' %}
 {# Router virtual mac address #}
 {% include 'eos/virtual-router-mac-address.j2' %}
@@ -170,6 +170,8 @@
 {% include 'eos/ipv6-prefix-lists.j2' %}
 {# System Control-Plane#}
 {% include 'eos/system-control-plane.j2' %}
+{# mac address-table notification #}
+{% include 'eos/mac-address-table-notification.j2' %}
 {# maintenance #}
 {% include 'eos/maintenance.j2' %}
 {# mlag configuration #}
