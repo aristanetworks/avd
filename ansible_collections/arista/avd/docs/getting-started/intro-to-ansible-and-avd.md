@@ -78,9 +78,9 @@ on using Ansible to provision Arista EOS devices either with or without Arista C
 ## What are the requirements to run Ansible?
 
 Ansible can run on almost anything, but in production scenarios Ansible is typically deployed on a virtual Linux server,
-running on the customer’s preferred hypervisor. This Ansible server then communicates either directly with the
+running on the customer's preferred hypervisor. This Ansible server then communicates either directly with the
 Arista network devices via eAPI or with Arista CloudVision Portal, which in turn communicates with the Arista network devices.
-Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator’s computer.
+Controlling what Ansible does is typically done using an SSH terminal session to the Ansible server from the Operator's computer.
 
 ![Figure: Ansible and CVP](../_media/getting-started/Ansible-and-CVP-httpapi.png)
 
@@ -121,7 +121,7 @@ AVD also uses the information provided to produce complete documentation of the 
 
 ## When and when not to use AVD
 
-It’s important to note when and perhaps more importantly when not to use AVD.
+It's important to note when and perhaps more importantly when not to use AVD.
 
 AVD is designed to generate and deploy complete configuration files in a manner where the network device's running-configuration is
 completely replaced. As such, caution should be exercised when running AVD against an existing manually-configured network. Various
@@ -207,15 +207,15 @@ all:
                       ansible_host: 10.255.0.16
 ```
 
-Don’t confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
+Don't confuse ***hosts*** with servers or similar. A host can be anything that can be accessed via SSH or an API, to be managed by Ansible,
 including Arista switches.
 
 The settings inside the inventory.yml file are defined in a tree-like structure using ***groups***. Groups can contain hosts or other groups -
 making it easier to apply common configuration to a group of devices.
 
-The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don’t worry too much about that for now.
+The ***all*** line at the top is a default group that contains all ***hosts*** i.e. all switches. Don't worry too much about that for now.
 
-The ***children:*** keyword is used to define “groups of groups” i.e. just an internal keyword to differentiate between hosts and groups.
+The ***children:*** keyword is used to define "groups of groups" i.e. just an internal keyword to differentiate between hosts and groups.
 
 The multi-colored figure below is just a visualization of the same text file, showing the different grouping and parent/child relationships:
 
@@ -324,7 +324,7 @@ Group variables can be overridden by specifying host variables for specific devi
 (See [DEFAULT_HASH_BEHAVIOUR](https://docs.ansible.com/ansible/latest/reference_appendices/config.html#default-hash-behaviour)).
 The order of precedence is (from lowest to highest):
 
-- 'All' group (because it is the ‘parent’ of all other groups)
+- 'All' group (because it is the 'parent' of all other groups)
 - Parent group
 - Child group
 - Host
