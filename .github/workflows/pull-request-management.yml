@@ -321,7 +321,7 @@ jobs:
       - name: 'ansible-test linting'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity  -v --requirements --docker
+          ansible-test sanity  -v --requirements --docker --python ${{ matrix.python_version }}
 
   galaxy_importer:
     name: Test galaxy-importer
