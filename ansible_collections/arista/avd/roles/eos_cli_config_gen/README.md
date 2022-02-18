@@ -1746,7 +1746,7 @@ management_ssh:
   cipher:
     - < cipher1 >
     - < cipher2 >
-  key-exchange:
+  key_exchange:
     - < method1 >
     - < method2 >
   mac:
@@ -2361,7 +2361,9 @@ class_maps:
       vlan: < VLAN value(s) or range(s) of VLAN values >
       cos: < CoS value(s) or range(s) of CoS values >
       ip:
-        access_group: < Standard access-list name >
+        access_group: < IPv4 access-list name >
+      ipv6:
+        access_group: < IPv6 access-list name >
 ```
 
 #### QOS Policy-map
@@ -2381,6 +2383,7 @@ policy_maps:
       classes:
         < class name >:
           set:
+            cos: < cos_value >
             dscp: < dscp-code >
             traffic_class: < traffic-class ID >
             drop_precedence: < drop-precedence value >
@@ -2396,6 +2399,9 @@ qos_profiles:
     dscp: < dscp-value >
     shape:
       rate: < "< rate > kbps" | "1-100 percent" | "< rate > pps" , supported options are platform dependent >
+    service_policy:
+      type:
+        qos_input: < policy_map_name >
     tx_queues:
       < tx-queue-id >:
         bandwidth_percent: < value >
@@ -2528,6 +2534,10 @@ router_bgp:
       ebgp_multihop: < integer >
       next_hop_self: < true | false >
       password: "< encrypted_password >"
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < standard | extended | large | all >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
@@ -2558,6 +2568,10 @@ router_bgp:
       timers: < keepalive_hold_timer_values >
       route_map_in: < inbound route-map >
       route_map_out: < outbound route-map >
+      default_originate:
+        enabled: < true | false >
+        always: < true | false >
+        route_map: < route_map_name >
       send_community: < all | extended | large | standard >
       maximum_routes: < integer >
       maximum_routes_warning_limit: < "<integer>" | "<0-100> percent" >
@@ -2687,6 +2701,9 @@ router_bgp:
       rd: < route distinguisher >
       route_targets:
         import_export: < route target >
+      mpls_control_word: < true | false, Default -> false >
+      label_flow: < true | false, Default -> false >
+      mtu: < mtu >
       pseudowires:
         - name: < pseudowire name >
           id_local: < integer, must match id_remote on other pe >

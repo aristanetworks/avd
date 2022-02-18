@@ -561,7 +561,7 @@ router general
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

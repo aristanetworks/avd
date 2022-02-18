@@ -107,7 +107,7 @@ interface Management1
 | Remote AS | 65000 |
 | Next-hop unchanged | True |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |

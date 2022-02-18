@@ -603,7 +603,7 @@ router ospf 14 vrf Tenant_A_WAN_Zone
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| BFD | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
