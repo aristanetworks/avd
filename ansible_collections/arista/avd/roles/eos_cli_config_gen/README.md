@@ -119,7 +119,6 @@
       - [Queue Monitor Streaming](#queue-monitor-streaming)
     - [Routing](#routing)
       - [ARP](#arp)
-      - [MAC Address-table](#mac-address-table)
       - [Router Virtual MAC Address](#router-virtual-mac-address)
       - [IP Routing](#ip-routing)
       - [IPv6 Routing](#ipv6-routing)
@@ -128,9 +127,9 @@
       - [Router IGMP Configuration](#router-igmp-configuration)
       - [Router OSPF Configuration](#router-ospf-configuration)
       - [Router ISIS Configuration](#router-isis-configuration)
+      - [Router Traffic Engineering](#router-traffic-engineering)
       - [Service Routing Configuration BGP](#service-routing-configuration-bgp)
       - [Service Routing Protocols Model](#service-routing-protocols-model)
-      - [Router Traffic Engineering](#router-traffic-engineering)
       - [Static Routes](#static-routes)
       - [IPv6 Static Routes](#ipv6-static-routes)
       - [VRF Instances](#vrf-instances)
@@ -140,6 +139,7 @@
     - [Traffic Policies](#traffic-policies)
     - [Virtual Source NAT](#virtual-source-nat)
     - [VLANs](#vlans)
+    - [MAC Address-table](#mac-address-table)
   - [Upgrade of eos_cli_config_gen data model](#upgrade-of-eos_cli_config_gen-data-model)
     - [Versioning](#versioning)
     - [Example Playbooks](#example-playbooks)
@@ -2457,13 +2457,6 @@ arp:
     timeout_default: < timeout-in-seconds >
 ```
 
-#### MAC Address-table
-
-```yaml
-mac_address_table:
-  aging_time: < aging_time_in_seconds >
-```
-
 #### Router Virtual MAC Address
 
 ```yaml
@@ -3320,6 +3313,18 @@ vlans:
       primary_vlan: < vlan_id >
   < vlan_id >:
     name: < vlan_name >
+```
+
+### MAC Address-table
+
+```yaml
+mac_address_table:
+  aging_time: < aging_time_in_seconds >
+  notification_host_flap:
+    logging: < true | false >
+    detection:
+      window: < 2-300 >
+      moves: < 2-10 >
 ```
 
 ## Upgrade of eos_cli_config_gen data model
