@@ -3,7 +3,9 @@
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
+- [MAC Address Table](#mac-address-table)
   - [MAC Address Table Summary](#mac-address-table-summary)
+  - [MAC Address Table Device Configuration](#mac-address-table-device-configuration)
 - [Authentication](#authentication)
 - [Monitoring](#monitoring)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
@@ -45,6 +47,8 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
+# MAC Address Table
+
 ## MAC Address Table Summary
 
 - MAC address table entry maximum age: 100 seconds
@@ -55,7 +59,7 @@ interface Management1
 
 - Size of the flap detection time window: 10 seconds
 
-### MAC Address Table Device Configuration
+## MAC Address Table Device Configuration
 
 ```eos
 !

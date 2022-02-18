@@ -1,5 +1,7 @@
 {% if mac_address_table is arista.avd.defined %}
 
+# MAC Address Table
+
 ## MAC Address Table Summary
 {%     if mac_address_table.aging_time is arista.avd.defined %}
 
@@ -21,10 +23,10 @@
 - Size of the flap detection time window: {{ mac_address_table.notification_host_flap.detection.window }} seconds
 {%     endif %}
 
-### MAC Address Table Device Configuration
+## MAC Address Table Device Configuration
 
 ```eos
-{%     include 'eos/mac-address-table.j2' %}
+{%     include 'eos/mac-address-table-aging-time.j2' %}
 {%     include 'eos/mac-address-table-notification.j2' %}
 ```
 {% endif %}
