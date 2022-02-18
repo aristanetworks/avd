@@ -297,8 +297,9 @@ jobs:
   ansible_test:
     name: Run ansible-test validation
     runs-on: ubuntu-20.04
-    needs: [ molecule_eos_designs, molecule_cloudvision ]
-    if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
+    needs: [ ]
+    #needs: [ molecule_eos_designs, molecule_cloudvision ]
+    #if: needs.cloudvision.status != 'failed' && needs.molecule_eos_designs.status != 'failed' && needs.file-changes.outputs.plugins == 'true'
     strategy:
       fail-fast: true
       matrix:
