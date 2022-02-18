@@ -9,7 +9,6 @@ from ansible.plugins.filter.core import combine
 from ansible.plugins.loader import lookup_loader
 from ansible_collections.arista.avd.plugins.module_utils.strip_empties import strip_null_from_data
 from datetime import datetime
-import yaml
 
 
 class ActionModule(ActionBase):
@@ -27,8 +26,8 @@ class ActionModule(ActionBase):
                 n = self._task.args.get("root_key")
                 n = self._templar.template(n)
                 if not isidentifier(n):
-                    raise AnsibleActionFail(f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character, "
-                                            "and contain only letters, numbers and underscores.")
+                    raise AnsibleActionFail(f"The argument 'root_key' value of '{n}' is not valid. Keys must start with a letter or underscore character, \
+                                            and contain only letters, numbers and underscores.")
                 root_key = n
 
             if "templates" in self._task.args:
@@ -40,9 +39,9 @@ class ActionModule(ActionBase):
             else:
                 raise AnsibleActionFail("The argument 'templates' must be set")
 
-            dest = self._task.args.get("dest",False)
-            template_output = self._task.args.get("template_output",False)
-            debug = self._task.args.get("debug",False)
+            dest = self._task.args.get("dest", False)
+            template_output = self._task.args.get("template_output", False)
+            debug = self._task.args.get("debug", False)
 
         else:
             raise AnsibleActionFail("The argument 'templates' must be set")
@@ -57,12 +56,12 @@ class ActionModule(ActionBase):
         # This list contains timestamps from every step for every template. This is useful for identifying slow templates.
         # Here we pull in the list from any previous tasks, so we can just add the the list.
         if debug:
-            avd_yaml_templates_to_facts_debug = template_vars.get('avd_yaml_templates_to_facts_debug',[])
+            avd_yaml_templates_to_facts_debug = template_vars.get('avd_yaml_templates_to_facts_debug', [])
 
         for template_item in template_list:
             if debug:
                 debug_item = template_item
-                debug_item['timestamps'] = { "starting": datetime.now() }
+                debug_item['timestamps'] = {"starting": datetime.now()}
 
             template = template_item.get('template')
             if not template:
@@ -113,7 +112,7 @@ class ActionModule(ActionBase):
         # This is to resolve any input values with inline jinja using variables/facts set by the input templates.
         if template_output:
             if debug:
-                debug_item = { 'action': 'template_output', 'timestamps': { 'combine_data': datetime.now() } }
+                debug_item = {'action': 'template_output', 'timestamps': {'combine_data': datetime.now()}}
 
             if root_key:
                 template_vars[root_key] = output
@@ -143,7 +142,7 @@ class ActionModule(ActionBase):
 
             # Depending on the file suffix of 'dest' (default: 'json') we will format the data to yaml or just write the output data directly.
             # The Copy module used in 'write_file' will convert the output data to json automatically.
-            if dest.split('.')[-1] in ["yml", "yaml"] :
+            if dest.split('.')[-1] in ["yml", "yaml"]:
                 write_file_result = self.write_file(yaml.dump(output, indent=2, sort_keys=False, width=130), task_vars)
             else:
                 write_file_result = self.write_file(output, task_vars)
@@ -169,9 +168,8 @@ class ActionModule(ActionBase):
             result['ansible_facts'] = output
         return result
 
-
-    # The write_file function is implementing the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
     def write_file(self, content, task_vars):
+        # The write_file function is implementing the Ansible 'copy' action_module, to benefit from Ansible builtin functionality like 'changed'.
         # Reuse task data
         new_task = self._task.copy()
 
