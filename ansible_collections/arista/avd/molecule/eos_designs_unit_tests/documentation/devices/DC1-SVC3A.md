@@ -11,6 +11,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+  - [Monitor Sessions](#monitor-sessions)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -164,6 +165,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -199,6 +201,52 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC DC1-SVC3A
+```
+
+## Monitor Sessions
+
+### Monitor Sessions Summary
+
+#### MonitoringSessionServer18WithDest
+
+##### MonitoringSessionServer18WithDest Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet25 | rx | ip | MyIpACL | 5 |
+| Ethernet28 | tx | mac | MyMacACL | 5 |
+| Port-Channel27 | tx | mac | MyMacACL | 5 |
+
+##### MonitoringSessionServer18WithDest Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Ethernet26, Ethernet40, Port-Channel42 |
+| Header Remove Size | 200 |
+| Access Group Type | mac |
+| Access Group Name | mac_acl |
+| Rate Limit per Ingress Chip | 30 bps |
+| Rate Limit per Egress Chip | 30 bps |
+| Sample | 10 |
+| Truncate Enabled | True |
+| Truncate Size | 20 |
+
+### Monitor Sessions Configuration
+
+```eos
+!
+monitor session MonitoringSessionServer18WithDest source Ethernet25 rx ip access-group MyIpACL priority 5
+monitor session MonitoringSessionServer18WithDest source Ethernet28 tx mac access-group MyMacACL priority 5
+monitor session MonitoringSessionServer18WithDest source Port-Channel27 tx mac access-group MyMacACL priority 5
+monitor session MonitoringSessionServer18WithDest destination Ethernet26
+monitor session MonitoringSessionServer18WithDest destination Ethernet40
+monitor session MonitoringSessionServer18WithDest destination Port-Channel42
+monitor session MonitoringSessionServer18WithDest header remove size 200
+monitor session MonitoringSessionServer18WithDest mac access-group mac_acl
+monitor session MonitoringSessionServer18WithDest rate-limit per-ingress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest rate-limit per-egress-chip 30 bps
+monitor session MonitoringSessionServer18WithDest sample 10
+monitor session MonitoringSessionServer18WithDest truncate size 20
 ```
 
 # MLAG
@@ -240,7 +288,7 @@ STP Root Super: **True**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4090,4092**
+- Spanning Tree disabled for VLANs: **4090,4092**
 
 ## Spanning Tree Device Configuration
 
@@ -291,7 +339,7 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
+| 3008 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
 | 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
 | 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
@@ -361,7 +409,7 @@ vlan 311
 vlan 350
    name Tenant_C_WAN_Zone_1
 !
-vlan 3009
+vlan 3008
    name MLAG_iBGP_Tenant_A_OP_Zone
    trunk group LEAF_PEER_L3
 !
@@ -431,6 +479,12 @@ vlan 4092
 | Ethernet22 | server15_port_channel_with_disabled_phy_interfaces_Eth1 | *access | *110 | *- | *- | 22 |
 | Ethernet23 | server16_port_channel_with_disabled_port_channel_Eth1 | *access | *110 | *- | *- | 23 |
 | Ethernet24 | server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1 | *access | *110 | *- | *- | 24 |
+| Ethernet25 |  server18_monitoring_session_source_phys_interfaces_Eth1 | access | 110 | - | - | - |
+| Ethernet26 |  server19_monitoring_session_destination_phys_Eth1 | access | - | - | - | - |
+| Ethernet27 | server18_monitoring_session_source_po_Eth3 | *access | *110 | *- | *- | 27 |
+| Ethernet28 |  server18_monitoring_session_source_phys_interface_Eth5 | access | 110 | - | - | - |
+| Ethernet40 |  server20_monitoring_session_destination_phys_Eth1 | access | - | - | - | - |
+| Ethernet42 | server21_monitoring_session_destination_po_Eth1 | *access | *110 | *- | *- | 42 |
 
 *Inherited from Port-Channel Interface
 
@@ -514,7 +568,8 @@ interface Ethernet11
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
-   spanning-tree bpdufilter enable
+   spanning-tree bpduguard disable
+   spanning-tree bpdufilter disable
    storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
@@ -527,6 +582,7 @@ interface Ethernet12
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -542,6 +598,7 @@ interface Ethernet13
    switchport mode access
    spanning-tree portfast network
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
@@ -566,6 +623,7 @@ interface Ethernet16
    switchport mode access
    spanning-tree portfast network
    spanning-tree bpduguard enable
+   spanning-tree bpdufilter disable
    storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
@@ -617,6 +675,40 @@ interface Ethernet24
    description server17_port_channel_with_disabled_phy_and_po_interfaces_Eth1
    shutdown
    channel-group 24 mode active
+!
+interface Ethernet25
+   description server18_monitoring_session_source_phys_interfaces_Eth1
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet26
+   description server19_monitoring_session_destination_phys_Eth1
+   no shutdown
+   switchport
+!
+interface Ethernet27
+   description server18_monitoring_session_source_po_Eth3
+   no shutdown
+   channel-group 27 mode active
+!
+interface Ethernet28
+   description server18_monitoring_session_source_phys_interface_Eth5
+   no shutdown
+   switchport
+   switchport access vlan 110
+   switchport mode access
+!
+interface Ethernet40
+   description server20_monitoring_session_destination_phys_Eth1
+   no shutdown
+   switchport
+!
+interface Ethernet42
+   description server21_monitoring_session_destination_po_Eth1
+   no shutdown
+   channel-group 42 mode active
 ```
 
 ## Port-Channel Interfaces
@@ -638,6 +730,8 @@ interface Ethernet24
 | Port-Channel22 | server15_port_channel_with_disabled_phy_interfaces_server15_port_channel_with_disabled_phy_interfaces | switched | access | 110 | - | - | - | - | 22 | - |
 | Port-Channel23 | server16_port_channel_with_disabled_port_channel_server16_port_channel_with_disabled_port_channel | switched | access | 110 | - | - | - | - | 23 | - |
 | Port-Channel24 | server17_port_channel_with_disabled_phy_and_po_interfaces_server17_port_channel_with_disabled_phy_and_po_interfaces | switched | access | 110 | - | - | - | - | 24 | - |
+| Port-Channel27 | server18_monitoring_session_source_po_server18_monitoring_session_source_po | switched | access | 110 | - | - | - | - | 27 | - |
+| Port-Channel42 | server21_monitoring_session_destination_po_server21_monitoring_session_destination_po | switched | access | 110 | - | - | - | - | 42 | - |
 
 ### Port-Channel Interfaces Device Configuration
 
@@ -676,6 +770,7 @@ interface Port-Channel14
    switchport mode trunk
    mlag 14
    spanning-tree portfast
+   spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -690,6 +785,7 @@ interface Port-Channel15
    switchport mode trunk
    mlag 15
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -706,6 +802,7 @@ interface Port-Channel17
    port-channel lacp fallback timeout 90
    port-channel lacp fallback static
    spanning-tree portfast
+   spanning-tree bpduguard disable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -722,6 +819,7 @@ interface Port-Channel18
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    spanning-tree portfast
+   spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -738,6 +836,7 @@ interface Port-Channel19
    port-channel lacp fallback timeout 10
    port-channel lacp fallback static
    spanning-tree portfast
+   spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
    storm-control all level 10
    storm-control broadcast level pps 100
@@ -764,6 +863,20 @@ interface Port-Channel24
    switchport
    switchport access vlan 110
    mlag 24
+!
+interface Port-Channel27
+   description server18_monitoring_session_source_po_server18_monitoring_session_source_po
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 27
+!
+interface Port-Channel42
+   description server21_monitoring_session_destination_po_server21_monitoring_session_destination_po
+   no shutdown
+   switchport
+   switchport access vlan 110
+   mlag 42
 ```
 
 ## Loopback Interfaces
@@ -830,7 +943,7 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone_1  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan311 |  Tenant_C_OP_Zone_2  |  Tenant_C_OP_Zone  |  -  |  false  |
 | Vlan350 |  Tenant_C_WAN_Zone_1  |  Tenant_C_WAN_Zone  |  -  |  false  |
-| Vlan3009 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  1500  |  false  |
+| Vlan3008 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone  |  Tenant_A_OP_Zone  |  1500  |  false  |
 | Vlan3010 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone  |  Tenant_A_WEB_Zone  |  1500  |  false  |
 | Vlan3011 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone  |  Tenant_A_APP_Zone  |  1500  |  false  |
 | Vlan3012 |  MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone  |  Tenant_A_DB_Zone  |  1500  |  false  |
@@ -861,7 +974,7 @@ interface Loopback100
 | Vlan310 |  Tenant_C_OP_Zone  |  -  |  10.3.10.1/24  |  -  |  -  |  -  |  -  |
 | Vlan311 |  Tenant_C_OP_Zone  |  -  |  10.3.11.1/24  |  -  |  -  |  -  |  -  |
 | Vlan350 |  Tenant_C_WAN_Zone  |  -  |  10.3.50.1/24  |  -  |  -  |  -  |  -  |
-| Vlan3009 |  Tenant_A_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
+| Vlan3008 |  Tenant_A_OP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3010 |  Tenant_A_WEB_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3011 |  Tenant_A_APP_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
 | Vlan3012 |  Tenant_A_DB_Zone  |  10.255.251.6/31  |  -  |  -  |  -  |  -  |  -  |
@@ -942,6 +1055,10 @@ interface Vlan150
    no shutdown
    vrf Tenant_A_WAN_Zone
    ip address virtual 10.1.40.1/24
+   ip ospf area 1
+   ip ospf cost 100
+   ip ospf authentication
+   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Vlan210
    description Tenant_B_OP_Zone_1
@@ -979,7 +1096,7 @@ interface Vlan350
    vrf Tenant_C_WAN_Zone
    ip address virtual 10.3.50.1/24
 !
-interface Vlan3009
+interface Vlan3008
    description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
    no shutdown
    mtu 1500
@@ -1053,11 +1170,11 @@ interface Vlan4092
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
-
-#### EVPN MLAG Shared Router MAC : mlag-system-id
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
+| EVPN MLAG Shared Router MAC | mlag-system-id |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -1161,7 +1278,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_APP_Zone | true |
 | Tenant_A_DB_Zone | true |
 | Tenant_A_OP_Zone | true |
@@ -1194,7 +1312,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_APP_Zone | false |
 | Tenant_A_DB_Zone | false |
 | Tenant_A_OP_Zone | false |
@@ -1204,7 +1323,6 @@ ip routing vrf Tenant_C_WAN_Zone
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_OP_Zone | false |
 | Tenant_C_WAN_Zone | false |
-
 
 ## Static Routes
 
@@ -1243,7 +1361,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -1268,26 +1386,26 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | default | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 172.31.255.48 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.50 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.52 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.54 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
-| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | default | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 172.31.255.48 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.50 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.52 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.54 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_APP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_DB_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WAN_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_A_WEB_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_B_WAN_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_OP_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
+| 10.255.251.7 | Inherited from peer group MLAG-PEERS | Tenant_C_WAN_Zone | - | Inherited from peer group MLAG-PEERS | Inherited from peer group MLAG-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -1303,9 +1421,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
 | Tenant_A_APP_Zone | 65103:12 | 12:12 | - | - | learned | 130-131 |
 | Tenant_A_DB_Zone | 65103:13 | 13:13 | - | - | learned | 140-141 |
-| Tenant_A_NFS | 65103:10161 | 10161:10161 | - | - | learned | 161 |
-| Tenant_A_OP_Zone | 65103:10 | 10:10 | - | - | learned | 110-111 |
-| Tenant_A_VMOTION | 65103:10160 | 10160:10160 | - | - | learned | 160 |
+| Tenant_A_NFS | 65103:20161 | 20161:20161 | - | - | learned | 161 |
+| Tenant_A_OP_Zone | 65103:9 | 9:9 | - | - | learned | 110-111 |
+| Tenant_A_VMOTION | 65103:20160 | 20160:20160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 65103:14 | 14:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 65103:11 | 11:11 | - | - | learned | 120-121 |
 | Tenant_B_OP_Zone | 65103:20 | 20:20 | - | - | learned | 210-211 |
@@ -1319,7 +1437,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | --- | ------------------- | ------------ |
 | Tenant_A_APP_Zone | 65103:12 | connected |
 | Tenant_A_DB_Zone | 65103:13 | connected |
-| Tenant_A_OP_Zone | 65103:10 | connected |
+| Tenant_A_OP_Zone | 65103:9 | connected |
 | Tenant_A_WAN_Zone | 65103:14 | connected |
 | Tenant_A_WEB_Zone | 65103:11 | connected |
 | Tenant_B_OP_Zone | 65103:20 | connected |
@@ -1395,20 +1513,20 @@ router bgp 65103
       vlan 140-141
    !
    vlan-aware-bundle Tenant_A_NFS
-      rd 65103:10161
-      route-target both 10161:10161
+      rd 65103:20161
+      route-target both 20161:20161
       redistribute learned
       vlan 161
    !
    vlan-aware-bundle Tenant_A_OP_Zone
-      rd 65103:10
-      route-target both 10:10
+      rd 65103:9
+      route-target both 9:9
       redistribute learned
       vlan 110-111
    !
    vlan-aware-bundle Tenant_A_VMOTION
-      rd 65103:10160
-      route-target both 10160:10160
+      rd 65103:20160
+      route-target both 20160:20160
       redistribute learned
       vlan 160
    !
@@ -1473,9 +1591,9 @@ router bgp 65103
       redistribute connected
    !
    vrf Tenant_A_OP_Zone
-      rd 65103:10
-      route-target import evpn 10:10
-      route-target export evpn 10:10
+      rd 65103:9
+      route-target import evpn 9:9
+      route-target export evpn 9:9
       router-id 192.168.255.12
       neighbor 10.255.251.7 peer group MLAG-PEERS
       redistribute connected
@@ -1555,12 +1673,15 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
+#### IP IGMP Snooping Vlan Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 120 | disabled |
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 120 | False | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

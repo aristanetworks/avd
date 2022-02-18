@@ -1,0 +1,32 @@
+{% if mac_address_table is arista.avd.defined %}
+
+# MAC Address Table
+
+## MAC Address Table Summary
+{%     if mac_address_table.aging_time is arista.avd.defined %}
+
+- MAC address table entry maximum age: {{ mac_address_table.aging_time }} seconds
+{%     endif %}
+{%     if mac_address_table.notification_host_flap.logging is arista.avd.defined(false) %}
+
+- Logging MAC address interface flapping is Disabled
+{%     elif mac_address_table.notification_host_flap.logging is arista.avd.defined(true) %}
+
+- Logging MAC address interface flapping is Enabled
+{%     endif %}
+{%     if mac_address_table.notification_host_flap.detection.moves is arista.avd.defined %}
+
+- {{ mac_address_table.notification_host_flap.detection.moves }} MAC moves are considered as one flap
+{%     endif %}
+{%     if mac_address_table.notification_host_flap.detection.window is arista.avd.defined %}
+
+- Size of the flap detection time window: {{ mac_address_table.notification_host_flap.detection.window }} seconds
+{%     endif %}
+
+## MAC Address Table Device Configuration
+
+```eos
+{%     include 'eos/mac-address-table-aging-time.j2' %}
+{%     include 'eos/mac-address-table-notification.j2' %}
+```
+{% endif %}

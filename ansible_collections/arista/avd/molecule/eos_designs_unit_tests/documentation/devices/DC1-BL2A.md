@@ -162,6 +162,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin nopassword
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 ```
 
 # Monitoring
@@ -224,9 +225,6 @@ STP Root Super: **True**
 | Instance(s) | Priority |
 | -------- | -------- |
 | 0 | 4096 |
-
-### Global Spanning-Tree Settings
-
 
 ## Spanning Tree Device Configuration
 
@@ -397,6 +395,10 @@ interface Vlan150
    no shutdown
    vrf Tenant_A_WAN_Zone
    ip address virtual 10.1.40.1/24
+   ip ospf area 1
+   ip ospf cost 100
+   ip ospf authentication
+   ip ospf authentication-key 7 AQQvKeimxJu+uGQ/yYvv9w==
 !
 interface Vlan250
    description Tenant_B_WAN_Zone_1
@@ -415,9 +417,10 @@ interface Vlan350
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -482,7 +485,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 | Tenant_A_WAN_Zone | true |
 | Tenant_B_OP_Zone | true |
 | Tenant_B_WAN_Zone | true |
@@ -505,12 +509,12 @@ ip routing vrf Tenant_C_WAN_Zone
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
+| default | false |
+| MGMT | false |
 | Tenant_A_WAN_Zone | false |
 | Tenant_B_OP_Zone | false |
 | Tenant_B_WAN_Zone | false |
 | Tenant_C_WAN_Zone | false |
-
 
 ## Static Routes
 
@@ -549,7 +553,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | -------- | ----- |
 | Address Family | evpn |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -564,16 +568,16 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.31.255.112 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.114 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.116 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 172.31.255.118 | 65001 | default | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS |
-| 192.168.255.1 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.3 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.4 | 65001 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.31.255.112 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.114 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.116 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 172.31.255.118 | 65001 | default | - | Inherited from peer group UNDERLAY-PEERS | Inherited from peer group UNDERLAY-PEERS | - | - |
+| 192.168.255.1 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.4 | 65001 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -726,8 +730,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 
@@ -806,6 +811,12 @@ vrf instance Tenant_C_WAN_Zone
 # Platform
 
 ## Platform Summary
+
+### Platform Sand Summary
+
+| Settings | Value |
+| -------- | ----- |
+| lag.hardware_only | True |
 
 ## Platform Configuration
 

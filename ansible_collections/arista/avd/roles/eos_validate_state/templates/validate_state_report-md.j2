@@ -7,16 +7,16 @@
 {% set validate_state_report.test_categories = [] %}
 {% set validate_state_report.test_categories_failed = [] %}
 {% set validate_state_report.duts = [] %}
-{% for test_id in validation_report_csv.dict %}
-{%     do validate_state_report.duts.append(validation_report_csv.dict[test_id].node) %}
-{%     do validate_state_report.test_categories.append(validation_report_csv.dict[test_id].test_category) %}
-{%     if validation_report_csv.dict[test_id].result == "PASS" %}
+{% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+{%     do validate_state_report.duts.append(report_entry.device | arista.avd.default("-")) %}
+{%     do validate_state_report.test_categories.append(report_entry.test_category | arista.avd.default("-")) %}
+{%     if report_entry.result is arista.avd.defined("PASS") %}
 {%         set validate_state_report.total_tests_passed = validate_state_report.total_tests_passed + 1 %}
-{%     elif validation_report_csv.dict[test_id].result == "FAIL" %}
+{%     elif report_entry.result is arista.avd.defined("FAIL") %}
 {%         set validate_state_report.total_tests_failed = validate_state_report.total_tests_failed + 1 %}
 {%     endif %}
 {%     if loop.last %}
-{%        set validate_state_report.total_tests = loop.length %}
+{%         set validate_state_report.total_tests = loop.length %}
 {%     endif %}
 {% endfor %}
 {% set validate_state_report.duts = validate_state_report.duts | unique  %}
@@ -44,13 +44,13 @@
 | DUT | Total Tests | Tests Passed | Tests Failed | Categories Failed |
 | --- | ----------- | ------------ | ------------ | ----------------- |
 {% for dut in validate_state_report.duts %}
-{%     for test_id in validation_report_csv.dict %}
-{%         if validation_report_csv.dict[test_id].node == dut %}
-{%             if validation_report_csv.dict[test_id].result == "PASS" %}
+{%     for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+{%         if report_entry.device is arista.avd.defined(dut) %}
+{%             if report_entry.result is arista.avd.defined("PASS") %}
 {%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
-{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
+{%             elif report_entry.result is arista.avd.defined("FAIL")  %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
-{%                 do validate_state_report.test_categories_failed.append(validation_report_csv.dict[test_id].test_category) %}
+{%                 do validate_state_report.test_categories_failed.append(report_entry.test_category) %}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
@@ -65,11 +65,11 @@
 | Test Category | Total Tests | Tests Passed | Tests Failed |
 | ------------- | ----------- | ------------ | ------------ |
 {% for test_category in validate_state_report.test_categories %}
-{%     for test_id in validation_report_csv.dict %}
-{%         if validation_report_csv.dict[test_id].test_category == test_category %}
-{%             if validation_report_csv.dict[test_id].result == "PASS" %}
+{%     for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+{%         if report_entry.test_category is arista.avd.defined(test_category) %}
+{%             if report_entry.result is arista.avd.defined("PASS") %}
 {%                 set validate_state_report.tests_passed = validate_state_report.tests_passed + 1 %}
-{%             elif validation_report_csv.dict[test_id].result == "FAIL" %}
+{%             elif report_entry.result is arista.avd.defined("FAIL") %}
 {%                 set validate_state_report.tests_failed = validate_state_report.tests_failed + 1 %}
 {%             endif %}
 {%         endif %}
@@ -83,16 +83,18 @@
 
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
-{% for test_id in validation_report_csv.dict %}
-{%     if validation_report_csv.dict[test_id].result == "FAIL" %}
-| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
+{% for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+{%     if report_entry.result is arista.avd.defined("FAIL") %}
+| {{ report_entry.id | arista.avd.default("-") }} | {{ report_entry.device | arista.avd.default("-") }} | {{ report_entry.test_category | arista.avd.default("-") }} | {{ report_entry.test_description | arista.avd.default("-") }} | {{ report_entry.test | arista.avd.default("-") }} | {{ report_entry.result | arista.avd.default("-") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("-") }} |
 {%     endif %}
 {% endfor %}
 
+{% if only_failed_tests is not arista.avd.defined(true) %}
 ## All Test Results
 
 | Test ID | Node | Test Category | Test Description | Test | Test Result | Failure Reason |
 | ------- | ---- | ------------- | ---------------- | ---- | ----------- | -------------- |
-{% for test_id in validation_report_csv.dict %}
-| {{ test_id }} | {{ validation_report_csv.dict[test_id].node }} | {{ validation_report_csv.dict[test_id].test_category }} | {{ validation_report_csv.dict[test_id].test_description }} | {{ validation_report_csv.dict[test_id].test }} | {{ validation_report_csv.dict[test_id].result | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ validation_report_csv.dict[test_id].failure_reason }} |
-{% endfor %}
+{%     for report_entry in eos_validate_state_report | arista.avd.default([]) %}
+| {{ report_entry.id | arista.avd.default("-") }} | {{ report_entry.device | arista.avd.default("-") }} | {{ report_entry.test_category | arista.avd.default("-") }} | {{ report_entry.test_description | arista.avd.default("-") }} | {{ report_entry.test | arista.avd.default("-") }} | {{ report_entry.result | arista.avd.default("-") | arista.avd.status_render(validate_state_markdown_flavor) }} | {{ report_entry.failure_reason | arista.avd.default("-") }} |
+{%     endfor %}
+{% endif %}

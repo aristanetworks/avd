@@ -16,6 +16,7 @@ policy_maps:
         CM_REPLICATION_LD:
           set:
             dscp: af11
+            cos: 4
   pbr:
     PM_PBR_BREAKOUT:
       classes:

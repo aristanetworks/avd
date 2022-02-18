@@ -1,0 +1,32 @@
+- name: Test with all parameters
+  register: CVP_VARS
+  inventory_to_container:
+        inventory: '{{ inventory_path }}/inventory.yml'
+        container_root: 'DC1_FABRIC'
+        configlet_dir: '{{ configlet_path }}'
+        configlet_prefix: 'AVD'
+        device_filter: ['DC1-LE']
+        destination: "{{ actual_output }}"
+
+- local_action: shell diff "{{ expected_output }}/expected_with_all_param.yml" "{{ actual_output }}"
+  failed_when: "diff_output.rc > 1"
+  register: diff_output
+
+- name: Validate output
+  assert:
+        that:
+              - CVP_VARS is success
+              - CVP_VARS.CVP_TOPOLOGY != {}
+              - CVP_VARS.CVP_CONFIGLETS != {}
+              - CVP_VARS.changed == false
+              - item is defined
+              - "'AVD_DC1-LE' in item[0:10]"
+              - diff_output.stdout == ""
+  with_items: "{{ CVP_VARS.CVP_CONFIGLETS }}"
+
+- name: Validate CVP_TOPOLOGY
+  assert:
+        that:
+              - item is defined
+              - item == "Tenant"
+  with_items: "{{ CVP_VARS.CVP_TOPOLOGY.DC1_FABRIC.parent_container }}"

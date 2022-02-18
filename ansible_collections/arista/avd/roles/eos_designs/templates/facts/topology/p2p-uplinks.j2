@@ -34,6 +34,14 @@ topology:
       peer_ip_address: {% include switch.ip_addressing.p2p_uplinks_peer_ip %}
 
 {%             endif %}
+{%             if switch.link_tracking_groups is arista.avd.defined %}
+{#    topology.link_tracking_group #}
+      link_tracking_groups:
+{%                 for lt_group in switch.link_tracking_groups %}
+        - name: {{ lt_group.name }}
+          direction: upstream
+{%                 endfor %}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {% endfor %}

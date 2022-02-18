@@ -173,9 +173,6 @@ daemon TerminAttr
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -225,15 +222,15 @@ vlan internal order ascending range 1006 1199
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet5 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet6 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet7 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -360,7 +357,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -375,8 +373,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 

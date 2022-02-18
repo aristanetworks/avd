@@ -69,7 +69,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -105,9 +106,10 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Address Family | evpn |
+| Allowas-in | Allowed, allowed 3 (default) times |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 3 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -120,16 +122,17 @@ interface Management1
 | Remote AS | 65101 |
 | Next-hop self | True |
 | Send community | all |
-| Maximum routes | 12000 |
+| Maximum routes | 12000 (warning-limit 80 percent, warning-only) |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
-| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 192.168.255.1 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Allowed, allowed 5 times | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.2 | Inherited from peer group EVPN-OVERLAY-PEERS | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 192.168.255.3 | - | default | - | - | 52000 (warning-limit 2000, warning-only) | Allowed, allowed 5 times | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | 15000 (warning-limit 50 percent) | - | - |
+| 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT02 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -151,16 +154,22 @@ interface Management1
 | Settings | Value |
 | -------- | ----- |
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
-| L3 Gateway Configured | True |
-| L3 Gateway Inter-domain | True |
+| L3 Gateway Configured | True |
+| L3 Gateway Inter-domain | True |
 
 ### Router BGP VLAN Aware Bundles
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp | 110 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned<br>no host-routes | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp<br>no connected | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
+
+### Router BGP VLANs
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 2488 | 145.245.21.0:1 | 145.245.21.0:1 | - | - | no learned |
 
 ### Router BGP VRFs
 
@@ -188,21 +197,31 @@ router bgp 65101
    neighbor EVPN-OVERLAY-PEERS password 7 q+VNViP5i4rVjW1cxFv2wA==
    neighbor EVPN-OVERLAY-PEERS send-community
    neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   neighbor EVPN-OVERLAY-PEERS allowas-in
    neighbor MLAG-IPv4-UNDERLAY-PEER peer group
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER password 7 vnEaG8gMeQf3d3cN6PktXQ==
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
-   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
+   neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000 warning-limit 80 percent warning-only
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-OUT out
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.1 allowas-in 5
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
+   neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
+   neighbor 192.168.255.3 allowas-in 5
+   !
+   vlan 2488
+      rd 145.245.21.0:1
+      route-target both 145.245.21.0:1
+      no redistribute learned
    !
    vlan-aware-bundle B-ELAN-201
       rd 192.168.255.3:20201
       route-target both 20201:20201
       redistribute learned
+      no redistribute host-routes
       vlan 201
    !
    vlan-aware-bundle TENANT_A_PROJECT01
@@ -211,6 +230,7 @@ router bgp 65101
       route-target import export evpn domain remote 2:11
       redistribute igmp
       redistribute learned
+      no redistribute connected
       vlan 110
    !
    vlan-aware-bundle TENANT_A_PROJECT02
@@ -241,6 +261,7 @@ router bgp 65101
       route-target export evpn 11:11
       router-id 192.168.255.3
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
+      neighbor 10.255.251.1 maximum-routes 15000 warning-limit 50 percent
       redistribute connected
    !
    vrf TENANT_A_PROJECT02

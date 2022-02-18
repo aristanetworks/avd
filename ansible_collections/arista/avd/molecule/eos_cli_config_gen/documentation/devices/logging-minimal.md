@@ -58,12 +58,15 @@ interface Management1
 | Console | informational |
 | Monitor | debugging |
 
+**Syslog facility value:** syslog
+
 ### Logging Servers and Features Device Configuration
 
 ```eos
 !
 logging console informational
 logging monitor debugging
+logging facility syslog
 ```
 
 # Internal VLAN Allocation Policy
@@ -86,7 +89,8 @@ logging monitor debugging
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos

@@ -72,13 +72,13 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '14:14'
+          - '65104:14'
           - 65000:456
           vpn-ipv4:
           - 65000:123
         export:
           evpn:
-          - '14:14'
+          - '65104:14'
           - 65000:789
           vpn-ipv4:
           - 65000:123
@@ -110,6 +110,7 @@ router_bgp:
           route_map_in: RM-123-1-1-11-IN
           route_map_out: RM-123-1-1-11-OUT
           local_as: 123
+          bfd: true
         fd5a:fe45:8831:06c5::a:
           remote_as: 12345
           send_community: all
@@ -119,6 +120,7 @@ router_bgp:
       redistribute_routes:
       - connected
       - static
+      - ospf
       address_families:
         ipv4:
           neighbors:
@@ -138,10 +140,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '15:15'
+          - '65104:15'
         export:
           evpn:
-          - '15:15'
+          - '65104:15'
       redistribute_routes:
       - connected
     Tenant_B_OP_Zone:
@@ -150,10 +152,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '20:20'
+          - '65104:20'
         export:
           evpn:
-          - '20:20'
+          - '65104:20'
       redistribute_routes:
       - connected
     Tenant_B_WAN_Zone:
@@ -162,10 +164,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '21:21'
+          - '65104:21'
         export:
           evpn:
-          - '21:21'
+          - '65104:21'
       redistribute_routes:
       - connected
     Tenant_C_WAN_Zone:
@@ -174,10 +176,10 @@ router_bgp:
       route_targets:
         import:
           evpn:
-          - '31:31'
+          - '65104:31'
         export:
           evpn:
-          - '31:31'
+          - '65104:31'
       redistribute_routes:
       - connected
   vlan_aware_bundles:
@@ -185,7 +187,7 @@ router_bgp:
       rd: 192.168.254.14:14
       route_targets:
         both:
-        - '14:14'
+        - '65104:14'
       redistribute_routes:
       - learned
       vlan: 150
@@ -193,7 +195,7 @@ router_bgp:
       rd: 192.168.254.14:21
       route_targets:
         both:
-        - '21:21'
+        - '65104:21'
       redistribute_routes:
       - learned
       vlan: 250
@@ -201,7 +203,7 @@ router_bgp:
       rd: 192.168.254.14:31
       route_targets:
         both:
-        - '31:31'
+        - '65104:31'
       redistribute_routes:
       - learned
       vlan: 350
@@ -264,6 +266,8 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
+      cvpadmin@hostmachine.local
 vrfs:
   MGMT:
     ip_routing: false
@@ -349,6 +353,17 @@ ethernet_interfaces:
     mtu: 9000
     shutdown: false
     description: test
+    ospf_area: 0
+    ospf_network_point_to_point: true
+    ospf_cost: 100
+    ospf_authentication: message-digest
+    ospf_message_digest_keys:
+      1:
+        hash_algorithm: sha1
+        key: AQQvKeimxJu+uGQ/yYvv9w==
+      2:
+        hash_algorithm: sha512
+        key: AQQvKeimxJu+uGQ/yYvv9w==
   Ethernet8:
     type: routed
     peer_type: l3_interface
@@ -436,6 +451,11 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_A_WAN_Zone
     ip_address_virtual: 10.1.40.1/24
+    ospf_area: 1
+    ospf_network_point_to_point: false
+    ospf_cost: 100
+    ospf_authentication: simple
+    ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
   Vlan250:
     tenant: Tenant_B
     tags:
@@ -452,6 +472,19 @@ vlan_interfaces:
     shutdown: false
     vrf: Tenant_C_WAN_Zone
     ip_address_virtual: 10.3.50.1/24
+router_ospf:
+  process_ids:
+    14:
+      vrf: Tenant_A_WAN_Zone
+      passive_interface_default: true
+      router_id: 192.168.255.14
+      no_passive_interfaces:
+      - Ethernet7
+      - Vlan150
+      max_lsa: 15000
+      redistribute:
+        bgp:
+          enabled: true
 vxlan_interface:
   Vxlan1:
     description: DC1-BL1A_VTEP

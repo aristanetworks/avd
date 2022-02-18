@@ -138,9 +138,6 @@ snmp-server location TWODC_5STAGE_CLOS DC1 DC1_POD2 DC1-POD2-LEAF1A
 
 STP mode: **none**
 
-### Global Spanning-Tree Settings
-
-
 ## Spanning Tree Device Configuration
 
 ```eos
@@ -331,9 +328,10 @@ interface Vlan112
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
 
 #### VLAN to VNI, Flood List and Multicast Group Mappings
 
@@ -396,7 +394,8 @@ ip virtual-router mac-address 00:1c:73:00:dc:01
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| Common_VRF | true |
+| default | true |
+| Common_VRF | true |
 | MGMT | false |
 
 ### IP Routing Device Configuration
@@ -413,9 +412,9 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || Common_VRF | false |
+| default | false |
+| Common_VRF | false |
 | MGMT | false |
-
 
 ## Static Routes
 
@@ -457,7 +456,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 | Address Family | evpn |
 | Remote AS | 65120 |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Ebgp multihop | 5 |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
@@ -473,13 +472,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.1.254
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 172.16.120.1 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.16.120.2 | 65120 | default | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS |
-| 172.17.10.13 | 65102 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.120.0 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
-| 172.17.120.2 | 65120 | default | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 172.16.120.1 | 65120 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.16.120.2 | 65120 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS |
+| 172.17.10.13 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | True |
+| 172.17.120.0 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
+| 172.17.120.2 | 65120 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - |
 
 ### Router BGP EVPN Address Family
 
@@ -621,8 +620,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

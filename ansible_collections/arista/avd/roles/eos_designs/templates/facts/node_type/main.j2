@@ -33,7 +33,7 @@ switch:
   network_services_l3: {{ ns.node_type_key_data.network_services.l3 | arista.avd.default(false) }}
 
 {# switch.underlay_router #}
-  underlay_router: {{ ns.node_type_key_data.underlay_router | arista.avd.default(true)}}
+  underlay_router: {{ ns.node_type_key_data.underlay_router | arista.avd.default(true) }}
 
 {# switch.uplink_type #}
   uplink_type: {{ ns.node_type_key_data.uplink_type | arista.avd.default('p2p') }}

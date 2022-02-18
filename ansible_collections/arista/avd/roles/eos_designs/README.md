@@ -79,17 +79,17 @@ Feasible Layer 3 leaf & spine topologies leveraging VXLAN data-plane with an EVP
 | Underlay | Overlay | Topology |
 | -------- | ------- | ---------- |
 | eBGP | eBGP | Multi-Stage + L2 Leafs |
-| ISIS | eBGP | Multi-Stage + L2 Leafs  |
-| ISIS | iBGP | Multi-Stage + L2 Leafs  |
+| ISIS | eBGP | Multi-Stage + L2 Leafs |
+| ISIS | iBGP | Multi-Stage + L2 Leafs |
 | OSPF | eBGP | Multi-Stage + L2 Leafs |
-| OSPF | iBGP | Multi-Stage + L2 Leafs  |
+| OSPF | iBGP | Multi-Stage + L2 Leafs |
 | RFC5549(eBGP) | eBGP | Multi-Stage + L2 Leafs |
 
 Across all designs the following functionality is provided:
 
 - Flexible placement of EVPN Route Server (RS) or Route Reflector (RR), including dedicated overlay controller
 - EVPN service definition: Layer 2 and Layer 3 (Network Services)
-- L3 Edge port definition
+- L3 Edge port(s) definition
 - L2 Edge ports definition (connected endpoints)
 
 **5 Stage topology example:**
@@ -130,11 +130,12 @@ The upgraded data will be saved in `{{ inventory_dir }}/eos_designs_upgrade_2.x_
 The user should then replace the old data structures manually in `group_vars` and `host_vars` files as applicable until no files are created in the upgrade directory when
 running the playbook. After all data has been upgraded, the `tasks_from: upgrade` or `tasks_from: upgrade-and-run` can be removed again.
 
-The upgrade will _not_ does not support `custom_structured_configuration` or `structured_config` keys. Content of these keys _must_ be upgraded manually as applicable.
+The upgrade does _not_ support `custom_structured_configuration` or `structured_config` keys. Content of these keys _must_ be upgraded manually as applicable.
 
 ### Versioning
 
 To support future upgrades the relevant upgrade tasks can be chosen using a new upgrade setting.
+
 ```yaml
 avd_eos_designs_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ```
@@ -142,6 +143,7 @@ avd_eos_designs_upgrade: < "2.x-to-3.0" | default -> "2.x-to-3.0" >
 ### Example Playbooks
 
 Running upgrade only
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -153,6 +155,7 @@ Running upgrade only
 ```
 
 Running upgrade and the regular `eos_designs` tasks
+
 ```yaml
 ---
 - hosts: DC1_FABRIC
@@ -164,6 +167,7 @@ Running upgrade and the regular `eos_designs` tasks
 ```
 
 Alternative with separate tasks:
+
 ```yaml
 ---
 - hosts: DC1_FABRIC

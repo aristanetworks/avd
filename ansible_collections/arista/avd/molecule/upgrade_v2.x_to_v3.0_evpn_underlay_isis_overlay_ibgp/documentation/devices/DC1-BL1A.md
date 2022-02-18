@@ -219,7 +219,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4093-4094**
+- Spanning Tree disabled for VLANs: **4093-4094**
 
 ## Spanning Tree Device Configuration
 
@@ -293,12 +293,12 @@ vlan 4094
 
 #### ISIS
 
-| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type |
-| --------- | ------------- | ------------- | ----------- | ---- | ----------------- |
-| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
-| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - |
+| Interface | Channel Group | ISIS Instance | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | Authentication Mode |
+| --------- | ------------- | ------------- | ----------- | ---- | ----------------- | ------------- | ------------------- |
+| Ethernet1 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet2 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet3 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
+| Ethernet4 | - | EVPN_UNDERLAY | 50 | point-to-point | - | - | - |
 
 ### Ethernet Interfaces Device Configuration
 
@@ -471,11 +471,11 @@ interface Vlan4094
 
 ### VXLAN Interface Summary
 
-#### Source Interface: Loopback1
-
-#### UDP port: 4789
-
-#### EVPN MLAG Shared Router MAC : mlag-system-id
+| Setting | Value |
+| ------- | ----- |
+| Source Interface | Loopback1 |
+| UDP port | 4789 |
+| EVPN MLAG Shared Router MAC | mlag-system-id |
 
 ### VXLAN Interface Device Configuration
 
@@ -517,7 +517,8 @@ ip virtual-router mac-address 00:dc:00:00:00:0a
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -532,8 +533,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -613,16 +614,16 @@ router isis EVPN_UNDERLAY
 | Address Family | evpn |
 | Remote AS | 65001 |
 | Source | Loopback0 |
-| Bfd | true |
+| BFD | True |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
 
 ### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Send-community | Maximum-routes |
-| -------- | --------- | --- | -------------- | -------------- |
-| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS |
-| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- |
+| 192.168.255.1 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
+| 192.168.255.4 | Inherited from peer group OVERLAY-PEERS | default | - | Inherited from peer group OVERLAY-PEERS | Inherited from peer group OVERLAY-PEERS | - | Inherited from peer group OVERLAY-PEERS |
 
 ### Router BGP EVPN Address Family
 
@@ -686,8 +687,9 @@ router bfd
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
-
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

@@ -14,7 +14,7 @@ logging monitor {{ logging.monitor }}
 {%     if logging.buffered.level is arista.avd.defined('disabled') %}
 no logging buffered
 {%     elif logging.buffered.level is arista.avd.defined %}
-{%         set logging_buffered_cli = "logging buffered"%}
+{%         set logging_buffered_cli = "logging buffered" %}
 {%         if logging.buffered.size is arista.avd.defined %}
 {%             set logging_buffered_cli = logging_buffered_cli ~ " " ~ logging.buffered.size %}
 {%         endif %}
@@ -41,6 +41,9 @@ logging format hostname ipv4
 {%     endif %}
 {%     if logging.format.sequence_numbers is arista.avd.defined(true) %}
 logging format sequence-numbers
+{%     endif %}
+{%     if logging.facility is arista.avd.defined %}
+logging facility {{ logging.facility }}
 {%     endif %}
 {%     if logging.source_interface is arista.avd.defined %}
 logging source-interface {{ logging.source_interface }}

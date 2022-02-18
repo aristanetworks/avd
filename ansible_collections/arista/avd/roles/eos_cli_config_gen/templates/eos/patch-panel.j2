@@ -10,9 +10,9 @@ patch panel
 {%             for connector in patch.connectors | arista.avd.natural_sort %}
 {%                 if connector.id is arista.avd.defined %}
 {%                     if connector.type is arista.avd.defined("interface") %}
-{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " interface " ~ connector.endpoint %}
 {%                     elif connector.type is arista.avd.defined("pseudowire") %}
-{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
+{%                         set connector_cli = "connector " ~ connector.id ~ " pseudowire " ~ connector.endpoint %}
 {%                     endif %}
       {{ connector_cli }}
 {%                 endif %}

@@ -2,11 +2,6 @@
 name: "Collection code testing"
 
 on:
-  # push:
-  #   branches-ignore:
-  #     - devel
-  #     - releases/**
-  #     - ci/**
   # For a pull_request event, only branches and tags on the base are evaluated.
   pull_request:
     branches-ignore:
@@ -87,7 +82,14 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true' || needs.file-changes.outputs.requirements == 'true'
     steps:
       - uses: actions/checkout@v2
-      - uses: pre-commit/action@v2.0.2
+      - name: Install requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
+          pip install -r ansible_collections/arista/avd/requirements.txt
+      - name: Run pre-commit
+        run: |
+          pre-commit run --all-files --color always
+
   # ----------------------------------- #
   # Check Links  offline for dead target
   # ----------------------------------- #
@@ -149,7 +151,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        avd_scenario: ['eos_cli_config_gen','upgrade_eos_cli_config_gen']
+        avd_scenario: ['eos_cli_config_gen', 'upgrade_eos_cli_config_gen']
         ansible_version: ['ansible-core==2.11.3', 'ansible-core>=2.11.3,<2.13.0']
     needs: [ pre_commit ]
     if: needs.file-changes.outputs.config_gen == 'true'
@@ -312,11 +314,13 @@ jobs:
         with:
           python-version: ${{ matrix.python_version }}
       - name: 'Install Python requirements'
-        run: make install-requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'ansible-test linting'
         run: |
           cd ansible_collections/arista/avd/
-          ansible-test sanity  -v --requirements --docker --skip-test yamllint --exclude docs/
+          ansible-test sanity  -v --requirements --docker
 
   galaxy_importer:
     name: Test galaxy-importer
@@ -334,7 +338,9 @@ jobs:
           echo "ANSIBLE_FORCE_COLOR=1" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - name: install requirements
-        run: make install-requirements
+        run: |
+          pip install -r ansible_collections/arista/avd/requirements.txt
+          pip install -r ansible_collections/arista/avd/requirements-dev.txt
       - name: 'build ansible package'
         run: make collection-build
       - name: 'run ansible-importer checks'
@@ -343,3 +349,18 @@ jobs:
         with:
           name: importer-logs
           path: ./importer_result.json
+
+  j2lint:
+    name: Validate j2 files
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+        timeout-minutes: 2
+      - name: Setup J2Lint
+        timeout-minutes: 2
+        run: |
+          pip install git+https://github.com/aristanetworks/j2lint.git
+      - name: Run J2lint
+        timeout-minutes: 2
+        run: |
+          j2lint $GITHUB_WORKSPACE --ignore S7 S6

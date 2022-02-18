@@ -229,7 +229,7 @@ STP mode: **mstp**
 
 ### Global Spanning-Tree Settings
 
-Spanning Tree disabled for VLANs: **4091**
+- Spanning Tree disabled for VLANs: **4091**
 
 ## Spanning Tree Device Configuration
 
@@ -457,7 +457,8 @@ service routing protocols model multi-agent
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | true|| MGMT | false |
+| default | true |
+| MGMT | false |
 
 ### IP Routing Device Configuration
 
@@ -472,8 +473,8 @@ no ip routing vrf MGMT
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false || MGMT | false |
-
+| default | false |
+| MGMT | false |
 
 ## Static Routes
 
@@ -496,12 +497,15 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 ### IP IGMP Snooping Summary
 
-IGMP snooping is globally enabled.
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
 
+#### IP IGMP Snooping Vlan Summary
 
-| VLAN | IGMP Snooping |
-| --- | --------------- |
-| 120 | disabled |
+| Vlan | IGMP Snooping | Fast Leave | Max Groups | Proxy |
+| ---- | ------------- | ---------- | ---------- | ----- |
+| 120 | False | - | - | - |
 
 ### IP IGMP Snooping Device Configuration
 

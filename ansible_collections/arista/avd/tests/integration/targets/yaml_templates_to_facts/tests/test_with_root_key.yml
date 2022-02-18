@@ -1,0 +1,24 @@
+- name: Test with root_key parameter
+  ignore_errors: no
+  vars:
+    timezone: "test"
+    hours:
+  register: result
+  yaml_templates_to_facts:
+    root_key: structured_config
+    templates:
+      - template: "templates/template.j2"
+
+- assert:
+    that:
+      - result is success
+      - result.changed == true
+      - result.ansible_facts is defined
+      - result.ansible_facts.structured_config is defined
+      - result.ansible_facts.structured_config.clock is defined
+      - result.ansible_facts.structured_config.clock.timezone is defined
+      - result.ansible_facts.structured_config.clock.timezone == 'test'
+      - result.ansible_facts.structured_config.clock.hours is not defined
+      - result.ansible_facts.structured_config.clock.minutes is not defined
+      - result.ansible_facts.structured_config.clock.seconds is defined
+      - result.ansible_facts.structured_config.clock.seconds == [1, 1, 2, 3]

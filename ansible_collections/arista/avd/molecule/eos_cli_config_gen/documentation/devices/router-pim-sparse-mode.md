@@ -69,7 +69,8 @@ interface Management1
 
 | VRF | Routing Enabled |
 | --- | --------------- |
-| default | false|
+| default | false |
+
 ### IP Routing Device Configuration
 
 ```eos
@@ -88,10 +89,10 @@ interface Management1
 
 ### IP Sparse Mode Information
 
-### IP Rendez-vous Information
+#### IP Rendezvous Information
 
-| Rendez-vous Point Address | Group Address |
-| ------------------------- | ------------- |
+| Rendezvous Point Address | Group Address |
+| ------------------------ | ------------- |
 | 10.238.1.161 | 239.12.12.12/32 |
 | 10.238.1.161 | 239.12.12.13/32 |
 | 10.238.1.161 | 239.12.12.14/32 |
@@ -99,11 +100,22 @@ interface Management1
 | 10.238.1.161 | 239.12.12.20/32 |
 | 10.238.1.161 | 239.12.12.21/32 |
 
-### IP Anycast Information
+#### IP Anycast Information
 
-| IP Anycast Address | Other Rendez-vous Point Address | Register Count |
-| ------------------ | ------------------------------- | -------------- |
-| 10.38.1.161 | 10.50.64.16 |  15 | |
+| IP Anycast Address | Other Rendezvous Point Address | Register Count |
+| ------------------ | ------------------------------ | -------------- |
+| 10.38.1.161 | 10.50.64.16 | 15 |
+
+#### IP Sparse Mode VRFs
+
+| VRF Name | Rendezvous Point Address | Group Address |
+| -------- | ------------------------ | ------------- |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
+| MCAST_VRF1 | 10.238.2.161 | 239.12.22.12/32, 239.12.22.13/32, 239.12.22.14/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.16/32, 239.12.22.20/32, 239.12.22.21/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.16/32, 239.12.22.20/32, 239.12.22.21/32 |
+| MCAST_VRF2 | 10.238.3.161 | 239.12.22.16/32, 239.12.22.20/32, 239.12.22.21/32 |
 
 ### Router Multicast Device Configuration
 
@@ -119,6 +131,18 @@ router pim sparse-mode
       rp address 10.238.1.161 239.12.12.21/32
       anycast-rp 10.38.1.161 10.50.64.16 register-count 15
       ssm range standard
+   !
+   vrf MCAST_VRF1
+      ipv4
+         rp address 10.238.2.161 239.12.22.12/32
+         rp address 10.238.2.161 239.12.22.13/32
+         rp address 10.238.2.161 239.12.22.14/32
+   !
+   vrf MCAST_VRF2
+      ipv4
+         rp address 10.238.3.161 239.12.22.16/32
+         rp address 10.238.3.161 239.12.22.20/32
+         rp address 10.238.3.161 239.12.22.21/32
 ```
 
 # Filters
