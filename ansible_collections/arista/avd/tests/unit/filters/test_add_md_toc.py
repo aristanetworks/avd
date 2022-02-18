@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.filter.add_md_toc import add_md_toc
 import pytest
 import md_toc

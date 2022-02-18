@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.modules.inventory_to_container import is_in_filter, isIterable, get_device_option_value
 from ansible_collections.arista.avd.plugins.modules.inventory_to_container import serialize, get_devices, isLeaf, get_containers
 import os
