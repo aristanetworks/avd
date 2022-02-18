@@ -1,0 +1,66 @@
+{# Leaf connected_endpoint monitor-sessions #}
+{% if monitor_sessions_data | length > 0 %}
+monitor_sessions:
+{%     for sname, group in monitor_sessions_data | groupby("name") %}
+{%         set merged_settings = {} | combine(group, recursive=true, list_merge='append') %}
+  - name: {{ sname }}
+    sources:
+{%         for session in group | selectattr('role', 'equalto', 'source') %}
+{%             if session.interface is arista.avd.defined %}
+      - name: {{ session.interface }}
+{%                 if session.source_settings is arista.avd.defined %}
+{%                     if session.source_settings.direction is arista.avd.defined %}
+        direction: {{ session.source_settings.direction }}
+{%                     endif %}
+{%                     if session.source_settings.access_group is arista.avd.defined %}
+        access_group:
+{%                         if session.source_settings.access_group.type is arista.avd.defined %}
+          type: {{ session.source_settings.access_group.type }}
+{%                         endif %}
+{%                         if session.source_settings.access_group.name is arista.avd.defined %}
+          name: {{ session.source_settings.access_group.name }}
+{%                         endif %}
+{%                         if session.source_settings.access_group.priority is arista.avd.defined %}
+          priority: {{ session.source_settings.access_group.priority }}
+{%                         endif %}
+{%                     endif %}
+{%                 endif %}
+{%             endif %}
+{%         endfor %}
+    destinations:
+{%         for session in group | selectattr('role', 'equalto', 'destination') %}
+{%             if session.interface is arista.avd.defined %}
+      - {{ session.interface }}
+{%             endif %}
+{%         endfor %}
+{%         if merged_settings.session_settings is arista.avd.defined %}
+{%             if merged_settings.session_settings.encapsulation_gre_metadata_tx is arista.avd.defined(true) %}
+    encapsulation_gre_metadata_tx: {{ merged_settings.session_settings.encapsulation_gre_metadata_tx }}
+{%             endif %}
+{%             if merged_settings.session_settings.header_remove_size is arista.avd.defined %}
+    header_remove_size: {{ merged_settings.session_settings.header_remove_size }}
+{%             endif %}
+{%             if merged_settings.session_settings.access_group.type is arista.avd.defined and merged_settings.session_settings.access_group.name is arista.avd.defined %}
+    access_group:
+      type: {{ merged_settings.session_settings.access_group.type }}
+      name: {{ merged_settings.session_settings.access_group.name }}
+{%             endif %}
+{%             if merged_settings.session_settings.rate_limit_per_ingress_chip is arista.avd.defined %}
+    rate_limit_per_ingress_chip: {{ merged_settings.session_settings.rate_limit_per_ingress_chip }}
+{%             endif %}
+{%             if merged_settings.session_settings.rate_limit_per_egress_chip is arista.avd.defined %}
+    rate_limit_per_egress_chip: {{ merged_settings.session_settings.rate_limit_per_egress_chip }}
+{%             endif %}
+{%             if merged_settings.session_settings.sample is arista.avd.defined %}
+    sample: {{ merged_settings.session_settings.sample }}
+{%             endif %}
+{%             if merged_settings.session_settings.truncate.enabled is arista.avd.defined(true) %}
+    truncate:
+      enabled: {{ merged_settings.session_settings.truncate.enabled }}
+{%                 if merged_settings.session_settings.truncate.size is arista.avd.defined %}
+      size: {{ merged_settings.session_settings.truncate.size }}
+{%                 endif %}
+{%             endif %}
+{%         endif %}
+{%     endfor %}
+{% endif %}
