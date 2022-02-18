@@ -16,8 +16,12 @@
 - [Multicast](#multicast)
 - [Filters](#filters)
 - [ACL](#acl)
+  - [Extended Access-lists](#extended-access-lists)
+  - [IPv6 Extended Access-lists](#ipv6-extended-access-lists)
 - [Quality Of Service](#quality-of-service)
   - [QOS](#qos)
+  - [QOS Class Maps](#qos-class-maps)
+  - [QOS Policy Maps](#qos-policy-maps)
   - [QOS Profiles](#qos-profiles)
 
 # Management
@@ -75,6 +79,7 @@ interface Management1
 | Ethernet3 | MLAG_PEER_DC1-LEAF1B_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-LEAF1B_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet6 |  SRV-POD02_Eth1 | trunk | 110-111,210-211 | - | - | - |
+| Ethernet7 |  Test-with-policymap | trunk | 110-111,210-211 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -113,6 +118,13 @@ interface Ethernet6
    qos trust cos
    qos cos 2
    service-profile experiment
+!
+interface Ethernet7
+   description Test-with-policymap
+   switchport
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode trunk
+   service-profile qprof_testwithpolicy
 ```
 
 ## Port-Channel Interfaces
@@ -169,6 +181,60 @@ interface Port-Channel3
 
 # ACL
 
+## Extended Access-lists
+
+### Extended Access-lists Summary
+
+#### acl_qos_tc0_v4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ip any 192.0.2.0/29 |
+
+#### acl_qos_tc5_v4
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ip any any dscp ef |
+
+### Extended Access-lists Device Configuration
+
+```eos
+!
+ip access-list acl_qos_tc0_v4
+   10 permit ip any 192.0.2.0/29
+!
+ip access-list acl_qos_tc5_v4
+   10 permit ip any any dscp ef
+```
+
+## IPv6 Extended Access-lists
+
+### IPv6 Extended Access-lists Summary
+
+#### acl_qos_tc0_v6
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ipv6 any any dscp cs1 |
+
+#### acl_qos_tc5_v6
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit ipv6 any 2001:db8::/48 |
+
+### IPv6 Extended Access-lists Device Configuration
+
+```eos
+!
+ipv6 access-list acl_qos_tc0_v6
+   10 permit ipv6 any any dscp cs1
+!
+ipv6 access-list acl_qos_tc5_v6
+   10 permit ipv6 any 2001:db8::/48
+```
+
 # Quality Of Service
 
 ## QOS
@@ -214,6 +280,70 @@ qos map traffic-class 2 4 5 to cos 7
 qos map traffic-class 6 to tx-queue 2
 ```
 
+## QOS Class Maps
+
+### QOS Class Maps Summary
+
+| Name | Field | Value |
+| ---- | ----- | ----- |
+| cmap_tc0_v4 | acl | acl_qos_tc0_v4 |
+| cmap_tc0_v6 | - | - |
+| cmap_tc5_v4 | acl | acl_qos_tc5_v4 |
+| cmap_tc5_v6 | - | - |
+
+### Class-maps Device Configuration
+
+```eos
+!
+class-map type qos match-any cmap_tc0_v4
+   match ip access-group acl_qos_tc0_v4
+!
+class-map type qos match-any cmap_tc0_v6
+   match ipv6 access-group acl_qos_tc0_v6
+!
+class-map type qos match-any cmap_tc5_v4
+   match ip access-group acl_qos_tc5_v4
+!
+class-map type qos match-any cmap_tc5_v6
+   match ipv6 access-group acl_qos_tc5_v6
+```
+
+## QOS Policy Maps
+
+### QOS Policy Maps Summary
+
+**pmap_test1**
+
+| class | Set | Value |
+| ----- | --- | ----- |
+| class-default | traffic_class | 1 |
+| cmap_tc0_v4 | traffic_class | 0 |
+| cmap_tc0_v6 | traffic_class | 0 |
+| cmap_tc5_v4 | traffic_class | 5 |
+| cmap_tc5_v6 | traffic_class | 5 |
+
+### QOS Policy Maps configuration
+
+```eos
+!
+policy-map type quality-of-service pmap_test1
+   class class-default
+      set traffic-class 1
+   !
+   class cmap_tc0_v4
+      set traffic-class 0
+   !
+   class cmap_tc0_v6
+      set traffic-class 0
+   !
+   class cmap_tc5_v4
+      set traffic-class 5
+   !
+   class cmap_tc5_v6
+      set traffic-class 5
+   !
+```
+
 ## QOS Profiles
 
 ### QOS Profiles Summary
@@ -243,6 +373,22 @@ QOS Profile: **no_qos_trust**
 | Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
 | ----------- | ------------ | ----- | ---------- | ------------------ |
 | 3 | 4 | disabled | - | - |
+
+QOS Profile: **qprof_testwithpolicy**
+
+**Settings**
+
+| Default COS | Default DSCP | Trust | Shape Rate | QOS Service Policy |
+| ----------- | ------------ | ----- | ---------- | ------------------ |
+| - | - | - | - | pmap_test1 |
+
+**Tx-queues**
+
+| Tx-queue | Bandwidth | Priority | Shape Rate |
+| -------- | --------- | -------- | ---------- |
+| 0 | 1 | - | - |
+| 1 | 80 | - | - |
+| 5 | 19 | no priority | - |
 
 QOS Profile: **test**
 
@@ -287,6 +433,19 @@ qos profile no_qos_trust
    no qos trust
    qos cos 3
    qos dscp 4
+!
+qos profile qprof_testwithpolicy
+   service-policy type qos input pmap_test1
+   !
+   tx-queue 0
+      bandwidth percent 1
+   !
+   tx-queue 1
+      bandwidth percent 80
+   !
+   tx-queue 5
+      bandwidth percent 19
+      no priority
 !
 qos profile test
    qos trust dscp
