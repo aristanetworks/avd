@@ -1,3 +1,6 @@
+from __future__ import (absolute_import, division, print_function)
+__metaclass__ = type
+
 from ansible_collections.arista.avd.plugins.test.defined import defined, TestModule
 from jinja2.runtime import Undefined
 from ansible.errors import AnsibleError
