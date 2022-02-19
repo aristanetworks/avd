@@ -2374,6 +2374,9 @@ policy_maps:
     < policy-map name >:
       classes:
         < class name >:
+          index: < integer > # Optional
+          # Set only one of the below actions per class
+          drop: < true | false >
           set:
             nexthop:
               ip_address: < IPv4_address | IPv6_address >
