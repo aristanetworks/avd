@@ -5,5 +5,7 @@ mlag_configuration:
   peer_link: Port-Channel12
   heartbeat_interval: 5000
   dual_primary_detection_delay: 5
+  dual_primary_recovery_delay_mlag: 90
+  dual_primary_recovery_delay_non_mlag: 30
   reload_delay_mlag: 400
   reload_delay_non_mlag: 450
