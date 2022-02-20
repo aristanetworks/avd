@@ -12,9 +12,7 @@
 | Rendezvous Point Address | Group Address |
 | ------------------------ | ------------- |
 {%             for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort %}
-{%                 for group in router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
-| {{ rp_address }} | {{ group }} |
-{%                 endfor %}
+| {{ rp_address }} | {{ rp_address.groups | arista.avd.default(['-']) | join(', ') }} |
 {%             endfor %}
 {%         endif %}
 {%         if router_pim_sparse_mode.ipv4.anycast_rps is arista.avd.defined %}
@@ -40,9 +38,7 @@
 {%         for vrf in router_pim_sparse_mode.vrfs | arista.avd.natural_sort('name') %}
 {%             if vrf.ipv4.rp_addresses is arista.avd.defined %}
 {%                 for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
-{%                     for group in rp_address.groups | arista.avd.natural_sort %}
-| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_address.groups | join(', ') }} |
-{%                     endfor %}
+| {{ vrf.name }} | {{ rp_address.address }} | {{ rp_address.groups | arista.avd.default(['-']) | join(', ') }} |
 {%                 endfor %}
 {%             endif %}
 {%         endfor %}
