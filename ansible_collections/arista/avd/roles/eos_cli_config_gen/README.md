@@ -1827,6 +1827,8 @@ mlag_configuration:
     peer_ip: < IPv4_address >
     vrf: < vrf_name >
   dual_primary_detection_delay: < seconds >
+  dual_primary_recovery_delay_mlag: < 0 - 1000 >
+  dual_primary_recovery_delay_non_mlag: < 0 - 1000 >
   peer_link: < Port-Channel_id >
   reload_delay_mlag: < seconds >
   reload_delay_non_mlag: < seconds >

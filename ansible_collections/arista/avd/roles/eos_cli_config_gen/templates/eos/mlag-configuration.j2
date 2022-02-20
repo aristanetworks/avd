@@ -28,6 +28,10 @@ mlag configuration
 {%     if mlag_configuration.dual_primary_detection_delay is arista.avd.defined %}
    dual-primary detection delay {{ mlag_configuration.dual_primary_detection_delay }} action errdisable all-interfaces
 {%     endif %}
+{%     if mlag_configuration.dual_primary_recovery_delay_mlag is arista.avd.defined and
+          mlag_configuration.dual_primary_recovery_delay_non_mlag is arista.avd.defined %}
+   dual-primary recovery delay mlag {{ mlag_configuration.dual_primary_recovery_delay_mlag }} non-mlag {{ mlag_configuration.dual_primary_recovery_delay_non_mlag }}
+{%     endif %}
 {%     if mlag_configuration.reload_delay_mlag is arista.avd.defined %}
    reload-delay mlag {{ mlag_configuration.reload_delay_mlag }}
 {%     endif %}
