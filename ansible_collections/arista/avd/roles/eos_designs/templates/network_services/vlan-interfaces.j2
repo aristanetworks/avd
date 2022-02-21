@@ -8,34 +8,47 @@ vlan_interfaces:
 {%             if svi.profile is arista.avd.defined %}
 {%                 set svi_profile = svi_profiles[svi.profile] | arista.avd.default() %}
 {%             endif %}
+{%             if svi_profile.parent_profile is arista.avd.defined %}
+{%                 set parent_profile = svi_profiles[svi_profile.parent_profile] | arista.avd.default({}) %}
+{%             endif %}
 {%             set svi_tags = svi.tags | arista.avd.default(
-                              svi_profile.tags) %}
+                              svi_profile.tags,
+                              parent_profile.tags) %}
 {%             set svi_name = svi.name | arista.avd.default(
-                              svi_profile.name) %}
+                              svi_profile.name,
+                              parent_profile.name) %}
 {%             set svi_description = svi.description | arista.avd.default(
                                      svi_profile.description,
+                                     parent_profile.description,
                                      svi_name) %}
 {%             set svi_enabled = svi.enabled | arista.avd.default(
-                                 svi_profile.enabled) %}
+                                 svi_profile.enabled,
+                                 parent_profile.enabled) %}
 {%             set svi_ip_virtual_router_addresses = svi.ip_virtual_router_addresses | arista.avd.default(
-                                                     svi_profile.ip_virtual_router_addresses) %}
+                                                     svi_profile.ip_virtual_router_addresses,
+                                                     parent_profile.ip_virtual_router_addresses) %}
 {%             set svi_ip_address_virtual = svi.ip_address_virtual | arista.avd.default(
-                                            svi_profile.ip_address_virtual) %}
+                                            svi_profile.ip_address_virtual,
+                                            parent_profile.ip_address_virtual) %}
 {%             set svi_ip_address_virtual_secondaries = svi.ip_address_virtual_secondaries | arista.avd.default(
-                                                      svi_profile.ip_address_virtual_secondaries) %}
+                                                      svi_profile.ip_address_virtual_secondaries,
+                                                      parent_profile.ip_address_virtual_secondaries) %}
 {%             set svi_mtu = svi.mtu | arista.avd.default(
-                             svi_profile.mtu) %}
+                             svi_profile.mtu,
+                             parent_profile.mtu) %}
 {%             set svi_ip_helpers = svi.ip_helpers | arista.avd.default(
                                     vrf.ip_helpers,
-                                    svi_profile.ip_helpers) %}
+                                    svi_profile.ip_helpers, parent_profile.ip_helpers) %}
 {%             set svi_raw_eos_cli = svi.nodes[inventory_hostname].raw_eos_cli | arista.avd.default(
                                      svi_profile.nodes[inventory_hostname].raw_eos_cli,
                                      svi.raw_eos_cli,
-                                     svi_profile.raw_eos_cli) %}
+                                     svi_profile.raw_eos_cli,
+                                     parent_profile.raw_eos_cli) %}
 {%             set svi_structured_config = svi.nodes[inventory_hostname].structured_config | arista.avd.default(
                                            svi_profile.nodes[inventory_hostname].structured_config,
                                            svi.structured_config,
-                                           svi_profile.structured_config) %}
+                                           svi_profile.structured_config,
+                                           parent_profile.structured_config) %}
   Vlan{{ svi.id | int }}:
     tenant: {{ tenant.name }}
     tags: {{ svi_tags }}
