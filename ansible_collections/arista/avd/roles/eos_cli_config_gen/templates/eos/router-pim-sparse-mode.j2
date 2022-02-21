@@ -5,7 +5,7 @@ router pim sparse-mode
 {%     if router_pim_sparse_mode.ipv4 is arista.avd.defined %}
    ipv4
 {%         for rp_address in router_pim_sparse_mode.ipv4.rp_addresses | arista.avd.natural_sort %}
-{%             if router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups is arista.avd.defined and router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | length > 0 %}
+{%             if router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups is arista.avd.defined %}
 {%                 for group in router_pim_sparse_mode.ipv4.rp_addresses[rp_address].groups | arista.avd.natural_sort %}
       rp address {{ rp_address }} {{ group }}
 {%                 endfor %}
@@ -32,7 +32,7 @@ router pim sparse-mode
 {%         if vrf.ipv4 is arista.avd.defined %}
       ipv4
 {%             for rp_address in vrf.ipv4.rp_addresses | arista.avd.natural_sort('address') %}
-{%                 if rp_address.groups is arista.avd.defined and rp_address.groups | length > 0 %}
+{%                 if rp_address.groups is arista.avd.defined %}
 {%                     for group in rp_address.groups | arista.avd.natural_sort %}
          rp address {{ rp_address.address }} {{ group }}
 {%                     endfor %}
